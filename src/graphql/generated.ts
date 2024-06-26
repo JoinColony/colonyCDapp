@@ -1508,7 +1508,7 @@ export type CreateIngestorStatsInput = {
 };
 
 export type CreateLiquidationAddressInput = {
-  chainId: Scalars['String'];
+  chainId: Scalars['Int'];
   id?: InputMaybe<Scalars['ID']>;
   liquidationAddress: Scalars['ID'];
   userAddress: Scalars['ID'];
@@ -2342,7 +2342,7 @@ export type IngestorStats = {
 export type LiquidationAddress = {
   __typename?: 'LiquidationAddress';
   /** The chain id the colony is on */
-  chainId: Scalars['String'];
+  chainId: Scalars['Int'];
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier for the liquidation address entry */
   id: Scalars['ID'];
@@ -3293,7 +3293,7 @@ export type ModelIntKeyConditionInput = {
 
 export type ModelLiquidationAddressConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressConditionInput>>>;
-  chainId?: InputMaybe<ModelStringInput>;
+  chainId?: InputMaybe<ModelIntInput>;
   liquidationAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelLiquidationAddressConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressConditionInput>>>;
@@ -3308,7 +3308,7 @@ export type ModelLiquidationAddressConnection = {
 
 export type ModelLiquidationAddressFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelLiquidationAddressFilterInput>>>;
-  chainId?: InputMaybe<ModelStringInput>;
+  chainId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
   liquidationAddress?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelLiquidationAddressFilterInput>;
@@ -3949,7 +3949,7 @@ export type ModelSubscriptionIntInput = {
 
 export type ModelSubscriptionLiquidationAddressFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>>>;
-  chainId?: InputMaybe<ModelSubscriptionStringInput>;
+  chainId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   liquidationAddress?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionLiquidationAddressFilterInput>>>;
@@ -8432,7 +8432,7 @@ export type UpdateIngestorStatsInput = {
 };
 
 export type UpdateLiquidationAddressInput = {
-  chainId?: InputMaybe<Scalars['String']>;
+  chainId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
   liquidationAddress?: InputMaybe<Scalars['ID']>;
   userAddress?: InputMaybe<Scalars['ID']>;
@@ -8858,7 +8858,7 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
-export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
 
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
 
@@ -9293,14 +9293,15 @@ export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
 export type GetUserLiquidationAddressesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
+  chainId: Scalars['Int'];
 }>;
 
 
-export type GetUserLiquidationAddressesQuery = { __typename?: 'Query', getLiquidationAddressesByUserAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: string, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+export type GetUserLiquidationAddressesQuery = { __typename?: 'Query', getLiquidationAddressesByUserAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
 export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12442,8 +12443,11 @@ export type GetUserByUserOrLiquidationAddressQueryHookResult = ReturnType<typeof
 export type GetUserByUserOrLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserByUserOrLiquidationAddressLazyQuery>;
 export type GetUserByUserOrLiquidationAddressQueryResult = Apollo.QueryResult<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>;
 export const GetUserLiquidationAddressesDocument = gql`
-    query GetUserLiquidationAddresses($userAddress: ID!) {
-  getLiquidationAddressesByUserAddress(userAddress: $userAddress) {
+    query GetUserLiquidationAddresses($userAddress: ID!, $chainId: Int!) {
+  getLiquidationAddressesByUserAddress(
+    userAddress: $userAddress
+    filter: {chainId: {eq: $chainId}}
+  ) {
     items {
       ...LiquidationAddress
     }
@@ -12464,6 +12468,7 @@ export const GetUserLiquidationAddressesDocument = gql`
  * const { data, loading, error } = useGetUserLiquidationAddressesQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */

@@ -97,5 +97,6 @@ export enum TRANSACTION_METHODS {
   SetUserRoles = 'setUserRoles',
   StakeMotion = 'stakeMotion',
   TokenUnlockAction = 'tokenUnlockAction',
+  Transfer = 'transfer',
   Upgrade = 'upgrade',
 }
