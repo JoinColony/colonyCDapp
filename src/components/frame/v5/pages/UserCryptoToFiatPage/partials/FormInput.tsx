@@ -12,7 +12,9 @@ export const FormInput: FC<FormInputProps> = ({ name, label, placeholder }) => {
   const {
     register,
     formState: { isSubmitting },
+    getFieldState,
   } = useFormContext();
+  const { error } = getFieldState(name);
   return (
     <Input
       name={name}
@@ -22,6 +24,8 @@ export const FormInput: FC<FormInputProps> = ({ name, label, placeholder }) => {
       labelMessage={label}
       shouldFocus
       placeholder={placeholder}
+      isError={!!error}
+      customErrorMessage={error?.message || ''}
     />
   );
 };
