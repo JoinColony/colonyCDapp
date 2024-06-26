@@ -132,8 +132,6 @@ const checkKYCHandler = async (
     const hasLiquidationAddress =
       colonyUser.liquidationAddresses.items.length > 0;
 
-    console.log(colonyUser.liquidationAddresses[0]);
-
     if (firstAccount && !hasLiquidationAddress) {
       // They have external accounts. Create a liquidation address
       const liquidationAddressCreation = await fetch(
@@ -157,13 +155,14 @@ const checkKYCHandler = async (
       if (liquidationAddressCreation.status === 200) {
         const liquidationAddressCreationRes =
           await liquidationAddressCreation.json();
+        console.log(liquidationAddressCreationRes);
         const liquidationAddress = liquidationAddressCreationRes.address;
-
-        await graphqlRequest(
+        console.log(liquidationAddress, checksummedWalletAddress);
+        const r = await graphqlRequest(
           createLiquidationAddress,
           {
             input: {
-              chainId: '42161',
+              chainId: 42161,
               liquidationAddress,
               userAddress: checksummedWalletAddress,
             },
