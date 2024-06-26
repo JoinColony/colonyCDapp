@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
+import { PostHogProvider } from 'posthog-js/react';
 import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
@@ -20,6 +21,14 @@ interface Props {
   store: any;
 }
 
+const posthogConfig = {
+  apiKey: import.meta.env.POSTHOG_KEY,
+  options: {
+    // eslint-disable-next-line camelcase
+    api_host: import.meta.env.POSTHOG_HOST,
+  },
+};
+
 if (__COMMIT_HASH__) {
   // eslint-disable-next-line no-console
   console.log(`Running on ${__COMMIT_HASH__}`);
@@ -29,30 +38,32 @@ const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   return (
-    <IntlProvider
-      locale="en"
-      defaultLocale="en"
-      messages={{
-        ...messages,
-        ...actionMessages,
-        ...eventsMessages,
-        ...systemMessages,
-        ...motionStatesMessages,
-      }}
-    >
-      <ApolloProvider client={apolloClient}>
-        <ReduxProvider store={store}>
-          <HelmetProvider>
-            <AnalyticsContextProvider>
-              <Router>
-                <RouteTracker />
-                <Routes />
-              </Router>
-            </AnalyticsContextProvider>
-          </HelmetProvider>
-        </ReduxProvider>
-      </ApolloProvider>
-    </IntlProvider>
+    <PostHogProvider {...posthogConfig}>
+      <IntlProvider
+        locale="en"
+        defaultLocale="en"
+        messages={{
+          ...messages,
+          ...actionMessages,
+          ...eventsMessages,
+          ...systemMessages,
+          ...motionStatesMessages,
+        }}
+      >
+        <ApolloProvider client={apolloClient}>
+          <ReduxProvider store={store}>
+            <HelmetProvider>
+              <AnalyticsContextProvider>
+                <Router>
+                  <RouteTracker />
+                  <Routes />
+                </Router>
+              </AnalyticsContextProvider>
+            </HelmetProvider>
+          </ReduxProvider>
+        </ApolloProvider>
+      </IntlProvider>
+    </PostHogProvider>
   );
 };
 
