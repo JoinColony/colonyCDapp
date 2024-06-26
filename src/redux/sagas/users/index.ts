@@ -321,7 +321,10 @@ function* userCryptoToFiatTransfer({
 
     const colonyManager: ColonyManager = yield getColonyManager();
     const { network } = colonyManager.networkClient;
+
     const tokenAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
+    const tokenClient = yield colonyManager.getTokenClient(tokenAddress);
+    const decimals = yield tokenClient.decimals();
 
     if (!tokenAddress) {
       throw new Error(`USDC token address not found on network ${network}`);
@@ -351,7 +354,7 @@ function* userCryptoToFiatTransfer({
       );
     }
 
-    const batchKey = TRANSACTION_METHODS.Transfer;
+    const batchKey = TRANSACTION_METHODS.Crypto2Fiat;
 
     const { transfer } = yield createTransactionChannels(meta.id, ['transfer']);
 
@@ -363,7 +366,10 @@ function* userCryptoToFiatTransfer({
         context: ClientType.TokenClient,
         methodName: 'transfer',
         identifier: tokenAddress,
-        params: [liquidationAddress, BigNumber.from(amount)],
+        params: [
+          liquidationAddress,
+          BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals)),
+        ],
         ready: true,
       },
     });
