@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
-// import { useBridgeXyzMutationMutation } from '~gql';
+import { useBridgeXyzMutationMutation } from '~gql';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
@@ -13,7 +13,7 @@ import {
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
-// import Button from '~v5/shared/Button/Button.tsx';
+import Button from '~v5/shared/Button/Button.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
 const displayName = 'frame.FourOFour';
@@ -43,18 +43,20 @@ const MSG = defineMessages({
 });
 
 const FourOFour = () => {
-  // const [bridgeXYZMutation, { data }] = useBridgeXyzMutationMutation();
+  const [bridgeXYZMutation, { data }] = useBridgeXyzMutationMutation();
 
-  // const body = {
-  //   full_name: 'My Apple Pie',
-  //   email: 'apple@pie.com',
-  // };
+  const body = {
+    // eslint-disable-next-line camelcase
+    full_name: 'My Apple Pie',
+    email: 'apple@pie.com',
+  };
 
-  // console.log(data);
+  // eslint-disable-next-line no-console
+  console.log(data);
 
   return (
     <MainLayout>
-      {/* <Button
+      <Button
         onClick={() =>
           bridgeXYZMutation({
             variables: {
@@ -68,7 +70,7 @@ const FourOFour = () => {
         }
       >
         Send bridge data
-      </Button> */}
+      </Button>
       <FourOFourMessage
         description={formatText(MSG.description)}
         links={
