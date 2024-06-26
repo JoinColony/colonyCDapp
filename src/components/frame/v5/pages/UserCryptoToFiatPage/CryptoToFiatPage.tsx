@@ -17,6 +17,7 @@ import {
 import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
+import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
 
@@ -72,6 +73,8 @@ const UserCryptoToFiatPage = () => {
           </Fragment>
         );
       })}
+      <hr />
+      <FiatTransfersTable />
     </div>
   );
 };
