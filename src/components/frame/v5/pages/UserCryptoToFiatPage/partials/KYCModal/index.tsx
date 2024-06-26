@@ -268,8 +268,10 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                         address: {
                           city,
                           country,
-                          addressLine1: address1,
-                          addressLine2: address2,
+                          // eslint-disable-next-line camelcase
+                          street_line_1: address1,
+                          // eslint-disable-next-line camelcase
+                          street_line_2: address2,
                           postcode,
                           state: state || 'DAY',
                         },
