@@ -14,6 +14,8 @@ const ParamNames = {
   ethRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Feth_rpc_endpoint`,
   bscscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fbscscan_api_key`,
   etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fetherscan_api_key`,
+  bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_key`,
+  bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`,
 };
 
 const getParam = async (paramName) => {

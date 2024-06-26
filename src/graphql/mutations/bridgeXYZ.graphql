@@ -1,3 +1,6 @@
 mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
-  bridgeXYZMutation(input: $input)
+  bridgeXYZMutation(input: $input) {
+    tos_link
+    kyc_link
+  }
 }
