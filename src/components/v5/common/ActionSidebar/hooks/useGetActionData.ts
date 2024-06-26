@@ -317,6 +317,7 @@ const useGetActionData = (transactionId: string | undefined) => {
     isInvalidTransactionHash,
     loadingAction,
     isMotion: !!action?.isMotion,
+    isMultiSig: !!action?.isMultiSig,
     networkMotionState,
     motionState,
     expenditure,
