@@ -58,7 +58,10 @@ const useHasNoDecisionMethods = () => {
     return false;
   }
 
-  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
+  if (
+    isStakedExpenditureEnabled &&
+    actionsWithStakingDecisionMethod.includes(actionType)
+  ) {
     return false;
   }
 
