@@ -193,6 +193,7 @@
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "html-react-parser": "^3.0.8",
+    "i18n-iso-countries": "^7.11.2",
     "image-blob-reduce": "^4.1.0",
     "immutable": "^4.1.0",
     "jwt-decode": "^2.2.0",
