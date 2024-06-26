@@ -60,3 +60,11 @@ mutation UpdateBridgeCustomer(
     success
   }
 }
+
+mutation CheckKYCStatus {
+  bridgeXYZMutation(input: { path: "v0/kyc_links/{kycLinkID}", body: {} }) {
+    kyc_status
+    kyc_link
+    success
+  }
+}

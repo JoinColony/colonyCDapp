@@ -42,6 +42,7 @@ const Body: React.FC<RowItemBodyProps> = ({
   description,
   descriptionComponent,
   ctaTitle,
+  ctaDisabled,
   ctaOnClick,
   ctaComponent,
 }) => {
@@ -59,7 +60,12 @@ const Body: React.FC<RowItemBodyProps> = ({
       </section>
       <section className="flex min-w-[200px] justify-end">
         {ctaComponent ?? (
-          <Button type="button" text={ctaTitle} onClick={ctaOnClick} />
+          <Button
+            type="button"
+            text={ctaTitle}
+            onClick={ctaOnClick}
+            disabled={ctaDisabled}
+          />
         )}
       </section>
     </div>

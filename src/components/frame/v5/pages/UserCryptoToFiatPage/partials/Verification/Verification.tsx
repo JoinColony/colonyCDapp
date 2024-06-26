@@ -1,15 +1,17 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
+import { useCheckKycStatusMutation } from '~gql';
 import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants.ts';
+import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
-import { statusPillScheme } from './consts.ts';
+import { STATUS_MSGS, getCTAProps, getStatusPillScheme } from './consts.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.Verification';
 
@@ -38,7 +40,12 @@ const MSG = defineMessages({
 });
 
 const Verification = () => {
-  const status = 'notStarted';
+  // const status = 'notStarted';
+  const [checkKycStatus] = useCheckKycStatusMutation();
+  const [status, setStatus] = useState<string | null | undefined>(
+    'not-started',
+  );
+  const [url, setUrl] = useState<string | null | undefined>('');
 
   const [searchParams] = useSearchParams();
   const isInitialOpened = !!searchParams?.has(
@@ -47,6 +54,21 @@ const Verification = () => {
   const [isOpened, setOpened] = useState(isInitialOpened);
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
+
+  const statusPillScheme = getStatusPillScheme(status);
+  const ctaProps = getCTAProps(status);
+
+  useEffect(() => {
+    checkKycStatus()
+      .then(({ data }) => {
+        setStatus(data?.bridgeXYZMutation?.kyc_status);
+        setUrl(data?.bridgeXYZMutation?.kyc_link);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error! ', err);
+      });
+  }, [checkKycStatus]);
 
   return (
     <RowItem.Container>
@@ -57,13 +79,15 @@ const Verification = () => {
         statusPill={
           // Move this inside the RowItem.Heading component
           <PillsBase
+            icon={statusPillScheme.icon}
+            iconClassName={statusPillScheme.iconClassName}
             className={clsx(
-              statusPillScheme[status].bgClassName,
+              statusPillScheme.bgClassName,
               'text-sm font-medium',
             )}
           >
-            <span className={statusPillScheme[status].textClassName}>
-              {status}
+            <span className={statusPillScheme.textClassName}>
+              {status && formatText(STATUS_MSGS[status])}
             </span>
           </PillsBase>
         }
@@ -71,11 +95,13 @@ const Verification = () => {
       <RowItem.Body
         title={MSG.bodyTitle}
         description={MSG.bodyDescription}
-        ctaTitle={MSG.bodyCtaTitle}
+        {...ctaProps}
         ctaOnClick={handleOpen}
       />
 
-      {isOpened && <KYCModal isOpened={isOpened} onClose={handleClose} />}
+      {isOpened && url && (
+        <KYCModal isOpened={isOpened} onClose={handleClose} url={url} />
+      )}
     </RowItem.Container>
   );
 };
