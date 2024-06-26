@@ -1,6 +1,6 @@
 FROM colony-cdapp-dev-env/base:latest
 
-ENV MOCKING_HASH=aef70f0586769c9182a275e6e82b36b9c15b1343
+ENV MOCKING_HASH=8e7f3046a674b294626733bb644d858d7c10b3ec
 
 
 # Declare volumes to set up metadata
