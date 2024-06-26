@@ -1,19 +1,19 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, type FC, type PropsWithChildren } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { type CountryData, getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { CountrySelect } from '../CountrySelect.tsx';
 import { FormInput } from '../FormInput.tsx';
+import { FormRow } from '../FormRow.tsx';
+import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
-const FormRow: FC<PropsWithChildren> = ({ children }) => {
-  return <div className="py-1">{children}</div>;
-};
+import { AccountDetailsInputs } from './AccountDetailsInputs.tsx';
+import { CURRENCY } from './constants.ts';
+import { validationSchema } from './validation.ts';
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
@@ -74,55 +74,38 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
   onClose,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
-    null,
-  );
-  const countries = getCountries();
-  const countriesOptions = countries.map((item) => ({
-    value: item,
-    label: item.name,
-  }));
-
   return (
     <div>
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
-      <Form onSubmit={onSubmit} className="flex flex-col gap-3">
+      <Form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-3"
+        validationSchema={validationSchema}
+        mode="onSubmit"
+      >
         <FormRow>
           <FormInput
-            name="account-owner"
+            name="accountOwner"
             label={formatText(MSG.accountOwnerNameLabel)}
             placeholder={formatText(MSG.accountOwnerNamePlaceholder)}
           />
         </FormRow>
         <FormRow>
           <FormInput
-            name="bank-name"
+            name="bankName"
             label={formatText(MSG.bankNameabel)}
             placeholder={formatText(MSG.bankNamePlaceholder)}
           />
         </FormRow>
         <FormRow>
-          <FormInput
+          <FormSelect
             name="currency"
-            label={formatText(MSG.payoutCurrencyLabel)}
-            placeholder={formatText(MSG.payoutCurrencyPlaceholder)}
+            labelMessage={formatText(MSG.payoutCurrencyLabel)}
+            options={CURRENCY}
           />
         </FormRow>
-        <FormRow>
-          <FormInput name="iban" placeholder="IBAN" />
-        </FormRow>
-        <FormRow>
-          <FormInput name="swift" placeholder="SWIFT/BIC" />
-        </FormRow>
-        <FormRow>
-          <CountrySelect
-            name="country"
-            options={countriesOptions as any}
-            value={selectedCountry}
-            labelMessage={formatText(MSG.countryLabel)}
-            onChange={(value) => setSelectedCountry(value as any)}
-          />
-        </FormRow>
+
+        <AccountDetailsInputs />
         <ModalFormCTAButtons
           cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}
           proceedButton={{ title: MSG.proceedButtonTitle }}
