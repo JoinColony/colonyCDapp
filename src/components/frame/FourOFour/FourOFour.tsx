@@ -49,6 +49,7 @@ const MSG = defineMessages({
 
 const FourOFour = () => {
   const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
+  // const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
 
   const sendKYCLinksMutation = () => {
     const body: KYCLinksMutationBody = {
@@ -78,7 +79,7 @@ const FourOFour = () => {
     const body: PutCustomerMutationBody = {
       address: {
         city: 'United',
-        country: 'United States',
+        country: 'USA',
         postal_code: '123',
         state: 'New York',
         street_line_1: '123',
@@ -110,10 +111,34 @@ const FourOFour = () => {
       });
   };
 
+  const checkKYCStatusQuery = () => {
+    bridgeXYZMutation({
+      variables: {
+        input: {
+          body: {},
+          path: 'v0/kyc_links/{kycLinkID}',
+        },
+      },
+    })
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error! ', err);
+      });
+  };
+
   return (
     <MainLayout>
-      <Button onClick={sendKYCLinksMutation}>Send kyc_links mutation</Button>
-      <Button onClick={putCustomerMutation}>Send put_customer mutation</Button>
+      <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
+        <Button onClick={sendKYCLinksMutation}>Send kyc_links mutation</Button>
+        <Button onClick={putCustomerMutation}>
+          Send put_customer mutation
+        </Button>
+        <Button onClick={checkKYCStatusQuery}>Check KYC status query</Button>
+      </div>
       <FourOFourMessage
         description={formatText(MSG.description)}
         links={

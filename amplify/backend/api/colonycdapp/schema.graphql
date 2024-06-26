@@ -290,8 +290,22 @@ input BridgeXYZMutationInput {
 }
 
 type BridgeXYZMutationReturn {
+  #
+  # KYC Links
+  #
   tos_link: String
   kyc_link: String
+
+  #
+  # KYC Status
+  #
+  kyc_status: String
+  country: String
+
+  success: Boolean
+}
+
+type BridgeXYZQueryReturn {
   success: Boolean
 }
 
@@ -876,7 +890,7 @@ type Query {
   """
   Fetch from the Bridge XYZ API
   """
-  bridgeXYZQuery(input: BridgeXYZQueryInput!): String
+  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
     @function(name: "bridgeXYZQuery-${env}")
 }
 
