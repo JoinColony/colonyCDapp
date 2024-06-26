@@ -7,30 +7,10 @@ const { graphqlRequest } = require('../utils');
  */
 const { updateUser } = require('../graphql');
 
-let apiKey = 'da2-fakeApiId123456';
-let apiUrl = 'http://mocking:3000/bridgexyz';
-let graphqlURL = 'http://localhost:20002/graphql';
-
-const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-
-  if (ENV === 'qa' || ENV === 'prod') {
-    const { getParams } = require('/opt/nodejs/getParams');
-    [apiKey, apiUrl, graphqlURL] = await getParams([
-      'bridgeXYZApiKey',
-      'bridgeXYZApiUrl',
-      'graphqlUrl',
-    ]);
-  }
-};
-
-const kycLinksHandler = async (event) => {
-  try {
-    await setEnvVariables();
-  } catch (e) {
-    throw new Error('Unable to set environment variables. Reason:', e);
-  }
-
+const kycLinksHandler = async (
+  event,
+  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
+) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
   const { body, path } = event.arguments?.input || {};
 
@@ -63,7 +43,7 @@ const kycLinksHandler = async (event) => {
           },
         },
         graphqlURL,
-        apiKey,
+        appSyncApiKey,
       );
 
       if (mutation.errors || !mutation.data) {

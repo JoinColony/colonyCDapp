@@ -253,24 +253,46 @@ input GetSafeTransactionStatusInput {
 
 input BridgeXYZQueryInput {
   path: String!
-  pathParams: [String!]!
   body: String!
 }
 
+input BridgeXYZMutationAddressInput {
+  street_line_1: String
+  street_line_2: String
+  city: String
+  state: String
+  postal_code: String
+  country: String
+}
+
 input BridgeXYZMutationBodyInput {
+  #
+  # KYC Links
+  #
   full_name: String
   email: String
+
+  #
+  # Put Customer
+  #
+  first_name: String
+  last_name: String
+  # email: String
+  address: BridgeXYZMutationAddressInput
+  birth_date: String
+  tax_identification_number: String
+  signed_agreement_id: String
 }
 
 input BridgeXYZMutationInput {
   path: String!
-  pathParams: [String!]!
   body: BridgeXYZMutationBodyInput!
 }
 
 type BridgeXYZMutationReturn {
   tos_link: String
   kyc_link: String
+  success: Boolean
 }
 
 """
@@ -1782,7 +1804,11 @@ type LiquidationAddress @model {
   """
   The user address associated
   """
-  userAddress: ID!@index(name: "byUserAddress", queryField: "getLiquidationAddressesByUserAddress")
+  userAddress: ID!
+    @index(
+      name: "byUserAddress"
+      queryField: "getLiquidationAddressesByUserAddress"
+    )
   """
   The user associated
   """
@@ -1790,7 +1816,11 @@ type LiquidationAddress @model {
   """
   The liquidation address
   """
-  liquidationAddress: ID! @index(name: "byLiquidationAddress", queryField: "getUserByLiquidationAddress")
+  liquidationAddress: ID!
+    @index(
+      name: "byLiquidationAddress"
+      queryField: "getUserByLiquidationAddress"
+    )
 }
 
 """
