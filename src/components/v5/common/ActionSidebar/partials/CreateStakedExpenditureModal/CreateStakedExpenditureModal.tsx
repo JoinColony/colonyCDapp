@@ -19,7 +19,6 @@ import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
 import useReputationValidation from '../../hooks/useReputationValidation.ts';
-import { useValidationSchema } from '../forms/PaymentBuilderForm/hooks.ts';
 
 import {
   type CreateStakedExpenditureFormFields,
@@ -82,7 +81,6 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
   } = useExpenditureStaking();
   const { networkInverseFee = '0' } = useNetworkInverseFee();
   const navigate = useNavigate();
-  const paymentBuilderValidationSchema = useValidationSchema(networkInverseFee);
   const { noReputationError } = useReputationValidation();
 
   if (!formValues) {
@@ -99,8 +97,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
       stakedExpenditureAddress: string().defined().required(),
       hasEnoughTokens: bool().required(),
     })
-    .required()
-    .concat(paymentBuilderValidationSchema);
+    .required();
 
   return (
     <ModalBase isOpen={isOpen} isFullOnMobile>
