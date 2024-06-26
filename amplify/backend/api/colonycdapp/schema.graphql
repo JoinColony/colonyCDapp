@@ -345,7 +345,7 @@ type BridgeXYZDrain {
 }
 
 type BridgeXYZQueryReturn {
-  drains: BridgeXYZDrain
+  drains: [BridgeXYZDrain]
   success: Boolean
   transactionFee: String
 }
