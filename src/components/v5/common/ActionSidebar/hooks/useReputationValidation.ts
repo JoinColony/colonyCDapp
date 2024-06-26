@@ -6,7 +6,7 @@ import { boolean, object } from 'yup';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetUserReputationQuery } from '~gql';
+import { SplitPaymentDistributionType, useGetUserReputationQuery } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 
 export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
@@ -39,6 +39,7 @@ const useReputationValidation = () => {
     [REPUTATION_VALIDATION_FIELD_NAME]: fieldValue,
     createdIn,
     decisionMethod,
+    distributionMethod,
   } = formValues;
 
   const createdInDomainId = createdIn ? Number(createdIn) : Id.RootDomain;
@@ -51,9 +52,14 @@ const useReputationValidation = () => {
       },
     },
   });
+  const isReputationDistributionMethodSelected =
+    distributionMethod &&
+    distributionMethod === SplitPaymentDistributionType.Reputation;
   const domainReputation = BigNumber.from(data?.getUserReputation ?? 0);
   const isMissingReputation =
-    domainReputation.isZero() && decisionMethod === DecisionMethod.Reputation;
+    domainReputation.isZero() &&
+    (decisionMethod === DecisionMethod.Reputation ||
+      isReputationDistributionMethodSelected);
 
   useEffect(() => {
     if (fieldValue !== isMissingReputation) {
@@ -63,7 +69,13 @@ const useReputationValidation = () => {
     }
   }, [fieldValue, isMissingReputation, setValue]);
 
-  return { noReputationError: !!fieldError && isSubmitted };
+  const hasError = !!fieldError;
+
+  return {
+    noReputationError: isReputationDistributionMethodSelected
+      ? hasError
+      : hasError && isSubmitted,
+  };
 };
 
 export default useReputationValidation;

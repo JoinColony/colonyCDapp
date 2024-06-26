@@ -15,6 +15,7 @@ import ManageVerifiedMembersDescription from './partials/ManageVerifiedMembersDe
 import MintTokensDescription from './partials/MintTokensDescription.tsx';
 import PaymentBuilderDescription from './partials/PaymentBuilderDescription.tsx';
 import SimplePaymentDescription from './partials/SimplePaymentDescription.tsx';
+import SplitPaymentDescription from './partials/SplitPaymentDescription.tsx';
 import TransferFundsDescription from './partials/TransferFundsDescription.tsx';
 import UnlockTokenDescription from './partials/UnlockTokenDescription.tsx';
 import UpgradeColonyDescription from './partials/UpgradeColonyDescription.tsx';
@@ -56,6 +57,8 @@ const ActionSidebarDescription = () => {
       return <ManageReputationDescription />;
     case Action.PaymentBuilder:
       return <PaymentBuilderDescription />;
+    case Action.SplitPayment:
+      return <SplitPaymentDescription />;
     default:
       return null;
   }

@@ -24,12 +24,13 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
 import useSidebarActionForm from '~v5/common/ActionSidebar/hooks/useSidebarActionForm.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
@@ -123,7 +124,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   );
 
   const shouldShowCreateStakedExpenditureModal =
-    actionType === Action.PaymentBuilder &&
+    actionsWithStakingDecisionMethod.includes(actionType) &&
     decisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
@@ -258,6 +259,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       )}
       {shouldShowCreateStakedExpenditureModal && (
         <CreateStakedExpenditureModal
+          actionType={actionType}
           isOpen={isCreateStakedExpenditureModalVisible}
           onCloseClick={hideCreateStakedExpenditureModal}
           formValues={formValues}

@@ -10,6 +10,10 @@ import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import {
+  actionsWithStakingDecisionMethod,
+  actionsWithoutReputationDecisionMethod,
+} from './consts.ts';
+import {
   getPermissionsDomainIdForAction,
   getPermissionsNeededForAction,
 } from './helpers.ts';
@@ -42,12 +46,18 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  // User can't use reputation to create Payment builder action
-  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
+  // User can't use reputation to create Payment builder or split payment action
+  if (
+    isVotingReputationEnabled &&
+    !actionsWithoutReputationDecisionMethod.includes(actionType)
+  ) {
     return false;
   }
 
-  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
+  if (
+    isStakedExpenditureEnabled &&
+    actionsWithStakingDecisionMethod.includes(actionType)
+  ) {
     return false;
   }
 

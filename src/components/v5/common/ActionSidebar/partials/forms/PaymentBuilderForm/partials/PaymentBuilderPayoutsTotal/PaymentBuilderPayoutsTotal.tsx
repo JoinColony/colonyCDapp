@@ -18,7 +18,7 @@ import { type PaymentBuilderPayoutsTotalProps } from './types.ts';
 
 const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
   data,
-  moveDecimals,
+  convertToWEI,
   itemClassName,
   buttonClassName,
 }) => {
@@ -27,53 +27,56 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
 
   const sortedTokens =
     useMemo(() => {
-      const summedTokens = data.reduce<ExpenditurePayout[]>(
-        (result, { amount = '0', tokenAddress }) => {
-          if (!tokenAddress) {
-            return result;
-          }
+      const summedTokens = data.reduce<ExpenditurePayout[]>((result, item) => {
+        if (!item) {
+          return result;
+        }
 
-          const tokenData = getSelectedToken(colony, tokenAddress);
+        const { amount = '0', tokenAddress } = item;
 
-          if (!tokenData) {
-            return result;
-          }
+        if (!tokenAddress) {
+          return result;
+        }
 
-          const existingEntryIndex = result.findIndex(
-            (entry) => entry.tokenAddress === tokenAddress,
-          );
+        const tokenData = getSelectedToken(colony, tokenAddress);
 
-          const tokenAmount = moveDecimals
-            ? moveDecimal(amount, tokenData.decimals)
-            : amount;
+        if (!tokenData) {
+          return result;
+        }
 
-          if (existingEntryIndex < 0) {
-            return [
-              ...result,
-              {
-                tokenAddress,
-                isClaimed: false,
-                amount: tokenAmount,
-              },
-            ];
-          }
+        const existingEntryIndex = result.findIndex(
+          (entry) => entry.tokenAddress === tokenAddress,
+        );
 
+        const tokenAmount = convertToWEI
+          ? moveDecimal(amount, tokenData.decimals)
+          : amount;
+
+        if (existingEntryIndex < 0) {
           return [
-            ...result.slice(0, existingEntryIndex),
+            ...result,
             {
-              ...result[existingEntryIndex],
-              amount: BigNumber.from(result[existingEntryIndex].amount)
-                .add(BigNumber.from(tokenAmount))
-                .toString(),
+              tokenAddress,
+              isClaimed: false,
+              amount: tokenAmount,
             },
-            ...result.slice(existingEntryIndex + 1),
           ];
-        },
-        [],
-      );
+        }
+
+        return [
+          ...result.slice(0, existingEntryIndex),
+          {
+            ...result[existingEntryIndex],
+            amount: BigNumber.from(result[existingEntryIndex].amount)
+              .add(BigNumber.from(tokenAmount))
+              .toString(),
+          },
+          ...result.slice(existingEntryIndex + 1),
+        ];
+      }, []);
 
       return sortPayouts(summedTokens);
-    }, [colony, data, moveDecimals]) || [];
+    }, [colony, data, convertToWEI]) || [];
 
   const getItem = (payout: ExpenditurePayout) => {
     const tokenData = getSelectedToken(colony, payout.tokenAddress);
