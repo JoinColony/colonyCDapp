@@ -7,6 +7,7 @@ const { graphqlRequest } = require('../utils');
  */
 const { getUserByAddress } = require('../graphql');
 
+let appSyncApiKey = 'da2-fakeApiId123456';
 let apiKey = 'da2-fakeApiId123456';
 let apiUrl = 'http://mocking:3000/bridgexyz';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -16,7 +17,8 @@ const setEnvVariables = async () => {
 
   if (ENV === 'qa' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [apiKey, apiUrl, graphqlURL] = await getParams([
+    [appSyncApiKey, apiKey, apiUrl, graphqlURL] = await getParams([
+      'appsyncApiKey',
       'bridgeXYZApiKey',
       'bridgeXYZApiUrl',
       'graphqlUrl',
@@ -41,7 +43,7 @@ const putCustomerHandler = async (event) => {
         id: checksummedWalletAddress,
       },
       graphqlURL,
-      apiKey,
+      appSyncApiKey,
     );
 
     const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
