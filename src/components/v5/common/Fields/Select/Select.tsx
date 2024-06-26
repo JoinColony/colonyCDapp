@@ -15,6 +15,7 @@ const Select: React.FC<SelectProps> = ({
   onChange: onChangeProp,
   isSearchable = false,
   className,
+  isError = false,
   ...rest
 }) => {
   const onChange = useCallback<
@@ -36,7 +37,9 @@ const Select: React.FC<SelectProps> = ({
 
   return (
     <SelectBase<SelectOption>
-      className={clsx(styles.wrapper, className)}
+      className={clsx(styles.wrapper, className, {
+        [styles['wrapper--error']]: isError,
+      })}
       classNames={{
         menu: () => styles.menu,
         option: ({ data }) => (data?.to ? 'with-link' : ''),
