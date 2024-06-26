@@ -1,9 +1,12 @@
 import React, { useEffect, useState, type FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { type CountryData } from '~utils/countries.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
+import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
+import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
 import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
@@ -13,15 +16,20 @@ interface KYCModalProps {
 }
 
 enum TabId {
-  Terms = 0,
-  PersonalDetails = 1,
-  BankDetails = 2,
+  PersonalDetails = 0,
+  Terms = 1,
+  ContactDetails = 2,
+  BankDetails = 3,
 }
 
 export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
   const { formatMessage } = useIntl();
 
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.Terms);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
+
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
+    null,
+  );
 
   useEffect(() => {
     const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
@@ -54,6 +62,28 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
             activeStepKey={activeTab}
             items={[
               {
+                key: TabId.PersonalDetails,
+                heading: {
+                  label: 'Personal details',
+                },
+
+                content: (
+                  <div>
+                    <PersonalDetailsForm
+                      selectedCountry={selectedCountry}
+                      handleSelectCountry={(value) =>
+                        setSelectedCountry(value as any)
+                      }
+                      onSubmit={(values) => {
+                        // eslint-disable-next-line no-console
+                        console.log(values);
+                        setActiveTab(TabId.Terms);
+                      }}
+                    />
+                  </div>
+                ),
+              },
+              {
                 key: TabId.Terms,
                 heading: {
                   label: 'Terms',
@@ -73,21 +103,20 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 ),
               },
               {
-                key: TabId.PersonalDetails,
+                key: TabId.ContactDetails,
                 heading: {
-                  label: 'Personal details',
+                  label: 'Contact details',
                 },
 
                 content: (
-                  <div>
-                    <PersonalDetailsForm
-                      onSubmit={(values) => {
-                        // eslint-disable-next-line no-console
-                        console.log(values);
-                        setActiveTab(TabId.BankDetails);
-                      }}
-                    />
-                  </div>
+                  <ContactDetailsForm
+                    selectedCountry={selectedCountry}
+                    onSubmit={(values) => {
+                      // eslint-disable-next-line no-console
+                      console.log(values);
+                      setActiveTab(TabId.BankDetails);
+                    }}
+                  />
                 ),
               },
               {
@@ -96,7 +125,15 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                   label: 'Bank details',
                 },
 
-                content: <div>Test 1</div>,
+                content: (
+                  <BankDetailsForm
+                    onSubmit={(values) => {
+                      // eslint-disable-next-line no-console
+                      console.log(values);
+                      setActiveTab(TabId.BankDetails);
+                    }}
+                  />
+                ),
               },
             ]}
           />
