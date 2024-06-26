@@ -1,0 +1,20 @@
+query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
+  getUserByAddress(id: $userOrLiquidationAddress) {
+    items {
+      ...User
+    }
+  }
+  getUserByLiquidationAddress(liquidationAddress: $userOrLiquidationAddress) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}
+
+query GetUserLiquidationAddresses($userAddress: ID!) {
+  getLiquidationAddressesByUserAddress(userAddress: $userAddress) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}
