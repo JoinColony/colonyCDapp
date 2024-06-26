@@ -2,6 +2,8 @@ import Papa, { type ParseResult } from 'papaparse';
 import { useState } from 'react';
 import { type FileRejection } from 'react-dropzone';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type FileReaderFile } from '~utils/fileReader/types.ts';
@@ -166,4 +168,51 @@ export const useUploadCSVFile = (
     progress,
     file,
   };
+};
+
+export const useCSVFileTemplate = () => {
+  const { totalContributors } = useMemberContext();
+  const { colony } = useColonyContext();
+
+  const csvTemplate = [
+    `
+Instructions here: https://clny.io/csv
+
+Address Book
+
+Username (for reference),Address (for reference)`,
+  ];
+
+  totalContributors.map((contributor) => {
+    return csvTemplate.push(
+      `${contributor?.user?.profile?.displayName},${contributor?.contributorAddress}`,
+    );
+  });
+
+  csvTemplate.push(
+    `
+Token List
+
+Symbol (for reference),Token Contract Address (for reference)`,
+  );
+
+  colony?.tokens?.items?.map((token) => {
+    return csvTemplate.push(
+      `${token?.token?.symbol},${token?.token?.tokenAddress}`,
+    );
+  });
+
+  csvTemplate.push(
+    `
+Payment Details
+
+Username (for reference),Address,Token Symbol (for reference),Token Contract Address,Amount,Claim delay (hours)
+Alice,0x0000000000000000000000000000000000000000,SDC,0xaf88d065e77c8cC2239327C5EDb3A432268e5831,200000,24
+Bob,0x0000000000000000000000000000000000000000,USDT,0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9,100000,12
+Charles,0x0000000000000000000000000000000000000000,DAI,0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1,50000,6
+Dillon,0x0000000000000000000000000000000000000000,CLNY,0xD611b29dc327723269Bd1e53Fe987Ee71A24B234,5000,1
+Erlich,0x0000000000000000000000000000000000000000,ETH,0x0000000000000000000000000000000000000000,5000,1`,
+  );
+
+  return csvTemplate.join('\n');
 };
