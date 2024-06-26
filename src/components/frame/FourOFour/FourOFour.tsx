@@ -1,9 +1,13 @@
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
+import {
+  FeatureFlag,
+  FeatureFlagsContext,
+} from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
 import { useBridgeXyzMutationMutation, useBridgeXyzQueryLazyQuery } from '~gql';
 import {
@@ -50,6 +54,7 @@ const MSG = defineMessages({
 const FourOFour = () => {
   const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
   const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
+  const featureFlags = useContext(FeatureFlagsContext);
 
   const [fee, setFee] = useState<string | null>(null);
 
@@ -157,13 +162,15 @@ const FourOFour = () => {
 
   return (
     <MainLayout>
-      <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
-        <Button onClick={getKYCLinks}>Get KYC links</Button>
-        <Button onClick={putCustomer}>Put customer</Button>
-        <Button onClick={checkKYCStatus}>Check KYC status</Button>
-        <Button onClick={getOfframpFees}>Get the current fees</Button>
-        {fee !== null && <span>The fee is {fee}</span>}
-      </div>
+      {featureFlags[FeatureFlag.CRYPTO_TO_FIAT] && (
+        <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
+          <Button onClick={getKYCLinks}>Get KYC links</Button>
+          <Button onClick={putCustomer}>Put customer</Button>
+          <Button onClick={checkKYCStatus}>Check KYC status</Button>
+          <Button onClick={getOfframpFees}>Get the current fees</Button>
+          {fee !== null && <span>The fee is {fee}</span>}
+        </div>
+      )}
       <FourOFourMessage
         description={formatText(MSG.description)}
         links={
