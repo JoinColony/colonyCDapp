@@ -44,7 +44,7 @@ const SettingsInputRow: FC<SettingsInputRowProps> = ({
     toast.success(
       <Toast
         type="success"
-        title={{ id: 'advancedSettings.fees.toast.title' }}
+        title={{ id: 'advancedSettings.toast.changesSaved' }}
         description={{
           id: 'advancedSettings.rpc.toast.description',
         }}
