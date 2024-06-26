@@ -35,7 +35,13 @@ const putCustomerHandler = async (
           'Api-Key': apiKey,
         },
         body: JSON.stringify({
-          ...body,
+          email: body.email,
+          first_name: body.first_name,
+          last_name: body.last_name,
+          address: body.address,
+          birth_date: body.birth_date,
+          tax_identification_number: body.tax_identification_number,
+          signed_agreement_id: body.signed_agreement_id,
           type: 'individual',
         }),
         method: 'PUT',
@@ -43,9 +49,47 @@ const putCustomerHandler = async (
     );
 
     if (res.status !== 200) {
-      console.log(await res.json());
+      // We might want not to expose the error message to the client
+      const message = JSON.stringify(await res.json());
       throw Error(
-        `Put failed with error code ${res.status}. Error message was: ${await res.json()}`,
+        `Put failed with error code ${res.status}. Error message was: ${message}`,
+      );
+    }
+
+    // Create external account
+    const accountType = body.currency === 'eur' ? 'iban' : 'us';
+
+    const createAccountPayload = {
+      currency: body.currency,
+      bank_name: body.bank_name,
+      account_owner_name: `${body.first_name} ${body.last_name}`,
+      account_type: accountType,
+      iban: body.iban,
+      account: body.account,
+      account_owner_type: 'individual',
+      first_name: body.first_name,
+      last_name: body.last_name,
+      address: body.address,
+    };
+
+    const externalAccountRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': 'thisisadifferentkey',
+          'Api-Key': apiKey,
+        },
+        body: JSON.stringify(createAccountPayload),
+        method: 'POST',
+      },
+    );
+
+    if (externalAccountRes.status !== 200) {
+      // We might want not to expose the error message to the client
+      const message = JSON.stringify(await externalAccountRes.json());
+      throw Error(
+        `Failed to create bank account with error code ${externalAccountRes.status}. Error message was: ${message}`,
       );
     }
 
