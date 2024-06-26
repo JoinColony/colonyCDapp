@@ -85,9 +85,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 content: (
                   <div>
                     <PersonalDetailsForm
-                      handleSelectCountry={(value) =>
-                        setSelectedCountry(value as any)
-                      }
+                      setSelectedCountry={setSelectedCountry}
                       onSubmit={(values) => {
                         // eslint-disable-next-line no-console
                         console.log(values);
