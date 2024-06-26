@@ -52,7 +52,10 @@ const MSG = defineMessages({
   },
 });
 
-export const BankDetailsModal: FC<BankDetailsModalProps> = ({ isOpened, onClose }) => {
+export const BankDetailsModal: FC<BankDetailsModalProps> = ({
+  isOpened,
+  onClose,
+}) => {
   const { formatMessage } = useIntl();
 
   const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
