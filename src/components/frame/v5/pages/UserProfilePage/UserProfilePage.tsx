@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState, useContext } from 'react';
 import {
   Outlet,
   useLocation,
@@ -6,6 +6,10 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
+import {
+  FeatureFlag,
+  FeatureFlagsContext,
+} from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
@@ -23,9 +27,17 @@ import { TabId } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage';
 
+const tabRoutes: Record<TabId, string> = {
+  [TabId.Profile]: USER_EDIT_PROFILE_ROUTE,
+  [TabId.Preferences]: USER_PREFERENCES_ROUTE,
+  [TabId.Advanced]: USER_ADVANCED_ROUTE,
+  [TabId.CryptoToFiat]: USER_CRYPTO_TO_FIAT_ROUTE,
+};
+
 const UserProfilePage: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const featureFlags = useContext(FeatureFlagsContext);
   const resolvedEditProfilePath = useResolvedPath(USER_EDIT_PROFILE_ROUTE);
   const resolvedPreferencesPath = useResolvedPath(USER_PREFERENCES_ROUTE);
   const resolvedAdvancedPath = useResolvedPath(USER_ADVANCED_ROUTE);
@@ -71,40 +83,38 @@ const UserProfilePage: FC = () => {
     resolvedCryptoToFiatPath.pathname,
   ]);
 
-  const tabRoutes: Record<TabId, string> = {
-    [TabId.Profile]: USER_EDIT_PROFILE_ROUTE,
-    [TabId.Preferences]: USER_PREFERENCES_ROUTE,
-    [TabId.Advanced]: USER_ADVANCED_ROUTE,
-    [TabId.CryptoToFiat]: USER_CRYPTO_TO_FIAT_ROUTE,
-  };
+  const items = [
+    {
+      id: TabId.Profile,
+      title: formatText({ id: 'userProfilePage.title' }) || '',
+      content: <Outlet />,
+    },
+    {
+      id: TabId.Preferences,
+      title: formatText({ id: 'userPreferencesPage.title' }) || '',
+      content: <Outlet />,
+    },
+    {
+      id: TabId.Advanced,
+      title: formatText({ id: 'userAdvancedPage.title' }) || '',
+      content: <Outlet />,
+    },
+  ];
+
+  if (featureFlags[FeatureFlag.CRYPTO_TO_FIAT]) {
+    items.push({
+      id: TabId.CryptoToFiat,
+      title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',
+      content: <Outlet />,
+    });
+  }
 
   return (
     <Tabs
       activeTab={activeTab}
       className="pt-6"
       onTabClick={(_, id) => navigate(tabRoutes[id])}
-      items={[
-        {
-          id: TabId.Profile,
-          title: formatText({ id: 'userProfilePage.title' }) || '',
-          content: <Outlet />,
-        },
-        {
-          id: TabId.Preferences,
-          title: formatText({ id: 'userPreferencesPage.title' }) || '',
-          content: <Outlet />,
-        },
-        {
-          id: TabId.Advanced,
-          title: formatText({ id: 'userAdvancedPage.title' }) || '',
-          content: <Outlet />,
-        },
-        {
-          id: TabId.CryptoToFiat,
-          title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',
-          content: <Outlet />,
-        },
-      ]}
+      items={items}
     />
   );
 };

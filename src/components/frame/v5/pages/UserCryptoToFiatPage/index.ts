@@ -1,1 +1,1 @@
-export { default } from './CyrptoToFiatPage.tsx';
+export { default } from './CryptoToFiatPage.tsx';

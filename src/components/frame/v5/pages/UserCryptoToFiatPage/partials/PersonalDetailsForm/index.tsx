@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
