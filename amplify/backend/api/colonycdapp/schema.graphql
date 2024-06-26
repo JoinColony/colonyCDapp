@@ -253,7 +253,6 @@ input GetSafeTransactionStatusInput {
 
 input BridgeXYZQueryInput {
   path: String!
-  body: String!
 }
 
 input BridgeXYZMutationAddressInput {
@@ -341,7 +340,12 @@ type BridgeXYZMutationReturn {
   success: Boolean
 }
 
+type BridgeXYZDrain {
+  id: String
+}
+
 type BridgeXYZQueryReturn {
+  drains: BridgeXYZDrain
   success: Boolean
   transactionFee: String
 }

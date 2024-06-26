@@ -30,37 +30,42 @@ const kycLinksHandler = async (
 
     const data = await res.json();
 
-    if (!data.customer_id) {
-      throw new Error('No customer_id returned');
+    let customerId;
+    if (data.customer_id) {
+      customerId = data.customer_id;
+    } else if (data.existing_kyc_link.customer_id) {
+      customerId = data.existing_kyc_link.customer_id;
     } else {
-      // Add customer_id to the user object
-      const mutation = await graphqlRequest(
-        updateUser,
-        {
-          input: {
-            id: checksummedWalletAddress,
-            bridgeCustomerId: data.customer_id,
-          },
-        },
-        graphqlURL,
-        appSyncApiKey,
-      );
-
-      if (mutation.errors || !mutation.data) {
-        const [error] = mutation.errors;
-        throw new Error(
-          error?.message ||
-            `Could not update user with wallet address "${checksummedWalletAddress}"`,
-        );
-      }
-
-      // Return the two urls
-      return {
-        tos_link: data.tos_link,
-        kyc_link: data.kyc_link,
-        // TODO: return success
-      };
+      throw new Error('No customer_id returned');
     }
+
+    // Add customer_id to the user object
+    const mutation = await graphqlRequest(
+      updateUser,
+      {
+        input: {
+          id: checksummedWalletAddress,
+          bridgeCustomerId: customerId,
+        },
+      },
+      graphqlURL,
+      appSyncApiKey,
+    );
+
+    if (mutation.errors || !mutation.data) {
+      const [error] = mutation.errors;
+      throw new Error(
+        error?.message ||
+          `Could not update user with wallet address "${checksummedWalletAddress}"`,
+      );
+    }
+
+    // Return the two urls
+    return {
+      tos_link: data.tos_link || data.existing_kyc_link.tos_link,
+      kyc_link: data.kyc_link || data.existing_kyc_link.kyc_link,
+      // TODO: return success
+    };
   } catch (e) {
     console.error(e);
     return undefined;

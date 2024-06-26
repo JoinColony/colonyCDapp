@@ -5,7 +5,7 @@ const { graphqlRequest } = require('../utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUserByAddress, createLiquidationAddress } = require('../graphql');
+const { getUser, createLiquidationAddress } = require('../graphql');
 
 const checkKYCHandler = async (
   event,
@@ -16,7 +16,7 @@ const checkKYCHandler = async (
 
   try {
     const { data: graphQlData } = await graphqlRequest(
-      getUserByAddress,
+      getUser,
       {
         id: checksummedWalletAddress,
       },
@@ -131,6 +131,8 @@ const checkKYCHandler = async (
 
     const hasLiquidationAddress =
       colonyUser.liquidationAddresses.items.length > 0;
+
+    console.log(colonyUser.liquidationAddresses[0]);
 
     if (firstAccount && !hasLiquidationAddress) {
       // They have external accounts. Create a liquidation address

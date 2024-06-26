@@ -57,6 +57,11 @@ export type BridgeXyzBankAccount = {
   usAccount?: Maybe<BridgeXyzusBankAccount>;
 };
 
+export type BridgeXyzDrain = {
+  __typename?: 'BridgeXYZDrain';
+  id?: Maybe<Scalars['String']>;
+};
+
 export type BridgeXyzIbanBankAccount = {
   __typename?: 'BridgeXYZIbanBankAccount';
   bic: Scalars['String'];
@@ -115,12 +120,12 @@ export type BridgeXyzMutationReturn = {
 };
 
 export type BridgeXyzQueryInput = {
-  body: Scalars['String'];
   path: Scalars['String'];
 };
 
 export type BridgeXyzQueryReturn = {
   __typename?: 'BridgeXYZQueryReturn';
+  drains?: Maybe<BridgeXyzDrain>;
   success?: Maybe<Scalars['Boolean']>;
   transactionFee?: Maybe<Scalars['String']>;
 };
@@ -9146,7 +9151,7 @@ export type BridgeXyzQueryQueryVariables = Exact<{
 }>;
 
 
-export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null } | null };
+export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: { __typename?: 'BridgeXYZDrain', id?: string | null } | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -11649,6 +11654,9 @@ export type SearchActionsQueryResult = Apollo.QueryResult<SearchActionsQuery, Se
 export const BridgeXyzQueryDocument = gql`
     query BridgeXYZQuery($input: BridgeXYZQueryInput!) {
   bridgeXYZQuery(input: $input) {
+    drains {
+      id
+    }
     success
     transactionFee
   }
