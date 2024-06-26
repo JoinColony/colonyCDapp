@@ -53,6 +53,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     isInvalidTransactionHash,
     loadingAction,
     isMotion,
+    isMultiSig,
     motionState,
     expenditure,
     loadingExpenditure,
@@ -259,7 +260,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   <ArrowsOutSimple size={18} />
                 )}
               </button>
-              {action && !isMotion && !expenditure && (
+              {action && !isMotion && !expenditure && !isMultiSig && (
                 <PillsBase
                   className="bg-success-100 text-success-400"
                   isCapitalized={false}
@@ -273,7 +274,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   withAdditionalStatuses
                 />
               )}
-              <MotionOutcomeBadge motionState={motionState} />
+              {(!!isMotion || !!isMultiSig) && (
+                <MotionOutcomeBadge motionState={motionState} />
+              )}
             </div>
           )}
         </div>
