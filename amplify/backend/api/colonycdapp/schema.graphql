@@ -926,6 +926,10 @@ type Profile @model {
   A user's prefered currency, for conversion purposes
   """
   preferredCurrency: SupportedCurrencies
+  """
+  Is automatic offramp enabled
+  """
+  isAutoOfframpEnabled: Boolean
 }
 
 """
@@ -1722,6 +1726,10 @@ type User @model {
   A user who has been invited by colony will be able to pass on the private beta invite
   """
   privateBetaInviteCode: PrivateBetaInviteCode @hasOne
+  """
+  Bridge customer id
+  """
+  bridgeCustomerId: String
 }
 
 """
