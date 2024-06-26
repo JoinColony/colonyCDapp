@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type FC } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { type CountryData } from '~utils/countries.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
@@ -7,6 +7,7 @@ import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
 import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
 import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
+import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
@@ -21,6 +22,20 @@ enum TabId {
   ContactDetails = 2,
   BankDetails = 3,
 }
+
+const displayName = 'v5.pages.UserCryptoToFiatPage.partials.KYCModal';
+
+const MSG = defineMessages({
+  tcTitle: {
+    id: `${displayName}.tcTitle`,
+    defaultMessage: 'Terms & Privacy',
+  },
+  tcSubtitle: {
+    id: `${displayName}.tcSubtitle`,
+    defaultMessage:
+      'Accept the terms and privacy of our partner provider Bridge to enable crypto to fiat functionality.',
+  },
+});
 
 export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
   const { formatMessage } = useIntl();
@@ -79,6 +94,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                         console.log(values);
                         setActiveTab(TabId.Terms);
                       }}
+                      onClose={onClose}
                     />
                   </div>
                 ),
@@ -90,11 +106,10 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 },
                 content: (
                   <div>
-                    <h2 className="text-2">Terms & Privacy</h2>
-                    <p className="whitespace-pre-wrap text-md">
-                      Accept the terms and privacy of our partner provider
-                      Bridge to enable crypto to fiat functionality.
-                    </p>
+                    <ModalHeading
+                      title={MSG.tcTitle}
+                      subtitle={MSG.tcSubtitle}
+                    />
                     <iframe
                       title="Terms iframe"
                       src="http://localhost:3007/bridgexyz/accept-terms-of-service"
@@ -107,7 +122,6 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 heading: {
                   label: 'Contact details',
                 },
-
                 content: (
                   <ContactDetailsForm
                     selectedCountry={selectedCountry}
@@ -116,6 +130,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                       console.log(values);
                       setActiveTab(TabId.BankDetails);
                     }}
+                    onClose={onClose}
                   />
                 ),
               },
@@ -132,6 +147,7 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                       console.log(values);
                       setActiveTab(TabId.BankDetails);
                     }}
+                    onClose={onClose}
                   />
                 ),
               },
