@@ -89,5 +89,13 @@
         "lambdaParams": {}
       }
     }
+  },
+  "dev": {
+    "categories": {
+      "function": {
+        "bridgeXYZMutation": {},
+        "bridgeXYZQuery": {}
+      }
+    }
   }
 }
