@@ -1,10 +1,6 @@
 FROM colony-cdapp-dev-env/base:latest
 
-<<<<<<< HEAD
-ENV MOCKING_HASH=8e7f3046a674b294626733bb644d858d7c10b3ec
-=======
 ENV MOCKING_HASH=f47e3d36ff685d0dc62959b6db219f8b823c0f79
->>>>>>> e3f2ab675 (Create liquidisation address if kyc is approved)
 
 
 # Declare volumes to set up metadata
