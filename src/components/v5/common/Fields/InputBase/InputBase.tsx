@@ -74,6 +74,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
         id={id}
         value={value}
         onBlur={onBlur}
+        maxLength={maxLength}
         {...rest}
       />
     );

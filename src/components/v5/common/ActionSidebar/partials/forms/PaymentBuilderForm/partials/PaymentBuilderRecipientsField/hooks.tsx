@@ -1,14 +1,16 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
+import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 
+import ClaimDelayField from '../ClaimDelayField/ClaimDelayField.tsx';
 import PaymentBuilderPayoutsTotal from '../PaymentBuilderPayoutsTotal/index.ts';
 
 import {
@@ -25,11 +27,11 @@ export const useRecipientsFieldTableColumns = (
 
   const dataRef = useWrapWithRef(data);
   const expendituresGlobalClaimDelayHours = useMemo(() => {
-    if (typeof expendituresGlobalClaimDelay !== 'number') {
+    if (typeof expendituresGlobalClaimDelay !== 'string') {
       return null;
     }
 
-    return expendituresGlobalClaimDelay / (60 * 60);
+    return convertPeriodToHours(expendituresGlobalClaimDelay);
   }, [expendituresGlobalClaimDelay]);
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
@@ -87,19 +89,12 @@ export const useRecipientsFieldTableColumns = (
         }),
         columnHelper.display({
           id: 'delay',
-          staticSize: '175px',
+          staticSize: '10.9375rem',
           header: () => formatText({ id: 'table.column.claimDelay' }),
           cell: ({ row }) => (
-            <FormInputBase
-              message={false}
-              placeholder="0"
-              autoWidth
-              inputWrapperClassName="flex-row flex items-center gap-2"
-              min={0}
-              key={row.id}
+            <ClaimDelayField
               name={`${name}.${row.index}.delay`}
-              type="number"
-              mode="secondary"
+              key={row.id}
               suffix={
                 <span className="inline-block text-md text-gray-900">
                   {formatText(
@@ -119,9 +114,11 @@ export const useRecipientsFieldTableColumns = (
                 id: 'totalDelay',
                 header: () => formatText({ id: 'table.column.totalDelay' }),
                 cell: ({ row }) => {
-                  const totalHours =
-                    expendituresGlobalClaimDelayHours +
-                    (dataRef.current[row.index]?.delay || 0);
+                  const totalHours = BigNumber.from(
+                    expendituresGlobalClaimDelayHours,
+                  )
+                    .add(BigNumber.from(dataRef.current[row.index]?.delay || 0))
+                    .toString();
 
                   return (
                     <span className="text-gray-300">

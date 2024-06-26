@@ -21,10 +21,11 @@ import {
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
+import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {
   allTokensAmountValidation,
   getPaymentBuilderPayload,
-} from './utils.tsx';
+} from './utils.ts';
 
 export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
@@ -94,22 +95,39 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                     ),
                   tokenAddress: string().required(),
                   delay: number()
-                    .max(99999, ({ path }) => {
+                    .min(0, ({ path }) => {
                       const index = getLastIndexFromPath(path);
-                      if (index === undefined) {
-                        return formatText(
-                          {
-                            id: 'errors.amount.smallerThan',
-                          },
-                          {
-                            max: 99999,
-                          },
-                        );
-                      }
+
                       return formatText(
-                        { id: 'errors.amount.smallerThanIn' },
-                        { paymentIndex: index + 1, max: 99999 },
+                        { id: 'errors.delay.min' },
+                        {
+                          paymentIndex: index === undefined ? 1 : index + 1,
+                          min: 0,
+                        },
                       );
+                    })
+                    .max(CLAIM_DELAY_MAX_VALUE, ({ path }) => {
+                      const index = getLastIndexFromPath(path);
+
+                      return formatText(
+                        { id: 'errors.delay.max' },
+                        {
+                          paymentIndex: index === undefined ? 1 : index + 1,
+                          max: CLAIM_DELAY_MAX_VALUE,
+                        },
+                      );
+                    })
+                    .test('decimals', 'Max 4 decimal places', (val) => {
+                      if (!val) {
+                        return true;
+                      }
+
+                      const value = val.toString().split('.');
+
+                      const decimals =
+                        value.length > 1 ? val.toString().split('.')[1] : '';
+
+                      return decimals.length <= 4;
                     })
                     .required(({ path }) => {
                       const index = getLastIndexFromPath(path);
