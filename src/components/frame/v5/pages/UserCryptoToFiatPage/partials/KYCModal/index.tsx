@@ -85,7 +85,6 @@ export const KYCModal: FC<KYCModalProps> = ({ isOpened, onClose }) => {
                 content: (
                   <div>
                     <PersonalDetailsForm
-                      selectedCountry={selectedCountry}
                       handleSelectCountry={(value) =>
                         setSelectedCountry(value as any)
                       }
