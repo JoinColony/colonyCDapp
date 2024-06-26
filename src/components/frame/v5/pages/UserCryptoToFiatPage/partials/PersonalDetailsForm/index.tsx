@@ -74,7 +74,7 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({ onSubmit }) => {
             name="country"
             options={countriesOptions as any}
             value={selectedCountry}
-            onChange={(value) => setSelectedCountry(value)}
+            onChange={(value) => setSelectedCountry(value as any)}
           />
         </FormRow>
         <FormRow>
