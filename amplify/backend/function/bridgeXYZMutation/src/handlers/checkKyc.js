@@ -5,14 +5,14 @@ const { graphqlRequest } = require('../utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUserByAddress } = require('../graphql');
+const { getUserByAddress, createLiquidationAddress } = require('../graphql');
 
 const checkKYCHandler = async (
   event,
   { appSyncApiKey, apiKey, apiUrl, graphqlURL },
 ) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
-  const { body, path } = event.arguments?.input || {};
+  const { path } = event.arguments?.input || {};
 
   try {
     const { data: graphQlData } = await graphqlRequest(
@@ -28,12 +28,10 @@ const checkKYCHandler = async (
     const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
     // Get customer from Bridge
-
     const customerRes = await fetch(
       `${apiUrl}/v0/customers/${bridgeCustomerId}`,
     );
     const bridgeCustomer = await customerRes.json();
-    // Take email, name
 
     // "Generate" KYC links
     const kycLinksRes = await fetch(`${apiUrl}/v0/kyc_links`, {
@@ -66,7 +64,6 @@ const checkKYCHandler = async (
     // Take kyc link id
     // const kycLinkId = data.id;
     // Check status of KYC Link id
-
     const res = await fetch(
       `${apiUrl}/${path.replace('{kycLinkID}', kycLinkId)}`,
       {
@@ -79,11 +76,12 @@ const checkKYCHandler = async (
     );
 
     if (res.status !== 200) {
-      throw Error(`Get failed with error code ${res.status}`);
+      const response = await res.json();
+      throw Error(
+        `Get failed with error code ${res.status}. Message: ${response.message}`,
+      );
     }
     const kyc_status = (await res.json()).kyc_status;
-
-    // TODO: If ~~KYC passed and~~ external account added, generate liquidation address
 
     const externalAccountRes = await fetch(
       `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
@@ -96,13 +94,10 @@ const checkKYCHandler = async (
       },
     );
 
-    const externalAccounts = await externalAccountRes.json();
-
-    // NOTE: Mock returns a key-value object, but the real API returns an array
-    const expectedResponseFormat = Object.values(externalAccounts);
+    const externalAccounts = await externalAccountRes.json().data;
 
     // TODO: Support multiple accounts
-    const firstAccount = expectedResponseFormat[0];
+    const firstAccount = externalAccounts[0];
     const mappedAccount = firstAccount
       ? {
           id: firstAccount.id,
@@ -136,11 +131,47 @@ const checkKYCHandler = async (
       colonyUser.liquidationAddresses.items.length > 0;
 
     if (firstAccount && !hasLiquidationAddress) {
-      // Create liquidation address
-      console.log('need to create');
+      // They have external accounts. Create a liquidation address
+      const liquidationAddressCreation = await fetch(
+        `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Idempotency-Key': 'thisisadifferentkey',
+            'Api-Key': apiKey,
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            chain: 'arbitrum',
+            currency: 'usdc',
+            external_account_id: externalAccounts[0].id,
+            destination_currency: 'usd',
+          }),
+        },
+      );
+
+      if (liquidationAddressCreation.status === 200) {
+        const liquidationAddressCreationRes =
+          await liquidationAddressCreation.json();
+        const liquidationAddress = liquidationAddressCreationRes.address;
+
+        await graphqlRequest(
+          createLiquidationAddress,
+          {
+            input: {
+              chainId: '42161',
+              liquidationAddress,
+              userAddress: checksummedWalletAddress,
+            },
+          },
+          graphqlURL,
+          appSyncApiKey,
+        );
+      }
     }
 
     return {
+      // TODO: Return kyclink
       kyc_status,
       kyc_link: kycLink,
       country: bridgeCustomer.address.country,
