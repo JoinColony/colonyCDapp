@@ -125,7 +125,7 @@ export type BridgeXyzQueryInput = {
 
 export type BridgeXyzQueryReturn = {
   __typename?: 'BridgeXYZQueryReturn';
-  drains?: Maybe<BridgeXyzDrain>;
+  drains?: Maybe<Array<Maybe<BridgeXyzDrain>>>;
   success?: Maybe<Scalars['Boolean']>;
   transactionFee?: Maybe<Scalars['String']>;
 };
@@ -9153,7 +9153,7 @@ export type BridgeXyzQueryQueryVariables = Exact<{
 }>;
 
 
-export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: { __typename?: 'BridgeXYZDrain', id?: string | null } | null } | null };
+export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: Array<{ __typename?: 'BridgeXYZDrain', id?: string | null } | null> | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
