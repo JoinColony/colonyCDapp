@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
@@ -11,6 +11,8 @@ import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
+
+import { getValidationSchema } from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
@@ -62,10 +64,20 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   selectedCountry,
   onClose,
 }) => {
+  const validationSchema = useMemo(
+    () => getValidationSchema(selectedCountry),
+    [selectedCountry],
+  );
+
   return (
     <div>
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
-      <Form onSubmit={onSubmit}>
+
+      <Form
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+        mode="onSubmit"
+      >
         <FormRow>
           <FormInput
             name="date"
@@ -95,11 +107,11 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
             </FormRow>
             <FormRow>
               <div className="flex">
-                <div className="flex-1">
+                <div className="mr-1 flex-1">
                   <FormInput name="city" placeholder="City" />
                 </div>
 
-                <div className="flex-1">
+                <div className="ml-1 flex-1">
                   <FormSelect
                     name="subdivisions"
                     options={selectedCountry?.subdivisions.map((item) => ({
