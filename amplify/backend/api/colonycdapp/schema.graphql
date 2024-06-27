@@ -340,8 +340,18 @@ type BridgeXYZMutationReturn {
   success: Boolean
 }
 
+type DrainReceipt {
+  destination_currency: String
+  url: String
+}
+
 type BridgeXYZDrain {
-  id: String
+  id: String,
+  amount: String,
+  state: String,
+  created_at: String,
+  deposit_tx_hash: String,
+  receipt: DrainReceipt,
 }
 
 type BridgeXYZQueryReturn {
