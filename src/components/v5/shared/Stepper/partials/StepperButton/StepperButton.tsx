@@ -31,7 +31,7 @@ const StepperButton: React.FC<StepperButtonProps> = ({
     if (ref.current) {
       setButtonWidth(ref.current.offsetWidth);
     }
-  }, []);
+  }, [ref]);
 
   useEffect(() => {
     if (isHighlighted) {
