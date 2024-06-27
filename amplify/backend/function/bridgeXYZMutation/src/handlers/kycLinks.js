@@ -8,6 +8,20 @@ const { graphqlRequest } = require('../utils');
  */
 const { updateUser } = require('../graphql');
 
+/**
+ * Extracts customer_id from TOS links of the following format:
+ * https://dashboard.bridge.xyz/accept-terms-of-service?customer_id=xxx
+ * @param tosLink {string}
+ */
+const extractCustomerId = (tosLink) => {
+  try {
+    const url = new URL(tosLink);
+    return url.searchParams.get('customer_id') ?? null;
+  } catch {
+    return null;
+  }
+};
+
 const kycLinksHandler = async (
   event,
   { appSyncApiKey, apiKey, apiUrl, graphqlURL },
@@ -31,13 +45,18 @@ const kycLinksHandler = async (
 
     const data = await res.json();
 
-    let customerId;
-    if (data.customer_id) {
-      customerId = data.customer_id;
-    } else if (data.existing_kyc_link.customer_id) {
-      customerId = data.existing_kyc_link.customer_id;
-    } else {
-      throw new Error('No customer_id returned');
+    /**
+     * customer_id in the kyc link object will be null until both TOS/KYC approved
+     * We can however extract the customer ID from the TOS link
+     */
+    const tosLink = data?.tos_link ?? data?.existing_kyc_link?.tos_link;
+    if (!tosLink) {
+      throw new Error('TOS link missing from Bridge XYZ response');
+    }
+
+    const customerId = extractCustomerId(tosLink);
+    if (!customerId) {
+      throw new Error('Could not extract customer ID from TOS link');
     }
 
     // Add customer_id to the user object
@@ -63,9 +82,9 @@ const kycLinksHandler = async (
 
     // Return the two urls
     return {
-      tos_link: data.tos_link || data.existing_kyc_link.tos_link,
-      kyc_link: data.kyc_link || data.existing_kyc_link.kyc_link,
-      // TODO: return success
+      tos_link: data?.tos_link || data?.existing_kyc_link?.tos_link,
+      kyc_link: data?.kyc_link || data?.existing_kyc_link?.kyc_link,
+      success: true,
     };
   } catch (e) {
     console.error(e);
