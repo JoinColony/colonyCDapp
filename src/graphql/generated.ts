@@ -9164,7 +9164,7 @@ export type BridgeXyzQueryQueryVariables = Exact<{
 }>;
 
 
-export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: Array<{ __typename?: 'BridgeXYZDrain', id?: string | null } | null> | null } | null };
+export type BridgeXyzQueryQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: Array<{ __typename?: 'BridgeXYZDrain', id?: string | null, amount?: string | null, state?: string | null, created_at?: string | null, deposit_tx_hash?: string | null, receipt?: { __typename?: 'DrainReceipt', destination_currency?: string | null, url?: string | null } | null } | null> | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -11685,6 +11685,14 @@ export const BridgeXyzQueryDocument = gql`
   bridgeXYZQuery(input: $input) {
     drains {
       id
+      amount
+      state
+      created_at
+      deposit_tx_hash
+      receipt {
+        destination_currency
+        url
+      }
     }
     success
     transactionFee
