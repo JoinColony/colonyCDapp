@@ -1,4 +1,5 @@
 const fetch = require('cross-fetch');
+const { v4: uuid } = require('uuid');
 
 const getFeesHandler = async (event, { apiKey, apiUrl }) => {
   const { path } = event.arguments?.input || {};
@@ -7,7 +8,7 @@ const getFeesHandler = async (event, { apiKey, apiUrl }) => {
     const res = await fetch(`${apiUrl}/${path}`, {
       headers: {
         'Content-Type': 'application/json',
-        'Idempotency-Key': 'thisisadifferentkey',
+        'Idempotency-Key': uuid(),
         'Api-Key': apiKey,
       },
     });

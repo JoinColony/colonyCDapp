@@ -1,4 +1,5 @@
 const fetch = require('cross-fetch');
+const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -18,7 +19,7 @@ const kycLinksHandler = async (
     const res = await fetch(`${apiUrl}/${path}`, {
       headers: {
         'Content-Type': 'application/json',
-        'Idempotency-Key': 'thisisadifferentkey',
+        'Idempotency-Key': uuid(),
         'Api-Key': apiKey,
       },
       body: JSON.stringify({
