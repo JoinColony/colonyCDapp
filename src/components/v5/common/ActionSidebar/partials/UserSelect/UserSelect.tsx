@@ -10,10 +10,12 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
+import { type User } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { useUserSelect } from './hooks.ts';
 import { type UserSelectProps } from './types.ts';
@@ -91,68 +93,79 @@ const UserSelect: FC<UserSelectProps> = ({
   const isUserAddressValid = isAddress(field.value);
 
   const toggler = (
-    <button
-      type="button"
-      ref={relativeElementRef}
-      className={clsx('flex items-center text-md transition-colors', {
-        'text-gray-400': !isError && !isUserSelectVisible && !disabled,
-        'text-gray-300': disabled,
-        'text-negative-400': isError,
-        'text-blue-400': isUserSelectVisible,
-        'md:hover:text-blue-400': !disabled,
-      })}
-      onClick={toggleUserSelect}
-      aria-label={formatText({ id: 'ariaLabel.selectUser' })}
-      disabled={disabled}
-    >
-      {selectedUser || field.value ? (
-        <>
-          {isUserAddressValid ? (
-            <>
-              <UserAvatar
-                userName={
-                  selectedUser?.profile?.displayName?.toString() ?? undefined
-                }
-                userAddress={userWalletAddress}
-                userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
-                size={20}
-              />
-              <p
-                className={clsx('ml-2 truncate text-md font-medium', {
-                  'text-warning-400': !selectedUser?.isVerified,
-                  'text-gray-900': selectedUser?.isVerified,
-                })}
-              >
-                {formatText(userName || '')}
-              </p>
-              {selectedUser?.isVerified && (
-                <CircleWavyCheck
-                  size={14}
-                  className="ml-1 flex-shrink-0 text-blue-400"
+    <>
+      <button
+        type="button"
+        ref={relativeElementRef}
+        className={clsx('flex items-center text-md transition-colors', {
+          'text-gray-400': !isError && !isUserSelectVisible && !disabled,
+          'text-gray-300': disabled,
+          'text-negative-400': isError,
+          'text-blue-400': isUserSelectVisible,
+          'md:hover:text-blue-400': !disabled,
+        })}
+        onClick={toggleUserSelect}
+        aria-label={formatText({ id: 'ariaLabel.selectUser' })}
+        disabled={disabled}
+      >
+        {selectedUser || field.value ? (
+          <>
+            {isUserAddressValid ? (
+              <>
+                <UserAvatar
+                  userName={
+                    selectedUser?.profile?.displayName?.toString() ?? undefined
+                  }
+                  userAddress={userWalletAddress}
+                  userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+                  size={20}
                 />
-              )}
-              {!selectedUser?.isVerified && (
-                <WarningCircle
-                  size={14}
-                  className="ml-1 flex-shrink-0 text-warning-400"
-                />
-              )}
-            </>
-          ) : (
-            <div className="flex items-center gap-1 text-negative-400">
-              <WarningCircle size={16} />
-              <span className="text-md">
-                {formatText({
-                  id: 'actionSidebar.addressError',
-                })}
-              </span>
-            </div>
-          )}
-        </>
-      ) : (
-        formatText({ id: 'actionSidebar.selectMember' })
-      )}
-    </button>
+                <p
+                  className={clsx('ml-2 truncate text-md font-medium', {
+                    'text-warning-400': !selectedUser?.isVerified,
+                    'text-gray-900': selectedUser?.isVerified,
+                  })}
+                >
+                  {formatText(userName || '')}
+                </p>
+                {selectedUser?.isVerified && (
+                  <CircleWavyCheck
+                    size={14}
+                    className="ml-1 flex-shrink-0 text-blue-400"
+                  />
+                )}
+              </>
+            ) : (
+              <div className="flex items-center gap-1 text-negative-400">
+                <WarningCircle size={16} />
+                <span className="text-md">
+                  {formatText({
+                    id: 'actionSidebar.addressError',
+                  })}
+                </span>
+              </div>
+            )}
+          </>
+        ) : (
+          formatText({ id: 'actionSidebar.selectMember' })
+        )}
+      </button>
+      {(selectedUser || field.value) &&
+        !selectedUser?.isVerified &&
+        isUserAddressValid && (
+          <UserInfoPopover
+            walletAddress={userWalletAddress}
+            user={selectedUser as User}
+            withVerifiedBadge={false}
+            className="flex w-auto max-w-full flex-col items-center justify-between gap-2 text-gray-900"
+          >
+            <WarningCircle
+              size={14}
+              className="ml-1 flex-shrink-0 text-warning-400"
+            />
+          </UserInfoPopover>
+        )}
+    </>
   );
 
   const selectedUserContent = (
