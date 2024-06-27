@@ -3,8 +3,9 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
+import { type InferType, mixed, number, object, string } from 'yup';
 
-import { UserRole, getRole } from '~constants/permissions.ts';
+import { CUSTOM_USER_ROLE, UserRole, getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -12,19 +13,84 @@ import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
-import {
-  Authority,
-  AVAILABLE_ROLES,
-  type ManagePermissionsFormValues,
-  type RemoveRoleOptionValue,
-  validationSchema,
-} from './consts.ts';
+import { Authority, AVAILABLE_ROLES, RemoveRoleOptionValue } from './consts.ts';
 import { getManagePermissionsPayload } from './utils.ts';
+
+export const useValidationSchema = () => {
+  const { colony } = useColonyContext();
+
+  return useMemo(
+    () =>
+      object()
+        .shape({
+          member: string().required(
+            formatText({ id: 'errors.member.required' }),
+          ),
+          team: number().required(formatText({ id: 'errors.team.required' })),
+          createdIn: number().required(),
+          role: string()
+            .required(formatText({ id: 'errors.role.required' }))
+            .test(
+              'has-role',
+              formatText({ id: 'errors.role.noPermissionsToRemove' }),
+              (value, context) => {
+                if (!value) {
+                  return true;
+                }
+
+                const { member, team, role } = context.parent;
+
+                if (
+                  !member ||
+                  !team ||
+                  !role ||
+                  role !== RemoveRoleOptionValue.remove
+                ) {
+                  return true;
+                }
+
+                const userPermissions = getUserRolesForDomain({
+                  colony,
+                  userAddress: member,
+                  domainId: Number(team),
+                });
+
+                return !!userPermissions.length;
+              },
+            ),
+          authority: string().required(
+            formatText({ id: 'errors.authority.required' }),
+          ),
+          permissions: mixed<Partial<Record<string, boolean>>>().test(
+            'permissions',
+            formatText({ id: 'errors.authority.required' }),
+            (value, { parent }) => {
+              if (parent.role !== CUSTOM_USER_ROLE.role) {
+                return true;
+              }
+
+              return Object.values(value || {}).some(Boolean);
+            },
+          ),
+          decisionMethod: string().defined(),
+        })
+        .defined()
+        .concat(ACTION_BASE_VALIDATION_SCHEMA),
+    [colony],
+  );
+};
+export type ManagePermissionsFormValues = InferType<
+  ReturnType<typeof useValidationSchema>
+>;
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -32,7 +98,7 @@ export const useManagePermissions = (
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const { setValue, watch } =
+  const { setValue, watch, trigger } =
     useFormContext<Partial<ManagePermissionsFormValues>>();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -49,39 +115,50 @@ export const useManagePermissions = (
   }, [isModeRoleSelected, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team }, { name }) => {
-      if (
-        !name ||
-        !['team', 'member'].includes(name) ||
-        !notMaybe(team) ||
-        !notMaybe(member)
-      ) {
-        return;
-      }
+    const { unsubscribe } = watch(
+      ({ member, team, role: fieldRole }, { name }) => {
+        if (
+          !name ||
+          !['team', 'member'].includes(name) ||
+          !notMaybe(team) ||
+          !notMaybe(member)
+        ) {
+          return;
+        }
 
-      const userPermissions = getUserRolesForDomain({
-        colony,
-        userAddress: member,
-        domainId: Number(team),
-      });
-      const userRole = getRole(userPermissions);
+        const userPermissions = getUserRolesForDomain({
+          colony,
+          userAddress: member,
+          domainId: Number(team),
+        });
+        const userRole = getRole(userPermissions);
+        const newRoleValue = userRole.permissions.length
+          ? userRole.role
+          : undefined;
 
-      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+        setValue('role', newRoleValue);
 
-      if (userRole.role !== UserRole.Custom) {
-        return;
-      }
+        if (fieldRole && newRoleValue && fieldRole !== newRoleValue) {
+          trigger('role');
+        }
 
-      AVAILABLE_ROLES.forEach((colonyRole) => {
-        setValue(
-          `permissions.role_${colonyRole}`,
-          userRole.permissions.includes(colonyRole),
-        );
-      });
-    });
+        if (userRole.role !== UserRole.Custom) {
+          return;
+        }
+
+        AVAILABLE_ROLES.forEach((colonyRole) => {
+          setValue(
+            `permissions.role_${colonyRole}`,
+            userRole.permissions.includes(colonyRole),
+          );
+        });
+      },
+    );
 
     return () => unsubscribe();
-  }, [colony, role, setValue, watch]);
+  }, [colony, role, setValue, watch, trigger]);
+
+  const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
     getFormOptions,

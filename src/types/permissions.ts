@@ -1,10 +1,11 @@
 import { type ColonyRole } from '@colony/colony-js';
 
 import { type UserRole } from '~constants/permissions.ts';
+import { type RemoveRoleOptionValue } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 
 export interface PermissionsTableProps {
   name: string;
-  role?: UserRole;
+  role?: UserRole | RemoveRoleOptionValue;
   className?: string;
 }
 
