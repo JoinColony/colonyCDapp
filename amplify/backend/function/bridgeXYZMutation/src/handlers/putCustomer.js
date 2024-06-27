@@ -1,4 +1,5 @@
 const fetch = require('cross-fetch');
+const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -31,7 +32,7 @@ const putCustomerHandler = async (
       {
         headers: {
           'Content-Type': 'application/json',
-          'Idempotency-Key': 'thisisadifferentkey',
+          'Idempotency-Key': uuid(),
           'Api-Key': apiKey,
         },
         body: JSON.stringify({
@@ -77,7 +78,7 @@ const putCustomerHandler = async (
       {
         headers: {
           'Content-Type': 'application/json',
-          'Idempotency-Key': 'thisisadifferentkey',
+          'Idempotency-Key': uuid(),
           'Api-Key': apiKey,
         },
         body: JSON.stringify(createAccountPayload),
