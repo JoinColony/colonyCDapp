@@ -15,6 +15,10 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "functioncolonycdappSSMAccessArn": {
+      "Type": "String",
+      "Default": "functioncolonycdappSSMAccessArn"
     }
   },
   "Conditions": {
@@ -80,7 +84,10 @@
         },
         "Runtime": "nodejs20.x",
         "Layers": [
-          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
+          "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4",
+          {
+            "Ref": "functioncolonycdappSSMAccessArn"
+          }
         ],
         "Timeout": 25
       }
