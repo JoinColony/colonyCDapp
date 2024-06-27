@@ -14,7 +14,7 @@ let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to al
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
+  if (ENV === 'qaarbsep' || ENV === 'prodclone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL] = await getParams(['chainRpcEndpoint']);
   }

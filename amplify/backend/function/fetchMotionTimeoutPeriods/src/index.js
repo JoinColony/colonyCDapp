@@ -15,7 +15,7 @@ let reputationOracleEndpoint =
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
+  if (ENV === 'qaarbsep' || ENV === 'prodclone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL, networkAddress, reputationOracleEndpoint, network] =
       await getParams([

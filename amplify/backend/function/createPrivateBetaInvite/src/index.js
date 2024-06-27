@@ -6,7 +6,7 @@ let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
+  if (ENV === 'qaarbsep' || ENV === 'prodclone') {
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   }
