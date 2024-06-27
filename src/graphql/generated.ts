@@ -59,7 +59,12 @@ export type BridgeXyzBankAccount = {
 
 export type BridgeXyzDrain = {
   __typename?: 'BridgeXYZDrain';
+  amount?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['String']>;
+  deposit_tx_hash?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
+  receipt?: Maybe<DrainReceipt>;
+  state?: Maybe<Scalars['String']>;
 };
 
 export type BridgeXyzIbanBankAccount = {
@@ -1984,6 +1989,12 @@ export type DomainMetadataChangelogInput = {
   oldDescription?: InputMaybe<Scalars['String']>;
   oldName: Scalars['String'];
   transactionHash: Scalars['String'];
+};
+
+export type DrainReceipt = {
+  __typename?: 'DrainReceipt';
+  destination_currency?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type Expenditure = {
