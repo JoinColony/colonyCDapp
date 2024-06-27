@@ -26,7 +26,7 @@ let network = Network.Custom;
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
@@ -285,7 +285,12 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
-    endedAt: flag === 'hasFailed' || flag === 'hasPassed' || flag === 'hasFailedNotFinalizable' ? new Date().toISOString() : null,
+    endedAt:
+      flag === 'hasFailed' ||
+      flag === 'hasPassed' ||
+      flag === 'hasFailedNotFinalizable'
+        ? new Date().toISOString()
+        : null,
   };
 
   const messageKeys = new Set(messages.items.map((m) => m.messageKey));

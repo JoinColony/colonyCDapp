@@ -35,7 +35,7 @@ const setEnvVariables = async (network) => {
     rpcURL = getDevRpcUrl(network);
   }
 
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
     let chainRpcParam = getRpcUrlParamName(network);
 
     const { getParams } = require('/opt/nodejs/getParams');
@@ -116,17 +116,26 @@ exports.handler = async (event) => {
       try {
         name = await tokenFromChain.name();
       } catch (error) {
-        console.log(`TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`, error);
+        console.log(
+          `TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`,
+          error,
+        );
       }
       try {
         symbol = await tokenFromChain.symbol();
       } catch (error) {
-        console.log(`TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`, error);
+        console.log(
+          `TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`,
+          error,
+        );
       }
       try {
         decimals = await tokenFromChain.decimals();
       } catch (error) {
-        console.log(`TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`, error);
+        console.log(
+          `TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`,
+          error,
+        );
       }
       const type = await getTokenType(tokenFromChain);
       const chainId = String((await provider.getNetwork()).chainId);

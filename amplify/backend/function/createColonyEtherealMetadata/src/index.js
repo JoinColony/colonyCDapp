@@ -17,12 +17,9 @@ let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [apiKey, graphqlURL] = await getParams([
-      'appsyncApiKey',
-      'graphqlUrl',
-    ]);
+    [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   }
 };
 
@@ -42,9 +39,8 @@ exports.handler = async (event) => {
     tokenThumbnail,
     initiatorAddress,
     transactionHash,
-    inviteCode
+    inviteCode,
   } = event.arguments?.input || {};
-
 
   /*
    * Validate invite code
@@ -132,7 +128,7 @@ exports.handler = async (event) => {
     const [error] = colonyMetadataMutation.errors;
     throw new Error(
       error?.message ||
-      `Could not create colony "${name}" with address "${checksummedAddress} 's metadata from transaction ${transactionHash}"`,
+        `Could not create colony "${name}" with address "${checksummedAddress} 's metadata from transaction ${transactionHash}"`,
     );
   }
 

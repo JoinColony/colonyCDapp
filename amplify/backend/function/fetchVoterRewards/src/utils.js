@@ -19,7 +19,7 @@ let reputationOracleEndpoint =
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (ENV === 'qaarbsep' || ENV === 'prodrevive') {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
