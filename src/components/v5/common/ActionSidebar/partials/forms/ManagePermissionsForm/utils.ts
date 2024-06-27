@@ -10,11 +10,8 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
-import {
-  AVAILABLE_ROLES,
-  RemoveRoleOptionValue,
-  type ManagePermissionsFormValues,
-} from './consts.ts';
+import { AVAILABLE_ROLES, RemoveRoleOptionValue } from './consts.ts';
+import { type ManagePermissionsFormValues } from './hooks.ts';
 
 export const getRoleLabel = (role: string | undefined) => {
   return [
@@ -84,10 +81,10 @@ export const getManagePermissionsPayload = (
   annotationMessage: values.description
     ? sanitizeHTML(values.description)
     : undefined,
-  domainId: Number(values.team),
+  domainId: values.team,
   userAddress: values.member,
   colonyName: colony.name,
   colonyAddress: colony.colonyAddress,
-  motionDomainId: Number(values.createdIn),
+  motionDomainId: values.createdIn,
   roles: getPermissionsMap(values.permissions, values.role),
 });

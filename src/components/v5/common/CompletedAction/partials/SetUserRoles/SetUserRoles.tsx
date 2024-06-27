@@ -1,16 +1,10 @@
-import { ColonyRole } from '@colony/colony-js';
 import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
-import {
-  ColonyActionType,
-  type ColonyActionRoles,
-  useGetColonyHistoricRoleRolesQuery,
-  type GetColonyHistoricRoleRolesQuery,
-} from '~gql';
+import { ColonyActionType, useGetColonyHistoricRoleRolesQuery } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
@@ -23,6 +17,7 @@ import {
   TEAM_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { RemoveRoleOptionValue } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
@@ -42,44 +37,16 @@ import {
   TeamFromRow,
 } from '../rows/index.ts';
 
+import {
+  transformActionRolesToColonyRoles,
+  transformRemovedActionRolesToColonyRoles,
+} from './utils.ts';
+
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
 interface Props {
   action: ColonyAction;
 }
-
-const transformActionRolesToColonyRoles = (
-  roles: ColonyActionRoles | null | undefined,
-  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
-): ColonyRole[] => {
-  if (!roles) return [];
-
-  const combinedRoles = { ...historicRoles };
-
-  for (const [key, value] of Object.entries(roles)) {
-    if (value !== null) {
-      combinedRoles[key] = value;
-    }
-  }
-
-  const roleKeys = Object.keys(combinedRoles);
-
-  const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => combinedRoles[key])
-    .map((key) => {
-      const match = key.match(/role_(\d+)/); // Extract the role number
-      if (match && match[1]) {
-        const roleIndex = parseInt(match[1], 10);
-        if (roleIndex in ColonyRole) {
-          return roleIndex;
-        }
-      }
-      return null;
-    })
-    .filter((role): role is ColonyRole => role !== null);
-
-  return colonyRoles;
-};
 
 const SetUserRoles = ({ action }: Props) => {
   const {
@@ -113,7 +80,14 @@ const SetUserRoles = ({ action }: Props) => {
     historicRoles?.getColonyHistoricRole,
   );
 
-  const { name: roleName, role } = getRole(userColonyRoles);
+  const isRemoveAction = !userColonyRoles.length && !!roles;
+
+  const removedActionRoles = isRemoveAction
+    ? transformRemovedActionRolesToColonyRoles(roles)
+    : [];
+
+  const displayedRoles = isRemoveAction ? removedActionRoles : userColonyRoles;
+  const { name: roleName, role } = getRole(displayedRoles);
   const rolesTitle = formatRolesTitle(roles);
 
   return (
@@ -187,26 +161,26 @@ const SetUserRoles = ({ action }: Props) => {
           />
         )}
         <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.permissions' })}
-          rowContent={
-            userColonyRoles.length
-              ? roleName
-              : formatText({
-                  id: 'actionSidebar.managePermissions.roleSelect.remove.title',
-                })
-          }
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.managePermissions.permissions',
-          })}
-          RowIcon={ShieldStar}
-        />
-        <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={AUTHORITY_OPTIONS[0].label}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.authority',
           })}
           RowIcon={Signature}
+        />
+        <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.permissions' })}
+          rowContent={
+            isRemoveAction
+              ? formatText({
+                  id: 'actionSidebar.managePermissions.roleSelect.remove.title',
+                })
+              : roleName
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.managePermissions.permissions',
+          })}
+          RowIcon={ShieldStar}
         />
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
@@ -218,13 +192,11 @@ const SetUserRoles = ({ action }: Props) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!userColonyRoles.length && (
-        <PermissionsTableRow
-          role={role}
-          domainId={action.fromDomain?.nativeId}
-          userColonyRoles={userColonyRoles}
-        />
-      )}
+      <PermissionsTableRow
+        role={isRemoveAction ? RemoveRoleOptionValue.remove : role}
+        domainId={action.fromDomain?.nativeId}
+        userColonyRoles={displayedRoles}
+      />
     </>
   );
 };

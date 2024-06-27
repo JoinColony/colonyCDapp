@@ -2,7 +2,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import React from 'react';
 
-import { UserRole } from '~constants/permissions.ts';
+import { UserRole, getRole } from '~constants/permissions.ts';
 import { useMobile } from '~hooks/index.ts';
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
 import {
@@ -10,6 +10,7 @@ import {
   type PermissionsTableModel,
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
+import { type RemoveRoleOptionValue } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { getCustomPermissionsTableColumns } from './utils.tsx';
@@ -17,7 +18,7 @@ import { getCustomPermissionsTableColumns } from './utils.tsx';
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
 interface Props {
-  role: UserRole;
+  role: UserRole | RemoveRoleOptionValue;
   domainId: number | undefined;
   userColonyRoles: ColonyRole[];
 }
@@ -28,7 +29,10 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
     userColonyRoles,
     isMobile,
   );
-  const permissionsTableProps = usePermissionsTableProps(role);
+
+  const userRole = getRole(userColonyRoles);
+
+  const permissionsTableProps = usePermissionsTableProps(role, userRole, true);
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>

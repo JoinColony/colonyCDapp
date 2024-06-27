@@ -25,7 +25,7 @@ import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
-import { AuthorityOptions, RemoveRoleOptionValue } from './consts.ts';
+import { AuthorityOptions } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
@@ -35,7 +35,7 @@ import { getRoleLabel } from './utils.ts';
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
+  const { role, isModRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
     {
@@ -43,7 +43,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team: string | undefined = useWatch({ name: 'team' });
+  const team: number | undefined = useWatch({ name: 'team' });
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
@@ -75,7 +75,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     ({ options, ...rest }) => ({
       ...rest,
       options: options.filter(({ value }) =>
-        value === UserRole.Owner ? Number(team) === Id.RootDomain : true,
+        value === UserRole.Owner ? team === Id.RootDomain : true,
       ),
     }),
   );
@@ -117,6 +117,45 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <ActionFormRow
+        icon={Signature}
+        fieldName="authority"
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.authority',
+            }),
+          },
+          content: isModRoleSelected
+            ? {
+                tooltipContent: formatText({
+                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
+                }),
+                selectTriggerRef: (triggerRef) => {
+                  if (!triggerRef) {
+                    return null;
+                  }
+
+                  return triggerRef.querySelector('span');
+                },
+              }
+            : undefined,
+        }}
+        title={formatText({ id: 'actionSidebar.authority' })}
+        isDisabled={hasNoDecisionMethods}
+      >
+        <FormCardSelect
+          disabled={isModRoleSelected || hasNoDecisionMethods}
+          name="authority"
+          options={AuthorityOptions}
+          title={formatText({
+            id: 'actionSidebar.managePermissions.authoritySelect.title',
+          })}
+          placeholder={formatText({
+            id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
+          })}
+        />
+      </ActionFormRow>
+      <ActionFormRow
         icon={Shield}
         fieldName="role"
         tooltips={{
@@ -136,7 +175,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             getRoleLabel(option?.value) || placeholder
           }
           options={ALLOWED_PERMISSION_OPTIONS}
-          title={formatText({ id: 'actionSidebar.permissions' })}
           placeholder={formatText({
             id: 'actionSidebar.managePermissions.roleSelect.placeholder',
           })}
@@ -145,51 +183,10 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
-      <ActionFormRow
-        icon={Signature}
-        fieldName="authority"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.authority',
-            }),
-          },
-          content: isModeRoleSelected
-            ? {
-                tooltipContent: formatText({
-                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
-                }),
-                selectTriggerRef: (triggerRef) => {
-                  if (!triggerRef) {
-                    return null;
-                  }
-
-                  return triggerRef.querySelector('span');
-                },
-              }
-            : undefined,
-        }}
-        title={formatText({ id: 'actionSidebar.authority' })}
-        isDisabled={hasNoDecisionMethods}
-      >
-        <FormCardSelect
-          disabled={isModeRoleSelected || hasNoDecisionMethods}
-          name="authority"
-          options={AuthorityOptions}
-          title={formatText({
-            id: 'actionSidebar.managePermissions.authoritySelect.title',
-          })}
-          placeholder={formatText({
-            id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
-          })}
-        />
-      </ActionFormRow>
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== RemoveRoleOptionValue.remove && (
-        <PermissionsTable name="permissions" role={role} className="mt-7" />
-      )}
+      <PermissionsTable name="permissions" role={role} className="mt-7" />
     </>
   );
 };

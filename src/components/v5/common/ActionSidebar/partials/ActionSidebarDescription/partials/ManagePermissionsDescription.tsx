@@ -7,7 +7,7 @@ import { type ColonyActionRoles, ColonyActionType } from '~gql';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { type ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/consts.tsx';
+import { type ManagePermissionsFormValues } from '../../forms/ManagePermissionsForm/hooks.ts';
 import { getPermissionsMap } from '../../forms/ManagePermissionsForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';

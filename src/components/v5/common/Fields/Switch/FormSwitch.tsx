@@ -8,13 +8,24 @@ import { type FormSwitchProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormSwitch';
 
-const FormSwitch: FC<FormSwitchProps> = ({ name, ...rest }) => {
+const FormSwitch: FC<FormSwitchProps> = ({
+  name,
+  readOnly: readOnlyProp,
+  ...rest
+}) => {
   const {
     field: { value, ...field },
   } = useController({ name });
   const { readonly } = useAdditionalFormOptionsContext();
 
-  return <Switch {...rest} {...field} checked={value} readOnly={readonly} />;
+  return (
+    <Switch
+      {...rest}
+      {...field}
+      checked={value}
+      readOnly={readonly || readOnlyProp}
+    />
+  );
 };
 
 FormSwitch.displayName = displayName;

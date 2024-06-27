@@ -10,6 +10,7 @@ import Switch from '~v5/common/Fields/Switch/index.ts';
 const customPermissionsColumnHelper =
   createColumnHelper<CustomPermissionTableModel>();
 
+//  @todo: update the placement of removed pill
 export const getCustomPermissionsTableColumns = (
   userColonyRoles: ColonyRole[],
   isMobile: boolean,
