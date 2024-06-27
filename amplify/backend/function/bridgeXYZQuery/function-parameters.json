@@ -7,7 +7,7 @@
     {
       "type": "ProjectLayer",
       "resourceName": "colonycdappSSMAccess",
-      "env": "prodclone",
+      "env": "prodrevive",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true
     }
