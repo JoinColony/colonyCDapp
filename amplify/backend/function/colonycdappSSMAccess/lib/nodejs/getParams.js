@@ -23,13 +23,10 @@ const getParam = async (paramName) => {
     throw Error(`Invalid param name '${paramName}' provided.`);
   }
 
-  const decrpytParam =
-    paramName === 'appsyncApiKey' ? '&withDecryption=true' : '';
-
   // Retrieve param from Parameter Store
   try {
     const res = await fetch(
-      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}${decrpytParam}`,
+      `http://localhost:2773/systemsmanager/parameters/get?name=${ParamNames[paramName]}&withDecryption=true`,
       {
         headers: {
           'X-Aws-Parameters-Secrets-Token': AWS_SESSION_TOKEN,
