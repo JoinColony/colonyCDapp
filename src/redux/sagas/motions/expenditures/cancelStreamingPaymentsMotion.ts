@@ -118,11 +118,6 @@ function* cancelStreamingPaymentsMotionAction({
           branchMask,
           siblings,
         ],
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 0,
-        },
       },
     });
 
