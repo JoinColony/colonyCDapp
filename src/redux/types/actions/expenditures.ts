@@ -14,6 +14,7 @@ import {
   type StreamingPayment,
   type Domain,
   type Expenditure,
+  type Colony,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
@@ -263,6 +264,27 @@ export type ExpendituresActionTypes =
   | ErrorActionType<ActionTypes.STREAMING_PAYMENT_CLAIM_ERROR, object>
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_CLAIM_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT,
+      {
+        colony: Colony;
+        streamingPayment: StreamingPayment;
+        streamingPaymentsAddress: string;
+        startTimestamp?: string;
+        endTimestamp?: string;
+        amount?: string;
+        interval?: number;
+        endCondition?: StreamingPaymentEndCondition;
+        limitAmount?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.STREAMING_PAYMENT_EDIT_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
       object,
       object
     >;

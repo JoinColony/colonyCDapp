@@ -13,6 +13,7 @@ export * from './annotations.ts';
 export * from './proofs.ts';
 export * from './expenditures.ts';
 export * from './expendituresMulticall.ts';
+export * from './getEndTimeByEndCondition.ts';
 
 export { updateDomainReputation } from './updateDomainReputation.ts';
 export { createActionMetadataInDB } from './createActionMetadata.ts';

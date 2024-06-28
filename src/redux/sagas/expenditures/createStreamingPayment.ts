@@ -10,7 +10,6 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
-  StreamingPaymentEndCondition,
   type CreateStreamingPaymentMetadataMutation,
   type CreateStreamingPaymentMetadataMutationVariables,
 } from '~gql';
@@ -29,6 +28,7 @@ import {
 } from '../transactions/index.ts';
 import {
   getColonyManager,
+  getEndTimeByEndCondition,
   initiateTransaction,
   putError,
   takeFrom,
@@ -37,9 +37,6 @@ import {
 
 export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
-
-// Maximum uint256
-const TIMESTAMP_IN_FUTURE = BigNumber.from(2).pow(256).sub(1);
 
 function* createStreamingPaymentAction({
   payload: {
@@ -104,42 +101,15 @@ function* createStreamingPaymentAction({
       BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
     );
 
-    let realEndTimestamp: BigNumber;
-
-    switch (endCondition) {
-      case StreamingPaymentEndCondition.FixedTime:
-        if (endTimestamp === undefined) {
-          throw new Error(
-            'endTimestamp is required for FixedTime endCondition',
-          );
-        }
-
-        realEndTimestamp = BigNumber.from(endTimestamp);
-        break;
-
-      case StreamingPaymentEndCondition.LimitReached:
-        if (limitAmount === undefined) {
-          throw new Error(
-            'limitAmount is required for LimitReached endCondition',
-          );
-        }
-
-        realEndTimestamp = BigNumber.from(limitAmount ?? 0).eq(0)
-          ? BigNumber.from(startTimestamp)
-          : BigNumber.from(limitAmount ?? 0)
-              .mul(interval)
-              .div(amount)
-              .add(startTimestamp);
-        break;
-
-      case StreamingPaymentEndCondition.WhenCancelled:
-        realEndTimestamp = TIMESTAMP_IN_FUTURE;
-        break;
-
-      default:
-        realEndTimestamp = TIMESTAMP_IN_FUTURE;
-        break;
-    }
+    const realEndTimestamp = getEndTimeByEndCondition({
+      endCondition,
+      startTimestamp,
+      interval,
+      convertedAmount,
+      tokenDecimals,
+      limitAmount,
+      endTimestamp,
+    });
 
     yield fork(createTransaction, createStreamingPayment.id, {
       context: ClientType.StreamingPaymentsClient,
