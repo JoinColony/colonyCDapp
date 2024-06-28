@@ -18,3 +18,10 @@ export const getExpenditureDatabaseId = (
 ) => {
   return `${colonyAddress}_${nativeExpenditureId}`;
 };
+
+export const getStreamingPaymentDatabaseId = (
+  colonyAddress: string,
+  nativeStreamingPaymentId: number,
+) => {
+  return `${colonyAddress}_${nativeStreamingPaymentId}`;
+};

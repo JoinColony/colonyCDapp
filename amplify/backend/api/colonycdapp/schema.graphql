@@ -721,6 +721,22 @@ enum ColonyActionType {
   An action related to finalizing an expenditure via a motion
   """
   FINALIZE_EXPENDITURE_MOTION
+  """
+  An action related to creating a streaming payment
+  """
+  CREATE_STREAMING_PAYMENT
+  """
+  An action related to cancelling a streaming payment
+  """
+  CANCEL_STREAMING_PAYMENT
+  """
+  An action related to cancelling and waiving a streaming payment
+  """
+  CANCEL_AND_WAIVE_STREAMING_PAYMENT
+  """
+  An action related to cancelling a streaming payment via a motion
+  """
+  CANCEL_STREAMING_PAYMENT_MOTION
 }
 
 """
@@ -2935,6 +2951,18 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getActionByStreamingPaymentId"
+    )
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
 }
 
 type ExpenditureSlotChanges {
@@ -3342,17 +3370,37 @@ type StreamingPayment @model {
   createdAt: AWSDateTime!
   recipientAddress: String!
   nativeDomainId: Int!
-  startTime: AWSTimestamp!
-  endTime: AWSTimestamp!
+  startTime: String!
+  endTime: String!
   interval: String!
-  payouts: [ExpenditurePayout!]
+  tokenAddress: String!
+  amount: String!
+  claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+  """
+  Actions associated with the streaming payment
+  """
+  actions: [ColonyAction!]
+    @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  Is the stream cancelled?
+  """
+  isCancelled: Boolean
+  """
+  Is the stream waived?
+  """
+  isWaived: Boolean
 }
 
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
   limitAmount: String
+}
+
+type StreamingPaymentClaim {
+  amount: String!
+  timestamp: String!
 }
 
 """

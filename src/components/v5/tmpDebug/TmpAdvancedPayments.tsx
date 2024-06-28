@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
-import { StreamingPaymentEndCondition, useGetExpenditureQuery } from '~gql';
+import { useGetExpenditureQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -16,7 +16,6 @@ import { type CancelExpenditurePayload } from '~redux/sagas/expenditures/cancelE
 import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExpenditure.ts';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
-import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
 import { type EditExpenditurePayload } from '~redux/sagas/expenditures/editExpenditure.ts';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
@@ -201,19 +200,6 @@ const TmpAdvancedPayments = () => {
         tokenAddress: colony.nativeToken.tokenAddress,
       },
     ],
-  };
-
-  const createStreamingPaymentPayload: CreateStreamingPaymentPayload = {
-    colonyAddress: colony.colonyAddress,
-    createdInDomain: rootDomain,
-    amount: transactionAmount,
-    endCondition: StreamingPaymentEndCondition.FixedTime,
-    interval: 60,
-    recipientAddress: user?.walletAddress ?? '',
-    startTimestamp: Math.floor(Date.now() / 1000),
-    tokenAddress,
-    tokenDecimals: parseInt(decimalAmount, 10),
-    endTimestamp: Math.floor(Date.now() / 1000) + 120,
   };
 
   const handleLockExpenditure = async () => {
@@ -462,51 +448,46 @@ const TmpAdvancedPayments = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex gap-4">
-        <InputBase
-          onChange={(e) => setTokenAddress(e.currentTarget.value)}
-          value={tokenAddress}
-          label="Token Address"
-        />
-        <InputBase
-          onChange={(e) => setDecimalAmount(e.currentTarget.value)}
-          value={decimalAmount}
-          label="Token Decimals"
-        />
-        <InputBase
-          onChange={(e) => setTransactionAmount(e.currentTarget.value)}
-          value={transactionAmount}
-          label="Transaction Amount"
-        />
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_CREATE}
-          values={createExpenditurePayload}
-        >
-          Create expenditure
-        </ActionButton>
-        <Button onClick={handleCreateStakedExpenditure}>
-          Create staked expenditure
-        </Button>
-        <ActionButton
-          actionType={ActionTypes.EXPENDITURE_CREATE}
-          values={createStagedExpenditurePayload}
-        >
-          Create staged expenditure
-        </ActionButton>
-        <ActionButton
-          actionType={ActionTypes.STREAMING_PAYMENT_CREATE}
-          values={createStreamingPaymentPayload}
-        >
-          Create streaming payment
-        </ActionButton>
-      </div>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4 rounded-lg bg-gray-100 p-3">
+        <h2 className="block w-full font-bold">Expenditures</h2>
+        <div className="flex items-end gap-4">
+          <InputBase
+            onChange={(e) => setTokenAddress(e.currentTarget.value)}
+            value={tokenAddress}
+            label="Token Address"
+          />
+          <InputBase
+            onChange={(e) => setDecimalAmount(e.currentTarget.value)}
+            value={decimalAmount}
+            label="Token Decimals"
+          />
+          <InputBase
+            onChange={(e) => setTransactionAmount(e.currentTarget.value)}
+            value={transactionAmount}
+            label="Transaction Amount"
+          />
+          <ActionButton
+            actionType={ActionTypes.EXPENDITURE_CREATE}
+            values={createExpenditurePayload}
+          >
+            Create expenditure
+          </ActionButton>
+          <Button onClick={handleCreateStakedExpenditure}>
+            Create staked expenditure
+          </Button>
+          <ActionButton
+            actionType={ActionTypes.EXPENDITURE_CREATE}
+            values={createStagedExpenditurePayload}
+          >
+            Create staged expenditure
+          </ActionButton>
+        </div>
         <InputBase
           value={expenditureId}
           onChange={(e) => setExpenditureId(e.currentTarget.value)}
           placeholder="Expenditure ID"
         />
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 ">
           <Button onClick={handleLockExpenditure}>Lock</Button>
           <Button onClick={handleFundExpenditure} disabled={!expenditure}>
             Fund
@@ -525,19 +506,19 @@ const TmpAdvancedPayments = () => {
           <Button onClick={handleFinalizeViaMotion}>Finalize via motion</Button>
           <Button onClick={() => refetch()}>Refetch</Button>
         </div>
-      </div>
-      <div className="flex gap-4">
-        <InputBase
-          value={releaseStage}
-          onChange={(e) => setReleaseStage(e.currentTarget.value)}
-          placeholder="Stage to release"
-        />
-        <Button
-          onClick={handleReleaseExpenditureStageMotion}
-          disabled={!expenditure}
-        >
-          Release Expenditure Stage Motion
-        </Button>
+        <div className="flex w-full gap-4">
+          <InputBase
+            value={releaseStage}
+            onChange={(e) => setReleaseStage(e.currentTarget.value)}
+            placeholder="Stage to release"
+          />
+          <Button
+            onClick={handleReleaseExpenditureStageMotion}
+            disabled={!expenditure}
+          >
+            Release Expenditure Stage Motion
+          </Button>
+        </div>
       </div>
     </div>
   );
