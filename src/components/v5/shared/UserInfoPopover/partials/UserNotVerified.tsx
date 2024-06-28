@@ -22,7 +22,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
 }) => {
   const {
     actionSidebarToggle: [
-      ,
+      isActionSidebarOpen,
       { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
     ],
   } = useActionSidebarContext();
@@ -35,7 +35,11 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
         <button
           type="button"
           onClick={() => {
-            toggleActionSidebarOff();
+            const timeout = isActionSidebarOpen ? 500 : 0;
+
+            if (isActionSidebarOpen) {
+              toggleActionSidebarOff();
+            }
 
             setTimeout(() => {
               onClick?.();
@@ -44,7 +48,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
                 members: [{ value: walletAddress }],
                 manageMembers: ManageMembersType.Add,
               });
-            }, 500);
+            }, timeout);
           }}
         >
           {formatText({ id: 'add.verified.member' })}
