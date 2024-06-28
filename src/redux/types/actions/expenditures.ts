@@ -1,3 +1,5 @@
+import { type BigNumber } from 'ethers';
+
 import {
   type SplitPaymentDistributionType,
   type StreamingPaymentEndCondition,

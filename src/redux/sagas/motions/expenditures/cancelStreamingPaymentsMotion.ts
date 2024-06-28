@@ -100,24 +100,29 @@ function* cancelStreamingPaymentsMotionAction({
       ],
     );
 
-    yield createGroupTransaction(createMotion, batchKey, meta, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        childSkillIndex,
-        streamingPaymentsClient.address,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
+    yield createGroupTransaction({
+      channel: createMotion,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          childSkillIndex,
+          streamingPaymentsClient.address,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: meta.id,
+          index: 0,
+        },
       },
     });
 
