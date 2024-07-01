@@ -1,4 +1,3 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -13,7 +12,6 @@ const displayName =
 const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
   const failed = status === TransactionStatusEnum.Failed;
   const succeeded = status === TransactionStatusEnum.Succeeded;
-  const pending = status === TransactionStatusEnum.Pending;
 
   return (
     <div
