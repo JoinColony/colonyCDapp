@@ -98,6 +98,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
     <UserInfo
       aboutDescription={bio || ''}
       contributorType={contributorType ?? undefined}
+      isVerified={isVerified}
       domains={domains}
       userDetails={
         <UserDetails

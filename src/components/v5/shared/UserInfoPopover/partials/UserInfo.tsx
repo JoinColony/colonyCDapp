@@ -68,6 +68,7 @@ const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 const UserInfo: FC<UserInfoProps> = ({
   aboutDescription = '',
   contributorType,
+  isVerified,
   domains,
   userDetails,
   additionalContent,
@@ -81,6 +82,8 @@ const UserInfo: FC<UserInfoProps> = ({
       className={clsx('flex flex-col sm:max-h-[504px] sm:w-[350px]', {
         'sm:min-w-[17rem]': !isTopContributorType,
         'sm:min-w-[20rem]': isTopContributorType,
+        'sm:max-h-[504px]': isVerified,
+        'sm:max-h-[646px]': !isVerified,
       })}
     >
       <div
@@ -185,17 +188,17 @@ const UserInfo: FC<UserInfoProps> = ({
                   return (
                     <li
                       key={domainId}
-                      className="grid grid-cols-[2fr,1fr] items-center rounded border border-gray-100 p-3 font-medium"
+                      className="grid h-12 min-h-12 grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-3 font-medium"
                     >
                       <div className="flex flex-row items-center truncate">
                         <div
-                          className={`mr-2 flex h-[0.625rem] w-[0.625rem] rounded-full ${getTeamColor(domainColor)}`}
+                          className={`mr-1 flex h-[0.625rem] w-[0.625rem] rounded-full ${getTeamColor(domainColor)}`}
                         />
                         <span className="truncate whitespace-nowrap text-sm">
                           {domainName}
                         </span>
                       </div>
-                      <div className="flex justify-end">
+                      <div className="flex justify-end gap-1.5">
                         {permissionRole && (
                           <Tooltip
                             placement="top"
@@ -221,12 +224,12 @@ const UserInfo: FC<UserInfoProps> = ({
 
                         <Tooltip
                           placement="top"
-                          className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
+                          className="flex items-center justify-end text-sm font-normal text-gray-900"
                           tooltipContent={
                             <Numeral value={reputationRaw} suffix=" pts" />
                           }
                         >
-                          <Star size={12} />
+                          <Star size={14} />
                           <span className="ml-1 inline-block">
                             {reputationPercentage.toFixed(2)}%
                           </span>
