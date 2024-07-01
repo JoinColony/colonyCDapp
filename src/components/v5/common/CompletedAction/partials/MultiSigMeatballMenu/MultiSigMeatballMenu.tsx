@@ -18,7 +18,7 @@ import {
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 
@@ -68,7 +68,7 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
       vote: MultiSigVote.Reject,
       domainId: Number(nativeMultiSigDomainId),
       multiSigId: nativeMultiSigId,
-      requiredRole: getMultiSigRequiredRole(actionType),
+      requiredRoles: getRolesNeededForMultiSigAction(actionType) || [],
     };
 
     await voteOnMultiSig(rejectVotePayload);

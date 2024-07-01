@@ -1,36 +1,42 @@
-import { Extension } from '@colony/colony-js';
+import { type ColonyRole, Extension } from '@colony/colony-js';
 
-import { type UserRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
-  domainId: string;
-  requiredRole: UserRole;
+  domainId?: number;
+  requiredRoles?: ColonyRole[];
 }
 
+type Threshold = { [role: number]: number } | null;
+
 interface UseDomainThresholdResult {
-  threshold: number | null;
+  thresholdPerRole: Threshold;
   isLoading: boolean;
 }
 
 export const useDomainThreshold = ({
-  requiredRole,
+  requiredRoles,
   domainId,
 }: UseDomainThresholdParams): UseDomainThresholdResult => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+
   const { extensionData, loading: loadingExtension } = useExtensionData(
     Extension.MultisigPermissions,
   );
 
-  const { loadingRoles, eligibleSignees } = useEligibleSignees({
+  const { countPerRole } = useEligibleSignees({
     domainId,
-    requiredRole,
+    requiredRoles,
   });
 
-  const getDomainThreshold = (): number | null => {
-    if (loadingExtension) {
+  const getDomainThreshold = (): Threshold => {
+    if (loadingExtension || !requiredRoles) {
       return null;
     }
 
@@ -52,7 +58,7 @@ export const useDomainThreshold = ({
     const matchingDomain = (domainThresholds ?? []).find(
       (thresholdEntry) =>
         thresholdEntry !== null &&
-        thresholdEntry.domainId === domainId.toString(),
+        thresholdEntry.domainId === `${colonyAddress}_${domainId}`,
     );
 
     // if we didn't find domain config, let's just assume we inherit from the colony
@@ -63,28 +69,32 @@ export const useDomainThreshold = ({
 
     // if it's not majority approval
     if (thresholdConfig > 0) {
-      return thresholdConfig;
+      return requiredRoles.reduce((acc, role) => {
+        acc[role] = thresholdConfig;
+        return acc;
+      }, {});
     }
 
-    if (loadingRoles) {
+    if (!Object.values(countPerRole).every((count) => count > 0)) {
+      console.warn(
+        'Not every required role has a member with multisig permissions',
+      );
       return null;
     }
 
-    const numberOfPermissionHolders = eligibleSignees.length;
+    const thresholdPerRole = Object.entries(countPerRole).reduce(
+      (acc, [role, count]) => {
+        acc[role] = Math.floor(count / 2) + 1;
+        return acc;
+      },
+      {},
+    );
 
-    if (numberOfPermissionHolders === 0) {
-      console.warn('There are no multiSig permission holders');
-
-      return null;
-    }
-
-    const majority = Math.ceil(numberOfPermissionHolders / 2);
-
-    return majority;
+    return thresholdPerRole;
   };
 
   return {
-    threshold: getDomainThreshold(),
-    isLoading: loadingExtension || loadingRoles,
+    thresholdPerRole: getDomainThreshold(),
+    isLoading: loadingExtension,
   };
 };

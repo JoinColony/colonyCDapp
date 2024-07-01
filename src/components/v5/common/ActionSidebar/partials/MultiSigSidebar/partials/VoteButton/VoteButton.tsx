@@ -8,7 +8,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 const displayName =
@@ -42,7 +42,7 @@ const VoteButton: FC<VoteButtonProps> = ({
       vote: voteType,
       domainId: multiSigDomainId,
       multiSigId,
-      requiredRole: getMultiSigRequiredRole(actionType),
+      requiredRoles: getRolesNeededForMultiSigAction(actionType) || [],
     };
 
     await voteOnMultiSig(votePayload);

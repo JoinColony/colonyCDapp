@@ -1,7 +1,6 @@
 import { type AnyColonyClient, ClientType } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
-import { userRolePermissions } from '~constants/permissions.ts';
 import type ColonyManager from '~context/ColonyManager.ts';
 import { MultiSigVote } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux';
@@ -35,7 +34,7 @@ function* voteOnMultiSigAction({
     colonyRoles,
     vote,
     multiSigId,
-    requiredRole,
+    requiredRoles,
     domainId,
   },
   meta,
@@ -47,7 +46,6 @@ function* voteOnMultiSigAction({
       throw new Error('No colony address or multiSigId');
     }
 
-    const requiredColonyRoles = userRolePermissions[requiredRole];
     const colonyManager: ColonyManager = yield getColonyManager();
 
     const colonyClient: AnyColonyClient = yield colonyManager.getClient(
@@ -61,7 +59,7 @@ function* voteOnMultiSigAction({
       colonyRoles,
       colonyDomains,
       requiredDomainId: domainId,
-      requiredColonyRole: requiredColonyRoles,
+      requiredColonyRole: requiredRoles,
       permissionAddress: userAddress,
       isMultiSig: true,
     });

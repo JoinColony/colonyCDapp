@@ -5,9 +5,12 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useCompletedActionContext } from '~context/CompletedActionContext/CompletedActionContext.ts';
 import { type ColonyActionType, MultiSigVote } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import { type ColonyMultiSig } from '~types/graphql.ts';
+import {
+  type MultiSigUserSignature,
+  type ColonyMultiSig,
+} from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 
 import CancelButton from '../CancelButton/CancelButton.tsx';
 import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
@@ -28,20 +31,20 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   actionType,
 }) => {
   const { user } = useAppContext();
-  const requiredRole = getMultiSigRequiredRole(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
   const { showRejectMultiSigStep, setShowRejectMultiSigStep } =
     useCompletedActionContext();
 
-  const { isLoading, threshold } = useDomainThreshold({
-    domainId: multiSigData.multiSigDomainId,
-    requiredRole,
+  const { isLoading, thresholdPerRole } = useDomainThreshold({
+    domainId: Number(multiSigData.multiSigDomainId),
+    requiredRoles,
   });
 
   if (isLoading) {
     return <div>Loading threshold</div>;
   }
 
-  if (threshold === null) {
+  if (thresholdPerRole === null) {
     console.warn('Invalid threshold');
     return <div>Invalid threshold, assign some stuff</div>;
   }
@@ -51,19 +54,51 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     (signature) => signature?.userAddress === user?.walletAddress,
   );
 
-  const approvalSignatures = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Approve,
-  );
-  const rejectionSignatures = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Reject,
+  const approvalSignaturesPerRole = {};
+  const rejectionSignaturesPerRole = {};
+  const allApprovalSignees = new Set<MultiSigUserSignature['user']>();
+  const allRejectionSignees = new Set<MultiSigUserSignature['user']>();
+
+  signatures.forEach((signature) => {
+    const { role, vote, user: voter } = signature;
+
+    if (vote === 'Approve') {
+      allApprovalSignees.add(voter);
+
+      if (!approvalSignaturesPerRole[role]) {
+        approvalSignaturesPerRole[role] = [];
+      }
+      approvalSignaturesPerRole[role].push(signature);
+    } else if (vote === 'Reject') {
+      allRejectionSignees.add(voter);
+
+      if (!rejectionSignaturesPerRole[role]) {
+        rejectionSignaturesPerRole[role] = [];
+      }
+      rejectionSignaturesPerRole[role].push(signature);
+    }
+  });
+
+  const isMultiSigFinalizable = Object.keys(approvalSignaturesPerRole).every(
+    (role) => {
+      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+      const threshold = thresholdPerRole[role] || 0;
+      return approvals >= threshold;
+    },
   );
 
-  const isMultiSigFinalizable = approvalSignatures.length >= threshold;
-  const isMultiSigCancelable = rejectionSignatures.length >= threshold;
+  const isMultiSigCancelable = Object.keys(rejectionSignaturesPerRole).every(
+    (role) => {
+      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+      const threshold = thresholdPerRole[role] || 0;
+      return approvals >= threshold;
+    },
+  );
+
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigExecuted = multiSigData.isExecuted;
 
-  if (rejectionSignatures.length > 0) {
+  if (Object.keys(rejectionSignaturesPerRole).length > 0) {
     setShowRejectMultiSigStep(true);
   }
 
@@ -75,12 +110,35 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     return <div>MultiSig motion completed</div>;
   }
 
+  const combinedThreshold = Object.values(thresholdPerRole).reduce(
+    (acc, threshold) => acc + threshold,
+    0,
+  );
+
+  let combinedApprovals = 0;
+  Object.keys(approvalSignaturesPerRole).forEach((role) => {
+    const approvalsForRole = approvalSignaturesPerRole[role]
+      ? approvalSignaturesPerRole[role].length
+      : 0;
+    const thresholdForRole = thresholdPerRole[role];
+    combinedApprovals += Math.min(approvalsForRole, thresholdForRole);
+  });
+
+  let combinedRejections = 0;
+  Object.keys(approvalSignaturesPerRole).forEach((role) => {
+    const rejectionsForRole = rejectionSignaturesPerRole[role]
+      ? rejectionSignaturesPerRole[role].length
+      : 0;
+    const thresholdForRole = thresholdPerRole[role];
+    combinedRejections += Math.min(rejectionsForRole, thresholdForRole);
+  });
+
   return (
     <div>
       <span>
-        Approvals: {approvalSignatures.length} of {threshold}
+        Approvals: {combinedApprovals} of {combinedThreshold}
       </span>
-      <Signees signees={approvalSignatures} />
+      <Signees signees={Array.from(allApprovalSignees)} />
       {userSignature?.vote === MultiSigVote.Approve ? (
         <RemoveVoteButton
           actionType={actionType}
@@ -102,9 +160,9 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         <>
           {' '}
           <span>
-            Rejections: {rejectionSignatures.length} of {threshold}
+            Rejections: {combinedRejections} of {combinedThreshold}
           </span>
-          <Signees signees={rejectionSignatures} />
+          <Signees signees={Array.from(allRejectionSignees)} />
           {userSignature?.vote === MultiSigVote.Reject ? (
             <RemoveVoteButton
               actionType={actionType}

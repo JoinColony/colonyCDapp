@@ -7,15 +7,17 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.Signees';
 
 interface SigneesProps {
-  signees: MultiSigUserSignature[];
+  signees: MultiSigUserSignature['user'][];
 }
 
 const Signees: FC<SigneesProps> = ({ signees }) => (
   <div className="flex flex-col">
-    {signees.map((signature) => (
-      <div className="flex w-full flex-row justify-between">
-        <span>{signature.userAddress.slice(0, 10)}...</span>
-        <span>{signature.vote}</span>
+    {signees.map((signee) => (
+      <div
+        key={signee.walletAddress}
+        className="flex w-full flex-row justify-between"
+      >
+        <span>{signee.walletAddress.slice(0, 10)}...</span>
       </div>
     ))}
   </div>

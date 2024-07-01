@@ -1,6 +1,6 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { type ColonyRole, Id } from '@colony/colony-js';
 
-import { Action } from '~constants/actions.ts';
+import { Action, PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
@@ -15,43 +15,50 @@ export const getPermissionsNeededForAction = (
 ): ColonyRole[] | undefined => {
   switch (actionType) {
     case Action.SimplePayment:
-      return [ColonyRole.Funding, ColonyRole.Administration];
+      return PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
     case Action.MintTokens:
-      return [ColonyRole.Root];
+      return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
     case Action.TransferFunds:
-      return [ColonyRole.Funding];
+      return PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
     case Action.UnlockToken:
-      return [ColonyRole.Root];
+      return PERMISSIONS_NEEDED_FOR_ACTION.UnlockToken;
     case Action.ManageTokens:
-      return [ColonyRole.Root];
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageTokens;
     case Action.CreateNewTeam:
-      return [ColonyRole.Architecture];
+      return PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
     case Action.EditExistingTeam:
-      return [ColonyRole.Architecture];
+      return PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
     case Action.ManageReputation:
-      if (!formValues.modification) {
-        return [ColonyRole.Arbitration];
+      if (formValues.modification === ModificationOption.AwardReputation) {
+        return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
       }
-      return formValues.modification === ModificationOption.RemoveReputation
-        ? [ColonyRole.Arbitration]
-        : [ColonyRole.Root];
+      if (formValues.modification === ModificationOption.RemoveReputation) {
+        return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove;
+      }
+      return undefined;
     case Action.ManagePermissions: {
       return formValues.team === Id.RootDomain
-        ? [ColonyRole.Root, ColonyRole.Architecture]
-        : [ColonyRole.Architecture];
+        ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
     }
     case Action.ManageVerifiedMembers: {
-      return [ColonyRole.Administration];
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
     }
-    case Action.EditColonyDetails:
-    case Action.ManageColonyObjectives:
-      return [ColonyRole.Root];
-    case Action.UpgradeColonyVersion:
-      return [ColonyRole.Root];
-    case Action.EnterRecoveryMode:
-      return [ColonyRole.Recovery];
-    case Action.PaymentBuilder:
-      return [ColonyRole.Administration];
+    case Action.EditColonyDetails: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails;
+    }
+    case Action.ManageColonyObjectives: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageColonyObjective;
+    }
+    case Action.UpgradeColonyVersion: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.UpgradeColonyVersion;
+    }
+    case Action.EnterRecoveryMode: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.EnterRecoveryMode;
+    }
+    case Action.PaymentBuilder: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.PaymentBuilder;
+    }
     default:
       return undefined;
   }
