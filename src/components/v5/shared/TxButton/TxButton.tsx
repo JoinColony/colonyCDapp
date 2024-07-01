@@ -28,7 +28,7 @@ const TxButton: FC = () => {
           return acc + 1;
         }
         return acc;
-      }, 0),
+      }, 1),
     [transactions],
   );
 
@@ -36,23 +36,19 @@ const TxButton: FC = () => {
   const [showPending, setShowPending] = useState(false);
   const prevGroupState = usePrevious(groupState);
 
-  // Does two things:
-  // - Shows the "Completed" messasge just a little longer after all transactions are completed
-  // - Shows the "Pending" message after one transaction but before the next to "bridge the gap"
+  // Shows the "Completed" messasge just a little longer after all transactions are completed
   useEffect(() => {
-    if (
-      (groupState === TransactionGroupStatus.NonePending ||
-        groupState === TransactionGroupStatus.AllCompleted) &&
-      prevGroupState === TransactionGroupStatus.SomePending
+    if (groupState === TransactionGroupStatus.Pending) {
+      setShowPending(true);
+    } else if (
+      groupState === TransactionGroupStatus.Done &&
+      prevGroupState === TransactionGroupStatus.Pending
     ) {
       setShowPending(false);
       setShowCompleted(true);
       setTimeout(() => {
         setShowCompleted(false);
       }, 5000);
-    } else if (groupState === TransactionGroupStatus.SomePending) {
-      setShowCompleted(false);
-      setShowPending(true);
     }
   }, [groupState, prevGroupState]);
 

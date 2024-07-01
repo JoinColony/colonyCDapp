@@ -93,10 +93,8 @@ export const convertTransactionType = ({
 
 export enum TransactionGroupStatus {
   Loading = 'Loading',
-  NonePending = 'NonePending',
-  SomePending = 'SomePending',
-  SomeFailed = 'SomeFailed',
-  AllCompleted = 'AllCompleted',
+  Pending = 'Pending',
+  Done = 'Done',
 }
 
 // Get the joint status of one transaction group
@@ -119,22 +117,29 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
   return TransactionStatus.Created;
 };
 
-// Get the joint status of all transaction groups (here it's only relevant if some are pending or not)
+// Get the joint status of all transaction groups (not failed or succeeded)
 export const getGroupStatusAll = (
-  txGroup: TransactionType[][],
+  transactions: TransactionType[][],
   loading: boolean,
 ) => {
   if (loading) {
     return TransactionGroupStatus.Loading;
   }
   if (
-    txGroup.some((group) =>
-      group.some((tx) => tx.status === TransactionStatus.Pending),
-    )
+    transactions.some((txGroup) => {
+      const groupStatus = getGroupStatus(txGroup);
+      if (
+        groupStatus !== TransactionStatus.Succeeded &&
+        groupStatus !== TransactionStatus.Failed
+      ) {
+        return true;
+      }
+      return false;
+    })
   ) {
-    return TransactionGroupStatus.SomePending;
+    return TransactionGroupStatus.Pending;
   }
-  return TransactionGroupStatus.NonePending;
+  return TransactionGroupStatus.Done;
 };
 
 // Get the index of the first transaction in a group that is ready to sign
