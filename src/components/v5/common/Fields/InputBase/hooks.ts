@@ -26,7 +26,7 @@ export const useAdjustInputWidth = (
 
     const input = inputRef.current;
     const changeHandler = () => {
-      input.style.width = `${getInputTextWidth(input)}px`;
+      input.style.width = `${getInputTextWidth(input, { usePlaceholderAsFallback: true })}px`;
     };
 
     input.addEventListener('input', changeHandler);

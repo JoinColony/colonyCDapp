@@ -85,7 +85,7 @@ const ManageReputationTable: FC = () => {
           'bg-transparent placeholder:text-gray-300': isChangeFieldDisabled,
           'placeholder:text-gray-400': !isChangeFieldDisabled && !error,
         })}
-        placeholder="0"
+        placeholder={formatText({ id: 'actionSidebar.enterValue' })}
         value={value}
         autoComplete="off"
         onChange={handleFieldChange}

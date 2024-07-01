@@ -71,7 +71,7 @@ export const useRecipientsFieldTableColumns = (
               name={`${name}.${row.index}.amount`}
               tokenAddressFieldName={`${name}.${row.index}.tokenAddress`}
               domainId={selectedTeam}
-              placeholder="0"
+              placeholder={formatText({ id: 'actionSidebar.enterAmount' })}
             />
           ),
           footer: hasMoreThanOneToken
@@ -92,7 +92,7 @@ export const useRecipientsFieldTableColumns = (
           cell: ({ row }) => (
             <FormInputBase
               message={false}
-              placeholder="0"
+              placeholder={formatText({ id: 'actionSidebar.enterValue' })}
               autoWidth
               inputWrapperClassName="flex-row flex items-center gap-2"
               min={0}
