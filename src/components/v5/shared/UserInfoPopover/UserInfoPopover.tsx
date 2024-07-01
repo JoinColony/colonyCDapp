@@ -13,6 +13,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ContributorType, useGetColonyContributorQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
+import useToggle from '~hooks/useToggle/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -63,22 +64,30 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
     setIsOpen(false);
   }, []);
 
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: popperOptions?.placement || 'bottom-end',
-      trigger: ['click'],
-      interactive: true,
-    });
+  const [
+    isTooltipVisible,
+    {
+      toggleOn: toggleOnTooltip,
+      toggleOff: toggleOffTooltip,
+      registerContainerRef,
+    },
+  ] = useToggle();
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
+    delayShow: 200,
+    delayHide: 200,
+    placement: popperOptions?.placement || 'bottom-end',
+    trigger: ['click'],
+    interactive: true,
+  });
 
   const button = (
     <button
-      onClick={isMobile ? onOpenModal : noop}
+      ref={setTriggerRef}
+      onClick={isMobile ? onOpenModal : toggleOnTooltip}
       onMouseEnter={isMobile ? noop : () => onOpenModal()}
       onMouseLeave={isMobile ? noop : () => onCloseModal()}
       type="button"
-      ref={setTriggerRef}
       className={clsx(
         'inline-flex flex-shrink-0 items-center transition-all duration-normal hover:text-blue-400',
         className,
@@ -111,9 +120,11 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       additionalContent={
         !isVerified ? (
           <UserNotVerified
+            onClick={toggleOffTooltip}
+            walletAddress={walletAddress}
             description={
               <div className="mt-2 break-words pb-2 text-sm font-semibold">
-                {user?.walletAddress}
+                {walletAddress}
               </div>
             }
           />
@@ -138,26 +149,28 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
         </Modal>
       ) : (
         <>
-          {visible && (
-            <PopoverBase
-              setTooltipRef={setTooltipRef}
-              tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem]"
-              withTooltipStyles={false}
-              cardProps={{
-                rounded: 's',
-                className: clsx('bg-base-white', {
-                  'overflow-hidden border-2 border-purple-200 ':
-                    isTopSectionWithBackground,
-                }),
-                hasShadow: true,
-              }}
-              isTopSectionWithBackground={
-                isTopSectionWithBackground && isMobile
-              }
-            >
-              {content}
-            </PopoverBase>
+          {isTooltipVisible && (
+            <div ref={registerContainerRef}>
+              <PopoverBase
+                setTooltipRef={setTooltipRef}
+                tooltipProps={getTooltipProps}
+                classNames="max-w-[20rem]"
+                withTooltipStyles={false}
+                cardProps={{
+                  rounded: 's',
+                  className: clsx('bg-base-white', {
+                    'overflow-hidden border-2 border-purple-200 ':
+                      isTopSectionWithBackground,
+                  }),
+                  hasShadow: true,
+                }}
+                isTopSectionWithBackground={
+                  isTopSectionWithBackground && isMobile
+                }
+              >
+                {content}
+              </PopoverBase>
+            </div>
           )}
         </>
       )}
