@@ -5,10 +5,13 @@ import {
   CreateColonyActionMetadataDocument,
 } from '~gql';
 
-export function* createActionMetadataInDB(txHash: string, customTitle: string) {
+export const createActionMetadataInDB = async (
+  txHash: string,
+  customTitle: string,
+) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  yield apolloClient.mutate<
+  return apolloClient.mutate<
     CreateColonyActionMetadataMutation,
     CreateColonyActionMetadataMutationVariables
   >({
@@ -20,4 +23,4 @@ export function* createActionMetadataInDB(txHash: string, customTitle: string) {
       },
     },
   });
-}
+};

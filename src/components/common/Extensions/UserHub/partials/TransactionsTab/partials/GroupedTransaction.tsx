@@ -15,11 +15,12 @@ import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import {
-  getActiveTransactionIdx,
   getGroupKey,
   getGroupStatus,
   getGroupValues,
-} from '../transactionGroup.ts';
+  getActiveTransactionIdx,
+  getGroupId,
+} from '../../../../../../../state/transactionState.ts';
 import { type GroupedTransactionProps } from '../types.ts';
 
 import GroupedTransactionContent from './GroupedTransactionContent.tsx';
@@ -40,17 +41,18 @@ const GROUP_KEYS_WHICH_CANNOT_LINK = [
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
   transactionGroup,
-  groupId,
   isContentOpened,
   onToggleExpand,
   hideSummary = false,
   isClickable = true,
+  isCancelable = true,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navigate = useNavigate();
 
   const groupKey = getGroupKey(transactionGroup);
+  const groupId = getGroupId(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
 
@@ -64,7 +66,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const defaultTransactionGroupMessageDescriptorTitleId = {
     id: `${
       transactionGroup[0].metatransaction ? 'meta' : ''
-    }transaction.${groupKey}.title`,
+    }transaction.group.${groupKey}.title`,
   };
   const defaultTransactionGroupMessageDescriptorDescriptionId = {
     id:
@@ -74,12 +76,12 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
           }transaction.debug.description`
         : `${
             transactionGroup[0].metatransaction ? 'meta' : ''
-          }transaction.${groupKey}.description`,
+          }transaction.group.${groupKey}.description`,
   };
 
   const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
 
-  const { methodName, context } = values;
+  const { methodName, context, params = [] } = values;
   const titleValues = { methodName, context };
 
   const value = formatText(
@@ -88,7 +90,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
       ...values.group?.title,
     },
     values.group?.titleValues || {
-      ...arrayToObject(values.params),
+      ...arrayToObject(params),
       ...titleValues,
     },
   );
@@ -148,7 +150,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                       {...values.group?.description}
                       values={
                         values.group?.descriptionValues || {
-                          ...arrayToObject(values.params),
+                          ...arrayToObject(params),
                           ...titleValues,
                         }
                       }
@@ -203,6 +205,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                     idx={idx}
                     transaction={transaction}
                     selected={idx === selectedTransactionIdx}
+                    isCancelable={isCancelable}
                   />
                 ))}
               </ul>

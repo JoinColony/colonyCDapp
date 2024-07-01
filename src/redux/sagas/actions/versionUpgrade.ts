@@ -88,7 +88,7 @@ function* createVersionUpgradeAction({
       yield takeFrom(annotateUpgrade.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield initiateTransaction({ id: upgrade.id });
+    yield initiateTransaction(upgrade.id);
 
     const {
       payload: {

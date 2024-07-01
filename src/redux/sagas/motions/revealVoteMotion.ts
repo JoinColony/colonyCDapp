@@ -141,7 +141,7 @@ function* revealVoteMotion({
         ActionTypes.TRANSACTION_CREATED,
       );
 
-      yield initiateTransaction({ id: revealVoteMotionTransaction.id });
+      yield initiateTransaction(revealVoteMotionTransaction.id);
       yield waitForTxResult(revealVoteMotionTransaction.channel);
 
       return yield put<AllActions>({
