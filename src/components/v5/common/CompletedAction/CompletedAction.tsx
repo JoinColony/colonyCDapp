@@ -55,6 +55,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDomainMotion:
       case ColonyActionType.EditDomain:
       case ColonyActionType.EditDomainMotion:
+      case ColonyActionType.CreateDomainMultisig:
+      case ColonyActionType.EditDomainMultisig:
         return <ManageTeam action={action} />;
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
