@@ -18,13 +18,19 @@ const DecisionMethodRow = ({
   isMultisig,
 }: DecisionMethodRowProps) => {
   const getRowContent = () => {
+    const textContent: Record<DecisionMethod, string> = {
+      [DecisionMethod.MultiSig]: 'Multi-Sig',
+      [DecisionMethod.Permissions]: 'Permissions',
+      [DecisionMethod.Reputation]: 'Reputation',
+    };
+
     if (isMultisig) {
-      return DecisionMethod.MultiSig;
+      return textContent[DecisionMethod.MultiSig];
     }
     if (isMotion) {
-      return DecisionMethod.Reputation;
+      return textContent[DecisionMethod.Reputation];
     }
-    return DecisionMethod.Permissions;
+    return textContent[DecisionMethod.Permissions];
   };
 
   return (
