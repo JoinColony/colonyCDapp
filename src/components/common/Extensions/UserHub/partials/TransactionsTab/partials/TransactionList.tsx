@@ -19,7 +19,16 @@ const TransactionList: FC<TransactionListProps> = ({ transactions }) => {
 
   const [selectedGroupId, setGroupId] = useState<string | undefined>(undefined);
 
-  const handleSelectElement = useCallback((id: string) => setGroupId(id), []);
+  const handleSelectElement = useCallback(
+    (id: string) => {
+      if (id === selectedGroupId) {
+        setGroupId(undefined);
+      } else {
+        setGroupId(id);
+      }
+    },
+    [selectedGroupId],
+  );
 
   useEffect(() => {
     setGroupId(groupId);
