@@ -2,7 +2,7 @@ import { Question } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
 
 import { type LearnMoreProps } from './types.ts';
 
@@ -24,7 +24,11 @@ const LearnMore: FC<PropsWithChildren<LearnMoreProps>> = ({
           values={{
             // eslint-disable-next-line react/no-unstable-nested-components
             a: (chunks) => (
-              <ExternalLink className="font-semibold underline" href={href}>
+              <ExternalLink
+                className="font-semibold underline"
+                href={href}
+                hasHover
+              >
                 {chunks}
               </ExternalLink>
             ),

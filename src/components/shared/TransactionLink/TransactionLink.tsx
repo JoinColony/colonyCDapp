@@ -1,49 +1,28 @@
-import React from 'react';
-import { type MessageDescriptor } from 'react-intl';
+import { createElement, type FC } from 'react';
 
 import ExternalLink from '~shared/ExternalLink/index.ts';
-import { type SimpleMessageValues } from '~types/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 
-interface Props {
-  /** Allows for link style customization (Eg: we need to disguise the link as a button)
-   * Don't abuse it!
-   */
-  className?: string;
-
-  /** Transaction hash */
-  hash: string;
-
-  /** A string or a `messageDescriptor` that make up the link's text. Defaults to `hash`. */
-  text?: MessageDescriptor | string;
-
-  /** Values for text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
-
-  /**  Show a title over the element, on hover. This is browser native. */
-  title?: string;
-}
+import { type TransactionLinkProps } from './types.ts';
 
 const displayName = 'TransactionLink';
 
-const TransactionLink = ({
-  className,
+const TransactionLink: FC<TransactionLinkProps> = ({
   hash,
-  text,
-  textValues,
-  title,
-}: Props) => (
-  <ExternalLink
-    className={className}
-    href={getBlockExplorerLink({
-      linkType: 'tx',
-      addressOrHash: hash,
-    })}
-    text={text || hash}
-    textValues={textValues}
-    title={title}
-  />
-);
+  children,
+  ...rest
+}) =>
+  createElement(
+    ExternalLink,
+    {
+      href: getBlockExplorerLink({
+        linkType: 'tx',
+        addressOrHash: hash,
+      }),
+      ...rest,
+    },
+    children,
+  );
 
 TransactionLink.displayName = displayName;
 

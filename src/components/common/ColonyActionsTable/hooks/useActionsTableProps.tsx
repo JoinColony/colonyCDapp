@@ -93,13 +93,14 @@ export const useActionsTableProps = (
       {
         key: '2',
         label: (
-          <TransactionLink
-            hash={transactionHash}
-            text={{ id: 'activityFeedTable.menu.viewOnNetwork' }}
-            textValues={{
-              blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-            }}
-          />
+          <TransactionLink hash={transactionHash}>
+            {formatText(
+              { id: 'activityFeedTable.menu.viewOnNetwork' },
+              {
+                blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+              },
+            )}
+          </TransactionLink>
         ),
         icon: ArrowSquareOut,
       },

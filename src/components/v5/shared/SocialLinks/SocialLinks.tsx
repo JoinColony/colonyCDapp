@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { type ExternalLink as ExternalLinkFragment } from '~gql';
-import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
 
 import { COLONY_LINK_CONFIG } from './colonyLinks.ts';
 
@@ -38,7 +38,8 @@ const SocialLinks = ({
           <ExternalLink
             href={link}
             key={`${linkName}:${link}`}
-            className="flex items-center gap-2 text-md text-gray-900"
+            hasHover
+            className="flex items-center gap-2 text-md"
           >
             <LinkIcon size={16} />
             {showLabels ? label : null}
