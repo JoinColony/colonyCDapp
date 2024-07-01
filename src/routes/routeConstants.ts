@@ -41,6 +41,7 @@ export const USER_HOME_ROUTE = '/account';
 export const USER_EDIT_PROFILE_ROUTE = 'profile';
 export const USER_ADVANCED_ROUTE = 'advanced';
 export const USER_PREFERENCES_ROUTE = 'preferences';
+export const USER_PROFILE_EXPERIMENTAL_ROUTE = 'experimental';
 
 // UNUSED?
 export const COLONY_EVENTS_ROUTE = `events`;

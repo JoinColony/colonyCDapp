@@ -26,6 +26,7 @@ import {
   USER_HOME_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
+  USER_PROFILE_EXPERIMENTAL_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_TEAMS_ROUTE,
   COLONY_VERIFIED_ROUTE,
@@ -72,6 +73,11 @@ const MSG = defineMessages({
   advancedSettings: {
     id: `${displayName}.useTitle.advancedSettings`,
     defaultMessage: `Advanced Settings | Colony`,
+  },
+
+  experimental: {
+    id: `${displayName}.useTitle.experimental`,
+    defaultMessage: `Experimantal User Settings | Colony`,
   },
 
   notFound: {
@@ -207,6 +213,7 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.editProfile,
   [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.editPreferences,
   [`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`]: MSG.advancedSettings,
+  [`${USER_HOME_ROUTE}/${USER_PROFILE_EXPERIMENTAL_ROUTE}`]: MSG.experimental,
 
   '/': MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
@@ -266,6 +273,7 @@ const getMessageAndValues = (
 
 export const useTitle = (title?: string) => {
   const { pathname, search } = useLocation();
+
   const { formatMessage } = useIntl();
   const { msg, values } = getMessageAndValues(pathname, search);
 
