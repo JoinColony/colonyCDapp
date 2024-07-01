@@ -13,6 +13,7 @@ import { TX_SEARCH_PARAM } from '~routes';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { DEFAULT_DATE_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 
 import {
   getActiveTransactionIdx,
@@ -95,7 +96,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
-    format(new Date(transactionGroup[0].createdAt), 'dd MMMM yyyy');
+    format(new Date(transactionGroup[0].createdAt), DEFAULT_DATE_FORMAT);
 
   const handleNavigateToAction = () => {
     if (canLinkToAction) {

@@ -8,6 +8,7 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { DEFAULT_DATE_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
@@ -27,7 +28,7 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
       new Date(
         ((extensionData as InstalledExtensionData)?.installedAt ?? 0) * 1000,
       ),
-      'dd MMMM yyyy',
+      DEFAULT_DATE_FORMAT,
     );
 
   const { user } = useUserByNameOrAddress(
@@ -35,7 +36,7 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   );
   const createdAtDate =
     extensionData &&
-    format(new Date(extensionData?.createdAt ?? 0 * 1000), 'dd MMMM yyyy');
+    format(new Date(extensionData?.createdAt ?? 0 * 1000), DEFAULT_DATE_FORMAT);
 
   const isExtensionDeprecatedAndDisabled = !!(
     !!user &&

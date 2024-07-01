@@ -9,6 +9,7 @@ import { useMobile } from '~hooks';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import { formatText } from '~utils/intl.ts';
+import { DEFAULT_DATE_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 
 import ActionBadge from '../partials/ActionBadge/ActionBadge.tsx';
@@ -83,7 +84,7 @@ const useColonyActionsTableColumns = (
           id: 'activityFeedTable.table.header.date',
         }),
         cell: ({ getValue }) => {
-          const date = format(new Date(getValue()), 'dd MMMM yyyy');
+          const date = format(new Date(getValue()), DEFAULT_DATE_FORMAT);
 
           return (
             <span
