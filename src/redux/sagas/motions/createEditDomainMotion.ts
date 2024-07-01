@@ -59,6 +59,7 @@ type TransactionPayloadBase = {
   index: number;
   colonyDomains: Domain[];
   colonyClient: ColonyClientV15;
+  isCreateDomain: boolean;
 };
 
 type MultiSigPaTransactionPayload = {
@@ -69,10 +70,6 @@ type MultiSigPaTransactionPayload = {
 type MotionTransactionPayload = {
   motionDomainId: number;
 };
-
-// type TransactionPayload =
-//   | MultiSigPaTransactionPayload
-//   | MotionTransactionPayload;
 
 type TransactionPayload = {
   base: TransactionPayloadBase;
@@ -91,6 +88,7 @@ function* getCreateTransactionPayload(payload: TransactionPayload) {
       index,
       colonyDomains,
       colonyClient,
+      isCreateDomain,
     },
   } = payload;
 
@@ -129,7 +127,7 @@ function* getCreateTransactionPayload(payload: TransactionPayload) {
     transactionParams.params = [
       Id.RootDomain,
       childSkillIndex,
-      [AddressZero],
+      [isCreateDomain ? colonyAddress : AddressZero],
       [encodedAction],
     ];
   } else {
@@ -148,7 +146,6 @@ function* getCreateTransactionPayload(payload: TransactionPayload) {
       motionDomainId,
     );
 
-    // this is only for the reputation flow
     const {
       key: reputationKey,
       value: reputationValue,
@@ -278,6 +275,7 @@ function* createEditDomainMotion({
         metaId,
         colonyDomains,
         colonyClient,
+        isCreateDomain,
       },
       motionPayload: {
         motionDomainId,
@@ -288,7 +286,6 @@ function* createEditDomainMotion({
       },
     });
 
-    // create transactions everything is same after this
     yield fork(createTransaction, createMotion.id, transactionParams);
 
     if (annotationMessage) {
