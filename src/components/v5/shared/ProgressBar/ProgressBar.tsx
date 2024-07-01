@@ -11,7 +11,6 @@ const ProgressBar: FC<ProgressBarProps> = ({
   max = 100,
   barClassName,
   className,
-  labelClassName,
 }) => {
   if (progress > max || progress < 0) {
     throw new Error(`Progress bar value must be between between 0 and ${max}`);
@@ -43,12 +42,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           />
         )}
       </div>
-      <span
-        className={clsx(
-          labelClassName,
-          'ml-3 flex-shrink-0 text-sm font-medium leading-3 text-gray-600',
-        )}
-      >
+      <span className="ml-3 flex-shrink-0 text-sm font-medium leading-3 text-gray-600">
         {progressLabel || progress}
       </span>
     </div>

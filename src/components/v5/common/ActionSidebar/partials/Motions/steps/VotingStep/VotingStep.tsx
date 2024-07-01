@@ -81,15 +81,18 @@ const VotingStep: FC<VotingStepProps> = ({
               className="mt-2"
               progress={currentReputationPercent}
               threshold={thresholdPercent}
-              labelClassName="!text-xs"
-              progressLabel={formatText(
-                {
-                  id: 'motion.votingStep.additionalText',
-                },
-                {
-                  progress: currentReputationPercent,
-                },
-              )}
+              progressLabel={
+                <span className="!text-xs">
+                  {formatText(
+                    {
+                      id: 'motion.votingStep.additionalText',
+                    },
+                    {
+                      progress: currentReputationPercent,
+                    },
+                  )}
+                </span>
+              }
               isTall
             />
           </div>

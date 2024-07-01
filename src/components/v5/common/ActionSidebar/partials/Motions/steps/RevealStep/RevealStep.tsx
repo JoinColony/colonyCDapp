@@ -80,15 +80,18 @@ const RevealStep: FC<RevealStepProps> = ({
               <ProgressBar
                 className="mt-2"
                 progress={revealProgress}
-                labelClassName="!text-xs"
-                progressLabel={formatText(
-                  {
-                    id: 'motion.revealStep.votesRevealed',
-                  },
-                  {
-                    votes: revealProgress,
-                  },
-                )}
+                progressLabel={
+                  <span className="!text-xs">
+                    {formatText(
+                      {
+                        id: 'motion.revealStep.votesRevealed',
+                      },
+                      {
+                        votes: revealProgress,
+                      },
+                    )}
+                  </span>
+                }
                 max={totalVoters}
                 isTall
               />
