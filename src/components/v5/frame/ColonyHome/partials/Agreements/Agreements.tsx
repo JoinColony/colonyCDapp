@@ -16,7 +16,6 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetBox from '~v5/common/WidgetBox/index.ts';
 import EmptyWidgetState from '~v5/common/WidgetBox/partials/index.ts';
-import MessageNumber from '~v5/shared/MessageNumber/index.ts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
 import TitleWithNumber from '~v5/shared/TitleWithNumber/index.ts';
 
@@ -72,7 +71,6 @@ const Agreements = () => {
                 <span className="text-3">
                   {newestAgreement.decisionData?.title}
                 </span>
-                <MessageNumber message={1} />
               </div>
               {newestAgreement.decisionData?.description && (
                 <RichTextDisplay
