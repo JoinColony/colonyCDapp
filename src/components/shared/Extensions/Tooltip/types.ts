@@ -12,8 +12,8 @@ export interface TooltipProps {
   showArrow?: boolean;
   isOpen?: boolean;
   isSuccess?: boolean;
-  isError?: boolean;
-  isFullWidthContent?: boolean;
   className?: string;
+  isError?: boolean;
+  isCopyTooltip?: boolean;
   selectTriggerRef?: (ref: HTMLElement | null) => HTMLElement | null;
 }

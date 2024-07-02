@@ -9,7 +9,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 // import { useMemberModalContext } from '~context/MemberModalContext';
 import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -104,7 +104,7 @@ export const useMembersTabContentItems = (
                           }
                           isOpen={isCopied}
                           isSuccess
-                          isFullWidthContent
+                          className="w-full"
                         >
                           <button
                             type="button"

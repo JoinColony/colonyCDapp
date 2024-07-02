@@ -6,7 +6,7 @@ import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Link from '~v5/shared/Link/index.ts';
 
 import { type DropdownMenuItemProps } from './types.ts';
@@ -28,6 +28,7 @@ const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
     props.tooltipProps ? (
       <Tooltip
         {...props.tooltipProps}
+        isCopyTooltip
         popperOptions={{
           strategy: 'fixed',
         }}
