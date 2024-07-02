@@ -68,6 +68,7 @@ export function* createTransaction(id: string, config: TxConfig) {
       estimateGasCost,
     );
   }
+  console.log('estimate gas tank', estimateGasTask);
 
   const sendTransactionTask = yield takeEvery(
     filterUniqueAction(id, ActionTypes.TRANSACTION_SEND),

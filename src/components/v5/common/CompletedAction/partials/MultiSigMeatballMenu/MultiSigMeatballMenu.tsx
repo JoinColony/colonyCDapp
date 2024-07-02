@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { Copy } from '@phosphor-icons/react';
+=======
+import { ColonyRole } from '@colony/colony-js';
+import { Copy, Prohibit } from '@phosphor-icons/react';
+>>>>>>> 664ef567d (feat: rework voting to be done with only roles the user is holding)
 import React, { type FC } from 'react';
 import { generatePath } from 'react-router-dom';
 
