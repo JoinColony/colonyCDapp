@@ -282,8 +282,11 @@ export type MotionActionTypes =
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
         authority: Authority;
-        motionDomainId: string;
+        motionDomainId: number;
         annotationMessage?: string;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >
