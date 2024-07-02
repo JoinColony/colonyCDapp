@@ -13,6 +13,7 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   txButtons,
   extra,
   isHidden,
+  className,
 }) => {
   const userHubComponent = userHub || <HeaderAvatar />;
   const userNavigation = (
@@ -24,7 +25,7 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   );
 
   return (
-    <div className="flex w-full">
+    <div className={clsx(className, 'flex w-full')}>
       <div
         className={clsx('ml-auto transition-all', {
           'opacity-0': isHidden,

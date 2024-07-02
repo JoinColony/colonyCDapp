@@ -12,7 +12,7 @@ const PageHeading: FC<PageHeadingProps> = ({
   title,
   className,
 }) => (
-  <div className={className}>
+  <div className={clsx(className, 'modal-blur')}>
     <Breadcrumbs className={clsx({ 'mb-2': title })} items={breadcrumbs} />
     {title && <h1 className="text-gray-900 heading-3">{title}</h1>}
   </div>
