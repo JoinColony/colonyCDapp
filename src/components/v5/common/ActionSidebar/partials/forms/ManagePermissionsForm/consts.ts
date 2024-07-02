@@ -16,6 +16,7 @@ import {
   type MEMBER_FIELD_NAME,
   type TEAM_FIELD_NAME,
   ACTION_BASE_VALIDATION_SCHEMA,
+  type TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
@@ -41,6 +42,7 @@ export type Permissions = {
 };
 
 export type ManagePermissionsFormValues = {
+  [TITLE_FIELD_NAME]: string;
   [MEMBER_FIELD_NAME]: string;
   [TEAM_FIELD_NAME]: number;
   [CREATED_IN_FIELD_NAME]: number;
@@ -172,6 +174,7 @@ export const validationSchema = object()
           ),
     }),
     decisionMethod: getEnumYupSchema(DecisionMethod).required(),
+    title: string().required(), // @TODO these two dont get inferred from the schema with concat
     description: string().optional(),
   })
   .defined()
