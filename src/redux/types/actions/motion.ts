@@ -90,6 +90,11 @@ export type MotionDomainCreateEditPayload = {
   colonyDomains: Domain[];
   domainCreatedInNativeId: number;
 };
+interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
+  colonyDomains: Domain[];
+  colonyRoles: ColonyRoleFragment[];
+  isMultiSig?: boolean;
+}
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -200,7 +205,7 @@ export type MotionActionTypes =
     >
   | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
-      OneTxPaymentPayload,
+      OneTxPaymentMotionPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
