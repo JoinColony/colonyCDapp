@@ -14,7 +14,7 @@ const PageHeader: FC<PageHeaderProps> = ({
 }) => {
   return (
     <header
-      className={clsx(className, 'flex items-start', {
+      className={clsx(className, 'flex', {
         'justify-between gap-4': pageHeadingProps && pageHeadingProps.title,
         'justify-end': !pageHeadingProps,
         'items-center':

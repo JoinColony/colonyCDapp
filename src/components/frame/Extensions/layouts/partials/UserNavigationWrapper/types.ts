@@ -5,4 +5,5 @@ export interface UserNavigationWrapperProps {
   userHub?: ReactNode;
   extra?: ReactNode;
   isHidden?: boolean;
+  className?: string;
 }

@@ -50,6 +50,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
   initialValues,
   transactionId,
+  className,
 }) => {
   const {
     action,
@@ -226,6 +227,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       initial="hidden"
       animate="visible"
       className={clsx(
+        className,
         `
           fixed
           bottom-4
