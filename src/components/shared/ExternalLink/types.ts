@@ -1,5 +1,3 @@
-import { type HTMLProps } from 'react';
+import { type AnchorHTMLAttributes } from 'react';
 
-export interface ExternalLinkProps extends HTMLProps<HTMLAnchorElement> {
-  hasHover?: boolean;
-}
+export type ExternalLinkProps = AnchorHTMLAttributes<HTMLAnchorElement>;

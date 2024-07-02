@@ -38,7 +38,6 @@ const SocialLinks = ({
           <ExternalLink
             href={link}
             key={`${linkName}:${link}`}
-            hasHover
             className="flex items-center gap-2 text-md"
           >
             <LinkIcon size={16} />

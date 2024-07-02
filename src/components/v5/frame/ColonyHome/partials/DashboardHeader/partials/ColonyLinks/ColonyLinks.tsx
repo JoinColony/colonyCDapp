@@ -84,7 +84,7 @@ const ColonyLinks = () => {
                 id: 'colony.tooltip.goToExternalLink',
               })}
             >
-              <ExternalLink href={link} hasHover>
+              <ExternalLink href={link}>
                 <LinkIcon size={16} />
               </ExternalLink>
             </ColonyLinkWrapper>

@@ -11,14 +11,14 @@ const ExternalLink: FC<ExternalLinkProps> = ({
   className,
   title,
   download,
-  hasHover,
 }) => {
   const linkText = children || href;
   return (
     <a
-      className={clsx(className, {
-        'transition-all duration-normal hover:text-blue-400': hasHover,
-      })}
+      className={clsx(
+        className,
+        'text-gray-900 transition-all duration-normal hover:text-blue-400',
+      )}
       href={href}
       target="_blank"
       rel="noreferrer noopener"
