@@ -1,6 +1,5 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
-import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -20,21 +19,6 @@ import {
 } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
-
-const MSG = defineMessages({
-  permissions: {
-    id: `${displayName}.permissions`,
-    defaultMessage: 'Permissions',
-  },
-  reputation: {
-    id: `${displayName}.reputation`,
-    defaultMessage: 'Reputation',
-  },
-  multiSig: {
-    id: `${displayName}.multiSig`,
-    defaultMessage: 'Multi-Sig',
-  },
-});
 
 const DecisionMethodField = ({
   reputationOnly,
@@ -68,7 +52,7 @@ const DecisionMethodField = ({
       ...(shouldShowPermissions
         ? [
             {
-              label: formatText(MSG.permissions),
+              label: formatText({ id: 'decisionMethod.permissions' }),
               value: DecisionMethod.Permissions,
             },
           ]
@@ -76,7 +60,7 @@ const DecisionMethodField = ({
       ...(isVotingReputationEnabled
         ? [
             {
-              label: formatText(MSG.reputation),
+              label: formatText({ id: 'decisionMethod.reputation' }),
               value: DecisionMethod.Reputation,
             },
           ]
@@ -84,7 +68,7 @@ const DecisionMethodField = ({
       ...(shouldShowMultiSig
         ? [
             {
-              label: formatText(MSG.multiSig),
+              label: formatText({ id: 'decisionMethod.multiSig' }),
               value: DecisionMethod.MultiSig,
             },
           ]
