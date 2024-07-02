@@ -12,7 +12,6 @@ import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -23,6 +22,7 @@ import {
   type ManagePermissionsFormValues,
   type RemoveRoleOptionValue,
   validationSchema,
+  FIELD_NAME,
 } from './consts.ts';
 import { getManagePermissionsPayload } from './utils.ts';
 
@@ -30,21 +30,24 @@ export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
+    name: FIELD_NAME.DECISION_METHOD,
   });
-  const { setValue, watch } =
-    useFormContext<Partial<ManagePermissionsFormValues>>();
+  const {
+    setValue,
+    watch,
+    formState: { isValid, isSubmitted },
+  } = useFormContext<Partial<ManagePermissionsFormValues>>();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
   const role: UserRole | RemoveRoleOptionValue | undefined = useWatch({
-    name: 'role',
+    name: FIELD_NAME.ROLE,
   });
   const isModeRoleSelected = role === UserRole.Mod;
 
   useEffect(() => {
     if (isModeRoleSelected) {
-      setValue('authority', Authority.Own);
+      setValue(FIELD_NAME.AUTHORITY, Authority.Own);
     }
   }, [isModeRoleSelected, setValue]);
 
@@ -52,7 +55,7 @@ export const useManagePermissions = (
     const { unsubscribe } = watch(({ member, team }, { name }) => {
       if (
         !name ||
-        !['team', 'member'].includes(name) ||
+        !([FIELD_NAME.MEMBER, FIELD_NAME.TEAM] as string[]).includes(name) ||
         !notMaybe(team) ||
         !notMaybe(member)
       ) {
@@ -65,8 +68,12 @@ export const useManagePermissions = (
         domainId: Number(team),
       });
       const userRole = getRole(userPermissions);
+      const roleValue = userRole.permissions.length ? userRole.role : undefined;
 
-      setValue('role', userRole.permissions.length ? userRole.role : undefined);
+      setValue(FIELD_NAME.ROLE, roleValue, {
+        shouldValidate: !!roleValue || (isSubmitted && !isValid),
+        shouldDirty: true,
+      });
 
       if (userRole.role !== UserRole.Custom) {
         return;
@@ -74,14 +81,14 @@ export const useManagePermissions = (
 
       AVAILABLE_ROLES.forEach((colonyRole) => {
         setValue(
-          `permissions.role_${colonyRole}`,
+          `${FIELD_NAME.PERMISSIONS}.role_${colonyRole}`,
           userRole.permissions.includes(colonyRole),
         );
       });
     });
 
     return () => unsubscribe();
-  }, [colony, role, setValue, watch]);
+  }, [colony, role, setValue, watch, isSubmitted, isValid]);
 
   useActionFormBaseHook({
     getFormOptions,
