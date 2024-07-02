@@ -17,7 +17,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({
     <a
       className={clsx(
         className,
-        'text-gray-900 transition-all duration-normal hover:text-blue-400',
+        'text-gray-900 transition-colors duration-normal hover:text-blue-400',
       )}
       href={href}
       target="_blank"
