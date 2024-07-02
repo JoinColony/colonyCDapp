@@ -51,7 +51,10 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
     vote: MultiSigVote.None,
     domainId: multiSigDomainId,
     multiSigId,
-    requiredRoles: getRolesNeededForMultiSigAction(actionType) || [],
+    requiredRoles: getRolesNeededForMultiSigAction({
+      actionType,
+      createdIn: multiSigDomainId,
+    }) || [],
   }));
 
   return (

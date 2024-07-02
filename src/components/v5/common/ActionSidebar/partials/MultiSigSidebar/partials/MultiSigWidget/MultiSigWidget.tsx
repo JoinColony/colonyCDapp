@@ -43,9 +43,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   action,
   initiatorAddress,
 }) => {
-  const actionType = action.type;
-  const { multiSigData } = action;
-  const requiredRoles = getRolesNeededForMultiSigAction(action.type);
+  const { type: actionType, multiSigData } = action;
+  const requiredRoles = getRolesNeededForMultiSigAction({
+    actionType,
+    createdIn: Number(multiSigData.nativeMultiSigDomainId),
+  });
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
     domainId: Number(multiSigData.nativeMultiSigDomainId),

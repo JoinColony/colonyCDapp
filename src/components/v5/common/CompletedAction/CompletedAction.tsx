@@ -70,6 +70,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <CreateDecision action={action} />;
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion:
+      case ColonyActionType.SetUserRolesMultisig:
         return <SetUserRoles action={action} />;
       case ColonyActionType.AddVerifiedMembers:
       case ColonyActionType.AddVerifiedMembersMotion:

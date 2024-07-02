@@ -1,4 +1,4 @@
-import { type ColonyRole } from '@colony/colony-js';
+import { Id, type ColonyRole } from '@colony/colony-js';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ColonyActionType, type ColonyActionFragment } from '~gql';
@@ -9,9 +9,13 @@ import { MotionState } from './colonyMotions.ts';
 import { extractColonyRoles } from './colonyRoles.ts';
 import { extractColonyDomains } from './domains.ts';
 
-export const getRolesNeededForMultiSigAction = (
-  actionType: ColonyActionType,
-): ColonyRole[] | undefined => {
+export const getRolesNeededForMultiSigAction = ({
+  actionType,
+  createdIn,
+}: {
+  actionType: ColonyActionType;
+  createdIn: number;
+}): ColonyRole[] | undefined => {
   switch (actionType) {
     case ColonyActionType.ColonyEditMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails;
@@ -28,6 +32,14 @@ export const getRolesNeededForMultiSigAction = (
       return PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
     case ColonyActionType.MoveFundsMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
+    case ColonyActionType.SetUserRolesMultisig:
+      if (!createdIn) {
+        return undefined;
+      }
+      if (createdIn === Id.RootDomain) {
+        return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain;
+      }
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
     default:
       return undefined;
   }

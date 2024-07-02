@@ -58,7 +58,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   const buttonText = {
     [MultiSigVote.Approve]: MSG.approve,
     [MultiSigVote.Reject]: MSG.reject,
-  };
+  }
 
   const transform = mapPayload(() => ({
     colonyAddress: colony.colonyAddress,
@@ -67,7 +67,10 @@ const VoteButton: FC<VoteButtonProps> = ({
     vote: voteType,
     domainId: multiSigDomainId,
     multiSigId,
-    requiredRoles: getRolesNeededForMultiSigAction(actionType) || [],
+    requiredRoles: getRolesNeededForMultiSigAction({
+      actionType,
+      createdIn: multiSigDomainId,
+    }) || [],
   }));
 
   return (
