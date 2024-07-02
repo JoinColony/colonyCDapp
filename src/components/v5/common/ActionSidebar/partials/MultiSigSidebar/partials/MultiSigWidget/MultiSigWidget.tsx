@@ -1,19 +1,20 @@
-import { type FC } from 'react';
+import { WarningCircle } from '@phosphor-icons/react';
+import { useMemo, type FC, useState, useEffect } from 'react';
 import React from 'react';
+import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useCompletedActionContext } from '~context/CompletedActionContext/CompletedActionContext.ts';
-import { type ColonyActionType, MultiSigVote } from '~gql';
+import { MultiSigVote, type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { type ColonyMultiSig } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
+import { formatText } from '~utils/intl.ts';
 import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
+import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 
-import CancelButton from '../CancelButton/CancelButton.tsx';
-import FinalizeButton from '../FinalizeButton/FinalizeButton.tsx';
-import RemoveVoteButton from '../RemoveVoteButton/RemoveVoteButton.tsx';
-import Signees from '../Signees/Signees.tsx';
-import VoteButton from '../VoteButton/VoteButton.tsx';
+import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
+import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
+import { MultiSigState } from './types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -21,109 +22,122 @@ const displayName =
 interface MultiSigWidgetProps {
   actionType: ColonyActionType;
   multiSigData: ColonyMultiSig;
+  initiatorAddress: string;
 }
+
+const MSG = defineMessages({
+  approvalLabel: {
+    id: `${displayName}.approvalLabel`,
+    defaultMessage: 'Approval',
+  },
+  finalizeLabel: {
+    id: `${displayName}.finalizeLabel`,
+    defaultMessage: 'Finalize',
+  },
+  invalidThreshold: {
+    id: `${displayName}.invalidThreshold`,
+    defaultMessage: 'Invalid threshold',
+  },
+});
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   multiSigData,
   actionType,
+  initiatorAddress,
 }) => {
-  const { user } = useAppContext();
   const requiredRole = getMultiSigRequiredRole(actionType);
-  const { showRejectMultiSigStep, setShowRejectMultiSigStep } =
-    useCompletedActionContext();
 
   const { isLoading, threshold } = useDomainThreshold({
     domainId: multiSigData.multiSigDomainId,
     requiredRole,
   });
 
-  if (isLoading) {
-    return <div>Loading threshold</div>;
-  }
-
-  if (threshold === null) {
-    console.warn('Invalid threshold');
-    return <div>Invalid threshold, assign some stuff</div>;
-  }
-
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
-  const userSignature = signatures.find(
-    (signature) => signature?.userAddress === user?.walletAddress,
-  );
 
-  const approvalSignatures = signatures.filter(
+  const approvalProgress = signatures.filter(
     (signature) => signature.vote === MultiSigVote.Approve,
-  );
-  const rejectionSignatures = signatures.filter(
+  ).length;
+  const rejectionProgress = signatures.filter(
     (signature) => signature.vote === MultiSigVote.Reject,
+  ).length;
+
+  const isMultiSigFinalizable =
+    threshold && (approvalProgress || rejectionProgress) >= threshold;
+  const isMultiSigExecuted = multiSigData.isExecuted;
+  const isMultiSigRejected = multiSigData.isRejected;
+
+  const items = useMemo(() => {
+    if (isLoading) {
+      return [];
+    }
+    return [
+      {
+        key: MultiSigState.Approval,
+        content: (
+          <ApprovalStep
+            threshold={threshold || 0}
+            multiSigData={multiSigData}
+            actionType={actionType}
+            initiatorAddress={initiatorAddress}
+            createdAt={multiSigData.createdAt}
+          />
+        ),
+        heading: {
+          label: formatText(MSG.approvalLabel),
+        },
+      },
+      {
+        key: MultiSigState.Finalize,
+        content: (
+          <FinalizeStep
+            threshold={threshold || 0}
+            multiSigData={multiSigData}
+            isMultiSigFinalizable={isMultiSigFinalizable || false}
+            // initiatorAddress={initiatorAddress}
+            createdAt={multiSigData.createdAt}
+          />
+        ),
+        heading: {
+          label: formatText(MSG.finalizeLabel),
+        },
+      },
+    ];
+  }, [
+    isLoading,
+    threshold,
+    multiSigData,
+    actionType,
+    initiatorAddress,
+    isMultiSigFinalizable,
+  ]);
+
+  const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(
+    MultiSigState.Approval,
   );
 
-  const isMultiSigFinalizable = approvalSignatures.length >= threshold;
-  const isMultiSigCancelable = rejectionSignatures.length >= threshold;
-  const isMultiSigRejected = multiSigData.isRejected;
-  const isMultiSigExecuted = multiSigData.isExecuted;
+  useEffect(() => {
+    if (isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected) {
+      setActiveStepKey(MultiSigState.Finalize);
+    }
+  }, [isMultiSigFinalizable, isMultiSigRejected, isMultiSigExecuted]);
 
-  if (rejectionSignatures.length > 0) {
-    setShowRejectMultiSigStep(true);
-  }
+  if (threshold === null && !isLoading) {
+    console.warn('Invalid threshold');
 
-  if (isMultiSigRejected) {
-    return <div>MultiSig motion rejected</div>;
-  }
-
-  if (isMultiSigExecuted) {
-    return <div>MultiSig motion completed</div>;
+    return (
+      <NotificationBanner status="error" icon={WarningCircle}>
+        {formatText(MSG.invalidThreshold)}
+      </NotificationBanner>
+    );
   }
 
   return (
     <div>
-      <span>
-        Approvals: {approvalSignatures.length} of {threshold}
-      </span>
-      <Signees signees={approvalSignatures} />
-      {userSignature?.vote === MultiSigVote.Approve ? (
-        <RemoveVoteButton
-          actionType={actionType}
-          multiSigId={multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-        />
-      ) : (
-        <VoteButton
-          actionType={actionType}
-          multiSigId={multiSigData.nativeMultiSigId}
-          multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-          voteType={MultiSigVote.Approve}
-        />
-      )}
-      {isMultiSigFinalizable && (
-        <FinalizeButton multiSigId={multiSigData.nativeMultiSigId} />
-      )}
-      {showRejectMultiSigStep ? (
-        <>
-          {' '}
-          <span>
-            Rejections: {rejectionSignatures.length} of {threshold}
-          </span>
-          <Signees signees={rejectionSignatures} />
-          {userSignature?.vote === MultiSigVote.Reject ? (
-            <RemoveVoteButton
-              actionType={actionType}
-              multiSigId={multiSigData.nativeMultiSigId}
-              multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-            />
-          ) : (
-            <VoteButton
-              actionType={actionType}
-              multiSigId={multiSigData.nativeMultiSigId}
-              multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-              voteType={MultiSigVote.Reject}
-            />
-          )}
-        </>
-      ) : null}
-      {isMultiSigCancelable && (
-        <CancelButton multiSigId={multiSigData.nativeMultiSigId} />
-      )}
+      <Stepper<MultiSigState>
+        items={items}
+        activeStepKey={activeStepKey}
+        setActiveStepKey={setActiveStepKey}
+      />
     </div>
   );
 };

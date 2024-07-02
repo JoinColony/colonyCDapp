@@ -17,7 +17,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex w-full items-center">
       <div
         className={clsx('relative w-full rounded bg-gray-200', {
           'h-2.5 rounded-lg': isTall,
