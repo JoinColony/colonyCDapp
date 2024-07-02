@@ -1,28 +1,32 @@
 import { isAddress } from '@ethersproject/address';
 import React, { useMemo } from 'react';
 
-import { getNetworkTokenList } from '~constants/tokens/index.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetTokenFromEverywhereQuery } from '~gql';
+import { useGetTokenFromEverywhereQuery, useGetTokensListQuery } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
+import { type TokenSearchSelectOptionProps } from './partials/TokenSearchSelect/types.ts';
 import TokenStatus from './partials/TokenStatus/TokenStatus.tsx';
 
-export const useTokenSelect = (inputValue: string) => {
-  // @TODO: `getNetworkTokenList` and `useGetAllTokens` return the same data - no need to use both
-  const predefinedTokens = getNetworkTokenList();
+export const useTokenSelect = (inputValue: string | undefined) => {
   const allTokens = useGetAllTokens();
-  const { colony } = useColonyContext();
-  const isNativeToken = colony.nativeToken?.tokenAddress === inputValue;
 
-  const tokenOptions: SearchSelectOptionProps = {
+  const { data: tokensListData } = useGetTokensListQuery({
+    variables: {
+      isValidated: true,
+    },
+  });
+
+  const predefinedTokens =
+    tokensListData?.listTokens?.items.filter(notNull) ?? [];
+
+  const tokenOptions: TokenSearchSelectOptionProps = {
     key: 'tokens',
-    title: { id: 'manageTokensTable.availableTokens' },
-    options: predefinedTokens.map(({ token }) => ({
+    title: formatText({ id: 'manageTokensTable.availableTokens' }),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    options: predefinedTokens.map(({ __typename, ...token }) => ({
       label: token.name,
       value: token.tokenAddress,
       token,
@@ -31,7 +35,7 @@ export const useTokenSelect = (inputValue: string) => {
 
   const isRemoteTokenAddress = useMemo(
     () =>
-      inputValue &&
+      !!inputValue &&
       isAddress(inputValue) &&
       !allTokens.some(({ token }) => token.tokenAddress === inputValue),
     [inputValue, allTokens],
@@ -47,38 +51,33 @@ export const useTokenSelect = (inputValue: string) => {
   });
 
   const renderButtonContent = () => {
-    if (!isRemoteTokenAddress) {
-      if (!inputValue) {
-        return formatText({ id: 'manageTokensTable.select' });
-      }
-
-      const selectedToken = allTokens.find(
-        ({ token }) => token.tokenAddress === inputValue,
-      )?.token;
-
-      return (
-        <div className="flex items-center gap-2">
-          {selectedToken && (
-            <TokenAvatar
-              size={18}
-              tokenName={selectedToken.name}
-              tokenAddress={selectedToken.tokenAddress}
-              tokenAvatarSrc={selectedToken?.avatar ?? undefined}
-            />
-          )}
-          {selectedToken?.name}
-        </div>
-      );
+    if (!inputValue) {
+      return formatText({ id: 'manageTokensTable.select' });
     }
 
     if (loading) {
-      return <SpinnerLoader appearance={{ size: 'small' }} />;
+      return (
+        <div className="h-[1.5rem] w-full max-w-[8.75rem] skeleton before:rounded" />
+      );
     }
 
-    return tokenData ? (
-      <TokenStatus status="success">
-        {tokenData.getTokenFromEverywhere?.items?.[0]?.name}
-      </TokenStatus>
+    const selectedToken =
+      allTokens.find(({ token }) => token.tokenAddress === inputValue)?.token ||
+      tokenData?.getTokenFromEverywhere?.items?.filter(notNull)?.[0];
+
+    return selectedToken ? (
+      <div className="flex w-full items-center gap-2">
+        <TokenAvatar
+          size={18}
+          tokenName={selectedToken.name}
+          tokenAddress={selectedToken.tokenAddress}
+          tokenAvatarSrc={selectedToken?.avatar ?? undefined}
+        />
+
+        <p className="truncate">
+          {selectedToken.name || selectedToken.tokenAddress}
+        </p>
+      </div>
     ) : (
       <TokenStatus status="error">
         {formatText({ id: 'manageTokensTable.notFound' })}
@@ -88,8 +87,6 @@ export const useTokenSelect = (inputValue: string) => {
 
   return {
     tokenOptions,
-    isRemoteTokenAddress,
     renderButtonContent,
-    isNativeToken,
   };
 };

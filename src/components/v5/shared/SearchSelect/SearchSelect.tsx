@@ -124,7 +124,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
           </div>
         )}
         {!isLoading && (
-          <div className="max-h-[calc(100vh-12rem)] overflow-y-scroll px-1.5 pr-1 sm:max-h-full sm:w-full">
+          <div className="max-h-[calc(100vh-12rem)] overflow-y-auto px-1.5 pr-1 sm:max-h-none sm:w-full">
             <div>
               {filteredList.length > 0
                 ? filteredList.map(({ options, title, isAccordion, key }) =>

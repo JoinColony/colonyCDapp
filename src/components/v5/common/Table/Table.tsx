@@ -133,9 +133,10 @@ const Table = <T,>({
               >
                 {headerGroups.map((headerGroup) =>
                   headerGroup.headers.map((header, index) => {
-                    const rowWithMeatBallMenu = index === 0 && getMenuProps;
+                    const rowWithMeatBallMenu = index === 0 && !!getMenuProps;
                     const meatBallMenuProps = getMenuProps?.(row);
-                    const colSpan = rowWithMeatBallMenu ? undefined : 2;
+                    const colSpan =
+                      meatBallMenuProps && rowWithMeatBallMenu ? undefined : 2;
 
                     return (
                       <TableRow
@@ -180,11 +181,11 @@ const Table = <T,>({
                           className={clsx(
                             'h-full text-left text-sm font-normal',
                             {
-                              'py-1 pl-4': rowWithMeatBallMenu,
-                              'px-4 py-1': !rowWithMeatBallMenu,
+                              'py-1 pl-4': !colSpan,
+                              'px-4 py-1': colSpan,
                             },
                           )}
-                          colSpan={meatBallMenuProps ? colSpan : undefined}
+                          colSpan={colSpan}
                         >
                           {flexRender(
                             header.column.columnDef.cell,
