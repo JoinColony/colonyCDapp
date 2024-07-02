@@ -78,7 +78,7 @@ export const useDomainThreshold = ({
       return null;
     }
 
-    const majority = Math.ceil(numberOfPermissionHolders / 2);
+    const majority = Math.floor(numberOfPermissionHolders / 2) + 1;
 
     return majority;
   };
