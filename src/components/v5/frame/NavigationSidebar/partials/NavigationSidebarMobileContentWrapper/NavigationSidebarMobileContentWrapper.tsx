@@ -26,14 +26,12 @@ const NavigationSidebarMobileContentWrapper: FC<
         left-0
         right-0
         top-full
+        z-base
         h-[calc(100vh-var(--top-content-height))]
         w-full
         overflow-hidden
         bg-base-white
       `,
-      {
-        'z-base': isOpen,
-      },
     )}
   >
     <div className="inner flex h-full flex-col gap-6 !p-6">
