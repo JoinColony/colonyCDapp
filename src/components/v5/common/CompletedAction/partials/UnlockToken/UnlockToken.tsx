@@ -2,6 +2,7 @@ import { CoinVertical } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
@@ -12,6 +13,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -38,15 +40,34 @@ const MSG = defineMessages({
 });
 
 const UnlockToken = ({ action }: UnlockTokenProps) => {
+  const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { name, symbol } = nativeToken;
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
+  const {
+    initiatorUser,
+    isMultiSig,
+    multiSigData,
+    transactionHash,
+    type: actionType,
+  } = action;
+
+  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        {isMultiSig && multiSigData && (
+          <MultiSigMeatballMenu
+            transactionHash={transactionHash}
+            multiSigData={multiSigData}
+            isOwner={isOwner}
+            actionType={actionType}
+          />
+        )}
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
@@ -69,7 +90,10 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
           RowIcon={CoinVertical}
         />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

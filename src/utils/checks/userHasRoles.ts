@@ -2,6 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 export const userHasRole = (userRoles: ColonyRole[], role: ColonyRole) =>
   userRoles.includes(role);
@@ -11,20 +12,35 @@ export const addressHasRoles = ({
   colony,
   address,
   requiredRoles,
+  isMultiSig = false,
 }: {
   requiredRolesDomains: number[];
   colony: Colony;
   address: string;
   requiredRoles: ColonyRole[];
+  isMultiSig?: boolean;
 }) => {
   return requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain({
-      colony,
+      colonyRoles: extractColonyRoles(colony.roles),
       userAddress: address || '',
       domainId,
     });
 
-    return requiredRoles.every((role) => userHasRole(userDomainRoles, role));
+    const userMultiSigDomainRoles = getUserRolesForDomain({
+      colonyRoles: extractColonyRoles(colony.roles),
+      userAddress: address || '',
+      domainId,
+      excludeInherited: false,
+      isMultiSig: true,
+    });
+
+    return requiredRoles.every((role) => {
+      return (
+        userDomainRoles.includes(role) ||
+        (isMultiSig && userMultiSigDomainRoles.includes(role))
+      );
+    });
   });
 };
 

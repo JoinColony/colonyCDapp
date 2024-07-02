@@ -184,7 +184,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           />
         )}
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

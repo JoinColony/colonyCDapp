@@ -64,7 +64,10 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
         <AddRemoveRow actionType={action.type} />
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

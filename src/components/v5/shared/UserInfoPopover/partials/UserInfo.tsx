@@ -1,10 +1,16 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { Star, User } from '@phosphor-icons/react';
+import { Star, User, UsersThree } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { getRole } from '~constants/permissions.ts';
+import {
+  UserRole,
+  type UserRoleMeta,
+  getRole,
+} from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
+import { type AvailablePermission } from '~hooks/members/types.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -15,6 +21,47 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
 
+const getPermissionTooltipContent = ({
+  role,
+  isMultiSig = false,
+}: {
+  role: UserRoleMeta;
+  isMultiSig?: boolean;
+}) => {
+  const roleName = isMultiSig
+    ? `${formatText({ id: 'userInfo.permissions.multiSig' })}${role.name}`
+    : role.name;
+
+  return (
+    <>
+      <p className="font-normal">
+        {formatText(
+          {
+            id:
+              role.role === UserRole.Custom
+                ? 'userInfo.permissions.custom'
+                : 'userInfo.permissions.bundle',
+          },
+          {
+            role: <span className="font-bold">{roleName}</span>,
+          },
+          roleName,
+        )}
+      </p>
+      <ul className="list-disc pl-4">
+        {role.permissions.map((permission) => (
+          <li key={permission}>
+            {isMultiSig
+              ? `${formatText({ id: 'userInfo.permissions.multiSig' })}`
+              : ''}
+            {ColonyRole[permission]}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
 const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
@@ -24,6 +71,7 @@ const UserInfo: FC<UserInfoProps> = ({
   userDetails,
   additionalContent,
 }) => {
+  const { isMultiSigEnabled } = useEnabledExtensions();
   const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = contributorType === ContributorType.Top;
 
@@ -99,21 +147,39 @@ const UserInfo: FC<UserInfoProps> = ({
                   domainId,
                   domainName,
                   permissions,
+                  multiSigPermissions,
                   reputationPercentage,
                   reputationRaw,
                 }) => {
-                  const finalPermissions = permissions?.length
-                    ? permissions
-                    : domains
-                        .find(({ nativeId }) => nativeId === Id.RootDomain)
-                        ?.permissions.filter(
+                  const getFilteredPermissions = (
+                    unfilteredPermissions: AvailablePermission[],
+                  ) => {
+                    if (unfilteredPermissions?.length) {
+                      return unfilteredPermissions;
+                    }
+                    const rootDomain = domains.find(
+                      ({ nativeId }) => nativeId === Id.RootDomain,
+                    );
+                    return rootDomain
+                      ? rootDomain.permissions.filter(
                           (permission) =>
                             permission !== ColonyRole.Root &&
                             permission !== ColonyRole.Recovery,
-                        );
+                        )
+                      : [];
+                  };
+
+                  const finalPermissions = getFilteredPermissions(permissions);
+                  const finalMultiSigPermissions =
+                    getFilteredPermissions(multiSigPermissions);
+
                   const permissionRole = finalPermissions?.length
                     ? getRole(finalPermissions)
                     : undefined;
+                  const multiSigPermissionRole =
+                    finalMultiSigPermissions?.length
+                      ? getRole(finalMultiSigPermissions)
+                      : undefined;
 
                   return (
                     <li
@@ -125,10 +191,24 @@ const UserInfo: FC<UserInfoProps> = ({
                       </span>
                       <div className="flex justify-end">
                         {permissionRole && (
-                          <PermissionsBadge
-                            text={permissionRole.name}
-                            icon={User} // @TODO: add UserTree icon for multiSig
-                          />
+                          <Tooltip
+                            tooltipContent={getPermissionTooltipContent({
+                              role: permissionRole,
+                            })}
+                          >
+                            <PermissionsBadge icon={User} />
+                          </Tooltip>
+                        )}
+
+                        {isMultiSigEnabled && multiSigPermissionRole && (
+                          <Tooltip
+                            tooltipContent={getPermissionTooltipContent({
+                              role: multiSigPermissionRole,
+                              isMultiSig: true,
+                            })}
+                          >
+                            <PermissionsBadge icon={UsersThree} />
+                          </Tooltip>
                         )}
 
                         <Tooltip

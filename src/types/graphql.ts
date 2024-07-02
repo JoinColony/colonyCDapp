@@ -43,6 +43,9 @@ import {
   type JoinedColonyFragment,
   type UserMotionStakesFragment,
   type NativeTokenStatusFragment,
+  type ColonyRoleFragment,
+  type MultiSigUserSignatureFragment,
+  type ColonyMultiSigFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -150,3 +153,9 @@ export type JoinedColony = JoinedColonyFragment;
 export type UserMotionStakes = UserMotionStakesFragment;
 
 export type NativeTokenStatus = NativeTokenStatusFragment;
+
+export type ColonyRole = ColonyRoleFragment;
+
+export type MultiSigUserSignature = MultiSigUserSignatureFragment;
+
+export type ColonyMultiSig = ColonyMultiSigFragment;

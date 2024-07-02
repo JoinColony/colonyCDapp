@@ -21,6 +21,7 @@ import decisionsSagas from './decisions/index.ts';
 import expendituresSagas from './expenditures/index.ts';
 import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
+import multiSigSagas from './multiSig/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 import { setupTransactionSagas } from './transactions/index.ts';
 import { disconnectWallet, setupUsersSagas } from './users/index.ts';
@@ -55,6 +56,7 @@ function* setupContextDependentSagas() {
     call(colonyCreateSaga),
     call(extensionSagas),
     call(motionSagas),
+    call(multiSigSagas),
     // call(vestingSagas),
     call(setupUsersSagas),
     call(setupTransactionSagas),

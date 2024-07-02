@@ -1,7 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import ActionData from './ActionData.tsx';
@@ -10,9 +9,23 @@ const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 
 interface DecisionMethodRowProps {
   isMotion: boolean;
+  isMultisig: boolean;
 }
 
-const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
+const DecisionMethodRow = ({
+  isMotion,
+  isMultisig,
+}: DecisionMethodRowProps) => {
+  const getRowContent = () => {
+    if (isMultisig) {
+      return formatText({ id: 'decisionMethod.multiSig' });
+    }
+    if (isMotion) {
+      return formatText({ id: 'decisionMethod.reputation' });
+    }
+    return formatText({ id: 'decisionMethod.permissions' });
+  };
+
   return (
     <ActionData
       rowLabel={formatText({ id: 'actionSidebar.decisionMethod' })}
@@ -20,9 +33,7 @@ const DecisionMethodRow = ({ isMotion }: DecisionMethodRowProps) => {
         id: 'actionSidebar.tooltip.decisionMethod',
       })}
       RowIcon={Scales}
-      rowContent={
-        isMotion ? DecisionMethod.Reputation : DecisionMethod.Permissions
-      }
+      rowContent={getRowContent()}
     />
   );
 };

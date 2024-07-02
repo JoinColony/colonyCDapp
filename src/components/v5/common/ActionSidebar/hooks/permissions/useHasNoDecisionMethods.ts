@@ -6,6 +6,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
@@ -20,7 +21,8 @@ import {
 const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   const { watch } = useFormContext() || {};
 
@@ -51,21 +53,46 @@ const useHasNoDecisionMethods = () => {
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
   const userRootRoles = getUserRolesForDomain({
-    colony,
+    colonyRoles: extractColonyRoles(colony.roles),
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
   });
 
-  const userRoles = getAllUserRoles(colony, user.walletAddress);
+  const userRootMultiSigRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: user.walletAddress,
+    domainId: Id.RootDomain,
+    excludeInherited: false,
+    isMultiSig: true,
+  });
+
+  const userRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user.walletAddress,
+  );
+
+  const userMultiSigRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user.walletAddress,
+    true,
+  );
 
   if (
     !requiredPermissions.every((role) => {
       // If the requiredRolesDomain is root, check the user has the required permissions in root
       if (requiredRolesDomain === Id.RootDomain) {
-        return userRootRoles.includes(role);
+        return (
+          userRootRoles.includes(role) ||
+          // If multiSig is enabled, check if the user has the required multiSig permissions in root
+          (isMultiSigEnabled && userRootMultiSigRoles.includes(role))
+        );
       }
       // Otherwise, check the user has the required permissions in any domain
-      return userRoles.includes(role);
+      return (
+        userRoles.includes(role) ||
+        // If multiSig is enabled, check if the user has the required multiSig permissions
+        (isMultiSigEnabled && userMultiSigRoles.includes(role))
+      );
     })
   ) {
     return true;

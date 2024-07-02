@@ -12,8 +12,9 @@ import {
   type GetColonyHistoricRoleRolesQuery,
 } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
@@ -99,6 +100,7 @@ const SetUserRoles = ({ action }: Props) => {
     annotation,
     blockNumber,
     colonyAddress,
+    rolesAreMultiSig,
   } = action;
 
   const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
@@ -115,6 +117,9 @@ const SetUserRoles = ({ action }: Props) => {
 
   const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
+  const roleAuthority = rolesAreMultiSig
+    ? Authority.ViaMultiSig
+    : Authority.Own;
 
   return (
     <>
@@ -126,7 +131,7 @@ const SetUserRoles = ({ action }: Props) => {
             [TITLE_FIELD_NAME]: customTitle,
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
-            authority: AUTHORITY_OPTIONS[0].value,
+            authority: roleAuthority,
             role,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: isMotion
@@ -202,13 +207,20 @@ const SetUserRoles = ({ action }: Props) => {
         />
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
+          rowContent={
+            rolesAreMultiSig
+              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
+              : formatText({ id: 'actionSidebar.authority.own' })
+          }
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.authority',
           })}
           RowIcon={Signature}
         />
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}

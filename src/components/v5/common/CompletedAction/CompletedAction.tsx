@@ -9,6 +9,7 @@ import { getExtendedActionType } from '~utils/colonyActions.ts';
 
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
+import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
 
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
@@ -44,6 +45,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <SimplePayment action={action} />;
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
+      case ColonyActionType.MintTokensMultisig:
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
@@ -55,6 +57,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <ManageTeam action={action} />;
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
+      case ColonyActionType.UnlockTokenMultisig:
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
@@ -93,6 +96,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   const getSidebarWidgetContent = () => {
+    if (action.isMultiSig) {
+      return <MultiSigSidebar transactionId={action.transactionHash} />;
+    }
+
     switch (actionType) {
       case ColonyActionType.AddVerifiedMembersMotion:
       case ColonyActionType.RemoveVerifiedMembersMotion:

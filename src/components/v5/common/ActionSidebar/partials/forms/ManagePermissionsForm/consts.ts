@@ -2,9 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { type InferType, mixed, object, string, number } from 'yup';
 
 import { CUSTOM_USER_ROLE } from '~constants/permissions.ts';
-import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
-import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export const validationSchema = object()
   .shape({
@@ -43,20 +41,3 @@ export const AVAILABLE_ROLES = [
 export enum RemoveRoleOptionValue {
   remove = 'remove',
 }
-
-export enum Authority {
-  ViaMultiSig = 'via-multi-sig',
-  Own = 'own',
-}
-
-export const AuthorityOptions: CardSelectOption<string>[] = [
-  // @TODO: Uncomment when multi-sig is ready
-  // {
-  //   label: formatText({ id: 'actionSidebar.authority.viaMultiSig' }),
-  //   value: Authority.ViaMultiSig,
-  // },
-  {
-    label: formatText({ id: 'actionSidebar.authority.own' }),
-    value: Authority.Own,
-  },
-];
