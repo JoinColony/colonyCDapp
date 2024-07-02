@@ -54,8 +54,6 @@ export enum RootMotionMethodNames {
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
   EditColonyByDelta = 'editColonyByDelta',
-  AddDomain = 'addDomain(uint256,uint256,uint256,string)',
-  EditDomain = 'editDomain',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
@@ -104,7 +102,6 @@ export type MotionDomainCreateEditPayload = {
   isMultiSig: boolean;
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
-  operationName: RootMotionMethodNames;
 };
 
 export type MotionActionTypes =
