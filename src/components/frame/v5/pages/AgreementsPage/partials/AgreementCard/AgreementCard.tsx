@@ -1,6 +1,5 @@
 import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { format } from 'date-fns';
 import React, { type FC, useEffect } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
@@ -13,10 +12,10 @@ import {
   TX_SEARCH_PARAM,
 } from '~routes/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
-import { DEFAULT_DATE_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
@@ -145,7 +144,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
               )}
               {createdAt && (
                 <p className="text-sm text-gray-600">
-                  {format(new Date(createdAt), DEFAULT_DATE_FORMAT)}
+                  {getFormattedDateFrom(new Date(createdAt))}
                 </p>
               )}
               <MeatBallMenu
