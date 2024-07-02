@@ -390,6 +390,7 @@
     "transaction.MultisigPermissionsClient.execute.title": "Execute MultiSig motion",
     "transaction.MultisigPermissionsClient.executeWithoutFailure.title": "Execute MultiSig motion",
     "transaction.MultisigPermissionsClient.createMotion.title": "Create motion",
+    "transaction.group.setInitialMultiSigRoles.title": "Set initial multi-sig roles",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",
