@@ -1,5 +1,8 @@
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import {
   calculateFee,
@@ -54,11 +57,12 @@ export const getSimplePaymentPayload = (
     tokenAddress,
     recipientAddress,
     payments,
+    decisionMethod,
   } = values;
   const fromDomainId = Number(from);
   const createdInDomainId = Number(createdIn);
 
-  const transformedPayload: OneTxPaymentPayload = {
+  const basePayload = {
     colonyName: colony.name,
     colonyAddress: colony.colonyAddress,
     domainId: fromDomainId,
@@ -87,9 +91,18 @@ export const getSimplePaymentPayload = (
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)
       : undefined,
-    motionDomainId: createdInDomainId,
     customActionTitle: title,
   };
 
-  return transformedPayload;
+  if (decisionMethod === DecisionMethod.Permissions) {
+    return basePayload;
+  }
+
+  return {
+    ...basePayload,
+    colonyRoles: extractColonyRoles(colony.roles),
+    colonyDomains: extractColonyDomains(colony.domains),
+    motionDomainId: createdInDomainId,
+    isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+  };
 };

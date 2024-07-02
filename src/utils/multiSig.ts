@@ -44,6 +44,8 @@ export const getRolesNeededForMultiSigAction = ({
         return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain;
       }
       return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+    case ColonyActionType.PaymentMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
     default:
       return undefined;
   }
