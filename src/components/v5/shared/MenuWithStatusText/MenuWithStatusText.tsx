@@ -10,8 +10,6 @@ const displayName = 'v5.shared.MenuWithStatusText';
 const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
   statusTextSectionProps,
   sections,
-  footer,
-  footerClassName,
 }) => {
   const { content, ...restStatusTextSectionProps } = statusTextSectionProps;
 
@@ -29,13 +27,7 @@ const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
     ...sections,
   ];
 
-  return (
-    <MenuWithSections
-      sections={sectionsWithStatusText}
-      footer={footer}
-      footerClassName={footerClassName}
-    />
-  );
+  return <MenuWithSections sections={sectionsWithStatusText} />;
 };
 
 MenuWithStatusText.displayName = displayName;

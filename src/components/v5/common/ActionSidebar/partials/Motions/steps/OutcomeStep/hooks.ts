@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { type ColonyMotion } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
+import { type UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
 
 import { supportOption, opposeOption } from '../../consts.ts';
 
@@ -34,7 +35,55 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
     ];
   }, [motionData]);
 
+  const stakingData = useMemo(() => {
+    if (!motionData) return undefined;
+
+    const { usersStakes } = motionData;
+
+    const stakers = usersStakes.flatMap((userStakes) => {
+      const { address, stakes } = userStakes;
+
+      const yay = Number(stakes.percentage.yay);
+      const nay = Number(stakes.percentage.nay);
+      const addresses: UserAvatarsItem[] = [];
+
+      if (yay > 0) {
+        addresses.push({ address, voteCount: '1', vote: MotionVote.Yay });
+      }
+
+      if (nay > 0) {
+        addresses.push({ address, voteCount: '1', vote: MotionVote.Nay });
+      }
+
+      return addresses;
+    });
+
+    // 100 is hardcoded because in userStakes total wasn't 100% (it was like 98%). Probably because of rounding.
+    const stakeVoteStatuses: VoteStatuses[] = [
+      {
+        key: supportOption.id,
+        icon: supportOption.icon,
+        label: supportOption.label || '',
+        progress: 100,
+        status: MotionVote.Yay,
+      },
+      {
+        key: opposeOption.id,
+        icon: opposeOption.icon,
+        label: opposeOption.label || '',
+        progress: 100,
+        status: MotionVote.Nay,
+      },
+    ];
+
+    return {
+      stakers,
+      stakeVoteStatuses,
+    };
+  }, [motionData]);
+
   return {
     voteStatuses,
+    stakingData,
   };
 };

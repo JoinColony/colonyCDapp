@@ -162,6 +162,7 @@ export const useVotingStep = ({
             rootHash={rootHash}
             textClassName="text-sm"
             walletAddress={user?.walletAddress ?? ''}
+            hideOnMobile={false}
           />
         ),
       },

@@ -142,7 +142,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           canInteract
             ? [
                 {
-                  key: '1',
+                  key: '2',
                   content: <NotEnoughTokensInfo />,
                   className: 'bg-negative-100 text-negative-400 !py-3',
                 },
@@ -178,7 +178,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           ...(isStaked
             ? [
                 {
-                  key: '3',
+                  key: '4',
                   content: (
                     <AccordionItem
                       title={formatText({

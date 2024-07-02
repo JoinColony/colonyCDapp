@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -55,10 +56,8 @@ const VotingStep: FC<VotingStepProps> = ({
   });
 
   const { wallet, user } = useAppContext();
-  const canVote =
-    !!wallet &&
-    !!user &&
-    !actionData.motionData.motionStateHistory.inRevealPhase;
+  const isRevealPhase = actionData.motionData.motionStateHistory.inRevealPhase;
+  const canVote = !!wallet && !!user && !isRevealPhase;
 
   const isSupportVote = currentUserVote === MotionVote.Yay;
   const isOpposeVote = currentUserVote === MotionVote.Nay;
@@ -67,24 +66,38 @@ const VotingStep: FC<VotingStepProps> = ({
     <MenuWithStatusText
       statusTextSectionProps={{
         status: StatusTypes.Info,
-        children: formatText(
-          { id: 'motion.votingStep.statusText' },
-          { thresholdPercent },
+        textClassName: 'text-4 text-gray-900 w-full',
+        children: (
+          <p className="text-4">
+            {formatText(
+              { id: 'motion.votingStep.statusText' },
+              { thresholdPercent },
+            )}
+          </p>
         ),
-        textClassName: 'text-4',
-        iconAlignment: 'top',
         content: (
           <div className="ml-[1.375rem] mt-1">
             <ProgressBar
+              className="mt-2"
               progress={currentReputationPercent}
               threshold={thresholdPercent}
-              additionalText={formatText({
-                id: 'motion.votingStep.additionalText',
-              })}
+              progressLabel={
+                <span className="!text-xs">
+                  {formatText(
+                    {
+                      id: 'motion.votingStep.additionalText',
+                    },
+                    {
+                      progress: currentReputationPercent,
+                    },
+                  )}
+                </span>
+              }
               isTall
             />
           </div>
         ),
+        iconAlignment: 'top',
       }}
       sections={[
         {
@@ -99,16 +112,15 @@ const VotingStep: FC<VotingStepProps> = ({
             >
               <div>
                 {hasUserVoted && (isSupportVote || isOpposeVote) && (
-                  <div className="mb-3">
-                    <div className="mb-6 flex items-center justify-between gap-2">
+                  <div className="w-full">
+                    <div className="flex items-center justify-between gap-2">
                       <h4 className="text-2">
                         {formatText({ id: 'motion.votingStep.voted' })}
                       </h4>
                       <MotionVoteBadge vote={currentUserVote} />
                     </div>
-                    {!actionData.motionData.motionStateHistory
-                      .inRevealPhase && (
-                      <>
+                    {!isRevealPhase && (
+                      <div className="mt-4 w-full">
                         <h4 className="mb-1 text-2">
                           {formatText({ id: 'motion.votingStep.changeVote' })}
                         </h4>
@@ -117,12 +129,16 @@ const VotingStep: FC<VotingStepProps> = ({
                             id: 'motion.votingStep.changeVoteDescription',
                           })}
                         </p>
-                      </>
+                      </div>
                     )}
                   </div>
                 )}
                 {canVote && (
-                  <>
+                  <div
+                    className={clsx('w-full', {
+                      'mt-4': hasUserVoted,
+                    })}
+                  >
                     {!hasUserVoted && (
                       <h4 className="mb-3 text-center text-1">
                         {formatText({ id: 'motion.votingStep.title' })}
@@ -135,19 +151,19 @@ const VotingStep: FC<VotingStepProps> = ({
                       )}
                       name="vote"
                     />
-                  </>
+                  </div>
                 )}
               </div>
-              {(hasUserVoted || canVote) && (
-                <div className="mt-7 border-t border-gray-200 pt-6" />
-              )}
-              <DescriptionList items={items} className="my-1" />
+              <DescriptionList
+                items={items}
+                className="mt-6 border-t border-gray-200 pt-6"
+              />
               {canVote && (
                 <Button
                   mode="primarySolid"
                   isFullSize
                   type="submit"
-                  className="mt-8"
+                  className="mt-6"
                   text={formatText(
                     hasUserVoted ? MSG.changeVote : MSG.submitVote,
                   )}

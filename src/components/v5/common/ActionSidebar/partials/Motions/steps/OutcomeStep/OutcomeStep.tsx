@@ -55,7 +55,8 @@ const getOutcomeStepTitle = (
 
 const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
   const { wallet } = useAppContext();
-  const { voteStatuses } = useOutcomeStep(motionData);
+  const { voteStatuses, stakingData } = useOutcomeStep(motionData);
+  const { stakers, stakeVoteStatuses } = stakingData || {};
 
   const voters: UserAvatarsItem[] =
     motionData?.voterRecord.map((voter) => ({
@@ -73,6 +74,8 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
     ? MotionVote.Yay
     : MotionVote.Nay;
 
+  const showVotingData = voters.length !== 0;
+
   return (
     <MenuWithSections
       sections={[
@@ -83,7 +86,10 @@ const OutcomeStep: FC<OutcomeStepProps> = ({ motionData }) => {
               <h3 className="mb-4 text-center text-1">
                 {formatText(getOutcomeStepTitle(currentUserVote, winningSide))}
               </h3>
-              <VoteStatuses items={voteStatuses} voters={voters} />
+              <VoteStatuses
+                items={showVotingData ? voteStatuses : stakeVoteStatuses || []}
+                voters={showVotingData ? voters : stakers || []}
+              />
             </div>
           ),
         },

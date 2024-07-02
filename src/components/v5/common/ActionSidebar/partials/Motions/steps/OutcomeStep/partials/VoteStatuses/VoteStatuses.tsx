@@ -28,10 +28,10 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
   );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="grid grid-cols-[1fr_auto] gap-8">
       {items.map(({ key, icon: Icon, label, progress, status }) => (
-        <div key={key} className="flex w-full items-center gap-8">
-          <div className="flex max-w-[182px] grow flex-col gap-1">
+        <React.Fragment key={key}>
+          <div className="flex w-full grow flex-col gap-1">
             <span className="flex items-start gap-[0.375rem]">
               <Icon
                 className={clsx('h-[1em] w-[1em] text-[1.125rem]', {
@@ -51,8 +51,8 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
             </span>
             <ProgressBar
               progress={progress}
+              progressLabel={`${progress}%`}
               max={100}
-              additionalText="%"
               barClassName={clsx({
                 'bg-purple-200': status === MotionVote.Yay,
                 'bg-negative-300': status === MotionVote.Nay,
@@ -72,7 +72,7 @@ const VoteStatuses: FC<VoteStatusesProps> = ({ items, voters }) => {
               size={26}
             />
           )}
-        </div>
+        </React.Fragment>
       ))}
     </div>
   );

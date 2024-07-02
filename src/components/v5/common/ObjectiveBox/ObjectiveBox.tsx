@@ -37,7 +37,10 @@ const ObjectiveBox: FC<ObjectiveBoxProps> = ({ objective }) => {
             )
           : formatMessage(MSG.noObjectiveBoxDescription)}
       </p>
-      <ProgressBar progress={objective?.progress || 0} additionalText="%" />
+      <ProgressBar
+        progress={objective?.progress || 0}
+        progressLabel={`${objective?.progress || 0}%`}
+      />
     </div>
   );
 };

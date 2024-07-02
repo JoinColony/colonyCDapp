@@ -2,6 +2,7 @@ import { CaretLeft, CaretRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { InView } from 'react-intersection-observer';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -19,6 +20,7 @@ function Stepper<TKey extends React.Key>({
   items,
 }: StepperProps<TKey>): JSX.Element | null {
   const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
+  const [hiddenItem, setHiddenItem] = useState<TKey | undefined>(undefined);
   const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
   const openedItem = items[openItemIndex];
@@ -47,14 +49,14 @@ function Stepper<TKey extends React.Key>({
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const element = listRef.current;
-      if (element) {
-        setIsScrollableList(element.scrollWidth > element.clientWidth);
-      }
-    };
+  const handleResize = () => {
+    const element = listRef.current;
+    if (element) {
+      setIsScrollableList(element.scrollWidth > element.clientWidth);
+    }
+  };
 
+  useEffect(() => {
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -66,7 +68,29 @@ function Stepper<TKey extends React.Key>({
 
   useEffect(() => {
     setOpenItemIndex(activeItemIndex);
+    handleResize();
   }, [activeItemIndex]);
+
+  const handleChange = (name: TKey, inView: boolean) => {
+    if (!inView) {
+      setHiddenItem(name);
+    } else {
+      setHiddenItem(undefined);
+    }
+  };
+
+  useEffect(() => {
+    if (hiddenItem && listRef.current && isMobile && isScrollableList) {
+      const index = items.findIndex(({ key }) => key === hiddenItem);
+      if (index > -1) {
+        listRef.current.scrollBy({
+          left: 70 * index,
+          behavior: 'smooth',
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openItemIndex, isMobile]);
 
   return items.length ? (
     <>
@@ -145,7 +169,11 @@ function Stepper<TKey extends React.Key>({
                     },
                   )}
                 >
-                  <div className="flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center">
+                  <InView
+                    as="div"
+                    onChange={(inView) => handleChange(key, inView)}
+                    className="flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center"
+                  >
                     <StepperButton
                       stage={
                         (index < activeItemIndex &&
@@ -157,6 +185,7 @@ function Stepper<TKey extends React.Key>({
                       }
                       onClick={() => {
                         setOpenItemIndex(index);
+                        setHiddenItem(undefined);
 
                         if (index > activeItemIndex && setActiveStepKey) {
                           setActiveStepKey(key);
@@ -168,7 +197,7 @@ function Stepper<TKey extends React.Key>({
                       {...restHeading}
                     />
                     {decor || null}
-                  </div>
+                  </InView>
                   {!isMobile && !itemDisabled && !!content && (
                     <div
                       className={clsx(

@@ -53,8 +53,7 @@ const Objective = () => {
             </p>
             <ProgressBar
               progress={objective.progress || 0}
-              className="ml-0"
-              additionalText="%"
+              progressLabel={`${objective.progress || 0}%`}
               isTall
               barClassName={selectedDomain ? teamColor : 'bg-blue-400'}
             />
