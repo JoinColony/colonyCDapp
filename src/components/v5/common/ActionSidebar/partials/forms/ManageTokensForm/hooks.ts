@@ -10,12 +10,13 @@ import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { TokenStatus } from '~v5/common/types.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { validationSchema, type ManageTokensFormValues } from './consts.ts';
-import { getManageTokensPayload } from './utils.tsx';
+import { getManageTokensPayload } from './utils.ts';
 
 export const useManageTokens = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -32,17 +33,39 @@ export const useManageTokens = (
     [colony.tokens?.items],
   );
 
-  const shouldShowMenu = useCallback(
-    (token: string) => {
-      if (readonly) {
-        return false;
-      }
+  const blockchainNativeTokenAddress = colonyTokens.find(
+    ({ colonyTokensId }) => colonyTokensId === 'DEFAULT_TOKEN_ID',
+  )?.token.tokenAddress;
 
-      return !colonyTokens
-        .map(({ token: colonyToken }) => colonyToken.tokenAddress)
-        .some((colonyTokenAddress) => colonyTokenAddress === token);
-    },
-    [colonyTokens, readonly],
+  const colonyNativeTokenAddress = colony?.nativeToken.tokenAddress;
+
+  const shouldShowMenu = (status: TokenStatus) => {
+    if (readonly) {
+      return false;
+    }
+
+    return status !== TokenStatus.NotEditable;
+  };
+
+  const nativeTokens = useMemo(
+    () => [
+      ...(blockchainNativeTokenAddress ? [blockchainNativeTokenAddress] : []),
+      colonyNativeTokenAddress,
+    ],
+    [blockchainNativeTokenAddress, colonyNativeTokenAddress],
+  );
+
+  const defaultColonyTokens = useMemo(
+    () =>
+      colonyTokens
+        .map(({ token: { tokenAddress } }) => ({
+          token: tokenAddress,
+          status: nativeTokens.includes(tokenAddress)
+            ? TokenStatus.NotEditable
+            : TokenStatus.Unaffected,
+        }))
+        .sort((a) => (nativeTokens.includes(a.token) ? -1 : 0)),
+    [colonyTokens, nativeTokens],
   );
 
   useActionFormBaseHook({
@@ -55,17 +78,22 @@ export const useManageTokens = (
     defaultValues: useMemo(
       () => ({
         createdIn: Id.RootDomain,
-        selectedTokenAddresses: colonyTokens.map(({ token }) => ({
-          token: token.tokenAddress,
-        })),
+        selectedTokenAddresses: defaultColonyTokens,
       }),
-      [colonyTokens],
+      [defaultColonyTokens],
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       pipe(
         mapPayload((values: ManageTokensFormValues) => {
-          return getManageTokensPayload(colony, values);
+          const updatedValues = {
+            ...values,
+            selectedTokenAddresses: values.selectedTokenAddresses.filter(
+              ({ status }) => status !== TokenStatus.Removed,
+            ),
+          };
+
+          return getManageTokensPayload(colony, updatedValues);
         }),
       ),
       [colony, user],

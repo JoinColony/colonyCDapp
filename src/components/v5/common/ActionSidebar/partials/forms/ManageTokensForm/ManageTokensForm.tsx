@@ -5,9 +5,9 @@ import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
-import TokensTable from '../../TokensTable/index.ts';
 
 import { useManageTokens } from './hooks.ts';
+import TokensTable from './partials/TokensTable/TokensTable.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManageTokensForm';
 
