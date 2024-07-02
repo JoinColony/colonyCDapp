@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useController, useWatch } from 'react-hook-form';
 
-import { UserRole } from '~constants/permissions.ts';
+import { UserRole, getRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import { getUserRolesForDomain } from '~transformers';
 import {
   type PermissionsTableModel,
   type CustomPermissionTableModel,
@@ -13,6 +15,8 @@ import {
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import Table from '~v5/common/Table/index.ts';
+
+import { RemoveRoleOptionValue } from '../../consts.ts';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
 
@@ -23,11 +27,34 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   role,
   className,
 }) => {
+  const { colony } = useColonyContext();
   const isMobile = useMobile();
-  const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
-  const permissionsTableProps = usePermissionsTableProps(role);
   const { fieldState } = useController({ name });
-  const team: string | undefined = useWatch({ name: 'team' });
+  const team: number | undefined = useWatch({ name: 'team' });
+  const member: string | undefined = useWatch({ name: 'member' });
+  const isRemovePermissionsAction = role === RemoveRoleOptionValue.remove;
+  const customPermissionsTableColumns = useCustomPermissionsTableColumns(
+    name,
+    isRemovePermissionsAction,
+  );
+
+  const userPermissions =
+    isRemovePermissionsAction && member
+      ? getUserRolesForDomain({
+          colony,
+          userAddress: member,
+          domainId: Number(team),
+        })
+      : [];
+
+  const userRole = getRole(userPermissions);
+
+  const displayedRole = isRemovePermissionsAction ? userRole.role : role;
+
+  const permissionsTableProps = usePermissionsTableProps(
+    displayedRole,
+    isRemovePermissionsAction,
+  );
 
   if (!role) {
     return null;
@@ -36,17 +63,18 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
       key === ColonyRole.Root || key === ColonyRole.Recovery
-        ? Number(team) === Id.RootDomain
+        ? team === Id.RootDomain
         : true,
     );
 
   return (
     <div className={className}>
-      {role !== UserRole.Custom ? (
+      {displayedRole !== UserRole.Custom ? (
         <Table<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
+            permissionsTableProps.className,
             'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0',
             {
               '!border-negative-400': !!fieldState.error,

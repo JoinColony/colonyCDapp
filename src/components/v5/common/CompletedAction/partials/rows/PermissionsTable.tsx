@@ -20,15 +20,21 @@ interface Props {
   role: UserRole;
   domainId: number | undefined;
   userColonyRoles: ColonyRole[];
+  isRemoveAction?: boolean;
 }
 
-const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
+const PermissionsTable = ({
+  role,
+  domainId,
+  userColonyRoles,
+  isRemoveAction,
+}: Props) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = getCustomPermissionsTableColumns(
     userColonyRoles,
     isMobile,
   );
-  const permissionsTableProps = usePermissionsTableProps(role);
+  const permissionsTableProps = usePermissionsTableProps(role, isRemoveAction);
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>

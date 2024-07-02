@@ -10,7 +10,10 @@ import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
 const customPermissionsColumnHelper =
   createColumnHelper<CustomPermissionTableModel>();
 
-export const useCustomPermissionsTableColumns = (name: string) => {
+export const useCustomPermissionsTableColumns = (
+  name: string,
+  isRemovePermissionsAction?: boolean,
+) => {
   const isMobile = useMobile();
 
   return useMemo(
@@ -57,10 +60,13 @@ export const useCustomPermissionsTableColumns = (name: string) => {
         id: 'enabled',
         header: formatText({ id: 'table.column.enable' }),
         cell: ({ row }) => (
-          <FormSwitch name={`${name}.role_${row.original.name}`} />
+          <FormSwitch
+            name={`${name}.role_${row.original.name}`}
+            readOnly={isRemovePermissionsAction}
+          />
         ),
       }),
     ],
-    [isMobile, name],
+    [isMobile, isRemovePermissionsAction, name],
   );
 };

@@ -10,11 +10,8 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
-import {
-  AVAILABLE_ROLES,
-  RemoveRoleOptionValue,
-  type ManagePermissionsFormValues,
-} from './consts.ts';
+import { AVAILABLE_ROLES, RemoveRoleOptionValue } from './consts.ts';
+import { type ManagePermissionsFormValues } from './hooks.ts';
 
 export const getRoleLabel = (role: string | undefined) => {
   return [
