@@ -1,11 +1,19 @@
 mutation CreateTransaction($input: CreateTransactionInput!) {
   createTransaction(input: $input) {
-    id
+    ...Transaction
   }
 }
 
 mutation UpdateTransaction($input: UpdateTransactionInput!) {
   updateTransaction(input: $input) {
+    deleted
+    error {
+      type
+      message
+    }
     id
+    identifier
+    params
+    status
   }
 }

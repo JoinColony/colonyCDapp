@@ -41,6 +41,7 @@ export interface GroupedTransactionContentProps {
   idx: number;
   transaction: TransactionType;
   selected: boolean;
+  isCancelable?: boolean;
 }
 
 export interface TransactionDetailsProps {
@@ -51,11 +52,11 @@ export interface TransactionDetailsProps {
 export interface GroupedTransactionProps {
   appearance?: Appearance;
   transactionGroup: TransactionType[];
-  groupId?: string;
   isContentOpened: boolean;
   onToggleExpand?: (id?: string) => void;
   hideSummary?: boolean;
   isClickable?: boolean;
+  isCancelable?: boolean;
 }
 
 export interface TransactionStatusProps {

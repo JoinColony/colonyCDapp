@@ -19,6 +19,11 @@ export function* extensionUninstall({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: 'uninstallExtension',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'uninstallExtension',
       identifier: colonyAddress,
       params: [getExtensionHash(extensionId)],
@@ -26,7 +31,7 @@ export function* extensionUninstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     const { type } = yield waitForTxResult(txChannel);
 

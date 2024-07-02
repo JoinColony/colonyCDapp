@@ -232,7 +232,7 @@ export function* claimExpenditurePayouts({
 
     yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: claimPayouts.id });
+    yield initiateTransaction(claimPayouts.id);
     yield waitForTxResult(claimPayouts.channel);
   } finally {
     claimPayouts.channel.close();

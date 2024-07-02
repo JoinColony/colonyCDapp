@@ -12,8 +12,10 @@ import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
 
+const TX_RETRY_TIMEOUT = 1000 * 60 * 10;
+
 const displayName =
-  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
+  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionContent';
 
 const MSG = defineMessages({
   failedTx: {
@@ -31,8 +33,10 @@ const MSG = defineMessages({
 
 const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   idx,
+  isCancelable = true,
   selected,
   transaction: {
+    createdAt,
     context,
     error,
     id,
@@ -66,6 +70,10 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     selected,
   });
 
+  // Whether a retry of the transaction is possible
+  const retryable =
+    createdAt.valueOf() > new Date().valueOf() - TX_RETRY_TIMEOUT;
+
   return (
     <li
       className={clsx(`${transactionsItemClasses.listItem}`, {
@@ -85,7 +93,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           />
         </h4>
 
-        {canBeSigned ? (
+        {isCancelable && canBeSigned ? (
           <CancelTransaction
             isShowingCancelConfirmation={isShowingCancelConfirmation}
             handleCancelTransaction={handleCancelTransaction}
@@ -95,7 +103,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           <TransactionStatus status={status} hasError={!!error} />
         )}
       </div>
-      {failed && error && (
+      {failed && error && retryable && (
         <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"
@@ -109,11 +117,13 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
                 >
                   <FormattedMessage id="retry" />
                 </button>
-                <CancelTransaction
-                  isShowingCancelConfirmation={isShowingCancelConfirmation}
-                  handleCancelTransaction={handleCancelTransaction}
-                  toggleCancelConfirmation={toggleCancelConfirmation}
-                />
+                {isCancelable && (
+                  <CancelTransaction
+                    isShowingCancelConfirmation={isShowingCancelConfirmation}
+                    handleCancelTransaction={handleCancelTransaction}
+                    toggleCancelConfirmation={toggleCancelConfirmation}
+                  />
+                )}
               </div>
             }
           >

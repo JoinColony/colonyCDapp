@@ -128,7 +128,7 @@ function* createRootMotionSaga({
       );
     }
 
-    yield initiateTransaction({ id: createMotion.id });
+    yield initiateTransaction(createMotion.id);
 
     const {
       payload: {

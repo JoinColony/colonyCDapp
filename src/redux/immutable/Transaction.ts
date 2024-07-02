@@ -1,14 +1,11 @@
 import { type ClientType } from '@colony/colony-js';
 import { type TransactionReceipt } from '@ethersproject/providers';
 import { type BigNumber, type Overrides } from 'ethers';
-import { Record } from 'immutable';
 import { type MessageDescriptor } from 'react-intl';
 
 import { type TransactionStatus } from '~gql';
 import {
   type AddressOrENSName,
-  type DefaultValues,
-  type RecordToJS,
   type SimpleMessageValues,
 } from '~types/index.ts';
 import {
@@ -24,31 +21,33 @@ export interface TransactionError {
 
 export type TransactionId = string;
 
-export interface TransactionRecordProps {
+interface TransactionRecordProps {
   context: ClientType | ExtendedClientType;
   createdAt: Date;
   deployedContractAddress?: string;
+  deleted?: boolean;
   error?: TransactionError;
   eventData?: object;
   from: string;
   gasLimit?: number;
   gasPrice?: BigNumber;
-  group?: {
+  groupId: string;
+  group: {
     key: string;
-    id: string | string[];
+    id: string;
     index: number;
     title?: MessageDescriptor;
     titleValues?: SimpleMessageValues;
     description?: MessageDescriptor;
     descriptionValues?: SimpleMessageValues;
   };
-  hash?: string;
+  hash: string;
   id: TransactionId;
   identifier?: AddressOrENSName;
   methodContext?: string; // Context in which method is used e.g. setOneTxRole
   methodName: string;
-  options: Overrides;
-  params: MethodParams;
+  options?: Overrides;
+  params?: MethodParams;
   receipt?: TransactionReceipt;
   status: TransactionStatus;
   loadingRelated?: boolean;
@@ -58,36 +57,3 @@ export interface TransactionRecordProps {
 }
 
 export type TransactionType = Readonly<TransactionRecordProps>;
-
-const defaultValues: DefaultValues<TransactionRecordProps> = {
-  // Just because we have to pick one
-  context: undefined,
-  createdAt: new Date(),
-  deployedContractAddress: undefined,
-  error: undefined,
-  eventData: undefined,
-  from: undefined,
-  gasLimit: undefined,
-  gasPrice: undefined,
-  group: undefined,
-  hash: undefined,
-  id: undefined,
-  identifier: undefined,
-  methodContext: undefined,
-  methodName: undefined,
-  options: {},
-  params: {},
-  receipt: undefined,
-  status: undefined,
-  loadingRelated: false,
-  metatransaction: false,
-  title: undefined,
-  titleValues: undefined,
-};
-
-export class TransactionRecord
-  extends Record<TransactionRecordProps>(defaultValues)
-  implements RecordToJS<TransactionType> {}
-
-export const Transaction = (p: TransactionRecordProps) =>
-  new TransactionRecord(p);

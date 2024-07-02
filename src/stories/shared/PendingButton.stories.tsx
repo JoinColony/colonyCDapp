@@ -1,13 +1,12 @@
 import { SpinnerGap } from '@phosphor-icons/react';
+import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 
-import type { Meta, StoryObj } from '@storybook/react';
-
-const meta: Meta<typeof TxButton> = {
+const meta: Meta<typeof IconButton> = {
   title: 'Shared/Buttons/Tx Button',
-  component: TxButton,
+  component: IconButton,
   argTypes: {
     text: {
       name: 'Text',
@@ -34,6 +33,6 @@ const meta: Meta<typeof TxButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TxButton>;
+type Story = StoryObj<typeof IconButton>;
 
 export const Base: Story = {};

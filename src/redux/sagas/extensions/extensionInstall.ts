@@ -22,6 +22,11 @@ export function* extensionInstall({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: 'installExtension',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'installExtension',
       identifier: colonyAddress,
       params: [getExtensionHash(extensionId), availableVersion],
@@ -29,7 +34,7 @@ export function* extensionInstall({
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     const { type } = yield waitForTxResult(txChannel);
 

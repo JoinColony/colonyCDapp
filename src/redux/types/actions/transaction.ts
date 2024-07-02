@@ -120,5 +120,4 @@ export type TransactionActionTypes =
       ActionTypes.TRANSACTION_SUCCEEDED,
       TransactionSucceededPayload,
       Meta
-    >
-  | ActionTypeWithMeta<ActionTypes.TRANSACTION_RETRY, Meta>;
+    >;
