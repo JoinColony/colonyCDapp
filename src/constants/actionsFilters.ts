@@ -17,6 +17,8 @@ export const FILTER_MOTION_STATES = [
   MotionState.Finalizable,
   MotionState.Passed,
   MotionState.Failed,
+  MotionState.Open,
+  MotionState.Rejected,
 ];
 
 export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
