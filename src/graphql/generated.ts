@@ -1647,6 +1647,7 @@ export type CreateTokenInput = {
   symbol: Scalars['String'];
   thumbnail?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<TokenType>;
+  validated?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type CreateTransactionInput = {
@@ -4130,6 +4131,7 @@ export type ModelSubscriptionTokenFilterInput = {
   symbol?: InputMaybe<ModelSubscriptionStringInput>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
+  validated?: InputMaybe<ModelSubscriptionBooleanInput>;
 };
 
 export type ModelSubscriptionTransactionFilterInput = {
@@ -4207,6 +4209,7 @@ export type ModelTokenConditionInput = {
   symbol?: InputMaybe<ModelStringInput>;
   thumbnail?: InputMaybe<ModelStringInput>;
   type?: InputMaybe<ModelTokenTypeInput>;
+  validated?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelTokenConnection = {
@@ -4227,6 +4230,7 @@ export type ModelTokenFilterInput = {
   symbol?: InputMaybe<ModelStringInput>;
   thumbnail?: InputMaybe<ModelStringInput>;
   type?: InputMaybe<ModelTokenTypeInput>;
+  validated?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelTokenTypeInput = {
@@ -8031,6 +8035,8 @@ export type Token = {
   type?: Maybe<TokenType>;
   updatedAt: Scalars['AWSDateTime'];
   users?: Maybe<ModelUserTokensConnection>;
+  /** If the token was validated by the Colony Team, meaning it shows up in the manage tokens list to add to your colony */
+  validated?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -8618,6 +8624,7 @@ export type UpdateTokenInput = {
   symbol?: InputMaybe<Scalars['String']>;
   thumbnail?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<TokenType>;
+  validated?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateTransactionInput = {
@@ -9492,6 +9499,15 @@ export type GetUserTokenBalanceQueryVariables = Exact<{
 
 
 export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalance?: { __typename?: 'GetUserTokenBalanceReturn', balance?: string | null, inactiveBalance?: string | null, lockedBalance?: string | null, activeBalance?: string | null, pendingBalance?: string | null } | null };
+
+export type GetTokensListQueryVariables = Exact<{
+  isValidated?: InputMaybe<Scalars['Boolean']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetTokensListQuery = { __typename?: 'Query', listTokens?: { __typename?: 'ModelTokenConnection', items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> } | null };
 
 export type GetUserTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -13144,6 +13160,49 @@ export function useGetUserTokenBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTokenBalanceQuery>;
 export type GetUserTokenBalanceLazyQueryHookResult = ReturnType<typeof useGetUserTokenBalanceLazyQuery>;
 export type GetUserTokenBalanceQueryResult = Apollo.QueryResult<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>;
+export const GetTokensListDocument = gql`
+    query GetTokensList($isValidated: Boolean, $nextToken: String, $limit: Int) {
+  listTokens(
+    filter: {validated: {eq: $isValidated}}
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      ...Token
+    }
+  }
+}
+    ${TokenFragmentDoc}`;
+
+/**
+ * __useGetTokensListQuery__
+ *
+ * To run a query within a React component, call `useGetTokensListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTokensListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTokensListQuery({
+ *   variables: {
+ *      isValidated: // value for 'isValidated'
+ *      nextToken: // value for 'nextToken'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetTokensListQuery(baseOptions?: Apollo.QueryHookOptions<GetTokensListQuery, GetTokensListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokensListQuery, GetTokensListQueryVariables>(GetTokensListDocument, options);
+      }
+export function useGetTokensListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokensListQuery, GetTokensListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokensListQuery, GetTokensListQueryVariables>(GetTokensListDocument, options);
+        }
+export type GetTokensListQueryHookResult = ReturnType<typeof useGetTokensListQuery>;
+export type GetTokensListLazyQueryHookResult = ReturnType<typeof useGetTokensListLazyQuery>;
+export type GetTokensListQueryResult = Apollo.QueryResult<GetTokensListQuery, GetTokensListQueryVariables>;
 export const GetUserTransactionsDocument = gql`
     query GetUserTransactions($userAddress: ID!, $nextToken: String, $limit: Int) {
   getTransactionsByUser(
