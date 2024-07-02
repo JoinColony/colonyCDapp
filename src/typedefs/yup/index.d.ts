@@ -14,6 +14,10 @@ declare module 'yup' {
       message: TestOptionsMessage,
       mapper?: (item: TValue) => any,
     ): NotRequiredArraySchema<T, C>;
+    some<TValue = T>(
+      message: TestOptionsMessage,
+      mapper?: (item: TValue) => any,
+    ): NotRequiredArraySchema<T, C>;
   }
 
   interface ObjectSchema<T> {

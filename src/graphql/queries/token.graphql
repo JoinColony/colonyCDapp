@@ -19,3 +19,15 @@ query GetUserTokenBalance($input: GetUserTokenBalanceInput!) {
     ...UserTokenBalanceData
   }
 }
+
+query GetTokensList($isValidated: Boolean, $nextToken: String, $limit: Int) {
+  listTokens(
+    filter: { validated: { eq: $isValidated } }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      ...Token
+    }
+  }
+}

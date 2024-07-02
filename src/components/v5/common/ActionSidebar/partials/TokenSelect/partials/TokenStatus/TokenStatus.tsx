@@ -12,17 +12,17 @@ const TokenStatus: FC<PropsWithChildren<TokenStatusProps>> = ({
   children,
 }) => (
   <div
-    className={clsx('flex items-center gap-2 text-md', {
+    className={clsx('flex w-full items-center gap-2 truncate text-md', {
       'text-success-400': status === 'success',
       'text-negative-400': status === 'error',
     })}
   >
     {status === 'success' ? (
-      <CheckCircle size={12} />
+      <CheckCircle size={12} className="flex-shrink-0" />
     ) : (
-      <WarningCircle size={12} />
+      <WarningCircle size={12} className="flex-shrink-0" />
     )}
-    {children}
+    {children && <div className="truncate">{children}</div>}
   </div>
 );
 

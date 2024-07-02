@@ -1,5 +1,7 @@
+import { type TokenStatus } from '~v5/common/types.ts';
+
 export interface TokensTableProps {
-  shouldShowMenu?: (tokenAddress: string) => boolean;
+  shouldShowMenu?: (status: TokenStatus) => boolean;
   name: string;
   isDisabled?: boolean;
 }
