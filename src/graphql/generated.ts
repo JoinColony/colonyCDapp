@@ -1525,8 +1525,8 @@ export type CreateTransactionInput = {
   from: Scalars['ID'];
   gasLimit?: InputMaybe<Scalars['String']>;
   gasPrice?: InputMaybe<Scalars['String']>;
-  group?: InputMaybe<TransactionGroupInput>;
-  groupId?: InputMaybe<Scalars['ID']>;
+  group: TransactionGroupInput;
+  groupId: Scalars['ID'];
   hash?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   identifier?: InputMaybe<Scalars['String']>;
@@ -5529,6 +5529,7 @@ export type Query = {
   getTransaction?: Maybe<Transaction>;
   getTransactionsByUser?: Maybe<ModelTransactionConnection>;
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
+  getTransactionsByUserAndStatus?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   /** Retrieve a user's reputation within a specific domain in a Colony */
@@ -6119,6 +6120,17 @@ export type QueryGetTransactionsByUserAndGroupArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetTransactionsByUserAndStatusArgs = {
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  from?: InputMaybe<ModelIdKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  status: TransactionStatus;
 };
 
 
@@ -7774,9 +7786,9 @@ export type Transaction = {
   /** The transaction's gas price */
   gasPrice?: Maybe<Scalars['String']>;
   /** The group to which the transaction belongs, if any */
-  group?: Maybe<TransactionGroup>;
+  group: TransactionGroup;
   /** The id of the group to which the transaction belongs, if any */
-  groupId?: Maybe<Scalars['ID']>;
+  groupId: Scalars['ID'];
   /** The transaction hash */
   hash?: Maybe<Scalars['String']>;
   /** Transaction id */
@@ -8603,7 +8615,7 @@ export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceRe
 
 export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null };
 
-export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null };
+export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } };
 
 export type UserFragment = { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null };
 
@@ -8742,14 +8754,14 @@ export type CreateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'Transaction', id: string } | null };
+export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
 
 export type UpdateTransactionMutationVariables = Exact<{
   input: UpdateTransactionInput;
 }>;
 
 
-export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', id: string } | null };
+export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', deleted?: boolean | null, id: string, identifier?: string | null, params?: string | null, status: TransactionStatus, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null } | null };
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
@@ -9056,28 +9068,34 @@ export type GetUserTokenBalanceQuery = { __typename?: 'Query', getUserTokenBalan
 
 export type GetUserTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
-  transactionsOlderThan?: InputMaybe<Scalars['String']>;
   nextToken?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
+export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
 
 export type GetTransactionsByGroupQueryVariables = Exact<{
-  from: Scalars['ID'];
+  userAddress: Scalars['ID'];
   groupId: Scalars['ID'];
 }>;
 
 
-export type GetTransactionsByGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null> } | null };
+export type GetTransactionsByGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
 
 export type GetTransactionQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, params?: string | null, groupId?: string | null, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, group?: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } | null } | null };
+export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
+
+export type GetPendingTransactionsQueryVariables = Exact<{
+  userAddress: Scalars['ID'];
+}>;
+
+
+export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
 
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -10030,8 +10048,13 @@ export const TransactionFragmentDoc = gql`
   id
   context
   createdAt
+  error {
+    type
+    message
+  }
   from
   colonyAddress
+  identifier
   params
   groupId
   group {
@@ -10649,10 +10672,10 @@ export type DeleteColonyTokensMutationOptions = Apollo.BaseMutationOptions<Delet
 export const CreateTransactionDocument = gql`
     mutation CreateTransaction($input: CreateTransactionInput!) {
   createTransaction(input: $input) {
-    id
+    ...Transaction
   }
 }
-    `;
+    ${TransactionFragmentDoc}`;
 export type CreateTransactionMutationFn = Apollo.MutationFunction<CreateTransactionMutation, CreateTransactionMutationVariables>;
 
 /**
@@ -10682,7 +10705,15 @@ export type CreateTransactionMutationOptions = Apollo.BaseMutationOptions<Create
 export const UpdateTransactionDocument = gql`
     mutation UpdateTransaction($input: UpdateTransactionInput!) {
   updateTransaction(input: $input) {
+    deleted
+    error {
+      type
+      message
+    }
     id
+    identifier
+    params
+    status
   }
 }
     `;
@@ -12303,10 +12334,9 @@ export type GetUserTokenBalanceQueryHookResult = ReturnType<typeof useGetUserTok
 export type GetUserTokenBalanceLazyQueryHookResult = ReturnType<typeof useGetUserTokenBalanceLazyQuery>;
 export type GetUserTokenBalanceQueryResult = Apollo.QueryResult<GetUserTokenBalanceQuery, GetUserTokenBalanceQueryVariables>;
 export const GetUserTransactionsDocument = gql`
-    query GetUserTransactions($userAddress: ID!, $transactionsOlderThan: String, $nextToken: String, $limit: Int) {
+    query GetUserTransactions($userAddress: ID!, $nextToken: String, $limit: Int) {
   getTransactionsByUser(
     from: $userAddress
-    createdAt: {lt: $transactionsOlderThan}
     filter: {deleted: {ne: true}}
     sortDirection: DESC
     nextToken: $nextToken
@@ -12333,7 +12363,6 @@ export const GetUserTransactionsDocument = gql`
  * const { data, loading, error } = useGetUserTransactionsQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
- *      transactionsOlderThan: // value for 'transactionsOlderThan'
  *      nextToken: // value for 'nextToken'
  *      limit: // value for 'limit'
  *   },
@@ -12351,8 +12380,8 @@ export type GetUserTransactionsQueryHookResult = ReturnType<typeof useGetUserTra
 export type GetUserTransactionsLazyQueryHookResult = ReturnType<typeof useGetUserTransactionsLazyQuery>;
 export type GetUserTransactionsQueryResult = Apollo.QueryResult<GetUserTransactionsQuery, GetUserTransactionsQueryVariables>;
 export const GetTransactionsByGroupDocument = gql`
-    query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
-  getTransactionsByUserAndGroup(groupId: $groupId, from: {eq: $from}) {
+    query GetTransactionsByGroup($userAddress: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(from: {eq: $userAddress}, groupId: $groupId) {
     items {
       ...Transaction
     }
@@ -12372,7 +12401,7 @@ export const GetTransactionsByGroupDocument = gql`
  * @example
  * const { data, loading, error } = useGetTransactionsByGroupQuery({
  *   variables: {
- *      from: // value for 'from'
+ *      userAddress: // value for 'userAddress'
  *      groupId: // value for 'groupId'
  *   },
  * });
@@ -12423,6 +12452,43 @@ export function useGetTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQuery>;
 export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransactionLazyQuery>;
 export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
+export const GetPendingTransactionsDocument = gql`
+    query GetPendingTransactions($userAddress: ID!) {
+  getTransactionsByUserAndStatus(from: {eq: $userAddress}, status: PENDING) {
+    items {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPendingTransactionsQuery__
+ *
+ * To run a query within a React component, call `useGetPendingTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPendingTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPendingTransactionsQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *   },
+ * });
+ */
+export function useGetPendingTransactionsQuery(baseOptions: Apollo.QueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
+      }
+export function useGetPendingTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
+        }
+export type GetPendingTransactionsQueryHookResult = ReturnType<typeof useGetPendingTransactionsQuery>;
+export type GetPendingTransactionsLazyQueryHookResult = ReturnType<typeof useGetPendingTransactionsLazyQuery>;
+export type GetPendingTransactionsQueryResult = Apollo.QueryResult<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>;
 export const GetUserByAddressDocument = gql`
     query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {

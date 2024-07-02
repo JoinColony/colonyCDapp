@@ -119,7 +119,7 @@ function* editExpenditureAction({
       );
     }
 
-    yield initiateTransaction({ id: editExpenditure.id });
+    yield initiateTransaction(editExpenditure.id);
 
     const {
       payload: {

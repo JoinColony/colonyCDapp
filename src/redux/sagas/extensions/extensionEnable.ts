@@ -114,13 +114,13 @@ function* extensionEnable({
 
     if (needsInitialisation) {
       yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
-      yield initiateTransaction({ id: initialise.id });
+      yield initiateTransaction(initialise.id);
       yield waitForTxResult(initialise.channel);
     }
 
     if (needsSettingRoles) {
       yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
-      yield initiateTransaction({ id: setUserRoles.id });
+      yield initiateTransaction(setUserRoles.id);
       yield waitForTxResult(setUserRoles.channel);
     }
 

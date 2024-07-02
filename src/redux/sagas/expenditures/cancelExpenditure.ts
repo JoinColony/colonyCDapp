@@ -10,6 +10,7 @@ import { type ColonyManager } from '~context/index.ts';
 import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type Expenditure } from '~types/graphql.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -95,6 +96,8 @@ function* cancelDraftExpenditure({
   stakedExpenditureAddress,
   meta,
 }: CancelExpenditureHelperParam) {
+  const batchKey = TRANSACTION_METHODS.CancelDraftExpenditure;
+
   if (expenditure.isStaked && stakedExpenditureAddress) {
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
       colonyClient.networkClient,
@@ -106,6 +109,11 @@ function* cancelDraftExpenditure({
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.StakedExpenditureClient,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'cancelAndReclaimStake',
       identifier: colonyAddress,
       params: [permissionDomainId, childSkillIndex, expenditure.nativeId],
@@ -113,13 +121,18 @@ function* cancelDraftExpenditure({
   } else {
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'cancelExpenditure',
       identifier: colonyAddress,
       params: [expenditure.nativeId],
     });
   }
 
-  yield initiateTransaction({ id: meta.id });
+  yield initiateTransaction(meta.id);
 }
 
 function* cancelLockedExpenditure({
@@ -128,6 +141,8 @@ function* cancelLockedExpenditure({
   colonyClient,
   expenditure,
 }: CancelExpenditureHelperParam) {
+  const batchKey = TRANSACTION_METHODS.CancelLockedExpenditure;
+
   const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
     colonyClient.networkClient,
     colonyClient,
@@ -139,12 +154,17 @@ function* cancelLockedExpenditure({
 
   yield fork(createTransaction, meta.id, {
     context: ClientType.ColonyClient,
+    group: {
+      key: batchKey,
+      id: meta.id,
+      index: 0,
+    },
     methodName: 'cancelExpenditureViaArbitration',
     identifier: colonyAddress,
     params,
   });
 
-  yield initiateTransaction({ id: meta.id });
+  yield initiateTransaction(meta.id);
 }
 
 export default function* cancelExpenditureSaga() {

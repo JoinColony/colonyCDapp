@@ -1,82 +1,87 @@
 import { Binoculars } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import { useInView } from 'framer-motion';
+import React, { useRef, type FC, useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 
-import { useTransactionsListObserver } from './hooks.ts';
+import { useGroupedTransactions } from '../../../../../../state/transactionState.ts';
+
 import TransactionList from './partials/TransactionList.tsx';
 import { type TransactionsProps } from './types.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
-const TransactionsTab: FC<TransactionsProps> = () =>
-  // {
-  //   appearance: { interactive },
-  // }
-  {
-    const { transactionAndMessageGroups } = useUserTransactionContext();
-    // const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
-    //   isLatestTxPending ? 0 : -1,
-    // );
+const MSG = defineMessages({
+  thisIsTheEnd: {
+    id: `${displayName}.thisIsTheEnd`,
+    defaultMessage: "😎 You've reached the end",
+  },
+});
 
-    // const renderTransactions = () => {
-    //   const unselectTransactionGroup = () => {
-    //     setSelectedGroupIdx(-1);
-    //   };
-    //   let detailsTransactionGroup = transactionAndMessageGroups[selectedGroupIdx];
-    //   if (!interactive && selectedGroupIdx === -1) {
-    //     [detailsTransactionGroup] = transactionAndMessageGroups;
-    //   }
+const TransactionsTab: FC<TransactionsProps> = () => {
+  const { transactions, canFetchMore, fetchMore } = useGroupedTransactions();
+  const containerNode = useRef(null);
+  const endNode = useRef(null);
+  const isInView = useInView(endNode, { root: containerNode });
+  const [isFetching, setIsFetching] = useState(false);
+  const isEmpty = !transactions.length;
 
-    //   if (detailsTransactionGroup || !interactive) {
-    //     if (isTxGroup(detailsTransactionGroup)) {
-    //       return (
-    //         <TransactionDetails transactionGroup={detailsTransactionGroup} />
-    //       );
-    //     }
-    //     // @TODO: when handle this cases?
-    //     return (
-    //       <MessageCardDetails
-    //         message={detailsTransactionGroup[0] as MessageType}
-    //         onClose={unselectTransactionGroup}
-    //       />
-    //     );
-    //   }
+  useEffect(() => {
+    if (isInView && !isFetching) {
+      setIsFetching(true);
+      fetchMore().then(
+        () => setIsFetching(false),
+        () => setIsFetching(false),
+      );
+    }
+    // We are not including fetchMore here as we really only want to react to changes of isInView
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView]);
 
-    //   return;
-    // };
-
-    const isEmpty =
-      !transactionAndMessageGroups || !transactionAndMessageGroups.length;
-
-    /* Load more when reaching end of list  */
-    useTransactionsListObserver();
-
-    return (
-      <div className="flex h-full w-full flex-col overflow-auto">
-        <p className="px-6 pt-6 heading-5">
-          {formatText({ id: 'transactions' })}
-        </p>
+  return (
+    <div
+      ref={containerNode}
+      className="flex h-full w-full flex-col overflow-auto"
+    >
+      <p className="px-6 pt-6 heading-5">
+        {formatText({ id: 'transactions' })}
+      </p>
+      <div className="h-full w-full px-6 sm:px-0">
+        {isEmpty ? (
+          <EmptyContent
+            title={{ id: 'empty.content.title.transactions' }}
+            description={{ id: 'empty.content.subtitle.transactions' }}
+            icon={Binoculars}
+            className="h-full"
+          />
+        ) : (
+          <TransactionList transactions={transactions} />
+        )}
         <div
-          className="h-full w-full px-6 sm:px-0"
-          id="transactionsListContainer"
+          ref={endNode}
+          className="flex items-center justify-center px-6 pb-4 pt-2 text-sm"
         >
-          {isEmpty ? (
-            <EmptyContent
-              title={{ id: 'empty.content.title.transactions' }}
-              description={{ id: 'empty.content.subtitle.transactions' }}
-              icon={Binoculars}
-              className="h-full"
-            />
+          {canFetchMore ? (
+            <>
+              <SpinnerLoader />
+              <span className="mx-2">
+                {formatText(
+                  { id: 'status.loading' },
+                  { optionalText: ' more' },
+                )}
+              </span>
+            </>
           ) : (
-            <TransactionList />
+            <span>{formatText(MSG.thisIsTheEnd)}</span>
           )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 TransactionsTab.displayName = displayName;
 

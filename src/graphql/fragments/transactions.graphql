@@ -2,8 +2,13 @@ fragment Transaction on Transaction {
   id
   context
   createdAt
+  error {
+    type
+    message
+  }
   from
   colonyAddress
+  identifier
   params
   groupId
   group {

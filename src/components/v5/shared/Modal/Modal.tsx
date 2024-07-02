@@ -3,12 +3,12 @@ import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
-import { useGetTxButtons } from '~frame/Extensions/layouts/hooks.tsx';
 import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
 import { useMobile } from '~hooks/index.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
 import JoinButton from '../Button/JoinButton/index.ts';
+import TxButton from '../TxButton/TxButton.tsx';
 
 import ModalBase from './ModalBase.tsx';
 import { type ModalProps } from './types.ts';
@@ -33,7 +33,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   ...props
 }) => {
   const { formatMessage } = useIntl();
-  const txButtons = useGetTxButtons();
   const isMobile = useMobile();
 
   return (
@@ -64,7 +63,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         <div className="fixed right-4 top-9 z-top">
           <div className="relative">
             <UserNavigationWrapper
-              txButtons={txButtons}
+              txButton={<TxButton />}
               userHub={<UserHubButton />}
               extra={<JoinButton />}
             />

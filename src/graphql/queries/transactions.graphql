@@ -1,12 +1,6 @@
-query GetUserTransactions(
-  $userAddress: ID!
-  $transactionsOlderThan: String
-  $nextToken: String
-  $limit: Int
-) {
+query GetUserTransactions($userAddress: ID!, $nextToken: String, $limit: Int) {
   getTransactionsByUser(
     from: $userAddress
-    createdAt: { lt: $transactionsOlderThan }
     filter: { deleted: { ne: true } }
     sortDirection: DESC
     nextToken: $nextToken
@@ -19,8 +13,8 @@ query GetUserTransactions(
   }
 }
 
-query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
-  getTransactionsByUserAndGroup(groupId: $groupId, from: { eq: $from }) {
+query GetTransactionsByGroup($userAddress: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(from: { eq: $userAddress }, groupId: $groupId) {
     items {
       ...Transaction
     }
@@ -30,5 +24,13 @@ query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
 query GetTransaction($id: ID!) {
   getTransaction(id: $id) {
     ...Transaction
+  }
+}
+
+query GetPendingTransactions($userAddress: ID!) {
+  getTransactionsByUserAndStatus(from: { eq: $userAddress }, status: PENDING) {
+    items {
+      id
+    }
   }
 }

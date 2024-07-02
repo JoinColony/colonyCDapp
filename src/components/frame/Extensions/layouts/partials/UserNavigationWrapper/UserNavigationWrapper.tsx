@@ -10,14 +10,14 @@ const displayName = 'frame.Extensions.partials.UserNavigationWrapper';
 
 const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   userHub,
-  txButtons,
+  txButton,
   extra,
   isHidden,
 }) => {
   const userHubComponent = userHub || <HeaderAvatar />;
   const userNavigation = (
     <UserNavigation
-      txButtons={txButtons}
+      txButton={txButton}
       userHub={userHubComponent}
       extra={extra}
     />
