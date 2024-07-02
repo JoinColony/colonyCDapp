@@ -21,6 +21,7 @@ import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion.t
 import managePermissionsMotionSaga from './managePermissionsMotion.ts';
 import manageReputationMotionSaga from './manageReputationMotion.ts';
 import manageTokensMotionSaga from './manageTokens.ts';
+import manageVerifiedMembersMotionSaga from './manageVerifiedMembers.ts';
 import moveFundsMotionSaga from './moveFundsMotion.ts';
 import paymentMotionSaga from './paymentMotion.ts';
 import removeVerifiedMembersMotionSaga from './removeVerifiedMembers.ts';
@@ -42,6 +43,7 @@ export default function* actionsSagas() {
     call(createEditDomainMultiSigMotionSaga),
     call(moveFundsMotionSaga),
     call(managePermissionsMotionSaga),
+    call(manageVerifiedMembersMotionSaga),
     call(editColonyMotionSaga),
     call(createDecisionMotionSaga),
     call(fundExpenditureMotionSaga),
