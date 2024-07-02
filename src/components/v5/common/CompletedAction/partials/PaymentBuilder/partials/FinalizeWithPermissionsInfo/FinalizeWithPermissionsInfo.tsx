@@ -1,8 +1,9 @@
 import { isToday, isYesterday } from 'date-fns';
 import React, { type FC } from 'react';
-import { FormattedDate, FormattedDateParts, defineMessages } from 'react-intl';
+import { FormattedDate, defineMessages } from 'react-intl';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
@@ -55,19 +56,7 @@ const formatDate = (value: string | undefined) => {
 
   return (
     <>
-      <FormattedDateParts
-        value={date}
-        day="numeric"
-        month="short"
-        year="numeric"
-      >
-        {(parts) => (
-          <span>
-            {parts[2].value} {parts[0].value} {parts[4].value}
-          </span>
-        )}
-      </FormattedDateParts>{' '}
-      {formatText(MSG.at)}{' '}
+      {getFormattedDateFrom(value)} {formatText(MSG.at)}{' '}
       <FormattedDate value={date} hour="numeric" minute="numeric" />
     </>
   );
