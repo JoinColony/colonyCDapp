@@ -15,7 +15,7 @@ import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
-import ManageTokens from './partials/ManageTokens/index.ts';
+import ManageTokens from './partials/ManageTokens/ManageTokens.tsx';
 import MintTokens from './partials/MintTokens/index.ts';
 import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/PaymentBuilderWidget.tsx';
 import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
