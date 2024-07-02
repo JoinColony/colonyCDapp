@@ -80,7 +80,7 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
     context: isMultiSig
       ? ClientType.MultisigPermissionsClient
       : ClientType.VotingReputationClient,
-    methodName: 'createMotion',
+    methodName: TRANSACTION_METHODS.CreateMotion,
     identifier: colonyAddress,
     group: {
       key: batchKey,
