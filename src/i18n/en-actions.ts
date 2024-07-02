@@ -53,7 +53,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
-      ${ExtendedColonyActionType.SplitPayment} {Split Payment **change me**}
+      ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -100,6 +100,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} {Contract interaction}
       ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
       ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} {Multiple transactions}
+      ${ExtendedColonyActionType.SplitPayment} {Split payment}
       other {Generic}
     }`,
 };

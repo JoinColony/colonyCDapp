@@ -39,12 +39,23 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  // User can't use reputation to create Payment builder action
-  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
+  const actionsWithoutReputationDecisionMethod = [
+    Action.PaymentBuilder,
+    Action.SplitPayment,
+  ];
+
+  // User can't use reputation to create Payment builder or split payment action
+  if (
+    isVotingReputationEnabled &&
+    !actionsWithoutReputationDecisionMethod.includes(actionType)
+  ) {
     return false;
   }
 
-  if (isStakedExpenditureEnabled && actionType === Action.PaymentBuilder) {
+  if (
+    isStakedExpenditureEnabled &&
+    actionsWithoutReputationDecisionMethod.includes(actionType)
+  ) {
     return false;
   }
 
