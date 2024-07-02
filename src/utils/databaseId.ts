@@ -18,3 +18,17 @@ export const getExpenditureDatabaseId = (
 ) => {
   return `${colonyAddress}_${nativeExpenditureId}`;
 };
+
+export const getHistoricRolesDatabaseId = ({
+  colonyAddress,
+  nativeId,
+  recipientAddress,
+  blockNumber,
+}: {
+  colonyAddress: string;
+  nativeId: number | undefined;
+  recipientAddress: string | null | undefined;
+  blockNumber: number;
+}) => {
+  return `${colonyAddress}_${nativeId}_${recipientAddress}_${blockNumber}_roles`;
+};
