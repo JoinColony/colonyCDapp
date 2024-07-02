@@ -98,6 +98,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
     <UserInfo
       aboutDescription={bio || ''}
       contributorType={contributorType ?? undefined}
+      isVerified={isVerified}
       domains={domains}
       userDetails={
         <UserDetails
@@ -142,7 +143,7 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="max-w-[20rem]"
+              classNames="max-w-[20rem] sm:max-w-[350px]"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',
