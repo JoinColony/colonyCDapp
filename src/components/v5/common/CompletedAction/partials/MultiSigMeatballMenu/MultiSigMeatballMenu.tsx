@@ -68,7 +68,11 @@ const MultiSigMeatballMenu: FC<MultiSigMeatballMenuProps> = ({
       vote: MultiSigVote.Reject,
       domainId: Number(nativeMultiSigDomainId),
       multiSigId: nativeMultiSigId,
-      requiredRoles: getRolesNeededForMultiSigAction(actionType) || [],
+      requiredRoles:
+        getRolesNeededForMultiSigAction({
+          actionType,
+          createdIn: Number(multiSigData.nativeMultiSigDomainId),
+        }) || [],
     };
 
     await voteOnMultiSig(rejectVotePayload);

@@ -427,6 +427,8 @@
     "transaction.MultisigPermissionsClient.multicall.title": "Multicall",
     "transaction.MultisigPermissionsClient.cancel.title": "Cancel MultiSig motion",
     "transaction.MultisigPermissionsClient.changeVote.title": "Change MultiSig motion vote",
+    "transaction.MultisigPermissionsClient.executeWithoutFailure.title": "Execute without failure",
+    "transaction.group.setInitialMultiSigRoles.title": "Set initial multi-sig roles",
     "metatransaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",
     "metatransaction.group.deposit.title": "Activate tokens",
     "metatransaction.group.deposit.description": "Activate tokens",

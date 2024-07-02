@@ -31,7 +31,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   actionType,
 }) => {
   const { user } = useAppContext();
-  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction({
+    actionType,
+    createdIn: Number(multiSigData.nativeMultiSigDomainId),
+  });
   const { showRejectMultiSigStep, setShowRejectMultiSigStep } =
     useCompletedActionContext();
 

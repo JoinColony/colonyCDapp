@@ -5,7 +5,10 @@ import {
   UserRole,
   USER_ROLES,
 } from '~constants/permissions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
@@ -80,15 +83,44 @@ export const getPermissionsMap = (
 export const getManagePermissionsPayload = (
   colony: Colony,
   values: ManagePermissionsFormValues,
-) => ({
-  annotationMessage: values.description
-    ? sanitizeHTML(values.description)
-    : undefined,
-  domainId: Number(values.team),
-  userAddress: values.member,
-  colonyName: colony.name,
-  colonyAddress: colony.colonyAddress,
-  motionDomainId: Number(values.createdIn),
-  roles: getPermissionsMap(values.permissions, values.role),
-  authority: values.authority,
-});
+) => {
+  const {
+    description: annotationMessage,
+    title,
+    decisionMethod,
+    team,
+    member,
+    createdIn,
+    permissions,
+    role,
+    authority,
+  } = values;
+
+  const commonPayload = {
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
+    domainId: Number(team),
+    userAddress: member,
+    colonyName: colony.name,
+    colonyAddress: colony.colonyAddress,
+    roles: getPermissionsMap(permissions, role),
+    authority,
+    customActionTitle: title,
+  };
+
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
+    return {
+      ...commonPayload,
+      motionDomainId: Number(createdIn),
+      colonyRoles: extractColonyRoles(colony.roles),
+      colonyDomains: extractColonyDomains(colony.domains),
+      isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+    };
+  }
+
+  return commonPayload;
+};
