@@ -95,9 +95,10 @@ export const useManagePermissions = (
     getFormOptions,
     validationSchema,
     actionType:
-      decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_USER_ROLES_SET
-        : ActionTypes.MOTION_USER_ROLES_SET,
+      decisionMethod === DecisionMethod.Reputation ||
+      decisionMethod === DecisionMethod.MultiSig
+        ? ActionTypes.MOTION_USER_ROLES_SET
+        : ActionTypes.ACTION_USER_ROLES_SET,
     defaultValues: useMemo<DeepPartial<ManagePermissionsFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
