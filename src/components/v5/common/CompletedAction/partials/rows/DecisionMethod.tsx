@@ -1,7 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import ActionData from './ActionData.tsx';
@@ -18,19 +17,13 @@ const DecisionMethodRow = ({
   isMultisig,
 }: DecisionMethodRowProps) => {
   const getRowContent = () => {
-    const textContent: Record<DecisionMethod, string> = {
-      [DecisionMethod.MultiSig]: 'Multi-Sig',
-      [DecisionMethod.Permissions]: 'Permissions',
-      [DecisionMethod.Reputation]: 'Reputation',
-    };
-
     if (isMultisig) {
-      return textContent[DecisionMethod.MultiSig];
+      return formatText({ id: 'decisionMethod.multiSig' });
     }
     if (isMotion) {
-      return textContent[DecisionMethod.Reputation];
+      return formatText({ id: 'decisionMethod.reputation' });
     }
-    return textContent[DecisionMethod.Permissions];
+    return formatText({ id: 'decisionMethod.permissions' });
   };
 
   return (
