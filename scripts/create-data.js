@@ -86,7 +86,8 @@ const CHAR_LIMITS = {
   },
   COLONY: {
     MAX_COLONY_DISPLAY_NAME: 20,
-    MAX_COLONY_OBJECTIVE_TITLE: 60
+    MAX_COLONY_OBJECTIVE_TITLE: 60,
+    MAX_COLONY_OBJECTIVE_DESCRIPTION: 200,
   }
 };
 
@@ -525,6 +526,7 @@ const createColony = async (
     metadata.objective = {
       ...colonyObjective,
       title: colonyObjective.title.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_TITLE),
+      description: colonyObjective.description.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_DESCRIPTION),
     };
   }
 
