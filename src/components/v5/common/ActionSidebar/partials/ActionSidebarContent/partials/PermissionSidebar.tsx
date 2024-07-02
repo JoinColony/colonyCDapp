@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
@@ -55,8 +56,7 @@ const formatDate = (value: string | undefined) => {
 
   return (
     <>
-      <FormattedDate value={date} day="numeric" month="short" year="numeric" />{' '}
-      {formatText(MSG.at)}{' '}
+      {getFormattedDateFrom(value)} {formatText(MSG.at)}{' '}
       <FormattedDate value={date} hour="numeric" minute="numeric" />
     </>
   );

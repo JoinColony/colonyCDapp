@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import format from 'date-fns/format';
 import React, { type FC } from 'react';
 
 import getActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
@@ -60,7 +60,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
     }),
   );
   const team = fromDomain?.metadata || motionData?.motionDomain.metadata;
-  const date = format(new Date(createdAt), 'dd MMMM yyyy');
+  const date = getFormattedDateFrom(createdAt);
   const meatBallMenuProps = getMenuProps(actionRow);
   const textClassName = 'font-normal text-sm';
 

@@ -1,4 +1,3 @@
-import format from 'date-fns/format';
 import sub from 'date-fns/sub';
 
 import {
@@ -11,7 +10,7 @@ import {
   type ActivityFeedFilters,
   type ActivityFeedColonyAction,
 } from '~hooks/useActivityFeed/types.ts';
-import { DEFAULT_DATE_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 
 import { type DateOptions } from './partials/ActionsTableFilters/types.ts';
 
@@ -117,8 +116,5 @@ export const getCustomDateLabel = (dateRange?: DateOptions['custom']) => {
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
 
-  return `${format(startDate, DEFAULT_DATE_FORMAT)} - ${format(
-    endDate,
-    DEFAULT_DATE_FORMAT,
-  )}`;
+  return `${getFormattedDateFrom(startDate)} - ${getFormattedDateFrom(endDate)}`;
 };
