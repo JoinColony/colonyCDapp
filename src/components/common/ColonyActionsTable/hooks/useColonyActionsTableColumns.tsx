@@ -78,7 +78,7 @@ const useColonyActionsTableColumns = (
         },
       }),
       helper.accessor('createdAt', {
-        staticSize: '8rem',
+        staticSize: '10rem',
         header: formatText({
           id: 'activityFeedTable.table.header.date',
         }),
