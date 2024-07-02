@@ -16,7 +16,7 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
-import TokensTable from './ApprovedTokens.tsx';
+import TokensTable from './partials/TokensTable/TokensTable.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.ManageTokens';
 
@@ -35,9 +35,8 @@ const ManageTokens = ({ action }: ManageTokensProps) => {
       },
     ),
   } = action?.metadata || {};
-  const { initiatorUser } = action;
 
-  const { approvedTokenChanges } = action;
+  const { initiatorUser, approvedTokenChanges } = action;
 
   return (
     <>

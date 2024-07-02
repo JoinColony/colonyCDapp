@@ -55,7 +55,7 @@ const SearchItem: FC<SearchItemProps> = ({
 
           return (
             <li
-              className={clsx({
+              className={clsx('overflow-x-auto', {
                 'mb-1 w-full': isLabelVisible,
                 'inline-flex w-1/4': !isLabelVisible,
               })}
