@@ -1,4 +1,3 @@
-import { RootMotionMethodNames } from '~redux';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
@@ -31,7 +30,6 @@ export const getCreateNewTeamPayload = (
 
   return {
     ...baseDomainPayload,
-    operationName: RootMotionMethodNames.AddDomain,
     colonyRoles: extractColonyRoles(colony.roles),
     colonyDomains: extractColonyDomains(colony.domains),
     isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
