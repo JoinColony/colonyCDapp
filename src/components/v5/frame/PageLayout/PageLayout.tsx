@@ -67,6 +67,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnFocusLoss
         pauseOnHover
         closeButton={CloseButton}
+        className="modal-blur"
       />
       <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
@@ -90,10 +91,13 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           ) : (
             <div className="w-full md:flex md:h-[calc(100vh-var(--top-content-height))] md:gap-8 md:pl-4 md:pt-4">
               <div
-                className={clsx('relative z-sidebar md:flex-shrink-0', {
-                  'md:w-[5.125rem]': !hasWideSidebar,
-                  'md:w-[17.5rem]': hasWideSidebar,
-                })}
+                className={clsx(
+                  'modal-blur relative z-sidebar md:flex-shrink-0',
+                  {
+                    'md:w-[5.125rem]': !hasWideSidebar,
+                    'md:w-[17.5rem]': hasWideSidebar,
+                  },
+                )}
               >
                 <div
                   className={clsx(
@@ -110,14 +114,14 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                   'gap-8': !isOnColonyRoute,
                 })}
               >
-                <div className="flex-shrink-0 pr-4 pt-5">
+                <div className="flex-shrink-0 pr-4 pt-4">
                   <PageHeader
                     {...headerProps}
                     className={clsx({ '!items-center': isOnColonyRoute })}
                   />
                 </div>
                 <div
-                  className="flex-grow overflow-auto pb-4 pr-4"
+                  className="modal-blur flex-grow overflow-auto pb-4 pr-4"
                   style={{ scrollbarGutter: 'stable' }}
                 >
                   <div className="w-full max-w-[79.875rem] xl:mx-auto">

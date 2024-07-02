@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import React, {
   type FC,
@@ -19,7 +20,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
+import { useTablet } from '~hooks';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
@@ -56,6 +57,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
     actionSidebarToggle;
   const txButtons = useGetTxButtons();
+  const isTablet = useTablet();
 
   const {
     isMemberModalOpen,
@@ -67,7 +69,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     useColonyCreatedModalContext();
   // const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
   //   useState(false);
-  const { isTokensModalOpen } = useTokensModalContext();
 
   const { calamityBannerItems, canUpgrade } = useCalamityBannerInfo();
 
@@ -91,17 +92,22 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const userHub = useMemo(() => <UserHubButton />, []);
 
   const getUserNavigation = useCallback(
-    (isHidden?: boolean) =>
-      !isTokensModalOpen ? (
-        <UserNavigationWrapper
-          txButtons={txButtons}
-          userHub={userHub}
-          isHidden={isHidden}
-          extra={
-            <>
-              <JoinButton />
-              {/* Hide Initially */}
-              {/* {!isActionSidebarOpen ? (
+    (isHidden?: boolean) => (
+      <UserNavigationWrapper
+        txButtons={txButtons}
+        userHub={userHub}
+        className={clsx(
+          'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
+          {
+            'relative z-userNav': !isTablet,
+          },
+        )}
+        isHidden={isTablet && isHidden}
+        extra={
+          <>
+            <JoinButton />
+            {/* Hide Initially */}
+            {/* {!isActionSidebarOpen ? (
                 <Button
                   className="ml-1"
                   text={MSG.inviteMembers}
@@ -111,11 +117,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
                   onClick={() => setIsInviteMembersModalOpen(true)}
                 />
               ) : null} */}
-            </>
-          }
-        />
-      ) : null,
-    [isTokensModalOpen, txButtons, userHub],
+          </>
+        }
+      />
+    ),
+    [isTablet, txButtons, userHub],
   );
 
   return (
@@ -159,8 +165,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           <ActionSidebar
             transactionId={transactionId || undefined}
             initialValues={actionSidebarInitialValues}
+            className="modal-blur"
           >
-            {getUserNavigation()}
+            {isTablet ? getUserNavigation() : undefined}
           </ActionSidebar>
         )}
       </AnimatePresence>

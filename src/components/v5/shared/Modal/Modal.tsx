@@ -2,13 +2,8 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
-import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
-import { useGetTxButtons } from '~frame/Extensions/layouts/hooks.tsx';
-import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
-import { useMobile } from '~hooks/index.ts';
+import { useAddClassToElement } from '~hooks/useAddClassToElement.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
-
-import JoinButton from '../Button/JoinButton/index.ts';
 
 import ModalBase from './ModalBase.tsx';
 import { type ModalProps } from './types.ts';
@@ -30,15 +25,21 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   buttonMode = 'secondarySolid',
   isTopSectionWithBackground,
   shouldShowHeader = false,
+  isOpen,
   ...props
 }) => {
   const { formatMessage } = useIntl();
-  const txButtons = useGetTxButtons();
-  const isMobile = useMobile();
+
+  useAddClassToElement({
+    shouldAddClass: isOpen && shouldShowHeader,
+    className: 'show-header-in-modal',
+    element: document.body,
+  });
 
   return (
     <ModalBase
       onRequestClose={onClose}
+      isOpen={isOpen}
       {...{ isFullOnMobile, ...props }}
       isTopSectionWithBackground={isTopSectionWithBackground}
     >
@@ -60,17 +61,6 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      {!isMobile && shouldShowHeader && (
-        <div className="fixed right-4 top-9 z-top">
-          <div className="relative">
-            <UserNavigationWrapper
-              txButtons={txButtons}
-              userHub={<UserHubButton />}
-              extra={<JoinButton />}
-            />
-          </div>
-        </div>
-      )}
       <div
         className={clsx(
           'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',

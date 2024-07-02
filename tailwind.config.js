@@ -148,6 +148,8 @@ module.exports = {
         dropdown: '20',
         header: '100',
         top: '1000',
+        userNav: '11',
+        userNavModal: '1001',
       },
     },
   },
