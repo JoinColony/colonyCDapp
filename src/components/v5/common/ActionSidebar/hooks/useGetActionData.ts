@@ -161,27 +161,6 @@ const useGetActionData = (transactionId: string | undefined) => {
         };
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion: {
-        const modifiedTokens =
-          action.pendingColonyMetadata?.modifiedTokenAddresses?.added?.map(
-            (addedToken) => ({
-              token: addedToken,
-            }),
-          );
-        const colonyTokens = action.colony.tokens?.items?.map(
-          (colonyToken) => ({
-            token: colonyToken?.token?.tokenAddress,
-          }),
-        );
-        const allTokens = [...(colonyTokens || []), ...(modifiedTokens || [])];
-
-        if (modifiedTokens && modifiedTokens?.length > 0) {
-          return {
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageTokens,
-            selectedTokenAddresses: allTokens,
-            ...repeatableFields,
-          };
-        }
-
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
           colonyName: motionData

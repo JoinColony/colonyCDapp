@@ -35,6 +35,7 @@ export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
+  EditColonyByDelta = 'editColonyByDelta',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
@@ -179,7 +180,6 @@ export type MotionActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        tokenAddresses?: Address[];
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;

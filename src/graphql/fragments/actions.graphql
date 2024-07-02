@@ -120,6 +120,15 @@ fragment ColonyAction on ColonyAction {
   members
   rootHash
   expenditureId
+  approvedTokenChanges {
+    ...ApprovedTokenChanges
+  }
+}
+
+fragment ApprovedTokenChanges on ApprovedTokenChanges {
+  added
+  removed
+  unaffected
 }
 
 fragment Annotation on Annotation {

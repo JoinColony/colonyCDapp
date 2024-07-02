@@ -98,10 +98,6 @@ fragment ColonyMetadata on ColonyMetadata {
     link
   }
   thumbnail
-  modifiedTokenAddresses {
-    added
-    removed
-  }
   objective {
     ...ColonyObjective
   }
@@ -110,7 +106,6 @@ fragment ColonyMetadata on ColonyMetadata {
     newDisplayName
     oldDisplayName
     hasAvatarChanged
-    haveTokensChanged
     hasDescriptionChanged
     haveExternalLinksChanged
     hasObjectiveChanged

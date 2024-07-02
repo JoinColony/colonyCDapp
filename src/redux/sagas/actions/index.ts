@@ -8,6 +8,7 @@ import initiateSafeTransactionSaga from './initiateSafeTransaction.ts';
 import manageExistingSafesActionSaga from './manageExistingSafes.ts';
 import managePermissionsActionSaga from './managePermissions.ts';
 import manageReputationActionSaga from './manageReputation.ts';
+import manageTokensActionSaga from './manageTokens.ts';
 import mintTokensActionSaga from './mintTokens.ts';
 import moveFundsActionSaga from './moveFunds.ts';
 import paymentActionSaga from './payment.ts';
@@ -29,6 +30,7 @@ export default function* actionsSagas() {
     call(unlockTokenActionSaga),
     // call(enterRecoveryActionSaga),
     call(manageReputationActionSaga),
+    call(manageTokensActionSaga),
     call(manageExistingSafesActionSaga),
     call(initiateSafeTransactionSaga),
     call(addVerifiedMembersActionSaga),

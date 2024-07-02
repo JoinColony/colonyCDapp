@@ -1,6 +1,7 @@
 enum MetadataDeltaActionType {
   ADD_VERIFIED_MEMBERS = 'ADD_VERIFIED_MEMBERS',
   REMOVE_VERIFIED_MEMBERS = 'REMOVE_VERIFIED_MEMBERS',
+  MANAGE_TOKENS = 'MANAGE_TOKENS',
 }
 
 type AddVerifiedMembersOperation = {
@@ -13,9 +14,15 @@ type RemoveVerifiedMembersOperation = {
   payload: string[];
 };
 
+type ManageTokensOperation = {
+  type: MetadataDeltaActionType.MANAGE_TOKENS;
+  payload: string[] | unknown[];
+};
+
 export type MetadataDeltaOperation =
   | AddVerifiedMembersOperation
-  | RemoveVerifiedMembersOperation;
+  | RemoveVerifiedMembersOperation
+  | ManageTokensOperation;
 
 export const getAddVerifiedMembersOperation = (
   members: string[],
@@ -32,5 +39,14 @@ export const getRemoveVerifiedMembersOperation = (
   return {
     type: MetadataDeltaActionType.REMOVE_VERIFIED_MEMBERS,
     payload: members,
+  };
+};
+
+export const getManageTokensOperation = (
+  tokenAddresses: string[] | unknown[],
+): ManageTokensOperation => {
+  return {
+    type: MetadataDeltaActionType.MANAGE_TOKENS,
+    payload: tokenAddresses,
   };
 };

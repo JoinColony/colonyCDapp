@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ExtendedColonyActionType } from '~types/actions.ts';
+import { ColonyActionType } from '~types/graphql.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 
@@ -13,7 +13,7 @@ export const ManageTokensDescription = () => {
     <FormattedMessage
       id="action.title"
       values={{
-        actionType: ExtendedColonyActionType.UpdateTokens,
+        actionType: ColonyActionType.ManageTokens,
         initiator: <CurrentUser />,
       }}
     />
