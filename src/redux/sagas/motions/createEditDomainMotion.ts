@@ -38,7 +38,7 @@ import {
 
 // import { ipfsUpload } from '../ipfs';
 
-type TransactionPayloadBase = {
+type CreateTransactionPayloadBase = {
   isMultiSig: boolean;
   colonyAddress: Address;
   batchKey: string;
@@ -51,16 +51,16 @@ type TransactionPayloadBase = {
   colonyRoles: ColonyRoleFragment[];
 };
 
-type TransactionPayloadMotion = {
+type CreateTransactionPayloadMotion = {
   motionDomainId: number;
 };
 
-type TransactionPayload = {
-  base: TransactionPayloadBase;
-  motionPayload: TransactionPayloadMotion;
+type CreateTransactionPayload = {
+  base: CreateTransactionPayloadBase;
+  motionPayload: CreateTransactionPayloadMotion;
 };
 
-function* getCreateTransactionPayload(payload: TransactionPayload) {
+function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
   const {
     base: {
       isMultiSig,
