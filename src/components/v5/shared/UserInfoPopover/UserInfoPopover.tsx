@@ -1,15 +1,11 @@
 import { CircleWavyCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
-import React, {
-  type FC,
-  type PropsWithChildren,
-  useCallback,
-  useState,
-} from 'react';
+import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { ContributorType, useGetColonyContributorQuery } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
@@ -26,7 +22,7 @@ import { type UserInfoPopoverProps } from './types.ts';
 
 const displayName = 'v5.UserInfoPopover';
 
-const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
+const UserInfoPopover: FC<UserInfoPopoverProps> = ({
   className,
   walletAddress,
   user,
@@ -43,15 +39,27 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
     colony: { colonyAddress },
   } = useColonyContext();
 
-  const { data: colonyContributorData } = useGetColonyContributorQuery({
+  const { totalMembers, loading: isColonyMembersDataLoading } =
+    useMemberContext();
+
+  const contributorData = totalMembers.find(
+    (member) => member?.contributorAddress === walletAddress,
+  );
+
+  const {
+    data: colonyContributorData,
+    loading: isColonyContributorDataLoading,
+  } = useGetColonyContributorQuery({
     variables: {
       id: getColonyContributorId(colonyAddress, walletAddress),
       colonyAddress,
     },
     fetchPolicy: 'cache-first',
+    skip: !!contributorData,
   });
 
-  const contributor = colonyContributorData?.getColonyContributor;
+  const contributor =
+    contributorData || colonyContributorData?.getColonyContributor;
   const { bio } = contributor?.user?.profile || {};
   const { isVerified, type: contributorType } = contributor || {};
   const domains = useContributorBreakdown(contributor);
@@ -91,9 +99,17 @@ const UserInfoPopover: FC<PropsWithChildren<UserInfoPopoverProps>> = ({
       className={clsx(
         'inline-flex flex-shrink-0 items-center transition-all duration-normal hover:text-blue-400',
         className,
+        {
+          skeleton:
+            isColonyMembersDataLoading || isColonyContributorDataLoading,
+        },
       )}
+      disabled={isColonyMembersDataLoading || isColonyContributorDataLoading}
     >
-      {children}
+      {typeof children === 'function'
+        ? children((contributor?.user || user) ?? undefined)
+        : children}
+
       {withVerifiedBadge && isVerified && (
         <CircleWavyCheck
           size={14}

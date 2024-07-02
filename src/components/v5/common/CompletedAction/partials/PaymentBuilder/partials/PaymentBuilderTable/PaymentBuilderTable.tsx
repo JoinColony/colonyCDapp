@@ -4,6 +4,7 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
@@ -50,17 +51,23 @@ const useGetPaymentBuilderColumns = ({
     [blockTime, finalizedTimestamp, slots],
   );
 
+  const { loading: isColonyContributorDataLoading } = useMemberContext();
+
+  const isDataLoading = isLoading || isColonyContributorDataLoading;
+
   return useMemo(
     () => [
       paymentBuilderColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) => (
-          <RecipientField
-            isLoading={isLoading}
-            address={row.original.recipient}
-          />
-        ),
+        cell: ({ row }) =>
+          isLoading ? (
+            <div className="flex w-full items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
+          ) : (
+            <RecipientField address={row.original.recipient} />
+          ),
         footer: hasMoreThanOneToken
           ? () => (
               <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
@@ -79,16 +86,24 @@ const useGetPaymentBuilderColumns = ({
         header: formatText({ id: 'table.row.amount' }),
         footer: hasMoreThanOneToken
           ? () => (
-              <PaymentBuilderPayoutsTotal
-                data={dataRef.current}
-                itemClassName="justify-end md:justify-start"
-                buttonClassName="justify-end md:justify-start"
-              />
+              <>
+                {isLoading ? (
+                  <div className="flex w-3/4 items-center">
+                    <div className="h-4 w-full overflow-hidden rounded skeleton" />
+                  </div>
+                ) : (
+                  <PaymentBuilderPayoutsTotal
+                    data={dataRef.current}
+                    itemClassName="justify-end md:justify-start"
+                    buttonClassName="justify-end md:justify-start"
+                  />
+                )}
+              </>
             )
           : undefined,
         cell: ({ row }) => (
           <AmountField
-            isLoading={isLoading}
+            isLoading={isDataLoading}
             amount={row.original.amount}
             tokenAddress={row.original.tokenAddress}
           />
@@ -104,7 +119,7 @@ const useGetPaymentBuilderColumns = ({
             Number(row.original.claimDelay) / 3600,
           );
 
-          return !isLoading ? (
+          return !isDataLoading ? (
             <span className="text-md text-gray-900">
               {formatText(
                 { id: 'table.column.claimDelayField' },
@@ -147,13 +162,14 @@ const useGetPaymentBuilderColumns = ({
           ]
         : []),
     ],
+    // Rule added so that we won't have to pass data or dataRef as dependencies to avoid unnecesary re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       claimablePayouts,
-      data.length,
-      dataRef,
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
+      isDataLoading,
       isLoading,
       isTablet,
       status,
@@ -165,6 +181,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
   items,
   status,
   finalizedTimestamp,
+  isLoading,
 }) => {
   const isTablet = useTablet();
   const {
@@ -194,7 +211,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     status,
     slots: items,
     finalizedTimestamp,
-    isLoading: !data.length,
+    isLoading: isLoading || !data.length,
   });
 
   return (

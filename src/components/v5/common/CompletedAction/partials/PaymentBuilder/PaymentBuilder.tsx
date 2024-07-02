@@ -199,7 +199,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         items={slots}
         status={status}
         finalizedTimestamp={finalizedAt}
-        isLoading={!slots.length}
+        isLoading={!slots.length || !!loadingExpenditure}
       />
       <CancelModal
         isOpen={isCancelModalOpen}
