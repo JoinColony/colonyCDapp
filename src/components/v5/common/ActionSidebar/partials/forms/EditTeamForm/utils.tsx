@@ -1,4 +1,3 @@
-import { RootMotionMethodNames } from '~redux';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Domain, type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
@@ -34,7 +33,6 @@ export const getEditDomainPayload = (
 
   return {
     ...baseDomainPayload,
-    operationName: RootMotionMethodNames.EditDomain,
     colonyRoles: extractColonyRoles(colony.roles),
     colonyDomains: extractColonyDomains(colony.domains),
     isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
