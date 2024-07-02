@@ -19,4 +19,5 @@ export enum TabId {
   Profile = 0,
   Preferences = 1,
   Advanced = 2,
+  CryptoToFiat = 3,
 }

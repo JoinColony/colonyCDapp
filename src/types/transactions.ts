@@ -76,6 +76,7 @@ export enum TRANSACTION_METHODS {
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',
   CreateStreamingPayment = 'createStreamingPayment',
+  Crypto2Fiat = 'crypto2Fiat',
   DeployToken = 'deployToken',
   DeployTokenViaNetwork = 'deployTokenViaNetwork',
   DeployTokenAuthority = 'deployTokenAuthority',

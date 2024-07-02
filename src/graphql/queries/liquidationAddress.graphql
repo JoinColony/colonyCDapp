@@ -1,0 +1,23 @@
+query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
+  getUserByAddress(id: $userOrLiquidationAddress) {
+    items {
+      ...User
+    }
+  }
+  getUserByLiquidationAddress(liquidationAddress: $userOrLiquidationAddress) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}
+
+query GetUserLiquidationAddresses($userAddress: ID!, $chainId: Int!) {
+  getLiquidationAddressesByUserAddress(
+    userAddress: $userAddress
+    filter: { chainId: { eq: $chainId } }
+  ) {
+    items {
+      ...LiquidationAddress
+    }
+  }
+}

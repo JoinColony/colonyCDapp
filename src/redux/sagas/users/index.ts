@@ -1,17 +1,26 @@
 // import { BigNumber } from 'ethers';
 import { type QueryOptions } from '@apollo/client';
-import { ClientType, type TokenLockingClient } from '@colony/colony-js';
+import { ClientType, Tokens, type TokenLockingClient } from '@colony/colony-js';
 import { BigNumber, utils } from 'ethers';
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
 import { deauthenticateWallet } from '~auth/index.ts';
-import { ContextModule, getContext, removeContext } from '~context/index.ts';
+import { DEV_USDC_ADDRESS, isDev } from '~constants';
+import {
+  type ColonyManager,
+  ContextModule,
+  getContext,
+  removeContext,
+} from '~context/index.ts';
 import {
   CreateUniqueUserDocument,
   type CreateUniqueUserMutation,
   type CreateUniqueUserMutationVariables,
   GetProfileByEmailDocument,
   GetUserByNameDocument,
+  type GetUserLiquidationAddressesQuery,
+  type GetUserLiquidationAddressesQueryVariables,
+  GetUserLiquidationAddressesDocument,
 } from '~gql';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -298,6 +307,95 @@ function* userWithdrawToken({
   return null;
 }
 
+function* userCryptoToFiatTransfer({
+  meta,
+  payload: { amount },
+}: Action<ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER>) {
+  const txChannel = yield call(getTxChannel, meta.id);
+  try {
+    const wallet = getContext(ContextModule.Wallet);
+
+    if (!wallet) {
+      throw new Error('Wallet not found in context');
+    }
+
+    const colonyManager: ColonyManager = yield getColonyManager();
+    const { network } = colonyManager.networkClient;
+
+    const tokenAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
+    const tokenClient = yield colonyManager.getTokenClient(tokenAddress);
+    const decimals = yield tokenClient.decimals();
+
+    if (!tokenAddress) {
+      throw new Error(`USDC token address not found on network ${network}`);
+    }
+
+    const apolloClient = getContext(ContextModule.ApolloClient);
+
+    const { chainId } = yield colonyManager.provider.getNetwork();
+
+    const { data } = yield apolloClient.query<
+      GetUserLiquidationAddressesQuery,
+      GetUserLiquidationAddressesQueryVariables
+    >({
+      query: GetUserLiquidationAddressesDocument,
+      variables: {
+        userAddress: utils.getAddress(wallet.address),
+        chainId,
+      },
+    });
+
+    const liquidationAddress =
+      data.getLiquidationAddressesByUserAddress?.items[0]?.liquidationAddress;
+
+    if (!liquidationAddress) {
+      throw new Error(
+        `Liquidation address not found for user ${wallet.address}`,
+      );
+    }
+
+    const batchKey = TRANSACTION_METHODS.Crypto2Fiat;
+
+    const { transfer } = yield createTransactionChannels(meta.id, ['transfer']);
+
+    yield createGroupTransaction({
+      channel: transfer,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.TokenClient,
+        methodName: 'transfer',
+        identifier: tokenAddress,
+        params: [
+          liquidationAddress,
+          BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals)),
+        ],
+        ready: true,
+      },
+    });
+
+    yield takeFrom(transfer.channel, ActionTypes.TRANSACTION_CREATED);
+
+    yield initiateTransaction({ id: transfer.id });
+
+    yield waitForTxResult(transfer.channel);
+
+    yield put({
+      type: ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER_SUCCESS,
+      meta,
+    });
+  } catch (error) {
+    return yield putError(
+      ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER_ERROR,
+      error,
+      meta,
+    );
+  } finally {
+    txChannel.close();
+  }
+  return null;
+}
+
 export function* setupUsersSagas() {
   // yield takeLatest(ActionTypes.USER_AVATAR_REMOVE, userAvatarRemove);
   // yield takeLatest(ActionTypes.USER_AVATAR_UPLOAD, userAvatarUpload);
@@ -305,4 +403,8 @@ export function* setupUsersSagas() {
   yield takeLatest(ActionTypes.USERNAME_CREATE, usernameCreate);
   yield takeLatest(ActionTypes.USER_DEPOSIT_TOKEN, userDepositToken);
   yield takeLatest(ActionTypes.USER_WITHDRAW_TOKEN, userWithdrawToken);
+  yield takeLatest(
+    ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER,
+    userCryptoToFiatTransfer,
+  );
 }

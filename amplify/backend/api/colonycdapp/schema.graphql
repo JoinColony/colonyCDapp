@@ -251,6 +251,115 @@ input GetSafeTransactionStatusInput {
   chainId: String!
 }
 
+input BridgeXYZQueryInput {
+  path: String!
+}
+
+input BridgeXYZMutationAddressInput {
+  street_line_1: String!
+  street_line_2: String
+  city: String!
+  state: String
+  postcode: String
+  country: String!
+}
+
+input BridgeXYZMutationIbanInput {
+  account_number: String!
+  bic: String!
+  country: String!
+}
+
+input BridgeXYZMutationAccountInput {
+  account_number: String!
+  routing_number: String!
+}
+
+input BridgeXYZMutationBodyInput {
+  #
+  # KYC Links
+  #
+  full_name: String
+  email: String
+
+  #
+  # Put Customer
+  #
+  first_name: String
+  last_name: String
+  # email: String
+  address: BridgeXYZMutationAddressInput
+  birth_date: String
+  tax_identification_number: String
+  signed_agreement_id: String
+  currency: String
+  bank_name: String
+  iban: BridgeXYZMutationIbanInput
+  account: BridgeXYZMutationAccountInput
+}
+
+input BridgeXYZMutationInput {
+  path: String!
+  body: BridgeXYZMutationBodyInput!
+}
+
+type BridgeXYZIbanBankAccount {
+  last4: String!
+  bic: String!
+  country: String!
+}
+
+type BridgeXYZUSBankAccount {
+  last4: String!
+  routingNumber: String!
+}
+
+type BridgeXYZBankAccount {
+  id: String!
+  currency: String!
+  bankName: String!
+  iban: BridgeXYZIbanBankAccount
+  usAccount: BridgeXYZUSBankAccount
+}
+
+type BridgeXYZMutationReturn {
+  #
+  # KYC Links
+  #
+  tos_link: String
+  kyc_link: String
+
+  #
+  # KYC Status
+  #
+  kyc_status: String
+  country: String
+  # Should support multiple accounts at some point
+  bankAccount: BridgeXYZBankAccount
+
+  success: Boolean
+}
+
+type DrainReceipt {
+  destination_currency: String
+  url: String
+}
+
+type BridgeXYZDrain {
+  id: String,
+  amount: String,
+  state: String,
+  created_at: String,
+  deposit_tx_hash: String,
+  receipt: DrainReceipt,
+}
+
+type BridgeXYZQueryReturn {
+  drains: [BridgeXYZDrain]
+  success: Boolean
+  transactionFee: String
+}
+
 """
 Return type for tokens gotten from DB or from chain
 """
@@ -792,27 +901,32 @@ type Query {
   getTokenFromEverywhere(
     input: TokenFromEverywhereArguments
   ): TokenFromEverywhereReturn @function(name: "fetchTokenFromChain-${env}")
+
   """
   Retrieve a user's reputation within a specific domain in a Colony
   """
   getUserReputation(input: GetUserReputationInput): String
     @function(name: "getUserReputation-${env}")
+
   """
   Retrieve a user's token balance for a specific token
   """
   getUserTokenBalance(
     input: GetUserTokenBalanceInput
   ): GetUserTokenBalanceReturn @function(name: "getUserTokenBalance-${env}")
+
   """
   Get the state of a motion (i.e. the current period)
   """
   getMotionState(input: GetMotionStateInput): Int!
     @function(name: "fetchMotionState-${env}")
+
   """
   Get the voting reward for a user and a motion
   """
   getVoterRewards(input: GetVoterRewardsInput): VoterRewardsReturn
     @function(name: "fetchVoterRewards-${env}")
+
   """
   Get the timeout for the current period of a motion
   """
@@ -823,6 +937,12 @@ type Query {
 
   getSafeTransactionStatus(input: GetSafeTransactionStatusInput): [String!]
     @function(name: "getSafeTransactionStatus-${env}")
+
+  """
+  Fetch from the Bridge XYZ API
+  """
+  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
+    @function(name: "bridgeXYZQuery-${env}")
 }
 
 """
@@ -853,6 +973,11 @@ type Mutation {
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
+  """
+  Post to the Bridge XYZ API
+  """
+  bridgeXYZMutation(input: BridgeXYZMutationInput!): BridgeXYZMutationReturn
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
@@ -926,6 +1051,10 @@ type Profile @model {
   A user's prefered currency, for conversion purposes
   """
   preferredCurrency: SupportedCurrencies
+  """
+  Is automatic offramp enabled
+  """
+  isAutoOfframpEnabled: Boolean
 }
 
 """
@@ -1722,6 +1851,43 @@ type User @model {
   A user who has been invited by colony will be able to pass on the private beta invite
   """
   privateBetaInviteCode: PrivateBetaInviteCode @hasOne
+  """
+  Bridge customer id
+  """
+  bridgeCustomerId: String
+  liquidationAddresses: [LiquidationAddress!]
+    @hasMany(indexName: "byUserAddress", fields: ["id"])
+}
+
+type LiquidationAddress @model {
+  """
+  Unique identifier for the liquidation address entry
+  """
+  id: ID!
+  """
+  The chain id the colony is on
+  """
+  chainId: Int!
+  """
+  The user address associated
+  """
+  userAddress: ID!
+    @index(
+      name: "byUserAddress"
+      queryField: "getLiquidationAddressesByUserAddress"
+    )
+  """
+  The user associated
+  """
+  user: User @hasOne(fields: ["userAddress"])
+  """
+  The liquidation address
+  """
+  liquidationAddress: ID!
+    @index(
+      name: "byLiquidationAddress"
+      queryField: "getUserByLiquidationAddress"
+    )
 }
 
 """
