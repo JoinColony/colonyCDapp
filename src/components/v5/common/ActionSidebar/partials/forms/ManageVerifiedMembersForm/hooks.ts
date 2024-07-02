@@ -49,10 +49,7 @@ export const useManageVerifiedMembers = (
     manageMembers === ManageMembersType.Add
       ? ActionTypes.ACTION_ADD_VERIFIED_MEMBERS
       : ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS;
-  const motionType =
-    manageMembers === ManageMembersType.Add
-      ? ActionTypes.MOTION_ADD_VERIFIED_MEMBERS
-      : ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS;
+  const motionType = ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS;
 
   const validationSchema = useMemo(() => {
     if (manageMembers === ManageMembersType.Add) {
@@ -85,6 +82,7 @@ export const useManageVerifiedMembers = (
         const members = values.members?.map((member) => member?.value);
 
         return {
+          manageMembers,
           colonyAddress,
           colonyName: name,
           members,
