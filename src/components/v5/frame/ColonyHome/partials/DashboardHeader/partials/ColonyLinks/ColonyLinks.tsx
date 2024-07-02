@@ -6,9 +6,9 @@ import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import ExternalLink from '~shared/Extensions/ExternalLink/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
+import ExternalLink from '~shared/ExternalLink/index.ts';
 import { formatText } from '~utils/intl.ts';
 import DropdownMenu from '~v5/common/DropdownMenu/index.ts';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
@@ -84,10 +84,7 @@ const ColonyLinks = () => {
                 id: 'colony.tooltip.goToExternalLink',
               })}
             >
-              <ExternalLink
-                href={link}
-                className="text-gray-900 md:hover:text-blue-400"
-              >
+              <ExternalLink href={link}>
                 <LinkIcon size={16} />
               </ExternalLink>
             </ColonyLinkWrapper>

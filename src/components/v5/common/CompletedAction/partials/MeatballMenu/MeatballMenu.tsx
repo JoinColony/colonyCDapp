@@ -48,13 +48,14 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
         {
           key: '2',
           label: (
-            <TransactionLink
-              hash={transactionHash}
-              text={{ id: 'completedAction.view' }}
-              textValues={{
-                blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-              }}
-            />
+            <TransactionLink hash={transactionHash}>
+              {formatText(
+                { id: 'completedAction.view' },
+                {
+                  blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+                },
+              )}
+            </TransactionLink>
           ),
           icon: ArrowSquareOut,
         },

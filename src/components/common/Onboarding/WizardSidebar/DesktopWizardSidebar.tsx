@@ -61,7 +61,7 @@ const DesktopWizardSidebar = ({ currentStep, wizardSteps }: Props) => (
       </div>
       <ExternalLink
         href="https://docs.colony.io/"
-        className="text-xs font-medium text-gray-900 underline hover:text-blue-400"
+        className="text-xs font-medium underline"
       >
         <FormattedMessage {...MSG.footerLink} />
       </ExternalLink>
