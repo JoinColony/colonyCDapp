@@ -1,5 +1,14 @@
 import { type InferType, object, string } from 'yup';
 
+import { intl } from '~utils/intl.ts';
+
+import { BIC_REGEX, IBAN_REGEX } from './constants.ts';
+
+const { formatMessage } = intl({
+  'error.iban': 'Invalid IBAN format',
+  'error.bic': 'Invalid SWIFT/BIC format',
+});
+
 export const validationSchema = object({
   accountOwner: string().required(),
   bankName: string().required(),
@@ -11,12 +20,16 @@ export const validationSchema = object({
   }),
   iban: string().when('currency', {
     is: 'eur',
-    then: string().required(),
+    then: string()
+      .matches(IBAN_REGEX, formatMessage({ id: 'error.iban' }))
+      .required(),
     otherwise: string().notRequired(),
   }),
   swift: string().when('currency', {
     is: 'eur',
-    then: string().required(),
+    then: string()
+      .matches(BIC_REGEX, formatMessage({ id: 'error.bic' }))
+      .required(),
     otherwise: string().notRequired(),
   }),
   accountNumber: string().when('currency', {

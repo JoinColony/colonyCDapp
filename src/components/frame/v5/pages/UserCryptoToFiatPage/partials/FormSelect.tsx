@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { type Message } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { get } from '~utils/lodash.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 import FormError from '~v5/shared/FormError/index.ts';
@@ -20,9 +21,12 @@ export const FormSelect: FC<FormSelectProps> = ({
   labelMessage,
   handleChange,
 }) => {
-  const { control, getFieldState } = useFormContext();
-  const { error } = getFieldState(name);
-  const customErrorMessage = error?.message || '';
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const error = get(errors, name)?.message as Message | undefined;
 
   return (
     <Controller
@@ -41,15 +45,18 @@ export const FormSelect: FC<FormSelectProps> = ({
           <Select
             {...field}
             options={options}
-            isError={!!customErrorMessage}
+            isError={!!error}
+            isSearchable
             onChange={(val) => {
               handleChange?.(val);
               field.onChange(val?.value);
             }}
           />
-          <FormError isFullSize alignment="left">
-            {customErrorMessage}
-          </FormError>
+          {error && (
+            <FormError isFullSize alignment="left">
+              {formatText(error)}
+            </FormError>
+          )}
         </>
       )}
     />
