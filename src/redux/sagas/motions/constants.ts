@@ -9,6 +9,8 @@ export const REQUIRED_MULTISIG_ROLES_BY_OPERATION: Record<
   ColonyRole[]
 > = {
   [RootMotionMethodNames.MintTokens]: PERMISSIONS_NEEDED_FOR_ACTION.MintTokens,
+  [RootMotionMethodNames.MoveFunds]:
+    PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds,
   [RootMotionMethodNames.UnlockToken]:
     PERMISSIONS_NEEDED_FOR_ACTION.UnlockToken,
   [RootMotionMethodNames.Upgrade]:
