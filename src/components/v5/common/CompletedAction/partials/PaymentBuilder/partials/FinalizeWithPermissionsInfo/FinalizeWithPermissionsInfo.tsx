@@ -98,7 +98,11 @@ const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
                         id: 'action.executed.permissions.member',
                       })}
                     </span>
-                    <UserPopover size={18} walletAddress={userAdddress || ''} />
+                    <UserPopover
+                      size={18}
+                      textClassName="text-sm"
+                      walletAddress={userAdddress || ''}
+                    />
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-2">
                     <span className="text-sm text-gray-600">

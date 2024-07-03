@@ -98,6 +98,7 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                   </span>
                   <UserPopover
                     size={20}
+                    textClassName="text-sm"
                     walletAddress={initiatorAddress || ''}
                   />
                 </div>
