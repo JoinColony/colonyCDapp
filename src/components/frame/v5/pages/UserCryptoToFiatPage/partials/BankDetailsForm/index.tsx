@@ -85,6 +85,7 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
         <FormRow>
           <FormInput
             name="accountOwner"
+            shouldFocus
             label={formatText(MSG.accountOwnerNameLabel)}
             placeholder={formatText(MSG.accountOwnerNamePlaceholder)}
           />
