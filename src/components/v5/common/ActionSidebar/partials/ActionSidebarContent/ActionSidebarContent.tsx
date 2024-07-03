@@ -81,7 +81,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   const isSubmitDisabled =
     !selectedAction ||
-    hasPermissions === false ||
+    !hasPermissions ||
     !hasEnoughMembersWithPermissions ||
     hasNoDecisionMethods;
 
