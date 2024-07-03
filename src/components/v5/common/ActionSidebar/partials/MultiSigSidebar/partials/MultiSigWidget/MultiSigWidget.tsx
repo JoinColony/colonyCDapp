@@ -7,7 +7,7 @@ import { type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import {
   type MultiSigUserSignature,
-  type ColonyMultiSig,
+  type ColonyAction, type ColonyMultiSig,
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -23,6 +23,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
+  action: ColonyAction;
   actionType: ColonyActionType;
   multiSigData: ColonyMultiSig;
   initiatorAddress: string;
@@ -44,11 +45,12 @@ const MSG = defineMessages({
 });
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
-  multiSigData,
   actionType,
+  multiSigData,
+  action,
   initiatorAddress,
 }) => {
-  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction(action.type);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
@@ -143,6 +145,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
             isMultiSigFinalizable={isMultiSigFinalizable}
             isMultiSigCancelable={isMultiSigCancelable}
             // initiatorAddress={initiatorAddress}
+            action={action}
             createdAt={multiSigData.createdAt}
           />
         ),
@@ -154,6 +157,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   }, [
     isLoading,
     combinedThreshold,
+    action,
     multiSigData,
     actionType,
     initiatorAddress,
