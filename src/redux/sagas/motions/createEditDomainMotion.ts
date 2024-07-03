@@ -38,7 +38,7 @@ import {
 
 // import { ipfsUpload } from '../ipfs';
 
-type CreateTransactionPayloadBase = {
+type CreateTransactionPayload = {
   isMultiSig: boolean;
   colonyAddress: Address;
   batchKey: string;
@@ -46,36 +46,27 @@ type CreateTransactionPayloadBase = {
   index: number;
   colonyDomains: Domain[];
   isCreateDomain: boolean;
-  domainId: number;
+  domainNativeId: number;
   action: string;
   colonyRoles: ColonyRoleFragment[];
+  domain: Domain | undefined;
+  parentDomainId: number;
 };
 
-type CreateTransactionPayloadMotion = {
-  motionDomainId: number;
-};
-
-type CreateTransactionPayload = {
-  base: CreateTransactionPayloadBase;
-  motionPayload: CreateTransactionPayloadMotion;
-};
-
-function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
-  const {
-    base: {
-      isMultiSig,
-      colonyAddress,
-      batchKey,
-      metaId,
-      index,
-      colonyDomains,
-      isCreateDomain,
-      domainId,
-      action,
-      colonyRoles,
-    },
-  } = payload;
-
+function* getCreateTransactionPayload({
+  isMultiSig,
+  colonyAddress,
+  batchKey,
+  metaId,
+  index,
+  colonyDomains,
+  isCreateDomain,
+  domainNativeId,
+  action,
+  colonyRoles,
+  domain,
+  parentDomainId,
+}: CreateTransactionPayload) {
   const transactionParams = {
     context: isMultiSig
       ? ClientType.MultisigPermissionsClient
@@ -112,7 +103,7 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: Id.RootDomain,
+        requiredDomainId: parentDomainId, // You need Architecture permissions in the parent domain to edit a subdomain
         requiredColonyRole: requiredRoles,
         permissionAddress: userAddress,
         isMultiSig,
@@ -121,7 +112,7 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       action,
-      [permissionDomainId, childSkillIndex, domainId, '.'], // domainMetadataIpfsHash
+      [permissionDomainId, childSkillIndex, domainNativeId, '.'], // domainMetadataIpfsHash
     );
 
     transactionParams.params = [
@@ -131,19 +122,17 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
       [encodedAction],
     ];
   } else {
-    const rootDomain = colonyDomains.find((domain) =>
-      BigNumber.from(domain.nativeId).eq(Id.RootDomain),
+    const rootDomain = colonyDomains.find((colonyDomain) =>
+      BigNumber.from(colonyDomain.nativeId).eq(domainNativeId),
     );
 
     if (!rootDomain) {
       throw new Error('Cannot find rootDomain in colony domains');
     }
 
-    const { motionDomainId } = payload.motionPayload;
-
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      motionDomainId,
+      domainNativeId,
     );
 
     const {
@@ -153,12 +142,20 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
       siblings: reputationSiblings,
     } = yield call(colonyClient.getReputation, skillId, AddressZero);
 
+    const domainSkillId = isCreateDomain
+      ? rootDomain.nativeSkillId
+      : domain?.nativeSkillId;
+
+    if (!domainSkillId) {
+      throw new Error('A Skill ID was not found for the selected domain');
+    }
+
     const motionChildSkillIndex = yield call(getChildIndexLocal, {
       networkClient: colonyClient.networkClient,
       parentDomainNativeId: rootDomain.nativeId,
       parentDomainSkillId: rootDomain.nativeSkillId,
-      domainNativeId: rootDomain.nativeId,
-      domainSkillId: rootDomain.nativeSkillId,
+      domainNativeId: isCreateDomain ? rootDomain.nativeId : domainNativeId,
+      domainSkillId,
     });
 
     const votingReputationClient = yield colonyManager.getClient(
@@ -172,7 +169,7 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: Id.RootDomain,
+        requiredDomainId: domainNativeId,
         requiredColonyRole: requiredRoles,
         permissionAddress: votingReputationClient.address,
         isMultiSig,
@@ -182,12 +179,12 @@ function* getCreateTransactionPayload(payload: CreateTransactionPayload) {
     const encodedAction = colonyClient.interface.encodeFunctionData(action, [
       permissionDomainId,
       childSkillIndex,
-      domainId,
+      domainNativeId,
       '.',
     ]);
 
     transactionParams.params = [
-      motionDomainId,
+      domainNativeId,
       motionChildSkillIndex,
       AddressZero,
       encodedAction,
@@ -211,8 +208,7 @@ function* createEditDomainMotion({
     annotationMessage,
     domain,
     isCreateDomain,
-    parentId = Id.RootDomain,
-    motionDomainId,
+    parentDomainId = Id.RootDomain,
     customActionTitle,
     isMultiSig,
     colonyDomains,
@@ -222,6 +218,7 @@ function* createEditDomainMotion({
   meta,
 }: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
+
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -239,8 +236,8 @@ function* createEditDomainMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
-    const domainId =
-      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentId;
+    const domainNativeId =
+      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentDomainId;
 
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.CreateMotion;
@@ -264,23 +261,20 @@ function* createEditDomainMotion({
     // );
 
     const transactionParams = yield call(getCreateTransactionPayload, {
-      base: {
-        batchKey,
-        colonyAddress,
-        index: 0,
-        isMultiSig,
-        metaId,
-        colonyDomains,
-        isCreateDomain,
-        domainId,
-        colonyRoles,
-        action: isCreateDomain
-          ? 'addDomain(uint256,uint256,uint256,string)'
-          : 'editDomain',
-      },
-      motionPayload: {
-        motionDomainId,
-      },
+      batchKey,
+      colonyAddress,
+      index: 0,
+      isMultiSig,
+      metaId,
+      colonyDomains,
+      isCreateDomain,
+      domainNativeId,
+      colonyRoles,
+      action: isCreateDomain
+        ? 'addDomain(uint256,uint256,uint256,string)'
+        : 'editDomain',
+      domain,
+      parentDomainId,
     });
 
     yield fork(createTransaction, createMotion.id, transactionParams);
