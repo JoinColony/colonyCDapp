@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -8,6 +7,7 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
@@ -23,19 +23,17 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
     extensionData && isInstalledExtensionData(extensionData);
   const installedAtDate =
     extensionData &&
-    format(
+    getFormattedDateFrom(
       new Date(
         ((extensionData as InstalledExtensionData)?.installedAt ?? 0) * 1000,
       ),
-      'dd MMMM yyyy',
     );
 
   const { user } = useUserByNameOrAddress(
     (extensionData as InstalledExtensionData)?.installedBy,
   );
   const createdAtDate =
-    extensionData &&
-    format(new Date(extensionData?.createdAt ?? 0 * 1000), 'dd MMMM yyyy');
+    extensionData && getFormattedDateFrom(extensionData?.createdAt ?? 0 * 1000);
 
   const isExtensionDeprecatedAndDisabled = !!(
     !!user &&

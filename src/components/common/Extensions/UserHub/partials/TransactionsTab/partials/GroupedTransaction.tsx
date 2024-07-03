@@ -1,6 +1,5 @@
 import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -12,6 +11,7 @@ import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 
 import {
@@ -96,7 +96,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
-    format(new Date(transactionGroup[0].createdAt), 'dd MMMM yyyy');
+    getFormattedDateFrom(new Date(transactionGroup[0].createdAt));
 
   const handleNavigateToAction = () => {
     if (canLinkToAction) {
