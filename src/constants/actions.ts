@@ -7,7 +7,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   // Simple Payment requires both funding and administration roles
   SimplePayment: [ColonyRole.Funding, ColonyRole.Administration],
   MintTokens: [ColonyRole.Root],
-  TransferFunds: [ColonyRole.Root],
+  TransferFunds: [ColonyRole.Funding],
   UnlockToken: [ColonyRole.Root],
   ManageTokens: [ColonyRole.Root],
   CreateNewTeam: [ColonyRole.Architecture],

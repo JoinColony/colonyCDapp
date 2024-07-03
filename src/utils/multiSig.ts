@@ -22,6 +22,8 @@ export const getRolesNeededForMultiSigAction = (
     case ColonyActionType.AddVerifiedMembersMultisig:
     case ColonyActionType.RemoveVerifiedMembersMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
+    case ColonyActionType.MoveFundsMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
     default:
       return undefined;
   }
