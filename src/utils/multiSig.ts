@@ -17,6 +17,9 @@ export const getRolesNeededForMultiSigAction = (
       return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
     case ColonyActionType.UnlockTokenMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.UnlockToken;
+    case ColonyActionType.AddVerifiedMembersMultisig:
+    case ColonyActionType.RemoveVerifiedMembersMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
     default:
       return undefined;
   }

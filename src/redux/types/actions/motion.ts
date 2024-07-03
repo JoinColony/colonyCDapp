@@ -15,7 +15,7 @@ import {
   type SafeTransactionData,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
-import { type ManageMembersType } from '~v5/common/ActionSidebar/partials/forms/ManageVerifiedMembersForm/consts.ts';
+import { type ManageVerifiedMembersOperation } from '~types/motions.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
@@ -330,9 +330,12 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS,
       {
-        manageMembers: ManageMembersType;
+        operation: ManageVerifiedMembersOperation;
         colonyAddress: Address;
         colonyName: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
         members: string[];
         domainId: number;
         annotationMessage?: string;
