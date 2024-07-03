@@ -19,13 +19,20 @@ export const useEligibleSignees = ({
 
   const getEligibleSignees = (members: ColonyContributor[]) => {
     if (!requiredRoles) {
-      return {};
+      return {
+        eligibleSignees: {},
+        uniqueEligibleSignees: [],
+      };
     }
 
     const matches = requiredRoles.reduce((acc, role) => {
       acc[role] = {};
       return acc;
-    }, {});
+    }, {}) as {
+      [role: number]: { [userAddress: string]: ColonyContributor['user'] };
+    };
+
+    const uniqueEligibleSignees = new Set();
 
     members.forEach((member) => {
       if (!member.roles) {
@@ -56,15 +63,23 @@ export const useEligibleSignees = ({
           if (assignedRoles.includes(role)) {
             const key = member.user.walletAddress;
             matches[role][key] = member.user;
+
+            uniqueEligibleSignees.add(member.user);
           }
         });
       });
     });
 
-    return matches;
+    return {
+      eligibleSignees: matches,
+      uniqueEligibleSignees: [
+        ...uniqueEligibleSignees,
+      ] as ColonyContributor['user'][],
+    };
   };
 
-  const eligibleSignees = getEligibleSignees(totalMembers);
+  const { eligibleSignees, uniqueEligibleSignees } =
+    getEligibleSignees(totalMembers);
 
   const countPerRole: { [role: number]: number } = {};
   Object.keys(eligibleSignees).forEach((role) => {
@@ -74,6 +89,7 @@ export const useEligibleSignees = ({
 
   return {
     eligibleSignees,
+    uniqueEligibleSignees,
     countPerRole,
   };
 };
