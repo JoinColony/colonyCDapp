@@ -53,7 +53,11 @@ export const useHasEnoughMembersWithPermissions = ({
     requiredRoles,
   });
 
-  if (!thresholdPerRole || !requiredRoles) {
+  if (
+    decisionMethod !== DecisionMethod.MultiSig ||
+    !thresholdPerRole ||
+    !requiredRoles
+  ) {
     return true;
   }
 
@@ -61,9 +65,5 @@ export const useHasEnoughMembersWithPermissions = ({
     (role) => countPerRole[role] >= thresholdPerRole[role],
   );
 
-  const showNotEnoughMembersWithPermissionsNotification =
-    decisionMethod === DecisionMethod.MultiSig &&
-    !hasEnoughMembersWithPermissions;
-
-  return !showNotEnoughMembersWithPermissionsNotification;
+  return hasEnoughMembersWithPermissions;
 };
