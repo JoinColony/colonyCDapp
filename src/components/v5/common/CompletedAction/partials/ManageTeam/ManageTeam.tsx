@@ -54,6 +54,11 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
 
   const actionDomainMetadata =
     action.pendingDomainMetadata || action.fromDomain?.metadata;
+
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
@@ -103,11 +108,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
