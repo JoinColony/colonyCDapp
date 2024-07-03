@@ -58,7 +58,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   const buttonText = {
     [MultiSigVote.Approve]: MSG.approve,
     [MultiSigVote.Reject]: MSG.reject,
-  }
+  };
 
   const transform = mapPayload(() => ({
     colonyAddress: colony.colonyAddress,
