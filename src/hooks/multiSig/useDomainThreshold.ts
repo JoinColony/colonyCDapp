@@ -42,7 +42,6 @@ export const useDomainThreshold = ({
 
     if (extensionData === null || !isInstalledExtensionData(extensionData)) {
       console.warn('MultiSig extension is not installed');
-
       return null;
     }
 
@@ -51,7 +50,6 @@ export const useDomainThreshold = ({
 
     if (colonyThreshold === undefined) {
       console.warn('MultiSig extension is not properly configured.');
-
       return null;
     }
 
