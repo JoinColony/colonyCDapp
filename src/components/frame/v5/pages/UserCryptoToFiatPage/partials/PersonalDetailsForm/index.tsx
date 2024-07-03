@@ -102,6 +102,7 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
         <FormRow>
           <FormInput
             name="firstName"
+            shouldFocus
             label={formatText(MSG.firstNameLabel)}
             placeholder={formatText(MSG.firstNamePlaceholder)}
           />

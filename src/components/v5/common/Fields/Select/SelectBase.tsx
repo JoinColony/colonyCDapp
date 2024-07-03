@@ -1,18 +1,15 @@
 import clsx from 'clsx';
-import React, { useId } from 'react';
-import ReactSelect from 'react-select';
+import React, { forwardRef, useId } from 'react';
+import ReactSelect, { type SelectInstance } from 'react-select';
 
 import { type SelectBaseOption, type SelectBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.SelectBase';
 
-const SelectBase = <T extends SelectBaseOption>({
-  className,
-  value,
-  defaultValue,
-  styles,
-  ...rest
-}: SelectBaseProps<T>): ReturnType<React.FC> => {
+const SelectBaseInner = <T extends SelectBaseOption>(
+  { className, value, defaultValue, styles, ...rest }: SelectBaseProps<T>,
+  ref,
+): ReturnType<React.FC> => {
   const id = useId();
 
   const selectedOption = rest.options?.find((option) =>
@@ -34,10 +31,14 @@ const SelectBase = <T extends SelectBaseOption>({
       {...rest}
       value={selectedOption || null}
       defaultValue={defaultSelectedOption}
+      ref={ref}
     />
   );
 };
+SelectBaseInner.displayName = displayName;
 
-SelectBase.displayName = displayName;
+const SelectBase = forwardRef(SelectBaseInner) as <T extends SelectBaseOption>(
+  props: SelectBaseProps<T> & { ref?: React.ForwardedRef<SelectInstance> },
+) => ReturnType<typeof SelectBaseInner>;
 
 export default SelectBase;

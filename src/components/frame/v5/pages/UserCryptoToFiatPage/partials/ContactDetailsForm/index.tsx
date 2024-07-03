@@ -81,6 +81,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         <FormRow>
           <FormInput
             name="date"
+            shouldFocus
             label={formatText(MSG.dobLabel)}
             placeholder={formatText(MSG.dobPlaceholder)}
           />
