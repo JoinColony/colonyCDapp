@@ -1,8 +1,10 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
@@ -17,6 +19,8 @@ export const getTransferFundsPayload = (
     to: toDomainId,
     description: annotationMessage,
     title,
+    decisionMethod,
+    createdIn: createdInDomainId,
   }: TransferFundsFormValues,
 ) => {
   const colonyTokens = colony?.tokens?.items || [];
@@ -30,6 +34,10 @@ export const getTransferFundsPayload = (
 
   const fromDomain = findDomainByNativeId(Number(fromDomainId), colony);
   const toDomain = findDomainByNativeId(Number(toDomainId), colony);
+  const createdInDomain = findDomainByNativeId(
+    Number(createdInDomainId),
+    colony,
+  );
 
   return {
     colonyAddress: colony.colonyAddress,
@@ -42,5 +50,9 @@ export const getTransferFundsPayload = (
       ? sanitizeHTML(annotationMessage)
       : undefined,
     customActionTitle: title,
+    isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+    colonyRoles: extractColonyRoles(colony.roles),
+    colonyDomains: extractColonyDomains(colony.domains),
+    createdInDomain,
   };
 };
