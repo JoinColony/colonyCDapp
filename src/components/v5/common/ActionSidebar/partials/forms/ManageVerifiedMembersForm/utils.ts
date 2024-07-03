@@ -1,9 +1,17 @@
+import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { DecisionMethod } from '~types/actions.ts';
+import { type Colony } from '~types/graphql.ts';
+import { ManageVerifiedMembersOperation } from '~types/motions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
+
+import { ManageMembersType } from './consts.ts';
 
 const MSG = defineMessages({
   membersRequired: {
@@ -43,3 +51,36 @@ export const getValidationSchema = (
 export type ManageVerifiedMembersFormValues = InferType<
   ReturnType<typeof getValidationSchema>
 >;
+
+export const getManageVerifiedMembersPayload = (
+  colony: Colony,
+  values: ManageVerifiedMembersFormValues,
+) => {
+  const members = values.members?.map((member) => member?.value);
+
+  const baseDomainPayload = {
+    operation:
+      values.manageMembers === ManageMembersType.Add
+        ? ManageVerifiedMembersOperation.Add
+        : ManageVerifiedMembersOperation.Remove,
+    colonyAddress: colony.colonyAddress,
+    colonyName: colony.name,
+    members,
+    customActionTitle: values.title,
+    annotationMessage: values.description,
+    domainId: values.createdIn || Id.RootDomain,
+  };
+
+  if (values.decisionMethod === DecisionMethod.Permissions) {
+    return {
+      ...baseDomainPayload,
+    };
+  }
+
+  return {
+    ...baseDomainPayload,
+    colonyRoles: extractColonyRoles(colony.roles),
+    colonyDomains: extractColonyDomains(colony.domains),
+    isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
+  };
+};

@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote, type ColonyMultiSigFragment } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -15,6 +16,7 @@ import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
+import { handleMultiSigFinalized } from '../../../../utils.ts';
 import FinalizeButton from '../../../FinalizeButton/FinalizeButton.tsx';
 import { hasWeekPassed } from '../../utils.ts';
 
@@ -128,6 +130,7 @@ interface FinalizeStepProps {
   // initiatorAddress: string;
   createdAt: string;
   threshold: number;
+  action: ColonyAction;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
@@ -137,6 +140,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   // initiatorAddress,
   createdAt,
   threshold,
+  action,
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
   const { colony } = useColonyContext();
@@ -181,8 +185,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (isMultiSigExecuted || isMultiSigRejected) {
       setIsFinalizePending(false);
+      handleMultiSigFinalized(action);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected]);
+  }, [isMultiSigExecuted, isMultiSigRejected, action]);
 
   return (
     <MenuWithStatusText
