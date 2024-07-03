@@ -28,7 +28,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closeMessage,
   disabled,
   buttonMode = 'secondarySolid',
-  isTopSectionWithBackground,
+  withPadding = true,
+  withBorder,
   shouldShowHeader = false,
   ...props
 }) => {
@@ -40,72 +41,75 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <ModalBase
       onRequestClose={onClose}
       {...{ isFullOnMobile, ...props }}
-      isTopSectionWithBackground={isTopSectionWithBackground}
+      withPadding={withPadding}
+      withBorder={withBorder}
     >
-      {Icon && (
-        <span
+      <div className="relative mr-[-6px]">
+        {Icon && (
+          <span
+            className={clsx(
+              'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
+              {
+                'border-negative-200 text-negative-400': isWarning,
+              },
+            )}
+          >
+            <Icon size={24} />
+          </span>
+        )}
+        <CloseButton
+          aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
+          title={formatMessage({ id: 'button.cancel' })}
+          onClick={onClose}
+          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+        />
+        {!isMobile && shouldShowHeader && (
+          <div className="fixed right-4 top-9 z-top">
+            <div className="relative">
+              <UserNavigationWrapper
+                txButtons={txButtons}
+                userHub={<UserHubButton />}
+                extra={<JoinButton />}
+              />
+            </div>
+          </div>
+        )}
+        <div
           className={clsx(
-            'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
+            'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
             {
-              'border-negative-200 text-negative-400': isWarning,
+              'pb-6 pr-6': withPadding,
             },
           )}
         >
-          <Icon size={24} />
-        </span>
-      )}
-      <CloseButton
-        aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
-        title={formatMessage({ id: 'button.cancel' })}
-        onClick={onClose}
-        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-      />
-      {!isMobile && shouldShowHeader && (
-        <div className="fixed right-4 top-9 z-top">
-          <div className="relative">
-            <UserNavigationWrapper
-              txButtons={txButtons}
-              userHub={<UserHubButton />}
-              extra={<JoinButton />}
-            />
+          <div className="flex flex-grow flex-col">
+            {title && <h4 className="mb-2 heading-5">{title}</h4>}
+            {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
+            {children}
           </div>
+          {(closeMessage || confirmMessage) && (
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
+              {closeMessage && (
+                <Button mode="primaryOutline" isFullSize onClick={onClose}>
+                  {closeMessage}
+                </Button>
+              )}
+              {confirmMessage && (
+                <Button
+                  mode={buttonMode}
+                  isFullSize
+                  disabled={disabled}
+                  onClick={() => {
+                    onConfirm?.();
+                    onClose();
+                  }}
+                >
+                  {confirmMessage}
+                </Button>
+              )}
+            </div>
+          )}
         </div>
-      )}
-      <div
-        className={clsx(
-          'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
-          {
-            'pb-6 pr-6': !isTopSectionWithBackground,
-          },
-        )}
-      >
-        <div className="flex flex-grow flex-col">
-          {title && <h4 className="mb-2 heading-5">{title}</h4>}
-          {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
-          {children}
-        </div>
-        {(closeMessage || confirmMessage) && (
-          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
-            {closeMessage && (
-              <Button mode="primaryOutline" isFullSize onClick={onClose}>
-                {closeMessage}
-              </Button>
-            )}
-            {confirmMessage && (
-              <Button
-                mode={buttonMode}
-                isFullSize
-                disabled={disabled}
-                onClick={() => {
-                  onConfirm?.();
-                  onClose();
-                }}
-              >
-                {confirmMessage}
-              </Button>
-            )}
-          </div>
-        )}
       </div>
     </ModalBase>
   );

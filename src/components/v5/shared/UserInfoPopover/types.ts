@@ -12,7 +12,6 @@ export interface UserInfoProps {
   additionalContent?: JSX.Element | null;
   userDetails: JSX.Element;
   contributorType?: ContributorType;
-  isVerified?: boolean;
 }
 
 export type UserInfoPopoverProps = PropsWithChildren<{
