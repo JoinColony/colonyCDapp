@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useMobile } from '~hooks';
+
 import tooltipClasses from './Tooltip.styles.ts';
 import { type TooltipProps } from './types.ts';
 
@@ -26,6 +28,8 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   contentWrapperClassName,
   selectTriggerRef = (v) => v,
 }) => {
+  const isMobile = useMobile();
+  const tooltipTrigger = isMobile ? 'click' : trigger;
   const {
     getArrowProps,
     getTooltipProps,
@@ -36,7 +40,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     {
       delayShow: 200,
       placement,
-      trigger: tooltipContent ? trigger : null,
+      trigger: tooltipContent ? tooltipTrigger : null,
       visible: isOpen,
       delayHide: interactive ? 200 : 0,
       interactive,
