@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import ExternalLink from '~shared/ExternalLink/index.ts';
@@ -14,7 +13,7 @@ const TransactionLink: FC<TransactionLinkProps> = ({ hash, children }) => (
       linkType: 'tx',
       addressOrHash: hash,
     })}
-    className={clsx('hover:text-gray-900')}
+    className="hover:text-gray-900"
   >
     {children}
   </ExternalLink>
