@@ -37,6 +37,7 @@ import {
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
+  MoveFunds = 'moveFunds',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
   EditColonyByDelta = 'editColonyByDelta',
@@ -239,6 +240,10 @@ export type MotionActionTypes =
         toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
+        isMultiSig?: boolean;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        createdInDomain: Domain;
       },
       MetaWithSetter<object>
     >
