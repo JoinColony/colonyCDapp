@@ -1,0 +1,31 @@
+@import '../../../../styles/main.css';
+
+.modalContentWrapper {
+  /* @TODO remove when we use tailwind-scrollbar */
+}
+
+/* The scrollbar itself */
+.modalContentWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* The container (or track) of the scrollbar */
+.modalContentWrapper::-webkit-scrollbar-track {
+  width: 0.3125rem;
+  background-color: transparent;
+}
+
+/* The actual scrollbar handle */
+.modalContentWrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: var(--onboard-gray-100);
+}
+
+/* When the scrollbar is being hovered or clicked */
+.modalContentWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--onboard-gray-300);
+}
+
+.modalContentWrapper::-webkit-scrollbar-corner {
+  display: none;
+}

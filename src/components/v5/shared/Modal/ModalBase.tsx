@@ -6,6 +6,8 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 
 import { type ModalBaseProps } from './types.ts';
 
+import styles from './ModalBase.module.css';
+
 const displayName = 'v5.ModalBase';
 
 const ModalBase: FC<ModalBaseProps> = ({
@@ -33,7 +35,7 @@ const ModalBase: FC<ModalBaseProps> = ({
         beforeClose: 'blur-none',
       }}
       className={clsx(
-        `relative flex max-h-full shrink-0 flex-col overflow-auto
+        `${styles.modalContentWrapper} relative flex max-h-full shrink-0 flex-col overflow-y-auto overflow-x-hidden
         bg-base-white shadow-default outline-0 md:h-auto md:w-[30.3125rem] md:rounded-xl md:border md:border-gray-200`,
         {
           'h-full w-screen': isFullOnMobile,
