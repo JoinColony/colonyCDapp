@@ -23,9 +23,7 @@ export const getCreateNewTeamPayload = (
   };
 
   if (values.decisionMethod === DecisionMethod.Permissions) {
-    return {
-      ...baseDomainPayload,
-    };
+    return baseDomainPayload;
   }
 
   return {
@@ -33,6 +31,5 @@ export const getCreateNewTeamPayload = (
     colonyRoles: extractColonyRoles(colony.roles),
     colonyDomains: extractColonyDomains(colony.domains),
     isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
-    motionDomainId: values.createdIn,
   };
 };
