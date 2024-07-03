@@ -124,6 +124,7 @@ const formatDate = (value: string | undefined) => {
 interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
   isMultiSigFinalizable: boolean;
+  isMultiSigCancelable: boolean;
   // initiatorAddress: string;
   createdAt: string;
   threshold: number;
@@ -132,6 +133,7 @@ interface FinalizeStepProps {
 const FinalizeStep: FC<FinalizeStepProps> = ({
   multiSigData,
   isMultiSigFinalizable,
+  isMultiSigCancelable,
   // initiatorAddress,
   createdAt,
   threshold,
@@ -197,7 +199,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           key: 'signatories',
           content: (
             <div>
-              {isMultiSigFinalizable &&
+              {(isMultiSigFinalizable || isMultiSigCancelable) &&
                 !isMultiSigExecuted &&
                 !isMultiSigRejected && (
                   <div className="flex flex-col gap-2">
@@ -259,6 +261,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                     <span className="text-gray-600">
                       {formatText(MSG.finalized)}
                     </span>
+                    {/* @TODO: What to show when rejected / cancelled? */}
                     <span>{finalizedAt && formatDate(finalizedAt)}</span>
                   </div>
                 </>
