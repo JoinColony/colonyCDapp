@@ -10,7 +10,10 @@ import {
   getRole,
 } from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
-import { type AvailablePermission } from '~hooks/members/types.ts';
+import {
+  type DomainWithPermissionsAndReputation,
+  type AvailablePermission,
+} from '~hooks/members/types.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
@@ -65,12 +68,25 @@ const getPermissionTooltipContent = ({
   );
 };
 
+const getRemainingDomainsTooltipContent = (
+  domains: DomainWithPermissionsAndReputation[],
+) =>
+  domains.map(({ domainName, domainId }) => <p key={domainId}>{domainName}</p>);
+
+const getDomainTooltipContent = (name: string) => {
+  const truncatedName = multiLineTextEllipsis(name, 7);
+  if (truncatedName === name) {
+    return null;
+  }
+
+  return name;
+};
+
 const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
   aboutDescription = '',
   contributorType,
-  isVerified,
   domains,
   userDetails,
   additionalContent,
@@ -82,11 +98,9 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div
-      className={clsx('flex flex-col sm:max-h-[504px] sm:w-[350px]', {
+      className={clsx('flex flex-col', {
         'sm:min-w-[17rem]': !isTopContributorType,
         'sm:min-w-[20rem]': isTopContributorType,
-        'sm:max-h-[504px]': isVerified,
-        'sm:max-h-[646px]': !isVerified,
       })}
     >
       <div
@@ -109,45 +123,56 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains
-                ?.slice(0, 3)
-                .map(({ domainName, domainId }) => (
+              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
+                <Tooltip
+                  key={domainId}
+                  placement="top"
+                  tooltipContent={getDomainTooltipContent(domainName)}
+                >
                   <UserStatus
-                    key={domainId}
                     mode="team"
                     text={multiLineTextEllipsis(domainName, 7)}
                   />
-                ))}
+                </Tooltip>
+              ))}
               {domains?.length > 3 && (
-                <UserStatus mode="team" className="!w-auto !max-w-none">
-                  +{domains.length - 3}
-                </UserStatus>
+                <Tooltip
+                  placement="top"
+                  tooltipContent={getRemainingDomainsTooltipContent(
+                    domains.slice(3),
+                  )}
+                >
+                  <UserStatus mode="team" className="!w-auto !max-w-none">
+                    +{domains.length - 3}
+                  </UserStatus>
+                </Tooltip>
               )}
             </div>
           </>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-6 overflow-hidden p-6 pt-[18px]">
+      <div className="flex flex-1 flex-col gap-6 overflow-hidden pb-6 pt-[18px]">
         {aboutDescriptionText && (
-          <div>
+          <div className="px-6">
             <TitleLabel
               className="mb-2"
               text={formatText({ id: 'userInfo.about.section' })}
             />
-            <p className="truncate whitespace-break-spaces text-md text-gray-600 sm:max-h-[80px]">
+            <p className="truncate whitespace-break-spaces text-md text-gray-600 sm:max-h-[100px]">
               {aboutDescriptionText}
             </p>
           </div>
         )}
-        {additionalContent && <div>{additionalContent}</div>}
+        {additionalContent && <div className="px-6">{additionalContent}</div>}
         {domains?.length ? (
-          <div className="flex flex-col overflow-hidden">
+          <div className="flex flex-col overflow-hidden pl-6 pr-2.5">
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
               })}
+              className="pb-2"
             />
-            <ul className="flex flex-col gap-2 pt-2 sm:overflow-y-auto">
+            <ul className="flex max-h-[216px] flex-col gap-2 pr-3.5 sm:overflow-y-auto">
               {domains.map(
                 ({
                   domainId,
