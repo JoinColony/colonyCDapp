@@ -18,6 +18,7 @@ import { ManageMembersType } from './consts.ts';
 import {
   type ManageVerifiedMembersFormValues,
   getValidationSchema,
+  getManageVerifiedMembersPayload,
 } from './utils.ts';
 
 const MSG = defineMessages({
@@ -34,9 +35,7 @@ const MSG = defineMessages({
 export const useManageVerifiedMembers = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const {
-    colony: { colonyAddress, name },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
   const { totalMembers, verifiedMembers } = useMemberContext();
 
   const decisionMethod: DecisionMethod | undefined = useWatch({
@@ -78,19 +77,9 @@ export const useManageVerifiedMembers = (
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
-      mapPayload((values: ManageVerifiedMembersFormValues) => {
-        const members = values.members?.map((member) => member?.value);
-
-        return {
-          manageMembers,
-          colonyAddress,
-          colonyName: name,
-          members,
-          customActionTitle: values.title,
-          annotationMessage: values.description,
-          domainId: values.createdIn || Id.RootDomain,
-        };
-      }),
+      mapPayload((values: ManageVerifiedMembersFormValues) =>
+        getManageVerifiedMembersPayload(colony, values),
+      ),
       [],
     ),
     defaultValues: useMemo<DeepPartial<ManageVerifiedMembersFormValues>>(
