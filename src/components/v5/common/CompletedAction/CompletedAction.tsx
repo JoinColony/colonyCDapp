@@ -49,6 +49,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <MintTokens action={action} />;
       case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
+      case ColonyActionType.MoveFundsMultisig:
         return <TransferFunds action={action} />;
       case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
