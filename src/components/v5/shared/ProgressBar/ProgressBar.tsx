@@ -5,8 +5,8 @@ import { type ProgressBarProps } from './types.ts';
 
 const ProgressBar: FC<ProgressBarProps> = ({
   progress,
+  progressLabel,
   isTall,
-  additionalText,
   threshold = null,
   max = 100,
   barClassName,
@@ -17,7 +17,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   }
 
   return (
-    <div className="flex items-center">
+    <div className={clsx(className, 'flex items-center')}>
       <div
         className={clsx('relative w-full rounded bg-gray-200', {
           'h-2.5 rounded-lg': isTall,
@@ -42,14 +42,9 @@ const ProgressBar: FC<ProgressBarProps> = ({
           />
         )}
       </div>
-      <span className="ml-3 text-xs font-medium leading-3 text-gray-600">
-        {progress}
+      <span className="ml-3 flex-shrink-0 text-sm font-medium leading-3 text-gray-600">
+        {progressLabel || progress}
       </span>
-      {additionalText && (
-        <span className={clsx(className, 'flex-shrink-0 text-gray-600 text-3')}>
-          {additionalText}
-        </span>
-      )}
     </div>
   );
 };

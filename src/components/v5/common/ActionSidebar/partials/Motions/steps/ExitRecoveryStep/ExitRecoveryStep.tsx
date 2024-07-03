@@ -24,25 +24,28 @@ const ExitRecoveryStep: FC = () => {
       <MenuWithStatusText
         statusTextSectionProps={{
           status: StatusTypes.Info,
-          children: formatText(
-            { id: 'motion.exitRecovery.statusText' },
-            { signatures: 2 },
+          children: (
+            <>
+              <p className="text-4">
+                {formatText(
+                  { id: 'motion.exitRecovery.statusText' },
+                  { signatures: 2 },
+                )}
+              </p>
+              <ProgressBar
+                progress={0}
+                progressLabel={formatText(
+                  {
+                    id: 'motion.exitRecovery.additionalText',
+                  },
+                  { signatures: 2 },
+                )}
+                max={2}
+                className="mt-2"
+              />
+            </>
           ),
-          textClassName: 'text-4',
           iconAlignment: 'top',
-          content: (
-            <ProgressBar
-              progress={0}
-              additionalText={formatText(
-                {
-                  id: 'motion.exitRecovery.additionalText',
-                },
-                { signatures: 2 },
-              )}
-              max={2}
-              className="ml-1"
-            />
-          ),
         }}
         sections={[
           {
@@ -107,7 +110,7 @@ const ExitRecoveryStep: FC = () => {
           children: formatText({
             id: 'motion.exitRecovery.storageSlots.statusText',
           }),
-          textClassName: 'text-4',
+          textClassName: 'text-4 text-gray-900',
           iconAlignment: 'top',
         }}
         sections={[

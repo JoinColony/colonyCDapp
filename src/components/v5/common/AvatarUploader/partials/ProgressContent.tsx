@@ -57,7 +57,7 @@ const ProgressContent: FC<ProgressContentProps> = ({
           </div>
         </div>
         <span className="text-sm text-gray-600">{fileSize}</span>
-        <ProgressBar progress={progress} additionalText="%" />
+        <ProgressBar progress={progress} progressLabel={`${progress}%`} />
       </div>
     </div>
   );

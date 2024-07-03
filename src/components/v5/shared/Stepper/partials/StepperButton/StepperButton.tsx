@@ -83,8 +83,15 @@ const StepperButton: React.FC<StepperButtonProps> = ({
         </StepperTooltip>
       ) : (
         <Tooltip
-          placement={isMobile ? 'bottom' : 'right'}
+          placement="right"
           className="!inline-flex"
+          tooltipStyle={
+            ref.current
+              ? {
+                  maxWidth: `calc(100% - ${ref.current.offsetWidth}px - 20px)`,
+                }
+              : undefined
+          }
           {...tooltipProps}
         >
           {content}

@@ -67,21 +67,32 @@ const RevealStep: FC<RevealStepProps> = ({
     <MenuWithStatusText
       statusTextSectionProps={{
         status: StatusTypes.Info,
-        children: formatText({ id: 'motion.revealStep.statusText' }),
-        textClassName: 'text-4',
+        iconAlignment: 'top',
+        textClassName: 'w-full',
+        children: (
+          <p className="text-gray-900 text-4">
+            {formatText({ id: 'motion.revealStep.statusText' })}
+          </p>
+        ),
         content: (
-          <div className="mt-1 flex flex-col gap-2">
-            <div className="ml-[1.375rem]">
+          <>
+            <div className="ml-[1.375rem] mt-1">
               <ProgressBar
+                className="mt-2"
                 progress={revealProgress}
+                progressLabel={
+                  <span className="!text-xs">
+                    {formatText(
+                      {
+                        id: 'motion.revealStep.votesRevealed',
+                      },
+                      {
+                        votes: revealProgress,
+                      },
+                    )}
+                  </span>
+                }
                 max={totalVoters}
-                additionalText={formatText({
-                  id:
-                    revealProgress === 1
-                      ? 'motion.revealStep.voteRevealed'
-                      : 'motion.revealStep.votesRevealed',
-                })}
-                className="ml-1"
                 isTall
               />
             </div>
@@ -94,7 +105,7 @@ const RevealStep: FC<RevealStepProps> = ({
                 {formatText({ id: 'motion.revealStep.warning' })}
               </StatusText>
             )}
-          </div>
+          </>
         ),
       }}
       sections={[
@@ -148,23 +159,35 @@ const RevealStep: FC<RevealStepProps> = ({
             </ActionForm>
           ),
         },
+        {
+          key: '2',
+          content: (
+            <AccordionItem
+              title={formatText({
+                id: isInformationAccordionOpen
+                  ? 'motion.revealStep.buttonHide'
+                  : 'motion.revealStep.buttonShow',
+              })}
+              isOpen={isInformationAccordionOpen}
+              onToggle={toggleInformationAccordion}
+              className={clsx(
+                `
+                  [&_.accordion-toggler]:text-sm
+                  [&_.accordion-toggler]:text-gray-500
+                `,
+                {
+                  '[&_.accordion-toggler]:text-blue-500':
+                    isInformationAccordionOpen,
+                },
+              )}
+              icon={CaretDown}
+              iconSize={16}
+            >
+              <RevealInformationList items={voters} />
+            </AccordionItem>
+          ),
+        },
       ]}
-      footer={
-        <AccordionItem
-          className="text-sm text-gray-500"
-          isOpen={isInformationAccordionOpen}
-          onToggle={toggleInformationAccordion}
-          title={formatText({
-            id: isInformationAccordionOpen
-              ? 'motion.revealStep.buttonHide'
-              : 'motion.revealStep.buttonShow',
-          })}
-          icon={CaretDown}
-          iconSize={16}
-        >
-          <RevealInformationList items={voters} />
-        </AccordionItem>
-      }
     />
   );
 };
