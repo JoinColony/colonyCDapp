@@ -26,9 +26,7 @@ export const getEditDomainPayload = (
   };
 
   if (values.decisionMethod === DecisionMethod.Permissions) {
-    return {
-      ...baseDomainPayload,
-    };
+    return baseDomainPayload;
   }
 
   return {
