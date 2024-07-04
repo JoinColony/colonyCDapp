@@ -120,6 +120,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ExtendedColonyActionType.UpdateColonyObjective:
         // @NOTE: Enabling those 2 above temporarily
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
