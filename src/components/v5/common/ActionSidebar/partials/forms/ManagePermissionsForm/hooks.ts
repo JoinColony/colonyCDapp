@@ -1,11 +1,11 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
-import { mixed, object, string, number } from 'yup';
+import { object, string, number } from 'yup';
 
-import { CUSTOM_USER_ROLE, UserRole, getRole } from '~constants/permissions.ts';
+import { UserRole, getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -13,11 +13,9 @@ import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { formatMessage } from '~utils/yup/tests/helpers.ts';
-import {
-  ACTION_BASE_VALIDATION_SCHEMA,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
+import { getObjectKeys } from '~utils/objects/index.ts';
+import { getEnumYupSchema } from '~utils/yup/utils.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -25,12 +23,15 @@ import { type ActionFormBaseProps } from '../../../types.ts';
 import {
   Authority,
   AVAILABLE_ROLES,
-  MANAGE_PERMISSIONS_FORM_MSGS,
   type ManagePermissionsFormValues,
-  type RemoveRoleOptionValue,
-  type TestNodeContext,
+  permissionsSchema,
+  schemaTests,
+  type SchemaTestContext,
 } from './consts.ts';
-import { getManagePermissionsPayload } from './utils.ts';
+import {
+  extractColonyRoleFromPermissionKey,
+  getManagePermissionsPayload,
+} from './utils.ts';
 
 const useManagePermissionsValidationSchema = () => {
   const [currentPermissions, setCurrentPermissions] = useState<Array<number>>(
@@ -40,82 +41,58 @@ const useManagePermissionsValidationSchema = () => {
     undefined,
   );
 
-  const { clearErrors } = useFormContext<ManagePermissionsFormValues>();
-
   const validationSchema = useMemo(
     () =>
       object()
-        .shape({
+        .shape<ManagePermissionsFormValues>({
           member: string().required(),
           team: number().required(),
           createdIn: number().required(),
           role: string()
             .test(
-              'role',
-              formatMessage(
-                MANAGE_PERMISSIONS_FORM_MSGS.samePermissionsApplied,
-              ),
-              (
-                role: UserRole,
-                { parent: { member, team } }: TestNodeContext,
-              ) => {
+              schemaTests.role.scope,
+              schemaTests.role.testTitles.samePermissionsApplied,
+              (role, { parent: { member, team } }: SchemaTestContext) => {
                 if (member && team && role && role !== UserRole.Custom) {
                   return role !== currentRole;
                 }
-
-                clearErrors('role');
 
                 return true;
               },
             )
             .required(),
-          authority: string().required(),
-          permissions: mixed<Partial<Record<string, boolean>>>()
+          authority: getEnumYupSchema(Authority).required(),
+          permissions: permissionsSchema
             .test(
-              'permissions',
-              formatMessage(MANAGE_PERMISSIONS_FORM_MSGS.permissionRequired),
+              schemaTests.permissions.scope,
+              schemaTests.permissions.testTitles.permissionRequired,
               (
-                permissions: Record<string, boolean>,
-                { parent: { member, team, role } }: TestNodeContext,
+                permissions,
+                { parent: { member, team, role } }: SchemaTestContext,
               ) => {
-                if (member && team)
-                  if (role === CUSTOM_USER_ROLE.role) {
+                if (member && team && permissions) {
+                  if (role === UserRole.Custom) {
                     return Object.values(permissions).some(Boolean);
                   }
-
+                }
                 return true;
               },
             )
             .test(
-              'permissions',
-              formatMessage(
-                MANAGE_PERMISSIONS_FORM_MSGS.samePermissionsApplied,
-              ),
+              schemaTests.permissions.scope,
+              schemaTests.permissions.testTitles.samePermissionsApplied,
               (
-                permissions: Record<string, boolean>,
-                { parent: { member, team, role } }: TestNodeContext,
+                permissions,
+                { parent: { member, team, role } }: SchemaTestContext,
               ) => {
-                if (member && team && role === UserRole.Custom) {
+                if (member && team && role === UserRole.Custom && permissions) {
                   // At this point, the user's current and db-stored permissions are represented as ColonyRole[]: [0, 1, 5, 6]
                   // Meanwhile the form-formatted permissions are represented as an object: { role_0: false, ... role_6: true }
                   // We'd want to filter the truthy form-formatted permissions and map their ColonyRole suffixes
                   // i.e. { role_0: false, role_1: true, role_2: false, role_4: true } => [1, 4]
-                  const newPermissions = Object.keys(permissions)
+                  const newPermissions = getObjectKeys(permissions)
                     .filter((permissionKey) => permissions[permissionKey])
-                    .map((permissionKey) => {
-                      const colonyRole = permissionKey.match(/role_(\d+)/)?.[1];
-
-                      if (colonyRole && colonyRole in ColonyRole) {
-                        return Number(colonyRole);
-                      }
-
-                      console.error(
-                        'Manage Permissions Form: Invalid permission: ',
-                        permissionKey,
-                      );
-
-                      return null;
-                    });
+                    .map(extractColonyRoleFromPermissionKey);
 
                   if (
                     newPermissions.includes(null) ||
@@ -133,11 +110,12 @@ const useManagePermissionsValidationSchema = () => {
                 return true;
               },
             ),
-          decisionMethod: string().defined(),
+          decisionMethod: getEnumYupSchema(DecisionMethod).required(),
+          description: string().optional(),
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [clearErrors, currentPermissions, currentRole],
+    [currentPermissions, currentRole],
   );
 
   return { validationSchema, setCurrentPermissions, setCurrentRole };
@@ -146,8 +124,11 @@ const useManagePermissionsValidationSchema = () => {
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const formDecisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
+  const formDecisionMethod = useWatch<
+    ManagePermissionsFormValues,
+    'decisionMethod'
+  >({
+    name: 'decisionMethod',
   });
   const {
     setValue,
@@ -155,11 +136,12 @@ export const useManagePermissions = (
     trigger,
     clearErrors,
     formState: { submitCount },
-  } = useFormContext<Partial<ManagePermissionsFormValues>>();
+  } = useFormContext<ManagePermissionsFormValues>();
+
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
-  const formRole: UserRole | RemoveRoleOptionValue | undefined = useWatch({
+  const formRole = useWatch<ManagePermissionsFormValues, 'role'>({
     name: 'role',
   });
   const isModeRoleSelected = formRole === UserRole.Mod;
@@ -204,6 +186,8 @@ export const useManagePermissions = (
       setCurrentPermissions(currentPermissions);
 
       setValue('role', currentRole);
+
+      clearErrors('role');
 
       AVAILABLE_ROLES.forEach((colonyRole) => {
         setValue(

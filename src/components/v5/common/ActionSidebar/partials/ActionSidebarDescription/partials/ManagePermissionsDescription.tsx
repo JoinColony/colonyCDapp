@@ -27,7 +27,7 @@ export const ManagePermissionsDescription = () => {
     (domain) => domain?.nativeId === team,
   );
   const membersPermissions =
-    typeof role === 'string' ? getPermissionsMap(permissions || {}, role) : {};
+    typeof role === 'string' ? getPermissionsMap(permissions, role) : {};
   const memberRoles = Object.entries(
     membersPermissions,
   ).reduce<ColonyActionRoles>(

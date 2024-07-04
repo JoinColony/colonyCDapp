@@ -31,12 +31,12 @@ export const getRoleLabel = (role: string | undefined) => {
 
 export const getPermissionsMap = (
   permissions: ManagePermissionsFormValues['permissions'],
-  role: string,
+  role: string | undefined,
 ) => {
   const permissionsList = (() => {
     switch (role) {
       case UserRole.Custom: {
-        return Object.entries(permissions).reduce<ColonyRole[]>(
+        return Object.entries(permissions ?? {}).reduce<ColonyRole[]>(
           (result, [key, value]) => {
             if (!value) {
               return result;
@@ -91,3 +91,15 @@ export const getManagePermissionsPayload = (
   motionDomainId: Number(values.createdIn),
   roles: getPermissionsMap(values.permissions, values.role),
 });
+
+export const extractColonyRoleFromPermissionKey = (permissionKey: string) => {
+  const colonyRole = permissionKey.match(/role_(\d+)/)?.[1];
+
+  if (colonyRole && colonyRole in ColonyRole) {
+    return Number(colonyRole);
+  }
+
+  console.error('Manage Permissions Form: Invalid permission: ', permissionKey);
+
+  return null;
+};

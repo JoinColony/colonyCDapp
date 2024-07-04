@@ -25,7 +25,11 @@ import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
 import UserSelect from '../../UserSelect/index.ts';
 
-import { AuthorityOptions, RemoveRoleOptionValue } from './consts.ts';
+import {
+  AuthorityOptions,
+  type ManagePermissionsFormValues,
+  RemoveRoleOptionValue,
+} from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
@@ -33,6 +37,8 @@ import PermissionsOptions from './PermissionOptions.tsx';
 import { getRoleLabel } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
+
+const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
@@ -43,7 +49,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team: string | undefined = useWatch({ name: 'team' });
+  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
@@ -86,7 +92,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         onClose={togglePermissionsModalOff}
         isOpen={isPermissionsModalOpen}
       />
-      <ActionFormRow
+      <FormRow
         icon={UserFocus}
         fieldName="member"
         tooltips={{
@@ -100,8 +106,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isDisabled={hasNoDecisionMethods}
       >
         <UserSelect name="member" disabled={hasNoDecisionMethods} />
-      </ActionFormRow>
-      <ActionFormRow
+      </FormRow>
+      <FormRow
         icon={UsersThree}
         fieldName="team"
         tooltips={{
@@ -115,8 +121,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isDisabled={hasNoDecisionMethods}
       >
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
-      </ActionFormRow>
-      <ActionFormRow
+      </FormRow>
+      <FormRow
         icon={Shield}
         fieldName="role"
         tooltips={{
@@ -144,8 +150,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           footer={permissionSelectFooter}
           disabled={hasNoDecisionMethods}
         />
-      </ActionFormRow>
-      <ActionFormRow
+      </FormRow>
+      <FormRow
         icon={Signature}
         fieldName="authority"
         tooltips={{
@@ -183,12 +189,16 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
             id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
           })}
         />
-      </ActionFormRow>
+      </FormRow>
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {role !== RemoveRoleOptionValue.remove && (
-        <PermissionsTable name="permissions" role={role} className="mt-7" />
+        <PermissionsTable
+          name="permissions"
+          role={role as UserRole}
+          className="mt-7"
+        />
       )}
     </>
   );
