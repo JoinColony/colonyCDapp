@@ -132,6 +132,7 @@ const UserInfo: FC<UserInfoProps> = ({
                   <UserStatus
                     mode="team"
                     text={multiLineTextEllipsis(domainName, 7)}
+                    className="cursor-default"
                   />
                 </Tooltip>
               ))}
@@ -142,7 +143,10 @@ const UserInfo: FC<UserInfoProps> = ({
                     domains.slice(3),
                   )}
                 >
-                  <UserStatus mode="team" className="!w-auto !max-w-none">
+                  <UserStatus
+                    mode="team"
+                    className="!w-auto !max-w-none cursor-default"
+                  >
                     +{domains.length - 3}
                   </UserStatus>
                 </Tooltip>
@@ -151,7 +155,7 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-6 overflow-hidden pb-6 pt-[18px]">
+      <div className="flex flex-1 flex-col gap-6 pb-6 pt-[18px] sm:overflow-hidden">
         {aboutDescriptionText && (
           <div className="px-6">
             <TitleLabel
@@ -165,14 +169,14 @@ const UserInfo: FC<UserInfoProps> = ({
         )}
         {additionalContent && <div className="px-6">{additionalContent}</div>}
         {domains?.length ? (
-          <div className="flex flex-col overflow-hidden pl-6 pr-2.5">
+          <div className="flex flex-col pl-6 pr-6 sm:overflow-hidden sm:pr-2.5">
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
               })}
               className="pb-2"
             />
-            <ul className="flex max-h-[216px] flex-col gap-2 pr-3.5 sm:overflow-y-auto">
+            <ul className="flex max-h-[216px] flex-col gap-2 sm:overflow-y-auto sm:pr-3.5">
               {domains.map(
                 ({
                   domainId,
