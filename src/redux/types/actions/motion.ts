@@ -219,6 +219,10 @@ export type MotionActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
+        tokenAddresses?: Address[];
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
