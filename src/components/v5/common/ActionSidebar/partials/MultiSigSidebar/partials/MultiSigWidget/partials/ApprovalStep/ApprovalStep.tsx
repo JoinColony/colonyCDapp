@@ -107,7 +107,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const requiredRoles = getRolesNeededForMultiSigAction(actionType);
   const { uniqueEligibleSignees } = useEligibleSignees({
-    domainId: Number(multiSigData.multiSigDomainId),
+    domainId: Number(multiSigData.nativeMultiSigDomainId),
     requiredRoles,
   });
   const voteOrder = {
