@@ -124,6 +124,10 @@ const SetUserRoles = ({ action }: Props) => {
     ? Authority.ViaMultiSig
     : Authority.Own;
 
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -233,11 +237,7 @@ const SetUserRoles = ({ action }: Props) => {
           isMotion={action.isMotion || false}
           isMultisig={action.isMultiSig || false}
         />
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />

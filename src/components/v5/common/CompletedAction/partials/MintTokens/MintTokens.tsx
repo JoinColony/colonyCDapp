@@ -77,6 +77,10 @@ const MintTokens = ({ action }: MintTokensProps) => {
 
   const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
 
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -132,11 +136,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
