@@ -1,11 +1,11 @@
 import useJoinedColonies from './useJoinedColonies.ts';
 
 const useIsContributor = ({
+  colonyAddress,
   walletAddress = '',
-  colonyAddress = '',
 }: {
+  colonyAddress: string;
   walletAddress: string | undefined;
-  colonyAddress: string | undefined;
 }) => {
   const { joinedColonies, loading } = useJoinedColonies(walletAddress);
 

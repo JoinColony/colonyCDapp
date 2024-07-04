@@ -3,7 +3,11 @@ import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
 import ActionSidebarContextProvider from '~context/ActionSidebarContext/ActionSidebarContextProvider.tsx';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
+import {
+  useAppContext,
+  useColonyContract,
+} from '~context/AppContext/AppContext.ts';
+import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import ColonyContextProvider from '~context/ColonyContext/ColonyContextProvider.tsx';
 import ColonyCreateModalProvider from '~context/ColonyCreateModalContext/ColonyCreateModalContextProvider.tsx';
 import ColonyDecisionProvider from '~context/ColonyDecisionContext/ColonyDecisionContextProvider.tsx';
@@ -15,6 +19,7 @@ import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { useGetFullColonyByNameQuery } from '~gql';
 import useIsContributor from '~hooks/useIsContributor.ts';
+import { type Colony } from '~types/graphql.ts';
 
 import NotFoundRoute from './NotFoundRoute.tsx';
 
@@ -27,58 +32,53 @@ const MSG = defineMessages({
   },
 });
 
-const ColonyRoute = () => {
-  const { colonyName = '' } = useParams();
-  const {
-    data,
-    loading: isColonyLoading,
-    error,
-    refetch: refetchColony,
-    startPolling,
-    stopPolling,
-  } = useGetFullColonyByNameQuery({
-    variables: {
-      name: colonyName,
-    },
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
-  });
+interface ColonyRouteInnerProps {
+  colony: Colony;
+  refetchColony: RefetchColonyFn;
+  startPollingColonyData: (pollInterval: number) => void;
+  stopPollingColonyData: () => void;
+}
 
+const ColonyRouteInner = ({
+  colony,
+  refetchColony,
+  startPollingColonyData,
+  stopPollingColonyData,
+}: ColonyRouteInnerProps) => {
   const { user, userLoading, walletConnecting } = useAppContext();
-
-  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
+  const { colonyAddress } = colony;
+  const { colonyContract, loading: contractLoading } =
+    useColonyContract(colonyAddress);
 
   const { isContributor, loading: isContributorLoading } = useIsContributor({
-    colonyAddress: colony?.colonyAddress,
+    colonyAddress,
     walletAddress: user?.walletAddress,
   });
 
   if (
+    contractLoading ||
     walletConnecting ||
-    isColonyLoading ||
     userLoading ||
     isContributorLoading
   ) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
-  if (!colony || error) {
-    if (error) {
-      console.error(error);
-    }
-    return <NotFoundRoute />;
-  }
-
   if (!user || !isContributor) {
     return <Navigate to={`/go/${colony.name}`} />;
+  }
+
+  if (!colonyContract) {
+    return <NotFoundRoute />;
   }
 
   return (
     <ColonyContextProvider
       colony={colony}
+      colonyContract={colonyContract}
       refetchColony={refetchColony}
-      startPollingColonyData={startPolling}
-      stopPollingColonyData={stopPolling}
+      startPollingColonyData={startPollingColonyData}
+      stopPollingColonyData={stopPollingColonyData}
     >
       <MemberContextProvider>
         <ActionSidebarContextProvider>
@@ -98,6 +98,46 @@ const ColonyRoute = () => {
         </ActionSidebarContextProvider>
       </MemberContextProvider>
     </ColonyContextProvider>
+  );
+};
+
+const ColonyRoute = () => {
+  const { colonyName = '' } = useParams();
+  const {
+    data,
+    loading,
+    error,
+    refetch: refetchColony,
+    startPolling,
+    stopPolling,
+  } = useGetFullColonyByNameQuery({
+    variables: {
+      name: colonyName,
+    },
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-first',
+  });
+
+  if (loading) {
+    return <LoadingTemplate loadingText={MSG.loadingText} />;
+  }
+
+  const colony = data?.getColonyByName?.items?.[0] ?? undefined;
+
+  if (!colony || error) {
+    if (error) {
+      console.error(error);
+    }
+    return <NotFoundRoute />;
+  }
+
+  return (
+    <ColonyRouteInner
+      colony={colony}
+      refetchColony={refetchColony}
+      startPollingColonyData={startPolling}
+      stopPollingColonyData={stopPolling}
+    />
   );
 };
 

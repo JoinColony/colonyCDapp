@@ -1,6 +1,8 @@
+import { type Colony as ColonyContract } from '@colony/sdk';
 import React, { useEffect, useMemo, type ReactNode } from 'react';
 
 import { ContextModule, setContext } from '~context';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateContributorsWithReputationMutation } from '~gql';
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
@@ -37,27 +39,37 @@ const useUpdateColonyReputation = (colonyAddress?: string) => {
 const ColonyContextProvider = ({
   children,
   colony,
+  colonyContract,
   refetchColony,
   startPollingColonyData,
   stopPollingColonyData,
 }: {
   children: ReactNode;
   colony: Colony;
+  colonyContract: ColonyContract;
   refetchColony: RefetchColonyFn;
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
 }) => {
+  // FIXME: refactor so that wallet is always available in the AppContext. Use loading bar if appropriate
+  const {} = useAppContext();
+
   useUpdateColonyReputation(colony?.colonyAddress);
 
+  // FIXME: use app context to get wallet and initialize colony network, then initialize colony contract and store it in this context
+  // Maybe there can be a loading state so that we know that the current colonyContract is always initialized
   const canInteractWithColony = useCanInteractWithColony(colony);
+
+  // @TODO: (sagas) use the min supported version from colony sdk
   const isSupportedColonyVersion =
-    (colony?.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
+    (colony.version ?? 0) >= MIN_SUPPORTED_COLONY_VERSION;
 
   const colonySubscription = useColonySubscription(colony);
 
   const colonyContext = useMemo<ColonyContextValue>(
     () => ({
       colony,
+      colonyContract,
       canInteractWithColony,
       refetchColony,
       startPollingColonyData,
@@ -67,6 +79,7 @@ const ColonyContextProvider = ({
     }),
     [
       colony,
+      colonyContract,
       canInteractWithColony,
       refetchColony,
       startPollingColonyData,
@@ -77,6 +90,7 @@ const ColonyContextProvider = ({
   );
 
   useEffect(() => {
+    // @TODO: (sagas) Remove eventually (when getting rid of sagas)
     setContext(ContextModule.CurrentColonyAddress, colony.colonyAddress);
   }, [colony.colonyAddress]);
 

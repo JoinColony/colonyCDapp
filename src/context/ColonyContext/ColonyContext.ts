@@ -1,4 +1,5 @@
 import { type ApolloQueryResult } from '@apollo/client';
+import { type Colony as ColonyContract } from '@colony/sdk';
 import { createContext, useContext } from 'react';
 
 import { type Exact, type GetFullColonyByNameQuery } from '~gql';
@@ -18,6 +19,7 @@ export const ColonyContext = createContext<ColonyContextValue | null>(null);
 
 export interface ColonyContextValue {
   colony: Colony;
+  colonyContract: ColonyContract;
   canInteractWithColony: boolean;
   refetchColony: RefetchColonyFn;
   startPollingColonyData: (pollInterval: number) => void;
