@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useState, type FC, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { findFirstUserRoleWithColonyRoles } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   type ColonyActionType,
@@ -297,7 +298,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 placement="bottom-start"
                 offset={[0, 4]}
                 tooltipContent={formatText(MSG.tooltip, {
-                  permission: requiredRoles,
+                  permission: findFirstUserRoleWithColonyRoles({
+                    colonyRoles: requiredRoles,
+                  }),
                 })}
               >
                 <h5 className="mb-2 text-1">{formatText(MSG.title)}</h5>

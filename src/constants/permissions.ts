@@ -150,3 +150,29 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
     permissions: [formatText({ id: 'permissions.moderation' })],
   },
 };
+
+export const findFirstUserRoleWithColonyRoles = ({
+  colonyRoles,
+  isMultiSig,
+}: {
+  colonyRoles?: ColonyRole[];
+  isMultiSig?: boolean;
+}) => {
+  if (!colonyRoles) {
+    return UserRole.Owner;
+  }
+  const matchingUserRole = USER_ROLES.find((userRole) =>
+    colonyRoles.every((role) => userRole.permissions.includes(role)),
+  );
+
+  if (!matchingUserRole) {
+    return UserRole.Owner;
+  }
+
+  // Multi-sig does not support the payer role
+  if (matchingUserRole.name === UserRole.Mod && isMultiSig) {
+    return UserRole.Payer;
+  }
+
+  return matchingUserRole.name;
+};
