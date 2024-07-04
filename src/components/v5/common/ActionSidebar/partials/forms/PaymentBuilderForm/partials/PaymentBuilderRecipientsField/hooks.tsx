@@ -44,7 +44,9 @@ export const useRecipientsFieldTableColumns = (
         columnHelper.display({
           id: 'recipient',
           header: () => formatText({ id: 'table.row.recipient' }),
-          cell: ({ row }) => <UserSelectRow row={row} name={name} />,
+          cell: ({ row }) => (
+            <UserSelectRow row={row} name={`${name}.${row.index}.recipient`} />
+          ),
           footer: hasMoreThanOneToken
             ? () => (
                 <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">

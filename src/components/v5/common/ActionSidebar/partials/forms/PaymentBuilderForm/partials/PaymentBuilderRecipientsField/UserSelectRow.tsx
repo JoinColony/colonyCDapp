@@ -1,22 +1,27 @@
+import { type Row } from '@tanstack/react-table';
 import { isAddress } from 'ethers/lib/utils';
-import React from 'react';
+import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 
-export const UserSelectRow = ({ row, name }: any) => {
-  const userSelectName = `${name}.${row.index}.recipient`;
+import { type PaymentBuilderRecipientsTableModel } from './types.ts';
 
+interface UserSelectRowProps {
+  name: string;
+  row: Row<PaymentBuilderRecipientsTableModel>;
+}
+export const UserSelectRow: FC<UserSelectRowProps> = ({ row, name }) => {
   const { field } = useController({
-    name: userSelectName,
+    name,
   });
 
   const isUserAddressValid = isAddress(field.value);
   return (
     <div key={row.id}>
       <UserSelect
-        name={userSelectName}
+        name={name}
         tooltipContent={
           !isUserAddressValid &&
           formatText({ id: 'actionSidebar.addressErrorTooltip' })
