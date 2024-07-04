@@ -104,12 +104,7 @@ const Table = <T,>({
   const shouldShowEmptyContent = emptyContent && data.length === 0;
 
   return (
-    <div
-      className={clsx(
-        className,
-        'overflow-hidden rounded-lg border border-gray-200',
-      )}
-    >
+    <div className={className}>
       <table
         className={`
           h-px
@@ -117,6 +112,9 @@ const Table = <T,>({
           table-fixed
           border-separate
           border-spacing-0
+          rounded-lg
+          border
+          border-gray-200
         `}
         cellPadding="0"
         cellSpacing="0"
@@ -160,6 +158,8 @@ const Table = <T,>({
                             text-left
                             text-sm
                             font-normal
+                            first:rounded-tl-lg
+                            last:rounded-tr-lg
                           `}
                           style={{
                             width:
@@ -231,7 +231,7 @@ const Table = <T,>({
                       key={header.id}
                       className={clsx(
                         header.column.columnDef.headCellClassName,
-                        'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 empty:p-0',
+                        'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
                         {
                           'cursor-pointer':
                             header.column.getCanSort() &&

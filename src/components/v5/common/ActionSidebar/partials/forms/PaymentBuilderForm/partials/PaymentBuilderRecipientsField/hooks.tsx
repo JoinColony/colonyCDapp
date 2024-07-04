@@ -6,7 +6,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 
 import PaymentBuilderPayoutsTotal from '../PaymentBuilderPayoutsTotal/index.ts';
@@ -15,6 +14,7 @@ import {
   type PaymentBuilderRecipientsFieldModel,
   type PaymentBuilderRecipientsTableModel,
 } from './types.ts';
+import { UserSelectRow } from './UserSelectRow.tsx';
 
 export const useRecipientsFieldTableColumns = (
   name: string,
@@ -44,11 +44,7 @@ export const useRecipientsFieldTableColumns = (
         columnHelper.display({
           id: 'recipient',
           header: () => formatText({ id: 'table.row.recipient' }),
-          cell: ({ row }) => (
-            <div key={row.id}>
-              <UserSelect name={`${name}.${row.index}.recipient`} />
-            </div>
-          ),
+          cell: ({ row }) => <UserSelectRow row={row} name={name} />,
           footer: hasMoreThanOneToken
             ? () => (
                 <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
