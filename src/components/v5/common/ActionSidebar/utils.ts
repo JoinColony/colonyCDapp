@@ -1,4 +1,9 @@
+import { apolloClient } from '~apollo';
 import { type Action } from '~constants/actions.ts';
+import { SearchActionsDocument } from '~gql';
+import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
+import { isQueryActive } from '~utils/isQueryActive';
+import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -13,4 +18,39 @@ export const translateAction = (action?: Action) => {
     .join('');
 
   return `actions.${actionName}`;
+};
+
+export const handleMotionCompleted = (action: ColonyAction) => {
+  switch (action.type) {
+    case ColonyActionType.AddVerifiedMembersMotion: {
+      if (action.members) {
+        updateContributorVerifiedStatus(
+          action.members,
+          action.colonyAddress,
+          true,
+        );
+      }
+      break;
+    }
+    case ColonyActionType.RemoveVerifiedMembersMotion: {
+      if (action.members) {
+        updateContributorVerifiedStatus(
+          action.members,
+          action.colonyAddress,
+          false,
+        );
+      }
+      break;
+    }
+    case ColonyActionType.CreateDecisionMotion: {
+      if (isQueryActive('SearchActions')) {
+        apolloClient.refetchQueries({ include: [SearchActionsDocument] });
+      }
+
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 };

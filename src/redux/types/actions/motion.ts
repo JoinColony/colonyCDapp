@@ -14,8 +14,10 @@ import {
   type Safe,
   type SafeTransactionData,
 } from '~types/graphql.ts';
-import { type Address } from '~types/index.ts';
-import { type ManageVerifiedMembersOperation } from '~types/motions.ts';
+import {
+  type Address,
+  type ManageVerifiedMembersOperation,
+} from '~types/index.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
@@ -310,24 +312,6 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.MOTION_ADD_VERIFIED_MEMBERS,
-      {
-        colonyAddress: Address;
-        colonyName: string;
-        members: string[];
-        domainId: number;
-        annotationMessage?: string;
-        customActionTitle: string;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
-      object,
-      object
-    >
-  | UniqueActionType<
       ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS,
       {
         operation: ManageVerifiedMembersOperation;
@@ -346,24 +330,6 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS_ERROR, object>
   | UniqueActionType<
       ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS_SUCCESS,
-      object,
-      object
-    >
-  | UniqueActionType<
-      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS,
-      {
-        colonyAddress: Address;
-        colonyName: string;
-        members: string[];
-        domainId: number;
-        annotationMessage?: string;
-        customActionTitle: string;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
       object,
       object
     >
