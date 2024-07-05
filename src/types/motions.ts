@@ -1,10 +1,5 @@
 import { type ColonyAction, type ColonyMotion } from './graphql.ts';
 
-export enum ManageVerifiedMembersOperation {
-  Add = 'Add',
-  Remove = 'Remove',
-}
-
 export enum StakeSide {
   Motion = 'MOTION',
   Objection = 'OBJECTION',

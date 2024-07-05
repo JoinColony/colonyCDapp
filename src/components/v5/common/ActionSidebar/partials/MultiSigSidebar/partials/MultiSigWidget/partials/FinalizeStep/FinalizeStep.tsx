@@ -11,12 +11,12 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
-import { handleMultiSigFinalized } from '../../../../utils.ts';
 import FinalizeButton from '../../../FinalizeButton/FinalizeButton.tsx';
 import { hasWeekPassed } from '../../utils.ts';
 
@@ -185,7 +185,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (isMultiSigExecuted || isMultiSigRejected) {
       setIsFinalizePending(false);
-      handleMultiSigFinalized(action);
+    }
+    if (isMultiSigExecuted) {
+      handleMotionCompleted(action);
     }
   }, [isMultiSigExecuted, isMultiSigRejected, action]);
 
