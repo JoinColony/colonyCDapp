@@ -2,6 +2,8 @@ require('cross-fetch/polyfill');
 const { providers } = require('ethers');
 const { getColonyNetworkClient } = require('@colony/colony-js');
 
+const isDev = process.env.ENV === 'dev';
+
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 let reputationOracleEndpoint;
@@ -11,8 +13,7 @@ let network;
 let networkAddress;
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,

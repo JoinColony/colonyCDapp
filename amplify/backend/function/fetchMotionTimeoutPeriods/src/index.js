@@ -7,6 +7,8 @@ const {
   getBlockTime,
 } = require('@colony/colony-js');
 
+const isDev = process.env.ENV === 'dev';
+
 let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 let networkAddress;
 let network = Network.Custom;
@@ -14,8 +16,7 @@ let reputationOracleEndpoint =
   'http://reputation-monitor:3001/reputation/local';
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL, networkAddress, reputationOracleEndpoint, network] =
       await getParams([

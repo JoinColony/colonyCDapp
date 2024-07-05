@@ -1,7 +1,6 @@
 const { graphqlRequest, getColonyContributorId } = require('./utils');
 const {
   getColonyMemberInvite,
-  updateColony,
   updateColonyMemberInvite,
   createColonyContributor,
   getUser,
@@ -9,12 +8,13 @@ const {
   updateColonyContributor,
 } = require('./graphql');
 
+const isDev = process.env.ENV === 'dev';
+
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [apiKey, graphqlURL] = await getParams(['appsyncApiKey', 'graphqlUrl']);
   }

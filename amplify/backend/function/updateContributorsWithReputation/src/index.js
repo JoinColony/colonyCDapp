@@ -30,6 +30,8 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
+const isDev = process.env.ENV === 'dev';
+
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
@@ -39,9 +41,7 @@ let reputationOracleEndpoint =
 let network = Network.Custom;
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
@@ -143,7 +143,7 @@ exports.handler = async (event) => {
     const allNativeDomainIds =
       data?.getColony?.domains?.items?.map(({ nativeId }) => nativeId) ?? [];
 
-    console.log({ allNativeDomainIds })
+    console.log({ allNativeDomainIds });
 
     const promiseResults = await Promise.allSettled(
       allNativeDomainIds.map(async (nativeDomainId) => {
@@ -183,22 +183,24 @@ exports.handler = async (event) => {
 
         const totalAddresses = sortedAddresses.length;
 
-        console.log({ totalAddresses })
+        console.log({ totalAddresses });
 
         const promiseStatuses = await Promise.allSettled(
           sortedAddresses.map(async ({ address, reputationBN }, idx) => {
             const contributorAddress = getAddress(address);
             const contributorRepDecimal = new Decimal(reputationBN.toString());
 
-            const colonyReputationPercentage = contributorRepDecimal
-              .mul(100)
-              .div(totalRepInColony.toString())
-              .toNumber() || 0;
+            const colonyReputationPercentage =
+              contributorRepDecimal
+                .mul(100)
+                .div(totalRepInColony.toString())
+                .toNumber() || 0;
 
-            const domainReputationPercentage = contributorRepDecimal
-              .mul(100)
-              .div(totalRepInDomain.toString())
-              .toNumber() || 0;
+            const domainReputationPercentage =
+              contributorRepDecimal
+                .mul(100)
+                .div(totalRepInDomain.toString())
+                .toNumber() || 0;
 
             const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
             const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
@@ -230,7 +232,14 @@ exports.handler = async (event) => {
 
                 const type = getContributorType(totalAddresses, idx, createdAt);
 
-                console.log({ type, colonyReputationPercentage, contributorAddress, contributorRepDecimal, domainReputationPercentage, reputation })
+                console.log({
+                  type,
+                  colonyReputationPercentage,
+                  contributorAddress,
+                  contributorRepDecimal,
+                  domainReputationPercentage,
+                  reputation,
+                });
 
                 await updateColonyContributorInDb({
                   id: colonyContributorId,
