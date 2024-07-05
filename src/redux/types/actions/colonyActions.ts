@@ -14,7 +14,11 @@ import {
   type Safe,
   type SafeTransactionData,
 } from '~types/graphql.ts';
-import { type Address, type WithKey } from '~types/index.ts';
+import {
+  type Address,
+  type WithKey,
+  type ManageVerifiedMembersOperation,
+} from '~types/index.ts';
 
 import {
   type ErrorActionType,
@@ -311,6 +315,25 @@ export type ColonyActionsActionTypes =
   | ErrorActionType<ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS_ERROR, object>
   | UniqueActionType<
       ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS,
+      {
+        operation: ManageVerifiedMembersOperation;
+        colonyAddress: Address;
+        colonyName: string;
+        members: string[];
+        domainId: number;
+        annotationMessage?: string;
+        customActionTitle: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS_SUCCESS,
       object,
       object
     >

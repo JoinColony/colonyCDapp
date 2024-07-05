@@ -3,7 +3,6 @@ import { useMemo, type FC, useState, useEffect } from 'react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import {
   type MultiSigUserSignature,
@@ -23,9 +22,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
-  action: ColonyAction;
-  actionType: ColonyActionType;
-  multiSigData: ColonyMultiSig;
+  action: Omit<ColonyAction, 'multiSigData'> & { multiSigData: ColonyMultiSig };
   initiatorAddress: string;
 }
 
@@ -45,11 +42,11 @@ const MSG = defineMessages({
 });
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
-  actionType,
-  multiSigData,
   action,
   initiatorAddress,
 }) => {
+  const actionType = action.type;
+  const { multiSigData } = action;
   const requiredRoles = getRolesNeededForMultiSigAction(action.type);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({

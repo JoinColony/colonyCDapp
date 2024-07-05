@@ -1,11 +1,10 @@
-import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
-import { ManageVerifiedMembersOperation } from '~types/motions.ts';
+import { ManageVerifiedMembersOperation } from '~types/index.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -68,13 +67,10 @@ export const getManageVerifiedMembersPayload = (
     members,
     customActionTitle: values.title,
     annotationMessage: values.description,
-    domainId: values.createdIn || Id.RootDomain,
   };
 
   if (values.decisionMethod === DecisionMethod.Permissions) {
-    return {
-      ...baseDomainPayload,
-    };
+    return baseDomainPayload;
   }
 
   return {

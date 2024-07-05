@@ -44,10 +44,7 @@ export const useManageVerifiedMembers = (
   const manageMembers: ManageMembersType | undefined = useWatch({
     name: 'manageMembers',
   });
-  const actionType =
-    manageMembers === ManageMembersType.Add
-      ? ActionTypes.ACTION_ADD_VERIFIED_MEMBERS
-      : ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS;
+  const actionType = ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS;
   const motionType = ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS;
 
   const validationSchema = useMemo(() => {
