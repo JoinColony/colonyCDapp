@@ -1,20 +1,18 @@
-import { ClientType, ColonyRole, Id } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateDomainMetadataDocument,
   type CreateDomainMetadataMutation,
   type CreateDomainMetadataMutationVariables,
   DomainColor,
-  type ColonyRoleFragment,
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
-import { type Address } from '~types';
-import { type Domain } from '~types/graphql.ts';
 import { type MethodParams, TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
 import {
@@ -38,19 +36,21 @@ import {
 
 // import { ipfsUpload } from '../ipfs';
 
-type CreateTransactionPayload = {
-  isMultiSig: boolean;
-  colonyAddress: Address;
+type CreateTransactionPayload = Pick<
+  Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>['payload'],
+  | 'isMultiSig'
+  | 'isCreateDomain'
+  | 'colonyAddress'
+  | 'colonyDomains'
+  | 'colonyRoles'
+  | 'domain'
+  | 'domainCreatedInNativeId'
+> & {
   batchKey: string;
   metaId: string;
   index: number;
-  colonyDomains: Domain[];
-  isCreateDomain: boolean;
   domainNativeId: number;
   action: string;
-  colonyRoles: ColonyRoleFragment[];
-  domain: Domain | undefined;
-  parentDomainId: number;
 };
 
 function* getCreateTransactionPayload({
@@ -65,7 +65,7 @@ function* getCreateTransactionPayload({
   action,
   colonyRoles,
   domain,
-  parentDomainId,
+  domainCreatedInNativeId,
 }: CreateTransactionPayload) {
   const transactionParams = {
     context: isMultiSig
@@ -89,10 +89,9 @@ function* getCreateTransactionPayload({
     colonyAddress,
   );
 
-  // eslint-disable-next-line no-warning-comments
-  // TODO: Use Sam's upcoming list of required permissions as the source of truth
-  // src/constants/actions.ts: PERMISSIONS_NEEDED_FOR_ACTION
-  const requiredRoles = [ColonyRole.Architecture];
+  const requiredRoles = isCreateDomain
+    ? PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam
+    : PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
 
   const userAddress = yield colonyClient.signer.getAddress();
 
@@ -103,7 +102,7 @@ function* getCreateTransactionPayload({
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: parentDomainId, // You need Architecture permissions in the parent domain to edit a subdomain
+        requiredDomainId: domainCreatedInNativeId, // This will be dynamically set by the user via the 'Created in' form field
         requiredColonyRole: requiredRoles,
         permissionAddress: userAddress,
         isMultiSig,
@@ -116,7 +115,7 @@ function* getCreateTransactionPayload({
     );
 
     transactionParams.params = [
-      Id.RootDomain,
+      domainCreatedInNativeId,
       childSkillIndex,
       [isCreateDomain ? colonyAddress : AddressZero],
       [encodedAction],
@@ -132,7 +131,7 @@ function* getCreateTransactionPayload({
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      domainNativeId,
+      domainCreatedInNativeId,
     );
 
     const {
@@ -169,7 +168,7 @@ function* getCreateTransactionPayload({
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: domainNativeId,
+        requiredDomainId: domainCreatedInNativeId,
         requiredColonyRole: requiredRoles,
         permissionAddress: votingReputationClient.address,
         isMultiSig,
@@ -184,7 +183,7 @@ function* getCreateTransactionPayload({
     ]);
 
     transactionParams.params = [
-      domainNativeId,
+      domainCreatedInNativeId,
       motionChildSkillIndex,
       AddressZero,
       encodedAction,
@@ -213,6 +212,7 @@ function* createEditDomainMotion({
     isMultiSig,
     colonyDomains,
     colonyRoles,
+    domainCreatedInNativeId,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -274,7 +274,7 @@ function* createEditDomainMotion({
         ? 'addDomain(uint256,uint256,uint256,string)'
         : 'editDomain',
       domain,
-      parentDomainId,
+      domainCreatedInNativeId,
     });
 
     yield fork(createTransaction, createMotion.id, transactionParams);
