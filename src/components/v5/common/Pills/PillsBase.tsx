@@ -14,7 +14,6 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   pillSize = 'medium',
   isCapitalized = true,
   textClassName,
-  ...rest
 }) => {
   const content = text || children;
 
@@ -29,7 +28,6 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
           'h-[1.5rem] text-4': pillSize === 'small',
         },
       )}
-      {...rest}
     >
       {Icon && (
         <span className="flex shrink-0">
