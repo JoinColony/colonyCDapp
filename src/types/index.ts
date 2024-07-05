@@ -95,3 +95,8 @@ export interface SelectedPickerItem {
 }
 
 export type OptionalValue<T> = Maybe<T> | undefined;
+
+export enum ManageVerifiedMembersOperation {
+  Add = 'Add',
+  Remove = 'Remove',
+}
