@@ -7,6 +7,7 @@ import { type ButtonMode } from '../Button/types.ts';
 export interface ModalBaseProps extends ReactModalProps {
   isFullOnMobile?: boolean;
   withPadding?: boolean;
+  withPaddingBottom?: boolean;
   withBorder?: boolean;
 }
 
