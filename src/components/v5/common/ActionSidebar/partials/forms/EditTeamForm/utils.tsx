@@ -34,6 +34,6 @@ export const getEditDomainPayload = (
     colonyRoles: extractColonyRoles(colony.roles),
     colonyDomains: extractColonyDomains(colony.domains),
     isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
-    motionDomainId: values.createdIn,
+    domainCreatedInNativeId: values.createdIn,
   };
 };
