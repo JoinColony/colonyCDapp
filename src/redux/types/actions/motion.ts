@@ -220,10 +220,10 @@ export type MotionActionTypes =
         customActionTitle: string;
         colonyAddress: Address;
         colonyName?: string;
-        colonyDomains: Domain[];
-        colonyRoles: ColonyRoleFragment[];
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
         isMultiSig?: boolean;
       },
       MetaWithSetter<object>

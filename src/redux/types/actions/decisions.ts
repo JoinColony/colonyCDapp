@@ -1,5 +1,6 @@
+import { type ColonyRoleFragment } from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
-import { type ColonyDecision } from '~types/graphql.ts';
+import { type Domain, type ColonyDecision } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
 
@@ -23,6 +24,9 @@ export type DecisionActionTypes =
         colonyAddress?: Address;
         colonyName?: string;
         draftDecision: DecisionDraft;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >

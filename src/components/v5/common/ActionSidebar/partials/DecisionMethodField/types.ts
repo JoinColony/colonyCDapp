@@ -6,7 +6,7 @@ export interface DecisionMethodOption {
 }
 
 export interface DecisionMethodFieldProps {
-  reputationOnly?: boolean;
+  motionOnly?: boolean;
   disabled?: boolean;
   tooltipContent?: string;
   filterOptionsFn?: (option: DecisionMethodOption) => boolean;

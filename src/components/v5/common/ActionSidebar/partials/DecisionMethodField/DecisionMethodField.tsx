@@ -21,7 +21,7 @@ import {
 const displayName = 'v5.common.ActionSidebar.partials.DecisionMethodField';
 
 const DecisionMethodField = ({
-  reputationOnly,
+  motionOnly,
   disabled,
   tooltipContent = 'actionSidebar.tooltip.decisionMethod',
   filterOptionsFn,
@@ -43,9 +43,8 @@ const DecisionMethodField = ({
   const { isVotingReputationEnabled, isMultiSigEnabled } =
     useEnabledExtensions();
 
-  const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
-  const shouldShowMultiSig =
-    !reputationOnly && isMultiSigEnabled && userMultiSigRoles.length > 0;
+  const shouldShowPermissions = !motionOnly && userRoles.length > 0;
+  const shouldShowMultiSig = isMultiSigEnabled && userMultiSigRoles.length > 0;
 
   const getDecisionMethods = () => {
     const decisionMethods: DecisionMethodOption[] = [

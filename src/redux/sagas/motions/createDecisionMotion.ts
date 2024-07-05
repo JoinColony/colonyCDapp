@@ -1,8 +1,5 @@
-import {
-  type AnyColonyClient,
-  ClientType,
-  getChildIndex,
-} from '@colony/colony-js';
+import { type AnyColonyClient, ClientType } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants/index.ts';
@@ -22,12 +19,19 @@ import {
   getTxChannel,
 } from '../transactions/index.ts';
 import { getColonyDecisionId } from '../utils/decisionMotion.ts';
-import { getColonyManager, initiateTransaction } from '../utils/index.ts';
+import {
+  getChildIndexLocal,
+  getColonyManager,
+  initiateTransaction,
+} from '../utils/index.ts';
 
 function* createDecisionMotion({
   payload: {
     colonyName,
     colonyAddress,
+    // colonyRoles,
+    colonyDomains,
+    isMultiSig,
     draftDecision: { motionDomainId, title, description, walletAddress },
   },
   meta: { id: metaId, navigate, setTxHash },
@@ -57,56 +61,89 @@ function* createDecisionMotion({
       colonyAddress,
     );
 
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      motionDomainId,
-      motionDomainId,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      ADDRESS_ZERO,
-    );
-
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.CreateMotion;
-
     const { createMotion /* annotateMotion */ } = yield call(
       createTransactionChannels,
       metaId,
       ['createMotion' /* 'annotateMotion' */],
     );
 
-    // create transactions
-    yield fork(createTransaction, createMotion.id, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
+    // eslint-disable-next-line no-inner-declarations
+    function* getCreateMotionParams() {
+      const motionDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(motionDomainId),
+      );
+
+      if (!motionDomain) {
+        throw new Error('Cannot find target motion domain in colony domains');
+      }
+
+      const childSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: motionDomain.nativeId,
+        parentDomainSkillId: motionDomain.nativeSkillId,
+        domainNativeId: motionDomain.nativeId,
+        domainSkillId: motionDomain.nativeSkillId,
+      });
+
+      if (isMultiSig) {
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            motionDomainId,
+            childSkillIndex,
+            [colonyAddress],
+            [ACTION_DECISION_MOTION_CODE],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
         motionDomainId,
-        childSkillIndex,
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
         ADDRESS_ZERO,
-        ACTION_DECISION_MOTION_CODE,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+      );
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          childSkillIndex,
+          ADDRESS_ZERO,
+          ACTION_DECISION_MOTION_CODE,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
+    }
+
+    const transactionParams = yield getCreateMotionParams();
+
+    // create transactions
+    yield fork(createTransaction, createMotion.id, transactionParams);
 
     // yield fork(createTransaction, annotateMotion.id, {
     //   context: ClientType.ColonyClient,

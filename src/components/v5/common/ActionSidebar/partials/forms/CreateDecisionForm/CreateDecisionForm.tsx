@@ -17,7 +17,7 @@ const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <>
-      <DecisionMethodField disabled={isFieldDisabled} reputationOnly />
+      <DecisionMethodField disabled={isFieldDisabled} motionOnly />
       <CreatedIn />
       <Description />
     </>

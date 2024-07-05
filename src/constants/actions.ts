@@ -27,6 +27,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   UpgradeColonyVersion: [ColonyRole.Root],
   EnterRecoveryMode: [ColonyRole.Root],
   PaymentBuilder: [ColonyRole.Administration],
+  Decision: [ColonyRole.Administration],
 };
 
 export enum Action {

@@ -8,19 +8,18 @@ import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
-import { sanitizeHTML } from '~utils/strings.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import { validationSchema, type CreateDecisionFormValues } from './consts.ts';
+import { getDecisionPayload } from './utils.ts';
 
 export const useCreateDecision = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const {
-    colony: { colonyAddress, name: colonyName },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
+  const { colonyAddress } = colony;
   const { user } = useAppContext();
   const walletAddress = user?.walletAddress || '';
   const dispatch = useDispatch();
@@ -55,28 +54,18 @@ export const useCreateDecision = (
     transform: useCallback(
       pipe(
         mapPayload((payload: CreateDecisionFormValues) => {
-          const safeDescription = sanitizeHTML(payload.description || '');
+          const decisionPayload = getDecisionPayload(
+            colony,
+            payload,
+            walletAddress,
+          );
 
           handleSaveAgreementInLocalStorage({
+            ...decisionPayload.draftDecision,
             colonyAddress,
-            title: payload.title,
-            motionDomainId: Number(payload.createdIn),
-            description: safeDescription,
-            walletAddress,
           });
 
-          return {
-            colonyAddress,
-            colonyName,
-            decisionMethod: payload.decisionMethod,
-            motionParams: [],
-            draftDecision: {
-              motionDomainId: Number(payload.createdIn),
-              title: payload.title,
-              description: safeDescription,
-              walletAddress,
-            },
-          };
+          return decisionPayload;
         }),
       ),
       [],

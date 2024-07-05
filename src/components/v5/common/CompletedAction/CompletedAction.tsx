@@ -63,6 +63,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.VersionUpgradeMotion:
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
+      case ColonyActionType.CreateDecisionMultisig:
         return <CreateDecision action={action} />;
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion:
