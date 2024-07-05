@@ -105,8 +105,8 @@ const UserInfo: FC<UserInfoProps> = ({
     >
       <div
         className={clsx({
-          'bg-purple-100 p-6 pb-[18px]': isTopContributorType,
-          'px-6 pt-6': !isTopContributorType,
+          'bg-purple-100 px-[22px] pb-[18px] pt-6': isTopContributorType,
+          'px-[23px] pt-6': !isTopContributorType,
         })}
       >
         <div
@@ -157,7 +157,12 @@ const UserInfo: FC<UserInfoProps> = ({
       </div>
       <div className="flex flex-1 flex-col gap-6 pt-[18px] sm:overflow-hidden sm:pb-6">
         {aboutDescriptionText && (
-          <div className="px-6">
+          <div
+            className={clsx({
+              'px-[22px]': isTopContributorType,
+              'px-[23px]': !isTopContributorType,
+            })}
+          >
             <TitleLabel
               className="mb-2"
               text={formatText({ id: 'userInfo.about.section' })}
@@ -165,9 +170,23 @@ const UserInfo: FC<UserInfoProps> = ({
             <p className="text-md text-gray-600">{aboutDescriptionText}</p>
           </div>
         )}
-        {additionalContent && <div className="px-6">{additionalContent}</div>}
+        {additionalContent && (
+          <div
+            className={clsx({
+              'px-[22px]': isTopContributorType,
+              'px-[23px]': !isTopContributorType,
+            })}
+          >
+            {additionalContent}
+          </div>
+        )}
         {domains?.length ? (
-          <div className="flex flex-col pl-6 pr-6 sm:overflow-hidden sm:pr-3.5">
+          <div
+            className={clsx(`flex flex-col pr-6 sm:overflow-hidden sm:pr-3.5`, {
+              'pl-[22px]': isTopContributorType,
+              'pl-[23px]': !isTopContributorType,
+            })}
+          >
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
