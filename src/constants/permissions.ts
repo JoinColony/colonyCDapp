@@ -169,7 +169,7 @@ export const findFirstUserRoleWithColonyRoles = ({
     return UserRole.Owner;
   }
 
-  // Multi-sig does not support the payer role
+  // Multi-sig does not support the moderation role
   if (matchingUserRole.name === UserRole.Mod && isMultiSig) {
     return UserRole.Payer;
   }
