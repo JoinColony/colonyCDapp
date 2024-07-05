@@ -11,29 +11,6 @@ export enum UserRole {
   Custom = 'custom',
 }
 
-export const userRolePermissions: Record<UserRole, ColonyRole[]> = {
-  [UserRole.Mod]: [ColonyRole.Administration],
-  [UserRole.Payer]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-  ],
-  [UserRole.Admin]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-  ],
-  [UserRole.Owner]: [
-    ColonyRole.Administration,
-    ColonyRole.Funding,
-    ColonyRole.Arbitration,
-    ColonyRole.Architecture,
-    ColonyRole.Root,
-  ],
-  [UserRole.Custom]: [],
-};
-
 export interface UserRoleMeta {
   name: string;
   role: UserRole;
@@ -172,4 +149,30 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
     heading: 'Mod permissions',
     permissions: [formatText({ id: 'permissions.moderation' })],
   },
+};
+
+export const findFirstUserRoleWithColonyRoles = ({
+  colonyRoles,
+  isMultiSig,
+}: {
+  colonyRoles?: ColonyRole[];
+  isMultiSig?: boolean;
+}) => {
+  if (!colonyRoles) {
+    return UserRole.Owner;
+  }
+  const matchingUserRole = USER_ROLES.find((userRole) =>
+    colonyRoles.every((role) => userRole.permissions.includes(role)),
+  );
+
+  if (!matchingUserRole) {
+    return UserRole.Owner;
+  }
+
+  // Multi-sig does not support the payer role
+  if (matchingUserRole.name === UserRole.Mod && isMultiSig) {
+    return UserRole.Payer;
+  }
+
+  return matchingUserRole.name;
 };

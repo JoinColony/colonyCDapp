@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useState, type FC, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { findFirstUserRoleWithColonyRoles } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   type ColonyActionType,
@@ -12,7 +13,7 @@ import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import ProgressBar from '~v5/shared/ProgressBar/ProgressBar.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
@@ -104,10 +105,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const isOwner = user?.walletAddress === initiatorAddress;
 
-  const requiredRole = getMultiSigRequiredRole(actionType);
-  const { eligibleSignees } = useEligibleSignees({
-    domainId: multiSigData.multiSigDomainId,
-    requiredRole,
+  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
+  const { uniqueEligibleSignees } = useEligibleSignees({
+    domainId: Number(multiSigData.nativeMultiSigDomainId),
+    requiredRoles,
   });
   const voteOrder = {
     [MultiSigVote.None]: 2,
@@ -116,17 +117,18 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   };
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
-  const notSignedUsers = (eligibleSignees ?? [])
+
+  const notSignedUsers = (uniqueEligibleSignees ?? [])
     .filter((eligibleSignee) => {
       return !signatures.find(
-        (signature) => signature.userAddress === eligibleSignee?.targetAddress,
+        (signature) => signature.userAddress === eligibleSignee?.walletAddress,
       );
     })
     .map((eligibleSignee) => {
       return {
-        userAddress: eligibleSignee?.targetAddress,
+        userAddress: eligibleSignee?.walletAddress,
         user: {
-          profile: eligibleSignee?.targetUser?.profile,
+          profile: eligibleSignee?.profile,
         },
         vote: MultiSigVote.None,
       };
@@ -149,8 +151,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     (signature) => signature?.userAddress === user?.walletAddress,
   );
 
-  const canUserSign = eligibleSignees.some(
-    (signature) => signature?.targetAddress === user?.walletAddress,
+  const canUserSign = uniqueEligibleSignees.some(
+    (signature) => signature?.walletAddress === user?.walletAddress,
   );
   const hasApprovalVotes = signatures.some(
     (signature) => signature.vote === MultiSigVote.Approve,
@@ -164,6 +166,26 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const rejectionProgress = signatures.filter(
     (signature) => signature.vote === MultiSigVote.Reject,
   ).length;
+
+  // @TODO: Leaving this here in case it is useful
+  // as an alternative way of getting approvals / rejections per role
+  // let combinedApprovals = 0;
+  // Object.keys(approvalSignaturesPerRole).forEach((role) => {
+  //   const approvalsForRole = approvalSignaturesPerRole[role]
+  //     ? approvalSignaturesPerRole[role].length
+  //     : 0;
+  //   const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+  //   combinedApprovals += Math.min(approvalsForRole, thresholdForRole);
+  // });
+
+  // let combinedRejections = 0;
+  // Object.keys(approvalSignaturesPerRole).forEach((role) => {
+  //   const rejectionsForRole = rejectionSignaturesPerRole[role]
+  //     ? rejectionSignaturesPerRole[role].length
+  //     : 0;
+  //   const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+  //   combinedRejections += Math.min(rejectionsForRole, thresholdForRole);
+  // });
 
   const isMultiSigFinalizable =
     threshold && (approvalProgress || rejectionProgress) >= threshold;
@@ -276,7 +298,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 placement="bottom-start"
                 offset={[0, 4]}
                 tooltipContent={formatText(MSG.tooltip, {
-                  permission: requiredRole,
+                  permission: findFirstUserRoleWithColonyRoles({
+                    colonyRoles: requiredRoles,
+                  }),
                 })}
               >
                 <h5 className="mb-2 text-1">{formatText(MSG.title)}</h5>

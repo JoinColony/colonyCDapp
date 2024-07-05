@@ -3,12 +3,15 @@ import { useMemo, type FC, useState, useEffect } from 'react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MultiSigVote, type ColonyActionType } from '~gql';
+import { type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import { type ColonyMultiSig } from '~types/graphql.ts';
+import {
+  type MultiSigUserSignature,
+  type ColonyMultiSig,
+} from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { getMultiSigRequiredRole } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 
@@ -45,26 +48,71 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   actionType,
   initiatorAddress,
 }) => {
-  const requiredRole = getMultiSigRequiredRole(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
 
-  const { isLoading, threshold } = useDomainThreshold({
-    domainId: multiSigData.multiSigDomainId,
-    requiredRole,
+  const { isLoading, thresholdPerRole } = useDomainThreshold({
+    domainId: Number(multiSigData.multiSigDomainId),
+    requiredRoles,
   });
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const approvalProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Approve,
-  ).length;
-  const rejectionProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Reject,
-  ).length;
+  const approvalSignaturesPerRole = {};
+  const rejectionSignaturesPerRole = {};
+  const allApprovalSignees = new Set<MultiSigUserSignature['user']>();
+  const allRejectionSignees = new Set<MultiSigUserSignature['user']>();
+
+  signatures.forEach((signature) => {
+    const { role, vote, user: voter } = signature;
+
+    if (vote === 'Approve') {
+      allApprovalSignees.add(voter);
+
+      if (!approvalSignaturesPerRole[role]) {
+        approvalSignaturesPerRole[role] = [];
+      }
+      approvalSignaturesPerRole[role].push(signature);
+    } else if (vote === 'Reject') {
+      allRejectionSignees.add(voter);
+
+      if (!rejectionSignaturesPerRole[role]) {
+        rejectionSignaturesPerRole[role] = [];
+      }
+      rejectionSignaturesPerRole[role].push(signature);
+    }
+  });
 
   const isMultiSigFinalizable =
-    threshold && (approvalProgress || rejectionProgress) >= threshold;
-  const isMultiSigExecuted = multiSigData.isExecuted;
+    Object.keys(approvalSignaturesPerRole).length > 0 &&
+    Object.keys(approvalSignaturesPerRole).every((role) => {
+      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+      if (!thresholdPerRole) {
+        return false;
+      }
+      const threshold = thresholdPerRole[role] || 0;
+      return approvals >= threshold;
+    });
+
+  const isMultiSigCancelable =
+    Object.keys(rejectionSignaturesPerRole).length > 0 &&
+    Object.keys(rejectionSignaturesPerRole).every((role) => {
+      const rejections = rejectionSignaturesPerRole[role]?.length || 0;
+      if (!thresholdPerRole) {
+        return false;
+      }
+      const threshold = thresholdPerRole[role] || 0;
+      return rejections >= threshold;
+    });
+
   const isMultiSigRejected = multiSigData.isRejected;
+  const isMultiSigExecuted = multiSigData.isExecuted;
+
+  const combinedThreshold = thresholdPerRole
+    ? Object.values(thresholdPerRole).reduce(
+        (acc, threshold) => acc + threshold,
+        0,
+      )
+    : 0;
 
   const items = useMemo(() => {
     if (isLoading) {
@@ -75,7 +123,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Approval,
         content: (
           <ApprovalStep
-            threshold={threshold || 0}
+            threshold={combinedThreshold || 0}
             multiSigData={multiSigData}
             actionType={actionType}
             initiatorAddress={initiatorAddress}
@@ -90,9 +138,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Finalize,
         content: (
           <FinalizeStep
-            threshold={threshold || 0}
+            threshold={combinedThreshold || 0}
             multiSigData={multiSigData}
-            isMultiSigFinalizable={isMultiSigFinalizable || false}
+            isMultiSigFinalizable={isMultiSigFinalizable}
+            isMultiSigCancelable={isMultiSigCancelable}
             // initiatorAddress={initiatorAddress}
             createdAt={multiSigData.createdAt}
           />
@@ -104,11 +153,12 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     ];
   }, [
     isLoading,
-    threshold,
+    combinedThreshold,
     multiSigData,
     actionType,
     initiatorAddress,
     isMultiSigFinalizable,
+    isMultiSigCancelable,
   ]);
 
   const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(
@@ -116,12 +166,22 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   );
 
   useEffect(() => {
-    if (isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected) {
+    if (
+      isMultiSigFinalizable ||
+      isMultiSigCancelable ||
+      isMultiSigExecuted ||
+      isMultiSigRejected
+    ) {
       setActiveStepKey(MultiSigState.Finalize);
     }
-  }, [isMultiSigFinalizable, isMultiSigRejected, isMultiSigExecuted]);
+  }, [
+    isMultiSigFinalizable,
+    isMultiSigRejected,
+    isMultiSigExecuted,
+    isMultiSigCancelable,
+  ]);
 
-  if (threshold === null && !isLoading) {
+  if (thresholdPerRole === null && !isLoading) {
     console.warn('Invalid threshold');
 
     return (

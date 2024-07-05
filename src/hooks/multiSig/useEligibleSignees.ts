@@ -1,67 +1,95 @@
-// disabling rule due to filters having snake case
-/* eslint-disable camelcase */
-import { UserRole } from '~constants/permissions.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import {
-  type ModelColonyRoleFilterInput,
-  useGetRolesForDomainQuery,
-} from '~gql';
+import { Id, type ColonyRole } from '@colony/colony-js';
+
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { type ColonyContributor } from '~types/graphql.ts';
 
 interface UseEligibleSigneesParams {
-  domainId: string;
-  requiredRole: UserRole;
+  domainId?: number;
+  requiredRoles?: ColonyRole[];
 }
-
-const getRoleFilter = (role: UserRole): Partial<ModelColonyRoleFilterInput> => {
-  switch (role) {
-    case UserRole.Payer:
-      return {
-        role_2: { eq: true },
-        role_5: { eq: true },
-        role_6: { eq: true },
-      };
-    case UserRole.Admin:
-      return {
-        role_2: { eq: true },
-        role_3: { eq: true },
-        role_5: { eq: true },
-        role_6: { eq: true },
-      };
-    case UserRole.Owner:
-      return {
-        role_1: { eq: true },
-        role_2: { eq: true },
-        role_3: { eq: true },
-        role_5: { eq: true },
-        role_6: { eq: true },
-      };
-    default:
-      return {};
-  }
-};
 
 export const useEligibleSignees = ({
   domainId,
-  requiredRole,
+  requiredRoles,
 }: UseEligibleSigneesParams) => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
+  const { totalMembers } = useMemberContext();
 
-  const { loading: loadingRoles, data: rolesData } = useGetRolesForDomainQuery({
-    variables: {
-      colonyAddress,
-      domainId,
-      filter: {
-        isMultiSig: { eq: true },
-        ...getRoleFilter(requiredRole),
-      },
-    },
-    fetchPolicy: 'cache-first',
+  const domainIds =
+    domainId === Id.RootDomain ? [Id.RootDomain] : [Id.RootDomain, domainId];
+
+  const getEligibleSignees = (members: ColonyContributor[]) => {
+    if (!requiredRoles) {
+      return {
+        eligibleSignees: {},
+        uniqueEligibleSignees: [],
+      };
+    }
+
+    const matches = requiredRoles.reduce((acc, role) => {
+      acc[role] = {};
+      return acc;
+    }, {}) as {
+      [role: number]: { [userAddress: string]: ColonyContributor['user'] };
+    };
+
+    const uniqueEligibleSignees = new Set();
+
+    members.forEach((member) => {
+      if (!member.roles) {
+        return;
+      }
+
+      member.roles.items.forEach((item) => {
+        if (!item || !item.isMultiSig) {
+          return;
+        }
+
+        const [, nativeDomainId] = item.domainId.split('_');
+        const hasRoleInDomain = domainIds.includes(Number(nativeDomainId));
+
+        if (!hasRoleInDomain) {
+          return;
+        }
+
+        const assignedRoles = Object.keys(item)
+          .filter((key) => key.startsWith('role_') && item[key] === true)
+          .map((key) => Number(key.split('_')[1]));
+
+        requiredRoles.forEach((role) => {
+          if (!member.user) {
+            return;
+          }
+
+          if (assignedRoles.includes(role)) {
+            const key = member.user.walletAddress;
+            matches[role][key] = member.user;
+
+            uniqueEligibleSignees.add(member.user);
+          }
+        });
+      });
+    });
+
+    return {
+      eligibleSignees: matches,
+      uniqueEligibleSignees: [
+        ...uniqueEligibleSignees,
+      ] as ColonyContributor['user'][],
+    };
+  };
+
+  const { eligibleSignees, uniqueEligibleSignees } =
+    getEligibleSignees(totalMembers);
+
+  const countPerRole: { [role: number]: number } = {};
+  Object.keys(eligibleSignees).forEach((role) => {
+    const numberOfUsers = Object.keys(eligibleSignees[role]).length;
+    countPerRole[role] = numberOfUsers;
   });
 
   return {
-    loadingRoles,
-    eligibleSignees: rolesData?.getRoleByDomainAndColony?.items ?? [],
+    eligibleSignees,
+    uniqueEligibleSignees,
+    countPerRole,
   };
 };
