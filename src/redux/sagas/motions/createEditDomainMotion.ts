@@ -115,7 +115,7 @@ function* getCreateTransactionPayload({
     );
 
     transactionParams.params = [
-      domainCreatedInNativeId,
+      permissionDomainId,
       childSkillIndex,
       [isCreateDomain ? colonyAddress : AddressZero],
       [encodedAction],
