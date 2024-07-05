@@ -6,6 +6,8 @@ const {
 } = require('@colony/colony-js');
 const fetch = require('cross-fetch');
 
+const isDev = process.env.ENV === 'dev';
+
 /*
  * @TODO These values need to be imported properly, and differentiate based on environment
  */
@@ -18,8 +20,7 @@ let reputationOracleEndpoint =
   'http://reputation-monitor:3001/reputation/local';
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
