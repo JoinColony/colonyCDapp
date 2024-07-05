@@ -9,6 +9,8 @@ const {
 const { graphqlRequest } = require('./utils');
 const { getColony } = require('./queries');
 
+const isDev = process.env.ENV === 'dev';
+
 Logger.setLogLevel(Logger.levels.ERROR);
 
 let apiKey = 'da2-fakeApiId123456';
@@ -18,8 +20,7 @@ let network = Network.Custom;
 let networkAddress;
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [networkAddress, apiKey, graphqlURL, rpcURL, network] = await getParams([
       'networkContractAddress',

@@ -16,6 +16,8 @@ const {
   updateColony,
 } = require('./graphql.js');
 
+const isDev = process.env.ENV === 'dev';
+
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
@@ -25,8 +27,7 @@ let networkAddress;
 let network = Network.Custom;
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [
       apiKey,
@@ -285,7 +286,12 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
-    endedAt: flag === 'hasFailed' || flag === 'hasPassed' || flag === 'hasFailedNotFinalizable' ? new Date().toISOString() : null,
+    endedAt:
+      flag === 'hasFailed' ||
+      flag === 'hasPassed' ||
+      flag === 'hasFailedNotFinalizable'
+        ? new Date().toISOString()
+        : null,
   };
 
   const messageKeys = new Set(messages.items.map((m) => m.messageKey));

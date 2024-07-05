@@ -7,6 +7,8 @@ const {
 
 Logger.setLogLevel(Logger.levels.ERROR);
 
+const isDev = process.env.ENV === 'dev';
+
 let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
 let networkAddress;
 let reputationOracleEndpoint =
@@ -14,8 +16,7 @@ let reputationOracleEndpoint =
 let network = Network.Custom;
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL, networkAddress, reputationOracleEndpoint, network] =
       await getParams([

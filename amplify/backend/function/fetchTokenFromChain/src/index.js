@@ -15,6 +15,8 @@ const {
  */
 const { createToken, getTokenByAddress } = require('./graphql');
 
+const isDev = process.env.ENV === 'dev';
+
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
 let rpcURL;
@@ -30,12 +32,9 @@ const baseToken = {
 };
 
 const setEnvVariables = async (network) => {
-  const ENV = process.env.ENV;
-  if (ENV === 'dev') {
+  if (isDev) {
     rpcURL = getDevRpcUrl(network);
-  }
-
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  } else {
     let chainRpcParam = getRpcUrlParamName(network);
 
     const { getParams } = require('/opt/nodejs/getParams');
@@ -116,17 +115,26 @@ exports.handler = async (event) => {
       try {
         name = await tokenFromChain.name();
       } catch (error) {
-        console.log(`TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`, error);
+        console.log(
+          `TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`,
+          error,
+        );
       }
       try {
         symbol = await tokenFromChain.symbol();
       } catch (error) {
-        console.log(`TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`, error);
+        console.log(
+          `TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`,
+          error,
+        );
       }
       try {
         decimals = await tokenFromChain.decimals();
       } catch (error) {
-        console.log(`TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`, error);
+        console.log(
+          `TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`,
+          error,
+        );
       }
       const type = await getTokenType(tokenFromChain);
       const chainId = String((await provider.getNetwork()).chainId);

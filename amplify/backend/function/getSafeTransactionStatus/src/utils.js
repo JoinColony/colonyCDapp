@@ -40,9 +40,8 @@ const TRANSACTION_STATUS = {
 const getApiKey = async (chainId) => {
   let bscscanApiKey = '';
   let etherscanApiKey = '';
-  const ENV = process.env.ENV;
 
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [bscscanApiKey, etherscanApiKey] = await getParams([
       'bscscanApiKey',
@@ -136,10 +135,9 @@ const LOCAL_HOME_CHAIN = 'http://127.0.0.1:8545';
 const LOCAL_FOREIGN_CHAIN = 'http://127.0.0.1:8546';
 
 const getHomeProvider = async () => {
-  const ENV = process.env.ENV;
   let rpcURL = LOCAL_HOME_CHAIN;
 
-  if (ENV === 'qaarbsep' || ENV === 'prodarbone') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [rpcURL] = await getParams(['chainRpcEndpoint']);
   }
