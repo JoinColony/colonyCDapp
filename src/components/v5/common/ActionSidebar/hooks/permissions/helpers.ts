@@ -36,7 +36,7 @@ export const getPermissionsNeededForAction = (
       }
       return undefined;
     case Action.ManagePermissions: {
-      return formValues.team === Id.RootDomain
+      return formValues.createdIn === Id.RootDomain
         ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
         : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
     }
