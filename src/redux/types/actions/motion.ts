@@ -85,6 +85,7 @@ export type MotionDomainCreateEditPayload = {
   isMultiSig: boolean;
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
+  domainCreatedInNativeId: number;
 };
 
 export type MotionActionTypes =

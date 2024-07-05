@@ -10,6 +10,9 @@ export const getRolesNeededForMultiSigAction = (
 ): ColonyRole[] | undefined => {
   switch (actionType) {
     case ColonyActionType.CreateDomainMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
+    case ColonyActionType.EditDomainMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
     case ColonyActionType.MintTokensMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
     case ColonyActionType.UnlockTokenMultisig:
