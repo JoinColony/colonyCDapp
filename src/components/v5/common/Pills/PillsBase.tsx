@@ -19,7 +19,7 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   return (
     <span
       className={clsx(
-        'inline-flex shrink-0 items-center rounded-3xl px-2.5 py-1.5 text-center',
+        'inline-flex shrink-0 items-center rounded-3xl px-[9px] py-1.5 text-center',
         className,
         {
           capitalize: isCapitalized,
