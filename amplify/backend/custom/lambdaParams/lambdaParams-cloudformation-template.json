@@ -13,7 +13,7 @@
             {
               "Ref": "env"
             },
-            "qaarbsep"
+            "qa"
           ]
         },
         {
@@ -21,7 +21,7 @@
             {
               "Ref": "env"
             },
-            "qaarbsepcl"
+            "qaclone"
           ]
         }
       ]
@@ -106,8 +106,8 @@
         "Value": {
           "Fn::If": [
             "IsQaOrClonedEnv",
-            "https://wmc3qb57g5cnhhpok2bvdhmism.appsync-api.eu-west-2.amazonaws.com/graphql",
-            "https://o4mnvckgrjhanhdnspfchnl6py.appsync-api.eu-west-2.amazonaws.com/graphql"
+            "https://nthrumpdlzgfndnrvkgdgmgpdy.appsync-api.eu-west-2.amazonaws.com/graphql",
+            "https://am3ucavzofenvci32flqh3h35e.appsync-api.eu-west-2.amazonaws.com/graphql"
           ]
         },
         "Description": "App Sync Graphql Url endpoint"
