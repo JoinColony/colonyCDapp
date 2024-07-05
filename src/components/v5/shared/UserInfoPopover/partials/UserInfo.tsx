@@ -167,14 +167,21 @@ const UserInfo: FC<UserInfoProps> = ({
         )}
         {additionalContent && <div className="px-6">{additionalContent}</div>}
         {domains?.length ? (
-          <div className="flex flex-col pl-6 pr-6 sm:overflow-hidden sm:pr-2.5">
+          <div className="flex flex-col pl-6 pr-6 sm:overflow-hidden sm:pr-3.5">
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
               })}
               className="pb-2"
             />
-            <ul className="flex max-h-[216px] flex-col gap-2 sm:overflow-y-auto sm:pr-3.5">
+            <ul
+              className={clsx(
+                `flex max-h-[216px] flex-col gap-2 sm:overflow-y-auto sm:pr-1.5`,
+                {
+                  'mr-[-7px] pr-2': domains.length > 4,
+                },
+              )}
+            >
               {domains.map(
                 ({
                   domainId,
@@ -218,7 +225,7 @@ const UserInfo: FC<UserInfoProps> = ({
                   return (
                     <li
                       key={domainId}
-                      className="grid h-12 min-h-12 grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-3 font-medium"
+                      className="grid h-12 min-h-12 grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:max-w-[302px]"
                     >
                       <div className="flex flex-row items-center truncate">
                         <div
@@ -228,7 +235,7 @@ const UserInfo: FC<UserInfoProps> = ({
                           {domainName}
                         </span>
                       </div>
-                      <div className="flex justify-end gap-1.5">
+                      <div className="flex justify-end gap-1">
                         {permissionRole && (
                           <Tooltip
                             placement="top"
@@ -236,7 +243,7 @@ const UserInfo: FC<UserInfoProps> = ({
                               role: permissionRole,
                             })}
                           >
-                            <PermissionsBadge icon={User} />
+                            <PermissionsBadge icon={User} pillSize="small" />
                           </Tooltip>
                         )}
 
@@ -248,7 +255,10 @@ const UserInfo: FC<UserInfoProps> = ({
                               isMultiSig: true,
                             })}
                           >
-                            <PermissionsBadge icon={UsersThree} />
+                            <PermissionsBadge
+                              icon={UsersThree}
+                              pillSize="small"
+                            />
                           </Tooltip>
                         )}
 
