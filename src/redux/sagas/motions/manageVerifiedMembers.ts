@@ -10,7 +10,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
-import { ManageVerifiedMembersOperation } from '~types/motions.ts';
+import { ManageVerifiedMembersOperation } from '~types/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -76,14 +76,14 @@ function* manageVerifiedMembersMotion({
         'annotateManageVerifiedMembersMotion',
       ]);
 
-    const verifiedMembersOperation =
+    const getVerifiedMembersOperation =
       operation === ManageVerifiedMembersOperation.Add
         ? getAddVerifiedMembersOperation
         : getRemoveVerifiedMembersOperation;
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'editColonyByDelta',
-      [JSON.stringify(verifiedMembersOperation(members))],
+      [JSON.stringify(getVerifiedMembersOperation(members))],
     );
 
     // eslint-disable-next-line no-inner-declarations
