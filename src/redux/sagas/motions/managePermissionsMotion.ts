@@ -1,14 +1,12 @@
-import { ClientType, Id, type ColonyRole } from '@colony/colony-js';
+import { ClientType, Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { type ColonyRoleFragment } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { Authority } from '~types/authority.ts';
-import { type Domain } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
@@ -26,248 +24,6 @@ import {
   getPermissionProofsLocal,
   getChildIndexLocal,
 } from '../utils/index.ts';
-
-function* getCreateMotionParams({
-  roles,
-  authority,
-  isMultiSig,
-  colonyAddress,
-  createdInDomainId,
-  colonyRoles,
-  colonyDomains,
-  userAddress,
-  teamDomainId,
-  batchKey,
-  metaId,
-}: {
-  roles: Record<ColonyRole, boolean>;
-  authority: Authority;
-  isMultiSig: boolean;
-  colonyAddress: string;
-  createdInDomainId: number;
-  colonyRoles: ColonyRoleFragment[];
-  colonyDomains: Domain[];
-  userAddress: string;
-  teamDomainId: number;
-  batchKey: TRANSACTION_METHODS;
-  metaId: string;
-}) {
-  const colonyManager = yield getColonyManager();
-
-  const colonyClient = yield colonyManager.getClient(
-    ClientType.ColonyClient,
-    colonyAddress,
-  );
-
-  const createdInDomain = colonyDomains.find((domain) =>
-    BigNumber.from(domain.nativeId).eq(createdInDomainId),
-  );
-  const teamDomain = colonyDomains.find((domain) =>
-    BigNumber.from(domain.nativeId).eq(teamDomainId),
-  );
-
-  if (!createdInDomain || !teamDomain) {
-    throw new Error(
-      'Cannot find created in domain or team domain in colony domains',
-    );
-  }
-
-  const requiredCreatedInRoles =
-    createdInDomainId === Id.RootDomain
-      ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-      : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
-  const requiredTeamRoles =
-    teamDomainId === Id.RootDomain
-      ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-      : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
-  const roleArray = Object.values(roles).reverse();
-  roleArray.splice(2, 0, false);
-
-  let roleBitmask = '';
-
-  roleArray.forEach((role) => {
-    roleBitmask += role ? '1' : '0';
-  });
-
-  const hexString = hexlify(parseInt(roleBitmask, 2));
-  const zeroPadHexString = hexZeroPad(hexString, 32);
-
-  let altTarget: string;
-
-  switch (authority) {
-    case Authority.ViaMultiSig: {
-      const multiSigClient = yield colonyManager.getClient(
-        ClientType.MultisigPermissionsClient,
-        colonyAddress,
-      );
-      // If assigning the user MultiSig permissions, then pass the multi-sig client address
-      altTarget = multiSigClient.address;
-      break;
-    }
-    case Authority.Own:
-    default: {
-      // If assigning the user own permissions and isMultiSig, then pass the colony address
-      // If assigning the user own permissions and is not multi-sig, then pass address zero
-      altTarget = isMultiSig ? colonyAddress : ADDRESS_ZERO;
-      break;
-    }
-  }
-
-  if (isMultiSig) {
-    // Creating a multi-sig motion
-
-    const initiatorAddress = yield colonyClient.signer.getAddress();
-
-    const multiSigClient = yield colonyManager.getClient(
-      ClientType.MultisigPermissionsClient,
-      colonyAddress,
-    );
-
-    // Get permission proofs for encoding the action with the multi-sig extension which will be used to execute the action
-    const [multiSigPermissionDomainId, multiSigChildSkillIndex] = yield call(
-      getPermissionProofsLocal,
-      {
-        networkClient: colonyClient.networkClient,
-        colonyRoles,
-        colonyDomains,
-        requiredDomainId: createdInDomainId,
-        requiredColonyRole: requiredCreatedInRoles,
-        // The address of the multi-sig client
-        permissionAddress: multiSigClient.address,
-        // The multi-sig extension has regular permissions, not multi-sig permissions
-        isMultiSig: false,
-      },
-    );
-
-    const encodedAction = colonyClient.interface.encodeFunctionData(
-      'setUserRoles',
-      [
-        multiSigPermissionDomainId,
-        multiSigChildSkillIndex,
-        // The address of the user being assigned permissions
-        userAddress,
-        // The domain they are being assigned permissions in
-        teamDomainId,
-        // A hex string representing the roles they are being assigned
-        zeroPadHexString,
-      ],
-    );
-
-    // Permission proofs for the user creating the multi-sig motion
-    const [userPermissionDomainId, userChildSkillIndex] = yield call(
-      getPermissionProofsLocal,
-      {
-        networkClient: colonyClient.networkClient,
-        colonyRoles,
-        colonyDomains,
-        requiredDomainId: createdInDomainId,
-        requiredColonyRole: requiredCreatedInRoles,
-        // The address of the user creating the multi-sig motion
-        permissionAddress: initiatorAddress,
-        // The user must have multi-sig permissions
-        isMultiSig: true,
-      },
-    );
-
-    const params = [
-      userPermissionDomainId,
-      userChildSkillIndex,
-      [altTarget],
-      [encodedAction],
-    ];
-
-    return {
-      context: ClientType.MultisigPermissionsClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params,
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    };
-  }
-
-  // Creating a reputation motion
-
-  const votingReputationClient = yield colonyManager.getClient(
-    ClientType.VotingReputationClient,
-    colonyAddress,
-  );
-
-  // Get permission proofs for encoding the action with the voting reputation extension which will be used to execute the action
-  const [votingReputationPermissionDomainId, votingReputationChildSkillIndex] =
-    yield call(getPermissionProofsLocal, {
-      networkClient: colonyClient.networkClient,
-      colonyRoles,
-      colonyDomains,
-      // The domain they are being assigned permissions in
-      requiredDomainId: teamDomainId,
-      requiredColonyRole: requiredTeamRoles,
-      // The address of the voting reputation client
-      permissionAddress: votingReputationClient.address,
-      isMultiSig: false,
-    });
-
-  const encodedAction = colonyClient.interface.encodeFunctionData(
-    'setUserRoles',
-    [
-      votingReputationPermissionDomainId,
-      votingReputationChildSkillIndex,
-      // The address of the user being assigned permissions
-      userAddress,
-      // The domain they are being assigned permissions in
-      teamDomainId,
-      // A hex string representing the roles they are being assigned
-      zeroPadHexString,
-    ],
-  );
-
-  const motionChildSkillIndex = yield call(getChildIndexLocal, {
-    networkClient: colonyClient.networkClient,
-    parentDomainNativeId: createdInDomain.nativeId,
-    parentDomainSkillId: createdInDomain.nativeSkillId,
-    domainNativeId: teamDomain.nativeId,
-    domainSkillId: teamDomain.nativeSkillId,
-  });
-
-  const { skillId } = yield call(
-    [colonyClient, colonyClient.getDomain],
-    createdInDomainId,
-  );
-
-  const { key, value, branchMask, siblings } = yield call(
-    colonyClient.getReputation,
-    skillId,
-    ADDRESS_ZERO,
-  );
-
-  return {
-    context: ClientType.VotingReputationClient,
-    methodName: 'createMotion',
-    identifier: colonyAddress,
-    params: [
-      createdInDomainId,
-      motionChildSkillIndex,
-      altTarget,
-      encodedAction,
-      key,
-      value,
-      branchMask,
-      siblings,
-    ],
-    group: {
-      key: batchKey,
-      id: metaId,
-      index: 0,
-    },
-    ready: false,
-  };
-}
 
 function* managePermissionsMotion({
   payload: {
@@ -301,19 +57,227 @@ function* managePermissionsMotion({
         'annotateSetUserRolesMotion',
       ]);
 
-    const transactionParams = yield getCreateMotionParams({
-      roles,
-      authority,
-      isMultiSig,
-      colonyAddress,
-      createdInDomainId,
-      colonyRoles,
-      colonyDomains,
-      userAddress,
-      teamDomainId,
-      batchKey,
-      metaId,
-    });
+    // eslint-disable-next-line no-inner-declarations
+    function* getCreateMotionParams() {
+      const colonyManager = yield getColonyManager();
+
+      const colonyClient = yield colonyManager.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
+      );
+
+      const createdInDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(createdInDomainId),
+      );
+      const teamDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(teamDomainId),
+      );
+
+      if (!createdInDomain || !teamDomain) {
+        throw new Error(
+          'Cannot find created in domain or team domain in colony domains',
+        );
+      }
+
+      const requiredCreatedInRoles =
+        createdInDomainId === Id.RootDomain
+          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+
+      const requiredTeamRoles =
+        teamDomainId === Id.RootDomain
+          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+
+      const roleArray = Object.values(roles).reverse();
+      roleArray.splice(2, 0, false);
+
+      let roleBitmask = '';
+
+      roleArray.forEach((role) => {
+        roleBitmask += role ? '1' : '0';
+      });
+
+      const hexString = hexlify(parseInt(roleBitmask, 2));
+      const zeroPadHexString = hexZeroPad(hexString, 32);
+
+      let altTarget: string;
+
+      switch (authority) {
+        case Authority.ViaMultiSig: {
+          const multiSigClient = yield colonyManager.getClient(
+            ClientType.MultisigPermissionsClient,
+            colonyAddress,
+          );
+          // If assigning the user MultiSig permissions, then pass the multi-sig client address
+          altTarget = multiSigClient.address;
+          break;
+        }
+        case Authority.Own:
+        default: {
+          // If assigning the user own permissions and isMultiSig, then pass the colony address
+          // If assigning the user own permissions and is not multi-sig, then pass address zero
+          altTarget = isMultiSig ? colonyAddress : ADDRESS_ZERO;
+          break;
+        }
+      }
+
+      if (isMultiSig) {
+        // Creating a multi-sig motion
+
+        const initiatorAddress = yield colonyClient.signer.getAddress();
+
+        const multiSigClient = yield colonyManager.getClient(
+          ClientType.MultisigPermissionsClient,
+          colonyAddress,
+        );
+
+        // Get permission proofs for encoding the action with the multi-sig extension which will be used to execute the action
+        const [multiSigPermissionDomainId, multiSigChildSkillIndex] =
+          yield call(getPermissionProofsLocal, {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: createdInDomainId,
+            requiredColonyRole: requiredCreatedInRoles,
+            // The address of the multi-sig client
+            permissionAddress: multiSigClient.address,
+            // The multi-sig extension has regular permissions, not multi-sig permissions
+            isMultiSig: false,
+          });
+
+        const encodedAction = colonyClient.interface.encodeFunctionData(
+          'setUserRoles',
+          [
+            multiSigPermissionDomainId,
+            multiSigChildSkillIndex,
+            // The address of the user being assigned permissions
+            userAddress,
+            // The domain they are being assigned permissions in
+            teamDomainId,
+            // A hex string representing the roles they are being assigned
+            zeroPadHexString,
+          ],
+        );
+
+        // Permission proofs for the user creating the multi-sig motion
+        const [userPermissionDomainId, userChildSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: createdInDomainId,
+            requiredColonyRole: requiredCreatedInRoles,
+            // The address of the user creating the multi-sig motion
+            permissionAddress: initiatorAddress,
+            // The user must have multi-sig permissions
+            isMultiSig: true,
+          },
+        );
+
+        const params = [
+          userPermissionDomainId,
+          userChildSkillIndex,
+          [altTarget],
+          [encodedAction],
+        ];
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params,
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      // Creating a reputation motion
+
+      const votingReputationClient = yield colonyManager.getClient(
+        ClientType.VotingReputationClient,
+        colonyAddress,
+      );
+
+      // Get permission proofs for encoding the action with the voting reputation extension which will be used to execute the action
+      const [
+        votingReputationPermissionDomainId,
+        votingReputationChildSkillIndex,
+      ] = yield call(getPermissionProofsLocal, {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        // The domain they are being assigned permissions in
+        requiredDomainId: teamDomainId,
+        requiredColonyRole: requiredTeamRoles,
+        // The address of the voting reputation client
+        permissionAddress: votingReputationClient.address,
+        isMultiSig: false,
+      });
+
+      const encodedAction = colonyClient.interface.encodeFunctionData(
+        'setUserRoles',
+        [
+          votingReputationPermissionDomainId,
+          votingReputationChildSkillIndex,
+          // The address of the user being assigned permissions
+          userAddress,
+          // The domain they are being assigned permissions in
+          teamDomainId,
+          // A hex string representing the roles they are being assigned
+          zeroPadHexString,
+        ],
+      );
+
+      // eslint-disable-next-line no-inner-declarations
+      const motionChildSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: createdInDomain.nativeId,
+        parentDomainSkillId: createdInDomain.nativeSkillId,
+        domainNativeId: teamDomain.nativeId,
+        domainSkillId: teamDomain.nativeSkillId,
+      });
+
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
+        createdInDomainId,
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
+        ADDRESS_ZERO,
+      );
+
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          createdInDomainId,
+          motionChildSkillIndex,
+          altTarget,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
+    }
+
+    const transactionParams = yield getCreateMotionParams();
 
     yield fork(createTransaction, createMotion.id, transactionParams);
 
