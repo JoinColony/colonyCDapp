@@ -152,16 +152,14 @@ const UserInfo: FC<UserInfoProps> = ({
           </>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-6 pb-6 pt-[18px] sm:overflow-hidden">
+      <div className="flex flex-1 flex-col gap-6 pt-[18px] sm:overflow-hidden sm:pb-6">
         {aboutDescriptionText && (
           <div className="px-6">
             <TitleLabel
               className="mb-2"
               text={formatText({ id: 'userInfo.about.section' })}
             />
-            <p className="truncate whitespace-break-spaces text-md text-gray-600 sm:max-h-[100px]">
-              {aboutDescriptionText}
-            </p>
+            <p className="text-md text-gray-600">{aboutDescriptionText}</p>
           </div>
         )}
         {additionalContent && <div className="px-6">{additionalContent}</div>}
