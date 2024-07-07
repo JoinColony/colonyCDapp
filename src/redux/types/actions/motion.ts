@@ -170,6 +170,32 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
       OneTxPaymentPayload,
       MetaWithSetter<object>
