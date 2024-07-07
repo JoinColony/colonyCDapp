@@ -5,7 +5,8 @@ import claimAllMotionRewardsSaga from './claimAllMotionRewards.ts';
 import claimMotionRewardsSaga from './claimMotionRewards.ts';
 // import escalateMotionSaga from './escalateMotion';
 import createDecisionMotionSaga from './createDecisionMotion.ts';
-import createEditDomainMotionSaga from './createEditDomainMotion.ts';
+import createEditDomainMultiSigMotionSaga from './domains/createEditDomainMultiSigMotion.ts';
+import createEditDomainReputationMotionSaga from './domains/createEditDomainReputationMotion.ts';
 import editColonyMotionSaga from './editColonyMotion.ts';
 import {
   fundExpenditureMotionSaga,
@@ -37,7 +38,8 @@ export default function* actionsSagas() {
     call(claimMotionRewardsSaga),
     call(claimAllMotionRewardsSaga),
     call(rootMotionSaga),
-    call(createEditDomainMotionSaga),
+    call(createEditDomainReputationMotionSaga),
+    call(createEditDomainMultiSigMotionSaga),
     call(moveFundsMotionSaga),
     call(managePermissionsMotionSaga),
     call(editColonyMotionSaga),

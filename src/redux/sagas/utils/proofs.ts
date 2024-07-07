@@ -203,7 +203,7 @@ interface GetPermissionProofsLocalParams {
   requiredDomainId: number;
   requiredColonyRole: ColonyRole | ColonyRole[];
   permissionAddress: string;
-  isMultiSig: boolean;
+  isMultiSig?: boolean;
 }
 export const getPermissionProofsLocal = async ({
   networkClient,
@@ -212,7 +212,7 @@ export const getPermissionProofsLocal = async ({
   requiredDomainId,
   requiredColonyRole,
   permissionAddress,
-  isMultiSig,
+  isMultiSig = false,
 }: GetPermissionProofsLocalParams): Promise<[BigNumber, BigNumber, string]> => {
   if (Array.isArray(requiredColonyRole)) {
     if (requiredColonyRole.length === 1) {
