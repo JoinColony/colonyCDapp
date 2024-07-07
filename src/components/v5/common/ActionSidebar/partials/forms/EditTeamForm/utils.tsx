@@ -33,7 +33,6 @@ export const getEditDomainPayload = (
     ...baseDomainPayload,
     colonyRoles: extractColonyRoles(colony.roles),
     colonyDomains: extractColonyDomains(colony.domains),
-    isMultiSig: values.decisionMethod === DecisionMethod.MultiSig,
     domainCreatedInNativeId: values.createdIn,
   };
 };
