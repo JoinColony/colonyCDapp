@@ -5,9 +5,7 @@ import { useGetExpenditureQuery } from '~gql';
 import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 
-export const useGetExpenditureData = (
-  expenditureId: string | null | undefined,
-) => {
+const useGetExpenditureData = (expenditureId: string | null | undefined) => {
   const pollInterval = getSafePollingInterval();
   const { data, loading, refetch, startPolling, stopPolling } =
     useGetExpenditureQuery({
@@ -51,3 +49,5 @@ export const useGetExpenditureData = (
     stopPolling,
   };
 };
+
+export default useGetExpenditureData;

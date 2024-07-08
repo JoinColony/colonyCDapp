@@ -11,6 +11,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -22,7 +23,6 @@ import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';

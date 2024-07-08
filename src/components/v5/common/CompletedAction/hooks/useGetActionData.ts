@@ -5,6 +5,8 @@ import { useMemo } from 'react';
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
@@ -12,16 +14,13 @@ import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
-
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
   Authority,
   AVAILABLE_ROLES,
-} from '../partials/forms/ManagePermissionsForm/consts.ts';
+} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 
-import useGetColonyAction from './useGetColonyAction.ts';
-import { useGetExpenditureData } from './useGetExpenditureData.ts';
+import { getFormattedTokenAmount } from '../partials/utils.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
   const {

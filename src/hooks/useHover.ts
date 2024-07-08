@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export const useHover = () => {
+const useHover = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const toggleHover = useCallback((hasHover) => setIsHovered(hasHover), []);
@@ -10,3 +10,5 @@ export const useHover = () => {
     toggleHover,
   };
 };
+
+export default useHover;
