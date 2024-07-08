@@ -153,7 +153,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const rejectedSignaturesCount = signatures.filter(
     (signature) => signature.vote === MultiSigVote.Reject,
   ).length;
-  const finalizedAt = multiSigData.executedAt;
+  const finalizedAt = multiSigData.executedAt || multiSigData.rejectedAt;
 
   let stepTitle = MSG.heading;
 
@@ -261,7 +261,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                     <span className="text-gray-600">
                       {formatText(MSG.finalized)}
                     </span>
-                    {/* @TODO: What to show when rejected / cancelled? */}
                     <span>{finalizedAt && formatDate(finalizedAt)}</span>
                   </div>
                 </>

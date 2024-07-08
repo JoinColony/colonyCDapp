@@ -54,7 +54,7 @@ const MSG = defineMessages({
   },
   additionalText: {
     id: `${displayName}.additionalText`,
-    defaultMessage: 'of {threshold}',
+    defaultMessage: '{progress} of {threshold}',
   },
   creatorRejection: {
     id: `${displayName}.creatorRejection`,
@@ -229,8 +229,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
                       threshold,
+                      progress: approvalProgress,
                     })}
-                    className="ml-[0.125rem] !text-xs"
+                    className="ml-[0.125rem] w-full !text-xs"
                     isTall
                   />
                 </div>
@@ -249,8 +250,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
                       threshold,
+                      progress: rejectionProgress,
                     })}
-                    className="ml-[0.125rem] !text-xs"
+                    className="ml-[0.125rem] w-full !text-xs"
                     isTall
                   />
                 </div>
