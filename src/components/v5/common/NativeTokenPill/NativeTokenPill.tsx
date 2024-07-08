@@ -81,8 +81,9 @@ const NativeTokenPill = ({
           isFullOnMobile={false}
           onClose={toggleTokenModalOff}
           isOpen={isTokenModalOpened}
+          withPadding={false}
         >
-          <TokenInfo className="w-full !p-0" token={token} isTokenNative />
+          <TokenInfo className="w-full" token={token} isTokenNative />
         </Modal>
       ) : (
         isTokenVisible && (
