@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 
 import {
   MAX_COLONY_DISPLAY_NAME,
-  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+  MAX_COLONY_DESCRIPTION,
 } from '~constants/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -86,7 +86,7 @@ const ColonyDetailsFields: FC = () => {
       >
         <FormTextareaBase
           message={false}
-          maxLength={MAX_OBJECTIVE_DESCRIPTION_LENGTH}
+          maxLength={MAX_COLONY_DESCRIPTION}
           name="colonyDescription"
           placeholder={formatText({
             id: 'actionSidebar.colonyDescription.placeholder',
