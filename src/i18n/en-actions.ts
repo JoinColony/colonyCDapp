@@ -59,6 +59,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
+      ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
