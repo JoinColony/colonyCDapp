@@ -10,14 +10,14 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { usePaymentBuilder } from './hooks.ts';
 import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsField/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
-const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const PaymentBuilderForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   usePaymentBuilder(getFormOptions);
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 

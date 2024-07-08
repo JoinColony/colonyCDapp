@@ -5,6 +5,7 @@ import { boolean, number, object, string } from 'yup';
 
 import { UserRole } from '~constants/permissions.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { formatText } from '~utils/intl.ts';
 import { getObjectKeys } from '~utils/objects/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
@@ -78,11 +79,6 @@ export const permissionsSchema = object({
 
 export enum RemoveRoleOptionValue {
   remove = 'remove',
-}
-
-export enum Authority {
-  ViaMultiSig = 'via-multi-sig',
-  Own = 'own',
 }
 
 export const AuthorityOptions: CardSelectOption<string>[] = [

@@ -1,4 +1,4 @@
-import { type FieldValues, type UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
 
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { type Address } from '~types';
@@ -8,7 +8,7 @@ export interface ActionButtonsProps {
   isActionDisabled?: boolean;
 }
 
-export interface ActionFormBaseProps {
+export interface CreateActionFormProps {
   getFormOptions: (
     formOptions: Omit<ActionFormProps<any>, 'children'> | undefined,
     form: UseFormReturn,
@@ -17,7 +17,7 @@ export interface ActionFormBaseProps {
 
 export type UseActionFormBaseHook = (
   options: {
-    getFormOptions: ActionFormBaseProps['getFormOptions'];
+    getFormOptions: CreateActionFormProps['getFormOptions'];
   } & Pick<
     ActionFormProps<any>,
     | 'transform'
@@ -29,10 +29,9 @@ export type UseActionFormBaseHook = (
   >,
 ) => void;
 
-export interface ActionSidebarProps {
-  initialValues?: FieldValues;
-  transactionId?: string;
-  className?: string;
+export enum ActionSidebarWidth {
+  Default,
+  Wide,
 }
 
 export type ClaimMintTokensActionParams = {

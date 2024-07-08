@@ -3,10 +3,10 @@ import { type FC } from 'react';
 import React from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 
 import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';

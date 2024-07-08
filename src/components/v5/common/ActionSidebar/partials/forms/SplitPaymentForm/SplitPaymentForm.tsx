@@ -10,7 +10,7 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { useSplitPayment } from './hooks.ts';
@@ -18,7 +18,7 @@ import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField/
 
 const displayName = 'v5.common.ActionSidebar.partials.SplitPaymentForm';
 
-const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const SplitPaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { currentToken, distributionMethod, amount } =
     useSplitPayment(getFormOptions);
 

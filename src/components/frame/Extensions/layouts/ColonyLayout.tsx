@@ -21,6 +21,7 @@ import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useTablet } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
@@ -94,6 +95,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       toggleActionSidebarOn();
     }
   }, [toggleActionSidebarOn, transactionId]);
+
+  useDisableBodyScroll(isActionSidebarOpen);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -177,12 +180,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {isActionSidebarOpen && (
           <ActionSidebar
-            transactionId={transactionId || undefined}
             initialValues={actionSidebarInitialValues}
-            className="modal-blur"
-          >
-            {isTablet ? getUserNavigation() : undefined}
-          </ActionSidebar>
+            userNavigation={isTablet ? getUserNavigation() : null}
+          />
         )}
       </AnimatePresence>
       <ManageMemberModal

@@ -1,14 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Cardholder, CopySimple } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 import { object, string } from 'yup';
 
 import { isEmailAlreadyRegistered } from '~common/Onboarding/wizardSteps/StepCreateUser/validation.ts';
-import { isFullScreen } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -277,25 +276,4 @@ export const useUserPreferencesPage = () => {
     errors,
     columnsList,
   };
-};
-
-export const useFullScreenMode = () => {
-  const [isFullScreenMode, setIsFullScreenMode] = useState(false);
-
-  useLayoutEffect(() => {
-    setIsFullScreenMode(localStorage.getItem(isFullScreen) === 'true');
-  }, []);
-
-  const toggleFullScreenMode = () => {
-    // Keep localStorage in sync with toggle state
-    if (isFullScreenMode) {
-      localStorage.setItem(isFullScreen, 'false');
-      setIsFullScreenMode(false);
-    } else {
-      localStorage.setItem(isFullScreen, 'true');
-      setIsFullScreenMode(true);
-    }
-  };
-
-  return { isFullScreenMode, toggleFullScreenMode };
 };

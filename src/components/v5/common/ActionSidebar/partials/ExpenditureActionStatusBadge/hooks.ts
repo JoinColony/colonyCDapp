@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { ExpenditureStatus } from '~gql';
 import { type Expenditure } from '~types/graphql.ts';
-import { isExpenditureFullyFunded } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/utils.ts';
+import { isExpenditureFullyFunded } from '~v5/common/ActionSidebar/utils.ts';
 
 import { ExpenditureActionStatus } from './types.ts';
 

@@ -23,7 +23,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {
@@ -182,7 +182,7 @@ export type PaymentBuilderFormValues = InferType<
 >;
 
 export const usePaymentBuilder = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
