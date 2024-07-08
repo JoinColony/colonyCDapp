@@ -25,6 +25,8 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
 
+import styles from './UserInfo.module.css';
+
 const getPermissionTooltipContent = ({
   role,
   isMultiSig = false,
@@ -192,9 +194,9 @@ const UserInfo: FC<UserInfoProps> = ({
             />
             <ul
               className={clsx(
-                `flex max-h-[216px] flex-col gap-2 sm:overflow-y-auto sm:pr-1.5`,
+                `${styles.userInfoDomainsWrapper} flex flex-col gap-2 sm:max-h-[216px] sm:overflow-y-auto sm:overflow-x-hidden sm:pr-1.5`,
                 {
-                  'mr-[-7px] pr-2': domains.length > 4,
+                  'mr-[-6px] pr-2': domains.length > 4,
                 },
               )}
             >

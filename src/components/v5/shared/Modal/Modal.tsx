@@ -67,7 +67,13 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
             title={formatMessage({ id: 'button.cancel' })}
             onClick={onClose}
-            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+            className={clsx(
+              `absolute right-4 text-gray-400 hover:text-gray-600`,
+              {
+                'top-6': !withPadding,
+                '-top-2': withPadding,
+              },
+            )}
           />
           <div
             className={clsx(

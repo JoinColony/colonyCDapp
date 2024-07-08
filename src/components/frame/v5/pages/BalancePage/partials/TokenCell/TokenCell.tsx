@@ -95,9 +95,10 @@ const TokenCell: FC<TokenCellProps> = ({
           isFullOnMobile={false}
           onClose={toggleTokenModalOff}
           isOpen={isTokenModalOpened}
+          withPadding={false}
         >
           <TokenInfo
-            className="w-full !p-0"
+            className="w-full"
             token={token}
             isTokenNative={isTokenNative}
           />
