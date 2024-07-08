@@ -227,7 +227,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                   <ProgressBar
                     progress={approvalProgress}
                     max={threshold}
-                    additionalText={formatText(MSG.additionalText, {
+                    progressLabel={formatText(MSG.additionalText, {
                       threshold,
                     })}
                     className="ml-[0.125rem] !text-xs"
@@ -247,7 +247,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                   <ProgressBar
                     progress={rejectionProgress}
                     max={threshold}
-                    additionalText={formatText(MSG.additionalText, {
+                    progressLabel={formatText(MSG.additionalText, {
                       threshold,
                     })}
                     className="ml-[0.125rem] !text-xs"
