@@ -25,7 +25,6 @@ import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
-import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
@@ -87,8 +86,6 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;
-      case ExtendedColonyActionType.UpdateColonyObjective:
-        return <UpgradeColonyObjective action={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
          case ColonyActionType.EmitDomainReputationPenalty:
