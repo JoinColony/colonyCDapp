@@ -241,7 +241,7 @@ const UserInfo: FC<UserInfoProps> = ({
                   return (
                     <li
                       key={domainId}
-                      className="grid h-12 min-h-12 grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:max-w-[302px]"
+                      className="grid h-12 min-h-12 w-full grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:min-w-[302px] sm:max-w-[302px]"
                     >
                       <div className="flex flex-row items-center truncate">
                         <div
