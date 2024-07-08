@@ -172,7 +172,7 @@ function Stepper<TKey extends React.Key>({
                   <InView
                     as="div"
                     onChange={(inView) => handleChange(key, inView)}
-                    className="flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center"
+                    className="z-base flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center"
                   >
                     <StepperButton
                       stage={
