@@ -7,7 +7,6 @@ import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
-import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
@@ -19,6 +18,7 @@ import ManageTokens from './partials/ManageTokens/ManageTokens.tsx';
 import MintTokens from './partials/MintTokens/index.ts';
 import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/PaymentBuilderWidget.tsx';
 import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
+import PermissionSidebar from './partials/PermissionSidebar/PermissionSidebar.tsx';
 import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
