@@ -50,21 +50,6 @@ export const getMembersList = (
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
-    const allMultiSigRoles = getAllUserRoles(
-      extractColonyRoles(colony.roles),
-      contributorAddress,
-      true,
-    );
-    const allMultiSigRolesFiltered =
-      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
-        ? allMultiSigRoles
-        : allMultiSigRoles?.filter(
-            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-          );
-    const permissionMultiSigRole =
-      hasRoleInTeam && allMultiSigRolesFiltered?.length
-        ? getRole(allMultiSigRolesFiltered)
-        : undefined;
 
     const allMultiSigRoles = getAllUserRoles(
       extractColonyRoles(colony.roles),
