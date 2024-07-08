@@ -75,6 +75,7 @@ const useManagePermissionsValidationSchema = () => {
                     return Object.values(permissions).some(Boolean);
                   }
                 }
+
                 return true;
               },
             )
@@ -93,13 +94,6 @@ const useManagePermissionsValidationSchema = () => {
                   const newPermissions = getObjectKeys(permissions)
                     .filter((permissionKey) => permissions[permissionKey])
                     .map(extractColonyRoleFromPermissionKey);
-
-                  if (
-                    newPermissions.includes(null) ||
-                    newPermissions.length === currentPermissions.length
-                  ) {
-                    return false;
-                  }
 
                   return (
                     JSON.stringify(currentPermissions.sort()) !==

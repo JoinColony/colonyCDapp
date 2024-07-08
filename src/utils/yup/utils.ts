@@ -14,7 +14,4 @@ export const createValidationComparableObject = (obj1, obj2) => {
 
 export const getEnumYupSchema = <T extends string | number>(
   enumObject: Record<string, T>,
-): MixedSchema<T> =>
-  mixed<T>()
-    .oneOf(Object.values(enumObject) as T[])
-    .required();
+): MixedSchema<T> => mixed<T>().oneOf(Object.values(enumObject) as T[]);
