@@ -3,9 +3,9 @@ import React, { type FC } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';

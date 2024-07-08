@@ -1,6 +1,6 @@
+import { type RefetchAction } from '~hooks/useGetColonyAction.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
-import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 export interface FinalizeStepProps {
   startPollingAction: (pollingInterval: number) => void;

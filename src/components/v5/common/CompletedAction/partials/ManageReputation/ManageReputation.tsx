@@ -21,11 +21,11 @@ import {
   TEAM_FIELD_NAME,
   AMOUNT_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
+import useGetActionData from '../../hooks/useGetActionData.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
