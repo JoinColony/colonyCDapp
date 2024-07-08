@@ -19,7 +19,8 @@ export const translateAction = (action?: Action) => {
 
 export const handleMotionCompleted = (action: ColonyAction) => {
   switch (action.type) {
-    case ColonyActionType.AddVerifiedMembersMotion: {
+    case ColonyActionType.AddVerifiedMembersMotion:
+    case ColonyActionType.AddVerifiedMembersMultisig: {
       if (action.members) {
         updateContributorVerifiedStatus(
           action.members,
@@ -29,7 +30,8 @@ export const handleMotionCompleted = (action: ColonyAction) => {
       }
       break;
     }
-    case ColonyActionType.RemoveVerifiedMembersMotion: {
+    case ColonyActionType.RemoveVerifiedMembersMotion:
+    case ColonyActionType.RemoveVerifiedMembersMultisig: {
       if (action.members) {
         updateContributorVerifiedStatus(
           action.members,
