@@ -17,17 +17,20 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 
 import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useLocationKeyChange from '~hooks/useLocationKeyChange.ts';
 import useLocationPathnameChange from '~hooks/useLocationPathnameChange.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal/index.ts';
@@ -57,15 +60,11 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
-  const { actionSidebarToggle, actionSidebarInitialValues } =
+  const { hideActionSidebar, showActionSidebar, data, isActionSidebarOpen } =
     useActionSidebarContext();
-  const [
-    isActionSidebarOpen,
-    { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-  ] = actionSidebarToggle;
   const isTablet = useTablet();
   const { clearUserHubTab, setUserHubTab, userHubTab } = usePageLayoutContext();
-  const actionType = actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME];
+  const { action } = data;
 
   const {
     isMemberModalOpen,
@@ -88,20 +87,20 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   const handleLocationPathnameChange = useCallback(() => {
     if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
-      toggleActionSidebarOff();
+      hideActionSidebar();
     }
   }, [
+    hideActionSidebar,
     previousTransactionId,
     transactionId,
     isActionSidebarOpen,
-    toggleActionSidebarOff,
   ]);
 
   const handleLocationHistoryChange = useCallback(() => {
-    if (!transactionId && !actionType && isActionSidebarOpen) {
-      toggleActionSidebarOff();
+    if (!transactionId && !action && isActionSidebarOpen) {
+      hideActionSidebar();
     }
-  }, [transactionId, actionType, isActionSidebarOpen, toggleActionSidebarOff]);
+  }, [hideActionSidebar, transactionId, action, isActionSidebarOpen]);
 
   useLocationPathnameChange(handleLocationPathnameChange);
 
@@ -109,9 +108,13 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (transactionId) {
-      toggleActionSidebarOn();
+      // FIXME: I think we want to open the sidebar based on the txId param
+      // Probably this is being done in the other PR
+      showActionSidebar(ActionSidebarMode.ViewAction);
     }
-  }, [toggleActionSidebarOn, transactionId]);
+  }, [showActionSidebar, transactionId]);
+
+  useDisableBodyScroll(isActionSidebarOpen);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -190,11 +193,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {isActionSidebarOpen && (
           <ActionSidebar
-            transactionId={transactionId || undefined}
-            className="modal-blur"
-          >
-            {isTablet ? getUserNavigation() : undefined}
-          </ActionSidebar>
+            userNavigation={isTablet ? getUserNavigation() : null}
+          />
         )}
       </AnimatePresence>
       <ManageMemberModal

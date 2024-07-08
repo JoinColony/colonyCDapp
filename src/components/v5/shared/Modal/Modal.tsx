@@ -17,7 +17,7 @@ const displayName = 'v5.Modal';
 
 const Modal: FC<PropsWithChildren<ModalProps>> = ({
   title,
-  subTitle,
+  subtitle,
   children,
   icon: Icon,
   onClose,
@@ -101,7 +101,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           >
             <div className="flex flex-grow flex-col">
               {title && <h4 className="mb-2 heading-5">{title}</h4>}
-              {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
+              {subtitle && <p className="text-md text-gray-600">{subtitle}</p>}
               {children}
             </div>
             {(closeMessage || confirmMessage) && (

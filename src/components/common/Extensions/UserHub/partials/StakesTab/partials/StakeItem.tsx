@@ -3,11 +3,11 @@ import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useGetActionTitleValues } from '~common/ColonyActions/index.ts';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
 
 import { type StakeItemProps } from '../types.ts';

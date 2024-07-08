@@ -6,12 +6,13 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
+  ACTION_TYPE_PARAM_NAME,
   CREATED_IN_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 
+// FIXME: I think we want to delete this
 export const useDraftAgreement = ({
   formContextOverride,
 }: {
@@ -34,7 +35,7 @@ export const useDraftAgreement = ({
 
     const formValues = finalFormContext.getValues();
 
-    const selectedActionType = formValues[ACTION_TYPE_FIELD_NAME];
+    const selectedActionType = formValues[ACTION_TYPE_PARAM_NAME];
 
     return (
       selectedActionType === Action.CreateDecision &&

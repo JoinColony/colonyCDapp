@@ -31,6 +31,14 @@ const PaymentGroup = () => {
           },
         )}
       </GroupedAction.List>
+      {/* FIXME: I don't know what this does but it needs to come back (was in: ActionSidebar)  */}
+      {/* I assume it's a button to go back when there was a group??? */}
+      {/* {actionGroupType && ( */}
+      {/*   <GoBackButton */}
+      {/*     action={action} */}
+      {/*     onClick={transactionId ? closeSidebarClick : undefined} */}
+      {/*   /> */}
+      {/* )} */}
     </GroupedActionWrapper>
   );
 };
