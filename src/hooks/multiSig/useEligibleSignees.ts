@@ -4,7 +4,7 @@ import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type ColonyContributor } from '~types/graphql.ts';
 
 interface UseEligibleSigneesParams {
-  domainId?: number;
+  domainId: number;
   requiredRoles?: ColonyRole[];
 }
 
@@ -13,6 +13,10 @@ export const useEligibleSignees = ({
   requiredRoles,
 }: UseEligibleSigneesParams) => {
   const { totalMembers } = useMemberContext();
+
+  if (Number.isNaN(domainId)) {
+    throw new Error('domainId must be a number');
+  }
 
   const domainIds =
     domainId === Id.RootDomain ? [Id.RootDomain] : [Id.RootDomain, domainId];
