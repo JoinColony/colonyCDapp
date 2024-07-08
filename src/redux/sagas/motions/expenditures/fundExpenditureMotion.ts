@@ -174,7 +174,7 @@ function* fundExpenditureMotion({
       },
     });
 
-    yield initiateTransaction({ id: createMotion.id });
+    yield initiateTransaction(createMotion.id);
 
     const {
       type,

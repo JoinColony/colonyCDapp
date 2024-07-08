@@ -103,7 +103,7 @@ function* releaseExpenditureStage({
       );
     }
 
-    yield initiateTransaction({ id: releaseExpenditure.id });
+    yield initiateTransaction(releaseExpenditure.id);
 
     const {
       payload: {

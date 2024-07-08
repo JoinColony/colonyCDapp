@@ -109,7 +109,8 @@ const ColonyPreviewPage = () => {
   const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
   const { isContributor, loading: isContributorLoading } = useIsContributor({
-    colonyAddress,
+    // FIXME: Can we wrap this page into something where Colony is always available? Re-use colony route?
+    colonyAddress: colonyAddress || '',
     walletAddress: user?.walletAddress,
   });
 

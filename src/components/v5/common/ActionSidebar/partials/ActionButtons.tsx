@@ -10,7 +10,8 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import Button from '~v5/shared/Button/index.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -97,7 +98,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
           isFullSize={isMobile}
         />
         {isSubmitting ? (
-          <TxButton
+          <IconButton
             rounded="s"
             isFullSize={isMobile}
             text={{ id: 'button.pending' }}
@@ -107,6 +108,8 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
               </span>
             }
             className="!px-4 !text-md"
+            title={{ id: 'button.pending' }}
+            ariaLabel={{ id: 'button.pending' }}
           />
         ) : (
           <Button

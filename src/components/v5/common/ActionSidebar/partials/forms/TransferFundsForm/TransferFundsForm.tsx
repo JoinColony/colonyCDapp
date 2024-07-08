@@ -27,6 +27,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('from');
 
+  // FIXME: Start here. Pass action definition
+  // const {} = useAction();
+
   return (
     <>
       <ActionFormRow

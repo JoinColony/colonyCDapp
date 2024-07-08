@@ -85,7 +85,7 @@ function* finalizeExpenditureAction({
       finalizeExpenditure.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield initiateTransaction({ id: finalizeExpenditure.id });
+    yield initiateTransaction(finalizeExpenditure.id);
     yield waitForTxResult(finalizeExpenditure.channel);
 
     const claimablePayouts = getClaimableExpenditurePayouts(expenditure.slots);

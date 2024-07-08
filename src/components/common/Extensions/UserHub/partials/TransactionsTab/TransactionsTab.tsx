@@ -1,9 +1,10 @@
 import { Binoculars } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+
+import { useGroupedTransactions } from '../../../../../../state/transactionState.ts';
 
 import { useTransactionsListObserver } from './hooks.ts';
 import TransactionList from './partials/TransactionList.tsx';
@@ -16,7 +17,6 @@ const TransactionsTab: FC<TransactionsProps> = () =>
   //   appearance: { interactive },
   // }
   {
-    const { transactionAndMessageGroups } = useUserTransactionContext();
     // const [selectedGroupIdx, setSelectedGroupIdx] = useState<number>(
     //   isLatestTxPending ? 0 : -1,
     // );
@@ -48,8 +48,8 @@ const TransactionsTab: FC<TransactionsProps> = () =>
     //   return;
     // };
 
-    const isEmpty =
-      !transactionAndMessageGroups || !transactionAndMessageGroups.length;
+    const { transactions } = useGroupedTransactions();
+    const isEmpty = !transactions.length;
 
     /* Load more when reaching end of list  */
     useTransactionsListObserver();
@@ -71,7 +71,7 @@ const TransactionsTab: FC<TransactionsProps> = () =>
               className="h-full"
             />
           ) : (
-            <TransactionList />
+            <TransactionList transactions={transactions} />
           )}
         </div>
       </div>

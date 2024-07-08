@@ -131,29 +131,6 @@ export const transactionSucceeded = (
   meta: { id, metatransaction },
 });
 
-export const transactionAddIdentifier = (
-  id: string,
-  identifier: string,
-): AllActions => ({
-  type: ActionTypes.TRANSACTION_ADD_IDENTIFIER,
-  meta: { id },
-  payload: { identifier },
-});
-
-export const transactionAddParams = (
-  id: string,
-  params: MethodParams,
-): AllActions => ({
-  type: ActionTypes.TRANSACTION_ADD_PARAMS,
-  meta: { id },
-  payload: { params },
-});
-
-export const transactionReady = (id: string): AllActions => ({
-  type: ActionTypes.TRANSACTION_READY,
-  meta: { id },
-});
-
 export const transactionPending = (id: string): AllActions => ({
   type: ActionTypes.TRANSACTION_PENDING,
   meta: { id },
@@ -161,11 +138,6 @@ export const transactionPending = (id: string): AllActions => ({
 
 export const transactionEstimateGas = (id: string): AllActions => ({
   type: ActionTypes.TRANSACTION_ESTIMATE_GAS,
-  meta: { id },
-});
-
-export const transactionRetry = (id: string): AllActions => ({
-  type: ActionTypes.TRANSACTION_RETRY,
   meta: { id },
 });
 

@@ -3,7 +3,6 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import type { Preview } from '@storybook/react';
 
-import { type Meta, type StoryObj } from '@storybook/react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 
@@ -12,7 +11,6 @@ import createRootReducer from '../src/redux/createRootReducer';
 
 import AppContextStub from './preview/AppContextStub';
 import ColonyContextStub from './preview/ColonyContextStub';
-import UserTransactionContextStub from './preview/UserTransactionsContextStub';
 
 const store = createStore(
   createRootReducer(),
@@ -57,13 +55,11 @@ export const decorators = [
       <ReduxProvider store={store}>
         <AppContextStub>
           <ColonyContextStub>
-            <UserTransactionContextStub>
-              <MemoryRouter>
-                <Routes>
-                  <Route path="/*" element={<Story />} />
-                </Routes>
-              </MemoryRouter>
-            </UserTransactionContextStub>
+            <MemoryRouter>
+              <Routes>
+                <Route path="/*" element={<Story />} />
+              </Routes>
+            </MemoryRouter>
           </ColonyContextStub>
         </AppContextStub>
       </ReduxProvider>

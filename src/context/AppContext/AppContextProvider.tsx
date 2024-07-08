@@ -1,4 +1,4 @@
-import { utils } from 'ethers';
+import { providers, utils } from 'ethers';
 import React, {
   useState,
   useMemo,
@@ -22,6 +22,7 @@ import { getContext, ContextModule } from '../index.ts';
 import { TokenActivationProvider } from '../TokenActivationContext/TokenActivationContextProvider.tsx';
 
 import { AppContext, type AppContextValue } from './AppContext.ts';
+import ColonyManager from './ColonyManager.ts';
 
 const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [wallet, setWallet] = useState<AppContextValue['wallet']>();
@@ -169,6 +170,18 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const signerOrProvider =
+    wallet?.ethersProvider.getSigner() ||
+    // FIXME: RpcRetryProvider is not a JsonRpcProvider
+    (wallet?.ethersProvider as unknown as providers.JsonRpcProvider) ||
+    // FIXME: remove this after the wallet refactor
+    new providers.JsonRpcProvider();
+
+  const colonyManager = useMemo(
+    () => new ColonyManager(signerOrProvider),
+    [signerOrProvider],
+  );
+
   const appContext = useMemo<AppContextValue>(
     () => ({
       wallet,
@@ -182,6 +195,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       canInteract: !!wallet && !!user,
       joinedColonies,
       joinedColoniesLoading,
+      colonyManager,
     }),
     [
       wallet,
@@ -194,6 +208,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       updateUser,
       joinedColonies,
       joinedColoniesLoading,
+      colonyManager,
     ],
   );
 

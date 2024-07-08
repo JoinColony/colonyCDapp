@@ -152,7 +152,7 @@ function* createStreamingPaymentAction({
       );
     }
 
-    yield initiateTransaction({ id: createStreamingPayment.id });
+    yield initiateTransaction(createStreamingPayment.id);
 
     const {
       payload: {

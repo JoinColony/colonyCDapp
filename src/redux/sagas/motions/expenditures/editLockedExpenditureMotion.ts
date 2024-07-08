@@ -129,7 +129,7 @@ function* editLockedExpenditureMotion({
       },
     });
 
-    yield initiateTransaction({ id: createMotion.id });
+    yield initiateTransaction(createMotion.id);
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateEditLockedExpenditure.id, {

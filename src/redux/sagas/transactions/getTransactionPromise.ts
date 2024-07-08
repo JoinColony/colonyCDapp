@@ -2,7 +2,7 @@ import { type ContractClient } from '@colony/colony-js';
 import { type TransactionResponse } from '@ethersproject/providers';
 import { type Overrides } from 'ethers';
 
-import { type TransactionRecord } from '../../immutable/index.ts';
+import { type TransactionType } from '../../immutable/index.ts';
 
 /*
  * Given a method and a transaction record, create a promise for sending the
@@ -11,7 +11,7 @@ import { type TransactionRecord } from '../../immutable/index.ts';
 async function getTransactionPromise(
   // @TODO this is not great but I feel like we will replace this anyways at some point
   client: ContractClient & { clientType: string },
-  tx: TransactionRecord,
+  tx: TransactionType,
 ): Promise<TransactionResponse> {
   const {
     methodName,
@@ -21,8 +21,8 @@ async function getTransactionPromise(
       maxFeePerGas,
       maxPriorityFeePerGas,
       ...restOptions
-    },
-    params,
+    } = {},
+    params = [],
     gasLimit,
     gasPrice,
   } = tx;
