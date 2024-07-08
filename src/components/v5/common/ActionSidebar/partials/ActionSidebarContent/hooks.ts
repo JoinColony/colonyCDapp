@@ -33,7 +33,7 @@ export const useHasEnoughMembersWithPermissions = ({
 }: {
   decisionMethod: DecisionMethod;
   selectedAction: Action;
-  createdIn?: number;
+  createdIn: number;
 }) => {
   const { watch } = useFormContext();
   const formValues = watch();
