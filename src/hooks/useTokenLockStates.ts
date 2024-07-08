@@ -43,6 +43,8 @@ const useTokenLockStates = (): Record<string, boolean> => {
 
   useEffect(() => {
     fetchTokenStates();
+    // We specifically only want to run this once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return tokenLockStatesMap;

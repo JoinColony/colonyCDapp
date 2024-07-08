@@ -18,10 +18,11 @@ import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import useReputationValidation from '~v5/common/ActionSidebar/hooks/useReputationValidation.ts';
-import AmountField from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
+
+import AmountField from '../CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 
 import {
   type CreateStakedExpenditureFormFields,
