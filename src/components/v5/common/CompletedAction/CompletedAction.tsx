@@ -85,6 +85,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <ManageReputation action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
+      case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
