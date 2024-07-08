@@ -667,7 +667,7 @@ const createColony = async (
 
   const metadata = {};
   if (colonyDescription) {
-    metadata.description = colonyDescription;
+    metadata.description = colonyDescription.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_DESCRIPTION);
   }
   if (colonyAvatar) {
     metadata.avatar = colonyAvatar;
