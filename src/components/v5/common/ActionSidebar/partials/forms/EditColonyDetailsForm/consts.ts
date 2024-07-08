@@ -4,7 +4,7 @@ import { object, string, array } from 'yup';
 import {
   MAX_ANNOTATION_LENGTH,
   MAX_COLONY_DISPLAY_NAME,
-  MAX_OBJECTIVE_DESCRIPTION_LENGTH,
+  MAX_COLONY_DESCRIPTION,
 } from '~constants/index.ts';
 import { ExternalLinks } from '~gql';
 import { formatText } from '~utils/intl.ts';
@@ -25,9 +25,7 @@ export const getEditColonyDetailsValidationSchema = (
       createdIn: string().defined(),
       decisionMethod: string().defined(),
       description: string().max(MAX_ANNOTATION_LENGTH).notRequired(),
-      colonyDescription: string()
-        .required()
-        .max(MAX_OBJECTIVE_DESCRIPTION_LENGTH),
+      colonyDescription: string().required().max(MAX_COLONY_DESCRIPTION),
       externalLinks: array()
         .of(
           object()
