@@ -160,7 +160,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {isActionSidebarOpen && (
           <ActionSidebar
-            transactionId={transactionId || undefined}
             initialValues={actionSidebarInitialValues}
             className="modal-blur"
           >

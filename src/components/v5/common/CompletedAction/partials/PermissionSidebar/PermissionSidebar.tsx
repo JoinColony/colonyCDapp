@@ -10,7 +10,7 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { type PermissionSidebarProps } from '../types.ts';
+import { type PermissionSidebarProps } from './types.ts';
 
 const displayName = 'v5.PermissionSidebar';
 
