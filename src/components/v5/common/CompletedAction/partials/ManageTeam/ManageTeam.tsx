@@ -64,7 +64,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: action.fromDomain?.metadata?.name,
+          team: actionDomainMetadata?.name,
           user: initiatorUser ? (
             <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
