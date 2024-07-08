@@ -68,22 +68,6 @@ export const getMembersList = (
         ? getRole(allMultiSigRolesFiltered)
         : undefined;
 
-    const allMultiSigRoles = getAllUserRoles(
-      extractColonyRoles(colony.roles),
-      contributorAddress,
-      true,
-    );
-    const allMultiSigRolesFiltered =
-      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
-        ? allMultiSigRoles
-        : allMultiSigRoles?.filter(
-            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-          );
-    const permissionMultiSigRole =
-      hasRoleInTeam && allMultiSigRolesFiltered?.length
-        ? getRole(allMultiSigRolesFiltered)
-        : undefined;
-
     return {
       user,
       walletAddress: contributorAddress,
