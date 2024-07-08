@@ -8,7 +8,6 @@ import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,
-  ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   COLONY_OBJECTIVE_TITLE_FIELD_NAME,
@@ -89,9 +88,9 @@ const UpgradeColonyObjective = ({ action }: Props) => {
         <MeatballMenu
           showRedoItem={false}
           transactionHash={transactionHash}
+          action={Action.ManageColonyObjectives}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
             [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
             [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
               objectiveData?.description,

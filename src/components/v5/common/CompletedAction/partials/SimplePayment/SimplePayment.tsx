@@ -15,7 +15,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   FROM_FIELD_NAME,
@@ -99,9 +98,9 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
           transactionHash={transactionHash}
+          action={Action.SimplePayment}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [RECIPIENT_FIELD_NAME]: recipientAddress,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),

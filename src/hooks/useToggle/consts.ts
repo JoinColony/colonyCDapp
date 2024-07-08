@@ -1,4 +1,4 @@
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 import { type UseToggleReturnType } from './types.ts';
 

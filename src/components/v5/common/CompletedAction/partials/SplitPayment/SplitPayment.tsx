@@ -10,11 +10,15 @@ import { generatePath } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ExpenditureStatus } from '~gql';
 import { useMobile } from '~hooks';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -33,7 +37,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
@@ -41,7 +44,6 @@ import {
   TITLE_FIELD_NAME,
   TOKEN_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import { distributionMethodOptions } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import { calculatePercentageValue } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -93,12 +95,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     isCancelModalOpen,
     { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
   ] = useToggle();
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { showActionSidebar, hideActionSidebar } = useActionSidebarContext();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
@@ -163,39 +160,41 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
       label: formatText({ id: 'completedAction.redoAction' }),
       icon: Repeat,
       onClick: () => {
-        toggleActionSidebarOff();
+        hideActionSidebar();
 
         setTimeout(() => {
-          toggleActionSidebarOn({
-            [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
-            distributionMethod: distributionType,
-            [TEAM_FIELD_NAME]: fundFromDomainNativeId,
-            [AMOUNT_FIELD_NAME]:
-              typeof redoAmount === 'string'
-                ? redoAmount.replace(',', '')
-                : redoAmount,
-            payments: slots.map((slot) => {
-              const currentAmount = moveDecimal(
-                slot.payouts?.[0].amount,
-                -getTokenDecimalsWithFallback(splitToken?.decimals),
-              );
+          showActionSidebar(ActionSidebarMode.CreateAction, {
+            action: Action.SplitPayment,
+            initialValues: {
+              [TITLE_FIELD_NAME]: customTitle,
+              distributionMethod: distributionType,
+              [TEAM_FIELD_NAME]: fundFromDomainNativeId,
+              [AMOUNT_FIELD_NAME]:
+                typeof redoAmount === 'string'
+                  ? redoAmount.replace(',', '')
+                  : redoAmount,
+              payments: slots.map((slot) => {
+                const currentAmount = moveDecimal(
+                  slot.payouts?.[0].amount,
+                  -getTokenDecimalsWithFallback(splitToken?.decimals),
+                );
 
-              return {
-                recipient: slot.recipientAddress,
-                amount: currentAmount,
-                tokenAddress: slot.payouts?.[0].tokenAddress,
-                percent: calculatePercentageValue(
-                  currentAmount,
-                  formattedAmount,
-                ),
-              };
-            }),
-            [TOKEN_FIELD_NAME]: splitToken?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isStaked
-              ? DecisionMethod.Staking
-              : DecisionMethod.Permissions,
-            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+                return {
+                  recipient: slot.recipientAddress,
+                  amount: currentAmount,
+                  tokenAddress: slot.payouts?.[0].tokenAddress,
+                  percent: calculatePercentageValue(
+                    currentAmount,
+                    formattedAmount,
+                  ),
+                };
+              }),
+              [TOKEN_FIELD_NAME]: splitToken?.tokenAddress,
+              [DECISION_METHOD_FIELD_NAME]: isStaked
+                ? DecisionMethod.Staking
+                : DecisionMethod.Permissions,
+              [DESCRIPTION_FIELD_NAME]: annotation?.message,
+            },
           });
         }, 500);
       },

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActiveActionType } from '~v5/common/ActionSidebar/hooks/useActiveActionType.ts';
 
 import ArbitraryTxsDescription from './partials/ArbitraryTxsDescription.tsx';
 import CreateDecisionDescription from './partials/CreateDecisionDescription.tsx';
@@ -22,13 +21,15 @@ import TransferFundsDescription from './partials/TransferFundsDescription.tsx';
 import UnlockTokenDescription from './partials/UnlockTokenDescription.tsx';
 import UpgradeColonyDescription from './partials/UpgradeColonyDescription.tsx';
 
+interface Props {
+  action: Action;
+}
+
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
 
-const ActionSidebarDescription = () => {
-  const selectedAction = useActiveActionType();
-
-  switch (selectedAction) {
+const ActionSidebarDescription: FC<Props> = ({ action }) => {
+  switch (action) {
     case Action.MintTokens:
       return <MintTokensDescription />;
     case Action.SimplePayment:

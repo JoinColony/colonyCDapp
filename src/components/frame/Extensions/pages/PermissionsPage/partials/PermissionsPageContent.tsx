@@ -2,11 +2,13 @@ import { Pencil, ShieldStar, X } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import PermissionsModal from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsModal/PermissionsModal.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 
@@ -22,9 +24,7 @@ const PermissionsPageContent: FC<
   PropsWithChildren<PermissionsPageFilterProps>
 > = ({ children, filterValue, items, onChange, ...filters }) => {
   const isMobile = useMobile();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const [
     isPermissionsModalOpen,
     {
@@ -116,8 +116,8 @@ const PermissionsPageContent: FC<
                   id: 'permissionsPage.managePermissions',
                 }),
                 onClick: () => {
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+                  showActionSidebar(ActionSidebarMode.CreateAction, {
+                    action: Action.ManagePermissions,
                   });
                 },
               },

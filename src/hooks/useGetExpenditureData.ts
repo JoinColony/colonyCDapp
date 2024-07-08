@@ -56,3 +56,5 @@ export const useGetExpenditureData = (
     stopPolling,
   };
 };
+
+export default useGetExpenditureData;

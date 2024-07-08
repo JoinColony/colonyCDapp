@@ -1,10 +1,12 @@
 import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName = 'v5.UserInfoPopover.partials.UserNotVerified';
@@ -20,12 +22,8 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
   walletAddress,
   onClick,
 }) => {
-  const {
-    actionSidebarToggle: [
-      isActionSidebarOpen,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { isActionSidebarOpen, showActionSidebar, hideActionSidebar } =
+    useActionSidebarContext();
 
   return (
     <NotificationBanner
@@ -38,15 +36,17 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
             const timeout = isActionSidebarOpen ? 500 : 0;
 
             if (isActionSidebarOpen) {
-              toggleActionSidebarOff();
+              hideActionSidebar();
             }
 
             setTimeout(() => {
               onClick?.();
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
-                members: [{ value: walletAddress }],
-                manageMembers: ManageVerifiedMembersOperation.Add,
+              showActionSidebar(ActionSidebarMode.CreateAction, {
+                action: Action.ManageVerifiedMembers,
+                initialValues: {
+                  members: [{ value: walletAddress }],
+                  manageMembers: ManageVerifiedMembersOperation.Add,
+                },
               });
             }, timeout);
           }}

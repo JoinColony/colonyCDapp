@@ -11,7 +11,6 @@ import {
 } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
@@ -103,9 +102,9 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
         <MeatballMenu
           showRedoItem={false}
           transactionHash={action.transactionHash}
+          action={actionType}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: actionType,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [CREATED_IN_FIELD_NAME]: domain?.nativeId,
             [DESCRIPTION_FIELD_NAME]: action.annotation?.message,

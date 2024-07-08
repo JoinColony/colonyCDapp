@@ -2,11 +2,13 @@ import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTotalInOutBalanceContext } from '~context/TotalInOutBalanceContext/TotalInOutBalanceContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
@@ -21,15 +23,13 @@ export const PaymentsSection = () => {
   } = useTotalInOutBalanceContext();
   const { setShowTabletSidebar } = usePageLayoutContext();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const clickHandler = () => {
     setShowTabletSidebar(false);
 
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.PaymentGroup,
+    showActionSidebar(ActionSidebarMode.CreateAction, {
+      action: Action.PaymentGroup,
     });
   };
 

@@ -10,7 +10,6 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
@@ -72,9 +71,9 @@ const MintTokens = ({ action }: MintTokensProps) => {
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
           transactionHash={transactionHash}
+          action={Action.MintTokens}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,

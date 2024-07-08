@@ -53,5 +53,5 @@ export const useOnElementScroll = ({
     return () => {
       scrollElement?.removeEventListener('scroll', handleScroll);
     };
-  }, [callback, scrollThrottle, scrollableElementId, shouldExecute]);
+  }, [callback, scrollableElementId, scrollThrottle, shouldExecute]);
 };

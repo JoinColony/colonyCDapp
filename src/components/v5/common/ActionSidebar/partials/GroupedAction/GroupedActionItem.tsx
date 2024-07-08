@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { type Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 type ThemeColor = 'blue' | 'success' | 'purple' | 'warning';
@@ -57,15 +59,11 @@ export const GroupedActionItem: FC<GroupedActionItemProps> = ({
   color = 'blue',
   isNew = false,
 }) => {
-  const {
-    actionSidebarInitialValues,
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const onClick = () => {
-    toggleActionSidebarOn({
-      ...actionSidebarInitialValues,
-      [ACTION_TYPE_FIELD_NAME]: action,
+    showActionSidebar(ActionSidebarMode.CreateAction, {
+      action,
     });
   };
 

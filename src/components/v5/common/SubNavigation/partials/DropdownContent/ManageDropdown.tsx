@@ -2,9 +2,11 @@ import React, { type PropsWithChildren, type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { LEARN_MORE_DECISIONS } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import LearnMore from '~shared/Extensions/LearnMore/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Button from '~v5/shared/Button/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
@@ -18,9 +20,7 @@ const displayName =
 
 const ManageDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -34,8 +34,8 @@ const ManageDropdown: FC<PropsWithChildren> = () => {
             {...rest}
             key={action}
             onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: action,
+              showActionSidebar(ActionSidebarMode.CreateAction, {
+                action: action,
               });
             }}
           />

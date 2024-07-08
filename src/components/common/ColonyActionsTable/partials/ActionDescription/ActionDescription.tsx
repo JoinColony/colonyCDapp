@@ -5,12 +5,12 @@ import useGetActionTitleValues from '~common/ColonyActions/helpers/getActionTitl
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
-import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 

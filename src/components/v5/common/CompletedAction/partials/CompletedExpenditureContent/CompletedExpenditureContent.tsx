@@ -5,7 +5,11 @@ import React, { type FC } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
 import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { type Action } from '~constants/actions.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ExpenditureType } from '~gql';
 import { useMobile } from '~hooks';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
@@ -46,6 +50,7 @@ interface CompletedExpenditureContentProps {
   expenditure: Expenditure;
   expenditureMeatballOptions: MeatBallMenuItem[];
   redoActionValues: FieldValues;
+  redoAction: Action;
 }
 
 const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
@@ -57,16 +62,12 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   action,
   expenditure,
   expenditureMeatballOptions,
+  redoAction,
   redoActionValues,
 }) => {
   const allTokens = useGetAllTokens();
   const isMobile = useMobile();
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { showActionSidebar, hideActionSidebar } = useActionSidebarContext();
 
   const { slots = [], metadata } = expenditure;
 
@@ -108,10 +109,13 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
               label: formatText({ id: 'completedAction.redoAction' }),
               icon: Repeat,
               onClick: () => {
-                toggleActionSidebarOff();
+                hideActionSidebar();
 
                 setTimeout(() => {
-                  toggleActionSidebarOn({ ...redoActionValues });
+                  showActionSidebar(ActionSidebarMode.CreateAction, {
+                    action: redoAction,
+                    initialValues: redoActionValues,
+                  });
                 }, 500);
               },
             },

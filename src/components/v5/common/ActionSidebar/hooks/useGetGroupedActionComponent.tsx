@@ -1,13 +1,15 @@
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import ManageColonyGroup from '../partials/ManageColonyGroup/index.ts';
 import PaymentGroup from '../partials/PaymentGroup/index.ts';
 
 const useGetGroupedActionComponent = () => {
-  const { actionSidebarInitialValues } = useActionSidebarContext();
-  switch (actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME]) {
+  const {
+    data: { action },
+  } = useActionSidebarContext();
+  switch (action) {
+    // FIXME: Take these out of the Action and use a separate enum
     case Action.PaymentGroup:
       return PaymentGroup;
     case Action.ManageColony:

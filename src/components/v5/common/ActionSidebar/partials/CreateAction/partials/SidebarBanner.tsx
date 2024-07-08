@@ -11,10 +11,7 @@ import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
-import {
-  ACTION_TYPE_FIELD_NAME,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
@@ -30,19 +27,20 @@ const MSG = defineMessages({
   },
 });
 
-export const SidebarBanner: FC = () => {
+interface Props {
+  action?: Action;
+}
+
+export const SidebarBanner: FC<Props> = ({ action }) => {
   const { watch } = useFormContext();
-  const [selectedAction, decisionMethod] = watch([
-    ACTION_TYPE_FIELD_NAME,
-    DECISION_METHOD_FIELD_NAME,
-  ]);
+  const [decisionMethod] = watch([DECISION_METHOD_FIELD_NAME]);
 
   const { installedExtensionsData } = useExtensionsData();
 
   const requiredExtensionsWithoutPermission = installedExtensionsData.filter(
     (extension) => {
       const isOneTxPaymentExtensionAction =
-        selectedAction === Action.SimplePayment &&
+        action === Action.SimplePayment &&
         extension.extensionId === Extension.OneTxPayment;
       const isVotingReputationExtensionAction =
         decisionMethod === DecisionMethod.Reputation &&
@@ -61,14 +59,14 @@ export const SidebarBanner: FC = () => {
   const isFieldDisabled = useIsFieldDisabled();
 
   const showVersionUpToDateNotification =
-    selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
+    action === Action.UpgradeColonyVersion && !canUpgrade;
 
   return (
     <>
-      {selectedAction && (
+      {action && (
         <ActionTypeNotification
           isFieldDisabled={isFieldDisabled}
-          selectedAction={selectedAction}
+          selectedAction={action}
           className="mt-7"
         />
       )}

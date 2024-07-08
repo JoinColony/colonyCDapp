@@ -10,7 +10,7 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
 import VerifiedMembersTable from '~v5/common/ActionSidebar/partials/MembersTable/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { getManageMembersOptions } from './consts.ts';
@@ -19,7 +19,7 @@ import { useManageVerifiedMembers } from './hooks.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm';
 
-const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
+const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
   getFormOptions,
 }) => {
   const { manageMembersOptions } = getManageMembersOptions();

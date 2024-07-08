@@ -67,7 +67,7 @@ const useDetectClickOutside = ({
       const [isDisabled, eventName, listener] = eventConfigItem;
 
       if (!isDisabled) {
-        document.addEventListener(eventName, listener);
+        document.addEventListener(eventName, listener, true);
       }
     });
 
@@ -76,7 +76,7 @@ const useDetectClickOutside = ({
         const [isDisabled, eventName, listener] = eventConfigItem;
 
         if (!isDisabled) {
-          document.removeEventListener(eventName, listener);
+          document.removeEventListener(eventName, listener, true);
         }
       });
     };

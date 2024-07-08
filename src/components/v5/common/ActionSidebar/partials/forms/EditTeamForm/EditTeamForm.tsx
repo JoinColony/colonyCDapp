@@ -21,7 +21,7 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
@@ -29,7 +29,7 @@ import { useEditTeam } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.EditTeamForm';
 
-const EditTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const EditTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
 
   useEditTeam(getFormOptions);

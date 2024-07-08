@@ -3,14 +3,13 @@ import clsx from 'clsx';
 import { utils } from 'ethers';
 import React, { type FC } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useMobile } from '~hooks';
-import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { useVerifiedMembersSelect } from './hooks.ts';
@@ -30,29 +29,21 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
   });
   const isError = !!error;
   const { usersOptions } = useVerifiedMembersSelect();
-  const [
-    isUserSelectVisible,
-    {
-      toggle: toggleUserSelect,
-      toggleOff: toggleOffUserSelect,
-      registerContainerRef,
-    },
-  ] = useToggle();
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
+
   const { readonly } = useAdditionalFormOptionsContext();
   const isMobile = useMobile();
   const selectedMember = usersOptions.options.find((user) => {
     return user.value === field.value.value;
   });
 
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isUserSelectVisible], {
-    withMaxHeight: false,
-    withAutoTopPlacement: true,
-    withLeftPosition: !isMobile,
-    top: 8,
-  });
   const { getValues, setValue } = useFormContext();
   const checkedItems = getValues()
     .members.filter((obj) => typeof obj.value === 'string')
@@ -108,16 +99,15 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
         <>
           <button
             type="button"
-            ref={relativeElementRef}
+            ref={setTriggerRef}
             className={clsx(
               'flex items-center text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError && !isUserSelectVisible,
+                'text-gray-400': !isError && !visible,
                 'text-negative-400': isError,
-                'text-blue-400': isUserSelectVisible,
+                'text-blue-400': visible,
               },
             )}
-            onClick={toggleUserSelect}
             aria-label={formatText({ id: 'ariaLabel.selectUser' })}
           >
             {selectedMember ||
@@ -147,15 +137,14 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
               formatText({ id: 'actionSidebar.selectMember' })
             )}
           </button>
-          {isUserSelectVisible && (
-            <SearchSelect
+          {visible && (
+            <SearchSelectPopover
+              setTooltipRef={setTooltipRef}
+              tooltipProps={getTooltipProps}
+              triggerRef={triggerRef}
               items={[usersOptions]}
               onSelect={onMemberSelect}
               checkboxesList={checkedItems}
-              ref={(ref) => {
-                registerContainerRef(ref);
-                portalElementRef.current = ref;
-              }}
               className={clsx('z-sidebar !max-h-[18.25rem]', {
                 'left-6 right-[1.9rem] w-auto': isMobile,
               })}
@@ -166,7 +155,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
                     <Button
                       mode="primarySolid"
                       size="small"
-                      onClick={toggleOffUserSelect}
+                      onClick={triggerRef?.click}
                       isFullSize
                     >
                       {formatText({ id: 'button.addMembersAndClose' })}

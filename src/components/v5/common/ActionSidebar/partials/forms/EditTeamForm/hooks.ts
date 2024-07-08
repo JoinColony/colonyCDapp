@@ -9,19 +9,21 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { validationSchema, type EditTeamFormValues } from './consts.ts';
 import { getEditDomainFormActionType, getEditDomainPayload } from './utils.tsx';
 
 export const useEditTeam = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { setValue } = useFormContext();
 
+  // FIXME:CONTEXT this is a problem
   const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, team } = useWatch<{
     decisionMethod: DecisionMethod;
+    // FIXME: team is not a problem, this can be assigned to createdIn later when transforming the payload
     team: number;
   }>();
 

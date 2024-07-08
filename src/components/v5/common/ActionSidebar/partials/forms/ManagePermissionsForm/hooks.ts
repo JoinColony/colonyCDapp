@@ -12,7 +12,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import {
   UserRoleModifier,
@@ -27,8 +27,8 @@ import {
   getRemovedInheritedPermissions,
 } from './utils.ts';
 
-export const useManagePermissionsForm = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+export const useManagePermissions = (
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -55,6 +55,7 @@ export const useManagePermissionsForm = (
     role: formRole,
   } = formValues;
 
+  // FIXME:CONTEXT this can be just done in the FormComponent itself
   useEffect(() => {
     /**
      * This effect handles the population of permissions-related form values when the
@@ -118,6 +119,7 @@ export const useManagePermissionsForm = (
     return () => unsubscribe();
   }, [clearErrors, colony, isSubmitted, setValue, trigger, watch]);
 
+  // FIXME:CONTEXT: This can go into a custom primary button element that is very much in the form context
   const isRemovingRootRoleFromRootDomain = useMemo(
     () =>
       isValid &&

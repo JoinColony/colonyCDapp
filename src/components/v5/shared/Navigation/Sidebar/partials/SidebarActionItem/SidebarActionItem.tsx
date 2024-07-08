@@ -1,11 +1,13 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
   sidebarButtonClass,
   sidebarButtonIconClass,
@@ -26,15 +28,13 @@ const ActionSectionItem: React.FC<ActionSectionItemProps> = ({
 
   const { isDarkMode } = usePageThemeContext();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const onClick = () => {
     setShowTabletSidebar(false);
 
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: action,
+    showActionSidebar(ActionSidebarMode.CreateAction, {
+      action,
     });
   };
 

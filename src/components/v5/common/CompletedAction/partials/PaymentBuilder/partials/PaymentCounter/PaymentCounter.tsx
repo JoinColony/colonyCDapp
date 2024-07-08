@@ -3,7 +3,7 @@ import React, { type FC, useEffect, useState } from 'react';
 
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import TimerValue from '~shared/TimerValue/TimerValue.tsx';
-import { splitTimeLeft } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/helpers.ts';
+import { splitTimeLeft } from '~v5/common/MotionCountDownTimer/helpers.ts';
 
 import { type PaymentCounterProps } from './types.ts';
 

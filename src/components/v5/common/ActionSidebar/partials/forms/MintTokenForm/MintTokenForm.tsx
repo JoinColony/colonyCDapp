@@ -5,13 +5,13 @@ import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useMintToken } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
-const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const MintTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useMintToken(getFormOptions);
 
   return (

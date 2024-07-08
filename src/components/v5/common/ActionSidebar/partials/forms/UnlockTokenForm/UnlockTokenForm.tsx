@@ -10,13 +10,13 @@ import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useUnlockToken } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';
 
-const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const UnlockTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { colony } = useColonyContext();
   const { status, nativeToken } = colony;
   const isNativeTokenUnlocked = !!status?.nativeToken?.unlocked;

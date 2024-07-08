@@ -19,7 +19,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { getTransferFundsPayload } from './utils.tsx';
 
@@ -92,7 +92,7 @@ export type TransferFundsFormValues = InferType<
 >;
 
 export const useTransferFunds = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { [DECISION_METHOD_FIELD_NAME]: decisionMethod } = useWatch<{

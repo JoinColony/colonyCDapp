@@ -1,313 +1,40 @@
-import {
-  ArrowLineRight,
-  ArrowsOutSimple,
-  ShareNetwork,
-  WarningCircle,
-  X,
-} from '@phosphor-icons/react';
-import clsx from 'clsx';
-import { motion } from 'framer-motion';
-import React, {
-  type FC,
-  type PropsWithChildren,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from 'react';
+import React, { type ReactNode, type FC } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import { isFullScreen } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { useMobile } from '~hooks/index.ts';
-import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
-import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import { formatText } from '~utils/intl.ts';
-import Modal from '~v5/shared/Modal/index.ts';
+import { TX_SEARCH_PARAM } from '~routes';
 
-import CompletedAction from '../CompletedAction/index.ts';
-import PillsBase from '../Pills/PillsBase.tsx';
+import CompletedActionSidebar from '../CompletedAction/CompletedActionSidebar.tsx';
 
-import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
-import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
-import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
-import { ActionNotFound } from './partials/ActionNotFound.tsx';
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
-import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
-import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
-import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
-import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
-import { type ActionSidebarProps } from './types.ts';
-import { getActionGroup, mapActionTypeToAction } from './utils.ts';
+import CreateActionSidebar from './partials/CreateAction/CreateActionSidebar.tsx';
 
 const displayName = 'v5.common.ActionSidebar';
 
-const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
-  children,
-  transactionId,
-  className,
-}) => {
-  const {
-    action,
-    isInvalidTransactionHash,
-    loadingAction,
-    isMotion,
-    isMultiSig,
-    motionState,
-    expenditure,
-    loadingExpenditure,
-    startPollingForAction,
-    stopPollingForAction,
-  } = useGetActionData(transactionId);
+interface Props {
+  userNavigation?: ReactNode;
+}
 
-  const {
-    actionSidebarToggle: [
-      isActionSidebarOpen,
-      { toggle: toggleActionSidebarOff, registerContainerRef },
-    ],
-    cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
-    actionSidebarInitialValues,
-  } = useActionSidebarContext();
-  const actionType = mapActionTypeToAction(action);
-  const actionGroupType = getActionGroup(
-    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
-  );
-  const GroupedActionComponent = useGetGroupedActionComponent();
-  const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
-    useToggle();
+const ActionSidebar: FC<Props> = ({ userNavigation }) => {
+  const [searchParams] = useSearchParams();
 
-  const timeout = useRef<NodeJS.Timeout>();
+  const GroupedActionSidebar = useGetGroupedActionComponent();
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem(isFullScreen) === 'true') {
-      toggleOn();
-    }
-  }, [toggleOn]);
+  const txId = searchParams.get(TX_SEARCH_PARAM);
 
-  useEffect(() => {
-    clearTimeout(timeout.current);
-
-    // If the action has not been found for 20 seconds, then assume transaction doesn't exist.
-    if (loadingAction) {
-      timeout.current = setTimeout(() => {
-        stopPollingForAction();
-      }, 20000);
-    }
-
-    return () => {
-      clearTimeout(timeout.current);
-    };
-  }, [loadingAction, stopPollingForAction]);
-
-  const { formRef, closeSidebarClick } = useCloseSidebarClick();
-
-  const { getIsDraftAgreement } = useDraftAgreement({
-    formContextOverride: formRef.current,
-  });
-
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
-  const isMobile = useMobile();
-
-  useDisableBodyScroll(isActionSidebarOpen);
-
-  const isLoading =
-    transactionId !== undefined && (loadingAction || loadingExpenditure);
-
-  const actionNotFound = transactionId && !action;
-
-  const getSidebarContent = () => {
-    if (action) {
-      return <CompletedAction action={action} />;
-    }
-
-    if (actionNotFound) {
-      return (
-        <ActionNotFound
-          isInvalidTransactionHash={isInvalidTransactionHash}
-          onCloseSidebar={toggleActionSidebarOff}
-          onRefetchAction={startPollingForAction}
-        />
-      );
-    }
-
-    if (GroupedActionComponent) {
-      return <GroupedActionComponent />;
-    }
-
+  if (txId) {
     return (
-      <ActionSidebarContent
-        transactionId={transactionId}
-        formRef={formRef}
-        defaultValues={actionSidebarInitialValues}
-        isMotion={!!isMotion}
+      <CompletedActionSidebar
+        transactionId={txId}
+        userNavigation={userNavigation}
       />
     );
-  };
+  }
 
-  const getShareButton = () =>
-    !!transactionId && (
-      <Tooltip
-        tooltipContent={formatText({ id: 'copy.urlCopied' })}
-        isOpen={isCopied}
-        isSuccess={isCopied}
-        placement="bottom"
-      >
-        <button
-          type="button"
-          className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-          onClick={() => handleClipboardCopy(window.location.href)}
-          aria-label={formatText({ id: 'ariaLabel.shareAction' })}
-        >
-          <ShareNetwork size={18} />
-        </button>
-      </Tooltip>
-    );
+  if (GroupedActionSidebar) {
+    return <GroupedActionSidebar />;
+  }
 
-  return (
-    <motion.div
-      transition={{
-        ease: 'easeInOut',
-      }}
-      variants={actionSidebarAnimation}
-      exit="hidden"
-      initial="hidden"
-      animate="visible"
-      data-testid="action-drawer"
-      className={clsx(
-        className,
-        `
-          fixed
-          right-0
-          top-[calc(var(--top-content-height))]
-          isolate
-          z-sidebar
-          flex
-          h-[calc(100dvh-var(--top-content-height))]
-          w-full
-          flex-col
-          border
-          border-r-0
-          border-gray-200
-          bg-base-white
-          shadow-default
-          transition-[max-width]
-          md:bottom-0
-          md:top-[calc(var(--top-content-height)+16px)]
-          md:h-[calc(100dvh-var(--top-content-height)-2rem)]
-          md:w-[calc(100vw-248px)]
-          md:rounded-l-lg
-        `,
-        {
-          'md:max-w-full': isSidebarFullscreen,
-          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
-          'md:max-w-[67.3125rem]':
-            (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
-            (!isSidebarFullscreen && !!transactionId && isLoading),
-        },
-      )}
-      ref={registerContainerRef}
-    >
-      <div className="relative">
-        <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={() =>
-                closeSidebarClick({
-                  shouldShowCancelModal: !getIsDraftAgreement(),
-                })
-              }
-              aria-label={formatText({ id: 'ariaLabel.closeModal' })}
-            >
-              <X size={18} />
-            </button>
-            {actionGroupType && (
-              <GoBackButton
-                action={action}
-                onClick={transactionId ? closeSidebarClick : undefined}
-              />
-            )}
-            {!isMobile && (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                    onClick={toggleIsSidebarFullscreen}
-                    aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
-                  >
-                    {isSidebarFullscreen ? (
-                      <ArrowLineRight size={18} />
-                    ) : (
-                      <ArrowsOutSimple size={18} />
-                    )}
-                  </button>
-                  {getShareButton()}
-                </div>
-                {action &&
-                  !isMotion &&
-                  !isMultiSig &&
-                  !expenditure &&
-                  !loadingExpenditure && (
-                    <PillsBase
-                      className="bg-success-100 text-success-400"
-                      isCapitalized={false}
-                    >
-                      {formatText({ id: 'action.passed' })}
-                    </PillsBase>
-                  )}
-                {!!expenditure && (
-                  <ExpenditureActionStatusBadge
-                    expenditure={expenditure}
-                    withAdditionalStatuses
-                  />
-                )}
-                {(!!(
-                  isMotion && action?.motionData?.motionStateHistory.endedAt
-                ) ||
-                  !!isMultiSig) &&
-                  motionState && (
-                    <MotionOutcomeBadge motionState={motionState} />
-                  )}
-              </div>
-            )}
-            {isMobile && getShareButton()}
-          </div>
-          <div>{children}</div>
-        </div>
-      </div>
-      {isLoading && <ActionSidebarLoadingSkeleton />}
-      <div
-        className={clsx('flex flex-grow overflow-y-auto', {
-          hidden: isLoading,
-        })}
-      >
-        {getSidebarContent()}
-      </div>
-
-      <Modal
-        title={formatText({ id: 'actionSidebar.cancelModal.title' })}
-        subTitle={formatText({
-          id: 'actionSidebar.cancelModal.subtitle',
-        })}
-        isOpen={isCancelModalOpen}
-        onClose={toggleCancelModalOff}
-        onConfirm={() => {
-          toggleCancelModalOff();
-          toggleActionSidebarOff();
-        }}
-        icon={WarningCircle}
-        buttonMode="primarySolid"
-        confirmMessage={formatText({ id: 'button.cancelAction' })}
-        closeMessage={formatText({
-          id: 'button.continueAction',
-        })}
-      />
-    </motion.div>
-  );
+  return <CreateActionSidebar userNavigation={userNavigation} />;
 };
 
 ActionSidebar.displayName = displayName;

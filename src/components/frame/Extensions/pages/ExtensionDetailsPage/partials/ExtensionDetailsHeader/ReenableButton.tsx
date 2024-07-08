@@ -44,7 +44,7 @@ const ReenableButton = ({
       <Modal
         icon={Question}
         title={formatText({ id: 'extensionReEnable.modal.title' })}
-        subTitle={formatText({
+        subtitle={formatText({
           id: 'extensionReEnable.modal.subTitle',
         })}
         buttonMode="primarySolid"

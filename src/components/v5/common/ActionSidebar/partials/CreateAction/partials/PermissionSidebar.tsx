@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import RelativeDate from '~v5/shared/RelativeDate/index.ts';
@@ -8,11 +9,13 @@ import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
-import { type PermissionSidebarProps } from '../types.ts';
+interface Props {
+  action: ColonyAction;
+}
 
 const displayName = 'v5.PermissionSidebar';
 
-const PermissionSidebar: FC<PermissionSidebarProps> = ({ action }) => {
+const PermissionSidebar: FC<Props> = ({ action }) => {
   const { initiatorAddress, createdAt } = action || {};
 
   return (

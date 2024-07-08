@@ -17,15 +17,14 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
   TEAM_FIELD_NAME,
   AMOUNT_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import useGetActionData from '~v5/common/CompletedAction/hooks/useGetActionData.ts';
 import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
@@ -102,9 +101,9 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
         </ActionTitle>
         <MeatballMenu
           transactionHash={transactionHash}
+          action={Action.ManageReputation}
           defaultValues={{
             [TITLE_FIELD_NAME]: metadata?.customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageReputation,
             member: recipientAddress,
             modification: isSmite
               ? ModificationOption.RemoveReputation

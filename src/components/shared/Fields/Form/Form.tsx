@@ -34,7 +34,7 @@ export type CustomSubmitErrorHandler<FormData extends FieldValues> = (
   event?: React.BaseSyntheticEvent,
 ) => any | Promise<any>;
 
-export interface FormProps<FormData extends FieldValues> {
+export interface FormProps<FormData extends FieldValues = Record<string, any>> {
   children:
     | ((props: UseFormReturn<FormData>) => React.ReactNode)
     | React.ReactNode;

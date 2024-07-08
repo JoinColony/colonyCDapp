@@ -22,14 +22,16 @@ import Description from '~v5/common/ActionSidebar/partials/Description/index.ts'
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { useUserSelect } from '~v5/common/ActionSidebar/partials/UserSelect/hooks.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { ModificationOption, modificationOptions } from './consts.ts';
 import { useManageReputation } from './hooks.ts';
 import ManageReputationTable from './partials/ManageReputationTable/index.ts';
 
-const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const ManageReputationForm: FC<CreateActionFormProps> = ({
+  getFormOptions,
+}) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const {
     team: selectedTeam,

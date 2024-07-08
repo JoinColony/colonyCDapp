@@ -9,7 +9,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { SplitPaymentDistributionType, useGetUserReputationQuery } from '~gql';
 import { DecisionMethod } from '~types/actions.ts';
 
-export const REPUTATION_VALIDATION_FIELD_NAME = 'isMissingReputation';
+import { REPUTATION_VALIDATION_FIELD_NAME } from '../consts.ts';
 
 export const reputationValidationSchema = object()
   .shape({

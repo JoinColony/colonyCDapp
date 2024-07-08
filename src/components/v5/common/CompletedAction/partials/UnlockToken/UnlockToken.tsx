@@ -7,7 +7,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
@@ -74,9 +73,9 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
         <MeatballMenu
           showRedoItem={false}
           transactionHash={transactionHash}
+          action={Action.UnlockToken}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,

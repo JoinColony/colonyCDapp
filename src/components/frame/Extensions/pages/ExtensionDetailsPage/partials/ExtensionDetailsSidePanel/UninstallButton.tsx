@@ -145,7 +145,7 @@ const UninstallButton = ({
         }}
         onConfirm={handleUninstall}
         title={formatText(MSG[extensionId].uninstallTitle)}
-        subTitle={formatText(MSG[extensionId].uninstallDescription)}
+        subtitle={formatText(MSG[extensionId].uninstallDescription)}
         confirmMessage={formatText({
           id: 'button.confirmUninstall',
         })}

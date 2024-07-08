@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import { Action } from '~constants/actions.ts';
 import { useIsEnoughSignees } from '~hooks/multiSig/useIsEnoughSignees.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   FROM_FIELD_NAME,
   TEAM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
@@ -21,49 +20,49 @@ const displayName =
 // Needs these two props to notice the parent about the loading state and sync the can create value
 // It's conditionally rendered, so it won't slow down the app until we choose Multi-Sig as the decision method
 interface MultiSigMembersErrorProps {
+  action?: Action;
   updateMembersLoadingState: (isLoading: boolean) => void;
   updateCanCreateAction: (canCreate: boolean) => void;
 }
 
-export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
+const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
+  action,
   updateMembersLoadingState,
   updateCanCreateAction,
 }) => {
   const { watch } = useFormContext();
   const formValues = watch();
-  const [selectedAction, fromDomain, team] = watch([
-    ACTION_TYPE_FIELD_NAME,
-    FROM_FIELD_NAME,
-    TEAM_FIELD_NAME,
-  ]);
+  const [fromDomain, team] = watch([FROM_FIELD_NAME, TEAM_FIELD_NAME]);
 
   const permissionDomainId = useMemo(() => {
     // for both of these actions you need roles in the parent domain
     if (
-      selectedAction === Action.TransferFunds ||
-      selectedAction === Action.ManagePermissions
+      action === Action.TransferFunds ||
+      action === Action.ManagePermissions
     ) {
       return Id.RootDomain;
     }
 
     return fromDomain ?? team ?? Id.RootDomain;
-  }, [fromDomain, selectedAction, team]);
+  }, [fromDomain, action, team]);
 
   const thresholdDomainId = useMemo(() => {
     if (
-      selectedAction === Action.TransferFunds ||
-      selectedAction === Action.ManagePermissions
+      action === Action.TransferFunds ||
+      action === Action.ManagePermissions
     ) {
       return Id.RootDomain;
     }
 
     return fromDomain ?? team ?? Id.RootDomain;
-  }, [fromDomain, selectedAction, team]);
+  }, [fromDomain, action, team]);
 
-  const requiredRoles = useMemo(
-    () => getPermissionsNeededForAction(selectedAction, formValues) || [],
-    [selectedAction, formValues],
-  );
+  const requiredRoles = useMemo(() => {
+    if (action) {
+      return getPermissionsNeededForAction(action, formValues);
+    }
+    return [];
+  }, [action, formValues]);
 
   /*
    * This may seem like a hack, but for display purposes, we always fetch all possible roles
@@ -99,3 +98,5 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
 };
 
 MultiSigMembersError.displayName = displayName;
+
+export default MultiSigMembersError;

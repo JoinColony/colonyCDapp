@@ -9,7 +9,10 @@ import React, { useCallback, type FC } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
@@ -20,8 +23,10 @@ import { DecisionMethod } from '~types/actions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
@@ -39,9 +44,7 @@ const DraftCard: FC = () => {
 
   const { draftAgreement } = useDraftAgreement();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const dispatch = useDispatch();
 
@@ -56,14 +59,16 @@ const DraftCard: FC = () => {
     draftAgreement || {};
 
   const openModal = useCallback(() => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
-      title,
-      description,
-      [DECISION_METHOD_FIELD_NAME]: DecisionMethod.Reputation,
-      createdIn: motionDomainId,
+    showActionSidebar(ActionSidebarMode.CreateAction, {
+      action: Action.CreateDecision,
+      initialValues: {
+        [TITLE_FIELD_NAME]: title,
+        [DESCRIPTION_FIELD_NAME]: description,
+        [DECISION_METHOD_FIELD_NAME]: DecisionMethod.Reputation,
+        [CREATED_IN_FIELD_NAME]: motionDomainId,
+      },
     });
-  }, [description, motionDomainId, title, toggleActionSidebarOn]);
+  }, [description, motionDomainId, title, showActionSidebar]);
 
   const currentTeam = colony?.domains?.items.find(
     (domain) => domain?.nativeId === motionDomainId,
@@ -170,7 +175,7 @@ const DraftCard: FC = () => {
       </div>
       <Modal
         title={formatText({ id: 'deleteAgreementDraftModal.title' })}
-        subTitle={formatText({
+        subtitle={formatText({
           id: 'deleteAgreementDraftModal.subtitle',
         })}
         isOpen={isModalOpen}

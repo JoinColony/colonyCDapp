@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 import { type AnyExtensionData } from '~types/extensions.ts';
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 import { ExtensionDetailsPageTabId } from '../types.ts';
 

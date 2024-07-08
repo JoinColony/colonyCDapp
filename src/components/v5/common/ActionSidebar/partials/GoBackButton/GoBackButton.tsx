@@ -1,9 +1,12 @@
 import { ArrowLeft } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { type Action } from '~constants/actions.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
   getActionGroup,
   mapActionTypeToAction,
@@ -15,18 +18,15 @@ interface GoBackButtonProps {
 }
 
 export const GoBackButton: FC<GoBackButtonProps> = ({ action, onClick }) => {
-  const { actionSidebarToggle, actionSidebarInitialValues } =
-    useActionSidebarContext();
-  const { toggleOn: toggleActionSidebarOn } = actionSidebarToggle[1];
+  const { showActionSidebar } = useActionSidebarContext();
   const actionType = mapActionTypeToAction(action);
-  const actionGroupType = getActionGroup(
-    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
-  );
+  // FIXME: This probably won't work. Repair
+  const actionGroupType = getActionGroup(actionType as Action);
 
   const openGroupedAction = () => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: actionGroupType,
-    });
+    // FIXME: This probably won't work. Repair
+    // WHICH OVERVIEW SHOULD IT BE??
+    showActionSidebar(ActionSidebarMode.ActionOverview);
   };
 
   if (!actionGroupType) {

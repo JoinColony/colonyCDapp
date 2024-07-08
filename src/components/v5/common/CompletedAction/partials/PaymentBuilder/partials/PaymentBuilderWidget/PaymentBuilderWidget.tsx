@@ -11,6 +11,8 @@ import {
   useGetColonyExpendituresQuery,
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
@@ -25,12 +27,11 @@ import { formatText } from '~utils/intl.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
 import {
   CacheQueryKeys,
-  getSafePollingInterval,
   removeCacheEntry,
+  getSafePollingInterval,
 } from '~utils/queries.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
-import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import { isExpenditureFullyFunded } from '~v5/common/ActionSidebar/utils.ts';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -58,7 +59,6 @@ import {
   getCancelStepIndex,
   getExpenditureStep,
   getShouldShowMotionTimer,
-  isExpenditureFullyFunded,
   sortActionsByCreatedDate,
 } from './utils.ts';
 

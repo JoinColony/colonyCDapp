@@ -13,27 +13,29 @@ import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
 
 const ITEM_KEY = 'headerDropdown.section3.toggleMute';
 
-const useMuteColonyItem = (): DropdownMenuItem => {
-  const MSG = defineMessages({
-    mute: {
-      id: 'headerDropdown.muteNotifications',
-      defaultMessage: 'Mute notifications',
-    },
-    unmute: {
-      id: 'headerDropdown.unmuteNotifications',
-      defaultMessage: 'Unmute notifications',
-    },
-    toastNotificationsUnmuted: {
-      id: `headerDropdown.toastNotificationsUnmuted`,
-      defaultMessage: 'You will now receive notifications from this colony.',
-    },
-    toastNotificationsMuted: {
-      id: `headerDropdown.toastNotificationsMuted`,
-      defaultMessage:
-        'You will no longer receive notifications from this colony.',
-    },
-  });
+// @TODO: When hooks have the .tsx file ending we're doing something wrong. Please use components instead
+// eslint-disable-next-line react-refresh/only-export-components
+const MSG = defineMessages({
+  mute: {
+    id: 'headerDropdown.muteNotifications',
+    defaultMessage: 'Mute notifications',
+  },
+  unmute: {
+    id: 'headerDropdown.unmuteNotifications',
+    defaultMessage: 'Unmute notifications',
+  },
+  toastNotificationsUnmuted: {
+    id: `headerDropdown.toastNotificationsUnmuted`,
+    defaultMessage: 'You will now receive notifications from this colony.',
+  },
+  toastNotificationsMuted: {
+    id: `headerDropdown.toastNotificationsMuted`,
+    defaultMessage:
+      'You will no longer receive notifications from this colony.',
+  },
+});
 
+const useMuteColonyItem = (): DropdownMenuItem => {
   const { user, updateUser } = useAppContext();
   const {
     colony: { colonyAddress },

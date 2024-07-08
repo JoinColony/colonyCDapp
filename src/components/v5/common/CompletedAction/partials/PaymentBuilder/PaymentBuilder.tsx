@@ -13,6 +13,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -28,7 +29,6 @@ import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
@@ -36,7 +36,6 @@ import {
   RECIPIENT_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 
 import CompletedExpenditureContent from '../CompletedExpenditureContent/CompletedExpenditureContent.tsx';
@@ -177,9 +176,9 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           actionType={ExtendedColonyActionType.StagedPayment}
           action={action}
           expenditure={expenditure}
+          redoAction={Action.StagedPayment}
           redoActionValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [RECIPIENT_FIELD_NAME]: recipient?.walletAddress,
             [DECISION_METHOD_FIELD_NAME]: isStaked
@@ -235,9 +234,9 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         actionType={ColonyActionType.CreateExpenditure}
         action={action}
         expenditure={expenditure}
+        redoAction={Action.PaymentBuilder}
         redoActionValues={{
           [TITLE_FIELD_NAME]: customTitle,
-          [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           [FROM_FIELD_NAME]: fromDomain?.nativeId,
           [DECISION_METHOD_FIELD_NAME]: isStaked
             ? DecisionMethod.Staking

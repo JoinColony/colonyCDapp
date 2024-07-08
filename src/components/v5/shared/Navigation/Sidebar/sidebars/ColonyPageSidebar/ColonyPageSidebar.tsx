@@ -3,7 +3,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
 import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import { useLockBodyScroll } from '~hooks/useLockBodyScroll/index.ts';
@@ -35,14 +38,12 @@ const ColonyPageSidebarContent = () => {
 const ColonyPageSidebar = () => {
   const { showTabletSidebar, setShowTabletSidebar } = usePageLayoutContext();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const isTablet = useTablet();
 
   const handleCreateNewAction = () => {
-    toggleActionSidebarOn();
+    showActionSidebar(ActionSidebarMode.CreateAction);
 
     // It looks glitchy if this component slides out of view while
     // the Action Form slides into view

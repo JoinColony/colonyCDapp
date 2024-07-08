@@ -4,13 +4,13 @@ import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionF
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useUpgradeColony } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.UpgradeColonyForm';
 
-const UpgradeColonyForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const UpgradeColonyForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useUpgradeColony(getFormOptions);
 
   return (

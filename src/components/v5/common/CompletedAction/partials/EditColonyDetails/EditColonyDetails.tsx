@@ -7,7 +7,6 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,
-  ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   COLONY_DESCRIPTION_FIELD_NAME,
@@ -64,9 +63,9 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
         <MeatballMenu
           showRedoItem={false}
           transactionHash={transactionHash}
+          action={Action.EditColonyDetails}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
             [COLONY_DESCRIPTION_FIELD_NAME]: actionColonyMetadata?.description,
             [COLONY_AVATAR_FIELD_NAME]: {
               image: actionColonyMetadata?.avatar,

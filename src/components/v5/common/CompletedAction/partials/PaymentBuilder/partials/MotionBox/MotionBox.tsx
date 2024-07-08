@@ -2,13 +2,13 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { type FC, useEffect, useState, useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
-import MotionProvider from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/index.ts';
+import MotionProvider from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/MotionProvider.tsx';
 import FinalizeStep from '~v5/common/ActionSidebar/partials/Motions/steps/FinalizeStep/FinalizeStep.tsx';
 import RevealStep from '~v5/common/ActionSidebar/partials/Motions/steps/RevealStep/RevealStep.tsx';
-import StakingStep from '~v5/common/ActionSidebar/partials/Motions/steps/StakingStep/index.ts';
+import StakingStep from '~v5/common/ActionSidebar/partials/Motions/steps/StakingStep/StakingStep.tsx';
 import VotingStep from '~v5/common/ActionSidebar/partials/Motions/steps/VotingStep/VotingStep.tsx';
 import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 

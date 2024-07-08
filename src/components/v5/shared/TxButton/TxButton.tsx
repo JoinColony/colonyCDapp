@@ -10,7 +10,7 @@ import {
   getGroupStatus,
 } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 import IconButton from '../Button/IconButton.tsx';
 

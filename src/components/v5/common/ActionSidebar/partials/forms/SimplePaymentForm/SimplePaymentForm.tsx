@@ -1,5 +1,5 @@
 import { UserFocus, UsersThree } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
@@ -12,14 +12,14 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+// import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { useSimplePayment } from './hooks.ts';
+// import { useSimplePayment } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
-const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  useSimplePayment(getFormOptions);
+const SimplePaymentForm = () => {
+  // useSimplePayment(getFormOptions);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 

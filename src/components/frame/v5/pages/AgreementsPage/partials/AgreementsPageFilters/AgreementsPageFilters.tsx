@@ -3,11 +3,13 @@ import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useFiltersContext } from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInput from '~v5/common/Filter/partials/SearchInput/index.ts';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
@@ -25,9 +27,7 @@ const AgreementsPageFilters: FC = () => {
   const { searchFilter, setSearchFilter, selectedFiltersCount } =
     useFiltersContext();
   const [isOpened, setOpened] = useState(false);
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const isMobile = useMobile();
   const {
     isSearchOpened,
@@ -95,8 +95,8 @@ const AgreementsPageFilters: FC = () => {
               size="small"
               isFullSize={false}
               onClick={() => {
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                showActionSidebar(ActionSidebarMode.CreateAction, {
+                  action: Action.CreateDecision,
                 });
               }}
             >
@@ -149,8 +149,8 @@ const AgreementsPageFilters: FC = () => {
               size="small"
               isFullSize={false}
               onClick={() => {
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                showActionSidebar(ActionSidebarMode.CreateAction, {
+                  action: Action.CreateDecision,
                 });
               }}
             >

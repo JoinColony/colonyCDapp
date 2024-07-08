@@ -20,7 +20,7 @@ import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreater
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {
@@ -183,7 +183,7 @@ export type PaymentBuilderFormValues = InferType<
 >;
 
 export const usePaymentBuilder = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
