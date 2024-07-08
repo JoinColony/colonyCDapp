@@ -1,7 +1,7 @@
 import { type RefObject, createContext } from 'react';
 
 import { type ActionTypes } from '~redux/actionTypes.ts';
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 export interface RefWithGetValues {
   getValues: () => Record<string, any>;

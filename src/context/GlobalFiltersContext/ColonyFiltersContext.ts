@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import { type NavigateOptions } from 'react-router-dom';
 
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 
 interface ColonyFiltersContextValue {
   filteredTeam: string | null;

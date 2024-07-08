@@ -10,13 +10,13 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { type MintTokenFormValues, validationSchema } from './consts.ts';
 import { getMintTokenPayload } from './utils.tsx';
 
 export const useMintToken = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({

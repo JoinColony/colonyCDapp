@@ -6,7 +6,10 @@ import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
@@ -16,8 +19,6 @@ import { getTeamColor } from '~utils/teams.ts';
 import TextButton from '~v5/shared/Button/TextButton.tsx';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
-
-import { ACTION_TYPE_FIELD_NAME } from '../ActionSidebar/consts.ts';
 
 import TeamReputationSummaryRow from './partials/TeamReputationSummaryRow.tsx';
 import { type TeamReputationSummaryProps } from './types.ts';
@@ -31,9 +32,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
   const {
     colony: { nativeToken, domains, reputation },
   } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const colonyReputation = reputation ?? '0';
   const teams = domains?.items
@@ -130,8 +129,8 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
           <TextButton
             mode="underlined"
             onClick={() =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              showActionSidebar(ActionSidebarMode.CreateAction, {
+                action: Action.CreateNewTeam,
               })
             }
           >

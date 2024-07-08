@@ -3,8 +3,8 @@ import React, { type FC } from 'react';
 import { FormattedDate } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import { type RequestsBoxItemProps } from './types.ts';
 

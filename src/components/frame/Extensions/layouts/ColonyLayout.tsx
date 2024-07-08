@@ -17,12 +17,16 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 
 import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useLocationPathnameChange from '~hooks/useLocationPathnameChange.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
@@ -55,11 +59,8 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
-  const { actionSidebarToggle } = useActionSidebarContext();
-  const [
-    isActionSidebarOpen,
-    { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-  ] = actionSidebarToggle;
+  const { hideActionSidebar, showActionSidebar, data, isActionSidebarOpen } =
+    useActionSidebarContext();
   const isTablet = useTablet();
   const { clearUserHubTab, setUserHubTab, userHubTab } = usePageLayoutContext();
 
@@ -84,15 +85,19 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   useLocationPathnameChange(() => {
     if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
-      toggleActionSidebarOff();
+      hideActionSidebar();
     }
   });
 
   useEffect(() => {
     if (transactionId) {
-      toggleActionSidebarOn();
+      // FIXME: I think we want to open the sidebar based on the txId param
+      // Probably this is being done in the other PR
+      showActionSidebar(ActionSidebarMode.ViewAction);
     }
-  }, [toggleActionSidebarOn, transactionId]);
+  }, [showActionSidebar, transactionId]);
+
+  useDisableBodyScroll(isActionSidebarOpen);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -171,11 +176,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {isActionSidebarOpen && (
           <ActionSidebar
-            transactionId={transactionId || undefined}
-            className="modal-blur"
-          >
-            {isTablet ? getUserNavigation() : undefined}
-          </ActionSidebar>
+            userNavigation={isTablet ? getUserNavigation() : null}
+          />
         )}
       </AnimatePresence>
       <ManageMemberModal

@@ -2,9 +2,11 @@ import { LockKey, ShareNetwork } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useMembersSubNavigation } from '~v5/shared/SubNavigationItem/hooks.ts';
 import SubNavigationItem from '~v5/shared/SubNavigationItem/index.ts';
 
@@ -17,9 +19,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
   // { onManageMembersClick }
   {
     const { handleClick, isCopyTriggered } = useMembersSubNavigation();
-    const {
-      actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-    } = useActionSidebarContext();
+    const { showActionSidebar } = useActionSidebarContext();
 
     return (
       <ul>
@@ -35,8 +35,8 @@ const SubNavigation: FC<SubNavigationProps> = () =>
           icon={LockKey}
           title="members.subnav.permissions"
           onClick={() =>
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            showActionSidebar(ActionSidebarMode.CreateAction, {
+              action: Action.ManagePermissions,
             })
           }
         />

@@ -1,9 +1,5 @@
-import { type FC, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
-
 import { Action } from '~constants/actions.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import ArbitraryTxsForm from '../partials/forms/ArbitraryTxsForm/index.ts';
 import BatchPaymentForm from '../partials/forms/BatchPaymentForm/index.ts';
 import CreateDecisionForm from '../partials/forms/CreateDecisionForm/index.ts';
@@ -23,46 +19,32 @@ import StagedPaymentForm from '../partials/forms/StagedPaymentForm/StagedPayment
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
-import { type ActionFormBaseProps } from '../types.ts';
 
-const useSidebarActionForm = () => {
-  const actionFormComponents = useMemo<
-    Partial<Record<Action, FC<ActionFormBaseProps>>>
-  >(
-    () => ({
-      [Action.SimplePayment]: SinglePaymentForm,
-      [Action.MintTokens]: MintTokenForm,
-      [Action.TransferFunds]: TransferFundsForm,
-      [Action.CreateNewTeam]: CreateNewTeamForm,
-      [Action.UnlockToken]: UnlockTokenForm,
-      [Action.UpgradeColonyVersion]: UpgradeColonyForm,
-      [Action.CreateDecision]: CreateDecisionForm,
-      [Action.EditExistingTeam]: EditTeamForm,
-      [Action.EnterRecoveryMode]: EnterRecoveryModeForm,
-      [Action.EditColonyDetails]: EditColonyDetailsForm,
-      [Action.SplitPayment]: SplitPaymentForm,
-      [Action.StagedPayment]: StagedPaymentForm,
-      [Action.ManageTokens]: ManageTokensForm,
-      [Action.PaymentBuilder]: PaymentBuilderForm,
-      [Action.BatchPayment]: BatchPaymentForm,
-      [Action.ManagePermissions]: ManagePermissionsForm,
-      [Action.ManageVerifiedMembers]: ManageVerifiedMembersForm,
-      [Action.ManageReputation]: ManageReputationForm,
-      [Action.ArbitraryTxs]: ArbitraryTxsForm,
-    }),
-    [],
-  );
-
-  const form = useFormContext();
-  const selectedAction: Action | undefined = form.watch(ACTION_TYPE_FIELD_NAME);
-  const formComponent = selectedAction
-    ? actionFormComponents[selectedAction]
-    : undefined;
-
-  return {
-    selectedAction,
-    formComponent,
-  };
+const formComponents = {
+  [Action.SimplePayment]: SinglePaymentForm,
+  [Action.MintTokens]: MintTokenForm,
+  [Action.TransferFunds]: TransferFundsForm,
+  [Action.CreateNewTeam]: CreateNewTeamForm,
+  [Action.UnlockToken]: UnlockTokenForm,
+  [Action.UpgradeColonyVersion]: UpgradeColonyForm,
+  [Action.CreateDecision]: CreateDecisionForm,
+  [Action.EditExistingTeam]: EditTeamForm,
+  [Action.EnterRecoveryMode]: EnterRecoveryModeForm,
+  [Action.EditColonyDetails]: EditColonyDetailsForm,
+  [Action.SplitPayment]: SplitPaymentForm,
+  [Action.StagedPayment]: StagedPaymentForm,
+  [Action.ManageTokens]: ManageTokensForm,
+  [Action.PaymentBuilder]: PaymentBuilderForm,
+  [Action.BatchPayment]: BatchPaymentForm,
+  [Action.ManagePermissions]: ManagePermissionsForm,
+  [Action.ManageVerifiedMembers]: ManageVerifiedMembersForm,
+  [Action.ManageReputation]: ManageReputationForm,
+  [Action.ArbitraryTxs]: ArbitraryTxsForm,
 };
 
-export default useSidebarActionForm;
+export const getActionSidebarFormComponent = (actionType?: Action) => {
+  if (!actionType) {
+    return null;
+  }
+  return formComponents[actionType];
+};

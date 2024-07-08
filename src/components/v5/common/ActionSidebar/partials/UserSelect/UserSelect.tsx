@@ -4,6 +4,7 @@ import { utils } from 'ethers';
 import { isAddress } from 'ethers/lib/utils';
 import React, { type FC } from 'react';
 import { useController } from 'react-hook-form';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
@@ -14,6 +15,7 @@ import { type User } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
+import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
@@ -38,25 +40,18 @@ const UserSelect: FC<UserSelectProps> = ({
   });
   const isError = !!error;
   const { usersOptions } = useUserSelect({ domainId, filterOptionsFn });
-  const [
-    isUserSelectVisible,
-    {
-      toggle: toggleUserSelect,
-      toggleOff: toggleUserSelectOff,
-      registerContainerRef,
-    },
-  ] = useToggle();
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
+
   const { user: userByAddress } = useUserByAddress(field.value);
   const { readonly } = useAdditionalFormOptionsContext();
 
   const userWalletAddress = field.value;
-
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isUserSelectVisible], {
-    top: 8,
-  });
 
   const selectedUserOption = (options || usersOptions).options.find(
     (option) => option.value === field.value,
@@ -95,15 +90,14 @@ const UserSelect: FC<UserSelectProps> = ({
     <>
       <button
         type="button"
-        ref={relativeElementRef}
+        ref={setTriggerRef}
         className={clsx('flex items-center text-md transition-colors', {
-          'text-gray-400': !isError && !isUserSelectVisible && !disabled,
+          'text-gray-400': !isError && !visible && !disabled,
           'text-gray-300': disabled,
           'text-negative-400': isError,
-          'text-blue-400': isUserSelectVisible,
+          'text-blue-400': visible,
           'md:hover:text-blue-400': !disabled,
         })}
-        onClick={toggleUserSelect}
         aria-label={formatText({ id: 'ariaLabel.selectUser' })}
         disabled={disabled}
       >
@@ -212,23 +206,20 @@ const UserSelect: FC<UserSelectProps> = ({
       ) : (
         <>
           {selectedUserContent}
-          {isUserSelectVisible && (
-            <SearchSelect
-              placeholder={formatText({
-                id: 'placeholder.searchUser',
-              })}
+          {visible && (
+            <SearchSelectPopover
+              tooltipProps={getTooltipProps}
+              triggerRef={triggerRef}
+              setTooltipRef={setTooltipRef}
               items={[options || usersOptions]}
               onSelect={(value) => {
                 field.onChange(utils.isHexString(value) ? value : undefined);
-                toggleUserSelectOff();
               }}
-              ref={(ref) => {
-                registerContainerRef(ref);
-                portalElementRef.current = ref;
+              onSearch={(query) => {
+                field.onChange(utils.isHexString(query) ? query : undefined);
               }}
               isLoading={usersOptions.isLoading}
-              className="z-sidebar"
-              shouldReturnAddresses
+              showEmptyContent={false}
             />
           )}
         </>

@@ -1,3 +1,4 @@
+import { type ButtonHTMLAttributes, type MouseEventHandler } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
@@ -7,25 +8,50 @@ import { type ColonyAction } from '~types/graphql.ts';
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
   onSubmitClick?: () => void;
-  primaryButton?: ActionFormProps['primaryButton'];
+  // FIXME: Urgh remove this primary button shit
+  // primaryButton?: ActionFormProps['primaryButton'];
+  /** A form id you can directly associate a submit button with */
+  id?: string;
+
+  /** Primary button prop overrides */
+  primaryButton?: {
+    /** The form's primary button type */
+    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+
+    /** Function called when the form's primary button type is set to "button" */
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+  };
 }
 
 export interface ActionFormOptions
-  extends Omit<ActionFormProps<any>, 'children' | 'onSuccess'> {
-  onSuccess?: () => void;
-  primaryButton?: ActionFormProps['primaryButton'];
+  extends Omit<ActionFormProps<any>, 'children'> {
+  // FIXME: Urgh remove this primary button shit
+  // primaryButton?: ActionFormProps['primaryButton'];
+  /** A form id you can directly associate a submit button with */
+  id?: string;
+
+  /** Primary button prop overrides */
+  primaryButton?: {
+    /** The form's primary button type */
+    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+
+    /** Function called when the form's primary button type is set to "button" */
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+  };
 }
 
-export interface ActionFormBaseProps {
+// FIXME: Remove
+export interface CreateActionFormProps {
   getFormOptions: (
     formOptions: ActionFormOptions | undefined,
     form: UseFormReturn,
   ) => void;
 }
 
+// FIXME: Remove
 export type UseActionFormBaseHook = (
   options: {
-    getFormOptions: ActionFormBaseProps['getFormOptions'];
+    getFormOptions: CreateActionFormProps['getFormOptions'];
   } & Pick<
     ActionFormOptions,
     | 'actionType'
@@ -40,9 +66,9 @@ export type UseActionFormBaseHook = (
   >,
 ) => void;
 
-export interface ActionSidebarProps {
-  transactionId?: string;
-  className?: string;
+export enum ActionSidebarWidth {
+  Default,
+  Wide,
 }
 
 export type ClaimMintTokensActionParams = {

@@ -77,7 +77,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
             </div>
             <Modal
               title={formatText(MSG.contractModalCancelTitle)}
-              subTitle={formatText(MSG.contractModalCancelSubtitle)}
+              subtitle={formatText(MSG.contractModalCancelSubtitle)}
               isOpen={isCancelModalOpen}
               className="md:mt-[3rem]"
               onClose={() => {

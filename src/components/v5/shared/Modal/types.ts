@@ -16,7 +16,7 @@ export interface ModalProps extends ModalBaseProps {
   onClose: () => void;
   onConfirm?: () => void | Promise<void>;
   title?: ReactNode;
-  subTitle?: ReactNode;
+  subtitle?: ReactNode;
   icon?: Icon;
   isWarning?: boolean;
   confirmMessage?: string;

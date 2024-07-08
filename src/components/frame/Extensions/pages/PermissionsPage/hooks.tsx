@@ -13,7 +13,10 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { UserRole, getRole } from '~constants/permissions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type MemberCardItem } from '~frame/v5/pages/MembersPage/types.ts';
@@ -27,7 +30,6 @@ import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import {
@@ -149,9 +151,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const membersList = useMemo(
     () =>
@@ -258,9 +258,11 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                     id: 'membersPage.memberNav.makePayment',
                   }),
                   onClick: () =>
-                    toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-                      recipient: member.walletAddress,
+                    showActionSidebar(ActionSidebarMode.CreateAction, {
+                      action: Action.SimplePayment,
+                      initialValues: {
+                        recipient: member.walletAddress,
+                      },
                     }),
                 },
                 {
@@ -270,9 +272,11 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                     id: 'permissionsPage.managePermissions',
                   }),
                   onClick: () => {
-                    toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-                      member: member.walletAddress,
+                    showActionSidebar(ActionSidebarMode.CreateAction, {
+                      action: Action.ManagePermissions,
+                      initialValues: {
+                        member: member.walletAddress,
+                      },
                     });
                   },
                 },
@@ -341,13 +345,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
         }),
         {},
       ),
-    [
-      handleClipboardCopy,
-      isCopied,
-      isMobile,
-      membersList,
-      toggleActionSidebarOn,
-    ],
+    [handleClipboardCopy, isCopied, isMobile, membersList, showActionSidebar],
   );
 
   const { filters, filterValue, searchValue } =

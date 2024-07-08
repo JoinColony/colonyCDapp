@@ -14,12 +14,10 @@ import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
 import {
-  ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '../consts.ts';
-import useCloseSidebarClick from '../hooks/useCloseSidebarClick.ts';
 import { type ActionButtonsProps } from '../types.ts';
 
 import {
@@ -38,51 +36,52 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const submitText = useSubmitButtonText();
-  const isButtonDisabled = useSubmitButtonDisabled();
   const {
     formState: { isSubmitting, dirtyFields },
-    getValues,
   } = useFormContext();
   const {
-    actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
-    cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
+    hideActionSidebar,
+    data,
+    // registerOnBeforeCloseCallback, hideActionSidebar,
+    // actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback, toggleOff }],
+    // cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
   } = useActionSidebarContext();
-  const { closeSidebarClick } = useCloseSidebarClick();
-  const isFieldDisabled = useIsFieldDisabled();
+  const { action } = data;
 
-  const draftAgreement = useSelector(
-    getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
-  );
+  const submitText = useSubmitButtonText(action);
+  const isButtonDisabled = useSubmitButtonDisabled(action);
+  const isFieldDisabled = useIsFieldDisabled(action);
 
-  const formValues = getValues();
-  const selectedActionType = formValues[ACTION_TYPE_FIELD_NAME];
-  const createDecisionActionSelected =
-    selectedActionType === Action.CreateDecision;
+  // const draftAgreement = useSelector(
+  //   getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
+  // );
 
-  useRegisterOnBeforeCloseCallback((element) => {
-    const isClickedInside = isElementInsideModalOrPortal(element);
-    const isFilledWithDraftData =
-      createDecisionActionSelected &&
-      formValues[TITLE_FIELD_NAME] === draftAgreement?.title &&
-      formValues[DESCRIPTION_FIELD_NAME] === draftAgreement?.description &&
-      formValues[CREATED_IN_FIELD_NAME] === draftAgreement?.motionDomainId;
+  const createDecisionActionSelected = action === Action.CreateDecision;
 
-    if (!isClickedInside) {
-      return false;
-    }
-
-    if (
-      Object.keys(dirtyFields).length > 0 &&
-      !isCancelModalOpen &&
-      !isFilledWithDraftData
-    ) {
-      toggleCancelModalOn();
-      return false;
-    }
-
-    return undefined;
-  });
+  // FIXME: Check if this is still necessary
+  // useRegisterOnBeforeCloseCallback((element) => {
+  //   const isClickedInside = isElementInsideModalOrPortal(element);
+  //   const isFilledWithDraftData =
+  //     createDecisionActionSelected &&
+  //     formValues[TITLE_FIELD_NAME] === draftAgreement?.title &&
+  //     formValues[DESCRIPTION_FIELD_NAME] === draftAgreement?.description &&
+  //     formValues[CREATED_IN_FIELD_NAME] === draftAgreement?.motionDomainId;
+  //
+  //   if (!isClickedInside) {
+  //     return false;
+  //   }
+  //
+  //   if (
+  //     Object.keys(dirtyFields).length > 0 &&
+  //     !isCancelModalOpen &&
+  //     !isFilledWithDraftData
+  //   ) {
+  //     toggleCancelModalOn();
+  //     return false;
+  //   }
+  //
+  //   return undefined;
+  // });
 
   const primaryButtonType = primaryButton?.type ?? 'submit';
 
@@ -99,7 +98,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
         <Button
           mode="primaryOutline"
           text={{ id: 'button.cancel' }}
-          onClick={closeSidebarClick}
+          onClick={hideActionSidebar}
           isFullSize={isMobile}
         />
         {isSubmitting ? (
