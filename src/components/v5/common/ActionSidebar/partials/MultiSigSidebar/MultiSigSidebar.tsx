@@ -3,9 +3,9 @@ import { type FC } from 'react';
 import React from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 
 import ActionSidebarWidgetLoadingSkeleton from '../ActionSidebarWidgetLoadingSkeleton/ActionSidebarWidgetLoadingSkeleton.tsx';
