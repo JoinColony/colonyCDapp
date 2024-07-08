@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
+import { MAX_COLONY_DESCRIPTION } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
@@ -98,10 +98,7 @@ const ColonyDetailsPage: FC = () => {
           })}
         >
           {description && description.length > 0
-            ? multiLineTextEllipsis(
-                description,
-                MAX_OBJECTIVE_DESCRIPTION_LENGTH,
-              )
+            ? multiLineTextEllipsis(description, MAX_COLONY_DESCRIPTION)
             : formatMessage(MSG.descriptionPlaceholder)}
         </p>
         {externalLinks && externalLinks.length ? (
