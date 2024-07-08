@@ -51,7 +51,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   const requiredRoles = getRolesNeededForMultiSigAction(actionType);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
-    domainId: Number(multiSigData.multiSigDomainId),
+    domainId: Number(multiSigData.nativeMultiSigDomainId),
     requiredRoles,
   });
 
@@ -86,10 +86,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     Object.keys(approvalSignaturesPerRole).length > 0 &&
     Object.keys(approvalSignaturesPerRole).every((role) => {
       const approvals = approvalSignaturesPerRole[role]?.length || 0;
-      if (!thresholdPerRole) {
+      if (!thresholdPerRole || !thresholdPerRole[role]) {
         return false;
       }
-      const threshold = thresholdPerRole[role] || 0;
+      const threshold = thresholdPerRole[role];
       return approvals >= threshold;
     });
 
