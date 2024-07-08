@@ -9,7 +9,7 @@ import {
   COLONY_ACTIVITY_ROUTE,
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
+import useGetActionData from '~v5/common/CompletedAction/hooks/useGetActionData.ts';
 import Link from '~v5/shared/Link/index.ts';
 import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 

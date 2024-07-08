@@ -4,9 +4,9 @@ import { defineMessages } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { type Expenditure, type ExpenditureAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { getMilestoneName } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/utils.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 

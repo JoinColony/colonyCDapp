@@ -11,14 +11,14 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { TokenStatus } from '~v5/common/types.ts';
 
 import { validationSchema, type ManageTokensFormValues } from './consts.ts';
 import { getManageTokensPayload } from './utils.ts';
 
 export const useManageTokens = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();

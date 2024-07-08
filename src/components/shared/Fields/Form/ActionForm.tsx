@@ -1,7 +1,4 @@
-import React, {
-  type MouseEventHandler,
-  type ButtonHTMLAttributes,
-} from 'react';
+import React from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
 import { authenticateWalletWithRetry } from '~auth';
@@ -39,7 +36,7 @@ export interface ActionFormProps<
   error?: ActionTypeString;
 
   /** Function to call after successful action was dispatched */
-  onSuccess?: OnSuccess<V> | (() => void);
+  onSuccess?: OnSuccess<V>;
 
   /** Function to call after error action was dispatched */
   onError?: CustomSubmitErrorHandler<V>;
@@ -53,14 +50,7 @@ export interface ActionFormProps<
   /** A form id you can directly associate a submit button with */
   id?: string;
 
-  /** Primary button prop overrides */
-  primaryButton?: {
-    /** The form's primary button type */
-    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
-
-    /** Function called when the form's primary button type is set to "button" */
-    onClick?: MouseEventHandler<HTMLButtonElement>;
-  };
+  /** Id used for integration tests */
   testId?: string;
 
   /** On form close behaviour overrides */
@@ -79,7 +69,6 @@ const ActionForm = <V extends Record<string, any>>({
   error,
   actionType,
   transform,
-  innerRef,
   ...props
 }: ActionFormProps<V>) => {
   const asyncFunction = useAsyncFunction({
@@ -100,14 +89,7 @@ const ActionForm = <V extends Record<string, any>>({
     }
   };
 
-  return (
-    <Form
-      {...props}
-      onSubmit={handleSubmit}
-      onError={onSubmitError}
-      innerRef={innerRef}
-    />
-  );
+  return <Form {...props} onSubmit={handleSubmit} onError={onSubmitError} />;
 };
 
 ActionForm.displayName = displayName;

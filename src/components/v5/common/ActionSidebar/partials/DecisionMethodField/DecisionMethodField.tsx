@@ -2,6 +2,7 @@ import { Scales } from '@phosphor-icons/react';
 import React, { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -10,10 +11,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import {
-  ACTION_TYPE_FIELD_NAME,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
+import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
   actionsWithStakingDecisionMethod,
   actionsWithoutMultiSigDecisionMethod,
@@ -57,22 +55,26 @@ const DecisionMethodField = ({
     isMultiSigEnabled,
     isStakedExpenditureEnabled,
   } = useEnabledExtensions();
-  const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
+  const { data } = useActionSidebarContext();
+  const { action } = data;
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
 
   const shouldShowReputation =
     isVotingReputationEnabled &&
-    !actionsWithoutReputationDecisionMethod.includes(actionType);
+    action &&
+    !actionsWithoutReputationDecisionMethod.includes(action);
 
   const shouldShowStaking =
     isStakedExpenditureEnabled &&
-    actionsWithStakingDecisionMethod.includes(actionType);
+    action &&
+    actionsWithStakingDecisionMethod.includes(action);
 
   const shouldShowMultiSig =
     !reputationOnly &&
     isMultiSigEnabled &&
-    !actionsWithoutMultiSigDecisionMethod.includes(actionType) &&
+    action &&
+    !actionsWithoutMultiSigDecisionMethod.includes(action) &&
     userMultiSigRoles.length > 0;
 
   const getDecisionMethods = () => {

@@ -47,7 +47,7 @@ const DeprecateButton = ({
         icon={Question}
         onClose={() => setIsDeprecateModalOpen(false)}
         title={formatText({ id: 'extensionDetailsPage.deprecate' })}
-        subTitle={formatText({
+        subtitle={formatText({
           id: 'extensionDetailsPage.deprecateDescription',
         })}
         onConfirm={handleDeprecate}

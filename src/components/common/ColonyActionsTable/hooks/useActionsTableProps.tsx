@@ -2,7 +2,10 @@ import { Binoculars } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  useActionSidebarContext,
+  ActionSidebarMode,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { merge } from '~utils/lodash.ts';
@@ -71,9 +74,7 @@ export const useActionsTableProps = (
     isRecentActivityVariant,
     getMenuProps,
   });
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const renderRowLink = useRenderRowLink(
     colonyActionsLoading,
@@ -178,7 +179,7 @@ export const useActionsTableProps = (
         onClick={
           searchFilter || selectedFiltersCount
             ? undefined
-            : () => toggleActionSidebarOn()
+            : () => showActionSidebar(ActionSidebarMode.ViewAction)
         }
         withoutButtonIcon
       />
