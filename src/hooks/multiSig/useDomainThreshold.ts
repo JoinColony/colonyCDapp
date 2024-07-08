@@ -7,7 +7,7 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
-  domainId?: number;
+  domainId: number;
   requiredRoles?: ColonyRole[];
 }
 
