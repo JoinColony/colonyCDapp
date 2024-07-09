@@ -15,6 +15,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDecisionMotion} {New agreement by {initiator}}
       ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
+      ${ColonyActionType.MoveFundsMultisig} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol} by {initiator}}
       ${ColonyActionType.UnlockTokenMotion} {Unlock native token {tokenSymbol} by {initiator}}
       ${ColonyActionType.MintTokens} {Mint {amount} {tokenSymbol} by {initiator}}
@@ -66,6 +67,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.PaymentMotion} {Simple payment}
       ${ColonyActionType.MoveFunds} {Move Funds}
       ${ColonyActionType.MoveFundsMotion} {Move Funds}
+      ${ColonyActionType.MoveFundsMultisig} {Move Funds}
       ${ColonyActionType.UnlockToken} {Unlock Token}
       ${ColonyActionType.UnlockTokenMotion} {Unlock Token}
       ${ColonyActionType.MintTokens} {Mint Tokens}
