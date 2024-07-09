@@ -1,9 +1,8 @@
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-import { useCheckKycStatusMutation } from '~gql';
 import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
@@ -40,14 +39,10 @@ const MSG = defineMessages({
   },
 });
 
-const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
-  // const status = 'notStarted';
-  const [checkKycStatus] = useCheckKycStatusMutation();
-  const [status, setStatus] = useState<string | null | undefined>(
-    'not-started',
-  );
-  const [kycLink, setKycLink] = useState<string | null>(null);
-
+const Verification: FC<CryptoToFiatPageComponentProps> = ({
+  order,
+  statusData,
+}) => {
   const [searchParams] = useSearchParams();
   const isInitialOpened = !!searchParams?.has(
     CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM,
@@ -56,20 +51,8 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 
-  const statusPillScheme = getStatusPillScheme(status);
-  const ctaProps = getCTAProps(status);
-
-  useEffect(() => {
-    checkKycStatus()
-      .then(({ data }) => {
-        setStatus(data?.bridgeXYZMutation?.kyc_status);
-        setKycLink(data?.bridgeXYZMutation?.kyc_link ?? null);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log('Error! ', err);
-      });
-  }, [checkKycStatus]);
+  const statusPillScheme = getStatusPillScheme(statusData?.kyc_status);
+  const ctaProps = getCTAProps(statusData?.kyc_status);
 
   return (
     <RowItem.Container>
@@ -88,7 +71,8 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
             )}
           >
             <span className={statusPillScheme.textClassName}>
-              {status && formatText(STATUS_MSGS[status])}
+              {statusData?.kyc_status &&
+                formatText(STATUS_MSGS[statusData.kyc_status])}
             </span>
           </PillsBase>
         }
@@ -104,7 +88,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
         <KYCModal
           isOpened={isOpened}
           onClose={handleClose}
-          existingKycLink={kycLink ?? ''}
+          existingKycLink={statusData?.kyc_link ?? ''}
         />
       )}
     </RowItem.Container>

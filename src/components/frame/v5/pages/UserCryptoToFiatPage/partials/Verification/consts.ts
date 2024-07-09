@@ -78,6 +78,10 @@ export const getStatusPillScheme = (
 export const getCTAProps = (
   status?: string | null,
 ): { ctaTitle?: MessageDescriptor; ctaDisabled?: boolean } => {
+  if (!status) {
+    return { ctaDisabled: true };
+  }
+
   switch (status) {
     case STATUS.REJECTED: {
       return {
