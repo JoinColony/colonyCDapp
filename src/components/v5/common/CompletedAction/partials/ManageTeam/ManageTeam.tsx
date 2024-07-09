@@ -2,6 +2,7 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useTeams } from '~frame/v5/pages/TeamsPage/hooks.tsx';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
@@ -39,12 +40,13 @@ const MSG = defineMessages({
   subtitle: {
     id: `${displayName}.subtitle`,
     defaultMessage:
-      '{isAddingNewTeam, select, true {New team {team} by {user}} other {Change {team} team details by {user}}}',
+      '{isAddingNewTeam, select, true {Create new team {team} by {user}} other {Change {team} team details by {user}}}',
   },
 });
 
 const ManageTeam = ({ action }: CreateNewTeamProps) => {
   const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
+
   const {
     customTitle = formatText(
       isAddingNewTeam ? MSG.newTeamTitle : MSG.editTeamTitle,
@@ -59,12 +61,18 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
     action.motionData?.motionDomain.metadata ??
     action.multiSigData?.multiSigDomain.metadata;
 
+  const { searchedTeams } = useTeams();
+
+  const team = searchedTeams.find(
+    (searchedTeam) => searchedTeam.key === action.fromDomain?.id,
+  )?.title;
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: action.fromDomain?.metadata?.name,
+          team,
           user: initiatorUser ? (
             <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
