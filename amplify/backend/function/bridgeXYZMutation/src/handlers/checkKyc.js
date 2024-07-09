@@ -78,100 +78,103 @@ const checkKYCHandler = async (
       kycStatus = data.kyc_status;
     }
 
-    // const externalAccountRes = await fetch(
-    //   `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
-    //   {
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'Idempotency-Key': uuid(),
-    //       'Api-Key': apiKey,
-    //     },
-    //   },
-    // );
+    const externalAccountRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': apiKey,
+        },
+      },
+    );
 
-    // const response = await externalAccountRes.json();
+    const response = await externalAccountRes.json();
 
-    // const externalAccounts = response.data;
+    const externalAccounts = response.data;
 
-    // // TODO: Support multiple accounts
-    // const firstAccount = externalAccounts[0];
-    // const mappedAccount = firstAccount
-    //   ? {
-    //       id: firstAccount.id,
-    //       currency: firstAccount.currency,
-    //       bankName: firstAccount.bank_name,
-    //       iban: firstAccount.iban
-    //         ? {
-    //             // TODO: Remove fallbacks
-    //             last4:
-    //               firstAccount.iban.last_4 ??
-    //               firstAccount.account.last_4 ??
-    //               'NOT MOCKED',
-    //             bic:
-    //               firstAccount.iban.bic ??
-    //               firstAccount.account.bic ??
-    //               'NOT MOCKED',
-    //             country: firstAccount.iban.country ?? 'NOT MOCKED',
-    //           }
-    //         : null,
-    //       usAccount: firstAccount.account
-    //         ? {
-    //             last4: firstAccount.account.last_4,
-    //             routingNumber:
-    //               firstAccount.account.routing_number ?? 'NOT MOCKED',
-    //           }
-    //         : null,
-    //     }
-    //   : null;
+    // TODO: Support multiple accounts
+    const firstAccount = externalAccounts[0];
 
-    // const hasLiquidationAddress =
-    //   colonyUser.liquidationAddresses.items.length > 0;
+    const mappedAccount = firstAccount
+      ? {
+          id: firstAccount.id,
+          currency: firstAccount.currency,
+          bankName: firstAccount.bank_name,
+          iban: firstAccount.iban
+            ? {
+                // TODO: Remove fallbacks
+                last4: firstAccount.iban.last_4 ?? 'NOT MOCKED',
+                bic: firstAccount.iban.bic ?? 'NOT MOCKED',
+                country: firstAccount.iban.country ?? 'NOT MOCKED',
+              }
+            : null,
+          usAccount: firstAccount.account
+            ? {
+                last4: firstAccount.account.last_4,
+                routingNumber:
+                  firstAccount.account.routing_number ?? 'NOT MOCKED',
+              }
+            : null,
+        }
+      : null;
 
-    // if (firstAccount && !hasLiquidationAddress) {
-    //   // They have external accounts. Create a liquidation address
-    //   const liquidationAddressCreation = await fetch(
-    //     `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         'Idempotency-Key': uuid(),
-    //         'Api-Key': apiKey,
-    //       },
-    //       method: 'POST',
-    //       body: JSON.stringify({
-    //         chain: 'arbitrum',
-    //         currency: 'usdc',
-    //         external_account_id: externalAccounts[0].id,
-    //         destination_currency: 'usd',
-    //       }),
-    //     },
-    //   );
+    const hasLiquidationAddress =
+      colonyUser.liquidationAddresses.items.length > 0;
 
-    //   if (liquidationAddressCreation.status === 200) {
-    //     const liquidationAddressCreationRes =
-    //       await liquidationAddressCreation.json();
-    //     console.log(liquidationAddressCreationRes);
-    //     const liquidationAddress = liquidationAddressCreationRes.address;
-    //     console.log(liquidationAddress, checksummedWalletAddress);
-    //     const r = await graphqlRequest(
-    //       createLiquidationAddress,
-    //       {
-    //         input: {
-    //           chainId: 42161,
-    //           liquidationAddress,
-    //           userAddress: checksummedWalletAddress,
-    //         },
-    //       },
-    //       graphqlURL,
-    //       appSyncApiKey,
-    //     );
-    //   }
-    // }
+    if (firstAccount && !hasLiquidationAddress) {
+      // They have external accounts. Create a liquidation address
+      console.log('Bank account exists, creating liquidation address');
+      const liquidationAddressCreation = await fetch(
+        `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Idempotency-Key': firstAccount.id,
+            'Api-Key': apiKey,
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            chain: 'arbitrum',
+            currency: 'usdc',
+            external_account_id: firstAccount.id,
+            destination_payment_rail:
+              firstAccount.currency === 'usd' ? 'ach' : 'sepa',
+            destination_currency: firstAccount.currency,
+          }),
+        },
+      );
+
+      const liquidationAddressCreationRes =
+        await liquidationAddressCreation.json();
+
+      if (liquidationAddressCreation.status === 201) {
+        console.log(liquidationAddressCreationRes);
+        const liquidationAddress = liquidationAddressCreationRes.address;
+        console.log(liquidationAddress, checksummedWalletAddress);
+        const r = await graphqlRequest(
+          createLiquidationAddress,
+          {
+            input: {
+              chainId: 42161,
+              liquidationAddress,
+              userAddress: checksummedWalletAddress,
+            },
+          },
+          graphqlURL,
+          appSyncApiKey,
+        );
+      } else {
+        console.error(
+          `Failed to create liquidation address: `,
+          liquidationAddressCreationRes,
+        );
+      }
+    }
 
     return {
       kyc_status: kycStatus,
       kyc_link: kycLink,
-      // bankAccount: mappedAccount,
+      bankAccount: mappedAccount,
     };
   } catch (e) {
     console.error(e);

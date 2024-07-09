@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 const displayName =
@@ -33,26 +34,15 @@ const MSG = defineMessages({
   },
 });
 
-const DATA = [
-  {
-    key: 'bank-name',
-    value: null,
-  },
-  {
-    key: 'account-number',
-    value: null,
-  },
-  {
-    key: 'bic',
-    value: null,
-  },
-  {
-    key: 'payout-currency',
-    value: null,
-  },
-];
+interface BankDetailsDescriptionComponentProps {
+  bankAccount: NonNullable<
+    CheckKycStatusMutation['bridgeXYZMutation']
+  >['bankAccount'];
+}
 
-const BankDetailsDescriptionComponent = () => {
+const BankDetailsDescriptionComponent = ({
+  bankAccount,
+}: BankDetailsDescriptionComponentProps) => {
   return (
     <div className="flex flex-col">
       <p className="mb-3 text-md">{formatMessage(MSG.componentTitle)}</p>
@@ -74,9 +64,16 @@ const BankDetailsDescriptionComponent = () => {
         </thead>
         <tbody>
           <tr>
-            {DATA.map(({ key, value }) => (
-              <td key={`${displayName}.table.${key}`}>{value ?? '-'}</td>
-            ))}
+            <td>{bankAccount?.bankName ?? '-'}</td>
+            <td>
+              {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
+            </td>
+            <td>
+              {bankAccount?.usAccount?.routingNumber ??
+                bankAccount?.iban?.bic ??
+                '-'}
+            </td>
+            <td>{bankAccount?.currency ?? '-'}</td>
           </tr>
         </tbody>
       </table>

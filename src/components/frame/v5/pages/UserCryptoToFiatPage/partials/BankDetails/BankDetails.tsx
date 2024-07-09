@@ -28,7 +28,10 @@ const MSG = defineMessages({
   },
 });
 
-const BankDetails: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
+const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
+  order,
+  statusData,
+}) => {
   const status = 'notStarted';
 
   const [isOpened, setOpened] = useState(false);
@@ -49,18 +52,23 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
             )}
           >
             <span className={statusPillScheme[status].textClassName}>
-              {status}
+              {statusData?.bankAccount ? 'Completed' : 'Not completed'}
             </span>
           </PillsBase>
         }
         itemOrder={order}
       />
       <RowItem.Body
-        descriptionComponent={<BankDetailsDescriptionComponent />}
+        descriptionComponent={
+          <BankDetailsDescriptionComponent
+            bankAccount={statusData?.bankAccount}
+          />
+        }
         ctaTitle={MSG.ctaTitle}
         ctaOnClick={handleOpen}
-        // eslint-disable-next-line no-warning-comments
-        ctaDisabled={false} // TODO: disable if KYC is not finished
+        ctaDisabled={
+          statusData?.kyc_status !== 'approved' || !!statusData.bankAccount
+        }
       />
 
       {isOpened && (

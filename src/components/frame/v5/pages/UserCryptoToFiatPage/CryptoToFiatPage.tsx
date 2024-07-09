@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
@@ -9,15 +9,13 @@ import {
 } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
-import {
-  LANDING_PAGE_ROUTE,
-  USER_EDIT_PROFILE_ROUTE,
-  USER_HOME_ROUTE,
-} from '~routes';
+import { useCheckKycStatusMutation } from '~gql';
+import { LANDING_PAGE_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
+import { type StatusData } from './types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
 
@@ -45,8 +43,20 @@ const UserCryptoToFiatPage = () => {
 
   const { rowItems } = useUserCryptoToFiatPage();
 
+  const [checkKycStatus] = useCheckKycStatusMutation();
+  const [statusData, setStatusData] = useState<StatusData | null>(null);
+
+  useEffect(() => {
+    checkKycStatus().then((result) => {
+      if (result.data?.bridgeXYZMutation) {
+        setStatusData(result.data.bridgeXYZMutation);
+      }
+    });
+  }, [checkKycStatus]);
+
+  // @TODO: Add loading state to FFs, otherwise it always thinks the flag is off and redirects
   if (!featureFlags[FeatureFlag.CRYPTO_TO_FIAT]) {
-    return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
+    // return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
   }
 
   if (userLoading || walletConnecting) {
@@ -68,7 +78,8 @@ const UserCryptoToFiatPage = () => {
       {rowItems.map(({ Component, key }, index, items) => {
         return (
           <Fragment key={key}>
-            <Component order={index + 1} />
+            {/* @TODO: Is there a benefit in having the hook return an array instead of just rendering components?  */}
+            <Component order={index + 1} statusData={statusData} />
             {index < items.length - 1 && <hr />}
           </Fragment>
         );
