@@ -10,21 +10,26 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.WrongColony} {Unknown Action}
       ${ColonyActionType.Payment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.PaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.MultiplePayment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.MultiplePaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MultiplePaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.CreateDecisionMotion} {New agreement by {initiator}}
       ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.MoveFundsMultisig} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
       ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol} by {initiator}}
       ${ColonyActionType.UnlockTokenMotion} {Unlock native token {tokenSymbol} by {initiator}}
+      ${ColonyActionType.UnlockTokenMultisig} {Unlock native token {tokenSymbol} by {initiator}}
       ${ColonyActionType.MintTokens} {Mint {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
+      ${ColonyActionType.MintTokensMultisig} {Mint {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.CreateDomainMultisig} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.VersionUpgrade} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
+      ${ColonyActionType.VersionUpgradeMultisig} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMultisig} {Edit details of the Colony by {initiator}}

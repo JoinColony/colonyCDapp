@@ -43,6 +43,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
     switch (actionType) {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion:
+      case ColonyActionType.PaymentMultisig:
         return <SimplePayment action={action} />;
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:

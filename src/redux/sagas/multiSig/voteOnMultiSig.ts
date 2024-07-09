@@ -52,6 +52,7 @@ function* voteOnMultiSigAction({
       ClientType.ColonyClient,
       colonyAddress,
     );
+
     const userAddress = yield colonyClient.signer.getAddress();
 
     const [permissionDomainId, childSkillIndex] = yield call(
