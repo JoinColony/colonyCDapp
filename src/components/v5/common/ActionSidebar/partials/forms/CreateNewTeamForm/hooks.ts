@@ -10,10 +10,11 @@ import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { getDomainFormActionType } from '../utils/getDomainFormActionType.ts';
-
 import { validationSchema, type CreateNewTeamFormValues } from './consts.ts';
-import { getCreateNewTeamPayload } from './utils.tsx';
+import {
+  getCreateDomainFormActionType,
+  getCreateNewTeamPayload,
+} from './utils.tsx';
 
 export const useCreateNewTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -24,7 +25,7 @@ export const useCreateNewTeam = (
   });
 
   useActionFormBaseHook({
-    actionType: getDomainFormActionType(decisionMethod),
+    actionType: getCreateDomainFormActionType(decisionMethod),
     defaultValues: useMemo<DeepPartial<CreateNewTeamFormValues>>(
       () => ({
         createdIn: Id.RootDomain,

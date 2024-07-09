@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+<<<<<<< HEAD
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
@@ -14,6 +15,15 @@ import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { validationSchema, type EditTeamFormValues } from './consts.ts';
 import { getEditDomainPayload } from './utils.tsx';
 import { getDomainFormActionType } from '../utils/getDomainFormActionType.ts';
+=======
+
+import { DECISION_METHOD_FIELD_NAME } from '../../../consts.ts';
+import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
+import { type ActionFormBaseProps } from '../../../types.ts';
+
+import { validationSchema, type EditTeamFormValues } from './consts.ts';
+import { getEditDomainFormActionType, getEditDomainPayload } from './utils.tsx';
+>>>>>>> eaf690b81 (feat: adjust utill structure for domain forms)
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -44,7 +54,7 @@ export const useEditTeam = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: getDomainFormActionType(decisionMethod),
+    actionType: getEditDomainFormActionType(decisionMethod),
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         createdIn: team || Id.RootDomain,
