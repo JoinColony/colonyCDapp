@@ -23,7 +23,8 @@ const CreatedIn: FC<CreatedInProps> = ({ filterOptionsFn, readonly }) => {
     name: DECISION_METHOD_FIELD_NAME,
   });
 
-  return decisionMethod === DecisionMethod.Reputation ? (
+  return decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig ? (
     <ActionFormRow
       icon={HouseLine}
       fieldName={CREATED_IN_FIELD_NAME}
