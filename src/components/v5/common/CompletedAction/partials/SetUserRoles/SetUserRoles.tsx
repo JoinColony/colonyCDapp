@@ -167,6 +167,12 @@ const SetUserRoles = ({ action }: Props) => {
           { id: 'action.title' },
           {
             direction: rolesTitle,
+            multiSigAuthority:
+              roleAuthority === Authority.ViaMultiSig
+                ? `${formatText({
+                    id: 'decisionMethod.multiSig',
+                  })} `
+                : '',
             actionType: ColonyActionType.SetUserRoles,
             fromDomain: action.fromDomain?.metadata?.name,
             initiator: initiatorUser ? (
