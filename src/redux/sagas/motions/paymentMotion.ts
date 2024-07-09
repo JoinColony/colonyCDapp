@@ -1,4 +1,9 @@
-import { ClientType, ColonyRole, Id } from '@colony/colony-js';
+import {
+  type AnyVotingReputationClient,
+  ClientType,
+  ColonyRole,
+  Id,
+} from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
@@ -21,7 +26,6 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
-  getChildIndexLocal,
   getPermissionProofsLocal,
 } from '../utils/index.ts';
 
@@ -36,7 +40,7 @@ function* createPaymentMotion({
     customActionTitle,
     colonyRoles,
     colonyDomains,
-    isMultiSig,
+    isMultiSig = false,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -104,7 +108,11 @@ function* createPaymentMotion({
 
     // eslint-disable-next-line no-inner-declarations
     function* getPaymentMotionParams() {
-      const requiredRoles = [ColonyRole.Funding, ColonyRole.Administration];
+      const requiredRoles = [
+        ColonyRole.Funding,
+        ColonyRole.Administration,
+        ColonyRole.Arbitration,
+      ];
       const safeMotionId = motionDomainId || Id.RootDomain;
 
       const rootDomain = colonyDomains.find((domain) =>
@@ -120,13 +128,20 @@ function* createPaymentMotion({
         );
       }
 
-      const childSkillIndex = yield call(getChildIndexLocal, {
-        networkClient: colonyClient.networkClient,
-        parentDomainNativeId: rootDomain.nativeId,
-        parentDomainSkillId: rootDomain.nativeSkillId,
-        domainNativeId: motionDomain.nativeId,
-        domainSkillId: motionDomain.nativeSkillId,
-      });
+      const userAddress = yield colonyClient.signer.getAddress();
+
+      const [userPermissionDomainId, userChildSkillIndex] = yield call(
+        getPermissionProofsLocal,
+        {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: safeMotionId,
+          requiredColonyRole: requiredRoles,
+          permissionAddress: userAddress,
+          isMultiSig,
+        },
+      );
 
       const [extensionPDID, extensionCSI] = yield call(
         getPermissionProofsLocal,
@@ -184,9 +199,9 @@ function* createPaymentMotion({
           methodName: 'createMotion',
           identifier: colonyAddress,
           params: [
-            Id.RootDomain,
-            childSkillIndex,
-            [colonyAddress],
+            userPermissionDomainId,
+            userChildSkillIndex,
+            [oneTxPaymentClient.address],
             [encodedAction],
           ],
           group: {
@@ -198,10 +213,11 @@ function* createPaymentMotion({
         };
       }
 
-      const votingReputationClient = yield colonyManager.getClient(
-        ClientType.VotingReputationClient,
-        colonyAddress,
-      );
+      const votingReputationClient: AnyVotingReputationClient =
+        yield colonyManager.getClient(
+          ClientType.VotingReputationClient,
+          colonyAddress,
+        );
 
       const [votingReputationPDID, votingReputationCSI] = yield call(
         getPermissionProofsLocal,
@@ -252,7 +268,7 @@ function* createPaymentMotion({
         identifier: colonyAddress,
         params: [
           motionDomainId,
-          childSkillIndex,
+          userChildSkillIndex,
           oneTxPaymentClient.address,
           encodedAction,
           key,
