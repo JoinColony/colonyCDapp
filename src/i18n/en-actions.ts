@@ -38,8 +38,10 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.SetUserRolesMotion} {{direction} permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.AddVerifiedMembersMotion} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${ColonyActionType.AddVerifiedMembersMultisig} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.RemoveVerifiedMembers} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${ColonyActionType.RemoveVerifiedMembersMultisig} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.CreateExpenditure} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
@@ -88,8 +90,10 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDecisionMotion} {Agreement}
       ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
+      ${ColonyActionType.AddVerifiedMembersMultisig} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Manage verified members}
+      ${ColonyActionType.RemoveVerifiedMembersMultisig} {Manage verified members}
       ${ColonyActionType.CreateExpenditure} {Advanced payment}
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
