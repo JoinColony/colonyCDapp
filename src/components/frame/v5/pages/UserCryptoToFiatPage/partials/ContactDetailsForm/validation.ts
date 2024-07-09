@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export const getValidationSchema = (shouldValidateAddress) =>
   Yup.object({
-    date: Yup.string().required(),
+    birthDate: Yup.string().required(),
     tax: Yup.string().required(),
     address1: shouldValidateAddress
       ? Yup.string().required()

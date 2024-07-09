@@ -9,6 +9,7 @@ export interface InputBaseProps
   className?: string;
   wrapperClassName?: string;
   inputWrapperClassName?: string;
+  labelClassName?: string;
   suffix?: React.ReactNode;
   prefix?: React.ReactNode;
   mode?: 'primary' | 'secondary';
