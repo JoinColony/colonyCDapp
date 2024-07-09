@@ -1,3 +1,4 @@
+import { Client as PersonaClient } from 'persona';
 import React, { useEffect, type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -74,6 +75,33 @@ export const KYCModal: FC<KYCModalProps> = ({
 
     return () => window.removeEventListener('message', handler);
   }, []);
+
+  useEffect(() => {
+    let personaClient: PersonaClient | undefined;
+
+    if (activeTab === TabId.KYC && kycFields.kycLink) {
+      try {
+        // Extract Persona flow details from KYC link
+        const url = new URL(kycFields.kycLink);
+        const searchParams = new URLSearchParams(url.search);
+
+        const templateId = searchParams.get('inquiry-template-id') ?? '';
+        const referenceId = searchParams.get('reference-id') ?? '';
+
+        personaClient = new PersonaClient({
+          templateId,
+          referenceId,
+          environmentId: 'env_AY6hSVzQeRamUtJB7ydFhnCx',
+        });
+
+        personaClient.open();
+      } catch {
+        //
+      }
+    }
+
+    return () => personaClient?.destroy();
+  }, [activeTab, kycFields.kycLink]);
 
   return (
     <ModalBase
