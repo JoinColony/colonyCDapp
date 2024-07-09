@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
+import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { BankDetailsModal } from '../BankDetailsModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
@@ -27,7 +28,7 @@ const MSG = defineMessages({
   },
 });
 
-const BankDetails = () => {
+const BankDetails: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
   const status = 'notStarted';
 
   const [isOpened, setOpened] = useState(false);
@@ -52,12 +53,14 @@ const BankDetails = () => {
             </span>
           </PillsBase>
         }
-        itemOrder={1}
+        itemOrder={order}
       />
       <RowItem.Body
         descriptionComponent={<BankDetailsDescriptionComponent />}
         ctaTitle={MSG.ctaTitle}
         ctaOnClick={handleOpen}
+        // eslint-disable-next-line no-warning-comments
+        ctaDisabled={false} // TODO: disable if KYC is not finished
       />
 
       {isOpened && (

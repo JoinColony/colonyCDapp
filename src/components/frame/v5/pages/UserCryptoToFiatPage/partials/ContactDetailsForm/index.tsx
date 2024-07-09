@@ -111,7 +111,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
               <FormInput name="city" placeholder="City" />
             </div>
 
-            {!!selectedCountry?.subdivisions.length && (
+            {!!selectedCountry?.subdivisions?.length && (
               <div className="ml-1 flex-1">
                 <FormSelect
                   name="subdivisions"

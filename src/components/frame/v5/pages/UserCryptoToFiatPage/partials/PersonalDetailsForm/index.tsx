@@ -16,7 +16,7 @@ import { validationSchema } from './validation.ts';
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
-  setSelectedCountry: (value: any) => void;
+  setSelectedCountry?: (value: any) => void;
 }
 
 const displayname =
@@ -87,7 +87,7 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   }));
 
   const onCountrySelect = (item) => {
-    setSelectedCountry(item?.country);
+    setSelectedCountry?.(item?.country);
   };
 
   return (

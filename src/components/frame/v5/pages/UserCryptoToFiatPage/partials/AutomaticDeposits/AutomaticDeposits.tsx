@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
@@ -9,6 +9,7 @@ import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
+import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { statusPillScheme } from './consts.ts';
@@ -39,7 +40,7 @@ const MSG = defineMessages({
   },
 });
 
-const AutomaticDeposits = () => {
+const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
   const status = 'kycPaymentRequired';
 
   const { user, updateUser } = useAppContext();
@@ -56,7 +57,7 @@ const AutomaticDeposits = () => {
       <RowItem.Heading
         title={MSG.headingTitle}
         accessory={MSG.headingAccessory}
-        itemOrder={3}
+        itemOrder={order}
         statusPill={
           // Move this inside the RowItem.Heading component
           <PillsBase
