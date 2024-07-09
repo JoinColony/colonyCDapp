@@ -8950,8 +8950,11 @@ export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateBankAccountMutationVariables = Exact<{
-  address?: InputMaybe<BridgeXyzMutationAddressInput>;
   currency: Scalars['String'];
+  bankName: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  address?: InputMaybe<BridgeXyzMutationAddressInput>;
   iban?: InputMaybe<BridgeXyzMutationIbanInput>;
 }>;
 
@@ -10675,9 +10678,9 @@ export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStat
 export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
 export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateBankAccountDocument = gql`
-    mutation CreateBankAccount($address: BridgeXYZMutationAddressInput, $currency: String!, $iban: BridgeXYZMutationIbanInput) {
+    mutation CreateBankAccount($currency: String!, $bankName: String!, $firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $iban: BridgeXYZMutationIbanInput) {
   bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}/external_accounts", body: {address: $address, currency: $currency, iban: $iban}}
+    input: {path: "v0/customers/{customerID}/external_accounts", body: {currency: $currency, bank_name: $bankName, first_name: $firstName, last_name: $lastName, address: $address, iban: $iban}}
   ) {
     success
   }
@@ -10698,8 +10701,11 @@ export type CreateBankAccountMutationFn = Apollo.MutationFunction<CreateBankAcco
  * @example
  * const [createBankAccountMutation, { data, loading, error }] = useCreateBankAccountMutation({
  *   variables: {
- *      address: // value for 'address'
  *      currency: // value for 'currency'
+ *      bankName: // value for 'bankName'
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      address: // value for 'address'
  *      iban: // value for 'iban'
  *   },
  * });

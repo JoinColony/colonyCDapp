@@ -88,14 +88,24 @@ mutation CheckKYCStatus {
 }
 
 mutation CreateBankAccount(
-  $address: BridgeXYZMutationAddressInput
   $currency: String!
+  $bankName: String!
+  $firstName: String!
+  $lastName: String!
+  $address: BridgeXYZMutationAddressInput
   $iban: BridgeXYZMutationIbanInput
 ) {
   bridgeXYZMutation(
     input: {
       path: "v0/customers/{customerID}/external_accounts"
-      body: { address: $address, currency: $currency, iban: $iban }
+      body: {
+        currency: $currency
+        bank_name: $bankName
+        first_name: $firstName
+        last_name: $lastName
+        address: $address
+        iban: $iban
+      }
     }
   ) {
     success

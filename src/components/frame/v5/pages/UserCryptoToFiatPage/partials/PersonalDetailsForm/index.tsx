@@ -2,12 +2,10 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
-import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
@@ -16,7 +14,6 @@ import { validationSchema } from './validation.ts';
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
-  setSelectedCountry?: (value: any) => void;
 }
 
 const displayname =
@@ -76,20 +73,8 @@ const MSG = defineMessages({
 
 export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
-  setSelectedCountry,
   onClose,
 }) => {
-  const countries = getCountries();
-  const countriesOptions = countries.map((item) => ({
-    value: item.alpha3,
-    label: item.name,
-    country: item,
-  }));
-
-  const onCountrySelect = (item) => {
-    setSelectedCountry?.(item?.country);
-  };
-
   return (
     <div>
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
@@ -124,14 +109,15 @@ export const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
           />
         </FormRow>
 
-        <FormRow>
+        {/* Don't need this here until different flow for US/non-US users is implemented */}
+        {/* <FormRow>
           <FormSelect
             name="country"
             options={countriesOptions}
             labelMessage={formatText(MSG.countryLabel)}
             handleChange={onCountrySelect}
           />
-        </FormRow>
+        </FormRow> */}
 
         <ModalFormCTAButtons
           cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}

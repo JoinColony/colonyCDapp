@@ -106,6 +106,7 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
         </FormRow>
 
         <AccountDetailsInputs />
+
         <ModalFormCTAButtons
           cancelButton={{ title: MSG.cancelButtonTitle, onClick: onClose }}
           proceedButton={{ title: MSG.proceedButtonTitle }}

@@ -38,13 +38,18 @@ const createExternalAccountHandler = async (
         body: JSON.stringify({
           ...body,
           account_owner_type: 'individual',
+          account_owner_name: `${body.first_name} ${body.last_name}`,
+          account_type: body.currency === 'usd' ? 'us' : 'iban',
         }),
         method: 'POST',
       },
     );
 
-    if (res.status !== 200) {
-      throw Error(`POST failed with error code ${res.status}`);
+    if (res.status !== 201) {
+      const details = await res.json();
+      throw Error(
+        `POST failed with error code ${res.status} - ${JSON.stringify(details)}`,
+      );
     }
 
     return {
