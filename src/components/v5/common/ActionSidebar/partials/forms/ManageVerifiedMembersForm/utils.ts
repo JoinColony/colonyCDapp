@@ -10,8 +10,6 @@ import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 
-import { ManageMembersType } from './consts.ts';
-
 const MSG = defineMessages({
   membersRequired: {
     id: 'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm.errors.member.required',
@@ -59,7 +57,7 @@ export const getManageVerifiedMembersPayload = (
 
   const baseDomainPayload = {
     operation:
-      values.manageMembers === ManageMembersType.Add
+      values.manageMembers === ManageVerifiedMembersOperation.Add
         ? ManageVerifiedMembersOperation.Add
         : ManageVerifiedMembersOperation.Remove,
     colonyAddress: colony.colonyAddress,
