@@ -26,6 +26,7 @@ import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
+import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 
 interface CompletedActionProps {
   action: ColonyAction;
@@ -87,6 +88,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
+      case ExtendedColonyActionType.UpdateColonyObjective:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMultisig:
+        return <UpgradeColonyObjective action={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
          case ColonyActionType.EmitDomainReputationPenalty:
@@ -125,7 +130,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.EmitDomainReputationRewardMotion:
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
-        // @NOTE: Enabling those 2 above temporarily
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilderWidget action={action} />;
