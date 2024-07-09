@@ -2,10 +2,11 @@ import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
 import React from 'react';
 
-import { type SimpleTarget } from '~gql';
+import { ColonyActionType, type SimpleTarget } from '~gql';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
+import { type OptionalValue } from '~types';
 import {
   type Colony,
   type ColonyAction,
@@ -154,6 +155,34 @@ export const mapColonyActionToExpectedFormat = ({
     return keyFallbackValues[fallbackKey];
   };
 
+  let fromDomainKeyMetadata: OptionalValue<DomainMetadata>;
+
+  if (actionData.type.includes('DOMAIN')) {
+    // when dealing with domain actions, the subtitle to display depends
+    // on the type of domain action dispatched
+
+    // If a domain is being created via the Permissions decision method,
+    // strictly use the fromDomain metadata
+    if (actionData.type === ColonyActionType.CreateDomain) {
+      fromDomainKeyMetadata = actionData.fromDomain?.metadata;
+    } else {
+      // For all other scenarios, conditionally set the metadata
+      const shouldUsePendingDomainMetadata = [
+        ColonyActionType.CreateDomainMotion,
+        ColonyActionType.CreateDomainMultisig,
+      ].includes(actionData.type);
+
+      fromDomainKeyMetadata = shouldUsePendingDomainMetadata
+        ? actionData.pendingDomainMetadata
+        : actionData.fromDomain?.metadata;
+    }
+  } else {
+    // When not dealing with domain actions, preserve the original behaviour
+    // whereby fromDomain?.metadata is prioritised over pendingDomainMetadata
+    fromDomainKeyMetadata =
+      actionData.fromDomain?.metadata || actionData.pendingDomainMetadata;
+  }
+
   return {
     ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
@@ -168,12 +197,10 @@ export const mapColonyActionToExpectedFormat = ({
     [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
       getDomainNameFromChangelog(
         actionData.transactionHash,
-        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
+        fromDomainKeyMetadata,
       ) ?? formatMessage({ id: 'unknownDomain' }),
       ActionTitleMessageKeys.FromDomain,
-      notMaybe(
-        actionData.fromDomain?.metadata || actionData.pendingDomainMetadata,
-      ),
+      notMaybe(fromDomainKeyMetadata),
     ),
     [ActionTitleMessageKeys.Initiator]: getFormattedValueWithFallback(
       getInitiator(actionData),
