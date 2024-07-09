@@ -4,10 +4,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import {
-  type MultiSigUserSignature,
-  type ColonyAction, type ColonyMultiSig,
-} from '~types/graphql.ts';
+import { type MultiSigUserSignature } from '~types/graphql.ts';
+import { type MultiSigAction } from '~types/motions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
@@ -22,7 +20,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
-  action: Omit<ColonyAction, 'multiSigData'> & { multiSigData: ColonyMultiSig };
+  action: MultiSigAction;
   initiatorAddress: string;
 }
 

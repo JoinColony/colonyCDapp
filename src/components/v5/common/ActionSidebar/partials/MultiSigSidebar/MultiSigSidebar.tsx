@@ -4,8 +4,8 @@ import React from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { type ColonyAction, type ColonyMultiSig } from '~types/graphql.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { isMultiSig } from '~utils/multiSig.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
@@ -14,16 +14,6 @@ import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';
 const displayName = 'v5.common.ActionSidebar.partials.MultiSig';
 interface MultiSigSidebarProps {
   transactionId: string;
-}
-
-function hasMultiSig(action: ColonyAction): action is Omit<
-  ColonyAction,
-  'multiSigData' | 'multiSigId'
-> & {
-  multiSigData: ColonyMultiSig;
-  multiSigId: string;
-} {
-  return !!action.multiSigData && !!action.multiSigId;
 }
 
 const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
@@ -37,7 +27,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     return <SpinnerLoader appearance={{ size: 'medium' }} />;
   }
 
-  if (!hasMultiSig(action)) {
+  if (!isMultiSig(action)) {
     console.warn('Not a multisig action');
     return null;
   }
