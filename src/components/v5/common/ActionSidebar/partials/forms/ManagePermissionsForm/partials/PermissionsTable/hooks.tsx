@@ -13,7 +13,7 @@ const customPermissionsColumnHelper =
 export const useCustomPermissionsTableColumns = (name: string) => {
   const isMobile = useMobile();
 
-  return useMemo(
+  const memoizedTableColumns = useMemo(
     () => [
       customPermissionsColumnHelper.accessor('type', {
         staticSize: isMobile ? '6.125rem' : '8.25rem',
@@ -52,15 +52,19 @@ export const useCustomPermissionsTableColumns = (name: string) => {
           <span className="text-md text-gray-600">{getValue()}</span>
         ),
       }),
-      customPermissionsColumnHelper.display({
-        staticSize: '4.375rem',
-        id: 'enabled',
-        header: formatText({ id: 'table.column.enable' }),
-        cell: ({ row }) => (
-          <FormSwitch name={`${name}.role_${row.original.name}`} />
-        ),
-      }),
     ],
     [isMobile, name],
   );
+
+  return [
+    ...memoizedTableColumns,
+    customPermissionsColumnHelper.display({
+      staticSize: '4.375rem',
+      id: 'enabled',
+      header: formatText({ id: 'table.column.enable' }),
+      cell: ({ row }) => (
+        <FormSwitch name={`${name}.role_${row.original.name}`} />
+      ),
+    }),
+  ];
 };
