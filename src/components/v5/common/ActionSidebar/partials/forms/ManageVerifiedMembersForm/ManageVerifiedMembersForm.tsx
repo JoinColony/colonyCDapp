@@ -2,6 +2,7 @@ import { PlusMinus } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
+import { type ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -13,7 +14,7 @@ import DecisionMethodField from '../../DecisionMethodField/DecisionMethodField.t
 import Description from '../../Description/Description.tsx';
 import VerifiedMembersTable from '../../MembersTable/index.ts';
 
-import { type ManageMembersType, getManageMembersOptions } from './consts.ts';
+import { getManageMembersOptions } from './consts.ts';
 import { useManageVerifiedMembers } from './hooks.ts';
 
 const displayName =
@@ -23,7 +24,7 @@ const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
   getFormOptions,
 }) => {
   const { manageMembersOptions } = getManageMembersOptions();
-  const manageMembers: ManageMembersType | undefined = useWatch({
+  const manageMembers: ManageVerifiedMembersOperation | undefined = useWatch({
     name: 'manageMembers',
   });
   const { resetField } = useFormContext();
