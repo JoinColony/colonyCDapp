@@ -260,7 +260,7 @@ input BridgeXYZMutationAddressInput {
   street_line_2: String
   city: String!
   state: String
-  postcode: String
+  postal_code: String
   country: String!
 }
 
@@ -346,12 +346,12 @@ type DrainReceipt {
 }
 
 type BridgeXYZDrain {
-  id: String,
-  amount: String,
-  state: String,
-  created_at: String,
-  deposit_tx_hash: String,
-  receipt: DrainReceipt,
+  id: String
+  amount: String
+  state: String
+  created_at: String
+  deposit_tx_hash: String
+  receipt: DrainReceipt
 }
 
 type BridgeXYZQueryReturn {

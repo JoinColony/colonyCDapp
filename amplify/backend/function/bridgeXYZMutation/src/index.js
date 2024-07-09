@@ -5,10 +5,10 @@ const {
   createExternalAccountHandler,
 } = require('./handlers/createExternalAccount');
 
-let appSyncApiKey = 'da2-fakeApiId123456';
-let apiKey = 'da2-fakeApiId123456';
-let apiUrl = 'http://mocking:3000/bridgexyz';
 let graphqlURL = 'http://localhost:20002/graphql';
+let appSyncApiKey = 'da2-fakeApiId123456';
+let apiUrl = 'https://api.bridge.xyz';
+let apiKey = 'xxx';
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
