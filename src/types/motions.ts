@@ -1,4 +1,8 @@
-import { type ColonyAction, type ColonyMotion } from './graphql.ts';
+import {
+  type ColonyAction,
+  type ColonyMotion,
+  type ColonyMultiSig,
+} from './graphql.ts';
 
 export enum StakeSide {
   Motion = 'MOTION',
@@ -12,3 +16,8 @@ export enum StakeSide {
 export interface MotionAction extends Omit<ColonyAction, 'motionData'> {
   motionData: ColonyMotion;
 }
+
+export type MultiSigAction = Omit<
+  ColonyAction,
+  'multiSigData' | 'multiSigId'
+> & { multiSigData: ColonyMultiSig; multiSigId: string };
