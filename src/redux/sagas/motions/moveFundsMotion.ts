@@ -1,6 +1,6 @@
 import { ClientType, Extension, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
@@ -217,14 +217,6 @@ function* moveFundsMotion({
         },
       );
 
-      const motionChildSkillIndex = yield call(getChildIndexLocal, {
-        networkClient: colonyClient.networkClient,
-        parentDomainNativeId: createdInDomain.nativeId,
-        parentDomainSkillId: createdInDomain.nativeSkillId,
-        domainNativeId: fromDomain.nativeId,
-        domainSkillId: fromDomain.nativeSkillId,
-      });
-
       const toChildSkillIndex = yield call(getChildIndexLocal, {
         networkClient: colonyClient.networkClient,
         parentDomainNativeId: rootDomain.nativeId,
@@ -233,12 +225,20 @@ function* moveFundsMotion({
         domainSkillId: toDomain.nativeSkillId,
       });
 
+      const motionChildSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: createdInDomain.nativeId,
+        parentDomainSkillId: createdInDomain.nativeSkillId,
+        domainNativeId: createdInDomain.nativeId,
+        domainSkillId: createdInDomain.nativeSkillId,
+      });
+
       const encodedAction = colonyClient.interface.encodeFunctionData(
         contractMethod,
         [
           ...(isOldVersion
             ? []
-            : [createdInDomain.nativeId, motionChildSkillIndex]),
+            : [fromPermissionDomainId, constants.MaxUint256]),
           fromPermissionDomainId,
           fromChildSkillIndex,
           toChildSkillIndex,
