@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -52,9 +53,11 @@ const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
     useSidebarActionForm();
   const { readonly } = useAdditionalFormOptionsContext();
   const { flatFormErrors } = useGetFormActionErrors();
+  const { setFormDirty } = useActionSidebarContext();
 
   const {
     formState: {
+      isDirty,
       errors: { this: customError },
     },
     getValues,
@@ -86,7 +89,15 @@ const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
     ) {
       showModal();
     }
-  }, [draftAgreement, formValues, isModalVisible, showModal]);
+    setFormDirty(isDirty);
+  }, [
+    draftAgreement,
+    formValues,
+    isModalVisible,
+    showModal,
+    isDirty,
+    setFormDirty,
+  ]);
 
   return (
     <>
@@ -186,7 +197,6 @@ const ActionSidebarFormContent: FC<ActionFormBaseProps> = ({
 };
 
 const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
-  formRef,
   defaultValues,
 }) => {
   const { getFormOptions, actionFormProps } = useActionFormProps(defaultValues);
@@ -199,7 +209,6 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           {...actionFormProps}
           key={actionFormProps.mode}
           className="flex h-full flex-col"
-          innerRef={formRef}
           onSuccess={() => {
             client.refetchQueries({
               include: [SearchActionsDocument],
