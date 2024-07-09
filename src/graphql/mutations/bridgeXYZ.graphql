@@ -31,6 +31,7 @@ mutation CreateKYCLinks($fullName: String!, $email: String!) {
   ) {
     success
     tos_link
+    kyc_link
   }
 }
 
@@ -69,7 +70,6 @@ mutation CheckKYCStatus {
   bridgeXYZMutation(input: { path: "v0/kyc_links/{kycLinkID}", body: {} }) {
     kyc_status
     kyc_link
-    success
     country
     bankAccount {
       currency
@@ -84,5 +84,20 @@ mutation CheckKYCStatus {
         routingNumber
       }
     }
+  }
+}
+
+mutation CreateBankAccount(
+  $address: BridgeXYZMutationAddressInput
+  $currency: String!
+  $iban: BridgeXYZMutationIbanInput
+) {
+  bridgeXYZMutation(
+    input: {
+      path: "v0/customers/{customerID}/external_accounts"
+      body: { address: $address, currency: $currency, iban: $iban }
+    }
+  ) {
+    success
   }
 }

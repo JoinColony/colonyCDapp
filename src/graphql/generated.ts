@@ -82,7 +82,7 @@ export type BridgeXyzMutationAccountInput = {
 export type BridgeXyzMutationAddressInput = {
   city: Scalars['String'];
   country: Scalars['String'];
-  postcode?: InputMaybe<Scalars['String']>;
+  postal_code?: InputMaybe<Scalars['String']>;
   state?: InputMaybe<Scalars['String']>;
   street_line_1: Scalars['String'];
   street_line_2?: InputMaybe<Scalars['String']>;
@@ -8927,7 +8927,7 @@ export type CreateKycLinksMutationVariables = Exact<{
 }>;
 
 
-export type CreateKycLinksMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null, tos_link?: string | null } | null };
+export type CreateKycLinksMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null, tos_link?: string | null, kyc_link?: string | null } | null };
 
 export type UpdateBridgeCustomerMutationVariables = Exact<{
   firstName: Scalars['String'];
@@ -8947,7 +8947,16 @@ export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZM
 export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, success?: boolean | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+
+export type CreateBankAccountMutationVariables = Exact<{
+  address?: InputMaybe<BridgeXyzMutationAddressInput>;
+  currency: Scalars['String'];
+  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
+}>;
+
+
+export type CreateBankAccountMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -10544,6 +10553,7 @@ export const CreateKycLinksDocument = gql`
   ) {
     success
     tos_link
+    kyc_link
   }
 }
     `;
@@ -10622,7 +10632,6 @@ export const CheckKycStatusDocument = gql`
   bridgeXYZMutation(input: {path: "v0/kyc_links/{kycLinkID}", body: {}}) {
     kyc_status
     kyc_link
-    success
     country
     bankAccount {
       currency
@@ -10665,6 +10674,43 @@ export function useCheckKycStatusMutation(baseOptions?: Apollo.MutationHookOptio
 export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStatusMutation>;
 export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
 export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
+export const CreateBankAccountDocument = gql`
+    mutation CreateBankAccount($address: BridgeXYZMutationAddressInput, $currency: String!, $iban: BridgeXYZMutationIbanInput) {
+  bridgeXYZMutation(
+    input: {path: "v0/customers/{customerID}/external_accounts", body: {address: $address, currency: $currency, iban: $iban}}
+  ) {
+    success
+  }
+}
+    `;
+export type CreateBankAccountMutationFn = Apollo.MutationFunction<CreateBankAccountMutation, CreateBankAccountMutationVariables>;
+
+/**
+ * __useCreateBankAccountMutation__
+ *
+ * To run a mutation, you first call `useCreateBankAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBankAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBankAccountMutation, { data, loading, error }] = useCreateBankAccountMutation({
+ *   variables: {
+ *      address: // value for 'address'
+ *      currency: // value for 'currency'
+ *      iban: // value for 'iban'
+ *   },
+ * });
+ */
+export function useCreateBankAccountMutation(baseOptions?: Apollo.MutationHookOptions<CreateBankAccountMutation, CreateBankAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBankAccountMutation, CreateBankAccountMutationVariables>(CreateBankAccountDocument, options);
+      }
+export type CreateBankAccountMutationHookResult = ReturnType<typeof useCreateBankAccountMutation>;
+export type CreateBankAccountMutationResult = Apollo.MutationResult<CreateBankAccountMutation>;
+export type CreateBankAccountMutationOptions = Apollo.BaseMutationOptions<CreateBankAccountMutation, CreateBankAccountMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {
