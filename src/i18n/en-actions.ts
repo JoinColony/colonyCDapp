@@ -21,12 +21,14 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
       ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
+      ${ColonyActionType.CreateDomainMultisig} {Create new team {fromDomain} by {initiator}}
       ${ColonyActionType.VersionUpgrade} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
+      ${ColonyActionType.EditDomainMultisig} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.Recovery} {Enter recovery mode by {initiator}}
       ${ColonyActionType.EmitDomainReputationPenalty} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
@@ -68,12 +70,14 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.MintTokensMotion} {Mint Tokens}
       ${ColonyActionType.CreateDomain} {Create new team}
       ${ColonyActionType.CreateDomainMotion} {Create new team}
+      ${ColonyActionType.CreateDomainMultisig} {Create new team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
       ${ColonyActionType.ColonyEdit} {Manage objective}
       ${ColonyActionType.ColonyEditMotion} {Manage objective}
       ${ColonyActionType.EditDomain} {Edit Team}
       ${ColonyActionType.EditDomainMotion} {Edit Team}
+      ${ColonyActionType.EditDomainMultisig} {Edit Team}
       ${ColonyActionType.SetUserRoles} {Manage permissions}
       ${ColonyActionType.SetUserRolesMotion} {Manage permissions}
       ${ColonyActionType.Recovery} {Recovery}
