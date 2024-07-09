@@ -5,12 +5,12 @@ import Verification from './partials/Verification/index.ts';
 export const useUserCryptoToFiatPage = () => {
   const rowItems = [
     {
-      key: 'bank-details',
-      Component: BankDetails,
-    },
-    {
       key: 'verification',
       Component: Verification,
+    },
+    {
+      key: 'bank-details',
+      Component: BankDetails,
     },
     {
       key: 'automatic-deposits',

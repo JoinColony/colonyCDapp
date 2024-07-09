@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
+import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
@@ -39,7 +40,7 @@ const MSG = defineMessages({
   },
 });
 
-const Verification = () => {
+const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
   // const status = 'notStarted';
   const [checkKycStatus] = useCheckKycStatusMutation();
   const [status, setStatus] = useState<string | null | undefined>(
@@ -75,7 +76,7 @@ const Verification = () => {
       <RowItem.Heading
         title={MSG.headingTitle}
         accessory={MSG.headingAccessory}
-        itemOrder={2}
+        itemOrder={order}
         statusPill={
           // Move this inside the RowItem.Heading component
           <PillsBase

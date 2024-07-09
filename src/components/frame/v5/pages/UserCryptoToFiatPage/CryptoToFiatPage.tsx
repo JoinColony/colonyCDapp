@@ -68,7 +68,7 @@ const UserCryptoToFiatPage = () => {
       {rowItems.map(({ Component, key }, index, items) => {
         return (
           <Fragment key={key}>
-            <Component />
+            <Component order={index + 1} />
             {index < items.length - 1 && <hr />}
           </Fragment>
         );
