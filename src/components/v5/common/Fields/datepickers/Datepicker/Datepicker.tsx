@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
+import { type InputBaseProps } from '~v5/common/Fields/InputBase/types.ts';
 import Button from '~v5/shared/Button/index.ts';
 import { type ButtonMode } from '~v5/shared/Button/types.ts';
 
@@ -17,7 +18,7 @@ import { type DatepickerProps } from './types.ts';
 
 import styles from '../common/Datepicker.module.css';
 
-const Datepicker: FC<DatepickerProps> = ({
+const Datepicker: FC<DatepickerProps & { inputProps?: InputBaseProps }> = ({
   cancelButtonProps,
   applyButtonProps,
   popperModifiers,
@@ -27,6 +28,8 @@ const Datepicker: FC<DatepickerProps> = ({
   popperClassName,
   minYear,
   maxYear,
+  inputProps,
+  shouldCloseOnSelect = false,
   ...rest
 }) => {
   const isMobile = useMobile();
@@ -75,13 +78,13 @@ const Datepicker: FC<DatepickerProps> = ({
         />
       )}
       ref={calendarRef}
-      customInput={<DatepickerCustomInput />}
+      customInput={<DatepickerCustomInput {...inputProps} />}
       dateFormat={dateFormat}
       popperClassName={clsx(popperClassName, '!z-top max-w-[20.5rem]')}
       renderDayContents={(day) => (
         <div className="react-datepicker__day-content">{day}</div>
       )}
-      shouldCloseOnSelect={false}
+      shouldCloseOnSelect={shouldCloseOnSelect}
       popperModifiers={[
         ...(popperModifiers || []),
         {
@@ -92,12 +95,17 @@ const Datepicker: FC<DatepickerProps> = ({
         },
       ]}
       selectsRange={false}
-      onChange={(date) => setSelectedDate(date)}
+      onChange={(date) => {
+        setSelectedDate(date);
+        if (shouldCloseOnSelect) {
+          onChange(date, undefined);
+        }
+      }}
       selected={selectedProp}
       onClickOutside={resetValues}
       {...rest}
     >
-      {selectedDate && (
+      {selectedDate && !shouldCloseOnSelect && (
         <div className="flex w-full items-center justify-between gap-2 border-t border-t-gray-200 p-4">
           <Button
             {...cancelButtonProps}
