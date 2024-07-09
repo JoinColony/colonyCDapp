@@ -48,7 +48,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       withBorder={withBorder}
     >
       <div
-        className={`${styles.modalContentWrapper} overflow-x-hidden overflow-y-scroll`}
+        className={`${styles.modalContentWrapper} overflow-y-auto overflow-x-hidden`}
       >
         <div className="relative mr-[-6px]">
           {Icon && (
