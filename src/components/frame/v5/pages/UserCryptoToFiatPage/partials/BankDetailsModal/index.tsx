@@ -2,12 +2,8 @@ import React, { useEffect, useState, type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
-import {
-  useCreateKycLinksMutation,
-  useUpdateBridgeCustomerMutation,
-} from '~gql';
+import { useUpdateBridgeCustomerMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { type CountryData } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
@@ -15,8 +11,6 @@ import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 import { formatDate } from '../../utils.ts';
 import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
 import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
-import ModalHeading from '../ModalHeading/ModalHeading.tsx';
-import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
 interface BankDetailsModalProps {
@@ -25,24 +19,13 @@ interface BankDetailsModalProps {
 }
 
 enum TabId {
-  PersonalDetails = 0,
-  Terms = 1,
-  ContactDetails = 2,
-  BankDetails = 3,
+  ContactDetails = 1,
+  BankDetails = 2,
 }
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsModal';
 
 const MSG = defineMessages({
-  tcTitle: {
-    id: `${displayName}.tcTitle`,
-    defaultMessage: 'Terms & Privacy',
-  },
-  tcSubtitle: {
-    id: `${displayName}.tcSubtitle`,
-    defaultMessage:
-      'Accept the terms and privacy of our partner provider Bridge to enable crypto to fiat functionality.',
-  },
   bankDetailsConfirmed: {
     id: `${displayName}.bankDetailsConfirmed`,
     defaultMessage: 'Bank details confirmed',
@@ -59,16 +42,12 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
+  const [activeTab, setActiveTab] = useState<TabId>(TabId.ContactDetails);
 
   const [kycFields, setKycFields] = useState<{
     signedAgreementId: string;
     birthDate: string;
-    firstName: string;
-    lastName: string;
     taxIdNumber: string;
-    tosLink: string;
-    email: string;
     address: {
       city: string;
       country: string;
@@ -78,13 +57,9 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
       address2: string;
     };
   }>({
-    email: '',
     signedAgreementId: '',
     birthDate: '',
-    firstName: '',
-    lastName: '',
     taxIdNumber: '',
-    tosLink: '',
     address: {
       city: '',
       country: '',
@@ -94,10 +69,6 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
       address2: '',
     },
   });
-
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
-    null,
-  );
 
   useEffect(() => {
     const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
@@ -117,8 +88,6 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
 
     return () => window.removeEventListener('message', handler);
   }, []);
-
-  const [createKycLinks] = useCreateKycLinksMutation();
 
   const [updateBridgeCustomer] = useUpdateBridgeCustomerMutation();
 
@@ -140,80 +109,13 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
           activeStepKey={activeTab}
           items={[
             {
-              key: TabId.PersonalDetails,
-              heading: {
-                label: 'Personal details',
-              },
-
-              content: (
-                <div>
-                  <PersonalDetailsForm
-                    setSelectedCountry={setSelectedCountry}
-                    onSubmit={async ({
-                      email,
-                      firstName,
-                      lastName,
-                      country,
-                    }) => {
-                      const response = await createKycLinks({
-                        variables: {
-                          email,
-                          fullName: `${firstName} ${lastName}`,
-                        },
-                      });
-
-                      const tosLink =
-                        response.data?.bridgeXYZMutation?.tos_link;
-
-                      if (tosLink) {
-                        setKycFields((state) => ({
-                          ...state,
-                          firstName,
-                          lastName,
-                          tosLink,
-                          email,
-                          address: {
-                            ...state.address,
-                            country,
-                          },
-                        }));
-
-                        setActiveTab(TabId.Terms);
-                      } else {
-                        // Notify the user via a Toast or something
-                      }
-                    }}
-                    onClose={onClose}
-                  />
-                </div>
-              ),
-            },
-            {
-              key: TabId.Terms,
-              heading: {
-                label: 'Terms',
-              },
-              content: (
-                <div>
-                  <ModalHeading title={MSG.tcTitle} subtitle={MSG.tcSubtitle} />
-                  <div className="flex justify-center">
-                    <iframe
-                      title="Terms iframe"
-                      src={kycFields.tosLink}
-                      className="min-h-[20.2rem] min-w-[25rem]"
-                    />
-                  </div>
-                </div>
-              ),
-            },
-            {
               key: TabId.ContactDetails,
               heading: {
                 label: 'Contact details',
               },
               content: (
                 <ContactDetailsForm
-                  selectedCountry={selectedCountry}
+                  selectedCountry={{} as any}
                   onSubmit={({
                     tax,
                     birthDate,
@@ -253,10 +155,7 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                     const {
                       signedAgreementId,
                       birthDate,
-                      firstName,
-                      lastName,
                       taxIdNumber,
-                      email,
                       address: {
                         address1,
                         address2,
@@ -271,10 +170,11 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                       variables: {
                         signedAgreementId,
                         birthDate,
-                        firstName,
-                        lastName,
+                        // eslint-disable-next-line no-warning-comments
+                        firstName: 'test', // TODO: fix after updateBridgeCustomerMutation will be updated
+                        lastName: 'test',
                         taxIdNumber,
-                        email,
+                        email: 'test@email.com',
                         currency: 'eur',
                         iban: {
                           // eslint-disable-next-line camelcase
