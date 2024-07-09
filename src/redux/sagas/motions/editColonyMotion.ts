@@ -1,7 +1,8 @@
-import { Id, getChildIndex, ClientType, ColonyRole } from '@colony/colony-js';
+import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -122,14 +123,14 @@ function* editColonyMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRole: [ColonyRole.Administration],
+          requiredColonyRole: PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails,
           permissionAddress: userAddress,
           isMultiSig: true,
         });
 
         return {
           context: ClientType.MultisigPermissionsClient,
-          methodName: 'createMotion',
+          methodName: TRANSACTION_METHODS.CreateMotion,
           identifier: colonyAddress,
           params: [
             Id.RootDomain,
@@ -174,7 +175,7 @@ function* editColonyMotion({
 
       return {
         context: ClientType.VotingReputationClient,
-        methodName: 'createMotion',
+        methodName: TRANSACTION_METHODS.CreateMotion,
         identifier: colonyAddress,
         params: [
           Id.RootDomain,
@@ -203,7 +204,7 @@ function* editColonyMotion({
     if (annotationMessage) {
       yield fork(createTransaction, annotateEditColonyMotion.id, {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: TRANSACTION_METHODS.AnnotateTransaction,
         identifier: colonyAddress,
         params: [],
         group: {

@@ -583,9 +583,13 @@ export const getExtendedActionType = (
      * @deprecated
      * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
      */
-    return actionData.isMotion
-      ? ExtendedColonyActionType.UpdateColonyObjectiveMotion
-      : ExtendedColonyActionType.UpdateColonyObjective;
+    if (actionData.isMotion) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMotion;
+    }
+    if (actionData.isMultiSig) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMultisig;
+    }
+    return ExtendedColonyActionType.UpdateColonyObjective;
   }
 
   if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {

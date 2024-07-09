@@ -25,7 +25,7 @@ import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
-import UpgradeColonyObjective from './partials/UpgradeColonyObjective/UpgradeColonyObjective.tsx';
+import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
@@ -93,6 +93,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
        * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
        */
       case ExtendedColonyActionType.UpdateColonyObjective:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMultisig:
         return <UpgradeColonyObjective action={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
@@ -132,7 +134,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.EmitDomainReputationRewardMotion:
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
-        // @NOTE: Enabling those 2 above temporarily
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilderWidget action={action} />;

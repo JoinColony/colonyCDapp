@@ -144,6 +144,7 @@ export enum ExtendedColonyActionType {
   SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
   SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
   UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
+  UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
 }
 
 /**
