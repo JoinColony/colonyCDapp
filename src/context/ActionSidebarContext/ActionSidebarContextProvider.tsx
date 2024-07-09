@@ -36,10 +36,12 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
 };
 
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [formDirty, setFormDirty] = useState(false);
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
   const cancelModalToggle = useToggle();
   const isTablet = useTablet();
+
   const [
     isActionSidebarOpen,
     {
@@ -75,6 +77,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const toggleOn = useCallback(
     (initialValues) => {
+      setFormDirty(false);
       setActionSidebarInitialValues(initialValues);
       // Track the event when the action panel is opened
       trackEvent(OPEN_ACTION_PANEL_EVENT);
@@ -84,8 +87,12 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const toggleOff = useCallback(() => {
-    return toggleActionSidebarOff();
-  }, [toggleActionSidebarOff]);
+    if (!formDirty) {
+      toggleActionSidebarOff();
+    } else {
+      cancelModalToggle[1].toggleOn();
+    }
+  }, [cancelModalToggle, formDirty, toggleActionSidebarOff]);
 
   const toggle = useCallback(
     (initialValues) => {
@@ -113,6 +120,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       ],
       cancelModalToggle,
       actionSidebarInitialValues,
+      setFormDirty,
     }),
     [
       actionSidebarInitialValues,

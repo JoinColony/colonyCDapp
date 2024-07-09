@@ -17,8 +17,6 @@ import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import { actionSidebarAnimation } from './consts.ts';
-import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
-import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -32,7 +30,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
-      { toggle: toggleActionSidebarOff, registerContainerRef },
+      { toggle: toggleActionSidebarOff, registerContainerRef, toggleOff },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
   } = useActionSidebarContext();
@@ -45,11 +43,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     }
   }, [toggleOn]);
 
-  const { formRef, closeSidebarClick } = useCloseSidebarClick();
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
-  useRemoveTxParamOnClose();
 
   return (
     <motion.div
@@ -98,7 +94,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={closeSidebarClick}
+              onClick={toggleOff}
               aria-label={formatText({ id: 'ariaLabel.closeModal' })}
             >
               <X size={18} />
@@ -125,7 +121,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      <ActionSidebarContent formRef={formRef} defaultValues={initialValues} />
+      <ActionSidebarContent defaultValues={initialValues} />
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({
