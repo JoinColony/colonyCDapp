@@ -93,7 +93,7 @@ const checkKYCHandler = async (
     const externalAccounts = response.data;
 
     // TODO: Support multiple accounts
-    const firstAccount = externalAccounts[0];
+    const firstAccount = externalAccounts?.[0];
 
     const mappedAccount = firstAccount
       ? {
