@@ -12,6 +12,7 @@ import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
+import { formatDate } from '../../utils.ts';
 import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
 import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
@@ -215,7 +216,7 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                   selectedCountry={selectedCountry}
                   onSubmit={({
                     tax,
-                    date: birthDate,
+                    birthDate,
                     address1,
                     address2,
                     city,
@@ -224,7 +225,7 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                     setKycFields((state) => ({
                       ...state,
                       taxIdNumber: tax,
-                      birthDate,
+                      birthDate: formatDate(birthDate),
                       address: {
                         ...state.address,
                         address1,

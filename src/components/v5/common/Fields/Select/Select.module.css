@@ -15,7 +15,7 @@
 }
 
 .wrapper :global(.select__value-container) {
-  @apply px-3.5 py-3;
+  @apply px-3.5 py-2;
 }
 
 .wrapper :global(.select__single-value) {

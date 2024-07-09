@@ -6,6 +6,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { type CountryData } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { FormDatepicker } from '../FormDatepicker.tsx';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
@@ -64,10 +65,11 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   selectedCountry,
   onClose,
 }) => {
-  const validationSchema = useMemo(
-    () => getValidationSchema(selectedCountry?.subdivisions.length),
-    [selectedCountry],
-  );
+  const validationSchema = useMemo(() => {
+    // For the US country, validation should include address validation.
+    const shouldValiateAddress = selectedCountry?.alpha2 === 'US';
+    return getValidationSchema(shouldValiateAddress);
+  }, [selectedCountry]);
 
   return (
     <div>
@@ -79,9 +81,8 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         mode="onSubmit"
       >
         <FormRow>
-          <FormInput
-            name="date"
-            shouldFocus
+          <FormDatepicker
+            name="birthDate"
             label={formatText(MSG.dobLabel)}
             placeholder={formatText(MSG.dobPlaceholder)}
           />
