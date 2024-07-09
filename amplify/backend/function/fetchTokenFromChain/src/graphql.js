@@ -47,4 +47,22 @@ module.exports = {
       }
     }
   `,
+  getColonyByAddress: /* GraphQL */ `
+    query GetColonyByAddress($address: ID!) {
+      getColonyByAddress(id: $address) {
+        items {
+          id
+        }
+      }
+    }
+  `,
+  getUserByAddress: /* GraphQL */ `
+    query GetUserByAddress($address: ID!) {
+      getUserByAddress(id: $address) {
+        items {
+          id
+        }
+      }
+    }
+  `,
 };
