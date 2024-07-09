@@ -1,13 +1,9 @@
-import {
-  type AnyColonyClient,
-  ClientType,
-  ColonyRole,
-  Id,
-} from '@colony/colony-js';
+import { type AnyColonyClient, ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { ManageVerifiedMembersOperation } from '~types/index.ts';
@@ -94,14 +90,15 @@ function* manageVerifiedMembersMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRole: [ColonyRole.Administration],
+          requiredColonyRole:
+            PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers,
           permissionAddress: userAddress,
           isMultiSig: true,
         });
 
         return {
           context: ClientType.MultisigPermissionsClient,
-          methodName: 'createMotion',
+          methodName: TRANSACTION_METHODS.CreateMotion,
           identifier: colonyAddress,
           params: [
             Id.RootDomain,
@@ -146,7 +143,7 @@ function* manageVerifiedMembersMotion({
 
       return {
         context: ClientType.VotingReputationClient,
-        methodName: 'createMotion',
+        methodName: TRANSACTION_METHODS.CreateMotion,
         identifier: colonyAddress,
         params: [
           Id.RootDomain,

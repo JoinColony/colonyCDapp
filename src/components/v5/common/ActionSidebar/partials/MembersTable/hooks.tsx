@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
 
 import { useMobile } from '~hooks';
+import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 
-import { ManageMembersType } from '../forms/ManageVerifiedMembersForm/consts.ts';
 import NonVerifiedMembersSelect from '../NonVerifiedMembersSelect/index.ts';
 import VerifiedMembersSelect from '../VerifiedMembersSelect/index.ts';
 
@@ -14,7 +14,7 @@ import { type VerifiedMembersTableModel } from './types.ts';
 export const useVerifiedMembersTableColumns = (
   name: string,
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>,
-  manageMembers: ManageMembersType | undefined,
+  manageMembers: ManageVerifiedMembersOperation | undefined,
 ): ColumnDef<VerifiedMembersTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<VerifiedMembersTableModel>(),
@@ -29,7 +29,7 @@ export const useVerifiedMembersTableColumns = (
         staticSize: isMobile ? '6.125rem' : undefined,
         header: () => formatText({ id: 'table.row.member' }),
         cell: ({ row }) =>
-          manageMembers === ManageMembersType.Add ? (
+          manageMembers === ManageVerifiedMembersOperation.Add ? (
             <NonVerifiedMembersSelect
               fieldArrayMethods={fieldArrayMethods}
               name={`${name}.${row.index}`}
