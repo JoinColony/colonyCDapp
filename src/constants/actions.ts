@@ -4,8 +4,12 @@ import { ColonyRole } from '@colony/colony-js';
 // EITHER Architecture OR Root so this (and all functions that use it) will need refactoring
 // to have an array of acceptable permissions be like this: [[ColonyRole.Architecture], [ColonyRole.Root]]
 export const PERMISSIONS_NEEDED_FOR_ACTION = {
-  // Simple Payment requires both funding and administration roles
-  SimplePayment: [ColonyRole.Funding, ColonyRole.Administration],
+  // Simple Payment requires all of funding, arbitration and administration roles
+  SimplePayment: [
+    ColonyRole.Funding,
+    ColonyRole.Administration,
+    ColonyRole.Arbitration,
+  ],
   MintTokens: [ColonyRole.Root],
   TransferFunds: [ColonyRole.Funding],
   UnlockToken: [ColonyRole.Root],
