@@ -1,16 +1,14 @@
-import React, { useEffect, useState, type FC } from 'react';
+import React, { useState, type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { toast } from 'react-toastify';
 
-import { useUpdateBridgeCustomerMutation } from '~gql';
+import { useCreateBankAccountMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
-import { formatDate } from '../../utils.ts';
 import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
-import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
 interface BankDetailsModalProps {
@@ -42,54 +40,29 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.ContactDetails);
+  const [activeTab] = useState<TabId>(TabId.BankDetails);
 
-  const [kycFields, setKycFields] = useState<{
-    signedAgreementId: string;
-    birthDate: string;
-    taxIdNumber: string;
-    address: {
-      city: string;
-      country: string;
-      postcode: string;
-      state: string;
-      address1: string;
-      address2: string;
-    };
-  }>({
-    signedAgreementId: '',
-    birthDate: '',
-    taxIdNumber: '',
-    address: {
-      city: '',
-      country: '',
-      postcode: '',
-      state: '',
-      address1: '',
-      address2: '',
-    },
-  });
+  // useEffect(() => {
+  //   const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
+  //     if (ev?.data && 'signedAgreementId' in ev.data) {
+  //       const { signedAgreementId } = ev.data;
 
-  useEffect(() => {
-    const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
-      if (ev?.data && 'signedAgreementId' in ev.data) {
-        const { signedAgreementId } = ev.data;
+  //       setKycFields((state) => ({
+  //         ...state,
+  //         signedAgreementId: signedAgreementId as string,
+  //       }));
 
-        setKycFields((state) => ({
-          ...state,
-          signedAgreementId: signedAgreementId as string,
-        }));
+  //       setActiveTab((prev) => prev + 1);
+  //     }
+  //   };
 
-        setActiveTab((prev) => prev + 1);
-      }
-    };
+  //   window.addEventListener('message', handler);
 
-    window.addEventListener('message', handler);
+  //   return () => window.removeEventListener('message', handler);
+  // }, []);
 
-    return () => window.removeEventListener('message', handler);
-  }, []);
-
-  const [updateBridgeCustomer] = useUpdateBridgeCustomerMutation();
+  // const [updateBridgeCustomer] = useUpdateBridgeCustomerMutation();
+  const [createBankAccount] = useCreateBankAccountMutation();
 
   return (
     <ModalBase
@@ -108,41 +81,41 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
         <Stepper
           activeStepKey={activeTab}
           items={[
-            {
-              key: TabId.ContactDetails,
-              heading: {
-                label: 'Contact details',
-              },
-              content: (
-                <ContactDetailsForm
-                  selectedCountry={{} as any}
-                  onSubmit={({
-                    tax,
-                    birthDate,
-                    address1,
-                    address2,
-                    city,
-                    postcode,
-                  }) => {
-                    setKycFields((state) => ({
-                      ...state,
-                      taxIdNumber: tax,
-                      birthDate: formatDate(birthDate),
-                      address: {
-                        ...state.address,
-                        address1,
-                        address2,
-                        city,
-                        postcode,
-                      },
-                    }));
+            // {
+            //   key: TabId.ContactDetails,
+            //   heading: {
+            //     label: 'Contact details',
+            //   },
+            //   content: (
+            //     <ContactDetailsForm
+            //       selectedCountry={{} as any}
+            //       onSubmit={({
+            //         tax,
+            //         birthDate,
+            //         address1,
+            //         address2,
+            //         city,
+            //         postcode,
+            //       }) => {
+            //         setKycFields((state) => ({
+            //           ...state,
+            //           taxIdNumber: tax,
+            //           birthDate: formatDate(birthDate),
+            //           address: {
+            //             ...state.address,
+            //             address1,
+            //             address2,
+            //             city,
+            //             postcode,
+            //           },
+            //         }));
 
-                    setActiveTab(TabId.BankDetails);
-                  }}
-                  onClose={onClose}
-                />
-              ),
-            },
+            //         setActiveTab(TabId.BankDetails);
+            //       }}
+            //       onClose={onClose}
+            //     />
+            //   ),
+            // },
             {
               key: TabId.BankDetails,
               heading: {
@@ -151,46 +124,29 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
 
               content: (
                 <BankDetailsForm
-                  onSubmit={async () => {
+                  onSubmit={async (values) => {
                     const {
-                      signedAgreementId,
-                      birthDate,
-                      taxIdNumber,
-                      address: {
-                        address1,
-                        address2,
-                        city,
-                        country,
-                        postcode,
-                        state,
-                      },
-                    } = kycFields;
+                      currency,
+                      bankName,
+                      accountOwner,
+                      iban,
+                      swift,
+                      country,
+                    } = values;
 
-                    const result = await updateBridgeCustomer({
+                    const [firstName, lastName] = accountOwner.split(' ');
+
+                    const result = await createBankAccount({
                       variables: {
-                        signedAgreementId,
-                        birthDate,
-                        // eslint-disable-next-line no-warning-comments
-                        firstName: 'test', // TODO: fix after updateBridgeCustomerMutation will be updated
-                        lastName: 'test',
-                        taxIdNumber,
-                        email: 'test@email.com',
-                        currency: 'eur',
+                        currency,
+                        bankName,
+                        firstName,
+                        lastName,
                         iban: {
                           // eslint-disable-next-line camelcase
-                          account_number: '12345',
-                          bic: 'bicbic',
-                          country: 'GBR',
-                        },
-                        address: {
-                          city,
+                          account_number: iban,
+                          bic: swift,
                           country,
-                          // eslint-disable-next-line camelcase
-                          street_line_1: address1,
-                          // eslint-disable-next-line camelcase
-                          street_line_2: address2,
-                          postcode,
-                          state: state || 'DAY',
                         },
                       },
                     });

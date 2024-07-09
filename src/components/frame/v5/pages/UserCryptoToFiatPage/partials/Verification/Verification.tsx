@@ -46,7 +46,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
   const [status, setStatus] = useState<string | null | undefined>(
     'not-started',
   );
-  const [url, setUrl] = useState<string | null | undefined>('');
+  const [kycLink, setKycLink] = useState<string | null>(null);
 
   const [searchParams] = useSearchParams();
   const isInitialOpened = !!searchParams?.has(
@@ -63,7 +63,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
     checkKycStatus()
       .then(({ data }) => {
         setStatus(data?.bridgeXYZMutation?.kyc_status);
-        setUrl(data?.bridgeXYZMutation?.kyc_link);
+        setKycLink(data?.bridgeXYZMutation?.kyc_link ?? null);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
@@ -100,8 +100,12 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
         ctaOnClick={handleOpen}
       />
 
-      {isOpened && url && (
-        <KYCModal isOpened={isOpened} onClose={handleClose} url={url} />
+      {isOpened && (
+        <KYCModal
+          isOpened={isOpened}
+          onClose={handleClose}
+          existingKycLink={kycLink ?? ''}
+        />
       )}
     </RowItem.Container>
   );

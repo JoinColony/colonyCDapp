@@ -1,7 +1,8 @@
-import React, { useEffect, useState, type FC } from 'react';
+import React, { useEffect, type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useCreateKycLinksMutation } from '~gql';
+import Button from '~v5/shared/Button/Button.tsx';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
@@ -10,7 +11,7 @@ import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
 import Stepper from '../Stepper/index.tsx';
 
 interface KYCModalProps {
-  url: string;
+  existingKycLink: string;
   isOpened: boolean;
   onClose: () => void;
 }
@@ -35,7 +36,11 @@ const MSG = defineMessages({
   },
 });
 
-export const KYCModal: FC<KYCModalProps> = ({ url, isOpened, onClose }) => {
+export const KYCModal: FC<KYCModalProps> = ({
+  existingKycLink,
+  isOpened,
+  onClose,
+}) => {
   const { formatMessage } = useIntl();
 
   const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
@@ -46,20 +51,23 @@ export const KYCModal: FC<KYCModalProps> = ({ url, isOpened, onClose }) => {
     tosLink: string;
     email: string;
     country: string;
+    kycLink: string;
   }>({
     email: '',
     firstName: '',
     lastName: '',
     tosLink: '',
     country: '',
+    kycLink: existingKycLink ?? '',
   });
 
   const [createKycLinks] = useCreateKycLinksMutation();
 
   useEffect(() => {
-    const handler = (ev: MessageEvent<{ type: string; message: string }>) => {
-      // eslint-disable-next-line no-console
-      console.log(ev.data);
+    const handler = (ev: MessageEvent) => {
+      if (ev.data.signedAgreementId) {
+        setActiveTab(TabId.KYC);
+      }
     };
 
     window.addEventListener('message', handler);
@@ -108,8 +116,10 @@ export const KYCModal: FC<KYCModalProps> = ({ url, isOpened, onClose }) => {
 
                       const tosLink =
                         response.data?.bridgeXYZMutation?.tos_link;
+                      const kycLink =
+                        response.data?.bridgeXYZMutation?.kyc_link;
 
-                      if (tosLink) {
+                      if (tosLink && kycLink) {
                         setKycFields((state) => ({
                           ...state,
                           firstName,
@@ -117,6 +127,7 @@ export const KYCModal: FC<KYCModalProps> = ({ url, isOpened, onClose }) => {
                           tosLink,
                           email,
                           country,
+                          kycLink,
                         }));
 
                         setActiveTab(TabId.Terms);
@@ -154,11 +165,10 @@ export const KYCModal: FC<KYCModalProps> = ({ url, isOpened, onClose }) => {
               },
               content: (
                 <div>
-                  <iframe
-                    title="Getting started"
-                    src={url}
-                    className="min-h-[20.2rem] min-w-[25rem]"
-                  />
+                  You will now need to complete KYC with our partner.
+                  <a href={kycFields.kycLink} target="_blank" rel="noreferrer">
+                    <Button>Start KYC</Button>
+                  </a>
                 </div>
               ),
             },
