@@ -65,10 +65,11 @@ const VoteButton: FC<VoteButtonProps> = ({
     [MultiSigVote.Reject]: MSG.reject,
   };
 
-  const transform = mapPayload(() => {
+  // @TODO once we merge in getAnyPermissionProofsLocal we can just straight up use that instead of filtering roles
+  const transform = mapPayload((): VoteOnMultiSigActionPayload | undefined => {
     // we need to cast a vote with each role the user can sign with
     if (!user?.walletAddress) {
-      return;
+      return undefined;
     }
 
     const colonyDomains = extractColonyDomains(colony.domains);
