@@ -67,6 +67,7 @@ export enum MetamaskRpcErrors {
 export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
+  AnnotateTransaction = 'annotateTransaction',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
   ClaimColonyFunds = 'claimColonyFunds',
