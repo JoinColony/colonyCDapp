@@ -2,8 +2,12 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useTeams } from '~frame/v5/pages/TeamsPage/hooks.tsx';
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
+import { type OptionalValue } from '~types';
+import {
+  ColonyActionType,
+  type DomainMetadata,
+  type ColonyAction,
+} from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
@@ -54,18 +58,22 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   } = action?.metadata || {};
   const { initiatorUser } = action;
 
-  const actionDomainMetadata =
-    action.pendingDomainMetadata || action.fromDomain?.metadata;
+  let actionDomainMetadata: OptionalValue<DomainMetadata>;
+  let team: OptionalValue<string>;
 
-  const metadata =
+  if (action.type === ColonyActionType.CreateDomain) {
+    actionDomainMetadata = action.fromDomain?.metadata;
+    team = actionDomainMetadata?.name;
+  } else {
+    actionDomainMetadata = action.pendingDomainMetadata;
+    team =
+      actionDomainMetadata?.changelog?.slice(-1)[0].oldName ??
+      actionDomainMetadata?.name;
+  }
+
+  const motionDomainMetadata =
     action.motionData?.motionDomain.metadata ??
     action.multiSigData?.multiSigDomain.metadata;
-
-  const { searchedTeams } = useTeams();
-
-  const team = searchedTeams.find(
-    (searchedTeam) => searchedTeam.key === action.fromDomain?.id,
-  )?.title;
 
   return (
     <>
@@ -116,7 +124,9 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
+        {motionDomainMetadata && (
+          <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
+        )}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />

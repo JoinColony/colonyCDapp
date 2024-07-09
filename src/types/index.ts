@@ -1,6 +1,8 @@
 import { type ReactNode, type useState } from 'react';
 import { type MessageDescriptor } from 'react-intl';
 
+import { type Maybe } from '~gql';
+
 // export * from './keyboard';
 // export * from './actions';
 // export * from './extensions';
@@ -91,3 +93,5 @@ export interface SelectedPickerItem {
   };
   walletAddress: Address;
 }
+
+export type OptionalValue<T> = Maybe<T> | undefined;
