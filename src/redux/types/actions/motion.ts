@@ -71,7 +71,6 @@ export type MotionFinalizePayload = {
 export type MotionDomainCreateEditPayload = {
   colonyAddress: Address;
   isCreateDomain: boolean;
-  motionDomainId: number;
   customActionTitle: string;
   domain?: Domain;
   colonyName?: string;

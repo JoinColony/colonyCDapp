@@ -1,9 +1,13 @@
-import { ClientType, Id } from '@colony/colony-js';
+import {
+  ClientType,
+  Id,
+  getPermissionProofs,
+  getChildIndex,
+  ColonyRole,
+} from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -21,8 +25,6 @@ import {
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
-  getPermissionProofsLocal,
-  getChildIndexLocal,
 } from '../../utils/index.ts';
 
 import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
@@ -40,14 +42,12 @@ function* createEditDomainReputationMotion({
     domain,
     isCreateDomain,
     parentDomainId = Id.RootDomain,
-    customActionTitle,
-    colonyDomains,
-    colonyRoles,
     domainCreatedInNativeId,
+    customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
-}: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
+}: Action<ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
 
   try {
@@ -67,8 +67,46 @@ function* createEditDomainReputationMotion({
     txChannel = yield call(getTxChannel, metaId);
 
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
-    const domainNativeId =
+    const domainId =
       !isCreateDomain && domain?.nativeId ? domain.nativeId : parentDomainId;
+
+    const context = yield getColonyManager();
+    const colonyClient = yield context.getClient(
+      ClientType.ColonyClient,
+      colonyAddress,
+    );
+    const votingReputationClient = yield context.getClient(
+      ClientType.VotingReputationClient,
+      colonyAddress,
+    );
+
+    const [permissionDomainId, childSkillIndex] = yield call(
+      getPermissionProofs,
+      colonyClient.networkClient,
+      colonyClient,
+      domainId,
+      ColonyRole.Architecture,
+      votingReputationClient.address,
+    );
+
+    const motionChildSkillIndex = yield call(
+      getChildIndex,
+      colonyClient.networkClient,
+      colonyClient,
+      domainCreatedInNativeId,
+      domainId,
+    );
+
+    const { skillId } = yield call(
+      [colonyClient, colonyClient.getDomain],
+      domainCreatedInNativeId,
+    );
+
+    const { key, value, branchMask, siblings } = yield call(
+      colonyClient.getReputation,
+      skillId,
+      AddressZero,
+    );
 
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.CreateMotion;
@@ -91,102 +129,35 @@ function* createEditDomainReputationMotion({
     //   }),
     // );
 
-    const colonyManager = yield getColonyManager();
-
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
-    const requiredRoles = isCreateDomain
-      ? PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam
-      : PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
-
-    const rootDomain = colonyDomains.find((colonyDomain) =>
-      BigNumber.from(colonyDomain.nativeId).eq(domainNativeId),
-    );
-
-    if (!rootDomain) {
-      throw new Error('Cannot find rootDomain in colony domains');
-    }
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      domainCreatedInNativeId,
-    );
-
-    const {
-      key: reputationKey,
-      value: reputationValue,
-      branchMask: reputationBranchMask,
-      siblings: reputationSiblings,
-    } = yield call(colonyClient.getReputation, skillId, AddressZero);
-
-    const domainSkillId = isCreateDomain
-      ? rootDomain.nativeSkillId
-      : domain?.nativeSkillId;
-
-    if (!domainSkillId) {
-      throw new Error('A Skill ID was not found for the selected domain');
-    }
-
-    const motionChildSkillIndex = yield call(getChildIndexLocal, {
-      networkClient: colonyClient.networkClient,
-      parentDomainNativeId: rootDomain.nativeId,
-      parentDomainSkillId: rootDomain.nativeSkillId,
-      domainNativeId: isCreateDomain ? rootDomain.nativeId : domainNativeId,
-      domainSkillId,
-    });
-
-    const votingReputationClient = yield colonyManager.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
-    const [permissionDomainId, childSkillIndex] = yield call(
-      getPermissionProofsLocal,
-      {
-        networkClient: colonyClient.networkClient,
-        colonyRoles,
-        colonyDomains,
-        requiredDomainId: domainCreatedInNativeId,
-        requiredColonyRole: requiredRoles,
-        permissionAddress: votingReputationClient.address,
-      },
-    );
-
     const encodedAction = colonyClient.interface.encodeFunctionData(
       isCreateDomain
         ? 'addDomain(uint256,uint256,uint256,string)'
         : 'editDomain',
-      [permissionDomainId, childSkillIndex, domainNativeId, '.'],
+      [permissionDomainId, childSkillIndex, domainId, '.'], // domainMetadataIpfsHash
     );
 
-    const transactionParams = {
+    // create transactions
+    yield fork(createTransaction, createMotion.id, {
       context: ClientType.VotingReputationClient,
-      methodName: TRANSACTION_METHODS.CreateMotion,
+      methodName: 'createMotion',
       identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
       params: [
         domainCreatedInNativeId,
         motionChildSkillIndex,
         AddressZero,
         encodedAction,
-        reputationKey,
-        reputationValue,
-        reputationBranchMask,
-        reputationSiblings,
+        key,
+        value,
+        branchMask,
+        siblings,
       ],
+      group: {
+        key: batchKey,
+        id: metaId,
+        index: 0,
+      },
       ready: false,
-    };
-
-    yield fork(createTransaction, createMotion.id, transactionParams);
-
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    });
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateMotion.id, {
@@ -201,7 +172,10 @@ function* createEditDomainReputationMotion({
         },
         ready: false,
       });
+    }
 
+    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    if (annotationMessage) {
       yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
