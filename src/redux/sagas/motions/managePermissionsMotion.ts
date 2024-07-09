@@ -185,7 +185,7 @@ function* managePermissionsMotion({
 
         return {
           context: ClientType.MultisigPermissionsClient,
-          methodName: 'createMotion',
+          methodName: TRANSACTION_METHODS.CreateMotion,
           identifier: colonyAddress,
           params,
           group: {
@@ -256,7 +256,7 @@ function* managePermissionsMotion({
 
       return {
         context: ClientType.VotingReputationClient,
-        methodName: 'createMotion',
+        methodName: TRANSACTION_METHODS.CreateMotion,
         identifier: colonyAddress,
         params: [
           createdInDomainId,
