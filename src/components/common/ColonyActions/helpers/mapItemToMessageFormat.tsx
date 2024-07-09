@@ -18,7 +18,7 @@ import {
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
-import { intl } from '~utils/intl.ts';
+import { formatText, intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -275,5 +275,10 @@ export const mapColonyActionToExpectedFormat = ({
         (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
       ),
     ).size,
+    [ActionTitleMessageKeys.MultiSigAuthority]: actionData.rolesAreMultiSig
+      ? `${formatText({
+          id: 'decisionMethod.multiSig',
+        })} `
+      : '',
   };
 };

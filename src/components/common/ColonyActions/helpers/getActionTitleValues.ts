@@ -22,6 +22,7 @@ export enum ActionTitleMessageKeys {
   Amount = 'amount',
   Direction = 'direction',
   FromDomain = 'fromDomain',
+  MultiSigAuthority = 'multiSigAuthority',
   Initiator = 'initiator',
   Members = 'members',
   NewVersion = 'newVersion',
@@ -107,6 +108,7 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.FromDomain,
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.MultiSigAuthority,
       ];
     case actionType.includes(ColonyActionType.CreateExpenditure):
       return [
