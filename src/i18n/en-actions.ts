@@ -36,8 +36,9 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationReward} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
-      ${ColonyActionType.SetUserRoles} {{direction} permissions for {recipient} in {fromDomain} by {initiator}}
-      ${ColonyActionType.SetUserRolesMotion} {{direction} permissions for {recipient} in {fromDomain} by {initiator}}
+      ${ColonyActionType.SetUserRoles} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
+      ${ColonyActionType.SetUserRolesMotion} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
+      ${ColonyActionType.SetUserRolesMultisig} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.AddVerifiedMembersMotion} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
       ${ColonyActionType.AddVerifiedMembersMultisig} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
@@ -87,6 +88,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EditDomainMultisig} {Edit Team}
       ${ColonyActionType.SetUserRoles} {Manage permissions}
       ${ColonyActionType.SetUserRolesMotion} {Manage permissions}
+      ${ColonyActionType.SetUserRolesMultisig} {Manage permissions}
       ${ColonyActionType.Recovery} {Recovery}
       ${ColonyActionType.EmitDomainReputationPenalty} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Manage reputation}
