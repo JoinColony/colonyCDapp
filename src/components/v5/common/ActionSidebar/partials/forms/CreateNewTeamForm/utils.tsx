@@ -1,3 +1,4 @@
+import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
@@ -32,4 +33,17 @@ export const getCreateNewTeamPayload = (
     colonyDomains: extractColonyDomains(colony.domains),
     domainCreatedInNativeId: values.createdIn,
   };
+};
+
+export const getCreateDomainFormActionType = (
+  decisionMethod: DecisionMethod | undefined,
+) => {
+  switch (decisionMethod) {
+    case DecisionMethod.Reputation:
+      return ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT;
+    case DecisionMethod.MultiSig:
+      return ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT;
+    default:
+      return ActionTypes.ACTION_DOMAIN_CREATE;
+  }
 };
