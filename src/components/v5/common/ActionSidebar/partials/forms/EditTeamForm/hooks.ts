@@ -11,10 +11,9 @@ import { findDomainByNativeId } from '~utils/domains.ts';
 import { DECISION_METHOD_FIELD_NAME } from '../../../consts.ts';
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
-import { getDomainFormActionType } from '../utils/getDomainFormActionType.ts';
 
 import { validationSchema, type EditTeamFormValues } from './consts.ts';
-import { getEditDomainPayload } from './utils.tsx';
+import { getEditDomainFormActionType, getEditDomainPayload } from './utils.tsx';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -45,7 +44,7 @@ export const useEditTeam = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: getDomainFormActionType(decisionMethod),
+    actionType: getEditDomainFormActionType(decisionMethod),
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         createdIn: team || Id.RootDomain,
