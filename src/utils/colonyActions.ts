@@ -579,9 +579,13 @@ export const getExtendedActionType = (
   const changelogItem = getChangelogItem(actionData, metadata);
 
   if (changelogItem?.hasObjectiveChanged) {
-    return actionData.isMotion
-      ? ExtendedColonyActionType.UpdateColonyObjectiveMotion
-      : ExtendedColonyActionType.UpdateColonyObjective;
+    if (actionData.isMotion) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMotion;
+    }
+    if (actionData.isMultiSig) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMultisig;
+    }
+    return ExtendedColonyActionType.UpdateColonyObjective;
   }
 
   if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
