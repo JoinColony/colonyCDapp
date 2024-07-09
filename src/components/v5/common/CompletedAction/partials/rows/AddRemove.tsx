@@ -34,9 +34,11 @@ const AddRemoveRow = ({ actionType }: AddRemoveRowProps) => {
     switch (actionType) {
       case ColonyActionType.AddVerifiedMembers:
       case ColonyActionType.AddVerifiedMembersMotion:
+      case ColonyActionType.AddVerifiedMembersMultisig:
         return formatText(MSG.addMembers);
       case ColonyActionType.RemoveVerifiedMembers:
       case ColonyActionType.RemoveVerifiedMembersMotion:
+      case ColonyActionType.RemoveVerifiedMembersMultisig:
         return formatText(MSG.removeMembers);
       default:
         console.warn('Unsupported action type');
