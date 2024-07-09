@@ -27,6 +27,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
+      ${ColonyActionType.ColonyEditMultisig} {Edit details of the Colony by {initiator}}
       ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
       ${ColonyActionType.EditDomainMultisig} {Change {fromDomain} team details by {initiator}}
@@ -60,6 +61,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective by {initiator}}
+      ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
