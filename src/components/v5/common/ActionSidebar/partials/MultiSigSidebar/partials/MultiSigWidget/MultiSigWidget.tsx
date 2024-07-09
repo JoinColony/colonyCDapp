@@ -60,7 +60,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   const rejectionSignaturesPerRole = {};
   const allApprovalSignees = new Set<MultiSigUserSignature['user']>();
   const allRejectionSignees = new Set<MultiSigUserSignature['user']>();
-  console.log('signatures', signatures);
 
   signatures.forEach((signature) => {
     const { role, vote, user: voter } = signature;

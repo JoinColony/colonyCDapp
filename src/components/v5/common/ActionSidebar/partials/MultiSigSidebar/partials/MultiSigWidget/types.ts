@@ -1,4 +1,7 @@
+import { type ColonyRole } from '@colony/colony-js';
+
 import { type MultiSigVote } from '~gql';
+import { type User } from '~types/graphql.ts';
 
 export enum MultiSigState {
   Approval = 'Approval',
@@ -7,7 +10,10 @@ export enum MultiSigState {
 
 export interface MultiSigSignee {
   userAddress?: string;
+  user: Partial<User>;
   vote: MultiSigVote;
+  rolesSignedWith: ColonyRole[];
+  userRoles: ColonyRole[];
 }
 
 export enum VoteExpectedStep {
