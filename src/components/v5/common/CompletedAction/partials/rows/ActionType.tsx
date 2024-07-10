@@ -1,7 +1,7 @@
 import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
-import { type ColonyActionType } from '~gql';
+import { type AnyActionType } from '~types/actions.ts';
 import { formatActionType } from '~utils/colonyActions.ts';
 
 import ActionData from './ActionData.tsx';
@@ -9,7 +9,7 @@ import ActionData from './ActionData.tsx';
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
 interface ActionTypeRowProps {
-  actionType: ColonyActionType;
+  actionType: AnyActionType;
 }
 
 const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => (
