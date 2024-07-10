@@ -20,4 +20,5 @@ export interface RowItemBodyProps {
   ctaDisabled?: boolean;
   ctaOnClick?: () => void;
   ctaComponent?: React.ReactNode;
+  ctaLoading?: boolean;
 }
