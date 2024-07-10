@@ -21,6 +21,7 @@ import { formatText } from '~utils/intl.ts';
 import { SetupComponentMap } from './consts.ts';
 import ExtensionInfo from './ExtensionInfo.tsx';
 import ExtensionsTopRow from './ExtensionTopRow.tsx';
+import { useCheckExtensionEnabled } from './hooks.ts';
 import ExtensionDetails from './partials/ExtensionDetails/index.ts';
 import {
   createExtensionSetupInitialValues,
@@ -36,12 +37,10 @@ const ExtensionDetailsPage: FC = () => {
   const { pathname } = useLocation();
   const {
     colony: { colonyAddress, name: colonyName },
-    refetchColony,
   } = useColonyContext();
   const navigate = useNavigate();
-  const { extensionData, loading, refetchExtensionData } = useExtensionData(
-    extensionId ?? '',
-  );
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { checkExtensionEnabled } = useCheckExtensionEnabled(extensionId ?? '');
   const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
     useState(false);
 
@@ -80,8 +79,7 @@ const ExtensionDetailsPage: FC = () => {
     colonyName,
     extensionData,
     navigate,
-    refetchColony,
-    refetchExtensionData,
+    checkExtensionEnabled,
     setWaitingForEnableConfirmation,
   });
 
