@@ -234,7 +234,6 @@ function* managePermissionsMotion({
         ],
       );
 
-      // eslint-disable-next-line no-inner-declarations
       const motionChildSkillIndex = yield call(getChildIndexLocal, {
         networkClient: colonyClient.networkClient,
         parentDomainNativeId: createdInDomain.nativeId,
@@ -284,7 +283,7 @@ function* managePermissionsMotion({
     if (annotationMessage) {
       yield fork(createTransaction, annotateSetUserRolesMotion.id, {
         context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
+        methodName: TRANSACTION_METHODS.AnnotateTransaction,
         identifier: colonyAddress,
         params: [],
         group: {
