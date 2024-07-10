@@ -34,8 +34,10 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.Recovery} {Enter recovery mode by {initiator}}
       ${ColonyActionType.EmitDomainReputationPenalty} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
+      ${ColonyActionType.EmitDomainReputationPenaltyMultisig} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationReward} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
+      ${ColonyActionType.EmitDomainReputationRewardMultisig} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
       ${ColonyActionType.SetUserRoles} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.SetUserRolesMotion} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
       ${ColonyActionType.SetUserRolesMultisig} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
@@ -93,9 +95,11 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.Recovery} {Recovery}
       ${ColonyActionType.EmitDomainReputationPenalty} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Manage reputation}
+      ${ColonyActionType.EmitDomainReputationPenaltyMultisig} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationReward} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Manage reputation}
-      ${ColonyActionType.CreateDecisionMotion} {Agreement}
+      ${ColonyActionType.EmitDomainReputationRewardMultisig} {Manage reputation}
+      ${ColonyActionType.CreateDecisionMotion} {Decision}
       ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMultisig} {Manage verified members}
