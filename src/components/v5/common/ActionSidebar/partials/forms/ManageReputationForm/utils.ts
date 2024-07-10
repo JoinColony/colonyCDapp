@@ -5,7 +5,10 @@ import { type TestContext } from 'yup';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ModificationOption } from './consts.ts';
@@ -21,6 +24,7 @@ export const getManageReputationPayload = (
     member,
     createdIn,
     modification,
+    decisionMethod,
   }: ManageReputationFormValues,
 ): ManageReputationMotionPayload => {
   const isSmiteAction = modification === ModificationOption.RemoveReputation;
@@ -28,6 +32,7 @@ export const getManageReputationPayload = (
     .mul(new Decimal(10).pow(nativeTokenDecimals))
     // Smite amount needs to be negative, otherwise leave it as it is
     .mul(isSmiteAction ? -1 : 1);
+  const isMultiSig = decisionMethod === DecisionMethod.MultiSig;
 
   return {
     colonyAddress: colony.colonyAddress,
@@ -39,6 +44,9 @@ export const getManageReputationPayload = (
     annotationMessage: description,
     customActionTitle: '',
     motionDomainId: createdIn,
+    isMultiSig,
+    colonyRoles: extractColonyRoles(colony.roles),
+    colonyDomains: extractColonyDomains(colony.domains),
   };
 };
 
