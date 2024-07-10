@@ -26,6 +26,7 @@
     "frontend:safe": "SAFE_ENABLED=true ulimit -n 2048 && vite",
     "build": "vite build",
     "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \"cd colonyNetwork && npx hardhat console --network localhost\"",
+    "hardhat:trace": "./scripts/hardhat-trace.js",
     "truffle": "echo 'Please use `npm run hardhat` instead of `npm run truffle`'",
     "amplify": "amplify",
     "codegen": "node codegen",
