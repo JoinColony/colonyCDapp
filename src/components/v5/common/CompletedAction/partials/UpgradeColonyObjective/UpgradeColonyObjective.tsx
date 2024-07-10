@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { type ColonyAction } from '~types/graphql.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ICON_SIZE } from '~v5/common/CompletedAction/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
@@ -79,7 +80,9 @@ const UpgradeColonyObjective = ({ action }: Props) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow
+          actionType={getExtendedActionType(action, colony.metadata)}
+        />
         <div className="flex items-center gap-2">
           <Article size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveTitle)}</span>
