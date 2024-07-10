@@ -69,9 +69,11 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     networkMotionState === NetworkMotionState.Finalized ||
     networkMotionState === NetworkMotionState.Failed;
 
-  const isSmite =
-    action.type === ColonyActionType.EmitDomainReputationPenalty ||
-    action.type === ColonyActionType.EmitDomainReputationPenaltyMotion;
+  const isSmite = [
+    ColonyActionType.EmitDomainReputationPenalty,
+    ColonyActionType.EmitDomainReputationPenaltyMotion,
+    ColonyActionType.EmitDomainReputationPenaltyMultisig,
+  ].includes(action.type);
 
   const positiveAmountValue = BigNumber.from(amount || '0')
     .abs()

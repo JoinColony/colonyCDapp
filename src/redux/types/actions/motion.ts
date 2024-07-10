@@ -322,6 +322,9 @@ export type MotionActionTypes =
         motionDomainId: number;
         annotationMessage?: string;
         isSmitingReputation?: boolean;
+        isMultiSig?: boolean;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
       },
       MetaWithSetter<object>
     >
