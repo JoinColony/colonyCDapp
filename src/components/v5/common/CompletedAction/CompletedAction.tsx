@@ -81,8 +81,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <RemoveVerifiedMembers action={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:
+      case ColonyActionType.EmitDomainReputationRewardMultisig:
       case ColonyActionType.EmitDomainReputationPenalty:
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
+      case ColonyActionType.EmitDomainReputationPenaltyMultisig:
         return <ManageReputation action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
