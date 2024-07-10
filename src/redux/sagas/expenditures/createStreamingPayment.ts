@@ -192,7 +192,6 @@ function* createStreamingPaymentAction({
             toNumber(streamingPaymentId),
           ),
           endCondition,
-          limitAmount,
         },
       },
     });
