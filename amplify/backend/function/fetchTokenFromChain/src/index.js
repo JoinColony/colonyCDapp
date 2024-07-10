@@ -13,7 +13,12 @@ const {
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { createToken, getTokenByAddress } = require('./graphql');
+const {
+  createToken,
+  getTokenByAddress,
+  getColonyByAddress,
+  getUserByAddress,
+} = require('./graphql');
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
@@ -94,6 +99,30 @@ exports.handler = async (event) => {
 
   if (tokenQuery && !token) {
     try {
+      // Check this address is not currently in use by a colony
+      const colonyQuery = await graphqlRequest(
+        getColonyByAddress,
+        { address: tokenAddress },
+        graphqlURL,
+        apiKey,
+      );
+
+      if (colonyQuery?.data?.getColonyByAddress?.items.length > 0) {
+        throw new Error(`${tokenAddress} is already in use by a colony.`);
+      }
+
+      // Check this address is not currently in use by a user
+      const userQuery = await graphqlRequest(
+        getUserByAddress,
+        { address: tokenAddress },
+        graphqlURL,
+        apiKey,
+      );
+
+      if (userQuery?.data?.getUserByAddress?.items.length > 0) {
+        throw new Error(`${tokenAddress} is already in use by a user.`);
+      }
+
       /*
        * Attempt to fetch it from the chain
        */
@@ -104,23 +133,56 @@ exports.handler = async (event) => {
         basicTokenAbi,
         provider,
       );
+
+      const contractCode = await provider.getCode(checksummedAddress);
+      // Check there is a contract deployed at this address
+      if (contractCode === '0x') {
+        throw new Error(
+          `There is no contract current deployed at: ${checksummedAddress}`,
+        );
+      }
+
+      // Call each of the following required ERC20 functions using their function selectors
+      // If these contract calls succeed without throwing an error, it is likely an ERC20 token contract
+      const erc20Functions = [
+        '0x18160ddd', // totalSupply
+        '0x70a08231', // balanceOf(address)
+        '0xa9059cbb', // transfer(address,uint256)
+        '0x095ea7b3', // approve(address,uint256)
+        '0xdd62ed3e', // allowance(address,address)
+        '0x23b872dd', // transferFrom(address,address,uint256)
+      ];
+
+      for (const erc20Function of erc20Functions) {
+        await provider.call({ to: checksummedAddress, data: erc20Function });
+      }
+
       let name = checksummedAddress;
       let symbol = checksummedAddress.slice(0, 6);
       let decimals = 0;
       try {
         name = await tokenFromChain.name();
       } catch (error) {
-        console.log(`TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`, error);
+        console.log(
+          `TOKEN NAME NOT AVAILABLE, FALLING BACK TO: "${name}"`,
+          error,
+        );
       }
       try {
         symbol = await tokenFromChain.symbol();
       } catch (error) {
-        console.log(`TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`, error);
+        console.log(
+          `TOKEN SYMBOL NOT AVAILABLE, FALLING BACK TO: "${symbol}"`,
+          error,
+        );
       }
       try {
         decimals = await tokenFromChain.decimals();
       } catch (error) {
-        console.log(`TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`, error);
+        console.log(
+          `TOKEN DECIMALS NOT AVAILABLE, FALLING BACK TO: "${decimals}"`,
+          error,
+        );
       }
       const type = await getTokenType(tokenFromChain);
       const chainId = String((await provider.getNetwork()).chainId);
