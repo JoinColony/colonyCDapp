@@ -132,9 +132,48 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                       iban,
                       swift,
                       country,
+                      accountNumber,
+                      routingNumber,
+                      address1,
+                      address2,
+                      postcode,
+                      city,
                     } = values;
 
                     const [firstName, lastName] = accountOwner.split(' ');
+
+                    let countryRelatedFields = {};
+
+                    if (country === 'USA') {
+                      countryRelatedFields = {
+                        usAccount: {
+                          // eslint-disable-next-line camelcase
+                          account_number: accountNumber,
+                          // eslint-disable-next-line camelcase
+                          routing_number: routingNumber,
+                        },
+                        address: {
+                          city,
+                          country,
+                          // eslint-disable-next-line camelcase
+                          postal_code: postcode,
+                          // eslint-disable-next-line camelcase
+                          street_line_1: address1,
+                          // eslint-disable-next-line camelcase
+                          street_line_2: address2,
+                          state: 'US-IL',
+                        },
+                      };
+                    } else {
+                      countryRelatedFields = {
+                        iban: {
+                          // eslint-disable-next-line camelcase
+                          account_number: iban,
+                          bic: swift,
+                          country,
+                        },
+                      };
+                    }
 
                     const result = await createBankAccount({
                       variables: {
@@ -142,12 +181,7 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
                         bankName,
                         firstName,
                         lastName,
-                        iban: {
-                          // eslint-disable-next-line camelcase
-                          account_number: iban,
-                          bic: swift,
-                          country,
-                        },
+                        ...countryRelatedFields,
                       },
                     });
 
