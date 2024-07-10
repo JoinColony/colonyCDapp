@@ -10,6 +10,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -26,6 +27,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
 } from '../utils/index.ts';
 
 export type ManageReputationMotionPayload =
@@ -42,6 +44,9 @@ function* manageReputationMotion({
     motionDomainId,
     isSmitingReputation,
     customActionTitle,
+    isMultiSig,
+    colonyDomains,
+    colonyRoles,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -67,45 +72,6 @@ function* manageReputationMotion({
       );
     }
 
-    const context = yield getColonyManager();
-    const colonyClient = yield context.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
-
-    const votingReputationClient = yield context.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
-    const [permissionDomainId, childSkillIndex] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      ColonyRole.Architecture,
-      votingReputationClient.address,
-    );
-
-    const motionChildSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      motionDomainId,
-      isSmitingReputation ? domainId : Id.RootDomain,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
-
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
@@ -117,42 +83,162 @@ function* manageReputationMotion({
         'annotateManageReputationMotion',
       ]);
 
-    let encodedAction;
+    // eslint-disable-next-line no-inner-declarations
+    function* getCreateMotionParams() {
+      const requiredRoles = isSmitingReputation
+        ? PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove
+        : PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
 
-    if (isSmitingReputation) {
-      encodedAction = colonyClient.interface.encodeFunctionData(
-        'emitDomainReputationPenalty',
-        [permissionDomainId, childSkillIndex, domainId, userAddress, amount],
+      const context = yield getColonyManager();
+      const colonyClient = yield context.getClient(
+        ClientType.ColonyClient,
+        colonyAddress,
       );
-    } else {
-      encodedAction = colonyClient.interface.encodeFunctionData(
-        'emitDomainReputationReward',
-        [domainId, userAddress, amount],
+
+      if (isMultiSig) {
+        const multiSigPermissionsClient = yield context.getClient(
+          ClientType.MultisigPermissionsClient,
+          colonyAddress,
+        );
+
+        let encodedAction;
+
+        if (isSmitingReputation) {
+          const permissionsUserAddress = yield colonyClient.signer.getAddress();
+
+          const [permissionDomainId, childSkillIndex] =
+            yield getPermissionProofsLocal({
+              networkClient: colonyClient.networkClient,
+              colonyRoles,
+              colonyDomains,
+              requiredDomainId: domainId,
+              requiredColonyRole: requiredRoles,
+              permissionAddress: permissionsUserAddress,
+              isMultiSig: true,
+            });
+
+          encodedAction = colonyClient.interface.encodeFunctionData(
+            'emitDomainReputationPenalty',
+            [
+              permissionDomainId,
+              childSkillIndex,
+              domainId,
+              userAddress,
+              amount,
+            ],
+          );
+        } else {
+          encodedAction = colonyClient.interface.encodeFunctionData(
+            'emitDomainReputationReward',
+            [domainId, userAddress, amount],
+          );
+        }
+
+        const [motionPermissionDomainId, motionChildSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: motionDomainId,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: multiSigPermissionsClient.address,
+            isMultiSig: false,
+          },
+        );
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            motionPermissionDomainId,
+            motionChildSkillIndex,
+            [colonyAddress],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      const votingReputationClient = yield context.getClient(
+        ClientType.VotingReputationClient,
+        colonyAddress,
       );
+
+      const [permissionDomainId, childSkillIndex] = yield call(
+        getPermissionProofs,
+        colonyClient.networkClient,
+        colonyClient,
+        domainId,
+        ColonyRole.Architecture,
+        votingReputationClient.address,
+      );
+
+      const motionChildSkillIndex = yield call(
+        getChildIndex,
+        colonyClient.networkClient,
+        colonyClient,
+        motionDomainId,
+        isSmitingReputation ? domainId : Id.RootDomain,
+      );
+
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
+        motionDomainId,
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
+        AddressZero,
+      );
+
+      let encodedAction;
+
+      if (isSmitingReputation) {
+        encodedAction = colonyClient.interface.encodeFunctionData(
+          'emitDomainReputationPenalty',
+          [permissionDomainId, childSkillIndex, domainId, userAddress, amount],
+        );
+      } else {
+        encodedAction = colonyClient.interface.encodeFunctionData(
+          'emitDomainReputationReward',
+          [domainId, userAddress, amount],
+        );
+      }
+
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          motionChildSkillIndex,
+          AddressZero,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
     }
 
+    const transactionParams = yield getCreateMotionParams();
     // create transactions
-    yield fork(createTransaction, createMotion.id, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
-        motionDomainId,
-        motionChildSkillIndex,
-        AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+    yield fork(createTransaction, createMotion.id, transactionParams);
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateManageReputationMotion.id, {
