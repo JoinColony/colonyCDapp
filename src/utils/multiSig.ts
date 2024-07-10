@@ -51,7 +51,10 @@ export const getMultiSigState = (
   return MotionState.Open;
 };
 
-export const getMultiSigPayload = (isMultiSigFlag: boolean, colony: Colony) => ({
+export const getMultiSigPayload = (
+  isMultiSigFlag: boolean,
+  colony: Colony,
+) => ({
   colonyRoles: extractColonyRoles(colony.roles),
   colonyDomains: extractColonyDomains(colony.domains),
   isMultiSig: isMultiSigFlag,
