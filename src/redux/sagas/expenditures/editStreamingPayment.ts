@@ -21,6 +21,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
+import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import {
@@ -119,7 +120,7 @@ function* editStreamingPaymentAction({
     const realStartTimestamp = startTimestamp || streamingPayment.startTime;
     const realInterval = interval || Number(streamingPayment.interval);
     const realLimitAmount =
-      limitAmount || streamingPayment.metadata?.limitAmount;
+      limitAmount || getStreamingPaymentLimit({ streamingPayment });
     const realEndCondition =
       endCondition || streamingPayment.metadata?.endCondition;
 
@@ -242,8 +243,6 @@ function* editStreamingPaymentAction({
     const { type } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      // @NOTE: hasLimitChanged is deliberately omitted here as it is updated on the block-ingestor
-      // Limit should only be updated here when the end condition changes to limit reached
       const hasEndConditionChanged =
         endCondition !== undefined &&
         endCondition !== streamingPayment.metadata?.endCondition;
@@ -261,7 +260,6 @@ function* editStreamingPaymentAction({
                 toNumber(streamingPayment.nativeId),
               ),
               endCondition,
-              limitAmount,
             },
           },
         });
