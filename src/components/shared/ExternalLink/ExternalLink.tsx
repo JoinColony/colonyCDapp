@@ -1,50 +1,24 @@
-import React, { type ReactNode } from 'react';
-import { type MessageDescriptor, useIntl } from 'react-intl';
+import clsx from 'clsx';
+import React, { type FC } from 'react';
 
-import { type SimpleMessageValues } from '~types/index.ts';
+import { type ExternalLinkProps } from './types.ts';
 
-interface Props {
-  /** Render a react-node into the link */
-  children?: ReactNode;
+const displayName = 'ExternalLink';
 
-  /** The page it should link to */
-  href: string;
-
-  /** A string or a `messageDescriptor` that make up the link's text */
-  text?: MessageDescriptor | string;
-
-  /** Values for text (react-intl interpolation) */
-  textValues?: SimpleMessageValues;
-
-  /*
-   * Allows for link style customization (Eg: we need to disquise the link as a button)
-   * Don't abuse it!
-   */
-  className?: string;
-
-  /*
-   * Show a title over the element, on hover. This is browser native.
-   */
-  title?: string;
-  download?: string | boolean;
-}
-
-const ExternalLink = ({
+const ExternalLink: FC<ExternalLinkProps> = ({
   children,
   href,
-  text,
-  textValues,
   className,
   title,
   download,
-}: Props) => {
-  const { formatMessage } = useIntl();
-  const typeOfText =
-    typeof text == 'string' ? text : text && formatMessage(text, textValues);
-  const linkText = children || typeOfText || href;
+}) => {
+  const linkText = children || href;
   return (
     <a
-      className={className}
+      className={clsx(
+        className,
+        'text-gray-900 transition-colors duration-normal hover:text-blue-400',
+      )}
       href={href}
       target="_blank"
       rel="noreferrer noopener"
@@ -55,5 +29,7 @@ const ExternalLink = ({
     </a>
   );
 };
+
+ExternalLink.displayName = displayName;
 
 export default ExternalLink;
