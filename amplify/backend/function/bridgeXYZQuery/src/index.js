@@ -1,15 +1,15 @@
 const { getFeesHandler } = require('./handlers/getFees');
 const { getLiquidationsHandler } = require('./handlers/getLiquidations');
 
+const isDev = process.env.ENV === 'dev';
+
 let appSyncApiKey = 'da2-fakeApiId123456';
 let apiKey = 'da2-fakeApiId123456';
 let apiUrl = 'http://mocking:3000/bridgexyz';
 let graphqlURL = 'http://localhost:20002/graphql';
 
 const setEnvVariables = async () => {
-  const ENV = process.env.ENV;
-
-  if (ENV === 'qaarbsep' || ENV === 'prod' || ENV === 'prodrevive') {
+  if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
     [appSyncApiKey, apiKey, apiUrl, graphqlURL] = await getParams([
       'appsyncApiKey',
