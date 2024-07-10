@@ -80,8 +80,9 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDomainMultisig} {Create new team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
-      ${ColonyActionType.ColonyEdit} {Manage objective}
-      ${ColonyActionType.ColonyEditMotion} {Manage objective}
+      ${ColonyActionType.ColonyEdit} {Edit Colony details}
+      ${ColonyActionType.ColonyEditMotion} {Edit Colony details}
+      ${ColonyActionType.ColonyEditMultisig} {Edit Colony details}
       ${ColonyActionType.EditDomain} {Edit Team}
       ${ColonyActionType.EditDomainMotion} {Edit Team}
       ${ColonyActionType.EditDomainMultisig} {Edit Team}
@@ -114,6 +115,9 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} {Contract interaction}
       ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
       ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} {Multiple transactions}
+      ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective}
+      ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective}
+      ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective}
       other {Generic}
     }`,
 };
