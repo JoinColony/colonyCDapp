@@ -50,6 +50,8 @@ const timeoutArgValue = process.argv[timeoutArg + 1];
 const coloniesArg = process.argv.indexOf('--coloniesCount');
 const coloniesArgValue = process.argv[coloniesArg + 1];
 
+const usePreviousColonyVersionArg = process.argv.indexOf('--usePreviousColonyVersion') !== -1;
+
 const yesArg = process.argv.indexOf('--yes');
 
 const DEFAULT_COLONIES = parseInt(coloniesArgValue, 10) || 2;
@@ -411,6 +413,7 @@ const createColony = async (
     colonySocialLinks = [],
     colonyAvatar,
     colonyObjective = {},
+    version,
     token: {
       name: tokenName = 'Generic Token',
       symbol: tokenSymbol = 'GTKN',
@@ -426,7 +429,9 @@ const createColony = async (
     signerOrWallet,
   );
 
-  const currentNetworkVersion = await colonyNetwork.getCurrentColonyVersion();
+  if (!version) {
+    version = await colonyNetwork.getCurrentColonyVersion();
+  }
 
   const populatedTransaction = await colonyNetwork.populateTransaction[
     'createColonyForFrontend'
@@ -435,7 +440,7 @@ const createColony = async (
     tokenName,
     tokenSymbol,
     tokenDecimals,
-    currentNetworkVersion,
+    version,
     '', // no point in storing ens name on the chain
     '',
   );
@@ -477,7 +482,7 @@ const createColony = async (
     );
   } else {
     console.log(
-      `Creating colony ethereal data { name: "${colonyName}", creationTransactionHash: "${hash}", version: "${currentNetworkVersion.toString()}" }`,
+      `Creating colony ethereal data { name: "${colonyName}", creationTransactionHash: "${hash}", version: "${version.toString()}" }`,
     );
   }
 
@@ -1173,14 +1178,14 @@ const tryFetchGraphqlQuery = async (
 
 
 const createRandomUser = async ({ username, index }) => {
-    const avatarURL = `http://xsgames.co/randomusers/assets/avatars/${
-        (index + 1) % 2 === 0 ? 'female' : 'male'
-      }/${index + 1}.jpg`;
-      const avatar = await imageUrlToBase64(avatarURL);
-      return createUser({
-        username,
-        avatar: (index + 1) % 5 === 0 ? null : avatar,
-      });
+  const avatarURL = `http://xsgames.co/randomusers/assets/avatars/${
+    (index + 1) % 2 === 0 ? 'female' : 'male'
+  }/${index + 1}.jpg`;
+  const avatar = await imageUrlToBase64(avatarURL);
+  return createUser({
+    username,
+    avatar: (index + 1) % 5 === 0 ? null : avatar,
+  });
 };
 
 const createRandomUsersBatch = async (start, size = 3) => {
@@ -1205,7 +1210,7 @@ const createRandomUsersInBatches = async () => {
   const batchSize = 3;
   const randomUsersBatchCount = Math.ceil(usersTempData.randomUsernames.length / batchSize);
   const randomUsers = [];
-  
+
   for (let batchCount = 0; batchCount < randomUsersBatchCount; batchCount++) {
     const randomUsersBatch = await createRandomUsersBatch(batchCount * batchSize, batchSize);
     randomUsers.push(...randomUsersBatch);
@@ -1245,7 +1250,7 @@ const createUserAndColonyData = async () => {
   walletUsers.forEach((user) => {
     availableUsers.walletUsers[user.address] = user;
   })
-  
+
   delay(1000);
 
   const randomUsers = await createRandomUsersInBatches();
@@ -1253,26 +1258,41 @@ const createUserAndColonyData = async () => {
     availableUsers.randomUsers[user.address] = user;
   })
 
+  const leelaWallet =
+    availableUsers.walletUsers[
+      utils.getAddress(Object.keys(ganacheAddresses)[0])
+    ];
+
+  const colonyNetwork = ColonyNetworkFactory.connect(
+    etherRouterAddress,
+    leelaWallet,
+  );
+
+  const currentVersion = await colonyNetwork.getCurrentColonyVersion();
+
   const colonyNamesToCreate = Object.keys(coloniesTempData).slice(
     0,
     DEFAULT_COLONIES,
   );
   for (let index = 0; index < colonyNamesToCreate.length; index++) {
     const colonyData = coloniesTempData[colonyNamesToCreate[index]];
+    colonyData.version = currentVersion.toNumber();
+    if (usePreviousColonyVersionArg) {
+      // Check version exists...
+      const resolver = await colonyNetwork.getColonyVersionResolver(
+        colonyData.version - 1,
+      );
+      if (resolver !== constants.AddressZero) {
+        colonyData.version -= 1;
+      }
+    }
 
-    const leela =
-      availableUsers.walletUsers[
-        utils.getAddress(Object.keys(ganacheAddresses)[0])
-      ];
     const {
       colonyAddress: newColonyAddress,
       tokenAddress,
       colonyName,
       oneTxExtensionAddress,
-    } = await createColony(
-      colonyData,
-      availableUsers.walletUsers[leela.address],
-    );
+    } = await createColony(colonyData, leelaWallet);
     delay();
 
     availableColonies[newColonyAddress] = {
@@ -1322,12 +1342,7 @@ const createUserAndColonyData = async () => {
     );
 
     // mint colony tokens
-    await mintTokens(
-      newColonyAddress,
-      colonyName,
-      tokenAddress,
-      availableUsers.walletUsers[leela.address],
-    );
+    await mintTokens(newColonyAddress, colonyName, tokenAddress, leelaWallet);
 
     const { data: colonyDomainsdata } = await graphqlRequestPreconfigured(
       getColonyDomains,
@@ -1344,7 +1359,7 @@ const createUserAndColonyData = async () => {
         colonyName,
         tokenAddress,
         domains,
-        availableUsers.walletUsers[leela.address],
+        leelaWallet,
       );
     }
 
@@ -1377,7 +1392,7 @@ const createUserAndColonyData = async () => {
           ),
           contributors[randomBetweenNumbers(0, contributors.length - 1)],
         ],
-        availableUsers.walletUsers[leela.address],
+        leelaWallet,
       );
 
       // All other colonies that are not planex
@@ -1397,7 +1412,7 @@ const createUserAndColonyData = async () => {
           tokenAddress,
           [{ nativeId: 1 }],
           [planetExpressColony?.colonyAddress],
-          availableUsers.walletUsers[leela.address],
+          leelaWallet,
         );
       }
     }
@@ -1461,10 +1476,17 @@ const checkArguments = () => {
   }
 
   console.log(
-    `Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms.`,
+    `Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms using the ${usePreviousColonyVersionArg ? "previous" : "current"} Colony version.`,
   );
   console.log(
     `If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`,
+  );
+  console.log();
+  console.log(
+    `Colonies will be deployed using the current Colony version. To deploy with the previous version pass --usePreviousColonyVersion`,
+  );
+  console.log(
+    `(For this to work, you will need to have already deployed the previous Colony version resolver to the network.)`,
   );
 };
 
