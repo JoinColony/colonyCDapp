@@ -56,6 +56,7 @@ const FourOFour = () => {
   const [bridgeXYZMutation] = useBridgeXyzMutationMutation();
   const [bridgeXYZQuery] = useBridgeXyzQueryLazyQuery();
   const featureFlags = useContext(FeatureFlagsContext);
+  const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
 
   const [fee, setFee] = useState<string | null>(null);
   const [liquidations, setLiquidations] = useState<any[]>([]);
@@ -131,20 +132,21 @@ const FourOFour = () => {
 
   return (
     <MainLayout>
-      {featureFlags[FeatureFlag.CRYPTO_TO_FIAT] && (
-        <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
-          <Button onClick={getKYCLinks}>Get KYC links</Button>
-          <Button onClick={checkKYCStatus}>Check KYC status</Button>
-          <Button onClick={getOfframpFees}>Get the current fees</Button>
-          <Button onClick={getLiquidations}>
-            Get the liquidations history
-          </Button>
-          {fee !== null && <span>The fee is {fee}</span>}
-          {liquidations.map((liquidation) => (
-            <span>{liquidation}</span>
-          ))}
-        </div>
-      )}
+      {cryptoToFiatFeatureFlag?.isEnabled &&
+        !cryptoToFiatFeatureFlag?.isLoading && (
+          <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
+            <Button onClick={getKYCLinks}>Get KYC links</Button>
+            <Button onClick={checkKYCStatus}>Check KYC status</Button>
+            <Button onClick={getOfframpFees}>Get the current fees</Button>
+            <Button onClick={getLiquidations}>
+              Get the liquidations history
+            </Button>
+            {fee !== null && <span>The fee is {fee}</span>}
+            {liquidations.map((liquidation) => (
+              <span>{liquidation}</span>
+            ))}
+          </div>
+        )}
       <FourOFourMessage
         description={formatText(MSG.description)}
         links={
