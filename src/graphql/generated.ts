@@ -8956,6 +8956,7 @@ export type CreateBankAccountMutationVariables = Exact<{
   lastName: Scalars['String'];
   address?: InputMaybe<BridgeXyzMutationAddressInput>;
   iban?: InputMaybe<BridgeXyzMutationIbanInput>;
+  usAccount?: InputMaybe<BridgeXyzMutationAccountInput>;
 }>;
 
 
@@ -10678,9 +10679,9 @@ export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStat
 export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
 export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateBankAccountDocument = gql`
-    mutation CreateBankAccount($currency: String!, $bankName: String!, $firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $iban: BridgeXYZMutationIbanInput) {
+    mutation CreateBankAccount($currency: String!, $bankName: String!, $firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $iban: BridgeXYZMutationIbanInput, $usAccount: BridgeXYZMutationAccountInput) {
   bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}/external_accounts", body: {currency: $currency, bank_name: $bankName, first_name: $firstName, last_name: $lastName, address: $address, iban: $iban}}
+    input: {path: "v0/customers/{customerID}/external_accounts", body: {currency: $currency, bank_name: $bankName, first_name: $firstName, last_name: $lastName, address: $address, iban: $iban, account: $usAccount}}
   ) {
     success
   }
@@ -10707,6 +10708,7 @@ export type CreateBankAccountMutationFn = Apollo.MutationFunction<CreateBankAcco
  *      lastName: // value for 'lastName'
  *      address: // value for 'address'
  *      iban: // value for 'iban'
+ *      usAccount: // value for 'usAccount'
  *   },
  * });
  */

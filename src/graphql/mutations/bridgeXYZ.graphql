@@ -94,6 +94,7 @@ mutation CreateBankAccount(
   $lastName: String!
   $address: BridgeXYZMutationAddressInput
   $iban: BridgeXYZMutationIbanInput
+  $usAccount: BridgeXYZMutationAccountInput
 ) {
   bridgeXYZMutation(
     input: {
@@ -105,6 +106,7 @@ mutation CreateBankAccount(
         last_name: $lastName
         address: $address
         iban: $iban
+        account: $usAccount
       }
     }
   ) {
