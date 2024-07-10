@@ -61,7 +61,10 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   let actionDomainMetadata: OptionalValue<DomainMetadata>;
   let team: OptionalValue<string>;
 
-  if (action.type === ColonyActionType.CreateDomain) {
+  if (
+    action.type === ColonyActionType.CreateDomain ||
+    action.type === ColonyActionType.EditDomain
+  ) {
     actionDomainMetadata = action.fromDomain?.metadata;
     team = actionDomainMetadata?.name;
   } else {
