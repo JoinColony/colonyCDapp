@@ -22,6 +22,7 @@ import { type StreamingPaymentsMotionCancelPayload } from '~redux/types/actions/
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
@@ -529,7 +530,7 @@ const TmpStreamingPayments = () => {
               End Condition: <b>{streamingPayment.metadata?.endCondition}</b>
             </p>
             <p>
-              Limit: <b>{streamingPayment.metadata?.limitAmount}</b>
+              Limit: <b>{getStreamingPaymentLimit({ streamingPayment })}</b>
             </p>
           </div>
         )}

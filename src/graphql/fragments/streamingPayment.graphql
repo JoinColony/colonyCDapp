@@ -7,10 +7,12 @@ fragment StreamingPayment on StreamingPayment {
   endTime
   interval
   tokenAddress
+  token {
+    ...Token
+  }
   amount
   metadata {
     endCondition
-    limitAmount
   }
   claims {
     amount
