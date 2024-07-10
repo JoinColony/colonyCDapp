@@ -21,6 +21,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
+import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import {
