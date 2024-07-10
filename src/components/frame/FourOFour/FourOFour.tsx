@@ -20,10 +20,7 @@ import {
   USER_EDIT_PROFILE_ROUTE,
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
-import {
-  type PutCustomerMutationBody,
-  type KYCLinksMutationBody,
-} from '~types/offramp.ts';
+import { type KYCLinksMutationBody } from '~types/offramp.ts';
 import { formatText } from '~utils/intl.ts';
 import FourOFourMessage from '~v5/common/FourOFourMessage/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -87,54 +84,6 @@ const FourOFour = () => {
       });
   };
 
-  const putCustomer = () => {
-    const body: PutCustomerMutationBody = {
-      address: {
-        city: 'United',
-        country: 'USA',
-        postcode: '123',
-        state: 'US-NY',
-        street_line_1: '123',
-        street_line_2: '456',
-      },
-      birth_date: '2020-01-01',
-      email: 'test@example.com',
-      first_name: 'John',
-      last_name: 'Doe',
-      signed_agreement_id: 'asdas',
-      tax_identification_number: '123',
-      currency: 'eur',
-      bank_name: 'HSBC',
-      // Either iban (EUR) or account (USD)
-      iban: {
-        account_number: '123',
-        bic: '123',
-        country: 'GBR',
-      },
-      account: {
-        account_number: '123',
-        routing_number: '123',
-      },
-    };
-
-    bridgeXYZMutation({
-      variables: {
-        input: {
-          body,
-          path: 'v0/customers/{customerID}',
-        },
-      },
-    })
-      .then((data) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.log('Error! ', err);
-      });
-  };
-
   const checkKYCStatus = () => {
     bridgeXYZMutation({
       variables: {
@@ -185,7 +134,6 @@ const FourOFour = () => {
       {featureFlags[FeatureFlag.CRYPTO_TO_FIAT] && (
         <div className="mx-auto flex max-w-80 flex-col gap-4 py-20">
           <Button onClick={getKYCLinks}>Get KYC links</Button>
-          <Button onClick={putCustomer}>Put customer</Button>
           <Button onClick={checkKYCStatus}>Check KYC status</Button>
           <Button onClick={getOfframpFees}>Get the current fees</Button>
           <Button onClick={getLiquidations}>
