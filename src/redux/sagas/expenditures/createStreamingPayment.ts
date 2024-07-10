@@ -191,24 +191,21 @@ function* createStreamingPaymentAction({
       streamingPaymentsClient.getNumStreamingPayments,
     );
 
-    yield mutateWithAuthRetry(() =>
-      apolloClient.mutate<
-        CreateStreamingPaymentMetadataMutation,
-        CreateStreamingPaymentMetadataMutationVariables
-      >({
-        mutation: CreateStreamingPaymentMetadataDocument,
-        variables: {
-          input: {
-            id: getExpenditureDatabaseId(
-              colonyAddress,
-              toNumber(streamingPaymentId),
-            ),
-            endCondition,
-            limitAmount,
-          },
+    yield apolloClient.mutate<
+      CreateStreamingPaymentMetadataMutation,
+      CreateStreamingPaymentMetadataMutationVariables
+    >({
+      mutation: CreateStreamingPaymentMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(
+            colonyAddress,
+            toNumber(streamingPaymentId),
+          ),
+          endCondition,
         },
-      }),
-    );
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
