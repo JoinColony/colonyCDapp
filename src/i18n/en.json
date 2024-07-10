@@ -1018,6 +1018,7 @@
     "manageTokensTable.notFound": "Token not found",
     "manageTokensTable.availableTokens": "Available tokens",
     "manageTokensTable.error": "This token is already on colony tokens list",
+    "manageTokensTable.tokenError": "This is not a valid token",
     "manageVerifiedMembers.manage": "Manage",
     "manageVerifiedMembers.add": "Add",
     "manageVerifiedMembers.remove": "Remove",

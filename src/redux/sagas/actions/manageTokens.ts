@@ -19,6 +19,7 @@ import {
   uploadAnnotation,
 } from '../utils/index.ts';
 import { getManageTokensOperation } from '../utils/metadataDelta.ts';
+import { validateTokenAddresses } from '../utils/validateTokens.ts';
 
 function* manageTokensAction({
   payload: {
@@ -79,6 +80,8 @@ function* manageTokensAction({
         ActionTypes.TRANSACTION_CREATED,
       );
     }
+
+    yield validateTokenAddresses({ tokenAddresses });
 
     yield put(
       transactionAddParams(manageTokens.id, [
