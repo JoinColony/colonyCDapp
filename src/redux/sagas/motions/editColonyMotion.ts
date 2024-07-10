@@ -259,11 +259,11 @@ function* editColonyMotion({
           input: {
             id: getPendingMetadataDatabaseId(colonyAddress, txHash),
             displayName: colonyDisplayName ?? colony.metadata.displayName,
-            avatar: colonyAvatarImage,
-            thumbnail: colonyThumbnail,
-            description: colonyDescription,
-            externalLinks: colonyExternalLinks,
-            objective: colonyObjective,
+            avatar: colonyAvatarImage ?? colony.metadata.avatar,
+            thumbnail: colonyThumbnail ?? colony.metadata.thumbnail,
+            description: colonyDescription ?? colony.metadata.description,
+            externalLinks: colonyExternalLinks ?? colony.metadata.externalLinks,
+            objective: colonyObjective ?? colony.metadata.objective,
             // We only need a single entry here, as we'll be appending it to the colony's metadata
             // changelog if the motion succeeds.
             changelog: [
