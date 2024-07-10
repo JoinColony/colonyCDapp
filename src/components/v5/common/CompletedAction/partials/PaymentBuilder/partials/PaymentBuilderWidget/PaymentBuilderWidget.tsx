@@ -215,7 +215,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   useEffect(() => {
     if (
       !hasEveryMotionEnded &&
-      motionState === MotionState.FailedNotFinalizable
+      (motionState === MotionState.FailedNotFinalizable ||
+        motionState === MotionState.Invalid)
     ) {
       setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
     }
@@ -225,6 +226,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     motionState,
     setSelectedTransaction,
   ]);
+
+  useEffect(() => {
+    setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
+  }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -299,7 +304,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           motionState &&
           motionStakes ? (
             <MotionCountDownTimer
-              key={motionAction?.transactionHash}
+              key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
               motionState={motionState}
               motionId={motionId}
               motionStakes={motionStakes}
