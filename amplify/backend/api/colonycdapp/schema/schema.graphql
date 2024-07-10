@@ -3824,7 +3824,8 @@ type StreamingPayment @model {
   startTime: String!
   endTime: String!
   interval: String!
-  tokenAddress: String!
+  tokenAddress: ID!
+  token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
@@ -3846,7 +3847,6 @@ type StreamingPayment @model {
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
-  limitAmount: String
 }
 
 type StreamingPaymentClaim {
