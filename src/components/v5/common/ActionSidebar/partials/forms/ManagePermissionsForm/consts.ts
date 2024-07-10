@@ -1,19 +1,25 @@
 /* eslint-disable camelcase */
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
-import { boolean, object } from 'yup';
+import { boolean, number, object, string } from 'yup';
 
-import { type DecisionMethod } from '~types/actions.ts';
+import { UserRole } from '~constants/permissions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { getObjectKeys } from '~utils/objects/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+import { getEnumYupSchema } from '~utils/yup/utils.ts';
 import {
   type DESCRIPTION_FIELD_NAME,
   type CREATED_IN_FIELD_NAME,
   type DECISION_METHOD_FIELD_NAME,
   type MEMBER_FIELD_NAME,
   type TEAM_FIELD_NAME,
+  ACTION_BASE_VALIDATION_SCHEMA,
 } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
+
+import { extractColonyRoleFromPermissionKey } from './utils.ts';
 
 export const ROLE_FIELD_NAME = 'role';
 export const AUTHORITY_FIELD_NAME = 'authority';
@@ -43,6 +49,10 @@ export type ManagePermissionsFormValues = {
   [PERMISSIONS_FIELD_NAME]: Permissions | undefined;
   [DECISION_METHOD_FIELD_NAME]: DecisionMethod;
   [DESCRIPTION_FIELD_NAME]: string | undefined;
+  // These are meant to be used as reference values in the validation schema
+  // and won't be included in the form submission
+  dbUserRole?: ManagePermissionsFormValues['role'];
+  dbUserPermissions?: ColonyRole[];
 };
 
 export type SchemaTestContext = { parent: ManagePermissionsFormValues };
@@ -77,7 +87,7 @@ export const AuthorityOptions: CardSelectOption<string>[] = [
   },
 ];
 
-export const MANAGE_PERMISSIONS_FORM_MSGS = defineMessages({
+const MSG = defineMessages({
   samePermissionsApplied: {
     id: 'managePermissionsFormError.samePermissionsApplied',
     defaultMessage: 'This user already has these permissions',
@@ -88,29 +98,70 @@ export const MANAGE_PERMISSIONS_FORM_MSGS = defineMessages({
   },
 });
 
-export const schemaTests: {
-  [K in keyof Pick<ManagePermissionsFormValues, 'role' | 'permissions'>]: {
-    scope: string;
-    testTitles: Record<string, string>;
-  };
-} = {
-  role: {
-    scope: ROLE_FIELD_NAME,
-    testTitles: {
-      samePermissionsApplied: formatMessage(
-        MANAGE_PERMISSIONS_FORM_MSGS.samePermissionsApplied,
-      ),
-    },
-  },
-  permissions: {
-    scope: PERMISSIONS_FIELD_NAME,
-    testTitles: {
-      permissionRequired: formatMessage(
-        MANAGE_PERMISSIONS_FORM_MSGS.permissionRequired,
-      ),
-      samePermissionsApplied: formatMessage(
-        MANAGE_PERMISSIONS_FORM_MSGS.samePermissionsApplied,
-      ),
-    },
-  },
-};
+export const validationSchema = object()
+  .shape<ManagePermissionsFormValues>({
+    member: string().required(),
+    team: number().required(),
+    createdIn: number().required(),
+    role: string()
+      .test(
+        ROLE_FIELD_NAME,
+        formatMessage(MSG.samePermissionsApplied),
+        (role, { parent: { member, team, dbUserRole } }: SchemaTestContext) => {
+          if (member && team && role && role !== UserRole.Custom) {
+            return role !== dbUserRole;
+          }
+
+          return true;
+        },
+      )
+      .required(),
+    authority: getEnumYupSchema(Authority).required(),
+    permissions: permissionsSchema.when('role', {
+      is: UserRole.Custom,
+      then: (schema: typeof permissionsSchema) =>
+        schema
+          .test(
+            PERMISSIONS_FIELD_NAME,
+            formatMessage(MSG.permissionRequired),
+            (permissions, { parent: { member, team } }: SchemaTestContext) => {
+              if (member && team && permissions) {
+                return Object.values(permissions).some(Boolean);
+              }
+
+              return true;
+            },
+          )
+          .test(
+            PERMISSIONS_FIELD_NAME,
+            formatMessage(MSG.samePermissionsApplied),
+            (
+              permissions,
+              {
+                parent: { member, team, dbUserPermissions },
+              }: SchemaTestContext,
+            ) => {
+              if (member && team && permissions && dbUserPermissions) {
+                // At this point, the user's current and db-stored permissions are represented as ColonyRole[]: [0, 1, 5, 6]
+                // Meanwhile the form-formatted permissions are represented as an object: { role_0: false, ... role_6: true }
+                // We'd want to filter the truthy form-formatted permissions and map their ColonyRole suffixes
+                // i.e. { role_0: false, role_1: true, role_2: false, role_4: true } => [1, 4]
+                const newPermissions = getObjectKeys(permissions)
+                  .filter((permissionKey) => permissions[permissionKey])
+                  .map(extractColonyRoleFromPermissionKey);
+
+                return (
+                  JSON.stringify(dbUserPermissions.sort()) !==
+                  JSON.stringify(newPermissions.sort())
+                );
+              }
+
+              return true;
+            },
+          ),
+    }),
+    decisionMethod: getEnumYupSchema(DecisionMethod).required(),
+    description: string().optional(),
+  })
+  .defined()
+  .concat(ACTION_BASE_VALIDATION_SCHEMA);

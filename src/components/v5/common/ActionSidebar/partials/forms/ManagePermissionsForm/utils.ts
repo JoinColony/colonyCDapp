@@ -31,7 +31,7 @@ export const getRoleLabel = (role: string | undefined) => {
 
 export const getPermissionsMap = (
   permissions: ManagePermissionsFormValues['permissions'],
-  role: string | undefined,
+  role: ManagePermissionsFormValues['role'],
 ) => {
   const permissionsList = (() => {
     switch (role) {

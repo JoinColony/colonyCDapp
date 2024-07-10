@@ -9,7 +9,7 @@ export interface ActionFormRowProps<T = any> {
   title: ReactNode;
   isExpandable?: boolean;
   isMultiLine?: boolean;
-  fieldName?: keyof T;
+  fieldName?: Extract<keyof T, string>;
   className?: string;
   children?: ((props: UseToggleReturnType) => ReactNode) | ReactNode;
   tooltips?: {

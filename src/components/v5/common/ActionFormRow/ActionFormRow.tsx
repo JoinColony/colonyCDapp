@@ -25,7 +25,7 @@ const ActionFormRow = <T,>(
 ) => {
   const {
     fieldState: { error },
-  } = useController({ name: (fieldName as string) || '' });
+  } = useController({ name: fieldName || '' });
   const rowToggle = useToggle();
   const [isExpanded, { toggle }] = rowToggle;
   const isError = !!error;

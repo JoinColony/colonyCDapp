@@ -41,4 +41,6 @@ export interface TableProps<T>
   virtualizedProps?: {
     virtualizedRowHeight?: number;
   };
+  tableClassName?: string;
+  tableBodyRowKeyProp?: Extract<keyof T, string>;
 }
