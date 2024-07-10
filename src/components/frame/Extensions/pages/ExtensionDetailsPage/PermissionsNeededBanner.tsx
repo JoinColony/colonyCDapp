@@ -11,6 +11,8 @@ import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
+import { useCheckExtensionEnabled } from './hooks.ts';
+
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
 
@@ -37,6 +39,9 @@ interface Props {
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+  const { checkExtensionEnabled } = useCheckExtensionEnabled(
+    extensionData.extensionId ?? '',
+  );
 
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const userHasRoles = addressHasRoles({
@@ -58,6 +63,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
         colonyAddress: colony.colonyAddress,
         extensionData,
       });
+      await checkExtensionEnabled();
       setIsPermissionEnabled(true);
     } catch (err) {
       console.error(err);
