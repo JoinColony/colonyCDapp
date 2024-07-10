@@ -19,6 +19,7 @@ import finalizeMotionSaga from './finalizeMotion.ts';
 import initiateSafeTransactionMotionSaga from './initiateSafeTransactionMotion.ts';
 import managePermissionsMotionSaga from './managePermissionsMotion.ts';
 import manageReputationMotionSaga from './manageReputationMotion.ts';
+import manageTokensMotionSaga from './manageTokens.ts';
 import moveFundsMotionSaga from './moveFundsMotion.ts';
 import paymentMotionSaga from './paymentMotion.ts';
 import removeVerifiedMembersMotionSaga from './removeVerifiedMembers.ts';
@@ -53,5 +54,6 @@ export default function* actionsSagas() {
     call(initiateSafeTransactionMotionSaga),
     call(addVerifiedMembersMotionSaga),
     call(removeVerifiedMembersMotionSaga),
+    call(manageTokensMotionSaga),
   ]);
 }
