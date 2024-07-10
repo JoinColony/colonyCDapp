@@ -1,6 +1,6 @@
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
-import { getMultiSigPayload } from '~utils/multiSig.ts';
+import { getMotionPayload } from '~utils/motions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type ManageColonyObjectivesFormValues } from './consts.ts';
@@ -28,7 +28,7 @@ export const getManageColonyObjectivesPayload = (
 
   return {
     ...baseDomainPayload,
-    ...getMultiSigPayload(
+    ...getMotionPayload(
       values.decisionMethod === DecisionMethod.MultiSig,
       colony,
     ),
