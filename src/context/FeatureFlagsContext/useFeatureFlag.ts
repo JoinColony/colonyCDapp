@@ -1,4 +1,5 @@
 import { useFeatureFlagPayload } from 'posthog-js/react';
+import { useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 
@@ -25,27 +26,39 @@ function isFeatureFlagPayload(value): value is FeatureFlagPayload {
 }
 
 export const useFeatureFlag = (featureFlagName: FeatureFlag) => {
-  const payload = useFeatureFlagPayload(featureFlagName);
+  const featureFlagPayload = useFeatureFlagPayload(featureFlagName);
+  const [loading, setLoading] = useState(true);
+  const [enabled, setEnabled] = useState(false);
   const { wallet } = useAppContext();
 
-  if (!wallet?.address) {
-    return false;
-  }
+  useEffect(() => {
+    if (!featureFlagPayload || !wallet?.address) {
+      return;
+    }
+    setLoading(false);
 
-  if (!isFeatureFlagPayload(payload)) {
-    // Handle the case where the payload does not match the expected structure
-    console.warn('Invalid feature flag payload', payload);
-    return false;
-  }
+    if (!isFeatureFlagPayload(featureFlagPayload)) {
+      console.warn('Invalid feature flag payload', featureFlagPayload);
+      return;
+    }
 
-  const { isEnabled, whitelistedUsers, blacklistedUsers } = payload;
-  if (isEnabled && blacklistedUsers?.includes(wallet?.address)) {
-    return false;
-  }
+    const { isEnabled, whitelistedUsers, blacklistedUsers } =
+      featureFlagPayload;
+    if (isEnabled && blacklistedUsers?.includes(wallet?.address)) {
+      setEnabled(false);
+      return;
+    }
 
-  if (!isEnabled && whitelistedUsers?.includes(wallet?.address)) {
-    return true;
-  }
+    if (!isEnabled && whitelistedUsers?.includes(wallet?.address)) {
+      setEnabled(true);
+      return;
+    }
 
-  return isEnabled;
+    setEnabled(true);
+  }, [featureFlagPayload, wallet?.address]);
+
+  return {
+    isEnabled: enabled,
+    isLoading: loading,
+  };
 };

@@ -46,6 +46,8 @@ const UserProfilePage: FC = () => {
 
   const { setBreadcrumbs } = usePageHeadingContext();
 
+  const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
+
   useEffect(() => {
     setBreadcrumbs([
       {
@@ -57,6 +59,22 @@ const UserProfilePage: FC = () => {
   }, [setBreadcrumbs]);
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+
+  useEffect(() => {
+    if (
+      !cryptoToFiatFeatureFlag?.isEnabled &&
+      !cryptoToFiatFeatureFlag?.isLoading &&
+      pathname !== resolvedEditProfilePath.pathname
+    ) {
+      navigate(resolvedEditProfilePath);
+    }
+  }, [
+    cryptoToFiatFeatureFlag?.isEnabled,
+    cryptoToFiatFeatureFlag?.isLoading,
+    pathname,
+    resolvedEditProfilePath,
+    navigate,
+  ]);
 
   useEffect(() => {
     switch (pathname) {
@@ -101,7 +119,10 @@ const UserProfilePage: FC = () => {
     },
   ];
 
-  if (featureFlags[FeatureFlag.CRYPTO_TO_FIAT]) {
+  if (
+    cryptoToFiatFeatureFlag?.isEnabled &&
+    !cryptoToFiatFeatureFlag?.isLoading
+  ) {
     items.push({
       id: TabId.CryptoToFiat,
       title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',

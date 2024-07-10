@@ -10,7 +10,11 @@ import {
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { useCheckKycStatusMutation } from '~gql';
-import { LANDING_PAGE_ROUTE } from '~routes';
+import {
+  LANDING_PAGE_ROUTE,
+  USER_EDIT_PROFILE_ROUTE,
+  USER_HOME_ROUTE,
+} from '~routes';
 import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
@@ -38,6 +42,7 @@ const MSG = defineMessages({
 const UserCryptoToFiatPage = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const featureFlags = useContext(FeatureFlagsContext);
+  const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
@@ -54,13 +59,12 @@ const UserCryptoToFiatPage = () => {
     });
   }, [checkKycStatus]);
 
-  // @TODO: Add loading state to FFs, otherwise it always thinks the flag is off and redirects
-  if (!featureFlags[FeatureFlag.CRYPTO_TO_FIAT]) {
-    // return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
+  if (userLoading || walletConnecting || cryptoToFiatFeatureFlag?.isLoading) {
+    return <LoadingTemplate loadingText={MSG.loadingText} />;
   }
 
-  if (userLoading || walletConnecting) {
-    return <LoadingTemplate loadingText={MSG.loadingText} />;
+  if (!cryptoToFiatFeatureFlag?.isEnabled) {
+    return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
   }
 
   if (!user) {
