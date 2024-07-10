@@ -16,7 +16,6 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -140,7 +139,7 @@ function* createStreamingPaymentAction({
         startTimestamp,
         realEndTimestamp,
         interval,
-        recipientAddress,
+        paymentAddress,
         tokenAddress,
         convertedAmount,
       ],
@@ -204,7 +203,6 @@ function* createStreamingPaymentAction({
               toNumber(streamingPaymentId),
             ),
             endCondition,
-            limitAmount,
           },
         },
       }),
