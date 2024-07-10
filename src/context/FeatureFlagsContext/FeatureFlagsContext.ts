@@ -5,5 +5,8 @@ export enum FeatureFlag {
 }
 
 export const FeatureFlagsContext = createContext<{
-  [key in FeatureFlag]?: boolean;
+  [key in FeatureFlag]?: {
+    isEnabled: boolean;
+    isLoading: boolean;
+  };
 }>({});

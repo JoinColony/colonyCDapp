@@ -41,7 +41,10 @@ const UserHub: FC<UserHubProps> = ({
   const [selectedTab, setSelectedTab] = useState(defaultOpenedTab);
 
   const filteredTabList = tabList.filter(
-    (tabItem) => !tabItem.featureFlag || featureFlags[tabItem.featureFlag],
+    (tabItem) =>
+      !tabItem.featureFlag ||
+      (!featureFlags[tabItem.featureFlag]?.isLoading &&
+        featureFlags[tabItem.featureFlag]?.isEnabled),
   );
 
   const handleTabChange = (newTab: UserHubTabs) => {
