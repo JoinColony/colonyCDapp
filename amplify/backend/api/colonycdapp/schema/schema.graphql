@@ -4149,12 +4149,17 @@ type StreamingPayment @model @searchable {
   endTime: String!
   interval: String!
 <<<<<<< HEAD
+<<<<<<< HEAD
   tokenAddress: ID!
   token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
   payouts: [ExpenditurePayout!]
 =======
   tokenAddress: String!
+=======
+  tokenAddress: ID!
+  token: Token @hasOne(fields: ["tokenAddress"])
+>>>>>>> 38c525943 (Feat: Remove limit amount from streamingPaymentMetadata)
   amount: String!
 >>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   claims: [StreamingPaymentClaim!]
@@ -4221,6 +4226,7 @@ type StreamingPaymentChanges {
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
+<<<<<<< HEAD
   """
   List of Streaming Payment metadata changelog entries
   """
@@ -4256,6 +4262,8 @@ type StreamingPaymentClaim {
 type StreamingPaymentClaim {
   amount: String!
   timestamp: String!
+=======
+>>>>>>> 38c525943 (Feat: Remove limit amount from streamingPaymentMetadata)
 }
 
 type StreamingPaymentClaim {

@@ -38,6 +38,7 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
+import meta from '~v5/common/PageLoader/PageLoader.stories.tsx';
 
 export type CreateStreamingPaymentPayload =
   Action<ActionTypes.STREAMING_PAYMENT_CREATE>['payload'];
@@ -286,8 +287,8 @@ function* createStreamingPaymentAction({
             endCondition,
           },
         },
-      }),
-    );
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
