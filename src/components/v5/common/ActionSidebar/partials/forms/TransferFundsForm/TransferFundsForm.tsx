@@ -25,7 +25,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const selectedTeam = watch('from');
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  const createdInFilterFn = useFilterCreatedInField('from');
+  const createdInFilterFn = useFilterCreatedInField('from', true);
 
   return (
     <>
@@ -71,7 +71,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       />
 
       <DecisionMethodField />
-      <CreatedIn filterOptionsFn={createdInFilterFn} />
+      <CreatedIn readonly filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
   );
