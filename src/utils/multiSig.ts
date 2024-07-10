@@ -23,6 +23,10 @@ export const getRolesNeededForMultiSigAction = ({
       return PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
     case ColonyActionType.EditDomainMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
+    case ColonyActionType.EmitDomainReputationRewardMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
+    case ColonyActionType.EmitDomainReputationPenaltyMultisig:
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove;
     case ColonyActionType.MintTokensMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
     case ColonyActionType.UnlockTokenMultisig:
