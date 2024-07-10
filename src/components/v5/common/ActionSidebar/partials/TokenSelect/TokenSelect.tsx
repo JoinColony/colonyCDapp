@@ -3,8 +3,14 @@ import { isAddress } from 'ethers/lib/utils';
 import React, { type FC, useEffect, useState, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 
+import { apolloClient } from '~apollo';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import {
+  GetTokenFromEverywhereDocument,
+  type GetTokenFromEverywhereQuery,
+  type GetTokenFromEverywhereQueryVariables,
+} from '~gql';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -24,6 +30,7 @@ const TokenSelect: FC<TokenSelectProps> = ({
 }) => {
   const { colony } = useColonyContext();
   const [searchError, setSearchError] = useState(false);
+  const [tokenError, setTokenError] = useState(false);
   const {
     field,
     fieldState: { error },
@@ -55,6 +62,7 @@ const TokenSelect: FC<TokenSelectProps> = ({
   useEffect(() => {
     if (!isTokenSelectVisible) {
       setSearchError(false);
+      setTokenError(false);
     }
   }, [isTokenSelectVisible]);
 
@@ -91,15 +99,19 @@ const TokenSelect: FC<TokenSelectProps> = ({
             <TokenSearchSelect
               showEmptyContent={!tokenOptions.options.length}
               items={[tokenOptions]}
-              state={searchError ? FieldState.Error : undefined}
+              state={searchError || tokenError ? FieldState.Error : undefined}
               message={
-                searchError ? (
+                searchError || tokenError ? (
                   <span className="text-sm text-negative-400">
-                    {formatText({ id: 'manageTokensTable.error' })}
+                    {formatText({
+                      id: searchError
+                        ? 'manageTokensTable.error'
+                        : 'manageTokensTable.tokenError',
+                    })}
                   </span>
                 ) : undefined
               }
-              onSearch={(query) => {
+              onSearch={async (query) => {
                 const isColonyToken = colonyTokens.some(
                   ({ token: { tokenAddress } }) => tokenAddress === query,
                 );
@@ -109,6 +121,27 @@ const TokenSelect: FC<TokenSelectProps> = ({
                   return;
                 }
 
+                const {
+                  data: { getTokenFromEverywhere },
+                } = await apolloClient.query<
+                  GetTokenFromEverywhereQuery,
+                  GetTokenFromEverywhereQueryVariables
+                >({
+                  query: GetTokenFromEverywhereDocument,
+                  variables: {
+                    input: {
+                      tokenAddress: query,
+                    },
+                  },
+                });
+
+                setTokenError(!getTokenFromEverywhere);
+
+                if (!getTokenFromEverywhere) {
+                  return;
+                }
+
+                // check here that it passes the check
                 field.onChange(isAddress(query) ? query : undefined);
               }}
               onSelect={(value) => {

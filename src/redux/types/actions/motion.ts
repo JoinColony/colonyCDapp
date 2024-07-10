@@ -410,4 +410,20 @@ export type MotionActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
       MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_MANAGE_TOKENS,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        tokenAddresses: Address[];
+        customActionTitle: string;
+        annotationMessage?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_MANAGE_TOKENS_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
+      MetaWithSetter<object>
     >;
