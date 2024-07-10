@@ -70,7 +70,6 @@ const TxButton: FC = () => {
             <SpinnerGap className="animate-spin" size={14} />
           </span>
         }
-        data-openhubifclicked // see UserReputation for usage
       >
         {isMobile ? undefined : (
           <span>
@@ -103,7 +102,6 @@ const TxButton: FC = () => {
             <Check className="text-base-white" size={14} />
           </span>
         }
-        data-openhubifclicked // see UserReputation for usage
       />
     );
   }
