@@ -1,8 +1,11 @@
 import clsx from 'clsx';
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { useRef, type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useAddClassToElement } from '~hooks/useAddClassToElement.ts';
+import { useResize } from '~hooks/useResize.ts';
+import { addClassToElement } from '~utils/css/addClassToElement.ts';
+import { isElementOverflowingContainerY } from '~utils/css/isElementOverflowingContainerY.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
 import ModalBase from './ModalBase.tsx';
@@ -39,6 +42,16 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     className: 'show-header-in-modal',
     element: document.body,
   });
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const addOverflowContentClass = () => {
+    const showScrollbar = isElementOverflowingContainerY(contentRef.current);
+    if (showScrollbar) {
+      addClassToElement(contentRef.current, '-mr-1.5');
+    }
+  };
+
+  useResize(addOverflowContentClass);
 
   return (
     <ModalBase
@@ -52,7 +65,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       <div
         className={`${styles.modalContentWrapper} overflow-y-auto overflow-x-hidden`}
       >
-        <div className="relative mr-[-6px]">
+        <div ref={contentRef} className="relative">
           {Icon && (
             <span
               className={clsx(
