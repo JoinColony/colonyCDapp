@@ -4,7 +4,7 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { mutateWithAuthRetry } from '~apollo/utils.ts';
@@ -19,7 +19,6 @@ import { type AllActions, type Action } from '~redux/types/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import {
   type ChannelDefinition,
@@ -108,17 +107,15 @@ function* createStreamingPaymentAction({
         ColonyRole.Arbitration,
       );
 
-    const convertedAmount = BigNumber.from(amount).mul(
-      BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
-    );
+    const amountInWei = moveDecimal(amount, tokenDecimals) as string;
+    const limitInWei = moveDecimal(limitAmount, tokenDecimals) as string;
 
     const realEndTimestamp = getEndTimeByEndCondition({
       endCondition,
       startTimestamp,
       interval,
-      convertedAmount,
-      tokenDecimals,
-      limitAmount,
+      amountInWei,
+      limitInWei,
       endTimestamp,
     });
 
@@ -142,7 +139,7 @@ function* createStreamingPaymentAction({
         interval,
         recipientAddress,
         tokenAddress,
-        convertedAmount,
+        amountInWei,
       ],
     });
 
