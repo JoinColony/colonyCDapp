@@ -3,10 +3,9 @@ import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { type CountryData } from '~utils/countries.ts';
+import { getCountries, getCountryByCode } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { FormDatepicker } from '../FormDatepicker.tsx';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
@@ -17,7 +16,7 @@ import { getValidationSchema } from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
-  selectedCountry: CountryData | null;
+  countryCode: string;
   onClose: () => void;
 }
 
@@ -39,7 +38,7 @@ const MSG = defineMessages({
   },
   proceedButtonTitle: {
     id: `${displayName}.proceedButtonTitle`,
-    defaultMessage: 'Next',
+    defaultMessage: 'Submit',
   },
   dobLabel: {
     id: `${displayName}.dobLabel`,
@@ -58,18 +57,30 @@ const MSG = defineMessages({
     id: `${displayName}.taxPlaceholder`,
     defaultMessage: 'Tax identification number',
   },
+  countryLabel: {
+    id: `${displayName}.countryLabel`,
+    defaultMessage: 'Country',
+  },
 });
 
 export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
+  countryCode,
   onSubmit,
-  selectedCountry,
   onClose,
 }) => {
+  const selectedCountry = getCountryByCode(countryCode);
   const validationSchema = useMemo(() => {
     // For the US country, validation should include address validation.
     const shouldValiateAddress = selectedCountry?.alpha2 === 'US';
     return getValidationSchema(shouldValiateAddress);
   }, [selectedCountry]);
+
+  const countries = getCountries();
+  const countriesOptions = countries.map((item) => ({
+    value: item.alpha3,
+    label: item.name,
+    country: item,
+  }));
 
   return (
     <div>
@@ -80,7 +91,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         validationSchema={validationSchema}
         mode="onSubmit"
       >
-        <FormRow>
+        {/* <FormRow>
           <FormDatepicker
             name="birthDate"
             label={formatText(MSG.dobLabel)}
@@ -93,11 +104,19 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
             label={formatText(MSG.taxLabel)}
             placeholder={formatText(MSG.taxPlaceholder)}
           />
-        </FormRow>
+        </FormRow> */}
 
         <label className="mb-1.5 text-md font-medium text-gray-700">
           Adress
         </label>
+
+        <FormRow>
+          <FormSelect
+            name="country"
+            options={countriesOptions}
+            labelMessage={formatText(MSG.countryLabel)}
+          />
+        </FormRow>
 
         <FormRow>
           <FormInput name="address1" placeholder="Address line 1" />
@@ -114,7 +133,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
             {!!selectedCountry?.subdivisions?.length && (
               <div className="ml-1 flex-1">
                 <FormSelect
-                  name="subdivisions"
+                  name="state"
                   options={selectedCountry?.subdivisions.map((item) => ({
                     value: item.code,
                     label: item.name,

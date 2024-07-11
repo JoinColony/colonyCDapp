@@ -48,3 +48,27 @@ const countriesData: CountryData[] = Object.entries(countryNames)
   });
 
 export const getCountries = () => countriesData;
+
+export const getCountryByCode = (code: string): CountryData | undefined => {
+  let alpha2Code: string | undefined;
+
+  if (code.length === 2) {
+    alpha2Code = code;
+  } else if (code.length === 3) {
+    alpha2Code = countries.getAlpha2Code(code, 'en');
+  }
+
+  if (!alpha2Code || FILTERED_COUNTRIES.includes(alpha2Code)) {
+    return undefined;
+  }
+
+  const name = countries.getName(alpha2Code, 'en');
+
+  if (!name) {
+    return undefined;
+  }
+  const alpha3 = alpha2ToAlpha3[alpha2Code];
+  const subdivisions = alpha2Code === 'US' ? usStates : [];
+
+  return { name, alpha2: alpha2Code, alpha3, subdivisions };
+};

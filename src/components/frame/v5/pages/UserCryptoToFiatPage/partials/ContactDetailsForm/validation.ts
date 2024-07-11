@@ -2,8 +2,6 @@ import * as Yup from 'yup';
 
 export const getValidationSchema = (shouldValidateAddress) =>
   Yup.object({
-    birthDate: Yup.string().required(),
-    tax: Yup.string().required(),
     address1: shouldValidateAddress
       ? Yup.string().required()
       : Yup.string().notRequired(),
@@ -11,7 +9,7 @@ export const getValidationSchema = (shouldValidateAddress) =>
     city: shouldValidateAddress
       ? Yup.string().required()
       : Yup.string().notRequired(),
-    subdivisions: shouldValidateAddress
+    state: shouldValidateAddress
       ? Yup.string().required()
       : Yup.string().notRequired(),
     postcode: shouldValidateAddress
