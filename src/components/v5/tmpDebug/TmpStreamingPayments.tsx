@@ -1,8 +1,10 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { Id } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import React, { useState } from 'react';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -23,6 +25,7 @@ import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
+import { getSelectedToken } from '~utils/tokens.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
@@ -530,7 +533,16 @@ const TmpStreamingPayments = () => {
               End Condition: <b>{streamingPayment.metadata?.endCondition}</b>
             </p>
             <p>
-              Limit: <b>{getStreamingPaymentLimit({ streamingPayment })}</b>
+              Limit:{' '}
+              <b>
+                {moveDecimal(
+                  getStreamingPaymentLimit({ streamingPayment }),
+                  -(
+                    getSelectedToken(colony, streamingPayment.tokenAddress)
+                      ?.decimals || DEFAULT_TOKEN_DECIMALS
+                  ),
+                )}
+              </b>
             </p>
           </div>
         )}
