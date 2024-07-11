@@ -8,25 +8,22 @@ export const getStreamingPaymentLimit = ({
 }: {
   streamingPayment: StreamingPayment;
 }): string | undefined => {
-  const { token, amount, startTime, endTime, interval, metadata } =
-    streamingPayment;
+  const {
+    amount: amountInWei,
+    startTime,
+    endTime,
+    interval,
+    metadata,
+  } = streamingPayment;
 
-  const tokenDecimals = token?.decimals;
-
-  if (
-    !tokenDecimals ||
-    metadata?.endCondition !== StreamingPaymentEndCondition.LimitReached
-  ) {
+  if (metadata?.endCondition !== StreamingPaymentEndCondition.LimitReached) {
     return '0';
   }
 
-  const originalAmount = BigNumber.from(amount).div(
-    BigNumber.from(10).pow(tokenDecimals),
-  );
-
-  const limit = BigNumber.from(endTime)
+  const limitInWei = BigNumber.from(endTime)
     .sub(startTime)
-    .mul(originalAmount)
+    .mul(amountInWei)
     .div(interval);
-  return limit.toString();
+
+  return limitInWei.toString();
 };
