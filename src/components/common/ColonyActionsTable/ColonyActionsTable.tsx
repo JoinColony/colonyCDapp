@@ -1,6 +1,5 @@
 import React, { type FC } from 'react';
 
-import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/index.ts';
@@ -27,7 +26,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
           <ActionsTableFilters />
         </TableHeader>
       )}
-      <Table<ColonyAction & ActivityFeedColonyAction>
+      <Table<ColonyAction>
         {...tableProps}
         renderSubComponent={renderSubComponent}
       />

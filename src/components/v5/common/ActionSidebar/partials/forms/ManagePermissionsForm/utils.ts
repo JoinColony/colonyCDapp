@@ -1,4 +1,4 @@
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import {
   CUSTOM_USER_ROLE,
@@ -32,6 +32,7 @@ export const getRoleLabel = (role: string | undefined) => {
 export const getPermissionsMap = (
   permissions: ManagePermissionsFormValues['permissions'],
   role: ManagePermissionsFormValues['role'],
+  team: ManagePermissionsFormValues['team'],
 ) => {
   const permissionsList = (() => {
     switch (role) {
@@ -71,7 +72,11 @@ export const getPermissionsMap = (
   return AVAILABLE_ROLES.reduce(
     (result, permission) => ({
       ...result,
-      [permission]: permissionsList.includes(permission),
+      [permission]:
+        team !== Id.RootDomain &&
+        [ColonyRole.Root, ColonyRole.Recovery].includes(permission)
+          ? false
+          : permissionsList.includes(permission),
     }),
     {},
   );
@@ -89,7 +94,7 @@ export const getManagePermissionsPayload = (
   colonyName: colony.name,
   colonyAddress: colony.colonyAddress,
   motionDomainId: Number(values.createdIn),
-  roles: getPermissionsMap(values.permissions, values.role),
+  roles: getPermissionsMap(values.permissions, values.role, values.team),
 });
 
 export const extractColonyRoleFromPermissionKey = (permissionKey: string) => {

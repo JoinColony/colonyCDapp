@@ -79,7 +79,7 @@ export const useManagePermissions = (
         colony,
         userAddress: member,
         domainId: team,
-        excludeInherited: true,
+        intersectingRoles: true,
       });
 
       const userRoleMeta = getRole(userRolesForDomain);

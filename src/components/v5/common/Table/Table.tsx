@@ -304,7 +304,10 @@ const Table = <T,>({
                     ? data[row.index]?.[tableBodyRowKeyProp]
                     : null;
 
-                  const key = typeof rowKey === 'string' ? rowKey : row.id;
+                  const key =
+                    typeof rowKey === 'string' || typeof rowKey === 'number'
+                      ? rowKey
+                      : row.id;
 
                   return (
                     <React.Fragment key={key}>
