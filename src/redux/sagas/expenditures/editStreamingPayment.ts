@@ -4,7 +4,8 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -22,7 +23,7 @@ import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { getSelectedToken } from '~utils/tokens.ts';
 
 import {
   createTransaction,
