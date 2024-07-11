@@ -36,8 +36,9 @@ export const useManagePermissions = (
     trigger,
     control,
     setValue,
+    setError,
     clearErrors,
-    formState: { submitCount },
+    formState: { submitCount, errors },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
@@ -56,14 +57,22 @@ export const useManagePermissions = (
     if (isModeRoleSelected) {
       setValue('authority', Authority.Own);
     }
-  }, [isModeRoleSelected, setValue]);
+
+    if (errors.permissions) {
+      setError('role', {});
+    } else {
+      clearErrors('role');
+    }
+  }, [clearErrors, errors.permissions, isModeRoleSelected, setError, setValue]);
 
   useEffect(() => {
     const { unsubscribe } = watch(({ member, team, role }, { name }) => {
-      if (role === UserRole.Custom) {
-        trigger('permissions');
-      } else {
-        clearErrors('permissions');
+      if (submitCount > 0) {
+        if (role === UserRole.Custom) {
+          trigger('permissions');
+        } else {
+          clearErrors('permissions');
+        }
       }
 
       if (
@@ -88,11 +97,11 @@ export const useManagePermissions = (
         ? userRoleMeta.role
         : undefined;
 
-      setValue('dbUserRole', userRole);
-      setValue('dbUserPermissions', userRolesForDomain);
+      setValue('_dbUserRole', userRole);
+      setValue('_dbUserPermissions', userRolesForDomain);
 
       if (role !== UserRole.Custom) {
-        setValue('role', userRole, { shouldValidate: true });
+        setValue('role', userRole, { shouldValidate: submitCount > 0 });
       }
 
       AVAILABLE_ROLES.forEach((colonyRole) => {
@@ -104,7 +113,16 @@ export const useManagePermissions = (
     });
 
     return () => unsubscribe();
-  }, [clearErrors, colony, setValue, submitCount, trigger, watch]);
+  }, [
+    clearErrors,
+    colony,
+    errors.permissions,
+    setError,
+    setValue,
+    submitCount,
+    trigger,
+    watch,
+  ]);
 
   useActionFormBaseHook({
     getFormOptions,
@@ -128,6 +146,7 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
+    mode: 'onSubmit',
   });
 
   return {

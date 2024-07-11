@@ -49,10 +49,18 @@ export type ManagePermissionsFormValues = {
   [PERMISSIONS_FIELD_NAME]: Permissions | undefined;
   [DECISION_METHOD_FIELD_NAME]: DecisionMethod;
   [DESCRIPTION_FIELD_NAME]: string | undefined;
-  // These are meant to be used as reference values in the validation schema
+  // These are intended to be used as reference values when running form validations
   // and won't be included in the form submission
-  dbUserRole?: ManagePermissionsFormValues['role'];
-  dbUserPermissions?: ColonyRole[];
+  /**
+   * Keeps track of a user's current DB role
+   * @internal
+   */
+  _dbUserRole?: ManagePermissionsFormValues['role'];
+  /**
+   * Keeps track of a user's current DB permissions
+   * @internal
+   */
+  _dbUserPermissions?: ColonyRole[];
 };
 
 export type SchemaTestContext = { parent: ManagePermissionsFormValues };
@@ -94,7 +102,7 @@ const MSG = defineMessages({
   },
   permissionRequired: {
     id: 'managePermissionsFormError.permissionsRequired',
-    defaultMessage: 'You have to select at least one permission',
+    defaultMessage: 'You have to enable at least one permission',
   },
 });
 
@@ -107,9 +115,12 @@ export const validationSchema = object()
       .test(
         ROLE_FIELD_NAME,
         formatMessage(MSG.samePermissionsApplied),
-        (role, { parent: { member, team, dbUserRole } }: SchemaTestContext) => {
+        (
+          role,
+          { parent: { member, team, _dbUserRole } }: SchemaTestContext,
+        ) => {
           if (member && team && role && role !== UserRole.Custom) {
-            return role !== dbUserRole;
+            return role !== _dbUserRole;
           }
 
           return true;
@@ -138,10 +149,10 @@ export const validationSchema = object()
             (
               permissions,
               {
-                parent: { member, team, dbUserPermissions },
+                parent: { member, team, _dbUserPermissions },
               }: SchemaTestContext,
             ) => {
-              if (member && team && permissions && dbUserPermissions) {
+              if (member && team && permissions && _dbUserPermissions) {
                 // At this point, the user's current and db-stored permissions are represented as ColonyRole[]: [0, 1, 5, 6]
                 // Meanwhile the form-formatted permissions are represented as an object: { role_0: false, ... role_6: true }
                 // We'd want to filter the truthy form-formatted permissions and map their ColonyRole suffixes
@@ -151,7 +162,7 @@ export const validationSchema = object()
                   .map(extractColonyRoleFromPermissionKey);
 
                 return (
-                  JSON.stringify(dbUserPermissions.sort()) !==
+                  JSON.stringify(_dbUserPermissions.sort()) !==
                   JSON.stringify(newPermissions.sort())
                 );
               }
