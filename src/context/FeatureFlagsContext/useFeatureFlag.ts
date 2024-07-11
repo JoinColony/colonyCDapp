@@ -44,17 +44,17 @@ export const useFeatureFlag = (featureFlagName: FeatureFlag) => {
 
     const { isEnabled, whitelistedUsers, blacklistedUsers } =
       featureFlagPayload;
-    if (isEnabled && blacklistedUsers?.includes(wallet?.address)) {
+    if (isEnabled && blacklistedUsers?.includes(wallet.address)) {
       setEnabled(false);
       return;
     }
 
-    if (!isEnabled && whitelistedUsers?.includes(wallet?.address)) {
+    if (!isEnabled && whitelistedUsers?.includes(wallet.address)) {
       setEnabled(true);
       return;
     }
 
-    setEnabled(true);
+    setEnabled(isEnabled);
   }, [featureFlagPayload, wallet?.address]);
 
   return {
