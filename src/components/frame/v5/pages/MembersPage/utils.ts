@@ -52,7 +52,6 @@ export const getMembersList = (
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
-
     const allMultiSigRoles = getAllUserRoles(
       extractColonyRoles(colony.roles),
       contributorAddress,

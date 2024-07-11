@@ -2,7 +2,12 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
+import { type OptionalValue } from '~types';
+import {
+  ColonyActionType,
+  type DomainMetadata,
+  type ColonyAction,
+} from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
@@ -39,12 +44,13 @@ const MSG = defineMessages({
   subtitle: {
     id: `${displayName}.subtitle`,
     defaultMessage:
-      '{isAddingNewTeam, select, true {New team {team} by {user}} other {Change {team} team details by {user}}}',
+      '{isAddingNewTeam, select, true {Create new team {team} by {user}} other {Change {team} team details by {user}}}',
   },
 });
 
 const ManageTeam = ({ action }: CreateNewTeamProps) => {
   const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
+
   const {
     customTitle = formatText(
       isAddingNewTeam ? MSG.newTeamTitle : MSG.editTeamTitle,
@@ -52,14 +58,32 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   } = action?.metadata || {};
   const { initiatorUser } = action;
 
-  const actionDomainMetadata =
-    action.pendingDomainMetadata || action.fromDomain?.metadata;
+  let actionDomainMetadata: OptionalValue<DomainMetadata>;
+  let team: OptionalValue<string>;
+
+  if (
+    action.type === ColonyActionType.CreateDomain ||
+    action.type === ColonyActionType.EditDomain
+  ) {
+    actionDomainMetadata = action.fromDomain?.metadata;
+    team = actionDomainMetadata?.name;
+  } else {
+    actionDomainMetadata = action.pendingDomainMetadata;
+    team =
+      actionDomainMetadata?.changelog?.slice(-1)[0].oldName ??
+      actionDomainMetadata?.name;
+  }
+
+  const motionDomainMetadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: action.fromDomain?.metadata?.name,
+          team,
           user: initiatorUser ? (
             <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
@@ -103,10 +127,8 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {motionDomainMetadata && (
+          <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (

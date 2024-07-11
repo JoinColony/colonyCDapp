@@ -69,6 +69,23 @@ export type MotionFinalizePayload = {
   gasEstimate: string;
 };
 
+export type MotionDomainCreateEditPayload = {
+  colonyAddress: Address;
+  isCreateDomain: boolean;
+  customActionTitle: string;
+  domain?: Domain;
+  colonyName?: string;
+  domainName: string;
+  domainColor?: DomainColor;
+  domainPurpose?: string;
+  annotationMessage?: string;
+  parentDomainId?: number;
+  isMultiSig: boolean;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  domainCreatedInNativeId: number;
+};
+
 export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_STAKE,
@@ -142,24 +159,38 @@ export type MotionActionTypes =
   | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-      {
-        colonyAddress: Address;
-        isCreateDomain: boolean;
-        motionDomainId: number;
-        customActionTitle: string;
-        domain?: Domain;
-        colonyName?: string;
-        domainName: string;
-        domainColor?: DomainColor;
-        domainPurpose?: string;
-        annotationMessage?: string;
-        parentId?: number;
-      },
+      MotionDomainCreateEditPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_SUCCESS,
       MetaWithSetter<object>
     >
   | UniqueActionType<
