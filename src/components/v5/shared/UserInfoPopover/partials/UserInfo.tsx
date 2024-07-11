@@ -199,7 +199,7 @@ const UserInfo: FC<UserInfoProps> = ({
               className={clsx(
                 `${styles.userInfoDomainsWrapper} flex flex-col gap-2 sm:max-h-[216px] sm:overflow-y-auto sm:overflow-x-hidden sm:pr-1.5`,
                 {
-                  'mr-[-6px] pr-2': domains.length > 4,
+                  '-mr-1.5 pr-2': domains.length > 4,
                 },
               )}
             >
