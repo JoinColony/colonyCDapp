@@ -68,7 +68,6 @@ jobs:
         push: true
         tags: |
           ${{ env.ECR_REPOSITORY }}:run-${{ github.run_number }}
-          ${{ env.ECR_REPOSITORY }}:${{ (github.ref == 'refs/heads/master' && 'gnosis') || (github.ref == 'refs/heads/master-arbitrum' && 'arbitrum') }}
           ${{ env.ECR_REPOSITORY }}:${{ env.COMMIT_HASH }}
         cache-from: type=gha
         cache-to: type=gha,mode=max,image-manifest=true
@@ -90,7 +89,7 @@ jobs:
       NAMESPACE: cdapp
       CLUSTER_NAME: qa-cluster
       # Tagging image based on whether we are deploying to gnosis or arbitrum
-      ENVIRONMENT_TAG: ${{ (github.ref == 'refs/heads/master' && 'qa') || (github.ref == 'refs/heads/master-arbitrum' && 'qa-arbitrum-sepolia') }}
+      ENVIRONMENT_TAG: "hackathon"
       REPOSITORY_NAME: cdapp/frontend
 
     steps:
@@ -137,11 +136,11 @@ jobs:
 
     - name: Deploy to Kubernetes cluster
       run: |
-        kubectl rollout restart deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+        kubectl rollout restart deployment/cdapp-frontend-qa-arbitrum-sepolia -n ${{ env.NAMESPACE }}
 
     - name: Validate Kubernetes deployment
       run: |
-        kubectl rollout status deployment/cdapp-frontend-${{ env.ENVIRONMENT_TAG }} -n ${{ env.NAMESPACE }}
+        kubectl rollout status deployment/cdapp-frontend-qa-arbitrum-sepolia -n ${{ env.NAMESPACE }}
 
     - name: Send discord notification
       uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
