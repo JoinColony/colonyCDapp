@@ -11,6 +11,7 @@ cypress/screenshots
 
 /src/typedefs/import-meta-env.d.ts
 /dist
+.env.local
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
