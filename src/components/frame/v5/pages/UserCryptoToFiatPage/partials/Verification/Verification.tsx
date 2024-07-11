@@ -51,8 +51,10 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 
-  const statusPillScheme = getStatusPillScheme(statusData?.kyc_status);
-  const ctaProps = getCTAProps(statusData?.kyc_status);
+  const kycStatus = statusData?.kyc_status;
+
+  const statusPillScheme = getStatusPillScheme(kycStatus);
+  const ctaProps = getCTAProps(kycStatus);
 
   return (
     <RowItem.Container>
@@ -62,19 +64,20 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
         itemOrder={order}
         statusPill={
           // Move this inside the RowItem.Heading component
-          <PillsBase
-            icon={statusPillScheme.icon}
-            iconClassName={statusPillScheme.iconClassName}
-            className={clsx(
-              statusPillScheme.bgClassName,
-              'text-sm font-medium',
-            )}
-          >
-            <span className={statusPillScheme.textClassName}>
-              {statusData?.kyc_status &&
-                formatText(STATUS_MSGS[statusData.kyc_status])}
-            </span>
-          </PillsBase>
+          kycStatus && (
+            <PillsBase
+              icon={statusPillScheme.icon}
+              iconClassName={statusPillScheme.iconClassName}
+              className={clsx(
+                statusPillScheme.bgClassName,
+                'text-sm font-medium',
+              )}
+            >
+              <span className={statusPillScheme.textClassName}>
+                {formatText(STATUS_MSGS[kycStatus])}
+              </span>
+            </PillsBase>
+          )
         }
       />
       <RowItem.Body

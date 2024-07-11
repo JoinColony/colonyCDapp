@@ -16,6 +16,7 @@ import { validationSchema } from './validation.ts';
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
+  setCurrentCurrency: (value: string) => void;
   onClose: () => void;
 }
 
@@ -71,6 +72,7 @@ const MSG = defineMessages({
 
 export const BankDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
+  setCurrentCurrency,
   onClose,
 }) => {
   return (
@@ -102,6 +104,7 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
             name="currency"
             labelMessage={formatText(MSG.payoutCurrencyLabel)}
             options={CURRENCY}
+            handleChange={({ value }) => setCurrentCurrency(value)}
           />
         </FormRow>
 

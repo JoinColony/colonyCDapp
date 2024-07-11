@@ -189,7 +189,7 @@ export const KYCModal: FC<KYCModalProps> = ({
             {
               key: TabId.KYC,
               heading: {
-                label: 'KYC',
+                label: 'KYC form',
               },
               content: (
                 <div>

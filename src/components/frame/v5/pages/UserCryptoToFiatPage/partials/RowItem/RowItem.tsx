@@ -1,5 +1,6 @@
 import React from 'react';
 
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -45,6 +46,7 @@ const Body: React.FC<RowItemBodyProps> = ({
   ctaDisabled,
   ctaOnClick,
   ctaComponent,
+  ctaLoading,
 }) => {
   return (
     <div className="flex items-end justify-between">
@@ -65,7 +67,9 @@ const Body: React.FC<RowItemBodyProps> = ({
             text={ctaTitle}
             onClick={ctaOnClick}
             disabled={ctaDisabled}
-          />
+          >
+            {ctaLoading && <SpinnerLoader appearance={{ size: 'small' }} />}
+          </Button>
         )}
       </section>
     </div>
