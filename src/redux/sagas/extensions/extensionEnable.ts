@@ -48,7 +48,7 @@ function* extensionEnable({
   yield removeOldExtensionClients(colonyAddress, extensionId);
 
   const needsInitialisation = !isInitialized && initializationParams;
-  const needsSettingRoles = missingColonyPermissions.length;
+  const needsSettingRoles = !!missingColonyPermissions.length;
 
   const { initialise, setUserRoles }: Record<string, ChannelDefinition> =
     yield createTransactionChannels(meta.id, ['initialise', 'setUserRoles']);
