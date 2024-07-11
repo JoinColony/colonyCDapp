@@ -21,6 +21,15 @@ module.exports = {
       }
     }
   `,
+  getUserByBridgeCustomerId: /* GraphQL */ `
+    query GetUserByBridgeCustomerId($bridgeCustomerId: String!) {
+      getUserByBridgeCustomerId(bridgeCustomerId: $bridgeCustomerId) {
+        items {
+          id
+        }
+      }
+    }
+  `,
   updateUser: /* GraphQL */ `
     mutation UpdateUser(
       $input: UpdateUserInput!

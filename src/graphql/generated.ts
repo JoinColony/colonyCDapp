@@ -5737,6 +5737,7 @@ export type Query = {
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
+  getUserByBridgeCustomerId?: Maybe<ModelUserConnection>;
   getUserByLiquidationAddress?: Maybe<ModelLiquidationAddressConnection>;
   /** Retrieve a user's reputation within a specific domain in a Colony */
   getUserReputation?: Maybe<Scalars['String']>;
@@ -6362,6 +6363,16 @@ export type QueryGetUserArgs = {
 export type QueryGetUserByAddressArgs = {
   filter?: InputMaybe<ModelUserFilterInput>;
   id: Scalars['ID'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetUserByBridgeCustomerIdArgs = {
+  bridgeCustomerId: Scalars['String'];
+  filter?: InputMaybe<ModelUserFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;

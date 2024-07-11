@@ -1855,6 +1855,10 @@ type User @model {
   Bridge customer id
   """
   bridgeCustomerId: String
+    @index(name: "byBridgeCustomerId", queryField: "getUserByBridgeCustomerId")
+  """
+  Bridge liquidation address associated with the user
+  """
   liquidationAddresses: [LiquidationAddress!]
     @hasMany(indexName: "byUserAddress", fields: ["id"])
 }

@@ -6,7 +6,7 @@ const { graphqlRequest } = require('../utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { updateUser } = require('../graphql');
+const { updateUser, getUserByBridgeCustomerId } = require('../graphql');
 
 /**
  * Extracts customer_id from TOS links of the following format:
@@ -59,25 +59,47 @@ const kycLinksHandler = async (
       throw new Error('Could not extract customer ID from TOS link');
     }
 
-    // Add customer_id to the user object
-    const mutation = await graphqlRequest(
-      updateUser,
+    const userByCustomerIdQuery = await graphqlRequest(
+      getUserByBridgeCustomerId,
       {
-        input: {
-          id: checksummedWalletAddress,
-          bridgeCustomerId: customerId,
-        },
+        bridgeCustomerId: customerId,
       },
       graphqlURL,
       appSyncApiKey,
     );
+    const userByCustomerIdData =
+      userByCustomerIdQuery.data?.getUserByBridgeCustomerId;
 
-    if (mutation.errors || !mutation.data) {
-      const [error] = mutation.errors;
+    if (
+      userByCustomerIdData?.items?.length > 0 &&
+      userByCustomerIdData?.items?.[0]?.id !== checksummedWalletAddress
+    ) {
       throw new Error(
-        error?.message ||
-          `Could not update user with wallet address "${checksummedWalletAddress}"`,
+        'A different user is already associated with this email address',
       );
+    }
+
+    if (userByCustomerIdData?.items?.length === 0) {
+      // Add customer_id to the user object
+      const mutation = await graphqlRequest(
+        updateUser,
+        {
+          input: {
+            id: checksummedWalletAddress,
+            bridgeCustomerId: customerId,
+          },
+        },
+        graphqlURL,
+        appSyncApiKey,
+      );
+
+      if (mutation.errors || !mutation.data) {
+        const [error] = mutation.errors;
+        throw new Error(
+          error?.message ||
+            `Could not update user with wallet address "${checksummedWalletAddress}"`,
+        );
+      }
     }
 
     // Return the two urls
