@@ -1,4 +1,6 @@
 import { type Action } from '~constants/actions.ts';
+import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
+import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -13,4 +15,34 @@ export const translateAction = (action?: Action) => {
     .join('');
 
   return `actions.${actionName}`;
+};
+
+export const handleMotionCompleted = (action: ColonyAction) => {
+  switch (action.type) {
+    case ColonyActionType.AddVerifiedMembersMotion:
+    case ColonyActionType.AddVerifiedMembersMultisig: {
+      if (action.members) {
+        updateContributorVerifiedStatus(
+          action.members,
+          action.colonyAddress,
+          true,
+        );
+      }
+      break;
+    }
+    case ColonyActionType.RemoveVerifiedMembersMotion:
+    case ColonyActionType.RemoveVerifiedMembersMultisig: {
+      if (action.members) {
+        updateContributorVerifiedStatus(
+          action.members,
+          action.colonyAddress,
+          false,
+        );
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 };

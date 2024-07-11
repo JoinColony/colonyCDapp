@@ -6,11 +6,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import { type ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/Table.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
-
-import { type ManageMembersType } from '../forms/ManageVerifiedMembersForm/consts.ts';
 
 import { useVerifiedMembersTableColumns } from './hooks.tsx';
 import {
@@ -29,7 +28,7 @@ const VerifiedMembersTable: FC<VerifiedMembersTableProps> = ({ name }) => {
       key: id,
     }),
   );
-  const manageMembers: ManageMembersType | undefined = useWatch({
+  const manageMembers: ManageVerifiedMembersOperation | undefined = useWatch({
     name: 'manageMembers',
   });
   const { getFieldState, getValues } = useFormContext();

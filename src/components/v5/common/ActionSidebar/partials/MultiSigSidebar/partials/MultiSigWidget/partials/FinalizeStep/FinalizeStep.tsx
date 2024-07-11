@@ -7,9 +7,11 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote, type ColonyMultiSigFragment } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
@@ -128,6 +130,7 @@ interface FinalizeStepProps {
   // initiatorAddress: string;
   createdAt: string;
   threshold: number;
+  action: ColonyAction;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
@@ -137,6 +140,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   // initiatorAddress,
   createdAt,
   threshold,
+  action,
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
   const { colony } = useColonyContext();
@@ -182,7 +186,10 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     if (isMultiSigExecuted || isMultiSigRejected) {
       setIsFinalizePending(false);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected]);
+    if (isMultiSigExecuted) {
+      handleMotionCompleted(action);
+    }
+  }, [isMultiSigExecuted, isMultiSigRejected, action]);
 
   return (
     <MenuWithStatusText

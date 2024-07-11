@@ -3,12 +3,9 @@ import { useMemo, type FC, useState, useEffect } from 'react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ColonyActionType } from '~gql';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import {
-  type MultiSigUserSignature,
-  type ColonyMultiSig,
-} from '~types/graphql.ts';
+import { type MultiSigUserSignature } from '~types/graphql.ts';
+import { type MultiSigAction } from '~types/motions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
@@ -23,8 +20,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
-  actionType: ColonyActionType;
-  multiSigData: ColonyMultiSig;
+  action: MultiSigAction;
   initiatorAddress: string;
 }
 
@@ -44,11 +40,12 @@ const MSG = defineMessages({
 });
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({
-  multiSigData,
-  actionType,
+  action,
   initiatorAddress,
 }) => {
-  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
+  const actionType = action.type;
+  const { multiSigData } = action;
+  const requiredRoles = getRolesNeededForMultiSigAction(action.type);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
@@ -143,6 +140,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
             isMultiSigFinalizable={isMultiSigFinalizable}
             isMultiSigCancelable={isMultiSigCancelable}
             // initiatorAddress={initiatorAddress}
+            action={action}
             createdAt={multiSigData.createdAt}
           />
         ),
@@ -154,6 +152,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
   }, [
     isLoading,
     combinedThreshold,
+    action,
     multiSigData,
     actionType,
     initiatorAddress,
