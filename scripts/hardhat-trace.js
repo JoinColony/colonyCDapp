@@ -7,7 +7,7 @@ const argv = process.argv.slice(2)
 const hash = argv[0];
 const rpc = 'http://localhost:8545';
 
-const cmd = `docker exec network bash -c \"cd colonyNetwork && npx hardhat trace --rpc ${rpc} --hash ${hash}\"`;
+const cmd = `docker exec -t network bash -c \"cd colonyNetwork && npx hardhat trace --rpc ${rpc} --hash ${hash}\"`;
 
 exec(cmd, (error, stdout, stderr) => {
   if (error) {
