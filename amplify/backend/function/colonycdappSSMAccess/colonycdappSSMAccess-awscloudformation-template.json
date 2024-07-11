@@ -20,19 +20,23 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersiond5a0fbf2": {
+    "LambdaLayerVersionad5aade1": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs20.x"
-        ],
+        "CompatibleRuntimes": {
+          "Ref": "runtimes"
+        },
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/colonycdappSSMAccess-LambdaLayerVersiond5a0fbf2-build.zip"
+          "S3Key": {
+            "Ref": "s3Key"
+          }
         },
-        "Description": "Updated layer version 2024-06-27T17:57:23.320Z",
+        "Description": {
+          "Ref": "description"
+        },
         "LayerName": {
           "Fn::Sub": [
             "colonycdappSSMAccess-${env}",
@@ -47,19 +51,86 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionAwsAccounts204031746016d5a0fbf2": {
+    "LambdaLayerPermissionAwsAccounts204031746016ad5aade1": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:eu-west-2:825831890065:layer:colonycdappSSMAccess-prodrevive:12",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersionad5aade1"
+        },
         "Principal": "204031746016"
       }
     },
-    "LambdaLayerPermissionPrivated5a0fbf2": {
+    "LambdaLayerPermissionPrivatead5aade1": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:eu-west-2:825831890065:layer:colonycdappSSMAccess-prodrevive:12",
+        "LayerVersionArn": {
+          "Ref": "LambdaLayerVersionad5aade1"
+        },
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerVersione2cc270e": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "CompatibleRuntimes": [
+          "nodejs20.x"
+        ],
+        "Content": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": "amplify-builds/colonycdappSSMAccess-LambdaLayerVersione2cc270e-build.zip"
+        },
+        "Description": "Updated layer version 2024-07-10T21:15:23.507Z",
+        "LayerName": {
+          "Fn::Sub": [
+            "colonycdappSSMAccess-${env}",
+            {
+              "env": {
+                "Ref": "env"
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "LambdaLayerPermissionAwsAccounts204031746016e2cc270e": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:391",
+        "Principal": "204031746016"
+      }
+    },
+    "LambdaLayerPermissionPrivatee2cc270e": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:391",
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerPermissionAwsAccounts204031746016Legacy75": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:75",
+        "Principal": "204031746016"
+      }
+    },
+    "LambdaLayerPermissionPrivateLegacy75": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:eu-west-2:204031746016:layer:colonycdappSSMAccess-qa:75",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -69,7 +140,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersiond5a0fbf2"
+        "Ref": "LambdaLayerVersionad5aade1"
       }
     }
   }
