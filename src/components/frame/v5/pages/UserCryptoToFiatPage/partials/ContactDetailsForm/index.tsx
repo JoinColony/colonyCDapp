@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useMemo, type FC } from 'react';
+import React, { useMemo, useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { getCountries, getCountryByCode } from '~utils/countries.ts';
-import { formatText } from '~utils/intl.ts';
+import { type CountryData } from '~utils/countries.ts';
 
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
@@ -12,11 +11,11 @@ import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
+import { CountrySelect } from './CountrySelect.tsx';
 import { getValidationSchema } from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
-  countryCode: string;
   onClose: () => void;
 }
 
@@ -57,30 +56,20 @@ const MSG = defineMessages({
     id: `${displayName}.taxPlaceholder`,
     defaultMessage: 'Tax identification number',
   },
-  countryLabel: {
-    id: `${displayName}.countryLabel`,
-    defaultMessage: 'Country',
-  },
 });
 
 export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
-  countryCode,
   onSubmit,
   onClose,
 }) => {
-  const selectedCountry = getCountryByCode(countryCode);
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
+    null,
+  );
   const validationSchema = useMemo(() => {
     // For the US country, validation should include address validation.
     const shouldValiateAddress = selectedCountry?.alpha2 === 'US';
     return getValidationSchema(shouldValiateAddress);
   }, [selectedCountry]);
-
-  const countries = getCountries();
-  const countriesOptions = countries.map((item) => ({
-    value: item.alpha3,
-    label: item.name,
-    country: item,
-  }));
 
   return (
     <div>
@@ -111,11 +100,7 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         </label>
 
         <FormRow>
-          <FormSelect
-            name="country"
-            options={countriesOptions}
-            labelMessage={formatText(MSG.countryLabel)}
-          />
+          <CountrySelect setSelectedCountry={setSelectedCountry} />
         </FormRow>
 
         <FormRow>

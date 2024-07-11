@@ -250,7 +250,6 @@ export const BankDetailsModal: FC<BankDetailsModalProps> = ({
               isHidden: currentCurrency !== 'usd',
               content: (
                 <ContactDetailsForm
-                  countryCode="US"
                   onSubmit={({
                     address1,
                     address2,
