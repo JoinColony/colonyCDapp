@@ -1,15 +1,9 @@
-import {
-  ClientType,
-  ColonyRole,
-  Extension,
-  getChildIndex,
-  getPermissionProofs,
-  Id,
-} from '@colony/colony-js';
+import { ClientType, Extension, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { constants } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -27,6 +21,8 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
+  getChildIndexLocal,
 } from '../utils/index.ts';
 
 function* moveFundsMotion({
@@ -40,6 +36,10 @@ function* moveFundsMotion({
     tokenAddress,
     annotationMessage,
     customActionTitle,
+    isMultiSig,
+    colonyDomains,
+    colonyRoles,
+    createdInDomain,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -75,31 +75,8 @@ function* moveFundsMotion({
       ClientType.ColonyClient,
       colonyAddress,
     );
-    const votingReputationClient = yield colonyClient.getExtensionClient(
-      Extension.VotingReputation,
-    );
 
-    const { nativeFundingPotId: fromPot } = fromDomain;
-    const { nativeFundingPotId: toPot } = toDomain;
-
-    const motionChildSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      Id.RootDomain,
-      Id.RootDomain,
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      Id.RootDomain,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
+    const userAddress = yield colonyClient.signer.getAddress();
 
     txChannel = yield call(getTxChannel, metaId);
 
@@ -112,65 +89,192 @@ function* moveFundsMotion({
         'annotateMoveFundsMotion',
       ]);
 
-    const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      fromDomain.nativeId,
-      [ColonyRole.Funding],
-      votingReputationClient.address,
-    );
+    // eslint-disable-next-line no-inner-declarations
+    function* getCreateMotionParams() {
+      const isOldVersion = colonyVersion <= 6;
+      const contractMethod = isOldVersion
+        ? 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
+        : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
 
-    const [, toChildSkillIndex] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      toDomain.nativeId,
-      [ColonyRole.Funding],
-      votingReputationClient.address,
-    );
+      const requiredRoles = PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
 
-    const isOldVersion = colonyVersion <= 6;
-    const contractMethod = isOldVersion
-      ? `moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)`
-      : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
+      const rootDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(Id.RootDomain),
+      );
 
-    const encodedAction = colonyClient.interface.encodeFunctionData(
-      contractMethod,
-      [
-        ...(isOldVersion ? [] : [fromPermissionDomainId, constants.MaxUint256]),
-        fromPermissionDomainId,
-        fromChildSkillIndex,
-        toChildSkillIndex,
-        fromPot,
-        toPot,
-        amount,
-        tokenAddress,
-      ],
-    );
+      if (!rootDomain) {
+        throw new Error('Cannot find rootDomain in colony domains');
+      }
 
-    // create transactions
-    yield fork(createTransaction, createMotion.id, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
-        Id.RootDomain,
-        motionChildSkillIndex,
+      const { nativeFundingPotId: fromPot } = fromDomain;
+      const { nativeFundingPotId: toPot } = toDomain;
+
+      if (isMultiSig) {
+        const multiSigClient = yield colonyClient.getExtensionClient(
+          Extension.MultisigPermissions,
+        );
+
+        const [multiSigPermissionDomainId, multiSigChildSkillIndex] =
+          yield call(getPermissionProofsLocal, {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: Id.RootDomain,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: multiSigClient.address,
+            isMultiSig: false,
+          });
+
+        const [userPermissionDomainId, userChildSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: Id.RootDomain,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: userAddress,
+            isMultiSig: true,
+          },
+        );
+
+        const fromChildSkillIndex = yield call(getChildIndexLocal, {
+          networkClient: colonyClient.networkClient,
+          parentDomainNativeId: rootDomain.nativeId,
+          parentDomainSkillId: rootDomain.nativeSkillId,
+          domainNativeId: fromDomain.nativeId,
+          domainSkillId: fromDomain.nativeSkillId,
+        });
+
+        const toChildSkillIndex = yield call(getChildIndexLocal, {
+          networkClient: colonyClient.networkClient,
+          parentDomainNativeId: rootDomain.nativeId,
+          parentDomainSkillId: rootDomain.nativeSkillId,
+          domainNativeId: toDomain.nativeId,
+          domainSkillId: toDomain.nativeSkillId,
+        });
+
+        const encodedAction = colonyClient.interface.encodeFunctionData(
+          contractMethod,
+          [
+            ...(isOldVersion
+              ? []
+              : [multiSigPermissionDomainId, multiSigChildSkillIndex]),
+            userPermissionDomainId,
+            fromChildSkillIndex,
+            toChildSkillIndex,
+            fromPot,
+            toPot,
+            amount,
+            tokenAddress,
+          ],
+        );
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            userPermissionDomainId,
+            userChildSkillIndex,
+            [colonyAddress],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      const votingReputationClient = yield colonyClient.getExtensionClient(
+        Extension.VotingReputation,
+      );
+
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
+        createdInDomain.nativeId,
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
         AddressZero,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+      );
+
+      const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
+        getPermissionProofsLocal,
+        {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: fromDomain.nativeId,
+          requiredColonyRole: requiredRoles,
+          permissionAddress: votingReputationClient.address,
+          isMultiSig: false,
+        },
+      );
+
+      const toChildSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: rootDomain.nativeId,
+        parentDomainSkillId: rootDomain.nativeSkillId,
+        domainNativeId: toDomain.nativeId,
+        domainSkillId: toDomain.nativeSkillId,
+      });
+
+      const motionChildSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: createdInDomain.nativeId,
+        parentDomainSkillId: createdInDomain.nativeSkillId,
+        domainNativeId: createdInDomain.nativeId,
+        domainSkillId: createdInDomain.nativeSkillId,
+      });
+
+      const encodedAction = colonyClient.interface.encodeFunctionData(
+        contractMethod,
+        [
+          ...(isOldVersion
+            ? []
+            : [fromPermissionDomainId, constants.MaxUint256]),
+          fromPermissionDomainId,
+          fromChildSkillIndex,
+          toChildSkillIndex,
+          fromPot,
+          toPot,
+          amount,
+          tokenAddress,
+        ],
+      );
+
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          createdInDomain.nativeId,
+          motionChildSkillIndex,
+          AddressZero,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
+    }
+
+    const transactionParams = yield getCreateMotionParams();
+    // create transactions
+    yield fork(createTransaction, createMotion.id, transactionParams);
 
     if (annotationMessage) {
       yield fork(createTransaction, annotateMoveFundsMotion.id, {

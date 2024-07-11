@@ -1,10 +1,11 @@
 import { ArrowDownRight } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type Domain, type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -28,6 +29,7 @@ import {
   ActionTitle,
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
+import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -58,6 +60,7 @@ const MSG = defineMessages({
 });
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
+  const { user } = useAppContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -67,11 +70,12 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     fromDomain,
     toDomain,
     isMotion,
+    isMultiSig,
     motionData,
+    multiSigData,
     annotation,
+    type: actionType,
   } = action;
-
-  const { motionDomain } = motionData || {};
 
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
@@ -82,28 +86,51 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
+  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
+
+  const motionDomain: Domain | null | undefined = useMemo(() => {
+    if (isMotion) {
+      return motionData?.motionDomain;
+    }
+
+    if (isMultiSig) {
+      return multiSigData?.multiSigDomain;
+    }
+
+    return null;
+  }, [motionData, multiSigData, isMotion, isMultiSig]);
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        <MeatballMenu
-          transactionHash={transactionHash}
-          defaultValues={{
-            [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
-            [FROM_FIELD_NAME]: fromDomain?.nativeId,
-            [TO_FIELD_NAME]: toDomain?.nativeId,
-            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
-            [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
-            [CREATED_IN_FIELD_NAME]: isMotion
-              ? motionDomain?.nativeId
-              : fromDomain?.nativeId,
-            [DESCRIPTION_FIELD_NAME]: annotation?.message,
-          }}
-        />
+        {isMultiSig && multiSigData ? (
+          <MultiSigMeatballMenu
+            transactionHash={transactionHash}
+            multiSigData={multiSigData}
+            isOwner={isOwner}
+            actionType={actionType}
+          />
+        ) : (
+          <MeatballMenu
+            transactionHash={transactionHash}
+            defaultValues={{
+              [TITLE_FIELD_NAME]: customTitle,
+              [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+              [FROM_FIELD_NAME]: fromDomain?.nativeId,
+              [TO_FIELD_NAME]: toDomain?.nativeId,
+              [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
+              [TOKEN_FIELD_NAME]: token?.tokenAddress,
+              [DECISION_METHOD_FIELD_NAME]: isMotion
+                ? DecisionMethod.Reputation
+                : DecisionMethod.Permissions,
+              [CREATED_IN_FIELD_NAME]: isMotion
+                ? motionDomain?.nativeId
+                : fromDomain?.nativeId,
+              [DESCRIPTION_FIELD_NAME]: annotation?.message,
+            }}
+          />
+        )}
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
@@ -157,10 +184,8 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {!!motionDomain?.metadata && (
+          <CreatedInRow motionDomainMetadata={motionDomain.metadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (
