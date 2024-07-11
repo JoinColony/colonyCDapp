@@ -50,7 +50,8 @@ const timeoutArgValue = process.argv[timeoutArg + 1];
 const coloniesArg = process.argv.indexOf('--coloniesCount');
 const coloniesArgValue = process.argv[coloniesArg + 1];
 
-const usePreviousColonyVersionArg = process.argv.indexOf('--usePreviousColonyVersion') !== -1;
+const usePreviousColonyVersionArg =
+  process.argv.indexOf('--usePreviousColonyVersion') !== -1;
 
 const yesArg = process.argv.indexOf('--yes');
 
@@ -84,13 +85,13 @@ const CHAR_LIMITS = {
   USER: {
     MAX_DISPLAYNAME_CHARS: 30,
     MAX_BIO_CHARS: 200,
-    MAX_LOCATION_CHARS: 200
+    MAX_LOCATION_CHARS: 200,
   },
   COLONY: {
     MAX_COLONY_DISPLAY_NAME: 20,
     MAX_COLONY_OBJECTIVE_TITLE: 60,
     MAX_COLONY_OBJECTIVE_DESCRIPTION: 200,
-  }
+  },
 };
 
 /*
@@ -210,8 +211,8 @@ const getColonyMetadata = /* GraphQL */ `
   }
 `;
 
-const graphqlRequestPreconfigured = async (queryOrMutation, variables) => 
-  graphqlRequest(queryOrMutation, variables, GRAPHQL_URI, API_KEY)
+const graphqlRequestPreconfigured = async (queryOrMutation, variables) =>
+  graphqlRequest(queryOrMutation, variables, GRAPHQL_URI, API_KEY);
 
 /*
  * Helper methods
@@ -240,19 +241,16 @@ const readFile = (path) => {
  */
 const subscribeUserToColony = async (userAddress, colonyAddress) => {
   // subscribe user to colony
-  await graphqlRequestPreconfigured(
-    createContributor,
-    {
-      input: {
-        colonyAddress,
-        colonyReputationPercentage: 0,
-        contributorAddress: userAddress,
-        isVerified: false,
-        id: `${colonyAddress}_${userAddress}`,
-        isWatching: true,
-      },
+  await graphqlRequestPreconfigured(createContributor, {
+    input: {
+      colonyAddress,
+      colonyReputationPercentage: 0,
+      contributorAddress: userAddress,
+      isVerified: false,
+      id: `${colonyAddress}_${userAddress}`,
+      isWatching: true,
     },
-  );
+  });
   await delay();
 
   console.log(
@@ -297,25 +295,28 @@ const createUser = async (
     }
 
     if (location) {
-      metadata.location = location.slice(0, CHAR_LIMITS.USER.MAX_LOCATION_CHARS);
+      metadata.location = location.slice(
+        0,
+        CHAR_LIMITS.USER.MAX_LOCATION_CHARS,
+      );
     }
 
-    const displayName = username.slice(0, CHAR_LIMITS.USER.MAX_DISPLAYNAME_CHARS);
+    const displayName = username.slice(
+      0,
+      CHAR_LIMITS.USER.MAX_DISPLAYNAME_CHARS,
+    );
     const email = `${displayName}@colony.io`;
 
-    const userQuery = await graphqlRequestPreconfigured(
-      createUniqueUser,
-      {
-        input: {
-          id: userAddress,
-          profile: {
-            displayName,
-            email,
-            ...metadata,
-          },
+    const userQuery = await graphqlRequestPreconfigured(createUniqueUser, {
+      input: {
+        id: userAddress,
+        profile: {
+          displayName,
+          email,
+          ...metadata,
         },
       },
-    );
+    });
     await delay();
 
     if (userQuery?.errors) {
@@ -342,15 +343,12 @@ const createUser = async (
 
 const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
   // add token to colony's token list
-  await graphqlRequestPreconfigured(
-    createColonyTokens,
-    {
-      input: {
-        colonyID: colonyAddress,
-        tokenID: tokenAddress,
-      },
+  await graphqlRequestPreconfigured(createColonyTokens, {
+    input: {
+      colonyID: colonyAddress,
+      tokenID: tokenAddress,
     },
-  );
+  });
   await delay();
 
   console.log(
@@ -360,16 +358,13 @@ const addTokenToColonyTokens = async (colonyAddress, tokenAddress) => {
 
 const addTokenToDB = async (tokenAddress, avatar) => {
   // create token entry in the db
-  await graphqlRequestPreconfigured(
-    getTokenFromEverywhere,
-    {
-      input: {
-        tokenAddress,
-        avatar: avatar || null,
-        thumbnail: avatar || null,
-      },
+  await graphqlRequestPreconfigured(getTokenFromEverywhere, {
+    input: {
+      tokenAddress,
+      avatar: avatar || null,
+      thumbnail: avatar || null,
     },
-  );
+  });
 };
 
 const mintTokens = async (
@@ -457,7 +452,9 @@ const createColony = async (
     await signerOrWallet.signTransaction(populatedTransaction);
   const hash = utils.keccak256(signedTransaction);
 
-  const displayName = (colonyDisplayName || `Colony ${colonyName.toUpperCase()}`).slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_DISPLAY_NAME);
+  const displayName = (
+    colonyDisplayName || `Colony ${colonyName.toUpperCase()}`
+  ).slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_DISPLAY_NAME);
 
   // create the colony
   const colonyQuery = await graphqlRequestPreconfigured(
@@ -530,8 +527,14 @@ const createColony = async (
   if (colonyObjective?.title && colonyObjective?.description) {
     metadata.objective = {
       ...colonyObjective,
-      title: colonyObjective.title.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_TITLE),
-      description: colonyObjective.description.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_DESCRIPTION),
+      title: colonyObjective.title.slice(
+        0,
+        CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_TITLE,
+      ),
+      description: colonyObjective.description.slice(
+        0,
+        CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_DESCRIPTION,
+      ),
     };
   }
 
@@ -662,12 +665,10 @@ const createColony = async (
       key: oneTxHash,
     },
   );
-  const { data: stakedExpenditureVersionData } = await graphqlRequestPreconfigured(
-    getCurrentVersion,
-    {
+  const { data: stakedExpenditureVersionData } =
+    await graphqlRequestPreconfigured(getCurrentVersion, {
       key: stakedExpenditureHash,
-    },
-  );
+    });
   const latestOneTxVersion =
     oneTxVersionData?.getCurrentVersionByKey?.items[0]?.version || 1;
   const latestStakedExpenditureVersion =
@@ -1175,8 +1176,6 @@ const tryFetchGraphqlQuery = async (
   }
 };
 
-
-
 const createRandomUser = async ({ username, index }) => {
   const avatarURL = `http://xsgames.co/randomusers/assets/avatars/${
     (index + 1) % 2 === 0 ? 'female' : 'male'
@@ -1196,10 +1195,10 @@ const createRandomUsersBatch = async (start, size = 3) => {
       break;
     }
     batch.push(
-      createRandomUser({ 
+      createRandomUser({
         username: usersTempData.randomUsernames[index],
-        index
-      })
+        index,
+      }),
     );
   }
 
@@ -1208,11 +1207,16 @@ const createRandomUsersBatch = async (start, size = 3) => {
 
 const createRandomUsersInBatches = async () => {
   const batchSize = 3;
-  const randomUsersBatchCount = Math.ceil(usersTempData.randomUsernames.length / batchSize);
+  const randomUsersBatchCount = Math.ceil(
+    usersTempData.randomUsernames.length / batchSize,
+  );
   const randomUsers = [];
 
   for (let batchCount = 0; batchCount < randomUsersBatchCount; batchCount++) {
-    const randomUsersBatch = await createRandomUsersBatch(batchCount * batchSize, batchSize);
+    const randomUsersBatch = await createRandomUsersBatch(
+      batchCount * batchSize,
+      batchSize,
+    );
     randomUsers.push(...randomUsersBatch);
     delay(1000);
   }
@@ -1249,14 +1253,14 @@ const createUserAndColonyData = async () => {
 
   walletUsers.forEach((user) => {
     availableUsers.walletUsers[user.address] = user;
-  })
+  });
 
   delay(1000);
 
   const randomUsers = await createRandomUsersInBatches();
   randomUsers.forEach((user) => {
     availableUsers.randomUsers[user.address] = user;
-  })
+  });
 
   const leelaWallet =
     availableUsers.walletUsers[
@@ -1329,15 +1333,12 @@ const createUserAndColonyData = async () => {
     // verify users
     await Promise.all(
       Object.keys(availableUsers.walletUsers).map(async (userAddress) => {
-        await graphqlRequestPreconfigured(
-          updateColonyContributor,
-          {
-            input: {
-              id: `${newColonyAddress}_${userAddress}`,
-              isVerified: true,
-            },
+        await graphqlRequestPreconfigured(updateColonyContributor, {
+          input: {
+            id: `${newColonyAddress}_${userAddress}`,
+            isVerified: true,
           },
-        );
+        });
       }),
     );
 
@@ -1364,10 +1365,10 @@ const createUserAndColonyData = async () => {
     }
 
     if (domains.length > 0) {
-      const { data: colonyContributorsData } = await graphqlRequestPreconfigured(
-        getColonyContributors,
-        { address: newColonyAddress },
-      );
+      const { data: colonyContributorsData } =
+        await graphqlRequestPreconfigured(getColonyContributors, {
+          address: newColonyAddress,
+        });
       const contributors = (
         colonyContributorsData?.listColonyContributors?.items || []
       )
@@ -1476,7 +1477,7 @@ const checkArguments = () => {
   }
 
   console.log(
-    `Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms using the ${usePreviousColonyVersionArg ? "previous" : "current"} Colony version.`,
+    `Starting data creation script with ${DEFAULT_COLONIES} colonies and a timeout of ${DEFAULT_TIMEOUT} ms using the ${usePreviousColonyVersionArg ? 'previous' : 'current'} Colony version.`,
   );
   console.log(
     `If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`,
