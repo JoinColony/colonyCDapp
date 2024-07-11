@@ -22,6 +22,9 @@ function Stepper<TKey extends React.Key>({
     setOpenItemIndex(activeItemIndex);
   }, [activeItemIndex]);
 
+  const itemsToShow = items.filter((i) => !i.isHidden).length;
+  const isOneItemShown = itemsToShow === 1;
+
   return items.length ? (
     <>
       <div className="flex w-full items-center gap-1">
@@ -29,8 +32,12 @@ function Stepper<TKey extends React.Key>({
           className={clsx('relative flex w-full justify-between gap-3')}
           ref={listRef}
         >
-          {items.map(({ key, heading }, index) => {
+          {items.map(({ key, heading, isHidden }, index) => {
             const { decor, ...restHeading } = heading;
+
+            if (isHidden) {
+              return undefined;
+            }
 
             return (
               <motion.li
@@ -55,9 +62,12 @@ function Stepper<TKey extends React.Key>({
                     after:flex-shrink-0
                     after:border-t
                     after:border-gray-900
-                    last:flex-grow-0
-                    last:after:hidden
                   `,
+                  {
+                    'last:flex-grow-0 last:after:hidden': !isOneItemShown,
+                    'justify-center after:w-[100%] after:!border-gray-300':
+                      isOneItemShown,
+                  },
                 )}
               >
                 <div className="flex flex-col items-start gap-[.375rem]">
