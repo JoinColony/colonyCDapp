@@ -1,7 +1,6 @@
 import { BigNumber } from 'ethers';
 
 import { StreamingPaymentEndCondition } from '~gql';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 // Maximum uint256
 export const TIMESTAMP_IN_FUTURE = BigNumber.from(2).pow(256).sub(1);
@@ -10,25 +9,17 @@ export const getEndTimeByEndCondition = ({
   endCondition,
   startTimestamp,
   interval,
-  convertedAmount,
-  tokenDecimals,
-  limitAmount,
+  amountInWei,
+  limitInWei,
   endTimestamp,
 }: {
   endCondition: StreamingPaymentEndCondition;
   startTimestamp: string;
   interval: number;
-  convertedAmount: BigNumber;
-  tokenDecimals: number;
-  limitAmount?: string | null;
+  amountInWei: string;
+  limitInWei?: string | null;
   endTimestamp?: string;
 }) => {
-  const getOriginalAmount = (amount: BigNumber) => {
-    return amount.div(
-      BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
-    );
-  };
-
   switch (endCondition) {
     case StreamingPaymentEndCondition.FixedTime: {
       if (endTimestamp === undefined) {
@@ -38,19 +29,15 @@ export const getEndTimeByEndCondition = ({
       return BigNumber.from(endTimestamp);
     }
     case StreamingPaymentEndCondition.LimitReached: {
-      if (limitAmount === undefined || limitAmount === null) {
-        throw new Error(
-          'limitAmount is required for LimitReached endCondition',
-        );
+      if (limitInWei === undefined || limitInWei === null) {
+        throw new Error('limitInWei is required for LimitReached endCondition');
       }
 
-      const originalAmount = getOriginalAmount(convertedAmount);
-
-      const limit = BigNumber.from(limitAmount ?? 0);
+      const limit = BigNumber.from(limitInWei ?? 0);
 
       return limit.eq(0)
         ? BigNumber.from(startTimestamp)
-        : limit.mul(interval).div(originalAmount).add(startTimestamp);
+        : limit.mul(interval).div(amountInWei).add(startTimestamp);
     }
 
     case StreamingPaymentEndCondition.WhenCancelled: {

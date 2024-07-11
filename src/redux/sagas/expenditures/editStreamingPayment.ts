@@ -4,7 +4,8 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
+import { type BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -22,7 +23,7 @@ import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { getSelectedToken } from '~utils/tokens.ts';
 
 import {
   createTransaction,
@@ -43,7 +44,7 @@ export type EditStreamingPaymentPayload =
 
 function* editStreamingPaymentAction({
   payload: {
-    colony: { colonyAddress, tokens },
+    colony,
     streamingPayment,
     streamingPaymentsAddress,
     startTimestamp,
@@ -55,6 +56,7 @@ function* editStreamingPaymentAction({
   },
   meta,
 }: Action<ActionTypes.STREAMING_PAYMENT_EDIT>) {
+  const { colonyAddress } = colony;
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   const colonyManager: ColonyManager = yield getColonyManager();
@@ -69,9 +71,7 @@ function* editStreamingPaymentAction({
 
   try {
     const { decimals: tokenDecimals } =
-      tokens?.items.find(
-        (token) => token?.token.tokenAddress === streamingPayment.tokenAddress,
-      )?.token || {};
+      getSelectedToken(colony, streamingPayment.tokenAddress) || {};
 
     if (!tokenDecimals) {
       throw new Error('Token cannot be found');
@@ -111,16 +111,12 @@ function* editStreamingPaymentAction({
         streamingPaymentsAddress,
       );
 
-    const convertedAmount = amount
-      ? BigNumber.from(amount).mul(
-          BigNumber.from(10).pow(getTokenDecimalsWithFallback(tokenDecimals)),
-        )
-      : BigNumber.from(streamingPayment.amount);
+    const amountInWei = amount
+      ? (moveDecimal(amount, tokenDecimals) as string)
+      : streamingPayment.amount;
 
     const realStartTimestamp = startTimestamp || streamingPayment.startTime;
     const realInterval = interval || Number(streamingPayment.interval);
-    const realLimitAmount =
-      limitAmount || getStreamingPaymentLimit({ streamingPayment });
     const realEndCondition =
       endCondition || streamingPayment.metadata?.endCondition;
 
@@ -130,19 +126,22 @@ function* editStreamingPaymentAction({
       );
     }
 
+    const limitInWei = limitAmount
+      ? (moveDecimal(limitAmount, tokenDecimals) as string)
+      : getStreamingPaymentLimit({ streamingPayment });
+
     const realEndTimestamp = getEndTimeByEndCondition({
       endCondition: realEndCondition,
       startTimestamp: realStartTimestamp,
       interval: realInterval,
-      convertedAmount,
-      tokenDecimals,
-      limitAmount: realLimitAmount,
+      amountInWei,
+      limitInWei,
       endTimestamp: endTimestamp || streamingPayment.endTime,
     });
 
     const multicallData: string[] = [];
 
-    const hasAmountChanged = !convertedAmount.eq(streamingPayment.amount);
+    const hasAmountChanged = amountInWei !== streamingPayment.amount;
     const hasIntervalChanged =
       realInterval !== Number(streamingPayment.interval);
 
@@ -156,7 +155,7 @@ function* editStreamingPaymentAction({
           extensionChildSkillIndex,
           extensionChildSkillIndex,
           streamingPayment.nativeId,
-          convertedAmount,
+          amountInWei,
           realInterval,
         ]),
       );
