@@ -123,7 +123,7 @@ function* editColonyMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRole: PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails,
+          requiredColonyRoles: PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails,
           permissionAddress: userAddress,
           isMultiSig: true,
         });
