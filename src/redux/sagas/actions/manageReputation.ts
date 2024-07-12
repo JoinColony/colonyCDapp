@@ -23,6 +23,9 @@ import {
   createActionMetadataInDB,
 } from '../utils/index.ts';
 
+export type ManageReputationPermissionsPayload =
+  Action<ActionTypes.ACTION_MANAGE_REPUTATION>['payload'];
+
 function* manageReputationAction({
   payload: {
     colonyAddress,
