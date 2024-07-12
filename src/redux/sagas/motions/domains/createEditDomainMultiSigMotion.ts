@@ -110,7 +110,7 @@ function* createEditDomainMultiSigMotion({
         colonyRoles,
         colonyDomains,
         requiredDomainId: domainCreatedInNativeId, // This will be dynamically set by the user via the 'Created in' form field
-        requiredColonyRole: requiredRoles,
+        requiredColonyRoles: requiredRoles,
         permissionAddress: userAddress,
         isMultiSig: true,
       },
