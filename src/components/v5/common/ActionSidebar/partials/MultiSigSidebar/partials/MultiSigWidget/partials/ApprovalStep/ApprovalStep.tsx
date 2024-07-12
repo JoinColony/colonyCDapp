@@ -105,7 +105,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const isOwner = user?.walletAddress === initiatorAddress;
 
-  const requiredRoles = getRolesNeededForMultiSigAction(actionType);
+  const requiredRoles = getRolesNeededForMultiSigAction({
+    actionType,
+    createdIn: Number(multiSigData.nativeMultiSigDomainId),
+  });
   const { uniqueEligibleSignees } = useEligibleSignees({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
     requiredRoles,
