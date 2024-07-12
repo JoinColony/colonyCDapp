@@ -77,21 +77,29 @@ const useHasNoDecisionMethods = () => {
   );
 
   if (
-    !requiredPermissions.every((role) => {
-      // If the requiredRolesDomain is root, check the user has the required permissions in root
-      if (requiredRolesDomain === Id.RootDomain) {
+    !requiredPermissions.some((roles) => {
+      // Check if every role in the current sub-array is satisfied
+      return roles.every((role) => {
+        // Determine the roles to check based on the domain
+        const rolesToCheck =
+          requiredRolesDomain === Id.RootDomain
+            ? {
+                userRoles: userRootRoles,
+                userMultiSigRoles: isMultiSigEnabled
+                  ? userRootMultiSigRoles
+                  : [],
+              }
+            : {
+                userRoles,
+                userMultiSigRoles: isMultiSigEnabled ? userMultiSigRoles : [],
+              };
+
+        // Check if the user has the role in any domain
         return (
-          userRootRoles.includes(role) ||
-          // If multiSig is enabled, check if the user has the required multiSig permissions in root
-          (isMultiSigEnabled && userRootMultiSigRoles.includes(role))
+          rolesToCheck.userRoles.includes(role) ||
+          (isMultiSigEnabled && rolesToCheck.userMultiSigRoles.includes(role))
         );
-      }
-      // Otherwise, check the user has the required permissions in any domain
-      return (
-        userRoles.includes(role) ||
-        // If multiSig is enabled, check if the user has the required multiSig permissions
-        (isMultiSigEnabled && userMultiSigRoles.includes(role))
-      );
+      });
     })
   ) {
     return true;
