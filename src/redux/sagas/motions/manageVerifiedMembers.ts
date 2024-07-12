@@ -90,7 +90,7 @@ function* manageVerifiedMembersMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRole:
+          requiredColonyRoles:
             PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers,
           permissionAddress: userAddress,
           isMultiSig: true,

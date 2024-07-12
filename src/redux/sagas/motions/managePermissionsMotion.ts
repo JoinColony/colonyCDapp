@@ -139,7 +139,7 @@ function* managePermissionsMotion({
             colonyRoles,
             colonyDomains,
             requiredDomainId: createdInDomainId,
-            requiredColonyRole: requiredCreatedInRoles,
+            requiredColonyRoles: requiredCreatedInRoles,
             // The address of the multi-sig client
             permissionAddress: multiSigClient.address,
             // The multi-sig extension has regular permissions, not multi-sig permissions
@@ -168,7 +168,7 @@ function* managePermissionsMotion({
             colonyRoles,
             colonyDomains,
             requiredDomainId: createdInDomainId,
-            requiredColonyRole: requiredCreatedInRoles,
+            requiredColonyRoles: requiredCreatedInRoles,
             // The address of the user creating the multi-sig motion
             permissionAddress: initiatorAddress,
             // The user must have multi-sig permissions
@@ -214,7 +214,7 @@ function* managePermissionsMotion({
         colonyDomains,
         // The domain they are being assigned permissions in
         requiredDomainId: teamDomainId,
-        requiredColonyRole: requiredTeamRoles,
+        requiredColonyRoles: requiredTeamRoles,
         // The address of the voting reputation client
         permissionAddress: votingReputationClient.address,
         isMultiSig: false,

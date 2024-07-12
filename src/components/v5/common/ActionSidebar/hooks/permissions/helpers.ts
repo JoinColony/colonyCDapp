@@ -12,7 +12,7 @@ import { ModificationOption } from '../../partials/forms/ManageReputationForm/co
 export const getPermissionsNeededForAction = (
   actionType: Action,
   formValues: Record<string, any>,
-): ColonyRole[] | undefined => {
+): ColonyRole[][] | undefined => {
   switch (actionType) {
     case Action.SimplePayment:
       return PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;

@@ -61,8 +61,8 @@ export const useHasEnoughMembersWithPermissions = ({
     return true;
   }
 
-  const hasEnoughMembersWithPermissions = requiredRoles.every(
-    (role) => countPerRole[role] >= thresholdPerRole[role],
+  const hasEnoughMembersWithPermissions = requiredRoles.some((roles) =>
+    roles.every((role) => countPerRole[role] >= thresholdPerRole[role]),
   );
 
   return hasEnoughMembersWithPermissions;
