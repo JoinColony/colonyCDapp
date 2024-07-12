@@ -11,6 +11,7 @@ import createExpenditureSaga from './createExpenditure.ts';
 import createStakedExpenditureSaga from './createStakedExpenditure.ts';
 import createStreamingPaymentSaga from './createStreamingPayment.ts';
 import editExpenditureSaga from './editExpenditure.ts';
+import editStreamingPaymentSaga from './editStreamingPayment.ts';
 import finalizeExpenditureSaga from './finalizeExpenditure.ts';
 import fundExpenditureSaga from './fundExpenditure.ts';
 import lockExpenditureSaga from './lockExpenditure.ts';
@@ -36,5 +37,6 @@ export default function* expendituresSagas() {
     call(cancelStreamingPaymentSaga),
     call(claimStreamingPaymentSaga),
     call(cancelStreamingPaymentsMotionSaga),
+    call(editStreamingPaymentSaga),
   ]);
 }

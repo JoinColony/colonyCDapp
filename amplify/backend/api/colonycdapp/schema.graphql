@@ -809,6 +809,14 @@ enum ContributorType {
 }
 
 """
+Type of stake a user can make
+"""
+enum UserStakeType {
+  MOTION
+  STAKED_EXPENDITURE
+}
+
+"""
 Root query type
 """
 type Query {
@@ -3373,7 +3381,8 @@ type StreamingPayment @model {
   startTime: String!
   endTime: String!
   interval: String!
-  tokenAddress: String!
+  tokenAddress: ID!
+  token: Token @hasOne(fields: ["tokenAddress"])
   amount: String!
   claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
@@ -3395,7 +3404,6 @@ type StreamingPayment @model {
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
-  limitAmount: String
 }
 
 type StreamingPaymentClaim {
@@ -3552,6 +3560,8 @@ type UserStake @model {
     )
   user: User! @hasOne(fields: ["userAddress"])
   colonyAddress: ID!
+  # TODO: Make this field non-nullable once migration is done
+  type: UserStakeType
   amount: String!
   isClaimed: Boolean!
   actionId: ID!
