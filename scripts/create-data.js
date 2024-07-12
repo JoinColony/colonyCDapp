@@ -86,6 +86,7 @@ const CHAR_LIMITS = {
   },
   COLONY: {
     MAX_COLONY_DISPLAY_NAME: 20,
+    MAX_COLONY_DESCRIPTION: 200,
     MAX_COLONY_OBJECTIVE_TITLE: 60,
     MAX_COLONY_OBJECTIVE_DESCRIPTION: 200,
   }
@@ -513,7 +514,7 @@ const createColony = async (
 
   const metadata = {};
   if (colonyDescription) {
-    metadata.description = colonyDescription;
+    metadata.description = colonyDescription.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_DESCRIPTION);
   }
   if (colonyAvatar) {
     metadata.avatar = colonyAvatar;

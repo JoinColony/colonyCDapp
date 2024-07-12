@@ -85,8 +85,11 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <ManageReputation action={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
+      case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
       case ExtendedColonyActionType.UpdateColonyObjective:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMultisig:
         return <UpgradeColonyObjective action={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
@@ -120,6 +123,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
         // @NOTE: Enabling those 2 above temporarily
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:

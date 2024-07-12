@@ -557,15 +557,15 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
 
 const getChangelogItem = (
   {
+    isMultiSig: actionIsMultiSig,
     isMotion: actionIsMotion,
     transactionHash,
     pendingColonyMetadata,
   }: ColonyAction,
   colonyMetadata: ColonyMetadata | null | undefined,
 ) => {
-  const metadataObject = actionIsMotion
-    ? pendingColonyMetadata
-    : colonyMetadata;
+  const metadataObject =
+    actionIsMotion || actionIsMultiSig ? pendingColonyMetadata : colonyMetadata;
 
   return metadataObject?.changelog?.find(
     (item) => item.transactionHash === transactionHash,
@@ -583,6 +583,12 @@ export const getExtendedActionType = (
   const changelogItem = getChangelogItem(actionData, metadata);
 
   if (changelogItem?.hasObjectiveChanged) {
+    if (actionData.isMotion) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMotion;
+    }
+    if (actionData.isMultiSig) {
+      return ExtendedColonyActionType.UpdateColonyObjectiveMultisig;
+    }
     return ExtendedColonyActionType.UpdateColonyObjective;
   }
 

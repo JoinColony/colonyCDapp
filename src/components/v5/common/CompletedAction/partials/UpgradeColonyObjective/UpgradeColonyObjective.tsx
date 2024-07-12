@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { type ColonyAction } from '~types/graphql.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -50,7 +51,13 @@ const MSG = defineMessages({
 
 const UpgradeColonyObjective = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, colony, isMotion, pendingColonyMetadata } = action;
+  const { initiatorUser, colony, isMotion, isMultiSig, pendingColonyMetadata } =
+    action;
+
+  const objectiveData =
+    isMotion || isMultiSig
+      ? pendingColonyMetadata?.objective
+      : colony.metadata?.objective;
 
   return (
     <>
@@ -69,28 +76,22 @@ const UpgradeColonyObjective = ({ action }: Props) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow
+          actionType={getExtendedActionType(action, colony.metadata)}
+        />
         <div className="flex items-center gap-2">
           <Article size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveTitle)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.title
-              : colony.metadata?.objective?.title}
-          </span>
+          <span>{objectiveData?.title}</span>
         </div>
         <div className="flex items-center gap-2">
           <FileText size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveDescription)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.description
-              : colony.metadata?.objective?.description}
-          </span>
+          <span>{objectiveData?.description}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -98,12 +99,7 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           <span>{formatText(MSG.objectiveProgress)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.progress
-              : colony.metadata?.objective?.progress}
-            %
-          </span>
+          <span>{objectiveData?.progress}%</span>
         </div>
         <DecisionMethodRow
           isMotion={action.isMotion || false}
