@@ -54,3 +54,6 @@ export const stripHTMLFromText = (text: string): string => {
 
   return tempDiv.textContent || tempDiv.innerText || '';
 };
+
+export const getElementWithSelector = (selector: string): HTMLElement | null =>
+  document.querySelector(selector);

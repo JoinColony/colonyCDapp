@@ -8,7 +8,10 @@ import React, {
 } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
+import { useTablet } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
+import { isChildOf } from '~utils/checks/isChildOf.ts';
+import { getElementWithSelector } from '~utils/elements.ts';
 
 import {
   useAnalyticsContext,
@@ -36,6 +39,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
   const cancelModalToggle = useToggle();
+  const isTablet = useTablet();
   const [
     isActionSidebarOpen,
     {
@@ -51,7 +55,12 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
-    if (!isClickedInside) {
+    const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
+
+    if (
+      !isClickedInside ||
+      (isChildOf(navigationWrapper, element) && !isTablet)
+    ) {
       return false;
     }
 

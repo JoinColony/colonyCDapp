@@ -9,6 +9,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
@@ -48,6 +49,7 @@ const UserHubButton: FC = () => {
   const walletAddress = wallet?.address;
 
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
+  const { isTokensModalOpen } = useTokensModalContext();
 
   const [, { toggleOff }] = mobileMenuToggle;
 
@@ -107,6 +109,13 @@ const UserHubButton: FC = () => {
     visible,
     isUserHubOpen,
   ]);
+
+  useEffect(() => {
+    if (isTokensModalOpen) {
+      triggerRef?.click();
+      setIsUserHubOpen(false);
+    }
+  }, [isTokensModalOpen, triggerRef]);
 
   useDisableBodyScroll(visible && isMobile);
 
