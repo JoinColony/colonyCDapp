@@ -11,10 +11,9 @@ import { type ColonyFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
-import { extractColonyDomains } from '~utils/domains.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
+import { getMotionPayload } from '~utils/motions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
 import {
@@ -125,9 +124,10 @@ export const getManagePermissionsPayload = (
     return {
       ...commonPayload,
       motionDomainId: Number(createdIn),
-      colonyRoles: extractColonyRoles(colony.roles),
-      colonyDomains: extractColonyDomains(colony.domains),
-      isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+      ...getMotionPayload(
+        values.decisionMethod === DecisionMethod.MultiSig,
+        colony,
+      ),
     };
   }
 
