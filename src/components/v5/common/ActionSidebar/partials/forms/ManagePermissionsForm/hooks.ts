@@ -4,11 +4,10 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
-import { UserRole, getRole } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { getUserRolesForDomain } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
@@ -17,12 +16,10 @@ import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
-  Authority,
-  AVAILABLE_ROLES,
   type ManagePermissionsFormValues,
   validationSchema,
 } from './consts.ts';
-import { getManagePermissionsPayload } from './utils.ts';
+import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -38,7 +35,7 @@ export const useManagePermissions = (
     setValue,
     setError,
     clearErrors,
-    formState: { submitCount, errors },
+    formState: { errors, defaultValues, isSubmitted },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
@@ -54,20 +51,27 @@ export const useManagePermissions = (
   const isModeRoleSelected = formRole === UserRole.Mod;
 
   useEffect(() => {
-    if (isModeRoleSelected) {
-      setValue('authority', Authority.Own);
-    }
+    /**
+     * This effect handles the population of permissions-related form values when the
+     * Manage Permissions form is given default values via the "Redo action" flow
+     */
+    const { member, role, team } = defaultValues ?? {};
 
-    if (errors.permissions) {
-      setError('role', {});
-    } else {
-      clearErrors('role');
+    if (member && role && team) {
+      configureFormRoles({
+        colony,
+        isSubmitted: false,
+        member,
+        role,
+        setValue,
+        team,
+      });
     }
-  }, [clearErrors, errors.permissions, isModeRoleSelected, setError, setValue]);
+  }, [colony, defaultValues, setValue]);
 
   useEffect(() => {
     const { unsubscribe } = watch(({ member, team, role }, { name }) => {
-      if (submitCount > 0) {
+      if (isSubmitted) {
         if (role === UserRole.Custom) {
           trigger('permissions');
         } else {
@@ -84,31 +88,13 @@ export const useManagePermissions = (
         return;
       }
 
-      const userRolesForDomain = getUserRolesForDomain({
+      configureFormRoles({
         colony,
-        userAddress: member,
-        domainId: team,
-        intersectingRoles: true,
-      });
-
-      const userRoleMeta = getRole(userRolesForDomain);
-
-      const userRole = userRoleMeta.permissions.length
-        ? userRoleMeta.role
-        : undefined;
-
-      setValue('_dbUserRole', userRole);
-      setValue('_dbUserPermissions', userRolesForDomain);
-
-      if (role !== UserRole.Custom) {
-        setValue('role', userRole, { shouldValidate: submitCount > 0 });
-      }
-
-      AVAILABLE_ROLES.forEach((colonyRole) => {
-        setValue(
-          `permissions.role_${colonyRole}`,
-          userRoleMeta.permissions.includes(colonyRole),
-        );
+        isSubmitted,
+        member,
+        role,
+        setValue,
+        team,
       });
     });
 
@@ -119,7 +105,7 @@ export const useManagePermissions = (
     errors.permissions,
     setError,
     setValue,
-    submitCount,
+    isSubmitted,
     trigger,
     watch,
   ]);
