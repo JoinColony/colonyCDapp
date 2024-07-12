@@ -15,6 +15,7 @@ export interface InputBaseProps
   autoWidth?: boolean;
   label?: React.ReactNode;
   shouldFocus?: boolean;
+  maxWidth?: number;
 }
 
 export interface FormInputBaseProps

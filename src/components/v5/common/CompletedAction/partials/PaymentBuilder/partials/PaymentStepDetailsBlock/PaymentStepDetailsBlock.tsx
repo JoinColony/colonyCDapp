@@ -67,8 +67,8 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
     [allPayouts, claimablePayouts],
   );
   const closestPayoutClaimDelay = leftToClaim.length
-    ? Number(leftToClaim[0].claimDelay)
-    : 0;
+    ? leftToClaim[0].claimDelay
+    : '0';
 
   const allPaid = !allPayouts.find(({ isClaimed }) => !isClaimed);
 

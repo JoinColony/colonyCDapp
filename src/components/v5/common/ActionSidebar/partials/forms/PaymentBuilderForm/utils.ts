@@ -1,4 +1,5 @@
 import { Id } from '@colony/colony-js';
+import { unformatNumeral } from 'cleave-zen';
 import { BigNumber } from 'ethers';
 import { type TestContext } from 'yup';
 
@@ -44,7 +45,9 @@ export const getPaymentBuilderPayload = (
       recipientAddress: payment.recipient,
       tokenAddress: payment.tokenAddress,
       amount: payment.amount.toString(),
-      claimDelay: convertPeriodToSeconds(payment.delay),
+      claimDelay: convertPeriodToSeconds(
+        Number(unformatNumeral(payment.delay)),
+      ),
       tokenDecimals:
         colonyTokens?.find(
           ({ token }) => token.tokenAddress === payment.tokenAddress,

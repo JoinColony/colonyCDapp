@@ -90,7 +90,7 @@ const UserSelect: FC<UserSelectProps> = ({
   };
 
   const userName = getUserName();
-  const isUserAddressValid = isAddress(field.value);
+  const isUserAddressValid = field.value && isAddress(field.value);
 
   const toggler = (
     <>
@@ -173,14 +173,8 @@ const UserSelect: FC<UserSelectProps> = ({
       {tooltipContent ? (
         <Tooltip
           tooltipContent={tooltipContent}
+          trigger="hover"
           placement="top"
-          // selectTriggerRef={(triggerRef) => {
-          //   if (!triggerRef) {
-          //     return null;
-          //   }
-
-          //   return triggerRef.querySelector(`.${LABEL_CLASSNAME}`);
-          // }}
         >
           {toggler}
         </Tooltip>

@@ -48,7 +48,6 @@ const AmountField: FC<AmountFieldProps> = ({
   } = useController({
     name: tokenAddressFieldName,
   });
-  const [value, setValue] = useState<string | undefined>(undefined);
   const isError = !!error || !!tokenAddressError;
   const { colony } = useColonyContext();
   const [
@@ -65,6 +64,9 @@ const AmountField: FC<AmountFieldProps> = ({
     dropdownRef,
     adjustInputWidth,
   } = useAmountField(tokenAddressController.value, maxWidth);
+  const [value, setValue] = useState<string | undefined>(
+    field.value ? formatNumeral(field.value, formattingOptions) : undefined,
+  );
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     const unformattedValue = unformatNumeral(e.target.value);

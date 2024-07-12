@@ -10,6 +10,7 @@ import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
+import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import Table from '~v5/common/Table/index.ts';
@@ -115,9 +116,7 @@ const useGetPaymentBuilderColumns = ({
         staticSize:
           status === ExpenditureStatus.Finalized ? '6.875rem' : undefined,
         cell: ({ row }) => {
-          const formattedHours = Math.floor(
-            Number(row.original.claimDelay) / 3600,
-          );
+          const formattedHours = convertPeriodToHours(row.original.claimDelay);
 
           return !isDataLoading ? (
             <span className="text-md text-gray-900">
@@ -197,6 +196,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             claimDelay: BigNumber.from(item.claimDelay || '0')
               .add(expendituresGlobalClaimDelay ?? '0')
               .toString(),
+
             amount: payout.amount || '0',
             tokenAddress: payout.tokenAddress || '',
             isClaimed: payout.isClaimed || false,
