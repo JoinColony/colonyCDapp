@@ -62,7 +62,7 @@ function* voteOnMultiSigAction({
         colonyRoles,
         colonyDomains,
         requiredDomainId: domainId,
-        requiredColonyRole: roles,
+        requiredColonyRoles: roles,
         permissionAddress: userAddress,
         isMultiSig: true,
       },

@@ -3,7 +3,7 @@ import { type BigNumber } from 'ethers';
 import { type RefObject } from 'react';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink } from '~gql';
+import { type ColonyRoleFragment, type ExternalLink } from '~gql';
 import { type ActionTypes } from '~redux/index.ts';
 import { type Authority } from '~types/authority.ts';
 import {
@@ -176,6 +176,8 @@ export type ColonyActionsActionTypes =
         roles: Record<ColonyRole, boolean>;
         authority: Authority;
         annotationMessage?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
       },
       MetaWithSetter<object>
     >

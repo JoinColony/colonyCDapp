@@ -15,7 +15,7 @@ export const getRolesNeededForMultiSigAction = ({
 }: {
   actionType: ColonyActionType;
   createdIn: number;
-}): ColonyRole[] | undefined => {
+}): ColonyRole[][] | undefined => {
   switch (actionType) {
     case ColonyActionType.ColonyEditMultisig:
       return PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails;
