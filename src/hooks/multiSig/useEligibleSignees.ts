@@ -5,7 +5,7 @@ import { type ColonyContributor } from '~types/graphql.ts';
 
 interface UseEligibleSigneesParams {
   domainId: number;
-  requiredRoles?: ColonyRole[];
+  requiredRoles?: ColonyRole[][];
 }
 
 export const useEligibleSignees = ({
@@ -22,21 +22,18 @@ export const useEligibleSignees = ({
     domainId === Id.RootDomain ? [Id.RootDomain] : [Id.RootDomain, domainId];
 
   const getEligibleSignees = (members: ColonyContributor[]) => {
-    if (!requiredRoles) {
+    if (!requiredRoles || requiredRoles.length === 0) {
       return {
         eligibleSignees: {},
         uniqueEligibleSignees: [],
       };
     }
 
-    const matches = requiredRoles.reduce((acc, role) => {
-      acc[role] = {};
-      return acc;
-    }, {}) as {
+    const matches: {
       [role: number]: { [userAddress: string]: ColonyContributor['user'] };
-    };
+    } = {};
 
-    const uniqueEligibleSignees = new Set();
+    const uniqueEligibleSignees = new Set<ColonyContributor['user']>();
 
     members.forEach((member) => {
       if (!member.roles) {
@@ -59,26 +56,34 @@ export const useEligibleSignees = ({
           .filter((key) => key.startsWith('role_') && item[key] === true)
           .map((key) => Number(key.split('_')[1]));
 
-        requiredRoles.forEach((role) => {
-          if (!member.user) {
-            return;
-          }
-
-          if (assignedRoles.includes(role)) {
+        // Check if assignedRoles includes all roles in any requiredRoles array
+        if (
+          requiredRoles.some((roles) =>
+            roles.every((role) => assignedRoles.includes(role)),
+          )
+        ) {
+          if (member.user) {
             const key = member.user.walletAddress;
-            matches[role][key] = member.user;
-
             uniqueEligibleSignees.add(member.user);
+
+            requiredRoles.forEach((roles) => {
+              roles.forEach((role) => {
+                if (assignedRoles.includes(role)) {
+                  if (!matches[role]) {
+                    matches[role] = {};
+                  }
+                  matches[role][key] = member.user;
+                }
+              });
+            });
           }
-        });
+        }
       });
     });
 
     return {
       eligibleSignees: matches,
-      uniqueEligibleSignees: [
-        ...uniqueEligibleSignees,
-      ] as ColonyContributor['user'][],
+      uniqueEligibleSignees: [...uniqueEligibleSignees],
     };
   };
 

@@ -1,11 +1,7 @@
-import {
-  ClientType,
-  ColonyRole,
-  getPermissionProofs,
-  Id,
-} from '@colony/colony-js';
+import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -30,6 +26,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
 } from '../utils/index.ts';
 
 function* managePermissionsAction({
@@ -42,6 +39,8 @@ function* managePermissionsAction({
     colonyName,
     annotationMessage,
     customActionTitle,
+    colonyRoles,
+    colonyDomains,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -146,11 +145,23 @@ function* managePermissionsAction({
       colonyAddress,
     );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+    const requiredRoles =
+      domainId === Id.RootDomain
+        ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+
+    const initiatorAddress = yield colonyClient.signer.getAddress();
+
+    const [permissionDomainId, childSkillIndex] = yield call(
+      getPermissionProofsLocal,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: domainId,
+        requiredColonyRoles: requiredRoles,
+        permissionAddress: initiatorAddress,
+      },
     );
 
     yield put(
