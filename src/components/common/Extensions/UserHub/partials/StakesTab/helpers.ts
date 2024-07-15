@@ -34,6 +34,10 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimed;
   }
 
+  if (stake.action?.expenditureId) {
+    return UserStakeStatus.Staking;
+  }
+
   const motionState = statesMap.get(stake.action?.motionData?.motionId ?? '');
   if (!motionState) {
     return UserStakeStatus.Unknown;
@@ -42,6 +46,7 @@ export const getStakeStatus = (
   if (motionState === NetworkMotionState.Finalizable) {
     return UserStakeStatus.Finalizable;
   }
+
   if (
     motionState === NetworkMotionState.Finalized ||
     motionState === NetworkMotionState.Failed

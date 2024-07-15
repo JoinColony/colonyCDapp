@@ -142,6 +142,7 @@ export type ExpendituresActionTypes =
         distributionType?: SplitPaymentDistributionType;
         activeBalance: string | undefined;
         tokenAddress: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >
