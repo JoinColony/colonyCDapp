@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
+import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
 
 import { type StakeItemProps } from '../types.ts';
@@ -15,6 +16,8 @@ const displayName =
 const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
+
+  const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
 
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
@@ -56,7 +59,11 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
               {stake.action
                 ? formatMessage(
                     { id: 'action.title' },
-                    getActionTitleValues({ actionData: stake.action, colony }),
+                    getActionTitleValues({
+                      actionData: stake.action,
+                      colony,
+                      expenditureData: expenditure ?? undefined,
+                    }),
                   )
                 : '-'}
             </div>
