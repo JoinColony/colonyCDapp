@@ -1,75 +1,90 @@
-import { WarningCircle, type Icon } from '@phosphor-icons/react';
+import { WarningCircle } from '@phosphor-icons/react';
 import { type MessageDescriptor, defineMessages } from 'react-intl';
 
-const displayName = 'v5.pages.UserCryptoToFiatPage.partials.Verification';
+import { formatText } from '~utils/intl.ts';
 
-export enum STATUS {
-  NOT_STARTED = 'not_started',
-  INCOMPLETE = 'incomplete',
-  UNDER_REVIEW = 'under_review',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-}
+import { statusPillThemes } from '../../constants.ts';
+import { type StatusPillScheme } from '../../types.ts';
 
-// @TODO add keys translation file
-export const STATUS_MSGS = defineMessages({
-  // update these keys to match the actual status
-  [STATUS.NOT_STARTED]: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Not started',
-  },
-  [STATUS.INCOMPLETE]: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Incomplete',
-  },
-  [STATUS.UNDER_REVIEW]: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Under Review',
-  },
-  [STATUS.APPROVED]: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Approved',
-  },
-  [STATUS.REJECTED]: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Rejected',
-  },
-});
+import { KycStatus } from './types.ts';
 
-// Add more status pills here
+export const displayName =
+  'v5.pages.UserCryptoToFiatPage.partials.Verification';
+
 export const getStatusPillScheme = (
   status?: string | null,
-): {
-  icon?: Icon;
-  iconClassName?: string;
-  bgClassName: string;
-  textClassName: string;
-} => {
+): StatusPillScheme => {
   switch (status) {
-    case STATUS.APPROVED: {
+    case KycStatus.NOT_STARTED: {
       return {
-        bgClassName: 'bg-teams-green-100',
-        textClassName: 'text-xs text-teams-green-400',
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Not started',
+        }),
+        icon: WarningCircle,
+        ...statusPillThemes.red,
       };
     }
-    case STATUS.INCOMPLETE: {
+    case KycStatus.INCOMPLETE: {
       return {
-        bgClassName: 'bg-warning-100',
-        textClassName: 'text-xs text-warning-400',
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Incomplete',
+        }),
+        ...statusPillThemes.orange,
       };
     }
-    case STATUS.UNDER_REVIEW: {
+    case KycStatus.AWAITING_UBO: {
       return {
-        bgClassName: 'bg-gray-100',
-        textClassName: 'text-xs text-gray-500',
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Awaiting UBO',
+        }),
+        ...statusPillThemes.gray,
+      };
+    }
+    case KycStatus.MANUAL_REVIEW: {
+      return {
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Manual review',
+        }),
+        ...statusPillThemes.gray,
+      };
+    }
+    case KycStatus.UNDER_REVIEW: {
+      return {
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Under review',
+        }),
+        ...statusPillThemes.gray,
+      };
+    }
+    case KycStatus.APPROVED: {
+      return {
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Approved',
+        }),
+        ...statusPillThemes.green,
+      };
+    }
+    case KycStatus.REJECTED: {
+      return {
+        copy: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Rejected',
+        }),
+        icon: WarningCircle,
+        ...statusPillThemes.red,
       };
     }
     default: {
       return {
-        icon: WarningCircle,
-        iconClassName: 'text-teams-red-400',
+        copy: '',
         bgClassName: 'bg-teams-red-50',
-        textClassName: 'text-xs text-teams-red-400',
+        textClassName: 'text-gray-400',
       };
     }
   }
@@ -87,7 +102,7 @@ export const getCTAProps = (
   }
 
   switch (status) {
-    case STATUS.REJECTED: {
+    case KycStatus.REJECTED: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -95,7 +110,7 @@ export const getCTAProps = (
         },
       };
     }
-    case STATUS.APPROVED: {
+    case KycStatus.APPROVED: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -104,7 +119,7 @@ export const getCTAProps = (
         ctaDisabled: true,
       };
     }
-    case STATUS.INCOMPLETE: {
+    case KycStatus.INCOMPLETE: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -112,7 +127,7 @@ export const getCTAProps = (
         },
       };
     }
-    case STATUS.UNDER_REVIEW: {
+    case KycStatus.UNDER_REVIEW: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -131,3 +146,27 @@ export const getCTAProps = (
     }
   }
 };
+
+export const MSG = defineMessages({
+  headingTitle: {
+    id: `${displayName}.headingTitle`,
+    defaultMessage: 'Verification',
+  },
+  headingAccessory: {
+    id: `${displayName}.headingAccessory`,
+    defaultMessage: 'Required',
+  },
+  bodyTitle: {
+    id: `${displayName}.bodyTitle`,
+    defaultMessage: 'Know Your Customer/Anti Money Laundering (KYC/AML) checks',
+  },
+  bodyDescription: {
+    id: `${displayName}.bodyDescription`,
+    defaultMessage:
+      'Regulatory compliance requires users to fiat off-ramp must complete KYC/AML checks. It only takes a couple of minutes.',
+  },
+  bodyCtaTitle: {
+    id: `${displayName}.bodyCtaTitle`,
+    defaultMessage: 'Start KYC',
+  },
+});

@@ -1,47 +1,24 @@
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
 import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants.ts';
-import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
-import { STATUS_MSGS, getCTAProps, getStatusPillScheme } from './consts.ts';
-
-const displayName = 'v5.pages.UserCryptoToFiatPage.partials.Verification';
-
-const MSG = defineMessages({
-  headingTitle: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Verification',
-  },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
-  },
-  bodyTitle: {
-    id: `${displayName}.bodyTitle`,
-    defaultMessage: 'Know Your Customer/Anti Money Laundering (KYC/AML)',
-  },
-  bodyDescription: {
-    id: `${displayName}.bodyDescription`,
-    defaultMessage:
-      'Regulatory compliance requires users to verify their account by completing KYC/AML checks. It only takes a couple of minutes.',
-  },
-  bodyCtaTitle: {
-    id: `${displayName}.bodyCtaTitle`,
-    defaultMessage: 'Start KYC',
-  },
-});
+import {
+  MSG,
+  displayName,
+  getCTAProps,
+  getStatusPillScheme,
+} from './consts.ts';
 
 const Verification: FC<CryptoToFiatPageComponentProps> = ({
   order,
-  statusData,
+  kycStatusData,
 }) => {
   const [searchParams] = useSearchParams();
   const isInitialOpened = !!searchParams?.has(
@@ -51,7 +28,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 
-  const kycStatus = statusData?.kyc_status;
+  const kycStatus = kycStatusData?.kyc_status;
 
   const statusPillScheme = getStatusPillScheme(kycStatus);
   const ctaProps = getCTAProps(kycStatus);
@@ -72,9 +49,10 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
                 statusPillScheme.bgClassName,
                 'text-sm font-medium',
               )}
+              isCapitalized={false}
             >
               <span className={statusPillScheme.textClassName}>
-                {formatText(STATUS_MSGS[kycStatus])}
+                {statusPillScheme.copy}
               </span>
             </PillsBase>
           )
@@ -91,7 +69,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
         <KYCModal
           isOpened={isOpened}
           onClose={handleClose}
-          existingKycLink={statusData?.kyc_link ?? ''}
+          existingKycLink={kycStatusData?.kyc_link ?? ''}
         />
       )}
     </RowItem.Container>

@@ -19,7 +19,7 @@ import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
-import { type StatusData } from './types.ts';
+import { type KycStatusData } from './types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
 
@@ -49,12 +49,14 @@ const UserCryptoToFiatPage = () => {
   const { rowItems } = useUserCryptoToFiatPage();
 
   const [checkKycStatus] = useCheckKycStatusMutation();
-  const [statusData, setStatusData] = useState<StatusData | null>(null);
+  const [kycStatusData, setKycStatusData] = useState<KycStatusData | null>(
+    null,
+  );
 
   useEffect(() => {
     checkKycStatus().then((result) => {
       if (result.data?.bridgeXYZMutation) {
-        setStatusData(result.data.bridgeXYZMutation);
+        setKycStatusData(result.data.bridgeXYZMutation);
       }
     });
   }, [checkKycStatus]);
@@ -83,7 +85,7 @@ const UserCryptoToFiatPage = () => {
         return (
           <Fragment key={key}>
             {/* @TODO: Is there a benefit in having the hook return an array instead of just rendering components?  */}
-            <Component order={index + 1} statusData={statusData} />
+            <Component order={index + 1} kycStatusData={kycStatusData} />
             {index < items.length - 1 && <hr />}
           </Fragment>
         );
