@@ -10,6 +10,7 @@ import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
+import { KycStatus } from '../Verification/types.ts';
 
 import { BODY_MSG, getStatusPillScheme, HEADING_MSG } from './consts.ts';
 
@@ -87,7 +88,11 @@ const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
                 />,
               );
             }}
-            disabled={editUserLoading}
+            disabled={
+              editUserLoading ||
+              kycStatusData?.kyc_status !== KycStatus.APPROVED ||
+              !kycStatusData?.bankAccount
+            }
           />
         }
       />
