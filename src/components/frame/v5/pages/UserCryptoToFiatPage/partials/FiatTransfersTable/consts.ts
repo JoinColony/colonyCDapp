@@ -17,23 +17,23 @@ export enum FiatTransferState {
 export const STATUS_MSGS = defineMessages({
   [FiatTransferState.AwaitingFunds]: {
     id: `${displayName}.awaitingFunds`,
-    defaultMessage: 'Awaiting Funds',
+    defaultMessage: 'Awaiting funds',
   },
   [FiatTransferState.InReview]: {
     id: `${displayName}.inReview`,
-    defaultMessage: 'In Review',
+    defaultMessage: 'In review',
   },
   [FiatTransferState.FundsReceived]: {
     id: `${displayName}.fundsReceived`,
-    defaultMessage: 'Funds Received',
+    defaultMessage: 'Funds received',
   },
   [FiatTransferState.PaymentSubmitted]: {
     id: `${displayName}.paymentSubmitted`,
-    defaultMessage: 'Payment Submitted',
+    defaultMessage: 'Payment submitted',
   },
   [FiatTransferState.PaymentProcessed]: {
     id: `${displayName}.paymentProcessed`,
-    defaultMessage: 'Payment Processed',
+    defaultMessage: 'Payment processed',
   },
   [FiatTransferState.Canceled]: {
     id: `${displayName}.canceled`,
@@ -63,42 +63,42 @@ export const statusPillScheme: Record<
 > = {
   [FiatTransferState.AwaitingFunds]: {
     bgClassName: 'bg-warning-100',
-    textClassName: 'text-xs text-warning-400',
+    textClassName: 'text-warning-400',
   },
   [FiatTransferState.InReview]: {
     bgClassName: 'bg-gray-100',
-    textClassName: 'text-xs text-gray-500',
+    textClassName: 'text-gray-500',
   },
   [FiatTransferState.FundsReceived]: {
     bgClassName: 'bg-success-100',
-    textClassName: 'text-xs text-success-400',
+    textClassName: 'text-success-400',
   },
   [FiatTransferState.PaymentSubmitted]: {
     bgClassName: 'bg-success-100',
-    textClassName: 'text-xs text-success-400',
+    textClassName: 'text-success-400',
   },
   [FiatTransferState.PaymentProcessed]: {
     bgClassName: 'bg-success-100',
-    textClassName: 'text-xs text-success-400',
+    textClassName: 'text-success-400',
   },
   [FiatTransferState.Canceled]: {
     bgClassName: 'bg-negative-200',
-    textClassName: 'text-xs text-negative-400',
+    textClassName: 'text-negative-400',
   },
   [FiatTransferState.Error]: {
     bgClassName: 'bg-negative-200',
-    textClassName: 'text-xs text-negative-400',
+    textClassName: 'text-negative-400',
   },
   [FiatTransferState.Returned]: {
     bgClassName: 'bg-negative-200',
-    textClassName: 'text-xs text-negative-400',
+    textClassName: 'text-negative-400',
   },
   [FiatTransferState.Refunded]: {
     bgClassName: 'bg-negative-200',
-    textClassName: 'text-xs text-negative-400',
+    textClassName: 'text-negative-400',
   },
   default: {
     bgClassName: 'bg-gray-100',
-    textClassName: 'text-xs text-gray-500',
+    textClassName: 'text-gray-500',
   },
 };

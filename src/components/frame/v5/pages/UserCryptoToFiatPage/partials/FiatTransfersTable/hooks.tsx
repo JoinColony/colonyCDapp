@@ -133,6 +133,7 @@ export const useFiatTransfersTableColumns = (
           }
           return (
             <PillsBase
+              isCapitalized={false}
               className={clsx(statusScheme.bgClassName, 'text-sm font-medium')}
             >
               <span className={statusScheme.textClassName}>
@@ -161,7 +162,7 @@ export const useFiatTransfersTableColumns = (
             <ExternalLink
               href={row.original.receiptUrl}
               key={row.original.receiptUrl}
-              className="flex items-center gap-2 text-md text-gray-700 underline"
+              className="flex items-center gap-2 text-md text-gray-700 underline transition-colors hover:text-blue-400"
             >
               <ArrowSquareOut size={18} />
               {formatText({ id: 'table.content.viewReceipt' })}
