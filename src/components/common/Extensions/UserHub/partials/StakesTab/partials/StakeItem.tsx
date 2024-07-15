@@ -18,6 +18,8 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const navigate = useNavigate();
   const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
 
+  const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
+
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
