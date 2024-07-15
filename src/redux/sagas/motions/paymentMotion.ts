@@ -84,7 +84,7 @@ function* createPaymentMotion({
       colonyAddress,
     );
 
-    const { network } = colonyManager.networkClient;
+    // const { network } = colonyManager.networkClient;
 
     const childSkillIndex = yield call(
       getChildIndex,
@@ -112,7 +112,7 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const payouts = yield adjustPayoutsAddresses(payments, network);
+    const payouts = yield adjustPayoutsAddresses(payments /* network */);
     const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(
