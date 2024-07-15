@@ -69,5 +69,6 @@ export const getCreateStakedExpenditurePayload = ({
     stakedExpenditureAddress,
     tokenAddress: colony.nativeToken.tokenAddress,
     activeBalance,
+    customActionTitle: values?.title,
   };
 };

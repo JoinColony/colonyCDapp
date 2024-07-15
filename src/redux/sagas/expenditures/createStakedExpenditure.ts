@@ -27,6 +27,7 @@ import {
   uploadAnnotation,
   getPayoutsWithSlotIds,
   getEditDraftExpenditureMulticallData,
+  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -49,6 +50,7 @@ function* createStakedExpenditure({
     distributionType,
     activeBalance = '0',
     tokenAddress,
+    customActionTitle,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield call(getColonyManager);
@@ -263,6 +265,10 @@ function* createStakedExpenditure({
     yield transactionSetParams(setExpenditureValues.id, [multicallData]);
     yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     if (isStaged) {
       yield takeFrom(
