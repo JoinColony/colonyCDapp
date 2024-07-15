@@ -149,6 +149,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           itemClassName="group flex text-md md:transition-colors md:[&_.role-title]:hover:font-medium md:hover:bg-gray-50 rounded-lg p-2 w-full cursor-pointer"
           footer={permissionSelectFooter}
           disabled={hasNoDecisionMethods}
+          valueOverride={role}
         />
       </FormRow>
       <FormRow
