@@ -219,6 +219,7 @@ export const useGroupedTransactions = () => {
     canFetchMore: !!data?.getTransactionsByUser?.nextToken,
     fetchMore,
     groupState,
+    onePageOnly: transactions.length <= TX_PAGE_SIZE,
     transactions,
   };
 };

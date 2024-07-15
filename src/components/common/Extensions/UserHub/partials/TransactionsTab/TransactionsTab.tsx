@@ -21,9 +21,10 @@ const MSG = defineMessages({
 });
 
 const TransactionsTab: FC<TransactionsProps> = () => {
-  const { transactions, canFetchMore, fetchMore } = useGroupedTransactions();
+  const { transactions, canFetchMore, fetchMore, onePageOnly } =
+    useGroupedTransactions();
   const containerNode = useRef(null);
-  const endNode = useRef(null);
+  const endNode = useRef<HTMLDivElement>(null);
   const isInView = useInView(endNode, { root: containerNode });
   const [isFetching, setIsFetching] = useState(false);
   const isEmpty = !transactions.length;
@@ -74,7 +75,7 @@ const TransactionsTab: FC<TransactionsProps> = () => {
               </span>
             </>
           ) : (
-            <span>{formatText(MSG.thisIsTheEnd)}</span>
+            !onePageOnly && <span>{formatText(MSG.thisIsTheEnd)}</span>
           )}
         </div>
       </div>
