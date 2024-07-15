@@ -131,6 +131,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ManageTokensMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.EmitDomainReputationPenaltyMotion:
+      case ColonyActionType.EmitDomainReputationRewardMotion:
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
         // @NOTE: Enabling those 2 above temporarily
         return <Motions transactionId={action.transactionHash} />;
