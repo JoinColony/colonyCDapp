@@ -54,9 +54,14 @@ export const getStakeStatus = (
     return UserStakeStatus.Lost;
   }
 
+  if (stake.action?.expenditureId) {
+    return UserStakeStatus.Staking;
+  }
+
   if (motionState === NetworkMotionState.Finalizable) {
     return UserStakeStatus.Finalizable;
   }
+
   if (
     motionState === NetworkMotionState.Finalized ||
     motionState === NetworkMotionState.Failed
