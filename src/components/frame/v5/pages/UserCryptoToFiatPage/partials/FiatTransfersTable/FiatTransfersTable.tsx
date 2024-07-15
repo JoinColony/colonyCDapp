@@ -58,6 +58,7 @@ const FiatTransfersTable = () => {
         onSortingChange={setSorting}
         getSortedRowModel={getSortedRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
+        className="[&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600"
         emptyContent={
           !sortedData.length &&
           !loading && (
