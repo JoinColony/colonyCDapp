@@ -48,11 +48,11 @@ function* createStakedExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const { network } = colonyManager.networkClient;
+  // const { network } = colonyManager.networkClient;
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
+  const adjustedPayouts = yield adjustPayoutsAddresses(payouts /* network */);
   const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
 
   const {
