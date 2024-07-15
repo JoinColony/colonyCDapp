@@ -80,7 +80,7 @@ export const getCTAScheme = ({
     return {
       ctaTitle: {
         id: `${displayName}.body.ctaTitle`,
-        defaultMessage: 'Completed',
+        defaultMessage: 'Update details',
       },
     };
   }
