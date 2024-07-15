@@ -3,6 +3,7 @@ import React, { useEffect, type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useCreateKycLinksMutation } from '~gql';
+import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
@@ -34,6 +35,18 @@ const MSG = defineMessages({
     id: `${displayName}.tcSubtitle`,
     defaultMessage:
       'Accept the terms and privacy of our partner provider Bridge to enable crypto to fiat functionality.',
+  },
+  personalDetailsTabHeading: {
+    id: `${displayName}.personalDetailsTabHeading`,
+    defaultMessage: 'Personal details',
+  },
+  termsTabHeading: {
+    id: `${displayName}.termsTabHeading`,
+    defaultMessage: 'Terms',
+  },
+  kycTabHeading: {
+    id: `${displayName}.kycTabHeading`,
+    defaultMessage: 'KYC form',
   },
 });
 
@@ -123,7 +136,7 @@ export const KYCModal: FC<KYCModalProps> = ({
             {
               key: TabId.PersonalDetails,
               heading: {
-                label: 'Personal details',
+                label: formatText(MSG.personalDetailsTabHeading),
               },
 
               content: (
@@ -171,7 +184,7 @@ export const KYCModal: FC<KYCModalProps> = ({
             {
               key: TabId.Terms,
               heading: {
-                label: 'Terms',
+                label: formatText(MSG.termsTabHeading),
               },
               content: (
                 <div>
@@ -189,7 +202,7 @@ export const KYCModal: FC<KYCModalProps> = ({
             {
               key: TabId.KYC,
               heading: {
-                label: 'KYC form',
+                label: formatText(MSG.kycTabHeading),
               },
               content: (
                 <div>

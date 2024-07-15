@@ -1,8 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { SupportedCurrencies } from '~gql';
 import { getCountries } from '~utils/countries.ts';
 
+import { CURRENCY_VALUES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
@@ -23,7 +25,7 @@ const AccountDetailsInputs = () => {
 
   return (
     <>
-      {currency === 'eur' && (
+      {currency === CURRENCY_VALUES[SupportedCurrencies.Eur] && (
         <>
           <FormRow>
             <FormInput name="iban" placeholder="IBAN" />
@@ -37,7 +39,7 @@ const AccountDetailsInputs = () => {
         </>
       )}
 
-      {currency === 'usd' && (
+      {currency === CURRENCY_VALUES[SupportedCurrencies.Usd] && (
         <>
           <FormRow>
             <FormInput

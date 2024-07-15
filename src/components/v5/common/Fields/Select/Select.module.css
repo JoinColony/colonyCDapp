@@ -11,7 +11,7 @@
 }
 
 .wrapper :global(.select__placeholder) {
-  @apply text-gray-900;
+  @apply font-normal text-gray-400;
 }
 
 .wrapper :global(.select__value-container) {

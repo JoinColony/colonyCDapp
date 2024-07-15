@@ -1,18 +1,9 @@
 import * as Yup from 'yup';
 
-export const getValidationSchema = (shouldValidateAddress) =>
-  Yup.object({
-    address1: shouldValidateAddress
-      ? Yup.string().required()
-      : Yup.string().notRequired(),
-    address2: Yup.string().notRequired(),
-    city: shouldValidateAddress
-      ? Yup.string().required()
-      : Yup.string().notRequired(),
-    state: shouldValidateAddress
-      ? Yup.string().required()
-      : Yup.string().notRequired(),
-    postcode: shouldValidateAddress
-      ? Yup.string().required()
-      : Yup.string().notRequired(),
-  }).defined();
+export const addressValidationSchema = Yup.object({
+  address1: Yup.string().required(),
+  address2: Yup.string().notRequired(),
+  city: Yup.string().required(),
+  state: Yup.string().required(),
+  postcode: Yup.string().required(),
+}).defined();
