@@ -99,22 +99,13 @@ export enum TransactionGroupStatus {
 
 // Get the joint status of one transaction group
 export const getGroupStatus = (txGroup: TransactionType[]) => {
-  if (!txGroup) {
-    throw new Error('this should not happen');
-  }
   if (txGroup.some((tx) => tx.status === TransactionStatus.Failed)) {
     return TransactionStatus.Failed;
-  }
-  if (txGroup.some((tx) => tx.status === TransactionStatus.Pending)) {
-    return TransactionStatus.Pending;
   }
   if (txGroup.every((tx) => tx.status === TransactionStatus.Succeeded)) {
     return TransactionStatus.Succeeded;
   }
-  if (txGroup.some((tx) => tx.status === TransactionStatus.Ready)) {
-    return TransactionStatus.Ready;
-  }
-  return TransactionStatus.Created;
+  return TransactionStatus.Pending;
 };
 
 // Get the joint status of all transaction groups (not failed or succeeded)

@@ -10,6 +10,7 @@ import { formatText } from '~utils/intl.ts';
 import {
   TransactionGroupStatus,
   useGroupedTransactions,
+  getGroupStatus,
 } from '../../../../state/transactionState.ts';
 import IconButton from '../Button/IconButton.tsx';
 
@@ -20,17 +21,29 @@ const TxButton: FC = () => {
 
   const { transactions, groupState } = useGroupedTransactions();
 
-  const succeededTransactionsCount = useMemo(
-    () =>
-      transactions.length &&
-      transactions[0]?.reduce((acc, tx) => {
-        if (tx.status === TransactionStatus.Succeeded) {
-          return acc + 1;
-        }
-        return acc;
-      }, 1),
-    [transactions],
-  );
+  const succeededTransactionsCount = useMemo(() => {
+    if (!transactions.length) {
+      return null;
+    }
+    // This will calculate the following from all transaction groups:
+    // Total number of succeeded txs within pending groups / total number of txs in pending groups
+    return transactions
+      .filter(
+        (txGroup) => getGroupStatus(txGroup) === TransactionStatus.Pending,
+      )
+      .reduce(
+        (acc, txGroup) => {
+          txGroup.forEach((tx) => {
+            if (tx.status === TransactionStatus.Succeeded) {
+              acc[0] += 1;
+            }
+            acc[1] += 1;
+          });
+          return acc;
+        },
+        [0, 0],
+      );
+  }, [transactions]);
 
   const [showCompleted, setShowCompleted] = useState(false);
   const [showPending, setShowPending] = useState(false);
@@ -74,9 +87,9 @@ const TxButton: FC = () => {
         {isMobile ? undefined : (
           <span>
             {formatText({ id: 'button.pending' })}{' '}
-            {transactions[0] &&
-              transactions[0].length > 1 &&
-              `${succeededTransactionsCount}/${transactions[0].length}`}
+            {succeededTransactionsCount
+              ? `${succeededTransactionsCount[0]}/${succeededTransactionsCount[1]}`
+              : null}
           </span>
         )}
       </IconButton>
