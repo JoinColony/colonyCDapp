@@ -1,8 +1,8 @@
-import React, { type FC } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { type CountryData, getCountries } from '~utils/countries.ts';
+import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
@@ -17,13 +17,7 @@ const MSG = defineMessages({
   },
 });
 
-interface CountrySelectProps {
-  setSelectedCountry: (c: CountryData) => void;
-}
-
-export const CountrySelect: FC<CountrySelectProps> = ({
-  setSelectedCountry,
-}) => {
+export const CountrySelect = () => {
   const countries = getCountries();
   const countriesOptions = countries.map((item) => ({
     value: item.alpha3,
@@ -33,8 +27,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
 
   const { setValue } = useFormContext();
 
-  const handleSelect = ({ country }) => {
-    setSelectedCountry(country);
+  const handleSelect = () => {
     // if country changed user should choose state of new country
     setValue('state', '');
   };
@@ -43,7 +36,7 @@ export const CountrySelect: FC<CountrySelectProps> = ({
     <FormSelect
       name="country"
       options={countriesOptions}
-      labelMessage={formatText(MSG.countryLabel)}
+      placeholder={formatText(MSG.countryLabel)}
       handleChange={handleSelect}
     />
   );

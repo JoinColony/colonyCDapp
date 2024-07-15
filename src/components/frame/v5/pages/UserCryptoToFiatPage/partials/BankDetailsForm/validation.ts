@@ -1,6 +1,9 @@
 import { type InferType, object, string } from 'yup';
 
+import { SupportedCurrencies } from '~gql';
 import { intl } from '~utils/intl.ts';
+
+import { CURRENCY_VALUES } from '../../constants.ts';
 
 import { BIC_REGEX, IBAN_REGEX } from './constants.ts';
 
@@ -14,31 +17,31 @@ export const validationSchema = object({
   bankName: string().required(),
   currency: string().required(),
   country: string().when('currency', {
-    is: 'eur',
+    is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string().required(),
     otherwise: string().notRequired(),
   }),
   iban: string().when('currency', {
-    is: 'eur',
+    is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
       .matches(IBAN_REGEX, formatMessage({ id: 'error.iban' }))
       .required(),
     otherwise: string().notRequired(),
   }),
   swift: string().when('currency', {
-    is: 'eur',
+    is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
       .matches(BIC_REGEX, formatMessage({ id: 'error.bic' }))
       .required(),
     otherwise: string().notRequired(),
   }),
   accountNumber: string().when('currency', {
-    is: 'usd',
+    is: CURRENCY_VALUES[SupportedCurrencies.Usd],
     then: string().required(),
     otherwise: string().notRequired(),
   }),
   routingNumber: string().when('currency', {
-    is: 'usd',
+    is: CURRENCY_VALUES[SupportedCurrencies.Usd],
     then: string().required(),
     otherwise: string().notRequired(),
   }),

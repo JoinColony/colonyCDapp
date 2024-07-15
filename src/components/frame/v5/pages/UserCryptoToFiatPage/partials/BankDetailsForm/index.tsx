@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { CURRENCIES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
@@ -11,12 +12,10 @@ import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx'
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
 import { AccountDetailsInputs } from './AccountDetailsInputs.tsx';
-import { CURRENCY } from './constants.ts';
 import { validationSchema } from './validation.ts';
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
-  setCurrentCurrency: (value: string) => void;
   onClose: () => void;
 }
 
@@ -72,7 +71,6 @@ const MSG = defineMessages({
 
 export const BankDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
-  setCurrentCurrency,
   onClose,
 }) => {
   return (
@@ -103,8 +101,7 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
           <FormSelect
             name="currency"
             labelMessage={formatText(MSG.payoutCurrencyLabel)}
-            options={CURRENCY}
-            handleChange={({ value }) => setCurrentCurrency(value)}
+            options={CURRENCIES}
           />
         </FormRow>
 
