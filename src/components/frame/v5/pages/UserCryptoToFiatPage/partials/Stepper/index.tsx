@@ -57,14 +57,14 @@ function Stepper<TKey extends React.Key>({
                     after:top-[.875rem]
                     after:flex
                     after:h-0
-                    after:w-[calc(100%+3rem)]
                     after:flex-1
                     after:flex-shrink-0
                     after:border-t
                     after:border-gray-900
                   `,
                   {
-                    'last:flex-grow-0 last:after:hidden': !isOneItemShown,
+                    'after:w-[calc(100%+3rem)] last:flex-grow-0 last:after:hidden':
+                      !isOneItemShown,
                     'justify-center after:w-[100%] after:!border-gray-300':
                       isOneItemShown,
                   },
