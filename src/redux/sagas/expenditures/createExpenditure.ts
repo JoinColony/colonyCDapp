@@ -52,7 +52,10 @@ function* createExpenditure({
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  const adjustedPayouts = yield adjustPayoutsAddresses(payouts /* network */);
+  const adjustedPayouts = yield adjustPayoutsAddresses(
+    payouts,
+    // network
+  );
   const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
 
   const {

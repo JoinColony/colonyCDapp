@@ -1,6 +1,5 @@
 import React from 'react';
 
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -22,7 +21,7 @@ const Heading: React.FC<RowItemHeadingProps> = ({
     <div>
       <div className="flex items-center justify-between">
         <section className="flex items-center gap-2 text-md font-bold">
-          <section className="flex aspect-square h-6 items-center justify-center rounded-full bg-base-black text-md text-base-white">
+          <section className="flex aspect-square h-6 items-center justify-center rounded-full bg-base-black text-sm text-base-white">
             {itemOrder}
           </section>
           <section className="flex items-end gap-1">
@@ -50,7 +49,7 @@ const Body: React.FC<RowItemBodyProps> = ({
 }) => {
   return (
     <div className="flex items-end justify-between">
-      <section className="max-w-[660px]">
+      <section className="max-w-[742px]">
         {descriptionComponent ?? (
           <div className="flex flex-col gap-1">
             {title && <h5 className="mr-1.5 text-1">{formatText(title)}</h5>}
@@ -67,9 +66,8 @@ const Body: React.FC<RowItemBodyProps> = ({
             text={ctaTitle}
             onClick={ctaOnClick}
             disabled={ctaDisabled}
-          >
-            {ctaLoading && <SpinnerLoader appearance={{ size: 'small' }} />}
-          </Button>
+            loading={ctaLoading}
+          />
         )}
       </section>
     </div>

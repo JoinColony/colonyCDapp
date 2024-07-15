@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
-import { defineMessages } from 'react-intl';
 
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
@@ -8,51 +7,51 @@ import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { BankDetailsModal } from '../BankDetailsModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
-import { statusPillScheme } from './consts.ts';
+import {
+  displayName,
+  getCTAScheme,
+  getStatusPillScheme,
+  HEADING_MSG,
+} from './consts.ts';
 import BankDetailsDescriptionComponent from './partials/BankDetailsDescriptionComponent/BankDetailsDescriptionComponent.tsx';
-
-const displayName = 'v5.pages.UserCryptoToFiat.partials.BankDetails';
-
-const MSG = defineMessages({
-  headingTitle: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Bank details',
-  },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
-  },
-  ctaTitle: {
-    id: `${displayName}.ctaTitle`,
-    defaultMessage: 'Add details',
-  },
-});
+import { BankDetailsStatus } from './types.ts';
 
 const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
   order,
-  statusData,
+  kycStatusData,
 }) => {
-  const status = 'notStarted';
-
   const [isOpened, setOpened] = useState(false);
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
 
+  const bankAccountData = kycStatusData?.bankAccount;
+
+  const status = bankAccountData
+    ? BankDetailsStatus.COMPLETED
+    : BankDetailsStatus.NOT_STARTED;
+
+  const statusPillScheme = getStatusPillScheme(status);
+
+  const ctaScheme = getCTAScheme({ bankAccountData, kycStatusData });
+
   return (
     <RowItem.Container>
       <RowItem.Heading
-        title={MSG.headingTitle}
-        accessory={MSG.headingAccessory}
+        title={HEADING_MSG.title}
+        accessory={HEADING_MSG.accessory}
         statusPill={
           // Move this inside the RowItem.Heading component
           <PillsBase
+            icon={statusPillScheme.icon}
+            iconClassName={statusPillScheme.iconClassName}
             className={clsx(
-              statusPillScheme[status].bgClassName,
+              statusPillScheme.bgClassName,
               'text-sm font-medium',
             )}
+            isCapitalized={false}
           >
-            <span className={statusPillScheme[status].textClassName}>
-              {statusData?.bankAccount ? 'Completed' : 'Not completed'}
+            <span className={statusPillScheme.textClassName}>
+              {statusPillScheme.copy}
             </span>
           </PillsBase>
         }
@@ -60,15 +59,11 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
       />
       <RowItem.Body
         descriptionComponent={
-          <BankDetailsDescriptionComponent
-            bankAccount={statusData?.bankAccount}
-          />
+          <BankDetailsDescriptionComponent bankAccount={bankAccountData} />
         }
-        ctaTitle={MSG.ctaTitle}
+        ctaTitle={ctaScheme.ctaTitle}
         ctaOnClick={handleOpen}
-        ctaDisabled={
-          statusData?.kyc_status !== 'approved' || !!statusData.bankAccount
-        }
+        ctaDisabled={ctaScheme.ctaDisabled}
       />
 
       {isOpened && (

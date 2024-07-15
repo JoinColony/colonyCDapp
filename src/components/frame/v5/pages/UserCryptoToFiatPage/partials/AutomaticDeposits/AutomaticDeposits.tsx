@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -12,76 +11,60 @@ import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
 
-import { statusPillScheme } from './consts.ts';
+import { BODY_MSG, getStatusPillScheme, HEADING_MSG } from './consts.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
 
-const MSG = defineMessages({
-  headingTitle: {
-    id: `${displayName}.headingTitle`,
-    defaultMessage: 'Bank details',
-  },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
-  },
-  bodyTitle: {
-    id: `${displayName}.bodyTitle`,
-    defaultMessage: 'Automatically deposit USDC payments to your bank account',
-  },
-  bodyDescription: {
-    id: `${displayName}.bodyDescription`,
-    defaultMessage:
-      'Enable this to automatically USD or EUR in your account any time you receive a USDC payment from the colony app. A gateway fee, plus any transaction costs will be deducted from your payment',
-  },
-  bodyCtaTitle: {
-    id: `${displayName}.bodyCtaTitle`,
-    defaultMessage: 'Start KYC',
-  },
-});
-
-const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({ order }) => {
-  const status = 'kycPaymentRequired';
-
+const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
+  order,
+  kycStatusData,
+}) => {
   const { user, updateUser } = useAppContext();
 
   const [editUser, { loading: editUserLoading }] =
     useUpdateUserProfileMutation();
 
-  const [isChecked, setIsChecked] = useState(
+  const [isAutoOfframEnabled, setIsAutoOfframEnabled] = useState(
     !!user?.profile?.isAutoOfframpEnabled,
   );
+
+  const statusPillScheme = getStatusPillScheme({
+    kycStatusData,
+    isAutoOfframEnabled,
+    bankAccountData: kycStatusData?.bankAccount,
+  });
 
   return (
     <RowItem.Container>
       <RowItem.Heading
-        title={MSG.headingTitle}
-        accessory={MSG.headingAccessory}
+        title={HEADING_MSG.headingTitle}
+        accessory={HEADING_MSG.headingAccessory}
         itemOrder={order}
         statusPill={
           // Move this inside the RowItem.Heading component
           <PillsBase
             className={clsx(
-              statusPillScheme[status].bgClassName,
+              statusPillScheme.bgClassName,
               'text-sm font-medium',
             )}
+            isCapitalized={false}
           >
-            <span className={statusPillScheme[status].textClassName}>
-              {status}
+            <span className={statusPillScheme.textClassName}>
+              {statusPillScheme.copy}
             </span>
           </PillsBase>
         }
       />
       <RowItem.Body
-        title={MSG.bodyTitle}
-        description={MSG.bodyDescription}
+        title={BODY_MSG.bodyTitle}
+        description={BODY_MSG.bodyDescription}
         ctaComponent={
           <Switch
-            checked={isChecked}
+            checked={isAutoOfframEnabled}
             onChange={async () => {
-              const newValue = !isChecked;
+              const newValue = !isAutoOfframEnabled;
 
-              setIsChecked(newValue);
+              setIsAutoOfframEnabled(newValue);
 
               await editUser({
                 variables: {

@@ -6,7 +6,10 @@ import { useFeatureFlag } from './useFeatureFlag.ts';
 const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const cryptoToFiatFeature = useFeatureFlag(FeatureFlag.CRYPTO_TO_FIAT);
 
-  const featureFlags = useMemo(
+  const featureFlags: Record<
+    FeatureFlag,
+    ReturnType<typeof useFeatureFlag>
+  > = useMemo(
     () => ({
       [FeatureFlag.CRYPTO_TO_FIAT]: cryptoToFiatFeature,
     }),

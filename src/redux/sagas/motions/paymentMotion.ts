@@ -112,7 +112,10 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const payouts = yield adjustPayoutsAddresses(payments /* network */);
+    const payouts = yield adjustPayoutsAddresses(
+      payments,
+      // network
+    );
     const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(

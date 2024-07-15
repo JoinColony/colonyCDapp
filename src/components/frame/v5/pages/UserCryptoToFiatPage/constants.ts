@@ -1,36 +1,19 @@
-import { defineMessages } from 'react-intl';
-
-const displayName = 'v5.pages.UserCryptoToFiatPage';
-
-export const BANK_DETAILS_ROW_ITEM = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Bank details',
+export const statusPillThemes = {
+  red: {
+    bgClassName: 'bg-negative-100',
+    textClassName: 'text-negative-400',
+    iconClassName: 'text-negative-400 h-3',
   },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
+  green: {
+    bgClassName: 'bg-teams-green-100',
+    textClassName: 'text-teams-green-400',
   },
-});
-
-export const VERIFICATION_ROW_ITEM = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Verification',
+  orange: {
+    bgClassName: 'bg-orange-100',
+    textClassName: 'text-orange-400',
   },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
+  gray: {
+    bgClassName: 'bg-gray-100',
+    textClassName: 'text-gray-400',
   },
-});
-
-export const AUTOMATIC_DEPOSITS_ROW_ITEM = defineMessages({
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Enable automatic deposits',
-  },
-  headingAccessory: {
-    id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Optional',
-  },
-});
+};

@@ -1,0 +1,6 @@
+export enum OfframpStatus {
+  AUTO_OFFRAMP_ON,
+  AUTO_OFFRAMP_OFF,
+  KYC_PAYMENT_REQUIRED,
+  KYC_REQUIRED,
+}
