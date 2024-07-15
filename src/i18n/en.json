@@ -378,6 +378,8 @@
     "transaction.ColonyClient.finalizeExpenditure.description": "Finalize Expenditure",
     "transaction.ColonyClient.finalizeExpenditureViaArbitration.title": "Finalize Expenditure",
     "transaction.ColonyClient.finalizeExpenditureViaArbitration.description": "Finalize Expenditure",
+    "transaction.group.lockExpenditure.title": "Lock Expenditure",
+    "transaction.group.lockExpenditure.description": "Lock Expenditure",
     "transaction.group.fundExpenditure.title": "Fund Expenditure",
     "transaction.group.fundExpenditure.description": "Fund Expenditure",
     "transaction.group.editExpenditure.title": "Edit Expenditure",
