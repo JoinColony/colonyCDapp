@@ -23,8 +23,12 @@ import CancelButton from '../../../CancelButton/CancelButton.tsx';
 import RemoveVoteButton from '../../../RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '../../../Signees/Signees.tsx';
 import VoteButton from '../../../VoteButton/VoteButton.tsx';
-import { type MultiSigSignee, VoteExpectedStep } from '../../types.ts';
-import { hasWeekPassed } from '../../utils.ts';
+import { VoteExpectedStep } from '../../types.ts';
+import {
+  getAllUserSignatures,
+  getNotSignedUsers,
+  hasWeekPassed,
+} from '../../utils.ts';
 import MultiSigPills from '../MultiSigPills/MultiSigPills.tsx';
 
 const displayName =
@@ -110,10 +114,11 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const isOwner = user?.walletAddress === initiatorAddress;
 
-  const requiredRoles = getRolesNeededForMultiSigAction({
-    actionType,
-    createdIn: Number(multiSigData.nativeMultiSigDomainId),
-  });
+  const requiredRoles =
+    getRolesNeededForMultiSigAction({
+      actionType,
+      createdIn: Number(multiSigData.nativeMultiSigDomainId),
+    }) || [];
   const doesActionRequireMultipleRoles = requiredRoles?.length
     ? requiredRoles.length > 1
     : false;
@@ -130,55 +135,13 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const notSignedUsers: MultiSigSignee[] = (uniqueEligibleSignees ?? [])
-    .filter((eligibleSignee) => {
-      return !signatures.find(
-        (signature) => signature.userAddress === eligibleSignee?.walletAddress,
-      );
-    })
-    .map((eligibleSignee) => {
-      return {
-        userAddress: eligibleSignee?.walletAddress,
-        user: {
-          profile: eligibleSignee?.profile,
-        },
-        vote: MultiSigVote.None,
-        rolesSignedWith: [],
-        userRoles: requiredRoles || [], // @TODO get this from the hook for signees
-      };
-    });
+  const notSignedUsers = getNotSignedUsers({
+    requiredRoles,
+    eligibleSignees: (uniqueEligibleSignees || []).filter(notMaybe),
+    signatures,
+  });
 
-  const allUserSignatures = signatures.reduce<Record<string, MultiSigSignee>>(
-    (signatureMap, signature) => {
-      const existingSignature: MultiSigSignee | undefined =
-        signatureMap[signature.userAddress];
-
-      if (!existingSignature) {
-        return {
-          ...signatureMap,
-          [signature.userAddress]: {
-            userAddress: signature.userAddress,
-            user: signature.user,
-            vote: signature.vote,
-            rolesSignedWith: [signature.role],
-            userRoles: requiredRoles || [], // @TODO get this from the hook for signees
-          },
-        };
-      }
-
-      return {
-        ...signatureMap,
-        [signature.userAddress]: {
-          ...existingSignature,
-          rolesSignedWith: [
-            ...existingSignature.rolesSignedWith,
-            signature.role,
-          ],
-        },
-      };
-    },
-    {},
-  );
+  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles);
 
   const signaturesToDisplay = [
     ...Object.values(allUserSignatures),
