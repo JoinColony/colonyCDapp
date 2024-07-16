@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type Domain, type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
@@ -22,6 +21,7 @@ import {
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -58,6 +58,7 @@ const MSG = defineMessages({
 });
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -93,17 +94,6 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
 
     return null;
   }, [motionData, multiSigData, isMotion, isMultiSig]);
-
-  const decisionMethod: DecisionMethod = useMemo(() => {
-    if (isMotion) {
-      return DecisionMethod.Reputation;
-    }
-    if (isMultiSig) {
-      return DecisionMethod.MultiSig;
-    }
-
-    return DecisionMethod.Permissions;
-  }, [isMotion, isMultiSig]);
 
   return (
     <>
