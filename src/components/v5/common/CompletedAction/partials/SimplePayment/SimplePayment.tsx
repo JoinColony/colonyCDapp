@@ -5,7 +5,6 @@ import { defineMessages } from 'react-intl';
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type Domain, type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
@@ -25,6 +24,7 @@ import {
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -60,6 +60,7 @@ const MSG = defineMessages({
 });
 
 const SimplePayment = ({ action }: SimplePaymentProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -88,7 +89,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { user } = useUserByAddress(actionRecipientAddress as string, true);
   const recipientAddress = user?.walletAddress ?? actionRecipientAddress;
   const recipientUser = user ?? actionRecipientUser;
-  
+
   const motionDomain: Domain | null | undefined = useMemo(() => {
     if (isMotion) {
       return motionData?.motionDomain;
@@ -114,9 +115,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
             [RECIPIENT_FIELD_NAME]: recipientAddress,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [CREATED_IN_FIELD_NAME]: isMotion
               ? motionDomain?.nativeId
               : fromDomain?.nativeId,
