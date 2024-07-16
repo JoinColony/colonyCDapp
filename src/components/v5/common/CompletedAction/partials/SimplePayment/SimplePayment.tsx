@@ -1,5 +1,5 @@
 import { UserFocus } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
@@ -7,7 +7,7 @@ import { Action } from '~constants/actions.ts';
 import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type Domain, type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -72,11 +72,11 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     transactionHash,
     fromDomain,
     isMotion,
+    isMultiSig,
+    multiSigData,
     motionData,
     annotation,
   } = action;
-
-  const { motionDomain } = motionData || {};
 
   const amountLessFee = useAmountLessFee(amount, networkFee);
 
@@ -92,6 +92,18 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { user } = useUserByAddress(actionRecipientAddress ?? '', true);
   const recipientAddress = user?.walletAddress ?? actionRecipientAddress;
   const recipientUser = user ?? actionRecipientUser;
+
+  const motionDomain: Domain | null | undefined = useMemo(() => {
+    if (isMotion) {
+      return motionData?.motionDomain;
+    }
+
+    if (isMultiSig) {
+      return multiSigData?.multiSigDomain;
+    }
+
+    return null;
+  }, [motionData, multiSigData, isMotion, isMultiSig]);
 
   return (
     <>
@@ -170,10 +182,8 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {!!motionDomain?.metadata && (
+          <CreatedInRow motionDomainMetadata={motionDomain.metadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (
