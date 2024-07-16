@@ -35,7 +35,7 @@ const MSG = defineMessages({
 });
 
 const getRolesText = (roles: ColonyRole[]) => {
-  return roles.map((roleId) => formatText({ id: `role.${roleId}` })).join(',');
+  return roles.map((roleId) => formatText({ id: `role.${roleId}` })).join(', ');
 };
 
 const RoleApprovalTooltip: FC<RoleApprovalTooltipProps> = ({
