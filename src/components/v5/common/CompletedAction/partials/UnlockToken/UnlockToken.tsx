@@ -4,7 +4,6 @@ import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -17,6 +16,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -49,6 +49,7 @@ const MSG = defineMessages({
 });
 
 const UnlockToken = ({ action }: UnlockTokenProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { name, symbol } = nativeToken;
@@ -79,7 +80,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
               [TITLE_FIELD_NAME]: customTitle,
               [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
               [TOKEN_FIELD_NAME]: token?.tokenAddress,
-              [DECISION_METHOD_FIELD_NAME]: DecisionMethod.MultiSig,
+              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
               [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,
               [DESCRIPTION_FIELD_NAME]: annotation?.message,
             }}

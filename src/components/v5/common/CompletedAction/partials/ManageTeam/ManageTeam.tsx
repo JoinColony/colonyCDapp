@@ -2,6 +2,7 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
 import { type OptionalValue } from '~types';
 import {
   ColonyActionType,
@@ -9,14 +10,23 @@ import {
   type ColonyAction,
 } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -49,6 +59,7 @@ const MSG = defineMessages({
 });
 
 const ManageTeam = ({ action }: CreateNewTeamProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
 
   const {
@@ -74,13 +85,33 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       actionDomainMetadata?.name;
   }
 
-  const motionDomainMetadata =
-    action.motionData?.motionDomain.metadata ??
-    action.multiSigData?.multiSigDomain.metadata;
+  const domain =
+    action.motionData?.motionDomain ?? action.multiSigData?.multiSigDomain;
+  const motionDomainMetadata = domain?.metadata;
+
+  const actionType = [
+    ColonyActionType.CreateDomain,
+    ColonyActionType.CreateDomainMotion,
+    ColonyActionType.CreateDomainMultisig,
+  ].includes(action.type)
+    ? Action.CreateNewTeam
+    : Action.EditExistingTeam;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          transactionHash={action.transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: actionType,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [CREATED_IN_FIELD_NAME]: domain?.nativeId,
+            [DESCRIPTION_FIELD_NAME]: action.annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           team,
