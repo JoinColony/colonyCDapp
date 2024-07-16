@@ -10,7 +10,6 @@ import {
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
 } from '~gql';
-import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
@@ -27,6 +26,7 @@ import {
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -74,6 +74,7 @@ const transformActionRolesToColonyRoles = (
 };
 
 const SetUserRoles = ({ action }: Props) => {
+  const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
       { id: 'action.type' },
@@ -87,7 +88,6 @@ const SetUserRoles = ({ action }: Props) => {
     recipientAddress,
     transactionHash,
     fromDomain,
-    isMotion,
     annotation,
     blockNumber,
     colonyAddress,
@@ -133,9 +133,7 @@ const SetUserRoles = ({ action }: Props) => {
             authority: roleAuthority,
             role,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
