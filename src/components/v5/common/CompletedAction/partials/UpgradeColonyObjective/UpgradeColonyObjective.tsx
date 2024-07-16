@@ -2,17 +2,28 @@ import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  TITLE_FIELD_NAME,
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  COLONY_OBJECTIVE_TITLE_FIELD_NAME,
+  COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { ICON_SIZE } from '../../consts.ts';
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionTypeRow,
   CreatedInRow,
@@ -50,9 +61,18 @@ const MSG = defineMessages({
 });
 
 const UpgradeColonyObjective = ({ action }: Props) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, colony, isMotion, isMultiSig, pendingColonyMetadata } =
-    action;
+  const {
+    transactionHash,
+    initiatorUser,
+    colony,
+    isMotion,
+    isMultiSig,
+    multiSigData,
+    pendingColonyMetadata,
+    annotation,
+  } = action;
 
   const objectiveData =
     isMotion || isMultiSig
@@ -61,7 +81,23 @@ const UpgradeColonyObjective = ({ action }: Props) => {
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        {isMultiSig && multiSigData && (
+          <MeatballMenu
+            transactionHash={transactionHash}
+            defaultValues={{
+              [TITLE_FIELD_NAME]: customTitle,
+              [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
+              [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
+              [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
+                objectiveData?.description,
+              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+              [DESCRIPTION_FIELD_NAME]: annotation?.message,
+            }}
+          />
+        )}
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
