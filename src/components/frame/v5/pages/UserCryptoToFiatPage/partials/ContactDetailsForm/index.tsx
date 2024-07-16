@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useMemo, useState, type FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
-import { type CountryData } from '~utils/countries.ts';
+import { formatText } from '~utils/intl.ts';
 
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
-import { FormSelect } from '../FormSelect.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
 import { CountrySelect } from './CountrySelect.tsx';
-import { getValidationSchema } from './validation.ts';
+import { SubdivisionSelect } from './SubdivisionSelect.tsx';
+import { addressValidationSchema } from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
@@ -39,6 +39,26 @@ const MSG = defineMessages({
     id: `${displayName}.proceedButtonTitle`,
     defaultMessage: 'Submit',
   },
+  addressLabel: {
+    id: `${displayName}.addressLabel`,
+    defaultMessage: 'Address',
+  },
+  address1Placeholder: {
+    id: `${displayName}.address1Placeholder`,
+    defaultMessage: 'Address line 1',
+  },
+  address2Placeholder: {
+    id: `${displayName}.address2Placeholder`,
+    defaultMessage: 'Address line 2',
+  },
+  cityPlaceholder: {
+    id: `${displayName}.cityPlaceholder`,
+    defaultMessage: 'City',
+  },
+  postcodePlaceholder: {
+    id: `${displayName}.postcodePlaceholder`,
+    defaultMessage: 'Postcode',
+  },
   dobLabel: {
     id: `${displayName}.dobLabel`,
     defaultMessage: 'Date of birth',
@@ -62,22 +82,13 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   onSubmit,
   onClose,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
-    null,
-  );
-  const validationSchema = useMemo(() => {
-    // For the US country, validation should include address validation.
-    const shouldValiateAddress = selectedCountry?.alpha2 === 'US';
-    return getValidationSchema(shouldValiateAddress);
-  }, [selectedCountry]);
-
   return (
     <div>
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
 
       <Form
         onSubmit={onSubmit}
-        validationSchema={validationSchema}
+        validationSchema={addressValidationSchema}
         mode="onSubmit"
       >
         {/* <FormRow>
@@ -96,41 +107,42 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         </FormRow> */}
 
         <label className="mb-1.5 text-md font-medium text-gray-700">
-          Adress
+          {formatText(MSG.addressLabel)}
         </label>
 
         <FormRow>
-          <CountrySelect setSelectedCountry={setSelectedCountry} />
+          <CountrySelect />
         </FormRow>
 
         <FormRow>
-          <FormInput name="address1" placeholder="Address line 1" />
+          <FormInput
+            name="address1"
+            placeholder={formatText(MSG.address1Placeholder)}
+          />
         </FormRow>
         <FormRow>
-          <FormInput name="address2" placeholder="Address line 2" />
+          <FormInput
+            name="address2"
+            placeholder={formatText(MSG.address2Placeholder)}
+          />
         </FormRow>
         <FormRow>
           <div className="flex">
             <div className="mr-1 flex-1">
-              <FormInput name="city" placeholder="City" />
+              <FormInput
+                name="city"
+                placeholder={formatText(MSG.cityPlaceholder)}
+              />
             </div>
-
-            {!!selectedCountry?.subdivisions?.length && (
-              <div className="ml-1 flex-1">
-                <FormSelect
-                  name="state"
-                  options={selectedCountry?.subdivisions.map((item) => ({
-                    value: item.code,
-                    label: item.name,
-                  }))}
-                />
-              </div>
-            )}
+            <SubdivisionSelect />
           </div>
         </FormRow>
 
         <FormRow>
-          <FormInput name="postcode" placeholder="Postcode" />
+          <FormInput
+            name="postcode"
+            placeholder={formatText(MSG.postcodePlaceholder)}
+          />
         </FormRow>
 
         <ModalFormCTAButtons

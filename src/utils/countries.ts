@@ -52,6 +52,9 @@ export const getCountries = () => countriesData;
 export const getCountryByCode = (code: string): CountryData | undefined => {
   let alpha2Code: string | undefined;
 
+  if (!code) {
+    return undefined;
+  }
   if (code.length === 2) {
     alpha2Code = code;
   } else if (code.length === 3) {

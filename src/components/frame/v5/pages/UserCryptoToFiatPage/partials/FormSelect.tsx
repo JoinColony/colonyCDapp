@@ -10,15 +10,17 @@ import FormError from '~v5/shared/FormError/index.ts';
 
 interface FormSelectProps {
   name: string;
-  labelMessage?: Message;
+  labelMessage?: string;
   options: SelectOption[];
   handleChange?: any;
+  placeholder?: string;
 }
 
 export const FormSelect: FC<FormSelectProps> = ({
   name,
   options,
   labelMessage,
+  placeholder,
   handleChange,
 }) => {
   const {
@@ -39,7 +41,7 @@ export const FormSelect: FC<FormSelectProps> = ({
               className="flex flex-col pb-1.5 text-1"
               htmlFor={`id-${name}`}
             >
-              {formatText(labelMessage)}
+              {labelMessage}
             </label>
           )}
           <Select
@@ -47,6 +49,7 @@ export const FormSelect: FC<FormSelectProps> = ({
             options={options}
             isError={!!error}
             isSearchable
+            placeholder={placeholder}
             onChange={(val) => {
               handleChange?.(val);
               field.onChange(val?.value);
