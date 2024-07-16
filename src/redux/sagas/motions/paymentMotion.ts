@@ -28,6 +28,7 @@ import {
   createActionMetadataInDB,
   adjustPayoutsAddresses,
   getPermissionProofsLocal,
+  getChildIndexLocal,
 } from '../utils/index.ts';
 
 function* createPaymentMotion({
@@ -125,27 +126,17 @@ function* createPaymentMotion({
       const motionDomain = colonyDomains.find((domain) =>
         BigNumber.from(domain.nativeId).eq(safeMotionId),
       );
+      const paymentDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(domainId),
+      );
 
-      if (!rootDomain || !motionDomain) {
+      if (!rootDomain || !motionDomain || !paymentDomain) {
         throw new Error(
-          'Cannot find rootDomain or motion domain in colony domains',
+          'Cannot find rootDomain, motion domain or payment from domain in colony domains',
         );
       }
 
       const userAddress = yield colonyClient.signer.getAddress();
-
-      const [userPermissionDomainId, userChildSkillIndex] = yield call(
-        getPermissionProofsLocal,
-        {
-          networkClient: colonyClient.networkClient,
-          colonyRoles,
-          colonyDomains,
-          requiredDomainId: safeMotionId,
-          requiredColonyRole: requiredRoles,
-          permissionAddress: userAddress,
-          isMultiSig,
-        },
-      );
 
       const [extensionPDID, extensionCSI] = yield call(
         getPermissionProofsLocal,
@@ -164,6 +155,19 @@ function* createPaymentMotion({
         const multiSigClient = yield colonyManager.getClient(
           ClientType.MultisigPermissionsClient,
           colonyAddress,
+        );
+
+        const [userPermissionDomainId, userChildSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: safeMotionId,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: userAddress,
+            isMultiSig,
+          },
         );
 
         const [multiSigPDID, multiSigCSI] = yield call(
@@ -223,6 +227,14 @@ function* createPaymentMotion({
           colonyAddress,
         );
 
+      const childSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: motionDomain.nativeId,
+        parentDomainSkillId: motionDomain.nativeSkillId,
+        domainNativeId: paymentDomain.nativeId,
+        domainSkillId: paymentDomain.nativeSkillId,
+      });
+
       const [votingReputationPDID, votingReputationCSI] = yield call(
         getPermissionProofsLocal,
         {
@@ -272,7 +284,7 @@ function* createPaymentMotion({
         identifier: colonyAddress,
         params: [
           motionDomainId,
-          userChildSkillIndex,
+          childSkillIndex,
           oneTxPaymentClient.address,
           encodedAction,
           key,
