@@ -4,7 +4,6 @@ import { type FieldValues } from 'react-hook-form';
 import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
@@ -137,27 +136,20 @@ export const getFormSuccessFn =
   <T extends FieldValues>({
     setWaitingForEnableConfirmation,
     extensionData,
-    refetchColony,
-    refetchExtensionData,
+    checkExtensionEnabled,
     navigate,
     colonyName,
   }: {
     setWaitingForEnableConfirmation: SetStateFn;
     extensionData: AnyExtensionData;
-    refetchColony: RefetchColonyFn;
-    refetchExtensionData: RefetchExtensionDataFn;
+    checkExtensionEnabled: () => Promise<void>;
     navigate: ReturnType<typeof useNavigate>;
     colonyName: string;
   }): OnSuccess<T> =>
   async (_, { reset }) => {
     setWaitingForEnableConfirmation(true);
     try {
-      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
-      await waitForColonyPermissions({ extensionData, refetchColony });
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.ENABLE,
-        refetchExtensionData,
-      });
+      await checkExtensionEnabled();
       toast.success(
         <Toast
           type="success"
@@ -173,8 +165,8 @@ export const getFormSuccessFn =
       toast.error(
         <Toast
           type="error"
-          title={{ id: 'extensionEnable.toast.title.success' }}
-          description={{ id: 'extensionEnable.toast.description.success' }}
+          title={{ id: 'extensionEnable.toast.title.error' }}
+          description={{ id: 'extensionEnable.toast.description.error' }}
         />,
       );
     } finally {
