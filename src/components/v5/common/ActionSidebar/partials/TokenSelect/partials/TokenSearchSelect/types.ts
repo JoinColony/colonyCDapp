@@ -9,13 +9,12 @@ export interface TokenSearchSelectOptionProps {
 }
 
 export interface TokenSearchSelectProps extends BaseFieldProps {
-  items: TokenSearchSelectOptionProps[];
   onSelect?: (value: string) => void;
   isLoading?: boolean;
   className?: string;
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
-  showEmptyContent?: boolean;
   readonly?: boolean;
   additionalButtons?: React.ReactNode;
+  filterOptionsFn?: (option: TokenSearchItemOption) => boolean;
 }

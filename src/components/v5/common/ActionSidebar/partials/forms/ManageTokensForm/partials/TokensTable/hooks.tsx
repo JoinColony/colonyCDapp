@@ -58,6 +58,9 @@ export const useTokensTableColumns = (
                     ({ token }) => token.tokenAddress === tokenAddress,
                   )
                 }
+                filterOptionsFn={({ value }) =>
+                  !dataRef.current?.find(({ token }) => token === value)
+                }
               />
             </div>
           );
