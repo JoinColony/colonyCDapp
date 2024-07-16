@@ -50,6 +50,7 @@ export type Annotation = {
 
 export type BridgeXyzBankAccount = {
   __typename?: 'BridgeXYZBankAccount';
+  accountOwner: Scalars['String'];
   bankName: Scalars['String'];
   currency: Scalars['String'];
   iban?: Maybe<BridgeXyzIbanBankAccount>;
@@ -8958,7 +8959,7 @@ export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZM
 export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateBankAccountMutationVariables = Exact<{
   currency: Scalars['String'];
@@ -10651,6 +10652,7 @@ export const CheckKycStatusDocument = gql`
     bankAccount {
       currency
       bankName
+      accountOwner
       iban {
         bic
         country

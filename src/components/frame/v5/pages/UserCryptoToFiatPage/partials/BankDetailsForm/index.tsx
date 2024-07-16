@@ -5,6 +5,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { CURRENCIES } from '../../constants.ts';
+import { type BankDetailsFormValues } from '../../types.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
@@ -17,6 +18,7 @@ import { validationSchema } from './validation.ts';
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
+  defaultValues: BankDetailsFormValues;
 }
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsForm';
@@ -72,6 +74,7 @@ const MSG = defineMessages({
 export const BankDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
   onClose,
+  defaultValues,
 }) => {
   return (
     <div>
@@ -81,6 +84,7 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
         className="flex flex-col gap-3"
         validationSchema={validationSchema}
         mode="onSubmit"
+        defaultValues={defaultValues}
       >
         <FormRow>
           <FormInput

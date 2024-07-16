@@ -51,7 +51,11 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
       />
 
       {isOpened && (
-        <BankDetailsModal isOpened={isOpened} onClose={handleClose} />
+        <BankDetailsModal
+          data={bankAccountData}
+          isOpened={isOpened}
+          onClose={handleClose}
+        />
       )}
     </RowItem.Container>
   );
