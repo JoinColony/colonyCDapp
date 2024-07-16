@@ -1,21 +1,23 @@
 import { type ReactNode, type PropsWithChildren } from 'react';
 import { type MessageDescriptor } from 'react-intl';
 
+import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
+
 import type React from 'react';
 
 export interface RowItemProps extends PropsWithChildren {}
 
 export interface RowItemHeadingProps {
-  title: MessageDescriptor;
-  accessory: MessageDescriptor;
-  statusPill: ReactNode;
+  title: ReactNode;
+  accessory: ReactNode;
+  badgeProps: CryptoToFiatBadgeProps;
   itemOrder: number;
 }
 
 export interface RowItemBodyProps {
-  title?: MessageDescriptor;
-  description?: MessageDescriptor;
-  descriptionComponent?: React.ReactNode;
+  title?: ReactNode;
+  description?: ReactNode;
+  descriptionComponent?: ReactNode;
   ctaTitle?: MessageDescriptor;
   ctaDisabled?: boolean;
   ctaOnClick?: () => void;

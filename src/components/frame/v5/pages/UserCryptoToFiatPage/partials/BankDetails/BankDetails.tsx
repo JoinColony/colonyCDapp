@@ -1,7 +1,6 @@
-import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 
-import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import { formatText } from '~utils/intl.ts';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { BankDetailsModal } from '../BankDetailsModal/index.tsx';
@@ -9,8 +8,8 @@ import RowItem from '../RowItem/index.ts';
 
 import {
   displayName,
+  getBadgeProps,
   getCTAScheme,
-  getStatusPillScheme,
   HEADING_MSG,
 } from './consts.ts';
 import BankDetailsDescriptionComponent from './partials/BankDetailsDescriptionComponent/BankDetailsDescriptionComponent.tsx';
@@ -30,31 +29,16 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
     ? BankDetailsStatus.COMPLETED
     : BankDetailsStatus.NOT_STARTED;
 
-  const statusPillScheme = getStatusPillScheme(status);
+  const badgeProps = getBadgeProps(status);
 
   const ctaScheme = getCTAScheme({ bankAccountData, kycStatusData });
 
   return (
     <RowItem.Container>
       <RowItem.Heading
-        title={HEADING_MSG.title}
-        accessory={HEADING_MSG.accessory}
-        statusPill={
-          // Move this inside the RowItem.Heading component
-          <PillsBase
-            icon={statusPillScheme.icon}
-            iconClassName={statusPillScheme.iconClassName}
-            className={clsx(
-              statusPillScheme.bgClassName,
-              'text-sm font-medium',
-            )}
-            isCapitalized={false}
-          >
-            <span className={statusPillScheme.textClassName}>
-              {statusPillScheme.copy}
-            </span>
-          </PillsBase>
-        }
+        title={formatText(HEADING_MSG.title)}
+        accessory={formatText(HEADING_MSG.accessory)}
+        badgeProps={badgeProps}
         itemOrder={order}
       />
       <RowItem.Body

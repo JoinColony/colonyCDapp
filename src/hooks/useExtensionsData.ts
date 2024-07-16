@@ -57,8 +57,8 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
       return [];
     }
 
-    return colonyExtensions
-      .map<InstalledExtensionData | null>((extension) => {
+    const colonyExtensionsMap =
+      colonyExtensions.map<InstalledExtensionData | null>((extension) => {
         const extensionConfig = supportedExtensionsConfig.find(
           (e) => getExtensionHash(e.extensionId) === extension?.hash,
         );
@@ -78,8 +78,9 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
           colonyExtension: extension,
           version,
         });
-      })
-      .filter(notNull);
+      });
+
+    return colonyExtensionsMap.filter(notNull);
   }, [colony, colonyExtensions, extensionVersions]);
 
   const availableExtensionsData = useMemo<InstallableExtensionData[]>(() => {

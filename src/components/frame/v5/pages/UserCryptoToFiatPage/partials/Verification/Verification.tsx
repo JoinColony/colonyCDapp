@@ -1,20 +1,14 @@
-import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants.ts';
-import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import { formatText } from '~utils/intl.ts';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import { KYCModal } from '../KYCModal/index.tsx';
 import RowItem from '../RowItem/index.ts';
 
-import {
-  MSG,
-  displayName,
-  getCTAProps,
-  getStatusPillScheme,
-} from './consts.ts';
+import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';
 
 const Verification: FC<CryptoToFiatPageComponentProps> = ({
   order,
@@ -30,37 +24,20 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
 
   const kycStatus = kycStatusData?.kyc_status;
 
-  const statusPillScheme = getStatusPillScheme(kycStatus);
+  const badgeProps = getBadgeProps(kycStatus);
   const ctaProps = getCTAProps(kycStatus);
 
   return (
     <RowItem.Container>
       <RowItem.Heading
-        title={MSG.headingTitle}
-        accessory={MSG.headingAccessory}
+        title={formatText(MSG.headingTitle)}
+        accessory={formatText(MSG.headingAccessory)}
         itemOrder={order}
-        statusPill={
-          // Move this inside the RowItem.Heading component
-          kycStatus && (
-            <PillsBase
-              icon={statusPillScheme.icon}
-              iconClassName={statusPillScheme.iconClassName}
-              className={clsx(
-                statusPillScheme.bgClassName,
-                'text-sm font-medium',
-              )}
-              isCapitalized={false}
-            >
-              <span className={statusPillScheme.textClassName}>
-                {statusPillScheme.copy}
-              </span>
-            </PillsBase>
-          )
-        }
+        badgeProps={badgeProps}
       />
       <RowItem.Body
-        title={MSG.bodyTitle}
-        description={MSG.bodyDescription}
+        title={formatText(MSG.bodyTitle)}
+        description={formatText(MSG.bodyDescription)}
         {...ctaProps}
         ctaOnClick={handleOpen}
       />

@@ -1,20 +1,33 @@
-import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { LEARN_MORE_CRYPTO_TO_FIAT } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
+import { formatText } from '~utils/intl.ts';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
-import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
 import { KycStatus } from '../Verification/types.ts';
 
-import { BODY_MSG, getStatusPillScheme, HEADING_MSG } from './consts.ts';
+import { BODY_MSG, getBadgeProps, HEADING_MSG } from './consts.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
+
+const BodyDescription = () => (
+  <>
+    {formatText(BODY_MSG.bodyDescription)}
+    {'. '}
+    <a
+      href={LEARN_MORE_CRYPTO_TO_FIAT}
+      className="font-bold text-gray-900 underline transition-colors hover:text-blue-400"
+    >
+      {formatText({ id: 'navigation.learnMore' })}
+    </a>
+  </>
+);
 
 const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
   order,
@@ -29,7 +42,7 @@ const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
     !!user?.profile?.isAutoOfframpEnabled,
   );
 
-  const statusPillScheme = getStatusPillScheme({
+  const badgeProps = getBadgeProps({
     kycStatusData,
     isAutoOfframEnabled,
     bankAccountData: kycStatusData?.bankAccount,
@@ -38,27 +51,14 @@ const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
   return (
     <RowItem.Container>
       <RowItem.Heading
-        title={HEADING_MSG.headingTitle}
-        accessory={HEADING_MSG.headingAccessory}
+        title={formatText(HEADING_MSG.headingTitle)}
+        accessory={formatText(HEADING_MSG.headingAccessory)}
         itemOrder={order}
-        statusPill={
-          // Move this inside the RowItem.Heading component
-          <PillsBase
-            className={clsx(
-              statusPillScheme.bgClassName,
-              'text-sm font-medium',
-            )}
-            isCapitalized={false}
-          >
-            <span className={statusPillScheme.textClassName}>
-              {statusPillScheme.copy}
-            </span>
-          </PillsBase>
-        }
+        badgeProps={badgeProps}
       />
       <RowItem.Body
-        title={BODY_MSG.bodyTitle}
-        description={BODY_MSG.bodyDescription}
+        title={formatText(BODY_MSG.bodyTitle)}
+        description={<BodyDescription />}
         ctaComponent={
           <Switch
             checked={isAutoOfframEnabled}

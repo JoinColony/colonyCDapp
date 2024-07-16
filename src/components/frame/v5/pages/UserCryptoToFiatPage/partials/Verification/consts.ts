@@ -2,89 +2,86 @@ import { WarningCircle } from '@phosphor-icons/react';
 import { type MessageDescriptor, defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
-
-import { statusPillThemes } from '../../constants.ts';
-import { type StatusPillScheme } from '../../types.ts';
+import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
 import { KycStatus } from './types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.Verification';
 
-export const getStatusPillScheme = (
+export const getBadgeProps = (
   status?: string | null,
-): StatusPillScheme => {
+): CryptoToFiatBadgeProps => {
   switch (status) {
     case KycStatus.NOT_STARTED: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Not started',
         }),
         icon: WarningCircle,
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
     case KycStatus.INCOMPLETE: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Incomplete',
         }),
-        ...statusPillThemes.orange,
+        theme: 'orange',
       };
     }
     case KycStatus.AWAITING_UBO: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Awaiting UBO',
         }),
-        ...statusPillThemes.gray,
+        theme: 'gray',
       };
     }
     case KycStatus.MANUAL_REVIEW: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Manual review',
         }),
-        ...statusPillThemes.gray,
+        theme: 'gray',
       };
     }
     case KycStatus.UNDER_REVIEW: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Under review',
         }),
-        ...statusPillThemes.gray,
+        theme: 'gray',
       };
     }
     case KycStatus.APPROVED: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Approved',
         }),
-        ...statusPillThemes.green,
+        theme: 'green',
       };
     }
     case KycStatus.REJECTED: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.pillCopy`,
           defaultMessage: 'Rejected',
         }),
         icon: WarningCircle,
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
     default: {
       return {
-        copy: '',
-        bgClassName: 'bg-teams-red-50',
-        textClassName: 'text-gray-400',
+        text: '',
+        theme: 'gray',
       };
     }
   }
