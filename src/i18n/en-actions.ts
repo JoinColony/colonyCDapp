@@ -89,6 +89,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateDomainMultisig} {Create new team}
       ${ColonyActionType.VersionUpgrade} {Version Upgrade}
       ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
+      ${ColonyActionType.VersionUpgradeMultisig} {Version Upgrade}
       ${ColonyActionType.ColonyEdit} {Edit Colony details}
       ${ColonyActionType.ColonyEditMotion} {Edit Colony details}
       ${ColonyActionType.ColonyEditMultisig} {Edit Colony details}
