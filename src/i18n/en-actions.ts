@@ -76,6 +76,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.WrongColony} {Not part of the Colony}
       ${ColonyActionType.Payment} {Simple payment}
       ${ColonyActionType.PaymentMotion} {Simple payment}
+      ${ColonyActionType.PaymentMultisig} {Simple payment}
       ${ColonyActionType.MoveFunds} {Move Funds}
       ${ColonyActionType.MoveFundsMotion} {Move Funds}
       ${ColonyActionType.MoveFundsMultisig} {Move Funds}
