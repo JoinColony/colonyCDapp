@@ -318,6 +318,7 @@ type BridgeXYZBankAccount {
   id: String!
   currency: String!
   bankName: String!
+  accountOwner: String!
   iban: BridgeXYZIbanBankAccount
   usAccount: BridgeXYZUSBankAccount
 }

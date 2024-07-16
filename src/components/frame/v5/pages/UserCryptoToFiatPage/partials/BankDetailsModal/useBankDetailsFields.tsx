@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
-import { SupportedCurrencies, useCreateBankAccountMutation } from '~gql';
+import {
+  SupportedCurrencies,
+  useCreateBankAccountMutation,
+  type BridgeXyzBankAccount,
+} from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
+import { type BankDetailsFormValues } from '../../types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsModal';
 
@@ -26,25 +31,36 @@ const MSG = defineMessages({
   },
 });
 
-export const useBankDetailsFields = ({ onClose, redirectToSecondTab }) => {
+interface UseBankDetailsParams {
+  data?: Partial<BridgeXyzBankAccount>;
+  onClose: () => void;
+  redirectToSecondTab: () => void;
+}
+export const useBankDetailsFields = ({
+  onClose,
+  redirectToSecondTab,
+  data,
+}: UseBankDetailsParams) => {
   const [createBankAccount] = useCreateBankAccountMutation();
 
-  const [bankDetailsFields, setBankDetailsFields] = useState({
-    currency: '',
-    bankName: '',
-    firstName: '',
-    lastName: '',
-    iban: '',
-    swift: '',
-    country: '',
-    accountNumber: '',
-    routingNumber: '',
-    address1: '',
-    address2: '',
-    postcode: '',
-    city: '',
-    state: '',
-  });
+  const [bankDetailsFields, setBankDetailsFields] =
+    useState<BankDetailsFormValues>({
+      currency: data?.currency ?? '',
+      bankName: data?.bankName ?? '',
+      firstName: '',
+      lastName: '',
+      accountOwner: data?.accountOwner ?? '',
+      iban: '',
+      swift: '',
+      country: '',
+      accountNumber: '',
+      routingNumber: data?.usAccount?.routingNumber ?? '',
+      address1: '',
+      address2: '',
+      postcode: '',
+      city: '',
+      state: '',
+    });
 
   const handleSubmitForm = async (variables) => {
     const result = await createBankAccount({

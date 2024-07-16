@@ -37,12 +37,20 @@ export const validationSchema = object({
   }),
   accountNumber: string().when('currency', {
     is: CURRENCY_VALUES[SupportedCurrencies.Usd],
-    then: string().required(),
+    then: string()
+      .required()
+      .matches(/^[0-9]+$/)
+      .min(8)
+      .max(17),
     otherwise: string().notRequired(),
   }),
   routingNumber: string().when('currency', {
     is: CURRENCY_VALUES[SupportedCurrencies.Usd],
-    then: string().required(),
+    then: string()
+      .required()
+      .matches(/^[0-9]+$/)
+      .min(9)
+      .max(9),
     otherwise: string().notRequired(),
   }),
 }).defined();
