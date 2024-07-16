@@ -63,6 +63,9 @@ export const getRolesNeededForMultiSigAction = ({
     case ColonyActionType.PaymentMultisig:
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
       break;
+    case ColonyActionType.VersionUpgradeMultisig:
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.UpgradeColonyVersion;
+      break;
     default:
       permissions = undefined;
       break;
