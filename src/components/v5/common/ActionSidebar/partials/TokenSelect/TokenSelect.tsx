@@ -6,6 +6,7 @@ import { useController } from 'react-hook-form';
 import { apolloClient } from '~apollo';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import TokenSelectContextProvider from '~context/TokenSelectContext/TokenSelectContextProvider.tsx';
 import {
   GetTokenFromEverywhereDocument,
   type GetTokenFromEverywhereQuery,
@@ -23,10 +24,11 @@ import { type TokenSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
-const TokenSelect: FC<TokenSelectProps> = ({
+const TokenSelectContent: FC<TokenSelectProps> = ({
   name,
   disabled = false,
   readOnly: readOnlyProp,
+  filterOptionsFn,
 }) => {
   const { colony } = useColonyContext();
   const [searchError, setSearchError] = useState(false);
@@ -46,7 +48,7 @@ const TokenSelect: FC<TokenSelectProps> = ({
       registerContainerRef,
     },
   ] = useToggle();
-  const { tokenOptions, renderButtonContent } = useTokenSelect(field.value);
+  const { renderButtonContent } = useTokenSelect(field.value);
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
@@ -97,8 +99,6 @@ const TokenSelect: FC<TokenSelectProps> = ({
           </button>
           {isTokenSelectVisible && (
             <TokenSearchSelect
-              showEmptyContent={!tokenOptions.options.length}
-              items={[tokenOptions]}
               state={searchError || tokenError ? FieldState.Error : undefined}
               message={
                 searchError || tokenError ? (
@@ -117,7 +117,7 @@ const TokenSelect: FC<TokenSelectProps> = ({
                 );
                 setSearchError(isColonyToken);
 
-                if (isColonyToken) {
+                if (isColonyToken || !isAddress(query)) {
                   return;
                 }
 
@@ -136,13 +136,6 @@ const TokenSelect: FC<TokenSelectProps> = ({
                 });
 
                 setTokenError(!getTokenFromEverywhere);
-
-                if (!getTokenFromEverywhere) {
-                  return;
-                }
-
-                // check here that it passes the check
-                field.onChange(isAddress(query) ? query : undefined);
               }}
               onSelect={(value) => {
                 field.onChange(value);
@@ -152,6 +145,7 @@ const TokenSelect: FC<TokenSelectProps> = ({
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
+              filterOptionsFn={filterOptionsFn}
             />
           )}
         </>
@@ -159,6 +153,12 @@ const TokenSelect: FC<TokenSelectProps> = ({
     </div>
   );
 };
+
+const TokenSelect: FC<TokenSelectProps> = (props) => (
+  <TokenSelectContextProvider>
+    <TokenSelectContent {...props} />
+  </TokenSelectContextProvider>
+);
 
 TokenSelect.displayName = displayName;
 
