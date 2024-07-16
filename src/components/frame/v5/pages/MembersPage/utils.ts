@@ -2,7 +2,7 @@ import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getAllUserRoles } from '~transformers';
+import { getUserRolesForDomain } from '~transformers';
 
 import { type MemberItem } from './types.ts';
 
@@ -19,37 +19,40 @@ export const getMembersList = (
       colonyReputationPercentage,
       user,
       isVerified,
-      roles,
       reputation,
       type,
-      hasPermissions,
     } = contributor;
 
-    const hasRoleInTeam = roles?.items?.some((item) => {
-      const domainId = item?.domain?.nativeId;
-
-      return isAllTeamsSelected
-        ? hasPermissions
-        : domainId === selectedTeamId || domainId === Id.RootDomain;
+    const permissionsInTeam = getUserRolesForDomain({
+      colony,
+      userAddress: contributorAddress,
+      domainId: selectedTeamId || Id.RootDomain,
+      excludeInherited: true,
     });
 
-    const allRoles = getAllUserRoles(colony, contributorAddress);
-
-    const filteredRoles =
-      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
-        ? allRoles
-        : allRoles?.filter(
-            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-          );
-
-    const permissionRole =
-      hasRoleInTeam && filteredRoles?.length
-        ? getRole(filteredRoles)
-        : undefined;
+    const allPermissions = getUserRolesForDomain({
+      colony,
+      userAddress: contributorAddress,
+      domainId: selectedTeamId || Id.RootDomain,
+    });
 
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
+
+    const parentRole = allPermissions.length
+      ? getRole(
+          allPermissions.filter((role) =>
+            selectedTeamId !== Id.RootDomain && !isAllTeamsSelected
+              ? role !== ColonyRole.Root && role !== ColonyRole.Recovery
+              : true,
+          ),
+        )
+      : undefined;
+
+    const roleTest = permissionsInTeam.length
+      ? getRole(permissionsInTeam)
+      : parentRole;
 
     return {
       user,
@@ -58,7 +61,8 @@ export const getMembersList = (
       reputation: isAllTeamsSelected
         ? colonyReputationPercentage
         : teamReputationPercentage,
-      role: permissionRole,
+      role: roleTest,
+      isRoleInherited: !permissionsInTeam.length && !!roleTest,
       contributorType: type ?? undefined,
     };
   });
