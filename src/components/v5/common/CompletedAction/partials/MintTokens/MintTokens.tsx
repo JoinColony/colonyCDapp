@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -24,7 +23,6 @@ import {
   ActionTitle,
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
-import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
 import {
   ActionTypeRow,
   AmountRow,
@@ -52,7 +50,6 @@ const MSG = defineMessages({
 });
 
 const MintTokens = ({ action }: MintTokensProps) => {
-  const { user } = useAppContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -60,10 +57,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
     token,
     transactionHash,
     isMotion,
-    isMultiSig,
     annotation,
-    multiSigData,
-    type: actionType,
   } = action;
 
   const formattedAmount = getFormattedTokenAmount(
@@ -75,8 +69,6 @@ const MintTokens = ({ action }: MintTokensProps) => {
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
-  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
-
   const metadata =
     action.motionData?.motionDomain.metadata ??
     action.multiSigData?.multiSigDomain.metadata;
@@ -85,28 +77,19 @@ const MintTokens = ({ action }: MintTokensProps) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData ? (
-          <MultiSigMeatballMenu
-            transactionHash={transactionHash}
-            multiSigData={multiSigData}
-            isOwner={isOwner}
-            actionType={actionType}
-          />
-        ) : (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
-              [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
-              [TOKEN_FIELD_NAME]: token?.tokenAddress,
-              [DECISION_METHOD_FIELD_NAME]: isMotion
-                ? DecisionMethod.Reputation
-                : DecisionMethod.Permissions,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+            [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
+            [TOKEN_FIELD_NAME]: token?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
