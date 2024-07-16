@@ -100,6 +100,7 @@ const checkKYCHandler = async (
           id: firstAccount.id,
           currency: firstAccount.currency,
           bankName: firstAccount.bank_name,
+          accountOwner: firstAccount.account_owner_name,
           iban: firstAccount.iban
             ? {
                 // TODO: Remove fallbacks

@@ -74,6 +74,7 @@ mutation CheckKYCStatus {
     bankAccount {
       currency
       bankName
+      accountOwner
       iban {
         bic
         country

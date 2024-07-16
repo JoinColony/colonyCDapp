@@ -1,7 +1,7 @@
 import React, { useState, type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { SupportedCurrencies } from '~gql';
+import { SupportedCurrencies, type BridgeXyzBankAccount } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
@@ -16,6 +16,7 @@ import { useBankDetailsFields } from './useBankDetailsFields.tsx';
 interface BankDetailsModalProps {
   isOpened: boolean;
   onClose: () => void;
+  data?: Partial<BridgeXyzBankAccount> | null;
 }
 
 enum TabId {
@@ -36,21 +37,33 @@ const MSG = defineMessages({
   },
 });
 
-const BankDetailsModal: FC<BankDetailsModalProps> = ({ isOpened, onClose }) => {
+const BankDetailsModal: FC<BankDetailsModalProps> = ({
+  isOpened,
+  onClose,
+  data,
+}) => {
   const { formatMessage } = useIntl();
   const [activeTab, setActiveTab] = useState<TabId>(TabId.BankDetails);
 
   const redirectToSecondTab = () => setActiveTab(TabId.ContactDetails);
 
   const { bankDetailsFields, handleSubmitFirstStep, handleSubmitSecondStep } =
-    useBankDetailsFields({ onClose, redirectToSecondTab });
+    useBankDetailsFields({
+      onClose,
+      redirectToSecondTab,
+      data: data ?? undefined,
+    });
 
   const stepItems = [
     {
       key: TabId.BankDetails,
       heading: { label: formatText(MSG.bankDetailsLabel) },
       content: (
-        <BankDetailsForm onSubmit={handleSubmitFirstStep} onClose={onClose} />
+        <BankDetailsForm
+          onSubmit={handleSubmitFirstStep}
+          onClose={onClose}
+          defaultValues={bankDetailsFields}
+        />
       ),
     },
     {
