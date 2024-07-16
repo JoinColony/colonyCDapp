@@ -2,9 +2,9 @@ import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
-import { statusPillThemes } from '../../constants.ts';
-import { type StatusPillScheme, type KycStatusData } from '../../types.ts';
+import { type KycStatusData } from '../../types.ts';
 import { type RowItemBodyProps } from '../RowItem/types.ts';
 import { KycStatus } from '../Verification/types.ts';
 
@@ -34,36 +34,36 @@ export const CTA_MSG = defineMessages({
   },
 });
 
-export const getStatusPillScheme = (
+export const getBadgeProps = (
   status?: string | null,
-): StatusPillScheme => {
+): CryptoToFiatBadgeProps => {
   switch (status) {
     case BankDetailsStatus.COMPLETED: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.statusPill.complete`,
           defaultMessage: 'Completed',
         }),
-        ...statusPillThemes.green,
+        theme: 'green',
       };
     }
     case BankDetailsStatus.NOT_STARTED: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.statusPill.notStarted`,
           defaultMessage: 'Not started',
         }),
         icon: WarningCircle,
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
     default: {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.statusPill.unknown`,
           defaultMessage: 'Unknown',
         }),
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
   }

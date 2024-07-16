@@ -2,12 +2,13 @@ import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
-import { statusPillThemes } from '../../constants.ts';
-import { type StatusPillScheme, type KycStatusData } from '../../types.ts';
+import { type KycStatusData } from '../../types.ts';
 import { KycStatus } from '../Verification/types.ts';
 
-const displayName = 'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
+export const displayName =
+  'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
 
 export const STATUS_MSGS = defineMessages({
   // update these keys to match the actual status
@@ -17,7 +18,7 @@ export const STATUS_MSGS = defineMessages({
   },
 });
 
-export const getStatusPillScheme = ({
+export const getBadgeProps = ({
   bankAccountData,
   isAutoOfframEnabled,
   kycStatusData,
@@ -25,60 +26,62 @@ export const getStatusPillScheme = ({
   kycStatusData: KycStatusData | null;
   bankAccountData: KycStatusData['bankAccount'];
   isAutoOfframEnabled: boolean;
-}): StatusPillScheme => {
+}): CryptoToFiatBadgeProps => {
   if (kycStatusData) {
     if (kycStatusData?.kyc_status !== KycStatus.APPROVED && !bankAccountData) {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.statusPill.incomplete`,
           defaultMessage: 'Complete KYC & payment details',
         }),
         icon: WarningCircle,
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
 
     // @TODO Figure out if this is still valid
-    //  This is based on the Figma design: https://www.figma.com/design/C2grfQysdsYXz0j4rADR6K/Crypto-to-Fiat?node-id=2401-10068&t=nxBQFcmRmZgCoLap-0
+    // This is based on the Figma design: https://www.figma.com/design/C2grfQysdsYXz0j4rADR6K/Crypto-to-Fiat?node-id=2401-10068&t=nxBQFcmRmZgCoLap-0
+    // I think this should now be kycStatusData?.kyc_status === KycStatus.APPROVED && !bankAccountData
     if (kycStatusData?.kyc_status !== KycStatus.APPROVED && !!bankAccountData) {
       return {
-        copy: formatText({
+        text: formatText({
           id: `${displayName}.statusPill.kycRequired`,
+          // I think this should now say Bank details required
           defaultMessage: 'KYC required',
         }),
         icon: WarningCircle,
-        ...statusPillThemes.red,
+        theme: 'red',
       };
     }
   }
 
   if (isAutoOfframEnabled) {
     return {
-      copy: formatText({
+      text: formatText({
         id: `${displayName}.statusPill.complete`,
         defaultMessage: 'Automatic bank deposit on',
       }),
-      ...statusPillThemes.green,
+      theme: 'green',
     };
   }
 
   return {
-    copy: formatText({
+    text: formatText({
       id: `${displayName}.statusPill.complete`,
       defaultMessage: 'Automatic bank deposit off',
     }),
-    ...statusPillThemes.gray,
+    theme: 'gray',
   };
 };
 
 export const HEADING_MSG = defineMessages({
   headingTitle: {
     id: `${displayName}.headingTitle`,
-    defaultMessage: 'Bank details',
+    defaultMessage: 'Enable automatic deposits',
   },
   headingAccessory: {
     id: `${displayName}.headingAccessory`,
-    defaultMessage: 'Required',
+    defaultMessage: 'optional',
   },
 });
 

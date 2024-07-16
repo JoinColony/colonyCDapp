@@ -99,3 +99,9 @@ export const getSafeTransactionMonitor = (
 
   return `${monitorUrl}100/${transactionHash}`;
 };
+
+/**
+ * Crypto to Fiat
+ */
+export const LEARN_MORE_CRYPTO_TO_FIAT =
+  'https://help.colony.io/en/articles/9529993-crypto-to-fiat#h_af81098357';
