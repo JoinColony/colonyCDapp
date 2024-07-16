@@ -5,7 +5,6 @@ import React from 'react';
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
   ColonyActionType,
   type ColonyActionRoles,
@@ -34,7 +33,6 @@ import {
   ActionTitle,
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
-import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -91,7 +89,6 @@ const SetUserRoles = ({ action }: Props) => {
       { actionType: ColonyActionType.SetUserRoles },
     ),
   } = action.metadata || {};
-  const { user } = useAppContext();
   const {
     initiatorUser,
     recipientUser,
@@ -104,12 +101,7 @@ const SetUserRoles = ({ action }: Props) => {
     blockNumber,
     colonyAddress,
     rolesAreMultiSig,
-    isMultiSig,
-    multiSigData,
-    type: actionType,
   } = action;
-
-  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
 
   const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
@@ -137,30 +129,21 @@ const SetUserRoles = ({ action }: Props) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData ? (
-          <MultiSigMeatballMenu
-            transactionHash={transactionHash}
-            multiSigData={multiSigData}
-            isOwner={isOwner}
-            actionType={actionType}
-          />
-        ) : (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-              member: recipientAddress,
-              authority: roleAuthority,
-              role,
-              [TEAM_FIELD_NAME]: fromDomain?.nativeId,
-              [DECISION_METHOD_FIELD_NAME]: isMotion
-                ? DecisionMethod.Reputation
-                : DecisionMethod.Permissions,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            member: recipientAddress,
+            authority: roleAuthority,
+            role,
+            [TEAM_FIELD_NAME]: fromDomain?.nativeId,
+            [DECISION_METHOD_FIELD_NAME]: isMotion
+              ? DecisionMethod.Reputation
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(
