@@ -11,6 +11,9 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
+  ARBITRUM_NETWORK,
+  ARBITRUM_SEPOLIA_NETWORK,
+  GNOSIS_NETWORK,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
@@ -99,7 +102,7 @@ const onboardConfig: InitOptions = {
         [ProviderLabel.Zeal]: false,
         [ProviderLabel.Phantom]: false,
         [ProviderLabel.OKXWallet]: false,
-        [ProviderLabel.Zerion]: false,
+        [ProviderLabel.Zerion]: true, // Enabled
         [ProviderLabel.Rainbow]: false,
         [ProviderLabel.SafePal]: false,
         [ProviderLabel.DeFiWallet]: false,
@@ -127,6 +130,27 @@ const onboardConfig: InitOptions = {
       token: TOKEN_DATA[Network.Ganache].symbol,
       label: GANACHE_NETWORK.shortName,
       rpcUrl: GANACHE_LOCAL_RPC_URL,
+    },
+    // arbitrum
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumOne].symbol,
+      label: ARBITRUM_NETWORK.shortName,
+    },
+    // arbitrum sepolia (testnet)
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_SEPOLIA_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumSepolia].symbol,
+      label: ARBITRUM_SEPOLIA_NETWORK.shortName,
+    },
+    // gnosis
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(GNOSIS_NETWORK.chainId),
+      token: TOKEN_DATA[Network.Gnosis].symbol,
+      label: GNOSIS_NETWORK.shortName,
     },
   ],
   accountCenter: {
