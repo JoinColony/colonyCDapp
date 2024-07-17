@@ -41,10 +41,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
 
   return (
     <div>
-      <MultiSigWidget
-        action={action}
-        initiatorAddress={action.initiatorAddress}
-      />
+      <MultiSigWidget action={action} />
     </div>
   );
 };

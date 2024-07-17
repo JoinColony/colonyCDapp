@@ -2,6 +2,7 @@ import { type ColonyRole, Extension } from '@colony/colony-js';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
+import { type Threshold } from '~types/multisig.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { useEligibleSignees } from './useEligibleSignees.ts';
@@ -10,8 +11,6 @@ interface UseDomainThresholdParams {
   domainId: number;
   requiredRoles?: ColonyRole[][];
 }
-
-type Threshold = { [role: number]: number } | null;
 
 interface UseDomainThresholdResult {
   thresholdPerRole: Threshold;
