@@ -17,6 +17,7 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
   onToggle,
   className,
   children,
+  withDelimiter,
 }) => (
   <div className={clsx(className, 'w-full overflow-hidden')}>
     <button
@@ -34,7 +35,7 @@ const AccordionItem: FC<PropsWithChildren<AccordionItemProps>> = ({
           text-left
           transition-colors
         `,
-        { 'text-blue-500': isOpen },
+        { 'text-blue-500': isOpen, 'border-b border-gray-200': withDelimiter },
       )}
     >
       {title}
