@@ -124,7 +124,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               onClick={handleNavigateToAction}
               disabled={!canLinkToAction || hideSummary}
               className={clsx(
-                'flex w-full min-w-0 flex-col items-start gap-1  sm:px-6',
+                'flex w-full flex-col items-start gap-1  sm:px-6',
                 {
                   'cursor-default': !canLinkToAction,
                 },
