@@ -96,6 +96,11 @@ const MSG = defineMessages({
     defaultMessage:
       'For more control over required approvals, you can customise the thresholds for each team.',
   },
+  domainFixedThresholdDescription: {
+    id: `${displayName}.domainFixedThresholdDescription`,
+    defaultMessage:
+      'Define a fixed number of signers that is required to approve an action for this specific team',
+  },
 });
 
 enum MultiSigThresholdType {
@@ -434,8 +439,15 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                       />
                     </div>
                     {domain.type === MultiSigThresholdType.FIXED_THRESHOLD && (
-                      <div className="flex items-center justify-between border-b pb-6 pt-4">
-                        <p>{formatText(MSG.thresholdFixedTitle)}</p>
+                      <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
+                        <div>
+                          <p className="text-md">
+                            {formatText(MSG.thresholdFixedTitle)}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {formatText(MSG.domainFixedThresholdDescription)}
+                          </p>
+                        </div>
 
                         <InputGroup
                           value={domain.threshold?.toString()}
@@ -455,7 +467,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                           appendMessage={formatText(
                             MSG.thresholdFixedFormApprovals,
                           )}
-                          className="flex flex-col items-end"
+                          className="flex shrink-0 grow-0 basis-auto flex-col items-end"
                         />
                       </div>
                     )}
