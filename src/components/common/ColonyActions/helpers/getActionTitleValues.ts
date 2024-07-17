@@ -118,6 +118,11 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.RecipientsNumber,
         ActionTitleMessageKeys.TokensNumber,
       ];
+    case actionType.includes(ExtendedColonyActionType.StagedPayment):
+      return [
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.Recipient,
+      ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
     case actionType.includes(ColonyActionType.CreateDecisionMotion):

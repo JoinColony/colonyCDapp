@@ -32,7 +32,6 @@ const SplitPaymentPercentField: FC<SplitPaymentPercentFieldProps> = ({
       suffix="%"
       disabled={disabled}
       message={false}
-      usePlaceholderAsFallback
     />
   );
 };
