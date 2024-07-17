@@ -33,6 +33,8 @@ import { getValidationSchema } from './validation.ts';
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
 const ExtensionDetailsPage: FC = () => {
+  // @TODO replace this with a proper use of context
+  const [activeTab, setActiveTab] = useState(0);
   const { extensionId } = useParams();
   const { pathname } = useLocation();
   const {
@@ -100,6 +102,7 @@ const ExtensionDetailsPage: FC = () => {
               extensionData={extensionData}
               isSetupRoute={isSetupRoute}
               waitingForEnableConfirmation={waitingForEnableConfirmation}
+              onActiveTabChange={setActiveTab}
             />
           </div>
           <div className="order-3 hidden md:col-span-2 md:block lg:row-span-2">
@@ -109,7 +112,13 @@ const ExtensionDetailsPage: FC = () => {
             <Routes>
               <Route
                 path="/"
-                element={<ExtensionInfo extensionData={extensionData} />}
+                element={
+                  <ExtensionInfo
+                    activeTab={activeTab}
+                    onActiveTabChange={setActiveTab}
+                    extensionData={extensionData}
+                  />
+                }
               />
               {SetupComponent && (
                 <Route

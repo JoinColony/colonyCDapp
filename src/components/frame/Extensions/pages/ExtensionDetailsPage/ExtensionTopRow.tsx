@@ -16,6 +16,7 @@ interface ExtensionsTopRowProps {
   extensionData: AnyExtensionData;
   waitingForEnableConfirmation: boolean;
   isSetupRoute: boolean;
+  onActiveTabChange: (activeTab: number) => void;
 }
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionTopRow';
@@ -45,6 +46,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   extensionData,
   waitingForEnableConfirmation,
   isSetupRoute,
+  onActiveTabChange,
 }) => {
   const { colony } = useColonyContext();
 
@@ -71,6 +73,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       <div className="flex flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <ActionButtons
+            onActiveTabChange={onActiveTabChange}
             waitingForEnableConfirmation={waitingForEnableConfirmation}
             isSetupRoute={isSetupRoute}
             extensionData={extensionData}

@@ -16,15 +16,22 @@ import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
-import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPage/utils.tsx';
+import {
+  EXTENSION_TAB_ID,
+  waitForDbAfterExtensionAction,
+} from '../ExtensionDetailsPage/utils.tsx';
 
 interface InstallButtonProps {
   extensionData: AnyExtensionData;
+  onActiveTabChange: (activeTab: number) => void;
 }
 
 const displayName = 'pages.ExtensionDetailsPage.InstallButton';
 
-const InstallButton = ({ extensionData }: InstallButtonProps) => {
+const InstallButton = ({
+  extensionData,
+  onActiveTabChange,
+}: InstallButtonProps) => {
   const {
     colony: { colonyAddress, name: colonyName },
     isSupportedColonyVersion,
@@ -57,6 +64,10 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
       navigate(
         `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData?.extensionId}/${COLONY_EXTENSION_SETUP_ROUTE}`,
       );
+    }
+    // @TODO will need to do the same for Extension.VotingReputation
+    if (extensionData.extensionId === Extension.MultisigPermissions) {
+      onActiveTabChange(EXTENSION_TAB_ID.SETTINGS);
     }
   };
 
