@@ -53,13 +53,7 @@ const MSG = defineMessages({
 const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const {
-    initiatorUser,
-    isMultiSig,
-    multiSigData,
-    transactionHash,
-    annotation,
-  } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
   const actionColonyMetadata =
     action.pendingColonyMetadata || action.colony.metadata;
 
@@ -67,23 +61,21 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData && (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
-              [COLONY_DESCRIPTION_FIELD_NAME]:
-                actionColonyMetadata?.description,
-              [COLONY_AVATAR_FIELD_NAME]: {
-                image: actionColonyMetadata?.avatar,
-              },
-              [COLONY_NAME_FIELD_NAME]: actionColonyMetadata?.displayName,
-              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+            [COLONY_DESCRIPTION_FIELD_NAME]: actionColonyMetadata?.description,
+            [COLONY_AVATAR_FIELD_NAME]: {
+              image: actionColonyMetadata?.avatar,
+            },
+            [COLONY_NAME_FIELD_NAME]: actionColonyMetadata?.displayName,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {

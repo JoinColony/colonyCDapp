@@ -73,7 +73,6 @@ const UpgradeColonyObjective = ({ action }: Props) => {
     colony,
     isMotion,
     isMultiSig,
-    multiSigData,
     pendingColonyMetadata,
     annotation,
   } = action;
@@ -87,20 +86,19 @@ const UpgradeColonyObjective = ({ action }: Props) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData && (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
-              [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
-              [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
-                objectiveData?.description,
-              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
+            [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
+            [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
+              objectiveData?.description,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
