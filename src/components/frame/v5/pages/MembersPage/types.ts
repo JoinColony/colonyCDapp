@@ -7,6 +7,7 @@ export interface MemberItem {
   user?: User | null;
   walletAddress: string;
   role?: UserRoleMeta;
+  isRoleInherited?: boolean;
   isVerified: boolean;
   reputation?: number;
   contributorType?: ContributorType;

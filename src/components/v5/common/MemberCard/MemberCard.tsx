@@ -19,6 +19,7 @@ const MemberCard: FC<MemberCardProps> = ({
   meatBallMenuProps,
   reputation,
   role,
+  isRoleInherited,
   contributorType,
   isVerified,
 }) => {
@@ -66,7 +67,7 @@ const MemberCard: FC<MemberCardProps> = ({
           )}
           {role && (
             <div className="ml-auto">
-              <RolesTooltip role={role} />
+              <RolesTooltip role={role} isRoleInherited={isRoleInherited} />
             </div>
           )}
         </div>

@@ -11,6 +11,7 @@ import { type RolesTooltipProps } from './types.ts';
 
 const RolesTooltip: FC<RolesTooltipProps> = ({
   role,
+  isRoleInherited,
   roleDescription,
   tooltipProps,
 }) => {
@@ -19,7 +20,14 @@ const RolesTooltip: FC<RolesTooltipProps> = ({
       tooltipContent={
         <>
           {roleDescription ||
-            formatText({ id: 'role.description' }, { role: role.name })}
+            formatText(
+              {
+                id: isRoleInherited
+                  ? 'role.description.inherited'
+                  : 'role.description',
+              },
+              { role: role.name },
+            )}
           <ul className="list-disc pl-4 font-medium">
             {role.permissions.map((permission) => (
               <li key={permission}>{ColonyRole[permission]}</li>

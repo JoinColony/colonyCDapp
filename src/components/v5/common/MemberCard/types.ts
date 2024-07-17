@@ -8,6 +8,7 @@ export interface MemberCardProps {
   user?: User;
   meatBallMenuProps: MeatBallMenuProps;
   role?: UserRoleMeta;
+  isRoleInherited?: boolean;
   reputation?: number;
   isVerified?: boolean;
   contributorType?: ContributorType;

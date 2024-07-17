@@ -96,6 +96,7 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                 role={item.member.role}
                 isVerified={item.member.isVerified}
                 contributorType={item.member.contributorType}
+                isRoleInherited={item.member.isRoleInherited}
               />
             );
           })}
