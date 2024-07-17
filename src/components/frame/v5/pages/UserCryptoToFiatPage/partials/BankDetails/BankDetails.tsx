@@ -3,7 +3,7 @@ import React, { type FC, useState } from 'react';
 import { formatText } from '~utils/intl.ts';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
-import { BankDetailsModal } from '../BankDetailsModal/index.tsx';
+import BankDetailsModal from '../BankDetailsModal/index.ts';
 import RowItem from '../RowItem/index.ts';
 
 import {

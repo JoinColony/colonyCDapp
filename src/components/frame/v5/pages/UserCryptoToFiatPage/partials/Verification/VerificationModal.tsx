@@ -1,24 +1,23 @@
-import { Client as PersonaClient } from 'persona';
 import React, { useEffect, type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useCreateKycLinksMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/Button.tsx';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
-import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
-import Stepper from '../Stepper/index.tsx';
+import PersonalDetailsForm from '../PersonalDetailsForm/index.ts';
+import Stepper from '../Stepper.tsx';
 
-interface KYCModalProps {
+interface VerificationModalProps {
   existingKycLink: string;
   isOpened: boolean;
   onClose: () => void;
+  onTermsAcceptance: (kycLink: string) => void;
 }
 
-const displayName = 'v5.pages.UserCryptoToFiatPage.partials.KYCModal';
+const displayName = 'v5.pages.UserCryptoToFiatPage.partials.VerificationModal';
 
 enum TabId {
   PersonalDetails = 0,
@@ -50,71 +49,32 @@ const MSG = defineMessages({
   },
 });
 
-export const KYCModal: FC<KYCModalProps> = ({
+const VerificationModal: FC<VerificationModalProps> = ({
   existingKycLink,
   isOpened,
   onClose,
+  onTermsAcceptance,
 }) => {
   const { formatMessage } = useIntl();
 
   const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
 
-  const [kycFields, setKycFields] = useState<{
-    firstName: string;
-    lastName: string;
-    tosLink: string;
-    email: string;
-    country: string;
-    kycLink: string;
-  }>({
-    email: '',
-    firstName: '',
-    lastName: '',
-    tosLink: '',
-    country: '',
-    kycLink: existingKycLink ?? '',
-  });
+  const [kycLink, setKycLink] = useState(existingKycLink);
+  const [termsLink, setTermsLink] = useState<string | null>(null);
 
   const [createKycLinks] = useCreateKycLinksMutation();
 
   useEffect(() => {
     const handler = (ev: MessageEvent) => {
       if (ev.data.signedAgreementId) {
-        setActiveTab(TabId.KYC);
+        onTermsAcceptance(kycLink);
       }
     };
 
     window.addEventListener('message', handler);
 
     return () => window.removeEventListener('message', handler);
-  }, []);
-
-  useEffect(() => {
-    let personaClient: PersonaClient | undefined;
-
-    if (activeTab === TabId.KYC && kycFields.kycLink) {
-      try {
-        // Extract Persona flow details from KYC link
-        const url = new URL(kycFields.kycLink);
-        const searchParams = new URLSearchParams(url.search);
-
-        const templateId = searchParams.get('inquiry-template-id') ?? '';
-        const referenceId = searchParams.get('reference-id') ?? '';
-
-        personaClient = new PersonaClient({
-          templateId,
-          referenceId,
-          environmentId: 'env_AY6hSVzQeRamUtJB7ydFhnCx',
-        });
-
-        personaClient.open();
-      } catch {
-        //
-      }
-    }
-
-    return () => personaClient?.destroy();
-  }, [activeTab, kycFields.kycLink]);
+  }, [kycLink, onTermsAcceptance]);
 
   return (
     <ModalBase
@@ -142,12 +102,7 @@ export const KYCModal: FC<KYCModalProps> = ({
               content: (
                 <div>
                   <PersonalDetailsForm
-                    onSubmit={async ({
-                      email,
-                      firstName,
-                      lastName,
-                      country,
-                    }) => {
+                    onSubmit={async ({ email, firstName, lastName }) => {
                       const response = await createKycLinks({
                         variables: {
                           email,
@@ -155,21 +110,14 @@ export const KYCModal: FC<KYCModalProps> = ({
                         },
                       });
 
-                      const tosLink =
+                      const responseTermsLink =
                         response.data?.bridgeXYZMutation?.tos_link;
-                      const kycLink =
+                      const responseKycLink =
                         response.data?.bridgeXYZMutation?.kyc_link;
 
-                      if (tosLink && kycLink) {
-                        setKycFields((state) => ({
-                          ...state,
-                          firstName,
-                          lastName,
-                          tosLink,
-                          email,
-                          country,
-                          kycLink,
-                        }));
+                      if (responseTermsLink && responseKycLink) {
+                        setTermsLink(responseTermsLink);
+                        setKycLink(responseKycLink);
 
                         setActiveTab(TabId.Terms);
                       } else {
@@ -190,11 +138,13 @@ export const KYCModal: FC<KYCModalProps> = ({
                 <div>
                   <ModalHeading title={MSG.tcTitle} subtitle={MSG.tcSubtitle} />
                   <div className="flex justify-center">
-                    <iframe
-                      title="Terms iframe"
-                      src={kycFields.tosLink}
-                      className="min-h-[20.2rem] min-w-[25rem]"
-                    />
+                    {termsLink && (
+                      <iframe
+                        title="Terms iframe"
+                        src={termsLink}
+                        className="min-h-[20.2rem] min-w-[25rem]"
+                      />
+                    )}
                   </div>
                 </div>
               ),
@@ -204,14 +154,7 @@ export const KYCModal: FC<KYCModalProps> = ({
               heading: {
                 label: formatText(MSG.kycTabHeading),
               },
-              content: (
-                <div>
-                  You will now need to complete KYC with our partner.
-                  <a href={kycFields.kycLink} target="_blank" rel="noreferrer">
-                    <Button>Start KYC</Button>
-                  </a>
-                </div>
-              ),
+              content: null,
             },
           ]}
         />
@@ -220,4 +163,6 @@ export const KYCModal: FC<KYCModalProps> = ({
   );
 };
 
-KYCModal.displayName = displayName;
+VerificationModal.displayName = displayName;
+
+export default VerificationModal;
