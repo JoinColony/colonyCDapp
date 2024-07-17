@@ -26,7 +26,7 @@ export const InputGroup: FC<InputGroupProps> = ({
     <div className={className}>
       <div
         className={clsx(
-          `mt-2 w-fit divide-x rounded border border-gray-300 text-gray-600 focus-within:border-blue-400`,
+          `mt-2 w-fit divide-x rounded border border-gray-300 text-md text-gray-600 focus-within:border-blue-400`,
           {
             'divide-negative-400 !border-negative-400': isError,
           },
