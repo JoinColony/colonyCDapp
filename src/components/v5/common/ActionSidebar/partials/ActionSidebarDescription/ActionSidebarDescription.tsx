@@ -16,6 +16,7 @@ import MintTokensDescription from './partials/MintTokensDescription.tsx';
 import PaymentBuilderDescription from './partials/PaymentBuilderDescription.tsx';
 import SimplePaymentDescription from './partials/SimplePaymentDescription.tsx';
 import SplitPaymentDescription from './partials/SplitPaymentDescription.tsx';
+import StagedPaymentsDescription from './partials/StagedPaymentsDescription.tsx';
 import TransferFundsDescription from './partials/TransferFundsDescription.tsx';
 import UnlockTokenDescription from './partials/UnlockTokenDescription.tsx';
 import UpgradeColonyDescription from './partials/UpgradeColonyDescription.tsx';
@@ -59,6 +60,8 @@ const ActionSidebarDescription = () => {
       return <PaymentBuilderDescription />;
     case Action.SplitPayment:
       return <SplitPaymentDescription />;
+    case Action.StagedPayment:
+      return <StagedPaymentsDescription />;
     default:
       return null;
   }
