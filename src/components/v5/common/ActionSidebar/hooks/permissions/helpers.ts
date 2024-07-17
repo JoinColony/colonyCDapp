@@ -2,6 +2,7 @@ import { type ColonyRole, Id } from '@colony/colony-js';
 
 import { Action, PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
@@ -35,9 +36,50 @@ export const getPermissionsNeededForAction = (
       if (formValues.modification === ModificationOption.RemoveReputation) {
         return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove;
       }
-      return undefined;
+      return [
+        ...PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward,
+        ...PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove,
+      ];
     case Action.ManagePermissions: {
-      return formValues.createdIn === Id.RootDomain
+      const { decisionMethod, createdIn, team } = formValues;
+
+      const isMotion = decisionMethod !== DecisionMethod.Permissions;
+
+      let createdInDomain;
+      if (!isMotion) {
+        createdInDomain = team;
+      } else if (team) {
+        createdInDomain = createdIn;
+      } else {
+        createdInDomain = undefined;
+      }
+
+      if (createdInDomain === undefined) {
+        return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+      }
+
+      const createdInRoot = createdInDomain === Id.RootDomain;
+
+      if (decisionMethod === DecisionMethod.MultiSig) {
+        if (createdInDomain === undefined) {
+          return [
+            ...PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain,
+            ...PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig,
+          ];
+        }
+        return createdInRoot
+          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
+      }
+
+      if (createdInDomain === undefined) {
+        return [
+          ...PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain,
+          ...PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain,
+        ];
+      }
+
+      return createdInRoot
         ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
         : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
     }
@@ -69,16 +111,35 @@ export const getPermissionsDomainIdForAction = (
   actionType: Action,
   formValues: Record<string, any>,
 ) => {
+  const { decisionMethod, createdIn, team, from } = formValues;
+  const isMotion =
+    decisionMethod && decisionMethod !== DecisionMethod.Permissions;
+
   switch (actionType) {
     case Action.SimplePayment:
-    case Action.TransferFunds:
     case Action.PaymentBuilder:
-      return formValues.from;
+      if (!isMotion) {
+        return from;
+      }
+      if (from !== undefined) {
+        return createdIn;
+      }
+      return undefined;
     case Action.ManageReputation:
     case Action.ManagePermissions:
-      return formValues.team;
+    case Action.EditExistingTeam:
+      if (!isMotion) {
+        return team;
+      }
+      if (team !== undefined) {
+        return createdIn;
+      }
+      return undefined;
     default:
-      return Id.RootDomain;
+      if (!isMotion) {
+        return Id.RootDomain;
+      }
+      return createdIn;
   }
 };
 
@@ -110,7 +171,7 @@ export const getHasActionPermissions = ({
     formValues,
   );
 
-  if (!requiredRoles || !relevantDomainId) {
+  if (!requiredRoles) {
     return undefined;
   }
 

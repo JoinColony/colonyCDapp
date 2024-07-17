@@ -79,16 +79,6 @@ function* managePermissionsMotion({
         );
       }
 
-      const requiredCreatedInRoles =
-        createdInDomainId === Id.RootDomain
-          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
-      const requiredTeamRoles =
-        teamDomainId === Id.RootDomain
-          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
       const roleArray = Object.values(roles).reverse();
       roleArray.splice(2, 0, false);
 
@@ -124,6 +114,11 @@ function* managePermissionsMotion({
 
       if (isMultiSig) {
         // Creating a multi-sig motion
+
+        const requiredCreatedInRoles =
+          createdInDomainId === Id.RootDomain
+            ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+            : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
 
         const initiatorAddress = yield colonyClient.signer.getAddress();
 
@@ -198,6 +193,11 @@ function* managePermissionsMotion({
       }
 
       // Creating a reputation motion
+
+      const requiredTeamRoles =
+        teamDomainId === Id.RootDomain
+          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
 
       const votingReputationClient = yield colonyManager.getClient(
         ClientType.VotingReputationClient,

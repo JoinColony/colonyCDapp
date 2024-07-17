@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { type ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
@@ -62,7 +62,6 @@ const useHasNoDecisionMethods = () => {
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
-    excludeInherited: false,
     isMultiSig: true,
   });
 
@@ -81,19 +80,32 @@ const useHasNoDecisionMethods = () => {
     !requiredPermissions.some((roles) => {
       // Check if every role in the current sub-array is satisfied
       return roles.every((role) => {
-        // Determine the roles to check based on the domain
-        const rolesToCheck =
-          requiredRolesDomain === Id.RootDomain
-            ? {
-                userRoles: userRootRoles,
-                userMultiSigRoles: isMultiSigEnabled
-                  ? userRootMultiSigRoles
-                  : [],
-              }
-            : {
-                userRoles,
-                userMultiSigRoles: isMultiSigEnabled ? userMultiSigRoles : [],
-              };
+        let rolesToCheck: {
+          userRoles: ColonyRole[];
+          userMultiSigRoles: ColonyRole[];
+        };
+
+        if (!requiredRolesDomain) {
+          rolesToCheck = {
+            userRoles: [...userRootRoles, ...userRoles],
+            userMultiSigRoles: isMultiSigEnabled
+              ? [...userRootMultiSigRoles, ...userMultiSigRoles]
+              : [],
+          };
+        } else if (requiredRolesDomain === Id.RootDomain) {
+          rolesToCheck = {
+            userRoles: userRootRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userRootMultiSigRoles : [],
+          };
+        } else {
+          rolesToCheck = {
+            userRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userMultiSigRoles : [],
+          };
+        }
+
+        // @TODO: If an action requires multiple permissions (Simple Payment) then all the roles need to be in the same domain
+        // This would require reworking `userRoles` and `userMultiSigRoles` to group roles by domain
 
         // Check if the user has the role in any domain
         return (

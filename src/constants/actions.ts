@@ -4,7 +4,7 @@ import { ColonyRole } from '@colony/colony-js';
 export const PERMISSIONS_NEEDED_FOR_ACTION = {
   // Simple Payment requires all of funding, arbitration and administration roles
   SimplePayment: [
-    [ColonyRole.Funding, ColonyRole.Administration, ColonyRole.Administration],
+    [ColonyRole.Funding, ColonyRole.Arbitration, ColonyRole.Administration],
   ],
   MintTokens: [[ColonyRole.Root]],
   TransferFunds: [[ColonyRole.Funding]],
@@ -15,13 +15,11 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   // Manage Reputation requires a different role dependant on awarding / removing
   ManageReputationAward: [[ColonyRole.Root]],
   ManageReputationRemove: [[ColonyRole.Arbitration]],
-  // Manage Permissions requires the root role if assigning the root role
+  // If assigning permissions in the root domain, the root role is required
   ManagePermissionsInRootDomain: [[ColonyRole.Root]],
-  // All other permissions can be assigned with either the root role or the Architecture role
+  // If assigning permissions in any other domain, root or architecture is required
   ManagePermissionsInSubDomain: [[ColonyRole.Root], [ColonyRole.Architecture]],
-  // @SAM-TODO: This is only here for testing - remove this
-  // ManagePermissionsInSubDomain: [[ColonyRole.Root, ColonyRole.Architecture]],
-  // @SAM-TODO - handle this new case
+  // Except when using multi-sig, then the architecture role is required
   ManagePermissionsInSubDomainViaMultiSig: [[ColonyRole.Architecture]],
   ManageVerifiedMembers: [[ColonyRole.Root]],
   EditColonyDetails: [[ColonyRole.Root]],

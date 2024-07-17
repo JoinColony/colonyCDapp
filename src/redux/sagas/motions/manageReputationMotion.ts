@@ -112,7 +112,7 @@ function* manageReputationMotion({
               colonyRoles,
               colonyDomains,
               requiredDomainId: domainId,
-              requiredColonyRole: requiredRoles,
+              requiredColonyRoles: requiredRoles,
               permissionAddress: permissionsUserAddress,
               isMultiSig: true,
             });
@@ -141,7 +141,7 @@ function* manageReputationMotion({
             colonyRoles,
             colonyDomains,
             requiredDomainId: motionDomainId,
-            requiredColonyRole: requiredRoles,
+            requiredColonyRoles: requiredRoles,
             permissionAddress: multiSigPermissionsClient.address,
             isMultiSig: false,
           },

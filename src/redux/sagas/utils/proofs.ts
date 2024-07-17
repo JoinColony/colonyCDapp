@@ -185,6 +185,10 @@ const getMultiPermissionProofsLocal = async ({
     ),
   );
 
+  if (proofs.length === 1) {
+    return proofs[0];
+  }
+
   // We are checking that all of the permissions resolve to the same domain and childSkillIndex
   for (let idx = 0; idx < proofs.length; idx += 1) {
     const [permissionDomainId, childSkillIndex, address] = proofs[idx];

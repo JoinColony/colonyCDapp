@@ -41,7 +41,6 @@ export const useDomainThreshold = ({
     }
 
     if (extensionData === null || !isInstalledExtensionData(extensionData)) {
-      console.warn('MultiSig extension is not installed');
       return null;
     }
 
