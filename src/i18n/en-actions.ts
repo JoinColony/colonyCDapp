@@ -54,6 +54,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -87,6 +88,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.CreateExpenditure} {Advanced payment}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.UpdateTokens} {Update Tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
