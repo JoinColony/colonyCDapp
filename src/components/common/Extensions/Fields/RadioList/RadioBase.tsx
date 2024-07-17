@@ -1,6 +1,6 @@
 import { Info } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -10,12 +10,13 @@ import { type RadioBaseProps, type RadioItemProps } from './types.ts';
 
 const displayName = 'common.Extensions.Fields.RadioBase';
 
-const RadioBase: FC<RadioBaseProps> = ({
+const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
   item,
   isError,
   onChange,
   name,
   checked,
+  children,
 }) => {
   const { disabled, label, description, value, badge, tooltip } =
     item as RadioItemProps;
@@ -40,10 +41,19 @@ const RadioBase: FC<RadioBaseProps> = ({
       <label
         htmlFor={label}
         className={clsx(
-          `relative z-base flex min-h-[2.75rem] cursor-pointer flex-col justify-center rounded-lg border border-gray-300 py-3 pl-[3.25rem] pr-6 text-md transition-all duration-normal before:absolute before:left-6 before:top-[0.875rem] before:h-[1rem] before:w-[1rem] before:rounded-full before:border before:border-gray-200 before:transition-all before:duration-normal after:absolute after:left-6 after:top-[0.875rem] after:h-[0.4375rem] after:w-[0.4375rem] after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:rounded-full after:bg-blue-400 after:opacity-0 after:transition-all after:duration-normal hover:border-blue-200 peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
+          `relative z-base flex min-h-[2.75rem] cursor-pointer flex-col justify-center rounded-lg 
+          border border-gray-300 py-3 pl-[3.25rem] pr-6 text-md transition-all duration-normal 
+          before:absolute before:left-6 before:top-[0.875rem] before:h-[1rem] before:w-[1rem] 
+          before:rounded-full before:border before:border-gray-200 before:transition-all before:duration-normal 
+          after:absolute after:left-6 after:top-[0.875rem] after:h-[0.4375rem] after:w-[0.4375rem] 
+          after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:rounded-full after:bg-blue-400 
+          after:opacity-0 after:transition-all after:duration-normal hover:border-blue-200 
+          peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 
+          peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
           {
             'before:top-4 after:top-4': !!badge,
-            'border-negative-400': isError,
+            '!border-negative-400 after:bg-negative-400 peer-checked/radio:before:border-negative-400':
+              isError && checked,
             'pointer-events-none border-gray-300 opacity-50': disabled,
           },
         )}
@@ -71,6 +81,7 @@ const RadioBase: FC<RadioBaseProps> = ({
               <ExtensionStatusBadge {...badge} />
             </div>
           )}
+          {children}
         </div>
       </label>
     </div>

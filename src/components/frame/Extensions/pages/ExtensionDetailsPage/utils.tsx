@@ -205,15 +205,23 @@ export const mapExtensionActionPayload = (
   );
 };
 
-export const getExtensionTabs = (extension: Extension): TabItem[] | null => {
+export const getExtensionTabs = (
+  extension: Extension,
+  isInitialized?: boolean,
+): TabItem[] | null => {
+  /* eslint-disable no-fallthrough */
   switch (extension) {
     case Extension.VotingReputation:
-    case Extension.MultisigPermissions:
-      return [
-        { id: 0, title: 'Overview' },
-        { id: 1, title: 'Extension settings' },
-      ];
+    case Extension.MultisigPermissions: {
+      if (isInitialized) {
+        return [
+          { id: 0, title: 'Overview' },
+          { id: 1, title: 'Extension settings' },
+        ];
+      }
+    }
     default:
-      return null;
+      return [{ id: 0, title: 'Overview' }];
   }
+  /* eslint-enable no-fallthrough */
 };

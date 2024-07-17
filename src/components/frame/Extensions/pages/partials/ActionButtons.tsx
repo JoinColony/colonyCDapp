@@ -12,6 +12,7 @@ import ActiveInstalls from './ActiveInstalls.tsx';
 import EnableButton from './EnableButton.tsx';
 import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
+import SaveSettingsButton from './SaveSettingsButton.tsx';
 import { type ActionButtonProps } from './types.ts';
 import UpgradeButton from './UpgradeButton.tsx';
 
@@ -72,6 +73,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
         userHasRoot={userHasRoot}
         waitingForEnableConfirmation={waitingForEnableConfirmation}
       />
+      <SaveSettingsButton />
       {isUpgradeButtonVisible && (
         <UpgradeButton extensionData={extensionData} />
       )}

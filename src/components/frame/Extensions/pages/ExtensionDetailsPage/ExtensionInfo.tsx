@@ -35,6 +35,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
         return (
           <LazyConsensusSettingsTab
             extension={Extension.VotingReputation}
+            extensionData={extensionData}
             params={
               (extensionData as InstalledExtensionData).params?.votingReputation
             }
@@ -52,9 +53,12 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
   };
 
   /* @TODO: handle case when more than one accordion in extension settings view will be visible */
-  const extensionTabs = getExtensionTabs(extensionData.extensionId);
+  const extensionTabs = getExtensionTabs(
+    extensionData.extensionId,
+    extensionData.isInitialized,
+  );
 
-  if (extensionData?.isInitialized && extensionTabs !== null) {
+  if (extensionTabs !== null) {
     return (
       <Tabs
         items={extensionTabs}
