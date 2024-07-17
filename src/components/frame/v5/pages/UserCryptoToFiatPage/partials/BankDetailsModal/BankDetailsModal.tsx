@@ -7,9 +7,9 @@ import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
-import { BankDetailsForm } from '../BankDetailsForm/index.tsx';
-import { ContactDetailsForm } from '../ContactDetailsForm/index.tsx';
-import Stepper from '../Stepper/index.tsx';
+import BankDetailsForm from '../BankDetailsForm/index.ts';
+import ContactDetailsForm from '../ContactDetailsForm/index.ts';
+import Stepper from '../Stepper.tsx';
 
 import { useBankDetailsFields } from './useBankDetailsFields.tsx';
 
@@ -101,4 +101,5 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
 };
 
 BankDetailsModal.displayName = displayName;
-export { BankDetailsModal };
+
+export default BankDetailsModal;

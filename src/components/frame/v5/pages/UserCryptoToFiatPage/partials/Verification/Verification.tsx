@@ -5,7 +5,7 @@ import { CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM } from '~routes/routeConstants
 import { formatText } from '~utils/intl.ts';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
-import { KYCModal } from '../KYCModal/index.tsx';
+import KYCModal from '../KYCModal.tsx';
 import RowItem from '../RowItem/index.ts';
 
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';

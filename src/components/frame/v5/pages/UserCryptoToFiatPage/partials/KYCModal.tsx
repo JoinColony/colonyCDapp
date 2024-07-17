@@ -8,9 +8,9 @@ import Button from '~v5/shared/Button/Button.tsx';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
-import ModalHeading from '../ModalHeading/ModalHeading.tsx';
-import { PersonalDetailsForm } from '../PersonalDetailsForm/index.tsx';
-import Stepper from '../Stepper/index.tsx';
+import ModalHeading from './ModalHeading/ModalHeading.tsx';
+import PersonalDetailsForm from './PersonalDetailsForm/index.ts';
+import Stepper from './Stepper.tsx';
 
 interface KYCModalProps {
   existingKycLink: string;
@@ -50,7 +50,7 @@ const MSG = defineMessages({
   },
 });
 
-export const KYCModal: FC<KYCModalProps> = ({
+const KYCModal: FC<KYCModalProps> = ({
   existingKycLink,
   isOpened,
   onClose,
@@ -221,3 +221,5 @@ export const KYCModal: FC<KYCModalProps> = ({
 };
 
 KYCModal.displayName = displayName;
+
+export default KYCModal;
