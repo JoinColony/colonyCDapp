@@ -124,7 +124,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               onClick={handleNavigateToAction}
               disabled={!canLinkToAction || hideSummary}
               className={clsx(
-                'flex w-full flex-col items-start gap-1  sm:px-6',
+                'flex w-full min-w-0 flex-col items-start gap-1  sm:px-6',
                 {
                   'cursor-default': !canLinkToAction,
                 },
@@ -138,7 +138,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                       {value}
                     </h4>
                     {createdAt && (
-                      <span className="mt-0.5 block text-xs text-gray-400">
+                      <span className="mt-0.5 block whitespace-nowrap text-xs text-gray-400">
                         {createdAt}
                       </span>
                     )}
@@ -156,7 +156,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                     />
                   </p>
                 </div>
-                <div className="flex gap-2 pr-8">
+                <div className="flex min-w-0 gap-2 pr-8">
                   {!isMobile && <GroupedTransactionStatus status={status} />}
                 </div>
               </div>
