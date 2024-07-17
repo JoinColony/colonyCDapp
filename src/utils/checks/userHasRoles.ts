@@ -20,33 +20,42 @@ export const addressHasRoles = ({
   requiredRoles: ColonyRole[] | ColonyRole[][];
   isMultiSig?: boolean;
 }) => {
+  // Convert requiredRoles to an array of arrays if it's not already
+  const rolesArray = Array.isArray(requiredRoles[0])
+    ? (requiredRoles as ColonyRole[][])
+    : [requiredRoles as ColonyRole[]];
+
+  // If an action requires multiple roles, all the roles must be in the same domain
+  const actionRequiresMultipleRoles = rolesArray.some((roleArray) => {
+    if (roleArray.length > 1) {
+      return true;
+    }
+    return false;
+  });
+
   return requiredRolesDomains.every((domainId) => {
     const userDomainRoles = getUserRolesForDomain({
       colonyRoles: extractColonyRoles(colony.roles),
       userAddress: address || '',
       domainId,
+      excludeInherited: domainId ? actionRequiresMultipleRoles : false,
     });
 
     const userMultiSigDomainRoles = getUserRolesForDomain({
       colonyRoles: extractColonyRoles(colony.roles),
       userAddress: address || '',
       domainId,
-      excludeInherited: false,
+      excludeInherited: domainId ? actionRequiresMultipleRoles : false,
       isMultiSig: true,
     });
-
-    // Convert requiredRoles to an array of arrays if it's not already
-    const rolesArray = Array.isArray(requiredRoles[0])
-      ? (requiredRoles as ColonyRole[][])
-      : [requiredRoles as ColonyRole[]];
 
     // Check if any of the requiredRoles arrays match
     return rolesArray.some((roles) => {
       return roles.every((role) => {
-        return (
-          userDomainRoles.includes(role) ||
-          (isMultiSig && userMultiSigDomainRoles.includes(role))
-        );
+        if (isMultiSig) {
+          return userMultiSigDomainRoles.includes(role);
+        }
+        return userDomainRoles.includes(role);
       });
     });
   });
