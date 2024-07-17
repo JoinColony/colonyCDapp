@@ -49,31 +49,24 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
       },
     ),
   } = action?.metadata || {};
-  const {
-    initiatorUser,
-    isMultiSig,
-    multiSigData,
-    transactionHash,
-    annotation,
-  } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
 
   return (
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData && (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
-              [MEMBERS_FIELD_NAME]: [],
-              [MANAGE_MEMBERS_FIELD_NAME]: ManageVerifiedMembersOperation.Add,
-              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
+            [MEMBERS_FIELD_NAME]: [],
+            [MANAGE_MEMBERS_FIELD_NAME]: ManageVerifiedMembersOperation.Add,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(

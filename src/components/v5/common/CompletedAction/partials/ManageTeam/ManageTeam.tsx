@@ -102,6 +102,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
+          showRedoItem={false}
           transactionHash={action.transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,

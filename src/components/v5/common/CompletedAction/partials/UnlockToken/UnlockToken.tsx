@@ -73,19 +73,18 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData && (
-          <MeatballMenu
-            transactionHash={transactionHash}
-            defaultValues={{
-              [TITLE_FIELD_NAME]: customTitle,
-              [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
-              [TOKEN_FIELD_NAME]: token?.tokenAddress,
-              [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-              [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,
-              [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            }}
-          />
-        )}
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+            [TOKEN_FIELD_NAME]: token?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
