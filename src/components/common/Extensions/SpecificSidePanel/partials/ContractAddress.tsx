@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 
@@ -18,8 +18,9 @@ const ContractAddress: FC<PanelTypeProps> = ({ title, description }) => {
       <p className={specificSidePanelClasses.panelTitle}>{title}</p>
       {description && (
         <Tooltip
-          interactive
+          isCopyTooltip
           isSuccess={isCopied}
+          isOpen={isCopied}
           tooltipContent={
             <a className="block" href={description}>
               {formatText({ id: isCopied ? 'copied' : 'copy.address' })}

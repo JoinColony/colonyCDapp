@@ -23,7 +23,7 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -316,6 +316,7 @@ export const useGetMembersForPermissions = () => {
                             }
                             isOpen={isCopied}
                             isSuccess
+                            isCopyTooltip
                           >
                             <button
                               type="button"

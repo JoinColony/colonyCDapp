@@ -1,7 +1,7 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { type MeatballMenuCopyItemProps } from './types.ts';
@@ -16,7 +16,8 @@ const MeatballMenuCopyItem: FC<
       isSuccess
       tooltipContent={formatText({ id: 'meatBallMenuCopyItem.copySuccess' })}
       isOpen={isCopied}
-      isFullWidthContent
+      isCopyTooltip
+      className="w-full"
     >
       <button
         type="button"

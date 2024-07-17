@@ -113,7 +113,7 @@ const Input: FC<InputProps> = ({
 
       {isDisabled && disabledTooltipMessage ? (
         <Tooltip
-          isFullWidthContent
+          className="w-full"
           tooltipContent={
             <span className="w-full text-3">
               {formatText(disabledTooltipMessage)}
