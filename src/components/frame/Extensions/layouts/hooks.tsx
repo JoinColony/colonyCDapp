@@ -257,15 +257,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //     }),
           //   disabled: true,
           // },
-          // {
-          //   key: '6',
-          //   label: formatText({ id: 'actions.stagedPayment' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
-          //     }),
-          //   disabled: true,
-          // },
+          {
+            key: '6',
+            label: formatText({ id: 'actions.stagedPayment' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
+              }),
+          },
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),

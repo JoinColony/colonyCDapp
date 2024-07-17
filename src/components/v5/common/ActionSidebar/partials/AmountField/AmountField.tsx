@@ -97,7 +97,7 @@ const AmountField: FC<AmountFieldProps> = ({
 
     onChange?.();
 
-    field.onChange(unformattedValue);
+    field.onChange(unformattedValue.replace('-', ''));
     setValue(formatNumeral(e.target.value, formattingOptions));
   };
 

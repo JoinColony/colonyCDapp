@@ -27,6 +27,7 @@ const useAutosizeTextArea = (
     textArea.style.overflow = 'scroll';
 
     const { scrollHeight } = textArea;
+
     textArea.style.height = `${scrollHeight}px`;
     textArea.style.overflow = 'hidden';
 

@@ -308,6 +308,8 @@ export const MEMBERS_LIST_LIMIT = 12;
 export const MEMBERS_MOBILE_LIST_LIMIT = 6;
 
 export const MAX_COLONY_DISPLAY_NAME = 20;
+export const MAX_MILESTONE_LENGTH = 80;
+export const MAX_OBJECTIVE_TITLE = 60;
 
 export const MAX_DOMAIN_PURPOSE_LENGTH = 120;
 

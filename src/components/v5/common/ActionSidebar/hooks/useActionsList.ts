@@ -2,10 +2,13 @@ import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 const useActionsList = () => {
   const { colony } = useColonyContext();
+  const { isStagedExpenditureEnabled } = useEnabledExtensions();
+
   return useMemo((): SearchSelectOptionProps[] => {
     const actionsListOptions: SearchSelectOptionProps[] = [
       {
@@ -30,10 +33,10 @@ const useActionsList = () => {
             label: { id: 'actions.splitPayment' },
             value: Action.SplitPayment,
           },
-          // {
-          //   label: { id: 'actions.stagedPayment' },
-          //   value: Action.StagedPayment,
-          // },
+          {
+            label: { id: 'actions.stagedPayment' },
+            value: Action.StagedPayment,
+          },
           // {
           //   label: { id: 'actions.streamingPayment' },
           //   value: Action.StreamingPayment,
@@ -128,6 +131,13 @@ const useActionsList = () => {
         ],
       },
     ];
+    if (!isStagedExpenditureEnabled) {
+      const stagedPaymentIndex = actionsListOptions[0].options.findIndex(
+        ({ value }) => value === Action.StagedPayment,
+      );
+
+      actionsListOptions[0].options.splice(stagedPaymentIndex, 1);
+    }
     if (!colony?.status?.nativeToken?.mintable) {
       actionsListOptions[2].options[1].isDisabled = true;
     }
@@ -135,7 +145,7 @@ const useActionsList = () => {
       actionsListOptions[2].options[2].isDisabled = true;
     }
     return actionsListOptions;
-  }, [colony]);
+  }, [colony, isStagedExpenditureEnabled]);
 };
 
 export default useActionsList;

@@ -1,30 +1,32 @@
 import { Id } from '@colony/colony-js';
-import { unformatNumeral } from 'cleave-zen';
-import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 import { type DeepPartial } from 'utility-types';
-import { array, type InferType, number, object, string } from 'yup';
+import { type InferType, array, number, object, string } from 'yup';
 
+import { MAX_MILESTONE_LENGTH } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
-import useTokenLockStates from '~hooks/useTokenLockStates.ts';
-import { ActionTypes } from '~redux/index.ts';
+import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
-import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
-import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
+import {
+  ACTION_BASE_VALIDATION_SCHEMA,
+  DECISION_METHOD_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  RECIPIENT_FIELD_NAME,
+  FROM_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
-import {
-  allTokensAmountValidation,
-  getPaymentBuilderPayload,
-} from './utils.ts';
+import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.tsx';
+
+import { getStagedPaymentPayload } from './utils.ts';
 
 export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
@@ -35,34 +37,55 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
-  const tokenLockStatesMap = useTokenLockStates();
 
   return useMemo(
     () =>
       object()
         .shape({
-          from: number().required(
+          [RECIPIENT_FIELD_NAME]: string()
+            .required(({ path }) => {
+              const index = getLastIndexFromPath(path);
+              if (index === undefined) {
+                return formatText({ id: 'errors.recipient.required' });
+              }
+              return formatText(
+                { id: 'errors.recipient.requiredIn' },
+                { paymentIndex: index + 1 },
+              );
+            })
+            .address(),
+          [FROM_FIELD_NAME]: number().required(
             formatText({ id: 'errors.fundFrom.required' }),
           ),
-          decisionMethod: string().defined(),
-          createdIn: number().defined(),
-          payments: array()
+          [DECISION_METHOD_FIELD_NAME]: string().defined(),
+          [CREATED_IN_FIELD_NAME]: number().defined(),
+          stages: array()
             .of(
               object()
                 .shape({
-                  recipient: string()
-                    .required(({ path }) => {
+                  milestone: string()
+                    .trim()
+                    .max(MAX_MILESTONE_LENGTH, ({ path }) => {
                       const index = getLastIndexFromPath(path);
                       if (index === undefined) {
-                        return formatText({ id: 'errors.recipient.required' });
+                        return formatText({ id: 'too.many.characters' });
                       }
                       return formatText(
-                        { id: 'errors.recipient.requiredIn' },
+                        { id: 'errors.milestone.characters' },
                         { paymentIndex: index + 1 },
                       );
                     })
-                    .address(),
-                  amount: string()
+                    .required(({ path }) => {
+                      const index = getLastIndexFromPath(path);
+                      if (index === undefined) {
+                        return formatText({ id: 'errors.amount' });
+                      }
+                      return formatText(
+                        { id: 'errors.milestone.required' },
+                        { paymentIndex: index + 1 },
+                      );
+                    }),
+                  [AMOUNT_FIELD_NAME]: string()
                     .required(formatText({ id: 'errors.amount' }))
                     .test(
                       'more-than-zero',
@@ -93,54 +116,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         networkInverseFee,
                       }),
                     ),
-                  tokenAddress: string()
-                    .required()
-                    .test(
-                      'token-unlocked',
-                      formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
-                      (value) =>
-                        !shouldPreventPaymentsWithTokenInColony(
-                          value || '',
-                          colony,
-                          tokenLockStatesMap,
-                        ),
-                    ),
-                  delay: string()
-                    .test(
-                      'is-bigger-than-max',
-                      ({ path }) => {
-                        const index = getLastIndexFromPath(path);
-
-                        return formatText(
-                          { id: 'errors.delay.max' },
-                          {
-                            paymentIndex: index === undefined ? 1 : index + 1,
-                            max: CLAIM_DELAY_MAX_VALUE,
-                          },
-                        );
-                      },
-                      (value) => {
-                        if (!value) {
-                          return true;
-                        }
-
-                        const unformattedValue = unformatNumeral(value);
-
-                        return BigNumber.from(
-                          moveDecimal(unformattedValue, 4),
-                        ).lte(moveDecimal(CLAIM_DELAY_MAX_VALUE, 4));
-                      },
-                    )
-                    .required(({ path }) => {
-                      const index = getLastIndexFromPath(path);
-                      if (index === undefined) {
-                        return formatText({ id: 'errors.delay.empty' });
-                      }
-                      return formatText(
-                        { id: 'errors.delay.emptyIndex' },
-                        { paymentIndex: index + 1 },
-                      );
-                    }),
+                  [TOKEN_FIELD_NAME]: string().required(),
                 })
                 .defined()
                 .required(),
@@ -152,13 +128,13 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
           'is-in-colony',
           formatText({ id: 'actionSidebar.tokenAddress.error' }),
           (item) => {
-            const { payments } = item || {};
+            const { stages } = item || {};
 
-            if (!payments) {
+            if (!stages) {
               return false;
             }
 
-            return payments.every((payment) => {
+            return stages.every((payment) => {
               return colonyTokens.some(
                 (colonyToken) =>
                   colonyToken.tokenAddress === payment.tokenAddress,
@@ -168,15 +144,15 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee, tokenLockStatesMap],
+    [colony, colonyTokens, networkInverseFee],
   );
 };
 
-export type PaymentBuilderFormValues = InferType<
+export type StagedPaymentFormValues = InferType<
   ReturnType<typeof useValidationSchema>
 >;
 
-export const usePaymentBuilder = (
+export const useStagePayment = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
@@ -186,10 +162,10 @@ export const usePaymentBuilder = (
 
   useActionFormBaseHook({
     validationSchema,
-    defaultValues: useMemo<DeepPartial<PaymentBuilderFormValues>>(
+    defaultValues: useMemo<DeepPartial<StagedPaymentFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
-        payments: [
+        stages: [
           {
             tokenAddress: nativeToken.tokenAddress,
           },
@@ -202,14 +178,12 @@ export const usePaymentBuilder = (
       getFormOptions(
         {
           ...formOptions,
-          mode: 'onSubmit',
-          reValidateMode: 'onSubmit',
           actionType: ActionTypes.EXPENDITURE_CREATE,
         },
         form,
       ),
-    transform: mapPayload((payload: PaymentBuilderFormValues) => {
-      return getPaymentBuilderPayload(colony, payload, networkInverseFee);
+    transform: mapPayload((payload: StagedPaymentFormValues) => {
+      return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),
   });
 };

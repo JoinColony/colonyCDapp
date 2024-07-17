@@ -146,6 +146,7 @@ export enum ExtendedColonyActionType {
   UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
   UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
   SplitPayment = 'SPLIT_PAYMENT',
+  StagedPayment = 'STAGED_PAYMENT',
 }
 
 /**

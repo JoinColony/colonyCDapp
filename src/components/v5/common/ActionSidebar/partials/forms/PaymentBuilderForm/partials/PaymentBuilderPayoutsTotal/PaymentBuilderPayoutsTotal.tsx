@@ -68,7 +68,7 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
           {
             ...result[existingEntryIndex],
             amount: BigNumber.from(result[existingEntryIndex].amount)
-              .add(BigNumber.from(tokenAmount))
+              .add(BigNumber.from(tokenAmount || '0'))
               .toString(),
           },
           ...result.slice(existingEntryIndex + 1),
