@@ -81,25 +81,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     }
   });
 
-  // const voteSets = [];
-
-  // {
-  //   requiredRoles: ColonyRoles[],
-  //   // but only the included roles
-  //   thresholdPerRole: Threshold,
-  //   approvalSignaturesPerRole: {},
-  //   rejectionSignaturesPerRole: {},
-  //   combinedThreshold: number,
-  //   allApprovalSignees
-  //   allRejectionSignees
-  // }
-
-  // @SAM-TODO: This needs to be grouped into requiredRoleGroups
-  // console.log('requiredRoles', requiredRoles);
-  // console.log('thresholdPerRole', thresholdPerRole);
-  // console.log('approvalSignaturesPerRole', approvalSignaturesPerRole);
-  // console.log('rejectionSignaturesPerRole', rejectionSignaturesPerRole);
-
   const isMultiSigFinalizable =
     Object.keys(approvalSignaturesPerRole).length > 0 &&
     Object.keys(approvalSignaturesPerRole).every((role) => {
