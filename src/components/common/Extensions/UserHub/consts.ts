@@ -54,6 +54,6 @@ export const tabList: UserHubTabList = [
     label: formatText(menuMessages.cryptoToFiat),
     value: UserHubTabs.CryptoToFiat,
     icon: CreditCard,
-    featureFlag: FeatureFlag.CRYPTO_TO_FIAT,
+    featureFlag: FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS,
   },
 ];

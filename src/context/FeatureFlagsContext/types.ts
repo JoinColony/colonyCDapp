@@ -1,5 +1,6 @@
 export enum FeatureFlag {
   CRYPTO_TO_FIAT = 'CRYPTO_TO_FIAT',
+  CRYPTO_TO_FIAT_WITHDRAWALS = 'CRYPTO_TO_FIAT_WITHDRAWALS',
 }
 
 export interface FeatureFlagValue {
