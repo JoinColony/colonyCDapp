@@ -136,12 +136,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
   const notSignedUsers = getNotSignedUsers({
-    requiredRoles,
+    requiredRoles: requiredRoles[0],
     eligibleSignees: (uniqueEligibleSignees || []).filter(notMaybe),
     signatures,
   });
 
-  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles);
+  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles[0]);
 
   const signaturesToDisplay = [
     ...Object.values(allUserSignatures),
