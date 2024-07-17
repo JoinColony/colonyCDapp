@@ -4,7 +4,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
-import { type MultiSigUserSignature } from '~types/graphql.ts';
 import { type MultiSigAction } from '~types/motions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -15,13 +14,13 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
+import { getSignaturesPerRole } from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
   action: MultiSigAction;
-  initiatorAddress: string;
 }
 
 const MSG = defineMessages({
@@ -39,10 +38,7 @@ const MSG = defineMessages({
   },
 });
 
-const MultiSigWidget: FC<MultiSigWidgetProps> = ({
-  action,
-  initiatorAddress,
-}) => {
+const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   const { type: actionType, multiSigData } = action;
   const requiredRoles = getRolesNeededForMultiSigAction({
     actionType,
@@ -56,35 +52,13 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const approvalSignaturesPerRole = {};
-  const rejectionSignaturesPerRole = {};
-  const allApprovalSignees = new Set<MultiSigUserSignature['user']>();
-  const allRejectionSignees = new Set<MultiSigUserSignature['user']>();
-
-  signatures.forEach((signature) => {
-    const { role, vote, user: voter } = signature;
-
-    if (vote === 'Approve') {
-      allApprovalSignees.add(voter);
-
-      if (!approvalSignaturesPerRole[role]) {
-        approvalSignaturesPerRole[role] = [];
-      }
-      approvalSignaturesPerRole[role].push(signature);
-    } else if (vote === 'Reject') {
-      allRejectionSignees.add(voter);
-
-      if (!rejectionSignaturesPerRole[role]) {
-        rejectionSignaturesPerRole[role] = [];
-      }
-      rejectionSignaturesPerRole[role].push(signature);
-    }
-  });
+  const { approvalsPerRole, rejectionsPerRole } =
+    getSignaturesPerRole(signatures);
 
   const isMultiSigFinalizable =
-    Object.keys(approvalSignaturesPerRole).length > 0 &&
-    Object.keys(approvalSignaturesPerRole).every((role) => {
-      const approvals = approvalSignaturesPerRole[role]?.length || 0;
+    Object.keys(approvalsPerRole).length > 0 &&
+    Object.keys(approvalsPerRole).every((role) => {
+      const approvals = approvalsPerRole[role]?.length || 0;
       if (!thresholdPerRole || !thresholdPerRole[role]) {
         return false;
       }
@@ -93,9 +67,9 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     });
 
   const isMultiSigCancelable =
-    Object.keys(rejectionSignaturesPerRole).length > 0 &&
-    Object.keys(rejectionSignaturesPerRole).every((role) => {
-      const rejections = rejectionSignaturesPerRole[role]?.length || 0;
+    Object.keys(rejectionsPerRole).length > 0 &&
+    Object.keys(rejectionsPerRole).every((role) => {
+      const rejections = rejectionsPerRole[role]?.length || 0;
       if (!thresholdPerRole) {
         return false;
       }
@@ -122,10 +96,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Approval,
         content: (
           <ApprovalStep
-            threshold={combinedThreshold || 0}
+            thresholdPerRole={thresholdPerRole}
             multiSigData={multiSigData}
             actionType={actionType}
-            initiatorAddress={initiatorAddress}
+            initiatorAddress={action.initiatorAddress}
             createdAt={multiSigData.createdAt}
           />
         ),
@@ -153,11 +127,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     ];
   }, [
     isLoading,
-    combinedThreshold,
-    action,
+    thresholdPerRole,
     multiSigData,
     actionType,
-    initiatorAddress,
+    action,
+    combinedThreshold,
     isMultiSigFinalizable,
     isMultiSigCancelable,
   ]);

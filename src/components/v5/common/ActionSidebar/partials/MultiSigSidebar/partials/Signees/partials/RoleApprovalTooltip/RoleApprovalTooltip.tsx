@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { MultiSigVote } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
+import { getMultipleRolesText } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName =
@@ -34,10 +35,6 @@ const MSG = defineMessages({
   },
 });
 
-const getRolesText = (roles: ColonyRole[]) => {
-  return roles.map((roleId) => formatText({ id: `role.${roleId}` })).join(', ');
-};
-
 const RoleApprovalTooltip: FC<RoleApprovalTooltipProps> = ({
   vote,
   rolesSignedWith,
@@ -56,7 +53,7 @@ const RoleApprovalTooltip: FC<RoleApprovalTooltipProps> = ({
                 numberOfRolesPending: numberOfUserRoles,
               })}
             </span>
-            <span>{getRolesText(userRoles)}</span>
+            <span>{getMultipleRolesText(userRoles)}</span>
           </>
         }
       >
@@ -84,7 +81,7 @@ const RoleApprovalTooltip: FC<RoleApprovalTooltipProps> = ({
               },
             )}
           </span>
-          <span>{getRolesText(rolesSignedWith)}</span>
+          <span>{getMultipleRolesText(rolesSignedWith)}</span>
         </>
       }
     >

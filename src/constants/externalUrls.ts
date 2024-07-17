@@ -62,6 +62,8 @@ export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const STREAMING_PAYMENTS = `https://docs.colony.io/use/making-payments/streaming-payments`;
 export const PERMISSIONS = `https://docs.colony.io/learn/advanced-concepts/permissions`;
 export const MULTI_SIG_EXTENSION = `https://blog.colony.io/new-feature-fully-control-a-multi-sig-safe-with-a-dao/`;
+export const MULTI_SIG_HELP_URL =
+  'https://help.colony.io/en/articles/9619272-multi-sig-permissions#h_3d3820ca17';
 
 /*
  * Navigation
