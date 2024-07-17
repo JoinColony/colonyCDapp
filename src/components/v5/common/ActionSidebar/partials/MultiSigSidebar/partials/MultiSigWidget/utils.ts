@@ -84,3 +84,31 @@ export const getAllUserSignatures = (
 
   return allUserSignatures;
 };
+
+export const getSignaturesPerRole = (
+  signatures: MultiSigUserSignature[],
+): {
+  approvalsPerRole: Record<number, MultiSigUserSignature[]>;
+  rejectionsPerRole: Record<number, MultiSigUserSignature[]>;
+} => {
+  const approvalsPerRole = {};
+  const rejectionsPerRole = {};
+
+  signatures.forEach((signature) => {
+    const { role, vote } = signature;
+
+    if (vote === MultiSigVote.Approve) {
+      if (!approvalsPerRole[role]) {
+        approvalsPerRole[role] = [];
+      }
+      approvalsPerRole[role].push(signature);
+    } else if (vote === MultiSigVote.Reject) {
+      if (!rejectionsPerRole[role]) {
+        rejectionsPerRole[role] = [];
+      }
+      rejectionsPerRole[role].push(signature);
+    }
+  });
+
+  return { approvalsPerRole, rejectionsPerRole };
+};
