@@ -79,14 +79,17 @@ export const allTokensAmountValidation = ({
     path,
   } = context;
   const { formValues } = formContext || {};
-  const { payments, from } = formValues || {};
+  const { payments, from, stages } = formValues || {};
   const { tokenAddress: fieldTokenAddress } = parent || {};
 
   if (!fieldTokenAddress) {
     return false;
   }
 
-  const groupedTokens = groupBy(payments, (payment) => payment.tokenAddress);
+  const groupedTokens = groupBy(
+    payments || stages,
+    (payment) => payment.tokenAddress,
+  );
 
   const token = colony.tokens?.items
     .filter(notNull)
