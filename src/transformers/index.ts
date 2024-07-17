@@ -55,6 +55,27 @@ export const convertRolesToArray = (
     )
     .filter(notUndefined);
 
+export const getAllUserRoles = (
+  colonyRoles: ColonyRoleFragment[],
+  userAddress: Address | undefined,
+  isMultiSig = false,
+): ColonyRole[] => {
+  if (!userAddress) return [];
+
+  const userRolesInAnyDomain = colonyRoles.filter((domainRole) => {
+    const isMatchingUser = domainRole?.targetAddress === userAddress;
+    const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
+
+    return isMatchingUser && isMatchingMultiSig;
+  });
+
+  const allRoles = userRolesInAnyDomain.flatMap((domainRole) =>
+    convertRolesToArray(domainRole),
+  );
+
+  return Array.from(new Set(allRoles));
+};
+
 export const getUserRolesForDomain = ({
   colonyRoles,
   userAddress,
@@ -64,10 +85,13 @@ export const getUserRolesForDomain = ({
 }: {
   colonyRoles: ColonyRoleFragment[];
   userAddress: Address;
-  domainId: number;
+  domainId?: number;
   excludeInherited?: boolean;
   isMultiSig?: boolean;
 }): ColonyRole[] => {
+  if (!domainId) {
+    return getAllUserRoles(colonyRoles, userAddress, isMultiSig);
+  }
   const getUserRolesInDomain = (targetDomainId: number) =>
     colonyRoles.find((domainRole) => {
       const isMatchingDomain = domainRole?.domain?.nativeId === targetDomainId;
@@ -94,21 +118,4 @@ export const getUserRolesForDomain = ({
   }
 
   return [];
-};
-
-export const getAllUserRoles = (
-  colonyRoles: ColonyRoleFragment[],
-  userAddress: Address | undefined,
-  isMultiSig = false,
-): ColonyRole[] => {
-  if (!userAddress) return [];
-
-  const userRolesInAnyDomain = colonyRoles.find((domainRole) => {
-    const isMatchingUser = domainRole?.targetAddress === userAddress;
-    const isMatchingMultiSig = isMultiSig === !!domainRole?.isMultiSig;
-
-    return isMatchingUser && isMatchingMultiSig;
-  });
-
-  return Array.from(new Set([...convertRolesToArray(userRolesInAnyDomain)]));
 };
