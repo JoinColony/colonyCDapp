@@ -11,6 +11,7 @@ import {
 } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
+import { type Threshold } from '~types/multisig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
@@ -27,15 +28,17 @@ import { VoteExpectedStep } from '../../types.ts';
 import {
   getAllUserSignatures,
   getNotSignedUsers,
+  getSignaturesPerRole,
   hasWeekPassed,
 } from '../../utils.ts';
 import MultiSigPills from '../MultiSigPills/MultiSigPills.tsx';
+import ThresholdPassedBanner from '../ThresholdPassedBanner/ThresholdPassedBanner.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.ApprovalStep';
 
 interface ApprovalStepProps {
-  threshold: number;
+  thresholdPerRole: Threshold;
   actionType: ColonyActionType;
   multiSigData: ColonyMultiSigFragment;
   initiatorAddress: string;
@@ -99,7 +102,7 @@ const MSG = defineMessages({
 });
 
 const ApprovalStep: FC<ApprovalStepProps> = ({
-  threshold,
+  thresholdPerRole,
   actionType,
   multiSigData,
   initiatorAddress,
@@ -160,6 +163,38 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     );
   });
 
+  const threshold = thresholdPerRole
+    ? Object.values(thresholdPerRole).reduce(
+        (acc, roleThreshold) => acc + roleThreshold,
+        0,
+      )
+    : 0;
+
+  const { approvalsPerRole, rejectionsPerRole } =
+    getSignaturesPerRole(signatures);
+
+  const isMultiSigExecutable =
+    Object.keys(approvalsPerRole).length > 0 &&
+    Object.keys(approvalsPerRole).every((role) => {
+      const approvals = approvalsPerRole[role]?.length || 0;
+      if (!thresholdPerRole || !thresholdPerRole[role]) {
+        return false;
+      }
+      const roleThreshold = thresholdPerRole[role];
+      return approvals >= roleThreshold;
+    });
+
+  const isMultiSigCancelable =
+    Object.keys(rejectionsPerRole).length > 0 &&
+    Object.keys(rejectionsPerRole).every((role) => {
+      const rejections = rejectionsPerRole[role]?.length || 0;
+      if (!thresholdPerRole) {
+        return false;
+      }
+      const roleThreshold = thresholdPerRole[role] || 0;
+      return rejections >= roleThreshold;
+    });
+
   const userSignature = signatures.find(
     (signature) => signature?.userAddress === user?.walletAddress,
   );
@@ -173,39 +208,34 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const hasRejectionVotes = signatures.some(
     (signature) => signature.vote === MultiSigVote.Reject,
   );
-  const approvalProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Approve,
-  ).length;
-  const rejectionProgress = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Reject,
-  ).length;
 
-  // @TODO: Leaving this here in case it is useful
-  // as an alternative way of getting approvals / rejections per role
-  // let combinedApprovals = 0;
-  // Object.keys(approvalSignaturesPerRole).forEach((role) => {
-  //   const approvalsForRole = approvalSignaturesPerRole[role]
-  //     ? approvalSignaturesPerRole[role].length
-  //     : 0;
-  //   const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
-  //   combinedApprovals += Math.min(approvalsForRole, thresholdForRole);
-  // });
+  const combinedApprovals = Object.entries(approvalsPerRole).reduce(
+    (approvalCount, [role, approvalsForRole]) => {
+      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+      return (
+        approvalCount + Math.min(approvalsForRole.length, thresholdForRole)
+      );
+    },
+    0,
+  );
 
-  // let combinedRejections = 0;
-  // Object.keys(approvalSignaturesPerRole).forEach((role) => {
-  //   const rejectionsForRole = rejectionSignaturesPerRole[role]
-  //     ? rejectionSignaturesPerRole[role].length
-  //     : 0;
-  //   const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
-  //   combinedRejections += Math.min(rejectionsForRole, thresholdForRole);
-  // });
+  const combinedRejections = Object.entries(rejectionsPerRole).reduce(
+    (rejectionCount, [role, rejectionsForRole]) => {
+      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+      return (
+        rejectionCount + Math.min(rejectionsForRole.length, thresholdForRole)
+      );
+    },
+    0,
+  );
 
-  const isMultiSigFinalizable =
-    threshold && (approvalProgress || rejectionProgress) >= threshold;
+  const isMultiSigFinalizable = isMultiSigExecutable || isMultiSigCancelable;
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigInFinalizeState =
     isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected;
+
+  const shouldCheckUserRoles = !userSignature && !isMultiSigInFinalizeState;
 
   useEffect(() => {
     if (userSignature) {
@@ -240,11 +270,11 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.approvals)}</span>
                   )}
                   <ProgressBar
-                    progress={Math.min(approvalProgress, threshold)}
+                    progress={Math.min(combinedApprovals, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
                       threshold,
-                      progress: approvalProgress,
+                      progress: combinedApprovals,
                     })}
                     className="ml-[0.125rem] w-full !text-xs"
                     isTall
@@ -261,12 +291,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.rejections)}</span>
                   )}
                   <ProgressBar
-                    progress={Math.min(rejectionProgress, threshold)}
+                    progress={Math.min(combinedRejections, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
-                      current: rejectionProgress,
+                      current: combinedRejections,
                       threshold,
-                      progress: rejectionProgress,
+                      progress: combinedRejections,
                     })}
                     className="ml-[0.125rem] w-full !text-xs"
                     isTall
@@ -308,6 +338,24 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
         iconClassName: 'text-gray-500',
       }}
       sections={[
+        {
+          key: 'thresholdPassedBanner',
+          className: '!p-0',
+          content: shouldCheckUserRoles ? (
+            /*
+             * @NOTE this banner should show up just for the SimplePayment action - actions that require multiple roleThreshold
+             * The only action which has a 2d array of required roles is managing roles in a subdomain via permissions, not multisig
+             * so we can safely assume that we can send in the first array of roles
+             */
+            <ThresholdPassedBanner
+              rejectionsPerRole={rejectionsPerRole}
+              approvalsPerRole={approvalsPerRole}
+              thresholdPerRole={thresholdPerRole}
+              multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
+              requiredRoles={requiredRoles[0] || []}
+            />
+          ) : null,
+        },
         {
           key: 'signatories',
           content: (
