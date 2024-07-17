@@ -812,6 +812,7 @@
     "status.governance": "Governance",
     "status.new": "New",
     "status.enabled": "Enabled",
+    "status.installed": "Installed",
     "status.notInstalled": "Not Installed",
     "status.disabled": "Disabled",
     "status.deprecated": "Deprecated",
