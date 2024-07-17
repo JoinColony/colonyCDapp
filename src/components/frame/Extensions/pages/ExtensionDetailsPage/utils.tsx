@@ -21,6 +21,11 @@ import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
+export enum EXTENSION_TAB_ID {
+  OVERVIEW = 0,
+  SETTINGS = 1,
+}
+
 export const waitForColonyPermissions = ({
   refetchColony,
   extensionData,
@@ -207,21 +212,21 @@ export const mapExtensionActionPayload = (
 
 export const getExtensionTabs = (
   extension: Extension,
-  isInitialized?: boolean,
-): TabItem[] | null => {
+  isInstalled?: boolean,
+): TabItem[] => {
   /* eslint-disable no-fallthrough */
   switch (extension) {
     case Extension.VotingReputation:
     case Extension.MultisigPermissions: {
-      if (isInitialized) {
+      if (isInstalled) {
         return [
-          { id: 0, title: 'Overview' },
-          { id: 1, title: 'Extension settings' },
+          { id: EXTENSION_TAB_ID.OVERVIEW, title: 'Overview' },
+          { id: EXTENSION_TAB_ID.SETTINGS, title: 'Extension settings' },
         ];
       }
     }
     default:
-      return [{ id: 0, title: 'Overview' }];
+      return [{ id: EXTENSION_TAB_ID.OVERVIEW, title: 'Overview' }];
   }
   /* eslint-enable no-fallthrough */
 };
