@@ -39,12 +39,14 @@ export const useGetSplitPaymentColumns = (
       splitPaymentColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) => (
-          <RecipientField
-            isLoading={isLoading}
-            address={row.original.recipient}
-          />
-        ),
+        cell: ({ row }) =>
+          isLoading ? (
+            <div className="flex w-full items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
+          ) : (
+            <RecipientField address={row.original.recipient} />
+          ),
         footer: () => (
           <span className="flex min-h-[1.875rem] items-center text-gray-400 text-4">
             {formatText({ id: 'table.footer.total' })}
@@ -84,7 +86,11 @@ export const useGetSplitPaymentColumns = (
             ? calculatePercentageValue(data?.[row.index].amount, amount)
             : 0;
 
-          return (
+          return isLoading ? (
+            <div className="flex w-full items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
+          ) : (
             <span className="text-md font-medium text-gray-900">
               {parseFloat(percentCalculated.toFixed(4))}%
             </span>
