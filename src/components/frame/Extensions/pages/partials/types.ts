@@ -10,6 +10,7 @@ export interface ActionButtonProps {
   waitingForEnableConfirmation: boolean;
   extensionStatusMode?: ExtensionStatusBadgeMode;
   extensionStatusText?: React.ReactNode;
+  onActiveTabChange: (activeTab: number) => void;
 }
 
 export interface ActiveInstallsProps {

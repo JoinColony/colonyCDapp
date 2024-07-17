@@ -24,6 +24,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   waitingForEnableConfirmation,
   extensionStatusMode,
   extensionStatusText,
+  onActiveTabChange,
 }) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -65,7 +66,10 @@ const ActionButtons: FC<ActionButtonProps> = ({
         </div>
       </div>
       {isInstallButtonVisible && (
-        <InstallButton extensionData={extensionData} />
+        <InstallButton
+          onActiveTabChange={onActiveTabChange}
+          extensionData={extensionData}
+        />
       )}
       <EnableButton
         extensionData={extensionData}
