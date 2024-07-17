@@ -159,6 +159,16 @@ const UninstallButton = ({
   const shouldShowWarning =
     isStreamingPaymentsExtension && (hasActiveStream || hasUnclaimedFunds);
 
+  const isStreamingPaymentsExtension =
+    extensionId === Extension.StreamingPayments;
+
+  // @todo: add proper logic here to determine if there are active streams or unclaimed funds
+  const hasActiveStream = false;
+  const hasUnclaimedFunds = false;
+
+  const shouldShowWarning =
+    isStreamingPaymentsExtension && (hasActiveStream || hasUnclaimedFunds);
+
   return (
     <>
       <div className="flex w-full justify-center">
