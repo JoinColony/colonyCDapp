@@ -5,6 +5,7 @@ import { number } from 'yup';
 import ExtensionAdvancedPaymentsIcon from '~icons/ExtensionAdvancedPaymentsIcon.tsx';
 import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
 import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
+import ExtensionStreamingPaymentsIcon from '~icons/ExtensionStreamingPaymentsIcon.tsx';
 import advancedHero from '~images/assets/extensions/advanced-hero.png';
 import advancedInterface from '~images/assets/extensions/advanced-interface.png';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
@@ -538,15 +539,20 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     createdAt: 1692048380000,
   },
   {
-    icon: ExtensionAdvancedPaymentsIcon,
+    icon: ExtensionStreamingPaymentsIcon,
     imageURLs: [streamingHero, streamingInterface],
     category: ExtensionCategory.Expenditures,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,
     descriptionShort: MSG.streamingPaymentsDescriptionShort,
     descriptionLong: MSG.streamingPaymentsDescriptionLong,
-    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
     uninstallable: true,
     createdAt: 1692048380000,
+    enabledAutomaticallyAfterInstall: true,
   },
 ];

@@ -5,8 +5,8 @@ import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
-import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
+import ExtensionDetailsPage from '~frame/Extensions/pages/Extensions/ExtensionDetailsPage/ExtensionDetailsPage.tsx';
+import ExtensionsListingPage from '~frame/Extensions/pages/Extensions/ExtensionsListingPage/ExtensionsListingPage.tsx';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
@@ -180,7 +180,10 @@ const Routes = () => {
               element={<IncorporationPage />}
             />
           )}
-          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
+          <Route
+            path={COLONY_EXTENSIONS_ROUTE}
+            element={<ExtensionsListingPage />}
+          />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
             element={<ExtensionDetailsPage />}
@@ -212,7 +215,10 @@ const Routes = () => {
             path={COLONY_PERMISSIONS_ROUTE}
             element={<PermissionsPage />}
           />
-          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
+          <Route
+            path={COLONY_EXTENSIONS_ROUTE}
+            element={<ExtensionsListingPage />}
+          />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
             element={<ExtensionDetailsPage />}
