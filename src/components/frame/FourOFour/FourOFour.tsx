@@ -4,10 +4,8 @@ import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
-import {
-  FeatureFlag,
-  FeatureFlagsContext,
-} from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
 import {
   type BridgeXyzDrain,

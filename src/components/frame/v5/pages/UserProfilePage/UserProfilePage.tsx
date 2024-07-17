@@ -1,10 +1,8 @@
-import React, { type FC, useEffect, useContext } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import React, { type FC, useEffect } from 'react';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import {
-  FeatureFlag,
-  FeatureFlagsContext,
-} from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
@@ -24,20 +22,29 @@ const displayName = 'v5.pages.UserProfilePage';
 
 const tabRoutes = [
   {
-    tabId: TabId.Profile,
+    id: TabId.Profile,
     route: USER_EDIT_PROFILE_ROUTE,
+    title: formatText({ id: 'userProfilePage.title' }) || '',
+    content: <Outlet />,
   },
   {
-    tabId: TabId.Preferences,
+    id: TabId.Preferences,
     route: USER_PREFERENCES_ROUTE,
+    title: formatText({ id: 'userPreferencesPage.title' }) || '',
+    content: <Outlet />,
   },
   {
-    tabId: TabId.Advanced,
+    id: TabId.Advanced,
     route: USER_ADVANCED_ROUTE,
+    title: formatText({ id: 'userAdvancedPage.title' }) || '',
+    content: <Outlet />,
   },
   {
-    tabId: TabId.CryptoToFiat,
+    id: TabId.CryptoToFiat,
     route: USER_CRYPTO_TO_FIAT_ROUTE,
+    title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',
+    content: <Outlet />,
+    featureFlag: FeatureFlag.CRYPTO_TO_FIAT,
   },
 ];
 
@@ -49,14 +56,21 @@ const getTabPath = (pathname: string) => {
 const UserProfilePage: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const featureFlags = useContext(FeatureFlagsContext);
+  const featureFlags = useFeatureFlagsContext();
 
   const { setBreadcrumbs } = usePageHeadingContext();
 
-  const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
+  const allowedTabRoutes = tabRoutes.filter((route) =>
+    route.featureFlag
+      ? featureFlags[route.featureFlag]?.isLoading ||
+        featureFlags[route.featureFlag]?.isEnabled
+      : true,
+  );
 
   const tabPath = getTabPath(pathname);
-  const activeTab = tabRoutes.find((route) => route.route === tabPath)?.tabId;
+  const activeTab = allowedTabRoutes.find(
+    (route) => route.route === tabPath,
+  )?.id;
 
   useEffect(() => {
     setBreadcrumbs([
@@ -70,34 +84,8 @@ const UserProfilePage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
-  const items = [
-    {
-      id: TabId.Profile,
-      title: formatText({ id: 'userProfilePage.title' }) || '',
-      content: <Outlet />,
-    },
-    {
-      id: TabId.Preferences,
-      title: formatText({ id: 'userPreferencesPage.title' }) || '',
-      content: <Outlet />,
-    },
-    {
-      id: TabId.Advanced,
-      title: formatText({ id: 'userAdvancedPage.title' }) || '',
-      content: <Outlet />,
-    },
-  ];
-
-  if (cryptoToFiatFeatureFlag?.isEnabled) {
-    items.push({
-      id: TabId.CryptoToFiat,
-      title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',
-      content: <Outlet />,
-    });
-  }
-
   if (activeTab === undefined) {
-    return null;
+    return <Navigate to="/account/profile" />;
   }
 
   return (
@@ -105,9 +93,9 @@ const UserProfilePage: FC = () => {
       activeTab={activeTab}
       className="pt-6"
       onTabClick={(_, id) =>
-        navigate(tabRoutes.find((route) => route.tabId === id)?.route ?? '')
+        navigate(tabRoutes.find((route) => route.id === id)?.route ?? '')
       }
-      items={items}
+      items={allowedTabRoutes}
     />
   );
 };

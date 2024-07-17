@@ -1,6 +1,6 @@
 import { type Icon } from '@phosphor-icons/react';
 
-import { type FeatureFlag } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { type FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 
 export type UserHubTabList = {
   id: UserHubTabs;

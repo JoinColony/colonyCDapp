@@ -1,12 +1,10 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export enum FeatureFlag {
-  CRYPTO_TO_FIAT = 'CRYPTO_TO_FIAT',
-}
+import { type FeatureFlagsContextValue } from './types.ts';
 
-export const FeatureFlagsContext = createContext<{
-  [key in FeatureFlag]?: {
-    isEnabled: boolean;
-    isLoading: boolean;
-  };
-}>({});
+export const FeatureFlagsContext = createContext<FeatureFlagsContextValue>({});
+
+export const useFeatureFlagsContext = () => {
+  const context = useContext(FeatureFlagsContext);
+  return context;
+};
