@@ -88,6 +88,7 @@
     "button.enable": "Enable",
     "button.finalize": "Finalize",
     "button.install": "Install",
+    "button.saveSettings": "Save settings",
     "button.remove": "Remove",
     "button.retry": "Retry",
     "button.submit": "Submit",
