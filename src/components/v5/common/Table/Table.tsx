@@ -45,6 +45,8 @@ const Table = <T,>({
   isDisabled = false,
   verticalLayout,
   virtualizedProps,
+  tableClassName,
+  tableBodyRowKeyProp,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -106,7 +108,8 @@ const Table = <T,>({
   return (
     <div className={className}>
       <table
-        className={`
+        className={clsx(
+          `
           h-px
           w-full
           table-fixed
@@ -115,7 +118,9 @@ const Table = <T,>({
           rounded-lg
           border
           border-gray-200
-        `}
+        `,
+          tableClassName,
+        )}
         cellPadding="0"
         cellSpacing="0"
       >
@@ -295,8 +300,17 @@ const Table = <T,>({
                   const showExpandableContent =
                     row.getIsExpanded() && renderSubComponent;
 
+                  const rowKey = tableBodyRowKeyProp
+                    ? data[row.index]?.[tableBodyRowKeyProp]
+                    : null;
+
+                  const key =
+                    typeof rowKey === 'string' || typeof rowKey === 'number'
+                      ? rowKey
+                      : row.id;
+
                   return (
-                    <React.Fragment key={row.id}>
+                    <React.Fragment key={key}>
                       <TableRow
                         itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
                         isEnabled={!!virtualizedProps}

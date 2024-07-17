@@ -23,11 +23,13 @@ function FormCardSelect<TValue = string>({
     name,
   });
 
+  const finalValue = 'valueOverride' in rest ? rest.valueOverride : value;
+
   return (
     <CardSelect<TValue>
       {...rest}
       readonly={readonly}
-      value={value}
+      value={finalValue}
       onChange={(onChangeValue) => {
         onChange?.(onChangeValue);
         onFieldChange(onChangeValue);

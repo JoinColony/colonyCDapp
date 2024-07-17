@@ -48,4 +48,5 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
 export interface FormCardSelectProps<TValue>
   extends Omit<CardSelectProps<TValue>, 'value' | 'state' | 'message'> {
   name: string;
+  valueOverride?: string | number;
 }

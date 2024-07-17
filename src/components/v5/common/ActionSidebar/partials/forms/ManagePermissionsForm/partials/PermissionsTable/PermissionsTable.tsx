@@ -1,7 +1,7 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
-import { useController, useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -13,6 +13,8 @@ import {
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import Table from '~v5/common/Table/index.ts';
+
+import { type ManagePermissionsFormValues } from '../../consts.ts';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
 
@@ -26,7 +28,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   const isMobile = useMobile();
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
   const permissionsTableProps = usePermissionsTableProps(role);
-  const { fieldState } = useController({ name });
+  const { formState } = useFormContext<ManagePermissionsFormValues>();
   const team: string | undefined = useWatch({ name: 'team' });
 
   if (!role) {
@@ -43,19 +45,23 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   return (
     <div className={className}>
       {role !== UserRole.Custom ? (
-        <Table<PermissionsTableModel> {...permissionsTableProps} />
+        <Table<PermissionsTableModel>
+          {...permissionsTableProps}
+          tableClassName={clsx({
+            '!border-negative-300': !!formState.errors.role,
+          })}
+        />
       ) : (
         <Table<CustomPermissionTableModel>
-          className={clsx(
-            'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0',
-            {
-              '!border-negative-400': !!fieldState.error,
-            },
-          )}
+          className="sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0"
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
           verticalLayout={isMobile}
           withBorder={false}
+          tableClassName={clsx({
+            '!border-negative-300': !!formState.errors.permissions,
+          })}
+          tableBodyRowKeyProp="type"
         />
       )}
     </div>

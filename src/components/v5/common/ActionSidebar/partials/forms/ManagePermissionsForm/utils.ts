@@ -1,10 +1,14 @@
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
+import { type UseFormSetValue } from 'react-hook-form';
 
 import {
   CUSTOM_USER_ROLE,
   UserRole,
   USER_ROLES,
+  getRole,
 } from '~constants/permissions.ts';
+import { type ColonyFragment } from '~gql';
+import { getUserRolesForDomain } from '~transformers';
 import { type Colony } from '~types/graphql.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
@@ -31,12 +35,13 @@ export const getRoleLabel = (role: string | undefined) => {
 
 export const getPermissionsMap = (
   permissions: ManagePermissionsFormValues['permissions'],
-  role: string,
+  role: ManagePermissionsFormValues['role'],
+  team: ManagePermissionsFormValues['team'],
 ) => {
   const permissionsList = (() => {
     switch (role) {
       case UserRole.Custom: {
-        return Object.entries(permissions).reduce<ColonyRole[]>(
+        return Object.entries(permissions ?? {}).reduce<ColonyRole[]>(
           (result, [key, value]) => {
             if (!value) {
               return result;
@@ -71,7 +76,11 @@ export const getPermissionsMap = (
   return AVAILABLE_ROLES.reduce(
     (result, permission) => ({
       ...result,
-      [permission]: permissionsList.includes(permission),
+      [permission]:
+        team !== Id.RootDomain &&
+        [ColonyRole.Root, ColonyRole.Recovery].includes(permission)
+          ? false
+          : permissionsList.includes(permission),
     }),
     {},
   );
@@ -89,5 +98,62 @@ export const getManagePermissionsPayload = (
   colonyName: colony.name,
   colonyAddress: colony.colonyAddress,
   motionDomainId: Number(values.createdIn),
-  roles: getPermissionsMap(values.permissions, values.role),
+  roles: getPermissionsMap(values.permissions, values.role, values.team),
 });
+
+export const extractColonyRoleFromPermissionKey = (permissionKey: string) => {
+  const colonyRole = permissionKey.match(/role_(\d+)/)?.[1];
+
+  if (colonyRole && colonyRole in ColonyRole) {
+    return Number(colonyRole);
+  }
+
+  console.error('Manage Permissions Form: Invalid permission: ', permissionKey);
+
+  return null;
+};
+
+export const configureFormRoles = ({
+  colony,
+  setValue,
+  isSubmitted,
+  member,
+  role,
+  team,
+}: {
+  colony: ColonyFragment;
+  setValue: UseFormSetValue<ManagePermissionsFormValues>;
+  isSubmitted: boolean;
+  member: ManagePermissionsFormValues['member'];
+  team: ManagePermissionsFormValues['team'];
+  role: ManagePermissionsFormValues['role'];
+  shouldPersistRole?: boolean;
+  setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const userRolesForDomain = getUserRolesForDomain({
+    colony,
+    userAddress: member,
+    domainId: team,
+    intersectingRoles: true,
+  });
+
+  const userRoleMeta = getRole(userRolesForDomain);
+
+  const userRole = userRoleMeta.permissions.length
+    ? userRoleMeta.role
+    : undefined;
+
+  setValue('_dbUserRole', userRole);
+  setValue('_dbUserPermissions', userRolesForDomain);
+
+  if (role !== UserRole.Custom) {
+    setValue('role', userRole, { shouldValidate: isSubmitted });
+  }
+
+  AVAILABLE_ROLES.forEach((colonyRole) => {
+    setValue(
+      `permissions.role_${colonyRole}`,
+      userRoleMeta.permissions.includes(colonyRole),
+    );
+  });
+};

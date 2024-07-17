@@ -1,3 +1,5 @@
+import { type MixedSchema, mixed } from 'yup';
+
 export const createValidationComparableObject = (obj1, obj2) => {
   const result = {};
 
@@ -9,3 +11,7 @@ export const createValidationComparableObject = (obj1, obj2) => {
 
   return result;
 };
+
+export const getEnumYupSchema = <T extends string | number>(
+  enumObject: Record<string, T>,
+): MixedSchema<T> => mixed<T>().oneOf(Object.values(enumObject) as T[]);

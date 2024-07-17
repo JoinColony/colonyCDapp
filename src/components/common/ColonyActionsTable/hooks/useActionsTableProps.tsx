@@ -130,7 +130,7 @@ export const useActionsTableProps = (
     refetchMotionStates,
     getMenuProps,
   });
-  const tableProps: TableProps<ColonyAction> = merge(
+  const tableProps = merge(
     {
       className: clsx(
         className,
@@ -205,7 +205,7 @@ export const useActionsTableProps = (
           withoutButtonIcon
         />
       ),
-    },
+    } as TableProps<ColonyAction>,
     rest,
   );
 
