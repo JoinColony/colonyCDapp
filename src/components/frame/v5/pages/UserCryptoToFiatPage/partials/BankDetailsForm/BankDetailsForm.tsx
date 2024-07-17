@@ -71,7 +71,7 @@ const MSG = defineMessages({
   },
 });
 
-export const BankDetailsForm: FC<BankDetailsFormProps> = ({
+const BankDetailsForm: FC<BankDetailsFormProps> = ({
   onSubmit,
   onClose,
   defaultValues,
@@ -120,3 +120,5 @@ export const BankDetailsForm: FC<BankDetailsFormProps> = ({
     </div>
   );
 };
+
+export default BankDetailsForm;

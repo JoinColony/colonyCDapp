@@ -78,7 +78,7 @@ const MSG = defineMessages({
   },
 });
 
-export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
+const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   onSubmit,
   onClose,
 }) => {
@@ -153,3 +153,5 @@ export const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
     </div>
   );
 };
+
+export default ContactDetailsForm;
