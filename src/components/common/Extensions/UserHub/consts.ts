@@ -6,7 +6,7 @@ import {
 } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
-import { FeatureFlag } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type UserHubTabList, UserHubTabs } from './types.ts';
