@@ -31,6 +31,9 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [posthog, walletAddress]);
 
   const cryptoToFiatFeature = useFeatureFlag(FeatureFlag.CRYPTO_TO_FIAT);
+  const cryptoToFiatWithdrawalsFeature = useFeatureFlag(
+    FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS,
+  );
 
   const featureFlags: Record<
     FeatureFlag,
@@ -38,8 +41,9 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   > = useMemo(
     () => ({
       [FeatureFlag.CRYPTO_TO_FIAT]: cryptoToFiatFeature,
+      [FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS]: cryptoToFiatWithdrawalsFeature,
     }),
-    [cryptoToFiatFeature],
+    [cryptoToFiatFeature, cryptoToFiatWithdrawalsFeature],
   );
 
   return (
