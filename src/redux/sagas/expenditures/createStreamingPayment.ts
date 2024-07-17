@@ -81,14 +81,14 @@ function* createStreamingPaymentAction({
       ClientType.StreamingPaymentsClient,
       colonyAddress,
     );
-    // const { network } = colonyManager.networkClient;
+    const { network } = colonyManager.networkClient;
 
     const paymentAddress = yield adjustRecipientAddress(
       {
         tokenAddress,
         recipientAddress,
       },
-      // network,
+      network,
     );
 
     // Get permissions proof of the caller's Funding permission
