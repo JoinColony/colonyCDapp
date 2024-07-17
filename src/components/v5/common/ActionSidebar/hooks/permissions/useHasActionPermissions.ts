@@ -2,7 +2,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -15,8 +14,6 @@ const useHasActionPermissions = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const { isMultiSigEnabled } = useEnabledExtensions();
-
   const { watch } = useFormContext();
   const formValues = watch();
 
@@ -26,8 +23,8 @@ const useHasActionPermissions = () => {
   } = formValues;
   if (
     !actionType ||
-    (!isMultiSigEnabled && decisionMethod !== DecisionMethod.Permissions) ||
-    (isMultiSigEnabled && decisionMethod !== DecisionMethod.MultiSig)
+    !decisionMethod ||
+    decisionMethod === DecisionMethod.Reputation
   ) {
     return undefined;
   }
