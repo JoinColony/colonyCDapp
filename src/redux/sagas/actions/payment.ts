@@ -43,7 +43,7 @@ function* createPaymentAction({
   let txChannel;
   try {
     const colonyManager: ColonyManager = yield getColonyManager();
-    // const { network } = colonyManager.networkClient;
+    const { network } = colonyManager.networkClient;
     /*
      * Validate the required values for the payment
      */
@@ -65,7 +65,7 @@ function* createPaymentAction({
       }
     }
 
-    const payouts = yield adjustPayoutsAddresses(payments /* network */);
+    const payouts = yield adjustPayoutsAddresses(payments, network);
     const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(

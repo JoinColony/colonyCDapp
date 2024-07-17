@@ -2,8 +2,8 @@
 import {
   type AnyColonyClient,
   ClientType,
-  // type Network,
-  // Tokens,
+  type Network,
+  Tokens,
 } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
@@ -308,15 +308,11 @@ interface MinimalPayout {
   recipientAddress: string;
   tokenAddress: string;
 }
-
-// @TODO: Move to colony-js after fixing Tokens namespace
-const TMP_USDC_ARBITRUM_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
-
 export const adjustRecipientAddress = async (
   { recipientAddress, tokenAddress }: MinimalPayout,
-  // network: Network,
+  network: Network,
 ) => {
-  const USDCAddress = isDev ? DEV_USDC_ADDRESS : TMP_USDC_ARBITRUM_ADDRESS;
+  const USDCAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
   console.log({ USDCAddress });
 
   if (tokenAddress !== USDCAddress) {
@@ -347,7 +343,7 @@ export const adjustRecipientAddress = async (
 
 export const adjustPayoutsAddresses = async (
   payouts: MinimalPayout[],
-  // network: Network,
+  network: Network,
 ) => {
   return Promise.all(
     payouts.map(async (payout) => {
@@ -357,7 +353,7 @@ export const adjustPayoutsAddresses = async (
           recipientAddress,
           tokenAddress,
         },
-        // network,
+        network,
       );
 
       return {
