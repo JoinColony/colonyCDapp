@@ -2,7 +2,6 @@ import { ArrowDownRight, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
@@ -24,13 +23,9 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
-  const decisionMethod = watch('decisionMethod');
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  const createdInFilterFn = useFilterCreatedInField(
-    'from',
-    decisionMethod === DecisionMethod.MultiSig,
-  );
+  const createdInFilterFn = useFilterCreatedInField('from', true);
 
   return (
     <>
@@ -76,10 +71,7 @@ const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       />
 
       <DecisionMethodField />
-      <CreatedIn
-        readonly={decisionMethod === DecisionMethod.MultiSig}
-        filterOptionsFn={createdInFilterFn}
-      />
+      <CreatedIn readonly filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
   );
