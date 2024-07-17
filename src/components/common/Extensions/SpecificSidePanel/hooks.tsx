@@ -1,3 +1,4 @@
+import { Extension } from '@colony/core';
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -14,10 +15,13 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { type SidePanelDataProps } from './types.ts';
 
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
+  const { formatMessage } = useIntl();
   const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([
     'disabled',
   ]);
-  const { formatMessage } = useIntl();
+  const [badgeMessages, setBadgeMessages] = useState<string[]>([
+    formatMessage({ id: 'status.disabled' }),
+  ]);
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
@@ -45,14 +49,31 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   useMemo(() => {
     if (!isExtensionInstalled) {
       setStatuses(['not-installed']);
+      setBadgeMessages([formatMessage({ id: 'status.notInstalled' })]);
     } else if (extensionData.isEnabled) {
-      setStatuses(['enabled']);
+      if (extensionData.extensionId === Extension.MultisigPermissions) {
+        setStatuses(['installed']);
+        setBadgeMessages([formatMessage({ id: 'status.installed' })]);
+      } else {
+        setStatuses(['enabled']);
+        setBadgeMessages([formatMessage({ id: 'status.enabled' })]);
+      }
     } else if (isExtensionDeprecatedAndDisabled) {
       setStatuses(['disabled', 'deprecated']);
+      setBadgeMessages([
+        formatMessage({ id: 'status.disabled' }),
+        formatMessage({ id: 'status.deprecated' }),
+      ]);
     } else {
       setStatuses(['disabled']);
+      setBadgeMessages([formatMessage({ id: 'status.disabled' })]);
     }
-  }, [extensionData, isExtensionInstalled, isExtensionDeprecatedAndDisabled]);
+  }, [
+    extensionData,
+    isExtensionInstalled,
+    isExtensionDeprecatedAndDisabled,
+    formatMessage,
+  ]);
 
   // @ts-expect-error CurrentVersion/Address aren't shown in the parent if the extension is not installed
   const { availableVersion, currentVersion, address, neededColonyPermissions } =
@@ -119,5 +140,6 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   return {
     sidePanelData,
     statuses,
+    badgeMessages,
   };
 };

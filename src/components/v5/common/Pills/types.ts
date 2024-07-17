@@ -7,6 +7,7 @@ import { type ContributorType } from '../TableFiltering/types.ts';
 export type ExtensionStatusBadgeMode =
   | 'coming-soon'
   | 'not-installed'
+  | 'installed'
   | 'enabled'
   | 'disabled'
   | 'deprecated'
