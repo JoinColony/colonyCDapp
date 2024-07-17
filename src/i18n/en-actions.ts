@@ -55,6 +55,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -90,6 +91,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateExpenditure} {Advanced payment}
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}

@@ -140,6 +140,7 @@ export enum ExtendedColonyActionType {
   SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
   SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
   SplitPayment = 'SPLIT_PAYMENT',
+  StagedPayment = 'STAGED_PAYMENT',
 }
 
 /**

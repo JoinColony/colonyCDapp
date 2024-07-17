@@ -47,6 +47,7 @@ const Table = <T,>({
   virtualizedProps,
   tableClassName,
   tableBodyRowKeyProp,
+  footerColSpan,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -391,22 +392,27 @@ const Table = <T,>({
           <tfoot>
             {footerGroups.map((footerGroup) => (
               <tr key={footerGroup.id}>
-                {footerGroup.headers.map((column) => (
-                  <td
-                    key={column.id}
-                    className={clsx(
-                      'h-full px-[1.1rem] text-md text-gray-500',
-                      {
-                        'border-t border-gray-200': !verticalLayout,
-                      },
-                    )}
-                  >
-                    {flexRender(
-                      column.column.columnDef.footer,
-                      column.getContext(),
-                    )}
-                  </td>
-                ))}
+                {footerGroup.headers.map((column, index) => {
+                  const isLastColumn = index === footerGroup.headers.length - 1;
+
+                  return (
+                    <td
+                      colSpan={isLastColumn ? footerColSpan : 1}
+                      key={column.id}
+                      className={clsx(
+                        'h-full px-[1.1rem] text-md text-gray-500',
+                        {
+                          'border-t border-gray-200': !verticalLayout,
+                        },
+                      )}
+                    >
+                      {flexRender(
+                        column.column.columnDef.footer,
+                        column.getContext(),
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tfoot>
