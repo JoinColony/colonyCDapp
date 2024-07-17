@@ -1,3 +1,4 @@
+import { Extension } from '@colony/core';
 import { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -20,8 +21,13 @@ const useExtensionsBadge = (extensionData) => {
       setStatus('deprecated');
       setBadgeMessage(formatMessage({ id: 'status.deprecated' }));
     } else if (extensionData?.isEnabled) {
-      setStatus('enabled');
-      setBadgeMessage(formatMessage({ id: 'status.enabled' }));
+      if (extensionData.extensionId === Extension.MultisigPermissions) {
+        setStatus('installed');
+        setBadgeMessage(formatMessage({ id: 'status.installed' }));
+      } else {
+        setStatus('enabled');
+        setBadgeMessage(formatMessage({ id: 'status.enabled' }));
+      }
     } else {
       setStatus('disabled');
       setBadgeMessage(formatMessage({ id: 'status.disabled' }));
