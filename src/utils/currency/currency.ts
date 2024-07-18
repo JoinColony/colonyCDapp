@@ -47,7 +47,7 @@ const fetchPriceFromCoinGecko = async ({
 const getCLNYPriceInUSD = async () => {
   // Returns 1 CLNY in terms of USD, 1 CLNY : x USD
   return fetchTokenPriceByAddress({
-    contractAddress: Tokens.Mainnet.Mainnet,
+    contractAddress: Tokens.Mainnet.CLNY,
     chainId: Network.Mainnet,
     conversionDenomination: SupportedCurrencies.Usd,
   });
