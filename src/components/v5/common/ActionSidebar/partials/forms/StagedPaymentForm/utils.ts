@@ -1,9 +1,9 @@
 import { Id } from '@colony/colony-js';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { type StagedPaymentFormValues } from './hooks.ts';
 
@@ -25,7 +25,17 @@ export const getStagedPaymentPayload = (
     colonyAddress: colony.colonyAddress,
     createdInDomain,
     fundFromDomainId: 1,
-    payouts: [],
+    payouts: values.stages.map((stage) => ({
+      recipientAddress: values.recipient,
+      tokenAddress: stage.tokenAddress,
+      amount: stage.amount,
+      claimDelay: '0',
+      tokenDecimals: getTokenDecimalsWithFallback(
+        colonyTokens?.find(
+          ({ token }) => token.tokenAddress === stage.tokenAddress,
+        )?.token.decimals,
+      ),
+    })),
     isStaged: true,
     networkInverseFee,
     annotationMessage: values.description,
@@ -33,10 +43,6 @@ export const getStagedPaymentPayload = (
       name: stage.milestone,
       tokenAddress: stage.tokenAddress,
       amount: stage.amount,
-      tokenDecimals:
-        colonyTokens?.find(
-          ({ token }) => token.tokenAddress === stage.tokenAddress,
-        )?.token.decimals || DEFAULT_TOKEN_DECIMALS,
     })),
   };
 };
