@@ -10,8 +10,10 @@ cypress/screenshots
 .DS_Store
 
 /src/typedefs/import-meta-env.d.ts
+.env.local.secrets
+.env
+
 /dist
-.env.local
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
