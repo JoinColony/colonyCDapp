@@ -322,7 +322,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     canInteract,
   ]);
 
-  if (!isVotingReputationExtensionInstalled) {
+  if (
+    networkMotionState === NetworkMotionState.Null ||
+    !isVotingReputationExtensionInstalled
+  ) {
     return <UninstalledMessage extension={Extension.VotingReputation} />;
   }
 
