@@ -58,6 +58,18 @@ export type CancelExpenditurePayload = {
   userAddress: Address;
 };
 
+export type EditStreamingPaymentPayload = {
+  colony: Colony;
+  streamingPayment: StreamingPayment;
+  streamingPaymentsAddress: string;
+  startTimestamp?: string;
+  endTimestamp?: string;
+  amount?: string;
+  interval?: number;
+  endCondition?: StreamingPaymentEndCondition;
+  limitAmount?: string;
+};
+
 export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CREATE,
@@ -279,17 +291,7 @@ export type ExpendituresActionTypes =
     >
   | UniqueActionType<
       ActionTypes.STREAMING_PAYMENT_EDIT,
-      {
-        colony: Colony;
-        streamingPayment: StreamingPayment;
-        streamingPaymentsAddress: string;
-        startTimestamp?: string;
-        endTimestamp?: string;
-        amount?: string;
-        interval?: number;
-        endCondition?: StreamingPaymentEndCondition;
-        limitAmount?: string;
-      },
+      EditStreamingPaymentPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.STREAMING_PAYMENT_EDIT_ERROR, object>
