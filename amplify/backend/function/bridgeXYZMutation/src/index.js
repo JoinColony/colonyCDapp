@@ -32,18 +32,19 @@ const setEnvVariables = async () => {
   }
 };
 
-const { Parameters } = await new aws.SSM()
-  .getParameters({
-    Names: [`%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`].map(
-      (secretName) => process.env[secretName],
-    ),
-    WithDecryption: true,
-  })
-  .promise();
-
 exports.handler = async (event) => {
   console.log({ env });
   console.log('Secret test:', secret('TEST_SECRET'));
+
+  const { Parameters } = await new aws.SSM()
+    .getParameters({
+      Names: [`%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`].map(
+        (secretName) => process.env[secretName],
+      ),
+      WithDecryption: true,
+    })
+    .promise();
+
   console.log({ Parameters });
 
   try {
