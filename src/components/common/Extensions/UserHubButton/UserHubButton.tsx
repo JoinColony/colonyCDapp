@@ -12,6 +12,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
+import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes';
@@ -55,6 +56,17 @@ const UserHubButton: FC = () => {
   const [, { toggleOff }] = mobileMenuToggle;
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
+
+  const ref = useDetectClickOutside({
+    onTriggered: (e) => {
+      // This stops the hub closing when clicking the pending button (which is outside)
+      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
+        setIsUserHubOpen(false);
+      } else {
+        setIsUserHubOpen(true);
+      }
+    },
+  });
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
     usePopperTooltip(
@@ -137,7 +149,7 @@ const UserHubButton: FC = () => {
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
   return (
-    <div className="flex-shrink-0">
+    <div ref={ref} className="flex-shrink-0">
       <Button
         mode="tertiary"
         size="large"

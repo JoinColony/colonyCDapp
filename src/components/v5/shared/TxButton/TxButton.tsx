@@ -115,6 +115,7 @@ const TxButton: FC = () => {
             <Check className="text-base-white" size={14} />
           </span>
         }
+        data-openhubifclicked
       />
     );
   }
