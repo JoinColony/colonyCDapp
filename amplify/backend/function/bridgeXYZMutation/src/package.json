@@ -8,6 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
+    "@aws-amplify/backend": "^1.0.4",
     "cross-fetch": "^4.0.0",
     "uuid": "^10.0.0"
   }

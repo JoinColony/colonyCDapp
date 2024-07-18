@@ -4,6 +4,8 @@ const { checkKYCHandler } = require('./handlers/checkKyc');
 const {
   createExternalAccountHandler,
 } = require('./handlers/createExternalAccount');
+const { env } = require('$amplify/env/bridgeXYZMutation');
+const { secrets } = require('@aws-amplify/backend');
 
 const isDev = process.env.ENV === 'dev';
 
@@ -14,6 +16,11 @@ let apiKey = 'xxx';
 
 const setEnvVariables = async () => {
   if (!isDev) {
+    // graphqlURL = env.graphqlURL;
+    // appSyncApiKey = env.appsyncApiKey;
+    // apiUrl = env.bridgeXYZApiUrl;
+    // apiKey =
+
     const { getParams } = require('/opt/nodejs/getParams');
     [appSyncApiKey, apiKey, apiUrl, graphqlURL] = await getParams([
       'appsyncApiKey',
@@ -25,6 +32,9 @@ const setEnvVariables = async () => {
 };
 
 exports.handler = async (event) => {
+  console.log({ env });
+  console.log('Secret test:', secret('TEST_SECRET'));
+
   try {
     await setEnvVariables();
   } catch (e) {
