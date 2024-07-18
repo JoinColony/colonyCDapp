@@ -56,10 +56,10 @@ export const useEligibleSignees = ({
           .filter((key) => key.startsWith('role_') && item[key] === true)
           .map((key) => Number(key.split('_')[1]));
 
-        // Check if assignedRoles includes all roles in any requiredRoles array
+        // Check if assignedRoles includes any roles in any requiredRoles array
         if (
           requiredRoles.some((roles) =>
-            roles.every((role) => assignedRoles.includes(role)),
+            roles.some((role) => assignedRoles.includes(role)),
           )
         ) {
           if (member.user) {

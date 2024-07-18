@@ -49,7 +49,7 @@ const EnableButton = ({
       address: user.walletAddress,
       colony,
       requiredRoles: [ColonyRole.Architecture],
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
     });
 
   /* To enable, a user must have the root permission. They also need architecture for the permissions tx to be successful. */

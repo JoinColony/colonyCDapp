@@ -24,7 +24,7 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({ extensionData }) => {
       address: user.walletAddress,
       colony,
       requiredRoles: [ColonyRole.Root],
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
     });
 
   /* If enabled, can be deprecated */

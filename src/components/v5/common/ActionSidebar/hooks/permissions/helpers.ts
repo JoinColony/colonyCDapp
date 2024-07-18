@@ -177,7 +177,7 @@ export const getHasActionPermissions = ({
 
   const hasPermissions = addressHasRoles({
     requiredRoles,
-    requiredRolesDomains: [relevantDomainId],
+    requiredRolesDomain: relevantDomainId,
     colony,
     address: userAddress,
     isMultiSig,

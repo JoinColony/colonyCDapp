@@ -67,7 +67,7 @@ const VoteButton: FC<VoteButtonProps> = ({
     vote: voteType,
     domainId: multiSigDomainId,
     multiSigId,
-    requiredRoles:
+    roles:
       getRolesNeededForMultiSigAction({
         actionType,
         createdIn: multiSigDomainId,

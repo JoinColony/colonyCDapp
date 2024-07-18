@@ -35,7 +35,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
       address: user.walletAddress,
       colony,
       requiredRoles: [ColonyRole.Root],
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
     });
 
   /* To install, a user must have the root permission. */
