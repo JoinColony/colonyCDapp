@@ -105,7 +105,9 @@ export const waitForDbAfterExtensionAction = ({
         }
 
         case ExtensionMethods.ENABLE: {
-          condition = !!extension?.isInitialized;
+          // Extension.MultisigPermissions doesn't need initialisation by default
+          condition =
+            !!extension?.isInitialized || !!extension?.params?.multiSig;
           break;
         }
 
