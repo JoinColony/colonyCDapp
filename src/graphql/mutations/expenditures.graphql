@@ -19,3 +19,11 @@ mutation UpdateStreamingPaymentMetadata(
     id
   }
 }
+
+mutation CreatePendingStreamingPaymentMetadata(
+  $input: CreatePendingStreamingPaymentMetadataInput!
+) {
+  createPendingStreamingPaymentMetadata(input: $input) {
+    id
+  }
+}
