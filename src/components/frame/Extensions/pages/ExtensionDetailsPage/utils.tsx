@@ -45,7 +45,7 @@ export const waitForColonyPermissions = ({
           address: (extensionData as InstalledExtensionData).address ?? '',
           colony: updatedColony,
           requiredRoles: extensionData.neededColonyPermissions,
-          requiredRolesDomains: [Id.RootDomain],
+          requiredRolesDomain: Id.RootDomain,
         });
 
         if (extensionHasPermissions) {
