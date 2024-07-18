@@ -38,9 +38,9 @@ exports.handler = async (event) => {
 
   const { Parameters } = await new aws.SSM()
     .getParameters({
-      Names: [`%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`].map(
-        (secretName) => process.env[secretName],
-      ),
+      Names: [
+        `%2Famplify%2Fcdapp%2F${process.env.ENV}%2Fbridgexyz_api_url`,
+      ].map((secretName) => process.env[secretName]),
       WithDecryption: true,
     })
     .promise();
