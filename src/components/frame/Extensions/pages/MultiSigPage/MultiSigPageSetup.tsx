@@ -1,11 +1,5 @@
 import { CaretDown } from '@phosphor-icons/react';
-import React, {
-  type FC,
-  useEffect,
-  useState,
-  useContext,
-  useMemo,
-} from 'react';
+import React, { type FC, useEffect, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -152,30 +146,55 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
     DomainThresholdSettings[]
   >([]);
 
-  const domainSettingsString = useMemo(
-    () => JSON.stringify(domainSettings),
-    [domainSettings],
-  );
-
   useEffect(() => {
     handleIsVisible(true);
     handleSetActionType(ActionTypes.MULTISIG_SET_THRESHOLDS);
 
     return () => resetAll();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
+    const domainThresholds = domainSettings.map((domain) => {
+      let threshold = 0;
+
+      if (
+        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
+        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
+      ) {
+        threshold = parseInt(fixedThreshold.toString(), 10);
+      }
+
+      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
+        threshold = domain.threshold;
+      }
+      return {
+        skillId: domain.nativeSkillId,
+        threshold,
+      };
+    });
+
+    handleSetValues({
+      colonyAddress,
+      globalThreshold:
+        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+          ? 0
+          : fixedThreshold,
+      domainThresholds,
+    });
+
+    let hasGlobalFixedThresholdError = false;
     if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      handleIsDisabled(isFixedThresholdError || !fixedThreshold);
-    } else {
-      const hasDomainSettingError = !!domainSettings.find(
-        (domain) => domain.isError,
-      );
-      handleIsDisabled(hasDomainSettingError);
+      hasGlobalFixedThresholdError = isFixedThresholdError || !fixedThreshold;
     }
+    const hasDomainSettingError = !!domainSettings.find(
+      (domain) => domain.isError,
+    );
+
+    handleIsDisabled(hasGlobalFixedThresholdError || hasDomainSettingError);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    domainSettingsString,
+    domainSettings,
     thresholdType,
     isFixedThresholdError,
     fixedThreshold,
@@ -273,43 +292,6 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
       navigate(pathname.split('/').slice(0, -1).join('/'));
     }
   }, [extensionData, pathname, navigate]);
-
-  useEffect(() => {
-    const domainThresholds = domainSettings.map((domain) => {
-      let threshold = 0;
-
-      if (
-        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
-      ) {
-        threshold = parseInt(fixedThreshold.toString(), 10);
-      }
-
-      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-        threshold = domain.threshold;
-      }
-      return {
-        skillId: domain.nativeSkillId,
-        threshold,
-      };
-    });
-
-    handleSetValues({
-      colonyAddress,
-      globalThreshold:
-        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-          ? 0
-          : fixedThreshold,
-      domainThresholds,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    domainSettingsString,
-    thresholdType,
-    handleSetValues,
-    colonyAddress,
-    fixedThreshold,
-  ]);
 
   if (!extensionData) {
     return (

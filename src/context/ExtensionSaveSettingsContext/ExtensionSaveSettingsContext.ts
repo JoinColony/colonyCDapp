@@ -6,8 +6,8 @@ import noop from '~utils/noop.ts';
 interface ExtensionSaveSettingsContextValues {
   isVisible: boolean;
   isDisabled: boolean;
-  values: any;
   actionType: ActionTypes | null;
+  handleGetValues: () => any;
   handleIsVisible: (value: boolean) => void;
   handleIsDisabled: (value: boolean) => void;
   handleSetValues: (values: any) => void;
@@ -19,8 +19,8 @@ export const ExtensionSaveSettingsContext =
   createContext<ExtensionSaveSettingsContextValues>({
     isVisible: false,
     isDisabled: false,
-    values: {},
     actionType: null,
+    handleGetValues: noop,
     handleIsVisible: noop,
     handleIsDisabled: noop,
     handleSetValues: noop,
