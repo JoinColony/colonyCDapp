@@ -96,7 +96,7 @@ function* createRootMotionSaga({
           params: [
             Id.RootDomain,
             childSkillIndex,
-            [colonyAddress],
+            [AddressZero],
             [encodedAction],
           ],
           group: {
