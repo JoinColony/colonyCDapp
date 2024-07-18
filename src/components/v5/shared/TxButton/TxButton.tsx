@@ -21,12 +21,13 @@ const TxButton: FC = () => {
 
   const { transactions, groupState } = useGroupedTransactions();
 
+  // This will calculate the following from all transaction groups:
+  // Total number of succeeded txs within pending groups / total number of txs in pending groups
+  // Returns a tupel [succeeded txs, all txs]
   const succeededTransactionsCount = useMemo(() => {
     if (!transactions.length) {
       return null;
     }
-    // This will calculate the following from all transaction groups:
-    // Total number of succeeded txs within pending groups / total number of txs in pending groups
     return transactions
       .filter(
         (txGroup) => getGroupStatus(txGroup) === TransactionStatus.Pending,
@@ -86,9 +87,10 @@ const TxButton: FC = () => {
       >
         {isMobile ? undefined : (
           <span>
-            {formatText({ id: 'button.pending' })}{' '}
-            {succeededTransactionsCount
-              ? `${succeededTransactionsCount[0]}/${succeededTransactionsCount[1]}`
+            {formatText({ id: 'button.pending' })}
+            {succeededTransactionsCount?.[1] &&
+            succeededTransactionsCount[1] > 1
+              ? ` ${succeededTransactionsCount[0]}/${succeededTransactionsCount[1]}`
               : null}
           </span>
         )}
