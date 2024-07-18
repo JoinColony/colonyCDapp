@@ -106,7 +106,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     address: user?.walletAddress || '',
     colony,
     requiredRoles: [ColonyRole.Arbitration],
-    requiredRolesDomains: [expenditure.nativeDomainId],
+    requiredRolesDomain: expenditure.nativeDomainId,
   });
   const showCancelOption =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
