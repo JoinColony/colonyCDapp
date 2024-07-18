@@ -91,7 +91,6 @@ export function* saveExpenditureMetadata({
         stages: stages?.map((stage, index) => ({
           name: stage.name,
           slotId: index + 1,
-          isReleased: false,
         })),
         distributionType,
       },
