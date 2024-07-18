@@ -1,4 +1,7 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import {
+  Extension,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { right as RightPlacementType } from '@popperjs/core';
 import clsx from 'clsx';
@@ -6,11 +9,14 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
@@ -43,6 +49,15 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     stopPollingForAction,
     refetchAction,
   } = useGetColonyAction(transactionId);
+
+  const { extensionData, loading: loadingExtension } = useExtensionData(
+    Extension.VotingReputation,
+  );
+
+  const isVotingReputationExtensionInstalled =
+    !loadingExtension &&
+    extensionData &&
+    isInstalledExtensionData(extensionData);
 
   const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
@@ -87,7 +102,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       .gt(0);
 
   const items = useMemo(() => {
-    if (loadingAction) {
+    if (
+      loadingAction ||
+      loadingExtension ||
+      !isVotingReputationExtensionInstalled
+    ) {
       return [];
     }
     return [
@@ -278,19 +297,22 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ];
   }, [
     loadingAction,
+    loadingExtension,
+    isVotingReputationExtensionInstalled,
     activeStepKey,
     motionStakes,
     motionState,
     motionId,
     refetchMotionState,
+    networkMotionState,
+    motionData,
     action,
     startPollingForAction,
     stopPollingForAction,
     transactionId,
     isFullyStaked,
     motionStakedAndFinalizable,
-    motionData,
-    networkMotionState,
+    rootHash,
     motionStateHistory?.hasPassed,
     motionStateHistory?.hasFailed,
     motionStateHistory?.hasFailedNotFinalizable,
@@ -298,10 +320,13 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     hasVotedMotionPassed,
     refetchAction,
     canInteract,
-    rootHash,
   ]);
 
-  return loadingAction ? (
+  if (!isVotingReputationExtensionInstalled) {
+    return <UninstalledMessage extension={Extension.VotingReputation} />;
+  }
+
+  return loadingAction || loadingExtension ? (
     <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
     <MotionProvider
