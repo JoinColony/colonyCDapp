@@ -1,6 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
 import { Copy, Prohibit } from '@phosphor-icons/react';
-import clsx from 'clsx';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
@@ -9,38 +8,30 @@ import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMe
 import { APP_URL } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ExpenditureStatus } from '~gql';
-import { useMobile } from '~hooks';
+import { ExpenditureStatus, ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { ExtendedColonyActionType } from '~types/actions.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
-import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
-import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
-import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
-import {
-  ActionDataGrid,
-  ActionSubtitle,
-  ActionTitle,
-} from '../Blocks/index.ts';
-import ActionTypeRow from '../rows/ActionType.tsx';
-import CreatedInRow from '../rows/CreatedIn.tsx';
-import DecisionMethodRow from '../rows/DecisionMethod.tsx';
-import DescriptionRow from '../rows/Description.tsx';
-import TeamFromRow from '../rows/TeamFrom.tsx';
+import CompletedExpenditureContent from '../CompletedExpenditureContent/CompletedExpenditureContent.tsx';
 
 import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
+import { ExpenditureStep } from './partials/PaymentBuilderWidget/types.ts';
+import { getExpenditureStep } from './partials/PaymentBuilderWidget/utils.ts';
+import StagedPaymentTable from './partials/StagedPaymentTable/StagedPaymentTable.tsx';
 
 interface PaymentBuilderProps {
   action: ColonyAction;
@@ -60,7 +51,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, transactionHash } = action;
-  const isMobile = useMobile();
   const [
     isCancelModalOpen,
     { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
@@ -68,6 +58,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
+  const expenditureStep = getExpenditureStep(expenditure);
+  const { user: recipient } = useUserByAddress(
+    expenditure?.slots?.[0]?.recipientAddress || '',
+  );
 
   if (loadingExpenditure) {
     return (
@@ -132,60 +126,41 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     },
   ];
 
+  if (expenditure.type === ExpenditureType.Staged) {
+    return (
+      <>
+        <CompletedExpenditureContent
+          title={customTitle}
+          expenditureMeatballOptions={expenditureMeatballOptions}
+          initiatorUser={initiatorUser}
+          recipient={recipient}
+          selectedTeam={selectedTeam}
+          actionType={ExtendedColonyActionType.StagedPayment}
+          action={action}
+          expenditure={expenditure}
+        />
+        <StagedPaymentTable
+          stages={expenditure.metadata?.stages || []}
+          slots={slots}
+          isLoading={!expenditure.metadata?.stages?.length}
+          isReleaseStep={expenditureStep === ExpenditureStep.Release}
+        />
+      </>
+    );
+  }
+
   return (
     <>
-      <div className="flex w-full items-center justify-between gap-2">
-        <ActionTitle>{customTitle}</ActionTitle>
-        <MeatBallMenu
-          contentWrapperClassName={clsx('z-[65] sm:min-w-[11.25rem]', {
-            '!left-6 right-6': isMobile,
-          })}
-          dropdownPlacementProps={{
-            top: 12,
-          }}
-          items={expenditureMeatballOptions}
-        />
-      </div>
-      <ActionSubtitle>
-        {formatText(
-          { id: 'action.title' },
-          {
-            actionType: ColonyActionType.CreateExpenditure,
-            recipientsNumber: getRecipientsNumber(expenditure),
-            tokensNumber: getTokensNumber(expenditure),
-            initiator: initiatorUser ? (
-              <UserInfoPopover
-                walletAddress={initiatorUser.walletAddress}
-                user={initiatorUser}
-                withVerifiedBadge={false}
-              >
-                {initiatorUser.profile?.displayName}
-              </UserInfoPopover>
-            ) : null,
-          },
-        )}
-      </ActionSubtitle>
-      <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
-
-        {selectedTeam?.metadata && (
-          <TeamFromRow
-            teamMetadata={selectedTeam.metadata}
-            actionType={action.type}
-          />
-        )}
-
-        <DecisionMethodRow action={action} />
-
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
-      </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
-      )}
+      <CompletedExpenditureContent
+        title={customTitle}
+        expenditureMeatballOptions={expenditureMeatballOptions}
+        initiatorUser={initiatorUser}
+        recipient={recipient}
+        selectedTeam={selectedTeam}
+        actionType={ColonyActionType.CreateExpenditure}
+        action={action}
+        expenditure={expenditure}
+      />
       <PaymentBuilderTable
         items={slots}
         status={status}
