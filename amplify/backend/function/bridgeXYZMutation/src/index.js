@@ -6,6 +6,7 @@ const {
 } = require('./handlers/createExternalAccount');
 const { env } = require('$amplify/env/bridgeXYZMutation');
 const { secrets } = require('@aws-amplify/backend');
+const { sdk } = require('aws-sdk');
 
 const isDev = process.env.ENV === 'dev';
 
@@ -31,9 +32,19 @@ const setEnvVariables = async () => {
   }
 };
 
+const { Parameters } = await new aws.SSM()
+  .getParameters({
+    Names: [`%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`].map(
+      (secretName) => process.env[secretName],
+    ),
+    WithDecryption: true,
+  })
+  .promise();
+
 exports.handler = async (event) => {
   console.log({ env });
   console.log('Secret test:', secret('TEST_SECRET'));
+  console.log({ Parameters });
 
   try {
     await setEnvVariables();
