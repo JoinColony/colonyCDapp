@@ -177,7 +177,7 @@ function* moveFundsMotion({
           params: [
             userPermissionDomainId,
             userChildSkillIndex,
-            [colonyAddress],
+            [AddressZero],
             [encodedAction],
           ],
           group: {

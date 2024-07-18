@@ -135,7 +135,7 @@ function* createEditDomainMultiSigMotion({
       params: [
         permissionDomainId,
         childSkillIndex,
-        [isCreateDomain ? colonyAddress : AddressZero],
+        [AddressZero],
         [encodedAction],
       ],
       ready: false,

@@ -103,7 +103,7 @@ function* manageVerifiedMembersMotion({
           params: [
             Id.RootDomain,
             childSkillIndex,
-            [colonyAddress],
+            [AddressZero],
             [encodedAction],
           ],
           group: {
