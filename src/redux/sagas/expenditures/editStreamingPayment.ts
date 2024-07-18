@@ -1,11 +1,4 @@
-import {
-  type AnyStreamingPaymentsClient,
-  ClientType,
-  ColonyRole,
-  getPermissionProofs,
-} from '@colony/colony-js';
-import { type BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
+import { type AnyStreamingPaymentsClient, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -22,25 +15,20 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
-import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
 
 import {
   createTransaction,
   waitForTxResult,
   getTxChannel,
 } from '../transactions/index.ts';
+import { checkColonyVersionCompliance } from '../utils/checkColonyVersionCompliance.ts';
+import { getEditStreamingPaymentMulticallData } from '../utils/editStreamingPaymentMulticall.ts';
 import {
-  TIMESTAMP_IN_FUTURE,
   getColonyManager,
-  getEndTimeByEndCondition,
   initiateTransaction,
   putError,
   takeFrom,
 } from '../utils/index.ts';
-
-export type EditStreamingPaymentPayload =
-  Action<ActionTypes.STREAMING_PAYMENT_EDIT>['payload'];
 
 function* editStreamingPaymentAction({
   payload: {
@@ -70,12 +58,9 @@ function* editStreamingPaymentAction({
   const txChannel = yield call(getTxChannel, meta.id);
 
   try {
-    const { decimals: tokenDecimals } =
-      getSelectedToken(colony, streamingPayment.tokenAddress) || {};
-
-    if (!tokenDecimals) {
-      throw new Error('Token cannot be found');
-    }
+    checkColonyVersionCompliance({
+      colony,
+    });
 
     const streamingPaymentsClient: AnyStreamingPaymentsClient = yield call(
       [colonyManager, colonyManager.getClient],
@@ -83,145 +68,23 @@ function* editStreamingPaymentAction({
       colonyAddress,
     );
 
-    // Get permissions proof of the caller's Funding permission
-    const [fundingPermissionDomainId, fundingChildSkillIndex] =
-      yield getPermissionProofs(
-        colonyClient.networkClient,
-        colonyClient,
-        streamingPayment.nativeDomainId,
-        ColonyRole.Funding,
-      );
-
-    // Get permissions proof of the caller's Admin permission
-    const [adminPermissionDomainId, adminChildSkillIndex] =
-      yield getPermissionProofs(
-        colonyClient.networkClient,
-        colonyClient,
-        streamingPayment.nativeDomainId,
-        ColonyRole.Administration,
-      );
-
-    // Get permissions proof of the streaming payment extensions funding and administration permissions
-    const [extensionPermissionDomainId, extensionChildSkillIndex] =
-      yield getPermissionProofs(
-        colonyClient.networkClient,
-        colonyClient,
-        streamingPayment.nativeDomainId,
-        [ColonyRole.Funding, ColonyRole.Administration],
-        streamingPaymentsAddress,
-      );
-
-    const amountInWei = amount
-      ? (moveDecimal(amount, tokenDecimals) as string)
-      : streamingPayment.amount;
-
-    const realStartTimestamp = startTimestamp || streamingPayment.startTime;
-    const realInterval = interval || Number(streamingPayment.interval);
-    const realEndCondition =
-      endCondition || streamingPayment.metadata?.endCondition;
-
-    if (!realEndCondition) {
-      throw new Error(
-        'End condition undefined and cannot be found in metadata',
-      );
+    if (!streamingPaymentsClient) {
+      throw new Error('Streaming payments extension cannot be found');
     }
 
-    const limitInWei = limitAmount
-      ? (moveDecimal(limitAmount, tokenDecimals) as string)
-      : getStreamingPaymentLimit({ streamingPayment });
-
-    const realEndTimestamp = getEndTimeByEndCondition({
-      endCondition: realEndCondition,
-      startTimestamp: realStartTimestamp,
-      interval: realInterval,
-      amountInWei,
-      limitInWei,
-      endTimestamp: endTimestamp || streamingPayment.endTime,
+    const multicallData = yield getEditStreamingPaymentMulticallData({
+      streamingPayment,
+      colonyClient,
+      streamingPaymentsAddress,
+      colony,
+      streamingPaymentsClient,
+      amount,
+      interval,
+      startTimestamp,
+      endTimestamp,
+      limitAmount,
+      endCondition,
     });
-
-    const multicallData: string[] = [];
-
-    const hasAmountChanged = amountInWei !== streamingPayment.amount;
-    const hasIntervalChanged =
-      realInterval !== Number(streamingPayment.interval);
-
-    if (hasAmountChanged || hasIntervalChanged) {
-      multicallData.push(
-        streamingPaymentsClient.interface.encodeFunctionData('setTokenAmount', [
-          fundingPermissionDomainId,
-          fundingChildSkillIndex,
-          extensionPermissionDomainId,
-          extensionChildSkillIndex,
-          extensionChildSkillIndex,
-          extensionChildSkillIndex,
-          streamingPayment.nativeId,
-          amountInWei,
-          realInterval,
-        ]),
-      );
-    }
-
-    const hasStartTimeChanged =
-      streamingPayment.startTime !== realStartTimestamp;
-    const hasEndTimeChanged = !realEndTimestamp.eq(streamingPayment.endTime);
-
-    const pushSetStartTime = (time: string) => {
-      multicallData.push(
-        streamingPaymentsClient.interface.encodeFunctionData('setStartTime', [
-          adminPermissionDomainId,
-          adminChildSkillIndex,
-          streamingPayment.nativeId,
-          time,
-        ]),
-      );
-    };
-
-    const pushSetEndTime = (time: BigNumber) => {
-      multicallData.push(
-        streamingPaymentsClient.interface.encodeFunctionData('setEndTime', [
-          adminPermissionDomainId,
-          adminChildSkillIndex,
-          streamingPayment.nativeId,
-          time,
-        ]),
-      );
-    };
-
-    // @NOTE: The multicall will fail if we set the new start time to be before the current end time
-    // Or the new end time to be before the current start time
-    // If both are true, then first set the endTime to the maximum possible end time
-    if (
-      realStartTimestamp > streamingPayment.endTime &&
-      realEndTimestamp.lt(streamingPayment.startTime)
-    ) {
-      if (hasEndTimeChanged) {
-        pushSetEndTime(TIMESTAMP_IN_FUTURE);
-      }
-
-      if (hasStartTimeChanged) {
-        pushSetStartTime(realStartTimestamp);
-      }
-
-      if (hasEndTimeChanged) {
-        pushSetEndTime(realEndTimestamp);
-      }
-    } else if (realStartTimestamp > streamingPayment.endTime) {
-      if (hasEndTimeChanged) {
-        pushSetEndTime(realEndTimestamp);
-      }
-
-      if (hasStartTimeChanged) {
-        pushSetStartTime(realStartTimestamp);
-      }
-    } else {
-      if (hasStartTimeChanged) {
-        pushSetStartTime(realStartTimestamp);
-      }
-
-      if (hasEndTimeChanged) {
-        pushSetEndTime(realEndTimestamp);
-      }
-    }
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.StreamingPaymentsClient,

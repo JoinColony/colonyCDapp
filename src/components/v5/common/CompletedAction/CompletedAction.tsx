@@ -117,6 +117,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.CancelStreamingPaymentMotion:
+      case ColonyActionType.EditStreamingPaymentMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:

@@ -7,6 +7,7 @@ import claimMotionRewardsSaga from './claimMotionRewards.ts';
 import createDecisionMotionSaga from './createDecisionMotion.ts';
 import createEditDomainMotionSaga from './createEditDomainMotion.ts';
 import editColonyMotionSaga from './editColonyMotion.ts';
+import editStreamingPaymentMotionSaga from './expenditures/editStreamingPaymentMotion.ts';
 import {
   fundExpenditureMotionSaga,
   cancelStakedExpenditureMotionSaga,
@@ -47,6 +48,7 @@ export default function* actionsSagas() {
     call(cancelStakedExpenditureMotionSaga),
     call(releaseExpenditureStagesMotionSaga),
     call(editLockedExpenditureMotionSaga),
+    call(editStreamingPaymentMotionSaga),
     call(finalizeExpenditureMotionSaga),
     call(paymentMotionSaga),
     // call(escalateMotionSaga),
