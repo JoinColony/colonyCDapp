@@ -1,4 +1,4 @@
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import { getUserRolesForDomain } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
@@ -8,13 +8,13 @@ export const userHasRole = (userRoles: ColonyRole[], role: ColonyRole) =>
   userRoles.includes(role);
 
 export const addressHasRoles = ({
-  requiredRolesDomains,
+  requiredRolesDomain,
   colony,
   address,
   requiredRoles,
   isMultiSig = false,
 }: {
-  requiredRolesDomains: number[];
+  requiredRolesDomain: number;
   colony: Colony;
   address: string;
   requiredRoles: ColonyRole[] | ColonyRole[][];
@@ -33,30 +33,66 @@ export const addressHasRoles = ({
     return false;
   });
 
-  return requiredRolesDomains.every((domainId) => {
-    const userDomainRoles = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
-      userAddress: address || '',
-      domainId,
-      excludeInherited: domainId ? actionRequiresMultipleRoles : false,
-    });
+  const userDomainRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: address || '',
+    domainId: requiredRolesDomain,
+    excludeInherited: requiredRolesDomain ? actionRequiresMultipleRoles : false,
+  });
 
-    const userMultiSigDomainRoles = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
-      userAddress: address || '',
-      domainId,
-      excludeInherited: domainId ? actionRequiresMultipleRoles : false,
-      isMultiSig: true,
-    });
+  const userMultiSigDomainRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: address || '',
+    domainId: requiredRolesDomain,
+    excludeInherited: requiredRolesDomain ? actionRequiresMultipleRoles : false,
+    isMultiSig: true,
+  });
 
-    // Check if any of the requiredRoles arrays match
-    return rolesArray.some((roles) => {
-      return roles.every((role) => {
-        if (isMultiSig) {
-          return userMultiSigDomainRoles.includes(role);
-        }
-        return userDomainRoles.includes(role);
-      });
+  // Check if any of the requiredRoles arrays match
+  const domainRolesIncludeRequiredRoles = rolesArray.some((roles) => {
+    return roles.every((role) => {
+      if (isMultiSig) {
+        return userMultiSigDomainRoles.includes(role);
+      }
+      return userDomainRoles.includes(role);
+    });
+  });
+
+  if (domainRolesIncludeRequiredRoles) {
+    return true;
+  }
+
+  if (
+    !actionRequiresMultipleRoles ||
+    (actionRequiresMultipleRoles && requiredRolesDomain === Id.RootDomain)
+  ) {
+    return false;
+  }
+
+  // Only actions requiring multiple roles should get here
+  // We excluded inherited roles in the above functions as all roles need to be in the same domain
+  // Is there wasn't a match in the createdIn domain
+  // We can check for an exact match in the root domain
+  const userDomainRootRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: address || '',
+    domainId: Id.RootDomain,
+  });
+
+  const userMultiSigDomainRootRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: address || '',
+    domainId: requiredRolesDomain,
+    isMultiSig: true,
+  });
+
+  // Check if any of the requiredRoles arrays match root roles
+  return rolesArray.some((roles) => {
+    return roles.every((role) => {
+      if (isMultiSig) {
+        return userMultiSigDomainRootRoles.includes(role);
+      }
+      return userDomainRootRoles.includes(role);
     });
   });
 };

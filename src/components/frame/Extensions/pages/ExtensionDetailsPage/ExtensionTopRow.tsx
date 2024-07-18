@@ -57,7 +57,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
     isInitialized &&
     !isDeprecated &&
     !addressHasRoles({
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
       colony,
       requiredRoles: neededColonyPermissions,
       address: address || '',
