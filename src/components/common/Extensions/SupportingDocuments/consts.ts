@@ -60,7 +60,6 @@ export const links = {
       message: supportingDocumentsMessages.streamingPaymentsLink,
     },
   ],
-  // @TODO add multisig with new colonyJS version
   [Extension.MultisigPermissions]: [
     {
       url: PERMISSIONS,
