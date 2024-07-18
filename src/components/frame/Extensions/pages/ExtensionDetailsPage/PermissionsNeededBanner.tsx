@@ -37,13 +37,13 @@ interface Props {
 }
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
+  const shouldDisplay =
+    extensionData.extensionId !== Extension.MultisigPermissions;
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { checkExtensionEnabled } = useCheckExtensionEnabled(
     extensionData.extensionId ?? '',
   );
-
-  const [shouldDisplay, setShouldDisplay] = useState(false);
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const userHasRoles = addressHasRoles({
     requiredRolesDomains: [Id.RootDomain],
@@ -81,9 +81,8 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
         // Enable Extension.MultisigPermissions by default
         enableAndCheckStatus();
       }
-    } else {
-      setShouldDisplay(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [extensionData.extensionId, colony.colonyAddress]);
 
   const getBanner = () => {
