@@ -1,12 +1,16 @@
+import { Id } from '@colony/colony-js';
 import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote, type ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
+import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getUserRolesForDomain } from '~transformers';
 import { mapPayload } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
@@ -42,20 +46,58 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
   isPending,
   setExpectedStep,
 }) => {
+  const { user } = useAppContext();
   const { colony } = useColonyContext();
 
-  const transform = mapPayload(() => ({
-    colonyAddress: colony.colonyAddress,
-    colonyDomains: extractColonyDomains(colony.domains),
-    colonyRoles: extractColonyRoles(colony.roles),
-    vote: MultiSigVote.None,
-    domainId: multiSigDomainId,
-    multiSigId,
-    requiredRoles: getRolesNeededForMultiSigAction({
-      actionType,
-      createdIn: multiSigDomainId,
-    }) || [],
-  }));
+  // @TODO once we merge in getAnyPermissionProofsLocal we can just straight up use that instead of filtering roles
+  const transform = mapPayload((): VoteOnMultiSigActionPayload | undefined => {
+    if (!user?.walletAddress) {
+      return undefined;
+    }
+
+    const colonyDomains = extractColonyDomains(colony.domains);
+    const colonyRoles = extractColonyRoles(colony.roles);
+
+    const userRolesInDomain = getUserRolesForDomain({
+      colonyRoles,
+      userAddress: user.walletAddress,
+      domainId: multiSigDomainId,
+      excludeInherited: true,
+      isMultiSig: true,
+    });
+    const userRolesInRoot = getUserRolesForDomain({
+      colonyRoles,
+      userAddress: user.walletAddress,
+      domainId: Id.RootDomain,
+      excludeInherited: true,
+      isMultiSig: true,
+    });
+    const requiredRoles =
+      getRolesNeededForMultiSigAction({
+        actionType,
+        createdIn: multiSigDomainId,
+      }) || [];
+
+    const allUserRoles = Array.from(
+      new Set([...userRolesInDomain, ...userRolesInRoot]),
+    );
+
+    const relevantUserRoles = allUserRoles.filter((role) =>
+      requiredRoles.includes(role),
+    );
+
+    const votePayload: VoteOnMultiSigActionPayload = {
+      colonyAddress: colony.colonyAddress,
+      colonyDomains,
+      colonyRoles,
+      vote: MultiSigVote.None,
+      domainId: multiSigDomainId,
+      multiSigId,
+      roles: relevantUserRoles,
+    };
+
+    return votePayload;
+  });
 
   return (
     <ActionForm

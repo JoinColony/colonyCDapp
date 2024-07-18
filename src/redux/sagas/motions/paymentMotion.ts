@@ -1,10 +1,11 @@
 import {
+  type AnyVotingReputationClient,
   ClientType,
-  getChildIndex,
-  getPermissionProofs,
   ColonyRole,
+  Id,
 } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
+import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -25,6 +26,8 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
+  getChildIndexLocal,
 } from '../utils/index.ts';
 
 function* createPaymentMotion({
@@ -36,6 +39,9 @@ function* createPaymentMotion({
     annotationMessage,
     motionDomainId,
     customActionTitle,
+    colonyRoles,
+    colonyDomains,
+    isMultiSig = false,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -73,40 +79,9 @@ function* createPaymentMotion({
       colonyAddress,
     );
 
-    const votingReputationClient = yield colonyManager.getClient(
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
-    );
-
-    const childSkillIndex = yield call(
-      getChildIndex,
-      colonyClient.networkClient,
-      colonyClient,
-      motionDomainId,
-      domainId,
-    );
-
-    const [extensionPDID, extensionCSI] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      [ColonyRole.Funding, ColonyRole.Administration],
-      oneTxPaymentClient.address,
-    );
-
-    const [votingReputationPDID, votingReputationCSI] = yield call(
-      getPermissionProofs,
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      [ColonyRole.Funding, ColonyRole.Administration],
-      votingReputationClient.address,
     );
 
     const sortedCombinedPayments = sortAndCombinePayments(payments);
@@ -121,37 +96,6 @@ function* createPaymentMotion({
       ({ recipient }) => recipient,
     );
 
-    const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
-      'makePaymentFundedFromDomain',
-      [
-        extensionPDID,
-        extensionCSI,
-        votingReputationPDID,
-        votingReputationCSI,
-        recipientAddresses,
-        tokenAddresses,
-        amounts,
-        domainId,
-        /*
-         * NOTE Always make the payment in the global skill 0
-         * This will make it so that the user only receives reputation in the
-         * above domain, but none in the skill itself.
-         */
-        0,
-      ],
-    );
-
-    const { skillId } = yield call(
-      [colonyClient, colonyClient.getDomain],
-      motionDomainId,
-    );
-
-    const { key, value, branchMask, siblings } = yield call(
-      colonyClient.getReputation,
-      skillId,
-      AddressZero,
-    );
-
     txChannel = yield call(getTxChannel, metaId);
 
     // setup batch ids and channels
@@ -163,28 +107,199 @@ function* createPaymentMotion({
         'annotatePaymentMotion',
       ]);
 
-    // create transactions
-    yield fork(createTransaction, createMotion.id, {
-      context: ClientType.VotingReputationClient,
-      methodName: 'createMotion',
-      identifier: colonyAddress,
-      params: [
+    // eslint-disable-next-line no-inner-declarations
+    function* getPaymentMotionParams() {
+      const requiredRoles = [
+        ColonyRole.Funding,
+        ColonyRole.Administration,
+        ColonyRole.Arbitration,
+      ];
+      const safeMotionId = motionDomainId || Id.RootDomain;
+
+      const rootDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(Id.RootDomain),
+      );
+      const motionDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(safeMotionId),
+      );
+      const paymentDomain = colonyDomains.find((domain) =>
+        BigNumber.from(domain.nativeId).eq(domainId),
+      );
+
+      if (!rootDomain || !motionDomain || !paymentDomain) {
+        throw new Error(
+          'Cannot find rootDomain, motion domain or payment from domain in colony domains',
+        );
+      }
+
+      const userAddress = yield colonyClient.signer.getAddress();
+
+      const [extensionPDID, extensionCSI] = yield call(
+        getPermissionProofsLocal,
+        {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: safeMotionId,
+          requiredColonyRole: requiredRoles,
+          permissionAddress: oneTxPaymentClient.address,
+          isMultiSig: false,
+        },
+      );
+
+      if (isMultiSig) {
+        const multiSigClient = yield colonyManager.getClient(
+          ClientType.MultisigPermissionsClient,
+          colonyAddress,
+        );
+
+        const [userPermissionDomainId, userChildSkillIndex] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: safeMotionId,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: userAddress,
+            isMultiSig,
+          },
+        );
+
+        const [multiSigPDID, multiSigCSI] = yield call(
+          getPermissionProofsLocal,
+          {
+            networkClient: colonyClient.networkClient,
+            colonyRoles,
+            colonyDomains,
+            requiredDomainId: safeMotionId,
+            requiredColonyRole: requiredRoles,
+            permissionAddress: multiSigClient.address,
+            isMultiSig: false,
+          },
+        );
+        const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
+          'makePaymentFundedFromDomain',
+          [
+            extensionPDID,
+            extensionCSI,
+            multiSigPDID,
+            multiSigCSI,
+            recipientAddresses,
+            tokenAddresses,
+            amounts,
+            domainId,
+            /*
+             * NOTE Always make the payment in the global skill 0
+             * This will make it so that the user only receives reputation in the
+             * above domain, but none in the skill itself.
+             */
+            0,
+          ],
+        );
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            userPermissionDomainId,
+            userChildSkillIndex,
+            [oneTxPaymentClient.address],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
+      const votingReputationClient: AnyVotingReputationClient =
+        yield colonyManager.getClient(
+          ClientType.VotingReputationClient,
+          colonyAddress,
+        );
+
+      const childSkillIndex = yield call(getChildIndexLocal, {
+        networkClient: colonyClient.networkClient,
+        parentDomainNativeId: motionDomain.nativeId,
+        parentDomainSkillId: motionDomain.nativeSkillId,
+        domainNativeId: paymentDomain.nativeId,
+        domainSkillId: paymentDomain.nativeSkillId,
+      });
+
+      const [votingReputationPDID, votingReputationCSI] = yield call(
+        getPermissionProofsLocal,
+        {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: safeMotionId,
+          requiredColonyRole: requiredRoles,
+          permissionAddress: votingReputationClient.address,
+          isMultiSig: false,
+        },
+      );
+
+      const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(
+        'makePaymentFundedFromDomain',
+        [
+          extensionPDID,
+          extensionCSI,
+          votingReputationPDID,
+          votingReputationCSI,
+          recipientAddresses,
+          tokenAddresses,
+          amounts,
+          domainId,
+          /*
+           * NOTE Always make the payment in the global skill 0
+           * This will make it so that the user only receives reputation in the
+           * above domain, but none in the skill itself.
+           */
+          0,
+        ],
+      );
+
+      const { skillId } = yield call(
+        [colonyClient, colonyClient.getDomain],
         motionDomainId,
-        childSkillIndex,
-        oneTxPaymentClient.address,
-        encodedAction,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+      );
+
+      const { key, value, branchMask, siblings } = yield call(
+        colonyClient.getReputation,
+        skillId,
+        AddressZero,
+      );
+      return {
+        context: ClientType.VotingReputationClient,
+        methodName: 'createMotion',
+        identifier: colonyAddress,
+        params: [
+          motionDomainId,
+          childSkillIndex,
+          oneTxPaymentClient.address,
+          encodedAction,
+          key,
+          value,
+          branchMask,
+          siblings,
+        ],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 0,
+        },
+        ready: false,
+      };
+    }
+
+    const transactionParams = yield getPaymentMotionParams();
+    // create transactions
+    yield fork(createTransaction, createMotion.id, transactionParams);
 
     if (annotationMessage) {
       yield fork(createTransaction, annotatePaymentMotion.id, {

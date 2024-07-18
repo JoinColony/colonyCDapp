@@ -210,14 +210,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                 !isMultiSigExecuted &&
                 !isMultiSigRejected && (
                   <div className="flex flex-col gap-2">
-                    {approvedSignaturesCount === threshold && (
+                    {approvedSignaturesCount >= threshold && (
                       <FinalizeButton
                         isPending={isFinalizePending}
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
                       />
                     )}
-                    {rejectedSignaturesCount === threshold && (
+                    {rejectedSignaturesCount >= threshold && (
                       <ActionForm
                         actionType={ActionTypes.MULTISIG_CANCEL}
                         onSuccess={() => setIsFinalizePending(true)}

@@ -34,7 +34,7 @@ function* voteOnMultiSigAction({
     colonyRoles,
     vote,
     multiSigId,
-    requiredRoles,
+    roles,
     domainId,
   },
   meta,
@@ -52,6 +52,7 @@ function* voteOnMultiSigAction({
       ClientType.ColonyClient,
       colonyAddress,
     );
+
     const userAddress = yield colonyClient.signer.getAddress();
 
     const [permissionDomainId, childSkillIndex] = yield call(
@@ -61,7 +62,7 @@ function* voteOnMultiSigAction({
         colonyRoles,
         colonyDomains,
         requiredDomainId: domainId,
-        requiredColonyRole: requiredRoles,
+        requiredColonyRole: roles,
         permissionAddress: userAddress,
         isMultiSig: true,
       },

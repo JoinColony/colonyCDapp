@@ -24,7 +24,11 @@ import RemoveVoteButton from '../../../RemoveVoteButton/RemoveVoteButton.tsx';
 import Signees from '../../../Signees/Signees.tsx';
 import VoteButton from '../../../VoteButton/VoteButton.tsx';
 import { VoteExpectedStep } from '../../types.ts';
-import { hasWeekPassed } from '../../utils.ts';
+import {
+  getAllUserSignatures,
+  getNotSignedUsers,
+  hasWeekPassed,
+} from '../../utils.ts';
 import MultiSigPills from '../MultiSigPills/MultiSigPills.tsx';
 
 const displayName =
@@ -43,6 +47,11 @@ const MSG = defineMessages({
     id: `${displayName}.heading`,
     defaultMessage:
       '{threshold} {threshold, plural, one {signature is} other {signatures are}} required to approve the action',
+  },
+  multipleRolesHeading: {
+    id: `${displayName}.multipleRolesHeading`,
+    defaultMessage:
+      'Multiple permissions are required for this action.\nEach permission held counts as an approval',
   },
   approvals: {
     id: `${displayName}.approvals`,
@@ -105,10 +114,15 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const isOwner = user?.walletAddress === initiatorAddress;
 
-  const requiredRoles = getRolesNeededForMultiSigAction({
-    actionType,
-    createdIn: Number(multiSigData.nativeMultiSigDomainId),
-  });
+  const requiredRoles =
+    getRolesNeededForMultiSigAction({
+      actionType,
+      createdIn: Number(multiSigData.nativeMultiSigDomainId),
+    }) || [];
+  const doesActionRequireMultipleRoles = requiredRoles?.length
+    ? requiredRoles.length > 1
+    : false;
+
   const { uniqueEligibleSignees } = useEligibleSignees({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
     requiredRoles,
@@ -121,22 +135,18 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const notSignedUsers = (uniqueEligibleSignees ?? [])
-    .filter((eligibleSignee) => {
-      return !signatures.find(
-        (signature) => signature.userAddress === eligibleSignee?.walletAddress,
-      );
-    })
-    .map((eligibleSignee) => {
-      return {
-        userAddress: eligibleSignee?.walletAddress,
-        user: {
-          profile: eligibleSignee?.profile,
-        },
-        vote: MultiSigVote.None,
-      };
-    });
-  const allSignatures = [...signatures, ...notSignedUsers].sort((a, b) => {
+  const notSignedUsers = getNotSignedUsers({
+    requiredRoles,
+    eligibleSignees: (uniqueEligibleSignees || []).filter(notMaybe),
+    signatures,
+  });
+
+  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles);
+
+  const signaturesToDisplay = [
+    ...Object.values(allUserSignatures),
+    ...notSignedUsers,
+  ].sort((a, b) => {
     const voteComparison = voteOrder[a.vote] - voteOrder[b.vote];
 
     if (voteComparison !== 0) {
@@ -216,9 +226,11 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     <MenuWithStatusText
       statusTextSectionProps={{
         status: StatusTypes.Info,
-        children: formatText(MSG.heading, {
-          threshold,
-        }),
+        children: doesActionRequireMultipleRoles
+          ? formatText(MSG.multipleRolesHeading)
+          : formatText(MSG.heading, {
+              threshold,
+            }),
         content: (
           <>
             <div className="ml-[1.375rem] mt-1">
@@ -228,7 +240,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.approvals)}</span>
                   )}
                   <ProgressBar
-                    progress={approvalProgress}
+                    progress={Math.min(approvalProgress, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
                       threshold,
@@ -249,9 +261,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.rejections)}</span>
                   )}
                   <ProgressBar
-                    progress={rejectionProgress}
+                    progress={Math.min(rejectionProgress, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
+                      current: rejectionProgress,
                       threshold,
                       progress: rejectionProgress,
                     })}
@@ -261,7 +274,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 </div>
               )}
             </div>
-            {isOwner && allSignatures.length > 5 && (
+            {isOwner && signaturesToDisplay.length > 5 && (
               <div className="mt-2">
                 <StatusText
                   status={StatusTypes.Info}
@@ -310,7 +323,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
               >
                 <h5 className="mb-2 text-1">{formatText(MSG.title)}</h5>
               </Tooltip>
-              <Signees signees={allSignatures} />
+              <Signees
+                signees={signaturesToDisplay}
+                shouldShowRoleNumber={doesActionRequireMultipleRoles}
+              />
               {!isMultiSigInFinalizeState && canUserSign && (
                 <>
                   {userSignature ? (
@@ -353,7 +369,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                           disabled: expectedStep === VoteExpectedStep.cancel,
                         }}
                       />
-                      {(isOwner && allSignatures.length > 5) ||
+                      {(isOwner && signaturesToDisplay.length > 5) ||
                       isMotionOlderThanWeek ? (
                         <CancelButton
                           multiSigId={multiSigData.nativeMultiSigId}
