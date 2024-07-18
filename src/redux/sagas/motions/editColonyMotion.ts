@@ -135,7 +135,7 @@ function* editColonyMotion({
           params: [
             Id.RootDomain,
             childSkillIndex,
-            [colonyAddress],
+            [ADDRESS_ZERO],
             [encodedAction],
           ],
           group: {

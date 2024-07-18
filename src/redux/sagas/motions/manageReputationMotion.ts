@@ -154,7 +154,7 @@ function* manageReputationMotion({
           params: [
             motionPermissionDomainId,
             motionChildSkillIndex,
-            [colonyAddress],
+            [AddressZero],
             [encodedAction],
           ],
           group: {
