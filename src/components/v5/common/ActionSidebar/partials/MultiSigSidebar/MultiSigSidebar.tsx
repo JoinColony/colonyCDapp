@@ -6,6 +6,7 @@ import useExtensionData from '~hooks/useExtensionData.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { isMultiSig } from '~utils/multiSig.ts';
+import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 
 import useGetColonyAction from '../../hooks/useGetColonyAction.ts';
 
@@ -36,7 +37,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     extensionData && isInstalledExtensionData(extensionData);
 
   if (!isMultiSigExtensionInstalled) {
-    return <div>The Multi Sig extension has been uninstalled</div>;
+    return <UninstalledMessage extension={Extension.MultisigPermissions} />;
   }
 
   return (

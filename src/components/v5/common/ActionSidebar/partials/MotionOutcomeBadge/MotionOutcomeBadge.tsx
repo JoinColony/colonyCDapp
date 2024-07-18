@@ -13,6 +13,7 @@ const MOTION_STATES_TO_SHOW = [
   MotionState.FailedNotFinalizable,
   MotionState.Open,
   MotionState.Rejected,
+  MotionState.Invalid,
 ];
 
 const MotionOutcomeBadge = ({ motionState }: MotionOutcomeBadgeProps) => {

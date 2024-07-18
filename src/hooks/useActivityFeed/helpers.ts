@@ -32,7 +32,7 @@ const getActivityFeedMotionState = (
 
   return networkMotionState
     ? getMotionState(networkMotionState, action.motionData)
-    : undefined;
+    : MotionState.Invalid;
 };
 
 export const filterActionByMotionState = (
