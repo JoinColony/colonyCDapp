@@ -45,7 +45,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
 
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const userHasRoles = addressHasRoles({
-    requiredRolesDomains: [Id.RootDomain],
+    requiredRolesDomain: Id.RootDomain,
     colony,
     requiredRoles: [ColonyRole.Root],
     address: user?.walletAddress || '',
