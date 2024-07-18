@@ -1,22 +1,19 @@
 import { CaretDown } from '@phosphor-icons/react';
-import React, { type FC, useEffect, useState, useContext } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ExtensionSaveSettingsContext } from '~context/ExtensionSaveSettingsContext/ExtensionSaveSettingsContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import { ActionTypes } from '~redux/actionTypes.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails.tsx';
 
+import { useBackNavigation, useThresholdData } from './hooks.ts';
 import { InputGroup } from './InputGroup.tsx';
+import { MultiSigThresholdType } from './types.ts';
 
 interface MultiSigPageSetupProps {
   extensionData: InstalledExtensionData;
@@ -97,201 +94,22 @@ const MSG = defineMessages({
   },
 });
 
-enum MultiSigThresholdType {
-  MAJORITY_APPROVAL = 'majorityApproval',
-  FIXED_THRESHOLD = 'fixedThreshold',
-  INHERIT_FROM_COLONY = 'inheritFromColony',
-}
-
-interface DomainThresholdSettings {
-  id: string;
-  nativeSkillId: number;
-  type: MultiSigThresholdType;
-  name: string;
-  threshold: number;
-  isError?: boolean;
-}
-
 const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
-  const {
-    colony: { colonyAddress, domains },
-  } = useColonyContext();
+  useBackNavigation({ extensionData });
 
   const {
-    handleSetValues,
-    handleIsDisabled,
-    handleIsVisible,
-    handleSetActionType,
-    resetAll,
-  } = useContext(ExtensionSaveSettingsContext);
+    thresholdType,
+    fixedThreshold,
+    isFixedThresholdError,
+    domainThresholdConfigs,
+    handleDomainThresholdChange,
+    handleDomainThresholdTypeChange,
+    handleThresholdChange,
+    handleThresholdTypeChange,
+  } = useThresholdData({ extensionData });
 
-  const multiSigConfig = extensionData.params?.multiSig || null;
-
-  const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
-    multiSigConfig && multiSigConfig.colonyThreshold > 0
-      ? MultiSigThresholdType.FIXED_THRESHOLD
-      : MultiSigThresholdType.MAJORITY_APPROVAL,
-  );
-  const defaultFixedThreshold = multiSigConfig
-    ? multiSigConfig.colonyThreshold
-    : 0;
-  const [fixedThreshold, setFixedThreshold] = useState<number | string>(
-    defaultFixedThreshold || '',
-  );
-  const [isFixedThresholdError, setIsFixedThresholdError] = useState(false);
   const [isCustomSettingsVisible, { toggle: toggleCustomSettings }] =
     useToggle();
-
-  const [domainSettings, setDomainSettings] = useState<
-    DomainThresholdSettings[]
-  >([]);
-
-  useEffect(() => {
-    handleIsVisible(true);
-    handleSetActionType(ActionTypes.MULTISIG_SET_THRESHOLDS);
-
-    return () => resetAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const domainThresholds = domainSettings.map((domain) => {
-      let threshold = 0;
-
-      if (
-        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
-      ) {
-        threshold = parseInt(fixedThreshold.toString(), 10);
-      }
-
-      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-        threshold = domain.threshold;
-      }
-      return {
-        skillId: domain.nativeSkillId,
-        threshold,
-      };
-    });
-
-    handleSetValues({
-      colonyAddress,
-      globalThreshold:
-        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-          ? 0
-          : fixedThreshold,
-      domainThresholds,
-    });
-
-    let hasGlobalFixedThresholdError = false;
-    if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      hasGlobalFixedThresholdError = isFixedThresholdError || !fixedThreshold;
-    }
-    const hasDomainSettingError = !!domainSettings.find(
-      (domain) => domain.isError,
-    );
-
-    handleIsDisabled(hasGlobalFixedThresholdError || hasDomainSettingError);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    domainSettings,
-    thresholdType,
-    isFixedThresholdError,
-    fixedThreshold,
-    handleIsDisabled,
-  ]);
-
-  useEffect(() => {
-    if (!domains || !domains.items || !multiSigConfig) {
-      return;
-    }
-
-    const domainsExcludingRoot = domains.items.filter(
-      (domain): domain is NonNullable<typeof domain> =>
-        domain !== null && !domain.isRoot,
-    );
-
-    setDomainSettings(
-      domainsExcludingRoot.map((domain) => {
-        const { colonyThreshold } = multiSigConfig;
-        const existingThreshold = multiSigConfig.domainThresholds?.find(
-          (item) => {
-            return Number(item?.domainId) === domain.nativeId;
-          },
-        )?.domainThreshold;
-        let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
-
-        if (
-          existingThreshold != null &&
-          existingThreshold !== colonyThreshold
-        ) {
-          if (existingThreshold === 0) {
-            type = MultiSigThresholdType.MAJORITY_APPROVAL;
-          } else {
-            type = MultiSigThresholdType.FIXED_THRESHOLD;
-          }
-        }
-
-        return {
-          id: domain.id,
-          nativeSkillId: Number(domain.nativeSkillId),
-          type,
-          name: domain.metadata?.name || '',
-          threshold: existingThreshold || colonyThreshold || 0,
-          isError: false,
-        };
-      }),
-    );
-  }, [domains, multiSigConfig]);
-
-  const { pathname } = useLocation();
-
-  const navigate = useNavigate();
-
-  // We should probably handle a min/max validation of this value depending on the number of members in a colony
-  const handleThresholdChange = (newThreshold: number) => {
-    if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      setFixedThreshold(newThreshold);
-      setIsFixedThresholdError(newThreshold === 0);
-    }
-  };
-
-  const handleThresholdTypeChange = (
-    newThresholdType: MultiSigThresholdType,
-  ) => {
-    setThresholdType(newThresholdType);
-  };
-
-  const handleDomainThresholdTypeChange = (
-    id: string,
-    newType: MultiSigThresholdType,
-  ) => {
-    setDomainSettings((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id ? { ...domain, type: newType } : domain,
-      ),
-    );
-  };
-
-  const handleDomainThresholdChange = (id: string, newThreshold: number) => {
-    setDomainSettings((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id
-          ? { ...domain, threshold: newThreshold, isError: !newThreshold }
-          : domain,
-      ),
-    );
-  };
-
-  /*
-   * If we arrive here but the extension is not installed go back to main extension details page
-   */
-
-  useEffect(() => {
-    if (!isInstalledExtensionData(extensionData)) {
-      navigate(pathname.split('/').slice(0, -1).join('/'));
-    }
-  }, [extensionData, pathname, navigate]);
 
   if (!extensionData) {
     return (
@@ -389,72 +207,74 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                 </p>
               </div>
               <div className="flex flex-col gap-6">
-                {domainSettings.map((domain) => (
-                  <div key={domain.id}>
-                    <div className="flex items-center justify-between">
-                      <p className="text-md font-medium">{domain.name}</p>
-                      <Select
-                        className="w-72"
-                        onChange={(option) =>
-                          handleDomainThresholdTypeChange(
-                            domain.id,
-                            option?.value as MultiSigThresholdType,
-                          )
-                        }
-                        value={domain.type}
-                        options={[
-                          {
-                            label: formatText(MSG.thresholdInherit),
-                            value: MultiSigThresholdType.INHERIT_FROM_COLONY,
-                          },
-                          {
-                            label: formatText(
-                              MSG.thresholdMajorityApprovalTitle,
-                            ),
-                            value: MultiSigThresholdType.MAJORITY_APPROVAL,
-                          },
-                          {
-                            label: formatText(MSG.thresholdFixedTitle),
-                            value: MultiSigThresholdType.FIXED_THRESHOLD,
-                          },
-                        ]}
-                      />
-                    </div>
-                    {domain.type === MultiSigThresholdType.FIXED_THRESHOLD && (
-                      <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
-                        <div>
-                          <p className="text-md">
-                            {formatText(MSG.thresholdFixedTitle)}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {formatText(MSG.domainFixedThresholdDescription)}
-                          </p>
-                        </div>
-
-                        <InputGroup
-                          value={domain.threshold?.toString()}
-                          min={0}
-                          placeholder="0"
-                          type="number"
-                          onChange={(e) =>
-                            handleDomainThresholdChange(
-                              domain.id,
-                              Number(e.target.value),
+                {domainThresholdConfigs.map(
+                  ({ id, name, type, threshold, isError }) => (
+                    <div key={id}>
+                      <div className="flex items-center justify-between">
+                        <p className="text-md font-medium">{name}</p>
+                        <Select
+                          className="w-72"
+                          onChange={(option) =>
+                            handleDomainThresholdTypeChange(
+                              id,
+                              option?.value as MultiSigThresholdType,
                             )
                           }
-                          isError={domain.isError}
-                          errorMessage={formatText(
-                            MSG.thresholdFixedErrorMessage,
-                          )}
-                          appendMessage={formatText(
-                            MSG.thresholdFixedFormApprovals,
-                          )}
-                          className="flex shrink-0 grow-0 basis-auto flex-col items-end"
+                          value={type}
+                          options={[
+                            {
+                              label: formatText(MSG.thresholdInherit),
+                              value: MultiSigThresholdType.INHERIT_FROM_COLONY,
+                            },
+                            {
+                              label: formatText(
+                                MSG.thresholdMajorityApprovalTitle,
+                              ),
+                              value: MultiSigThresholdType.MAJORITY_APPROVAL,
+                            },
+                            {
+                              label: formatText(MSG.thresholdFixedTitle),
+                              value: MultiSigThresholdType.FIXED_THRESHOLD,
+                            },
+                          ]}
                         />
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {type === MultiSigThresholdType.FIXED_THRESHOLD && (
+                        <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
+                          <div>
+                            <p className="text-md">
+                              {formatText(MSG.thresholdFixedTitle)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {formatText(MSG.domainFixedThresholdDescription)}
+                            </p>
+                          </div>
+
+                          <InputGroup
+                            value={threshold?.toString()}
+                            min={0}
+                            placeholder="0"
+                            type="number"
+                            onChange={(e) =>
+                              handleDomainThresholdChange(
+                                id,
+                                Number(e.target.value),
+                              )
+                            }
+                            isError={isError}
+                            errorMessage={formatText(
+                              MSG.thresholdFixedErrorMessage,
+                            )}
+                            appendMessage={formatText(
+                              MSG.thresholdFixedFormApprovals,
+                            )}
+                            className="flex shrink-0 grow-0 basis-auto flex-col items-end"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )}
               </div>
             </>
           </AccordionItem>
