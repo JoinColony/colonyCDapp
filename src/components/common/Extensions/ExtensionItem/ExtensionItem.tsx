@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useMobile } from '~hooks/index.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -19,7 +18,6 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   extensionId,
 }) => {
   const { formatMessage } = useIntl();
-  const isMobile = useMobile();
   const {
     badgeMessage,
     extensionUrl,
@@ -61,13 +59,15 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
             </p>
           </div>
         </Link>
-        {!isMobile && button}
+        <div className="ml-[3.125rem] self-stretch sm:ml-0 sm:self-auto">
+          {button}
+        </div>
       </div>
-      {isMobile && (
+      {/* {isMobile && (
         <div className="ml-3.625rem mt-6 w-[calc(100%-3.625rem)] shrink-0 sm:ml-4 sm:mt-0 sm:w-auto">
           {button}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
