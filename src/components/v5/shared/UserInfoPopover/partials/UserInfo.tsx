@@ -9,17 +9,23 @@ import {
   getRole,
 } from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
-import { type AvailablePermission } from '~hooks/members/types.ts';
+import {
+  type DomainWithPermissionsAndReputation,
+  type AvailablePermission,
+} from '~hooks/members/types.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
+import { getTeamColor } from '~utils/teams.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { type UserInfoProps } from '../types.ts';
+
+import styles from './UserInfo.module.css';
 
 const getPermissionTooltipContent = ({
   role,
@@ -62,6 +68,20 @@ const getPermissionTooltipContent = ({
   );
 };
 
+const getRemainingDomainsTooltipContent = (
+  domains: DomainWithPermissionsAndReputation[],
+) =>
+  domains.map(({ domainName, domainId }) => <p key={domainId}>{domainName}</p>);
+
+const getDomainTooltipContent = (name: string) => {
+  const truncatedName = multiLineTextEllipsis(name, 7);
+  if (truncatedName === name) {
+    return null;
+  }
+
+  return name;
+};
+
 const displayName = 'v5.UserInfoPopover.partials.UserInfo';
 
 const UserInfo: FC<UserInfoProps> = ({
@@ -77,20 +97,20 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div
-      className={clsx({
+      className={clsx('flex flex-col', {
         'sm:min-w-[17rem]': !isTopContributorType,
         'sm:min-w-[20rem]': isTopContributorType,
       })}
     >
       <div
         className={clsx({
-          'bg-purple-100 p-6': isTopContributorType,
-          'px-6 pt-6': !isTopContributorType,
+          'bg-purple-100 px-[22px] pb-[18px] pt-6': isTopContributorType,
+          'px-[23px] pt-6': !isTopContributorType,
         })}
       >
         <div
           className={clsx({
-            'mb-6': isTopContributorType,
+            'mb-4': isTopContributorType,
           })}
         >
           {userDetails}
@@ -102,27 +122,46 @@ const UserInfo: FC<UserInfoProps> = ({
               text={formatText({ id: 'userInfo.top.contributor.in' })}
             />
             <div className="flex gap-1">
-              {domains
-                ?.slice(0, 3)
-                .map(({ domainName, domainId }) => (
+              {domains?.slice(0, 3).map(({ domainName, domainId }) => (
+                <Tooltip
+                  key={domainId}
+                  placement="top"
+                  tooltipContent={getDomainTooltipContent(domainName)}
+                >
                   <UserStatus
-                    key={domainId}
                     mode="team"
                     text={multiLineTextEllipsis(domainName, 7)}
+                    className="cursor-default"
                   />
-                ))}
+                </Tooltip>
+              ))}
               {domains?.length > 3 && (
-                <UserStatus mode="team" className="!w-auto !max-w-none">
-                  +{domains.length - 3}
-                </UserStatus>
+                <Tooltip
+                  placement="top"
+                  tooltipContent={getRemainingDomainsTooltipContent(
+                    domains.slice(3),
+                  )}
+                >
+                  <UserStatus
+                    mode="team"
+                    className="!w-auto !max-w-none cursor-default"
+                  >
+                    +{domains.length - 3}
+                  </UserStatus>
+                </Tooltip>
               )}
             </div>
           </>
         )}
       </div>
-      <div className="flex flex-col gap-6 p-6">
+      <div className="flex flex-1 flex-col gap-6 pt-[18px] sm:overflow-hidden sm:pb-6">
         {aboutDescriptionText && (
-          <div>
+          <div
+            className={clsx({
+              'px-[22px]': isTopContributorType,
+              'px-[23px]': !isTopContributorType,
+            })}
+          >
             <TitleLabel
               className="mb-2"
               text={formatText({ id: 'userInfo.about.section' })}
@@ -130,21 +169,41 @@ const UserInfo: FC<UserInfoProps> = ({
             <p className="text-md text-gray-600">{aboutDescriptionText}</p>
           </div>
         )}
-        {additionalContent && <div>{additionalContent}</div>}
-        {(aboutDescriptionText || additionalContent) && !!domains?.length && (
-          <div className="border-t border-gray-200" />
+        {additionalContent && (
+          <div
+            className={clsx({
+              'px-[22px]': isTopContributorType,
+              'px-[23px]': !isTopContributorType,
+            })}
+          >
+            {additionalContent}
+          </div>
         )}
         {domains?.length ? (
-          <div>
+          <div
+            className={clsx(`flex flex-col pr-6 sm:overflow-hidden sm:pr-3.5`, {
+              'pl-[22px]': isTopContributorType,
+              'pl-[23px]': !isTopContributorType,
+            })}
+          >
             <TitleLabel
               text={formatText({
                 id: 'userInfo.teamBreakdown.section',
               })}
+              className="pb-2"
             />
-            <ul className="flex flex-col gap-2 pt-2">
+            <ul
+              className={clsx(
+                `${styles.userInfoDomainsWrapper} flex flex-col gap-2 sm:max-h-[216px] sm:overflow-y-auto sm:overflow-x-hidden sm:pr-1.5`,
+                {
+                  '-mr-1.5 pr-2': domains.length > 4,
+                },
+              )}
+            >
               {domains.map(
                 ({
                   domainId,
+                  domainColor,
                   domainName,
                   permissions,
                   multiSigPermissions,
@@ -184,40 +243,51 @@ const UserInfo: FC<UserInfoProps> = ({
                   return (
                     <li
                       key={domainId}
-                      className="grid grid-cols-[2fr,1fr] items-center font-medium"
+                      className="grid h-12 min-h-12 w-full grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:min-w-[302px] sm:max-w-[302px]"
                     >
-                      <span className="truncate whitespace-nowrap text-md">
-                        {domainName}
-                      </span>
-                      <div className="flex justify-end">
+                      <div className="flex flex-row items-center truncate">
+                        <div
+                          className={`mr-1 flex h-[0.625rem] w-[0.625rem] rounded-full ${getTeamColor(domainColor)}`}
+                        />
+                        <span className="truncate whitespace-nowrap text-sm">
+                          {domainName}
+                        </span>
+                      </div>
+                      <div className="flex justify-end gap-1">
                         {permissionRole && (
                           <Tooltip
+                            placement="top"
                             tooltipContent={getPermissionTooltipContent({
                               role: permissionRole,
                             })}
                           >
-                            <PermissionsBadge icon={User} />
+                            <PermissionsBadge icon={User} pillSize="small" />
                           </Tooltip>
                         )}
 
                         {isMultiSigEnabled && multiSigPermissionRole && (
                           <Tooltip
+                            placement="top"
                             tooltipContent={getPermissionTooltipContent({
                               role: multiSigPermissionRole,
                               isMultiSig: true,
                             })}
                           >
-                            <PermissionsBadge icon={UsersThree} />
+                            <PermissionsBadge
+                              icon={UsersThree}
+                              pillSize="small"
+                            />
                           </Tooltip>
                         )}
 
                         <Tooltip
-                          className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
+                          placement="top"
+                          className="flex items-center justify-end text-sm font-normal text-gray-900"
                           tooltipContent={
                             <Numeral value={reputationRaw} suffix=" pts" />
                           }
                         >
-                          <Star size={12} />
+                          <Star size={14} />
                           <span className="ml-1 inline-block">
                             {reputationPercentage.toFixed(2)}%
                           </span>

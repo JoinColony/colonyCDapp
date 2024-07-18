@@ -1,12 +1,17 @@
 import clsx from 'clsx';
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, { useRef, type FC, type PropsWithChildren } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useAddClassToElement } from '~hooks/useAddClassToElement.ts';
+import { useResize } from '~hooks/useResize.ts';
+import { addClassToElement } from '~utils/css/addClassToElement.ts';
+import { isElementOverflowingContainerY } from '~utils/css/isElementOverflowingContainerY.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
 
 import ModalBase from './ModalBase.tsx';
 import { type ModalProps } from './types.ts';
+
+import styles from './Modal.module.css';
 
 const displayName = 'v5.Modal';
 
@@ -23,7 +28,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closeMessage,
   disabled,
   buttonMode = 'secondarySolid',
-  isTopSectionWithBackground,
+  withPadding = true,
+  withBorder,
   shouldShowHeader = false,
   isOpen,
   ...props
@@ -35,67 +41,90 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
     className: 'show-header-in-modal',
     element: document.body,
   });
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const addOverflowContentClass = () => {
+    const showScrollbar = isElementOverflowingContainerY(contentRef.current);
+    if (showScrollbar) {
+      addClassToElement(contentRef.current, '-mr-1.5');
+    }
+  };
+
+  useResize(addOverflowContentClass);
 
   return (
     <ModalBase
       onRequestClose={onClose}
       isOpen={isOpen}
       {...{ isFullOnMobile, ...props }}
-      isTopSectionWithBackground={isTopSectionWithBackground}
+      withPadding={withPadding}
+      withBorder={withBorder}
     >
-      {Icon && (
-        <span
-          className={clsx(
-            'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
-            {
-              'border-negative-200 text-negative-400': isWarning,
-            },
-          )}
-        >
-          <Icon size={24} />
-        </span>
-      )}
-      <CloseButton
-        aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
-        title={formatMessage({ id: 'button.cancel' })}
-        onClick={onClose}
-        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-      />
       <div
-        className={clsx(
-          'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
-          {
-            'pb-6 pr-6': !isTopSectionWithBackground,
-          },
-        )}
+        className={`${styles.modalContentWrapper} overflow-y-auto overflow-x-hidden`}
       >
-        <div className="flex flex-grow flex-col">
-          {title && <h4 className="mb-2 heading-5">{title}</h4>}
-          {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
-          {children}
-        </div>
-        {(closeMessage || confirmMessage) && (
-          <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
-            {closeMessage && (
-              <Button mode="primaryOutline" isFullSize onClick={onClose}>
-                {closeMessage}
-              </Button>
+        <div ref={contentRef} className="relative">
+          {Icon && (
+            <span
+              className={clsx(
+                'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
+                {
+                  'border-negative-200 text-negative-400': isWarning,
+                },
+              )}
+            >
+              <Icon size={24} />
+            </span>
+          )}
+          <CloseButton
+            aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
+            title={formatMessage({ id: 'button.cancel' })}
+            onClick={onClose}
+            className={clsx(
+              `absolute right-4 text-gray-400 hover:text-gray-600`,
+              {
+                'top-6': !withPadding,
+                '-top-2': withPadding,
+              },
             )}
-            {confirmMessage && (
-              <Button
-                mode={buttonMode}
-                isFullSize
-                disabled={disabled}
-                onClick={() => {
-                  onConfirm?.();
-                  onClose();
-                }}
-              >
-                {confirmMessage}
-              </Button>
+          />
+          <div
+            className={clsx(
+              'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
+              {
+                'pb-6 pr-6': withPadding,
+              },
+            )}
+          >
+            <div className="flex flex-grow flex-col">
+              {title && <h4 className="mb-2 heading-5">{title}</h4>}
+              {subTitle && <p className="text-md text-gray-600">{subTitle}</p>}
+              {children}
+            </div>
+            {(closeMessage || confirmMessage) && (
+              <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
+                {closeMessage && (
+                  <Button mode="primaryOutline" isFullSize onClick={onClose}>
+                    {closeMessage}
+                  </Button>
+                )}
+                {confirmMessage && (
+                  <Button
+                    mode={buttonMode}
+                    isFullSize
+                    disabled={disabled}
+                    onClick={() => {
+                      onConfirm?.();
+                      onClose();
+                    }}
+                  >
+                    {confirmMessage}
+                  </Button>
+                )}
+              </div>
             )}
           </div>
-        )}
+        </div>
       </div>
     </ModalBase>
   );
