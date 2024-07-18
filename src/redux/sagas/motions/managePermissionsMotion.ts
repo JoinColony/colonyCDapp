@@ -117,7 +117,7 @@ function* managePermissionsMotion({
         default: {
           // If assigning the user own permissions and isMultiSig, then pass the colony address
           // If assigning the user own permissions and is not multi-sig, then pass address zero
-          altTarget = isMultiSig ? colonyAddress : ADDRESS_ZERO;
+          altTarget = ADDRESS_ZERO;
           break;
         }
       }
