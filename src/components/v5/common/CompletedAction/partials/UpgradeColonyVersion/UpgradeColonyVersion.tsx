@@ -41,6 +41,10 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, newColonyVersion } = action;
 
+  const motionDomainMetadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -93,10 +97,8 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {motionDomainMetadata && (
+          <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (
