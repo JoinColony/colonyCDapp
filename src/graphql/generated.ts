@@ -332,6 +332,11 @@ export type ColonyAction = {
   showInActionsList: Scalars['Boolean'];
   /** Streaming payment associated with the action, if any */
   streamingPayment?: Maybe<StreamingPayment>;
+  /**
+   * Changes to the streaming payment associated with the action, if any
+   * Applicable to `EDIT_STREAMING_PAYMENT` action only
+   */
+  streamingPaymentChanges?: Maybe<FullStreamingPaymentChanges>;
   /** ID of the associated streaming payment, if any */
   streamingPaymentId?: Maybe<Scalars['ID']>;
   /** The target Domain of the action, if applicable */
@@ -424,6 +429,9 @@ export enum ColonyActionType {
   EditExpenditure = 'EDIT_EXPENDITURE',
   /** An action related to creating a motion to edit an expenditure */
   EditExpenditureMotion = 'EDIT_EXPENDITURE_MOTION',
+  /** An action related to editing a streaming payment */
+  EditStreamingPayment = 'EDIT_STREAMING_PAYMENT',
+  EditStreamingPaymentMotion = 'EDIT_STREAMING_PAYMENT_MOTION',
   /** An action related to a domain reputation penalty within a Colony (smite) */
   EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
   /** An action related to a domain reputation penalty within a Colony (smite) via a motion */
@@ -880,6 +888,10 @@ export type ColonyMotion = {
   objectionAnnotation?: Maybe<Annotation>;
   /** Id of the associated objection annotation, if any */
   objectionAnnotationId?: Maybe<Scalars['ID']>;
+  /** Streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes */
+  pendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+  /** Identifier of streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes */
+  pendingStreamingPaymentMetadataId?: Maybe<Scalars['ID']>;
   /**
    * Stakes remaining to activate either side of the motion
    * It's a tuple: `[nayRemaining, yayRemaining]`
@@ -895,6 +907,10 @@ export type ColonyMotion = {
   skillRep: Scalars['String'];
   /** List of staker rewards users will be receiving for a motion */
   stakerRewards: Array<StakerRewards>;
+  /** Streaming payment associated with the motion, if any */
+  streamingPaymentId?: Maybe<Scalars['ID']>;
+  /** Streaming Payment changes by the action */
+  streamingPaymentPendingChanges?: Maybe<StreamingPaymentPendingChanges>;
   /** The transaction hash of the createMotion action */
   transactionHash: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
@@ -1156,6 +1172,7 @@ export type CreateColonyActionInput = {
   roles?: InputMaybe<ColonyActionRolesInput>;
   rootHash: Scalars['String'];
   showInActionsList: Scalars['Boolean'];
+  streamingPaymentChanges?: InputMaybe<FullStreamingPaymentChangesInput>;
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -1308,12 +1325,15 @@ export type CreateColonyMotionInput = {
   nativeMotionDomainId: Scalars['String'];
   nativeMotionId: Scalars['String'];
   objectionAnnotationId?: InputMaybe<Scalars['ID']>;
+  pendingStreamingPaymentMetadataId?: InputMaybe<Scalars['ID']>;
   remainingStakes: Array<Scalars['String']>;
   repSubmitted: Scalars['String'];
   requiredStake: Scalars['String'];
   revealedVotes: MotionStakesInput;
   skillRep: Scalars['String'];
   stakerRewards: Array<StakerRewardsInput>;
+  streamingPaymentId?: InputMaybe<Scalars['ID']>;
+  streamingPaymentPendingChanges?: InputMaybe<StreamingPaymentPendingChangesInput>;
   transactionHash: Scalars['ID'];
   userMinStake: Scalars['String'];
   usersStakes: Array<UserMotionStakesInput>;
@@ -1449,6 +1469,11 @@ export type CreateMotionMessageInput = {
   motionId: Scalars['ID'];
   name: Scalars['String'];
   vote?: InputMaybe<Scalars['String']>;
+};
+
+export type CreatePendingStreamingPaymentMetadataInput = {
+  endCondition: StreamingPaymentEndCondition;
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreatePrivateBetaInviteCodeInput = {
@@ -1721,6 +1746,10 @@ export type DeleteIngestorStatsInput = {
 };
 
 export type DeleteMotionMessageInput = {
+  id: Scalars['ID'];
+};
+
+export type DeletePendingStreamingPaymentMetadataInput = {
   id: Scalars['ID'];
 };
 
@@ -2140,6 +2169,17 @@ export enum FilteringMethod {
   /** Apply a union filter */
   Union = 'UNION'
 }
+
+export type FullStreamingPaymentChanges = {
+  __typename?: 'FullStreamingPaymentChanges';
+  newValues: StreamingPaymentChanges;
+  oldValues: StreamingPaymentChanges;
+};
+
+export type FullStreamingPaymentChangesInput = {
+  newValues: StreamingPaymentChangesInput;
+  oldValues: StreamingPaymentChangesInput;
+};
 
 export type FunctionParam = {
   __typename?: 'FunctionParam';
@@ -2704,10 +2744,12 @@ export type ModelColonyMotionConditionInput = {
   not?: InputMaybe<ModelColonyMotionConditionInput>;
   objectionAnnotationId?: InputMaybe<ModelIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMotionConditionInput>>>;
+  pendingStreamingPaymentMetadataId?: InputMaybe<ModelIdInput>;
   remainingStakes?: InputMaybe<ModelStringInput>;
   repSubmitted?: InputMaybe<ModelStringInput>;
   requiredStake?: InputMaybe<ModelStringInput>;
   skillRep?: InputMaybe<ModelStringInput>;
+  streamingPaymentId?: InputMaybe<ModelIdInput>;
   transactionHash?: InputMaybe<ModelIdInput>;
   userMinStake?: InputMaybe<ModelStringInput>;
 };
@@ -2734,10 +2776,12 @@ export type ModelColonyMotionFilterInput = {
   not?: InputMaybe<ModelColonyMotionFilterInput>;
   objectionAnnotationId?: InputMaybe<ModelIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyMotionFilterInput>>>;
+  pendingStreamingPaymentMetadataId?: InputMaybe<ModelIdInput>;
   remainingStakes?: InputMaybe<ModelStringInput>;
   repSubmitted?: InputMaybe<ModelStringInput>;
   requiredStake?: InputMaybe<ModelStringInput>;
   skillRep?: InputMaybe<ModelStringInput>;
+  streamingPaymentId?: InputMaybe<ModelIdInput>;
   transactionHash?: InputMaybe<ModelIdInput>;
   userMinStake?: InputMaybe<ModelStringInput>;
 };
@@ -3240,6 +3284,27 @@ export type ModelMotionMessageFilterInput = {
   vote?: InputMaybe<ModelStringInput>;
 };
 
+export type ModelPendingStreamingPaymentMetadataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>>>;
+  endCondition?: InputMaybe<ModelStreamingPaymentEndConditionInput>;
+  not?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>>>;
+};
+
+export type ModelPendingStreamingPaymentMetadataConnection = {
+  __typename?: 'ModelPendingStreamingPaymentMetadataConnection';
+  items: Array<Maybe<PendingStreamingPaymentMetadata>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelPendingStreamingPaymentMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>>>;
+  endCondition?: InputMaybe<ModelStreamingPaymentEndConditionInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>>>;
+};
+
 export type ModelPrivateBetaInviteCodeConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
   not?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
@@ -3667,10 +3732,12 @@ export type ModelSubscriptionColonyMotionFilterInput = {
   nativeMotionId?: InputMaybe<ModelSubscriptionStringInput>;
   objectionAnnotationId?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMotionFilterInput>>>;
+  pendingStreamingPaymentMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   remainingStakes?: InputMaybe<ModelSubscriptionStringInput>;
   repSubmitted?: InputMaybe<ModelSubscriptionStringInput>;
   requiredStake?: InputMaybe<ModelSubscriptionStringInput>;
   skillRep?: InputMaybe<ModelSubscriptionStringInput>;
+  streamingPaymentId?: InputMaybe<ModelSubscriptionIdInput>;
   transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   userMinStake?: InputMaybe<ModelSubscriptionStringInput>;
 };
@@ -3860,6 +3927,13 @@ export type ModelSubscriptionMotionMessageFilterInput = {
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionMotionMessageFilterInput>>>;
   vote?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionPendingStreamingPaymentMetadataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
+  endCondition?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
 };
 
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
@@ -4385,6 +4459,7 @@ export type Mutation = {
   createExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   createIngestorStats?: Maybe<IngestorStats>;
   createMotionMessage?: Maybe<MotionMessage>;
+  createPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -4425,6 +4500,7 @@ export type Mutation = {
   deleteExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteMotionMessage?: Maybe<MotionMessage>;
+  deletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -4465,6 +4541,7 @@ export type Mutation = {
   updateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   updateIngestorStats?: Maybe<IngestorStats>;
   updateMotionMessage?: Maybe<MotionMessage>;
+  updatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -4667,6 +4744,13 @@ export type MutationCreateIngestorStatsArgs = {
 export type MutationCreateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: CreateMotionMessageInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreatePendingStreamingPaymentMetadataArgs = {
+  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
+  input: CreatePendingStreamingPaymentMetadataInput;
 };
 
 
@@ -4943,6 +5027,13 @@ export type MutationDeleteMotionMessageArgs = {
 
 
 /** Root mutation type */
+export type MutationDeletePendingStreamingPaymentMetadataArgs = {
+  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
+  input: DeletePendingStreamingPaymentMetadataInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeletePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: DeletePrivateBetaInviteCodeInput;
@@ -5215,6 +5306,13 @@ export type MutationUpdateMotionMessageArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdatePendingStreamingPaymentMetadataArgs = {
+  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
+  input: UpdatePendingStreamingPaymentMetadataInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdatePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: UpdatePrivateBetaInviteCodeInput;
@@ -5419,6 +5517,14 @@ export type PendingModifiedTokenAddressesInput = {
   removed?: InputMaybe<Array<Scalars['String']>>;
 };
 
+export type PendingStreamingPaymentMetadata = {
+  __typename?: 'PendingStreamingPaymentMetadata';
+  createdAt: Scalars['AWSDateTime'];
+  endCondition: StreamingPaymentEndCondition;
+  id: Scalars['ID'];
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 export type PrivateBetaInviteCode = {
   __typename?: 'PrivateBetaInviteCode';
   createdAt: Scalars['AWSDateTime'];
@@ -5556,6 +5662,7 @@ export type Query = {
   getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
   getMotionByExpenditureId?: Maybe<ModelColonyMotionConnection>;
+  getMotionByStreamingPaymentId?: Maybe<ModelColonyMotionConnection>;
   getMotionByTransactionHash?: Maybe<ModelColonyMotionConnection>;
   getMotionMessage?: Maybe<MotionMessage>;
   getMotionMessageByMotionId?: Maybe<ModelMotionMessageConnection>;
@@ -5563,6 +5670,7 @@ export type Query = {
   getMotionState: Scalars['Int'];
   /** Get the timeout for the current period of a motion */
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
+  getPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -5621,6 +5729,7 @@ export type Query = {
   listExtensionInstallationsCounts?: Maybe<ModelExtensionInstallationsCountConnection>;
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
+  listPendingStreamingPaymentMetadata?: Maybe<ModelPendingStreamingPaymentMetadataConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
@@ -5998,6 +6107,16 @@ export type QueryGetMotionByExpenditureIdArgs = {
 
 
 /** Root query type */
+export type QueryGetMotionByStreamingPaymentIdArgs = {
+  filter?: InputMaybe<ModelColonyMotionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  streamingPaymentId: Scalars['ID'];
+};
+
+
+/** Root query type */
 export type QueryGetMotionByTransactionHashArgs = {
   filter?: InputMaybe<ModelColonyMotionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6033,6 +6152,12 @@ export type QueryGetMotionStateArgs = {
 /** Root query type */
 export type QueryGetMotionTimeoutPeriodsArgs = {
   input?: InputMaybe<GetMotionTimeoutPeriodsInput>;
+};
+
+
+/** Root query type */
+export type QueryGetPendingStreamingPaymentMetadataArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -6457,6 +6582,14 @@ export type QueryListIngestorStatsArgs = {
 /** Root query type */
 export type QueryListMotionMessagesArgs = {
   filter?: InputMaybe<ModelMotionMessageFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListPendingStreamingPaymentMetadataArgs = {
+  filter?: InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -7020,6 +7153,7 @@ export type StreamingPayment = {
   /** Is the stream waived? */
   isWaived?: Maybe<Scalars['Boolean']>;
   metadata?: Maybe<StreamingPaymentMetadata>;
+  motions?: Maybe<ModelColonyMotionConnection>;
   nativeDomainId: Scalars['Int'];
   nativeId: Scalars['Int'];
   recipientAddress: Scalars['String'];
@@ -7035,6 +7169,29 @@ export type StreamingPaymentActionsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+export type StreamingPaymentMotionsArgs = {
+  filter?: InputMaybe<ModelColonyMotionFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+export type StreamingPaymentChanges = {
+  __typename?: 'StreamingPaymentChanges';
+  amount?: Maybe<Scalars['String']>;
+  endTime?: Maybe<Scalars['String']>;
+  interval?: Maybe<Scalars['String']>;
+  startTime?: Maybe<Scalars['String']>;
+};
+
+export type StreamingPaymentChangesInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  endTime?: InputMaybe<Scalars['String']>;
+  interval?: InputMaybe<Scalars['String']>;
+  startTime?: InputMaybe<Scalars['String']>;
 };
 
 export type StreamingPaymentClaim = {
@@ -7060,6 +7217,21 @@ export type StreamingPaymentMetadata = {
   endCondition: StreamingPaymentEndCondition;
   id: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
+};
+
+export type StreamingPaymentPendingChanges = {
+  __typename?: 'StreamingPaymentPendingChanges';
+  amount?: Maybe<Scalars['String']>;
+  endTime?: Maybe<Scalars['String']>;
+  interval?: Maybe<Scalars['String']>;
+  startTime?: Maybe<Scalars['String']>;
+};
+
+export type StreamingPaymentPendingChangesInput = {
+  amount?: InputMaybe<Scalars['String']>;
+  endTime?: InputMaybe<Scalars['String']>;
+  interval?: InputMaybe<Scalars['String']>;
+  startTime?: InputMaybe<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -7090,6 +7262,7 @@ export type Subscription = {
   onCreateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
+  onCreatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -7128,6 +7301,7 @@ export type Subscription = {
   onDeleteExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
+  onDeletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -7166,6 +7340,7 @@ export type Subscription = {
   onUpdateExtensionInstallationsCount?: Maybe<ExtensionInstallationsCount>;
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
+  onUpdatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -7308,6 +7483,11 @@ export type SubscriptionOnCreateIngestorStatsArgs = {
 
 export type SubscriptionOnCreateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnCreatePendingStreamingPaymentMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
 };
 
 
@@ -7501,6 +7681,11 @@ export type SubscriptionOnDeleteMotionMessageArgs = {
 };
 
 
+export type SubscriptionOnDeletePendingStreamingPaymentMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
+};
+
+
 export type SubscriptionOnDeletePrivateBetaInviteCodeArgs = {
   filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
@@ -7688,6 +7873,11 @@ export type SubscriptionOnUpdateIngestorStatsArgs = {
 
 export type SubscriptionOnUpdateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
+};
+
+
+export type SubscriptionOnUpdatePendingStreamingPaymentMetadataArgs = {
+  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
 };
 
 
@@ -7992,6 +8182,7 @@ export type UpdateColonyActionInput = {
   roles?: InputMaybe<ColonyActionRolesInput>;
   rootHash?: InputMaybe<Scalars['String']>;
   showInActionsList?: InputMaybe<Scalars['Boolean']>;
+  streamingPaymentChanges?: InputMaybe<FullStreamingPaymentChangesInput>;
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -8122,12 +8313,15 @@ export type UpdateColonyMotionInput = {
   nativeMotionDomainId?: InputMaybe<Scalars['String']>;
   nativeMotionId?: InputMaybe<Scalars['String']>;
   objectionAnnotationId?: InputMaybe<Scalars['ID']>;
+  pendingStreamingPaymentMetadataId?: InputMaybe<Scalars['ID']>;
   remainingStakes?: InputMaybe<Array<Scalars['String']>>;
   repSubmitted?: InputMaybe<Scalars['String']>;
   requiredStake?: InputMaybe<Scalars['String']>;
   revealedVotes?: InputMaybe<MotionStakesInput>;
   skillRep?: InputMaybe<Scalars['String']>;
   stakerRewards?: InputMaybe<Array<StakerRewardsInput>>;
+  streamingPaymentId?: InputMaybe<Scalars['ID']>;
+  streamingPaymentPendingChanges?: InputMaybe<StreamingPaymentPendingChangesInput>;
   transactionHash?: InputMaybe<Scalars['ID']>;
   userMinStake?: InputMaybe<Scalars['String']>;
   usersStakes?: InputMaybe<Array<UserMotionStakesInput>>;
@@ -8291,6 +8485,11 @@ export type UpdateMotionMessageInput = {
   motionId?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   vote?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdatePendingStreamingPaymentMetadataInput = {
+  endCondition?: InputMaybe<StreamingPaymentEndCondition>;
+  id: Scalars['ID'];
 };
 
 export type UpdatePrivateBetaInviteCodeInput = {
@@ -8829,6 +9028,13 @@ export type UpdateStreamingPaymentMetadataMutationVariables = Exact<{
 
 
 export type UpdateStreamingPaymentMetadataMutation = { __typename?: 'Mutation', updateStreamingPaymentMetadata?: { __typename?: 'StreamingPaymentMetadata', id: string } | null };
+
+export type CreatePendingStreamingPaymentMetadataMutationVariables = Exact<{
+  input: CreatePendingStreamingPaymentMetadataInput;
+}>;
+
+
+export type CreatePendingStreamingPaymentMetadataMutation = { __typename?: 'Mutation', createPendingStreamingPaymentMetadata?: { __typename?: 'PendingStreamingPaymentMetadata', id: string } | null };
 
 export type CreateSafeTransactionMutationVariables = Exact<{
   input: CreateSafeTransactionInput;
@@ -10703,6 +10909,39 @@ export function useUpdateStreamingPaymentMetadataMutation(baseOptions?: Apollo.M
 export type UpdateStreamingPaymentMetadataMutationHookResult = ReturnType<typeof useUpdateStreamingPaymentMetadataMutation>;
 export type UpdateStreamingPaymentMetadataMutationResult = Apollo.MutationResult<UpdateStreamingPaymentMetadataMutation>;
 export type UpdateStreamingPaymentMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateStreamingPaymentMetadataMutation, UpdateStreamingPaymentMetadataMutationVariables>;
+export const CreatePendingStreamingPaymentMetadataDocument = gql`
+    mutation CreatePendingStreamingPaymentMetadata($input: CreatePendingStreamingPaymentMetadataInput!) {
+  createPendingStreamingPaymentMetadata(input: $input) {
+    id
+  }
+}
+    `;
+export type CreatePendingStreamingPaymentMetadataMutationFn = Apollo.MutationFunction<CreatePendingStreamingPaymentMetadataMutation, CreatePendingStreamingPaymentMetadataMutationVariables>;
+
+/**
+ * __useCreatePendingStreamingPaymentMetadataMutation__
+ *
+ * To run a mutation, you first call `useCreatePendingStreamingPaymentMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePendingStreamingPaymentMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPendingStreamingPaymentMetadataMutation, { data, loading, error }] = useCreatePendingStreamingPaymentMetadataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreatePendingStreamingPaymentMetadataMutation(baseOptions?: Apollo.MutationHookOptions<CreatePendingStreamingPaymentMetadataMutation, CreatePendingStreamingPaymentMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePendingStreamingPaymentMetadataMutation, CreatePendingStreamingPaymentMetadataMutationVariables>(CreatePendingStreamingPaymentMetadataDocument, options);
+      }
+export type CreatePendingStreamingPaymentMetadataMutationHookResult = ReturnType<typeof useCreatePendingStreamingPaymentMetadataMutation>;
+export type CreatePendingStreamingPaymentMetadataMutationResult = Apollo.MutationResult<CreatePendingStreamingPaymentMetadataMutation>;
+export type CreatePendingStreamingPaymentMetadataMutationOptions = Apollo.BaseMutationOptions<CreatePendingStreamingPaymentMetadataMutation, CreatePendingStreamingPaymentMetadataMutationVariables>;
 export const CreateSafeTransactionDocument = gql`
     mutation CreateSafeTransaction($input: CreateSafeTransactionInput!) {
   createSafeTransaction(input: $input) {

@@ -737,6 +737,11 @@ enum ColonyActionType {
   An action related to cancelling a streaming payment via a motion
   """
   CANCEL_STREAMING_PAYMENT_MOTION
+  """
+  An action related to editing a streaming payment
+  """
+  EDIT_STREAMING_PAYMENT
+  EDIT_STREAMING_PAYMENT_MOTION
 }
 
 """
@@ -2463,6 +2468,30 @@ type ColonyMotion @model {
   gasEstimate: String!
 
   """
+  Streaming payment associated with the motion, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getMotionByStreamingPaymentId"
+    )
+
+  """
+  Streaming Payment changes by the action
+  """
+  streamingPaymentPendingChanges: StreamingPaymentPendingChanges
+
+  """
+  Identifier of streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadataId: ID
+  """
+  Streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadata: PendingStreamingPaymentMetadata
+    @hasOne(fields: ["pendingStreamingPaymentMetadataId"])
+
+  """
   Expenditure associated with the motion, if any
   """
   expenditureId: ID
@@ -2485,6 +2514,18 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+}
+
+type StreamingPaymentPendingChanges {
+  startTime: String
+  endTime: String
+  interval: String
+  amount: String
+}
+
+type PendingStreamingPaymentMetadata @model {
+  id: ID!
+  endCondition: StreamingPaymentEndCondition!
 }
 
 type ExpenditureFundingItem {
@@ -2971,6 +3012,23 @@ type ColonyAction @model @searchable {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+  """
+  Changes to the streaming payment associated with the action, if any
+  Applicable to `EDIT_STREAMING_PAYMENT` action only
+  """
+  streamingPaymentChanges: FullStreamingPaymentChanges
+}
+
+type FullStreamingPaymentChanges {
+  oldValues: StreamingPaymentChanges!
+  newValues: StreamingPaymentChanges!
+}
+
+type StreamingPaymentChanges {
+  startTime: String
+  endTime: String
+  interval: String
+  amount: String
 }
 
 type ExpenditureSlotChanges {
@@ -3399,6 +3457,11 @@ type StreamingPayment @model {
   Is the stream waived?
   """
   isWaived: Boolean
+  """
+  The motions created that relate to this streaming payment, if there are any
+  """
+  motions: [ColonyMotion]
+    @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
 }
 
 type StreamingPaymentMetadata @model {

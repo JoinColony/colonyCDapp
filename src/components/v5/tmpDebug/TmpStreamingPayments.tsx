@@ -18,9 +18,14 @@ import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLef
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
-import { type EditStreamingPaymentPayload } from '~redux/sagas/expenditures/editStreamingPayment.ts';
-import { type CancelStreamingPaymentPayload } from '~redux/types/actions/expenditures.ts';
-import { type StreamingPaymentsMotionCancelPayload } from '~redux/types/actions/motion.ts';
+import {
+  type EditStreamingPaymentPayload,
+  type CancelStreamingPaymentPayload,
+} from '~redux/types/actions/expenditures.ts';
+import {
+  type StreamingPaymentsMotionEditPayload,
+  type StreamingPaymentsMotionCancelPayload,
+} from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -121,6 +126,11 @@ const TmpStreamingPayments = () => {
     submit: ActionTypes.STREAMING_PAYMENT_EDIT,
     error: ActionTypes.STREAMING_PAYMENT_EDIT_ERROR,
     success: ActionTypes.STREAMING_PAYMENT_EDIT_SUCCESS,
+  });
+  const editStreamingPaymentMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_STREAMING_PAYMENT_EDIT,
+    error: ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_ERROR,
+    success: ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_SUCCESS,
   });
   const cancelMotion = useAsyncFunction({
     submit: ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
@@ -350,6 +360,96 @@ const TmpStreamingPayments = () => {
     }
 
     await editStreamingPayment(payload);
+  };
+
+  const handleEditMotion = async () => {
+    if (
+      !streamingPayment ||
+      !streamingPaymentsAddress ||
+      !votingReputationAddress
+    ) {
+      return;
+    }
+
+    const fixedPayload: StreamingPaymentsMotionEditPayload = {
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress,
+      annotationMessage: annotation,
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.FixedTime,
+      endTimestamp: updateEndTime ? getEndTime(selectedEndTime) : undefined,
+    };
+
+    const limitPayload: StreamingPaymentsMotionEditPayload = {
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress,
+      annotationMessage: annotation,
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.LimitReached,
+      limitAmount: updateLimit ? limit : undefined,
+    };
+
+    const whenCancelledPayload: StreamingPaymentsMotionEditPayload = {
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress,
+      annotationMessage: annotation,
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      endCondition: StreamingPaymentEndCondition.WhenCancelled,
+    };
+
+    const undefinedEndConditionPayload: StreamingPaymentsMotionEditPayload = {
+      motionDomainId: Id.RootDomain,
+      votingReputationAddress,
+      annotationMessage: annotation,
+      colony,
+      streamingPayment,
+      streamingPaymentsAddress,
+      startTimestamp: updateStartTime
+        ? getStartTime(selectedStartTime)
+        : undefined,
+      endTimestamp: updateEndTime ? getEndTime(selectedEndTime) : undefined,
+      amount: updateAmount ? transactionAmount : undefined,
+      interval: updateInterval ? getInterval(selectedInterval) : undefined,
+      limitAmount: updateLimit ? limit : undefined,
+    };
+
+    let payload: StreamingPaymentsMotionEditPayload =
+      undefinedEndConditionPayload;
+
+    if (updateEndCondition) {
+      if (endCondition === StreamingPaymentEndCondition.FixedTime) {
+        payload = fixedPayload;
+      }
+      if (endCondition === StreamingPaymentEndCondition.LimitReached) {
+        payload = limitPayload;
+      }
+      if (endCondition === StreamingPaymentEndCondition.WhenCancelled) {
+        payload = whenCancelledPayload;
+      }
+    }
+
+    await editStreamingPaymentMotion(payload);
   };
 
   return (
@@ -624,6 +724,12 @@ const TmpStreamingPayments = () => {
             </div>
             <Button onClick={() => handleEdit()} disabled={!streamingPayment}>
               Edit
+            </Button>
+            <Button
+              onClick={() => handleEditMotion()}
+              disabled={!streamingPayment}
+            >
+              Edit via motion
             </Button>
           </div>
         )}
