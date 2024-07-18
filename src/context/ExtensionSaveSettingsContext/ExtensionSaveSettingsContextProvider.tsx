@@ -3,6 +3,7 @@ import React, {
   type PropsWithChildren,
   useState,
   useMemo,
+  useRef,
 } from 'react';
 
 import { type ActionTypes } from '~redux/actionTypes.ts';
@@ -14,14 +15,20 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [values, setValues] = useState({});
+  const values = useRef({});
   const [actionType, setActionType] = useState<ActionTypes | null>(null);
 
   const handleIsVisible = (newValue: boolean) => setIsVisible(newValue);
 
   const handleIsDisabled = (newValue: boolean) => setIsDisabled(newValue);
 
-  const handleSetValues = (newValues) => setValues(newValues);
+  const handleSetValues = (newValues) => {
+    values.current = newValues;
+  };
+
+  const handleGetValues = () => {
+    return values.current;
+  };
 
   const handleSetActionType = (newActionType: ActionTypes) =>
     setActionType(newActionType);
@@ -29,23 +36,23 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
   const resetAll = () => {
     setIsVisible(false);
     setIsDisabled(false);
-    setValues({});
     setActionType(null);
+    values.current = {};
   };
 
   const value = useMemo(
     () => ({
       isVisible,
       isDisabled,
-      values,
       actionType,
+      handleGetValues,
       handleIsVisible,
       handleIsDisabled,
       handleSetValues,
       handleSetActionType,
       resetAll,
     }),
-    [isVisible, isDisabled, values, actionType],
+    [isVisible, isDisabled, actionType],
   );
 
   return (
