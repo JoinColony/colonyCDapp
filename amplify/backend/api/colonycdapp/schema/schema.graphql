@@ -3606,6 +3606,7 @@ type ColonyAction @model @searchable {
   Changes to the streaming payment associated with the action, if any
   Applicable to `EDIT_STREAMING_PAYMENT` action only
   """
+<<<<<<< HEAD
   streamingPaymentChanges: StreamingPaymentChangeSet
 }
 
@@ -3617,14 +3618,28 @@ type StreamingPaymentChangeSet {
   """
   The values before the change
   """
+=======
+  streamingPaymentChanges: FullStreamingPaymentChanges
+}
+
+type FullStreamingPaymentChanges {
+  oldValues: StreamingPaymentChanges!
+>>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
   newValues: StreamingPaymentChanges!
 }
 
 type StreamingPaymentChanges {
+<<<<<<< HEAD
   startTime: String!
   endTime: String!
   interval: String!
   amount: String!
+=======
+  startTime: String
+  endTime: String
+  interval: String
+  amount: String
+>>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
 }
 
 """
@@ -4127,10 +4142,13 @@ type StreamingPayment @model @searchable {
   """
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+<<<<<<< HEAD
   """
   Address of the stream creator, can be a user or an extension
   """
   creatorAddress: ID!
+=======
+>>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
 }
 
 type StreamingPaymentMetadata @model {

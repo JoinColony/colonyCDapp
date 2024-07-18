@@ -1,11 +1,4 @@
-import {
-  type AnyStreamingPaymentsClient,
-  ClientType,
-  ColonyRole,
-  getPermissionProofs,
-} from '@colony/colony-js';
-import { type BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
+import { type AnyStreamingPaymentsClient, ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -22,8 +15,6 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
-import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
 
 import {
   createTransaction,
