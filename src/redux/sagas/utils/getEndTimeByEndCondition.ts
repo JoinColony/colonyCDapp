@@ -1,9 +1,8 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, constants } from 'ethers';
 
 import { StreamingPaymentEndCondition } from '~gql';
 
-// Maximum uint256
-export const TIMESTAMP_IN_FUTURE = BigNumber.from(2).pow(256).sub(1);
+export const TIMESTAMP_IN_FUTURE = constants.MaxUint256;
 
 export const getEndTimeByEndCondition = ({
   endCondition,
