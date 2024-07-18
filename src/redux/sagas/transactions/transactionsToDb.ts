@@ -121,7 +121,7 @@ export function* addTransactionToDb({
     variables: {
       input: {
         id,
-        context: context as ClientType,
+        context: context as unknown as ClientType,
         createdAt: txCreatedAt,
         from,
         colonyAddress,
