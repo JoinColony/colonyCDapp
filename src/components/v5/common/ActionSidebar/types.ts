@@ -4,6 +4,8 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
+  submitButtonType: ActionFormProps<any>['actionFormSubmitButtonType'];
+  onActionFormButtonClick: ActionFormProps<any>['onActionFormButtonClick'];
 }
 
 export interface ActionFormBaseProps {
@@ -24,6 +26,9 @@ export type UseActionFormBaseHook = (
     | 'validationSchema'
     | 'mode'
     | 'reValidateMode'
+    | 'actionFormSubmitButtonType'
+    | 'onActionFormButtonClick'
+    | 'id'
   >,
 ) => void;
 

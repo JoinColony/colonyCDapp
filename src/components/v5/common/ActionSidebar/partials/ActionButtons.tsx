@@ -30,7 +30,11 @@ import SaveDraftButton from './SaveDraftButton/SaveDraftButton.tsx';
 
 const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
-const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
+const ActionButtons: FC<ActionButtonsProps> = ({
+  isActionDisabled,
+  submitButtonType = 'submit',
+  onActionFormButtonClick,
+}) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -114,7 +118,10 @@ const ActionButtons: FC<ActionButtonsProps> = ({ isActionDisabled }) => {
             disabled={isActionDisabled || isButtonDisabled || isFieldDisabled}
             text={submitText}
             isFullSize={isMobile}
-            type="submit"
+            type={submitButtonType}
+            onClick={() =>
+              submitButtonType === 'button' && onActionFormButtonClick?.()
+            }
           />
         )}
       </div>

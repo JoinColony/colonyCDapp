@@ -25,6 +25,7 @@ const useActionFormProps = (
     children: undefined,
     mode: 'onChange',
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
+    actionFormSubmitButtonType: 'submit',
   });
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(

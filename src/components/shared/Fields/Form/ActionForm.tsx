@@ -45,6 +45,15 @@ export interface ActionFormProps<V extends Record<string, any>>
 
   /** A function to transform the action after the form data was passed in (as payload) */
   transform?: ActionTransformFnType;
+
+  /** The action form's button type */
+  actionFormSubmitButtonType?: HTMLButtonElement['type'];
+
+  /** Function called when the form button type is set to "button" */
+  onActionFormButtonClick?: () => void;
+
+  /** A form id you can directly associate a submit button with */
+  id?: string;
 }
 
 const ActionForm = <V extends Record<string, any>>({
