@@ -11,7 +11,7 @@ import {
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
-import { getMultiSigState } from '~utils/multiSig.ts';
+import { getMultiSigState } from '~utils/multiSig/index.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
 
