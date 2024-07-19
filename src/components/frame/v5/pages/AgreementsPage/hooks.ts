@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Extension } from '@colony/colony-js';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -13,13 +12,12 @@ import {
   filterActionByMotionState,
   makeWithMotionStateMapper,
 } from '~hooks/useActivityFeed/helpers.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 
 const QUERY_PAGE_SIZE = 20;
 
@@ -137,13 +135,14 @@ export const useGetAgreements = () => {
     [
       agreementsData,
       motionStatesMap,
-      multiSigInstalledExtensionData,
-      votingRepInstalledExtensionData,
+      multiSigExtensionData,
+      votingReputationExtensionData,
     ],
   );
 
   const loadingMotionStateFilter =
-    motionStatesLoading && !!activeFilters?.motionStates?.length;
+    (motionStatesLoading || loadingExtensions) &&
+    !!activeFilters?.motionStates?.length;
 
   const filteredAgreements = agreements
     .filter((agreement) =>
