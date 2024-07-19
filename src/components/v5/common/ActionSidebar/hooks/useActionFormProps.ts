@@ -26,6 +26,7 @@ const useActionFormProps = (
     mode: 'onChange',
     onSuccess: () => {},
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
+    actionFormSubmitButtonType: 'submit',
   });
   const { colony } = useColonyContext();
   const [searchParams, setSearchParams] = useSearchParams();

@@ -217,17 +217,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
-            onSubmitClick={
-              shouldShowCreateStakedExpenditureModal
-                ? async () => {
-                    await trigger();
-
-                    if (isValid) {
-                      showCreateStakedExpenditureModal();
-                    }
-                  }
-                : undefined
-            }
+            submitButtonType={actionFormSubmitButtonType}
+            onActionFormButtonClick={onActionFormButtonClick}
           />
         </div>
       )}
@@ -297,7 +288,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             actionFormProps?.onSuccess?.();
           }}
         >
-          <ActionSidebarFormContent getFormOptions={getFormOptions} />
+          <ActionSidebarFormContent
+            getFormOptions={getFormOptions}
+            isMotion={isMotion}
+            transactionId={transactionId}
+            actionFormProps={actionFormProps}
+          />
         </ActionForm>
       </div>
     </div>
