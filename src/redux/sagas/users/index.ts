@@ -140,6 +140,10 @@ function* usernameCreate({
       refetchQueries,
     });
 
+    if (updateUser) {
+      yield call(updateUser, walletAddress, true);
+    }
+
     yield put<AllActions>({
       type: ActionTypes.USERNAME_CREATE_SUCCESS,
       payload: {
@@ -148,11 +152,6 @@ function* usernameCreate({
       },
       meta,
     });
-
-    if (updateUser) {
-      updateUser(walletAddress, true);
-    }
-
     if (navigate) {
       navigate(colonyName ? `/${colonyName}` : LANDING_PAGE_ROUTE);
     }

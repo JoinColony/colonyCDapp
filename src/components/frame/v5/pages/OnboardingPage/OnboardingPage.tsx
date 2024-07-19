@@ -1,14 +1,13 @@
 import { HandWaving, HandsClapping } from '@phosphor-icons/react';
 import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Onboarding, { Flow } from '~common/Onboarding/index.ts';
 import HeaderRow from '~common/Onboarding/wizardSteps/HeaderRow.tsx';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
-import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
@@ -62,7 +61,7 @@ const SplashLayout = ({ children }: PropsWithChildren) => (
 );
 
 const OnboardingPage = ({ flow }: Props) => {
-  const { connectWallet, user, userLoading, wallet, walletConnecting } =
+  const { connectWallet, userLoading, wallet, walletConnecting } =
     useAppContext();
   const { inviteCode } = useParams<{ inviteCode: string }>();
   const { data, loading } = useGetPrivateBetaCodeInviteValidityQuery({
@@ -77,10 +76,6 @@ const OnboardingPage = ({ flow }: Props) => {
         <PageLoader loadingText={formatText(MSG.loadingMessage)} />
       </SplashLayout>
     );
-  }
-
-  if (flow === Flow.User && user) {
-    return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
   if (!wallet || (flow === Flow.Colony && !valid)) {
