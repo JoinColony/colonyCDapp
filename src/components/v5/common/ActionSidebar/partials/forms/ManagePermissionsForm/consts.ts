@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 import { boolean, number, object, string } from 'yup';
 
@@ -54,15 +54,20 @@ export type ManagePermissionsFormValues = {
   // These are intended to be used as reference values when running form validations
   // and won't be included in the form submission
   /**
-   * Keeps track of a user's current DB role
+   * Keeps track of a user's current DB role wrapper which is taken from the role meta i.e. mod | payer | admin
    * @internal
    */
-  _dbUserRole?: ManagePermissionsFormValues['role'];
+  _dbUserRoleWrapper?: ManagePermissionsFormValues['role'];
   /**
-   * Keeps track of a user's current DB permissions
+   * Keeps track of a user's specific DB roles for a domain
    * @internal
    */
-  _dbUserPermissions?: ColonyRole[];
+  _dbUserRolesForDomain?: ColonyRole[];
+  /**
+   * Keeps track of a user's inherited DB roles for a domain
+   * @internal
+   */
+  _dbUserInheritedRolesForDomain?: ColonyRole[];
 };
 
 export type SchemaTestContext = { parent: ManagePermissionsFormValues };
@@ -76,8 +81,8 @@ export const permissionsSchema = object({
   role_6: boolean().default(false),
 });
 
-export enum RemoveRoleOptionValue {
-  remove = 'remove',
+export enum UserRoleModifier {
+  Remove = 'Remove',
 }
 
 export enum Authority {
@@ -106,6 +111,15 @@ const MSG = defineMessages({
     id: 'managePermissionsFormError.permissionsRequired',
     defaultMessage: 'You have to enable at least one permission',
   },
+  permissionsInherited: {
+    id: 'managePermissionsFormError.permissionsInherited',
+    defaultMessage:
+      'Permissions inherited from a parent team, select the parent team to remove permissions.',
+  },
+  noPermissionsInDomain: {
+    id: 'managePermissionsFormError.noPermissionsInDomain',
+    defaultMessage: 'Member does not have permissions in this team',
+  },
 });
 
 export const validationSchema = object()
@@ -116,13 +130,47 @@ export const validationSchema = object()
     role: string()
       .test(
         ROLE_FIELD_NAME,
+        formatMessage(MSG.permissionsInherited),
+        (
+          role,
+          {
+            parent: { member, team, _dbUserInheritedRolesForDomain },
+          }: SchemaTestContext,
+        ) => {
+          if (
+            member &&
+            team !== Id.RootDomain &&
+            role === UserRoleModifier.Remove
+          ) {
+            return !_dbUserInheritedRolesForDomain?.length;
+          }
+
+          return true;
+        },
+      )
+      .test(
+        ROLE_FIELD_NAME,
+        formatMessage(MSG.noPermissionsInDomain),
+        (
+          role,
+          { parent: { member, _dbUserRolesForDomain } }: SchemaTestContext,
+        ) => {
+          if (member && role === UserRoleModifier.Remove) {
+            return !!_dbUserRolesForDomain?.length;
+          }
+
+          return true;
+        },
+      )
+      .test(
+        ROLE_FIELD_NAME,
         formatMessage(MSG.samePermissionsApplied),
         (
           role,
-          { parent: { member, team, _dbUserRole } }: SchemaTestContext,
+          { parent: { member, team, _dbUserRoleWrapper } }: SchemaTestContext,
         ) => {
           if (member && team && role && role !== UserRole.Custom) {
-            return role !== _dbUserRole;
+            return role !== _dbUserRoleWrapper;
           }
 
           return true;
@@ -151,20 +199,20 @@ export const validationSchema = object()
             (
               permissions,
               {
-                parent: { member, team, _dbUserPermissions },
+                parent: { member, team, _dbUserRolesForDomain },
               }: SchemaTestContext,
             ) => {
-              if (member && team && permissions && _dbUserPermissions) {
-                // At this point, the user's current and db-stored permissions are represented as ColonyRole[]: [0, 1, 5, 6]
-                // Meanwhile the form-formatted permissions are represented as an object: { role_0: false, ... role_6: true }
-                // We'd want to filter the truthy form-formatted permissions and map their ColonyRole suffixes
+              if (member && team && permissions && _dbUserRolesForDomain) {
+                // At this point, the user's current and db-stored roles are represented as ColonyRole[]: [0, 1, 5, 6]
+                // Meanwhile the form-formatted roles are represented as an object: { role_0: false, ... role_6: true }
+                // We'd want to filter the truthy form-formatted roles and map their ColonyRole suffixes
                 // i.e. { role_0: false, role_1: true, role_2: false, role_4: true } => [1, 4]
                 const newPermissions = getObjectKeys(permissions)
                   .filter((permissionKey) => permissions[permissionKey])
                   .map(extractColonyRoleFromPermissionKey);
 
                 return (
-                  JSON.stringify(_dbUserPermissions.sort()) !==
+                  JSON.stringify(_dbUserRolesForDomain.sort()) !==
                   JSON.stringify(newPermissions.sort())
                 );
               }
