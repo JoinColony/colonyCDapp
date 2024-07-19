@@ -129,6 +129,7 @@ const SetUserRoles = ({ action }: Props) => {
               : DecisionMethod.Permissions,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
+          enableRedoAction={!!userColonyRoles.length}
         />
       </div>
       <ActionSubtitle>

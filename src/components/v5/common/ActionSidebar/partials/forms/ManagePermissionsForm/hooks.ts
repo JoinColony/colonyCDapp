@@ -16,6 +16,7 @@ import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
+  UserRoleModifier,
   type ManagePermissionsFormValues,
   validationSchema,
 } from './consts.ts';
@@ -33,9 +34,8 @@ export const useManagePermissions = (
     trigger,
     control,
     setValue,
-    setError,
     clearErrors,
-    formState: { errors, defaultValues, isSubmitted },
+    formState: { defaultValues, isSubmitted },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
@@ -79,6 +79,10 @@ export const useManagePermissions = (
         }
       }
 
+      if (role === UserRoleModifier.Remove) {
+        trigger('role');
+      }
+
       if (
         !name ||
         !['team', 'member'].includes(name) ||
@@ -99,16 +103,7 @@ export const useManagePermissions = (
     });
 
     return () => unsubscribe();
-  }, [
-    clearErrors,
-    colony,
-    errors.permissions,
-    setError,
-    setValue,
-    isSubmitted,
-    trigger,
-    watch,
-  ]);
+  }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
 
   useActionFormBaseHook({
     getFormOptions,
@@ -132,7 +127,6 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
-    mode: 'onSubmit',
   });
 
   return {

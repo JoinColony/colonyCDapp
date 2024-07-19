@@ -62,12 +62,14 @@ export const getUserRolesForDomain = ({
   domainId,
   excludeInherited = false,
   intersectingRoles = false,
+  inheritedRoles = false,
 }: {
   colony: ColonyFragment;
   userAddress: Address;
   domainId: number;
   excludeInherited?: boolean;
   intersectingRoles?: boolean;
+  inheritedRoles?: boolean;
 }): ColonyRole[] => {
   const userRolesInAnyDomain = colony.roles?.items.find(
     (domainRole) =>
@@ -80,6 +82,10 @@ export const getUserRolesForDomain = ({
       domainRole?.domain?.nativeId === Id.RootDomain &&
       domainRole?.targetAddress === userAddress,
   );
+
+  if (inheritedRoles) {
+    return convertRolesToArray(userRolesInRootDomain);
+  }
 
   if (excludeInherited && userRolesInAnyDomain) {
     return convertRolesToArray(userRolesInAnyDomain);

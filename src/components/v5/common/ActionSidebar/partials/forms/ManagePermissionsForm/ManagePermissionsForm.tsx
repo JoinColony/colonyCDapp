@@ -28,7 +28,7 @@ import UserSelect from '../../UserSelect/index.ts';
 import {
   AuthorityOptions,
   type ManagePermissionsFormValues,
-  RemoveRoleOptionValue,
+  UserRoleModifier,
 } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
@@ -123,36 +123,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </FormRow>
       <FormRow
-        icon={Shield}
-        fieldName="role"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.managePermissions.permissions',
-            }),
-          },
-        }}
-        title={formatText({ id: 'actionSidebar.permissions' })}
-        isDisabled={hasNoDecisionMethods}
-      >
-        <FormCardSelect
-          name="role"
-          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm md:px-4 md:[&_.section-title]:px-2"
-          renderSelectedValue={(_, placeholder) =>
-            getRoleLabel(role) || placeholder
-          }
-          options={ALLOWED_PERMISSION_OPTIONS}
-          title={formatText({ id: 'actionSidebar.permissions' })}
-          placeholder={formatText({
-            id: 'actionSidebar.managePermissions.roleSelect.placeholder',
-          })}
-          itemClassName="group flex text-md md:transition-colors md:[&_.role-title]:hover:font-medium md:hover:bg-gray-50 rounded-lg p-2 w-full cursor-pointer"
-          footer={permissionSelectFooter}
-          disabled={hasNoDecisionMethods}
-          valueOverride={role}
-        />
-      </FormRow>
-      <FormRow
         icon={Signature}
         fieldName="authority"
         tooltips={{
@@ -191,10 +161,40 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           })}
         />
       </FormRow>
+      <FormRow
+        icon={Shield}
+        fieldName="role"
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.managePermissions.permissions',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.permissions' })}
+        isDisabled={hasNoDecisionMethods}
+      >
+        <FormCardSelect
+          name="role"
+          cardClassName="max-w-[calc(100vw-2.5rem)] md:max-w-sm md:px-4 md:[&_.section-title]:px-2"
+          renderSelectedValue={(_, placeholder) =>
+            getRoleLabel(role) || placeholder
+          }
+          options={ALLOWED_PERMISSION_OPTIONS}
+          title={formatText({ id: 'actionSidebar.permissions' })}
+          placeholder={formatText({
+            id: 'actionSidebar.managePermissions.roleSelect.placeholder',
+          })}
+          itemClassName="group flex text-md md:transition-colors md:[&_.role-title]:hover:font-medium md:hover:bg-gray-50 rounded-lg p-2 w-full cursor-pointer"
+          footer={permissionSelectFooter}
+          disabled={hasNoDecisionMethods}
+          valueOverride={role}
+        />
+      </FormRow>
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== RemoveRoleOptionValue.remove && (
+      {role !== UserRoleModifier.Remove && (
         <PermissionsTable
           name="permissions"
           role={role as UserRole}
