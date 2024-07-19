@@ -3,6 +3,7 @@ import { isHexString } from 'ethers/lib/utils';
 import { ColonyActionType, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type AnyActionType } from '~types/actions.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
@@ -223,16 +224,30 @@ export const getActionsByPageNumber = (
 export const makeWithMotionStateMapper =
   (
     motionStatesMap: MotionStatesMap,
-    isVotingRepExtensionInstalled: boolean | null,
-    isMultiSigExtensionInstalled: boolean | null,
+    votingRepExtensionData: InstalledExtensionData | null,
+    multiSigExtensionData: InstalledExtensionData | null,
   ) =>
   (action: ColonyAction): ActivityFeedColonyAction => {
     let motionState;
-    if (action.isMultiSig && !isMultiSigExtensionInstalled) {
+    // If the action is multi sig, and the multi sig extension was uninstalled.
+    if (action.isMultiSig && !multiSigExtensionData) {
       motionState = MotionState.Uninstalled;
-    } else if (action.isMotion && !isVotingRepExtensionInstalled) {
+    }
+    // If the action is a motion, and the voting with reputation extension was uninstalled.
+    else if (action.isMotion && !votingRepExtensionData) {
       motionState = MotionState.Uninstalled;
-    } else {
+    }
+
+    // If the action is a motion, but was created with an old uninstalled extension.
+    else if (
+      action.isMotion &&
+      action.motionData?.createdBy !== votingRepExtensionData?.address
+    ) {
+      motionState = MotionState.Uninstalled;
+    }
+
+    // Otherwise, get the state in a normal way.
+    else {
       motionState = getActivityFeedMotionState(action, motionStatesMap);
     }
 
