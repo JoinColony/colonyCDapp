@@ -30,7 +30,11 @@ const getActivityFeedMotionState = (
 
   const networkMotionState = motionStatesMap.get(action.motionData.motionId);
 
-  return networkMotionState
+  if (networkMotionState === null) {
+    return MotionState.Uninstalled;
+  }
+
+  return networkMotionState !== undefined
     ? getMotionState(networkMotionState, action.motionData)
     : MotionState.Invalid;
 };
@@ -220,8 +224,23 @@ export const getActionsByPageNumber = (
 };
 
 export const makeWithMotionStateMapper =
-  (motionStatesMap: MotionStatesMap) =>
-  (action: ColonyAction): ActivityFeedColonyAction => ({
-    ...action,
-    motionState: getActivityFeedMotionState(action, motionStatesMap),
-  });
+  (
+    motionStatesMap: MotionStatesMap,
+    isVotingRepExtensionInstalled: boolean | null,
+    isMultiSigExtensionInstalled: boolean | null,
+  ) =>
+  (action: ColonyAction): ActivityFeedColonyAction => {
+    let motionState;
+    if (action.isMultiSig && !isMultiSigExtensionInstalled) {
+      motionState = MotionState.Uninstalled;
+    } else if (action.isMotion && !isVotingRepExtensionInstalled) {
+      motionState = MotionState.Uninstalled;
+    } else {
+      motionState = getActivityFeedMotionState(action, motionStatesMap);
+    }
+
+    return {
+      ...action,
+      motionState,
+    };
+  };

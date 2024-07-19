@@ -303,7 +303,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     withAdditionalStatuses
                   />
                 )}
-                {(!!isMotion || !!isMultiSig) && (
+                {(!!isMotion || !!isMultiSig) && motionState && (
                   <MotionOutcomeBadge motionState={motionState} />
                 )}
               </div>
