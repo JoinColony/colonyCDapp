@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useImperativeHandle, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -33,17 +34,19 @@ export const useThresholdData = ({ extensionData }) => {
   } = useColonyContext();
 
   const {
-    handleSetValues,
-    handleIsDisabled,
-    handleIsVisible,
-    handleSetActionType,
-    resetAll,
-  } = useContext(ExtensionSaveSettingsContext);
+    register,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors, isValid },
+    reset,
+  } = useForm<any>({
+    defaultValues: { globalThreshold: defaultFixedThreshold || '' },
+    mode: 'onChange',
+  });
 
-  const [fixedThreshold, setFixedThreshold] = useState<number | string>(
-    defaultFixedThreshold || '',
-  );
-  const [isFixedThresholdError, setIsFixedThresholdError] = useState(false);
+  const { handleIsVisible, handleSetActionType, resetAll, callback } =
+    useContext(ExtensionSaveSettingsContext);
 
   const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
     multiSigConfig && multiSigConfig.colonyThreshold > 0
@@ -59,56 +62,16 @@ export const useThresholdData = ({ extensionData }) => {
     handleIsVisible(true);
     handleSetActionType(ActionTypes.MULTISIG_SET_THRESHOLDS);
 
-    return () => resetAll();
+    return () => {
+      resetAll();
+      reset();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const domainThresholds = domainThresholdConfigs.map((domain) => {
-      let threshold = 0;
-
-      if (
-        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
-      ) {
-        threshold = parseInt(fixedThreshold.toString(), 10);
-      }
-
-      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-        threshold = domain.threshold;
-      }
-      return {
-        skillId: domain.nativeSkillId,
-        threshold,
-      };
-    });
-
-    handleSetValues({
-      colonyAddress,
-      globalThreshold:
-        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-          ? 0
-          : fixedThreshold,
-      domainThresholds,
-    });
-
-    let hasGlobalFixedThresholdError = false;
-    if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      hasGlobalFixedThresholdError = isFixedThresholdError || !fixedThreshold;
-    }
-    const hasDomainSettingError = !!domainThresholdConfigs.find(
-      (domain) => domain.isError,
-    );
-
-    handleIsDisabled(hasGlobalFixedThresholdError || hasDomainSettingError);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    domainThresholdConfigs,
-    thresholdType,
-    isFixedThresholdError,
-    fixedThreshold,
-    handleIsDisabled,
-  ]);
+    setValue('colonyAddress', colonyAddress);
+  }, [colonyAddress, setValue]);
 
   useEffect(() => {
     if (!domains || !domains.items || !multiSigConfig) {
@@ -120,58 +83,78 @@ export const useThresholdData = ({ extensionData }) => {
         domain !== null && !domain.isRoot,
     );
 
-    setDomainThresholdConfigs(
-      domainsExcludingRoot.map((domain) => {
-        const { colonyThreshold } = multiSigConfig;
-        const existingThreshold = multiSigConfig.domainThresholds?.find(
-          (item) => {
-            return Number(item?.domainId) === domain.nativeId;
-          },
-        )?.domainThreshold;
-        let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
+    const tempDomainThresholdConfigs = domainsExcludingRoot.map((domain) => {
+      const { colonyThreshold } = multiSigConfig;
+      const existingThreshold = multiSigConfig.domainThresholds?.find(
+        (item) => {
+          return Number(item?.domainId) === domain.nativeId;
+        },
+      )?.domainThreshold;
+      let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
+
+      if (existingThreshold != null && existingThreshold !== colonyThreshold) {
+        if (existingThreshold === 0) {
+          type = MultiSigThresholdType.MAJORITY_APPROVAL;
+        } else {
+          type = MultiSigThresholdType.FIXED_THRESHOLD;
+        }
+      }
+
+      const name = domain.metadata?.name || '';
+      setValue(name, existingThreshold || colonyThreshold || 0);
+
+      return {
+        id: domain.id,
+        nativeSkillId: Number(domain.nativeSkillId),
+        type,
+        name,
+      };
+    });
+
+    setDomainThresholdConfigs(tempDomainThresholdConfigs);
+  }, [domains, multiSigConfig, setValue]);
+
+  useImperativeHandle(callback, () => ({
+    getValues: async () => {
+      await trigger(undefined, { shouldFocus: true });
+      if (!isValid) throw new Error('Error within form');
+
+      const values = getValues();
+
+      const domainThresholds = domainThresholdConfigs.map((domain) => {
+        let threshold = 0;
 
         if (
-          existingThreshold != null &&
-          existingThreshold !== colonyThreshold
+          domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
+          thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
         ) {
-          if (existingThreshold === 0) {
-            type = MultiSigThresholdType.MAJORITY_APPROVAL;
-          } else {
-            type = MultiSigThresholdType.FIXED_THRESHOLD;
-          }
+          threshold = Number(values.globalThreshold);
         }
 
+        if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
+          threshold = Number(values[domain.name]);
+        }
         return {
-          id: domain.id,
-          nativeSkillId: Number(domain.nativeSkillId),
-          type,
-          name: domain.metadata?.name || '',
-          threshold: existingThreshold || colonyThreshold || 0,
-          isError: false,
+          skillId: domain.nativeSkillId,
+          threshold,
         };
-      }),
-    );
-  }, [domains, multiSigConfig]);
+      });
 
-  const resetFixedThresholdFields = () => {
-    setFixedThreshold('');
-    setIsFixedThresholdError(false);
-  };
+      return {
+        colonyAddress,
+        globalThreshold:
+          thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+            ? 0
+            : values.globalThreshold,
+        domainThresholds,
+      };
+    },
+  }));
 
-  const handleThresholdChange = (newThreshold: number) => {
-    if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      setFixedThreshold(newThreshold);
-      setIsFixedThresholdError(newThreshold === 0);
-    }
-  };
-
-  const handleThresholdTypeChange = (
+  const handleGlobalThresholdTypeChange = (
     newThresholdType: MultiSigThresholdType,
   ) => {
     setThresholdType(newThresholdType);
-    if (newThresholdType === MultiSigThresholdType.MAJORITY_APPROVAL) {
-      resetFixedThresholdFields();
-    }
   };
 
   const handleDomainThresholdTypeChange = (
@@ -185,24 +168,20 @@ export const useThresholdData = ({ extensionData }) => {
     );
   };
 
-  const handleDomainThresholdChange = (id: string, newThreshold: number) => {
-    setDomainThresholdConfigs((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id
-          ? { ...domain, threshold: newThreshold, isError: !newThreshold }
-          : domain,
-      ),
-    );
+  const handleThresholdValueChange = (id: string, value: number) => {
+    setValue(id, value, { shouldDirty: true, shouldValidate: true });
   };
 
   return {
     thresholdType,
-    fixedThreshold,
-    isFixedThresholdError,
-    domainThresholdConfigs,
-    handleThresholdChange,
-    handleThresholdTypeChange,
+    isFixedThresholdError: !!errors.globalThreshold,
+    domainThresholdConfigs: domainThresholdConfigs.map((config) => ({
+      ...config,
+      isError: !!errors[config.name],
+    })),
+    register,
+    handleThresholdValueChange,
+    handleGlobalThresholdTypeChange,
     handleDomainThresholdTypeChange,
-    handleDomainThresholdChange,
   };
 };

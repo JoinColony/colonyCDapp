@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC } from 'react';
+import React, { useEffect, type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import Tabs from '~shared/Extensions/Tabs/Tabs.tsx';
@@ -31,6 +31,18 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({
 }) => {
   const isExtensionInstalled = isInstalledExtensionData(extensionData);
 
+  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
+  const extensionTabs = getExtensionTabs(
+    extensionData.extensionId,
+    isExtensionInstalled,
+  );
+
+  useEffect(() => {
+    if (extensionTabs.length <= activeTab) {
+      onActiveTabChange(0);
+    }
+  }, [extensionTabs, activeTab, onActiveTabChange]);
+
   const handleOnTabClick = (_, id) => {
     onActiveTabChange(id);
   };
@@ -58,12 +70,6 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({
         return null;
     }
   };
-
-  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
-  const extensionTabs = getExtensionTabs(
-    extensionData.extensionId,
-    isExtensionInstalled,
-  );
 
   return (
     <Tabs

@@ -9,6 +9,5 @@ export interface DomainThresholdConfig {
   nativeSkillId: number;
   type: MultiSigThresholdType;
   name: string;
-  threshold: number;
   isError?: boolean;
 }
