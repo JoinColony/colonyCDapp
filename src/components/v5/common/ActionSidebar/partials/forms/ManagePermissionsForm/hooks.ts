@@ -37,7 +37,7 @@ export const useManagePermissions = (
     control,
     setValue,
     clearErrors,
-    formState: { defaultValues, isSubmitted },
+    formState: { defaultValues, isSubmitted, errors },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
@@ -161,10 +161,13 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
+    mode: 'onSubmit',
   });
 
   return {
     role: formRole,
     isModRoleSelected,
+    values: watch(),
+    errors,
   };
 };

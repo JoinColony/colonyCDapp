@@ -182,16 +182,16 @@ export const configureFormRoles = ({
 
   const userRoleMeta = getRole(userRolesForDomain);
 
-  const userRoleWrapper = userRoleMeta.permissions.length
+  const userRoleWrapperForDomain = userRoleMeta.permissions.length
     ? userRoleMeta.role
     : undefined;
 
-  setValue('_dbUserRoleWrapper', userRoleWrapper);
+  setValue('_dbuserRoleWrapperForDomain', userRoleWrapperForDomain);
   setValue('_dbUserRolesForDomain', userRolesForDomain);
   setValue('_dbUserInheritedRolesForDomain', userInheritedRolesForDomain);
 
   if (role !== UserRole.Custom && role !== UserRoleModifier.Remove) {
-    setValue('role', userRoleWrapper, { shouldValidate: isSubmitted });
+    setValue('role', userRoleWrapperForDomain, { shouldValidate: isSubmitted });
   }
 
   AVAILABLE_ROLES.forEach((colonyRole) => {

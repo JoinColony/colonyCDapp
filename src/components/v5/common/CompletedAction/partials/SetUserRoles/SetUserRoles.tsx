@@ -60,7 +60,7 @@ const transformActionRolesToColonyRoles = (
   const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key])
+    .filter((key) => roles[key] !== null)
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -114,19 +114,22 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  // if it's the first time assigning roles, we use the action roles
-  const userColonyRoles = transformActionRolesToColonyRoles(
+  const newUserColonyRoles = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole || roles,
   );
 
+  const oldUserColonyRoles = transformActionRolesToColonyRoles(roles);
+
   const rolesTitle = formatRolesTitle(roles);
 
-  const { name: roleName, role } = getRole(
-    userColonyRoles,
+  const { name: newRoleName, role: newRole } = getRole(
+    newUserColonyRoles,
     roleAuthority === Authority.ViaMultiSig,
   );
 
-  const metadata = action.motionData?.motionDomain.metadata;
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
 
   return (
     <>
@@ -139,12 +142,12 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
-            role,
+            newRole,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
-          enableRedoAction={!!userColonyRoles.length}
+          showRedoItem={!!newUserColonyRoles.length}
         />
       </div>
       <ActionSubtitle>
@@ -218,8 +221,8 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            userColonyRoles.length
-              ? roleName
+            newUserColonyRoles.length
+              ? newRoleName
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
                 })
@@ -235,13 +238,12 @@ const SetUserRoles = ({ action }: Props) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!userColonyRoles.length && (
-        <PermissionsTableRow
-          role={role}
-          domainId={action.fromDomain?.nativeId}
-          userColonyRoles={userColonyRoles}
-        />
-      )}
+      <PermissionsTableRow
+        role={newRole}
+        domainId={action.fromDomain?.nativeId}
+        userRolesForDomain={newUserColonyRoles}
+        oldUserRolesForDomain={oldUserColonyRoles}
+      />
     </>
   );
 };

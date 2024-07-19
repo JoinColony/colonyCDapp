@@ -10,6 +10,7 @@ import {
   type PermissionsTableModel,
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
+import { UserRoleModifier } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { getCustomPermissionsTableColumns } from './utils.tsx';
@@ -19,16 +20,33 @@ const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 interface Props {
   role: UserRole;
   domainId: number | undefined;
-  userColonyRoles: ColonyRole[];
+  userRolesForDomain: ColonyRole[];
+  oldUserRolesForDomain?: ColonyRole[];
 }
 
-const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
+const PermissionsTable = ({
+  role,
+  domainId,
+  userRolesForDomain,
+  oldUserRolesForDomain,
+}: Props) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = getCustomPermissionsTableColumns(
-    userColonyRoles,
+    userRolesForDomain,
     isMobile,
   );
-  const permissionsTableProps = usePermissionsTableProps(role);
+
+  const activeFormRole = userRolesForDomain?.length
+    ? role
+    : UserRoleModifier.Remove;
+
+  const permissionsTableProps = usePermissionsTableProps({
+    activeFormRole,
+    userRolesForDomain,
+    userRoleWrapperForDomain: role,
+    isCompletedAction: true,
+    oldUserRolesForDomain,
+  });
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
@@ -39,7 +57,7 @@ const PermissionsTable = ({ role, domainId, userColonyRoles }: Props) => {
 
   return (
     <div className="mt-7">
-      {role !== UserRole.Custom ? (
+      {activeFormRole !== UserRole.Custom ? (
         <Table<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
         <Table<CustomPermissionTableModel>

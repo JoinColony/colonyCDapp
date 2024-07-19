@@ -57,7 +57,7 @@ export type ManagePermissionsFormValues = {
    * Keeps track of a user's current DB role wrapper which is taken from the role meta i.e. mod | payer | admin
    * @internal
    */
-  _dbUserRoleWrapper?: ManagePermissionsFormValues['role'];
+  _dbuserRoleWrapperForDomain?: ManagePermissionsFormValues['role'];
   /**
    * Keeps track of a user's specific DB roles for a domain
    * @internal
@@ -153,9 +153,11 @@ export const validationSchema = object()
         formatMessage(MSG.noPermissionsInDomain),
         (
           role,
-          { parent: { member, _dbUserRolesForDomain } }: SchemaTestContext,
+          {
+            parent: { member, team, _dbUserRolesForDomain },
+          }: SchemaTestContext,
         ) => {
-          if (member && role === UserRoleModifier.Remove) {
+          if (member && team && role === UserRoleModifier.Remove) {
             return !!_dbUserRolesForDomain?.length;
           }
 
@@ -167,10 +169,12 @@ export const validationSchema = object()
         formatMessage(MSG.samePermissionsApplied),
         (
           role,
-          { parent: { member, team, _dbUserRoleWrapper } }: SchemaTestContext,
+          {
+            parent: { member, team, _dbuserRoleWrapperForDomain },
+          }: SchemaTestContext,
         ) => {
           if (member && team && role && role !== UserRole.Custom) {
-            return role !== _dbUserRoleWrapper;
+            return role !== _dbuserRoleWrapperForDomain;
           }
 
           return true;
