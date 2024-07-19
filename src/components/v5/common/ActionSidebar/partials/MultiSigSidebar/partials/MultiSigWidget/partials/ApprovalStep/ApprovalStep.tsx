@@ -101,6 +101,12 @@ const MSG = defineMessages({
   },
 });
 
+const voteOrder = {
+  [MultiSigVote.None]: 2,
+  [MultiSigVote.Approve]: 0,
+  [MultiSigVote.Reject]: 1,
+};
+
 const ApprovalStep: FC<ApprovalStepProps> = ({
   thresholdPerRole,
   actionType,
@@ -130,22 +136,39 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const requiredMultiSigRoles = requiredRoles[0] || [];
 
   const doesActionRequireMultipleRoles = requiredMultiSigRoles.length > 1;
-
-  const { uniqueEligibleSignees } = useEligibleSignees({
-    domainId: Number(multiSigData.nativeMultiSigDomainId),
-    requiredRoles,
-  });
-  const voteOrder = {
-    [MultiSigVote.None]: 2,
-    [MultiSigVote.Approve]: 0,
-    [MultiSigVote.Reject]: 1,
-  };
+  const isMotionOlderThanWeek = hasWeekPassed(createdAt);
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
+  const userSignature = signatures.find(
+    (signature) => signature?.userAddress === user?.walletAddress,
+  );
+
+  useEffect(() => {
+    if (userSignature) {
+      setActiveStep(VoteExpectedStep.cancel);
+      setCurrentVote(null);
+    } else {
+      setActiveStep(VoteExpectedStep.vote);
+    }
+
+    if (expectedStep === activeStep) {
+      setExpectedStep(null);
+    }
+  }, [activeStep, expectedStep, userSignature]);
+
+  const { isLoading: areEligibleSigneesLoading, uniqueEligibleSignees } =
+    useEligibleSignees({
+      domainId: Number(multiSigData.nativeMultiSigDomainId),
+      requiredRoles,
+    });
+
+  if (areEligibleSigneesLoading) {
+    return <div>Loading</div>;
+  }
+
   const notSignedUsers = getNotSignedUsers({
-    requiredRoles: requiredMultiSigRoles,
-    eligibleSignees: (uniqueEligibleSignees || []).filter(notMaybe),
+    eligibleSignees: Object.values(uniqueEligibleSignees),
     signatures,
   });
 
@@ -203,13 +226,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
       return rejections >= roleThreshold;
     });
 
-  const userSignature = signatures.find(
-    (signature) => signature?.userAddress === user?.walletAddress,
-  );
-
-  const canUserSign = uniqueEligibleSignees.some(
-    (signature) => signature?.walletAddress === user?.walletAddress,
-  );
+  const canUserSign = user?.walletAddress
+    ? !!uniqueEligibleSignees[user.walletAddress]
+    : false;
   const hasApprovalVotes = signatures.some(
     (signature) => signature.vote === MultiSigVote.Approve,
   );
@@ -244,21 +263,6 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected;
 
   const shouldCheckUserRoles = !userSignature && !isMultiSigInFinalizeState;
-
-  useEffect(() => {
-    if (userSignature) {
-      setActiveStep(VoteExpectedStep.cancel);
-      setCurrentVote(null);
-    } else {
-      setActiveStep(VoteExpectedStep.vote);
-    }
-
-    if (expectedStep === activeStep) {
-      setExpectedStep(null);
-    }
-  }, [activeStep, expectedStep, userSignature]);
-
-  const isMotionOlderThanWeek = hasWeekPassed(createdAt);
 
   return (
     <MenuWithStatusText
