@@ -44,20 +44,32 @@ const useActivityFeed = (
     loading: loadingVotingRepExtension,
   } = useExtensionData(Extension.VotingReputation);
 
-  const isVotingReputationExtensionInstalled =
-    !loadingVotingRepExtension &&
-    votingRepExtensionData &&
-    isInstalledExtensionData(votingRepExtensionData);
-
   const {
     extensionData: multiSigExtensionData,
     loading: loadingMultiSigExtension,
   } = useExtensionData(Extension.MultisigPermissions);
 
-  const isMultiSigExtensionInstalled =
-    !loadingMultiSigExtension &&
-    multiSigExtensionData &&
-    isInstalledExtensionData(multiSigExtensionData);
+  const votingRepInstalledExtensionData = useMemo(() => {
+    if (loadingVotingRepExtension) {
+      return null;
+    }
+
+    return votingRepExtensionData &&
+      isInstalledExtensionData(votingRepExtensionData)
+      ? votingRepExtensionData
+      : null;
+  }, [loadingVotingRepExtension, votingRepExtensionData]);
+
+  const multiSigInstalledExtensionData = useMemo(() => {
+    if (loadingMultiSigExtension) {
+      return null;
+    }
+
+    return multiSigExtensionData &&
+      isInstalledExtensionData(multiSigExtensionData)
+      ? multiSigExtensionData
+      : null;
+  }, [loadingMultiSigExtension, multiSigExtensionData]);
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -103,15 +115,15 @@ const useActivityFeed = (
       (items?.filter(notNull) ?? []).map(
         makeWithMotionStateMapper(
           motionStatesMap,
-          isVotingReputationExtensionInstalled,
-          isMultiSigExtensionInstalled,
+          votingRepInstalledExtensionData,
+          multiSigInstalledExtensionData,
         ),
       ),
     [
-      isMultiSigExtensionInstalled,
-      isVotingReputationExtensionInstalled,
       items,
       motionStatesMap,
+      multiSigInstalledExtensionData,
+      votingRepInstalledExtensionData,
     ],
   );
 
@@ -176,7 +188,10 @@ const useActivityFeed = (
   return {
     loadingFirstPage,
     loadingNextPage,
-    loadingMotionStates: motionStatesLoading,
+    loadingMotionStates:
+      loadingMultiSigExtension ||
+      loadingVotingRepExtension ||
+      motionStatesLoading,
     actions: visibleActions,
     hasNextPage,
     hasPrevPage,
