@@ -18,4 +18,5 @@ export const MOTION_STATE_TO_CLASSNAME_MAP: Record<MotionState, string> = {
   [MotionState.Open]: 'text-teams-blue-400 bg-teams-blue-50',
   [MotionState.Rejected]: 'text-negative-400 bg-negative-100',
   [MotionState.Unknown]: 'text-teams-grey-500 bg-teams-grey-50',
+  [MotionState.Uninstalled]: 'text-negative-400 bg-negative-100',
 };
