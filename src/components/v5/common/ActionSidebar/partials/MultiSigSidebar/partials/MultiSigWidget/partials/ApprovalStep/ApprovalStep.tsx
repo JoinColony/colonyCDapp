@@ -14,7 +14,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type Threshold } from '~types/multisig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import ProgressBar from '~v5/shared/ProgressBar/ProgressBar.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
