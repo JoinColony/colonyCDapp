@@ -8,7 +8,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
-import { getMultiSigState } from '~utils/multiSig.ts';
+import { getMultiSigState } from '~utils/multiSig/index.ts';
 
 import {
   ActivityDecisionMethod,

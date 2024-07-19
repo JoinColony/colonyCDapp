@@ -5,9 +5,9 @@ import { ColonyActionType, type ColonyActionFragment } from '~gql';
 import { type Colony, type ColonyAction } from '~types/graphql.ts';
 import { type MultiSigAction } from '~types/motions.ts';
 
-import { MotionState } from './colonyMotions.ts';
-import { extractColonyRoles } from './colonyRoles.ts';
-import { extractColonyDomains } from './domains.ts';
+import { MotionState } from '../colonyMotions.ts';
+import { extractColonyRoles } from '../colonyRoles.ts';
+import { extractColonyDomains } from '../domains.ts';
 
 export const getRolesNeededForMultiSigAction = ({
   actionType,
