@@ -9,7 +9,7 @@ import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
   domainId: number;
-  requiredRoles?: ColonyRole[][];
+  requiredRoles: ColonyRole[][];
 }
 
 interface UseDomainThresholdResult {
@@ -29,13 +29,14 @@ export const useDomainThreshold = ({
     Extension.MultisigPermissions,
   );
 
-  const { countPerRole } = useEligibleSignees({
-    domainId,
-    requiredRoles,
-  });
+  const { countPerRole, isLoading: loadingEligibleSignees } =
+    useEligibleSignees({
+      domainId,
+      requiredRoles,
+    });
 
   const getDomainThreshold = (): Threshold => {
-    if (loadingExtension || !requiredRoles) {
+    if (loadingExtension || loadingEligibleSignees || !requiredRoles) {
       return null;
     }
 

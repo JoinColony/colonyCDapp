@@ -32,3 +32,23 @@ query GetRolesForDomain(
     }
   }
 }
+
+query GetMultiSigRolesForDomain(
+  $domainId: ID!
+  $filter: ModelColonyRoleFilterInput!
+) {
+  getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
+    items {
+      id
+      targetUser {
+        ...User
+      }
+      targetAddress
+      role_1
+      role_2
+      role_3
+      role_5
+      role_6
+    }
+  }
+}

@@ -2,7 +2,8 @@ import { type ColonyRole } from '@colony/colony-js';
 import { isBefore, parseISO, subWeeks } from 'date-fns';
 
 import { MultiSigVote } from '~gql';
-import { type User, type MultiSigUserSignature } from '~types/graphql.ts';
+import { type MultiSigUserSignature } from '~types/graphql.ts';
+import { type EligibleSignee } from '~types/multiSig.ts';
 
 import { type MultiSigSignee } from './types.ts';
 
@@ -17,29 +18,27 @@ export const hasWeekPassed = (createdAt: string) => {
 };
 
 export const getNotSignedUsers = ({
-  requiredRoles,
   signatures,
   eligibleSignees,
 }: {
   signatures: MultiSigUserSignature[];
-  eligibleSignees: User[];
-  requiredRoles: ColonyRole[];
+  eligibleSignees: EligibleSignee[];
 }): MultiSigSignee[] => {
   const notSignedUsers: MultiSigSignee[] = eligibleSignees
     .filter((eligibleSignee) => {
       return !signatures.find(
-        (signature) => signature.userAddress === eligibleSignee?.walletAddress,
+        (signature) => signature.userAddress === eligibleSignee.userAddress,
       );
     })
     .map((eligibleSignee) => {
       return {
-        userAddress: eligibleSignee?.walletAddress,
+        userAddress: eligibleSignee.userAddress,
         user: {
-          profile: eligibleSignee?.profile,
+          profile: eligibleSignee.user.profile,
         },
         vote: MultiSigVote.None,
         rolesSignedWith: [],
-        userRoles: requiredRoles || [], // @TODO get this from the hook for signees
+        userRoles: eligibleSignee.userRoles,
       };
     });
 
