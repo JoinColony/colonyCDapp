@@ -21,18 +21,20 @@ const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
 const PermissionsTable: FC<PermissionsTableProps> = ({
   name,
-  role,
   className,
+  userRoleWrapperForDomain,
+  userRolesForDomain,
+  activeFormRole,
 }) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
-  const permissionsTableProps = usePermissionsTableProps(role);
+  const permissionsTableProps = usePermissionsTableProps({
+    userRoleWrapperForDomain,
+    userRolesForDomain,
+    activeFormRole,
+  });
   const { formState } = useFormContext<ManagePermissionsFormValues>();
   const team: string | undefined = useWatch({ name: 'team' });
-
-  if (!role) {
-    return null;
-  }
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
@@ -43,14 +45,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
 
   return (
     <div className={className}>
-      {role !== UserRole.Custom ? (
-        <Table<PermissionsTableModel>
-          {...permissionsTableProps}
-          tableClassName={clsx({
-            '!border-negative-300': !!formState.errors.role,
-          })}
-        />
-      ) : (
+      {activeFormRole === UserRole.Custom ? (
         <Table<CustomPermissionTableModel>
           className="sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0"
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
@@ -61,6 +56,13 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
             '!border-negative-300': !!formState.errors.permissions,
           })}
           tableBodyRowKeyProp="type"
+        />
+      ) : (
+        <Table<PermissionsTableModel>
+          {...permissionsTableProps}
+          tableClassName={clsx({
+            '!border-negative-300': !!formState.errors.role,
+          })}
         />
       )}
     </div>
