@@ -1,3 +1,4 @@
+import { Extension } from '@colony/colony-js';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -6,7 +7,9 @@ import {
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import useNetworkMotionStates from '../useNetworkMotionStates.ts';
 
@@ -35,6 +38,26 @@ const useActivityFeed = (
   const { colony } = useColonyContext();
 
   const { colonyAddress } = colony;
+
+  const {
+    extensionData: votingRepExtensionData,
+    loading: loadingVotingRepExtension,
+  } = useExtensionData(Extension.VotingReputation);
+
+  const isVotingReputationExtensionInstalled =
+    !loadingVotingRepExtension &&
+    votingRepExtensionData &&
+    isInstalledExtensionData(votingRepExtensionData);
+
+  const {
+    extensionData: multiSigExtensionData,
+    loading: loadingMultiSigExtension,
+  } = useExtensionData(Extension.MultisigPermissions);
+
+  const isMultiSigExtensionInstalled =
+    !loadingMultiSigExtension &&
+    multiSigExtensionData &&
+    isInstalledExtensionData(multiSigExtensionData);
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -68,6 +91,7 @@ const useActivityFeed = (
         .filter(Boolean) || [],
     [items],
   );
+
   const {
     motionStatesMap,
     loading: motionStatesLoading,
@@ -77,9 +101,18 @@ const useActivityFeed = (
   const actions = useMemo(
     () =>
       (items?.filter(notNull) ?? []).map(
-        makeWithMotionStateMapper(motionStatesMap),
+        makeWithMotionStateMapper(
+          motionStatesMap,
+          isVotingReputationExtensionInstalled,
+          isMultiSigExtensionInstalled,
+        ),
       ),
-    [items, motionStatesMap],
+    [
+      isMultiSigExtensionInstalled,
+      isVotingReputationExtensionInstalled,
+      items,
+      motionStatesMap,
+    ],
   );
 
   const loadingMotionStateFilter =
