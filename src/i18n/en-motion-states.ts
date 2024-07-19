@@ -19,6 +19,7 @@ const motionStatesMessageDescriptors = {
       ${MotionState.Open} {Open}
       ${MotionState.Rejected} {Rejected}
       ${MotionState.Unknown} {Unknown}
+      ${MotionState.Uninstalled} {Uninstalled}
       other {Generic action we don't have information about}
     }`,
 };

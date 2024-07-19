@@ -1,5 +1,8 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Extension,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
@@ -9,7 +12,9 @@ import {
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { getMultiSigState } from '~utils/multiSig.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
@@ -28,6 +33,7 @@ const useGetColonyAction = (transactionHash?: string) => {
     refetchColony,
   } = useColonyContext();
   const { refetchTokenBalances } = useUserTokenBalanceContext();
+
   const isInvalidTx = !isTransactionFormat(transactionHash);
   /* Unfortunately, we need to track polling state ourselves: https://github.com/apollographql/apollo-client/issues/9081#issuecomment-975722271 */
   const [isPolling, setIsPolling] = useState(!isInvalidTx);
@@ -51,6 +57,26 @@ const useGetColonyAction = (transactionHash?: string) => {
   });
 
   const action = actionData?.getColonyAction;
+
+  const {
+    extensionData: votingRepExtensionData,
+    loading: loadingVotingRepExtension,
+  } = useExtensionData(Extension.VotingReputation);
+
+  const votingReputationExtensionIsUninstalled =
+    !loadingVotingRepExtension &&
+    votingRepExtensionData &&
+    !isInstalledExtensionData(votingRepExtensionData);
+
+  const {
+    extensionData: multiSigExtensionData,
+    loading: loadingMultiSigExtension,
+  } = useExtensionData(Extension.MultisigPermissions);
+
+  const multiSigExtensionIsUninstalled =
+    !loadingMultiSigExtension &&
+    multiSigExtensionData &&
+    !isInstalledExtensionData(multiSigExtensionData);
 
   const clearPollingCancellationTimer = () => {
     if (pollTimerRef.current) {
@@ -141,16 +167,34 @@ const useGetColonyAction = (transactionHash?: string) => {
    */
   const networkMotionState = (motionStateData?.getMotionState ??
     NetworkMotionState.Null) as NetworkMotionState;
-  let motionState;
-  if (action?.isMultiSig) {
-    motionState = action?.multiSigData
-      ? getMultiSigState(action?.multiSigData)
-      : MotionState.Invalid;
-  } else {
-    motionState = action?.motionData
+
+  const motionState = useMemo(() => {
+    if (loadingMotionState) return undefined;
+    if (action?.isMultiSig) {
+      if (multiSigExtensionIsUninstalled) {
+        return MotionState.Uninstalled;
+      }
+      return action?.multiSigData
+        ? getMultiSigState(action?.multiSigData)
+        : MotionState.Invalid;
+    }
+
+    if (votingReputationExtensionIsUninstalled) {
+      return MotionState.Uninstalled;
+    }
+
+    return action?.motionData
       ? getMotionState(networkMotionState, action?.motionData)
       : MotionState.Invalid;
-  }
+  }, [
+    action?.isMultiSig,
+    action?.motionData,
+    action?.multiSigData,
+    loadingMotionState,
+    multiSigExtensionIsUninstalled,
+    networkMotionState,
+    votingReputationExtensionIsUninstalled,
+  ]);
 
   /* Ensures motion state is kept in sync with motion data */
   useEffect(() => {
