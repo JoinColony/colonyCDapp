@@ -26,19 +26,30 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_AMPLIFY_WEBHOOK_QA: ${{ vars.AWS_AMPLIFY_WEBHOOK_QA }}
       AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
 
     steps:
-      - name: Trigger Amplify AWS Pipeline
-        run: |
-          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_QA}&operation=startbuild" -H "Content-Type:application/json"
+      - uses: actions/checkout@v3
+        name: Checkout repo
       
-      - name: Post AWS Amplify console link in GH summary
-        run: |
-          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
-          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_QA})." >> $GITHUB_STEP_SUMMARY
+      - name: Configure AWS credentials for Amplify
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_QA }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
+          aws-region: ${{ env.AWS_REGION }}
 
+      - name: Install Amplify CLI
+        run: |
+          curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+          echo "$(which amplify)" >> $GITHUB_PATH
+
+      - name: Run Amplify deployment script
+        run: |
+          chmod +x .github/scripts/amplify-deploy.sh
+          .github/scripts/amplify-deploy.sh
+        working-directory: ${{ github.workspace }}
+      
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
         with:
@@ -54,19 +65,30 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_AMPLIFY_WEBHOOK_PROD: ${{ vars.AWS_AMPLIFY_WEBHOOK_PROD }}
       AWS_AMPLIFY_APP_ID_PROD: ${{ vars.AWS_AMPLIFY_APP_ID_PROD }}
-
+    
     steps:
-      - name: Trigger Amplify AWS Pipeline
-        run: |
-          curl -X POST -d {} "${AWS_AMPLIFY_WEBHOOK_PROD}&operation=startbuild" -H "Content-Type:application/json"
+      - uses: actions/checkout@v3
+        name: Checkout repo
+      
+      - name: Configure AWS credentials for Amplify
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Post AWS Amplify console link in GH summary
+      - name: Install Amplify CLI
         run: |
-          echo "### AWS Amplify pipeline" >> $GITHUB_STEP_SUMMARY
-          echo "Amplify build triggered, progress can be tracked in the [AWS Console](https://${AWS_REGION}.console.aws.amazon.com/amplify/home?region=${AWS_REGION}#/${AWS_AMPLIFY_APP_ID_PROD})." >> $GITHUB_STEP_SUMMARY
-
+          curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+          echo "$(which amplify)" >> $GITHUB_PATH
+  
+      - name: Run Amplify deployment script
+        run: |
+          chmod +x .github/scripts/amplify-deploy.sh
+          .github/scripts/amplify-deploy.sh
+        working-directory: ${{ github.workspace }}
+    
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
         with:
