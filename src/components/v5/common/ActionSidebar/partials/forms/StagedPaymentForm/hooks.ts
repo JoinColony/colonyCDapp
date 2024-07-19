@@ -24,7 +24,7 @@ import {
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.tsx';
+import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.ts';
 
 import { getStagedPaymentPayload } from './utils.ts';
 
