@@ -40,10 +40,11 @@ const MSG = defineMessages({
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   const { type: actionType, multiSigData } = action;
-  const requiredRoles = getRolesNeededForMultiSigAction({
-    actionType,
-    createdIn: Number(multiSigData.nativeMultiSigDomainId),
-  });
+  const requiredRoles =
+    getRolesNeededForMultiSigAction({
+      actionType,
+      createdIn: Number(multiSigData.nativeMultiSigDomainId),
+    }) || [];
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
