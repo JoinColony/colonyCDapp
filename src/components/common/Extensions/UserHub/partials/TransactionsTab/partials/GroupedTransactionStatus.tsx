@@ -36,7 +36,7 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
         <span className="truncate">{status.toLowerCase()}</span>
         {pending && (
           <SpinnerGap
-            className="ml-1 h-[0.8125rem] w-[0.8125rem] flex-shrink-0 animate-spin text-blue-400"
+            className="ml-1 h-[0.8125rem] w-[0.8125rem] flex-shrink-0 animate-spin"
             size={14}
           />
         )}
