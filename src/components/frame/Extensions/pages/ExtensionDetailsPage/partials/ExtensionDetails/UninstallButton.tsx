@@ -1,10 +1,11 @@
-import { Trash } from '@phosphor-icons/react';
+import { SpinnerGap, Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import { useUninstall } from './hooks.tsx';
@@ -25,15 +26,29 @@ const UninstallButton = ({
   return (
     <>
       <div className="flex w-full justify-center">
-        <Button
-          mode="primaryOutlineFull"
-          size="small"
-          isFullSize
-          loading={isLoading}
-          onClick={() => setIsUninstallModalOpen(true)}
-        >
-          {formatText({ id: 'button.uninstallExtension' })}
-        </Button>
+        {isLoading ? (
+          <TxButton
+            rounded="s"
+            isFullSize
+            text={{ id: 'button.pending' }}
+            icon={
+              <span className="ml-2 flex shrink-0">
+                <SpinnerGap size={14} className="animate-spin" />
+              </span>
+            }
+            className="!px-4 !py-2 !text-sm"
+          />
+        ) : (
+          <Button
+            mode="primaryOutlineFull"
+            size="small"
+            isFullSize
+            loading={isLoading}
+            onClick={() => setIsUninstallModalOpen(true)}
+          >
+            {formatText({ id: 'button.uninstallExtension' })}
+          </Button>
+        )}
       </div>
 
       <Modal
