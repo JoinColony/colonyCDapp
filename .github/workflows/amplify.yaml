@@ -25,9 +25,6 @@ jobs:
   deployQA:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
-
     steps:
       - uses: actions/checkout@v3
         name: Checkout repo
@@ -39,17 +36,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_QA }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Install Amplify CLI
+      - name: Install Amplify CLI and Run Deployment Script
         run: |
           curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
-          echo "$(which amplify)" >> $GITHUB_PATH
-
-      - name: Run Amplify deployment script
-        run: |
+          export PATH="$HOME/.amplify/bin:$PATH"
+          amplify --version
           chmod +x .github/workflows/scripts/amplify-deploy.sh
           .github/workflows/scripts/amplify-deploy.sh
         working-directory: ${{ github.workspace }}
-      
+        env:
+          AWS_AMPLIFY_APP_ID_QA: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
+          AMPLIFY_ENV_NAME: qa
+          
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
         if: always()
         with:
