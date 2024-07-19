@@ -35,20 +35,13 @@ export const useManagePermissions = (
     control,
     setValue,
     clearErrors,
-    formState: { defaultValues, isSubmitted },
+    formState: { defaultValues, isSubmitted, errors },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
     control,
     name: 'decisionMethod',
   });
-
-  const formRole = useWatch({
-    control,
-    name: 'role',
-  });
-
-  const isModeRoleSelected = formRole === UserRole.Mod;
 
   useEffect(() => {
     /**
@@ -81,6 +74,8 @@ export const useManagePermissions = (
 
       if (role === UserRoleModifier.Remove) {
         trigger('role');
+      } else {
+        clearErrors('role');
       }
 
       if (
@@ -127,10 +122,11 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
+    mode: 'onSubmit',
   });
 
   return {
-    role: formRole,
-    isModeRoleSelected,
+    values: watch(),
+    errors,
   };
 };

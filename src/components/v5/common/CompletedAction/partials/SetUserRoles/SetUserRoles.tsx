@@ -6,6 +6,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import {
+  type ColonyActionFragment,
   ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
@@ -49,14 +50,16 @@ interface Props {
 }
 
 const transformActionRolesToColonyRoles = (
-  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
+  roles:
+    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
+    | ColonyActionFragment['roles'],
 ): ColonyRole[] => {
-  if (!historicRoles) return [];
+  if (!roles) return [];
 
-  const roleKeys = Object.keys(historicRoles);
+  const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => historicRoles[key])
+    .filter((key) => roles[key] !== null)
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -104,11 +107,13 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const userColonyRoles = transformActionRolesToColonyRoles(
+  const newUserColonyRoles = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole,
   );
 
-  const { name: roleName, role } = getRole(userColonyRoles);
+  const oldUserColonyRoles = transformActionRolesToColonyRoles(roles);
+
+  const { name: roleName, role } = getRole(newUserColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
 
   return (
@@ -129,7 +134,7 @@ const SetUserRoles = ({ action }: Props) => {
               : DecisionMethod.Permissions,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
-          enableRedoAction={!!userColonyRoles.length}
+          enableRedoAction={!!newUserColonyRoles.length}
         />
       </div>
       <ActionSubtitle>
@@ -183,9 +188,17 @@ const SetUserRoles = ({ action }: Props) => {
           />
         )}
         <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.authority' })}
+          rowContent={AUTHORITY_OPTIONS[0].label}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.authority',
+          })}
+          RowIcon={Signature}
+        />
+        <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            userColonyRoles.length
+            newUserColonyRoles.length
               ? roleName
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
@@ -195,14 +208,6 @@ const SetUserRoles = ({ action }: Props) => {
             id: 'actionSidebar.tooltip.managePermissions.permissions',
           })}
           RowIcon={ShieldStar}
-        />
-        <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.authority',
-          })}
-          RowIcon={Signature}
         />
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
@@ -214,13 +219,12 @@ const SetUserRoles = ({ action }: Props) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!userColonyRoles.length && (
-        <PermissionsTableRow
-          role={role}
-          domainId={action.fromDomain?.nativeId}
-          userColonyRoles={userColonyRoles}
-        />
-      )}
+      <PermissionsTableRow
+        role={role}
+        domainId={action.fromDomain?.nativeId}
+        userRolesForDomain={newUserColonyRoles}
+        oldUserRolesForDomain={oldUserColonyRoles}
+      />
     </>
   );
 };

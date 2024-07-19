@@ -7,7 +7,6 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import React, { type FC, useCallback } from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -27,8 +26,8 @@ import UserSelect from '../../UserSelect/index.ts';
 
 import {
   AuthorityOptions,
-  type ManagePermissionsFormValues,
   UserRoleModifier,
+  type ManagePermissionsFormValues,
 } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
@@ -41,7 +40,17 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
+  const {
+    errors,
+    values: {
+      member,
+      role,
+      team,
+      _dbuserRoleWrapperForDomain: userRoleWrapperForDomain,
+      _dbUserRolesForDomain: rolesForDomain,
+    },
+  } = useManagePermissions(getFormOptions);
+
   const [
     isPermissionsModalOpen,
     {
@@ -49,8 +58,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
 
+  const isModRoleSelected = role === UserRole.Mod;
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
 
@@ -85,6 +94,12 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       ),
     }),
   );
+
+  const isRemovePermissionsErrorPresent =
+    role === UserRoleModifier.Remove && errors.role;
+
+  const showPermissionsTable =
+    member && team && role && !isRemovePermissionsErrorPresent;
 
   return (
     <>
@@ -131,7 +146,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
               id: 'actionSidebar.tooltip.authority',
             }),
           },
-          content: isModeRoleSelected
+          content: isModRoleSelected
             ? {
                 tooltipContent: formatText({
                   id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
@@ -150,7 +165,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
-          disabled={isModeRoleSelected || hasNoDecisionMethods}
+          disabled={isModRoleSelected || hasNoDecisionMethods}
           name="authority"
           options={AuthorityOptions}
           title={formatText({
@@ -194,11 +209,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== UserRoleModifier.Remove && (
+      {showPermissionsTable && (
         <PermissionsTable
           name="permissions"
-          role={role as UserRole}
           className="mt-7"
+          userRoleWrapperForDomain={userRoleWrapperForDomain}
+          userRolesForDomain={rolesForDomain}
+          activeFormRole={role}
         />
       )}
     </>

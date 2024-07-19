@@ -25,18 +25,22 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
   } = useActionSidebarContext();
 
   const items = [
-    enableRedoAction && {
-      key: '1',
-      label: formatText({ id: 'completedAction.redoAction' }),
-      icon: Repeat,
-      onClick: () => {
-        toggleActionSidebarOff();
+    ...(enableRedoAction
+      ? [
+          {
+            key: '1',
+            label: formatText({ id: 'completedAction.redoAction' }),
+            icon: Repeat,
+            onClick: () => {
+              toggleActionSidebarOff();
 
-        setTimeout(() => {
-          toggleActionSidebarOn({ ...defaultValues });
-        }, 500);
-      },
-    },
+              setTimeout(() => {
+                toggleActionSidebarOn({ ...defaultValues });
+              }, 500);
+            },
+          },
+        ]
+      : []),
     {
       key: '2',
       label: (
@@ -51,7 +55,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
       ),
       icon: ArrowSquareOut,
     },
-  ].filter((item) => item !== false);
+  ];
 
   return (
     <MeatBallMenu
