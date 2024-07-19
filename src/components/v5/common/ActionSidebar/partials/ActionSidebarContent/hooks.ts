@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { type Action } from '~constants/actions.ts';
@@ -26,6 +27,7 @@ export const useGetFormActionErrors = () => {
   };
 };
 
+// @TODO somehow rework this so we don't always fetch it, but only call the business logic if decision method is multisig
 export const useHasEnoughMembersWithPermissions = ({
   decisionMethod,
   selectedAction,
@@ -38,9 +40,10 @@ export const useHasEnoughMembersWithPermissions = ({
   const { watch } = useFormContext();
   const formValues = watch();
 
-  const requiredRoles = getPermissionsNeededForAction(
-    selectedAction,
-    formValues,
+  // @NOTE this needs to be memoed because formValues are constantly changing and it rerenders too much otherwise
+  const requiredRoles = useMemo(
+    () => getPermissionsNeededForAction(selectedAction, formValues) || [],
+    [formValues, selectedAction],
   );
 
   const { thresholdPerRole } = useDomainThreshold({
