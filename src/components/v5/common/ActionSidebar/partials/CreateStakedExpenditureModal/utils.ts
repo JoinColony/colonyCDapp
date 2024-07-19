@@ -5,7 +5,7 @@ import { Action } from '~constants/actions.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
 
-import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.tsx';
+import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.ts';
 import { getSplitPaymentPayload } from '../forms/SplitPaymentForm/utils.ts';
 
 export const getActionPayload = ({
