@@ -252,5 +252,279 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
+  },
+  "parameters": {
+    "AMPLIFY_function_colonycdappSSMAccess_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ]
+    },
+    "AMPLIFY_function_colonycdappSSMAccess_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ]
+    },
+    "AMPLIFY_function_createColonyEtherealMetadata_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createColonyEtherealMetadata"
+        }
+      ]
+    },
+    "AMPLIFY_function_createColonyEtherealMetadata_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createColonyEtherealMetadata"
+        }
+      ]
+    },
+    "AMPLIFY_function_createPrivateBetaInvite_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createPrivateBetaInvite"
+        }
+      ]
+    },
+    "AMPLIFY_function_createPrivateBetaInvite_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createPrivateBetaInvite"
+        }
+      ]
+    },
+    "AMPLIFY_function_createUniqueUser_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_createUniqueUser_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createUniqueUser"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyBalances_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyBalances_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyNativeFundsClaim_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyNativeFundsClaim"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchColonyNativeFundsClaim_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchColonyNativeFundsClaim"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchExpenditureBalances_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchExpenditureBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchExpenditureBalances_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchExpenditureBalances"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionState_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionState"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionState_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionState"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionTimeoutPeriods_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionTimeoutPeriods"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchMotionTimeoutPeriods_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchMotionTimeoutPeriods"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchTokenFromChain_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchTokenFromChain"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchTokenFromChain_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchTokenFromChain"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchVoterRewards_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchVoterRewards"
+        }
+      ]
+    },
+    "AMPLIFY_function_fetchVoterRewards_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fetchVoterRewards"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSafeTransactionStatus_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSafeTransactionStatus"
+        }
+      ]
+    },
+    "AMPLIFY_function_getSafeTransactionStatus_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getSafeTransactionStatus"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserReputation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserReputation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserTokenBalance_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserTokenBalance"
+        }
+      ]
+    },
+    "AMPLIFY_function_getUserTokenBalance_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getUserTokenBalance"
+        }
+      ]
+    },
+    "AMPLIFY_function_qaSSMtest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "qaSSMtest"
+        }
+      ]
+    },
+    "AMPLIFY_function_qaSSMtest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "qaSSMtest"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateContributorsWithReputation_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateContributorsWithReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateContributorsWithReputation_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateContributorsWithReputation"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateUserInvite_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateUserInvite"
+        }
+      ]
+    },
+    "AMPLIFY_function_validateUserInvite_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "validateUserInvite"
+        }
+      ]
+    }
   }
 }
