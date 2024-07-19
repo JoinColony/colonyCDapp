@@ -85,8 +85,8 @@ jobs:
   
       - name: Run Amplify deployment script
         run: |
-          chmod +x .github/scripts/amplify-deploy.sh
-          .github/scripts/amplify-deploy.sh
+          chmod +x .github/workflows/scripts/amplify-deploy.sh
+          .github/workflows/scripts/amplify-deploy.sh
         working-directory: ${{ github.workspace }}
     
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
