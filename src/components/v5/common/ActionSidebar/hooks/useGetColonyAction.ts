@@ -1,7 +1,4 @@
-import {
-  Extension,
-  MotionState as NetworkMotionState,
-} from '@colony/colony-js';
+import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -12,9 +9,8 @@ import {
   useGetColonyActionQuery,
   useGetMotionStateQuery,
 } from '~gql';
-import useExtensionData from '~hooks/useExtensionData.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { getMultiSigState } from '~utils/multiSig.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { isTransactionFormat } from '~utils/web3/index.ts';
@@ -59,24 +55,16 @@ const useGetColonyAction = (transactionHash?: string) => {
   const action = actionData?.getColonyAction;
 
   const {
-    extensionData: votingRepExtensionData,
-    loading: loadingVotingRepExtension,
-  } = useExtensionData(Extension.VotingReputation);
+    loading: loadingExtensions,
+    votingReputationExtensionData,
+    multiSigExtensionData,
+  } = useEnabledExtensions();
 
   const votingReputationExtensionIsUninstalled =
-    !loadingVotingRepExtension &&
-    votingRepExtensionData &&
-    !isInstalledExtensionData(votingRepExtensionData);
-
-  const {
-    extensionData: multiSigExtensionData,
-    loading: loadingMultiSigExtension,
-  } = useExtensionData(Extension.MultisigPermissions);
+    !loadingExtensions && !votingReputationExtensionData;
 
   const multiSigExtensionIsUninstalled =
-    !loadingMultiSigExtension &&
-    multiSigExtensionData &&
-    !isInstalledExtensionData(multiSigExtensionData);
+    !loadingExtensions && !multiSigExtensionData;
 
   const clearPollingCancellationTimer = () => {
     if (pollTimerRef.current) {
@@ -169,7 +157,7 @@ const useGetColonyAction = (transactionHash?: string) => {
     NetworkMotionState.Null) as NetworkMotionState;
 
   const motionState = useMemo(() => {
-    if (loadingMotionState) return undefined;
+    if (loadingMotionState || loadingExtensions) return undefined;
     if (action?.isMultiSig) {
       if (multiSigExtensionIsUninstalled) {
         return MotionState.Uninstalled;
@@ -190,6 +178,7 @@ const useGetColonyAction = (transactionHash?: string) => {
     action?.isMultiSig,
     action?.motionData,
     action?.multiSigData,
+    loadingExtensions,
     loadingMotionState,
     multiSigExtensionIsUninstalled,
     networkMotionState,
@@ -208,7 +197,10 @@ const useGetColonyAction = (transactionHash?: string) => {
     isUnknownTransaction:
       !isInvalidTx && action?.colony?.colonyAddress !== colonyAddress,
     loadingAction:
-      loadingAction || (isPolling && !action) || loadingMotionState,
+      loadingAction ||
+      (isPolling && !action) ||
+      loadingMotionState ||
+      loadingExtensions,
     action,
     startPollingForAction,
     stopPollingForAction,
