@@ -7,7 +7,6 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import React, { type FC, useCallback } from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -27,8 +26,9 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import {
-  type ManagePermissionsFormValues,
+  AuthorityOptions,
   UserRoleModifier,
+  type ManagePermissionsFormValues,
 } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
@@ -41,7 +41,17 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModRoleSelected } = useManagePermissions(getFormOptions);
+  const {
+    errors,
+    values: {
+      member,
+      role,
+      team,
+      authority,
+      _dbuserRoleWrapperForDomain: userRoleWrapperForDomain,
+      _dbUserRolesForDomain: rolesForDomain,
+    },
+  } = useManagePermissions(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [
     isPermissionsModalOpen,
@@ -50,9 +60,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
-  const authority: string | undefined = useWatch({ name: 'authority' });
 
+  const isModRoleSelected = role === UserRole.Mod;
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
 
@@ -108,6 +117,11 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         ]
       : []),
   ];
+  const isRemovePermissionsErrorPresent =
+    role === UserRoleModifier.Remove && errors.role;
+
+  const showPermissionsTable =
+    member && team && role && !isRemovePermissionsErrorPresent;
 
   return (
     <>
@@ -217,11 +231,13 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== UserRoleModifier.Remove && (
+      {showPermissionsTable && (
         <PermissionsTable
           name="permissions"
-          role={role as UserRole}
           className="mt-7"
+          userRoleWrapperForDomain={userRoleWrapperForDomain}
+          userRolesForDomain={rolesForDomain}
+          activeFormRole={role}
         />
       )}
     </>
