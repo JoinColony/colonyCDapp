@@ -227,8 +227,8 @@ export const getActionsByPageNumber = (
 export const makeWithMotionStateMapper =
   (
     motionStatesMap: MotionStatesMap,
-    votingRepExtensionData: InstalledExtensionData | null,
-    multiSigExtensionData: InstalledExtensionData | null,
+    votingRepExtensionData: InstalledExtensionData | undefined,
+    multiSigExtensionData: InstalledExtensionData | undefined,
   ) =>
   (action: ColonyAction): ActivityFeedColonyAction => {
     let motionState;

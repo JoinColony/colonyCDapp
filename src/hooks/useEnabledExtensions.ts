@@ -1,5 +1,6 @@
 import { Extension } from '@colony/colony-js';
 
+import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type Address } from '~types/index.ts';
 
 import useExtensionsData from './useExtensionsData.ts';
@@ -10,12 +11,14 @@ export interface EnabledExtensionData {
   isVotingReputationEnabled: boolean;
   votingReputationVersion: number | undefined;
   votingReputationAddress: Address | undefined;
+  votingReputationExtensionData: InstalledExtensionData | undefined;
   shortPollExtensions: () => void;
   isStakedExpenditureEnabled: boolean;
   isStagedExpenditureEnabled: boolean;
   stagedExpenditureAddress: Address | undefined;
   isStreamingPaymentsEnabled: boolean;
   isMultiSigEnabled: boolean;
+  multiSigExtensionData: InstalledExtensionData | undefined;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -47,11 +50,13 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isVotingReputationEnabled: !!votingReputationExtension?.isEnabled,
     votingReputationVersion: votingReputationExtension?.currentVersion,
     votingReputationAddress: votingReputationExtension?.address,
+    votingReputationExtensionData: votingReputationExtension,
     isStakedExpenditureEnabled: !!stakedExpenditureExtension?.isEnabled,
     isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
     stagedExpenditureAddress: stagedExpenditureExtension?.address,
     isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
     isMultiSigEnabled: !!multiSigExtension?.isEnabled,
+    multiSigExtensionData: multiSigExtension,
     shortPollExtensions,
   };
 };

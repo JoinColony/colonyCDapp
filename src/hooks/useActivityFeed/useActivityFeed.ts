@@ -1,4 +1,3 @@
-import { Extension } from '@colony/colony-js';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -7,9 +6,8 @@ import {
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
-import useExtensionData from '~hooks/useExtensionData.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import useNetworkMotionStates from '../useNetworkMotionStates.ts';
 
@@ -40,36 +38,10 @@ const useActivityFeed = (
   const { colonyAddress } = colony;
 
   const {
-    extensionData: votingRepExtensionData,
-    loading: loadingVotingRepExtension,
-  } = useExtensionData(Extension.VotingReputation);
-
-  const {
-    extensionData: multiSigExtensionData,
-    loading: loadingMultiSigExtension,
-  } = useExtensionData(Extension.MultisigPermissions);
-
-  const votingRepInstalledExtensionData = useMemo(() => {
-    if (loadingVotingRepExtension) {
-      return null;
-    }
-
-    return votingRepExtensionData &&
-      isInstalledExtensionData(votingRepExtensionData)
-      ? votingRepExtensionData
-      : null;
-  }, [loadingVotingRepExtension, votingRepExtensionData]);
-
-  const multiSigInstalledExtensionData = useMemo(() => {
-    if (loadingMultiSigExtension) {
-      return null;
-    }
-
-    return multiSigExtensionData &&
-      isInstalledExtensionData(multiSigExtensionData)
-      ? multiSigExtensionData
-      : null;
-  }, [loadingMultiSigExtension, multiSigExtensionData]);
+    loading: loadingExtensions,
+    votingReputationExtensionData,
+    multiSigExtensionData,
+  } = useEnabledExtensions();
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -115,15 +87,15 @@ const useActivityFeed = (
       (items?.filter(notNull) ?? []).map(
         makeWithMotionStateMapper(
           motionStatesMap,
-          votingRepInstalledExtensionData,
-          multiSigInstalledExtensionData,
+          votingReputationExtensionData,
+          multiSigExtensionData,
         ),
       ),
     [
       items,
       motionStatesMap,
-      multiSigInstalledExtensionData,
-      votingRepInstalledExtensionData,
+      multiSigExtensionData,
+      votingReputationExtensionData,
     ],
   );
 
@@ -188,10 +160,7 @@ const useActivityFeed = (
   return {
     loadingFirstPage,
     loadingNextPage,
-    loadingMotionStates:
-      loadingMultiSigExtension ||
-      loadingVotingRepExtension ||
-      motionStatesLoading,
+    loadingMotionStates: loadingExtensions || motionStatesLoading,
     actions: visibleActions,
     hasNextPage,
     hasPrevPage,

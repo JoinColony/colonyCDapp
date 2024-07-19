@@ -9,11 +9,10 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
@@ -50,14 +49,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     refetchAction,
   } = useGetColonyAction(transactionId);
 
-  const { extensionData, loading: loadingExtension } = useExtensionData(
-    Extension.VotingReputation,
-  );
+  const { loading: loadingExtensions, votingReputationExtensionData } =
+    useEnabledExtensions();
 
-  const isVotingReputationExtensionInstalled =
-    !loadingExtension &&
-    extensionData &&
-    isInstalledExtensionData(extensionData);
+  const isVotingReputationExtensionUninstalled =
+    !loadingExtensions && !votingReputationExtensionData;
 
   const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
@@ -104,8 +100,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const items = useMemo(() => {
     if (
       loadingAction ||
-      loadingExtension ||
-      !isVotingReputationExtensionInstalled
+      loadingExtensions ||
+      isVotingReputationExtensionUninstalled
     ) {
       return [];
     }
@@ -301,8 +297,8 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ];
   }, [
     loadingAction,
-    loadingExtension,
-    isVotingReputationExtensionInstalled,
+    loadingExtensions,
+    isVotingReputationExtensionUninstalled,
     activeStepKey,
     motionStakes,
     motionState,
@@ -328,12 +324,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   if (
     networkMotionState === NetworkMotionState.Null ||
-    !isVotingReputationExtensionInstalled
+    isVotingReputationExtensionUninstalled
   ) {
     return <UninstalledMessage extension={Extension.VotingReputation} />;
   }
 
-  return loadingAction || loadingExtension ? (
+  return loadingAction || loadingExtensions ? (
     <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
     <MotionProvider
