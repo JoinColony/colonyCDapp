@@ -24,7 +24,7 @@ export const useGetReleaseDecisionMethodItems = (
     address: user.walletAddress,
     colony,
     requiredRoles: [ColonyRole.Arbitration],
-    requiredRolesDomains: [expenditure.nativeDomainId],
+    requiredRolesDomain: expenditure.nativeDomainId,
   });
 
   return [

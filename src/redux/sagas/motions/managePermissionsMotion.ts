@@ -79,16 +79,6 @@ function* managePermissionsMotion({
         );
       }
 
-      const requiredCreatedInRoles =
-        createdInDomainId === Id.RootDomain
-          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
-      const requiredTeamRoles =
-        teamDomainId === Id.RootDomain
-          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
-
       const roleArray = Object.values(roles).reverse();
       roleArray.splice(2, 0, false);
 
@@ -125,6 +115,11 @@ function* managePermissionsMotion({
       if (isMultiSig) {
         // Creating a multi-sig motion
 
+        const requiredCreatedInRoles =
+          createdInDomainId === Id.RootDomain
+            ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+            : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
+
         const initiatorAddress = yield colonyClient.signer.getAddress();
 
         const multiSigClient = yield colonyManager.getClient(
@@ -139,7 +134,7 @@ function* managePermissionsMotion({
             colonyRoles,
             colonyDomains,
             requiredDomainId: createdInDomainId,
-            requiredColonyRole: requiredCreatedInRoles,
+            requiredColonyRoles: requiredCreatedInRoles,
             // The address of the multi-sig client
             permissionAddress: multiSigClient.address,
             // The multi-sig extension has regular permissions, not multi-sig permissions
@@ -168,7 +163,7 @@ function* managePermissionsMotion({
             colonyRoles,
             colonyDomains,
             requiredDomainId: createdInDomainId,
-            requiredColonyRole: requiredCreatedInRoles,
+            requiredColonyRoles: requiredCreatedInRoles,
             // The address of the user creating the multi-sig motion
             permissionAddress: initiatorAddress,
             // The user must have multi-sig permissions
@@ -199,6 +194,11 @@ function* managePermissionsMotion({
 
       // Creating a reputation motion
 
+      const requiredTeamRoles =
+        teamDomainId === Id.RootDomain
+          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+
       const votingReputationClient = yield colonyManager.getClient(
         ClientType.VotingReputationClient,
         colonyAddress,
@@ -214,7 +214,7 @@ function* managePermissionsMotion({
         colonyDomains,
         // The domain they are being assigned permissions in
         requiredDomainId: teamDomainId,
-        requiredColonyRole: requiredTeamRoles,
+        requiredColonyRoles: requiredTeamRoles,
         // The address of the voting reputation client
         permissionAddress: votingReputationClient.address,
         isMultiSig: false,

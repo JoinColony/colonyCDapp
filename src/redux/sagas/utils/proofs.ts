@@ -49,12 +49,18 @@ export async function getChildIndexLocal({
   return BigNumber.from(idx);
 }
 
+type SingleRole = ColonyRole;
+type RoleGroup = ColonyRole[];
+type RoleGroupSet = ColonyRole[][];
+
+type RequiredColonyRoleGroup = SingleRole | RoleGroup | RoleGroupSet;
+
 interface GetSinglePermissionProofsLocalParams {
   networkClient: ColonyNetworkClient;
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
   requiredDomainId: number;
-  requiredColonyRole: ColonyRole;
+  requiredColonyRole: SingleRole;
   permissionAddress: string;
   isMultiSig: boolean;
 }
@@ -149,7 +155,7 @@ interface GetMultiPermissionProofsLocalParams {
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
   requiredDomainId: number;
-  requiredColonyRoles: ColonyRole[];
+  requiredColonyRoles: RoleGroup;
   permissionAddress: string;
   isMultiSig: boolean;
 }
@@ -179,6 +185,10 @@ const getMultiPermissionProofsLocal = async ({
     ),
   );
 
+  if (proofs.length === 1) {
+    return proofs[0];
+  }
+
   // We are checking that all of the permissions resolve to the same domain and childSkillIndex
   for (let idx = 0; idx < proofs.length; idx += 1) {
     const [permissionDomainId, childSkillIndex, address] = proofs[idx];
@@ -196,52 +206,180 @@ const getMultiPermissionProofsLocal = async ({
   return proofs[0];
 };
 
+interface GetAnyPermissionProofsLocalParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRoles: RoleGroupSet;
+  permissionAddress: string;
+  isMultiSig: boolean;
+}
+
+// Returns the proof if any ROLE in any group of permissions is valid
+export const getAnyPermissionProofsLocal = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRoles,
+  permissionAddress,
+  isMultiSig,
+}: GetAnyPermissionProofsLocalParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
+  // Iterate over each RoleGroup in the RoleGroupSet
+  for (const roleGroup of requiredColonyRoles) {
+    for (const singleRole of roleGroup) {
+      try {
+        // Attempt to get proofs for the current RoleGroup
+        // eslint-disable-next-line no-await-in-loop
+        const proof = await getSinglePermissionProofsLocal({
+          networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId,
+          requiredColonyRole: singleRole,
+          permissionAddress,
+          isMultiSig,
+        });
+
+        // If we get here, it means the current singleRole satisfies the conditions,
+        // so we can return its proof.
+        return proof;
+      } catch (error) {
+        // Catch any errors and continue to the next singleRole in the RoleGroup or the next RoleGroup in the RoleGroupSet
+        // No need to do anything here, just continue to the next iteration
+      }
+    }
+  }
+
+  // If we exhaust all SingleRoles in the RoleGroups in the RoleGroupSet without finding a valid proof,
+  // we throw an error indicating none of the RoleGroups have the required permissions.
+  throw new Error(
+    `${permissionAddress} does not have any required roles in any of the specified domains`,
+  );
+};
+
+interface GetAnyGroupPermissionProofsLocalParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRoles: RoleGroupSet;
+  permissionAddress: string;
+  isMultiSig: boolean;
+}
+
+// Returns the proof if any GROUP of permissions is valid
+const getAnyGroupPermissionProofsLocal = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRoles,
+  permissionAddress,
+  isMultiSig,
+}: GetAnyGroupPermissionProofsLocalParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
+  // Iterate over each RoleGroup in the RoleGroupSet
+  for (const roleGroup of requiredColonyRoles) {
+    try {
+      // Attempt to get proofs for the current RoleGroup
+      // eslint-disable-next-line no-await-in-loop
+      const proof = await getMultiPermissionProofsLocal({
+        networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId,
+        requiredColonyRoles: roleGroup,
+        permissionAddress,
+        isMultiSig,
+      });
+
+      // If we get here, it means the current roleGroup satisfies the conditions,
+      // so we can return its proof.
+      return proof;
+    } catch (error) {
+      // Catch any errors and continue to the next RoleGroup in the RoleGroupSet
+      // No need to do anything here, just continue to the next iteration
+    }
+  }
+
+  // If we exhaust all RoleGroups in the RoleGroupSet without finding a valid proof,
+  // we throw an error indicating none of the RoleGroups have the required permissions.
+  throw new Error(
+    `${permissionAddress} does not have any required roles in any of the specified domains`,
+  );
+};
+
 interface GetPermissionProofsLocalParams {
   networkClient: ColonyNetworkClient;
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
   requiredDomainId: number;
-  requiredColonyRole: ColonyRole | ColonyRole[];
+  requiredColonyRoles: RequiredColonyRoleGroup;
   permissionAddress: string;
   isMultiSig?: boolean;
 }
+
 export const getPermissionProofsLocal = async ({
   networkClient,
   colonyRoles,
   colonyDomains,
   requiredDomainId,
-  requiredColonyRole,
+  requiredColonyRoles,
   permissionAddress,
   isMultiSig = false,
 }: GetPermissionProofsLocalParams): Promise<[BigNumber, BigNumber, string]> => {
-  if (Array.isArray(requiredColonyRole)) {
-    if (requiredColonyRole.length === 1) {
+  if (!Array.isArray(requiredColonyRoles)) {
+    const singleRole = requiredColonyRoles;
+    // ColonyRole.Root
+    return getSinglePermissionProofsLocal({
+      networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId,
+      requiredColonyRole: singleRole,
+      permissionAddress,
+      isMultiSig,
+    });
+  }
+
+  if (!Array.isArray(requiredColonyRoles[0])) {
+    const roleGroup = requiredColonyRoles as RoleGroup;
+    if (roleGroup.length === 1) {
+      // [ColonyRole.Root]
       return getSinglePermissionProofsLocal({
         networkClient,
         colonyRoles,
         colonyDomains,
         requiredDomainId,
-        requiredColonyRole: requiredColonyRole[0],
+        requiredColonyRole: roleGroup[0],
         permissionAddress,
         isMultiSig,
       });
     }
+    // [ColonyRole.Root, ColonyRole.Architecture]
     return getMultiPermissionProofsLocal({
       networkClient,
       colonyRoles,
       colonyDomains,
       requiredDomainId,
-      requiredColonyRoles: requiredColonyRole,
+      requiredColonyRoles: roleGroup,
       permissionAddress,
       isMultiSig,
     });
   }
-  return getSinglePermissionProofsLocal({
+  const roleGroupSet = requiredColonyRoles as RoleGroupSet;
+  // [[ColonyRole.Root]] // [[ColonyRole.Root, ColonyRole.Architecture]] // [[ColonyRole.Root], [ColonyRole.Architecture]]
+  return getAnyGroupPermissionProofsLocal({
     networkClient,
     colonyRoles,
     colonyDomains,
     requiredDomainId,
-    requiredColonyRole,
+    requiredColonyRoles: roleGroupSet,
     permissionAddress,
     isMultiSig,
   });

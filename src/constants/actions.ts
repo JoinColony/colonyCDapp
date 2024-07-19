@@ -1,36 +1,32 @@
 import { ColonyRole } from '@colony/colony-js';
 
-// @TODO: For ManagePermissionsInSubDomain it should be possible to use
-// EITHER Architecture OR Root so this (and all functions that use it) will need refactoring
-// to have an array of acceptable permissions be like this: [[ColonyRole.Architecture], [ColonyRole.Root]]
+// Expected to return ColonyRole[][]
 export const PERMISSIONS_NEEDED_FOR_ACTION = {
   // Simple Payment requires all of funding, arbitration and administration roles
   SimplePayment: [
-    ColonyRole.Funding,
-    ColonyRole.Administration,
-    ColonyRole.Arbitration,
+    [ColonyRole.Funding, ColonyRole.Arbitration, ColonyRole.Administration],
   ],
-  MintTokens: [ColonyRole.Root],
-  TransferFunds: [ColonyRole.Funding],
-  UnlockToken: [ColonyRole.Root],
-  ManageTokens: [ColonyRole.Root],
-  CreateNewTeam: [ColonyRole.Architecture],
-  EditExistingTeam: [ColonyRole.Architecture],
+  MintTokens: [[ColonyRole.Root]],
+  TransferFunds: [[ColonyRole.Funding]],
+  UnlockToken: [[ColonyRole.Root]],
+  ManageTokens: [[ColonyRole.Root]],
+  CreateNewTeam: [[ColonyRole.Architecture]],
+  EditExistingTeam: [[ColonyRole.Architecture]],
   // Manage Reputation requires a different role dependant on awarding / removing
-  ManageReputationAward: [ColonyRole.Root],
-  ManageReputationRemove: [ColonyRole.Arbitration],
-  // Manage Permissions requires the root role if assigning the root role
-  ManagePermissionsInRootDomain: [ColonyRole.Root],
-  // All other permissions can be assigned with the Architecture role
-  // @TODO: This should be possible to use EITHER architecture OR root
-  // Make sure to update the saga too when this is updated
-  ManagePermissionsInSubDomain: [ColonyRole.Architecture],
-  ManageVerifiedMembers: [ColonyRole.Root],
-  EditColonyDetails: [ColonyRole.Root],
-  ManageColonyObjective: [ColonyRole.Root],
-  UpgradeColonyVersion: [ColonyRole.Root],
-  EnterRecoveryMode: [ColonyRole.Root],
-  PaymentBuilder: [ColonyRole.Administration],
+  ManageReputationAward: [[ColonyRole.Root]],
+  ManageReputationRemove: [[ColonyRole.Arbitration]],
+  // If assigning permissions in the root domain, the root role is required
+  ManagePermissionsInRootDomain: [[ColonyRole.Root]],
+  // If assigning permissions in any other domain, root or architecture is required
+  ManagePermissionsInSubDomain: [[ColonyRole.Root], [ColonyRole.Architecture]],
+  // Except when using multi-sig, then the architecture role is required
+  ManagePermissionsInSubDomainViaMultiSig: [[ColonyRole.Architecture]],
+  ManageVerifiedMembers: [[ColonyRole.Root]],
+  EditColonyDetails: [[ColonyRole.Root]],
+  ManageColonyObjective: [[ColonyRole.Root]],
+  UpgradeColonyVersion: [[ColonyRole.Root]],
+  EnterRecoveryMode: [[ColonyRole.Root]],
+  PaymentBuilder: [[ColonyRole.Administration]],
 };
 
 export enum Action {

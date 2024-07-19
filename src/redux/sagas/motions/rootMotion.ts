@@ -84,7 +84,7 @@ function* createRootMotionSaga({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRole: requiredRoles,
+          requiredColonyRoles: requiredRoles,
           permissionAddress: userAddress,
           isMultiSig: true,
         });

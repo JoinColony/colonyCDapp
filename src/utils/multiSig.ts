@@ -15,40 +15,71 @@ export const getRolesNeededForMultiSigAction = ({
 }: {
   actionType: ColonyActionType;
   createdIn: number;
-}): ColonyRole[] | undefined => {
+}): ColonyRole[][] | undefined => {
+  let permissions: ColonyRole[][] | undefined;
+
   switch (actionType) {
     case ColonyActionType.ColonyEditMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.EditColonyDetails;
+      break;
     case ColonyActionType.CreateDomainMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
+      break;
     case ColonyActionType.EditDomainMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
+      break;
     case ColonyActionType.EmitDomainReputationRewardMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
+      break;
     case ColonyActionType.EmitDomainReputationPenaltyMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationRemove;
+      break;
     case ColonyActionType.MintTokensMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.MintTokens;
+      break;
     case ColonyActionType.UnlockTokenMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.UnlockToken;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.UnlockToken;
+      break;
     case ColonyActionType.AddVerifiedMembersMultisig:
     case ColonyActionType.RemoveVerifiedMembersMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageVerifiedMembers;
+      break;
     case ColonyActionType.MoveFundsMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
+      break;
     case ColonyActionType.SetUserRolesMultisig:
       if (!createdIn) {
-        return undefined;
+        permissions = undefined;
+        break;
       }
       if (createdIn === Id.RootDomain) {
-        return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain;
+        permissions =
+          PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain;
+        break;
       }
-      return PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+      permissions =
+        PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
+      break;
     case ColonyActionType.PaymentMultisig:
-      return PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.SimplePayment;
+      break;
     default:
-      return undefined;
+      permissions = undefined;
+      break;
   }
+
+  if (!permissions) {
+    return undefined;
+  }
+
+  if (permissions.length > 1) {
+    console.warn(
+      'The Multi-Sig voting UI does not support actions which can be voted on by different sets of roles',
+    );
+    return undefined;
+  }
+
+  return permissions;
 };
 
 export const getMultiSigState = (

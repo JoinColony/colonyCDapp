@@ -8,7 +8,7 @@ import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
   domainId: number;
-  requiredRoles?: ColonyRole[];
+  requiredRoles?: ColonyRole[][];
 }
 
 type Threshold = { [role: number]: number } | null;
@@ -41,7 +41,6 @@ export const useDomainThreshold = ({
     }
 
     if (extensionData === null || !isInstalledExtensionData(extensionData)) {
-      console.warn('MultiSig extension is not installed');
       return null;
     }
 
@@ -67,10 +66,17 @@ export const useDomainThreshold = ({
 
     // if it's not majority approval
     if (thresholdConfig > 0) {
-      return requiredRoles.reduce((acc, role) => {
-        acc[role] = thresholdConfig;
-        return acc;
-      }, {});
+      const thresholdMap: { [role: number]: number } = {};
+
+      // Iterate over each array of roles in requiredRoles
+      requiredRoles.forEach((roles) => {
+        // Assign the thresholdConfig to each role in the current roles array
+        roles.forEach((role) => {
+          thresholdMap[role] = thresholdConfig;
+        });
+      });
+
+      return thresholdMap;
     }
 
     if (!Object.values(countPerRole).every((count) => count > 0)) {

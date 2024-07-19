@@ -11,8 +11,8 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  getAnyPermissionProofsLocal,
   getColonyManager,
-  getPermissionProofsLocal,
   initiateTransaction,
   putError,
   takeFrom,
@@ -56,13 +56,13 @@ function* voteOnMultiSigAction({
     const userAddress = yield colonyClient.signer.getAddress();
 
     const [permissionDomainId, childSkillIndex] = yield call(
-      getPermissionProofsLocal,
+      getAnyPermissionProofsLocal,
       {
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
         requiredDomainId: domainId,
-        requiredColonyRole: roles,
+        requiredColonyRoles: roles,
         permissionAddress: userAddress,
         isMultiSig: true,
       },

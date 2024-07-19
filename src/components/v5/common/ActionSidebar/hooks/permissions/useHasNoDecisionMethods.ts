@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { type ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
@@ -62,7 +62,6 @@ const useHasNoDecisionMethods = () => {
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
-    excludeInherited: false,
     isMultiSig: true,
   });
 
@@ -78,21 +77,42 @@ const useHasNoDecisionMethods = () => {
   );
 
   if (
-    !requiredPermissions.every((role) => {
-      // If the requiredRolesDomain is root, check the user has the required permissions in root
-      if (requiredRolesDomain === Id.RootDomain) {
+    !requiredPermissions.some((roles) => {
+      // Check if every role in the current sub-array is satisfied
+      return roles.every((role) => {
+        let rolesToCheck: {
+          userRoles: ColonyRole[];
+          userMultiSigRoles: ColonyRole[];
+        };
+
+        if (!requiredRolesDomain) {
+          rolesToCheck = {
+            userRoles: [...userRootRoles, ...userRoles],
+            userMultiSigRoles: isMultiSigEnabled
+              ? [...userRootMultiSigRoles, ...userMultiSigRoles]
+              : [],
+          };
+        } else if (requiredRolesDomain === Id.RootDomain) {
+          rolesToCheck = {
+            userRoles: userRootRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userRootMultiSigRoles : [],
+          };
+        } else {
+          rolesToCheck = {
+            userRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userMultiSigRoles : [],
+          };
+        }
+
+        // @TODO: If an action requires multiple permissions (Simple Payment) then all the roles need to be in the same domain
+        // This would require reworking `userRoles` and `userMultiSigRoles` to group roles by domain
+
+        // Check if the user has the role in any domain
         return (
-          userRootRoles.includes(role) ||
-          // If multiSig is enabled, check if the user has the required multiSig permissions in root
-          (isMultiSigEnabled && userRootMultiSigRoles.includes(role))
+          rolesToCheck.userRoles.includes(role) ||
+          (isMultiSigEnabled && rolesToCheck.userMultiSigRoles.includes(role))
         );
-      }
-      // Otherwise, check the user has the required permissions in any domain
-      return (
-        userRoles.includes(role) ||
-        // If multiSig is enabled, check if the user has the required multiSig permissions
-        (isMultiSigEnabled && userMultiSigRoles.includes(role))
-      );
+      });
     })
   ) {
     return true;
