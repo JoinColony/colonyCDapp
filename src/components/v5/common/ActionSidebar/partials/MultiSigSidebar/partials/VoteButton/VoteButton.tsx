@@ -11,7 +11,7 @@ import { mapPayload } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
-import { getRolesNeededForMultiSigAction } from '~utils/multiSig.ts';
+import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import TxButton from '~v5/shared/Button/TxButton.tsx';
 import { type ButtonProps } from '~v5/shared/Button/types.ts';
