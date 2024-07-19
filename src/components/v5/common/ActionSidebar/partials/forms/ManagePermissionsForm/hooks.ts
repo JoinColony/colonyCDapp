@@ -1,5 +1,5 @@
 import { Id } from '@colony/colony-js';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
@@ -21,6 +21,7 @@ import {
   UserRoleModifier,
   type ManagePermissionsFormValues,
   validationSchema,
+  MANAGE_PERMISSIONS_ACTION_FORM_ID,
 } from './consts.ts';
 import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
 
@@ -31,13 +32,16 @@ export const useManagePermissions = (
   const { user } = useAppContext();
   const navigate = useNavigate();
 
+  const [showPermissionRemovalWarning, setShowPermissionRemovalWarning] =
+    useState(false);
+
   const {
     watch,
     trigger,
     control,
     setValue,
     clearErrors,
-    formState: { defaultValues, isSubmitted, errors },
+    formState: { defaultValues, isSubmitted, errors, isValid, isSubmitting },
   } = useFormContext<ManagePermissionsFormValues>();
 
   const formDecisionMethod = useWatch({
@@ -138,6 +142,11 @@ export const useManagePermissions = (
     return () => unsubscribe();
   }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
 
+  const { team, role } = watch();
+
+  const isUserOwnerInRootDomain =
+    isValid && team === Id.RootDomain && role === UserRoleModifier.Remove;
+
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
@@ -162,6 +171,11 @@ export const useManagePermissions = (
       [colony, user, navigate],
     ),
     mode: 'onSubmit',
+    actionFormSubmitButtonType: isUserOwnerInRootDomain ? 'button' : 'submit',
+    onActionFormButtonClick: () => {
+      setShowPermissionRemovalWarning(true);
+    },
+    id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
   });
 
   return {
@@ -169,5 +183,8 @@ export const useManagePermissions = (
     isModRoleSelected,
     values: watch(),
     errors,
+    isSubmitting,
+    showPermissionRemovalWarning,
+    setShowPermissionRemovalWarning,
   };
 };

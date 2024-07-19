@@ -52,6 +52,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
+  actionFormProps: { actionFormSubmitButtonType, onActionFormButtonClick },
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -193,7 +194,11 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          <ActionButtons isActionDisabled={isSubmitDisabled} />
+          <ActionButtons
+            isActionDisabled={isSubmitDisabled}
+            submitButtonType={actionFormSubmitButtonType}
+            onActionFormButtonClick={onActionFormButtonClick}
+          />
         </div>
       )}
       {draftAgreement && (
@@ -266,6 +271,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             getFormOptions={getFormOptions}
             isMotion={isMotion}
             transactionId={transactionId}
+            actionFormProps={actionFormProps}
           />
         </ActionForm>
       </div>
