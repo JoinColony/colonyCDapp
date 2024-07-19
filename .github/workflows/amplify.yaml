@@ -45,7 +45,7 @@ jobs:
           .github/workflows/scripts/amplify-deploy.sh
         working-directory: ${{ github.workspace }}
         env:
-          AWS_AMPLIFY_APP_ID: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
+          AMPLIFY_APP_ID: ${{ vars.AWS_AMPLIFY_APP_ID_QA }}
           AMPLIFY_ENV_NAME: qa
           
       - uses: sarisia/actions-status-discord@c193626e5ce172002b8161e116aa897de7ab5383
