@@ -222,6 +222,7 @@ fragment ColonyMotion on ColonyMotion {
     type
   }
   createdAt
+  createdBy
 }
 
 fragment MotionMessage on MotionMessage {
