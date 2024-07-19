@@ -92,7 +92,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      showHeaderProps={{ className: 'right-6 top-[2.0625rem]' }}
+      shouldShowHeader
       icon={Wallet}
       {...rest}
     >
