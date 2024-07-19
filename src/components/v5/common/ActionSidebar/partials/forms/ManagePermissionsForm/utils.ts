@@ -20,7 +20,7 @@ import { sanitizeHTML } from '~utils/strings.ts';
 
 import {
   AVAILABLE_ROLES,
-  RemoveRoleOptionValue,
+  UserRoleModifier,
   type ManagePermissionsFormValues,
 } from './consts.ts';
 
@@ -29,7 +29,7 @@ export const getRoleLabel = (role: string | undefined) => {
     ...USER_ROLES,
     CUSTOM_USER_ROLE,
     {
-      role: RemoveRoleOptionValue.remove,
+      role: UserRoleModifier.Remove,
       name: formatText({
         id: 'actionSidebar.managePermissions.roleSelect.remove.title',
       }),
@@ -65,7 +65,7 @@ export const getPermissionsMap = (
           [],
         );
       }
-      case RemoveRoleOptionValue.remove: {
+      case UserRoleModifier.Remove: {
         return [];
       }
       default: {
@@ -173,17 +173,25 @@ export const configureFormRoles = ({
     isMultiSig: authority === Authority.ViaMultiSig,
   });
 
+  const userInheritedRolesForDomain = getUserRolesForDomain({
+    colony,
+    userAddress: member,
+    domainId: team,
+    inheritedRoles: true,
+  });
+
   const userRoleMeta = getRole(userRolesForDomain);
 
-  const userRole = userRoleMeta.permissions.length
+  const userRoleWrapper = userRoleMeta.permissions.length
     ? userRoleMeta.role
     : undefined;
 
-  setValue('_dbUserRole', userRole);
-  setValue('_dbUserPermissions', userRolesForDomain);
+  setValue('_dbUserRoleWrapper', userRoleWrapper);
+  setValue('_dbUserRolesForDomain', userRolesForDomain);
+  setValue('_dbUserInheritedRolesForDomain', userInheritedRolesForDomain);
 
-  if (role !== UserRole.Custom) {
-    setValue('role', userRole, { shouldValidate: isSubmitted });
+  if (role !== UserRole.Custom && role !== UserRoleModifier.Remove) {
+    setValue('role', userRoleWrapper, { shouldValidate: isSubmitted });
   }
 
   AVAILABLE_ROLES.forEach((colonyRole) => {

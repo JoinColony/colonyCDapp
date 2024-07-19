@@ -28,7 +28,7 @@ import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import {
   type ManagePermissionsFormValues,
-  RemoveRoleOptionValue,
+  UserRoleModifier,
 } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
@@ -217,7 +217,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== RemoveRoleOptionValue.remove && (
+      {role !== UserRoleModifier.Remove && (
         <PermissionsTable
           name="permissions"
           role={role as UserRole}
