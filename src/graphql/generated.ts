@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -14817,3 +14818,5 @@ export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentCo
 =======
 >>>>>>> 5c6b462b7 (Feat: add rejectedAt, rejectedBy and executedBy for ColonyMultiSig)
 >>>>>>> cc6643096 (Feat: add rejectedAt, rejectedBy and executedBy for ColonyMultiSig)
+=======
+>>>>>>> a22bc38a8 (Fix reinstall states)
