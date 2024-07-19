@@ -65,22 +65,24 @@ const ActionButtons: FC<ActionButtonProps> = ({
           <ActiveInstalls activeInstalls={activeInstalls} />
         </div>
       </div>
-      {isInstallButtonVisible && (
-        <InstallButton
-          onActiveTabChange={onActiveTabChange}
+      <div className="flex flex-col gap-2 sm:flex-row">
+        {isInstallButtonVisible && (
+          <InstallButton
+            onActiveTabChange={onActiveTabChange}
+            extensionData={extensionData}
+          />
+        )}
+        <EnableButton
           extensionData={extensionData}
+          isSetupRoute={isSetupRoute}
+          userHasRoot={userHasRoot}
+          waitingForEnableConfirmation={waitingForEnableConfirmation}
         />
-      )}
-      <EnableButton
-        extensionData={extensionData}
-        isSetupRoute={isSetupRoute}
-        userHasRoot={userHasRoot}
-        waitingForEnableConfirmation={waitingForEnableConfirmation}
-      />
-      <SaveSettingsButton />
-      {isUpgradeButtonVisible && (
-        <UpgradeButton extensionData={extensionData} />
-      )}
+        <SaveSettingsButton />
+        {isUpgradeButtonVisible && (
+          <UpgradeButton extensionData={extensionData} />
+        )}
+      </div>
     </>
   );
 };

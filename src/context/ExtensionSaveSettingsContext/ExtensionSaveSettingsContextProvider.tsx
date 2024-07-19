@@ -14,20 +14,13 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const values = useRef({});
   const [actionType, setActionType] = useState<ActionTypes | null>(null);
+  const callbackRef = useRef<any>(null);
 
   const handleIsVisible = (newValue: boolean) => setIsVisible(newValue);
 
-  const handleIsDisabled = (newValue: boolean) => setIsDisabled(newValue);
-
-  const handleSetValues = (newValues) => {
-    values.current = newValues;
-  };
-
-  const handleGetValues = () => {
-    return values.current;
+  const handleGetValues = async () => {
+    return callbackRef.current?.getValues();
   };
 
   const handleSetActionType = (newActionType: ActionTypes) =>
@@ -35,24 +28,20 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
 
   const resetAll = () => {
     setIsVisible(false);
-    setIsDisabled(false);
     setActionType(null);
-    values.current = {};
   };
 
   const value = useMemo(
     () => ({
+      callback: callbackRef,
       isVisible,
-      isDisabled,
       actionType,
       handleGetValues,
       handleIsVisible,
-      handleIsDisabled,
-      handleSetValues,
       handleSetActionType,
       resetAll,
     }),
-    [isVisible, isDisabled, actionType],
+    [isVisible, actionType],
   );
 
   return (
