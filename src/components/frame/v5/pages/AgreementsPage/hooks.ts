@@ -1,3 +1,4 @@
+import { Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -10,8 +11,10 @@ import {
   filterActionByMotionState,
   makeWithMotionStateMapper,
 } from '~hooks/useActivityFeed/helpers.ts';
+import useExtensionData from '~hooks/useExtensionData.ts';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 
@@ -19,6 +22,38 @@ export const useGetAgreements = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
+  const {
+    extensionData: votingRepExtensionData,
+    loading: loadingVotingRepExtension,
+  } = useExtensionData(Extension.VotingReputation);
+
+  const {
+    extensionData: multiSigExtensionData,
+    loading: loadingMultiSigExtension,
+  } = useExtensionData(Extension.MultisigPermissions);
+
+  const votingRepInstalledExtensionData = useMemo(() => {
+    if (loadingVotingRepExtension) {
+      return null;
+    }
+
+    return votingRepExtensionData &&
+      isInstalledExtensionData(votingRepExtensionData)
+      ? votingRepExtensionData
+      : null;
+  }, [loadingVotingRepExtension, votingRepExtensionData]);
+
+  const multiSigInstalledExtensionData = useMemo(() => {
+    if (loadingMultiSigExtension) {
+      return null;
+    }
+
+    return multiSigExtensionData &&
+      isInstalledExtensionData(multiSigExtensionData)
+      ? multiSigExtensionData
+      : null;
+  }, [loadingMultiSigExtension, multiSigExtensionData]);
+
   const { activeFilters, searchFilter } = useFiltersContext();
   const { data, loading } = useGetColonyActionsQuery({
     variables: {
@@ -47,9 +82,18 @@ export const useGetAgreements = () => {
   const agreements = useMemo(
     () =>
       (agreementsData?.filter(notNull) ?? []).map(
-        makeWithMotionStateMapper(motionStatesMap),
+        makeWithMotionStateMapper(
+          motionStatesMap,
+          votingRepInstalledExtensionData,
+          multiSigInstalledExtensionData,
+        ),
       ),
-    [agreementsData, motionStatesMap],
+    [
+      agreementsData,
+      motionStatesMap,
+      multiSigInstalledExtensionData,
+      votingRepInstalledExtensionData,
+    ],
   );
 
   const loadingMotionStateFilter =
