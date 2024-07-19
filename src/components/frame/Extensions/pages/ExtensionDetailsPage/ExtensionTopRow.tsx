@@ -70,7 +70,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       {!isSetupRoute && showPermissionsBanner && (
         <PermissionsNeededBanner extensionData={extensionData} />
       )}
-      <div className="flex flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
+      <div className="flex flex-col flex-wrap justify-between sm:h-10 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <ActionButtons
             onActiveTabChange={onActiveTabChange}
