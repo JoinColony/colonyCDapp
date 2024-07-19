@@ -54,7 +54,7 @@ export type ManagePermissionsFormValues = {
   // These are intended to be used as reference values when running form validations
   // and won't be included in the form submission
   /**
-   * Keeps track of a user's current DB role wrapper which is taken from the role meta i.e. mod | payer | admin
+   * Keeps track of a user's current DB role wrapper which is taken from the role meta i.e. owner | mod | payer | admin | custom
    * @internal
    */
   _dbuserRoleWrapperForDomain?: ManagePermissionsFormValues['role'];
@@ -231,3 +231,6 @@ export const validationSchema = object()
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);
+
+export const MANAGE_PERMISSIONS_ACTION_FORM_ID =
+  'manage-permissions-action-form-id';

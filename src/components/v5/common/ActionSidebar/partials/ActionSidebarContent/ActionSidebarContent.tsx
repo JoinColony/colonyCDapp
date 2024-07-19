@@ -54,6 +54,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
+  actionFormProps: { actionFormSubmitButtonType, onActionFormButtonClick },
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -220,17 +221,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
-            onSubmitClick={
-              shouldShowCreateStakedExpenditureModal
-                ? async () => {
-                    await trigger();
-
-                    if (isValid) {
-                      showCreateStakedExpenditureModal();
-                    }
-                  }
-                : undefined
-            }
+            submitButtonType={actionFormSubmitButtonType}
+            onActionFormButtonClick={onActionFormButtonClick}
           />
         </div>
       )}
@@ -320,6 +312,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             getFormOptions={getFormOptions}
             isMotion={isMotion}
             transactionId={transactionId}
+            actionFormProps={actionFormProps}
           />
         </ActionForm>
       </div>

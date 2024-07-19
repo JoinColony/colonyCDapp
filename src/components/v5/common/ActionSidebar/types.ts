@@ -12,6 +12,8 @@ export interface ActionButtonsProps {
 export interface ActionFormOptions
   extends Omit<ActionFormProps<any>, 'children' | 'onSuccess'> {
   onSuccess?: () => void;
+  submitButtonType: ActionFormProps<any>['actionFormSubmitButtonType'];
+  onActionFormButtonClick: ActionFormProps<any>['onActionFormButtonClick'];
 }
 
 export interface ActionFormBaseProps {
@@ -33,6 +35,9 @@ export type UseActionFormBaseHook = (
     | 'mode'
     | 'reValidateMode'
     | 'onSuccess'
+    | 'actionFormSubmitButtonType'
+    | 'onActionFormButtonClick'
+    | 'id'
   >,
 ) => void;
 

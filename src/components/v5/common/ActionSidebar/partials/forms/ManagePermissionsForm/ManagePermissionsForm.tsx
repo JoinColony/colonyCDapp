@@ -32,6 +32,7 @@ import {
 } from './consts.ts';
 import { useManagePermissions } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
+import PermissionsRemovalModal from './partials/PermissionsRemovalModal/PermissionsRemovalModal.tsx';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
 import PermissionsOptions from './PermissionOptions.tsx';
 import { getRoleLabel } from './utils.ts';
@@ -43,14 +44,17 @@ const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const {
     errors,
+    isSubmitting,
     values: {
       member,
       role,
       team,
       authority,
       _dbuserRoleWrapperForDomain: userRoleWrapperForDomain,
-      _dbUserRolesForDomain: rolesForDomain,
+      _dbUserRolesForDomain: userRolesForDomain,
     },
+    showPermissionRemovalWarning,
+    setShowPermissionRemovalWarning,
   } = useManagePermissions(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [
@@ -236,10 +240,19 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           name="permissions"
           className="mt-7"
           userRoleWrapperForDomain={userRoleWrapperForDomain}
-          userRolesForDomain={rolesForDomain}
+          userRolesForDomain={userRolesForDomain}
           activeFormRole={role}
         />
       )}
+      <PermissionsRemovalModal
+        member={member}
+        isOpen={showPermissionRemovalWarning}
+        onClose={() => setShowPermissionRemovalWarning(false)}
+        activeFormRole={role}
+        userRoleWrapperForDomain={userRoleWrapperForDomain}
+        userRolesForDomain={userRolesForDomain}
+        isFormSubmitting={isSubmitting}
+      />
     </>
   );
 };
