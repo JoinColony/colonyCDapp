@@ -120,7 +120,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.staking.label' }) || '',
           decor:
-            activeStepKey === NetworkMotionState.Staking && motionStakes ? (
+            activeStepKey === NetworkMotionState.Staking &&
+            motionStakes &&
+            motionState ? (
               <MotionCountDownTimer
                 motionState={motionState}
                 motionId={motionId}
@@ -186,7 +188,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.reveal.label' }) || '',
           decor:
-            activeStepKey === NetworkMotionState.Reveal && motionStakes ? (
+            activeStepKey === NetworkMotionState.Reveal &&
+            motionStakes &&
+            motionState ? (
               <MotionCountDownTimer
                 motionState={motionState}
                 motionId={motionId}
