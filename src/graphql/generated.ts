@@ -9597,6 +9597,14 @@ export type GetRolesForDomainQueryVariables = Exact<{
 
 export type GetRolesForDomainQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, targetUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null } | null } | null } | null> } | null };
 
+export type GetMultiSigRolesForDomainQueryVariables = Exact<{
+  domainId: Scalars['ID'];
+  filter: ModelColonyRoleFilterInput;
+}>;
+
+
+export type GetMultiSigRolesForDomainQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+
 export type GetUserStakesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
   colonyAddress: Scalars['ID'];
@@ -12888,6 +12896,53 @@ export function useGetRolesForDomainLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetRolesForDomainQueryHookResult = ReturnType<typeof useGetRolesForDomainQuery>;
 export type GetRolesForDomainLazyQueryHookResult = ReturnType<typeof useGetRolesForDomainLazyQuery>;
 export type GetRolesForDomainQueryResult = Apollo.QueryResult<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>;
+export const GetMultiSigRolesForDomainDocument = gql`
+    query GetMultiSigRolesForDomain($domainId: ID!, $filter: ModelColonyRoleFilterInput!) {
+  getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
+    items {
+      id
+      targetUser {
+        ...User
+      }
+      targetAddress
+      role_1
+      role_2
+      role_3
+      role_5
+      role_6
+    }
+  }
+}
+    ${UserFragmentDoc}`;
+
+/**
+ * __useGetMultiSigRolesForDomainQuery__
+ *
+ * To run a query within a React component, call `useGetMultiSigRolesForDomainQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMultiSigRolesForDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMultiSigRolesForDomainQuery({
+ *   variables: {
+ *      domainId: // value for 'domainId'
+ *      filter: // value for 'filter'
+ *   },
+ * });
+ */
+export function useGetMultiSigRolesForDomainQuery(baseOptions: Apollo.QueryHookOptions<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>(GetMultiSigRolesForDomainDocument, options);
+      }
+export function useGetMultiSigRolesForDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>(GetMultiSigRolesForDomainDocument, options);
+        }
+export type GetMultiSigRolesForDomainQueryHookResult = ReturnType<typeof useGetMultiSigRolesForDomainQuery>;
+export type GetMultiSigRolesForDomainLazyQueryHookResult = ReturnType<typeof useGetMultiSigRolesForDomainLazyQuery>;
+export type GetMultiSigRolesForDomainQueryResult = Apollo.QueryResult<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>;
 export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
