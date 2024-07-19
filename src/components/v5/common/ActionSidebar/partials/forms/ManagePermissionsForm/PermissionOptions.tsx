@@ -19,7 +19,7 @@ import {
   type CardSelectOptionsGroup,
 } from '~v5/common/Fields/CardSelect/types.ts';
 
-import { RemoveRoleOptionValue } from './consts.ts';
+import { UserRoleModifier } from './consts.ts';
 import RoleOptionLabel from './partials/RoleOptionLabel/index.ts';
 import { type UserRoleSelectMeta } from './types.ts';
 
@@ -104,7 +104,7 @@ const PermissionsOptions: CardSelectOptionsGroup<string>[] = [
             })}
           </RoleOptionLabel>
         ),
-        value: RemoveRoleOptionValue.remove,
+        value: UserRoleModifier.Remove,
       },
     ],
   },
