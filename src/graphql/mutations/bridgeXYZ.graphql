@@ -6,18 +6,7 @@ mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
     kyc_link
     success
     bankAccount {
-      id
-      currency
-      bankName
-      iban {
-        last4
-        bic
-        country
-      }
-      usAccount {
-        last4
-        routingNumber
-      }
+      ...BridgeBankAccount
     }
   }
 }
@@ -72,45 +61,19 @@ mutation CheckKYCStatus {
     kyc_link
     country
     bankAccount {
-      currency
-      bankName
-      accountOwner
-      iban {
-        bic
-        country
-        last4
-      }
-      usAccount {
-        last4
-        routingNumber
-      }
+      ...BridgeBankAccount
     }
   }
 }
 
-mutation CreateBankAccount(
-  $currency: String!
-  $bankName: String!
-  $firstName: String!
-  $lastName: String!
-  $address: BridgeXYZMutationAddressInput
-  $iban: BridgeXYZMutationIbanInput
-  $usAccount: BridgeXYZMutationAccountInput
-) {
-  bridgeXYZMutation(
-    input: {
-      path: "v0/customers/{customerID}/external_accounts"
-      body: {
-        currency: $currency
-        bank_name: $bankName
-        first_name: $firstName
-        last_name: $lastName
-        address: $address
-        iban: $iban
-        account: $usAccount
-      }
-    }
-  ) {
+mutation CreateBankAccount($input: BridgeCreateBankAccountInput!) {
+  bridgeCreateBankAccount(input: $input) {
+    success
+  }
+}
+
+mutation UpdateBankAccount($input: BridgeUpdateBankAccountInput!) {
+  bridgeUpdateBankAccount(input: $input) {
     success
   }
 }

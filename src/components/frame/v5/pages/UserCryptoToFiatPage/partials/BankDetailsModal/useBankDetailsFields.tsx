@@ -5,9 +5,10 @@ import { toast } from 'react-toastify';
 import {
   SupportedCurrencies,
   useCreateBankAccountMutation,
-  type BridgeXyzBankAccount,
+  useUpdateBankAccountMutation,
 } from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
+import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
@@ -32,7 +33,7 @@ const MSG = defineMessages({
 });
 
 interface UseBankDetailsParams {
-  data?: Partial<BridgeXyzBankAccount>;
+  data?: BridgeBankAccount | null;
   onClose: () => void;
   redirectToSecondTab: () => void;
 }
@@ -42,13 +43,12 @@ export const useBankDetailsFields = ({
   data,
 }: UseBankDetailsParams) => {
   const [createBankAccount] = useCreateBankAccountMutation();
+  const [updateBankAccount] = useUpdateBankAccountMutation();
 
   const [bankDetailsFields, setBankDetailsFields] =
     useState<BankDetailsFormValues>({
       currency: data?.currency ?? '',
       bankName: data?.bankName ?? '',
-      firstName: '',
-      lastName: '',
       accountOwner: data?.accountOwner ?? '',
       iban: '',
       swift: '',
@@ -62,12 +62,81 @@ export const useBankDetailsFields = ({
       state: '',
     });
 
-  const handleSubmitForm = async (variables) => {
-    const result = await createBankAccount({
-      variables,
-    });
+  const handleSubmitForm = async (values: BankDetailsFormValues) => {
+    const {
+      bankName,
+      accountNumber,
+      currency,
+      iban,
+      swift,
+      country,
+      accountOwner,
+      routingNumber,
+      address1,
+      address2,
+      city,
+      state,
+      postcode,
+    } = values;
 
-    if (result.data?.bridgeXYZMutation?.success) {
+    const accountInput = {
+      bankName,
+      accountOwner,
+      currency,
+      iban:
+        currency === CURRENCY_VALUES[SupportedCurrencies.Eur]
+          ? {
+              // eslint-disable-next-line camelcase
+              account_number: iban,
+              bic: swift,
+              country,
+            }
+          : undefined,
+      usAccount:
+        currency === CURRENCY_VALUES[SupportedCurrencies.Usd]
+          ? {
+              // eslint-disable-next-line camelcase
+              account_number: accountNumber,
+              // eslint-disable-next-line camelcase
+              routing_number: routingNumber,
+            }
+          : undefined,
+      address:
+        currency === CURRENCY_VALUES[SupportedCurrencies.Usd]
+          ? {
+              city,
+              country,
+              // eslint-disable-next-line camelcase
+              postal_code: postcode,
+              // eslint-disable-next-line camelcase
+              street_line_1: address1,
+              // eslint-disable-next-line camelcase
+              street_line_2: address2,
+              state,
+            }
+          : undefined,
+    };
+
+    let isSuccess;
+
+    if (!data) {
+      const result = await createBankAccount({
+        variables: { input: accountInput },
+      });
+      isSuccess = !!result.data?.bridgeCreateBankAccount?.success;
+    } else {
+      const result = await updateBankAccount({
+        variables: {
+          input: {
+            id: data.id,
+            account: accountInput,
+          },
+        },
+      });
+      isSuccess = !!result.data?.bridgeUpdateBankAccount?.success;
+    }
+
+    if (isSuccess) {
       toast.success(
         <Toast
           type="success"
@@ -84,87 +153,17 @@ export const useBankDetailsFields = ({
     }
   };
 
-  const handleSubmitFirstStep = async (values) => {
-    const {
-      currency,
-      bankName,
-      accountOwner,
-      iban,
-      swift,
-      country,
-      accountNumber,
-      routingNumber,
-    } = values;
-
-    const [firstName, lastName] = accountOwner.split(' ');
-
-    if (currency !== CURRENCY_VALUES[SupportedCurrencies.Usd]) {
-      handleSubmitForm({
-        firstName,
-        lastName,
-        currency,
-        bankName,
-        iban: {
-          // eslint-disable-next-line camelcase
-          account_number: iban,
-          bic: swift,
-          country,
-        },
-      });
+  const handleSubmitFirstStep = async (values: BankDetailsFormValues) => {
+    if (values.currency !== CURRENCY_VALUES[SupportedCurrencies.Usd]) {
+      handleSubmitForm(values);
     } else {
-      setBankDetailsFields((prev) => ({
-        ...prev,
-        firstName,
-        lastName,
-        currency,
-        bankName,
-        accountNumber,
-        routingNumber,
-      }));
+      setBankDetailsFields({ ...values });
       redirectToSecondTab();
     }
   };
 
-  const handleSubmitSecondStep = async ({
-    address1,
-    address2,
-    city,
-    postcode,
-    state,
-    country,
-  }) => {
-    const {
-      currency,
-      bankName,
-      accountNumber,
-      routingNumber,
-      firstName,
-      lastName,
-    } = bankDetailsFields;
-
-    handleSubmitForm({
-      currency,
-      bankName,
-      firstName,
-      lastName,
-      usAccount: {
-        // eslint-disable-next-line camelcase
-        account_number: accountNumber,
-        // eslint-disable-next-line camelcase
-        routing_number: routingNumber,
-      },
-      address: {
-        city,
-        country,
-        // eslint-disable-next-line camelcase
-        postal_code: postcode,
-        // eslint-disable-next-line camelcase
-        street_line_1: address1,
-        // eslint-disable-next-line camelcase
-        street_line_2: address2,
-        state,
-      },
-    });
+  const handleSubmitSecondStep = async (values: BankDetailsFormValues) => {
+    handleSubmitForm({ ...bankDetailsFields, ...values });
   };
 
   return { bankDetailsFields, handleSubmitFirstStep, handleSubmitSecondStep };

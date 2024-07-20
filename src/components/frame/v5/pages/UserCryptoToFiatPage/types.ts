@@ -13,8 +13,6 @@ export interface CryptoToFiatPageComponentProps {
 export interface BankDetailsFormValues {
   currency: string;
   bankName: string;
-  firstName: string;
-  lastName: string;
   accountOwner: string;
   iban: string;
   swift: string;

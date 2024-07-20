@@ -1,7 +1,8 @@
 import React, { useState, type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { SupportedCurrencies, type BridgeXyzBankAccount } from '~gql';
+import { SupportedCurrencies } from '~gql';
+import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
@@ -16,7 +17,7 @@ import { useBankDetailsFields } from './useBankDetailsFields.tsx';
 interface BankDetailsModalProps {
   isOpened: boolean;
   onClose: () => void;
-  data?: Partial<BridgeXyzBankAccount> | null;
+  data?: BridgeBankAccount | null;
 }
 
 enum TabId {
@@ -51,7 +52,7 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
     useBankDetailsFields({
       onClose,
       redirectToSecondTab,
-      data: data ?? undefined,
+      data,
     });
 
   const stepItems = [

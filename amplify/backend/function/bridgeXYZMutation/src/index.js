@@ -4,12 +4,15 @@ const { checkKYCHandler } = require('./handlers/checkKyc');
 const {
   createExternalAccountHandler,
 } = require('./handlers/createExternalAccount');
+const {
+  updateExternalAccountHandler,
+} = require('./handlers/updateExternalAccount');
 
 const isDev = process.env.ENV === 'dev';
 
 let graphqlURL = 'http://localhost:20002/graphql';
 let appSyncApiKey = 'da2-fakeApiId123456';
-let apiUrl = 'https://api.bridge.xyz';
+let apiUrl = 'https://api.sandbox.bridge.xyz';
 let apiKey = 'xxx';
 
 const setEnvVariables = async () => {
@@ -24,6 +27,11 @@ const setEnvVariables = async () => {
   }
 };
 
+const BRIDGE_MUTATIONS = {
+  CREATE_EXTERNAL_ACCOUNT: 'bridgeCreateBankAccount',
+  UPDATE_EXTERNAL_ACCOUNT: 'bridgeUpdateBankAccount',
+};
+
 exports.handler = async (event) => {
   try {
     await setEnvVariables();
@@ -34,17 +42,23 @@ exports.handler = async (event) => {
   const { path } = event.arguments?.input || {};
 
   const handlers = {
+    [BRIDGE_MUTATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
+    [BRIDGE_MUTATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
     'v0/kyc_links': kycLinksHandler,
     'v0/customers/{customerID}': putCustomerHandler,
     'v0/kyc_links/{kycLinkID}': checkKYCHandler,
-    'v0/customers/{customerID}/external_accounts': createExternalAccountHandler,
     default: () => {
       console.log('Running default handler');
       return null;
     },
   };
 
-  const handler = handlers[path] || handlers.default;
+  const handler =
+    handlers[path] || handlers[event.fieldName] || handlers.default;
 
-  return handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+  try {
+    return handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+  } catch {
+    return { success: false };
+  }
 };

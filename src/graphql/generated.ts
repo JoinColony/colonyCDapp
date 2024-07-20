@@ -48,14 +48,63 @@ export type Annotation = {
   updatedAt: Scalars['AWSDateTime'];
 };
 
+export type BridgeCreateBankAccountInput = {
+  accountOwner: Scalars['String'];
+  address?: InputMaybe<BridgeXyzMutationAddressInput>;
+  bankName: Scalars['String'];
+  currency: Scalars['String'];
+  iban?: InputMaybe<BridgeIbanAccountInput>;
+  usAccount?: InputMaybe<BridgeUsAccountInput>;
+};
+
+export type BridgeCreateBankAccountReturn = {
+  __typename?: 'BridgeCreateBankAccountReturn';
+  success?: Maybe<Scalars['Boolean']>;
+};
+
+export type BridgeIbanAccountInput = {
+  account_number: Scalars['String'];
+  bic: Scalars['String'];
+  country: Scalars['String'];
+};
+
+export type BridgeIbanBankAccount = {
+  __typename?: 'BridgeIbanBankAccount';
+  bic: Scalars['String'];
+  country: Scalars['String'];
+  id: Scalars['String'];
+  last4: Scalars['String'];
+};
+
+export type BridgeUpdateBankAccountInput = {
+  account: BridgeCreateBankAccountInput;
+  id: Scalars['String'];
+};
+
+export type BridgeUpdateBankAccountReturn = {
+  __typename?: 'BridgeUpdateBankAccountReturn';
+  success?: Maybe<Scalars['Boolean']>;
+};
+
+export type BridgeUsAccountInput = {
+  account_number: Scalars['String'];
+  routing_number: Scalars['String'];
+};
+
+export type BridgeUsBankAccount = {
+  __typename?: 'BridgeUsBankAccount';
+  last4: Scalars['String'];
+  routingNumber: Scalars['String'];
+};
+
 export type BridgeXyzBankAccount = {
   __typename?: 'BridgeXYZBankAccount';
   accountOwner: Scalars['String'];
   bankName: Scalars['String'];
   currency: Scalars['String'];
-  iban?: Maybe<BridgeXyzIbanBankAccount>;
+  iban?: Maybe<BridgeIbanBankAccount>;
   id: Scalars['String'];
-  usAccount?: Maybe<BridgeXyzusBankAccount>;
+  usAccount?: Maybe<BridgeUsBankAccount>;
 };
 
 export type BridgeXyzDrain = {
@@ -66,13 +115,6 @@ export type BridgeXyzDrain = {
   id?: Maybe<Scalars['String']>;
   receipt?: Maybe<DrainReceipt>;
   state?: Maybe<Scalars['String']>;
-};
-
-export type BridgeXyzIbanBankAccount = {
-  __typename?: 'BridgeXYZIbanBankAccount';
-  bic: Scalars['String'];
-  country: Scalars['String'];
-  last4: Scalars['String'];
 };
 
 export type BridgeXyzMutationAccountInput = {
@@ -134,12 +176,6 @@ export type BridgeXyzQueryReturn = {
   drains?: Maybe<Array<Maybe<BridgeXyzDrain>>>;
   success?: Maybe<Scalars['Boolean']>;
   transactionFee?: Maybe<Scalars['String']>;
-};
-
-export type BridgeXyzusBankAccount = {
-  __typename?: 'BridgeXYZUSBankAccount';
-  last4: Scalars['String'];
-  routingNumber: Scalars['String'];
 };
 
 /**
@@ -4473,6 +4509,8 @@ export type MotionStateHistoryInput = {
 /** Root mutation type */
 export type Mutation = {
   __typename?: 'Mutation';
+  bridgeCreateBankAccount?: Maybe<BridgeCreateBankAccountReturn>;
+  bridgeUpdateBankAccount?: Maybe<BridgeUpdateBankAccountReturn>;
   /** Post to the Bridge XYZ API */
   bridgeXYZMutation?: Maybe<BridgeXyzMutationReturn>;
   createAnnotation?: Maybe<Annotation>;
@@ -4600,6 +4638,18 @@ export type Mutation = {
   updateUserTokens?: Maybe<UserTokens>;
   /** Validates the user invite code and adds the user as a colony contributor */
   validateUserInvite?: Maybe<Scalars['Boolean']>;
+};
+
+
+/** Root mutation type */
+export type MutationBridgeCreateBankAccountArgs = {
+  input: BridgeCreateBankAccountInput;
+};
+
+
+/** Root mutation type */
+export type MutationBridgeUpdateBankAccountArgs = {
+  input: BridgeUpdateBankAccountInput;
 };
 
 
@@ -8834,6 +8884,8 @@ export type MotionStakesFragment = { __typename?: 'MotionStakes', raw: { __typen
 
 export type ColonyDecisionFragment = { __typename?: 'ColonyDecision', title: string, description: string, motionDomainId: number, walletAddress: string, createdAt: string, actionId: string, colonyAddress: string };
 
+export type BridgeBankAccountFragment = { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null };
+
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, modifiedTokenAddresses?: { __typename?: 'PendingModifiedTokenAddresses', added?: Array<string> | null, removed?: Array<string> | null } | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, haveTokensChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null };
 
 export type PublicColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', avatar?: string | null, displayName: string, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', link: string, name: ExternalLinks }> | null } | null };
@@ -8931,7 +8983,7 @@ export type BridgeXyzMutationMutationVariables = Exact<{
 }>;
 
 
-export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', last4: string, bic: string, country: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateKycLinksMutationVariables = Exact<{
   fullName: Scalars['String'];
@@ -8959,20 +9011,21 @@ export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZM
 export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeXYZIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeXYZUSBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateBankAccountMutationVariables = Exact<{
-  currency: Scalars['String'];
-  bankName: Scalars['String'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  address?: InputMaybe<BridgeXyzMutationAddressInput>;
-  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
-  usAccount?: InputMaybe<BridgeXyzMutationAccountInput>;
+  input: BridgeCreateBankAccountInput;
 }>;
 
 
-export type CreateBankAccountMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
+export type CreateBankAccountMutation = { __typename?: 'Mutation', bridgeCreateBankAccount?: { __typename?: 'BridgeCreateBankAccountReturn', success?: boolean | null } | null };
+
+export type UpdateBankAccountMutationVariables = Exact<{
+  input: BridgeUpdateBankAccountInput;
+}>;
+
+
+export type UpdateBankAccountMutation = { __typename?: 'Mutation', bridgeUpdateBankAccount?: { __typename?: 'BridgeUpdateBankAccountReturn', success?: boolean | null } | null };
 
 export type CreateColonyEtherealMetadataMutationVariables = Exact<{
   input: CreateColonyEtherealMetadataInput;
@@ -9503,6 +9556,23 @@ export type GetCurrentColonyVersionQueryVariables = Exact<{ [key: string]: never
 
 export type GetCurrentColonyVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number } | null> } | null };
 
+export const BridgeBankAccountFragmentDoc = gql`
+    fragment BridgeBankAccount on BridgeXYZBankAccount {
+  id
+  currency
+  bankName
+  accountOwner
+  iban {
+    bic
+    country
+    last4
+  }
+  usAccount {
+    last4
+    routingNumber
+  }
+}
+    `;
 export const ColonyObjectiveFragmentDoc = gql`
     fragment ColonyObjective on ColonyObjective {
   title
@@ -10520,22 +10590,11 @@ export const BridgeXyzMutationDocument = gql`
     kyc_link
     success
     bankAccount {
-      id
-      currency
-      bankName
-      iban {
-        last4
-        bic
-        country
-      }
-      usAccount {
-        last4
-        routingNumber
-      }
+      ...BridgeBankAccount
     }
   }
 }
-    `;
+    ${BridgeBankAccountFragmentDoc}`;
 export type BridgeXyzMutationMutationFn = Apollo.MutationFunction<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>;
 
 /**
@@ -10650,22 +10709,11 @@ export const CheckKycStatusDocument = gql`
     kyc_link
     country
     bankAccount {
-      currency
-      bankName
-      accountOwner
-      iban {
-        bic
-        country
-        last4
-      }
-      usAccount {
-        last4
-        routingNumber
-      }
+      ...BridgeBankAccount
     }
   }
 }
-    `;
+    ${BridgeBankAccountFragmentDoc}`;
 export type CheckKycStatusMutationFn = Apollo.MutationFunction<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 
 /**
@@ -10692,10 +10740,8 @@ export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStat
 export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
 export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateBankAccountDocument = gql`
-    mutation CreateBankAccount($currency: String!, $bankName: String!, $firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $iban: BridgeXYZMutationIbanInput, $usAccount: BridgeXYZMutationAccountInput) {
-  bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}/external_accounts", body: {currency: $currency, bank_name: $bankName, first_name: $firstName, last_name: $lastName, address: $address, iban: $iban, account: $usAccount}}
-  ) {
+    mutation CreateBankAccount($input: BridgeCreateBankAccountInput!) {
+  bridgeCreateBankAccount(input: $input) {
     success
   }
 }
@@ -10715,13 +10761,7 @@ export type CreateBankAccountMutationFn = Apollo.MutationFunction<CreateBankAcco
  * @example
  * const [createBankAccountMutation, { data, loading, error }] = useCreateBankAccountMutation({
  *   variables: {
- *      currency: // value for 'currency'
- *      bankName: // value for 'bankName'
- *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
- *      address: // value for 'address'
- *      iban: // value for 'iban'
- *      usAccount: // value for 'usAccount'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -10732,6 +10772,39 @@ export function useCreateBankAccountMutation(baseOptions?: Apollo.MutationHookOp
 export type CreateBankAccountMutationHookResult = ReturnType<typeof useCreateBankAccountMutation>;
 export type CreateBankAccountMutationResult = Apollo.MutationResult<CreateBankAccountMutation>;
 export type CreateBankAccountMutationOptions = Apollo.BaseMutationOptions<CreateBankAccountMutation, CreateBankAccountMutationVariables>;
+export const UpdateBankAccountDocument = gql`
+    mutation UpdateBankAccount($input: BridgeUpdateBankAccountInput!) {
+  bridgeUpdateBankAccount(input: $input) {
+    success
+  }
+}
+    `;
+export type UpdateBankAccountMutationFn = Apollo.MutationFunction<UpdateBankAccountMutation, UpdateBankAccountMutationVariables>;
+
+/**
+ * __useUpdateBankAccountMutation__
+ *
+ * To run a mutation, you first call `useUpdateBankAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBankAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBankAccountMutation, { data, loading, error }] = useUpdateBankAccountMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateBankAccountMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBankAccountMutation, UpdateBankAccountMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBankAccountMutation, UpdateBankAccountMutationVariables>(UpdateBankAccountDocument, options);
+      }
+export type UpdateBankAccountMutationHookResult = ReturnType<typeof useUpdateBankAccountMutation>;
+export type UpdateBankAccountMutationResult = Apollo.MutationResult<UpdateBankAccountMutation>;
+export type UpdateBankAccountMutationOptions = Apollo.BaseMutationOptions<UpdateBankAccountMutation, UpdateBankAccountMutationVariables>;
 export const CreateColonyEtherealMetadataDocument = gql`
     mutation CreateColonyEtherealMetadata($input: CreateColonyEtherealMetadataInput!) {
   createColonyEtherealMetadata(input: $input) {

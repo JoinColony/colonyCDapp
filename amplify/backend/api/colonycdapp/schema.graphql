@@ -287,7 +287,6 @@ input BridgeXYZMutationBodyInput {
   #
   first_name: String
   last_name: String
-  # email: String
   address: BridgeXYZMutationAddressInput
   birth_date: String
   tax_identification_number: String
@@ -303,13 +302,47 @@ input BridgeXYZMutationInput {
   body: BridgeXYZMutationBodyInput!
 }
 
-type BridgeXYZIbanBankAccount {
+input BridgeUsAccountInput {
+  account_number: String!
+  routing_number: String!
+}
+
+input BridgeIbanAccountInput {
+  account_number: String!
+  bic: String!
+  country: String!
+}
+
+input BridgeCreateBankAccountInput {
+  iban: BridgeIbanAccountInput
+  usAccount: BridgeUsAccountInput
+  currency: String!
+  bankName: String!
+  address: BridgeXYZMutationAddressInput
+  accountOwner: String!
+}
+
+input BridgeUpdateBankAccountInput {
+  id: String!
+  account: BridgeCreateBankAccountInput!
+}
+
+type BridgeCreateBankAccountReturn {
+  success: Boolean
+}
+
+type BridgeUpdateBankAccountReturn {
+  success: Boolean
+}
+
+type BridgeIbanBankAccount {
+  id: String!
   last4: String!
   bic: String!
   country: String!
 }
 
-type BridgeXYZUSBankAccount {
+type BridgeUsBankAccount {
   last4: String!
   routingNumber: String!
 }
@@ -319,8 +352,8 @@ type BridgeXYZBankAccount {
   currency: String!
   bankName: String!
   accountOwner: String!
-  iban: BridgeXYZIbanBankAccount
-  usAccount: BridgeXYZUSBankAccount
+  iban: BridgeIbanBankAccount
+  usAccount: BridgeUsBankAccount
 }
 
 type BridgeXYZMutationReturn {
@@ -979,6 +1012,14 @@ type Mutation {
   """
   bridgeXYZMutation(input: BridgeXYZMutationInput!): BridgeXYZMutationReturn
     @function(name: "bridgeXYZMutation-${env}")
+
+  bridgeCreateBankAccount(
+    input: BridgeCreateBankAccountInput!
+  ): BridgeCreateBankAccountReturn @function(name: "bridgeXYZMutation-${env}")
+
+  bridgeUpdateBankAccount(
+    input: BridgeUpdateBankAccountInput!
+  ): BridgeUpdateBankAccountReturn @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
