@@ -11,3 +11,8 @@ export interface DomainThresholdConfig {
   name: string;
   isError?: boolean;
 }
+
+export type MultiSigSetupFormValues = {
+  globalThreshold: string | number;
+  [key: string]: string | number;
+};
