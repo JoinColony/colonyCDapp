@@ -15,9 +15,9 @@ import {
   getContext,
 } from '~context/index.ts';
 import {
-  CreatePendingStreamingPaymentMetadataDocument,
-  type CreatePendingStreamingPaymentMetadataMutation,
-  type CreatePendingStreamingPaymentMetadataMutationVariables,
+  type CreateStreamingPaymentMetadataMutation,
+  type CreateStreamingPaymentMetadataMutationVariables,
+  CreateStreamingPaymentMetadataDocument,
 } from '~gql';
 import { type Action, ActionTypes } from '~redux/index.ts';
 import {
@@ -30,6 +30,7 @@ import { checkColonyVersionCompliance } from '~redux/sagas/utils/checkColonyVers
 import { getEditStreamingPaymentMulticallData } from '~redux/sagas/utils/editStreamingPaymentMulticall.ts';
 import {
   getColonyManager,
+  getUpdatedStreamingPaymentMetadataChangelog,
   initiateTransaction,
   putError,
   takeFrom,
@@ -198,20 +199,22 @@ function* editStreamingPaymentMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    const hasEndConditionChanged =
-      endCondition !== undefined &&
-      endCondition !== streamingPayment.metadata?.endCondition;
-
-    if (hasEndConditionChanged) {
+    if (streamingPayment.metadata) {
       yield apolloClient.mutate<
-        CreatePendingStreamingPaymentMetadataMutation,
-        CreatePendingStreamingPaymentMetadataMutationVariables
+        CreateStreamingPaymentMetadataMutation,
+        CreateStreamingPaymentMetadataMutationVariables
       >({
-        mutation: CreatePendingStreamingPaymentMetadataDocument,
+        mutation: CreateStreamingPaymentMetadataDocument,
         variables: {
           input: {
             id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-            endCondition,
+            endCondition:
+              endCondition ?? streamingPayment.metadata.endCondition,
+            changelog: getUpdatedStreamingPaymentMetadataChangelog({
+              transactionHash: txHash,
+              metadata: streamingPayment.metadata,
+              newEndCondition: endCondition,
+            }),
           },
         },
       });
