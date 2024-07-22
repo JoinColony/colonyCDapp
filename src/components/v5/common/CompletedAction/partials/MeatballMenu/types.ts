@@ -1,17 +1,7 @@
 import { type FieldValues } from 'react-hook-form';
 
-type BaseMeatballMenuProps = {
+export interface MeatballMenuProps {
   transactionHash: string;
   defaultValues?: FieldValues;
-};
-
-type WithRedoItem = BaseMeatballMenuProps & {
-  showRedoItem?: true;
-  defaultValues: FieldValues;
-};
-
-type WithoutRedoItem = BaseMeatballMenuProps & {
-  showRedoItem: false;
-};
-
-export type MeatballMenuProps = WithRedoItem | WithoutRedoItem;
+  showRedoItem?: boolean;
+}
