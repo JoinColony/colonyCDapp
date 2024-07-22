@@ -107,13 +107,14 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const newUserColonyRoles = transformActionRolesToColonyRoles(
+  const newDbPermissions = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole,
   );
 
-  const oldUserColonyRoles = transformActionRolesToColonyRoles(roles);
+  const oldDbPermissions = transformActionRolesToColonyRoles(roles);
 
-  const { name: roleName, role } = getRole(newUserColonyRoles);
+  const { name: roleName, role: dbRoleForDomain } = getRole(newDbPermissions);
+
   const rolesTitle = formatRolesTitle(roles);
 
   return (
@@ -127,14 +128,18 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: AUTHORITY_OPTIONS[0].value,
-            role,
+            role: dbRoleForDomain,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: isMotion
               ? DecisionMethod.Reputation
               : DecisionMethod.Permissions,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
-          enableRedoAction={!!newUserColonyRoles.length}
+          enableRedoAction={
+            // @TODO Add a boolean check for multi-sig motions
+            !!newDbPermissions.length ||
+            (!!action.motionData && !action.motionData?.isFinalized)
+          }
         />
       </div>
       <ActionSubtitle>
@@ -198,7 +203,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            newUserColonyRoles.length
+            newDbPermissions.length
               ? roleName
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
@@ -220,10 +225,10 @@ const SetUserRoles = ({ action }: Props) => {
         <DescriptionRow description={action.annotation.message} />
       )}
       <PermissionsTableRow
-        role={role}
+        dbRoleForDomain={dbRoleForDomain}
         domainId={action.fromDomain?.nativeId}
-        userRolesForDomain={newUserColonyRoles}
-        oldUserRolesForDomain={oldUserColonyRoles}
+        dbPermissionsForDomain={newDbPermissions}
+        oldDbPermissionsForDomain={oldDbPermissions}
       />
     </>
   );

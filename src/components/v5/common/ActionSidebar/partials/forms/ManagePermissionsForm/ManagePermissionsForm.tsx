@@ -45,14 +45,16 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     errors,
     isSubmitting,
     values: {
-      member,
-      role,
       team,
-      _dbuserRoleWrapperForDomain: userRoleWrapperForDomain,
-      _dbUserRolesForDomain: userRolesForDomain,
+      role,
+      member,
+      permissions,
+      _dbRoleForDomain: dbRoleForDomain,
+      _dbInheritedPermissions: dbInheritedPermissions,
+      _dbPermissionsForDomain: dbPermissionsForDomain,
     },
-    showPermissionRemovalWarning,
-    setShowPermissionRemovalWarning,
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
   } = useManagePermissions(getFormOptions);
 
   const [
@@ -217,18 +219,19 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <PermissionsTable
           name="permissions"
           className="mt-7"
-          userRoleWrapperForDomain={userRoleWrapperForDomain}
-          userRolesForDomain={userRolesForDomain}
-          activeFormRole={role}
+          dbRoleForDomain={dbRoleForDomain}
+          dbPermissionsForDomain={dbPermissionsForDomain}
+          formRole={role}
         />
       )}
       <PermissionsRemovalModal
-        isOpen={showPermissionRemovalWarning}
-        onClose={() => setShowPermissionRemovalWarning(false)}
-        activeFormRole={role}
-        userRoleWrapperForDomain={userRoleWrapperForDomain}
-        userRolesForDomain={userRolesForDomain}
+        formRole={role}
+        formPermissions={permissions}
         isFormSubmitting={isSubmitting}
+        dbRoleForDomain={dbRoleForDomain}
+        isOpen={showPermissionsRemovalWarning}
+        dbInheritedPermissions={dbInheritedPermissions}
+        onClose={() => setShowPermissionsRemovalWarning(false)}
       />
     </>
   );
