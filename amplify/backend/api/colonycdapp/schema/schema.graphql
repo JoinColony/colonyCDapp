@@ -3605,6 +3605,7 @@ type ColonyAction @model @searchable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
@@ -3673,6 +3674,8 @@ type StreamingPaymentChanges {
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
+=======
+>>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 """
@@ -4201,6 +4204,7 @@ type StreamingPayment @model @searchable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   """
   Address of the stream creator, can be a user or an extension
   """
@@ -4208,6 +4212,8 @@ type StreamingPayment @model @searchable {
 =======
 >>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
 =======
+=======
+>>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
   """
   List of Streaming Payment changelog entries
   """
@@ -4234,17 +4240,23 @@ type StreamingPaymentChanges {
   endTime: String!
   interval: String!
   amount: String!
+<<<<<<< HEAD
 >>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
+=======
+>>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
   """
   List of Streaming Payment metadata changelog entries
   """
@@ -4268,6 +4280,7 @@ type StreamingPaymentMetadataChangelog {
   """
   newEndCondition: StreamingPaymentEndCondition!
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 
 type StreamingPaymentClaim {
@@ -4282,6 +4295,8 @@ type StreamingPaymentClaim {
   timestamp: String!
 =======
 >>>>>>> 38c525943 (Feat: Remove limit amount from streamingPaymentMetadata)
+=======
+>>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 type StreamingPaymentClaim {
