@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     svgr(),
     importMetaEnv.vite({
       example: '.env.example',
-      env: '.env.local',
+      env: '.env',
     })
   ],
   resolve: {
