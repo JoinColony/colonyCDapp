@@ -1,6 +1,10 @@
 FROM colony-cdapp-dev-env/base:latest
 
+<<<<<<< HEAD
 ENV BLOCK_INGESTOR_HASH=5913f9a5997a9d2ba138cf98bd3a279dc7ee1327
+=======
+ENV BLOCK_INGESTOR_HASH=c1e68101d343992a65a528c890b01cc68c2df628
+>>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
