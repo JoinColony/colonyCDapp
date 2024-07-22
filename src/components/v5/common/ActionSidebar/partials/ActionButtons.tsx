@@ -32,8 +32,7 @@ const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 
 const ActionButtons: FC<ActionButtonsProps> = ({
   isActionDisabled,
-  submitButtonType = 'submit',
-  onActionFormButtonClick,
+  primaryButton,
 }) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -118,9 +117,9 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             disabled={isActionDisabled || isButtonDisabled || isFieldDisabled}
             text={submitText}
             isFullSize={isMobile}
-            type={submitButtonType}
+            type={primaryButton?.type}
             onClick={() =>
-              submitButtonType === 'button' && onActionFormButtonClick?.()
+              primaryButton?.type === 'button' && primaryButton?.onClick?.()
             }
           />
         )}
