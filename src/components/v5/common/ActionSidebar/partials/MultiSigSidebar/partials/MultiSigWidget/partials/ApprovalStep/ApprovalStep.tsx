@@ -11,7 +11,8 @@ import {
 } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import { type Threshold } from '~types/multisig.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
@@ -128,14 +129,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
       actionType,
       createdIn: Number(multiSigData.nativeMultiSigDomainId),
     }) || [];
-  /*
-   * @NOTE we can remove this once we flatten fetching of eligible signees to not use a 2d array
-   * The only action which has a 2d array of required roles is managing roles in a subdomain via permissions, not multisig
-   * so we can safely assume that we can use just the first array of roles
-   */
-  const requiredMultiSigRoles = requiredRoles[0] || [];
 
-  const doesActionRequireMultipleRoles = requiredMultiSigRoles.length > 1;
+  const doesActionRequireMultipleRoles = requiredRoles.length > 1;
   const isMotionOlderThanWeek = hasWeekPassed(createdAt);
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
@@ -164,7 +159,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     });
 
   if (areEligibleSigneesLoading) {
-    return <div>Loading</div>;
+    return <SpinnerLoader appearance={{ size: 'medium' }} />;
   }
 
   const notSignedUsers = getNotSignedUsers({
@@ -172,10 +167,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     signatures,
   });
 
-  const allUserSignatures = getAllUserSignatures(
-    signatures,
-    requiredMultiSigRoles,
-  );
+  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles);
 
   const signaturesToDisplay = [
     ...Object.values(allUserSignatures),
@@ -359,7 +351,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
               approvalsPerRole={approvalsPerRole}
               thresholdPerRole={thresholdPerRole}
               multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-              requiredRoles={requiredMultiSigRoles}
+              requiredRoles={requiredRoles}
             />
           ) : null,
         },

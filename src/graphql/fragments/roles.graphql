@@ -1,0 +1,12 @@
+fragment ColonyUserRole on ColonyRole {
+  id
+  targetUser {
+    ...User
+  }
+  targetAddress
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+}
