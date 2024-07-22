@@ -15,7 +15,7 @@ export const getRolesNeededForMultiSigAction = ({
 }: {
   actionType: ColonyActionType;
   createdIn: number;
-}): ColonyRole[][] | undefined => {
+}): ColonyRole[] | undefined => {
   let permissions: ColonyRole[][] | undefined;
 
   switch (actionType) {
@@ -82,7 +82,7 @@ export const getRolesNeededForMultiSigAction = ({
     return undefined;
   }
 
-  return permissions;
+  return permissions[0];
 };
 
 export const getMultiSigState = (
