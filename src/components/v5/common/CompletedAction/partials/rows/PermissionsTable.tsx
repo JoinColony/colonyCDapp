@@ -18,37 +18,37 @@ import { getCustomPermissionsTableColumns } from './utils.tsx';
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
 interface Props {
-  role: UserRole;
+  dbRoleForDomain: UserRole;
   domainId: number | undefined;
-  userRolesForDomain: ColonyRole[];
-  oldUserRolesForDomain?: ColonyRole[];
+  dbPermissionsForDomain: ColonyRole[];
+  oldDbPermissionsForDomain?: ColonyRole[];
 }
 
 const PermissionsTable = ({
-  role,
+  dbRoleForDomain,
   domainId,
-  userRolesForDomain,
-  oldUserRolesForDomain,
+  dbPermissionsForDomain,
+  oldDbPermissionsForDomain,
 }: Props) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = getCustomPermissionsTableColumns(
-    userRolesForDomain,
+    dbPermissionsForDomain,
     isMobile,
   );
 
-  const activeFormRole = userRolesForDomain?.length
-    ? role
+  const formRole = dbPermissionsForDomain?.length
+    ? dbRoleForDomain
     : UserRoleModifier.Remove;
 
   const permissionsTableProps = usePermissionsTableProps({
-    activeFormRole,
-    userRolesForDomain,
-    userRoleWrapperForDomain: role,
+    formRole,
+    dbRoleForDomain,
     isCompletedAction: true,
-    oldUserRolesForDomain,
+    roles: oldDbPermissionsForDomain,
+    isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
   });
 
-  const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
+  const ALLOWED_CUSTOM_PERMISSIONS_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
       key === ColonyRole.Root || key === ColonyRole.Recovery
         ? domainId === Id.RootDomain
@@ -57,14 +57,14 @@ const PermissionsTable = ({
 
   return (
     <div className="mt-7">
-      {activeFormRole !== UserRole.Custom ? (
+      {formRole !== UserRole.Custom ? (
         <Table<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
         <Table<CustomPermissionTableModel>
           className={clsx(
             'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
           )}
-          data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
+          data={ALLOWED_CUSTOM_PERMISSIONS_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
           verticalLayout={isMobile}
         />

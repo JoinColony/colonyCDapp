@@ -81,6 +81,7 @@ export const getUserRolesForDomain = ({
   intersectingRoles = false,
   isMultiSig = false,
   inheritedRoles = false,
+  dbInheritedPermissions = false,
 }: {
   colonyRoles: ColonyRoleFragment[];
   userAddress: Address;
@@ -89,6 +90,7 @@ export const getUserRolesForDomain = ({
   intersectingRoles?: boolean;
   isMultiSig?: boolean;
   inheritedRoles?: boolean;
+  dbInheritedPermissions?: boolean;
 }): ColonyRole[] => {
   if (!domainId) {
     return getAllUserRoles(colonyRoles, userAddress, isMultiSig);
@@ -105,7 +107,7 @@ export const getUserRolesForDomain = ({
   const userRolesInAnyDomain = getUserRolesInDomain(domainId);
   const userRolesInRootDomain = getUserRolesInDomain(Id.RootDomain);
 
-  if (inheritedRoles) {
+  if (dbInheritedPermissions) {
     return convertRolesToArray(userRolesInRootDomain);
   }
 

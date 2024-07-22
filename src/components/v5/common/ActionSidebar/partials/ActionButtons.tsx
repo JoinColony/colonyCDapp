@@ -120,7 +120,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             disabled={isActionDisabled || isButtonDisabled || isFieldDisabled}
             text={submitText}
             isFullSize={isMobile}
-            type={primaryButton?.type}
+            type={primaryButton?.type ?? 'submit'}
             onClick={() =>
               primaryButton?.type === 'button' && primaryButton?.onClick?.()
             }

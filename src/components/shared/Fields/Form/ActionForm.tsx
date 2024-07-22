@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { type ButtonHTMLAttributes } from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
 import { authenticateWallet } from '~auth';
@@ -53,7 +53,7 @@ export interface ActionFormProps<
   /** Primary button prop overrides */
   primaryButton?: {
     /** The form's primary button type */
-    type?: ButtonHTMLAttributes<any>['type'];
+    type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 
     /** Function called when the form's primary button type is set to "button" */
     onClick?: () => void;

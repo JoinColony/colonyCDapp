@@ -26,7 +26,6 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import {
-  AuthorityOptions,
   UserRoleModifier,
   type ManagePermissionsFormValues,
 } from './consts.ts';
@@ -46,15 +45,17 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     errors,
     isSubmitting,
     values: {
-      member,
-      role,
       team,
       authority,
-      _dbuserRoleWrapperForDomain: userRoleWrapperForDomain,
-      _dbUserRolesForDomain: userRolesForDomain,
+      role,
+      member,
+      permissions,
+      _dbRoleForDomain: dbRoleForDomain,
+      _dbInheritedPermissions: dbInheritedPermissions,
+      _dbPermissionsForDomain: dbPermissionsForDomain,
     },
-    showPermissionRemovalWarning,
-    setShowPermissionRemovalWarning,
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
   } = useManagePermissions(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [
@@ -106,7 +107,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       }),
     }),
   );
-
   const AUTHORITY_OPTIONS = [
     {
       label: formatText({ id: 'actionSidebar.authority.own' }),
@@ -121,6 +121,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         ]
       : []),
   ];
+
   const isRemovePermissionsErrorPresent =
     role === UserRoleModifier.Remove && errors.role;
 
@@ -239,18 +240,19 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <PermissionsTable
           name="permissions"
           className="mt-7"
-          userRoleWrapperForDomain={userRoleWrapperForDomain}
-          userRolesForDomain={userRolesForDomain}
-          activeFormRole={role}
+          dbRoleForDomain={dbRoleForDomain}
+          dbPermissionsForDomain={dbPermissionsForDomain}
+          formRole={role}
         />
       )}
       <PermissionsRemovalModal
-        isOpen={showPermissionRemovalWarning}
-        onClose={() => setShowPermissionRemovalWarning(false)}
-        activeFormRole={role}
-        userRoleWrapperForDomain={userRoleWrapperForDomain}
-        userRolesForDomain={userRolesForDomain}
+        formRole={role}
+        formPermissions={permissions}
         isFormSubmitting={isSubmitting}
+        dbRoleForDomain={dbRoleForDomain}
+        isOpen={showPermissionsRemovalWarning}
+        dbInheritedPermissions={dbInheritedPermissions}
+        onClose={() => setShowPermissionsRemovalWarning(false)}
       />
     </>
   );

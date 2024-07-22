@@ -1,3 +1,4 @@
+import { type ColonyRole } from '@colony/colony-js';
 import { User, UsersThree } from '@phosphor-icons/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -12,10 +13,7 @@ import {
 import { type PermissionsTableModel } from '~types/permissions.ts';
 import { tw } from '~utils/css/index.ts';
 import { formatText } from '~utils/intl.ts';
-import {
-  UserRoleModifier,
-  type ManagePermissionsFormValues,
-} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/PermissionsBadge.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import { type TableProps } from '~v5/common/Table/types.ts';
@@ -23,41 +21,32 @@ import { type TableProps } from '~v5/common/Table/types.ts';
 const permissionsColumnHelper = createColumnHelper<PermissionsTableModel>();
 
 export const usePermissionsTableProps = ({
+  roles,
+  formRole,
   isCompletedAction,
-  activeFormRole,
-  userRoleWrapperForDomain,
-  userRolesForDomain,
-  oldUserRolesForDomain,
+  dbRoleForDomain,
+  isRemovePermissionsAction,
 }: {
-  activeFormRole: ManagePermissionsFormValues['role'];
-  userRoleWrapperForDomain: ManagePermissionsFormValues['_dbuserRoleWrapperForDomain'];
-  userRolesForDomain: ManagePermissionsFormValues['_dbUserRolesForDomain'];
-  oldUserRolesForDomain?: ManagePermissionsFormValues['_dbUserRolesForDomain'];
+  formRole: ManagePermissionsFormValues['role'];
+  dbRoleForDomain: ManagePermissionsFormValues['_dbRoleForDomain'];
   isCompletedAction?: boolean;
+  roles: ColonyRole[] | undefined;
+  isRemovePermissionsAction: boolean;
 }): TableProps<PermissionsTableModel> => {
   return useMemo(() => {
-    const isRemovePermissionsAction =
-      activeFormRole === UserRoleModifier.Remove;
-
     const tableClassName = tw`[&_th]:h-[2.625rem] [&_th]:py-1`;
 
-    const permissionsSet = isCompletedAction
-      ? oldUserRolesForDomain
-      : userRolesForDomain;
-
-    return permissionsSet &&
-      activeFormRole &&
-      activeFormRole !== UserRole.Custom
+    return roles &&
+      formRole &&
+      (formRole !== UserRole.Custom || isRemovePermissionsAction)
       ? {
           className: tableClassName,
           data: [
             {
               key: Date.now(),
               permissions: isRemovePermissionsAction
-                ? permissionsSet?.map((role) =>
-                    formatText({ id: `role.${role}` }),
-                  )
-                : PERMISSIONS_TABLE_CONTENT[activeFormRole].permissions,
+                ? roles?.map((role) => formatText({ id: `role.${role}` }))
+                : PERMISSIONS_TABLE_CONTENT[formRole].permissions,
             },
           ],
           columns: [
@@ -71,16 +60,16 @@ export const usePermissionsTableProps = ({
                         id: 'actionSidebar.managePermissions.removePermissionsTableHeading',
                       })}
                     </span>
-                    {userRoleWrapperForDomain && (
+                    {dbRoleForDomain && (
                       <PermissionsBadge
                         text={
                           USER_ROLES.find(
                             ({ role: roleField }) =>
-                              roleField === userRoleWrapperForDomain,
+                              roleField === dbRoleForDomain,
                           )?.name || formatText({ id: 'role.custom' })
                         }
                         icon={
-                          userRoleWrapperForDomain === UserRole.Custom
+                          dbRoleForDomain === UserRole.Custom
                             ? UsersThree
                             : User
                         }
@@ -89,7 +78,7 @@ export const usePermissionsTableProps = ({
                   </div>
                 ) : (
                   <span className="text-md font-medium text-gray-900">
-                    {PERMISSIONS_TABLE_CONTENT[activeFormRole].heading}
+                    {PERMISSIONS_TABLE_CONTENT[formRole].heading}
                   </span>
                 ),
               cell: ({ row }) => {
@@ -179,10 +168,10 @@ export const usePermissionsTableProps = ({
           columns: [],
         };
   }, [
-    activeFormRole,
+    formRole,
     isCompletedAction,
-    oldUserRolesForDomain,
-    userRolesForDomain,
-    userRoleWrapperForDomain,
+    isRemovePermissionsAction,
+    roles,
+    dbRoleForDomain,
   ]);
 };
