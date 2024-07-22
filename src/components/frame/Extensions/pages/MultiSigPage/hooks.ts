@@ -7,7 +7,17 @@ import { ExtensionSaveSettingsContext } from '~context/ExtensionSaveSettingsCont
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
-import { MultiSigThresholdType, type DomainThresholdConfig } from './types.ts';
+import {
+  MultiSigThresholdType,
+  type DomainThresholdConfig,
+  type MultiSigSetupFormValues,
+} from './types.ts';
+import {
+  getDomainThresholds,
+  getInitialDomainConfig,
+  getInitialGlobalThreshold,
+  getThresholdType,
+} from './utils.ts';
 
 export const useBackNavigation = ({ extensionData }) => {
   const navigate = useNavigate();
@@ -25,10 +35,6 @@ export const useBackNavigation = ({ extensionData }) => {
 export const useThresholdData = ({ extensionData }) => {
   const multiSigConfig = extensionData.params?.multiSig || null;
 
-  const defaultFixedThreshold = multiSigConfig
-    ? multiSigConfig.colonyThreshold
-    : 0;
-
   const {
     colony: { colonyAddress, domains },
   } = useColonyContext();
@@ -40,8 +46,10 @@ export const useThresholdData = ({ extensionData }) => {
     trigger,
     formState: { errors, isValid },
     reset,
-  } = useForm<any>({
-    defaultValues: { globalThreshold: defaultFixedThreshold || '' },
+  } = useForm<MultiSigSetupFormValues>({
+    defaultValues: {
+      globalThreshold: getInitialGlobalThreshold(multiSigConfig),
+    },
     mode: 'onChange',
   });
 
@@ -49,9 +57,7 @@ export const useThresholdData = ({ extensionData }) => {
     useContext(ExtensionSaveSettingsContext);
 
   const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
-    multiSigConfig && multiSigConfig.colonyThreshold > 0
-      ? MultiSigThresholdType.FIXED_THRESHOLD
-      : MultiSigThresholdType.MAJORITY_APPROVAL,
+    getThresholdType(multiSigConfig?.colonyThreshold),
   );
 
   const [domainThresholdConfigs, setDomainThresholdConfigs] = useState<
@@ -84,31 +90,14 @@ export const useThresholdData = ({ extensionData }) => {
     );
 
     const tempDomainThresholdConfigs = domainsExcludingRoot.map((domain) => {
-      const { colonyThreshold } = multiSigConfig;
-      const existingThreshold = multiSigConfig.domainThresholds?.find(
-        (item) => {
-          return Number(item?.domainId) === domain.nativeId;
-        },
-      )?.domainThreshold;
-      let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
+      const { threshold, ...rest } = getInitialDomainConfig(
+        domain,
+        multiSigConfig,
+      );
 
-      if (existingThreshold != null && existingThreshold !== colonyThreshold) {
-        if (existingThreshold === 0) {
-          type = MultiSigThresholdType.MAJORITY_APPROVAL;
-        } else {
-          type = MultiSigThresholdType.FIXED_THRESHOLD;
-        }
-      }
+      setValue(rest.name, threshold);
 
-      const name = domain.metadata?.name || '';
-      setValue(name, existingThreshold || colonyThreshold || 0);
-
-      return {
-        id: domain.id,
-        nativeSkillId: Number(domain.nativeSkillId),
-        type,
-        name,
-      };
+      return rest;
     });
 
     setDomainThresholdConfigs(tempDomainThresholdConfigs);
@@ -121,32 +110,17 @@ export const useThresholdData = ({ extensionData }) => {
 
       const values = getValues();
 
-      const domainThresholds = domainThresholdConfigs.map((domain) => {
-        let threshold = 0;
-
-        if (
-          domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-          thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
-        ) {
-          threshold = Number(values.globalThreshold);
-        }
-
-        if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-          threshold = Number(values[domain.name]);
-        }
-        return {
-          skillId: domain.nativeSkillId,
-          threshold,
-        };
-      });
-
       return {
         colonyAddress,
         globalThreshold:
           thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
             ? 0
             : values.globalThreshold,
-        domainThresholds,
+        domainThresholds: getDomainThresholds(
+          values,
+          domainThresholdConfigs,
+          thresholdType,
+        ),
       };
     },
   }));
