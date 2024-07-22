@@ -122,9 +122,14 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
       actionType,
       createdIn: Number(multiSigData.nativeMultiSigDomainId),
     }) || [];
-  const doesActionRequireMultipleRoles = requiredRoles?.length
-    ? requiredRoles.length > 1
-    : false;
+  /*
+   * @NOTE we can remove this once we flatten fetching of eligible signees to not use a 2d array
+   * The only action which has a 2d array of required roles is managing roles in a subdomain via permissions, not multisig
+   * so we can safely assume that we can use just the first array of roles
+   */
+  const requiredMultiSigRoles = requiredRoles[0] || [];
+
+  const doesActionRequireMultipleRoles = requiredMultiSigRoles.length > 1;
 
   const { uniqueEligibleSignees } = useEligibleSignees({
     domainId: Number(multiSigData.nativeMultiSigDomainId),
@@ -139,12 +144,15 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
   const notSignedUsers = getNotSignedUsers({
-    requiredRoles: requiredRoles[0],
+    requiredRoles: requiredMultiSigRoles,
     eligibleSignees: (uniqueEligibleSignees || []).filter(notMaybe),
     signatures,
   });
 
-  const allUserSignatures = getAllUserSignatures(signatures, requiredRoles[0]);
+  const allUserSignatures = getAllUserSignatures(
+    signatures,
+    requiredMultiSigRoles,
+  );
 
   const signaturesToDisplay = [
     ...Object.values(allUserSignatures),
@@ -342,17 +350,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
           key: 'thresholdPassedBanner',
           className: '!p-0',
           content: shouldCheckUserRoles ? (
-            /*
-             * @NOTE this banner should show up just for the SimplePayment action - actions that require multiple roleThreshold
-             * The only action which has a 2d array of required roles is managing roles in a subdomain via permissions, not multisig
-             * so we can safely assume that we can send in the first array of roles
-             */
             <ThresholdPassedBanner
               rejectionsPerRole={rejectionsPerRole}
               approvalsPerRole={approvalsPerRole}
               thresholdPerRole={thresholdPerRole}
               multiSigDomainId={Number(multiSigData.nativeMultiSigDomainId)}
-              requiredRoles={requiredRoles[0] || []}
+              requiredRoles={requiredMultiSigRoles}
             />
           ) : null,
         },
