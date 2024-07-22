@@ -3022,7 +3022,7 @@ type ColonyMotion @model {
   expenditureFunding: [ExpenditureFundingItem!]
 
   """
-  Streaming payment associated with the motion, if any
+  ID of the associated streaming payment, if any
   """
   streamingPaymentId: ID
     @index(
@@ -3031,9 +3031,14 @@ type ColonyMotion @model {
     )
 
   """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+
+  """
   Streaming Payment changes by the action
   """
-  streamingPaymentPendingChanges: StreamingPaymentPendingChanges
+  pendingStreamingPaymentChanges: StreamingPaymentChanges
 
   """
   Identifier of streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
@@ -3042,20 +3047,8 @@ type ColonyMotion @model {
   """
   Streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
   """
-  pendingStreamingPaymentMetadata: PendingStreamingPaymentMetadata
+  pendingStreamingPaymentMetadata: StreamingPaymentMetadata
     @hasOne(fields: ["pendingStreamingPaymentMetadataId"])
-}
-
-type StreamingPaymentPendingChanges {
-  startTime: String
-  endTime: String
-  interval: String
-  amount: String
-}
-
-type PendingStreamingPaymentMetadata @model {
-  id: ID!
-  endCondition: StreamingPaymentEndCondition!
 }
 
 type ExpenditureFundingItem {
@@ -3581,23 +3574,6 @@ type ColonyAction @model @searchable {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
-  """
-  Changes to the streaming payment associated with the action, if any
-  Applicable to `EDIT_STREAMING_PAYMENT` action only
-  """
-  streamingPaymentChanges: FullStreamingPaymentChanges
-}
-
-type FullStreamingPaymentChanges {
-  oldValues: StreamingPaymentChanges!
-  newValues: StreamingPaymentChanges!
-}
-
-type StreamingPaymentChanges {
-  startTime: String
-  endTime: String
-  interval: String
-  amount: String
 }
 
 """
@@ -4062,11 +4038,59 @@ type StreamingPayment @model {
   """
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  List of Streaming Payment changelog entries
+  """
+  changelog: [StreamingPaymentChangelog!]
+}
+
+type StreamingPaymentChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  The values before the change
+  """
+  oldValues: StreamingPaymentChanges!
+  """
+  The values before the change
+  """
+  newValues: StreamingPaymentChanges!
+}
+
+type StreamingPaymentChanges {
+  startTime: String!
+  endTime: String!
+  interval: String!
+  amount: String!
 }
 
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
+  """
+  List of Streaming Payment metadata changelog entries
+  """
+  changelog: [StreamingPaymentMetadataChangelog!]
+}
+
+"""
+Represents a changelog entry for Streaming Payment metadata
+"""
+type StreamingPaymentMetadataChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  The end condition before the change
+  """
+  oldEndCondition: StreamingPaymentEndCondition!
+  """
+  The end condition after the change
+  """
+  newEndCondition: StreamingPaymentEndCondition!
 }
 
 type StreamingPaymentClaim {

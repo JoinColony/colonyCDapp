@@ -2,8 +2,11 @@ import {
   type DomainColor,
   type DomainMetadataChangelogInput,
   type ColonyMetadataChangelogInput,
+  type StreamingPaymentEndCondition,
+  type StreamingPaymentMetadataChangelogInput,
 } from '~gql';
 import {
+  type StreamingPayment,
   type ColonyMetadata,
   type DomainMetadata,
   type Safe,
@@ -76,6 +79,27 @@ export const getUpdatedColonyMetadataChangelog = ({
       haveExternalLinksChanged,
       newSafes: newSafes ?? currentColonySafes,
       oldSafes: currentColonySafes,
+    },
+  ];
+};
+
+export const getUpdatedStreamingPaymentMetadataChangelog = ({
+  transactionHash,
+  metadata,
+  newEndCondition,
+}: {
+  transactionHash: string;
+  metadata: NonNullable<StreamingPayment['metadata']>;
+  newEndCondition?: StreamingPaymentEndCondition;
+}): StreamingPaymentMetadataChangelogInput[] => {
+  const existingChangelog = metadata.changelog ?? [];
+
+  return [
+    ...existingChangelog,
+    {
+      transactionHash,
+      newEndCondition: newEndCondition ?? metadata.endCondition,
+      oldEndCondition: metadata.endCondition,
     },
   ];
 };
