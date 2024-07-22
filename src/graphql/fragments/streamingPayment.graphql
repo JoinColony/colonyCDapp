@@ -13,9 +13,30 @@ fragment StreamingPayment on StreamingPayment {
   amount
   metadata {
     endCondition
+    changelog {
+      transactionHash
+      oldEndCondition
+      newEndCondition
+    }
   }
   claims {
     amount
     timestamp
   }
+  changelog {
+    transactionHash
+    oldValues {
+      ...StreamingPaymentChanges
+    }
+    newValues {
+      ...StreamingPaymentChanges
+    }
+  }
+}
+
+fragment StreamingPaymentChanges on StreamingPaymentChanges {
+  startTime
+  endTime
+  interval
+  amount
 }
