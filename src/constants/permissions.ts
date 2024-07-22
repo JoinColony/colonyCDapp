@@ -155,16 +155,14 @@ export const findFirstUserRoleWithColonyRoles = ({
   colonyRoles,
   isMultiSig,
 }: {
-  colonyRoles?: ColonyRole[][];
+  colonyRoles: ColonyRole[];
   isMultiSig?: boolean;
 }) => {
   if (!colonyRoles || colonyRoles.length === 0) {
     return UserRole.Owner;
   }
   const matchingUserRole = USER_ROLES.find((userRole) =>
-    colonyRoles.some((roles) =>
-      roles.every((role) => userRole.permissions.includes(role)),
-    ),
+    colonyRoles.every((role) => userRole.permissions.includes(role)),
   );
 
   if (!matchingUserRole) {
