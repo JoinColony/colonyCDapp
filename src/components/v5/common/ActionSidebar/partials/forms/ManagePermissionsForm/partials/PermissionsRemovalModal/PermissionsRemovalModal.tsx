@@ -1,44 +1,40 @@
-import { SpinnerGap } from '@phosphor-icons/react';
-import React from 'react';
+import { SpinnerGap, Trash } from '@phosphor-icons/react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
-import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { type PermissionsTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
+import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Table from '~v5/common/Table/Table.tsx';
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import {
   MANAGE_PERMISSIONS_ACTION_FORM_ID,
   type ManagePermissionsFormValues,
 } from '../../consts.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 const displayName = 'ManagePermissionsForm.partials.PermissionsRemovalModal';
 
 const MSG = defineMessages({
   title: {
     id: 'permissionRemovalModal.title',
-    defaultMessage: 'Warning',
+    defaultMessage: 'Root permissions removal warning',
   },
-  body1: {
+  body: {
     id: 'permissionRemovalModal.body1',
     defaultMessage:
-      'Member {member} will lose the following permissions from the parent domain:',
+      "You are about to remove a member's Root permissions, if no other member or contract holds adequate permissions, there is a risk of losing control of this colony.",
   },
-  body2: {
-    id: 'permissionRemovalModal.body2',
-    defaultMessage: 'This action is irreversible.',
-  },
-  body3: {
+  acknowledge: {
     id: 'permissionRemovalModal.body3',
-    defaultMessage: 'Are you sure you want to proceed?',
+    defaultMessage: 'I understand the risk and want to remove Root permissions',
   },
 });
 
 const PermissionsRemovalModal = ({
-  member,
   isOpen,
   onClose,
   userRoleWrapperForDomain,
@@ -46,7 +42,6 @@ const PermissionsRemovalModal = ({
   activeFormRole,
   isFormSubmitting,
 }: {
-  member: ManagePermissionsFormValues['member'];
   isOpen: boolean;
   onClose: () => void;
   userRoleWrapperForDomain: ManagePermissionsFormValues['_dbuserRoleWrapperForDomain'];
@@ -54,7 +49,7 @@ const PermissionsRemovalModal = ({
   activeFormRole: ManagePermissionsFormValues['role'];
   isFormSubmitting: boolean;
 }) => {
-  const { user } = useUserByAddress(member);
+  const [isAcknowledged, setIsAcknowledged] = useState(false);
 
   const permissionsTableProps = usePermissionsTableProps({
     userRoleWrapperForDomain,
@@ -64,14 +59,25 @@ const PermissionsRemovalModal = ({
 
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
-      <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold">{formatText(MSG.title)}</h1>
-        <p className="text-md">
-          {formatText(MSG.body1, { member: user?.profile?.displayName })}
-        </p>
-        <Table<PermissionsTableModel> {...permissionsTableProps} />
-        <p className="text-md">{formatText(MSG.body2)}</p>
-        <p className="text-md">{formatText(MSG.body3)}</p>
+      <div className="flex flex-col">
+        <div className="mb-4 w-fit rounded-md border border-negative-200 p-2">
+          <Trash className="fill-negative-400" />
+        </div>
+        <h1 className="mb-2 text-xl font-bold">{formatText(MSG.title)}</h1>
+        <p className="mb-6 text-md">{formatText(MSG.body)}</p>
+        <Table<PermissionsTableModel>
+          {...permissionsTableProps}
+          className="mb-4"
+        />
+        <Checkbox
+          name="acknowledge"
+          isChecked={isAcknowledged}
+          onChange={() => setIsAcknowledged((state) => !state)}
+          classNames="mb-8"
+          disabled={isFormSubmitting}
+        >
+          <p className="text-md">{formatText(MSG.acknowledge)}</p>
+        </Checkbox>
         <div className="flex gap-2">
           <Button
             mode="primaryOutline"
@@ -81,7 +87,7 @@ const PermissionsRemovalModal = ({
             disabled={isFormSubmitting}
           />
           {isFormSubmitting ? (
-            <TxButton
+            <IconButton
               rounded="s"
               isFullSize
               text={{ id: 'button.pending' }}
@@ -94,11 +100,12 @@ const PermissionsRemovalModal = ({
             />
           ) : (
             <Button
-              mode="primarySolid"
+              mode="secondarySolid"
               text={{ id: 'button.changePermissions' }}
               form={MANAGE_PERMISSIONS_ACTION_FORM_ID}
               isFullSize
               type="submit"
+              disabled={!isAcknowledged}
             />
           )}
         </div>

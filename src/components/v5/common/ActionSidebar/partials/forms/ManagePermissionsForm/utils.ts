@@ -165,8 +165,10 @@ export const configureFormRoles = ({
   setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
   authority: ManagePermissionsFormValues['authority'];
 }) => {
+  const colonyRoles = extractColonyRoles(colony.roles);
+
   const userRolesForDomain = getUserRolesForDomain({
-    colonyRoles: extractColonyRoles(colony.roles),
+    colonyRoles,
     userAddress: member,
     domainId: team,
     intersectingRoles: true,
@@ -174,10 +176,10 @@ export const configureFormRoles = ({
   });
 
   const userInheritedRolesForDomain = getUserRolesForDomain({
-    colony,
     userAddress: member,
     domainId: team,
     inheritedRoles: true,
+    colonyRoles,
   });
 
   const userRoleMeta = getRole(userRolesForDomain);

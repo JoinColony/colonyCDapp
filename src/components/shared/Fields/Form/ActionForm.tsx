@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
 import { authenticateWallet } from '~auth';
@@ -20,8 +20,9 @@ export type OnSuccess<V extends FieldValues> = (
   result: any,
 ) => void;
 
-export interface ActionFormProps<V extends Record<string, any>>
-  extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
+export interface ActionFormProps<
+  V extends Record<string, any> = Record<string, any>,
+> extends Omit<FormProps<V>, 'onError' | 'onSubmit'> {
   /** Redux action type to dispatch on submit (e.g. CREATE_XXX) */
   actionType: ActionTypes;
 
@@ -46,14 +47,17 @@ export interface ActionFormProps<V extends Record<string, any>>
   /** A function to transform the action after the form data was passed in (as payload) */
   transform?: ActionTransformFnType;
 
-  /** The action form's button type */
-  actionFormSubmitButtonType?: HTMLButtonElement['type'];
-
-  /** Function called when the form button type is set to "button" */
-  onActionFormButtonClick?: () => void;
-
   /** A form id you can directly associate a submit button with */
   id?: string;
+
+  /** Primary button prop overrides */
+  primaryButton?: {
+    /** The form's primary button type */
+    type?: ButtonHTMLAttributes<any>['type'];
+
+    /** Function called when the form's primary button type is set to "button" */
+    onClick?: () => void;
+  };
 }
 
 const ActionForm = <V extends Record<string, any>>({

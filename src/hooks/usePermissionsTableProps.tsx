@@ -1,6 +1,7 @@
 import { User, UsersThree } from '@phosphor-icons/react';
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
+import chunk from 'lodash/chunk';
 import React, { useMemo } from 'react';
 
 import {
@@ -94,6 +95,11 @@ export const usePermissionsTableProps = ({
               cell: ({ row }) => {
                 const { permissions } = row.original;
 
+                const permissionsColumns = chunk(
+                  row.original.permissions,
+                  Math.ceil(row.original.permissions.length / 2),
+                );
+
                 return (
                   <>
                     <span className="mb-3 inline-block text-md text-gray-600">
@@ -113,30 +119,53 @@ export const usePermissionsTableProps = ({
                     <div
                       className={clsx('w-full', {
                         'space-y-2': isRemovePermissionsAction,
+                        flex: !isRemovePermissionsAction,
                       })}
                     >
-                      {permissions.map((permission) => {
-                        return (
-                          <ul
-                            key={JSON.stringify(permission)}
-                            className="list-disc pl-6"
-                          >
-                            <li
-                              className="capitalize text-gray-600"
+                      {isRemovePermissionsAction &&
+                        permissions.map((permission) => {
+                          return (
+                            <ul
                               key={JSON.stringify(permission)}
+                              className="list-disc pl-6"
                             >
-                              <div className="flex items-center justify-between">
-                                <div>{permission}</div>
-                                {isRemovePermissionsAction && (
-                                  <PillsBase className="bg-negative-100 text-negative-400">
-                                    {formatText({ id: 'badge.removed' })}
-                                  </PillsBase>
-                                )}
-                              </div>
-                            </li>
+                              <li
+                                className="text-gray-600"
+                                key={JSON.stringify(permission)}
+                              >
+                                <div className="flex items-center justify-between">
+                                  {permission}
+                                  {isRemovePermissionsAction && (
+                                    <PillsBase
+                                      isCapitalized={false}
+                                      className="bg-negative-100 text-negative-400"
+                                    >
+                                      {formatText({
+                                        id: 'badge.removed',
+                                      })}
+                                    </PillsBase>
+                                  )}
+                                </div>
+                              </li>
+                            </ul>
+                          );
+                        })}
+                      {!isRemovePermissionsAction &&
+                        permissionsColumns.map((column) => (
+                          <ul
+                            key={JSON.stringify(column)}
+                            className="flex-1 list-disc pl-6"
+                          >
+                            {column.map((permission) => (
+                              <li
+                                className="text-gray-600"
+                                key={JSON.stringify(permission)}
+                              >
+                                {permission}
+                              </li>
+                            ))}
                           </ul>
-                        );
-                      })}
+                        ))}
                     </div>
                   </>
                 );

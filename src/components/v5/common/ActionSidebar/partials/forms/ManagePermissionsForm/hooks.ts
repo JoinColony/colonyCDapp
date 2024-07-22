@@ -171,11 +171,11 @@ export const useManagePermissions = (
       [colony, user, navigate],
     ),
     mode: 'onSubmit',
-    actionFormSubmitButtonType: isUserOwnerInRootDomain ? 'button' : 'submit',
-    onActionFormButtonClick: () => {
-      setShowPermissionRemovalWarning(true);
-    },
     id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
+    primaryButton: {
+      type: isUserOwnerInRootDomain ? 'button' : 'submit',
+      onClick: () => setShowPermissionRemovalWarning(true),
+    },
   });
 
   return {
