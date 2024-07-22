@@ -12,7 +12,10 @@ import {
   type PermissionsTableProps,
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
-import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import {
+  UserRoleModifier,
+  type ManagePermissionsFormValues,
+} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
@@ -22,16 +25,17 @@ const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 const PermissionsTable: FC<PermissionsTableProps> = ({
   name,
   className,
-  userRoleWrapperForDomain,
-  userRolesForDomain,
-  activeFormRole,
+  dbRoleForDomain,
+  dbPermissionsForDomain,
+  formRole,
 }) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
   const permissionsTableProps = usePermissionsTableProps({
-    userRoleWrapperForDomain,
-    userRolesForDomain,
-    activeFormRole,
+    dbRoleForDomain,
+    formRole,
+    roles: dbPermissionsForDomain,
+    isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
   });
   const { formState } = useFormContext<ManagePermissionsFormValues>();
   const team: string | undefined = useWatch({ name: 'team' });
@@ -45,7 +49,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
 
   return (
     <div className={className}>
-      {activeFormRole === UserRole.Custom ? (
+      {formRole === UserRole.Custom ? (
         <Table<CustomPermissionTableModel>
           className="sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0"
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}

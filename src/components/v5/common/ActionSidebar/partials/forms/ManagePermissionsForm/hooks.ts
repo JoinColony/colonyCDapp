@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,12 @@ import {
   validationSchema,
   MANAGE_PERMISSIONS_ACTION_FORM_ID,
 } from './consts.ts';
-import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
+import {
+  configureFormRoles,
+  getManagePermissionsPayload,
+  getFormPermissions,
+  getRemovedInheritedPermissions,
+} from './utils.ts';
 
 export const useManagePermissions = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -32,7 +37,7 @@ export const useManagePermissions = (
   const { user } = useAppContext();
   const navigate = useNavigate();
 
-  const [showPermissionRemovalWarning, setShowPermissionRemovalWarning] =
+  const [showPermissionsRemovalWarning, setShowPermissionsRemovalWarning] =
     useState(false);
 
   const {
@@ -142,10 +147,18 @@ export const useManagePermissions = (
     return () => unsubscribe();
   }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
 
-  const { team, role } = watch();
+  const { team, permissions, _dbInheritedPermissions, role } = watch();
 
-  const isUserOwnerInRootDomain =
-    isValid && team === Id.RootDomain && role === UserRoleModifier.Remove;
+  const isRemovingRootRoleFromRootDomain =
+    isValid &&
+    team === Id.RootDomain &&
+    getRemovedInheritedPermissions({
+      dbInheritedPermissions: _dbInheritedPermissions,
+      formPermissions: getFormPermissions({
+        formPermissions: permissions,
+        formRole: role,
+      }),
+    }).includes(ColonyRole.Root);
 
   useActionFormBaseHook({
     getFormOptions,
@@ -173,8 +186,8 @@ export const useManagePermissions = (
     mode: 'onSubmit',
     id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
     primaryButton: {
-      type: isUserOwnerInRootDomain ? 'button' : 'submit',
-      onClick: () => setShowPermissionRemovalWarning(true),
+      type: isRemovingRootRoleFromRootDomain ? 'button' : 'submit',
+      onClick: useCallback(() => setShowPermissionsRemovalWarning(true), []),
     },
   });
 
@@ -184,7 +197,7 @@ export const useManagePermissions = (
     values: watch(),
     errors,
     isSubmitting,
-    showPermissionRemovalWarning,
-    setShowPermissionRemovalWarning,
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
   };
 };

@@ -6,7 +6,6 @@ import { boolean, number, object, string } from 'yup';
 import { UserRole } from '~constants/permissions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getObjectKeys } from '~utils/objects/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import { getEnumYupSchema } from '~utils/yup/utils.ts';
 import {
@@ -20,13 +19,13 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
-import { extractColonyRoleFromPermissionKey } from './utils.ts';
+import { mapPermissions } from './utils.ts';
 
 export const ROLE_FIELD_NAME = 'role';
 export const AUTHORITY_FIELD_NAME = 'authority';
 export const PERMISSIONS_FIELD_NAME = 'permissions';
 
-export const AVAILABLE_ROLES = [
+export const AVAILABLE_PERMISSIONS = [
   ColonyRole.Recovery,
   ColonyRole.Root,
   ColonyRole.Arbitration,
@@ -35,10 +34,10 @@ export const AVAILABLE_ROLES = [
   ColonyRole.Administration,
 ] as const;
 
-type AvailableRolesUnion = (typeof AVAILABLE_ROLES)[number];
+type AvailablePermissionsUnion = (typeof AVAILABLE_PERMISSIONS)[number];
 
 export type Permissions = {
-  [K in AvailableRolesUnion as `role_${K}`]: boolean;
+  [K in AvailablePermissionsUnion as `role_${K}`]: boolean;
 };
 
 export type ManagePermissionsFormValues = {
@@ -54,20 +53,20 @@ export type ManagePermissionsFormValues = {
   // These are intended to be used as reference values when running form validations
   // and won't be included in the form submission
   /**
-   * Keeps track of a user's current DB role wrapper which is taken from the role meta i.e. owner | mod | payer | admin | custom
+   * Keeps track of a user's current DB user role which is taken from the role meta i.e. owner | mod | payer | admin | custom
    * @internal
    */
-  _dbuserRoleWrapperForDomain?: ManagePermissionsFormValues['role'];
+  _dbRoleForDomain?: ManagePermissionsFormValues['role'];
   /**
-   * Keeps track of a user's specific DB roles for a domain
+   * Keeps track of a user's specific DB permissions for a domain
    * @internal
    */
-  _dbUserRolesForDomain?: ColonyRole[];
+  _dbPermissionsForDomain?: ColonyRole[];
   /**
-   * Keeps track of a user's inherited DB roles for a domain
+   * Keeps track of a user's inherited DB permissions for a domain
    * @internal
    */
-  _dbUserInheritedRolesForDomain?: ColonyRole[];
+  _dbInheritedPermissions?: ColonyRole[];
 };
 
 export type SchemaTestContext = { parent: ManagePermissionsFormValues };
@@ -134,7 +133,7 @@ export const validationSchema = object()
         (
           role,
           {
-            parent: { member, team, _dbUserInheritedRolesForDomain },
+            parent: { member, team, _dbInheritedPermissions },
           }: SchemaTestContext,
         ) => {
           if (
@@ -142,7 +141,7 @@ export const validationSchema = object()
             team !== Id.RootDomain &&
             role === UserRoleModifier.Remove
           ) {
-            return !_dbUserInheritedRolesForDomain?.length;
+            return !_dbInheritedPermissions?.length;
           }
 
           return true;
@@ -154,11 +153,11 @@ export const validationSchema = object()
         (
           role,
           {
-            parent: { member, team, _dbUserRolesForDomain },
+            parent: { member, team, _dbPermissionsForDomain },
           }: SchemaTestContext,
         ) => {
           if (member && team && role === UserRoleModifier.Remove) {
-            return !!_dbUserRolesForDomain?.length;
+            return !!_dbPermissionsForDomain?.length;
           }
 
           return true;
@@ -169,12 +168,10 @@ export const validationSchema = object()
         formatMessage(MSG.samePermissionsApplied),
         (
           role,
-          {
-            parent: { member, team, _dbuserRoleWrapperForDomain },
-          }: SchemaTestContext,
+          { parent: { member, team, _dbRoleForDomain } }: SchemaTestContext,
         ) => {
           if (member && team && role && role !== UserRole.Custom) {
-            return role !== _dbuserRoleWrapperForDomain;
+            return role !== _dbRoleForDomain;
           }
 
           return true;
@@ -203,21 +200,19 @@ export const validationSchema = object()
             (
               permissions,
               {
-                parent: { member, team, _dbUserRolesForDomain },
+                parent: { member, team, _dbPermissionsForDomain },
               }: SchemaTestContext,
             ) => {
-              if (member && team && permissions && _dbUserRolesForDomain) {
-                // At this point, the user's current and db-stored roles are represented as ColonyRole[]: [0, 1, 5, 6]
-                // Meanwhile the form-formatted roles are represented as an object: { role_0: false, ... role_6: true }
-                // We'd want to filter the truthy form-formatted roles and map their ColonyRole suffixes
+              if (member && team && permissions && _dbPermissionsForDomain) {
+                // At this point, the user's current and db-stored permissions are represented as ColonyRole[]: [0, 1, 5, 6]
+                // Meanwhile the form-formatted permissions are represented as an object: { role_0: false, ... role_6: true }
+                // We'd want to filter the truthy form-formatted permissions and map their ColonyRole suffixes
                 // i.e. { role_0: false, role_1: true, role_2: false, role_4: true } => [1, 4]
-                const newPermissions = getObjectKeys(permissions)
-                  .filter((permissionKey) => permissions[permissionKey])
-                  .map(extractColonyRoleFromPermissionKey);
+                const formPermissions = mapPermissions(permissions);
 
                 return (
-                  JSON.stringify(_dbUserRolesForDomain.sort()) !==
-                  JSON.stringify(newPermissions.sort())
+                  JSON.stringify(_dbPermissionsForDomain.sort()) !==
+                  JSON.stringify(formPermissions.sort())
                 );
               }
 

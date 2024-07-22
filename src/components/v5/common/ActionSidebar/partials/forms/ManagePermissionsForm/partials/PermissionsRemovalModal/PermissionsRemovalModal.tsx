@@ -1,5 +1,5 @@
-import { SpinnerGap, Trash } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import { Trash } from '@phosphor-icons/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
@@ -7,13 +7,19 @@ import { type PermissionsTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import Table from '~v5/common/Table/Table.tsx';
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import {
   MANAGE_PERMISSIONS_ACTION_FORM_ID,
-  type ManagePermissionsFormValues,
+  UserRoleModifier,
 } from '../../consts.ts';
+import {
+  getFormPermissions,
+  getRemovedInheritedPermissions,
+} from '../../utils.ts';
+
+import { type PermissionsRemovalModalProps } from './types.ts';
 
 const displayName = 'ManagePermissionsForm.partials.PermissionsRemovalModal';
 
@@ -33,31 +39,43 @@ const MSG = defineMessages({
   },
 });
 
-const PermissionsRemovalModal = ({
+const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
   isOpen,
   onClose,
-  userRoleWrapperForDomain,
-  userRolesForDomain,
-  activeFormRole,
+  formRole,
+  formPermissions,
   isFormSubmitting,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  userRoleWrapperForDomain: ManagePermissionsFormValues['_dbuserRoleWrapperForDomain'];
-  userRolesForDomain: ManagePermissionsFormValues['_dbUserRolesForDomain'];
-  activeFormRole: ManagePermissionsFormValues['role'];
-  isFormSubmitting: boolean;
+  dbRoleForDomain,
+  dbInheritedPermissions,
 }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false);
 
   const permissionsTableProps = usePermissionsTableProps({
-    userRoleWrapperForDomain,
-    userRolesForDomain,
-    activeFormRole,
+    dbRoleForDomain,
+    formRole,
+    isRemovePermissionsAction: true,
+    roles:
+      formRole === UserRoleModifier.Remove
+        ? dbInheritedPermissions
+        : getRemovedInheritedPermissions({
+            dbInheritedPermissions,
+            formPermissions: getFormPermissions({ formPermissions, formRole }),
+          }),
   });
 
+  const handleClose = useCallback(() => {
+    onClose();
+    setIsAcknowledged(false);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isFormSubmitting) {
+      handleClose();
+    }
+  }, [handleClose, isFormSubmitting]);
+
   return (
-    <Modal onClose={onClose} isOpen={isOpen}>
+    <Modal onClose={handleClose} isOpen={isOpen}>
       <div className="flex flex-col">
         <div className="mb-4 w-fit rounded-md border border-negative-200 p-2">
           <Trash className="fill-negative-400" />
@@ -81,32 +99,18 @@ const PermissionsRemovalModal = ({
           <Button
             mode="primaryOutline"
             text="Cancel"
-            onClick={onClose}
+            onClick={handleClose}
             isFullSize
             disabled={isFormSubmitting}
           />
-          {isFormSubmitting ? (
-            <TxButton
-              rounded="s"
-              isFullSize
-              text={{ id: 'button.pending' }}
-              icon={
-                <span className="ml-2 flex shrink-0">
-                  <SpinnerGap size={18} className="animate-spin" />
-                </span>
-              }
-              className="!px-4 !text-md"
-            />
-          ) : (
-            <Button
-              mode="secondarySolid"
-              text={{ id: 'button.changePermissions' }}
-              form={MANAGE_PERMISSIONS_ACTION_FORM_ID}
-              isFullSize
-              type="submit"
-              disabled={!isAcknowledged}
-            />
-          )}
+          <Button
+            mode="secondarySolid"
+            text={{ id: 'button.changePermissions' }}
+            form={MANAGE_PERMISSIONS_ACTION_FORM_ID}
+            isFullSize
+            type="submit"
+            disabled={!isAcknowledged}
+          />
         </div>
       </div>
     </Modal>
