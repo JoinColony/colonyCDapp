@@ -25,6 +25,7 @@ import { checkColonyVersionCompliance } from '../utils/checkColonyVersionComplia
 import { getEditStreamingPaymentMulticallData } from '../utils/editStreamingPaymentMulticall.ts';
 import {
   getColonyManager,
+  getUpdatedStreamingPaymentMetadataChangelog,
   initiateTransaction,
   putError,
   takeFrom,
@@ -102,14 +103,15 @@ function* editStreamingPaymentAction({
 
     yield initiateTransaction({ id: meta.id });
 
-    const { type } = yield waitForTxResult(txChannel);
+    const {
+      type,
+      payload: {
+        receipt: { transactionHash: txHash },
+      },
+    } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      const hasEndConditionChanged =
-        endCondition !== undefined &&
-        endCondition !== streamingPayment.metadata?.endCondition;
-
-      if (hasEndConditionChanged) {
+      if (streamingPayment.metadata) {
         yield apolloClient.mutate<
           UpdateStreamingPaymentMetadataMutation,
           UpdateStreamingPaymentMetadataMutationVariables
@@ -122,6 +124,11 @@ function* editStreamingPaymentAction({
                 toNumber(streamingPayment.nativeId),
               ),
               endCondition,
+              changelog: getUpdatedStreamingPaymentMetadataChangelog({
+                transactionHash: txHash,
+                metadata: streamingPayment.metadata,
+                newEndCondition: endCondition,
+              }),
             },
           },
         });
