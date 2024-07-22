@@ -9143,6 +9143,8 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
+export type ColonyUserRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
 
 export type FunctionParamFragment = { __typename?: 'FunctionParam', name: string, type: string, value: string };
@@ -9587,15 +9589,6 @@ export type GetColonyHistoricRoleRolesQueryVariables = Exact<{
 
 
 export type GetColonyHistoricRoleRolesQuery = { __typename?: 'Query', getColonyHistoricRole?: { __typename?: 'ColonyHistoricRole', role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null } | null };
-
-export type GetRolesForDomainQueryVariables = Exact<{
-  domainId: Scalars['ID'];
-  colonyAddress: Scalars['ID'];
-  filter: ModelColonyRoleFilterInput;
-}>;
-
-
-export type GetRolesForDomainQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, targetUser?: { __typename?: 'User', id: string, profile?: { __typename?: 'Profile', avatar?: string | null, displayName?: string | null } | null } | null } | null> } | null };
 
 export type GetMultiSigRolesForDomainQueryVariables = Exact<{
   domainId: Scalars['ID'];
@@ -10141,6 +10134,20 @@ ${ExpenditureStageFragmentDoc}
 ${ColonyMotionFragmentDoc}
 ${ExpenditureBalanceFragmentDoc}
 ${ExpenditureActionFragmentDoc}`;
+export const ColonyUserRoleFragmentDoc = gql`
+    fragment ColonyUserRole on ColonyRole {
+  id
+  targetUser {
+    ...User
+  }
+  targetAddress
+  role_1
+  role_2
+  role_3
+  role_5
+  role_6
+}
+    ${UserFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
     fragment UserDisplay on User {
   walletAddress: id
@@ -12845,75 +12852,15 @@ export function useGetColonyHistoricRoleRolesLazyQuery(baseOptions?: Apollo.Lazy
 export type GetColonyHistoricRoleRolesQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesQuery>;
 export type GetColonyHistoricRoleRolesLazyQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesLazyQuery>;
 export type GetColonyHistoricRoleRolesQueryResult = Apollo.QueryResult<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>;
-export const GetRolesForDomainDocument = gql`
-    query GetRolesForDomain($domainId: ID!, $colonyAddress: ID!, $filter: ModelColonyRoleFilterInput!) {
-  getRoleByDomainAndColony(
-    domainId: $domainId
-    colonyAddress: {eq: $colonyAddress}
-    filter: $filter
-  ) {
-    items {
-      id
-      targetUser {
-        id
-        profile {
-          avatar
-          displayName
-        }
-      }
-      targetAddress
-    }
-  }
-}
-    `;
-
-/**
- * __useGetRolesForDomainQuery__
- *
- * To run a query within a React component, call `useGetRolesForDomainQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetRolesForDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetRolesForDomainQuery({
- *   variables: {
- *      domainId: // value for 'domainId'
- *      colonyAddress: // value for 'colonyAddress'
- *      filter: // value for 'filter'
- *   },
- * });
- */
-export function useGetRolesForDomainQuery(baseOptions: Apollo.QueryHookOptions<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>(GetRolesForDomainDocument, options);
-      }
-export function useGetRolesForDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>(GetRolesForDomainDocument, options);
-        }
-export type GetRolesForDomainQueryHookResult = ReturnType<typeof useGetRolesForDomainQuery>;
-export type GetRolesForDomainLazyQueryHookResult = ReturnType<typeof useGetRolesForDomainLazyQuery>;
-export type GetRolesForDomainQueryResult = Apollo.QueryResult<GetRolesForDomainQuery, GetRolesForDomainQueryVariables>;
 export const GetMultiSigRolesForDomainDocument = gql`
     query GetMultiSigRolesForDomain($domainId: ID!, $filter: ModelColonyRoleFilterInput!) {
   getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
     items {
-      id
-      targetUser {
-        ...User
-      }
-      targetAddress
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
+      ...ColonyUserRole
     }
   }
 }
-    ${UserFragmentDoc}`;
+    ${ColonyUserRoleFragmentDoc}`;
 
 /**
  * __useGetMultiSigRolesForDomainQuery__
