@@ -211,7 +211,7 @@ interface GetAnyPermissionProofsLocalParams {
   colonyRoles: ColonyRoleFragment[];
   colonyDomains: Domain[];
   requiredDomainId: number;
-  requiredColonyRoles: RoleGroupSet;
+  requiredColonyRoles: RoleGroup;
   permissionAddress: string;
   isMultiSig: boolean;
 }
@@ -228,29 +228,26 @@ export const getAnyPermissionProofsLocal = async ({
 }: GetAnyPermissionProofsLocalParams): Promise<
   [BigNumber, BigNumber, string]
 > => {
-  // Iterate over each RoleGroup in the RoleGroupSet
-  for (const roleGroup of requiredColonyRoles) {
-    for (const singleRole of roleGroup) {
-      try {
-        // Attempt to get proofs for the current RoleGroup
-        // eslint-disable-next-line no-await-in-loop
-        const proof = await getSinglePermissionProofsLocal({
-          networkClient,
-          colonyRoles,
-          colonyDomains,
-          requiredDomainId,
-          requiredColonyRole: singleRole,
-          permissionAddress,
-          isMultiSig,
-        });
+  for (const singleRole of requiredColonyRoles) {
+    try {
+      // Attempt to get proofs for the current RoleGroup
+      // eslint-disable-next-line no-await-in-loop
+      const proof = await getSinglePermissionProofsLocal({
+        networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId,
+        requiredColonyRole: singleRole,
+        permissionAddress,
+        isMultiSig,
+      });
 
-        // If we get here, it means the current singleRole satisfies the conditions,
-        // so we can return its proof.
-        return proof;
-      } catch (error) {
-        // Catch any errors and continue to the next singleRole in the RoleGroup or the next RoleGroup in the RoleGroupSet
-        // No need to do anything here, just continue to the next iteration
-      }
+      // If we get here, it means the current singleRole satisfies the conditions,
+      // so we can return its proof.
+      return proof;
+    } catch (error) {
+      // Catch any errors and continue to the next singleRole in the RoleGroup or the next RoleGroup in the RoleGroupSet
+      // No need to do anything here, just continue to the next iteration
     }
   }
 
