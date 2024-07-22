@@ -53,6 +53,7 @@ fragment Colony on Colony {
     id
     invitesRemaining
   }
+  lastUpdatedContributorsWithReputation
 }
 
 fragment PublicColony on Colony {

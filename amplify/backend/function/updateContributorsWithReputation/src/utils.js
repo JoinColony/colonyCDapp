@@ -7,6 +7,7 @@ const {
   updateDomain,
 } = require('./graphql');
 const Decimal = require('decimal.js');
+const { BigNumber } = require('ethers');
 
 const reputationMiningCycleMetadataId = 'REPUTATION_MINING_CYCLE_METADATA'; // this is constant, since we only need one entry of this type in the db.
 
@@ -281,6 +282,29 @@ const updateReputationInDomain = async ({
   );
 };
 
+const calculatePercentageReputation = (userReputation, totalReputation) => {
+  if (!userReputation || !totalReputation) return null;
+  const userReputationNumber = BigNumber.from(userReputation);
+  const totalReputationNumber = BigNumber.from(totalReputation);
+
+  const reputationSafeguard = BigNumber.from(100).pow(2);
+
+  if (
+    userReputationNumber.isZero() ||
+    totalReputationNumber.isZero() ||
+    userReputationNumber.mul(reputationSafeguard).lt(totalReputationNumber)
+  ) {
+    return 0;
+  }
+
+  const reputation = userReputationNumber
+    .mul(reputationSafeguard)
+    .div(totalReputationNumber)
+    .toNumber();
+
+  return reputation / 10 ** 2;
+};
+
 module.exports = {
   graphqlRequest,
   getContributorType,
@@ -292,4 +316,5 @@ module.exports = {
   updateReputationInDomain,
   getDomainDatabaseId,
   reputationMiningCycleMetadataId,
+  calculatePercentageReputation,
 };

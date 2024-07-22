@@ -85,3 +85,9 @@ query GetColonyMemberInvite($id: ID!) {
     invitesRemaining
   }
 }
+
+subscription OnUpdateColony {
+  onUpdateColony {
+    ...Colony
+  }
+}

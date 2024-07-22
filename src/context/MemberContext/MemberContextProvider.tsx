@@ -3,6 +3,7 @@ import React, {
   type FC,
   type PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
 } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
@@ -14,7 +15,10 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants/index.ts';
-import { useSearchColonyContributorsQuery } from '~gql';
+import {
+  useOnUpdateColonySubscription,
+  useSearchColonyContributorsQuery,
+} from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
@@ -92,6 +96,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     data: memberSearchData,
     loading,
     fetchMore,
+    refetch,
   } = useSearchColonyContributorsQuery({
     variables: {
       colonyAddress,
@@ -124,6 +129,16 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     },
   });
+
+  const { data } = useOnUpdateColonySubscription();
+
+  useEffect(() => {
+    // When the colony first loads, the reputation is updated asynchronously. This means that the currently
+    // cached reputation might be out of date. If this is the case, we should refetch.
+    if (data?.onUpdateColony?.lastUpdatedContributorsWithReputation) {
+      refetch();
+    }
+  }, [data?.onUpdateColony?.lastUpdatedContributorsWithReputation, refetch]);
 
   const allMembers = useMemo(
     () =>
