@@ -11,12 +11,17 @@ import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 
 import { type MeatballMenuProps } from './types.ts';
+import { isRedoItemProps } from './utils.ts';
 
-const MeatballMenu: FC<MeatballMenuProps> = ({
-  transactionHash,
-  defaultValues = {},
-  showRedoItem = true,
-}) => {
+const defaultProps = {
+  showRedoItem: true as const,
+};
+
+const MeatballMenu: FC<MeatballMenuProps> = (props) => {
+  const propsWithDefaults = useMemo(
+    () => ({ ...defaultProps, ...props }),
+    [props],
+  );
   const isMobile = useMobile();
   const {
     actionSidebarToggle: [
@@ -28,7 +33,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
   const items = useMemo(() => {
     const menuItems: MeatBallMenuItem[] = [];
 
-    if (showRedoItem) {
+    if (isRedoItemProps(propsWithDefaults)) {
       menuItems.push({
         key: '1',
         label: formatText({ id: 'completedAction.redoAction' }),
@@ -37,7 +42,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
           toggleActionSidebarOff();
 
           setTimeout(() => {
-            toggleActionSidebarOn({ ...defaultValues });
+            toggleActionSidebarOn({ ...propsWithDefaults.defaultValues });
           }, 500);
         },
       });
@@ -46,7 +51,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
     menuItems.push({
       key: '2',
       label: (
-        <TransactionLink hash={transactionHash}>
+        <TransactionLink hash={propsWithDefaults.transactionHash}>
           {formatText(
             { id: 'completedAction.view' },
             {
@@ -59,13 +64,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
     });
 
     return menuItems;
-  }, [
-    transactionHash,
-    defaultValues,
-    showRedoItem,
-    toggleActionSidebarOn,
-    toggleActionSidebarOff,
-  ]);
+  }, [propsWithDefaults, toggleActionSidebarOn, toggleActionSidebarOff]);
 
   return (
     <MeatBallMenu
