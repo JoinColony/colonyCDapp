@@ -9,46 +9,13 @@ query GetColonyHistoricRoleRoles($id: ID!) {
   }
 }
 
-query GetRolesForDomain(
-  $domainId: ID!
-  $colonyAddress: ID!
-  $filter: ModelColonyRoleFilterInput!
-) {
-  getRoleByDomainAndColony(
-    domainId: $domainId
-    colonyAddress: { eq: $colonyAddress }
-    filter: $filter
-  ) {
-    items {
-      id
-      targetUser {
-        id
-        profile {
-          avatar
-          displayName
-        }
-      }
-      targetAddress
-    }
-  }
-}
-
 query GetMultiSigRolesForDomain(
   $domainId: ID!
   $filter: ModelColonyRoleFilterInput!
 ) {
   getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
     items {
-      id
-      targetUser {
-        ...User
-      }
-      targetAddress
-      role_1
-      role_2
-      role_3
-      role_5
-      role_6
+      ...ColonyUserRole
     }
   }
 }

@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { MULTI_SIG_HELP_URL } from '~constants/externalUrls.ts';
 import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
 import { type MultiSigUserSignature } from '~types/graphql.ts';
-import { type Threshold } from '~types/multisig.ts';
+import { type Threshold } from '~types/multiSig.ts';
 import { getMultipleRolesText } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 

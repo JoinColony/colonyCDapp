@@ -42,7 +42,7 @@ export type MultiSigActionTypes =
         colonyRoles: ColonyRoleFragment[];
         vote: MultiSigVote;
         domainId: number;
-        roles: ColonyRole[][];
+        roles: ColonyRole[];
         multiSigId: string;
       },
       MetaWithSetter<object>

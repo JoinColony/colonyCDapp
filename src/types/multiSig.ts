@@ -7,3 +7,4 @@ export interface EligibleSignee {
   user: Partial<User>;
   userRoles: ColonyRole[];
 }
+export type Threshold = { [role: number]: number } | null;

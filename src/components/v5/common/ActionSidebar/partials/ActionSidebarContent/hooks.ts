@@ -40,20 +40,25 @@ export const useHasEnoughMembersWithPermissions = ({
   const { watch } = useFormContext();
   const formValues = watch();
 
-  // @NOTE this needs to be memoed because formValues are constantly changing and it rerenders too much otherwise
   const requiredRoles = useMemo(
     () => getPermissionsNeededForAction(selectedAction, formValues) || [],
-    [formValues, selectedAction],
+    [selectedAction, formValues],
   );
+
+  /*
+   * This may seem like a hack, but for display purposes, we always fetch all possible roles
+   * The only action where this can break is managing permissions in a subdomain via permissions, not via multisig, so we are good
+   */
+  const multiSigRoles = requiredRoles.flat();
 
   const { thresholdPerRole } = useDomainThreshold({
     domainId: createdIn,
-    requiredRoles,
+    requiredRoles: multiSigRoles,
   });
 
   const { countPerRole } = useEligibleSignees({
     domainId: createdIn,
-    requiredRoles,
+    requiredRoles: multiSigRoles,
   });
 
   if (

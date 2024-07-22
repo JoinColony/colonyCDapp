@@ -2,14 +2,14 @@ import { type ColonyRole, Extension } from '@colony/colony-js';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
-import { type Threshold } from '~types/multisig.ts';
+import { type Threshold } from '~types/multiSig.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { useEligibleSignees } from './useEligibleSignees.ts';
 
 interface UseDomainThresholdParams {
   domainId: number;
-  requiredRoles: ColonyRole[][];
+  requiredRoles: ColonyRole[];
 }
 
 interface UseDomainThresholdResult {
@@ -69,11 +69,9 @@ export const useDomainThreshold = ({
       const thresholdMap: { [role: number]: number } = {};
 
       // Iterate over each array of roles in requiredRoles
-      requiredRoles.forEach((roles) => {
+      requiredRoles.forEach((role) => {
         // Assign the thresholdConfig to each role in the current roles array
-        roles.forEach((role) => {
-          thresholdMap[role] = thresholdConfig;
-        });
+        thresholdMap[role] = thresholdConfig;
       });
 
       return thresholdMap;
