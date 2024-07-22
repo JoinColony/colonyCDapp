@@ -3602,6 +3602,7 @@ type ColonyAction @model @searchable {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+<<<<<<< HEAD
   """
   Changes to the streaming payment associated with the action, if any
   Applicable to `EDIT_STREAMING_PAYMENT` action only
@@ -3640,6 +3641,8 @@ type StreamingPaymentChanges {
   interval: String
   amount: String
 >>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
+=======
+>>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 """
@@ -4143,12 +4146,41 @@ type StreamingPayment @model @searchable {
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
 <<<<<<< HEAD
+<<<<<<< HEAD
   """
   Address of the stream creator, can be a user or an extension
   """
   creatorAddress: ID!
 =======
 >>>>>>> e5ef3fbe5 (Feat: Edit streams using motions)
+=======
+  """
+  List of Streaming Payment changelog entries
+  """
+  changelog: [StreamingPaymentChangelog!]
+}
+
+type StreamingPaymentChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  The values before the change
+  """
+  oldValues: StreamingPaymentChanges!
+  """
+  The values before the change
+  """
+  newValues: StreamingPaymentChanges!
+}
+
+type StreamingPaymentChanges {
+  startTime: String!
+  endTime: String!
+  interval: String!
+  amount: String!
+>>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 type StreamingPaymentMetadata @model {
@@ -4176,11 +4208,14 @@ type StreamingPaymentMetadataChangelog {
   The end condition after the change
   """
   newEndCondition: StreamingPaymentEndCondition!
+<<<<<<< HEAD
 }
 
 type StreamingPaymentClaim {
   amount: String!
   timestamp: String!
+=======
+>>>>>>> 9a2bfec21 (Feat: Add changelog to streaming payment and streaming payment metadata)
 }
 
 type StreamingPaymentClaim {
