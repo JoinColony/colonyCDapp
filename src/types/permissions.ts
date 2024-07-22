@@ -5,9 +5,9 @@ import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/parti
 export interface PermissionsTableProps {
   name: string;
   className?: string;
-  userRoleWrapperForDomain: ManagePermissionsFormValues['_dbuserRoleWrapperForDomain'];
-  userRolesForDomain: ManagePermissionsFormValues['_dbUserRolesForDomain'];
-  activeFormRole: ManagePermissionsFormValues['role'];
+  formRole: ManagePermissionsFormValues['role'];
+  dbRoleForDomain: ManagePermissionsFormValues['_dbRoleForDomain'];
+  dbPermissionsForDomain: ManagePermissionsFormValues['_dbPermissionsForDomain'];
 }
 
 export interface PermissionsTableModel {

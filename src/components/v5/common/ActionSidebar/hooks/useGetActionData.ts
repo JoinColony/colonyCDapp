@@ -28,6 +28,8 @@ import {
 } from '../consts.ts';
 import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
 import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
+import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
+import { AVAILABLE_PERMISSIONS } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';
@@ -339,7 +341,7 @@ const useGetActionData = (transactionId: string | undefined) => {
           team: fromDomain?.nativeId,
           permissions:
             role === UserRole.Custom
-              ? AVAILABLE_ROLES.reduce(
+              ? AVAILABLE_PERMISSIONS.reduce(
                   (result, currentRole) => ({
                     ...result,
                     [`role_${currentRole}`]: rolesList.includes(currentRole),

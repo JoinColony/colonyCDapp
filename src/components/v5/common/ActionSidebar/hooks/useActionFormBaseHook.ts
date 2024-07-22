@@ -31,12 +31,22 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
         actionFormSubmitButtonType,
         onActionFormButtonClick,
         id,
-        primaryButton,
+        primaryButton: {
+          type: primaryButton?.type,
+          onClick: primaryButton?.onClick,
+        },
       },
       form,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultValues, validationSchema, actionType, id, primaryButton]);
+  }, [
+    defaultValues,
+    validationSchema,
+    actionType,
+    id,
+    primaryButton?.onClick,
+    primaryButton?.type,
+  ]);
 
   useUnmountEffect(() => {
     getFormOptions(undefined, form);
