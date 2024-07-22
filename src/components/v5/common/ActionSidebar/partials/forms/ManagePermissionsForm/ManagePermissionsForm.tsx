@@ -245,7 +245,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         />
       )}
       <PermissionsRemovalModal
-        member={member}
         isOpen={showPermissionRemovalWarning}
         onClose={() => setShowPermissionRemovalWarning(false)}
         activeFormRole={role}

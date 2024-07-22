@@ -13,9 +13,8 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
   reValidateMode = 'onChange',
   onSuccess,
   getFormOptions,
-  actionFormSubmitButtonType,
-  onActionFormButtonClick,
   id,
+  primaryButton,
 }) => {
   const form = useFormContext();
 
@@ -32,17 +31,12 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
         actionFormSubmitButtonType,
         onActionFormButtonClick,
         id,
+        primaryButton,
       },
       form,
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    defaultValues,
-    validationSchema,
-    actionType,
-    actionFormSubmitButtonType,
-    id,
-  ]);
+  }, [defaultValues, validationSchema, actionType, id, primaryButton]);
 
   useUnmountEffect(() => {
     getFormOptions(undefined, form);

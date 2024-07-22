@@ -14,6 +14,7 @@ export interface ActionFormOptions
   onSuccess?: () => void;
   submitButtonType: ActionFormProps<any>['actionFormSubmitButtonType'];
   onActionFormButtonClick: ActionFormProps<any>['onActionFormButtonClick'];
+  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormBaseProps {
@@ -38,6 +39,7 @@ export type UseActionFormBaseHook = (
     | 'actionFormSubmitButtonType'
     | 'onActionFormButtonClick'
     | 'id'
+    | 'primaryButton'
   >,
 ) => void;
 

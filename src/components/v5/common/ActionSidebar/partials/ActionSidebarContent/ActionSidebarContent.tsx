@@ -54,7 +54,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
-  actionFormProps: { actionFormSubmitButtonType, onActionFormButtonClick },
+  actionFormProps: { primaryButton },
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -221,8 +221,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
-            submitButtonType={actionFormSubmitButtonType}
-            onActionFormButtonClick={onActionFormButtonClick}
+            primaryButton={primaryButton}
           />
         </div>
       )}
