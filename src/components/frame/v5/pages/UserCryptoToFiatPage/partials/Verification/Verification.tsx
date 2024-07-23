@@ -1,6 +1,8 @@
 import { Client as PersonaClient } from 'persona';
 import React, { type FC, useState } from 'react';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useUpdateUserProfileMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
 import { type CryptoToFiatPageComponentProps } from '../../types.ts';
@@ -12,15 +14,21 @@ import VerificationModal from './VerificationModal.tsx';
 const Verification: FC<CryptoToFiatPageComponentProps> = ({
   order,
   kycStatusData,
+  refetchStatus,
+  kycStatusLoading,
 }) => {
+  const [updateProfile] = useUpdateUserProfileMutation();
+
+  const { user } = useAppContext();
+
   const [isModalOpened, setIsModalOpened] = useState(false);
   const handleOpen = () => setIsModalOpened(true);
   const handleClose = () => setIsModalOpened(false);
 
-  const kycStatus = kycStatusData?.kyc_status;
+  const { kycStatus } = kycStatusData ?? {};
 
   const badgeProps = getBadgeProps(kycStatus);
-  const ctaProps = getCTAProps(kycStatus);
+  const ctaProps = getCTAProps(kycStatusLoading, kycStatus);
 
   const handleTermsAcceptance = (kycLink: string) => {
     handleClose();
@@ -35,6 +43,18 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
       templateId,
       referenceId,
       environmentId: 'env_AY6hSVzQeRamUtJB7ydFhnCx',
+      async onComplete() {
+        await updateProfile({
+          variables: {
+            input: {
+              id: user?.walletAddress ?? '',
+              hasCompletedKYCFlow: true,
+            },
+          },
+        });
+
+        refetchStatus();
+      },
     });
 
     personaClient.open();

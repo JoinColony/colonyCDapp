@@ -366,7 +366,7 @@ type BridgeXYZMutationReturn {
   #
   # KYC Status
   #
-  kyc_status: String
+  kycStatus: KYCStatus
   country: String
   # Should support multiple accounts at some point
   bankAccount: BridgeXYZBankAccount
@@ -923,6 +923,15 @@ enum ContributorType {
   ACTIVE
   NEW
   GENERAL
+}
+
+enum KYCStatus {
+  NOT_STARTED
+  INCOMPLETE
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
 }
 
 """

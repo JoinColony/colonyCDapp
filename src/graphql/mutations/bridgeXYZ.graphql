@@ -1,16 +1,3 @@
-mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
-  bridgeXYZMutation(input: $input) {
-    country
-    kyc_status
-    tos_link
-    kyc_link
-    success
-    bankAccount {
-      ...BridgeBankAccount
-    }
-  }
-}
-
 mutation CreateKYCLinks($fullName: String!, $email: String!) {
   bridgeXYZMutation(
     input: {
@@ -57,7 +44,7 @@ mutation UpdateBridgeCustomer(
 
 mutation CheckKYCStatus {
   bridgeXYZMutation(input: { path: "v0/kyc_links/{kycLinkID}", body: {} }) {
-    kyc_status
+    kycStatus
     kyc_link
     country
     bankAccount {

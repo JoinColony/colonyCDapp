@@ -1,11 +1,11 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
+import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
 import { type KycStatusData } from '../../types.ts';
-import { KycStatus } from '../Verification/types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
@@ -23,12 +23,12 @@ export const getBadgeProps = ({
   isAutoOfframEnabled,
   kycStatusData,
 }: {
-  kycStatusData: KycStatusData | null;
+  kycStatusData?: KycStatusData | null;
   bankAccountData: KycStatusData['bankAccount'];
   isAutoOfframEnabled: boolean;
 }): CryptoToFiatBadgeProps => {
   if (kycStatusData) {
-    if (kycStatusData?.kyc_status !== KycStatus.APPROVED && !bankAccountData) {
+    if (kycStatusData?.kycStatus !== KycStatus.Approved && !bankAccountData) {
       return {
         text: formatText({
           id: `${displayName}.statusPill.incomplete`,
@@ -42,7 +42,7 @@ export const getBadgeProps = ({
     // @TODO Figure out if this is still valid
     // This is based on the Figma design: https://www.figma.com/design/C2grfQysdsYXz0j4rADR6K/Crypto-to-Fiat?node-id=2401-10068&t=nxBQFcmRmZgCoLap-0
     // I think this should now be kycStatusData?.kyc_status === KycStatus.APPROVED && !bankAccountData
-    if (kycStatusData?.kyc_status !== KycStatus.APPROVED && !!bankAccountData) {
+    if (kycStatusData?.kycStatus !== KycStatus.Approved && !!bankAccountData) {
       return {
         text: formatText({
           id: `${displayName}.statusPill.kycRequired`,

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
@@ -17,7 +17,6 @@ import { formatText } from '~utils/intl.ts';
 
 import { useUserCryptoToFiatPage } from './hooks.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
-import { type KycStatusData } from './types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
 
@@ -46,17 +45,11 @@ const UserCryptoToFiatPage = () => {
 
   const { rowItems } = useUserCryptoToFiatPage();
 
-  const [checkKycStatus] = useCheckKycStatusMutation();
-  const [kycStatusData, setKycStatusData] = useState<KycStatusData | null>(
-    null,
-  );
+  const [checkKycStatus, { data, loading: kycStatusLoading }] =
+    useCheckKycStatusMutation();
 
   useEffect(() => {
-    checkKycStatus().then((result) => {
-      if (result.data?.bridgeXYZMutation) {
-        setKycStatusData(result.data.bridgeXYZMutation);
-      }
-    });
+    checkKycStatus();
   }, [checkKycStatus]);
 
   if (userLoading || walletConnecting || cryptoToFiatFeatureFlag?.isLoading) {
@@ -83,7 +76,12 @@ const UserCryptoToFiatPage = () => {
         return (
           <Fragment key={key}>
             {/* @TODO: Is there a benefit in having the hook return an array instead of just rendering components?  */}
-            <Component order={index + 1} kycStatusData={kycStatusData} />
+            <Component
+              order={index + 1}
+              kycStatusData={data?.bridgeXYZMutation}
+              refetchStatus={() => checkKycStatus()}
+              kycStatusLoading={kycStatusLoading}
+            />
             {index < items.length - 1 && <hr />}
           </Fragment>
         );

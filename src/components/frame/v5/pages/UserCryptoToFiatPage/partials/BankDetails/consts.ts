@@ -1,12 +1,12 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
+import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
 import { type KycStatusData } from '../../types.ts';
 import { type RowItemBodyProps } from '../RowItem/types.ts';
-import { KycStatus } from '../Verification/types.ts';
 
 import { BankDetailsStatus } from './types.ts';
 
@@ -73,7 +73,7 @@ export const getCTAScheme = ({
   bankAccountData,
   kycStatusData,
 }: {
-  kycStatusData: KycStatusData | null;
+  kycStatusData?: KycStatusData | null;
   bankAccountData: KycStatusData['bankAccount'];
 }): Pick<RowItemBodyProps, 'ctaDisabled' | 'ctaTitle'> => {
   if (bankAccountData) {
@@ -91,6 +91,6 @@ export const getCTAScheme = ({
       defaultMessage: 'Add details',
     },
     ctaDisabled:
-      bankAccountData || kycStatusData?.kyc_status !== KycStatus.APPROVED,
+      bankAccountData || kycStatusData?.kycStatus !== KycStatus.Approved,
   };
 };

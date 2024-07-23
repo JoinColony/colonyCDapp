@@ -1,10 +1,11 @@
 import { WarningCircle } from '@phosphor-icons/react';
-import { type MessageDescriptor, defineMessages } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
+import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
-import { KycStatus } from './types.ts';
+import { type RowItemBodyProps } from '../RowItem/types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.Verification';
@@ -13,7 +14,7 @@ export const getBadgeProps = (
   status?: string | null,
 ): CryptoToFiatBadgeProps => {
   switch (status) {
-    case KycStatus.NOT_STARTED: {
+    case KycStatus.NotStarted: {
       return {
         text: formatText({
           id: `${displayName}.pillCopy`,
@@ -23,7 +24,7 @@ export const getBadgeProps = (
         theme: 'red',
       };
     }
-    case KycStatus.INCOMPLETE: {
+    case KycStatus.Incomplete: {
       return {
         text: formatText({
           id: `${displayName}.pillCopy`,
@@ -32,25 +33,8 @@ export const getBadgeProps = (
         theme: 'orange',
       };
     }
-    case KycStatus.AWAITING_UBO: {
-      return {
-        text: formatText({
-          id: `${displayName}.pillCopy`,
-          defaultMessage: 'Awaiting UBO',
-        }),
-        theme: 'gray',
-      };
-    }
-    case KycStatus.MANUAL_REVIEW: {
-      return {
-        text: formatText({
-          id: `${displayName}.pillCopy`,
-          defaultMessage: 'Manual review',
-        }),
-        theme: 'gray',
-      };
-    }
-    case KycStatus.UNDER_REVIEW: {
+    case KycStatus.Pending:
+    case KycStatus.UnderReview: {
       return {
         text: formatText({
           id: `${displayName}.pillCopy`,
@@ -59,7 +43,7 @@ export const getBadgeProps = (
         theme: 'gray',
       };
     }
-    case KycStatus.APPROVED: {
+    case KycStatus.Approved: {
       return {
         text: formatText({
           id: `${displayName}.pillCopy`,
@@ -68,7 +52,7 @@ export const getBadgeProps = (
         theme: 'green',
       };
     }
-    case KycStatus.REJECTED: {
+    case KycStatus.Rejected: {
       return {
         text: formatText({
           id: `${displayName}.pillCopy`,
@@ -88,18 +72,19 @@ export const getBadgeProps = (
 };
 
 export const getCTAProps = (
+  isLoading: boolean,
   status?: string | null,
-): {
-  ctaTitle?: MessageDescriptor;
-  ctaDisabled?: boolean;
-  ctaLoading?: boolean;
-} => {
+): Partial<RowItemBodyProps> => {
+  if (isLoading) {
+    return { ctaLoading: true };
+  }
+
   if (!status) {
-    return { ctaDisabled: true, ctaLoading: true };
+    return { ctaHidden: true };
   }
 
   switch (status) {
-    case KycStatus.REJECTED: {
+    case KycStatus.Rejected: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -107,7 +92,7 @@ export const getCTAProps = (
         },
       };
     }
-    case KycStatus.APPROVED: {
+    case KycStatus.Approved: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -116,7 +101,7 @@ export const getCTAProps = (
         ctaDisabled: true,
       };
     }
-    case KycStatus.INCOMPLETE: {
+    case KycStatus.Incomplete: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,
@@ -124,7 +109,8 @@ export const getCTAProps = (
         },
       };
     }
-    case KycStatus.UNDER_REVIEW: {
+    case KycStatus.Pending:
+    case KycStatus.UnderReview: {
       return {
         ctaTitle: {
           id: `${displayName}.headingTitle`,

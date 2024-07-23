@@ -48,6 +48,7 @@ const Body: React.FC<RowItemBodyProps> = ({
   ctaOnClick,
   ctaComponent,
   ctaLoading,
+  ctaHidden,
 }) => {
   return (
     <div className="flex items-end justify-between">
@@ -62,7 +63,7 @@ const Body: React.FC<RowItemBodyProps> = ({
         )}
       </section>
       <section className="flex min-w-[200px] justify-end">
-        {ctaComponent ?? (
+        {(!ctaHidden && ctaComponent) ?? (
           <Button
             type="button"
             text={ctaTitle}
