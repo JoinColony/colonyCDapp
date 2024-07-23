@@ -3574,6 +3574,29 @@ type ColonyAction @model @searchable {
   Streaming payment associated with the action, if any
   """
   streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+  """
+  Changes to the streaming payment associated with the action, if any
+  Applicable to `EDIT_STREAMING_PAYMENT` action only
+  """
+  streamingPaymentChanges: StreamingPaymentChangeSet
+}
+
+type StreamingPaymentChangeSet {
+  """
+  The values before the change
+  """
+  oldValues: StreamingPaymentChanges!
+  """
+  The values before the change
+  """
+  newValues: StreamingPaymentChanges!
+}
+
+type StreamingPaymentChanges {
+  startTime: String!
+  endTime: String!
+  interval: String!
+  amount: String!
 }
 
 """
@@ -4038,32 +4061,6 @@ type StreamingPayment @model {
   """
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
-  """
-  List of Streaming Payment changelog entries
-  """
-  changelog: [StreamingPaymentChangelog!]
-}
-
-type StreamingPaymentChangelog {
-  """
-  Transaction hash associated with the changelog entry
-  """
-  transactionHash: String!
-  """
-  The values before the change
-  """
-  oldValues: StreamingPaymentChanges!
-  """
-  The values before the change
-  """
-  newValues: StreamingPaymentChanges!
-}
-
-type StreamingPaymentChanges {
-  startTime: String!
-  endTime: String!
-  interval: String!
-  amount: String!
 }
 
 type StreamingPaymentMetadata @model {
