@@ -32,12 +32,6 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
         textClassName="flex max-w-full items-center"
       >
         <span className="truncate">{status.toLowerCase()}</span>
-        {pending && (
-          <SpinnerGap
-            className="ml-1 h-[0.8125rem] w-[0.8125rem] flex-shrink-0 animate-spin"
-            size={14}
-          />
-        )}
       </PillsBase>
     </div>
   );

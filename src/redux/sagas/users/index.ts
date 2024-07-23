@@ -375,7 +375,7 @@ function* userCryptoToFiatTransfer({
 
     yield takeFrom(transfer.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: transfer.id });
+    yield initiateTransaction(transfer.id);
 
     yield waitForTxResult(transfer.channel);
 
