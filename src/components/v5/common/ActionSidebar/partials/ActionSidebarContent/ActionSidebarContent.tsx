@@ -147,7 +147,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               status="error"
               icon={WarningCircle}
               description={
-                <ul className="list-inside list-disc text-negative-400">
+                <ul className="list-outside list-disc text-negative-400">
                   {flatFormErrors.map(({ key, message }) => (
                     <li key={key}>{message}</li>
                   ))}

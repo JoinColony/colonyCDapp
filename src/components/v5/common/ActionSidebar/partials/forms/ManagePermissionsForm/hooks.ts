@@ -28,7 +28,7 @@ import {
   getRemovedInheritedPermissions,
 } from './utils.ts';
 
-export const useManagePermissions = (
+export const useManagePermissionsForm = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
@@ -73,6 +73,10 @@ export const useManagePermissions = (
 
   useEffect(() => {
     const { unsubscribe } = watch(({ member, team, role }, { name }) => {
+      if (role === UserRole.Mod) {
+        clearErrors('authority');
+      }
+
       if (isSubmitted) {
         if (role === UserRole.Custom) {
           trigger('permissions');
@@ -144,7 +148,6 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
-    mode: 'onSubmit',
     id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
     primaryButton: {
       type: isRemovingRootRoleFromRootDomain ? 'button' : 'submit',

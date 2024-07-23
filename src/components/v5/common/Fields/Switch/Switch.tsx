@@ -6,7 +6,17 @@ import { type SwitchProps } from './types.ts';
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
+  (
+    {
+      id,
+      disabled: disabledProp,
+      readOnly,
+      className,
+      greyOutWhenDisabled,
+      ...rest
+    },
+    ref,
+  ) => {
     const generatedId = useId();
     const disabled = disabledProp || readOnly;
 
@@ -30,7 +40,13 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           className={clsx(
             'h-5 w-9 rounded-full border-2 border-gray-200 bg-gray-200',
             "after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-base-white after:shadow-sm after:transition after:content-['']",
-            'peer-checked:border-gray-900 peer-checked:bg-gray-900 peer-checked:after:translate-x-full',
+            'peer-checked:after:translate-x-full',
+            {
+              'peer-checked:border-gray-900 peer-checked:bg-gray-900':
+                !disabled,
+              'peer-checked:border-gray-100 peer-checked:bg-gray-100':
+                greyOutWhenDisabled && disabled,
+            },
           )}
         />
       </label>
