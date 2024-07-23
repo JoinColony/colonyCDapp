@@ -1,11 +1,16 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
+import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useGetColonyExpendituresQuery, ColonyActionType } from '~gql';
+import {
+  useGetColonyExpendituresQuery,
+  ColonyActionType,
+  ExpenditureType,
+} from '~gql';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -30,6 +35,8 @@ import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import RequestBox from '../RequestBox/RequestBox.tsx';
+import { type MilestoneItem } from '../StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
+import StagedReleaseStep from '../StagedReleaseStep/StagedReleaseStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -69,6 +76,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     userStake,
     ownerAddress,
     motions,
+    slots,
+    metadata,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
   const { items: fundingActionsItems } = fundingActions || {};
@@ -232,6 +241,99 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   useEffect(() => {
     setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
   }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
+
+  const milestones: MilestoneItem[] = useMemo(
+    () =>
+      (metadata?.stages || []).map((item) => {
+        const payout = (slots || []).find((slot) => slot.id === item.slotId);
+        const amount = payout?.payouts?.[0].amount;
+        const tokenAddress = payout?.payouts?.[0].tokenAddress;
+        const isReleased = payout?.payouts?.[0].isClaimed;
+
+        return {
+          milestone: item.name,
+          amount: amount || '0',
+          tokenAddress: tokenAddress || ADDRESS_ZERO,
+          id: item.slotId,
+          isReleased: isReleased || false,
+        };
+      }),
+    [slots, metadata],
+  );
+
+  const releaseStep =
+    expenditure?.type === ExpenditureType.Staged
+      ? {
+          key: ExpenditureStep.Release,
+          heading: {
+            label: formatText({ id: 'expenditure.releaseStage.label' }),
+          },
+          content: (
+            <StagedReleaseStep
+              items={milestones}
+              expenditure={expenditure}
+              expectedStepKey={expectedStepKey}
+            />
+          ),
+        }
+      : {
+          key: ExpenditureStep.Release,
+          heading: {
+            label: formatText({ id: 'expenditure.releaseStage.label' }),
+          },
+          content:
+            expenditureStep === ExpenditureStep.Release ? (
+              <StepDetailsBlock
+                text={formatText({
+                  id: 'expenditure.releaseStage.info',
+                })}
+                content={
+                  expectedStepKey === ExpenditureStep.Payment ? (
+                    <TxButton
+                      className="max-h-[2.5rem] w-full !text-md"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showReleasePaymentModal}
+                      text={formatText({
+                        id: 'expenditure.releaseStage.button',
+                      })}
+                    />
+                  )
+                }
+              />
+            ) : (
+              <>
+                {finalizedAt ? (
+                  <>
+                    {finalizingActions?.items[0]?.initiatorAddress ===
+                    ownerAddress ? (
+                      <FinalizeByPaymentCreatorInfo
+                        userAdddress={expenditure?.ownerAddress}
+                      />
+                    ) : (
+                      <ActionWithPermissionsInfo
+                        userAdddress={
+                          finalizingActions?.items[0]?.initiatorAddress
+                        }
+                        createdAt={finalizingActions?.items[0]?.createdAt}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <div />
+                )}
+              </>
+            ),
+        };
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -408,60 +510,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           </>
         ),
     },
-    {
-      key: ExpenditureStep.Release,
-      heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
-      content:
-        expenditureStep === ExpenditureStep.Release ? (
-          <StepDetailsBlock
-            text={formatText({
-              id: 'expenditure.releaseStage.info',
-            })}
-            content={
-              expectedStepKey === ExpenditureStep.Payment ? (
-                <TxButton
-                  className="max-h-[2.5rem] w-full !text-md"
-                  rounded="s"
-                  text={{ id: 'button.pending' }}
-                  icon={
-                    <span className="ml-1.5 flex shrink-0">
-                      <SpinnerGap className="animate-spin" size={14} />
-                    </span>
-                  }
-                />
-              ) : (
-                <Button
-                  className="w-full"
-                  onClick={showReleasePaymentModal}
-                  text={formatText({
-                    id: 'expenditure.releaseStage.button',
-                  })}
-                />
-              )
-            }
-          />
-        ) : (
-          <>
-            {finalizedAt ? (
-              <>
-                {finalizingActions?.items[0]?.initiatorAddress ===
-                ownerAddress ? (
-                  <FinalizeByPaymentCreatorInfo
-                    userAdddress={expenditure?.ownerAddress}
-                  />
-                ) : (
-                  <ActionWithPermissionsInfo
-                    userAdddress={finalizingActions?.items[0]?.initiatorAddress}
-                    createdAt={finalizingActions?.items[0]?.createdAt}
-                  />
-                )}
-              </>
-            ) : (
-              <div />
-            )}
-          </>
-        ),
-    },
+    releaseStep,
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },

@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
+import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 
@@ -18,28 +19,45 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     isReleaseModalOpen,
     { toggleOn: toggleOnReleaseModal, toggleOff: toggleOffReleaseModal },
   ] = useToggle();
+  const [
+    isMilestoneModalOpen,
+    { toggleOn: toggleOnMilestoneModal, toggleOff: toggleOffMilestoneModal },
+  ] = useToggle();
   const [selectedTransaction, setSelectedTransaction] = useState<string>('');
+  const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
+    [],
+  );
 
   const value = useMemo(
     () => ({
       toggleOnFundingModal,
       toggleOffFundingModal,
       isFundingModalOpen,
+      toggleOnMilestoneModal,
+      toggleOffMilestoneModal,
+      isMilestoneModalOpen,
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
       selectedTransaction,
       setSelectedTransaction,
+      selectedMilestones,
+      setSelectedMilestones,
     }),
     [
       toggleOnFundingModal,
       toggleOffFundingModal,
       isFundingModalOpen,
+      toggleOnMilestoneModal,
+      toggleOffMilestoneModal,
+      isMilestoneModalOpen,
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
       selectedTransaction,
       setSelectedTransaction,
+      selectedMilestones,
+      setSelectedMilestones,
     ],
   );
 
