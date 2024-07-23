@@ -65,6 +65,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <UnlockToken action={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
+      case ColonyActionType.VersionUpgradeMultisig:
         return <UpgradeColonyVersion action={action} />;
       case ColonyActionType.CreateDecisionMotion:
         return <CreateDecision action={action} />;

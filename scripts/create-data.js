@@ -516,7 +516,10 @@ const createColony = async (
 
   const metadata = {};
   if (colonyDescription) {
-    metadata.description = colonyDescription.slice(0, CHAR_LIMITS.COLONY.MAX_COLONY_DESCRIPTION);
+    metadata.description = colonyDescription.slice(
+      0,
+      CHAR_LIMITS.COLONY.MAX_COLONY_DESCRIPTION,
+    );
   }
   if (colonyAvatar) {
     metadata.avatar = colonyAvatar;
@@ -1484,9 +1487,13 @@ const checkArguments = () => {
     `If you wish to change these values, please pass --coloniesCount <number> and --timeout <number> respectively to this script.`,
   );
   console.log();
-  console.log(
-    `Colonies will be deployed using the current Colony version. To deploy with the previous version pass --usePreviousColonyVersion`,
-  );
+
+  if (!usePreviousColonyVersionArg) {
+    console.log(
+      `Colonies will be deployed using the current Colony version. To deploy with the previous version pass --usePreviousColonyVersion`,
+    );
+  }
+
   console.log(
     `(For this to work, you will need to have already deployed the previous Colony version resolver to the network.)`,
   );
