@@ -186,6 +186,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                     onChange: (e) => {
                       handleThresholdValueChange(
                         'globalThreshold',
+                        // Slicing the input value to the last 5 entered digits
                         Number(e.target.value?.slice(-5)),
                       );
                     },
@@ -224,6 +225,8 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-md font-medium">{name}</p>
                       <Select
+                        menuPosition="fixed"
+                        menuShouldScrollIntoView={false}
                         className="w-full sm:w-72"
                         onChange={(option) =>
                           handleDomainThresholdTypeChange(
@@ -269,6 +272,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                             onChange: (e) => {
                               handleThresholdValueChange(
                                 name,
+                                // Slicing the input value to the last 5 entered digits
                                 Number(e.target.value?.slice(-5)),
                               );
                             },

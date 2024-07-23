@@ -1,10 +1,9 @@
-import { Question, SpinnerGap } from '@phosphor-icons/react';
+import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
+import { ButtonWithLoader } from '~frame/Extensions/pages/partials/ButtonWithLoader.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import { useDeprecate } from './hooks.tsx';
@@ -27,29 +26,17 @@ const DeprecateButton = ({
   return (
     <>
       <div className="flex w-full justify-center">
-        {isLoading ? (
-          <TxButton
-            rounded="s"
-            isFullSize
-            text={{ id: 'button.pending' }}
-            icon={
-              <span className="ml-2 flex shrink-0">
-                <SpinnerGap size={14} className="animate-spin" />
-              </span>
-            }
-            className="!px-4 !py-2 !text-sm"
-          />
-        ) : (
-          <Button
-            mode="primaryOutlineFull"
-            size="small"
-            isFullSize
-            loading={isLoading}
-            onClick={() => setIsDeprecateModalOpen(true)}
-          >
-            {formatText({ id: 'button.deprecateExtension' })}
-          </Button>
-        )}
+        <ButtonWithLoader
+          mode="primaryOutlineFull"
+          isFullSize
+          size="small"
+          isLoading={isLoading}
+          loaderClassName="!px-4 !py-2 !text-sm"
+          loaderIconSize={14}
+          onClick={() => setIsDeprecateModalOpen(true)}
+        >
+          {formatText({ id: 'button.deprecateExtension' })}
+        </ButtonWithLoader>
       </div>
       <Modal
         isOpen={isDeprecateModalOpen}
