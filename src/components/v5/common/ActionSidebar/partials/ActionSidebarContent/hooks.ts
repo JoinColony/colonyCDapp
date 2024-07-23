@@ -27,6 +27,11 @@ export const useGetFormActionErrors = () => {
   };
 };
 
+interface UseHasEnoughMembersWithPermissionsResult {
+  hasEnoughMembersWithPermissions: boolean;
+  isLoading: boolean;
+}
+
 // @TODO somehow rework this so we don't always fetch it, but only call the business logic if decision method is multisig
 export const useHasEnoughMembersWithPermissions = ({
   decisionMethod,
@@ -36,7 +41,7 @@ export const useHasEnoughMembersWithPermissions = ({
   decisionMethod: DecisionMethod;
   selectedAction: Action;
   createdIn: number;
-}) => {
+}): UseHasEnoughMembersWithPermissionsResult => {
   const { watch } = useFormContext();
   const formValues = watch();
 
@@ -51,27 +56,35 @@ export const useHasEnoughMembersWithPermissions = ({
    */
   const multiSigRoles = requiredRoles.flat();
 
-  const { thresholdPerRole } = useDomainThreshold({
-    domainId: createdIn,
-    requiredRoles: multiSigRoles,
-  });
+  const { thresholdPerRole, isLoading: isDomainThresholdLoading } =
+    useDomainThreshold({
+      domainId: createdIn,
+      requiredRoles: multiSigRoles,
+    });
 
-  const { countPerRole } = useEligibleSignees({
-    domainId: createdIn,
-    requiredRoles: multiSigRoles,
-  });
+  const { countPerRole, isLoading: areEligibleSigneesLoading } =
+    useEligibleSignees({
+      domainId: createdIn,
+      requiredRoles: multiSigRoles,
+    });
 
   if (
     decisionMethod !== DecisionMethod.MultiSig ||
     !thresholdPerRole ||
     !requiredRoles
   ) {
-    return true;
+    return {
+      hasEnoughMembersWithPermissions: true,
+      isLoading: false,
+    };
   }
 
   const hasEnoughMembersWithPermissions = requiredRoles.some((roles) =>
     roles.every((role) => countPerRole[role] >= thresholdPerRole[role]),
   );
 
-  return hasEnoughMembersWithPermissions;
+  return {
+    hasEnoughMembersWithPermissions,
+    isLoading: isDomainThresholdLoading || areEligibleSigneesLoading,
+  };
 };
