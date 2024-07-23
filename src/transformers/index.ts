@@ -1,5 +1,4 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
-import intersection from 'lodash/intersection';
 
 import { type ColonyRoleFragment } from '~gql';
 import { type Address } from '~types/index.ts';
@@ -82,6 +81,7 @@ export const getUserRolesForDomain = ({
   isMultiSig = false,
   inheritedRoles = false,
   dbInheritedPermissions = false,
+  onlyInheritedRoles = false,
 }: {
   colonyRoles: ColonyRoleFragment[];
   userAddress: Address;
@@ -91,6 +91,7 @@ export const getUserRolesForDomain = ({
   isMultiSig?: boolean;
   inheritedRoles?: boolean;
   dbInheritedPermissions?: boolean;
+  onlyInheritedRoles?: boolean;
 }): ColonyRole[] => {
   if (!domainId) {
     return getAllUserRoles(colonyRoles, userAddress, isMultiSig);
@@ -107,19 +108,12 @@ export const getUserRolesForDomain = ({
   const userRolesInAnyDomain = getUserRolesInDomain(domainId);
   const userRolesInRootDomain = getUserRolesInDomain(Id.RootDomain);
 
-  if (dbInheritedPermissions) {
+  if (onlyInheritedRoles) {
     return convertRolesToArray(userRolesInRootDomain);
   }
 
   if (excludeInherited && userRolesInAnyDomain) {
     return convertRolesToArray(userRolesInAnyDomain);
-  }
-
-  if (intersectingRoles && userRolesInAnyDomain && userRolesInRootDomain) {
-    return intersection(
-      convertRolesToArray(userRolesInAnyDomain),
-      convertRolesToArray(userRolesInRootDomain),
-    );
   }
 
   if (!excludeInherited && (userRolesInAnyDomain || userRolesInRootDomain)) {

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { ColonyRole, Id } from '@colony/colony-js';
 import difference from 'lodash/difference';
 import { type UseFormSetValue } from 'react-hook-form';
@@ -19,7 +18,11 @@ import { extractColonyDomains } from '~utils/domains.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getObjectKeys } from '~utils/objects/index.ts';
-import { sanitizeHTML } from '~utils/strings.ts';
+import {
+  capitalizeFirstLetter,
+  getCommaSeparatedStringList,
+  sanitizeHTML,
+} from '~utils/strings.ts';
 
 import {
   AVAILABLE_PERMISSIONS,
@@ -178,22 +181,27 @@ export const configureFormRoles = ({
     isMultiSig: authority === Authority.ViaMultiSig,
   });
 
-  const userInheritedRolesForDomain = getUserRolesForDomain({
+  const dbInheritedPermissions = getUserRolesForDomain({
     colonyRoles,
     userAddress: member,
     domainId: team,
-    dbInheritedPermissions: true,
+    onlyInheritedRoles: true,
   });
 
-  const userRoleMeta = getRole(dbPermissionsForDomain);
+  const dbRoleMetaForDomain = getRole(dbPermissionsForDomain);
+  const dbRoleForDomain = dbRoleMetaForDomain.permissions.length
+    ? dbRoleMetaForDomain.role
+    : undefined;
 
-  const dbRoleForDomain = userRoleMeta.permissions.length
-    ? userRoleMeta.role
+  const dbInheritedRoleMeta = getRole(dbInheritedPermissions);
+  const dbInheritedRole = dbInheritedRoleMeta.permissions.length
+    ? dbInheritedRoleMeta.role
     : undefined;
 
   setValue('_dbRoleForDomain', dbRoleForDomain);
+  setValue('_dbInheritedRole', dbInheritedRole);
   setValue('_dbPermissionsForDomain', dbPermissionsForDomain);
-  setValue('_dbInheritedPermissions', userInheritedRolesForDomain);
+  setValue('_dbInheritedPermissions', dbInheritedPermissions);
 
   if (role !== UserRole.Custom && role !== UserRoleModifier.Remove) {
     setValue('role', dbRoleForDomain, { shouldValidate: isSubmitted });
@@ -202,7 +210,7 @@ export const configureFormRoles = ({
   AVAILABLE_PERMISSIONS.forEach((colonyRole) => {
     setValue(
       `permissions.role_${colonyRole}`,
-      userRoleMeta.permissions.includes(colonyRole),
+      dbRoleMetaForDomain.permissions.includes(colonyRole),
     );
   });
 };
@@ -235,3 +243,44 @@ export const getRemovedInheritedPermissions = ({
   dbInheritedPermissions: ManagePermissionsFormValues['_dbInheritedPermissions'];
   formPermissions: ColonyRole[] | undefined;
 }) => difference(dbInheritedPermissions, formPermissions);
+
+export const arePermissionsTheSame = (
+  permissionsA: ColonyRole[] | undefined,
+  permissionsB: ColonyRole[] | undefined,
+) =>
+  JSON.stringify(permissionsA?.sort()) === JSON.stringify(permissionsB?.sort());
+
+export const getPermissionName = (role: ColonyRole) =>
+  formatText({ id: `role.${role}` });
+
+/**
+ *
+ * @param role: payer
+ * @param permissions: [2, 5, 6]
+ * @returns "Payer"
+ *
+ * @param role: custom
+ * @param permissions: [1, 2, 5]
+ * @returns "Custom (Root, Arbitration and Funding)"
+ */
+export const getFormattedRole = ({
+  role,
+  permissions,
+}: {
+  role: UserRole;
+  permissions: ColonyRole[];
+}) => {
+  if (role === UserRole.Custom) {
+    const permissionNames = permissions.map(getPermissionName);
+
+    const formattedPermissionNames =
+      getCommaSeparatedStringList(permissionNames);
+
+    return `Custom (${formattedPermissionNames})`;
+  }
+
+  return capitalizeFirstLetter(role);
+};
+
+export const getPermissionsForRole = (role: string) =>
+  USER_ROLES.find((userRole) => userRole.role === role)?.permissions ?? [];
