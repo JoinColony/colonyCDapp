@@ -4,10 +4,11 @@ import React, { useState, type FC, useEffect } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { MultiSigVote, type ColonyMultiSigFragment } from '~gql';
+import { type ColonyMultiSigFragment } from '~gql';
 import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { type Threshold } from '~types/multiSig.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -18,7 +19,14 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import FinalizeButton from '../../../FinalizeButton/FinalizeButton.tsx';
-import { hasWeekPassed } from '../../utils.ts';
+import {
+  getIsMultiSigCancelable,
+  getIsMultiSigExecutable,
+  getNumberOfApprovals,
+  getNumberOfRejections,
+  getSignaturesPerRole,
+  hasWeekPassed,
+} from '../../utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.FinalizeStep';
@@ -125,22 +133,18 @@ const formatDate = (value: string | undefined) => {
 
 interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
-  isMultiSigFinalizable: boolean;
-  isMultiSigCancelable: boolean;
   // initiatorAddress: string;
   createdAt: string;
-  threshold: number;
+  thresholdPerRole: Threshold;
   action: ColonyAction;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
   multiSigData,
-  isMultiSigFinalizable,
-  isMultiSigCancelable,
   // initiatorAddress,
   createdAt,
-  threshold,
   action,
+  thresholdPerRole,
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
   const { colony } = useColonyContext();
@@ -151,13 +155,27 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const isOwner = false;
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
-  const approvedSignaturesCount = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Approve,
-  ).length;
-  const rejectedSignaturesCount = signatures.filter(
-    (signature) => signature.vote === MultiSigVote.Reject,
-  ).length;
+
+  const { approvalsPerRole, rejectionsPerRole } =
+    getSignaturesPerRole(signatures);
   const finalizedAt = multiSigData.executedAt || multiSigData.rejectedAt;
+
+  const numberOfApprovals = getNumberOfApprovals(
+    approvalsPerRole,
+    thresholdPerRole,
+  );
+  const numberOfRejections = getNumberOfRejections(
+    rejectionsPerRole,
+    thresholdPerRole,
+  );
+  const isMultiSigExecutable = getIsMultiSigExecutable(
+    approvalsPerRole,
+    thresholdPerRole,
+  );
+  const isMultiSigCancelable = getIsMultiSigCancelable(
+    rejectionsPerRole,
+    thresholdPerRole,
+  );
 
   let stepTitle = MSG.heading;
 
@@ -169,9 +187,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     stepTitle = MSG.headingRejectedWeek;
   } else if (isMultiSigRejected) {
     stepTitle = MSG.headingRejected;
-  } else if (rejectedSignaturesCount === threshold && !isMultiSigRejected) {
+  } else if (isMultiSigCancelable && !isMultiSigRejected) {
     stepTitle = MSG.headingFinalizeCancel;
-  } else if (approvedSignaturesCount === threshold && !isMultiSigRejected) {
+  } else if (isMultiSigExecutable && !isMultiSigRejected) {
     stepTitle = MSG.heading;
   } else {
     stepTitle = MSG.headingFinalizeBoth;
@@ -206,18 +224,18 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           key: 'signatories',
           content: (
             <div>
-              {(isMultiSigFinalizable || isMultiSigCancelable) &&
+              {(isMultiSigExecutable || isMultiSigCancelable) &&
                 !isMultiSigExecuted &&
                 !isMultiSigRejected && (
                   <div className="flex flex-col gap-2">
-                    {approvedSignaturesCount >= threshold && (
+                    {isMultiSigExecutable && (
                       <FinalizeButton
                         isPending={isFinalizePending}
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
                       />
                     )}
-                    {rejectedSignaturesCount >= threshold && (
+                    {isMultiSigCancelable && (
                       <ActionForm
                         actionType={ActionTypes.MULTISIG_CANCEL}
                         onSuccess={() => setIsFinalizePending(true)}
@@ -259,8 +277,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                     </span>
                     <span>
                       {formatText(MSG.outcomeValue, {
-                        approval: approvedSignaturesCount,
-                        rejection: rejectedSignaturesCount,
+                        approval: numberOfApprovals,
+                        rejection: numberOfRejections,
                       })}
                     </span>
                   </div>
