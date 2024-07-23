@@ -1,6 +1,6 @@
 import { Extension } from '@colony/core';
 import React, { useMemo, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { type MessageDescriptor, useIntl } from 'react-intl';
 
 import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
 import {
@@ -14,14 +14,32 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { type SidePanelDataProps } from './types.ts';
 
+type AvailableStatus = Extract<
+  ExtensionStatusBadgeMode,
+  'installed' | 'enabled' | 'disabled' | 'deprecated' | 'not-installed'
+>;
+
+const badgeMessages: Record<AvailableStatus, MessageDescriptor> = {
+  installed: {
+    id: 'status.installed',
+  },
+  enabled: {
+    id: 'status.enabled',
+  },
+  disabled: {
+    id: 'status.disabled',
+  },
+  deprecated: {
+    id: 'status.deprecated',
+  },
+  'not-installed': {
+    id: 'status.notInstalled',
+  },
+};
+
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   const { formatMessage } = useIntl();
-  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([
-    'disabled',
-  ]);
-  const [badgeMessages, setBadgeMessages] = useState<string[]>([
-    formatMessage({ id: 'status.disabled' }),
-  ]);
+  const [statuses, setStatuses] = useState<AvailableStatus[]>(['disabled']);
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
@@ -49,31 +67,18 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   useMemo(() => {
     if (!isExtensionInstalled) {
       setStatuses(['not-installed']);
-      setBadgeMessages([formatMessage({ id: 'status.notInstalled' })]);
     } else if (extensionData.isEnabled) {
       if (extensionData.extensionId === Extension.MultisigPermissions) {
         setStatuses(['installed']);
-        setBadgeMessages([formatMessage({ id: 'status.installed' })]);
       } else {
         setStatuses(['enabled']);
-        setBadgeMessages([formatMessage({ id: 'status.enabled' })]);
       }
     } else if (isExtensionDeprecatedAndDisabled) {
       setStatuses(['disabled', 'deprecated']);
-      setBadgeMessages([
-        formatMessage({ id: 'status.disabled' }),
-        formatMessage({ id: 'status.deprecated' }),
-      ]);
     } else {
       setStatuses(['disabled']);
-      setBadgeMessages([formatMessage({ id: 'status.disabled' })]);
     }
-  }, [
-    extensionData,
-    isExtensionInstalled,
-    isExtensionDeprecatedAndDisabled,
-    formatMessage,
-  ]);
+  }, [extensionData, isExtensionInstalled, isExtensionDeprecatedAndDisabled]);
 
   // @ts-expect-error CurrentVersion/Address aren't shown in the parent if the extension is not installed
   const { availableVersion, currentVersion, address, neededColonyPermissions } =

@@ -20,6 +20,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   transform,
   values,
   isLoading = false,
+  useTxLoader,
   ...props
 }) => {
   const isMobile = useMobile();
@@ -50,7 +51,7 @@ const ActionButton: FC<ActionButtonProps> = ({
     }
   };
 
-  return loading && actionType ? (
+  return useTxLoader && (isLoading || loading) ? (
     <TxButton
       rounded="s"
       isFullSize={isMobile}

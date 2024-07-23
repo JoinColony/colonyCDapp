@@ -17,7 +17,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 import {
-  EXTENSION_TAB_ID,
+  ExtensionTabId,
   waitForDbAfterExtensionAction,
 } from '../ExtensionDetailsPage/utils.tsx';
 
@@ -67,7 +67,7 @@ const InstallButton = ({
     }
     // @TODO will need to do the same for Extension.VotingReputation
     if (extensionData.extensionId === Extension.MultisigPermissions) {
-      onActiveTabChange(EXTENSION_TAB_ID.SETTINGS);
+      onActiveTabChange(ExtensionTabId.SETTINGS);
     }
   };
 
@@ -84,6 +84,7 @@ const InstallButton = ({
 
   return (
     <ActionButton
+      useTxLoader
       actionType={ActionTypes.EXTENSION_INSTALL}
       isLoading={isPolling}
       values={{ colonyAddress, extensionData }}

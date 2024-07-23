@@ -41,6 +41,7 @@ export const getDomainThresholds = (
   thresholdType: MultiSigThresholdType,
 ) =>
   domainThresholdConfigs.map((domain) => {
+    // Default to 0 if domain threshold type is MultiSigThresholdType.MAJORITY_APPROVAL
     let threshold = 0;
 
     if (

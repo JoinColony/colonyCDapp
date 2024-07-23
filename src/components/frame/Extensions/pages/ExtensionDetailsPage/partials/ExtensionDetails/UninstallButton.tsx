@@ -1,11 +1,10 @@
-import { SpinnerGap, Trash } from '@phosphor-icons/react';
+import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
+import { ButtonWithLoader } from '~frame/Extensions/pages/partials/ButtonWithLoader.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
-import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import { useUninstall } from './hooks.tsx';
@@ -26,29 +25,17 @@ const UninstallButton = ({
   return (
     <>
       <div className="flex w-full justify-center">
-        {isLoading ? (
-          <TxButton
-            rounded="s"
-            isFullSize
-            text={{ id: 'button.pending' }}
-            icon={
-              <span className="ml-2 flex shrink-0">
-                <SpinnerGap size={14} className="animate-spin" />
-              </span>
-            }
-            className="!px-4 !py-2 !text-sm"
-          />
-        ) : (
-          <Button
-            mode="primaryOutlineFull"
-            size="small"
-            isFullSize
-            loading={isLoading}
-            onClick={() => setIsUninstallModalOpen(true)}
-          >
-            {formatText({ id: 'button.uninstallExtension' })}
-          </Button>
-        )}
+        <ButtonWithLoader
+          mode="primaryOutlineFull"
+          isFullSize
+          size="small"
+          isLoading={isLoading}
+          loaderClassName="!px-4 !py-2 !text-sm"
+          loaderIconSize={14}
+          onClick={() => setIsUninstallModalOpen(true)}
+        >
+          {formatText({ id: 'button.uninstallExtension' })}
+        </ButtonWithLoader>
       </div>
 
       <Modal

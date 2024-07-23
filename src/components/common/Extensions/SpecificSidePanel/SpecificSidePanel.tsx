@@ -45,11 +45,11 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
               </div>
               <div className="flex flex-col justify-start gap-y-2 md:flex-row md:flex-wrap">
                 <div className="flex flex-wrap gap-1">
-                  {statuses.map((status, index) => (
+                  {statuses.map((status) => (
                     <ExtensionStatusBadge
                       key={status}
                       mode={status}
-                      text={badgeMessages[index]}
+                      text={formatMessage(badgeMessages[status])}
                     />
                   ))}
                 </div>
