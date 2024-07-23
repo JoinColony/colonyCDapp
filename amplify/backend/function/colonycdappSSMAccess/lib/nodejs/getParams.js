@@ -4,18 +4,18 @@ const AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN;
 const ENV = process.env.ENV;
 
 const ParamNames = {
-  graphqlUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_graphql_url`,
-  reputationEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Freputation_endpoint`,
-  networkContractAddress: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network_contract`,
-  chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_rpc_endpoint`,
-  chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2Fchain_network`,
-  appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Faws_appsync_api_key`,
-  bnbRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Fbnb_rpc_endpoint`,
-  ethRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2Feth_rpc_endpoint`,
-  bscscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fbscscan_api_key`,
-  etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fetherscan_api_key`,
-  bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_key`,
-  bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2Fbridgexyz_api_url`,
+  graphqlUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FAWS_APPSYNC_GRAPHQL_URL`,
+  reputationEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FREPUTATION_ENDPOINT`,
+  networkContractAddress: `%2Famplify%2Fcdapp%2F${ENV}%2FCHAIN_NETWORK_CONTRACT`,
+  chainRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FCHAIN_RPC_ENDPOINT`,
+  chainNetwork: `%2Famplify%2Fcdapp%2F${ENV}%2FCHAIN_NETWORK`,
+  appsyncApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FAWS_APPSYNC_API_KEY`,
+  bnbRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FBNB_RPC_ENDPOINT`,
+  ethRpcEndpoint: `%2Famplify%2Fcdapp%2F${ENV}%2FETH_RPC_ENDPOINT`,
+  bscscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBSCSCAN_API_KEY`,
+  etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FETHERSCAN_API_KEY`,
+  bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_KEY`,
+  bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_URL`,
 };
 
 const getParam = async (paramName) => {
