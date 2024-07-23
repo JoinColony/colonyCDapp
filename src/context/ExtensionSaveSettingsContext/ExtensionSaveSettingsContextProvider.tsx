@@ -8,16 +8,19 @@ import React, {
 
 import { type ActionTypes } from '~redux/actionTypes.ts';
 
-import { ExtensionSaveSettingsContext } from './ExtensionSaveSettingsContext.ts';
+import {
+  type RefWithGetValues,
+  ExtensionSaveSettingsContext,
+} from './ExtensionSaveSettingsContext.ts';
 
 export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [actionType, setActionType] = useState<ActionTypes | null>(null);
-  const callbackRef = useRef<any>(null);
+  const callbackRef = useRef<RefWithGetValues | null>(null);
 
-  const handleIsVisible = (newValue: boolean) => setIsVisible(newValue);
+  const handleSetVisible = (newValue: boolean) => setIsVisible(newValue);
 
   const handleGetValues = async () => {
     return callbackRef.current?.getValues();
@@ -33,11 +36,11 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
 
   const value = useMemo(
     () => ({
-      callback: callbackRef,
+      callbackRef,
       isVisible,
       actionType,
       handleGetValues,
-      handleIsVisible,
+      handleSetVisible,
       handleSetActionType,
       resetAll,
     }),
