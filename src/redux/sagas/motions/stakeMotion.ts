@@ -170,6 +170,20 @@ function* stakeMotion({
       yield takeFrom(annotateStaking.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
+    if (activateTokens) {
+      yield put(transactionPending(approve.id));
+
+      yield initiateTransaction({ id: approve.id });
+
+      yield waitForTxResult(approve.channel);
+
+      yield put(transactionPending(deposit.id));
+
+      yield initiateTransaction({ id: deposit.id });
+
+      yield waitForTxResult(deposit.channel);
+    }
+
     yield put(transactionPending(approveStake.id));
 
     const { domainId, rootHash } = yield call(
@@ -184,16 +198,6 @@ function* stakeMotion({
         amount,
       ]),
     );
-
-    if (activateTokens) {
-      yield initiateTransaction({ id: approve.id });
-
-      yield waitForTxResult(approve.channel);
-
-      yield initiateTransaction({ id: deposit.id });
-
-      yield waitForTxResult(deposit.channel);
-    }
 
     yield initiateTransaction({ id: approveStake.id });
 
