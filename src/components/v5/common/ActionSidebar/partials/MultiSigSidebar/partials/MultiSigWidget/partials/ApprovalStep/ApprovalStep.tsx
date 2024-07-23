@@ -28,7 +28,11 @@ import VoteButton from '../../../VoteButton/VoteButton.tsx';
 import { VoteExpectedStep } from '../../types.ts';
 import {
   getAllUserSignatures,
+  getIsMultiSigCancelable,
+  getIsMultiSigExecutable,
   getNotSignedUsers,
+  getNumberOfApprovals,
+  getNumberOfRejections,
   getSignaturesPerRole,
   hasWeekPassed,
 } from '../../utils.ts';
@@ -192,31 +196,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
         0,
       )
     : 0;
-
   const { approvalsPerRole, rejectionsPerRole } =
     getSignaturesPerRole(signatures);
-
-  const isMultiSigExecutable =
-    Object.keys(approvalsPerRole).length > 0 &&
-    Object.keys(approvalsPerRole).every((role) => {
-      const approvals = approvalsPerRole[role]?.length || 0;
-      if (!thresholdPerRole || !thresholdPerRole[role]) {
-        return false;
-      }
-      const roleThreshold = thresholdPerRole[role];
-      return approvals >= roleThreshold;
-    });
-
-  const isMultiSigCancelable =
-    Object.keys(rejectionsPerRole).length > 0 &&
-    Object.keys(rejectionsPerRole).every((role) => {
-      const rejections = rejectionsPerRole[role]?.length || 0;
-      if (!thresholdPerRole) {
-        return false;
-      }
-      const roleThreshold = thresholdPerRole[role] || 0;
-      return rejections >= roleThreshold;
-    });
 
   const canUserSign = user?.walletAddress
     ? !!uniqueEligibleSignees[user.walletAddress]
@@ -228,24 +209,22 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     (signature) => signature.vote === MultiSigVote.Reject,
   );
 
-  const combinedApprovals = Object.entries(approvalsPerRole).reduce(
-    (approvalCount, [role, approvalsForRole]) => {
-      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
-      return (
-        approvalCount + Math.min(approvalsForRole.length, thresholdForRole)
-      );
-    },
-    0,
+  const numberOfApprovals = getNumberOfApprovals(
+    approvalsPerRole,
+    thresholdPerRole,
+  );
+  const numberOfRejections = getNumberOfRejections(
+    rejectionsPerRole,
+    thresholdPerRole,
   );
 
-  const combinedRejections = Object.entries(rejectionsPerRole).reduce(
-    (rejectionCount, [role, rejectionsForRole]) => {
-      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
-      return (
-        rejectionCount + Math.min(rejectionsForRole.length, thresholdForRole)
-      );
-    },
-    0,
+  const isMultiSigExecutable = getIsMultiSigExecutable(
+    approvalsPerRole,
+    thresholdPerRole,
+  );
+  const isMultiSigCancelable = getIsMultiSigCancelable(
+    rejectionsPerRole,
+    thresholdPerRole,
   );
 
   const isMultiSigFinalizable = isMultiSigExecutable || isMultiSigCancelable;
@@ -274,11 +253,11 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.approvals)}</span>
                   )}
                   <ProgressBar
-                    progress={Math.min(combinedApprovals, threshold)}
+                    progress={Math.min(numberOfApprovals, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
                       threshold,
-                      progress: combinedApprovals,
+                      progress: numberOfApprovals,
                     })}
                     className="ml-[0.125rem] w-full !text-xs"
                     isTall
@@ -295,12 +274,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <span className="text-4">{formatText(MSG.rejections)}</span>
                   )}
                   <ProgressBar
-                    progress={Math.min(combinedRejections, threshold)}
+                    progress={Math.min(numberOfRejections, threshold)}
                     max={threshold}
                     progressLabel={formatText(MSG.additionalText, {
-                      current: combinedRejections,
+                      current: numberOfRejections,
                       threshold,
-                      progress: combinedRejections,
+                      progress: numberOfRejections,
                     })}
                     className="ml-[0.125rem] w-full !text-xs"
                     isTall
