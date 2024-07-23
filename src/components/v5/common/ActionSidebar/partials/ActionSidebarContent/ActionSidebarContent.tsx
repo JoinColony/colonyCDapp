@@ -74,16 +74,18 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  const hasEnoughMembersWithPermissions = useHasEnoughMembersWithPermissions({
-    decisionMethod: formValues[DECISION_METHOD_FIELD_NAME],
-    selectedAction: formValues[ACTION_TYPE_FIELD_NAME],
-    createdIn: formValues[CREATED_IN_FIELD_NAME],
-  });
+  const { hasEnoughMembersWithPermissions, isLoading } =
+    useHasEnoughMembersWithPermissions({
+      decisionMethod: formValues[DECISION_METHOD_FIELD_NAME],
+      selectedAction: formValues[ACTION_TYPE_FIELD_NAME],
+      createdIn: formValues[CREATED_IN_FIELD_NAME],
+    });
 
   const isSubmitDisabled =
     !selectedAction ||
     hasPermissions === false ||
     !hasEnoughMembersWithPermissions ||
+    isLoading ||
     hasNoDecisionMethods;
 
   const [isModalVisible, { toggleOn: showModal, toggleOff: hideModal }] =

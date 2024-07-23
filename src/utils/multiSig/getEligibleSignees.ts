@@ -7,11 +7,24 @@ import {
   type GetMultiSigRolesForDomainQuery,
   type GetMultiSigRolesForDomainQueryVariables,
   type ModelColonyRoleFilterInput,
+  type ColonyActionRoles,
 } from '~gql';
 import { type EligibleSignee } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 
-const COLONY_ROLE_TO_FILTER_KEY = {
+type MultiSigColonyRoles =
+  | ColonyRole.Recovery
+  | ColonyRole.Root
+  | ColonyRole.Arbitration
+  | ColonyRole.Architecture
+  | ColonyRole.Funding
+  | ColonyRole.Administration;
+
+const COLONY_ROLE_TO_FILTER_KEY: Record<
+  MultiSigColonyRoles,
+  keyof ColonyActionRoles
+> = {
+  [ColonyRole.Recovery]: 'role_0',
   [ColonyRole.Root]: 'role_1',
   [ColonyRole.Arbitration]: 'role_2',
   [ColonyRole.Architecture]: 'role_3',
