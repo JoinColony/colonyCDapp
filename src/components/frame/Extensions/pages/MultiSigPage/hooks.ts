@@ -44,16 +44,17 @@ export const useThresholdData = ({ extensionData }) => {
     setValue,
     getValues,
     trigger,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<MultiSigSetupFormValues>({
     defaultValues: {
       globalThreshold: getInitialGlobalThreshold(multiSigConfig),
+      colonyAddress,
     },
     mode: 'onChange',
   });
 
-  const { handleIsVisible, handleSetActionType, resetAll, callback } =
+  const { handleSetVisible, handleSetActionType, resetAll, callbackRef } =
     useContext(ExtensionSaveSettingsContext);
 
   const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
@@ -65,7 +66,7 @@ export const useThresholdData = ({ extensionData }) => {
   >([]);
 
   useEffect(() => {
-    handleIsVisible(true);
+    handleSetVisible(true);
     handleSetActionType(ActionTypes.MULTISIG_SET_THRESHOLDS);
 
     return () => {
@@ -74,10 +75,6 @@ export const useThresholdData = ({ extensionData }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    setValue('colonyAddress', colonyAddress);
-  }, [colonyAddress, setValue]);
 
   useEffect(() => {
     if (!domains || !domains.items || !multiSigConfig) {
@@ -103,27 +100,31 @@ export const useThresholdData = ({ extensionData }) => {
     setDomainThresholdConfigs(tempDomainThresholdConfigs);
   }, [domains, multiSigConfig, setValue]);
 
-  useImperativeHandle(callback, () => ({
-    getValues: async () => {
-      await trigger(undefined, { shouldFocus: true });
-      if (!isValid) throw new Error('Error within form');
+  useImperativeHandle(
+    callbackRef,
+    () => ({
+      getValues: async () => {
+        const isValid = await trigger(undefined, { shouldFocus: true });
+        if (!isValid) throw new Error('Error within form');
 
-      const values = getValues();
+        const values = getValues();
 
-      return {
-        colonyAddress,
-        globalThreshold:
-          thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-            ? 0
-            : values.globalThreshold,
-        domainThresholds: getDomainThresholds(
-          values,
-          domainThresholdConfigs,
-          thresholdType,
-        ),
-      };
-    },
-  }));
+        return {
+          colonyAddress,
+          globalThreshold:
+            thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+              ? 0
+              : values.globalThreshold,
+          domainThresholds: getDomainThresholds(
+            values,
+            domainThresholdConfigs,
+            thresholdType,
+          ),
+        };
+      },
+    }),
+    [trigger, getValues, thresholdType, domainThresholdConfigs, colonyAddress],
+  );
 
   const handleGlobalThresholdTypeChange = (
     newThresholdType: MultiSigThresholdType,

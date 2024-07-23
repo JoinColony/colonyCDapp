@@ -1,5 +1,4 @@
 import { ColonyRole, Extension, Id } from '@colony/colony-js';
-import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,9 +15,10 @@ import {
 } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
 
 import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton.tsx';
+
+import { ButtonWithLoader } from './ButtonWithLoader.tsx';
 
 interface EnableButtonProps {
   userHasRoot: boolean;
@@ -91,22 +91,15 @@ const EnableButton = ({
       );
     }
 
-    return isSubmitting || waitingForEnableConfirmation ? (
-      <TxButton
-        rounded="s"
+    return (
+      <ButtonWithLoader
+        type="submit"
+        disabled={!isValid}
         isFullSize={isMobile}
-        text={{ id: 'button.pending' }}
-        icon={
-          <span className="ml-2 flex shrink-0">
-            <SpinnerGap size={18} className="animate-spin" />
-          </span>
-        }
-        className="!px-4 !text-md"
-      />
-    ) : (
-      <Button type="submit" disabled={!isValid} isFullSize={isMobile}>
+        isLoading={isSubmitting || waitingForEnableConfirmation}
+      >
         {formatText({ id: 'button.enable' })}
-      </Button>
+      </ButtonWithLoader>
     );
   }
 
