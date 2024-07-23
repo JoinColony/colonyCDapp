@@ -14,7 +14,11 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
-import { getSignaturesPerRole } from './utils.ts';
+import {
+  getIsMultiSigCancelable,
+  getIsMultiSigExecutable,
+  getSignaturesPerRole,
+} from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -56,37 +60,17 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   const { approvalsPerRole, rejectionsPerRole } =
     getSignaturesPerRole(signatures);
 
-  const isMultiSigFinalizable =
-    Object.keys(approvalsPerRole).length > 0 &&
-    Object.keys(approvalsPerRole).every((role) => {
-      const approvals = approvalsPerRole[role]?.length || 0;
-      if (!thresholdPerRole || !thresholdPerRole[role]) {
-        return false;
-      }
-      const threshold = thresholdPerRole[role];
-      return approvals >= threshold;
-    });
-
-  const isMultiSigCancelable =
-    Object.keys(rejectionsPerRole).length > 0 &&
-    Object.keys(rejectionsPerRole).every((role) => {
-      const rejections = rejectionsPerRole[role]?.length || 0;
-      if (!thresholdPerRole) {
-        return false;
-      }
-      const threshold = thresholdPerRole[role] || 0;
-      return rejections >= threshold;
-    });
+  const isMultiSigExecutable = getIsMultiSigExecutable(
+    approvalsPerRole,
+    thresholdPerRole,
+  );
+  const isMultiSigCancelable = getIsMultiSigCancelable(
+    rejectionsPerRole,
+    thresholdPerRole,
+  );
 
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigExecuted = multiSigData.isExecuted;
-
-  const combinedThreshold = thresholdPerRole
-    ? Object.values(thresholdPerRole).reduce(
-        (acc, threshold) => acc + threshold,
-        0,
-      )
-    : 0;
 
   const items = useMemo(() => {
     if (isLoading) {
@@ -112,10 +96,8 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
         key: MultiSigState.Finalize,
         content: (
           <FinalizeStep
-            threshold={combinedThreshold || 0}
+            thresholdPerRole={thresholdPerRole}
             multiSigData={multiSigData}
-            isMultiSigFinalizable={isMultiSigFinalizable}
-            isMultiSigCancelable={isMultiSigCancelable}
             // initiatorAddress={initiatorAddress}
             action={action}
             createdAt={multiSigData.createdAt}
@@ -126,16 +108,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
         },
       },
     ];
-  }, [
-    isLoading,
-    thresholdPerRole,
-    multiSigData,
-    actionType,
-    action,
-    combinedThreshold,
-    isMultiSigFinalizable,
-    isMultiSigCancelable,
-  ]);
+  }, [isLoading, thresholdPerRole, multiSigData, actionType, action]);
 
   const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(
     MultiSigState.Approval,
@@ -143,7 +116,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
 
   useEffect(() => {
     if (
-      isMultiSigFinalizable ||
+      isMultiSigExecutable ||
       isMultiSigCancelable ||
       isMultiSigExecuted ||
       isMultiSigRejected
@@ -151,7 +124,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
       setActiveStepKey(MultiSigState.Finalize);
     }
   }, [
-    isMultiSigFinalizable,
+    isMultiSigExecutable,
     isMultiSigRejected,
     isMultiSigExecuted,
     isMultiSigCancelable,
