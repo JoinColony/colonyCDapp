@@ -21,7 +21,7 @@ import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 
-export enum EXTENSION_TAB_ID {
+export enum ExtensionTabId {
   OVERVIEW = 0,
   SETTINGS = 1,
 }
@@ -220,13 +220,13 @@ export const getExtensionTabs = (
     case Extension.MultisigPermissions: {
       if (isInstalled) {
         return [
-          { id: EXTENSION_TAB_ID.OVERVIEW, title: 'Overview' },
-          { id: EXTENSION_TAB_ID.SETTINGS, title: 'Extension settings' },
+          { id: ExtensionTabId.OVERVIEW, title: 'Overview' },
+          { id: ExtensionTabId.SETTINGS, title: 'Extension settings' },
         ];
       }
     }
     default:
-      return [{ id: EXTENSION_TAB_ID.OVERVIEW, title: 'Overview' }];
+      return [{ id: ExtensionTabId.OVERVIEW, title: 'Overview' }];
   }
   /* eslint-enable no-fallthrough */
 };
