@@ -25,7 +25,7 @@ cd $AMPLIFY_DIR
 amplify pull --appId $AMPLIFY_APP_ID --envName $AMPLIFY_ENV_NAME --yes
 
 # Define the resource folders we want to update
-RESOURCE_FOLDERS=("api" "function" "custom" "types")
+RESOURCE_FOLDERS=("api" "function" "types")
 
 # Remove existing resource folders in the pulled amplify/backend directory
 for folder in "${RESOURCE_FOLDERS[@]}"; do
