@@ -1,6 +1,6 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole, Extension, Id } from '@colony/colony-js';
 import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -37,12 +37,13 @@ interface Props {
 }
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
+  const shouldDisplay =
+    extensionData.extensionId !== Extension.MultisigPermissions;
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { checkExtensionEnabled } = useCheckExtensionEnabled(
     extensionData.extensionId ?? '',
   );
-
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
   const userHasRoles = addressHasRoles({
     requiredRolesDomain: Id.RootDomain,
@@ -57,18 +58,32 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
   });
 
+  const enableAndCheckStatus = async () => {
+    await asyncFunction({
+      colonyAddress: colony.colonyAddress,
+      extensionData,
+    });
+    await checkExtensionEnabled();
+  };
+
   const handleEnableClick = async () => {
     try {
-      await asyncFunction({
-        colonyAddress: colony.colonyAddress,
-        extensionData,
-      });
-      await checkExtensionEnabled();
+      await enableAndCheckStatus();
       setIsPermissionEnabled(true);
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    if (extensionData.extensionId === Extension.MultisigPermissions) {
+      if (colony.colonyAddress) {
+        // Enable Extension.MultisigPermissions by default
+        enableAndCheckStatus();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [extensionData.extensionId, colony.colonyAddress]);
 
   const getBanner = () => {
     if (isPermissionEnabled) {
@@ -96,7 +111,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     );
   };
 
-  return <div className="mb-6">{getBanner()}</div>;
+  return shouldDisplay ? <div className="mb-6">{getBanner()}</div> : null;
 };
 
 PermissionsNeededBanner.displayName = displayName;
