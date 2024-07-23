@@ -105,7 +105,8 @@ export const useThresholdData = ({ extensionData }) => {
     () => ({
       getValues: async () => {
         const isValid = await trigger(undefined, { shouldFocus: true });
-        if (!isValid) throw new Error('Error within form');
+        if (!isValid)
+          throw new Error('Error in MultiSig extension domain threshold form');
 
         const values = getValues();
 
