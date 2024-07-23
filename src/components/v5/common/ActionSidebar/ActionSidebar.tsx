@@ -6,13 +6,11 @@ import {
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { type FC, type PropsWithChildren, useLayoutEffect } from 'react';
+import React, { useCallback, type FC, type PropsWithChildren } from 'react';
 
-import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -34,14 +32,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
   } = useActionSidebarContext();
-  const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
-    useToggle();
 
-  useLayoutEffect(() => {
-    if (localStorage.getItem(isFullScreen) === 'true') {
-      toggleOn();
-    }
-  }, [toggleOn]);
+  const [isSidebarFullscreen, setIsSidebarFullscreen] =
+    React.useState<boolean>(false);
+  const toggleSidebarFullscreen = useCallback(() => {
+    setIsSidebarFullscreen(!isSidebarFullscreen);
+  }, [isSidebarFullscreen]);
 
   const isMobile = useMobile();
 
@@ -105,7 +101,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   <button
                     type="button"
                     className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                    onClick={toggleIsSidebarFullscreen}
+                    onClick={toggleSidebarFullscreen}
                     aria-label={formatText({ id: 'ariaLabel.fullWidth' })}
                   >
                     {isSidebarFullscreen ? (
