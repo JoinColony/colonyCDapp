@@ -556,14 +556,18 @@ export type ColonyAction = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   /**
    * Changes to the streaming payment associated with the action, if any
    * Applicable to `EDIT_STREAMING_PAYMENT` action only
    */
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -583,6 +587,9 @@ export type ColonyAction = {
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
 =======
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+  streamingPaymentChanges?: Maybe<StreamingPaymentChangeSet>;
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   /** ID of the associated streaming payment, if any */
   streamingPaymentId?: Maybe<Scalars['ID']>;
   /** The target Domain of the action, if applicable */
@@ -1649,6 +1656,7 @@ export type CreateColonyActionInput = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 =======
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
@@ -1667,6 +1675,9 @@ export type CreateColonyActionInput = {
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
 =======
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+  streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -2109,7 +2120,6 @@ export type CreateStreamingPaymentInput = {
 =======
 >>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   amount: Scalars['String'];
-  changelog?: InputMaybe<Array<StreamingPaymentChangelogInput>>;
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId: Scalars['ID'];
 =======
@@ -9098,8 +9108,6 @@ export type StreamingPayment = {
 =======
 >>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   amount: Scalars['String'];
-  /** List of Streaming Payment changelog entries */
-  changelog?: Maybe<Array<StreamingPaymentChangelog>>;
   claims?: Maybe<Array<StreamingPaymentClaim>>;
   /** The Colony to which the expenditure belongs */
   colony: Colony;
@@ -9197,6 +9205,7 @@ export type StreamingPaymentMotionsArgs = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type StreamingPaymentChangeSet = {
   __typename?: 'StreamingPaymentChangeSet';
 =======
@@ -9211,6 +9220,10 @@ export type StreamingPaymentChangeSet = {
 export type StreamingPaymentChangelog = {
   __typename?: 'StreamingPaymentChangelog';
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+export type StreamingPaymentChangeSet = {
+  __typename?: 'StreamingPaymentChangeSet';
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   /** The values before the change */
   newValues: StreamingPaymentChanges;
   /** The values before the change */
@@ -9218,8 +9231,11 @@ export type StreamingPaymentChangelog = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 };
 
 export type StreamingPaymentChangeSetInput = {
@@ -10593,6 +10609,7 @@ export type UpdateColonyActionInput = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
 =======
 >>>>>>> ce1397c62 (Feat: Cancel streams using permissions)
@@ -10611,6 +10628,9 @@ export type UpdateColonyActionInput = {
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
 =======
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+  streamingPaymentChanges?: InputMaybe<StreamingPaymentChangeSetInput>;
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   streamingPaymentId?: InputMaybe<Scalars['ID']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
@@ -11059,7 +11079,6 @@ export type UpdateStreamingPaymentInput = {
 =======
 >>>>>>> 819abc5af (Schema update: adjust streaming payment model for a single token)
   amount?: InputMaybe<Scalars['String']>;
-  changelog?: InputMaybe<Array<StreamingPaymentChangelogInput>>;
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
 =======
@@ -11550,7 +11569,7 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null, changelog?: Array<{ __typename?: 'StreamingPaymentChangelog', transactionHash: string, oldValues: { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string }, newValues: { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string } }> | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null };
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
@@ -12107,6 +12126,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
 
 export type GetStreamingPaymentQueryVariables = Exact<{
@@ -12139,6 +12159,9 @@ export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayme
 =======
 export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null, changelog?: Array<{ __typename?: 'StreamingPaymentChangelog', transactionHash: string, oldValues: { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string }, newValues: { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string } }> | null } | null };
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -13545,14 +13568,6 @@ export const UserStakeFragmentDoc = gql`
   type
 }
     ${ColonyActionFragmentDoc}`;
-export const StreamingPaymentChangesFragmentDoc = gql`
-    fragment StreamingPaymentChanges on StreamingPaymentChanges {
-  startTime
-  endTime
-  interval
-  amount
-}
-    `;
 export const StreamingPaymentFragmentDoc = gql`
     fragment StreamingPayment on StreamingPayment {
   id
@@ -13668,16 +13683,8 @@ export const StreamingPaymentChangesFragmentDoc = gql`
     amount
     timestamp
   }
-  changelog {
-    transactionHash
-    oldValues {
-      ...StreamingPaymentChanges
-    }
-    newValues {
-      ...StreamingPaymentChanges
-    }
-  }
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -13693,6 +13700,17 @@ export const StreamingPaymentChangesFragmentDoc = gql`
     ${TokenFragmentDoc}
 ${StreamingPaymentChangesFragmentDoc}`;
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+    ${TokenFragmentDoc}`;
+export const StreamingPaymentChangesFragmentDoc = gql`
+    fragment StreamingPaymentChanges on StreamingPaymentChanges {
+  startTime
+  endTime
+  interval
+  amount
+}
+    `;
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 export const UserTokenBalanceDataFragmentDoc = gql`
     fragment UserTokenBalanceData on GetUserTokenBalanceReturn {
   balance

@@ -3606,10 +3606,13 @@ type ColonyAction @model @searchable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   """
   Changes to the streaming payment associated with the action, if any
   Applicable to `EDIT_STREAMING_PAYMENT` action only
@@ -3617,8 +3620,11 @@ type ColonyAction @model @searchable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   streamingPaymentChanges: StreamingPaymentChangeSet
 }
 
@@ -3630,6 +3636,7 @@ type StreamingPaymentChangeSet {
   """
   The values before the change
   """
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -3645,6 +3652,8 @@ type FullStreamingPaymentChanges {
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 =======
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   newValues: StreamingPaymentChanges!
 }
 
@@ -3652,12 +3661,16 @@ type StreamingPaymentChanges {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 28c6dff03 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
   startTime: String!
   endTime: String!
   interval: String!
   amount: String!
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -3676,6 +3689,8 @@ type StreamingPaymentChanges {
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
 =======
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 }
 
 """
@@ -4205,6 +4220,7 @@ type StreamingPayment @model @searchable {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   """
   Address of the stream creator, can be a user or an extension
   """
@@ -4248,6 +4264,8 @@ type StreamingPaymentChanges {
 >>>>>>> adad6bd8a (Feat: Edit streams using motions)
 =======
 >>>>>>> 53ad3f4f6 (Feat: Add changelog to streaming payment and streaming payment metadata)
+=======
+>>>>>>> 39a7fd207 (Fix: Store streaming payment changes on colony action, and tidy up editStreamingPaymentMotion saga)
 }
 
 type StreamingPaymentMetadata @model {

@@ -31,15 +31,6 @@ fragment StreamingPayment on StreamingPayment {
     timestamp
     tokenAddress
   }
-  changelog {
-    transactionHash
-    oldValues {
-      ...StreamingPaymentChanges
-    }
-    newValues {
-      ...StreamingPaymentChanges
-    }
-  }
 }
 
 fragment StreamingPaymentChanges on StreamingPaymentChanges {
