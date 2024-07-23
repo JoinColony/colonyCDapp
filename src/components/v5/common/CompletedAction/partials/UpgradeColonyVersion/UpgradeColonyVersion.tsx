@@ -11,6 +11,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -42,7 +43,13 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={action.transactionHash}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           newVersion: newColonyVersion,

@@ -2,18 +2,27 @@ import { CoinVertical } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
-import MultiSigMeatballMenu from '../MultiSigMeatballMenu/MultiSigMeatballMenu.tsx';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -40,33 +49,42 @@ const MSG = defineMessages({
 });
 
 const UnlockToken = ({ action }: UnlockTokenProps) => {
-  const { user } = useAppContext();
+  const decisionMethod = useDecisionMethod(action);
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { name, symbol } = nativeToken;
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
+    annotation,
     initiatorUser,
+    isMotion,
+    motionData,
     isMultiSig,
     multiSigData,
     transactionHash,
+    token,
     type: actionType,
   } = action;
 
-  const isOwner = initiatorUser?.walletAddress === user?.walletAddress;
+  const metadata =
+    motionData?.motionDomain.metadata ?? multiSigData?.multiSigDomain.metadata;
 
   return (
     <>
       <div className="flex items-center justify-between gap-2">
         <ActionTitle>{customTitle}</ActionTitle>
-        {isMultiSig && multiSigData && (
-          <MultiSigMeatballMenu
-            transactionHash={transactionHash}
-            multiSigData={multiSigData}
-            isOwner={isOwner}
-            actionType={actionType}
-          />
-        )}
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+            [TOKEN_FIELD_NAME]: token?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
       </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
@@ -82,7 +100,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow actionType={actionType} />
 
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.token' })}
@@ -91,18 +109,14 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
         />
 
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={isMotion || false}
+          isMultisig={isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {annotation?.message && (
+        <DescriptionRow description={annotation.message} />
       )}
     </>
   );
