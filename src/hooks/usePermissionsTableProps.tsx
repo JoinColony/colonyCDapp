@@ -14,6 +14,7 @@ import { type PermissionsTableModel } from '~types/permissions.ts';
 import { tw } from '~utils/css/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import { getPermissionName } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/PermissionsBadge.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import { type TableProps } from '~v5/common/Table/types.ts';
@@ -21,7 +22,7 @@ import { type TableProps } from '~v5/common/Table/types.ts';
 const permissionsColumnHelper = createColumnHelper<PermissionsTableModel>();
 
 export const usePermissionsTableProps = ({
-  roles,
+  dbPermissionsForDomain,
   formRole,
   isCompletedAction,
   dbRoleForDomain,
@@ -30,13 +31,13 @@ export const usePermissionsTableProps = ({
   formRole: ManagePermissionsFormValues['role'];
   dbRoleForDomain: ManagePermissionsFormValues['_dbRoleForDomain'];
   isCompletedAction?: boolean;
-  roles: ColonyRole[] | undefined;
+  dbPermissionsForDomain: ColonyRole[] | undefined;
   isRemovePermissionsAction: boolean;
 }): TableProps<PermissionsTableModel> => {
   return useMemo(() => {
     const tableClassName = tw`[&_th]:h-[2.625rem] [&_th]:py-1`;
 
-    return roles &&
+    return dbPermissionsForDomain &&
       formRole &&
       (formRole !== UserRole.Custom || isRemovePermissionsAction)
       ? {
@@ -45,7 +46,7 @@ export const usePermissionsTableProps = ({
             {
               key: Date.now(),
               permissions: isRemovePermissionsAction
-                ? roles?.map((role) => formatText({ id: `role.${role}` }))
+                ? dbPermissionsForDomain?.map(getPermissionName)
                 : PERMISSIONS_TABLE_CONTENT[formRole].permissions,
             },
           ],
@@ -171,7 +172,7 @@ export const usePermissionsTableProps = ({
     formRole,
     isCompletedAction,
     isRemovePermissionsAction,
-    roles,
+    dbPermissionsForDomain,
     dbRoleForDomain,
   ]);
 };

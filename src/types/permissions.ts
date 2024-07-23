@@ -8,6 +8,7 @@ export interface PermissionsTableProps {
   formRole: ManagePermissionsFormValues['role'];
   dbRoleForDomain: ManagePermissionsFormValues['_dbRoleForDomain'];
   dbPermissionsForDomain: ManagePermissionsFormValues['_dbPermissionsForDomain'];
+  dbInheritedPermissions: ManagePermissionsFormValues['_dbInheritedPermissions'];
 }
 
 export interface PermissionsTableModel {

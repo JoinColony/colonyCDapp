@@ -29,7 +29,7 @@ import {
   UserRoleModifier,
   type ManagePermissionsFormValues,
 } from './consts.ts';
-import { useManagePermissions } from './hooks.ts';
+import { useManagePermissionsForm } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
 import PermissionsRemovalModal from './partials/PermissionsRemovalModal/PermissionsRemovalModal.tsx';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
@@ -56,7 +56,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     },
     showPermissionsRemovalWarning,
     setShowPermissionsRemovalWarning,
-  } = useManagePermissions(getFormOptions);
+  } = useManagePermissionsForm(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [
     isPermissionsModalOpen,
@@ -243,6 +243,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           dbRoleForDomain={dbRoleForDomain}
           dbPermissionsForDomain={dbPermissionsForDomain}
           formRole={role}
+          dbInheritedPermissions={dbInheritedPermissions}
         />
       )}
       <PermissionsRemovalModal

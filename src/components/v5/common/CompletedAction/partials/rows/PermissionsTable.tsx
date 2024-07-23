@@ -18,33 +18,35 @@ import { getCustomPermissionsTableColumns } from './utils.tsx';
 const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
 interface Props {
-  dbRoleForDomain: UserRole;
+  dbRoleForDomainNew: UserRole;
   domainId: number | undefined;
-  dbPermissionsForDomain: ColonyRole[];
-  oldDbPermissionsForDomain?: ColonyRole[];
+  dbPermissionsNew: ColonyRole[];
+  dbPermissionsOld?: ColonyRole[];
+  dbRoleForDomainOld?: UserRole;
 }
 
 const PermissionsTable = ({
-  dbRoleForDomain,
+  dbRoleForDomainNew,
   domainId,
-  dbPermissionsForDomain,
-  oldDbPermissionsForDomain,
+  dbPermissionsNew,
+  dbPermissionsOld,
+  dbRoleForDomainOld,
 }: Props) => {
   const isMobile = useMobile();
   const customPermissionsTableColumns = getCustomPermissionsTableColumns(
-    dbPermissionsForDomain,
+    dbPermissionsNew,
     isMobile,
   );
 
-  const formRole = dbPermissionsForDomain?.length
-    ? dbRoleForDomain
+  const formRole = dbPermissionsNew?.length
+    ? dbRoleForDomainNew
     : UserRoleModifier.Remove;
 
   const permissionsTableProps = usePermissionsTableProps({
     formRole,
-    dbRoleForDomain,
+    dbRoleForDomain: dbRoleForDomainOld,
     isCompletedAction: true,
-    roles: oldDbPermissionsForDomain,
+    dbPermissionsForDomain: dbPermissionsOld,
     isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
   });
 
