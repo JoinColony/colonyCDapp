@@ -42,10 +42,10 @@ export const useEligibleSignees = ({
           domainId,
         });
         setSigneesResult(response);
-        setIsLoading(false);
       } catch (error) {
         console.warn('Error while fetching eligible signees', error);
         setIsError(true);
+      } finally {
         setIsLoading(false);
       }
     }

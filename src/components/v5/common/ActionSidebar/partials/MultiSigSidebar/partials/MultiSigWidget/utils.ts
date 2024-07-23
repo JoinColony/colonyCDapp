@@ -3,7 +3,7 @@ import { isBefore, parseISO, subWeeks } from 'date-fns';
 
 import { MultiSigVote } from '~gql';
 import { type MultiSigUserSignature } from '~types/graphql.ts';
-import { type EligibleSignee } from '~types/multiSig.ts';
+import { type Threshold, type EligibleSignee } from '~types/multiSig.ts';
 
 import { type MultiSigSignee } from './types.ts';
 
@@ -110,4 +110,74 @@ export const getSignaturesPerRole = (
   });
 
   return { approvalsPerRole, rejectionsPerRole };
+};
+
+export const getNumberOfApprovals = (
+  approvalsPerRole: Record<number, MultiSigUserSignature[]>,
+  thresholdPerRole: Threshold,
+): number => {
+  const combinedApprovals = Object.entries(approvalsPerRole).reduce(
+    (approvalCount, [role, approvalsForRole]) => {
+      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+      return (
+        approvalCount + Math.min(approvalsForRole.length, thresholdForRole)
+      );
+    },
+    0,
+  );
+
+  return combinedApprovals;
+};
+
+export const getNumberOfRejections = (
+  rejectionsPerRole: Record<number, MultiSigUserSignature[]>,
+  thresholdPerRole: Threshold,
+): number => {
+  const combinedRejections = Object.entries(rejectionsPerRole).reduce(
+    (rejectionCount, [role, rejectionsForRole]) => {
+      const thresholdForRole = thresholdPerRole ? thresholdPerRole[role] : 0;
+      return (
+        rejectionCount + Math.min(rejectionsForRole.length, thresholdForRole)
+      );
+    },
+    0,
+  );
+
+  return combinedRejections;
+};
+
+export const getIsMultiSigExecutable = (
+  approvalsPerRole: Record<number, MultiSigUserSignature[]>,
+  thresholdPerRole: Threshold,
+): boolean => {
+  const isMultiSigExecutable =
+    Object.keys(approvalsPerRole).length > 0 &&
+    Object.keys(approvalsPerRole).every((role) => {
+      const approvals = approvalsPerRole[role]?.length || 0;
+      if (!thresholdPerRole || !thresholdPerRole[role]) {
+        return false;
+      }
+      const roleThreshold = thresholdPerRole[role];
+      return approvals >= roleThreshold;
+    });
+
+  return isMultiSigExecutable;
+};
+
+export const getIsMultiSigCancelable = (
+  rejectionsPerRole: Record<number, MultiSigUserSignature[]>,
+  thresholdPerRole: Threshold,
+): boolean => {
+  const isMultiSigCancelable =
+    Object.keys(rejectionsPerRole).length > 0 &&
+    Object.keys(rejectionsPerRole).every((role) => {
+      const rejections = rejectionsPerRole[role]?.length || 0;
+      if (!thresholdPerRole) {
+        return false;
+      }
+      const roleThreshold = thresholdPerRole[role] || 0;
+      return rejections >= roleThreshold;
+    });
+
+  return isMultiSigCancelable;
 };
