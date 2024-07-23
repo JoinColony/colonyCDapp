@@ -4,6 +4,7 @@ import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useMobile, useTablet } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
@@ -12,6 +13,7 @@ import { type StagedPaymentRecipientsFieldModel } from '~v5/common/ActionSidebar
 import Table from '~v5/common/Table/Table.tsx';
 
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
+import { type MilestoneItem } from '../StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
 
 import ReleaseAllButton from './partials/ReleaseAllButton/ReleaseAllButton.tsx';
 import { type StagedPaymentTableProps } from './types.ts';
@@ -26,13 +28,15 @@ const MSG = defineMessages({
 });
 
 const useStagedPaymentTableColumns = (
-  data: StagedPaymentRecipientsFieldModel[],
+  data: MilestoneItem[],
   isReleaseStep?: boolean,
   isLoading?: boolean,
 ) => {
   const hasMoreThanOneToken = data.length > 1;
   const dataRef = useWrapWithRef(data);
   const isMobile = useMobile();
+  const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
+    usePaymentBuilderContext();
 
   const columns: ColumnDef<StagedPaymentRecipientsFieldModel, string>[] =
     useMemo(() => {
@@ -92,7 +96,7 @@ const useStagedPaymentTableColumns = (
                     buttonClassName="justify-end md:justify-start"
                   />
                   {isMobile && isReleaseStep && dataRef.current.length > 1 && (
-                    <ReleaseAllButton />
+                    <ReleaseAllButton items={dataRef.current} />
                   )}
                 </>
               )
@@ -104,24 +108,45 @@ const useStagedPaymentTableColumns = (
                 id: 'release',
                 staticSize: '90px',
                 enableSorting: false,
-                cell: ({ row }) => (
-                  <button
-                    key={row.id}
-                    type="button"
-                    className="w-full text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
-                  >
-                    {formatText(MSG.release)}
-                  </button>
-                ),
+                cell: ({ row }) => {
+                  const { original } = row;
+                  const currentMilestone = dataRef.current.find(
+                    (item) => item.id === original.id,
+                  );
+
+                  return (
+                    <button
+                      key={row.id}
+                      type="button"
+                      className="w-full text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
+                      onClick={() => {
+                        if (!currentMilestone) return;
+
+                        setSelectedMilestones([currentMilestone]);
+                        showModal();
+                      }}
+                    >
+                      {formatText(MSG.release)}
+                    </button>
+                  );
+                },
                 footer:
                   !isMobile && dataRef.current.length > 1
-                    ? () => <ReleaseAllButton />
+                    ? () => <ReleaseAllButton items={dataRef.current} />
                     : undefined,
               }),
             ]
           : []),
       ];
-    }, [dataRef, hasMoreThanOneToken, isReleaseStep, isMobile, isLoading]);
+    }, [
+      hasMoreThanOneToken,
+      isReleaseStep,
+      isMobile,
+      dataRef,
+      isLoading,
+      setSelectedMilestones,
+      showModal,
+    ]);
 
   return columns;
 };
@@ -133,17 +158,20 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
   isLoading,
 }) => {
   const isTablet = useTablet();
-  const data = useMemo(
+  const data: MilestoneItem[] = useMemo(
     () =>
       stages.map((item) => {
         const payout = (slots || []).find((slot) => slot.id === item.slotId);
         const amount = payout?.payouts?.[0].amount;
         const tokenAddress = payout?.payouts?.[0].tokenAddress;
+        const isReleased = payout?.payouts?.[0].isClaimed;
 
         return {
           milestone: item.name,
           amount: amount || '0',
           tokenAddress: tokenAddress || ADDRESS_ZERO,
+          id: item.slotId,
+          isReleased: isReleased || false,
         };
       }),
     [stages, slots],
