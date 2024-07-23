@@ -24,6 +24,16 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
   );
 
   useEffect(() => {
+    if (!votingReputationAddress) {
+      const statesMap = new Map();
+      nativeMotionIds.forEach((nativeMotionId) => {
+        statesMap.set(nativeMotionId, null);
+      });
+      setMotionStatesMap(statesMap);
+    }
+  }, [nativeMotionIds, votingReputationAddress]);
+
+  useEffect(() => {
     const { ethersProvider } = wallet || {};
     if (
       skip ||
@@ -58,6 +68,7 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
           try {
             const motionState =
               await votingRepClient.getMotionState(nativeMotionId);
+
             statesMap.set(nativeMotionId, motionState);
           } catch {
             statesMap.set(nativeMotionId, null);

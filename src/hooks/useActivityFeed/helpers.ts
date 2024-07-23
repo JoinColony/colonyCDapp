@@ -3,6 +3,7 @@ import { isHexString } from 'ethers/lib/utils';
 import { ColonyActionType, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type AnyActionType } from '~types/actions.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
@@ -30,9 +31,13 @@ const getActivityFeedMotionState = (
 
   const networkMotionState = motionStatesMap.get(action.motionData.motionId);
 
-  return networkMotionState
+  if (networkMotionState === null) {
+    return MotionState.Uninstalled;
+  }
+
+  return networkMotionState !== undefined
     ? getMotionState(networkMotionState, action.motionData)
-    : undefined;
+    : MotionState.Invalid;
 };
 
 export const filterActionByMotionState = (
@@ -220,8 +225,37 @@ export const getActionsByPageNumber = (
 };
 
 export const makeWithMotionStateMapper =
-  (motionStatesMap: MotionStatesMap) =>
-  (action: ColonyAction): ActivityFeedColonyAction => ({
-    ...action,
-    motionState: getActivityFeedMotionState(action, motionStatesMap),
-  });
+  (
+    motionStatesMap: MotionStatesMap,
+    votingRepExtensionData: InstalledExtensionData | undefined,
+    multiSigExtensionData: InstalledExtensionData | undefined,
+  ) =>
+  (action: ColonyAction): ActivityFeedColonyAction => {
+    let motionState;
+    // If the action is multi sig, and the multi sig extension was uninstalled.
+    if (action.isMultiSig && !multiSigExtensionData) {
+      motionState = MotionState.Uninstalled;
+    }
+    // If the action is a motion, and the voting with reputation extension was uninstalled.
+    else if (action.isMotion && !votingRepExtensionData) {
+      motionState = MotionState.Uninstalled;
+    }
+
+    // If the action is a motion, but was created with an old uninstalled extension.
+    else if (
+      action.isMotion &&
+      action.motionData?.createdBy !== votingRepExtensionData?.address
+    ) {
+      motionState = MotionState.Uninstalled;
+    }
+
+    // Otherwise, get the state in a normal way.
+    else {
+      motionState = getActivityFeedMotionState(action, motionStatesMap);
+    }
+
+    return {
+      ...action,
+      motionState,
+    };
+  };
