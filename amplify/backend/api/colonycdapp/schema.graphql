@@ -1097,6 +1097,11 @@ type Profile @model {
   Is automatic offramp enabled
   """
   isAutoOfframpEnabled: Boolean
+  """
+  Whether the user has completed the Persona KYC Flow
+  Note: This doesn't indicate the outcome of the KYC check
+  """
+  hasCompletedKYCFlow: Boolean
 }
 
 """
