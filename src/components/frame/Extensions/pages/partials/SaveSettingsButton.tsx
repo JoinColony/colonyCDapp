@@ -12,7 +12,7 @@ const SaveSettingsButton = () => {
   );
 
   return isVisible && !!actionType ? (
-    <ActionButton actionType={actionType} values={handleGetValues}>
+    <ActionButton useTxLoader actionType={actionType} values={handleGetValues}>
       {formatText({ id: 'button.saveSettings' })}
     </ActionButton>
   ) : null;
