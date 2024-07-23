@@ -4,7 +4,6 @@ import {
   ColonyRole,
   getPermissionProofs,
   Id,
-  type AnyVotingReputationClient,
 } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
@@ -95,16 +94,6 @@ function* editStreamingPaymentMotion({
       throw new Error('Streaming payments extension cannot be found');
     }
 
-    const votingReputationClient: AnyVotingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
-      colonyAddress,
-    );
-
-    if (!votingReputationClient) {
-      throw new Error('Voting reputation extension cannot be found');
-    }
-
     const multicallData = yield getEditStreamingPaymentMulticallData({
       streamingPayment,
       colonyClient,
@@ -124,7 +113,7 @@ function* editStreamingPaymentMotion({
       colonyClient,
       streamingPayment.nativeDomainId,
       [ColonyRole.Funding, ColonyRole.Administration],
-      votingReputationClient.address,
+      votingReputationAddress,
     );
 
     const { skillId } = yield call(
@@ -162,11 +151,6 @@ function* editStreamingPaymentMotion({
           branchMask,
           siblings,
         ],
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 1,
-        },
       },
     });
 

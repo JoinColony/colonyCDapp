@@ -3605,19 +3605,25 @@ type ColonyAction @model @searchable {
   Changes to the streaming payment associated with the action, if any
   Applicable to `EDIT_STREAMING_PAYMENT` action only
   """
-  streamingPaymentChanges: FullStreamingPaymentChanges
+  streamingPaymentChanges: StreamingPaymentChangeSet
 }
 
-type FullStreamingPaymentChanges {
+type StreamingPaymentChangeSet {
+  """
+  The values before the change
+  """
   oldValues: StreamingPaymentChanges!
+  """
+  The values before the change
+  """
   newValues: StreamingPaymentChanges!
 }
 
 type StreamingPaymentChanges {
-  startTime: String
-  endTime: String
-  interval: String
-  amount: String
+  startTime: String!
+  endTime: String!
+  interval: String!
+  amount: String!
 }
 
 """

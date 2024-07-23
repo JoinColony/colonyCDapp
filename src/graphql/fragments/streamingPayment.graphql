@@ -19,3 +19,10 @@ fragment StreamingPayment on StreamingPayment {
     timestamp
   }
 }
+
+fragment StreamingPaymentChanges on StreamingPaymentChanges {
+  startTime
+  endTime
+  interval
+  amount
+}
