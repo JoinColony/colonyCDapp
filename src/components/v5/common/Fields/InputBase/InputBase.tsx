@@ -17,6 +17,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
       className,
       wrapperClassName,
       inputWrapperClassName,
+      labelClassName,
       state,
       message,
       prefix,
@@ -83,7 +84,10 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>
         <label
-          className="mb-1.5 text-md font-medium text-gray-700"
+          className={clsx(
+            labelClassName,
+            'mb-1.5 text-md font-medium text-gray-700',
+          )}
           htmlFor={id}
         >
           {label}

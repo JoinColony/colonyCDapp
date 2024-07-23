@@ -25,6 +25,7 @@ import {
   getColonyManager,
   getMultiPermissionProofs,
   createActionMetadataInDB,
+  adjustPayoutsAddresses,
 } from '../utils/index.ts';
 
 function* createPaymentAction({
@@ -42,7 +43,7 @@ function* createPaymentAction({
   let txChannel;
   try {
     const colonyManager: ColonyManager = yield getColonyManager();
-
+    const { network } = colonyManager.networkClient;
     /*
      * Validate the required values for the payment
      */
@@ -59,12 +60,13 @@ function* createPaymentAction({
       if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!payments.every(({ recipient }) => !!recipient)) {
+      if (!payments.every(({ recipientAddress }) => !!recipientAddress)) {
         throw new Error('Recipient not assigned for OneTxPayment transaction');
       }
     }
 
-    const sortedCombinedPayments = sortAndCombinePayments(payments);
+    const payouts = yield adjustPayoutsAddresses(payments, network);
+    const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(
       ({ tokenAddress }) => tokenAddress,
@@ -73,7 +75,7 @@ function* createPaymentAction({
     const amounts = sortedCombinedPayments.map(({ amount }) => amount);
 
     const recipientAddresses = sortedCombinedPayments.map(
-      ({ recipient }) => recipient,
+      ({ recipientAddress }) => recipientAddress,
     );
 
     txChannel = yield call(getTxChannel, metaId);
@@ -207,8 +209,8 @@ export default function* paymentActionSaga() {
 }
 
 function sortPayments(
-  { recipient: recipientA, tokenAddress: tokenA },
-  { recipient: recipientB, tokenAddress: tokenB },
+  { recipientAddress: recipientA, tokenAddress: tokenA },
+  { recipientAddress: recipientB, tokenAddress: tokenB },
 ) {
   if (recipientA < recipientB) {
     return -1;
@@ -238,24 +240,24 @@ function sortPayments(
 export function sortAndCombinePayments(
   payments: OneTxPaymentPayload['payments'],
 ): {
-  recipient: string;
+  recipientAddress: string;
   amount: BigNumber;
   tokenAddress: string;
 }[] {
   return payments.sort(sortPayments).reduce(
     (acc, payment) => {
-      const { recipient, tokenAddress, amount } = payment;
+      const { recipientAddress, tokenAddress, amount } = payment;
       const convertedAmount = BigNumber.from(amount);
 
       const {
-        recipient: prevRecipient,
+        recipientAddress: prevRecipient,
         tokenAddress: prevToken,
         amount: prevAmount,
       } = acc.at(-1) ?? {};
 
       const updatedAcc = [...acc, { ...payment, amount: convertedAmount }];
 
-      if (recipient !== prevRecipient || tokenAddress !== prevToken) {
+      if (recipientAddress !== prevRecipient || tokenAddress !== prevToken) {
         return updatedAcc;
       }
 
@@ -272,7 +274,7 @@ export function sortAndCombinePayments(
       ];
     },
     [] as {
-      recipient: string;
+      recipientAddress: string;
       amount: BigNumber;
       tokenAddress: string;
       decimals: number;

@@ -41,6 +41,7 @@ export const USER_HOME_ROUTE = '/account';
 export const USER_EDIT_PROFILE_ROUTE = 'profile';
 export const USER_ADVANCED_ROUTE = 'advanced';
 export const USER_PREFERENCES_ROUTE = 'preferences';
+export const USER_CRYPTO_TO_FIAT_ROUTE = 'crypto-to-fiat';
 
 // UNUSED?
 export const COLONY_EVENTS_ROUTE = `events`;
@@ -56,6 +57,7 @@ export const LANDING_PAGE_ROUTE = '/';
 
 export const TX_SEARCH_PARAM = 'tx';
 export const TEAM_SEARCH_PARAM = 'team';
+export const CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM = 'verification';
 
 // Note all base routes begin with a '/'
 

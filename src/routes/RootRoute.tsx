@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
+import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import PageThemeContextProvider from '~context/PageThemeContext/PageThemeContextProvider.tsx';
@@ -27,9 +28,11 @@ const RootRouteInner = () => {
 const RootRoute = () => (
   <PageThemeContextProvider>
     <AppContextProvider>
-      <CurrencyContextProvider>
-        <RootRouteInner />
-      </CurrencyContextProvider>
+      <FeatureFlagsContextProvider>
+        <CurrencyContextProvider>
+          <RootRouteInner />
+        </CurrencyContextProvider>
+      </FeatureFlagsContextProvider>
     </AppContextProvider>
   </PageThemeContextProvider>
 );

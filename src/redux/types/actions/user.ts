@@ -58,6 +58,20 @@ export type UserActionTypes =
       object
     >
   | UniqueActionType<
+      ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER,
+      { amount: number },
+      object
+    >
+  | ErrorActionType<ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER_SUCCESS,
+      {
+        tokenAddress: string;
+        amount: number;
+      },
+      object
+    >
+  | UniqueActionType<
       ActionTypes.USER_WITHDRAW_TOKEN,
       { colonyAddress: string; tokenAddress: string; amount: number },
       object

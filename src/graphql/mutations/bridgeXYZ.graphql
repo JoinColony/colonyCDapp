@@ -1,0 +1,79 @@
+mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
+  bridgeXYZMutation(input: $input) {
+    country
+    kyc_status
+    tos_link
+    kyc_link
+    success
+    bankAccount {
+      ...BridgeBankAccount
+    }
+  }
+}
+
+mutation CreateKYCLinks($fullName: String!, $email: String!) {
+  bridgeXYZMutation(
+    input: {
+      path: "v0/kyc_links"
+      body: { full_name: $fullName, email: $email }
+    }
+  ) {
+    success
+    tos_link
+    kyc_link
+  }
+}
+
+mutation UpdateBridgeCustomer(
+  $firstName: String!
+  $lastName: String!
+  $address: BridgeXYZMutationAddressInput
+  $birthDate: String!
+  $taxIdNumber: String!
+  $signedAgreementId: String!
+  $email: String!
+  $currency: String!
+  $iban: BridgeXYZMutationIbanInput
+) {
+  bridgeXYZMutation(
+    input: {
+      path: "v0/customers/{customerID}"
+      body: {
+        first_name: $firstName
+        last_name: $lastName
+        address: $address
+        birth_date: $birthDate
+        tax_identification_number: $taxIdNumber
+        signed_agreement_id: $signedAgreementId
+        email: $email
+        currency: $currency
+        iban: $iban
+      }
+    }
+  ) {
+    success
+  }
+}
+
+mutation CheckKYCStatus {
+  bridgeXYZMutation(input: { path: "v0/kyc_links/{kycLinkID}", body: {} }) {
+    kyc_status
+    kyc_link
+    country
+    bankAccount {
+      ...BridgeBankAccount
+    }
+  }
+}
+
+mutation CreateBankAccount($input: BridgeCreateBankAccountInput!) {
+  bridgeCreateBankAccount(input: $input) {
+    success
+  }
+}
+
+mutation UpdateBankAccount($input: BridgeUpdateBankAccountInput!) {
+  bridgeUpdateBankAccount(input: $input) {
+    success
+  }
+}

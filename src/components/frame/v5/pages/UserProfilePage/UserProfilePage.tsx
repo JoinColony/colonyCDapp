@@ -1,16 +1,14 @@
-import React, { type FC, useEffect, useState } from 'react';
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useResolvedPath,
-} from 'react-router-dom';
+import React, { type FC, useEffect } from 'react';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
 } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import {
+  USER_CRYPTO_TO_FIAT_ROUTE,
   USER_ADVANCED_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   USER_PREFERENCES_ROUTE,
@@ -22,15 +20,57 @@ import { TabId } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage';
 
+const tabRoutes = [
+  {
+    id: TabId.Profile,
+    route: USER_EDIT_PROFILE_ROUTE,
+    title: formatText({ id: 'userProfilePage.title' }) || '',
+    content: <Outlet />,
+  },
+  {
+    id: TabId.Preferences,
+    route: USER_PREFERENCES_ROUTE,
+    title: formatText({ id: 'userPreferencesPage.title' }) || '',
+    content: <Outlet />,
+  },
+  {
+    id: TabId.Advanced,
+    route: USER_ADVANCED_ROUTE,
+    title: formatText({ id: 'userAdvancedPage.title' }) || '',
+    content: <Outlet />,
+  },
+  {
+    id: TabId.CryptoToFiat,
+    route: USER_CRYPTO_TO_FIAT_ROUTE,
+    title: formatText({ id: 'userCryptoToFiatPage.title' }) || '',
+    content: <Outlet />,
+    featureFlag: FeatureFlag.CRYPTO_TO_FIAT,
+  },
+];
+
+const getTabPath = (pathname: string) => {
+  const segments = pathname.split('/');
+  return segments[segments.length - 1];
+};
+
 const UserProfilePage: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const resolvedEditProfilePath = useResolvedPath(USER_EDIT_PROFILE_ROUTE);
-  const resolvedPreferencesPath = useResolvedPath(USER_PREFERENCES_ROUTE);
-  const resolvedAdvancedPath = useResolvedPath(USER_ADVANCED_ROUTE);
-  const [activeTab, setActiveTab] = useState<TabId>(TabId.Profile);
+  const featureFlags = useFeatureFlagsContext();
 
   const { setBreadcrumbs } = usePageHeadingContext();
+
+  const allowedTabRoutes = tabRoutes.filter((route) =>
+    route.featureFlag
+      ? featureFlags[route.featureFlag]?.isLoading ||
+        featureFlags[route.featureFlag]?.isEnabled
+      : true,
+  );
+
+  const tabPath = getTabPath(pathname);
+  const activeTab = allowedTabRoutes.find(
+    (route) => route.route === tabPath,
+  )?.id;
 
   useEffect(() => {
     setBreadcrumbs([
@@ -44,55 +84,18 @@ const UserProfilePage: FC = () => {
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
-  useEffect(() => {
-    switch (pathname) {
-      case resolvedEditProfilePath.pathname:
-        setActiveTab(TabId.Profile);
-        break;
-      case resolvedPreferencesPath.pathname:
-        setActiveTab(TabId.Preferences);
-        break;
-      case resolvedAdvancedPath.pathname:
-        setActiveTab(TabId.Advanced);
-        break;
-      default:
-        break;
-    }
-  }, [
-    pathname,
-    resolvedPreferencesPath.pathname,
-    resolvedEditProfilePath.pathname,
-    resolvedAdvancedPath.pathname,
-  ]);
-
-  const tabRoutes: Record<TabId, string> = {
-    [TabId.Profile]: USER_EDIT_PROFILE_ROUTE,
-    [TabId.Preferences]: USER_PREFERENCES_ROUTE,
-    [TabId.Advanced]: USER_ADVANCED_ROUTE,
-  };
+  if (activeTab === undefined) {
+    return <Navigate to="/account/profile" />;
+  }
 
   return (
     <Tabs
       activeTab={activeTab}
       className="pt-6"
-      onTabClick={(_, id) => navigate(tabRoutes[id])}
-      items={[
-        {
-          id: TabId.Profile,
-          title: formatText({ id: 'userProfilePage.title' }) || '',
-          content: <Outlet />,
-        },
-        {
-          id: TabId.Preferences,
-          title: formatText({ id: 'userPreferencesPage.title' }) || '',
-          content: <Outlet />,
-        },
-        {
-          id: TabId.Advanced,
-          title: formatText({ id: 'userAdvancedPage.title' }) || '',
-          content: <Outlet />,
-        },
-      ]}
+      onTabClick={(_, id) =>
+        navigate(tabRoutes.find((route) => route.id === id)?.route ?? '')
+      }
+      items={allowedTabRoutes}
     />
   );
 };

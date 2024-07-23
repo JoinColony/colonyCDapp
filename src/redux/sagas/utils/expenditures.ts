@@ -1,12 +1,23 @@
-import { type AnyColonyClient, ClientType } from '@colony/colony-js';
+/* eslint-disable no-console */
+import {
+  type AnyColonyClient,
+  ClientType,
+  type Network,
+  Tokens,
+} from '@colony/colony-js';
 import { BigNumber } from 'ethers';
+import { getAddress } from 'ethers/lib/utils';
 import { fork } from 'redux-saga/effects';
 
-import { ContextModule, getContext } from '~context/index.ts';
+import { apolloClient } from '~apollo';
+import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
+  type GetUserByAddressQuery,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
+  type GetUserByAddressQueryVariables,
+  GetUserByAddressDocument,
 } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { type Address } from '~types';
@@ -152,8 +163,6 @@ export function* saveExpenditureMetadata({
   fundFromDomainId,
   stages,
 }: SaveExpenditureMetadataParams) {
-  const apolloClient = getContext(ContextModule.ApolloClient);
-
   yield apolloClient.mutate<
     CreateExpenditureMetadataMutation,
     CreateExpenditureMetadataMutationVariables
@@ -292,4 +301,65 @@ export const getResolvedPayouts = (
   });
 
   return resolvedPayouts;
+};
+
+// @TODO: Crypto-to-fiat
+interface MinimalPayout {
+  recipientAddress: string;
+  tokenAddress: string;
+}
+export const adjustRecipientAddress = async (
+  { recipientAddress, tokenAddress }: MinimalPayout,
+  network: Network,
+) => {
+  const USDCAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
+  console.log({ USDCAddress });
+
+  if (tokenAddress !== USDCAddress) {
+    console.log('Token is not USDC');
+    return recipientAddress;
+  }
+
+  const { data } = await apolloClient.query<
+    GetUserByAddressQuery,
+    GetUserByAddressQueryVariables
+  >({
+    query: GetUserByAddressDocument,
+    variables: {
+      address: getAddress(recipientAddress),
+    },
+  });
+
+  const user = data?.getUserByAddress?.items[0];
+
+  if (!user) {
+    console.log('No user for recipient found');
+    return recipientAddress;
+  }
+
+  // @TODO: Return liquidation address
+  return recipientAddress;
+};
+
+export const adjustPayoutsAddresses = async (
+  payouts: MinimalPayout[],
+  network: Network,
+) => {
+  return Promise.all(
+    payouts.map(async (payout) => {
+      const { tokenAddress, recipientAddress } = payout;
+      const paymentAddress = await adjustRecipientAddress(
+        {
+          recipientAddress,
+          tokenAddress,
+        },
+        network,
+      );
+
+      return {
+        ...payout,
+        recipientAddress: paymentAddress,
+      };
+    }),
+  );
 };

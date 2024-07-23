@@ -1,5 +1,9 @@
 .wrapper :global(.select__control) {
-  @apply border-gray-300 rounded-s rounded-e text-gray-900 font-medium text-md;
+  @apply rounded-e rounded-s border-gray-300 text-md font-medium text-gray-900;
+}
+
+.wrapper--error :global(.select__control) {
+  @apply border-negative-400;
 }
 
 .wrapper :global(.select__control--is-focused) {
@@ -7,11 +11,11 @@
 }
 
 .wrapper :global(.select__placeholder) {
-  @apply text-gray-900;
+  @apply font-normal text-gray-400;
 }
 
 .wrapper :global(.select__value-container) {
-  @apply px-3.5 py-3;
+  @apply px-3.5 py-2;
 }
 
 .wrapper :global(.select__single-value) {
@@ -19,7 +23,7 @@
 }
 
 .wrapper :global(.select__indicator) {
-  @apply px-3.5 py-3 transition-all text-gray-400;
+  @apply px-3.5 py-3 text-gray-400 transition-all;
 }
 
 .wrapper :global(.select__control--menu-is-open .select__indicator) {
@@ -31,15 +35,15 @@
 }
 
 .menu {
-  @apply my-1 shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] rounded-s rounded-e border border-gray-300;
+  @apply my-1 rounded-e rounded-s border border-gray-300 shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)];
 }
 
 .menu :global(.select__menu-list) {
-  @apply py-2 px-1.5;
+  @apply px-1.5 py-2;
 }
 
 .menu :global(.select__option) {
-  @apply rounded-s rounded-e text-gray-900 cursor-pointer transition-all;
+  @apply cursor-pointer rounded-e rounded-s text-gray-900 transition-all;
 }
 
 .menu :global(.select__option:not(.with-link)) {
@@ -51,11 +55,11 @@
 }
 
 .menu :global(.select__option.with-link a) {
-  @apply p-2 block;
+  @apply block p-2;
 }
 
 .menu :global(.select__option--is-selected) {
-  @apply text-blue-400 font-medium bg-transparent;
+  @apply bg-transparent font-medium text-blue-400;
 }
 
 .menu :global(.select__option--is-focused) {

@@ -37,6 +37,7 @@ export interface PillsProps {
   text?: React.ReactNode;
   icon?: Icon;
   iconSize?: IconSize;
+  iconClassName?: string;
   pillSize?: PillSize;
   className?: string;
   textClassName?: string;

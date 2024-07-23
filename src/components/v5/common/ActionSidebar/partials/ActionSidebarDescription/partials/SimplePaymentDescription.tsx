@@ -20,15 +20,15 @@ const displayName =
 export const SimplePaymentDescription = () => {
   const formValues = useFormContext<SimplePaymentFormValues>().getValues();
   const { colony } = useColonyContext();
-  const { amount, tokenAddress, recipient } = formValues;
+  const { amount, tokenAddress, recipientAddress } = formValues;
 
   const { nativeToken } = colony;
   const matchingColonyToken = colony.tokens?.items.find(
     (colonyToken) => colonyToken?.token?.tokenAddress === tokenAddress,
   );
 
-  const recipientUser = recipient ? (
-    <RecipientUser userAddress={recipient} />
+  const recipientUser = recipientAddress ? (
+    <RecipientUser userAddress={recipientAddress} />
   ) : (
     formatText({
       id: 'actionSidebar.metadataDescription.recipient',

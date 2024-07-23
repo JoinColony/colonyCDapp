@@ -27,6 +27,7 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
+  adjustRecipientAddress,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -80,6 +81,15 @@ function* createStreamingPaymentAction({
       ClientType.StreamingPaymentsClient,
       colonyAddress,
     );
+    const { network } = colonyManager.networkClient;
+
+    const paymentAddress = yield adjustRecipientAddress(
+      {
+        tokenAddress,
+        recipientAddress,
+      },
+      network,
+    );
 
     // Get permissions proof of the caller's Funding permission
     const [fundingPermissionDomainId, fundingChildSkillIndex] =
@@ -121,7 +131,7 @@ function* createStreamingPaymentAction({
         startTimestamp,
         endTimestamp ?? TIMESTAMP_IN_FUTURE,
         interval,
-        recipientAddress,
+        paymentAddress,
         [tokenAddress],
         [convertedAmount],
       ],

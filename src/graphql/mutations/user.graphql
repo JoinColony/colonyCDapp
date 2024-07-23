@@ -15,3 +15,9 @@ mutation UpdateUserProfile($input: UpdateProfileInput!) {
     email
   }
 }
+
+mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+  }
+}

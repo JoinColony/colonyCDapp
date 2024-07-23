@@ -10,6 +10,7 @@ export interface SelectBaseProps<T extends SelectBaseOption>
   className?: string;
   value?: SelectBaseOption['value'];
   defaultValue?: SelectBaseOption['value'];
+  isError?: boolean;
 }
 
 export interface SelectOption extends SelectBaseOption {

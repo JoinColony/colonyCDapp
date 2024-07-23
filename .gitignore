@@ -10,6 +10,9 @@ cypress/screenshots
 .DS_Store
 
 /src/typedefs/import-meta-env.d.ts
+.env.local.secrets
+.env
+
 /dist
 
 #amplify-do-not-edit-begin

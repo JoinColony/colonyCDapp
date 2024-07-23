@@ -6,7 +6,7 @@ export interface FileUploadModalProps extends ModalProps {
 }
 
 export interface CSVFileItem {
-  recipient: string;
+  address: string;
   tokenContractAddress: string;
   amount: string;
   claimDelay: string;

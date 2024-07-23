@@ -1,13 +1,15 @@
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
+import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
+import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
@@ -35,7 +37,15 @@ const UserHub: FC<UserHubProps> = ({
   defaultOpenedTab = UserHubTabs.Balance,
 }) => {
   const isMobile = useMobile();
+  const featureFlags = useContext(FeatureFlagsContext);
   const [selectedTab, setSelectedTab] = useState(defaultOpenedTab);
+
+  const filteredTabList = tabList.filter(
+    (tabItem) =>
+      !tabItem.featureFlag ||
+      (!featureFlags[tabItem.featureFlag]?.isLoading &&
+        featureFlags[tabItem.featureFlag]?.isEnabled),
+  );
 
   const handleTabChange = (newTab: UserHubTabs) => {
     setSelectedTab(newTab);
@@ -51,14 +61,16 @@ const UserHub: FC<UserHubProps> = ({
   return (
     <div
       className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
-        'sm:h-[27.75rem]': selectedTab !== UserHubTabs.Balance,
+        'sm:h-[27.75rem]':
+          selectedTab !== UserHubTabs.Balance &&
+          selectedTab !== UserHubTabs.CryptoToFiat,
         'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
       })}
     >
       <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.85rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
-            options={tabList}
+            options={filteredTabList}
             defaultValue={selectedTab}
             value={selectedTab}
             onChange={(value) => handleTabChange(value?.value as UserHubTabs)}
@@ -73,7 +85,7 @@ const UserHub: FC<UserHubProps> = ({
                 text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 flex w-[calc(100%+2rem)] flex-col">
-                {tabList.map(({ value, id, icon: Icon, label }) => (
+                {filteredTabList.map(({ value, id, icon: Icon, label }) => (
                   <li
                     className="w-full"
                     key={value}
@@ -119,6 +131,7 @@ const UserHub: FC<UserHubProps> = ({
         {selectedTab === UserHubTabs.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
+        {selectedTab === UserHubTabs.CryptoToFiat && <CryptoToFiatTab />}
       </div>
       {/* @BETA: Disabled for now */}
       {/* {isMobile && ( */}

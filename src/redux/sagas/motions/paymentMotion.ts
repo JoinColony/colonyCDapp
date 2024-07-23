@@ -25,6 +25,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  adjustPayoutsAddresses,
 } from '../utils/index.ts';
 
 function* createPaymentMotion({
@@ -62,7 +63,7 @@ function* createPaymentMotion({
       if (!payments.every(({ tokenAddress }) => !!tokenAddress)) {
         throw new Error('Payment token not set for OneTxPayment transaction');
       }
-      if (!payments.every(({ recipient }) => !!recipient)) {
+      if (!payments.every(({ recipientAddress }) => !!recipientAddress)) {
         throw new Error('Recipient not assigned for OneTxPayment transaction');
       }
     }
@@ -82,6 +83,8 @@ function* createPaymentMotion({
       ClientType.ColonyClient,
       colonyAddress,
     );
+
+    const { network } = colonyManager.networkClient;
 
     const childSkillIndex = yield call(
       getChildIndex,
@@ -109,7 +112,8 @@ function* createPaymentMotion({
       votingReputationClient.address,
     );
 
-    const sortedCombinedPayments = sortAndCombinePayments(payments);
+    const payouts = yield adjustPayoutsAddresses(payments, network);
+    const sortedCombinedPayments = sortAndCombinePayments(payouts);
 
     const tokenAddresses = sortedCombinedPayments.map(
       ({ tokenAddress }) => tokenAddress,
@@ -118,7 +122,7 @@ function* createPaymentMotion({
     const amounts = sortedCombinedPayments.map(({ amount }) => amount);
 
     const recipientAddresses = sortedCombinedPayments.map(
-      ({ recipient }) => recipient,
+      ({ recipientAddress }) => recipientAddress,
     );
 
     const encodedAction = oneTxPaymentClient.interface.encodeFunctionData(

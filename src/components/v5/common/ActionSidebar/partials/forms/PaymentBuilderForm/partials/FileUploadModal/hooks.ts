@@ -2,6 +2,8 @@ import Papa, { type ParseResult } from 'papaparse';
 import { useState } from 'react';
 import { type FileRejection } from 'react-dropzone';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { getFileRejectionErrors } from '~shared/FileUpload/utils.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type FileReaderFile } from '~utils/fileReader/types.ts';
@@ -10,7 +12,7 @@ import { DropzoneErrors } from '~v5/common/AvatarUploader/utils.ts';
 import { type CSVFileItem } from './types.ts';
 
 const defaultValues = {
-  recipient: '0x0000000000000000000000000000000000000000',
+  address: '0x0000000000000000000000000000000000000000',
   tokenContractAddress: 'wrongToken',
   amount: '',
   claimDelay: '',
@@ -22,7 +24,7 @@ const isValueNumber = (value: string) =>
 const prepareStructure = (file: CSVFileItem[]) => {
   const hasRightHeaders = file.some(
     (header) =>
-      'recipient' in header ||
+      'address' in header ||
       'tokenContractAddress' in header ||
       'amount' in header ||
       'claimDelay' in header,
@@ -34,7 +36,7 @@ const prepareStructure = (file: CSVFileItem[]) => {
 
   const emptyRow = file.find(
     (item) =>
-      !item.recipient &&
+      !item.address &&
       !item.tokenContractAddress &&
       !item.amount &&
       !item.claimDelay,
@@ -53,7 +55,7 @@ const prepareStructure = (file: CSVFileItem[]) => {
   return file
     .filter((item) => item !== emptyRow)
     .map((item) => ({
-      recipientAddress: item.recipient || defaultValues.recipient,
+      recipientAddress: item.address || defaultValues.address,
       tokenAddress:
         item.tokenContractAddress || defaultValues.tokenContractAddress,
       amount:
@@ -99,12 +101,37 @@ export const useUploadCSVFile = (
 
       Papa.parse(uploadedFile.file, {
         complete: (result: ParseResult<CSVFileItem>) => {
-          if (result.data.length > 400) {
+          const dataDelimiterIndex = result.data.findIndex(
+            (line, index) =>
+              line[0] === 'Payment Details' && result.data[index - 1][0] === '',
+          );
+
+          const truncatedData = result.data.slice(dataDelimiterIndex + 2);
+
+          if (truncatedData.length > 400) {
             setError(DropzoneErrors.STRUCTURE);
             return;
           }
 
-          const validResults = prepareStructure(result.data);
+          let reconstructedFile = '';
+          truncatedData.map((line) => {
+            reconstructedFile += `${line.join(',')}\n`;
+            return reconstructedFile;
+          });
+
+          const parsedFile = Papa.parse(reconstructedFile, {
+            header: true,
+            skipEmptyLines: true,
+            transformHeader: (header: string) => {
+              return header
+                .toLowerCase()
+                .replace(/\([^)]*\)/g, '')
+                .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
+                .trim();
+            },
+          });
+
+          const validResults = prepareStructure(parsedFile.data);
 
           if (!validResults) {
             setError(DropzoneErrors.STRUCTURE);
@@ -113,14 +140,6 @@ export const useUploadCSVFile = (
 
           handleFileUpload(validResults);
           handleFileRemove();
-        },
-        header: true,
-        transformHeader: (header: string) => {
-          return header
-            .toLowerCase()
-            .replace(/\([^)]*\)/g, '')
-            .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
-            .trim();
         },
       });
     } catch (error) {
@@ -149,4 +168,51 @@ export const useUploadCSVFile = (
     progress,
     file,
   };
+};
+
+export const useCSVFileTemplate = () => {
+  const { totalContributors } = useMemberContext();
+  const { colony } = useColonyContext();
+
+  const csvTemplate = [
+    `
+Instructions here: https://go.clny.io/csv
+
+Address Book
+
+Username (for reference),Address (for reference)`,
+  ];
+
+  totalContributors.map((contributor) => {
+    return csvTemplate.push(
+      `${contributor?.user?.profile?.displayName},${contributor?.contributorAddress}`,
+    );
+  });
+
+  csvTemplate.push(
+    `
+Token List
+
+Symbol (for reference),Token Contract Address (for reference)`,
+  );
+
+  colony?.tokens?.items?.map((token) => {
+    return csvTemplate.push(
+      `${token?.token?.symbol},${token?.token?.tokenAddress}`,
+    );
+  });
+
+  csvTemplate.push(
+    `
+Payment Details
+
+Username (for reference),Address,Token Symbol (for reference),Token Contract Address,Amount,Claim delay (hours)
+Arjun,0x0000000000000000000000000000000000000000,USDC,0xaf88d065e77c8cC2239327C5EDb3A432268e5831,200000,24
+Bob,0x0000000000000000000000000000000000000000,USDT,0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9,100000,12
+Chika,0x0000000000000000000000000000000000000000,DAI,0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1,50000,6
+Dana,0x0000000000000000000000000000000000000000,CLNY,0xD611b29dc327723269Bd1e53Fe987Ee71A24B234,5000,1
+Erlich,0x0000000000000000000000000000000000000000,ETH,0x0000000000000000000000000000000000000000,5000,1`,
+  );
+
+  return csvTemplate.join('\n');
 };

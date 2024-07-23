@@ -27,7 +27,7 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     return body;
   } catch (error) {
     /*
-     * Something went wrong... obviously
+     * Something went wrong... obviously 🦆
      */
     console.error(error);
     return null;

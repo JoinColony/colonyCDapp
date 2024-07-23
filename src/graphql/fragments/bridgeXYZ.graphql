@@ -1,0 +1,15 @@
+fragment BridgeBankAccount on BridgeXYZBankAccount {
+  id
+  currency
+  bankName
+  accountOwner
+  iban {
+    bic
+    country
+    last4
+  }
+  usAccount {
+    last4
+    routingNumber
+  }
+}
