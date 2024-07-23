@@ -5,6 +5,7 @@ interface InputGroupProps {
   className?: string;
   value?: number;
   placeholder: string;
+  name: string;
   min?: number;
   max?: number;
   step?: number;
@@ -16,7 +17,23 @@ interface InputGroupProps {
 }
 
 export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
-  ({ className, isError, errorMessage, appendMessage, ...rest }, ref) => {
+  (
+    {
+      className,
+      isError,
+      errorMessage,
+      appendMessage,
+      name,
+      value,
+      min,
+      max,
+      step,
+      placeholder,
+      type,
+      onChange,
+    },
+    ref,
+  ) => {
     return (
       <div className={className}>
         <div
@@ -28,8 +45,15 @@ export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
           )}
         >
           <input
-            {...rest}
             ref={ref}
+            name={name}
+            value={value}
+            min={min}
+            max={max}
+            step={step}
+            placeholder={placeholder}
+            type={type}
+            onChange={onChange}
             className="w-16 bg-transparent py-3 pl-[14px] pr-3 outline-0 placeholder:text-gray-400"
           />
           <span className="inline-block h-full py-3 pl-[14px] pr-3">
