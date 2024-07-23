@@ -158,7 +158,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   const { approvalsPerRole, rejectionsPerRole } =
     getSignaturesPerRole(signatures);
-  const finalizedAt = multiSigData.executedAt || multiSigData.rejectedAt;
 
   const numberOfApprovals = getNumberOfApprovals(
     approvalsPerRole,
@@ -176,6 +175,16 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     rejectionsPerRole,
     thresholdPerRole,
   );
+
+  let finalizedAt;
+
+  if (isMultiSigRejected) {
+    finalizedAt = multiSigData.rejectedAt;
+  }
+
+  if (isMultiSigExecuted) {
+    finalizedAt = multiSigData.executedAt;
+  }
 
   let stepTitle = MSG.heading;
 
@@ -282,12 +291,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between gap-2 text-sm">
-                    <span className="text-gray-600">
-                      {formatText(MSG.finalized)}
-                    </span>
-                    <span>{finalizedAt && formatDate(finalizedAt)}</span>
-                  </div>
+                  {finalizedAt && (
+                    <div className="flex items-center justify-between gap-2 text-sm">
+                      <span className="text-gray-600">
+                        {formatText(MSG.finalized)}
+                      </span>
+                      <span>{formatDate(finalizedAt)}</span>
+                    </div>
+                  )}
                 </>
               )}
             </div>
