@@ -28,17 +28,24 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
   dbRoleForDomain,
   dbPermissionsForDomain,
   formRole,
+  dbInheritedPermissions,
 }) => {
+  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
+
   const isMobile = useMobile();
-  const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
+  const customPermissionsTableColumns = useCustomPermissionsTableColumns({
+    name,
+    team,
+    dbInheritedPermissions,
+  });
+
   const permissionsTableProps = usePermissionsTableProps({
     dbRoleForDomain,
     formRole,
-    roles: dbPermissionsForDomain,
+    dbPermissionsForDomain,
     isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
   });
   const { formState } = useFormContext<ManagePermissionsFormValues>();
-  const team: string | undefined = useWatch({ name: 'team' });
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>

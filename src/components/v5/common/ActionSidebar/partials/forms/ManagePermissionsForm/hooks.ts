@@ -30,7 +30,7 @@ import {
   getRemovedInheritedPermissions,
 } from './utils.ts';
 
-export const useManagePermissions = (
+export const useManagePermissionsForm = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
@@ -183,7 +183,6 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
-    mode: 'onSubmit',
     id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
     primaryButton: {
       type: isRemovingRootRoleFromRootDomain ? 'button' : 'submit',

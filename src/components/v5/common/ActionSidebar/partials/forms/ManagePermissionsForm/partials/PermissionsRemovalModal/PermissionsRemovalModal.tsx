@@ -54,7 +54,7 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
     dbRoleForDomain,
     formRole,
     isRemovePermissionsAction: true,
-    roles:
+    dbPermissionsForDomain:
       formRole === UserRoleModifier.Remove
         ? dbInheritedPermissions
         : getRemovedInheritedPermissions({

@@ -8,7 +8,17 @@ import { type SwitchProps } from './types.ts';
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
+  (
+    {
+      id,
+      disabled: disabledProp,
+      readOnly,
+      className,
+      greyOutWhenDisabled,
+      ...rest
+    },
+    ref,
+  ) => {
     const generatedId = useId();
     const { isDarkMode } = usePageThemeContext();
     const disabled = disabledProp || readOnly;
@@ -37,6 +47,10 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
             {
               'border-gray-200 bg-gray-200': !isDarkMode,
               'border-gray-300 bg-gray-300': isDarkMode,
+              'peer-checked:border-gray-900 peer-checked:bg-gray-900':
+                !disabled,
+              'peer-checked:border-gray-100 peer-checked:bg-gray-100':
+                greyOutWhenDisabled && disabled,
             },
           )}
         />
