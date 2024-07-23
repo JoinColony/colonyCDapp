@@ -4,7 +4,6 @@ import {
   ColonyRole,
   getPermissionProofs,
   Id,
-  type AnyVotingReputationClient,
 } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
