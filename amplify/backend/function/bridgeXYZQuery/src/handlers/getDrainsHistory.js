@@ -7,7 +7,7 @@ const { graphqlRequest } = require('../utils');
  */
 const { getUser } = require('../graphql');
 
-const getLiquidationsHandler = async (
+const getDrainsHistoryHandler = async (
   event,
   { appSyncApiKey, apiKey, apiUrl, graphqlURL },
 ) => {
@@ -62,15 +62,23 @@ const getLiquidationsHandler = async (
 
     const drainsResult = await drainsRes.json();
 
-    drains.push(...drainsResult.data);
+    const mappedDrains = drainsResult.data.map((drain) => ({
+      id: drain.id,
+      amount: drain.amount,
+      currency: drain.currency,
+      state: drain.state,
+      createdAt: drain.created_at,
+      receipt: {
+        url: drain.receipt.url,
+      },
+    }));
+
+    drains.push(...mappedDrains);
   }
 
-  return {
-    success: true,
-    drains,
-  };
+  return drains;
 };
 
 module.exports = {
-  getLiquidationsHandler,
+  getDrainsHistoryHandler,
 };

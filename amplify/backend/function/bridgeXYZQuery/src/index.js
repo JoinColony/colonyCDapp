@@ -1,5 +1,5 @@
 const { getFeesHandler } = require('./handlers/getFees');
-const { getLiquidationsHandler } = require('./handlers/getLiquidations');
+const { getDrainsHistoryHandler } = require('./handlers/getDrainsHistory');
 
 const isDev = process.env.ENV === 'dev';
 
@@ -20,6 +20,10 @@ const setEnvVariables = async () => {
   }
 };
 
+const BRIDGE_QUERIES = {
+  GET_DRAINS_HISTORY: 'bridgeGetDrainsHistory',
+};
+
 exports.handler = async (event) => {
   try {
     await setEnvVariables();
@@ -31,15 +35,21 @@ exports.handler = async (event) => {
 
   const handlers = {
     'v0/developer/fees': getFeesHandler,
-    'v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains':
-      getLiquidationsHandler,
+    [BRIDGE_QUERIES.GET_DRAINS_HISTORY]: getDrainsHistoryHandler,
     default: () => {
       console.log('Running default handler');
       return null;
     },
   };
 
-  const handler = handlers[path] || handlers.default;
-
-  return handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+  const handler =
+    handlers[path] || handlers[event.fieldName] || handlers.default;
+  try {
+    return await handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+  } catch (error) {
+    console.error(
+      `bridgeXYZMutation handler ${handler.name} failed with error: ${error}`,
+    );
+    return null;
+  }
 };
