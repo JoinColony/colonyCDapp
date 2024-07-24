@@ -80,7 +80,7 @@ function* releaseExpenditureStages({
         colonyClient.networkClient,
         colonyClient,
         expenditure.nativeDomainId,
-        ColonyRole.Administration,
+        ColonyRole.Arbitration,
       );
     }
 
