@@ -16,11 +16,9 @@ import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
-  CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
 } from '../../../consts.ts';
 import { useIsFieldDisabled } from '../../hooks.ts';
-import { useHasEnoughMembersWithPermissions } from '../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';
@@ -33,12 +31,17 @@ const MSG = defineMessages({
   },
 });
 
-export const SidebarBanner: FC = () => {
+interface SidebarBannerProps {
+  hasEnoughMembersWithPermissions: boolean;
+}
+
+export const SidebarBanner: FC<SidebarBannerProps> = ({
+  hasEnoughMembersWithPermissions,
+}) => {
   const { watch } = useFormContext();
-  const [selectedAction, decisionMethod, createdIn] = watch([
+  const [selectedAction, decisionMethod] = watch([
     ACTION_TYPE_FIELD_NAME,
     DECISION_METHOD_FIELD_NAME,
-    CREATED_IN_FIELD_NAME,
   ]);
 
   const { installedExtensionsData } = useExtensionsData();
@@ -66,12 +69,6 @@ export const SidebarBanner: FC = () => {
 
   const showVersionUpToDateNotification =
     selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
-
-  const hasEnoughMembersWithPermissions = useHasEnoughMembersWithPermissions({
-    decisionMethod,
-    selectedAction,
-    createdIn,
-  });
 
   return (
     <>
