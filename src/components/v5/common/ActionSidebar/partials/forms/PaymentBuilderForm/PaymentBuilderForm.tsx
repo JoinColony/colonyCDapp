@@ -41,7 +41,10 @@ const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField
-        filterOptionsFn={({ value }) => value !== DecisionMethod.Reputation}
+        // @TODO remove MultiSig once we add support for multisig advanced payments
+        filterOptionsFn={({ value }) =>
+          ![DecisionMethod.Reputation, DecisionMethod.MultiSig].includes(value)
+        }
       />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
