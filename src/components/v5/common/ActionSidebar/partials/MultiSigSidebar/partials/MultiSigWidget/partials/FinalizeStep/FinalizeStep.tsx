@@ -83,6 +83,18 @@ const MSG = defineMessages({
     id: `${displayName}.finalizeCancelButton`,
     defaultMessage: 'Finalize cancel',
   },
+  finalizedNotExecuted: {
+    id: `${displayName}.finalizedNotExecuted`,
+    defaultMessage: 'Not executed',
+  },
+  notExecutedReasonLabel: {
+    id: `${displayName}.notExecutedReasonLabel`,
+    defaultMessage: 'Reason',
+  },
+  notExecutedReasonValue: {
+    id: `${displayName}.notExecutedReasonValue`,
+    defaultMessage: 'Execution failed beyond timeout',
+  },
 });
 
 const formatDate = (value: string | undefined) => {
@@ -135,8 +147,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   thresholdPerRole,
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
+
   const isMultiSigExecuted = multiSigData.isExecuted;
+  const hasMultiSigActionCompleted = multiSigData.hasActionCompleted;
   const isMultiSigRejected = multiSigData.isRejected;
+  // used if failing execution after a week
+  const isMultiSigFailingExecution =
+    isMultiSigExecuted && !hasMultiSigActionCompleted;
+
   const isMotionOlderThanWeek = hasWeekPassed(createdAt);
   const rejectedByOwner = multiSigData.rejectedBy === initiatorAddress;
 
@@ -236,12 +254,27 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       })}
                     </span>
                   </div>
-                  {finalizedAt && (
+                  {isMultiSigFailingExecution ? (
+                    <>
+                      <div className="mb-2 flex items-center justify-between gap-2 text-sm">
+                        <span className="text-gray-600">
+                          {formatText(MSG.finalized)}
+                        </span>
+                        <span>{formatText(MSG.finalizedNotExecuted)}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-2 text-sm">
+                        <span className="text-gray-600">
+                          {formatText(MSG.notExecutedReasonLabel)}
+                        </span>
+                        <span>{formatText(MSG.notExecutedReasonValue)}</span>
+                      </div>
+                    </>
+                  ) : (
                     <div className="flex items-center justify-between gap-2 text-sm">
                       <span className="text-gray-600">
                         {formatText(MSG.finalized)}
                       </span>
-                      <span>{formatDate(finalizedAt)}</span>
+                      <span>{finalizedAt && formatDate(finalizedAt)}</span>
                     </div>
                   )}
                 </>
