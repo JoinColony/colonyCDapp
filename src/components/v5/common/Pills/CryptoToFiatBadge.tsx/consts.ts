@@ -14,4 +14,7 @@ export const badgeThemes: CryptoToFiatBadgeTheme = {
   gray: {
     className: 'bg-gray-100 text-gray-400',
   },
+  'light-orange': {
+    className: 'bg-warning-100 text-warning-400',
+  },
 };

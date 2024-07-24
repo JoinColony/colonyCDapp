@@ -33,7 +33,15 @@ export const getBadgeProps = (
         theme: 'orange',
       };
     }
-    case KycStatus.Pending:
+    case KycStatus.Pending: {
+      return {
+        text: formatText({
+          id: `${displayName}.pillCopy`,
+          defaultMessage: 'Pending',
+        }),
+        theme: 'light-orange',
+      };
+    }
     case KycStatus.UnderReview: {
       return {
         text: formatText({
