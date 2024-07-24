@@ -1,5 +1,7 @@
 import React, { type FC } from 'react';
 
+import { DecisionMethod } from '~types/actions.ts';
+
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
@@ -18,7 +20,10 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <>
-      <DecisionMethodField />
+      <DecisionMethodField
+        // @TODO remove this once we add support for managing tokens
+        filterOptionsFn={({ value }) => value !== DecisionMethod.MultiSig}
+      />
       <CreatedIn readonly />
       <Description />
       <TokensTable
