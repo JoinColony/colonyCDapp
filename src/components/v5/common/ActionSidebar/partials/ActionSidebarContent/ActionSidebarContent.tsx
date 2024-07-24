@@ -134,7 +134,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             <ActionSidebarDescription />
           </div>
         )}
-        <SidebarBanner />
+        <SidebarBanner
+          hasEnoughMembersWithPermissions={hasEnoughMembersWithPermissions}
+        />
         {!readonly && <NoPermissionsError />}
         <ActionTypeSelect
           className={clsx(
