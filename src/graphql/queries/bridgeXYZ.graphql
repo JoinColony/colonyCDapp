@@ -1,13 +1,16 @@
-query BridgeXYZQuery($input: BridgeXYZQueryInput!) {
-  bridgeXYZQuery(input: $input) {
+query GetUserDrains {
+  bridgeXYZQuery(
+    input: {
+      path: "v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains"
+    }
+  ) {
     drains {
       id
       amount
+      currency
       state
       created_at
-      deposit_tx_hash
       receipt {
-        destination_currency
         url
       }
     }

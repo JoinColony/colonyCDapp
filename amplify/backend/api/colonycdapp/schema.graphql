@@ -375,16 +375,15 @@ type BridgeXYZMutationReturn {
 }
 
 type DrainReceipt {
-  destination_currency: String
   url: String
 }
 
 type BridgeXYZDrain {
   id: String
   amount: String
+  currency: String
   state: String
   created_at: String
-  deposit_tx_hash: String
   receipt: DrainReceipt
 }
 
