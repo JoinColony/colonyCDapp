@@ -1,8 +1,10 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { Navigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { LANDING_PAGE_ROUTE } from '~routes/routeConstants.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { type WizardStepProps } from '~shared/Wizard/index.ts';
 import { withMeta } from '~utils/actions.ts';
@@ -36,8 +38,15 @@ const StepCreateUser = ({
     initialValues: { username, emailAddress },
   },
 }: Props) => {
-  const { updateUser } = useAppContext();
+  const { user, updateUser } = useAppContext();
 
+  if (user) {
+    return <Navigate to={LANDING_PAGE_ROUTE} />;
+  }
+
+  const transformWithMeta = withMeta({
+    updateUser,
+  });
   return (
     <ActionForm<CreateUserFormValues>
       className="flex max-w-lg flex-col items-end"
@@ -48,9 +57,7 @@ const StepCreateUser = ({
       }}
       mode="onChange"
       actionType={ActionTypes.USERNAME_CREATE}
-      transform={withMeta({
-        updateUser,
-      })}
+      transform={transformWithMeta}
       onSuccess={nextStep}
     >
       {({ formState: { isSubmitting } }) => (
