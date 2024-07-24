@@ -178,6 +178,7 @@ const useGroupState = ({
       }, 3000);
     } else if (
       hasLatestGroupPendingTx &&
+      !someFailed &&
       groupState !== TransactionGroupStates.SomePending
     ) {
       if (!previousPending) {
