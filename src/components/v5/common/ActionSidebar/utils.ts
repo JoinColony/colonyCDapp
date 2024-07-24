@@ -3,7 +3,10 @@ import { type Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
 import { isQueryActive } from '~utils/isQueryActive';
-import { updateContributorVerifiedStatus } from '~utils/members.ts';
+import {
+  clearContributorsAndRolesCache,
+  updateContributorVerifiedStatus,
+} from '~utils/members.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -48,7 +51,11 @@ export const handleMotionCompleted = (action: ColonyAction) => {
       if (isQueryActive('SearchActions')) {
         apolloClient.refetchQueries({ include: [SearchActionsDocument] });
       }
-
+      break;
+    }
+    case ColonyActionType.SetUserRolesMotion:
+    case ColonyActionType.SetUserRolesMultisig: {
+      clearContributorsAndRolesCache();
       break;
     }
     default: {
