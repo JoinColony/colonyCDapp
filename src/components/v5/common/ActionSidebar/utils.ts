@@ -1,6 +1,9 @@
 import { type Action } from '~constants/actions.ts';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
-import { updateContributorVerifiedStatus } from '~utils/members.ts';
+import {
+  clearContributorsAndRolesCache,
+  updateContributorVerifiedStatus,
+} from '~utils/members.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -39,6 +42,11 @@ export const handleMotionCompleted = (action: ColonyAction) => {
           false,
         );
       }
+      break;
+    }
+    case ColonyActionType.SetUserRolesMotion:
+    case ColonyActionType.SetUserRolesMultisig: {
+      clearContributorsAndRolesCache();
       break;
     }
     default: {

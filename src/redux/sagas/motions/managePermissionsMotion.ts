@@ -8,7 +8,6 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { clearContributorsAndRolesCache } from '~utils/members.ts';
 import { putError, takeFrom } from '~utils/saga/effects.ts';
 
 import {
@@ -335,8 +334,6 @@ function* managePermissionsMotion({
         state: { isRedirect: true },
       });
     }
-
-    yield clearContributorsAndRolesCache();
   } catch (caughtError) {
     yield putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);
   } finally {
