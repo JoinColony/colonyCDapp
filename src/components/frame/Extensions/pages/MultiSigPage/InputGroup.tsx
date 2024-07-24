@@ -1,5 +1,9 @@
 import clsx from 'clsx';
-import React, { forwardRef, type ChangeEventHandler } from 'react';
+import React, {
+  forwardRef,
+  type ChangeEventHandler,
+  type KeyboardEventHandler,
+} from 'react';
 
 interface InputGroupProps {
   className?: string;
@@ -14,6 +18,7 @@ interface InputGroupProps {
   errorMessage?: string;
   appendMessage?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>;
 }
 
 export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
@@ -31,6 +36,7 @@ export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
       placeholder,
       type,
       onChange,
+      onKeyDown,
     },
     ref,
   ) => {
@@ -54,6 +60,7 @@ export const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
             placeholder={placeholder}
             type={type}
             onChange={onChange}
+            onKeyDown={onKeyDown}
             className="w-16 bg-transparent py-3 pl-[14px] pr-3 outline-0 placeholder:text-gray-400"
           />
           <span className="inline-block h-full py-3 pl-[14px] pr-3">
