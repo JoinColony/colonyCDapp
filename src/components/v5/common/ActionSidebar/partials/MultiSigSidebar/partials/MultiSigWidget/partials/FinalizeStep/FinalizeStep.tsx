@@ -214,6 +214,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   <div className="flex flex-col gap-2">
                     {isMultiSigExecutable && (
                       <FinalizeButton
+                        isMotionOlderThanAWeek={isMotionOlderThanWeek}
                         isPending={isFinalizePending}
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}

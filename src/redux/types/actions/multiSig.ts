@@ -57,6 +57,7 @@ export type MultiSigActionTypes =
       {
         colonyAddress: Address;
         multiSigId: string;
+        canActionFail: boolean;
       },
       MetaWithSetter<object>
     >
