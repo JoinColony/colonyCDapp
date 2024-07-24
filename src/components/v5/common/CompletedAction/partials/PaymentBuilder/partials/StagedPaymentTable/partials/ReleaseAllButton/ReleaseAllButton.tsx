@@ -4,15 +4,15 @@ import { defineMessages } from 'react-intl';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { type MilestoneItem } from '../../../StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
+import { type MilestoneItem } from '../../../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 const displayName =
   'v5.common.CompletedAction.partials.StagedPaymentTable.partials.ReleaseAllButton';
 
 const MSG = defineMessages({
-  releaseAll: {
-    id: `${displayName}.releaseAll`,
-    defaultMessage: 'Release all',
+  payAll: {
+    id: `${displayName}.payAll`,
+    defaultMessage: 'Pay all',
   },
 });
 
@@ -23,7 +23,7 @@ interface ReleaseAllButtonProps {
 const ReleaseAllButton: FC<ReleaseAllButtonProps> = ({ items }) => {
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
-  const notReleasedMilestones = items.filter((item) => !item.isReleased);
+  const notReleasedMilestones = items.filter((item) => !item.isClaimed);
 
   return (
     <button
@@ -34,7 +34,7 @@ const ReleaseAllButton: FC<ReleaseAllButtonProps> = ({ items }) => {
         showModal();
       }}
     >
-      {formatText(MSG.releaseAll)}
+      {formatText(MSG.payAll)}
     </button>
   );
 };

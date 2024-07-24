@@ -4,10 +4,12 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
+import { type ReleaseExpenditureStagesPayload } from '~redux/sagas/expenditures/releaseExpenditureStages.ts';
 import { type ReleaseExpenditureStagesMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStagesMotion.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -35,12 +37,12 @@ const displayName =
 const MSG = defineMessages({
   title: {
     id: `${displayName}.title`,
-    defaultMessage: 'Release milestone payments',
+    defaultMessage: 'Make milestone payments',
   },
   description: {
     id: `${displayName}.description`,
     defaultMessage:
-      'This is a request to release the following payment milestones.',
+      'This is a request to make the following milestone payments.',
   },
   details: {
     id: `${displayName}.details`,
@@ -48,11 +50,11 @@ const MSG = defineMessages({
   },
   releasePayment: {
     id: `${displayName}.releasePayment`,
-    defaultMessage: 'Release payment',
+    defaultMessage: 'Make payment',
   },
   releaseAllPayments: {
     id: `${displayName}.releaseAllPayments`,
-    defaultMessage: 'Release all payments',
+    defaultMessage: 'Make payments',
   },
 });
 
@@ -83,8 +85,8 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
       </p>
       <p className="mb-2 text-1">{formatText(MSG.details)}</p>
       <ul className="mb-4 flex flex-col gap-2">
-        {items.map(({ amount, milestone, tokenAddress, id }) => (
-          <div key={id}>
+        {items.map(({ amount, milestone, tokenAddress, slotId }) => (
+          <div key={slotId}>
             <MilestoneItem
               amount={amount}
               milestone={milestone}
@@ -155,6 +157,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
   expenditure,
 }) => {
   const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const validationSchema = getValidationSchema();
   const { stagedExpenditureAddress, votingReputationAddress } =
     useEnabledExtensions();
@@ -164,33 +167,50 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
     error: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
     success: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
   });
+  const releaseExpenditureStage = useAsyncFunction({
+    submit: ActionTypes.RELEASE_EXPENDITURE_STAGES,
+    error: ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR,
+    success: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
+  });
 
   const onSubmit = async ({ decisionMethod }) => {
     try {
-      const payload: ReleaseExpenditureStagesMotionPayload = {
+      const motionPayload: ReleaseExpenditureStagesMotionPayload = {
         colonyAddress: colony.colonyAddress,
         colonyName: colony.name,
         stagedExpenditureAddress: stagedExpenditureAddress || '',
         votingReputationAddress: votingReputationAddress || '',
         expenditure,
-        slotIds: [items[0].id],
+        slotIds: items.map(({ slotId }) => slotId),
         motionDomainId: expenditure.nativeDomainId,
         tokenAddresses: [colony.nativeToken.tokenAddress],
+      };
+      const payload: ReleaseExpenditureStagesPayload = {
+        colonyAddress: colony.colonyAddress,
+        expenditure,
+        tokenAddresses: [colony.nativeToken.tokenAddress],
+        stagedExpenditureAddress: stagedExpenditureAddress || '',
+        slotIds: items.map(({ slotId }) => slotId),
+        userAddress: user?.walletAddress || '',
       };
 
       if (
         decisionMethod &&
         decisionMethod.value === DecisionMethod.Reputation
       ) {
-        await releaseExpenditureStageMotion(payload);
+        await releaseExpenditureStageMotion(motionPayload);
+      } else {
+        await releaseExpenditureStage(payload);
       }
+
+      onClose();
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} icon={HandCoins}>
+    <Modal isOpen={isOpen} onClose={onClose} shouldShowHeader icon={HandCoins}>
       <Form
         className="flex h-full flex-col"
         onSubmit={onSubmit}

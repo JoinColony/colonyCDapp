@@ -155,7 +155,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           stages={expenditure.metadata?.stages || []}
           slots={slots}
           isLoading={!expenditure.metadata?.stages?.length}
-          isReleaseStep={expenditureStep === ExpenditureStep.Release}
+          isPaymentStep={expenditureStep === ExpenditureStep.Payment}
         />
       </>
     );

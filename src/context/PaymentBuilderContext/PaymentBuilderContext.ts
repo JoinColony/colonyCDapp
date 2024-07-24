@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 import noop from '~utils/noop.ts';
-import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
+import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 export const PaymentBuilderContext = createContext<{
   toggleOnFundingModal: () => void;

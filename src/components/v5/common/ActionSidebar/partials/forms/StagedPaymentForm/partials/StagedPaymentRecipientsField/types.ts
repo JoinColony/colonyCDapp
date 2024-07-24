@@ -10,5 +10,5 @@ export interface StagedPaymentRecipientsFieldModel {
   milestone?: string;
   amount?: string;
   tokenAddress?: string;
-  id?: number;
+  slotId?: number;
 }

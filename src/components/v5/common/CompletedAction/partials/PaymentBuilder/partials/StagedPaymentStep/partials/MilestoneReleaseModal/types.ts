@@ -4,8 +4,8 @@ import { type ModalProps } from '~v5/shared/Modal/types.ts';
 import { type MilestoneItemProps } from '../MilestoneItem/types.ts';
 
 export interface MilestoneItem extends MilestoneItemProps {
-  id: number;
-  isReleased: boolean;
+  slotId: number;
+  isClaimed: boolean;
 }
 
 export interface MilestoneReleaseModalProps extends ModalProps {
