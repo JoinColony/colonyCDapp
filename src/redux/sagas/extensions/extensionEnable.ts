@@ -8,6 +8,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { clearContributorsAndRolesCache } from '~utils/members.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -129,6 +130,8 @@ function* extensionEnable({
       payload: {},
       meta,
     });
+
+    yield clearContributorsAndRolesCache();
   } catch (error) {
     console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);

@@ -145,3 +145,8 @@ export const updateMemberProfile = (
     colonyAddress,
   );
 };
+
+export const clearContributorsAndRolesCache = () => {
+  apolloClient.cache.evict({ fieldName: 'searchColonyContributors' });
+  apolloClient.cache.evict({ fieldName: 'getRoleByDomainAndColony' });
+};

@@ -3,6 +3,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { clearContributorsAndRolesCache } from '~utils/members.ts';
 
 import {
   createTransaction,
@@ -60,6 +61,8 @@ function* setThresholds({
       type: ActionTypes.MULTISIG_SET_THRESHOLDS_SUCCESS,
       meta,
     });
+
+    yield clearContributorsAndRolesCache();
   } catch (error) {
     return yield putError(
       ActionTypes.MULTISIG_SET_THRESHOLDS_ERROR,
