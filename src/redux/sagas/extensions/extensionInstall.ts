@@ -2,7 +2,7 @@ import { type ApolloQueryResult } from '@apollo/client';
 import {
   ClientType,
   ColonyRole,
-  Extension,
+  // Extension,
   Id,
   getExtensionHash,
   getPermissionProofs,
@@ -60,9 +60,12 @@ export function* extensionInstall({
     const { type } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
+      /*
+       * @NOTE temporarily disabled, until we tackle https://github.com/JoinColony/colonyCDapp/issues/2765
       if (extensionId === Extension.MultisigPermissions) {
         yield handleMultiSigInstall(colonyAddress, meta.id);
       }
+      */
       yield put<AllActions>({
         type: ActionTypes.EXTENSION_INSTALL_SUCCESS,
         payload: {},
@@ -78,6 +81,7 @@ export function* extensionInstall({
   return null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function* handleMultiSigInstall(colonyAddress: string, metaId: string) {
   const batchKey = 'setInitialMultiSigRoles';
 
