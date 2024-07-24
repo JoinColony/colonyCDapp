@@ -9,6 +9,10 @@ export type KycStatusData = NonNullable<
 >['bridgeXYZMutation'];
 
 export type KycBankAccountData = NonNullable<KycStatusData>['bankAccount'];
+export interface CryptoToFiatPageComponentProps {
+  kycStatusData: KycStatusData | null;
+  kycStatusDataIsLoading: boolean;
+}
 
 export interface BankDetailsFormValues {
   currency: string;
