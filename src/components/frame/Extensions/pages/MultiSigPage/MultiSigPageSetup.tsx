@@ -118,6 +118,12 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   const [isCustomSettingsVisible, { toggle: toggleCustomSettings }] =
     useToggle();
 
+  const handleOnKeyDown = (e) => {
+    if (['.', ','].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   if (!extensionData) {
     return (
       <p>{formatText({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
@@ -192,6 +198,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                     },
                   })}
                   {...inputGroupSharedConfig}
+                  onKeyDown={handleOnKeyDown}
                   isError={isFixedThresholdError}
                   errorMessage={formatText(MSG.thresholdFixedErrorMessage)}
                   appendMessage={formatText(MSG.thresholdFixedFormApprovals)}
@@ -278,6 +285,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                             },
                           })}
                           {...inputGroupSharedConfig}
+                          onKeyDown={handleOnKeyDown}
                           isError={isError}
                           errorMessage={formatText(
                             MSG.thresholdFixedErrorMessage,
