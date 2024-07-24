@@ -18,6 +18,7 @@ interface FinalizeButtonProps {
   multiSigId: string;
   isPending: boolean;
   setIsPending: (isPending: boolean) => void;
+  isMotionOlderThanAWeek: boolean;
 }
 
 const MSG = defineMessages({
@@ -31,11 +32,13 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
   multiSigId,
   isPending,
   setIsPending,
+  isMotionOlderThanAWeek,
 }) => {
   const { colony } = useColonyContext();
   const transform = mapPayload(() => ({
     colonyAddress: colony.colonyAddress,
     multiSigId,
+    canActionFail: isMotionOlderThanAWeek,
   }));
 
   return (

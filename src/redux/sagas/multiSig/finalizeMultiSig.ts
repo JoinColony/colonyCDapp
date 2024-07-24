@@ -12,7 +12,7 @@ import {
 import { initiateTransaction, putError, takeFrom } from '../utils/effects.ts';
 
 function* finalizeMultiSigAction({
-  payload: { colonyAddress, multiSigId },
+  payload: { colonyAddress, multiSigId, canActionFail },
   meta,
 }: Action<ActionTypes.MULTISIG_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -25,7 +25,7 @@ function* finalizeMultiSigAction({
 
     yield fork(createTransaction, meta.id, {
       context: ClientType.MultisigPermissionsClient,
-      methodName: 'executeWithoutFailure',
+      methodName: canActionFail ? 'execute' : 'executeWithoutFailure',
       identifier: colonyAddress,
       params: [multiSigId],
       group: {
