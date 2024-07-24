@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
-import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
+import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 

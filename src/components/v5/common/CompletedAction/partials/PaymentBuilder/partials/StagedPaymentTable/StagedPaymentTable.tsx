@@ -10,10 +10,11 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import { type StagedPaymentRecipientsFieldModel } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/partials/StagedPaymentRecipientsField/types.ts';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import Table from '~v5/common/Table/Table.tsx';
 
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
-import { type MilestoneItem } from '../StagedReleaseStep/partials/MilestoneReleaseModal/types.ts';
+import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 import ReleaseAllButton from './partials/ReleaseAllButton/ReleaseAllButton.tsx';
 import { type StagedPaymentTableProps } from './types.ts';
@@ -21,15 +22,19 @@ import { type StagedPaymentTableProps } from './types.ts';
 const displayName = 'v5.common.CompletedAction.partials.StagedPaymentTable';
 
 const MSG = defineMessages({
-  release: {
-    id: `${displayName}.release`,
-    defaultMessage: 'Release',
+  payNow: {
+    id: `${displayName}.payNow`,
+    defaultMessage: 'Pay now',
+  },
+  released: {
+    id: `${displayName}.released`,
+    defaultMessage: 'Released',
   },
 });
 
 const useStagedPaymentTableColumns = (
   data: MilestoneItem[],
-  isReleaseStep?: boolean,
+  isPaymentStep?: boolean,
   isLoading?: boolean,
 ) => {
   const hasMoreThanOneToken = data.length > 1;
@@ -42,6 +47,8 @@ const useStagedPaymentTableColumns = (
     useMemo(() => {
       const columnHelper =
         createColumnHelper<StagedPaymentRecipientsFieldModel>();
+      const hasMoreThanOneMilestone =
+        dataRef.current.filter((item) => !item.isClaimed).length > 1;
 
       return [
         columnHelper.accessor('milestone', {
@@ -95,14 +102,14 @@ const useStagedPaymentTableColumns = (
                     itemClassName="justify-end md:justify-start"
                     buttonClassName="justify-end md:justify-start"
                   />
-                  {isMobile && isReleaseStep && dataRef.current.length > 1 && (
+                  {isMobile && isPaymentStep && hasMoreThanOneMilestone && (
                     <ReleaseAllButton items={dataRef.current} />
                   )}
                 </>
               )
             : undefined,
         }),
-        ...(isReleaseStep
+        ...(isPaymentStep
           ? [
               columnHelper.display({
                 id: 'release',
@@ -111,10 +118,19 @@ const useStagedPaymentTableColumns = (
                 cell: ({ row }) => {
                   const { original } = row;
                   const currentMilestone = dataRef.current.find(
-                    (item) => item.id === original.id,
+                    (item) => item.slotId === original.slotId,
                   );
+                  const isClaimed = currentMilestone?.isClaimed;
 
-                  return (
+                  return isClaimed ? (
+                    <PillsBase
+                      className={clsx(
+                        'bg-teams-blue-50 text-sm font-medium text-teams-blue-400',
+                      )}
+                    >
+                      {formatText(MSG.released)}
+                    </PillsBase>
+                  ) : (
                     <button
                       key={row.id}
                       type="button"
@@ -126,12 +142,12 @@ const useStagedPaymentTableColumns = (
                         showModal();
                       }}
                     >
-                      {formatText(MSG.release)}
+                      {formatText(MSG.payNow)}
                     </button>
                   );
                 },
                 footer:
-                  !isMobile && dataRef.current.length > 1
+                  !isMobile && hasMoreThanOneMilestone
                     ? () => <ReleaseAllButton items={dataRef.current} />
                     : undefined,
               }),
@@ -140,7 +156,7 @@ const useStagedPaymentTableColumns = (
       ];
     }, [
       hasMoreThanOneToken,
-      isReleaseStep,
+      isPaymentStep,
       isMobile,
       dataRef,
       isLoading,
@@ -154,7 +170,7 @@ const useStagedPaymentTableColumns = (
 const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
   stages,
   slots,
-  isReleaseStep,
+  isPaymentStep,
   isLoading,
 }) => {
   const isTablet = useTablet();
@@ -164,20 +180,20 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
         const payout = (slots || []).find((slot) => slot.id === item.slotId);
         const amount = payout?.payouts?.[0].amount;
         const tokenAddress = payout?.payouts?.[0].tokenAddress;
-        const isReleased = payout?.payouts?.[0].isClaimed;
+        const isClaimed = payout?.payouts?.[0].isClaimed;
 
         return {
           milestone: item.name,
           amount: amount || '0',
           tokenAddress: tokenAddress || ADDRESS_ZERO,
-          id: item.slotId,
-          isReleased: isReleased || false,
+          slotId: item.slotId,
+          isClaimed: isClaimed || false,
         };
       }),
     [stages, slots],
   );
 
-  const columns = useStagedPaymentTableColumns(data, isReleaseStep, isLoading);
+  const columns = useStagedPaymentTableColumns(data, isPaymentStep, isLoading);
 
   return (
     <div>
