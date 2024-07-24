@@ -1,5 +1,4 @@
 const fetch = require('cross-fetch');
-const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -26,33 +25,35 @@ const getLiquidationsHandler = async (
 
   const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
-  try {
-    const res = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Idempotency-Key': uuid(),
-          'Api-Key': apiKey,
-        },
-        method: 'GET',
+  const res = await fetch(
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': apiKey,
       },
-    );
+      method: 'GET',
+    },
+  );
 
-    const liquidationAddressResult = await res.json();
+  const liquidationAddressResult = await res.json();
 
-    if (!liquidationAddressResult.count) {
-      throw new Error('No liquidation addresses found for user');
-    }
+  if (!liquidationAddressResult.count) {
+    throw new Error('No liquidation addresses found for user');
+  }
 
-    const liquidationAddress = liquidationAddressResult.data[0];
+  const liquidationAddressIds = liquidationAddressResult.data.map(
+    (item) => item.id,
+  );
 
+  const drains = [];
+
+  for (const liquidationAddressId of liquidationAddressIds) {
     const drainsRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddress.id}/drains`,
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddressId}/drains`,
       {
         headers: {
           'Content-Type': 'application/json',
-          'Idempotency-Key': uuid(),
           'Api-Key': apiKey,
         },
         method: 'GET',
@@ -61,14 +62,13 @@ const getLiquidationsHandler = async (
 
     const drainsResult = await drainsRes.json();
 
-    return {
-      success: true,
-      drains: drainsResult.drains,
-    };
-  } catch (e) {
-    console.error(e);
-    return undefined;
+    drains.push(...drainsResult.data);
   }
+
+  return {
+    success: true,
+    drains,
+  };
 };
 
 module.exports = {
