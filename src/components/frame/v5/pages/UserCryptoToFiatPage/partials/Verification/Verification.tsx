@@ -11,12 +11,7 @@ import RowItem from '../RowItem/index.ts';
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';
 import VerificationModal from './VerificationModal.tsx';
 
-const Verification: FC<CryptoToFiatPageComponentProps> = ({
-  order,
-  kycStatusData,
-  refetchStatus,
-  kycStatusLoading,
-}) => {
+const Verification = () => {
   const [updateProfile] = useUpdateUserProfileMutation();
 
   const { user } = useAppContext();
@@ -28,7 +23,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
   const { kycStatus } = kycStatusData ?? {};
 
   const badgeProps = getBadgeProps(kycStatus);
-  const ctaProps = getCTAProps(kycStatusLoading, kycStatus);
+  const ctaProps = getCTAProps(kycStatus);
 
   const handleTermsAcceptance = (kycLink: string) => {
     handleClose();
@@ -65,14 +60,16 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
       <RowItem.Heading
         title={formatText(MSG.headingTitle)}
         accessory={formatText(MSG.headingAccessory)}
-        itemOrder={order}
+        itemIndex={1}
         badgeProps={badgeProps}
+        isDataLoading={kycStatusDataIsLoading}
       />
       <RowItem.Body
         title={formatText(MSG.bodyTitle)}
         description={formatText(MSG.bodyDescription)}
         {...ctaProps}
         ctaOnClick={handleOpen}
+        isDataLoading={kycStatusDataIsLoading}
       />
 
       {isModalOpened && (

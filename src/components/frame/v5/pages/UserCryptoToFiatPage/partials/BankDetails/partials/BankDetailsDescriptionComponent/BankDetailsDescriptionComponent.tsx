@@ -1,8 +1,11 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import hocWithLoading from '~common/HocWithLoading/index.ts';
 import { type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+
+import { SKELETON_FRAME } from './consts.ts';
 
 const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetails.partials.BankDetailsDescriptionComponent';
@@ -38,10 +41,20 @@ interface BankDetailsDescriptionComponentProps {
   bankAccount: NonNullable<
     CheckKycStatusMutation['bridgeXYZMutation']
   >['bankAccount'];
+  isDataLoading: boolean;
 }
+
+const TableDataCellValue = ({
+  value = '-',
+}: {
+  value: string | null | undefined;
+}) => <>{value}</>;
+
+const TableDataCellValueWithLoading = hocWithLoading(TableDataCellValue);
 
 const BankDetailsDescriptionComponent = ({
   bankAccount,
+  isDataLoading,
 }: BankDetailsDescriptionComponentProps) => {
   return (
     <div className="flex flex-col">
@@ -64,16 +77,40 @@ const BankDetailsDescriptionComponent = ({
         </thead>
         <tbody>
           <tr>
-            <td>{bankAccount?.bankName ?? '-'}</td>
             <td>
-              {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
+              <TableDataCellValueWithLoading
+                value={bankAccount?.bankName}
+                isLoading={isDataLoading}
+                skeletonFrame={SKELETON_FRAME}
+              />
             </td>
             <td>
-              {bankAccount?.usAccount?.routingNumber ??
-                bankAccount?.iban?.bic ??
-                '-'}
+              <TableDataCellValueWithLoading
+                value={
+                  bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4
+                }
+                isLoading={isDataLoading}
+                skeletonFrame={SKELETON_FRAME}
+              />
             </td>
-            <td>{bankAccount?.currency ?? '-'}</td>
+            <td>
+              <TableDataCellValueWithLoading
+                value={
+                  bankAccount?.usAccount?.routingNumber ??
+                  bankAccount?.iban?.bic
+                }
+                isLoading={isDataLoading}
+                skeletonFrame={SKELETON_FRAME}
+                containerClassName="py-1"
+              />
+            </td>
+            <td>
+              <TableDataCellValueWithLoading
+                value={bankAccount?.currency}
+                isLoading={isDataLoading}
+                skeletonFrame={SKELETON_FRAME}
+              />
+            </td>
           </tr>
         </tbody>
       </table>

@@ -16,8 +16,8 @@ import BankDetailsDescriptionComponent from './partials/BankDetailsDescriptionCo
 import { BankDetailsStatus } from './types.ts';
 
 const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
-  order,
   kycStatusData,
+  kycStatusDataIsLoading,
 }) => {
   const [isOpened, setOpened] = useState(false);
   const handleOpen = () => setOpened(true);
@@ -39,15 +39,20 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
         title={formatText(HEADING_MSG.title)}
         accessory={formatText(HEADING_MSG.accessory)}
         badgeProps={badgeProps}
-        itemOrder={order}
+        itemIndex={2}
+        isDataLoading={kycStatusDataIsLoading}
       />
       <RowItem.Body
         descriptionComponent={
-          <BankDetailsDescriptionComponent bankAccount={bankAccountData} />
+          <BankDetailsDescriptionComponent
+            bankAccount={bankAccountData}
+            isDataLoading={kycStatusDataIsLoading}
+          />
         }
         ctaTitle={ctaScheme.ctaTitle}
         ctaOnClick={handleOpen}
         ctaDisabled={ctaScheme.ctaDisabled}
+        isDataLoading={kycStatusDataIsLoading}
       />
 
       {isOpened && (

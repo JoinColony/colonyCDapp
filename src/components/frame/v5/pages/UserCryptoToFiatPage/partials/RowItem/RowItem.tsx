@@ -1,5 +1,6 @@
 import React from 'react';
 
+import hocWithLoading from '~common/HocWithLoading/index.ts';
 import CryptoToFiatBadge from '~v5/common/Pills/CryptoToFiatBadge.tsx/CryptoToFiatBadge.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -11,28 +12,37 @@ import {
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.RowItem';
 
+const CrytoToFiatBadgeWithLoading = hocWithLoading(CryptoToFiatBadge);
+
+const ButtonWithLoading = hocWithLoading(Button);
+
 const Heading: React.FC<RowItemHeadingProps> = ({
   title,
   accessory,
   badgeProps,
-  itemOrder,
+  itemIndex,
+  isDataLoading,
 }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
         <section className="flex items-center gap-2 text-md font-bold">
           <section className="flex aspect-square h-6 items-center justify-center rounded-full bg-base-black text-sm text-base-white">
-            {itemOrder}
+            {itemIndex}
           </section>
           <section className="flex items-end gap-1">
             <h4>{title}</h4>
             <span className="text-xs font-thin leading-[19px] text-gray-600">
-              {accessory}
+              ({accessory})
             </span>
           </section>
         </section>
         <section>
-          <CryptoToFiatBadge {...badgeProps} />
+          <CrytoToFiatBadgeWithLoading
+            {...badgeProps}
+            isLoading={isDataLoading}
+            skeletonFrame={{ width: 66, height: 26, borderRadius: 24 }}
+          />
         </section>
       </div>
     </div>
@@ -47,8 +57,7 @@ const Body: React.FC<RowItemBodyProps> = ({
   ctaDisabled,
   ctaOnClick,
   ctaComponent,
-  ctaLoading,
-  ctaHidden,
+  isDataLoading,
 }) => {
   return (
     <div className="flex items-end justify-between">
@@ -63,13 +72,14 @@ const Body: React.FC<RowItemBodyProps> = ({
         )}
       </section>
       <section className="flex min-w-[200px] justify-end">
-        {(!ctaHidden && ctaComponent) ?? (
-          <Button
+        {ctaComponent ?? (
+          <ButtonWithLoading
             type="button"
             text={ctaTitle}
             onClick={ctaOnClick}
             disabled={ctaDisabled}
-            loading={ctaLoading}
+            isLoading={isDataLoading}
+            skeletonFrame={{ width: 113, height: 40 }}
           />
         )}
       </section>

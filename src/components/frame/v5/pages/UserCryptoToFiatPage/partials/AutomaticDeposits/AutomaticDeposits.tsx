@@ -29,8 +29,8 @@ const BodyDescription = () => (
 );
 
 const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
-  order,
   kycStatusData,
+  kycStatusDataIsLoading,
 }) => {
   const { user, updateUser } = useAppContext();
 
@@ -52,8 +52,9 @@ const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
       <RowItem.Heading
         title={formatText(HEADING_MSG.headingTitle)}
         accessory={formatText(HEADING_MSG.headingAccessory)}
-        itemOrder={order}
+        itemIndex={3}
         badgeProps={badgeProps}
+        isDataLoading={kycStatusDataIsLoading}
       />
       <RowItem.Body
         title={formatText(BODY_MSG.bodyTitle)}

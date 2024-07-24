@@ -82,13 +82,12 @@ export const getBadgeProps = (
 export const getCTAProps = (
   isLoading: boolean,
   status?: string | null,
-): Partial<RowItemBodyProps> => {
-  if (isLoading) {
-    return { ctaLoading: true };
-  }
-
+): {
+  ctaTitle?: MessageDescriptor;
+  ctaDisabled?: boolean;
+} => {
   if (!status) {
-    return { ctaHidden: true };
+    return { ctaDisabled: true };
   }
 
   switch (status) {
