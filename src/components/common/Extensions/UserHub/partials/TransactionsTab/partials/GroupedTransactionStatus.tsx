@@ -17,25 +17,29 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
 
   return (
     <div
-      className={clsx('flex flex-col items-end', {
+      className={clsx('flex max-w-full flex-col items-end', {
         'text-success-400': succeeded,
         'text-negative-400': failed,
       })}
     >
-      {pending && (
-        <SpinnerGap
-          className="ml-2.5 h-[0.8125rem] w-[0.8125rem] animate-spin text-blue-400"
-          size={14}
-        />
-      )}
       <PillsBase
-        className={clsx({
-          'bg-success-100 text-success-400': succeeded,
-          'bg-negative-100 text-negative-400': failed,
-          'bg-gray-100 text-gray-500': !succeeded && !failed,
-        })}
+        className={clsx(
+          {
+            'bg-success-100 text-success-400': succeeded,
+            'bg-negative-100 text-negative-400': failed,
+            'bg-gray-100 text-gray-500': !succeeded && !failed,
+          },
+          'max-w-full',
+        )}
+        textClassName="flex max-w-full items-center"
       >
-        {status.toLowerCase()}
+        <span className="truncate">{status.toLowerCase()}</span>
+        {pending && (
+          <SpinnerGap
+            className="ml-1 h-[0.8125rem] w-[0.8125rem] flex-shrink-0 animate-spin"
+            size={14}
+          />
+        )}
       </PillsBase>
     </div>
   );
