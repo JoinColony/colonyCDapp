@@ -991,8 +991,10 @@ type Query {
   """
   Fetch from the Bridge XYZ API
   """
-  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
+  bridgeXYZQuery2(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
     @function(name: "bridgeXYZQuery-${env}")
+
+  bridgeGetDrainsHistory: [BridgeDrain] @function(name: "bridgeXYZQuery-${env}")
 }
 
 """
