@@ -42,7 +42,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
     const personaClient = new PersonaClient({
       templateId,
       referenceId,
-      environmentId: 'env_AY6hSVzQeRamUtJB7ydFhnCx',
+      environmentId: import.meta.env.PERSONA_ENVIRONMENT_ID,
       async onComplete() {
         await updateProfile({
           variables: {
