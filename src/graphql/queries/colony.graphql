@@ -86,6 +86,34 @@ query GetColonyMemberInvite($id: ID!) {
   }
 }
 
+query GetColonyTokensWithLockedStates($name: String!) {
+  getColonyByName(name: $name) {
+    items {
+      tokens {
+        items {
+          token {
+            colonies {
+              items {
+                colony {
+                  status {
+                    nativeToken {
+                      unlocked
+                    }
+                  }
+                  nativeTokenId
+                  name
+                }
+              }
+            }
+            name
+            id
+          }
+        }
+      }
+    }
+  }
+}
+
 subscription OnUpdateColony {
   onUpdateColony {
     lastUpdatedContributorsWithReputation

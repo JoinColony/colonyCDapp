@@ -9,12 +9,14 @@ import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
+import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -39,6 +41,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
+  const tokenStatesMap = useTokenLockStates();
 
   return useMemo(
     () =>
@@ -96,7 +99,18 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         networkInverseFee,
                       }),
                     ),
-                  tokenAddress: string().required(),
+                  tokenAddress: string()
+                    .required()
+                    .test(
+                      'token-unlocked',
+                      formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+                      (value) =>
+                        !shouldPreventPaymentsWithTokenInColony(
+                          value || '',
+                          colony,
+                          tokenStatesMap,
+                        ),
+                    ),
                   delay: string()
                     .test(
                       'is-bigger-than-max',
@@ -160,7 +174,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee],
+    [colony, colonyTokens, networkInverseFee, tokenStatesMap],
   );
 };
 
