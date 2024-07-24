@@ -3,7 +3,7 @@ import {
   ColonyRole,
   getPermissionProofs,
 } from '@colony/colony-js';
-import { type BigNumberish, utils, BigNumber } from 'ethers';
+import { type BigNumberish, utils, BigNumber, constants } from 'ethers';
 
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
@@ -22,7 +22,7 @@ const EXPENDITURESLOTS_SLOT = toB32(BigNumber.from(26));
 const EXPENDITURESLOT_RECIPIENT = toB32(BigNumber.from(0));
 const EXPENDITURESLOT_CLAIMDELAY = toB32(BigNumber.from(1));
 
-export const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
+export const MAX_CLAIM_DELAY_VALUE = constants.MaxUint256;
 
 interface GetEditLockedExpenditureMulticallDataParams {
   expenditure: Expenditure;
