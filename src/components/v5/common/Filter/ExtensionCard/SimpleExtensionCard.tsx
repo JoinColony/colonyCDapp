@@ -23,12 +23,12 @@ const SimpleExtensionCard: FC<SimpleExtensionCardProps> = ({
           <span className="inline-block w-full truncate text-1">
             {extensionName}
           </span>
+        </div>
+        <div className="flex flex-shrink-0 items-center justify-end gap-2">
           <ExtensionStatusBadge
             mode="extension"
             text={formatText({ id: 'permissionsPage.extension' })}
           />
-        </div>
-        <div className="flex-shrink-0">
           <MeatBallMenu withVerticalIcon {...meatBallMenuProps} />
         </div>
       </div>
