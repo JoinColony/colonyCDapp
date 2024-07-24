@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@colony/colony-js": "^0.0.0-snapshot-20240620212433",
+    "@colony/colony-js": "^0.0.0-snapshot-69cce09-20240724101901",
     "@colony/events": "0.0.0-snapshot-20240329154314",
     "cross-fetch": "^4.0.0",
     "ethers": "^5.7.2"
