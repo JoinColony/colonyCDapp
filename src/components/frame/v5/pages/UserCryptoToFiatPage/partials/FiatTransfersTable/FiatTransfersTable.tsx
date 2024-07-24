@@ -7,6 +7,7 @@ import {
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { useGetUserDrainsQuery } from '~gql';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
@@ -37,6 +38,9 @@ const MSG = defineMessages({
 });
 
 const FiatTransfersTable = () => {
+  const { data } = useGetUserDrainsQuery({});
+  const drains = data?.bridgeXYZQuery?.drains ?? [];
+
   const { formatMessage } = useIntl();
   const [sorting, setSorting] = useState<SortingState>([
     { desc: true, id: 'createdAt' },
@@ -50,7 +54,18 @@ const FiatTransfersTable = () => {
       <TableHeader title={formatMessage(MSG.tableTitle)} />
       <Table<FormattedTransfer>
         columns={columns}
-        data={loading ? Array(3).fill({}) : sortedData}
+        data={
+          loading
+            ? Array(3).fill({})
+            : drains?.map((item) => ({
+                id: item?.id ?? '',
+                amount: item?.amount ?? '',
+                amountNumeric: item?.amount ?? 0,
+                receiptUrl: item?.receipt?.url ?? '',
+                state: item?.state ?? '',
+                createdAt: item?.created_at ?? '',
+              }))
+        }
         state={{ sorting }}
         getRowId={(row) => row.id}
         initialState={{ pagination: { pageSize: 10 } }}
