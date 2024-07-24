@@ -2,7 +2,6 @@ import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
@@ -48,7 +47,6 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   isClickable = true,
   isCancelable = true,
 }) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navigate = useNavigate();
 
@@ -57,44 +55,45 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
 
+  const groupMsgId = `transaction.group`;
+
+  const groupMsgTitle = values.group?.title || {
+    id: `${groupMsgId}.${groupKey}.title`,
+  };
+  const groupMsgDescription = values.group?.description || {
+    id:
+      import.meta.env.VITE_DEBUG === 'true'
+        ? `transaction.debug.description`
+        : `${groupMsgId}.${groupKey}.description`,
+  };
+
+  const { methodName, context, params = [] } = values;
+  const msgValues = { methodName, context };
+
+  const groupTitle = formatText(
+    groupMsgTitle,
+    values.group?.titleValues || {
+      ...arrayToObject(params),
+      ...msgValues,
+    },
+  );
+
+  const groupDescription = formatText(
+    groupMsgDescription,
+    values.group?.descriptionValues || {
+      ...arrayToObject(params),
+      ...msgValues,
+    },
+  );
+
+  const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
+
   const canLinkToAction =
     isClickable &&
     values.group?.key &&
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
       values.group.key as TRANSACTION_METHODS,
     );
-
-  const defaultTransactionGroupMessageDescriptorTitleId = {
-    id: `${
-      transactionGroup[0].metatransaction ? 'meta' : ''
-    }transaction.group.${groupKey}.title`,
-  };
-  const defaultTransactionGroupMessageDescriptorDescriptionId = {
-    id:
-      import.meta.env.VITE_DEBUG === 'true'
-        ? `${
-            transactionGroup[0].metatransaction ? 'meta' : ''
-          }transaction.debug.description`
-        : `${
-            transactionGroup[0].metatransaction ? 'meta' : ''
-          }transaction.group.${groupKey}.description`,
-  };
-
-  const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
-
-  const { methodName, context, params = [] } = values;
-  const titleValues = { methodName, context };
-
-  const value = formatText(
-    {
-      ...defaultTransactionGroupMessageDescriptorTitleId,
-      ...values.group?.title,
-    },
-    values.group?.titleValues || {
-      ...arrayToObject(params),
-      ...titleValues,
-    },
-  );
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
@@ -136,8 +135,11 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               <div className="flex w-full items-center justify-between gap-4">
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-2">
-                    <h4 className="truncate text-left text-1 sm:w-[190px]">
-                      {value}
+                    <h4
+                      className="truncate text-left text-1 sm:w-[190px]"
+                      title={groupTitle}
+                    >
+                      {groupTitle}
                     </h4>
                     {createdAt && (
                       <span className="mt-0.5 block whitespace-nowrap text-xs text-gray-400">
@@ -145,17 +147,11 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="truncate text-left text-xs text-gray-600 sm:w-[250px]">
-                    <FormattedMessage
-                      {...defaultTransactionGroupMessageDescriptorDescriptionId}
-                      {...values.group?.description}
-                      values={
-                        values.group?.descriptionValues || {
-                          ...arrayToObject(params),
-                          ...titleValues,
-                        }
-                      }
-                    />
+                  <p
+                    className="truncate text-left text-xs text-gray-600 sm:w-[250px]"
+                    title={groupDescription}
+                  >
+                    {groupDescription}
                   </p>
                 </div>
                 <div className="flex min-w-0 gap-2 pr-8">
@@ -165,7 +161,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             </button>
             <button
               type="button"
-              aria-label={formatMessage({
+              aria-label={formatText({
                 id: 'handle.unselect.transaction',
               })}
               className="absolute right-0 flex w-6 -translate-y-1/2 items-center justify-center sm:right-6"

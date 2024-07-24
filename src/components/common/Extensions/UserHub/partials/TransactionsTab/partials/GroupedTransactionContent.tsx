@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type GroupedTransactionContentProps } from '../types.ts';
@@ -45,13 +46,22 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     params,
     status,
     group,
-    metatransaction,
     title,
     titleValues,
   },
 }) => {
+  const titleId = ['transaction', context, methodName, methodContext, 'title']
+    .filter((i) => !!i)
+    .join('.');
+
+  const titleMsg = title || { id: titleId };
+
+  const titleText = formatText(
+    titleMsg,
+    (titleValues || params) as Record<string, any>,
+  );
+
   const {
-    defaultTransactionMessageDescriptorId,
     handleRetryAction,
     failed,
     pending,
@@ -62,10 +72,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     canBeSigned,
   } = useGroupedTransactionContent({
     id,
-    methodContext,
-    methodName,
-    metatransaction,
-    context,
     status,
     selected,
   });
@@ -84,14 +90,9 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
       })}
     >
       <div className="flex items-center justify-between gap-2">
-        <h4 className="text-gray-900">
-          {`${(group?.index || idx) + 1}. `}{' '}
-          <FormattedMessage
-            {...defaultTransactionMessageDescriptorId}
-            {...title}
-            values={(titleValues || params) as Record<string, any>}
-          />
-        </h4>
+        <div className="text-gray-900">
+          {`${(group?.index || idx) + 1}. `} {titleText}
+        </div>
 
         {isCancelable && canBeSigned ? (
           <CancelTransaction

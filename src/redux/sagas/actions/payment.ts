@@ -80,7 +80,7 @@ function* createPaymentAction({
     /*
      * setup batch ids and channels
      */
-    const batchKey = TRANSACTION_METHODS.PaymentAction;
+    const batchKey = TRANSACTION_METHODS.Payment;
 
     const { paymentAction, annotatePaymentAction } =
       yield createTransactionChannels(metaId, [

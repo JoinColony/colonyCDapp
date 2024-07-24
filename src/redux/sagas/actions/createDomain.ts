@@ -66,7 +66,7 @@ function* createDomainAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = TRANSACTION_METHODS.CreateDomainAction;
+    const batchKey = TRANSACTION_METHODS.CreateDomain;
     const {
       createDomainAction: createDomain,
       annotateCreateDomainAction: annotateCreateDomain,

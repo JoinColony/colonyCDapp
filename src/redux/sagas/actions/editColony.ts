@@ -57,7 +57,7 @@ function* editColonyAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = TRANSACTION_METHODS.EditColonyAction;
+    const batchKey = TRANSACTION_METHODS.EditColony;
 
     const {
       editColonyAction: editColony,

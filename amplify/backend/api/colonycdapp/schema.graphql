@@ -1694,8 +1694,6 @@ enum ClientType {
   TokenLockingClient
   VotingReputationClient
   WhitelistClient
-  WrappedTokenClient
-  VestingSimpleClient
   LightTokenClient
 }
 

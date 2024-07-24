@@ -59,7 +59,7 @@ function* editDomainAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = TRANSACTION_METHODS.EditDomainAction;
+    const batchKey = TRANSACTION_METHODS.EditDomain;
 
     const {
       editDomainAction: editDomain,
