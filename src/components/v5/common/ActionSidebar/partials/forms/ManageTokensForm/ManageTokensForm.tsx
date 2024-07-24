@@ -5,6 +5,7 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { DecisionMethod } from '~types/actions.ts';
 
 import { useManageTokens } from './hooks.ts';
 import TokensTable from './partials/TokensTable/TokensTable.tsx';
@@ -18,7 +19,10 @@ const ManageTokensForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   return (
     <>
-      <DecisionMethodField />
+      <DecisionMethodField
+        // @TODO remove this once we add support for managing tokens
+        filterOptionsFn={({ value }) => value !== DecisionMethod.MultiSig}
+      />
       <CreatedIn readonly />
       <Description />
       <TokensTable
