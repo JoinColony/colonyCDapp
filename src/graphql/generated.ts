@@ -12441,6 +12441,7 @@ export const ColonyMultiSigFragmentDoc = gql`
   isExecuted
   hasActionCompleted
   isRejected
+  hasActionCompleted
   isDecision
   executedAt
   signatures {
