@@ -1,6 +1,6 @@
 import { Extension } from '@colony/core';
 import React, { useMemo, useState } from 'react';
-import { type MessageDescriptor, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import useUserByNameOrAddress from '~hooks/useUserByNameOrAddress.ts';
 import {
@@ -9,37 +9,16 @@ import {
 } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
-import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
+import { type AvailableExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { type SidePanelDataProps } from './types.ts';
 
-type AvailableStatus = Extract<
-  ExtensionStatusBadgeMode,
-  'installed' | 'enabled' | 'disabled' | 'deprecated' | 'not-installed'
->;
-
-const badgeMessages: Record<AvailableStatus, MessageDescriptor> = {
-  installed: {
-    id: 'status.installed',
-  },
-  enabled: {
-    id: 'status.enabled',
-  },
-  disabled: {
-    id: 'status.disabled',
-  },
-  deprecated: {
-    id: 'status.deprecated',
-  },
-  'not-installed': {
-    id: 'status.notInstalled',
-  },
-};
-
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   const { formatMessage } = useIntl();
-  const [statuses, setStatuses] = useState<AvailableStatus[]>(['disabled']);
+  const [statuses, setStatuses] = useState<AvailableExtensionStatusBadgeMode[]>(
+    ['disabled'],
+  );
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
@@ -145,6 +124,5 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
   return {
     sidePanelData,
     statuses,
-    badgeMessages,
   };
 };

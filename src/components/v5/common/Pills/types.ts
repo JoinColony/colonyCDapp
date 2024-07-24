@@ -19,6 +19,11 @@ export type ExtensionStatusBadgeMode =
   | 'extension'
   | 'payments';
 
+export type AvailableExtensionStatusBadgeMode = Extract<
+  ExtensionStatusBadgeMode,
+  'installed' | 'enabled' | 'disabled' | 'deprecated' | 'not-installed'
+>;
+
 export type UserStatusMode =
   | ContributorType
   | 'dedicated-filled'

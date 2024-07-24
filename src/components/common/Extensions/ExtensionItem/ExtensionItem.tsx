@@ -19,7 +19,6 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const {
-    badgeMessage,
     extensionUrl,
     isExtensionInstalled,
     status,
@@ -52,7 +51,10 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
                   v{version}
                 </span>
               </h5>
-              <ExtensionStatusBadge mode={status} text={badgeMessage} />
+              <ExtensionStatusBadge
+                mode={status}
+                text={formatMessage({ id: `extension.status.${status}` })}
+              />
             </div>
             <p className="mt-1.5 text-md text-gray-600">
               {formatMessage(description)}
@@ -63,11 +65,6 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
           {button}
         </div>
       </div>
-      {/* {isMobile && (
-        <div className="ml-3.625rem mt-6 w-[calc(100%-3.625rem)] shrink-0 sm:ml-4 sm:mt-0 sm:w-auto">
-          {button}
-        </div>
-      )} */}
     </div>
   );
 };

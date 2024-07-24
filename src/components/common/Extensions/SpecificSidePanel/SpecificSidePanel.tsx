@@ -17,8 +17,7 @@ const displayName = 'common.Extensions.SpecificSidePanel';
 
 const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
   const { formatMessage } = useIntl();
-  const { badgeMessages, statuses, sidePanelData } =
-    useSpecificSidePanel(extensionData);
+  const { statuses, sidePanelData } = useSpecificSidePanel(extensionData);
 
   return (
     <div className="flex flex-col gap-2">
@@ -49,7 +48,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
                     <ExtensionStatusBadge
                       key={status}
                       mode={status}
-                      text={formatMessage(badgeMessages[status])}
+                      text={formatMessage({ id: `extension.status.${status}` })}
                     />
                   ))}
                 </div>

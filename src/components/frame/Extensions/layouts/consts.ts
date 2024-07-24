@@ -168,7 +168,7 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
   //   icon: Briefcase,
   //   disabled: true,
   //   tagProps: {
-  //     text: formatText({ id: 'status.comingSoon' }),
+  //     text: formatText({ id: 'extension.status.coming-soon' }),
   //   },
   // },
   {
