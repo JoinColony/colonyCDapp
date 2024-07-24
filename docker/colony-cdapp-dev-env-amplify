@@ -8,6 +8,8 @@ VOLUME [ "/colonyCDapp/amplify/backend", "/colonyCDapp/amplify/mock-data", "/col
 EXPOSE 20002
 # Opensearch
 EXPOSE 9200
+# DynamoDB
+EXPOSE 62224
 
 WORKDIR /colonyCDapp
 
