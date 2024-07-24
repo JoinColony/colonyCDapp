@@ -1,7 +1,1 @@
-import { type HocWithLoadingProps } from '~common/HocWithLoading/types.ts';
-
-export const SKELETON_FRAME: HocWithLoadingProps['skeletonFrame'] = {
-  height: 20,
-  width: 120,
-  borderRadius: 4,
-};
+export const TABLE_TD_LOADER_STYLES = 'h-5 w-[120px] rounded-[4px] my-1';

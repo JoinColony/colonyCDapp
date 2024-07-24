@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { type HocWithLoadingProps } from './types.ts';
@@ -7,21 +8,11 @@ const hocWithLoading = <P extends object>(
 ): React.FC<P & HocWithLoadingProps> => {
   return ({
     isLoading,
-    containerClassName,
-    skeletonFrame: { height, width, borderRadius = 8 },
+    loaderClassName,
     ...wrappedComponentProps
   }: HocWithLoadingProps & P) => {
     return isLoading ? (
-      <div className={containerClassName}>
-        <div
-          className="overflow-hidden skeleton"
-          style={{
-            height: `${height}px`,
-            width: `${width}px`,
-            borderRadius: `${borderRadius}px`,
-          }}
-        />
-      </div>
+      <div className={clsx('overflow-hidden skeleton', loaderClassName)} />
     ) : (
       <WrappedComponent {...(wrappedComponentProps as P)} />
     );

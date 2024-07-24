@@ -5,7 +5,7 @@ import hocWithLoading from '~common/HocWithLoading/index.ts';
 import { type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
-import { SKELETON_FRAME } from './consts.ts';
+import { TABLE_TD_LOADER_STYLES } from './consts.ts';
 
 const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetails.partials.BankDetailsDescriptionComponent';
@@ -81,7 +81,7 @@ const BankDetailsDescriptionComponent = ({
               <TableDataCellValueWithLoading
                 value={bankAccount?.bankName}
                 isLoading={isDataLoading}
-                skeletonFrame={SKELETON_FRAME}
+                loaderClassName={TABLE_TD_LOADER_STYLES}
               />
             </td>
             <td>
@@ -90,7 +90,7 @@ const BankDetailsDescriptionComponent = ({
                   bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4
                 }
                 isLoading={isDataLoading}
-                skeletonFrame={SKELETON_FRAME}
+                loaderClassName={TABLE_TD_LOADER_STYLES}
               />
             </td>
             <td>
@@ -100,15 +100,14 @@ const BankDetailsDescriptionComponent = ({
                   bankAccount?.iban?.bic
                 }
                 isLoading={isDataLoading}
-                skeletonFrame={SKELETON_FRAME}
-                containerClassName="py-1"
+                loaderClassName={TABLE_TD_LOADER_STYLES}
               />
             </td>
             <td>
               <TableDataCellValueWithLoading
                 value={bankAccount?.currency}
                 isLoading={isDataLoading}
-                skeletonFrame={SKELETON_FRAME}
+                loaderClassName={TABLE_TD_LOADER_STYLES}
               />
             </td>
           </tr>

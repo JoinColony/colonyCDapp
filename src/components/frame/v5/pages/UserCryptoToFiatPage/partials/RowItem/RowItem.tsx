@@ -41,7 +41,7 @@ const Heading: React.FC<RowItemHeadingProps> = ({
           <CrytoToFiatBadgeWithLoading
             {...badgeProps}
             isLoading={isDataLoading}
-            skeletonFrame={{ width: 66, height: 26, borderRadius: 24 }}
+            loaderClassName="w-[66px] h-[26px] rounded-[24px]"
           />
         </section>
       </div>
@@ -79,7 +79,7 @@ const Body: React.FC<RowItemBodyProps> = ({
             onClick={ctaOnClick}
             disabled={ctaDisabled}
             isLoading={isDataLoading}
-            skeletonFrame={{ width: 113, height: 40 }}
+            loaderClassName="w-[113px] h-[40px] rounded-lg"
           />
         )}
       </section>
