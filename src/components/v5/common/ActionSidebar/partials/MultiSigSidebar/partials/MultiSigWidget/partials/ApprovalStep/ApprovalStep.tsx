@@ -287,7 +287,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 </div>
               )}
             </div>
-            {isOwner && signaturesToDisplay.length > 5 && (
+            {isOwner && !isMotionOlderThanWeek && !userSignature && (
               <div className="mt-2">
                 <StatusText
                   status={StatusTypes.Info}
@@ -300,7 +300,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 </StatusText>
               </div>
             )}
-            {isMotionOlderThanWeek && (
+            {isMotionOlderThanWeek && !userSignature && (
               <div className="mt-2">
                 <StatusText
                   status={StatusTypes.Info}
@@ -395,8 +395,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                           disabled: expectedStep === VoteExpectedStep.cancel,
                         }}
                       />
-                      {(isOwner && signaturesToDisplay.length > 5) ||
-                      isMotionOlderThanWeek ? (
+                      {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
                           multiSigId={multiSigData.nativeMultiSigId}
                           isPending={
