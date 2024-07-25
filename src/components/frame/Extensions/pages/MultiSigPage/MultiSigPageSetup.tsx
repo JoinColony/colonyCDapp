@@ -72,7 +72,11 @@ const MSG = defineMessages({
   },
   thresholdFixedErrorMessage: {
     id: `${displayName}.thresholdFixedErrorMessage`,
-    defaultMessage: 'A value must be entered before submitting',
+    defaultMessage: 'A value must be entered before enabling',
+  },
+  thresholdFixedMaxErrorMessage: {
+    id: `${displayName}.thresholdFixedMaxErrorMessage`,
+    defaultMessage: 'Threshold must be less than or equal to 99999',
   },
   thresholdInherit: {
     id: `${displayName}.thresholdInherit`,
@@ -108,6 +112,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   const {
     thresholdType,
     isFixedThresholdError,
+    fixedThresholdErrorMessage,
     domainThresholdConfigs,
     register,
     handleThresholdValueChange,
@@ -186,21 +191,26 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
               {thresholdType === MultiSigThresholdType.FIXED_THRESHOLD && (
                 <InputGroup
                   {...register('globalThreshold', {
-                    required: true,
-                    min: 1,
-                    max: 99999,
+                    required: formatText(MSG.thresholdFixedErrorMessage),
+                    min: {
+                      value: 1,
+                      message: formatText(MSG.thresholdFixedErrorMessage),
+                    },
+                    max: {
+                      value: 99999,
+                      message: formatText(MSG.thresholdFixedMaxErrorMessage),
+                    },
                     onChange: (e) => {
                       handleThresholdValueChange(
                         'globalThreshold',
-                        // Slicing the input value to the last 5 entered digits
-                        Number(e.target.value?.slice(-5)),
+                        Number(e.target.value),
                       );
                     },
                   })}
                   {...inputGroupSharedConfig}
                   onKeyDown={handleOnKeyDown}
                   isError={isFixedThresholdError}
-                  errorMessage={formatText(MSG.thresholdFixedErrorMessage)}
+                  errorMessage={fixedThresholdErrorMessage}
                   appendMessage={formatText(MSG.thresholdFixedFormApprovals)}
                 />
               )}
@@ -227,78 +237,89 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                 </p>
               </div>
               <div className="flex flex-col gap-6">
-                {domainThresholdConfigs.map(({ id, name, type, isError }) => (
-                  <div key={id}>
-                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-md font-medium">{name}</p>
-                      <Select
-                        menuPosition="fixed"
-                        menuShouldScrollIntoView={false}
-                        className="w-full sm:w-72"
-                        onChange={(option) =>
-                          handleDomainThresholdTypeChange(
-                            id,
-                            option?.value as MultiSigThresholdType,
-                          )
-                        }
-                        value={type}
-                        options={[
-                          {
-                            label: formatText(MSG.thresholdInherit),
-                            value: MultiSigThresholdType.INHERIT_FROM_COLONY,
-                          },
-                          {
-                            label: formatText(
-                              MSG.thresholdMajorityApprovalTitle,
-                            ),
-                            value: MultiSigThresholdType.MAJORITY_APPROVAL,
-                          },
-                          {
-                            label: formatText(MSG.thresholdFixedTitle),
-                            value: MultiSigThresholdType.FIXED_THRESHOLD,
-                          },
-                        ]}
-                      />
-                    </div>
-                    {type === MultiSigThresholdType.FIXED_THRESHOLD && (
-                      <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
-                        <div>
-                          <p className="mb-0.5 text-md font-medium">
-                            {formatText(MSG.thresholdFixedTitle)}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {formatText(MSG.domainFixedThresholdDescription)}
-                          </p>
-                        </div>
-
-                        <InputGroup
-                          {...register(name, {
-                            required: true,
-                            min: 1,
-                            max: 99999,
-                            onChange: (e) => {
-                              handleThresholdValueChange(
-                                name,
-                                // Slicing the input value to the last 5 entered digits
-                                Number(e.target.value?.slice(-5)),
-                              );
+                {domainThresholdConfigs.map(
+                  ({ id, name, type, isError, errorMessage }) => (
+                    <div key={id}>
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-md font-medium">{name}</p>
+                        <Select
+                          menuPosition="fixed"
+                          menuShouldScrollIntoView={false}
+                          className="w-full sm:w-72"
+                          onChange={(option) =>
+                            handleDomainThresholdTypeChange(
+                              id,
+                              option?.value as MultiSigThresholdType,
+                            )
+                          }
+                          value={type}
+                          options={[
+                            {
+                              label: formatText(MSG.thresholdInherit),
+                              value: MultiSigThresholdType.INHERIT_FROM_COLONY,
                             },
-                          })}
-                          {...inputGroupSharedConfig}
-                          onKeyDown={handleOnKeyDown}
-                          isError={isError}
-                          errorMessage={formatText(
-                            MSG.thresholdFixedErrorMessage,
-                          )}
-                          appendMessage={formatText(
-                            MSG.thresholdFixedFormApprovals,
-                          )}
-                          className="flex shrink-0 grow-0 basis-auto flex-col items-end"
+                            {
+                              label: formatText(
+                                MSG.thresholdMajorityApprovalTitle,
+                              ),
+                              value: MultiSigThresholdType.MAJORITY_APPROVAL,
+                            },
+                            {
+                              label: formatText(MSG.thresholdFixedTitle),
+                              value: MultiSigThresholdType.FIXED_THRESHOLD,
+                            },
+                          ]}
                         />
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {type === MultiSigThresholdType.FIXED_THRESHOLD && (
+                        <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
+                          <div>
+                            <p className="mb-0.5 text-md font-medium">
+                              {formatText(MSG.thresholdFixedTitle)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {formatText(MSG.domainFixedThresholdDescription)}
+                            </p>
+                          </div>
+
+                          <InputGroup
+                            {...register(name, {
+                              required: formatText(
+                                MSG.thresholdFixedErrorMessage,
+                              ),
+                              min: {
+                                value: 1,
+                                message: formatText(
+                                  MSG.thresholdFixedErrorMessage,
+                                ),
+                              },
+                              max: {
+                                value: 99999,
+                                message: formatText(
+                                  MSG.thresholdFixedMaxErrorMessage,
+                                ),
+                              },
+                              onChange: (e) => {
+                                handleThresholdValueChange(
+                                  name,
+                                  Number(e.target.value),
+                                );
+                              },
+                            })}
+                            {...inputGroupSharedConfig}
+                            onKeyDown={handleOnKeyDown}
+                            isError={isError}
+                            errorMessage={errorMessage}
+                            appendMessage={formatText(
+                              MSG.thresholdFixedFormApprovals,
+                            )}
+                            className="flex shrink-0 grow-0 basis-auto flex-col items-end"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )}
               </div>
             </>
           </AccordionItem>
