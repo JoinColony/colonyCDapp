@@ -109,7 +109,7 @@ function* editStreamingPaymentAction({
         endCondition !== undefined &&
         endCondition !== streamingPayment.metadata?.endCondition;
 
-      if (hasEndConditionChanged) {
+      if (hasEndConditionChanged && streamingPayment.metadata) {
         yield apolloClient.mutate<
           UpdateStreamingPaymentMetadataMutation,
           UpdateStreamingPaymentMetadataMutationVariables
