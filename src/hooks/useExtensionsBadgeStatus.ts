@@ -5,7 +5,8 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { type AvailableExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 
 const useExtensionsBadge = (extensionData) => {
-  const [status, setStatus] = useState<AvailableExtensionStatusBadgeMode>();
+  const [status, setStatus] =
+    useState<AvailableExtensionStatusBadgeMode>('not-installed');
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
