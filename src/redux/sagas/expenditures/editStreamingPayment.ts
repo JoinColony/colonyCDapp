@@ -111,7 +111,11 @@ function* editStreamingPaymentAction({
     } = yield waitForTxResult(txChannel);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      if (streamingPayment.metadata) {
+      const hasEndConditionChanged =
+        endCondition !== undefined &&
+        endCondition !== streamingPayment.metadata?.endCondition;
+
+      if (hasEndConditionChanged && streamingPayment.metadata) {
         yield apolloClient.mutate<
           UpdateStreamingPaymentMetadataMutation,
           UpdateStreamingPaymentMetadataMutationVariables
