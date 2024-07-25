@@ -169,13 +169,9 @@ function* stakeMotion({
     }
 
     if (activateTokens) {
-      yield put(transactionPending(approve.id));
-
       yield initiateTransaction(approve.id);
 
       yield waitForTxResult(approve.channel);
-
-      yield put(transactionPending(deposit.id));
 
       yield initiateTransaction(deposit.id);
 

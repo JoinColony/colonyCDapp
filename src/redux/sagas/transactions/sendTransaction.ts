@@ -23,7 +23,7 @@ export default function* sendTransaction({
     transaction;
 
   if (status !== TransactionStatus.Ready) {
-    throw new Error('Transaction is not ready to send.');
+    throw new Error(`Transaction ${id} is not ready to send.`);
   }
   const colonyManager = yield getColonyManager();
 
