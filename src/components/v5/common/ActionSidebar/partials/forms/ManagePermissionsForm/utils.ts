@@ -152,6 +152,7 @@ export const configureFormRoles = ({
   member,
   role,
   team,
+  isMultiSig = false,
 }: {
   colony: ColonyFragment;
   setValue: UseFormSetValue<ManagePermissionsFormValues>;
@@ -161,12 +162,14 @@ export const configureFormRoles = ({
   role: ManagePermissionsFormValues['role'];
   shouldPersistRole?: boolean;
   setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
+  isMultiSig?: boolean;
 }) => {
   const userRolesForDomain = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: member,
     domainId: team,
     intersectingRoles: true,
+    isMultiSig,
   });
 
   const userRoleMeta = getRole(userRolesForDomain);
