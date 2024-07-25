@@ -64,7 +64,7 @@ const AmountField: FC<AmountFieldProps> = ({
     dropdownRef,
     adjustInputWidth,
   } = useAmountField(tokenAddressController.value, maxWidth);
-  const [value, setValue] = useState<string | undefined>(
+  const [value, setValue] = useState<string>(
     field.value ? formatNumeral(field.value, formattingOptions) : '',
   );
 
