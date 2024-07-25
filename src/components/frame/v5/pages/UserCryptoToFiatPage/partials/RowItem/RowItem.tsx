@@ -14,8 +14,6 @@ import {
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.RowItem';
 
-
-
 const Heading: React.FC<RowItemHeadingProps> = ({
   title,
   accessory,
