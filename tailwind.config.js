@@ -136,10 +136,10 @@ module.exports = {
         fast: '175ms',
       },
       screens: {
-        sm: '48rem',
-        md: '64.0625rem',
-        lg: '80rem',
-        xl: 'calc(90rem + 1px)',
+        sm: '40rem',
+        md: '48rem',
+        lg: '64rem',
+        xl: 'calc(80rem + 1px)',
       },
       zIndex: {
         base: '1',
@@ -148,7 +148,7 @@ module.exports = {
         dropdown: '20',
         header: '100',
         top: '1000',
-        userNav: '11',
+        userNav: '9',
         userNavModal: '1001',
       },
     },

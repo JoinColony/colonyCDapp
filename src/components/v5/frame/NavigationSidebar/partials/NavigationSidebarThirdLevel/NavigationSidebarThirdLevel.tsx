@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { useTablet } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -20,7 +20,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   title,
   items,
 }) => {
-  const isTablet = useTablet();
+  const isMobile = useMobile();
   const [isOpen, { toggle }] = useToggle();
   const { mobileMenuToggle, setOpenItemIndex } = useNavigationSidebarContext();
   const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
@@ -30,7 +30,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   }
 
   const ctaClassName =
-    'text-md md:text-3 text-inherit transition-colors md:enabled:hover:underline block w-full text-left py-2 md:whitespace-nowrap disabled:opacity-50';
+    'text-md sm:text-3 text-inherit transition-colors sm:enabled:hover:underline block w-full text-left py-2 sm:whitespace-nowrap disabled:opacity-50';
 
   const list = (
     <ul className="flex flex-col gap-0.5">
@@ -62,25 +62,25 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   return (
     <div
       className={`
-        md:text-inherit
+        sm:text-inherit
         rounded-[.25rem]
         bg-gray-900
         px-4
         py-2 text-base-white
-        md:rounded-none
-        md:bg-transparent
-        md:p-0
+        sm:rounded-none
+        sm:bg-transparent
+        sm:p-0
       `}
     >
-      {title && !isTablet && (
+      {title && !isMobile && (
         <motion.h3
           variants={thirdLevelContentAnimation}
-          className="text-inherit mb-4 text-4 md:whitespace-nowrap md:uppercase"
+          className="text-inherit mb-4 text-4 sm:whitespace-nowrap sm:uppercase"
         >
           {title}
         </motion.h3>
       )}
-      {title && isTablet && (
+      {title && isMobile && (
         <button
           type="button"
           className="text-inherit flex w-full items-center justify-between gap-4 py-2 text-2"
@@ -96,7 +96,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
         </button>
       )}
       <AnimatePresence>
-        {isTablet && isOpen && (
+        {isMobile && isOpen && (
           <motion.div
             variants={accordionAnimation}
             initial="hidden"
@@ -108,7 +108,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
           </motion.div>
         )}
       </AnimatePresence>
-      {!isTablet && list}
+      {!isMobile && list}
     </div>
   );
 };

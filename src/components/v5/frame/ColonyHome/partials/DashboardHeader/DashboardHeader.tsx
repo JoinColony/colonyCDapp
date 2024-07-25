@@ -34,11 +34,11 @@ const DashboardHeader = () => {
           />
         )}
       </div>
-      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:gap-4">
-        <p className="line-clamp-5 max-w-[52.75rem] text-md text-gray-700 sm:line-clamp-3 md:line-clamp-2">
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:gap-4">
+        <p className="line-clamp-5 max-w-[52.75rem] text-md text-gray-700 md:line-clamp-3 lg:line-clamp-2">
           {description}
         </p>
-        <div className="flex-shrink-0 sm:mt-1">
+        <div className="flex-shrink-0 md:mt-1">
           <ColonyLinks />
         </div>
       </div>

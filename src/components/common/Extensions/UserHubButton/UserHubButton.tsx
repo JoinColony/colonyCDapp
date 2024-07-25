@@ -12,7 +12,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { TransactionStatus } from '~gql';
-import { useMobile } from '~hooks/index.ts';
+import { useMobile, useTablet } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
@@ -32,6 +32,7 @@ const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
 const UserHubButton: FC = () => {
   const isMobile = useMobile();
+  const isTable = useTablet();
   const {
     colony: { colonyAddress },
   } = useColonyContext();
@@ -173,9 +174,9 @@ const UserHubButton: FC = () => {
                 userAvatarSrc={user?.profile?.avatar ?? undefined}
                 userName={userName}
                 userAddress={wallet.address}
-                size={isMobile ? 18 : 16}
+                size={isTable ? 18 : 16}
               />
-              {!isMobile && (
+              {!isTable && (
                 <>
                   <p className="ml-1 truncate text-sm font-medium">
                     {userName}

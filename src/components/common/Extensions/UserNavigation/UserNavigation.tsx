@@ -5,7 +5,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
@@ -31,7 +31,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
   txButtons = null,
 }) => {
   const { wallet, connectWallet } = useAppContext();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
 
@@ -41,9 +41,9 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip(
       {
-        delayShow: isMobile ? 0 : 200,
+        delayShow: isTablet ? 0 : 200,
         delayHide: 0,
-        placement: isMobile ? 'bottom' : 'bottom-end',
+        placement: isTablet ? 'bottom' : 'bottom-end',
         trigger: 'click',
         interactive: true,
         onVisibleChange: () => {},
@@ -54,14 +54,14 @@ const UserNavigation: FC<UserNavigationProps> = ({
           {
             name: 'offset',
             options: {
-              offset: isMobile ? [0, 0] : [0, 8],
+              offset: isTablet ? [0, 0] : [0, 8],
             },
           },
         ],
       },
     );
 
-  useDisableBodyScroll(visible && isMobile);
+  useDisableBodyScroll(visible && isTablet);
 
   return (
     <div className="flex gap-1 md:relative">
@@ -70,7 +70,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         <div className="flex gap-1">
           {networkInfo && (
             <NetworkName
-              size={isMobile ? 18 : 16}
+              size={isTablet ? 18 : 16}
               networkInfo={networkInfo}
               error={networkInfo?.chainId !== DEFAULT_NETWORK_INFO.chainId}
               errorMessage={formatText(MSG.wrongNetwork, {
@@ -85,7 +85,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           mode="tertiary"
           isFullRounded
           onClick={connectWallet}
-          icon={visible && isMobile ? X : Cardholder}
+          icon={visible && isTablet ? X : Cardholder}
           size="small"
         >
           {formatText({ id: 'connectWallet' })}
@@ -93,8 +93,8 @@ const UserNavigation: FC<UserNavigationProps> = ({
       )}
       <Hamburger
         isOpened={visible}
-        icon={isMobile ? GearSix : List}
-        iconSize={isMobile ? 18 : 16}
+        icon={isTablet ? GearSix : List}
+        iconSize={isTablet ? 18 : 16}
         setTriggerRef={setTriggerRef}
         onClick={() => {
           setOpenItemIndex(undefined);

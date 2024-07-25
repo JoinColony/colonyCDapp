@@ -38,14 +38,14 @@ const ColonyHome = () => {
     <div className="flex flex-col gap-6 lg:gap-10">
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
-        <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">
+        <div className="flex w-full flex-col items-center gap-[1.125rem] md:flex-row">
           <TotalActions />
           <Members />
           <TokenBalance />
         </div>
       </div>
-      <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-[39%_1fr]">
-        <div className="flex w-full flex-1 flex-col gap-6 sm:grid sm:grid-cols-2 sm:gap-[1.125rem] lg:flex lg:flex-col lg:gap-[1.125rem]">
+      <div className="flex h-fit w-full flex-col gap-6 xl:grid xl:grid-cols-[39%_1fr]">
+        <div className="flex w-full flex-1 flex-col gap-6 md:grid md:grid-cols-2 md:gap-[1.125rem] xl:flex xl:flex-col xl:gap-[1.125rem]">
           <Objective />
           <ReputationChart />
           <Agreements />

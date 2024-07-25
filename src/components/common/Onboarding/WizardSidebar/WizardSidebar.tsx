@@ -3,7 +3,7 @@ import { type MessageDescriptor } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import UserNavigationWrapper from '~frame/Extensions/layouts/partials/UserNavigationWrapper/UserNavigationWrapper.tsx';
-import { useMobile, useTablet } from '~hooks';
+import { useMobile } from '~hooks';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import { LANDING_PAGE_ROUTE } from '~routes/routeConstants.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
@@ -35,7 +35,6 @@ const WizardSidebar = ({
   wizardSteps,
 }: Props) => {
   const isMobile = useMobile();
-  const isTablet = useTablet();
 
   return (
     <>
@@ -44,7 +43,7 @@ const WizardSidebar = ({
           <Link to={LANDING_PAGE_ROUTE} className="h-fit w-fit">
             <ColonyIcon size={36} />
           </Link>
-          {isTablet && <UserNavigationWrapper />}
+          {isMobile && <UserNavigationWrapper />}
         </div>
         {!isMobile && (
           <>

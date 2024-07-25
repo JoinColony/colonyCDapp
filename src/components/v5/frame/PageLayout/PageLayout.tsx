@@ -9,7 +9,7 @@ import React, {
 import { useMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import { useTablet } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 import { COLONY_HOME_ROUTE } from '~routes/index.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
 
@@ -30,7 +30,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const topContentWrapperRef = useRef<HTMLDivElement | null>(null);
-  const isTablet = useTablet();
+  const isMobile = useMobile();
   const isOnColonyRoute = useMatch(COLONY_HOME_ROUTE);
 
   useEffect(() => {
@@ -69,19 +69,19 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         closeButton={CloseButton}
         className="modal-blur"
       />
-      <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
+      <div className="w-full sm:flex sm:h-screen sm:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}
         <div
-          className="z-base w-full bg-base-white sm:z-sidebar md:bg-transparent"
+          className="z-base w-full bg-base-white sm:z-sidebar sm:bg-transparent"
           ref={topContentWrapperRef}
         >
           <div className="relative w-full">
             {topContent && <div className="flex-shrink-0">{topContent}</div>}
-            {isTablet && sidebar}
+            {isMobile && sidebar}
           </div>
         </div>
         <AnimatePresence>
-          {isTablet ? (
+          {isMobile ? (
             <div className="inner h-[calc(100vh-var(--top-content-height))] overflow-auto py-6">
               {pageHeadingProps && (
                 <PageHeading {...pageHeadingProps} className="mb-2 sm:mb-6" />
@@ -89,19 +89,19 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {children}
             </div>
           ) : (
-            <div className="w-full md:flex md:h-[calc(100vh-var(--top-content-height))] md:gap-8 md:pl-4 md:pt-4">
+            <div className="w-full sm:flex sm:h-[calc(100vh-var(--top-content-height))] sm:gap-8 sm:pl-4 sm:pt-4">
               <div
                 className={clsx(
-                  'modal-blur relative z-sidebar md:flex-shrink-0',
+                  'modal-blur relative z-sidebar sm:flex-shrink-0',
                   {
-                    'md:w-[5.125rem]': !hasWideSidebar,
-                    'md:w-[17.5rem]': hasWideSidebar,
+                    'sm:w-[5.125rem]': !hasWideSidebar,
+                    'sm:w-[17.5rem]': hasWideSidebar,
                   },
                 )}
               >
                 <div
                   className={clsx(
-                    'md:absolute md:bottom-4 md:left-0 md:top-0',
+                    'sm:absolute sm:bottom-4 sm:left-0 sm:top-0',
                     { 'w-full': hasWideSidebar },
                   )}
                 >

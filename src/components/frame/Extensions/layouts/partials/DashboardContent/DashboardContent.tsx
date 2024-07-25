@@ -12,8 +12,8 @@ const DashboardContent: FC = () => {
     useMemberContext();
 
   return (
-    <div className="w-full pt-2 md:pt-4">
-      <div className="mb-4 flex w-full items-center gap-4 px-2 text-sm text-gray-900 md:mb-7 md:px-0">
+    <div className="w-full pt-2 sm:pt-4">
+      <div className="mb-4 flex w-full items-center gap-4 px-2 text-sm text-gray-900 sm:mb-7 sm:px-0">
         {loading ? (
           <SpinnerLoader />
         ) : (
@@ -46,12 +46,12 @@ const DashboardContent: FC = () => {
         )}
       </div>
       <NavigationSidebarLinksList
-        className="md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
+        className="sm:-mx-2.5 sm:w-[calc(100%+1.25rem)]"
         items={dashboardMainMenu}
       />
       <div className="mt-4 border-t border-t-gray-200 pt-4">
         <NavigationSidebarLinksList
-          className="md:-mx-2.5 md:w-[calc(100%+1.25rem)]"
+          className="sm:-mx-2.5 sm:w-[calc(100%+1.25rem)]"
           items={dashboardMenu}
         />
       </div>

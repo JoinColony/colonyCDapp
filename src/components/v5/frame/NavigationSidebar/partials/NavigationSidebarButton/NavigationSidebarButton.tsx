@@ -2,7 +2,7 @@ import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useTablet } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 
 import { type NavigationSidebarButtonProps } from './types.ts';
 
@@ -19,7 +19,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   isHighlighted,
   ...rest
 }) => {
-  const isTablet = useTablet();
+  const isMobile = useMobile();
 
   return (
     <button
@@ -36,38 +36,38 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
           px-2.5
           py-2
           text-left
-          md:w-auto
-          md:justify-center
-          md:gap-0
-          md:rounded-lg
-          md:transition-all
+          sm:w-auto
+          sm:justify-center
+          sm:gap-0
+          sm:rounded-lg
+          sm:transition-all
         `,
         {
-          'text-blue-400 md:bg-gray-900 md:text-base-white':
-            isActive && !isTablet,
-          'text-gray-900 md:hover:bg-gray-900 md:hover:text-base-white':
+          'text-blue-400 sm:bg-gray-900 sm:text-base-white':
+            isActive && !isMobile,
+          'text-gray-900 sm:hover:bg-gray-900 sm:hover:text-base-white':
             !isActive && !isHighlighted,
           'bg-blue-100 text-blue-400': isHighlighted,
         },
       )}
       {...rest}
     >
-      {!isTablet && <Icon size={22} />}
+      {!isMobile && <Icon size={22} />}
       <span
         className={`
           heading-5
-          md:max-w-0
-          md:overflow-hidden
-          md:transition-[max-width]
-          md:text-2
-          md:group-hover/navigation-button:max-w-xs
+          sm:max-w-0
+          sm:overflow-hidden
+          sm:transition-[max-width]
+          sm:text-2
+          sm:group-hover/navigation-button:max-w-xs
         `}
       >
-        <span className="align-middle md:whitespace-nowrap md:pl-2">
+        <span className="align-middle sm:whitespace-nowrap sm:pl-2">
           {label}
         </span>
       </span>
-      {isTablet && hasSecondLevel && (
+      {isMobile && hasSecondLevel && (
         <CaretDown
           className={clsx('transition-transform', {
             'rotate-180': isActive && isExpanded,

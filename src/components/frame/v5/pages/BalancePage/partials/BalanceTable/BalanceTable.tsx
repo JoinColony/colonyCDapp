@@ -225,9 +225,9 @@ const BalanceTable: FC = () => {
           <div
             className={clsx(
               className,
-              'min-h-[4.25rem] !py-[0.1rem] md:min-h-[3.625rem]',
+              'min-h-[4.25rem] !py-[0.1rem] lg:min-h-[3.625rem]',
               {
-                'pl-0 md:pl-[1.1rem]':
+                'pl-0 lg:pl-[1.1rem]':
                   cell.column.columnDef.id === MEATBALL_MENU_COLUMN_ID,
                 'pl-0 pr-2':
                   cell.column.columnDef.id &&

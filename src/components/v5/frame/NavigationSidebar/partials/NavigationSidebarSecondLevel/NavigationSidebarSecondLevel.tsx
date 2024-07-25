@@ -2,7 +2,7 @@ import { ArrowLineRight } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useTablet } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -27,21 +27,21 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
   isExpanded,
   bottomActionProps,
 }) => {
-  const isTablet = useTablet();
+  const isMobile = useMobile();
   const { setOpenItemIndex } = useNavigationSidebarContext();
   const isContentList = Array.isArray(content);
 
   return (
-    <div className="flex h-full flex-col justify-between gap-4 pb-8 md:overflow-auto md:p-6 md:pt-[1.625rem]">
+    <div className="flex h-full flex-col justify-between gap-4 pb-8 sm:overflow-auto sm:p-6 sm:pt-[1.625rem]">
       <div>
-        {!isTablet && (
-          <div className="flex justify-between gap-4 px-2 md:px-0">
+        {!isMobile && (
+          <div className="flex justify-between gap-4 px-2 sm:px-0">
             <h2 className="text-gray-900 heading-5">{title}</h2>
             {onArrowClick && (
               <button
                 type="button"
                 onClick={onArrowClick}
-                className="md:hover:text-blue-500 text-gray-900 transition-colors"
+                className="sm:hover:text-blue-500 text-gray-900 transition-colors"
               >
                 <ArrowLineRight
                   size={16}
@@ -57,13 +57,13 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
           </div>
         )}
         {description && (
-          <div className="h-15 line-clamp-3 px-2 text-md text-gray-600 md:mt-1 md:px-0">
+          <div className="h-15 line-clamp-3 px-2 text-md text-gray-600 sm:mt-1 sm:px-0">
             <p>{multiLineTextEllipsis(description, MAX_DESCRIPTION_LENGTH)}</p>
           </div>
         )}
         {isContentList ? (
           <NavigationSidebarLinksList
-            className="mt-4 md:-mx-2.5 md:mt-9 md:w-[calc(100%+1.25rem)]"
+            className="mt-4 sm:-mx-2.5 sm:mt-9 sm:w-[calc(100%+1.25rem)]"
             items={content}
           />
         ) : (
@@ -71,7 +71,7 @@ const NavigationSidebarSecondLevel: FC<NavigationSidebarSecondLevelProps> = ({
         )}
         {additionalContent}
       </div>
-      {!isTablet && (
+      {!isMobile && (
         <div className="flex flex-col gap-5">
           <NavigationFeedbackWidget />
           {bottomActionProps && (

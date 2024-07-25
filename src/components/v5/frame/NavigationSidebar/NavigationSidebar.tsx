@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
-import { useTablet } from '~hooks/index.ts';
+import { useMobile, useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import ColonyLogo from '~images/logo-new.svg?react';
@@ -33,6 +33,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   hamburgerLabel,
 }) => {
   const isTablet = useTablet();
+  const isMobile = useMobile();
   const {
     openItemIndex,
     setOpenItemIndex,
@@ -50,7 +51,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     { toggleOn: toggleOnThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
   ] = thirdLevelMenuToggle;
 
-  useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isTablet);
+  useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isMobile);
 
   const withMainMenu = !!mainMenuItems?.length;
 
@@ -87,18 +88,18 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
           border-gray-200
           bg-base-white
           py-6
-          md:h-full
-          md:rounded-lg
-          md:border
-          md:py-0
+          sm:h-full
+          sm:rounded-lg
+          sm:border
+          sm:py-0
         `,
       )}
       ref={registerContainerRef}
     >
       <div
-        className={clsx('w-full md:h-full md:w-[5.125rem] md:p-4 md:pb-6', {
-          'flex flex-col items-center justify-between gap-4': !isTablet,
-          'inner h-full': isTablet,
+        className={clsx('w-full sm:h-full sm:w-[5.125rem] sm:p-4 sm:pb-6', {
+          'flex flex-col items-center justify-between gap-4': !isMobile,
+          'inner h-full': isMobile,
         })}
       >
         <div
@@ -109,16 +110,16 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
             w-full
             items-center
             justify-between
-            md:relative
-            md:h-auto
-            md:w-auto
-            md:flex-col
-            md:justify-start
-            md:gap-9
+            sm:relative
+            sm:h-auto
+            sm:w-auto
+            sm:flex-col
+            sm:justify-start
+            sm:gap-9
           `}
         >
-          <div className="flex gap-6 md:flex-col md:gap-9">
-            <div className="flex justify-center md:w-full">
+          <div className="flex gap-6 sm:flex-col sm:gap-9">
+            <div className="flex justify-center sm:w-full">
               <button
                 type="button"
                 onClick={() => {
@@ -154,7 +155,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 )}
               </button>
             </div>
-            {isTablet ? (
+            {isMobile ? (
               <>
                 {withMainMenu && (
                   <>
@@ -189,11 +190,11 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
               mainMenu
             )}
           </div>
-          {additionalMobileContent && isTablet && (
+          {additionalMobileContent && isMobile && (
             <div>{additionalMobileContent}</div>
           )}
         </div>
-        {!isTablet && (
+        {!isMobile && (
           <>
             <div className="mt-auto flex w-11 justify-start px-px">
               <FeedbackButton
@@ -211,7 +212,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
         )}
       </div>
       <AnimatePresence>
-        {isSecondLevelMenuOpen && !isTablet && openItemIndex !== undefined && (
+        {isSecondLevelMenuOpen && !isMobile && openItemIndex !== undefined && (
           <>
             <motion.div
               variants={secondLevelWrapperAnimation}

@@ -205,7 +205,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   return (
     <div
       className={clsx('flex w-full flex-grow', {
-        'flex-col-reverse overflow-auto sm:overflow-hidden md:flex-row':
+        'flex-col-reverse overflow-auto md:overflow-hidden lg:flex-row':
           !!transactionId,
         'overflow-hidden': !transactionId,
       })}

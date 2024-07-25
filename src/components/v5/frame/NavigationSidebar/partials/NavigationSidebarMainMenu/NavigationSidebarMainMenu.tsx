@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
-import { useTablet } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 
 import NavigationSidebarButton from '../NavigationSidebarButton/index.ts';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks.ts';
@@ -17,7 +17,7 @@ const displayName =
 const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
   mainMenuItems,
 }) => {
-  const isTablet = useTablet();
+  const isMobile = useMobile();
   const { openItemIndex, setOpenItemIndex, thirdLevelMenuToggle } =
     useNavigationSidebarContext();
   const [, { toggleOff: toggleOffThirdLevelMenu }] = thirdLevelMenuToggle;
@@ -41,7 +41,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
           index,
         ) => {
           // Don't show item if hideMobile is true and we're on mobile
-          if (isTablet && hideMobile) {
+          if (isMobile && hideMobile) {
             return null;
           }
 
@@ -68,7 +68,7 @@ const NavigationSidebarMainMenu: FC<NavigationSidebarMainMenuProps> = ({
                 isHighlighted={isHighlighted}
               />
               <AnimatePresence>
-                {isTablet && secondLevelMenuProps && isActive && (
+                {isMobile && secondLevelMenuProps && isActive && (
                   <motion.div
                     variants={accordionAnimation}
                     initial="hidden"

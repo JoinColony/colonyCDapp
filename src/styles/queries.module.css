@@ -1,5 +1,5 @@
-/* 48rem - 1px */
-@value query850: (max-width: 47.9375rem);
+/* 40rem - 1px */
+@value query640: (max-width: 39.9375rem);
 
-/* 64rem */
-@value query1024: (max-width: 64rem);
+/* 48rem - 1px */
+@value query768: (max-width: 47.9375rem);

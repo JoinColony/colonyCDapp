@@ -118,10 +118,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
+    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto md:flex-row md:justify-start">
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
-          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
+          'md:w-[calc(100%-23.75rem)]': action.isMotion,
         })}
       >
         {getActionContent()}
@@ -135,13 +135,13 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             bg-gray-25
             px-6
             py-8
-            sm:h-full
-            sm:w-[23.75rem]
-            sm:flex-shrink-0
-            sm:overflow-y-auto
-            sm:border-b-0
-            sm:border-l
-            sm:border-l-gray-200
+            md:h-full
+            md:w-[23.75rem]
+            md:flex-shrink-0
+            md:overflow-y-auto
+            md:border-b-0
+            md:border-l
+            md:border-l-gray-200
           `}
       >
         {getSidebarWidgetContent()}

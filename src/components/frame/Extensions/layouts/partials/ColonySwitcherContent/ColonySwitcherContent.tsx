@@ -57,7 +57,7 @@ const ColonySwitcherContent: FC<ColonySwitcherContentProps> = ({ colony }) => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-4 md:pt-6">
+    <div className="flex w-full flex-col gap-4 sm:pt-6">
       {colony && (
         <div>
           <h3 className={titleClassName}>
