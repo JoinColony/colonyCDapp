@@ -7,8 +7,8 @@ import {
   type CreateAnnotationMutationVariables,
 } from '~gql';
 import { transactionPending } from '~redux/actionCreators/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 
-import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   waitForTxResult,
   type TransactionChannel,

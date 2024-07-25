@@ -4,8 +4,8 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 
-import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,

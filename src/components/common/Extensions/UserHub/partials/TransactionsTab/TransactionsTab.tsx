@@ -1,10 +1,9 @@
 import { Binoculars } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { useGroupedTransactions } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-
-import { useGroupedTransactions } from '../../../../../../state/transactionState.ts';
 
 import TransactionList from './partials/TransactionList.tsx';
 import { type TransactionsProps } from './types.ts';

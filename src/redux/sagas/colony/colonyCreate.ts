@@ -34,14 +34,14 @@ import {
   type GetFullColonyByNameQueryVariables,
 } from '~gql';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { createAddress } from '~utils/web3/index.ts';
-
 import {
   transactionSetIdentifier,
   transactionSetParams,
   updateTransaction,
-} from '../../../state/transactionState.ts';
+} from '~state/transactionState.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { createAddress } from '~utils/web3/index.ts';
+
 import { transactionPending } from '../../actionCreators/index.ts';
 import {
   type ChannelDefinition,

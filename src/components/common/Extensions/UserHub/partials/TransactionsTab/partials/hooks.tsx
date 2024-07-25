@@ -9,8 +9,7 @@ import {
 } from '~redux/actionCreators/index.ts';
 import { type TransactionId } from '~redux/immutable/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
-
-import { transactionRetry } from '../../../../../../../state/transactionState.ts';
+import { transactionRetry } from '~state/transactionState.ts';
 
 export const useGroupedTransactionContent = ({
   id,

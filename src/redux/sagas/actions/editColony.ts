@@ -9,10 +9,10 @@ import {
   type UpdateColonyMetadataMutationVariables,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { isEqual } from '~utils/lodash.ts';
 
-import { transactionSetParams } from '../../../state/transactionState.ts';
 import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,

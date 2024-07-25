@@ -5,13 +5,13 @@ import React, { useMemo, type FC, useState, useEffect } from 'react';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
-import { formatText } from '~utils/intl.ts';
-
 import {
   TransactionGroupStatus,
   useGroupedTransactions,
   getGroupStatus,
-} from '../../../../state/transactionState.ts';
+} from '~state/transactionState.ts';
+import { formatText } from '~utils/intl.ts';
+
 import IconButton from '../Button/IconButton.tsx';
 
 const displayName = 'v5.TxButton';

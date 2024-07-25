@@ -5,13 +5,13 @@ import GroupedTransaction from '~common/Extensions/UserHub/partials/Transactions
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { TransactionStatus } from '~gql';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import { formatText } from '~utils/intl.ts';
-
 import {
   findTransactionGroupByKey,
   getGroupStatus,
   useGroupedTransactions,
-} from '../../../../../state/transactionState.ts';
+} from '~state/transactionState.ts';
+import { formatText } from '~utils/intl.ts';
+
 import HeaderRow from '../HeaderRow.tsx';
 
 const displayName = 'common.CreateColonyWizard.StepConfirmTransactions';

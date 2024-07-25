@@ -7,8 +7,8 @@ import {
   transactionSend,
   messageSign,
 } from '~redux/actionCreators/index.ts';
+import { transactionSetReady } from '~state/transactionState.ts';
 
-import { transactionSetReady } from '../../../state/transactionState.ts';
 import {
   type ErrorActionType,
   type TakeFilter,

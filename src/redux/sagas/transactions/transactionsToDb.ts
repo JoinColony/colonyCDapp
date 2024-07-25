@@ -21,13 +21,12 @@ import {
   type TransactionReceiptReceivedPayload,
   type TransactionSucceededPayload,
 } from '~redux/types/actions/transaction.ts';
-import { notNull } from '~utils/arrays/index.ts';
-
 import {
   deleteTransaction,
   getTransaction,
   updateTransaction,
-} from '../../../state/transactionState.ts';
+} from '~state/transactionState.ts';
+import { notNull } from '~utils/arrays/index.ts';
 
 const pendingTransactions = new Set();
 

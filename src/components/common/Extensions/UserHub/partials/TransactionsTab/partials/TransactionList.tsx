@@ -1,8 +1,7 @@
 import React, { type FC, useCallback, useState, useEffect } from 'react';
 
 import { type TransactionType } from '~redux/immutable/Transaction.ts';
-
-import { getGroupId } from '../../../../../../../state/transactionState.ts';
+import { getGroupId } from '~state/transactionState.ts';
 
 import GroupedTransaction from './GroupedTransaction.tsx';
 

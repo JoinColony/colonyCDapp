@@ -3,9 +3,9 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { transactionSetParams } from '../../../state/transactionState.ts';
 import {
   type ChannelDefinition,
   createTransaction,

@@ -8,18 +8,18 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { arrayToObject } from '~utils/arrays/index.ts';
-import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
-import { formatText } from '~utils/intl.ts';
-
 import {
   getGroupKey,
   getGroupStatus,
   getGroupValues,
   getActiveTransactionIdx,
   getGroupId,
-} from '../../../../../../../state/transactionState.ts';
+} from '~state/transactionState.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { arrayToObject } from '~utils/arrays/index.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
+import { formatText } from '~utils/intl.ts';
+
 import { type GroupedTransactionProps } from '../types.ts';
 
 import GroupedTransactionContent from './GroupedTransactionContent.tsx';

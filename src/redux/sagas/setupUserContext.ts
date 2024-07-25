@@ -4,6 +4,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 import { authenticateWallet } from '~auth/index.ts';
 import { getContext, setContext, ContextModule } from '~context/index.ts';
+import { failPendingTransactions } from '~state/transactionState.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 import {
   getLastWallet,
@@ -12,7 +13,6 @@ import {
 } from '~utils/autoLogin.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
-import { failPendingTransactions } from '../../state/transactionState.ts';
 import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
 

@@ -2,7 +2,8 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber, type Contract } from 'ethers';
 import { call, put } from 'redux-saga/effects';
 
-import { getTransaction } from '../../../state/transactionState.ts';
+import { getTransaction } from '~state/transactionState.ts';
+
 import {
   transactionUpdateGas,
   transactionEstimateError,

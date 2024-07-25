@@ -2,10 +2,10 @@ import { ClientType } from '@colony/colony-js';
 import { call, put, take } from 'redux-saga/effects';
 
 import { TransactionStatus } from '~gql';
+import { getTransaction } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { mergePayload } from '~utils/actions.ts';
 
-import { getTransaction } from '../../../state/transactionState.ts';
 import { transactionSendError } from '../../actionCreators/index.ts';
 import { type ActionTypes } from '../../actionTypes.ts';
 import { type Action } from '../../types/actions/index.ts';

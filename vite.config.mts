@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => ({
       '~redux': path.resolve(__dirname, 'src/redux'),
       '~routes': path.resolve(__dirname, 'src/routes'),
       '~shared': path.resolve(__dirname, 'src/components/shared'),
+      '~state': path.resolve(__dirname, 'src/state'),
       '~styles': path.resolve(__dirname, 'src/styles'),
       '~types': path.resolve(__dirname, 'src/types'),
       '~transformers': path.resolve(__dirname, 'src/transformers'),

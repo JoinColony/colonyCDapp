@@ -5,9 +5,9 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { transactionSetParams } from '../../../state/transactionState.ts';
 import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createTransaction,

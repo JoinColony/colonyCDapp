@@ -13,10 +13,10 @@ import {
 
 import { getContext, ContextModule } from '~context/index.ts';
 import { TransactionStatus } from '~gql';
+import { addTransactionToDb } from '~state/transactionState.ts';
 import { type ExtendedClientType, type TxConfig } from '~types/transactions.ts';
 import { filterUniqueAction } from '~utils/actions.ts';
 
-import { addTransactionToDb } from '../../../state/transactionState.ts';
 import { createTransactionAction } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { takeFrom, getCanUserSendMetatransactions } from '../utils/index.ts';

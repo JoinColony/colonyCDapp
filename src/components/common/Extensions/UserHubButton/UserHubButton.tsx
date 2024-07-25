@@ -16,16 +16,16 @@ import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes';
+import {
+  getGroupStatus,
+  useGroupedTransactions,
+} from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import {
-  getGroupStatus,
-  useGroupedTransactions,
-} from '../../../../state/transactionState.ts';
 import { UserHubTabs } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
