@@ -81,7 +81,6 @@ const VerificationModal: FC<VerificationModalProps> = ({
       isFullOnMobile={false}
       isOpen={isOpened}
       onRequestClose={onClose}
-      isTopSectionWithBackground
     >
       <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
