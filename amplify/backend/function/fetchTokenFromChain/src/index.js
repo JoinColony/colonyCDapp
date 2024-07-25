@@ -1,7 +1,6 @@
 const { constants, utils, providers, Contract } = require('ethers');
 const { abi } = require('@colony/abis/versions/hmwss/MetaTxToken');
 
-const basicTokenAbi = require('./basicTokenAbi.json');
 const {
   graphqlRequest,
   getTokenType,
