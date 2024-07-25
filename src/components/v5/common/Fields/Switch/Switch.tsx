@@ -6,17 +6,7 @@ import { type SwitchProps } from './types.ts';
 const displayName = 'v5.common.Fields.Switch';
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  (
-    {
-      id,
-      disabled: disabledProp,
-      readOnly,
-      className,
-      greyOutWhenDisabled,
-      ...rest
-    },
-    ref,
-  ) => {
+  ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
     const generatedId = useId();
     const disabled = disabledProp || readOnly;
 
@@ -43,9 +33,9 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
             'peer-checked:after:translate-x-full',
             {
               'peer-checked:border-gray-900 peer-checked:bg-gray-900':
-                !disabled,
+                !disabledProp,
               'peer-checked:border-gray-100 peer-checked:bg-gray-100':
-                greyOutWhenDisabled && disabled,
+                disabledProp,
             },
           )}
         />

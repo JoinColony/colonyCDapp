@@ -109,6 +109,8 @@ const SetUserRoles = ({ action }: Props) => {
 
   const dbPermissionsOld = transformActionRolesToColonyRoles(roles);
 
+  // Historic role might sound like it's the old roles, but it's actually the
+  // most recent set or permissions for a user
   const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole,
   );

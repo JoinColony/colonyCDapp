@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
@@ -20,6 +20,7 @@ import {
   type ManagePermissionsFormValues,
   validationSchema,
   MANAGE_PERMISSIONS_ACTION_FORM_ID,
+  Authority,
 } from './consts.ts';
 import {
   configureFormRoles,
@@ -41,16 +42,20 @@ export const useManagePermissionsForm = (
   const {
     watch,
     trigger,
-    control,
     setValue,
     clearErrors,
     formState: { defaultValues, isSubmitted, errors, isValid, isSubmitting },
   } = useFormContext<ManagePermissionsFormValues>();
 
-  const formDecisionMethod = useWatch({
-    control,
-    name: 'decisionMethod',
-  });
+  const formValues = watch();
+
+  const {
+    team: formTeam,
+    permissions: formPermissions,
+    decisionMethod: formDecisionMethod,
+    _dbInheritedPermissions: dbInheritedPermissions,
+    role: formRole,
+  } = formValues;
 
   useEffect(() => {
     /**
@@ -72,11 +77,13 @@ export const useManagePermissionsForm = (
   }, [colony, defaultValues, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team, role }, { name }) => {
-      if (role === UserRole.Mod) {
-        clearErrors('authority');
-      }
+    if (formRole === UserRole.Mod) {
+      setValue('authority', Authority.Own, { shouldValidate: true });
+    }
+  }, [formRole, setValue]);
 
+  useEffect(() => {
+    const { unsubscribe } = watch(({ member, team, role }, { name }) => {
       if (isSubmitted) {
         if (role === UserRole.Custom) {
           trigger('permissions');
@@ -113,18 +120,19 @@ export const useManagePermissionsForm = (
     return () => unsubscribe();
   }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
 
-  const { team, permissions, _dbInheritedPermissions, role } = watch();
-
-  const isRemovingRootRoleFromRootDomain =
-    isValid &&
-    team === Id.RootDomain &&
-    getRemovedInheritedPermissions({
-      dbInheritedPermissions: _dbInheritedPermissions,
-      formPermissions: getFormPermissions({
-        formPermissions: permissions,
-        formRole: role,
-      }),
-    }).includes(ColonyRole.Root);
+  const isRemovingRootRoleFromRootDomain = useMemo(
+    () =>
+      isValid &&
+      formTeam === Id.RootDomain &&
+      getRemovedInheritedPermissions({
+        dbInheritedPermissions,
+        formPermissions: getFormPermissions({
+          formPermissions,
+          formRole,
+        }),
+      }).includes(ColonyRole.Root),
+    [dbInheritedPermissions, formPermissions, formRole, formTeam, isValid],
+  );
 
   useActionFormBaseHook({
     getFormOptions,
@@ -157,7 +165,7 @@ export const useManagePermissionsForm = (
 
   return {
     errors,
-    values: watch(),
+    formValues,
     isSubmitting,
     showPermissionsRemovalWarning,
     setShowPermissionsRemovalWarning,

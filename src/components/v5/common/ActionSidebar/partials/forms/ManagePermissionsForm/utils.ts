@@ -11,6 +11,7 @@ import {
 import { type ColonyFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
 import { type Colony } from '~types/graphql.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getObjectKeys } from '~utils/objects/index.ts';
@@ -179,11 +180,12 @@ export const configureFormRoles = ({
 export const mapPermissions = (
   permissions: ManagePermissionsFormValues['permissions'],
 ) =>
-  (permissions
+  permissions
     ? getObjectKeys(permissions)
         .filter((permissionKey) => permissions?.[permissionKey])
         .map(extractColonyRoleFromPermissionKey)
-    : []) as ColonyRole[];
+        .filter(notNull)
+    : [];
 
 export const getFormPermissions = ({
   formRole,
