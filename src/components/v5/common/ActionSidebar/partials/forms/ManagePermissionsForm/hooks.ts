@@ -1,6 +1,6 @@
 import { ColonyRole, Id } from '@colony/colony-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
@@ -43,21 +43,21 @@ export const useManagePermissionsForm = (
   const {
     watch,
     trigger,
-    control,
     setValue,
     clearErrors,
     formState: { defaultValues, isSubmitted, errors, isValid, isSubmitting },
   } = useFormContext<ManagePermissionsFormValues>();
 
-  const formDecisionMethod = useWatch({
-    control,
-    name: 'decisionMethod',
-  });
+  const formValues = watch();
 
-  const formRole = useWatch({
-    control,
-    name: 'role',
-  });
+  const {
+    team: formTeam,
+    permissions: formPermissions,
+    decisionMethod: formDecisionMethod,
+    _dbInheritedPermissions: dbInheritedPermissions,
+    role: formRole,
+  } = formValues;
+
   const isModRoleSelected = formRole === UserRole.Mod;
 
   useEffect(() => {
@@ -147,18 +147,19 @@ export const useManagePermissionsForm = (
     return () => unsubscribe();
   }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
 
-  const { team, permissions, _dbInheritedPermissions, role } = watch();
-
-  const isRemovingRootRoleFromRootDomain =
-    isValid &&
-    team === Id.RootDomain &&
-    getRemovedInheritedPermissions({
-      dbInheritedPermissions: _dbInheritedPermissions,
-      formPermissions: getFormPermissions({
-        formPermissions: permissions,
-        formRole: role,
-      }),
-    }).includes(ColonyRole.Root);
+  const isRemovingRootRoleFromRootDomain = useMemo(
+    () =>
+      isValid &&
+      formTeam === Id.RootDomain &&
+      getRemovedInheritedPermissions({
+        dbInheritedPermissions,
+        formPermissions: getFormPermissions({
+          formPermissions,
+          formRole,
+        }),
+      }).includes(ColonyRole.Root),
+    [dbInheritedPermissions, formPermissions, formRole, formTeam, isValid],
+  );
 
   useActionFormBaseHook({
     getFormOptions,
@@ -192,9 +193,9 @@ export const useManagePermissionsForm = (
 
   return {
     role: formRole,
-    isModRoleSelected,
     values: watch(),
     errors,
+    formValues,
     isSubmitting,
     showPermissionsRemovalWarning,
     setShowPermissionsRemovalWarning,

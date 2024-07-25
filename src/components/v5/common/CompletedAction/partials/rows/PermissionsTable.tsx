@@ -4,7 +4,7 @@ import React from 'react';
 
 import { UserRole } from '~constants/permissions.ts';
 import { useMobile } from '~hooks/index.ts';
-import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import usePermissionsTableProps from '~hooks/usePermissionsTableProps/index.ts';
 import {
   type CustomPermissionTableModel,
   type PermissionsTableModel,
@@ -45,9 +45,8 @@ const PermissionsTable = ({
   const permissionsTableProps = usePermissionsTableProps({
     formRole,
     dbRoleForDomain: dbRoleForDomainOld,
-    isCompletedAction: true,
     dbPermissionsForDomain: dbPermissionsOld,
-    isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
+    isRemovePermissions: formRole === UserRoleModifier.Remove,
   });
 
   const ALLOWED_CUSTOM_PERMISSIONS_TABLE_CONTENT =
