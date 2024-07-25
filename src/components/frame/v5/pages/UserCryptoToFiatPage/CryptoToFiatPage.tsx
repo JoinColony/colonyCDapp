@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import {
@@ -17,6 +17,7 @@ import CryptoToFiatContextProvider from './context/CryptoToFiatContextProvider.t
 import AutomaticDeposits from './partials/AutomaticDeposits/AutomaticDeposits.tsx';
 import BankDetails from './partials/BankDetails/BankDetails.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
+import LiquidationAddress from './partials/LiquidationAddress/LiquidationAddress.tsx';
 import Verification from './partials/Verification/Verification.tsx';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
@@ -34,8 +35,8 @@ const MSG = defineMessages({
 });
 
 const UserCryptoToFiatPage = () => {
+  const featureFlags = useFeatureFlagsContext();
   const { user, userLoading, walletConnecting } = useAppContext();
-  const featureFlags = useContext(FeatureFlagsContext);
   const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
@@ -67,6 +68,8 @@ const UserCryptoToFiatPage = () => {
         <BankDetails />
         <hr />
         <AutomaticDeposits />
+        <hr />
+        <LiquidationAddress />
         <hr />
         <FiatTransfersTable />
       </div>

@@ -24,7 +24,7 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
   return (
     <>
       {mode === 'completed' && (
-        <span className="mr-2 flex shrink-0">
+        <span className="mr-1 flex shrink-0">
           <Check size={iconSize || 12} />
         </span>
       )}
@@ -39,7 +39,7 @@ const ButtonContent: FC<PropsWithChildren<ButtonContentProps>> = ({
             <span
               className={clsx('flex items-center', {
                 'mr-2': isIconRight,
-                'ml-2': !isIconRight,
+                'ml-1': !isIconRight,
               })}
             >
               {buttonText || children}
