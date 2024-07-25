@@ -7,10 +7,10 @@ import { type Threshold, type EligibleSignee } from '~types/multiSig.ts';
 
 import { type MultiSigSignee } from './types.ts';
 
-export const hasWeekPassed = (createdAt: string) => {
+export const hasWeekPassed = (createdAt: string, currentBlockTime: number) => {
   const createdAtDate = parseISO(createdAt);
 
-  const currentDate = new Date();
+  const currentDate = new Date(currentBlockTime);
 
   const oneWeekAgo = subWeeks(currentDate, 1);
 

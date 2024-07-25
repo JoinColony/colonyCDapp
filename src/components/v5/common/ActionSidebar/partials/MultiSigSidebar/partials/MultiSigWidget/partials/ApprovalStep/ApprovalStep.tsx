@@ -10,6 +10,7 @@ import {
   MultiSigVote,
 } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type Threshold } from '~types/multiSig.ts';
@@ -134,8 +135,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     }) || [];
 
   const doesActionRequireMultipleRoles = requiredRoles.length > 1;
-  const isMotionOlderThanWeek = hasWeekPassed(createdAt);
-
+  const { currentBlockTime } = useCurrentBlockTime();
+  const isMotionOlderThanWeek = currentBlockTime
+    ? hasWeekPassed(createdAt, currentBlockTime * 1000)
+    : false;
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
   const userSignature = signatures.find(
