@@ -6,13 +6,13 @@ on:
   repository_dispatch: # Allows API workflow trigger
     types: [cdapp-frontend]
 
-  push: # Disable automatic deploys until production branch is merged
-    branches:
-      - master # Automatically deploy on commits to master
-    paths-ignore:
-      - '.github/**'
-      - 'amplify/**'
-      - '**.md'
+  # push: # Disable automatic deploys until production branch is merged
+  #   branches:
+  #     - master # Automatically deploy on commits to master
+  #   paths-ignore:
+  #     - '.github/**'
+  #     - 'amplify/**'
+  #     - '**.md'
     
 
 concurrency:

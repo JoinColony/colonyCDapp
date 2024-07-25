@@ -5,11 +5,11 @@ on:
   repository_dispatch: # Allows API workflow trigger
     types: [cdapp-amplify]
 
-  push: # Disabling auto deployment until production branch is merged
-    branches:
-      - master
-    paths:
-      - 'amplify/**'
+  # push: # Disabling auto deployment until production branch is merged
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'amplify/**'
 
 concurrency:
   group: cdapp-amplify
