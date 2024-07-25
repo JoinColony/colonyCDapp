@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "cross-fetch": "^4.0.0",
-    "ethers": "^5.7.1"
+    "ethers": "^5.7.1",
+    "@colony/abis": "^1.4.1"
   }
 }
