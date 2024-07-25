@@ -9894,6 +9894,14 @@ export const ExpenditureFragmentDoc = gql`
       ...ExpenditureStage
     }
   }
+  actions(filter: {type: {eq: CREATE_EXPENDITURE}}) {
+    items {
+      metadata {
+        customTitle
+      }
+      transactionHash: id
+    }
+  }
   finalizedAt
   createdAt
   motions {
