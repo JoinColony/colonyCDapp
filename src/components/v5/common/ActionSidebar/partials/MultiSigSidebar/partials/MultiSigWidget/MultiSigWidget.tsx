@@ -108,6 +108,8 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   useEffect(() => {
     if (isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected) {
       setActiveStepKey(MultiSigState.Finalize);
+    } else {
+      setActiveStepKey(MultiSigState.Approval);
     }
   }, [isMultiSigExecutable, isMultiSigRejected, isMultiSigExecuted]);
 

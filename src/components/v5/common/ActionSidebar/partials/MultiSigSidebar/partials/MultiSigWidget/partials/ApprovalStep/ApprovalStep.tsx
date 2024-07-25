@@ -222,11 +222,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     thresholdPerRole,
   );
 
-  const isMultiSigFinalizable = isMultiSigExecutable;
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigInFinalizeState =
-    isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected;
+    isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected;
 
   const shouldCheckUserRoles = !userSignature && !isMultiSigInFinalizeState;
 
@@ -348,7 +347,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 signees={signaturesToDisplay}
                 shouldShowRoleNumber={doesActionRequireMultipleRoles}
               />
-              {!isMultiSigInFinalizeState && canUserSign && (
+              {!isMultiSigExecuted && !isMultiSigRejected && canUserSign && (
                 <>
                   {userSignature ? (
                     <>
