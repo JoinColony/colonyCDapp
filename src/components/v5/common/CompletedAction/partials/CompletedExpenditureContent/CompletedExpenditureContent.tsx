@@ -5,7 +5,7 @@ import React, { type FC } from 'react';
 import { ADDRESS_ZERO } from '~constants';
 import { ExpenditureType } from '~gql';
 import { useMobile } from '~hooks';
-import { type AnyActionType, DecisionMethod } from '~types/actions.ts';
+import { type AnyActionType } from '~types/actions.ts';
 import {
   type Expenditure,
   type ColonyAction,
@@ -39,7 +39,6 @@ interface CompletedExpenditureContentProps {
   slots: ExpenditureSlot[];
   selectedTeam: Domain | undefined;
   action: ColonyAction;
-  isStaked: boolean;
   expenditure: Expenditure;
   expenditureMeatballOptions: MeatBallMenuItem[];
   tokensCount?: number;
@@ -53,7 +52,6 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   slots,
   selectedTeam,
   action,
-  isStaked,
   expenditure,
   expenditureMeatballOptions,
   tokensCount,
@@ -125,10 +123,7 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
             })}
           />
         )}
-        <DecisionMethodRow
-          decisionMethod={isStaked ? DecisionMethod.Staking : undefined}
-          isMotion={action.isMotion || false}
-        />
+        <DecisionMethodRow action={action} />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}

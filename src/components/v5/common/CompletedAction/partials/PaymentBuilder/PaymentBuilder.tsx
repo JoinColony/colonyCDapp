@@ -78,7 +78,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     return null;
   }
 
-  const { slots = [], metadata, status, finalizedAt, isStaked } = expenditure;
+  const { slots = [], metadata, status, finalizedAt } = expenditure;
 
   const selectedTeam = findDomainByNativeId(
     metadata?.fundFromDomainNativeId,
@@ -148,7 +148,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           actionType={ExtendedColonyActionType.StagedPayment}
           action={action}
           expenditure={expenditure}
-          isStaked={isStaked}
           slots={slots}
         />
         <StagedPaymentTable
@@ -172,7 +171,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         actionType={ColonyActionType.CreateExpenditure}
         action={action}
         expenditure={expenditure}
-        isStaked={isStaked}
         slots={slots}
         tokensCount={tokensCount}
       />
