@@ -14,11 +14,7 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
-import {
-  getIsMultiSigCancelable,
-  getIsMultiSigExecutable,
-  getSignaturesPerRole,
-} from './utils.ts';
+import { getIsMultiSigExecutable, getSignaturesPerRole } from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -57,15 +53,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const { approvalsPerRole, rejectionsPerRole } =
-    getSignaturesPerRole(signatures);
+  const { approvalsPerRole } = getSignaturesPerRole(signatures);
 
   const isMultiSigExecutable = getIsMultiSigExecutable(
     approvalsPerRole,
-    thresholdPerRole,
-  );
-  const isMultiSigCancelable = getIsMultiSigCancelable(
-    rejectionsPerRole,
     thresholdPerRole,
   );
 
@@ -98,7 +89,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
           <FinalizeStep
             thresholdPerRole={thresholdPerRole}
             multiSigData={multiSigData}
-            // initiatorAddress={initiatorAddress}
+            initiatorAddress={action.initiatorAddress}
             action={action}
             createdAt={multiSigData.createdAt}
           />
@@ -115,20 +106,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   );
 
   useEffect(() => {
-    if (
-      isMultiSigExecutable ||
-      isMultiSigCancelable ||
-      isMultiSigExecuted ||
-      isMultiSigRejected
-    ) {
+    if (isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected) {
       setActiveStepKey(MultiSigState.Finalize);
     }
-  }, [
-    isMultiSigExecutable,
-    isMultiSigRejected,
-    isMultiSigExecuted,
-    isMultiSigCancelable,
-  ]);
+  }, [isMultiSigExecutable, isMultiSigRejected, isMultiSigExecuted]);
 
   if (thresholdPerRole === null && !isLoading) {
     console.warn('Invalid threshold');
