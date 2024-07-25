@@ -1,8 +1,8 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
+import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import BankDetailsModal from '../BankDetailsModal/index.ts';
 import RowItem from '../RowItem/index.ts';
 
@@ -15,15 +15,13 @@ import {
 import BankDetailsDescriptionComponent from './partials/BankDetailsDescriptionComponent/BankDetailsDescriptionComponent.tsx';
 import { BankDetailsStatus } from './types.ts';
 
-const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
-  kycStatusData,
-  kycStatusDataIsLoading,
-}) => {
+const BankDetails = () => {
+  const { kycStatusData, bankAccountData, isKycStatusDataLoading } =
+    useCryptoToFiatContext();
+
   const [isOpened, setOpened] = useState(false);
   const handleOpen = () => setOpened(true);
   const handleClose = () => setOpened(false);
-
-  const bankAccountData = kycStatusData?.bankAccount;
 
   const status = bankAccountData
     ? BankDetailsStatus.COMPLETED
@@ -40,19 +38,19 @@ const BankDetails: FC<CryptoToFiatPageComponentProps> = ({
         accessory={formatText(HEADING_MSG.accessory)}
         badgeProps={badgeProps}
         itemIndex={2}
-        isDataLoading={kycStatusDataIsLoading}
+        isDataLoading={isKycStatusDataLoading}
       />
       <RowItem.Body
         descriptionComponent={
           <BankDetailsDescriptionComponent
             bankAccount={bankAccountData}
-            isDataLoading={kycStatusDataIsLoading}
+            isDataLoading={isKycStatusDataLoading}
           />
         }
         ctaTitle={ctaScheme.ctaTitle}
         ctaOnClick={handleOpen}
         ctaDisabled={ctaScheme.ctaDisabled}
-        isDataLoading={kycStatusDataIsLoading}
+        isDataLoading={isKycStatusDataLoading}
       />
 
       {isOpened && (

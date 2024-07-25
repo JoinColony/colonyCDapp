@@ -1,6 +1,6 @@
 import React from 'react';
 
-import hocWithLoading from '~common/HocWithLoading/index.ts';
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import CryptoToFiatBadge from '~v5/common/Pills/CryptoToFiatBadge.tsx/CryptoToFiatBadge.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -11,10 +11,6 @@ import {
 } from './types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.RowItem';
-
-const CrytoToFiatBadgeWithLoading = hocWithLoading(CryptoToFiatBadge);
-
-const ButtonWithLoading = hocWithLoading(Button);
 
 const Heading: React.FC<RowItemHeadingProps> = ({
   title,
@@ -38,11 +34,12 @@ const Heading: React.FC<RowItemHeadingProps> = ({
           </section>
         </section>
         <section>
-          <CrytoToFiatBadgeWithLoading
-            {...badgeProps}
+          <LoadingSkeleton
             isLoading={isDataLoading}
-            loaderClassName="w-[66px] h-[26px] rounded-[24px]"
-          />
+            className="h-[26px] w-[66px] rounded-[24px]"
+          >
+            <CryptoToFiatBadge {...badgeProps} />
+          </LoadingSkeleton>
         </section>
       </div>
     </div>
@@ -73,14 +70,17 @@ const Body: React.FC<RowItemBodyProps> = ({
       </section>
       <section className="flex min-w-[200px] justify-end">
         {ctaComponent ?? (
-          <ButtonWithLoading
-            type="button"
-            text={ctaTitle}
-            onClick={ctaOnClick}
-            disabled={ctaDisabled}
+          <LoadingSkeleton
             isLoading={isDataLoading}
-            loaderClassName="w-[113px] h-[40px] rounded-lg"
-          />
+            className="h-[40px] w-[113px] rounded-lg"
+          >
+            <Button
+              type="button"
+              text={ctaTitle}
+              onClick={ctaOnClick}
+              disabled={ctaDisabled}
+            />
+          </LoadingSkeleton>
         )}
       </section>
     </div>

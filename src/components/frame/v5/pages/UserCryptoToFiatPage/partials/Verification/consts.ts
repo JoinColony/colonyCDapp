@@ -1,5 +1,5 @@
 import { WarningCircle } from '@phosphor-icons/react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, MessageDescriptor } from 'react-intl';
 
 import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
@@ -80,7 +80,6 @@ export const getBadgeProps = (
 };
 
 export const getCTAProps = (
-  isLoading: boolean,
   status?: string | null,
 ): {
   ctaTitle?: MessageDescriptor;

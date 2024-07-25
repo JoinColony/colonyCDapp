@@ -13,6 +13,7 @@ import {
 } from '~routes';
 import { formatText } from '~utils/intl.ts';
 
+import CryptoToFiatContextProvider from './context/CryptoToFiatContextProvider.tsx';
 import AutomaticDeposits from './partials/AutomaticDeposits/AutomaticDeposits.tsx';
 import BankDetails from './partials/BankDetails/BankDetails.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
@@ -52,20 +53,23 @@ const UserCryptoToFiatPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <section className="flex flex-col gap-1">
-        <h4 className="heading-4">{formatText(MSG.pageHeading)}</h4>
-        <span className="text-md text-gray-500">
-          {formatText(MSG.pageSubHeading)}
-        </span>
-      </section>
-      <Verification />
-      <hr />
-      <BankDetails />
-      <AutomaticDeposits />
-      <hr />
-      <FiatTransfersTable />
-    </div>
+    <CryptoToFiatContextProvider>
+      <div className="flex flex-col gap-6">
+        <section className="flex flex-col gap-1">
+          <h4 className="heading-4">{formatText(MSG.pageHeading)}</h4>
+          <span className="text-md text-gray-500">
+            {formatText(MSG.pageSubHeading)}
+          </span>
+        </section>
+        <Verification />
+        <hr />
+        <BankDetails />
+        <hr />
+        <AutomaticDeposits />
+        <hr />
+        <FiatTransfersTable />
+      </div>
+    </CryptoToFiatContextProvider>
   );
 };
 

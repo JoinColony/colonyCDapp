@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import hocWithLoading from '~common/HocWithLoading/index.ts';
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
@@ -44,14 +44,6 @@ interface BankDetailsDescriptionComponentProps {
   isDataLoading: boolean;
 }
 
-const TableDataCellValue = ({
-  value = '-',
-}: {
-  value: string | null | undefined;
-}) => <>{value}</>;
-
-const TableDataCellValueWithLoading = hocWithLoading(TableDataCellValue);
-
 const BankDetailsDescriptionComponent = ({
   bankAccount,
   isDataLoading,
@@ -78,37 +70,40 @@ const BankDetailsDescriptionComponent = ({
         <tbody>
           <tr>
             <td>
-              <TableDataCellValueWithLoading
-                value={bankAccount?.bankName}
+              <LoadingSkeleton
                 isLoading={isDataLoading}
-                loaderClassName={TABLE_TD_LOADER_STYLES}
-              />
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.bankName ?? '-'}
+              </LoadingSkeleton>
             </td>
             <td>
-              <TableDataCellValueWithLoading
-                value={
-                  bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4
-                }
+              <LoadingSkeleton
                 isLoading={isDataLoading}
-                loaderClassName={TABLE_TD_LOADER_STYLES}
-              />
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.usAccount?.last4 ??
+                  bankAccount?.iban?.last4 ??
+                  '-'}
+              </LoadingSkeleton>
             </td>
             <td>
-              <TableDataCellValueWithLoading
-                value={
-                  bankAccount?.usAccount?.routingNumber ??
-                  bankAccount?.iban?.bic
-                }
+              <LoadingSkeleton
                 isLoading={isDataLoading}
-                loaderClassName={TABLE_TD_LOADER_STYLES}
-              />
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.usAccount?.routingNumber ??
+                  bankAccount?.iban?.bic ??
+                  '-'}
+              </LoadingSkeleton>
             </td>
             <td>
-              <TableDataCellValueWithLoading
-                value={bankAccount?.currency}
+              <LoadingSkeleton
                 isLoading={isDataLoading}
-                loaderClassName={TABLE_TD_LOADER_STYLES}
-              />
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.currency ?? ''}
+              </LoadingSkeleton>
             </td>
           </tr>
         </tbody>

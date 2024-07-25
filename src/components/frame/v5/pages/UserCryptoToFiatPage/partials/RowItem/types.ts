@@ -12,7 +12,7 @@ export interface RowItemHeadingProps {
   accessory: ReactNode;
   badgeProps: CryptoToFiatBadgeProps;
   itemIndex: number;
-  isDataLoading?: boolean;
+  isDataLoading: boolean;
 }
 
 export interface RowItemBodyProps {
