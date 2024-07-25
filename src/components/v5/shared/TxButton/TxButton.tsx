@@ -52,6 +52,7 @@ const TxButton: FC = () => {
 
   // Shows the "Completed" messasge just a little longer after all transactions are completed
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
     if (groupState === TransactionGroupStatus.Pending) {
       setShowPending(true);
     } else if (
@@ -60,10 +61,11 @@ const TxButton: FC = () => {
     ) {
       setShowPending(false);
       setShowCompleted(true);
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setShowCompleted(false);
       }, 5000);
     }
+    return () => clearTimeout(timeoutId);
   }, [groupState, prevGroupState]);
 
   if (showPending) {
