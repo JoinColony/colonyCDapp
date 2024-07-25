@@ -4,16 +4,14 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
-import { getRole, UserRole } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { getUserRolesForDomain } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
@@ -100,25 +98,6 @@ export const useManagePermissions = (
 
         const isMultiSig = authority === Authority.ViaMultiSig;
 
-        const userPermissions = getUserRolesForDomain({
-          colonyRoles: extractColonyRoles(colony.roles),
-          userAddress: member,
-          domainId: Number(team),
-          excludeInherited: true,
-          isMultiSig,
-        });
-
-        const userRole = getRole(userPermissions);
-
-        setValue(
-          'role',
-          userRole.permissions.length ? userRole.role : undefined,
-        );
-
-        if (userRole.role !== UserRole.Custom) {
-          return;
-        }
-
         configureFormRoles({
           colony,
           isSubmitted,
@@ -126,6 +105,7 @@ export const useManagePermissions = (
           role,
           setValue,
           team,
+          isMultiSig,
         });
       },
     );
