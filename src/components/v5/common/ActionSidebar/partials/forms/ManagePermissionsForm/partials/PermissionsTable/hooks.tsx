@@ -85,7 +85,6 @@ export const useCustomPermissionsTableColumns = ({
             <FormSwitch
               disabled={disabled}
               name={`${name}.role_${row.original.name}`}
-              greyOutWhenDisabled
             />
           );
 

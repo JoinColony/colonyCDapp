@@ -2,7 +2,7 @@ import { SpinnerGap, Trash } from '@phosphor-icons/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import usePermissionsTableProps from '~hooks/usePermissionsTableProps/index.ts';
 import { type PermissionsTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
@@ -54,7 +54,8 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
   const permissionsTableProps = usePermissionsTableProps({
     dbRoleForDomain,
     formRole,
-    isRemovePermissionsAction: true,
+    isRemovePermissions: true,
+    isRemovingRoot: true,
     dbPermissionsForDomain:
       formRole === UserRoleModifier.Remove
         ? dbInheritedPermissions
@@ -81,8 +82,8 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
         <div className="mb-4 w-fit rounded-md border border-negative-200 p-2">
           <Trash className="fill-negative-400" />
         </div>
-        <h1 className="mb-2 text-xl font-bold">{formatText(MSG.title)}</h1>
-        <p className="mb-6 text-md">{formatText(MSG.body)}</p>
+        <h1 className="mb-2 text-lg font-bold">{formatText(MSG.title)}</h1>
+        <p className="mb-6 text-md text-gray-600">{formatText(MSG.body)}</p>
         <Table<PermissionsTableModel>
           {...permissionsTableProps}
           className="mb-4"

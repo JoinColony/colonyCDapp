@@ -44,7 +44,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const {
     errors,
     isSubmitting,
-    values: {
+    formValues: {
       team,
       authority,
       role,

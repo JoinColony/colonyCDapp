@@ -4,11 +4,7 @@ import difference from 'lodash/difference';
 import { defineMessages } from 'react-intl';
 import { boolean, number, object, string, type TestContext } from 'yup';
 
-import {
-  getRole,
-  PERMISSIONS_TABLE_CONTENT,
-  UserRole,
-} from '~constants/permissions.ts';
+import { PERMISSIONS_TABLE_CONTENT, UserRole } from '~constants/permissions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -173,6 +169,7 @@ export const validationSchema = object()
               _dbInheritedPermissions: dbInheritedPermissions,
               _dbPermissionsForDomain: dbPermissionsForDomain,
               _dbInheritedRole: dbInheritedRole,
+              _dbRoleForDomain: dbRoleForDomain,
             },
             createError,
           }: TestContext,
@@ -219,16 +216,11 @@ export const validationSchema = object()
                 // Then Funding and Arbitration were added for the user in Team Andromeda.
                 // This effectively gives Payer permissions for the user in Team Andromeda even though the
                 // inherited role is Mod.
-                // So we really have to know the derived role for a given subdomain.
-                const derivedRoleForDomainMeta = getRole(
-                  dbPermissionsForDomain,
-                );
-
-                const derivedDbRoleForDomain = derivedRoleForDomainMeta.role;
+                // So we really have to know the derived role for a given subdomain which is held in _dbInheritedRole
 
                 // If the same role is being given to a user, determine if the role is a
                 // a derived or inherited role. Adjust the error message accordingly.
-                if (formRole === derivedDbRoleForDomain) {
+                if (formRole === dbRoleForDomain) {
                   // If the roles happen to be the same but the domain permissions are only
                   // partially made up of the inherited permissions, we can conclude that the current
                   // form permissions are made up of inherited permissions + user-selected permissions
@@ -291,7 +283,7 @@ export const validationSchema = object()
 
                 // If the DB inherited role is custom
                 if (dbInheritedRole === UserRole.Custom) {
-                  if (derivedDbRoleForDomain === formRole) {
+                  if (dbRoleForDomain === formRole) {
                     return createError({
                       message: formatText(MSG.samePermissionsApplied),
                       path: ROLE_FIELD_NAME,
@@ -346,11 +338,7 @@ export const validationSchema = object()
         },
       })
       .required(),
-    authority: getEnumYupSchema(Authority).when(ROLE_FIELD_NAME, {
-      is: UserRole.Mod,
-      then: getEnumYupSchema(Authority).optional(),
-      otherwise: getEnumYupSchema(Authority).required(),
-    }),
+    authority: getEnumYupSchema(Authority).required(),
     permissions: permissionsSchema.when('role', {
       is: UserRole.Custom,
       then: (schema: typeof permissionsSchema) =>

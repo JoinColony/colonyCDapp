@@ -5,7 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import { useMobile } from '~hooks/index.ts';
-import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import usePermissionsTableProps from '~hooks/usePermissionsTableProps/index.ts';
 import {
   type PermissionsTableModel,
   type CustomPermissionTableModel,
@@ -43,7 +43,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
     dbRoleForDomain,
     formRole,
     dbPermissionsForDomain,
-    isRemovePermissionsAction: formRole === UserRoleModifier.Remove,
+    isRemovePermissions: formRole === UserRoleModifier.Remove,
   });
   const { formState } = useFormContext<ManagePermissionsFormValues>();
 
