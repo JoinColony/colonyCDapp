@@ -163,21 +163,3 @@ export const getIsMultiSigExecutable = (
 
   return isMultiSigExecutable;
 };
-
-export const getIsMultiSigCancelable = (
-  rejectionsPerRole: Record<number, MultiSigUserSignature[]>,
-  thresholdPerRole: Threshold,
-): boolean => {
-  const isMultiSigCancelable =
-    Object.keys(rejectionsPerRole).length > 0 &&
-    Object.keys(rejectionsPerRole).every((role) => {
-      const rejections = rejectionsPerRole[role]?.length || 0;
-      if (!thresholdPerRole) {
-        return false;
-      }
-      const roleThreshold = thresholdPerRole[role] || 0;
-      return rejections >= roleThreshold;
-    });
-
-  return isMultiSigCancelable;
-};
