@@ -3,6 +3,7 @@ import React, { useState, type FC, useEffect } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
 import { type ColonyMultiSigFragment } from '~gql';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
@@ -148,6 +149,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
 
+  const { currentBlockTime } = useCurrentBlockTime();
+  const isMotionOlderThanWeek = currentBlockTime
+    ? hasWeekPassed(createdAt, currentBlockTime * 1000)
+    : false;
+
   const isMultiSigExecuted = multiSigData.isExecuted;
   const hasMultiSigActionCompleted = multiSigData.hasActionCompleted;
   const isMultiSigRejected = multiSigData.isRejected;
@@ -155,7 +161,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const isMultiSigFailingExecution =
     isMultiSigExecuted && !hasMultiSigActionCompleted;
 
-  const isMotionOlderThanWeek = hasWeekPassed(createdAt);
   const rejectedByOwner = multiSigData.rejectedBy === initiatorAddress;
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);

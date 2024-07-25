@@ -2701,6 +2701,10 @@ type ColonyMultiSig @model {
   The timestamp when the motion was rejected
   """
   rejectedAt: AWSDateTime
+  """
+  The timestamp when the motion was created at
+  """
+  createdAt: AWSDateTime!
 }
 """
 Represents a Motion within a Colony
