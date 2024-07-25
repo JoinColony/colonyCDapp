@@ -28,7 +28,6 @@ import VoteButton from '../../../VoteButton/VoteButton.tsx';
 import { VoteExpectedStep } from '../../types.ts';
 import {
   getAllUserSignatures,
-  getIsMultiSigCancelable,
   getIsMultiSigExecutable,
   getNotSignedUsers,
   getNumberOfApprovals,
@@ -222,12 +221,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     approvalsPerRole,
     thresholdPerRole,
   );
-  const isMultiSigCancelable = getIsMultiSigCancelable(
-    rejectionsPerRole,
-    thresholdPerRole,
-  );
 
-  const isMultiSigFinalizable = isMultiSigExecutable || isMultiSigCancelable;
+  const isMultiSigFinalizable = isMultiSigExecutable;
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigInFinalizeState =

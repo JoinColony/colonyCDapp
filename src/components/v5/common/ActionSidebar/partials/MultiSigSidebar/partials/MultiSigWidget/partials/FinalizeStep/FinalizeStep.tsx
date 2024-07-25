@@ -1,26 +1,18 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import { isToday, isYesterday } from 'date-fns';
 import React, { useState, type FC, useEffect } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyMultiSigFragment } from '~gql';
-import { ActionTypes } from '~redux';
-import { ActionForm } from '~shared/Fields/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
-import { mapPayload } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import FinalizeButton from '../../../FinalizeButton/FinalizeButton.tsx';
 import {
-  getIsMultiSigCancelable,
   getIsMultiSigExecutable,
   getNumberOfApprovals,
   getNumberOfRejections,
@@ -59,16 +51,12 @@ const MSG = defineMessages({
   headingRejectedByOwner: {
     id: `${displayName}.headingRejectedByOwner`,
     defaultMessage:
-      'The creator can reject the action immediately without requiring approval.',
+      'The creator rejected the action immediately without requiring approval.',
   },
   headingRejectedWeek: {
     id: `${displayName}.headingRejectedWeek`,
     defaultMessage:
       '7 days had passed, the action was rejected immediately without requiring approval.',
-  },
-  headingFinalizeCancel: {
-    id: `${displayName}.finalizeCancel`,
-    defaultMessage: 'Finalize to cancel the action.',
   },
   headingFinalizeBoth: {
     id: `${displayName}.finalizeBoth`,
@@ -133,7 +121,7 @@ const formatDate = (value: string | undefined) => {
 
 interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
-  // initiatorAddress: string;
+  initiatorAddress: string;
   createdAt: string;
   thresholdPerRole: Threshold;
   action: ColonyAction;
@@ -141,18 +129,16 @@ interface FinalizeStepProps {
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
   multiSigData,
-  // initiatorAddress,
+  initiatorAddress,
   createdAt,
   action,
   thresholdPerRole,
 }) => {
   const [isFinalizePending, setIsFinalizePending] = useState(false);
-  const { colony } = useColonyContext();
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMotionOlderThanWeek = hasWeekPassed(createdAt);
-  // @TODO: Check for rejected initiator
-  const isOwner = false;
+  const rejectedByOwner = multiSigData.rejectedBy === initiatorAddress;
 
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
@@ -172,33 +158,22 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     approvalsPerRole,
     thresholdPerRole,
   );
-  const isMultiSigCancelable = getIsMultiSigCancelable(
-    rejectionsPerRole,
-    thresholdPerRole,
-  );
 
   let stepTitle = MSG.heading;
 
   if (isMultiSigExecuted) {
     stepTitle = MSG.headingSuccess;
-  } else if (isMultiSigRejected && isOwner) {
+  } else if (isMultiSigRejected && rejectedByOwner) {
     stepTitle = MSG.headingRejectedByOwner;
   } else if (isMultiSigRejected && isMotionOlderThanWeek) {
     stepTitle = MSG.headingRejectedWeek;
   } else if (isMultiSigRejected) {
     stepTitle = MSG.headingRejected;
-  } else if (isMultiSigCancelable && !isMultiSigRejected) {
-    stepTitle = MSG.headingFinalizeCancel;
   } else if (isMultiSigExecutable && !isMultiSigRejected) {
     stepTitle = MSG.heading;
   } else {
     stepTitle = MSG.headingFinalizeBoth;
   }
-
-  const transform = mapPayload(() => ({
-    colonyAddress: colony.colonyAddress,
-    motionId: multiSigData.nativeMultiSigId,
-  }));
 
   useEffect(() => {
     if (isMultiSigExecuted || isMultiSigRejected) {
@@ -224,7 +199,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           key: 'signatories',
           content: (
             <div>
-              {(isMultiSigExecutable || isMultiSigCancelable) &&
+              {isMultiSigExecutable &&
                 !isMultiSigExecuted &&
                 !isMultiSigRejected && (
                   <div className="flex flex-col gap-2">
@@ -234,37 +209,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
                       />
-                    )}
-                    {isMultiSigCancelable && (
-                      <ActionForm
-                        actionType={ActionTypes.MULTISIG_CANCEL}
-                        onSuccess={() => setIsFinalizePending(true)}
-                        onError={() => setIsFinalizePending(false)}
-                        transform={transform}
-                      >
-                        {({ formState: { isSubmitting } }) =>
-                          isFinalizePending || isSubmitting ? (
-                            <TxButton
-                              rounded="s"
-                              isFullSize
-                              text={{ id: 'button.pending' }}
-                              icon={
-                                <span className="ml-2 flex shrink-0">
-                                  <SpinnerGap
-                                    size={18}
-                                    className="animate-spin"
-                                  />
-                                </span>
-                              }
-                              className="!px-4 !text-md"
-                            />
-                          ) : (
-                            <Button type="submit" isFullSize>
-                              {formatText(MSG.finalizeCancelButton)}
-                            </Button>
-                          )
-                        }
-                      </ActionForm>
                     )}
                   </div>
                 )}
