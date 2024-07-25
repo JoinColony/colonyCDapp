@@ -16,13 +16,17 @@ const displayName =
 const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
-
   const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
 
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
+    expenditure?.actions?.items?.[0]?.metadata?.customTitle ||
     stake.action?.type;
+
+  const stakeItemTransctionHash = expenditure
+    ? expenditure?.actions?.items?.[0]?.transactionHash
+    : stake.action?.transactionHash;
 
   return (
     <li className="flex flex-col border-b border-gray-100 py-3.5 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
@@ -30,7 +34,7 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
         type="button"
         onClick={() =>
           navigate(
-            `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,
+            `${window.location.pathname}?${TX_SEARCH_PARAM}=${stakeItemTransctionHash}`,
             {
               replace: true,
             },
