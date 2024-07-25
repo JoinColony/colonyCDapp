@@ -151,9 +151,11 @@ export const useThresholdData = ({ extensionData }) => {
   return {
     thresholdType,
     isFixedThresholdError: !!errors.globalThreshold,
+    fixedThresholdErrorMessage: errors.globalThreshold?.message,
     domainThresholdConfigs: domainThresholdConfigs.map((config) => ({
       ...config,
       isError: !!errors[config.name],
+      errorMessage: errors[config.name]?.message,
     })),
     register,
     handleThresholdValueChange,
