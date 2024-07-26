@@ -993,6 +993,7 @@
     "filter.contributor.type": "Contributor type",
     "filter.user.status": "User status",
     "filter.reputation": "Reputation",
+    "filter.multiSig": "Multi-Sig",
     "filter.sortBy": "Sort by:",
     "filter.sortByReputation": "Sort by: Reputation",
     "filter.permissions": "Permissions",
