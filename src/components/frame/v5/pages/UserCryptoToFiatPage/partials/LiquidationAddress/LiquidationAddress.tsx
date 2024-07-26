@@ -1,26 +1,17 @@
-import { Cardholder, Eye } from '@phosphor-icons/react';
+import { Cardholder, CopySimple, Eye } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useGetUserLiquidationAddressesQuery } from '~gql';
+import { useCryptoToFiatContext } from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import { getChainId } from '~redux/sagas/utils/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { MOCK_LIQUIDATION_ADDRESS_CHAIN_ID } from './mocks.ts';
 import { BlockExplorerButton } from './partials/BlockExplorerButton.tsx';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.LiquidationAddress';
-
-const chainIdWithMockFallback = Number(
-  import.meta.env.MODE === 'development'
-    ? MOCK_LIQUIDATION_ADDRESS_CHAIN_ID
-    : getChainId(),
-);
 
 const MSG = defineMessages({
   header: {
@@ -44,27 +35,15 @@ const MSG = defineMessages({
 });
 
 const LiquidationAddress = () => {
-  const { user } = useAppContext();
-
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
-  const { loading: isLiquidationAddressLoading, data } =
-    useGetUserLiquidationAddressesQuery({
-      variables: {
-        chainId: chainIdWithMockFallback,
-        userAddress: user?.walletAddress ?? '',
-      },
-      skip: !user,
-    });
+  const { kycStatusData, isKycStatusDataLoading } = useCryptoToFiatContext();
 
   const [showLiquidationAddress, setShowLiquidationAddress] = useState(false);
 
-  const isLoading = !data || isLiquidationAddressLoading;
+  const isLoading = isKycStatusDataLoading;
 
-  const liquidationAddressesData = data?.getLiquidationAddressesByUserAddress;
-
-  const liquidationAddress =
-    liquidationAddressesData?.items[0]?.liquidationAddress;
+  const liquidationAddress = kycStatusData?.liquidationAddress;
 
   const onAddressCtaButtonClick = () => {
     if (showLiquidationAddress && liquidationAddress) {
@@ -90,6 +69,18 @@ const LiquidationAddress = () => {
     return MSG.showAddress;
   };
 
+  const addressCtaButtonIcon = () => {
+    if (isCopied) {
+      return undefined;
+    }
+
+    if (showLiquidationAddress) {
+      return CopySimple;
+    }
+
+    return Eye;
+  };
+
   const hideOrShow = (address: string) =>
     showLiquidationAddress ? liquidationAddress : '•'.repeat(address.length);
 
@@ -99,31 +90,35 @@ const LiquidationAddress = () => {
         <h1 className="mb-3 text-lg font-semibold">{formatText(MSG.header)}</h1>
         <p className="text-sm text-gray-600">{formatText(MSG.description)}</p>
       </section>
-      <section className="flex h-16 w-full justify-between gap-2 rounded-[4px] bg-gray-50 p-3">
-        <div className="flex flex-1 items-center gap-2">
+      <section className="flex min-h-16 w-full flex-col items-center justify-between gap-3 rounded-[4px] bg-gray-50 p-3 sm:flex-row">
+        <div className="flex w-full items-center gap-2 overflow-hidden">
           <LoadingSkeleton
             className="aspect-square h-4 w-4 rounded-[4px]"
             isLoading={isLoading}
           >
-            <Cardholder size={18} />
+            <Cardholder className="aspect-square h-[18px] w-auto flex-shrink-0" />
           </LoadingSkeleton>
           <LoadingSkeleton
             isLoading={isLoading}
-            className="h-[27px] w-full max-w-[377px] rounded-[4px]"
+            className="h-[27px] w-full max-w-full rounded-[4px] sm:max-w-[377px]"
           >
-            <span className="text-md font-normal">
+            <span
+              className={clsx('text-md font-normal', {
+                truncate: showLiquidationAddress,
+              })}
+            >
               {liquidationAddress
                 ? hideOrShow(liquidationAddress)
                 : formatText(MSG.incompleteDetails)}
             </span>
           </LoadingSkeleton>
         </div>
-        <div className="flex flex-1 justify-end gap-2">
-          {liquidationAddress && (
+        <div className="flex w-full flex-col gap-3 sm:w-fit sm:flex-row">
+          {liquidationAddress && showLiquidationAddress && (
             <BlockExplorerButton address={liquidationAddress} />
           )}
           <LoadingSkeleton
-            className="h-10 w-full max-w-[153px] rounded-lg"
+            className="h-10 w-full rounded-lg sm:w-[153px]"
             isLoading={isLoading}
           >
             <Button
@@ -133,7 +128,7 @@ const LiquidationAddress = () => {
               })}
               disabled={!liquidationAddress}
               onClick={onAddressCtaButtonClick}
-              icon={isCopied ? undefined : Eye}
+              icon={addressCtaButtonIcon()}
               text={addressCtaButtonCopy()}
             />
           </LoadingSkeleton>
