@@ -32,12 +32,16 @@ export const useEligibleSignees = ({
     signeesPerRole: {},
   });
 
+  // Since it's an array fetched from a function, we "memo" this by stringify it to prevent it always triggering the useEffect
+  const requiredRolesString = JSON.stringify(requiredRoles);
+
   useEffect(() => {
     async function fetchEligibleSignees() {
+      const parsedRequiredRoles = JSON.parse(requiredRolesString);
       try {
         setIsLoading(true);
         const response = await getEligibleSigneesApi({
-          requiredRoles,
+          requiredRoles: parsedRequiredRoles,
           colonyAddress,
           domainId,
         });
@@ -51,8 +55,7 @@ export const useEligibleSignees = ({
     }
 
     fetchEligibleSignees();
-    // Since it's an array fetched from a function, it will always trigger this, so we "memo" it by stringifying it :)
-  }, [colonyAddress, domainId, JSON.stringify(requiredRoles)]);
+  }, [colonyAddress, domainId, requiredRolesString]);
 
   return {
     isLoading,
