@@ -14,7 +14,7 @@ export const useActiveFilters = () => {
   const {
     actionTypesFilters,
     dateFilters,
-    decisionMethod,
+    decisionMethods,
     motionStates,
     handleResetFilters,
   } = useFiltersContext();
@@ -52,15 +52,15 @@ export const useActiveFilters = () => {
             },
           ]
         : []),
-      ...(decisionMethod
+      ...(decisionMethods.length
         ? [
             {
               filter: FiltersValues.DecisionMethod,
               category: formatText({
                 id: 'activityFeedTable.filters.decisionMethod',
               }),
-              items: DECISION_METHOD_FILTERS.filter(
-                ({ name }) => decisionMethod === name,
+              items: DECISION_METHOD_FILTERS.filter(({ name }) =>
+                decisionMethods.includes(name),
               ).map(({ label }) => label),
             },
           ]
@@ -88,7 +88,7 @@ export const useActiveFilters = () => {
           ]
         : []),
     ];
-  }, [actionTypesFilters, dateFilters, decisionMethod, motionStates]);
+  }, [actionTypesFilters, dateFilters, decisionMethods, motionStates]);
 
   return { activeFiltersToDisplay, handleResetFilters };
 };
