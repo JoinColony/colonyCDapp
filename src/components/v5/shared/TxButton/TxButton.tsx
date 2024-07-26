@@ -4,13 +4,13 @@ import React, { useMemo, type FC, useState, useEffect } from 'react';
 
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
-import usePrevious from '~hooks/usePrevious.ts';
 import {
   TransactionGroupStatus,
   useGroupedTransactions,
   getGroupStatus,
 } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
+import noop from '~utils/noop.ts';
 
 import IconButton from '../Button/IconButton.tsx';
 
@@ -48,25 +48,24 @@ const TxButton: FC = () => {
 
   const [showCompleted, setShowCompleted] = useState(false);
   const [showPending, setShowPending] = useState(false);
-  const prevGroupState = usePrevious(groupState);
-
   // Shows the "Completed" messasge just a little longer after all transactions are completed
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
     if (groupState === TransactionGroupStatus.Pending) {
       setShowPending(true);
-    } else if (
-      groupState === TransactionGroupStatus.Done &&
-      prevGroupState === TransactionGroupStatus.Pending
-    ) {
+    } else if (groupState === TransactionGroupStatus.Done && showPending) {
       setShowPending(false);
       setShowCompleted(true);
-      timeoutId = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setShowCompleted(false);
       }, 5000);
+      return () => {
+        if (!(groupState === TransactionGroupStatus.Done && showPending)) {
+          clearTimeout(timeoutId);
+        }
+      };
     }
-    return () => clearTimeout(timeoutId);
-  }, [groupState, prevGroupState]);
+    return noop;
+  }, [groupState, showPending]);
 
   if (showPending) {
     return (
