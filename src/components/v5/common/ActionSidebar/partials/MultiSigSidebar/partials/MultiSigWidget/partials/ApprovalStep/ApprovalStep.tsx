@@ -28,7 +28,6 @@ import VoteButton from '../../../VoteButton/VoteButton.tsx';
 import { VoteExpectedStep } from '../../types.ts';
 import {
   getAllUserSignatures,
-  getIsMultiSigCancelable,
   getIsMultiSigExecutable,
   getNotSignedUsers,
   getNumberOfApprovals,
@@ -222,16 +221,11 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     approvalsPerRole,
     thresholdPerRole,
   );
-  const isMultiSigCancelable = getIsMultiSigCancelable(
-    rejectionsPerRole,
-    thresholdPerRole,
-  );
 
-  const isMultiSigFinalizable = isMultiSigExecutable || isMultiSigCancelable;
   const isMultiSigExecuted = multiSigData.isExecuted;
   const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigInFinalizeState =
-    isMultiSigFinalizable || isMultiSigExecuted || isMultiSigRejected;
+    isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected;
 
   const shouldCheckUserRoles = !userSignature && !isMultiSigInFinalizeState;
 
@@ -287,7 +281,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 </div>
               )}
             </div>
-            {isOwner && signaturesToDisplay.length > 5 && (
+            {isOwner && !isMotionOlderThanWeek && !userSignature && (
               <div className="mt-2">
                 <StatusText
                   status={StatusTypes.Info}
@@ -300,7 +294,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 </StatusText>
               </div>
             )}
-            {isMotionOlderThanWeek && (
+            {isMotionOlderThanWeek && !userSignature && (
               <div className="mt-2">
                 <StatusText
                   status={StatusTypes.Info}
@@ -353,7 +347,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                 signees={signaturesToDisplay}
                 shouldShowRoleNumber={doesActionRequireMultipleRoles}
               />
-              {!isMultiSigInFinalizeState && canUserSign && (
+              {!isMultiSigExecuted && !isMultiSigRejected && canUserSign && (
                 <>
                   {userSignature ? (
                     <>
@@ -395,8 +389,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                           disabled: expectedStep === VoteExpectedStep.cancel,
                         }}
                       />
-                      {(isOwner && signaturesToDisplay.length > 5) ||
-                      isMotionOlderThanWeek ? (
+                      {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
                           multiSigId={multiSigData.nativeMultiSigId}
                           isPending={
