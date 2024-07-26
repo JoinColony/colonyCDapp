@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 
@@ -21,6 +22,8 @@ const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const { colony } = useColonyContext();
+
+  const { votingReputationAddress } = useEnabledExtensions();
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
@@ -53,7 +56,7 @@ const StakesTab = () => {
     >
       <div className="mb-4 flex items-center justify-between sm:px-6 sm:pt-6">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
-        {!isMobile && (
+        {!isMobile && votingReputationAddress && (
           <ClaimAllButton
             colonyAddress={colony.colonyAddress}
             claimableStakes={claimableStakes}
