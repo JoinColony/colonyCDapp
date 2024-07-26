@@ -161,7 +161,7 @@ export const getBaseSearchActionsFilterVariable = (
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
-  { dateFrom, dateTo, decisionMethod, teamId }: ActivityFeedFilters = {},
+  { dateFrom, dateTo, decisionMethods, teamId }: ActivityFeedFilters = {},
 ): SearchActionsFilterVariable => {
   const dateFilter =
     dateFrom && dateTo
@@ -187,22 +187,40 @@ export const getSearchActionsFilterVariable = (
             : {}),
         };
   const decisionMethodFilter =
-    decisionMethod !== undefined
+    decisionMethods && !!decisionMethods.length
       ? {
-          ...(decisionMethod === ActivityDecisionMethod.Reputation
-            ? {
-                isMotion: {
-                  eq: true,
-                },
-              }
-            : {}),
-          ...(decisionMethod === ActivityDecisionMethod.Permissions
-            ? {
-                isMotion: {
-                  ne: true,
-                },
-              }
-            : {}),
+          or: [
+            ...(decisionMethods.includes(ActivityDecisionMethod.Reputation)
+              ? [
+                  {
+                    isMotion: {
+                      eq: true,
+                    },
+                  },
+                ]
+              : []),
+            ...(decisionMethods.includes(ActivityDecisionMethod.MultiSig)
+              ? [
+                  {
+                    isMultiSig: {
+                      eq: true,
+                    },
+                  },
+                ]
+              : []),
+            ...(decisionMethods.includes(ActivityDecisionMethod.Permissions)
+              ? [
+                  {
+                    isMotion: {
+                      ne: true,
+                    },
+                    isMultiSig: {
+                      ne: true,
+                    },
+                  },
+                ]
+              : []),
+          ],
         }
       : undefined;
 

@@ -10,4 +10,8 @@ export const DECISION_METHOD_FILTERS = [
     label: formatText({ id: 'filter.reputation' }),
     name: ActivityDecisionMethod.Reputation,
   },
+  {
+    label: formatText({ id: 'filter.multiSig' }),
+    name: ActivityDecisionMethod.MultiSig,
+  },
 ];

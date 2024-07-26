@@ -96,7 +96,7 @@ export const getMultiSigState = (
     return MotionState.Rejected;
   }
 
-  if (multiSigData.isExecuted) {
+  if (multiSigData.isExecuted && multiSigData.hasActionCompleted) {
     return MotionState.Passed;
   }
 
