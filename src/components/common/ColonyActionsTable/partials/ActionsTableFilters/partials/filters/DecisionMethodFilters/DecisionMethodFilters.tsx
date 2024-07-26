@@ -7,7 +7,7 @@ import Checkbox from '~v5/common/Checkbox/index.ts';
 import { DECISION_METHOD_FILTERS } from './consts.ts';
 
 const DecisionMethodFilters: FC = () => {
-  const { decisionMethod, handleDecisionMethodFilterChange } =
+  const { decisionMethods, handleDecisionMethodsFilterChange } =
     useFiltersContext();
 
   return (
@@ -17,7 +17,7 @@ const DecisionMethodFilters: FC = () => {
       </h5>
       <ul>
         {DECISION_METHOD_FILTERS.map(({ label, name }) => {
-          const isChecked = decisionMethod === name;
+          const isChecked = decisionMethods.includes(name);
 
           return (
             <li key={name}>
@@ -25,7 +25,7 @@ const DecisionMethodFilters: FC = () => {
                 classNames="subnav-button px-0 sm:px-3.5"
                 name={name}
                 isChecked={isChecked}
-                onChange={handleDecisionMethodFilterChange}
+                onChange={handleDecisionMethodsFilterChange}
               >
                 {label}
               </Checkbox>

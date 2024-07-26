@@ -10,6 +10,7 @@ import { type MotionState } from '~utils/colonyMotions.ts';
 export enum ActivityDecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
+  MultiSig = 'MultiSig',
 }
 
 export interface ActivityFeedFilters {
@@ -18,7 +19,7 @@ export interface ActivityFeedFilters {
   motionStates?: MotionState[];
   dateFrom?: Date;
   dateTo?: Date;
-  decisionMethod?: ActivityDecisionMethod;
+  decisionMethods?: ActivityDecisionMethod[];
   search?: string;
 }
 
