@@ -210,17 +210,30 @@ const UserInfo: FC<UserInfoProps> = ({
                   reputationPercentage,
                   reputationRaw,
                 }) => {
-                  const getFilteredPermissions = (
-                    unfilteredPermissions: AvailablePermission[],
-                  ) => {
+                  const getFilteredPermissions = ({
+                    unfilteredPermissions,
+                    isMultiSig = false,
+                  }: {
+                    unfilteredPermissions: AvailablePermission[];
+                    isMultiSig?: boolean;
+                  }) => {
                     if (unfilteredPermissions?.length) {
                       return unfilteredPermissions;
                     }
                     const rootDomain = domains.find(
                       ({ nativeId }) => nativeId === Id.RootDomain,
                     );
+                    if (!isMultiSig) {
+                      return rootDomain
+                        ? rootDomain.permissions.filter(
+                            (permission) =>
+                              permission !== ColonyRole.Root &&
+                              permission !== ColonyRole.Recovery,
+                          )
+                        : [];
+                    }
                     return rootDomain
-                      ? rootDomain.permissions.filter(
+                      ? rootDomain.multiSigPermissions.filter(
                           (permission) =>
                             permission !== ColonyRole.Root &&
                             permission !== ColonyRole.Recovery,
@@ -228,9 +241,14 @@ const UserInfo: FC<UserInfoProps> = ({
                       : [];
                   };
 
-                  const finalPermissions = getFilteredPermissions(permissions);
-                  const finalMultiSigPermissions =
-                    getFilteredPermissions(multiSigPermissions);
+                  const finalPermissions = getFilteredPermissions({
+                    unfilteredPermissions: permissions,
+                  });
+
+                  const finalMultiSigPermissions = getFilteredPermissions({
+                    unfilteredPermissions: multiSigPermissions,
+                    isMultiSig: true,
+                  });
 
                   const permissionRole = finalPermissions?.length
                     ? getRole(finalPermissions)
