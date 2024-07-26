@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetUserStakesQuery } from '~gql';
-import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
+import useNetworkMotionStatesAllColonies from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
@@ -12,9 +11,6 @@ import { getStakeStatus } from './helpers.ts';
 import { type StakesFilterType } from './types.ts';
 
 export const useStakesByFilterType = () => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
 
@@ -25,7 +21,6 @@ export const useStakesByFilterType = () => {
   } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
-      colonyAddress,
     },
     skip: !walletAddress,
     fetchPolicy: 'cache-and-network',
@@ -42,16 +37,23 @@ export const useStakesByFilterType = () => {
         .map((stake) => stake.action?.motionData?.motionId ?? ''),
     [userStakes],
   );
-  const { motionStatesMap, loading: motionStatesLoading } =
-    useNetworkMotionStates(motionIds);
+  const {
+    motionStatesMapByColonies,
+    loading: motionStatesLoading,
+    votingReputationByColony,
+  } = useNetworkMotionStatesAllColonies(motionIds);
 
   const stakesWithStatus = useMemo(
     () =>
       userStakes.map((stake) => ({
         ...stake,
-        status: getStakeStatus(stake, motionStatesMap),
+        status: getStakeStatus(
+          stake,
+          motionStatesMapByColonies,
+          votingReputationByColony,
+        ),
       })),
-    [userStakes, motionStatesMap],
+    [userStakes, motionStatesMapByColonies, votingReputationByColony],
   );
 
   const stakesByFilterType = stakesFilterOptions.reduce(

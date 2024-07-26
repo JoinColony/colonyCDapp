@@ -38,7 +38,6 @@ import PillsBase from '../Pills/PillsBase.tsx';
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
-import useRemoveTxParamOnClose from './hooks/useRemoveTxParamOnClose.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
@@ -102,7 +101,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const isMobile = useMobile();
 
   useDisableBodyScroll(isActionSidebarOpen);
-  useRemoveTxParamOnClose();
 
   const actionNotFound =
     transactionId && !action && !loadingAction && !loadingExpenditure;

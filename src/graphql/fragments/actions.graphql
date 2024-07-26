@@ -87,6 +87,7 @@ fragment ColonyAction on ColonyAction {
   }
   colony {
     colonyAddress: id
+    name
     nativeToken {
       nativeTokenDecimals: decimals
       nativeTokenSymbol: symbol

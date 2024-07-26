@@ -15,3 +15,39 @@ query GetExtensionInstallationsCount($id: ID!) {
     reputationWeighted
   }
 }
+
+query GetAllColoniesExtensions(
+  $contributorAddress: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int = 100
+  $nextToken: String
+  $isWatching: Boolean
+) {
+  getContributorsByAddress(
+    contributorAddress: $contributorAddress
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+    filter: { isWatching: { eq: $isWatching } }
+  ) {
+    items {
+      id
+      createdAt
+      colony {
+        colonyAddress: id
+        name
+        extensions(filter: { isDeleted: { eq: false } }) {
+          items {
+            address: id
+            version
+            hash
+            isDeleted
+            isDeprecated
+            isInitialized
+          }
+        }
+      }
+    }
+    nextToken
+  }
+}

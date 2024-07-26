@@ -1,4 +1,12 @@
-query GetUserStakes($userAddress: ID!, $colonyAddress: ID!) {
+query GetUserStakes($userAddress: ID!) {
+  getUserStakes(userAddress: $userAddress, limit: 10000, sortDirection: DESC) {
+    items {
+      ...UserStake
+    }
+  }
+}
+
+query GetUserStakesByColony($userAddress: ID!, $colonyAddress: ID!) {
   getUserStakes(
     userAddress: $userAddress
     filter: { colonyAddress: { eq: $colonyAddress } }

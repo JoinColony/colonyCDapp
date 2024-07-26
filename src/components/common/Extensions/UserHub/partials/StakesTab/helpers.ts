@@ -28,15 +28,22 @@ export const getStakesTabItems = (
 
 export const getStakeStatus = (
   stake: UserStake,
-  statesMap: MotionStatesMap,
+  statesMap: Map<string, MotionStatesMap>,
+  votingReputationByColony: Record<string, string>,
 ) => {
   if (stake.isClaimed) {
     return UserStakeStatus.Claimed;
   }
 
-  const motionState = statesMap.get(stake.action?.motionData?.motionId ?? '');
-  if (!motionState) {
-    return UserStakeStatus.Unknown;
+  const colonyAddress = stake.action?.colonyAddress;
+  const currentColonyMotionState = statesMap?.get(colonyAddress ?? '');
+  const motionState = currentColonyMotionState?.get(
+    stake.action?.motionData?.motionId ?? '',
+  );
+  const reputationAddress =
+    colonyAddress && votingReputationByColony[colonyAddress];
+  if (!reputationAddress || !motionState) {
+    return UserStakeStatus.Uninstalled;
   }
 
   if (motionState === NetworkMotionState.Finalizable) {

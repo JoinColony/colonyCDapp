@@ -23,6 +23,7 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
       blockNumber: index,
       colony: {
         colonyAddress: ADDRESS_ZERO,
+        name: '',
         nativeToken: {
           tokenAddress: ADDRESS_ZERO,
           nativeTokenDecimals: DEFAULT_TOKEN_DECIMALS,

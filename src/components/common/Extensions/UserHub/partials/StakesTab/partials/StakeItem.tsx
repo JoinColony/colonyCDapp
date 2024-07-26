@@ -1,10 +1,12 @@
-import React, { type FC } from 'react';
+import React, { useEffect, useState, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
 
 import { type StakeItemProps } from '../types.ts';
@@ -16,18 +18,41 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
 
+  const [navigatePath, setNavigatePath] = useState(window.location.pathname);
+
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
     stake.action?.type;
 
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
+  const stakeColonyName = stake.action?.colony.name ?? '';
+
+  useEffect(() => {
+    if (colonyName !== stakeColonyName) {
+      // For transactions from other colonies it should redirect to /{ownColony}?tx={hash}
+      setNavigatePath(`/${stakeColonyName}`);
+    }
+  }, [
+    colonyName,
+    stakeColonyName,
+    setNavigatePath,
+    stake.action?.transactionHash,
+  ]);
+
   return (
-    <li className="flex flex-col border-b border-gray-100 py-3.5 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
+    <li className="flex flex-col border-b border-gray-100 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
       <button
         type="button"
         onClick={() =>
           navigate(
-            `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,
+            setQueryParamOnUrl(
+              navigatePath,
+              TX_SEARCH_PARAM,
+              stake.action?.transactionHash ?? '',
+            ),
             {
               replace: true,
             },
