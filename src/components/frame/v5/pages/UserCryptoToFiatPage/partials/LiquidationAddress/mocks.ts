@@ -1,24 +1,6 @@
-// @TODO Remove this once a better solution is found
-// For testing purposes, I'm using this array as a fallback and
-// I've added an extra guard to make sure it's never used
-// outside of our dev sandbox.
+// @TODO Remove this once Jakub fulfils his promise:
+// "I promise that soon we'll have a proper local dev env for it"
 
-import { type LiquidationAddress } from '~gql';
+import { ARBITRUM_NETWORK } from '~constants';
 
-export const MOCK_LIQUIDATION_ADDRESSES: Pick<
-  LiquidationAddress,
-  'liquidationAddress'
->[] =
-  import.meta.env.MODE === 'development'
-    ? [
-        {
-          liquidationAddress: '0x742d35Cc6634C0532925a3b844Bc454e4438f44a',
-        },
-        {
-          liquidationAddress: '0x742d35Cc6634C0532925a3b844Bc454e4438f44b',
-        },
-        {
-          liquidationAddress: '0x742d35Cc6634C0532925a3b844Bc454e4438f44c',
-        },
-      ]
-    : [];
+export const MOCK_LIQUIDATION_ADDRESS_CHAIN_ID = ARBITRUM_NETWORK.chainId;

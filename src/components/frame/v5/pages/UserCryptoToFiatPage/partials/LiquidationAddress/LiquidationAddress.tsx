@@ -1,6 +1,6 @@
 import { Cardholder, Eye } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
@@ -11,14 +11,16 @@ import { getChainId } from '~redux/sagas/utils/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
-import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
-
-import { MOCK_LIQUIDATION_ADDRESSES } from './mocks.ts';
+import { MOCK_LIQUIDATION_ADDRESS_CHAIN_ID } from './mocks.ts';
 import { BlockExplorerButton } from './partials/BlockExplorerButton.tsx';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.LiquidationAddress';
 
-const chainId = getChainId();
+const chainIdWithMockFallback = Number(
+  import.meta.env.MODE === 'development'
+    ? MOCK_LIQUIDATION_ADDRESS_CHAIN_ID
+    : getChainId(),
+);
 
 const MSG = defineMessages({
   header: {
@@ -44,48 +46,31 @@ const MSG = defineMessages({
 const LiquidationAddress = () => {
   const { user } = useAppContext();
 
-  const { bankAccountData, kycStatusData, isKycStatusDataLoading } =
-    useCryptoToFiatContext();
-
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   const { loading: isLiquidationAddressLoading, data } =
     useGetUserLiquidationAddressesQuery({
       variables: {
-        chainId: Number(chainId),
+        chainId: chainIdWithMockFallback,
         userAddress: user?.walletAddress ?? '',
       },
       skip: !user,
     });
 
-  const isLoading = isKycStatusDataLoading || isLiquidationAddressLoading;
+  const [showLiquidationAddress, setShowLiquidationAddress] = useState(false);
 
-  const [showAddress, setShowAddress] = useState(false);
+  const isLoading = !data || isLiquidationAddressLoading;
 
-  const isLiquidationEligible =
-    !!bankAccountData && !!kycStatusData && !isLoading;
+  const liquidationAddressesData = data?.getLiquidationAddressesByUserAddress;
 
-  const liquidationAddress = useMemo(() => {
-    const liquidationAddresses = data?.getLiquidationAddressesByUserAddress
-      ?.items.length
-      ? data?.getLiquidationAddressesByUserAddress?.items
-      : MOCK_LIQUIDATION_ADDRESSES;
-
-    const address = liquidationAddresses[0]?.liquidationAddress;
-
-    // Based on the Figma design, it sort of assumes that a user will have a liquidation address
-    // once KYC is successful and bank details have been submitted. But what if we still don't have
-    // a liquidation address after those two are satisfied?
-    if (!address) return '';
-
-    return showAddress ? address : '•'.repeat(address.length);
-  }, [data?.getLiquidationAddressesByUserAddress?.items, showAddress]);
+  const liquidationAddress =
+    liquidationAddressesData?.items[0]?.liquidationAddress;
 
   const onAddressCtaButtonClick = () => {
-    if (showAddress) {
+    if (showLiquidationAddress && liquidationAddress) {
       handleClipboardCopy(liquidationAddress);
     } else {
-      setShowAddress(true);
+      setShowLiquidationAddress(true);
     }
   };
 
@@ -96,7 +81,7 @@ const LiquidationAddress = () => {
       };
     }
 
-    if (showAddress) {
+    if (showLiquidationAddress) {
       return {
         id: 'copy.address',
       };
@@ -104,6 +89,9 @@ const LiquidationAddress = () => {
 
     return MSG.showAddress;
   };
+
+  const hideOrShow = (address: string) =>
+    showLiquidationAddress ? liquidationAddress : '•'.repeat(address.length);
 
   return (
     <div>
@@ -124,14 +112,16 @@ const LiquidationAddress = () => {
             className="h-[27px] w-full max-w-[377px] rounded-[4px]"
           >
             <span className="text-md font-normal">
-              {isLiquidationEligible
-                ? liquidationAddress
+              {liquidationAddress
+                ? hideOrShow(liquidationAddress)
                 : formatText(MSG.incompleteDetails)}
             </span>
           </LoadingSkeleton>
         </div>
         <div className="flex flex-1 justify-end gap-2">
-          {showAddress && <BlockExplorerButton address={liquidationAddress} />}
+          {liquidationAddress && (
+            <BlockExplorerButton address={liquidationAddress} />
+          )}
           <LoadingSkeleton
             className="h-10 w-full max-w-[153px] rounded-lg"
             isLoading={isLoading}
@@ -141,7 +131,7 @@ const LiquidationAddress = () => {
               className={clsx('gap-2', {
                 'border-gray-300': !isCopied,
               })}
-              disabled={!isLiquidationEligible}
+              disabled={!liquidationAddress}
               onClick={onAddressCtaButtonClick}
               icon={isCopied ? undefined : Eye}
               text={addressCtaButtonCopy()}
