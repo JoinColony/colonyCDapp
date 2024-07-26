@@ -3,11 +3,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { SupportedCurrencies } from '~gql';
 import { getCountries } from '~utils/countries.ts';
+import { formatText } from '~utils/intl.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
+
+import { BANK_DETAILS_FORM_MSG } from './constants.ts';
 
 const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetailsForm.AccountDetailsInputs';
@@ -34,7 +37,11 @@ const AccountDetailsInputs = () => {
             <FormInput name="swift" placeholder="SWIFT/BIC" />
           </FormRow>
           <FormRow>
-            <FormSelect name="country" options={countriesOptions} />
+            <FormSelect
+              name="country"
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.countryPlaceholder)}
+              options={countriesOptions}
+            />
           </FormRow>
         </>
       )}
