@@ -17,6 +17,7 @@ import CryptoToFiatContextProvider from './context/CryptoToFiatContextProvider.t
 import AutomaticDeposits from './partials/AutomaticDeposits/AutomaticDeposits.tsx';
 import BankDetails from './partials/BankDetails/BankDetails.tsx';
 import FiatTransfersTable from './partials/FiatTransfersTable/FiatTransfersTable.tsx';
+import LiquidationAddress from './partials/LiquidationAddress/LiquidationAddress.tsx';
 import Verification from './partials/Verification/Verification.tsx';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage';
@@ -67,6 +68,8 @@ const UserCryptoToFiatPage = () => {
         <BankDetails />
         <hr />
         <AutomaticDeposits />
+        <hr />
+        <LiquidationAddress />
         <hr />
         <FiatTransfersTable />
       </div>
