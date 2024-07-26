@@ -14,10 +14,10 @@ export const BlockExplorerButton = ({ address }: { address: string }) => (
       addressOrHash: address,
     })}
     className={clsx(
-      buttonClasses.primaryOutlineFull,
-      'flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border-gray-300 px-4 text-md',
-      'font-medium text-gray-700 sm:hover:text-base-white',
+      'flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border-gray-300 px-4',
+      'text-md font-medium !text-gray-700 hover:!text-base-white',
       'transition-colors duration-normal',
+      buttonClasses.primaryOutlineFull,
     )}
   >
     <ArrowSquareOut className="aspect-square h-4 w-4" />
