@@ -1,13 +1,12 @@
+import { Extension } from '@colony/core';
 import { useMemo, useState } from 'react';
-import { useIntl } from 'react-intl';
 
 import { isInstalledExtensionData } from '~utils/extensions.ts';
-import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
+import { type AvailableExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 
 const useExtensionsBadge = (extensionData) => {
-  const { formatMessage } = useIntl();
-  const [status, setStatus] = useState<ExtensionStatusBadgeMode>();
-  const [badgeMessage, setBadgeMessage] = useState<string>('');
+  const [status, setStatus] =
+    useState<AvailableExtensionStatusBadgeMode>('not-installed');
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
@@ -15,22 +14,21 @@ const useExtensionsBadge = (extensionData) => {
   useMemo(() => {
     if (!isExtensionInstalled) {
       setStatus('not-installed');
-      setBadgeMessage(formatMessage({ id: 'status.notInstalled' }));
     } else if (extensionData?.isDeprecated) {
       setStatus('deprecated');
-      setBadgeMessage(formatMessage({ id: 'status.deprecated' }));
     } else if (extensionData?.isEnabled) {
-      setStatus('enabled');
-      setBadgeMessage(formatMessage({ id: 'status.enabled' }));
+      if (extensionData.extensionId === Extension.MultisigPermissions) {
+        setStatus('installed');
+      } else {
+        setStatus('enabled');
+      }
     } else {
       setStatus('disabled');
-      setBadgeMessage(formatMessage({ id: 'status.disabled' }));
     }
-  }, [extensionData, formatMessage, isExtensionInstalled]);
+  }, [extensionData, isExtensionInstalled]);
 
   return {
     status,
-    badgeMessage,
   };
 };
 

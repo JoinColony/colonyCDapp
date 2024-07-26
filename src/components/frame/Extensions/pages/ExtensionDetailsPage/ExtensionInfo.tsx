@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC, useState } from 'react';
+import React, { useEffect, type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import Tabs from '~shared/Extensions/Tabs/Tabs.tsx';
@@ -8,6 +8,7 @@ import {
   type AnyExtensionData,
   type InstalledExtensionData,
 } from '~types/extensions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
 
@@ -17,15 +18,33 @@ import { getExtensionTabs } from './utils.tsx';
 
 interface ExtensionInfoProps {
   extensionData: AnyExtensionData;
+  activeTab: number;
+  onActiveTabChange: (activeTab: number) => void;
 }
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionInfo';
 
-const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
-  const [activeTab, setActiveTab] = useState(0);
+const ExtensionInfo: FC<ExtensionInfoProps> = ({
+  extensionData,
+  activeTab,
+  onActiveTabChange,
+}) => {
+  const isExtensionInstalled = isInstalledExtensionData(extensionData);
+
+  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
+  const extensionTabs = getExtensionTabs(
+    extensionData.extensionId,
+    isExtensionInstalled,
+  );
+
+  useEffect(() => {
+    if (extensionTabs.length <= activeTab) {
+      onActiveTabChange(0);
+    }
+  }, [extensionTabs, activeTab, onActiveTabChange]);
 
   const handleOnTabClick = (_, id) => {
-    setActiveTab(id);
+    onActiveTabChange(id);
   };
 
   const getSecondExtensionTab = () => {
@@ -35,6 +54,7 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
         return (
           <LazyConsensusSettingsTab
             extension={Extension.VotingReputation}
+            extensionData={extensionData}
             params={
               (extensionData as InstalledExtensionData).params?.votingReputation
             }
@@ -51,38 +71,27 @@ const ExtensionInfo: FC<ExtensionInfoProps> = ({ extensionData }) => {
     }
   };
 
-  /* @TODO: handle case when more than one accordion in extension settings view will be visible */
-  const extensionTabs = getExtensionTabs(extensionData.extensionId);
-
-  if (extensionData?.isInitialized && extensionTabs !== null) {
-    return (
-      <Tabs
-        items={extensionTabs}
-        className="pt-6"
-        activeTab={activeTab}
-        onTabClick={handleOnTabClick}
-      >
-        <ul className="flex flex-col">
-          <AnimatePresence>
-            <motion.div
-              key="params-tab"
-              variants={accordionAnimation}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              {activeTab === 0 && <TabContent extensionData={extensionData} />}
-              {activeTab === 1 && getSecondExtensionTab()}
-            </motion.div>
-          </AnimatePresence>
-        </ul>
-      </Tabs>
-    );
-  }
-
   return (
-    <div>
-      <TabContent extensionData={extensionData} />
-    </div>
+    <Tabs
+      items={extensionTabs}
+      className="pt-6"
+      activeTab={activeTab}
+      onTabClick={handleOnTabClick}
+    >
+      <ul className="flex flex-col">
+        <AnimatePresence>
+          <motion.div
+            key="params-tab"
+            variants={accordionAnimation}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            {activeTab === 0 && <TabContent extensionData={extensionData} />}
+            {activeTab === 1 && getSecondExtensionTab()}
+          </motion.div>
+        </AnimatePresence>
+      </ul>
+    </Tabs>
   );
 };
 

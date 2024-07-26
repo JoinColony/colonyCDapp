@@ -12,6 +12,7 @@ import ActiveInstalls from './ActiveInstalls.tsx';
 import EnableButton from './EnableButton.tsx';
 import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
+import SaveSettingsButton from './SaveSettingsButton.tsx';
 import { type ActionButtonProps } from './types.ts';
 import UpgradeButton from './UpgradeButton.tsx';
 
@@ -23,6 +24,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   waitingForEnableConfirmation,
   extensionStatusMode,
   extensionStatusText,
+  onActiveTabChange,
 }) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -63,18 +65,24 @@ const ActionButtons: FC<ActionButtonProps> = ({
           <ActiveInstalls activeInstalls={activeInstalls} />
         </div>
       </div>
-      {isInstallButtonVisible && (
-        <InstallButton extensionData={extensionData} />
-      )}
-      <EnableButton
-        extensionData={extensionData}
-        isSetupRoute={isSetupRoute}
-        userHasRoot={userHasRoot}
-        waitingForEnableConfirmation={waitingForEnableConfirmation}
-      />
-      {isUpgradeButtonVisible && (
-        <UpgradeButton extensionData={extensionData} />
-      )}
+      <div className="flex flex-col gap-2 sm:flex-row">
+        {isInstallButtonVisible && (
+          <InstallButton
+            onActiveTabChange={onActiveTabChange}
+            extensionData={extensionData}
+          />
+        )}
+        <EnableButton
+          extensionData={extensionData}
+          isSetupRoute={isSetupRoute}
+          userHasRoot={userHasRoot}
+          waitingForEnableConfirmation={waitingForEnableConfirmation}
+        />
+        <SaveSettingsButton />
+        {isUpgradeButtonVisible && (
+          <UpgradeButton extensionData={extensionData} />
+        )}
+      </div>
     </>
   );
 };

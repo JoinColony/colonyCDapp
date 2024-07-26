@@ -1,3 +1,4 @@
+import { Extension } from '@colony/core';
 import React, { useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -8,16 +9,16 @@ import {
 } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
-import { type ExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
+import { type AvailableExtensionStatusBadgeMode } from '~v5/common/Pills/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { type SidePanelDataProps } from './types.ts';
 
 export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
-  const [statuses, setStatuses] = useState<ExtensionStatusBadgeMode[]>([
-    'disabled',
-  ]);
   const { formatMessage } = useIntl();
+  const [statuses, setStatuses] = useState<AvailableExtensionStatusBadgeMode[]>(
+    ['disabled'],
+  );
 
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
@@ -46,7 +47,11 @@ export const useSpecificSidePanel = (extensionData: AnyExtensionData) => {
     if (!isExtensionInstalled) {
       setStatuses(['not-installed']);
     } else if (extensionData.isEnabled) {
-      setStatuses(['enabled']);
+      if (extensionData.extensionId === Extension.MultisigPermissions) {
+        setStatuses(['installed']);
+      } else {
+        setStatuses(['enabled']);
+      }
     } else if (isExtensionDeprecatedAndDisabled) {
       setStatuses(['disabled', 'deprecated']);
     } else {

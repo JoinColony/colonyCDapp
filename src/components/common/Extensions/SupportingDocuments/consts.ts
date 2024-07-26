@@ -6,6 +6,8 @@ import {
   PAYMENTS,
   LAZY_CONSENSUS_EXTENSION,
   STREAMING_PAYMENTS,
+  MULTI_SIG_EXTENSION,
+  PERMISSIONS,
 } from '~constants/index.ts';
 
 const supportingDocumentsMessages = defineMessages({
@@ -58,5 +60,14 @@ export const links = {
       message: supportingDocumentsMessages.streamingPaymentsLink,
     },
   ],
-  // @TODO add multisig with new colonyJS version
+  [Extension.MultisigPermissions]: [
+    {
+      url: PERMISSIONS,
+      message: supportingDocumentsMessages.permissionsLink,
+    },
+    {
+      url: MULTI_SIG_EXTENSION,
+      message: supportingDocumentsMessages.multiSigExtensionLink,
+    },
+  ],
 };

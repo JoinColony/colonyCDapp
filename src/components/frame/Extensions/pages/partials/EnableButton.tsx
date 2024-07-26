@@ -18,6 +18,8 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton.tsx';
 
+import { ButtonWithLoader } from './ButtonWithLoader.tsx';
+
 interface EnableButtonProps {
   userHasRoot: boolean;
   extensionData: AnyExtensionData;
@@ -90,14 +92,14 @@ const EnableButton = ({
     }
 
     return (
-      <Button
+      <ButtonWithLoader
         type="submit"
         disabled={!isValid}
         isFullSize={isMobile}
-        loading={isSubmitting || waitingForEnableConfirmation}
+        isLoading={isSubmitting || waitingForEnableConfirmation}
       >
         {formatText({ id: 'button.enable' })}
-      </Button>
+      </ButtonWithLoader>
     );
   }
 

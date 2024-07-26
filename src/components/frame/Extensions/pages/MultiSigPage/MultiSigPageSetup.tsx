@@ -1,14 +1,19 @@
-import React, { type FC, useEffect, useState } from 'react';
+import { CaretDown } from '@phosphor-icons/react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ActionTypes } from '~redux/actionTypes.ts';
+import useToggle from '~hooks/useToggle/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import Select from '~v5/common/Fields/Select/Select.tsx';
+import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
+
+import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails.tsx';
+
+import { useBackNavigation, useThresholdData } from './hooks.ts';
+import { InputGroup } from './InputGroup.tsx';
+import { MultiSigThresholdType } from './types.ts';
 
 interface MultiSigPageSetupProps {
   extensionData: InstalledExtensionData;
@@ -65,166 +70,63 @@ const MSG = defineMessages({
     id: `${displayName}.thresholdFixedFormApprovals`,
     defaultMessage: 'Approvals',
   },
+  thresholdFixedErrorMessage: {
+    id: `${displayName}.thresholdFixedErrorMessage`,
+    defaultMessage: 'A value must be entered before enabling',
+  },
+  thresholdFixedMaxErrorMessage: {
+    id: `${displayName}.thresholdFixedMaxErrorMessage`,
+    defaultMessage: 'Threshold must be less than or equal to 99999',
+  },
   thresholdInherit: {
     id: `${displayName}.thresholdInherit`,
-    defaultMessage: 'Inherit from colony wide',
+    defaultMessage: 'Inherit from Colony wide',
   },
   domainSettingsHeading: {
     id: `${displayName}.domainSettingsHeading`,
     defaultMessage: 'Customize thresholds per team',
   },
+  domainSettingsDescription: {
+    id: `${displayName}.domainSettingsDescription`,
+    defaultMessage:
+      'For more control over required approvals, you can customise the thresholds for each team.',
+  },
+  domainFixedThresholdDescription: {
+    id: `${displayName}.domainFixedThresholdDescription`,
+    defaultMessage:
+      'Define a fixed number of signers that is required to approve an action for this specific team',
+  },
 });
 
-enum MultiSigThresholdType {
-  MAJORITY_APPROVAL = 'majorityApproval',
-  FIXED_THRESHOLD = 'fixedThreshold',
-  INHERIT_FROM_COLONY = 'inheritFromColony',
-}
-
-interface DomainThresholdSettings {
-  id: string;
-  nativeSkillId: number;
-  type: MultiSigThresholdType;
-  name: string;
-  threshold: number;
-}
+const inputGroupSharedConfig = {
+  min: 0,
+  max: 99999,
+  step: 1,
+  placeholder: '0',
+  type: 'number',
+};
 
 const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
+  useBackNavigation({ extensionData });
+
   const {
-    colony: { colonyAddress, domains },
-  } = useColonyContext();
+    thresholdType,
+    isFixedThresholdError,
+    fixedThresholdErrorMessage,
+    domainThresholdConfigs,
+    register,
+    handleThresholdValueChange,
+    handleDomainThresholdTypeChange,
+    handleGlobalThresholdTypeChange,
+  } = useThresholdData({ extensionData });
 
-  const multiSigConfig = extensionData.params?.multiSig || null;
+  const [isCustomSettingsVisible, { toggle: toggleCustomSettings }] =
+    useToggle();
 
-  const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
-    multiSigConfig && multiSigConfig.colonyThreshold > 0
-      ? MultiSigThresholdType.FIXED_THRESHOLD
-      : MultiSigThresholdType.MAJORITY_APPROVAL,
-  );
-  const [fixedThreshold, setFixedThreshold] = useState(
-    multiSigConfig ? multiSigConfig.colonyThreshold : 0,
-  );
-
-  const [domainSettings, setDomainSettings] = useState<
-    DomainThresholdSettings[]
-  >([]);
-
-  useEffect(() => {
-    if (!domains || !domains.items || !multiSigConfig) {
-      return;
+  const handleOnKeyDown = (e) => {
+    if (['.', ','].includes(e.key)) {
+      e.preventDefault();
     }
-
-    const domainsExcludingRoot = domains.items.filter(
-      (domain): domain is NonNullable<typeof domain> =>
-        domain !== null && !domain.isRoot,
-    );
-
-    setDomainSettings(
-      domainsExcludingRoot.map((domain) => {
-        const { colonyThreshold } = multiSigConfig;
-        const existingThreshold = multiSigConfig.domainThresholds?.find(
-          (item) => {
-            return Number(item?.domainId) === domain.nativeId;
-          },
-        )?.domainThreshold;
-        let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
-
-        if (
-          existingThreshold != null &&
-          existingThreshold !== colonyThreshold
-        ) {
-          if (existingThreshold === 0) {
-            type = MultiSigThresholdType.MAJORITY_APPROVAL;
-          } else {
-            type = MultiSigThresholdType.FIXED_THRESHOLD;
-          }
-        }
-
-        return {
-          id: domain.id,
-          nativeSkillId: Number(domain.nativeSkillId),
-          type,
-          name: domain.metadata?.name || '',
-          threshold: existingThreshold || colonyThreshold || 0,
-        };
-      }),
-    );
-  }, [domains, multiSigConfig]);
-
-  const { pathname } = useLocation();
-
-  const navigate = useNavigate();
-
-  // We should probably handle a min/max validation of this value depending on the number of members in a colony
-  const handleThresholdChange = (newThreshold: number) => {
-    if (thresholdType === MultiSigThresholdType.FIXED_THRESHOLD) {
-      setFixedThreshold(newThreshold);
-    }
-  };
-
-  const handleThresholdTypeChange = (
-    newThresholdType: MultiSigThresholdType,
-  ) => {
-    setThresholdType(newThresholdType);
-  };
-
-  const handleDomainThresholdTypeChange = (
-    id: string,
-    newType: MultiSigThresholdType,
-  ) => {
-    setDomainSettings((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id ? { ...domain, type: newType } : domain,
-      ),
-    );
-  };
-
-  const handleDomainThresholdChange = (id: string, newThreshold: number) => {
-    setDomainSettings((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id ? { ...domain, threshold: newThreshold } : domain,
-      ),
-    );
-  };
-
-  /*
-   * If we arrive here but the extension is not installed go back to main extension details page
-   */
-
-  useEffect(() => {
-    if (!isInstalledExtensionData(extensionData)) {
-      navigate(pathname.split('/').slice(0, -1).join('/'));
-    }
-  }, [extensionData, pathname, navigate]);
-
-  const getSetThresholdsPayload = () => {
-    const domainThresholds = domainSettings.map((domain) => {
-      let threshold = 0;
-
-      if (
-        domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-        thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
-      ) {
-        threshold = fixedThreshold;
-      }
-
-      if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-        threshold = domain.threshold;
-      }
-      return {
-        skillId: domain.nativeSkillId,
-        threshold,
-      };
-    });
-
-    return {
-      colonyAddress,
-      globalThreshold:
-        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-          ? 0
-          : fixedThreshold,
-      domainThresholds,
-    };
   };
 
   if (!extensionData) {
@@ -234,125 +136,196 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   }
 
   return (
-    <div className="w-full">
-      <p className="text-md text-gray-600">
-        {formatText(MSG.settingsFirstLine)}
-      </p>
-      <p className="mt-6 text-md text-gray-600">
-        {formatText(MSG.settingsSecondLine)}
-      </p>
-      <h4 className="my-6 text-lg font-semibold text-gray-900">
-        {formatText(MSG.parametersTitle)}
-      </h4>
-      <h5 className="mb-2 text-md font-semibold text-gray-900">
-        {formatText(MSG.parametersApprovalNrSubtitle)}
-      </h5>
-      <p className="text-md text-gray-600">
-        {formatText(MSG.parametersApprovalNrDescription)}
-      </p>
-      <h5 className="mb-3 mt-4 text-md font-semibold text-gray-900">
-        {formatText(MSG.thresholdSubtitle)}
-      </h5>
-      <ul className="flex flex-col gap-3">
-        <li key="multiSig.config.majorityApproval">
-          <RadioBase
-            name="multiSig.config.majorityApproval"
-            onChange={handleThresholdTypeChange}
-            item={{
-              value: MultiSigThresholdType.MAJORITY_APPROVAL,
-              label: formatText(MSG.thresholdMajorityApprovalTitle),
-              description: formatText(MSG.thresholdMajorityApprovalDescription),
-            }}
-            checked={thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL}
-          />
-        </li>
-        <li key="multiSig.config.fixedThreshold" className="flex flex-col">
-          <RadioBase
-            name="multiSig.config.fixedThreshold"
-            onChange={handleThresholdTypeChange}
-            item={{
-              value: MultiSigThresholdType.FIXED_THRESHOLD,
-              label: formatText(MSG.thresholdFixedTitle),
-              description: formatText(MSG.thresholdFixedDescription),
-            }}
-            checked={thresholdType === MultiSigThresholdType.FIXED_THRESHOLD}
-          />
-          {thresholdType === MultiSigThresholdType.FIXED_THRESHOLD && (
-            <>
-              <input
-                className="border border-gray-600"
-                value={fixedThreshold}
-                onChange={(e) => handleThresholdChange(Number(e.target.value))}
-                type="number"
-              />
-              <span>{formatText(MSG.thresholdFixedFormApprovals)}</span>
-            </>
-          )}
-        </li>
-      </ul>
-      <div>
-        <h5 className="mb-3 mt-4 text-md font-semibold text-gray-900">
-          {formatText(MSG.domainSettingsHeading)}
+    <>
+      <div className="mb-9 md:hidden">
+        <ExtensionDetails extensionData={extensionData} />
+      </div>
+      <div className="w-full">
+        <p className="text-md text-gray-600">
+          {formatText(MSG.settingsFirstLine)}
+        </p>
+        <p className="mt-[14px] text-md text-gray-600">
+          {formatText(MSG.settingsSecondLine)}
+        </p>
+        <h4 className="my-6 text-lg font-semibold text-gray-900">
+          {formatText(MSG.parametersTitle)}
+        </h4>
+        <h5 className="mb-4 text-md font-medium text-gray-900">
+          {formatText(MSG.parametersApprovalNrSubtitle)}
         </h5>
-        <div className="flex flex-col gap-6">
-          {domainSettings.map((domain) => (
-            <div key={domain.id}>
-              <div className="flex items-center justify-between">
-                <p className="text-md font-medium">{domain.name}</p>
-                <select
-                  value={domain.type}
-                  onChange={(e) =>
-                    handleDomainThresholdTypeChange(
-                      domain.id,
-                      e.target.value as MultiSigThresholdType,
-                    )
-                  }
-                  className="h-11 border"
-                >
-                  <option value={MultiSigThresholdType.INHERIT_FROM_COLONY}>
-                    {formatText(MSG.thresholdInherit)}
-                  </option>
-                  {thresholdType !==
-                    MultiSigThresholdType.MAJORITY_APPROVAL && (
-                    <option value={MultiSigThresholdType.MAJORITY_APPROVAL}>
-                      {formatText(MSG.thresholdMajorityApprovalTitle)}
-                    </option>
-                  )}
-                  <option value={MultiSigThresholdType.FIXED_THRESHOLD}>
-                    {formatText(MSG.thresholdFixedTitle)}
-                  </option>
-                </select>
-              </div>
-              {domain.type === MultiSigThresholdType.FIXED_THRESHOLD && (
-                <div className="flex items-center justify-between border-b pb-6 pt-4">
-                  <p>{formatText(MSG.thresholdFixedTitle)}</p>
-                  <div>
-                    <input
-                      className="h-11 border"
-                      value={domain.threshold}
-                      onChange={(e) =>
-                        handleDomainThresholdChange(
-                          domain.id,
-                          Number(e.target.value),
-                        )
-                      }
-                      type="number"
-                    />
-                    <span>{formatText(MSG.thresholdFixedFormApprovals)}</span>
-                  </div>
-                </div>
+        <p className="text-md text-gray-600">
+          {formatText(MSG.parametersApprovalNrDescription)}
+        </p>
+        <h5 className="mb-3 mt-4 text-md font-semibold text-gray-900">
+          {formatText(MSG.thresholdSubtitle)}
+        </h5>
+        <ul className="flex flex-col gap-3">
+          <li key="multiSig.config.majorityApproval">
+            <RadioBase
+              name="multiSig.config.majorityApproval"
+              onChange={handleGlobalThresholdTypeChange}
+              item={{
+                value: MultiSigThresholdType.MAJORITY_APPROVAL,
+                label: formatText(MSG.thresholdMajorityApprovalTitle),
+                description: formatText(
+                  MSG.thresholdMajorityApprovalDescription,
+                ),
+              }}
+              checked={
+                thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+              }
+            />
+          </li>
+          <li key="multiSig.config.fixedThreshold" className="flex flex-col">
+            <RadioBase
+              name="multiSig.config.fixedThreshold"
+              onChange={handleGlobalThresholdTypeChange}
+              item={{
+                value: MultiSigThresholdType.FIXED_THRESHOLD,
+                label: formatText(MSG.thresholdFixedTitle),
+                description: formatText(MSG.thresholdFixedDescription),
+              }}
+              checked={thresholdType === MultiSigThresholdType.FIXED_THRESHOLD}
+              isError={isFixedThresholdError}
+            >
+              {thresholdType === MultiSigThresholdType.FIXED_THRESHOLD && (
+                <InputGroup
+                  {...register('globalThreshold', {
+                    required: formatText(MSG.thresholdFixedErrorMessage),
+                    min: {
+                      value: 1,
+                      message: formatText(MSG.thresholdFixedErrorMessage),
+                    },
+                    max: {
+                      value: 99999,
+                      message: formatText(MSG.thresholdFixedMaxErrorMessage),
+                    },
+                    onChange: (e) => {
+                      handleThresholdValueChange(
+                        'globalThreshold',
+                        Number(e.target.value),
+                      );
+                    },
+                  })}
+                  {...inputGroupSharedConfig}
+                  onKeyDown={handleOnKeyDown}
+                  isError={isFixedThresholdError}
+                  errorMessage={fixedThresholdErrorMessage}
+                  appendMessage={formatText(MSG.thresholdFixedFormApprovals)}
+                />
               )}
-            </div>
-          ))}
+            </RadioBase>
+          </li>
+        </ul>
+        <div>
+          <AccordionItem
+            className="mt-12"
+            icon={CaretDown}
+            title={
+              <h5 className="mb-3 mt-4 text-md font-semibold text-gray-900">
+                {formatText(MSG.domainSettingsHeading)}
+              </h5>
+            }
+            isOpen={isCustomSettingsVisible}
+            onToggle={toggleCustomSettings}
+            withDelimiter
+          >
+            <>
+              <div className="mb-6 mt-4">
+                <p className="text-sm text-gray-600">
+                  {formatText(MSG.domainSettingsDescription)}
+                </p>
+              </div>
+              <div className="flex flex-col gap-6">
+                {domainThresholdConfigs.map(
+                  ({ id, name, type, isError, errorMessage }) => (
+                    <div key={id}>
+                      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-md font-medium">{name}</p>
+                        <Select
+                          menuPosition="fixed"
+                          menuShouldScrollIntoView={false}
+                          className="w-full sm:w-72"
+                          onChange={(option) =>
+                            handleDomainThresholdTypeChange(
+                              id,
+                              option?.value as MultiSigThresholdType,
+                            )
+                          }
+                          value={type}
+                          options={[
+                            {
+                              label: formatText(MSG.thresholdInherit),
+                              value: MultiSigThresholdType.INHERIT_FROM_COLONY,
+                            },
+                            {
+                              label: formatText(
+                                MSG.thresholdMajorityApprovalTitle,
+                              ),
+                              value: MultiSigThresholdType.MAJORITY_APPROVAL,
+                            },
+                            {
+                              label: formatText(MSG.thresholdFixedTitle),
+                              value: MultiSigThresholdType.FIXED_THRESHOLD,
+                            },
+                          ]}
+                        />
+                      </div>
+                      {type === MultiSigThresholdType.FIXED_THRESHOLD && (
+                        <div className="flex items-center justify-between gap-4 border-b pb-6 pt-4">
+                          <div>
+                            <p className="mb-0.5 text-md font-medium">
+                              {formatText(MSG.thresholdFixedTitle)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {formatText(MSG.domainFixedThresholdDescription)}
+                            </p>
+                          </div>
+
+                          <InputGroup
+                            {...register(name, {
+                              required: formatText(
+                                MSG.thresholdFixedErrorMessage,
+                              ),
+                              min: {
+                                value: 1,
+                                message: formatText(
+                                  MSG.thresholdFixedErrorMessage,
+                                ),
+                              },
+                              max: {
+                                value: 99999,
+                                message: formatText(
+                                  MSG.thresholdFixedMaxErrorMessage,
+                                ),
+                              },
+                              onChange: (e) => {
+                                handleThresholdValueChange(
+                                  name,
+                                  Number(e.target.value),
+                                );
+                              },
+                            })}
+                            {...inputGroupSharedConfig}
+                            onKeyDown={handleOnKeyDown}
+                            isError={isError}
+                            errorMessage={errorMessage}
+                            appendMessage={formatText(
+                              MSG.thresholdFixedFormApprovals,
+                            )}
+                            className="flex shrink-0 grow-0 basis-auto flex-col items-end"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )}
+              </div>
+            </>
+          </AccordionItem>
         </div>
       </div>
-      <ActionButton
-        actionType={ActionTypes.MULTISIG_SET_THRESHOLDS}
-        values={getSetThresholdsPayload()}
-      >
-        Save settings
-      </ActionButton>
-    </div>
+    </>
   );
 };
 
