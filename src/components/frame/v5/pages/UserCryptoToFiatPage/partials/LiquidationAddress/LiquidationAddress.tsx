@@ -99,7 +99,7 @@ const LiquidationAddress = () => {
         <h1 className="mb-3 text-lg font-semibold">{formatText(MSG.header)}</h1>
         <p className="text-sm text-gray-600">{formatText(MSG.description)}</p>
       </section>
-      <section className="flex h-16 w-full justify-between gap-2 rounded-[4px] bg-gray-100 p-3">
+      <section className="flex h-16 w-full justify-between gap-2 rounded-[4px] bg-gray-50 p-3">
         <div className="flex flex-1 items-center gap-2">
           <LoadingSkeleton
             className="aspect-square h-4 w-4 rounded-[4px]"
