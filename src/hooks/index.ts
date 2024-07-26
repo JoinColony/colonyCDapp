@@ -9,7 +9,7 @@ export const useMobile = () => {
 };
 
 export const useTablet = () => {
-  const { query768: query } = queries;
+  const { query1024: query } = queries;
   const isTablet = useMediaQuery({ query });
   return isTablet;
 };

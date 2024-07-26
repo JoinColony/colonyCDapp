@@ -43,7 +43,7 @@ const WizardTemplate = <F extends Record<string, any>>({
       }
       hasWideSidebar
     >
-      <article className="mx-auto max-w-lg">{children}</article>
+      <article className="mx-auto max-w-xl">{children}</article>
     </MainLayout>
   );
 };

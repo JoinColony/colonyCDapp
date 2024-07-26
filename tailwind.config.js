@@ -139,7 +139,7 @@ module.exports = {
         sm: '40rem',
         md: '48rem',
         lg: '64rem',
-        xl: 'calc(80rem + 1px)',
+        xl: '90rem',
       },
       zIndex: {
         base: '1',
@@ -151,6 +151,9 @@ module.exports = {
         userNav: '9',
         userNavModal: '1001',
       },
+      maxWidth: {
+        xl: '33.125rem'
+      }
     },
   },
   plugins: [
