@@ -1,11 +1,9 @@
 import { WarningCircle } from '@phosphor-icons/react';
-import { defineMessages, MessageDescriptor } from 'react-intl';
+import { defineMessages, type MessageDescriptor } from 'react-intl';
 
 import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
-
-import { type RowItemBodyProps } from '../RowItem/types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.Verification';

@@ -22,10 +22,6 @@ import Verification from './partials/Verification/Verification.tsx';
 const displayName = 'v5.pages.UserCryptoToFiatPage';
 
 const MSG = defineMessages({
-  loadingText: {
-    id: `${displayName}.loadingText`,
-    defaultMessage: 'Fetching crypto to fiat information',
-  },
   pageHeading: {
     id: `${displayName}.pageHeading`,
     defaultMessage: 'Crypto to fiat settings',
@@ -38,17 +34,22 @@ const MSG = defineMessages({
 });
 
 const UserCryptoToFiatPage = () => {
-  const { user } = useAppContext();
+  const { user, userLoading, walletConnecting } = useAppContext();
   const featureFlags = useContext(FeatureFlagsContext);
   const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
-  if (!cryptoToFiatFeatureFlag?.isEnabled) {
+  if (
+    !cryptoToFiatFeatureFlag?.isLoading &&
+    !cryptoToFiatFeatureFlag?.isEnabled
+  ) {
     return <Navigate to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`} />;
   }
 
-  if (!user) {
+  const isLoadingUserAndWalletInfo = userLoading || walletConnecting;
+
+  if (!isLoadingUserAndWalletInfo && !user) {
     return <Navigate to={LANDING_PAGE_ROUTE} />;
   }
 
