@@ -128,24 +128,32 @@ const checkKYCHandler = async (
           accountOwner: firstAccount.account_owner_name,
           iban: firstAccount.iban
             ? {
-                // TODO: Remove fallbacks
-                last4: firstAccount.iban.last_4 ?? 'NOT MOCKED',
-                bic: firstAccount.iban.bic ?? 'NOT MOCKED',
-                country: firstAccount.iban.country ?? 'NOT MOCKED',
+                last4: firstAccount.iban.last_4,
+                bic: firstAccount.iban.bic,
+                country: firstAccount.iban.country,
               }
             : null,
           usAccount: firstAccount.account
             ? {
                 last4: firstAccount.account.last_4,
-                routingNumber:
-                  firstAccount.account.routing_number ?? 'NOT MOCKED',
+                routingNumber: firstAccount.account.routing_number,
               }
             : null,
         }
       : null;
 
-    const hasLiquidationAddress =
-      colonyUser.liquidationAddresses.items.length > 0;
+    const liquidationAddressesRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': apiKey,
+        },
+      },
+    );
+
+    const liquidationAddressesJson = await liquidationAddressesRes.json();
+    const hasLiquidationAddress = liquidationAddressesJson.count > 0;
 
     if (firstAccount && !hasLiquidationAddress) {
       // They have external accounts. Create a liquidation address
@@ -174,10 +182,8 @@ const checkKYCHandler = async (
         await liquidationAddressCreation.json();
 
       if (liquidationAddressCreation.status === 201) {
-        console.log(liquidationAddressCreationRes);
         const liquidationAddress = liquidationAddressCreationRes.address;
-        console.log(liquidationAddress, checksummedWalletAddress);
-        const r = await graphqlRequest(
+        await graphqlRequest(
           createLiquidationAddress,
           {
             input: {
