@@ -7,7 +7,7 @@ import {
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useGetUserDrainsQuery } from '~gql';
+import { type BridgeDrain } from '~types/graphql.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
@@ -16,8 +16,6 @@ import {
   useFiatTransfersData,
   useFiatTransfersTableColumns,
 } from './hooks.tsx';
-
-import type { FormattedTransfer } from './types.ts';
 
 const displayName = 'v5.pages.FiatTransfersTable';
 
@@ -38,9 +36,6 @@ const MSG = defineMessages({
 });
 
 const FiatTransfersTable = () => {
-  const { data } = useGetUserDrainsQuery({});
-  const drains = data?.bridgeXYZQuery?.drains ?? [];
-
   const { formatMessage } = useIntl();
   const [sorting, setSorting] = useState<SortingState>([
     { desc: true, id: 'createdAt' },
@@ -52,20 +47,9 @@ const FiatTransfersTable = () => {
   return (
     <div>
       <TableHeader title={formatMessage(MSG.tableTitle)} />
-      <Table<FormattedTransfer>
+      <Table<BridgeDrain>
         columns={columns}
-        data={
-          loading
-            ? Array(3).fill({})
-            : drains?.map((item) => ({
-                id: item?.id ?? '',
-                amount: item?.amount ?? '',
-                amountNumeric: item?.amount ?? 0,
-                receiptUrl: item?.receipt?.url ?? '',
-                state: item?.state ?? '',
-                createdAt: item?.created_at ?? '',
-              }))
-        }
+        data={loading ? Array(3).fill({}) : sortedData}
         state={{ sorting }}
         getRowId={(row) => row.id}
         initialState={{ pagination: { pageSize: 10 } }}

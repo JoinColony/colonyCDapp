@@ -5,17 +5,18 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 
+import { SupportedCurrencies, useGetUserDrainsQuery } from '~gql';
 import { useMobile } from '~hooks';
 import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
+import { type BridgeDrain } from '~types/graphql.ts';
+import { getFormattedAmount } from '~utils/getFormattedAmount.ts';
+import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { FiatTransferState, statusPillScheme, STATUS_MSGS } from './consts.ts';
-import { mockTransfers } from './mockData.ts';
-
-import type { Transfer, FormattedTransfer } from './types';
 
 const stateOrder: Record<FiatTransferState, number> = {
   [FiatTransferState.AwaitingFunds]: 1,
@@ -30,65 +31,31 @@ const stateOrder: Record<FiatTransferState, number> = {
 };
 
 export const useFiatTransfersData = (sorting: SortingState) => {
-  const [transfers, setTransfers] = useState<Transfer[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate data fetching
-    setLoading(true);
-    setTimeout(() => {
-      setTransfers(mockTransfers);
-      setLoading(false);
-    }, 1000);
-  }, []);
-
-  const formattedData: FormattedTransfer[] = useMemo(() => {
-    return transfers.map((transfer) => {
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: transfer.receipt.destination_currency,
-        minimumFractionDigits: 2,
-      });
-
-      const amountFormatted = `${formatter.format(parseFloat(transfer.receipt.outgoing_amount))} ${transfer.receipt.destination_currency.toUpperCase()}`;
-
-      return {
-        id: transfer.id,
-        amount: amountFormatted,
-        amountNumeric: parseFloat(transfer.receipt.outgoing_amount),
-        state: transfer.state,
-        createdAt: new Date(transfer.created_at).toLocaleDateString('en-GB', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        }),
-        receiptUrl: transfer.receipt.url,
-      };
-    });
-  }, [transfers]);
+  const { data, loading } = useGetUserDrainsQuery({});
 
   const sortedData = useMemo(() => {
-    const sorted = [...formattedData];
+    const drains = data?.bridgeGetDrainsHistory ?? [];
+    const sorted = [...drains];
     sorting.forEach(({ id, desc }) => {
       sorted.sort((a, b) => {
-        const aValue = a[id as keyof FormattedTransfer];
-        const bValue = b[id as keyof FormattedTransfer];
+        const aValue = a[id as keyof any];
+        const bValue = b[id as keyof any];
         if (aValue > bValue) return desc ? -1 : 1;
         if (aValue < bValue) return desc ? 1 : -1;
         return 0;
       });
     });
     return sorted;
-  }, [formattedData, sorting]);
+  }, [data, sorting]);
 
   return { sortedData, loading };
 };
 
 export const useFiatTransfersTableColumns = (
   loading: boolean,
-): ColumnDef<FormattedTransfer, any>[] => {
+): ColumnDef<BridgeDrain, any>[] => {
   const isMobile = useMobile();
-  const columnHelper = createColumnHelper<FormattedTransfer>();
+  const columnHelper = createColumnHelper<BridgeDrain>();
 
   return useMemo(() => {
     return [
@@ -101,11 +68,19 @@ export const useFiatTransfersTableColumns = (
           if (loading) {
             return <div className="h-4 w-20 skeleton" />;
           }
-          return <div>{row.original.amount}</div>;
+          return (
+            <div>
+              {getFormattedAmount(
+                row.original.amount,
+                SupportedCurrencies[row.original.currency.toUpperCase()] ??
+                  SupportedCurrencies.Usd,
+              )}
+            </div>
+          );
         },
         sortingFn: (rowA, rowB) => {
-          const a = rowA.original.amountNumeric;
-          const b = rowB.original.amountNumeric;
+          const a = parseFloat(rowA.original.amount);
+          const b = parseFloat(rowB.original.amount);
           return Math.sign(a - b);
         },
       }),
@@ -117,7 +92,7 @@ export const useFiatTransfersTableColumns = (
           if (loading) {
             return <div className="h-4 w-20 skeleton" />;
           }
-          return <div>{row.original.createdAt}</div>;
+          return <div>{getFormattedDateFrom(row.original.createdAt)}</div>;
         },
       }),
       columnHelper.accessor('state', {
@@ -150,7 +125,7 @@ export const useFiatTransfersTableColumns = (
           return aOrder - bOrder;
         },
       }),
-      columnHelper.accessor('receiptUrl', {
+      columnHelper.accessor('receipt', {
         header: () => formatText({ id: 'table.row.receipt' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
         staticSize: '180px',
@@ -160,8 +135,8 @@ export const useFiatTransfersTableColumns = (
           }
           return (
             <ExternalLink
-              href={row.original.receiptUrl}
-              key={row.original.receiptUrl}
+              href={row.original.receipt.url}
+              key={row.original.receipt.url}
               className="flex items-center gap-2 text-md text-gray-700 underline transition-colors hover:text-blue-400"
             >
               <ArrowSquareOut size={18} />
