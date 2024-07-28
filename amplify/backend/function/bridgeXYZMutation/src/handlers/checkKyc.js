@@ -143,7 +143,7 @@ const checkKYCHandler = async (
         }
       : null;
 
-    const liquidationAddresses = getLiquidationAddresses(
+    const liquidationAddresses = await getLiquidationAddresses(
       apiUrl,
       apiKey,
       bridgeCustomerId,

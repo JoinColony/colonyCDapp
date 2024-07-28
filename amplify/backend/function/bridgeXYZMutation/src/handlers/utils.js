@@ -56,6 +56,11 @@ const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
 
   const liquidationAddressesJson = await liquidationAddressesRes.json();
 
+  if (liquidationAddressesRes.status !== 200) {
+    console.error(liquidationAddressesJson);
+    throw new Error('Error fetching liquidation addresses');
+  }
+
   return liquidationAddressesJson.data;
 };
 
