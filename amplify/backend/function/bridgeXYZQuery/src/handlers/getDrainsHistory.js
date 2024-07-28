@@ -39,7 +39,7 @@ const getDrainsHistoryHandler = async (
   const liquidationAddressResult = await res.json();
 
   if (!liquidationAddressResult.count) {
-    throw new Error('No liquidation addresses found for user');
+    return [];
   }
 
   const liquidationAddressIds = liquidationAddressResult.data.map(
