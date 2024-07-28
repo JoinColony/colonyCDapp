@@ -7,6 +7,8 @@ const createExternalAccount = async (
   bridgeCustomerId,
   account,
 ) => {
+  const [firstName, lastName] = account.accountOwner.split(' ');
+
   const createAccountRes = await fetch(
     `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
     {
@@ -24,17 +26,40 @@ const createExternalAccount = async (
         account_owner_name: account.accountOwner,
         account_type: account.currency === 'usd' ? 'us' : 'iban',
         address: account.address,
+        first_name: firstName,
+        last_name: lastName,
       }),
       method: 'POST',
     },
   );
 
+  const createAccountJson = await createAccountRes.json();
+
   if (createAccountRes.status !== 201) {
-    console.error(await createAccountRes.json());
+    console.error(createAccountJson);
     throw Error('Error creating external account');
   }
+
+  return createAccountJson;
+};
+
+const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
+  const liquidationAddressesRes = await fetch(
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': apiKey,
+      },
+    },
+  );
+
+  const liquidationAddressesJson = await liquidationAddressesRes.json();
+
+  return liquidationAddressesJson.data;
 };
 
 module.exports = {
   createExternalAccount,
+  getLiquidationAddresses,
 };

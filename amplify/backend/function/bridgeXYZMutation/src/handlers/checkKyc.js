@@ -1,6 +1,7 @@
 const fetch = require('cross-fetch');
 const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
+const { getLiquidationAddresses } = require('./utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
  * So that we can always ensure it follows the latest schema
@@ -142,18 +143,12 @@ const checkKYCHandler = async (
         }
       : null;
 
-    const liquidationAddressesRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Api-Key': apiKey,
-        },
-      },
+    const liquidationAddresses = getLiquidationAddresses(
+      apiUrl,
+      apiKey,
+      bridgeCustomerId,
     );
-
-    const liquidationAddressesJson = await liquidationAddressesRes.json();
-    const hasLiquidationAddress = liquidationAddressesJson.count > 0;
+    const hasLiquidationAddress = liquidationAddresses.length > 0;
 
     if (firstAccount && !hasLiquidationAddress) {
       // They have external accounts. Create a liquidation address
