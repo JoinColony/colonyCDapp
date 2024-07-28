@@ -1,6 +1,6 @@
 const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
-const { createExternalAccount } = require('./utils');
+const { createExternalAccount, getLiquidationAddresses } = require('./utils');
 
 const { getUser } = require('../graphql');
 
@@ -43,7 +43,46 @@ const updateExternalAccountHandler = async (
     throw Error('Error deleting external account');
   }
 
-  await createExternalAccount(apiUrl, apiKey, bridgeCustomerId, account);
+  const newAccount = await createExternalAccount(
+    apiUrl,
+    apiKey,
+    bridgeCustomerId,
+    account,
+  );
+
+  /**
+   * Update liquidation addresses associated with the deleted account
+   */
+  const liquidationAddresses = await getLiquidationAddresses(
+    apiUrl,
+    apiKey,
+    bridgeCustomerId,
+  );
+  const targetLiquidationAddress = liquidationAddresses.find(
+    (address) => address.external_account_id === input.id,
+  );
+
+  // @TODO: What if liquidation address is in different Fiat currency?
+  if (targetLiquidationAddress) {
+    const updateAddressRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${targetLiquidationAddress.id}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': apiKey,
+        },
+        body: JSON.stringify({
+          external_account_id: newAccount.id,
+        }),
+        method: 'PUT',
+      },
+    );
+
+    if (updateAddressRes.status !== 200) {
+      console.error(await updateAddressRes.json());
+      throw Error('Error updating liquidation address');
+    }
+  }
 
   return {
     success: true,

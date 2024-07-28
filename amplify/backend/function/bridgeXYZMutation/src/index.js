@@ -1,5 +1,4 @@
 const { kycLinksHandler } = require('./handlers/kycLinks');
-const { putCustomerHandler } = require('./handlers/putCustomer');
 const { checkKYCHandler } = require('./handlers/checkKyc');
 const {
   createExternalAccountHandler,
@@ -45,7 +44,6 @@ exports.handler = async (event) => {
     [BRIDGE_MUTATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
     [BRIDGE_MUTATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
     'v0/kyc_links': kycLinksHandler,
-    'v0/customers/{customerID}': putCustomerHandler,
     'v0/kyc_links/{kycLinkID}': checkKYCHandler,
     default: () => {
       console.log('Running default handler');
