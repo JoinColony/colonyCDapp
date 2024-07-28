@@ -76,6 +76,21 @@ export type BridgeCreateBankAccountReturn = {
   success?: Maybe<Scalars['Boolean']>;
 };
 
+export type BridgeDrain = {
+  __typename?: 'BridgeDrain';
+  amount: Scalars['String'];
+  createdAt: Scalars['String'];
+  currency: Scalars['String'];
+  id: Scalars['String'];
+  receipt: BridgeDrainReceipt;
+  state: Scalars['String'];
+};
+
+export type BridgeDrainReceipt = {
+  __typename?: 'BridgeDrainReceipt';
+  url: Scalars['String'];
+};
+
 export type BridgeIbanAccountInput = {
   account_number: Scalars['String'];
   bic: Scalars['String'];
@@ -119,16 +134,6 @@ export type BridgeXyzBankAccount = {
   iban?: Maybe<BridgeIbanBankAccount>;
   id: Scalars['String'];
   usAccount?: Maybe<BridgeUsBankAccount>;
-};
-
-export type BridgeXyzDrain = {
-  __typename?: 'BridgeXYZDrain';
-  amount?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['String']>;
-  currency?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['String']>;
-  receipt?: Maybe<DrainReceipt>;
-  state?: Maybe<Scalars['String']>;
 };
 
 export type BridgeXyzMutationAccountInput = {
@@ -187,7 +192,6 @@ export type BridgeXyzQueryInput = {
 
 export type BridgeXyzQueryReturn = {
   __typename?: 'BridgeXYZQueryReturn';
-  drains?: Maybe<Array<Maybe<BridgeXyzDrain>>>;
   success?: Maybe<Scalars['Boolean']>;
   transactionFee?: Maybe<Scalars['String']>;
 };
@@ -2037,11 +2041,6 @@ export type DomainMetadataChangelogInput = {
   oldDescription?: InputMaybe<Scalars['String']>;
   oldName: Scalars['String'];
   transactionHash: Scalars['String'];
-};
-
-export type DrainReceipt = {
-  __typename?: 'DrainReceipt';
-  url?: Maybe<Scalars['String']>;
 };
 
 export type Expenditure = {
@@ -5724,6 +5723,7 @@ export type ProfileMetadataInput = {
 /** Root query type */
 export type Query = {
   __typename?: 'Query';
+  bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
   /** Fetch from the Bridge XYZ API */
   bridgeXYZQuery?: Maybe<BridgeXyzQueryReturn>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
@@ -8914,6 +8914,8 @@ export type ColonyDecisionFragment = { __typename?: 'ColonyDecision', title: str
 
 export type BridgeBankAccountFragment = { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null };
 
+export type BridgeDrainFragment = { __typename?: 'BridgeDrain', id: string, amount: string, currency: string, state: string, createdAt: string, receipt: { __typename?: 'BridgeDrainReceipt', url: string } };
+
 export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null };
 
 export type PublicColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', avatar?: string | null, displayName: string, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', link: string, name: ExternalLinks }> | null } | null };
@@ -9261,7 +9263,7 @@ export type SearchActionsQuery = { __typename?: 'Query', searchColonyActions?: {
 export type GetUserDrainsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserDrainsQuery = { __typename?: 'Query', bridgeXYZQuery?: { __typename?: 'BridgeXYZQueryReturn', success?: boolean | null, transactionFee?: string | null, drains?: Array<{ __typename?: 'BridgeXYZDrain', id?: string | null, amount?: string | null, currency?: string | null, state?: string | null, created_at?: string | null, receipt?: { __typename?: 'DrainReceipt', url?: string | null } | null } | null> | null } | null };
+export type GetUserDrainsQuery = { __typename?: 'Query', bridgeGetDrainsHistory?: Array<{ __typename?: 'BridgeDrain', id: string, amount: string, currency: string, state: string, createdAt: string, receipt: { __typename?: 'BridgeDrainReceipt', url: string } }> | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -9616,6 +9618,18 @@ export const BridgeBankAccountFragmentDoc = gql`
   usAccount {
     last4
     routingNumber
+  }
+}
+    `;
+export const BridgeDrainFragmentDoc = gql`
+    fragment BridgeDrain on BridgeDrain {
+  id
+  amount
+  currency
+  state
+  createdAt
+  receipt {
+    url
   }
 }
     `;
@@ -11847,24 +11861,11 @@ export type SearchActionsLazyQueryHookResult = ReturnType<typeof useSearchAction
 export type SearchActionsQueryResult = Apollo.QueryResult<SearchActionsQuery, SearchActionsQueryVariables>;
 export const GetUserDrainsDocument = gql`
     query GetUserDrains {
-  bridgeXYZQuery(
-    input: {path: "v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains"}
-  ) {
-    drains {
-      id
-      amount
-      currency
-      state
-      created_at
-      receipt {
-        url
-      }
-    }
-    success
-    transactionFee
+  bridgeGetDrainsHistory {
+    ...BridgeDrain
   }
 }
-    `;
+    ${BridgeDrainFragmentDoc}`;
 
 /**
  * __useGetUserDrainsQuery__

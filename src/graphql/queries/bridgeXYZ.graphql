@@ -1,20 +1,5 @@
 query GetUserDrains {
-  bridgeXYZQuery(
-    input: {
-      path: "v0/customers/{customerID}/liquidation_addresses/{liquidationAddressID}/drains"
-    }
-  ) {
-    drains {
-      id
-      amount
-      currency
-      state
-      created_at
-      receipt {
-        url
-      }
-    }
-    success
-    transactionFee
+  bridgeGetDrainsHistory {
+    ...BridgeDrain
   }
 }

@@ -1,0 +1,12 @@
+type BridgeDrainReceipt {
+  url: String!
+}
+
+type BridgeDrain {
+  id: String!
+  amount: String!
+  currency: String!
+  state: String!
+  createdAt: String!
+  receipt: BridgeDrainReceipt!
+}

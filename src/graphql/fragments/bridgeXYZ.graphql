@@ -13,3 +13,14 @@ fragment BridgeBankAccount on BridgeXYZBankAccount {
     routingNumber
   }
 }
+
+fragment BridgeDrain on BridgeDrain {
+  id
+  amount
+  currency
+  state
+  createdAt
+  receipt {
+    url
+  }
+}

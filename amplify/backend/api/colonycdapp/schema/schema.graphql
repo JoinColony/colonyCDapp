@@ -374,21 +374,7 @@ type BridgeXYZMutationReturn {
   success: Boolean
 }
 
-type DrainReceipt {
-  url: String
-}
-
-type BridgeXYZDrain {
-  id: String
-  amount: String
-  currency: String
-  state: String
-  created_at: String
-  receipt: DrainReceipt
-}
-
 type BridgeXYZQueryReturn {
-  drains: [BridgeXYZDrain]
   success: Boolean
   transactionFee: String
 }
@@ -991,10 +977,11 @@ type Query {
   """
   Fetch from the Bridge XYZ API
   """
-  bridgeXYZQuery2(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
+  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
     @function(name: "bridgeXYZQuery-${env}")
 
-  bridgeGetDrainsHistory: [BridgeDrain] @function(name: "bridgeXYZQuery-${env}")
+  bridgeGetDrainsHistory: [BridgeDrain!]
+    @function(name: "bridgeXYZQuery-${env}")
 }
 
 """
