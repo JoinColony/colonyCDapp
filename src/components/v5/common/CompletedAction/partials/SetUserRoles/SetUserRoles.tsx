@@ -94,6 +94,10 @@ const SetUserRoles = ({ action }: Props) => {
     rolesAreMultiSig,
   } = action;
 
+  const roleAuthority = rolesAreMultiSig
+    ? Authority.ViaMultiSig
+    : Authority.Own;
+
   const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
       id: getHistoricRolesDatabaseId({
@@ -101,6 +105,7 @@ const SetUserRoles = ({ action }: Props) => {
         colonyAddress,
         nativeId: fromDomain?.nativeId,
         recipientAddress,
+        isMultiSig: roleAuthority === Authority.ViaMultiSig,
       }),
     },
     fetchPolicy: 'cache-and-network',
@@ -110,11 +115,12 @@ const SetUserRoles = ({ action }: Props) => {
     historicRoles?.getColonyHistoricRole,
   );
 
-  const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
-  const roleAuthority = rolesAreMultiSig
-    ? Authority.ViaMultiSig
-    : Authority.Own;
+
+  const { name: roleName, role } = getRole(
+    userColonyRoles,
+    roleAuthority === Authority.ViaMultiSig,
+  );
 
   const metadata =
     action.motionData?.motionDomain.metadata ??

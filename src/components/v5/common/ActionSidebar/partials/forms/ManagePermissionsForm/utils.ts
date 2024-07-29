@@ -10,6 +10,7 @@ import {
 import { type ColonyFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
@@ -152,7 +153,7 @@ export const configureFormRoles = ({
   member,
   role,
   team,
-  isMultiSig = false,
+  authority,
 }: {
   colony: ColonyFragment;
   setValue: UseFormSetValue<ManagePermissionsFormValues>;
@@ -162,14 +163,14 @@ export const configureFormRoles = ({
   role: ManagePermissionsFormValues['role'];
   shouldPersistRole?: boolean;
   setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
-  isMultiSig?: boolean;
+  authority: ManagePermissionsFormValues['authority'];
 }) => {
   const userRolesForDomain = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: member,
     domainId: team,
     intersectingRoles: true,
-    isMultiSig,
+    isMultiSig: authority === Authority.ViaMultiSig,
   });
 
   const userRoleMeta = getRole(userRolesForDomain);
