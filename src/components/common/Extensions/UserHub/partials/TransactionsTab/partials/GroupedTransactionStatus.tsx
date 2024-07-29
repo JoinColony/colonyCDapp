@@ -1,4 +1,3 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
@@ -13,7 +12,6 @@ const displayName =
 const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
   const failed = status === TransactionStatusEnum.Failed;
   const succeeded = status === TransactionStatusEnum.Succeeded;
-  const pending = status === TransactionStatusEnum.Pending;
 
   return (
     <div
@@ -34,12 +32,6 @@ const GroupedTransactionStatus: FC<TransactionStatusProps> = ({ status }) => {
         textClassName="flex max-w-full items-center"
       >
         <span className="truncate">{status.toLowerCase()}</span>
-        {pending && (
-          <SpinnerGap
-            className="ml-1 h-[0.8125rem] w-[0.8125rem] flex-shrink-0 animate-spin"
-            size={14}
-          />
-        )}
       </PillsBase>
     </div>
   );

@@ -5,12 +5,10 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import {
-  transactionPending,
-  transactionAddParams,
-} from '../../actionCreators/index.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createTransaction,
   createTransactionChannels,
@@ -82,7 +80,7 @@ function* createPaymentAction({
     /*
      * setup batch ids and channels
      */
-    const batchKey = TRANSACTION_METHODS.PaymentAction;
+    const batchKey = TRANSACTION_METHODS.Payment;
 
     const { paymentAction, annotatePaymentAction } =
       yield createTransactionChannels(metaId, [
@@ -146,26 +144,24 @@ function* createPaymentAction({
       roles: [ColonyRole.Funding, ColonyRole.Administration],
     });
 
-    yield put(
-      transactionAddParams(paymentAction.id, [
-        extensionPDID,
-        extensionCSI,
-        userPDID,
-        userCSI,
-        recipientAddresses,
-        tokenAddresses,
-        amounts,
-        domainId,
-        /*
-         * NOTE Always make the payment in the global skill 0
-         * This will make it so that the user only receives reputation in the
-         * above domain, but none in the skill itself.
-         */
-        0,
-      ]),
-    );
+    yield transactionSetParams(paymentAction.id, [
+      extensionPDID,
+      extensionCSI,
+      userPDID,
+      userCSI,
+      recipientAddresses,
+      tokenAddresses,
+      amounts,
+      domainId,
+      /*
+       * NOTE Always make the payment in the global skill 0
+       * This will make it so that the user only receives reputation in the
+       * above domain, but none in the skill itself.
+       */
+      0,
+    ]);
 
-    yield initiateTransaction({ id: paymentAction.id });
+    yield initiateTransaction(paymentAction.id);
 
     const {
       payload: {

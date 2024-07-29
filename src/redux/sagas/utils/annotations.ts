@@ -6,10 +6,8 @@ import {
   type CreateAnnotationMutation,
   type CreateAnnotationMutationVariables,
 } from '~gql';
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 
 import {
   waitForTxResult,
@@ -76,9 +74,9 @@ export function* uploadAnnotation({
     ipfsHash,
   });
 
-  yield put(transactionAddParams(txChannel.id, [txHash, ipfsHash]));
+  yield transactionSetParams(txChannel.id, [txHash, ipfsHash]);
 
-  yield initiateTransaction({ id: txChannel.id });
+  yield initiateTransaction(txChannel.id);
 
   yield waitForTxResult(txChannel.channel);
 }

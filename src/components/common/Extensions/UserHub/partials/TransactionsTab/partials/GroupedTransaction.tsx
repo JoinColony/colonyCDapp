@@ -2,24 +2,24 @@ import { CaretDown, CaretUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
+import {
+  getGroupKey,
+  getGroupStatus,
+  getGroupValues,
+  getActiveTransactionIdx,
+  getGroupId,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 
-import {
-  getActiveTransactionIdx,
-  getGroupKey,
-  getGroupStatus,
-  getGroupValues,
-} from '../transactionGroup.ts';
 import { type GroupedTransactionProps } from '../types.ts';
 
 import GroupedTransactionContent from './GroupedTransactionContent.tsx';
@@ -41,19 +41,52 @@ const GROUP_KEYS_WHICH_CANNOT_LINK = [
 
 const GroupedTransaction: FC<GroupedTransactionProps> = ({
   transactionGroup,
-  groupId,
   isContentOpened,
   onToggleExpand,
   hideSummary = false,
   isClickable = true,
+  isCancelable = true,
 }) => {
-  const { formatMessage } = useIntl();
   const isMobile = useMobile();
   const navigate = useNavigate();
 
   const groupKey = getGroupKey(transactionGroup);
+  const groupId = getGroupId(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
+
+  const groupMsgId = `transaction.group`;
+
+  const groupMsgTitle = values.group?.title || {
+    id: `${groupMsgId}.${groupKey}.title`,
+  };
+  const groupMsgDescription = values.group?.description || {
+    id:
+      import.meta.env.VITE_DEBUG === 'true'
+        ? `transaction.debug.description`
+        : `${groupMsgId}.${groupKey}.description`,
+  };
+
+  const { methodName, context, params = [] } = values;
+  const msgValues = { methodName, context };
+
+  const groupTitle = formatText(
+    groupMsgTitle,
+    values.group?.titleValues || {
+      ...arrayToObject(params),
+      ...msgValues,
+    },
+  );
+
+  const groupDescription = formatText(
+    groupMsgDescription,
+    values.group?.descriptionValues || {
+      ...arrayToObject(params),
+      ...msgValues,
+    },
+  );
+
+  const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
 
   const canLinkToAction =
     isClickable &&
@@ -61,38 +94,6 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
       values.group.key as TRANSACTION_METHODS,
     );
-
-  const defaultTransactionGroupMessageDescriptorTitleId = {
-    id: `${
-      transactionGroup[0].metatransaction ? 'meta' : ''
-    }transaction.${groupKey}.title`,
-  };
-  const defaultTransactionGroupMessageDescriptorDescriptionId = {
-    id:
-      import.meta.env.VITE_DEBUG === 'true'
-        ? `${
-            transactionGroup[0].metatransaction ? 'meta' : ''
-          }transaction.debug.description`
-        : `${
-            transactionGroup[0].metatransaction ? 'meta' : ''
-          }transaction.${groupKey}.description`,
-  };
-
-  const selectedTransactionIdx = getActiveTransactionIdx(transactionGroup) || 0;
-
-  const { methodName, context } = values;
-  const titleValues = { methodName, context };
-
-  const value = formatText(
-    {
-      ...defaultTransactionGroupMessageDescriptorTitleId,
-      ...values.group?.title,
-    },
-    values.group?.titleValues || {
-      ...arrayToObject(values.params),
-      ...titleValues,
-    },
-  );
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
@@ -134,8 +135,11 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               <div className="flex w-full items-center justify-between gap-4">
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-2">
-                    <h4 className="truncate text-left text-1 sm:w-[190px]">
-                      {value}
+                    <h4
+                      className="truncate text-left text-1 sm:w-[190px]"
+                      title={groupTitle}
+                    >
+                      {groupTitle}
                     </h4>
                     {createdAt && (
                       <span className="mt-0.5 block whitespace-nowrap text-xs text-gray-400">
@@ -143,17 +147,11 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                       </span>
                     )}
                   </div>
-                  <p className="truncate text-left text-xs text-gray-600 sm:w-[250px]">
-                    <FormattedMessage
-                      {...defaultTransactionGroupMessageDescriptorDescriptionId}
-                      {...values.group?.description}
-                      values={
-                        values.group?.descriptionValues || {
-                          ...arrayToObject(values.params),
-                          ...titleValues,
-                        }
-                      }
-                    />
+                  <p
+                    className="truncate text-left text-xs text-gray-600 sm:w-[250px]"
+                    title={groupDescription}
+                  >
+                    {groupDescription}
                   </p>
                 </div>
                 <div className="flex min-w-0 gap-2 pr-8">
@@ -163,7 +161,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             </button>
             <button
               type="button"
-              aria-label={formatMessage({
+              aria-label={formatText({
                 id: 'handle.unselect.transaction',
               })}
               className="absolute right-0 flex w-6 -translate-y-1/2 items-center justify-center sm:right-6"
@@ -204,6 +202,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                     idx={idx}
                     transaction={transaction}
                     selected={idx === selectedTransactionIdx}
+                    isCancelable={isCancelable}
                   />
                 ))}
               </ul>

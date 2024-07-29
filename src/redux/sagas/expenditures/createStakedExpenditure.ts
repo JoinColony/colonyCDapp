@@ -3,8 +3,8 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
-import { transactionAddParams } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -139,7 +139,7 @@ function* createStakedExpenditure({
     }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
-    yield initiateTransaction({ id: approveStake.id });
+    yield initiateTransaction(approveStake.id);
     yield waitForTxResult(approveStake.channel);
 
     // Find a chill skill index as a proof the extension has permissions in the selected domain
@@ -163,17 +163,16 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-    yield put(
-      transactionAddParams(makeExpenditure.id, [
-        Id.RootDomain,
-        childSkillIndex,
-        createdInDomain.nativeId,
-        reputationKey,
-        reputationValue,
-        branchMask,
-        siblings,
-      ]),
-    );
+
+    yield transactionSetParams(makeExpenditure.id, [
+      Id.RootDomain,
+      childSkillIndex,
+      createdInDomain.nativeId,
+      reputationKey,
+      reputationValue,
+      branchMask,
+      siblings,
+    ]);
 
     if (annotationMessage) {
       yield takeFrom(
@@ -181,7 +180,7 @@ function* createStakedExpenditure({
         ActionTypes.TRANSACTION_CREATED,
       );
     }
-    yield initiateTransaction({ id: makeExpenditure.id });
+    yield initiateTransaction(makeExpenditure.id);
 
     const {
       payload: {
@@ -195,18 +194,16 @@ function* createStakedExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield put(
-      transactionAddParams(
-        setExpenditureValues.id,
-        getSetExpenditureValuesFunctionParams({
-          nativeExpenditureId: expenditureId,
-          payouts: payoutsWithSlotIds,
-          networkInverseFee,
-          isStaged,
-        }),
-      ),
+    yield transactionSetParams(
+      setExpenditureValues.id,
+      getSetExpenditureValuesFunctionParams({
+        nativeExpenditureId: expenditureId,
+        payouts: payoutsWithSlotIds,
+        networkInverseFee,
+        isStaged,
+      }),
     );
-    yield initiateTransaction({ id: setExpenditureValues.id });
+    yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
     if (isStaged) {
@@ -214,10 +211,11 @@ function* createStakedExpenditure({
         setExpenditureStaged.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
-      yield put(
-        transactionAddParams(setExpenditureStaged.id, [expenditureId, true]),
-      );
-      yield initiateTransaction({ id: setExpenditureStaged.id });
+      yield transactionSetParams(setExpenditureStaged.id, [
+        expenditureId,
+        true,
+      ]);
+      yield initiateTransaction(setExpenditureStaged.id);
       yield waitForTxResult(setExpenditureStaged.channel);
     }
 

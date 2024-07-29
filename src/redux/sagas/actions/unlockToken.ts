@@ -28,7 +28,7 @@ function* tokenUnlockAction({
   try {
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = TRANSACTION_METHODS.TokenUnlockAction;
+    const batchKey = TRANSACTION_METHODS.UnlockToken;
 
     const {
       tokenUnlockAction: tokenUnlock,
@@ -85,7 +85,7 @@ function* tokenUnlockAction({
       );
     }
 
-    yield initiateTransaction({ id: tokenUnlock.id });
+    yield initiateTransaction(tokenUnlock.id);
 
     const {
       payload: {

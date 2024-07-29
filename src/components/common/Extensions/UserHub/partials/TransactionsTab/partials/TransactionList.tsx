@@ -1,59 +1,51 @@
-import React, { type FC, useCallback, useState } from 'react';
+import React, { type FC, useCallback, useState, useEffect } from 'react';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
-import MessageCard from '~frame/MessageCard/MessageCard.tsx';
-import { type MessageType } from '~redux/immutable/index.ts';
-
-import {
-  type TransactionOrMessageGroup,
-  getGroupId,
-  isTxGroup,
-} from '../transactionGroup.ts';
+import { type TransactionType } from '~redux/immutable/Transaction.ts';
+import { getGroupId } from '~state/transactionState.ts';
 
 import GroupedTransaction from './GroupedTransaction.tsx';
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionTab.partials.TransactionList';
 
-const TransactionList: FC = () => {
-  const { transactionAndMessageGroups } = useUserTransactionContext();
+interface TransactionListProps {
+  transactions: TransactionType[][];
+}
 
-  const [groupId, setGroupId] = useState<string | undefined>(undefined);
+const TransactionList: FC<TransactionListProps> = ({ transactions }) => {
+  const newestGroup = transactions[0];
+  const groupId = getGroupId(newestGroup);
+
+  const [selectedGroupId, setGroupId] = useState<string | undefined>(undefined);
 
   const handleSelectElement = useCallback(
     (id: string) => {
-      if (groupId === id) {
+      if (id === selectedGroupId) {
         setGroupId(undefined);
       } else {
         setGroupId(id);
       }
     },
-    [groupId],
+    [selectedGroupId],
   );
+
+  useEffect(() => {
+    setGroupId(groupId);
+  }, [groupId]);
 
   return (
     <ul>
-      {transactionAndMessageGroups.map(
-        (transactionOrMessageGroup: TransactionOrMessageGroup, idx: number) =>
-          isTxGroup(transactionOrMessageGroup) ? (
-            <GroupedTransaction
-              key={getGroupId(transactionOrMessageGroup)}
-              groupId={getGroupId(transactionOrMessageGroup)}
-              transactionGroup={transactionOrMessageGroup}
-              onToggleExpand={handleSelectElement}
-              isContentOpened={
-                groupId === getGroupId(transactionOrMessageGroup)
-              }
-            />
-          ) : (
-            <MessageCard
-              key={getGroupId(transactionOrMessageGroup)}
-              message={transactionOrMessageGroup[0] as MessageType}
-              onClick={() => {}}
-              idx={idx}
-            />
-          ),
-      )}
+      {transactions.map((tx) => {
+        const gid = getGroupId(tx);
+        return (
+          <GroupedTransaction
+            key={gid}
+            transactionGroup={tx}
+            onToggleExpand={handleSelectElement}
+            isContentOpened={selectedGroupId === gid}
+          />
+        );
+      })}
     </ul>
   );
 };

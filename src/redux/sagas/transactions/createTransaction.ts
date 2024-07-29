@@ -1,3 +1,4 @@
+import { type ClientType } from '@colony/colony-js';
 import { type Channel, buffers } from 'redux-saga';
 import {
   actionChannel,
@@ -11,7 +12,9 @@ import {
 } from 'redux-saga/effects';
 
 import { getContext, ContextModule } from '~context/index.ts';
-import { type TxConfig } from '~types/transactions.ts';
+import { TransactionStatus } from '~gql';
+import { addTransactionToDb } from '~state/transactionState.ts';
+import { type ExtendedClientType, type TxConfig } from '~types/transactions.ts';
 import { filterUniqueAction } from '~utils/actions.ts';
 
 import { createTransactionAction } from '../../actionCreators/index.ts';
@@ -34,6 +37,25 @@ export function* createTransaction(id: string, config: TxConfig) {
   if (!id) {
     throw new Error('Could not create transaction. No transaction id provided');
   }
+
+  yield addTransactionToDb(id, {
+    context: config.context as ClientType | ExtendedClientType,
+    createdAt: new Date(),
+    from: walletAddress,
+    group: config.group,
+    identifier: config.identifier,
+    methodContext: config.methodContext,
+    methodName: config.methodName,
+    metatransaction: config.metatransaction || false,
+    options: config.options,
+    params: config.params,
+    status:
+      config.ready === false
+        ? TransactionStatus.Created
+        : TransactionStatus.Ready,
+    title: config.title,
+    titleValues: config.titleValues,
+  });
 
   if (shouldSendMetatransaction) {
     yield put(

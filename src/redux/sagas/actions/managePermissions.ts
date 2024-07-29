@@ -7,13 +7,11 @@ import {
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -138,16 +136,15 @@ function* managePermissionsAction({
       domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
     );
 
-    yield put(
-      transactionAddParams(setUserRoles.id, [
-        permissionDomainId,
-        childSkillIndex,
-        userAddress,
-        domainId,
-        intArrayToBytes32(roleArray),
-      ]),
-    );
-    yield initiateTransaction({ id: setUserRoles.id });
+    yield transactionSetParams(setUserRoles.id, [
+      permissionDomainId,
+      childSkillIndex,
+      userAddress,
+      domainId,
+      intArrayToBytes32(roleArray),
+    ]);
+
+    yield initiateTransaction(setUserRoles.id);
 
     const {
       payload: {

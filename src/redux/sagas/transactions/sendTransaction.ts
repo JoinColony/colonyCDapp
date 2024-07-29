@@ -1,44 +1,29 @@
 import { ClientType } from '@colony/colony-js';
-import { Contract, type ContractInterface } from 'ethers';
 import { call, put, take } from 'redux-saga/effects';
-// import abis from '@colony/colony-js/lib-esm/abis';
 
 import { TransactionStatus } from '~gql';
-import {
-  TRANSACTION_METHODS,
-  ExtendedClientType,
-} from '~types/transactions.ts';
+import { getTransaction } from '~state/transactionState.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { mergePayload } from '~utils/actions.ts';
 
 import { transactionSendError } from '../../actionCreators/index.ts';
 import { type ActionTypes } from '../../actionTypes.ts';
-import { type TransactionRecord } from '../../immutable/index.ts';
-import { oneTransaction } from '../../selectors/index.ts';
 import { type Action } from '../../types/actions/index.ts';
-import { selectAsJS, getColonyManager } from '../utils/index.ts';
+import { getColonyManager } from '../utils/index.ts';
 
 import getMetatransactionPromise from './getMetatransactionPromise.ts';
 import getTransactionPromise from './getTransactionPromise.ts';
 import transactionChannel from './transactionChannel.ts';
 
-/*
- * @TODO Refactor to support abis (either added to the app or from colonyJS)
- */
-const abis = {
-  WrappedToken: { default: { abi: {} as ContractInterface } },
-  vestingSimple: { default: { abi: {} as ContractInterface } },
-};
-
 export default function* sendTransaction({
   meta: { id },
 }: Action<ActionTypes.TRANSACTION_SEND>) {
-  const transaction: TransactionRecord = yield selectAsJS(oneTransaction, id);
-
+  const transaction = yield getTransaction(id, 'cache-first');
   const { status, context, identifier, metatransaction, methodName } =
     transaction;
 
   if (status !== TransactionStatus.Ready) {
-    throw new Error('Transaction is not ready to send.');
+    throw new Error(`Transaction ${id} is not ready to send.`);
   }
   const colonyManager = yield getColonyManager();
 
@@ -54,22 +39,6 @@ export default function* sendTransaction({
     methodName === TRANSACTION_METHODS.DeployTokenAuthority
   ) {
     contextClient = colonyManager.networkClient;
-  } else if (context === ExtendedClientType.WrappedTokenClient) {
-    const wrappedTokenAbi = abis.WrappedToken.default.abi;
-    contextClient = new Contract(
-      identifier || '',
-      wrappedTokenAbi,
-      colonyManager.signer,
-    );
-    contextClient.clientType = ExtendedClientType.WrappedTokenClient;
-  } else if (context === ExtendedClientType.VestingSimpleClient) {
-    const vestingSimpleAbi = abis.vestingSimple.default.abi;
-    contextClient = new Contract(
-      identifier || '',
-      vestingSimpleAbi,
-      colonyManager.signer,
-    );
-    contextClient.clientType = ExtendedClientType.VestingSimpleClient;
   } else {
     contextClient = yield colonyManager.getClient(
       context as ClientType,
@@ -105,7 +74,7 @@ export default function* sendTransaction({
     while (true) {
       const action = yield take(channel);
       // Add the transaction to the payload (we need to get the most recent version of it)
-      const currentTransaction = yield selectAsJS(oneTransaction, id);
+      const currentTransaction = yield getTransaction(id, 'network-only');
 
       // Put the action to the store
       yield put(mergePayload({ transaction: currentTransaction })(action));

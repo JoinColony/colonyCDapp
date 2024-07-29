@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, type ReactNode } from 'react';
 
+import { ContextModule, setContext } from '~context';
 import { useUpdateContributorsWithReputationMutation } from '~gql';
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
@@ -74,6 +75,10 @@ const ColonyContextProvider = ({
       colonySubscription,
     ],
   );
+
+  useEffect(() => {
+    setContext(ContextModule.CurrentColonyAddress, colony.colonyAddress);
+  }, [colony.colonyAddress]);
 
   return (
     <ColonyContext.Provider value={colonyContext}>

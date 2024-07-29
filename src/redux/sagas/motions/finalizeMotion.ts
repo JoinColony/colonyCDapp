@@ -57,7 +57,7 @@ function* finalizeMotion({
       }),
     );
 
-    yield initiateTransaction({ id: finalizeMotionTransaction.id });
+    yield initiateTransaction(finalizeMotionTransaction.id);
 
     const { type } = yield waitForTxResult(finalizeMotionTransaction.channel);
 

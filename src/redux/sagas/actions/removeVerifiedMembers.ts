@@ -3,7 +3,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
@@ -89,13 +89,11 @@ function* removeVerifiedMembersAction({
       );
     }
 
-    yield put(
-      transactionAddParams(removeVerifiedMembers.id, [
-        JSON.stringify(getRemoveVerifiedMembersOperation(members)),
-      ]),
-    );
+    yield transactionSetParams(removeVerifiedMembers.id, [
+      JSON.stringify(getRemoveVerifiedMembersOperation(members)),
+    ]);
 
-    yield initiateTransaction({ id: removeVerifiedMembers.id });
+    yield initiateTransaction(removeVerifiedMembers.id);
 
     const {
       payload: {

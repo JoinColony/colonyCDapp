@@ -4,6 +4,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 
 import { authenticateWallet } from '~auth/index.ts';
 import { getContext, setContext, ContextModule } from '~context/index.ts';
+import { failPendingTransactions } from '~state/transactionState.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
 import {
   getLastWallet,
@@ -22,7 +23,7 @@ import expendituresSagas from './expenditures/index.ts';
 import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
-import { setupTransactionSagas } from './transactions/index.ts';
+import setupTransactionsSaga from './transactions/transactionsToDb.ts';
 import { disconnectWallet, setupUsersSagas } from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
 import { getBasicWallet, getWallet } from './wallet/index.ts';
@@ -57,8 +58,8 @@ function* setupContextDependentSagas() {
     call(motionSagas),
     // call(vestingSagas),
     call(setupUsersSagas),
-    call(setupTransactionSagas),
     call(expendituresSagas),
+    call(setupTransactionsSaga),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes
@@ -77,6 +78,7 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
   setContext(ContextModule.Wallet, wallet);
   yield call(getGasPrices);
   yield call(authenticateWallet);
+  yield call(failPendingTransactions);
 }
 
 /*

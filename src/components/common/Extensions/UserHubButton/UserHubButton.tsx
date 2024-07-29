@@ -10,13 +10,16 @@ import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
-import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes';
+import {
+  getGroupStatus,
+  useGroupedTransactions,
+} from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -26,7 +29,6 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { UserHubTabs } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
-import { findNewestGroup, getGroupStatus } from './utils.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
@@ -37,7 +39,7 @@ const UserHubButton: FC = () => {
   } = useColonyContext();
   const { wallet, user } = useAppContext();
   const [isUserHubOpen, setIsUserHubOpen] = useState(false);
-  const { transactionAndMessageGroups } = useUserTransactionContext();
+  const { transactions } = useGroupedTransactions();
   const [prevGroupStatus, setPrevGroupStatus] = useState<
     TransactionStatus | undefined
   >();
@@ -125,11 +127,11 @@ const UserHubButton: FC = () => {
     toggleOff();
   };
 
-  const groupStatus = getGroupStatus(
-    findNewestGroup(transactionAndMessageGroups),
-  );
-
   useEffect(() => {
+    if (!transactions.length) {
+      return;
+    }
+    const groupStatus = getGroupStatus(transactions[0]);
     if (
       groupStatus === TransactionStatus.Failed &&
       (prevGroupStatus === TransactionStatus.Pending ||
@@ -137,13 +139,10 @@ const UserHubButton: FC = () => {
     ) {
       setIsUserHubOpen(true);
     }
-  }, [groupStatus, prevGroupStatus]);
-
-  useEffect(() => {
-    if (groupStatus && groupStatus !== prevGroupStatus) {
+    if (groupStatus !== prevGroupStatus) {
       setPrevGroupStatus(groupStatus);
     }
-  }, [groupStatus, prevGroupStatus]);
+  }, [transactions, prevGroupStatus]);
 
   const userName =
     user?.profile?.displayName ??

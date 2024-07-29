@@ -8,12 +8,10 @@ import {
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import {
-  transactionAddParams,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -171,15 +169,11 @@ function* stakeMotion({
     }
 
     if (activateTokens) {
-      yield put(transactionPending(approve.id));
-
-      yield initiateTransaction({ id: approve.id });
+      yield initiateTransaction(approve.id);
 
       yield waitForTxResult(approve.channel);
 
-      yield put(transactionPending(deposit.id));
-
-      yield initiateTransaction({ id: deposit.id });
+      yield initiateTransaction(deposit.id);
 
       yield waitForTxResult(deposit.channel);
     }
@@ -191,15 +185,13 @@ function* stakeMotion({
       motionId,
     );
 
-    yield put(
-      transactionAddParams(approveStake.id, [
-        votingReputationClient.address,
-        domainId,
-        amount,
-      ]),
-    );
+    yield transactionSetParams(approveStake.id, [
+      votingReputationClient.address,
+      domainId,
+      amount,
+    ]);
 
-    yield initiateTransaction({ id: approveStake.id });
+    yield initiateTransaction(approveStake.id);
 
     yield waitForTxResult(approveStake.channel);
 
@@ -227,21 +219,19 @@ function* stakeMotion({
         rootHash,
       );
 
-    yield put(
-      transactionAddParams(stakeMotionTransaction.id, [
-        motionId,
-        permissionDomainId,
-        childSkillIndex,
-        vote,
-        amount,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ]),
-    );
+    yield transactionSetParams(stakeMotionTransaction.id, [
+      motionId,
+      permissionDomainId,
+      childSkillIndex,
+      vote,
+      amount,
+      key,
+      value,
+      branchMask,
+      siblings,
+    ]);
 
-    yield initiateTransaction({ id: stakeMotionTransaction.id });
+    yield initiateTransaction(stakeMotionTransaction.id);
 
     const {
       payload: {

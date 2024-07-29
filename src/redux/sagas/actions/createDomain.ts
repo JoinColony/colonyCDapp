@@ -16,11 +16,9 @@ import {
   type CreateDomainMetadataMutation,
   type CreateDomainMetadataMutationVariables,
 } from '~gql';
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
@@ -68,7 +66,7 @@ function* createDomainAction({
 
     txChannel = yield call(getTxChannel, metaId);
 
-    const batchKey = TRANSACTION_METHODS.CreateDomainAction;
+    const batchKey = TRANSACTION_METHODS.CreateDomain;
     const {
       createDomainAction: createDomain,
       annotateCreateDomainAction: annotateCreateDomain,
@@ -127,14 +125,13 @@ function* createDomainAction({
       ColonyRole.Architecture,
     );
 
-    yield put(
-      transactionAddParams(createDomain.id, [
-        permissionDomainId,
-        childSkillIndex,
-        parentId,
-      ]),
-    );
-    yield initiateTransaction({ id: createDomain.id });
+    yield transactionSetParams(createDomain.id, [
+      permissionDomainId,
+      childSkillIndex,
+      parentId,
+    ]);
+
+    yield initiateTransaction(createDomain.id);
 
     const {
       payload: {

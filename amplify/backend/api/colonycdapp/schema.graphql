@@ -1694,8 +1694,6 @@ enum ClientType {
   TokenLockingClient
   VotingReputationClient
   WhitelistClient
-  WrappedTokenClient
-  VestingSimpleClient
   LightTokenClient
 }
 
@@ -1761,18 +1759,18 @@ type Transaction @model {
   """
   colonyAddress: ID!
   """
-  The id of the group to which the transaction belongs, if any
+  The id of the group to which the transaction belongs
   """
-  groupId: ID
+  groupId: ID!
     @index(
       name: "byGroup"
       queryField: "getTransactionsByUserAndGroup"
       sortKeyFields: ["from"]
     )
   """
-  The group to which the transaction belongs, if any
+  The group to which the transaction belongs
   """
-  group: TransactionGroup
+  group: TransactionGroup!
   """
   The transaction hash
   """

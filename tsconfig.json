@@ -22,6 +22,7 @@
       "~routes": ["src/routes"],
       "~routes/*": ["src/routes/*"],
       "~shared/*": ["src/components/shared/*"],
+      "~state/*": ["src/state/*"],
       "~styles/*": ["src/styles/shared/*"],
       "~transformers": ["src/transformers"],
       "~transformers/*": ["src/transformers/*"],

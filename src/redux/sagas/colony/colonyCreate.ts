@@ -34,21 +34,21 @@ import {
   type GetFullColonyByNameQueryVariables,
 } from '~gql';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
+import {
+  transactionSetIdentifier,
+  transactionSetParams,
+  updateTransaction,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
-import {
-  transactionAddParams,
-  transactionAddIdentifier,
-  transactionPending,
-} from '../../actionCreators/index.ts';
+import { transactionPending } from '../../actionCreators/index.ts';
 import {
   type ChannelDefinition,
   createGroupTransaction,
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { updateTransaction } from '../transactions/transactionsToDb.ts';
 import { getExtensionVersion } from '../utils/extensionVersion.ts';
 import {
   putError,
@@ -217,18 +217,16 @@ function* colonyCreate({
     const [{ version: currentColonyVersion = 0 }] =
       colonyVersionData?.getCurrentVersionByKey?.items ?? [];
 
-    yield put(
-      transactionAddParams(createColony.id, [
-        usedTokenAddress,
-        tokenName,
-        tokenSymbol,
-        DEFAULT_TOKEN_DECIMALS,
-        currentColonyVersion,
-        '', // store colonies on chain without a name
-        '', // we aren't using ipfs to store metadata in the CDapp
-      ]),
-    );
-    yield initiateTransaction({ id: createColony.id });
+    yield transactionSetParams(createColony.id, [
+      usedTokenAddress,
+      tokenName,
+      tokenSymbol,
+      DEFAULT_TOKEN_DECIMALS,
+      currentColonyVersion,
+      '', // store colonies on chain without a name
+      '', // we aren't using ipfs to store metadata in the CDapp
+    ]);
+    yield initiateTransaction(createColony.id);
 
     const {
       payload: { hash: colonyCreationTransactionHash },
@@ -272,7 +270,7 @@ function* colonyCreate({
      */
     yield all(
       transactionCreatedActions.map(({ meta: { id } }) =>
-        updateTransaction({ id, colonyAddress, from: walletAddress }),
+        updateTransaction({ id, colonyAddress }),
       ),
     );
 
@@ -322,17 +320,17 @@ function* colonyCreate({
     yield all(
       [installExtensions, setExtensionsRoles /* , enableStakedExpenditure */]
         .filter(Boolean)
-        .map(({ id }) => put(transactionAddIdentifier(id, colonyAddress))),
+        .map(({ id }) => transactionSetIdentifier(id, colonyAddress)),
     );
     yield all(
       [setOwner]
         .filter(Boolean)
-        .map(({ id }) => put(transactionAddIdentifier(id, tokenAddress))),
+        .map(({ id }) => transactionSetIdentifier(id, tokenAddress)),
     );
 
     if (setOwner) {
-      yield put(transactionAddParams(setOwner.id, [colonyAddress]));
-      yield initiateTransaction({ id: setOwner.id });
+      yield transactionSetParams(setOwner.id, [colonyAddress]);
+      yield initiateTransaction(setOwner.id);
       yield waitForTxResult(setOwner.channel);
     }
 
@@ -448,8 +446,8 @@ function* deployExtensions(
   //   ]),
   // );
 
-  yield put(transactionAddParams(installExtensions.id, [installMulticallData]));
-  yield initiateTransaction({ id: installExtensions.id });
+  yield transactionSetParams(installExtensions.id, [installMulticallData]);
+  yield initiateTransaction(installExtensions.id);
   yield waitForTxResult(installExtensions.channel);
 
   /*
@@ -534,11 +532,9 @@ function* deployExtensions(
   //   ]),
   // );
 
-  yield put(
-    transactionAddParams(setExtensionsRoles.id, [setRolesMulticallData]),
-  );
+  yield transactionSetParams(setExtensionsRoles.id, [setRolesMulticallData]);
 
-  yield initiateTransaction({ id: setExtensionsRoles.id });
+  yield initiateTransaction(setExtensionsRoles.id);
   yield waitForTxResult(setExtensionsRoles.channel);
 
   /**

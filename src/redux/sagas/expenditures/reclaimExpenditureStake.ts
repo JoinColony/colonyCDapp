@@ -22,12 +22,17 @@ function* reclaimExpenditureStake({
   try {
     yield fork(createTransaction, meta.id, {
       context: ClientType.StakedExpenditureClient,
+      group: {
+        key: 'reclaimStake',
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'reclaimStake',
       identifier: colonyAddress,
       params: [nativeExpenditureId],
     });
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     yield waitForTxResult(txChannel);
 

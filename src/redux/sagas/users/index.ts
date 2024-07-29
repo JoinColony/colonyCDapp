@@ -241,13 +241,13 @@ function* userDepositToken({
 
     yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: approve.id });
+    yield initiateTransaction(approve.id);
 
     yield waitForTxResult(approve.channel);
 
     yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: deposit.id });
+    yield initiateTransaction(deposit.id);
 
     yield waitForTxResult(deposit.channel);
 
@@ -286,7 +286,7 @@ function* userWithdrawToken({
 
     yield takeFrom(withdraw.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: withdraw.id });
+    yield initiateTransaction(withdraw.id);
 
     yield waitForTxResult(withdraw.channel);
 
@@ -375,7 +375,7 @@ function* userCryptoToFiatTransfer({
 
     yield takeFrom(transfer.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: transfer.id });
+    yield initiateTransaction(transfer.id);
 
     yield waitForTxResult(transfer.channel);
 

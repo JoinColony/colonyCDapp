@@ -13,15 +13,16 @@ export type MethodParams = (MethodParam | MethodParam[] | MethodParam[][])[];
 
 export interface TxConfig {
   context: string;
-  group?: {
+  group: {
     key: string;
-    id: string | string[];
+    id: string;
     index: number;
     title?: MessageDescriptor;
     titleValues?: SimpleMessageValues;
     description?: MessageDescriptor;
     descriptionValues?: SimpleMessageValues;
   };
+  hash?: string;
   identifier?: string;
   methodContext?: string;
   methodName: string;
@@ -40,8 +41,6 @@ export interface TransactionResponse {
 }
 
 export enum ExtendedClientType {
-  WrappedTokenClient = 'WrappedTokenClient',
-  VestingSimpleClient = 'VestingSimpleClient',
   LightTokenClient = 'LightTokenClient',
 }
 
@@ -68,11 +67,12 @@ export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
+  CancelLockedExpenditure = 'cancelLockedExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
   ClaimColonyFunds = 'claimColonyFunds',
   ClaimExpenditure = 'claimExpenditure',
   CreateColony = 'createColony',
-  CreateDomainAction = 'createDomainAction',
+  CreateDomain = 'createDomain',
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',
   CreateStreamingPayment = 'createStreamingPayment',
@@ -81,8 +81,8 @@ export enum TRANSACTION_METHODS {
   DeployTokenViaNetwork = 'deployTokenViaNetwork',
   DeployTokenAuthority = 'deployTokenAuthority',
   Deposit = 'deposit',
-  EditColonyAction = 'editColonyAction',
-  EditDomainAction = 'editDomainAction',
+  EditColony = 'editColony',
+  EditDomain = 'editDomain',
   EnableExtension = 'enableExtension',
   EscalateMotion = 'escalateMotion',
   FinalizeExpenditure = 'finalizeExpenditure',
@@ -92,11 +92,11 @@ export enum TRANSACTION_METHODS {
   LockExpenditure = 'lockExpenditure',
   MintTokens = 'mintTokens',
   MoveFunds = 'moveFunds',
-  PaymentAction = 'paymentAction',
+  Payment = 'payment',
   ReleaseExpenditure = 'releaseExpenditure',
   RemoveVerifiedMembers = 'removeVerifiedMembers',
   SetUserRoles = 'setUserRoles',
   StakeMotion = 'stakeMotion',
-  TokenUnlockAction = 'tokenUnlockAction',
+  UnlockToken = 'unlockToken',
   Upgrade = 'upgrade',
 }

@@ -16,7 +16,7 @@ import {
   generateMetamaskTypedDataSignatureErrorMessage,
 } from '~utils/web3/index.ts';
 
-import { type TransactionRecord } from '../../immutable/index.ts';
+import { type TransactionType } from '../../immutable/index.ts';
 import {
   getChainId,
   generateEIP2612TypedData,
@@ -27,7 +27,7 @@ import {
 
 async function getMetatransactionPromise(
   client: ContractClient,
-  { methodName, params, identifier: clientAddress }: TransactionRecord,
+  { methodName, params = [], identifier: clientAddress }: TransactionType,
 ): Promise<TransactionResponse> {
   const wallet = getContext(ContextModule.Wallet);
 

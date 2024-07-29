@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type GroupedTransactionContentProps } from '../types.ts';
@@ -12,8 +13,10 @@ import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
 
+const TX_RETRY_TIMEOUT = 1000 * 60 * 10;
+
 const displayName =
-  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionCard';
+  'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionContent';
 
 const MSG = defineMessages({
   failedTx: {
@@ -31,8 +34,10 @@ const MSG = defineMessages({
 
 const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   idx,
+  isCancelable = true,
   selected,
   transaction: {
+    createdAt,
     context,
     error,
     id,
@@ -41,13 +46,22 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     params,
     status,
     group,
-    metatransaction,
     title,
     titleValues,
   },
 }) => {
+  const titleId = ['transaction', context, methodName, methodContext, 'title']
+    .filter((i) => !!i)
+    .join('.');
+
+  const titleMsg = title || { id: titleId };
+
+  const titleText = formatText(
+    titleMsg,
+    (titleValues || params) as Record<string, any>,
+  );
+
   const {
-    defaultTransactionMessageDescriptorId,
     handleRetryAction,
     failed,
     pending,
@@ -58,13 +72,13 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     canBeSigned,
   } = useGroupedTransactionContent({
     id,
-    methodContext,
-    methodName,
-    metatransaction,
-    context,
     status,
     selected,
   });
+
+  // Whether a retry of the transaction is possible
+  const retryable =
+    createdAt.valueOf() > new Date().valueOf() - TX_RETRY_TIMEOUT;
 
   return (
     <li
@@ -76,16 +90,11 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
       })}
     >
       <div className="flex items-center justify-between gap-2">
-        <h4 className="text-gray-900">
-          {`${(group?.index || idx) + 1}. `}{' '}
-          <FormattedMessage
-            {...defaultTransactionMessageDescriptorId}
-            {...title}
-            values={(titleValues || params) as Record<string, any>}
-          />
-        </h4>
+        <div className="text-gray-900">
+          {`${(group?.index || idx) + 1}. `} {titleText}
+        </div>
 
-        {canBeSigned ? (
+        {isCancelable && canBeSigned ? (
           <CancelTransaction
             isShowingCancelConfirmation={isShowingCancelConfirmation}
             handleCancelTransaction={handleCancelTransaction}
@@ -95,7 +104,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           <TransactionStatus status={status} hasError={!!error} />
         )}
       </div>
-      {failed && error && (
+      {failed && error && retryable && (
         <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"
@@ -109,11 +118,13 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
                 >
                   <FormattedMessage id="retry" />
                 </button>
-                <CancelTransaction
-                  isShowingCancelConfirmation={isShowingCancelConfirmation}
-                  handleCancelTransaction={handleCancelTransaction}
-                  toggleCancelConfirmation={toggleCancelConfirmation}
-                />
+                {isCancelable && (
+                  <CancelTransaction
+                    isShowingCancelConfirmation={isShowingCancelConfirmation}
+                    handleCancelTransaction={handleCancelTransaction}
+                    toggleCancelConfirmation={toggleCancelConfirmation}
+                  />
+                )}
               </div>
             }
           >

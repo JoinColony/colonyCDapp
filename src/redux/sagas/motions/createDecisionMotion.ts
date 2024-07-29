@@ -124,7 +124,7 @@ function* createDecisionMotion({
     yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
     // yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: createMotion.id });
+    yield initiateTransaction(createMotion.id);
 
     const {
       payload: { hash: txHash },

@@ -5,7 +5,6 @@ import React, {
   type PropsWithChildren,
   useCallback,
   useEffect,
-  useMemo,
   // useState,
 } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -32,9 +31,10 @@ import PageLayout from '~v5/frame/PageLayout/index.ts';
 // import Button from '~v5/shared/Button';
 import JoinButton from '~v5/shared/Button/JoinButton/index.ts';
 import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
+import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
 import ColonySidebar from './ColonySidebar.tsx';
-import { useCalamityBannerInfo, useGetTxButtons } from './hooks.tsx';
+import { useCalamityBannerInfo } from './hooks.tsx';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
@@ -56,7 +56,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     useActionSidebarContext();
   const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
     actionSidebarToggle;
-  const txButtons = useGetTxButtons();
   const isTablet = useTablet();
 
   const {
@@ -89,13 +88,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [hasRecentlyCreatedColony, setIsColonyCreatedModalOpen]);
 
-  const userHub = useMemo(() => <UserHubButton />, []);
-
   const getUserNavigation = useCallback(
     (isHidden?: boolean) => (
       <UserNavigationWrapper
-        txButtons={txButtons}
-        userHub={userHub}
+        txButton={<TxButton />}
+        userHub={<UserHubButton />}
         className={clsx(
           'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
           {
@@ -121,7 +118,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }
       />
     ),
-    [isTablet, txButtons, userHub],
+    [isTablet],
   );
 
   return (
@@ -152,8 +149,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }}
         sidebar={
           <ColonySidebar
-            userHub={userHub}
-            txButtons={txButtons}
+            txButton={<TxButton />}
+            userHub={<UserHubButton />}
             transactionId={transactionId || undefined}
           />
         }

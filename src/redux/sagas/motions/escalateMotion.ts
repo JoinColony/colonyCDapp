@@ -8,10 +8,8 @@ import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import {
-  transactionAddParams,
-  transactionPending,
-} from '~redux/actionCreators/index.ts';
+import { transactionPending } from '~redux/actionCreators/index.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { ActionTypes } from '../../actionTypes.ts';
@@ -110,23 +108,21 @@ function* escalateMotion({
       throw new Error('Child skill index could not be found');
     }
 
-    yield put(
-      transactionAddParams(escalateMotionTransaction.id, [
-        motionId,
-        /*
-         * We can only escalate the motion in a parent domain, and all current
-         * sub-domains have ROOT as the parent domain
-         */
-        Id.RootDomain,
-        motionDomainChildSkillIdIndex,
-        key,
-        value,
-        branchMask,
-        siblings,
-      ]),
-    );
+    yield transactionSetParams(escalateMotionTransaction.id, [
+      motionId,
+      /*
+       * We can only escalate the motion in a parent domain, and all current
+       * sub-domains have ROOT as the parent domain
+       */
+      Id.RootDomain,
+      motionDomainChildSkillIdIndex,
+      key,
+      value,
+      branchMask,
+      siblings,
+    ]);
 
-    yield initiateTransaction({ id: escalateMotionTransaction.id });
+    yield initiateTransaction(escalateMotionTransaction.id);
 
     yield waitForTxResult(escalateMotionTransaction.channel);
 

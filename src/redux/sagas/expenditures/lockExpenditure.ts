@@ -1,8 +1,10 @@
 import { ClientType } from '@colony/colony-js';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
+import { transactionPending } from '~redux/actionCreators/transactions.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { takeFrom } from '~utils/saga/effects.ts';
 
 import {
   type ChannelDefinition,
@@ -36,6 +38,11 @@ function* lockExpenditureAction({
   try {
     yield fork(createTransaction, lockExpenditure.id, {
       context: ClientType.ColonyClient,
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
       methodName: 'lockExpenditure',
       identifier: colonyAddress,
       params: [nativeExpenditureId],
@@ -54,7 +61,18 @@ function* lockExpenditureAction({
       });
     }
 
-    yield initiateTransaction({ id: lockExpenditure.id });
+    yield takeFrom(lockExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateLockExpenditure.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield put(transactionPending(lockExpenditure.id));
+
+    yield initiateTransaction(lockExpenditure.id);
 
     const {
       payload: {
