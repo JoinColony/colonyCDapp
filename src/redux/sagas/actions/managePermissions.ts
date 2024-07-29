@@ -5,6 +5,7 @@ import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { clearContributorsAndRolesCache } from '~utils/members.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import {
@@ -203,6 +204,8 @@ function* managePermissionsAction({
         state: { isRedirect: true },
       });
     }
+
+    yield clearContributorsAndRolesCache();
   } catch (error) {
     yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);
   } finally {
