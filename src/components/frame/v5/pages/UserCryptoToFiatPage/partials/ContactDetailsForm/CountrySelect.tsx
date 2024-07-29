@@ -1,21 +1,13 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { defineMessages } from 'react-intl';
 
 import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
 
-const displayName =
-  'v5.pages.UserCryptoToFiatpage.partials.ContactDetailsForm.CountrySelect';
-
-const MSG = defineMessages({
-  countryLabel: {
-    id: `${displayName}.countryLabel`,
-    defaultMessage: 'Country',
-  },
-});
+import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
+import { type ContactDetailsFormSchema } from './validation.ts';
 
 export const CountrySelect = () => {
   const countries = getCountries();
@@ -33,10 +25,10 @@ export const CountrySelect = () => {
   };
 
   return (
-    <FormSelect
+    <FormSelect<ContactDetailsFormSchema>
       name="country"
       options={countriesOptions}
-      placeholder={formatText(MSG.countryLabel)}
+      placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.countryPlaceholder)}
       handleChange={handleSelect}
     />
   );

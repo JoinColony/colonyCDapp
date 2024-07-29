@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { type FC } from 'react';
-import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -10,73 +9,18 @@ import { FormRow } from '../FormRow.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
+import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
 import { CountrySelect } from './CountrySelect.tsx';
 import { SubdivisionSelect } from './SubdivisionSelect.tsx';
-import { addressValidationSchema } from './validation.ts';
+import {
+  addressValidationSchema,
+  type ContactDetailsFormSchema,
+} from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
   onClose: () => void;
 }
-
-const displayName = 'v5.pages.UserCryptoToFiatpage.partials.ContactDetailsForm';
-
-const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: 'Contact details',
-  },
-  subtitle: {
-    id: `${displayName}.subtitle`,
-    defaultMessage:
-      'The address details provided should match your bank account details. This information is only provided to Bridge and not stored by Colony',
-  },
-  cancelButtonTitle: {
-    id: `${displayName}.cancelButtonTitle`,
-    defaultMessage: 'Cancel',
-  },
-  proceedButtonTitle: {
-    id: `${displayName}.proceedButtonTitle`,
-    defaultMessage: 'Submit',
-  },
-  addressLabel: {
-    id: `${displayName}.addressLabel`,
-    defaultMessage: 'Address',
-  },
-  address1Placeholder: {
-    id: `${displayName}.address1Placeholder`,
-    defaultMessage: 'Address line 1',
-  },
-  address2Placeholder: {
-    id: `${displayName}.address2Placeholder`,
-    defaultMessage: 'Address line 2',
-  },
-  cityPlaceholder: {
-    id: `${displayName}.cityPlaceholder`,
-    defaultMessage: 'City',
-  },
-  postcodePlaceholder: {
-    id: `${displayName}.postcodePlaceholder`,
-    defaultMessage: 'Postcode',
-  },
-  dobLabel: {
-    id: `${displayName}.dobLabel`,
-    defaultMessage: 'Date of birth',
-  },
-  dobPlaceholder: {
-    id: `${displayName}.dobPlaceholder`,
-    defaultMessage: 'YYYY-MM-DD',
-  },
-  taxLabel: {
-    id: `${displayName}.taxLabel`,
-    defaultMessage:
-      'Tax identification number (eg. social security number or EIN)',
-  },
-  taxPlaceholder: {
-    id: `${displayName}.taxPlaceholder`,
-    defaultMessage: 'Tax identification number',
-  },
-});
 
 const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   onSubmit,
@@ -84,13 +28,17 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
 }) => {
   return (
     <div>
-      <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
+      <ModalHeading
+        title={CONTACT_DETAILS_FORM_MSGS.title}
+        subtitle={CONTACT_DETAILS_FORM_MSGS.subtitle}
+      />
 
       <Form
         onSubmit={onSubmit}
         validationSchema={addressValidationSchema}
         mode="onSubmit"
       >
+        {/** @TODO Let's remove this if it's not needed anymore */}
         {/* <FormRow>
           <FormDatepicker
             name="birthDate"
@@ -107,7 +55,7 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         </FormRow> */}
 
         <label className="mb-1.5 text-md font-medium text-gray-700">
-          {formatText(MSG.addressLabel)}
+          {formatText(CONTACT_DETAILS_FORM_MSGS.addressLabel)}
         </label>
 
         <FormRow>
@@ -115,23 +63,29 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         </FormRow>
 
         <FormRow>
-          <FormInput
+          <FormInput<ContactDetailsFormSchema>
             name="address1"
-            placeholder={formatText(MSG.address1Placeholder)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.address1Placeholder,
+            )}
           />
         </FormRow>
         <FormRow>
-          <FormInput
+          <FormInput<ContactDetailsFormSchema>
             name="address2"
-            placeholder={formatText(MSG.address2Placeholder)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.address2Placeholder,
+            )}
           />
         </FormRow>
         <FormRow>
           <div className="flex">
             <div className="mr-1 flex-1">
-              <FormInput
+              <FormInput<ContactDetailsFormSchema>
                 name="city"
-                placeholder={formatText(MSG.cityPlaceholder)}
+                placeholder={formatText(
+                  CONTACT_DETAILS_FORM_MSGS.cityPlaceholder,
+                )}
               />
             </div>
             <SubdivisionSelect />
@@ -139,15 +93,22 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         </FormRow>
 
         <FormRow>
-          <FormInput
+          <FormInput<ContactDetailsFormSchema>
             name="postcode"
-            placeholder={formatText(MSG.postcodePlaceholder)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.postcodePlaceholder,
+            )}
           />
         </FormRow>
 
         <ModalFormCTAButtons
-          cancelButton={{ onClick: onClose, title: MSG.cancelButtonTitle }}
-          proceedButton={{ title: MSG.proceedButtonTitle }}
+          cancelButton={{
+            onClick: onClose,
+            title: CONTACT_DETAILS_FORM_MSGS.cancelButtonTitle,
+          }}
+          proceedButton={{
+            title: CONTACT_DETAILS_FORM_MSGS.proceedButtonTitle,
+          }}
         />
       </Form>
     </div>

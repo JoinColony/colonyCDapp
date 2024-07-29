@@ -2,6 +2,7 @@ import { type InferType, object, string } from 'yup';
 
 import { SupportedCurrencies } from '~gql';
 import { formErrorMessage } from '~utils/intl.ts';
+import { capitalizeFirstLetter } from '~utils/strings.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
 
@@ -59,7 +60,10 @@ export const validationSchema = object({
       )
       .matches(
         /^[0-9]+$/,
-        formErrorMessage(BANK_DETAILS_FORM_MSG.accountNumberLabel, 'invalid'),
+        capitalizeFirstLetter(
+          formErrorMessage(BANK_DETAILS_FORM_MSG.accountNumberLabel, 'invalid'),
+          { lowerCaseRemainingLetters: true },
+        ),
       )
       .min(
         accountNumber.min,
@@ -87,7 +91,10 @@ export const validationSchema = object({
       )
       .matches(
         /^[0-9]+$/,
-        formErrorMessage(BANK_DETAILS_FORM_MSG.routingNumberLabel, 'invalid'),
+        capitalizeFirstLetter(
+          formErrorMessage(BANK_DETAILS_FORM_MSG.routingNumberLabel, 'invalid'),
+          { lowerCaseRemainingLetters: true },
+        ),
       )
       .length(
         routingNumber.length,

@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { type Message } from '~types/index.ts';
@@ -8,21 +8,21 @@ import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 import FormError from '~v5/shared/FormError/index.ts';
 
-interface FormSelectProps {
-  name: string;
+interface FormSelectProps<T> {
+  name: Extract<keyof T, string>;
   labelMessage?: string;
   options: SelectOption[];
   handleChange?: any;
   placeholder?: string;
 }
 
-export const FormSelect: FC<FormSelectProps> = ({
+export const FormSelect = <T,>({
   name,
   options,
   labelMessage,
   placeholder,
   handleChange,
-}) => {
+}: FormSelectProps<T>) => {
   const {
     control,
     formState: { errors },
