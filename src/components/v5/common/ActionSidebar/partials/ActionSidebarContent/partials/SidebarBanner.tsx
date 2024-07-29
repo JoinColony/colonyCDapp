@@ -30,13 +30,7 @@ const MSG = defineMessages({
   },
 });
 
-interface SidebarBannerProps {
-  hasEnoughMembersWithPermissions: boolean;
-}
-
-export const SidebarBanner: FC<SidebarBannerProps> = ({
-  hasEnoughMembersWithPermissions,
-}) => {
+export const SidebarBanner: FC = () => {
   const { watch } = useFormContext();
   const [selectedAction, decisionMethod] = watch([
     ACTION_TYPE_FIELD_NAME,
@@ -92,13 +86,6 @@ export const SidebarBanner: FC<SidebarBannerProps> = ({
         <div className="mt-6">
           <NotificationBanner icon={CheckCircle} status="success">
             <FormattedMessage id="actionSidebar.upToDate" />
-          </NotificationBanner>
-        </div>
-      )}
-      {!hasEnoughMembersWithPermissions && (
-        <div className="mt-6">
-          <NotificationBanner icon={WarningCircle} status="error">
-            <FormattedMessage id="actionSidebar.notEnoughMembersWithPermissions" />
           </NotificationBanner>
         </div>
       )}
