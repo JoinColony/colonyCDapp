@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   type AnyColonyClient,
   ClientType,
@@ -313,10 +312,8 @@ export const adjustRecipientAddress = async (
   network: Network,
 ) => {
   const USDCAddress = isDev ? DEV_USDC_ADDRESS : Tokens[network]?.USDC;
-  console.log({ USDCAddress });
 
   if (tokenAddress !== USDCAddress) {
-    console.log('Token is not USDC');
     return recipientAddress;
   }
 
@@ -333,7 +330,6 @@ export const adjustRecipientAddress = async (
   const user = data?.getUserByAddress?.items[0];
 
   if (!user) {
-    console.log('No user for recipient found');
     return recipientAddress;
   }
 

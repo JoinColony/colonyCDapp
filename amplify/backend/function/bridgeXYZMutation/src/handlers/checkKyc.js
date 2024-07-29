@@ -8,6 +8,14 @@ const { graphqlRequest } = require('../utils');
  */
 const { getUser, createLiquidationAddress } = require('../graphql');
 
+const KYC_STATUS = {
+  NOT_STARTED: 'NOT_STARTED',
+  INCOMPLETE: 'INCOMPLETE',
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+};
+
 const checkKYCHandler = async (
   event,
   { appSyncApiKey, apiKey, apiUrl, graphqlURL },
@@ -27,7 +35,7 @@ const checkKYCHandler = async (
 
     const bridgeCustomerId = colonyUser?.bridgeCustomerId;
     if (!bridgeCustomerId) {
-      return { kyc_status: 'not_started' };
+      return { kycStatus: KYC_STATUS.NOT_STARTED };
     }
 
     // Get customer from Bridge
@@ -43,7 +51,7 @@ const checkKYCHandler = async (
 
     if (!bridgeCustomer) {
       return {
-        kyc_status: 'not_started',
+        kycStatus: KYC_STATUS.NOT_STARTED,
       };
     }
 
@@ -76,6 +84,23 @@ const checkKYCHandler = async (
       kycLinkId = data.id;
       kycLink = data.kyc_link;
       kycStatus = data.kyc_status;
+    }
+
+    kycStatus = kycStatus?.toUpperCase();
+
+    /**
+     * Status returned from Bridge does not allow to determine between incomplete and awaiting response after completing the KYC flow
+     * Hence the need for additional pending status
+     */
+    if (
+      kycStatus === KYC_STATUS.INCOMPLETE &&
+      colonyUser.profile.hasCompletedKYCFlow
+    ) {
+      kycStatus = KYC_STATUS.PENDING;
+    }
+
+    if (kycStatus !== KYC_STATUS.APPROVED) {
+      return { kycStatus };
     }
 
     const externalAccountRes = await fetch(
@@ -173,7 +198,7 @@ const checkKYCHandler = async (
     }
 
     return {
-      kyc_status: kycStatus,
+      kycStatus,
       kyc_link: kycLink,
       bankAccount: mappedAccount,
     };

@@ -1,6 +1,6 @@
 import { type Icon } from '@phosphor-icons/react';
 
-type Theme = 'red' | 'green' | 'orange' | 'gray';
+type Theme = 'red' | 'green' | 'orange' | 'gray' | 'light-orange';
 
 type ThemeConfig = {
   className: string;

@@ -7,7 +7,9 @@ export type KycStatusData = NonNullable<
 
 export interface CryptoToFiatPageComponentProps {
   order: number;
-  kycStatusData: KycStatusData | null;
+  kycStatusLoading: boolean;
+  kycStatusData?: KycStatusData | null;
+  refetchStatus: () => void;
 }
 
 export interface BankDetailsFormValues {

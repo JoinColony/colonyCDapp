@@ -161,8 +161,8 @@ export type BridgeXyzMutationReturn = {
   __typename?: 'BridgeXYZMutationReturn';
   bankAccount?: Maybe<BridgeXyzBankAccount>;
   country?: Maybe<Scalars['String']>;
+  kycStatus?: Maybe<KycStatus>;
   kyc_link?: Maybe<Scalars['String']>;
-  kyc_status?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['Boolean']>;
   tos_link?: Maybe<Scalars['String']>;
 };
@@ -1584,6 +1584,7 @@ export type CreateProfileInput = {
   displayName?: InputMaybe<Scalars['String']>;
   displayNameChanged?: InputMaybe<Scalars['AWSDateTime']>;
   email?: InputMaybe<Scalars['AWSEmail']>;
+  hasCompletedKYCFlow?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
   isAutoOfframpEnabled?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
@@ -2391,6 +2392,15 @@ export type IngestorStats = {
   /** JSON string to pass custom, dynamic values */
   value: Scalars['String'];
 };
+
+export enum KycStatus {
+  Approved = 'APPROVED',
+  Incomplete = 'INCOMPLETE',
+  NotStarted = 'NOT_STARTED',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED',
+  UnderReview = 'UNDER_REVIEW'
+}
 
 export type LiquidationAddress = {
   __typename?: 'LiquidationAddress';
@@ -3431,6 +3441,7 @@ export type ModelProfileConditionInput = {
   displayName?: InputMaybe<ModelStringInput>;
   displayNameChanged?: InputMaybe<ModelStringInput>;
   email?: InputMaybe<ModelStringInput>;
+  hasCompletedKYCFlow?: InputMaybe<ModelBooleanInput>;
   isAutoOfframpEnabled?: InputMaybe<ModelBooleanInput>;
   location?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProfileConditionInput>;
@@ -3453,6 +3464,7 @@ export type ModelProfileFilterInput = {
   displayName?: InputMaybe<ModelStringInput>;
   displayNameChanged?: InputMaybe<ModelStringInput>;
   email?: InputMaybe<ModelStringInput>;
+  hasCompletedKYCFlow?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isAutoOfframpEnabled?: InputMaybe<ModelBooleanInput>;
   location?: InputMaybe<ModelStringInput>;
@@ -4036,6 +4048,7 @@ export type ModelSubscriptionProfileFilterInput = {
   displayName?: InputMaybe<ModelSubscriptionStringInput>;
   displayNameChanged?: InputMaybe<ModelSubscriptionStringInput>;
   email?: InputMaybe<ModelSubscriptionStringInput>;
+  hasCompletedKYCFlow?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isAutoOfframpEnabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   location?: InputMaybe<ModelSubscriptionStringInput>;
@@ -5646,6 +5659,11 @@ export type Profile = {
   displayNameChanged?: Maybe<Scalars['AWSDateTime']>;
   /** User's email address */
   email?: Maybe<Scalars['AWSEmail']>;
+  /**
+   * Whether the user has completed the Persona KYC Flow
+   * Note: This doesn't indicate the outcome of the KYC check
+   */
+  hasCompletedKYCFlow?: Maybe<Scalars['Boolean']>;
   /** Unique identifier for the user's profile */
   id: Scalars['ID'];
   /** Is automatic offramp enabled */
@@ -8539,6 +8557,7 @@ export type UpdateProfileInput = {
   displayName?: InputMaybe<Scalars['String']>;
   displayNameChanged?: InputMaybe<Scalars['AWSDateTime']>;
   email?: InputMaybe<Scalars['AWSEmail']>;
+  hasCompletedKYCFlow?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isAutoOfframpEnabled?: InputMaybe<Scalars['Boolean']>;
   location?: InputMaybe<Scalars['String']>;
@@ -8978,13 +8997,6 @@ export type CreateAnnotationMutationVariables = Exact<{
 
 export type CreateAnnotationMutation = { __typename?: 'Mutation', createAnnotation?: { __typename?: 'Annotation', id: string } | null };
 
-export type BridgeXyzMutationMutationVariables = Exact<{
-  input: BridgeXyzMutationInput;
-}>;
-
-
-export type BridgeXyzMutationMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', country?: string | null, kyc_status?: string | null, tos_link?: string | null, kyc_link?: string | null, success?: boolean | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
-
 export type CreateKycLinksMutationVariables = Exact<{
   fullName: Scalars['String'];
   email: Scalars['String'];
@@ -9011,7 +9023,7 @@ export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZM
 export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kyc_status?: string | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
+export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kycStatus?: KycStatus | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateBankAccountMutationVariables = Exact<{
   input: BridgeCreateBankAccountInput;
@@ -10592,46 +10604,6 @@ export function useCreateAnnotationMutation(baseOptions?: Apollo.MutationHookOpt
 export type CreateAnnotationMutationHookResult = ReturnType<typeof useCreateAnnotationMutation>;
 export type CreateAnnotationMutationResult = Apollo.MutationResult<CreateAnnotationMutation>;
 export type CreateAnnotationMutationOptions = Apollo.BaseMutationOptions<CreateAnnotationMutation, CreateAnnotationMutationVariables>;
-export const BridgeXyzMutationDocument = gql`
-    mutation BridgeXYZMutation($input: BridgeXYZMutationInput!) {
-  bridgeXYZMutation(input: $input) {
-    country
-    kyc_status
-    tos_link
-    kyc_link
-    success
-    bankAccount {
-      ...BridgeBankAccount
-    }
-  }
-}
-    ${BridgeBankAccountFragmentDoc}`;
-export type BridgeXyzMutationMutationFn = Apollo.MutationFunction<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>;
-
-/**
- * __useBridgeXyzMutationMutation__
- *
- * To run a mutation, you first call `useBridgeXyzMutationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useBridgeXyzMutationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [bridgeXyzMutationMutation, { data, loading, error }] = useBridgeXyzMutationMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useBridgeXyzMutationMutation(baseOptions?: Apollo.MutationHookOptions<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>(BridgeXyzMutationDocument, options);
-      }
-export type BridgeXyzMutationMutationHookResult = ReturnType<typeof useBridgeXyzMutationMutation>;
-export type BridgeXyzMutationMutationResult = Apollo.MutationResult<BridgeXyzMutationMutation>;
-export type BridgeXyzMutationMutationOptions = Apollo.BaseMutationOptions<BridgeXyzMutationMutation, BridgeXyzMutationMutationVariables>;
 export const CreateKycLinksDocument = gql`
     mutation CreateKYCLinks($fullName: String!, $email: String!) {
   bridgeXYZMutation(
@@ -10716,7 +10688,7 @@ export type UpdateBridgeCustomerMutationOptions = Apollo.BaseMutationOptions<Upd
 export const CheckKycStatusDocument = gql`
     mutation CheckKYCStatus {
   bridgeXYZMutation(input: {path: "v0/kyc_links/{kycLinkID}", body: {}}) {
-    kyc_status
+    kycStatus
     kyc_link
     country
     bankAccount {

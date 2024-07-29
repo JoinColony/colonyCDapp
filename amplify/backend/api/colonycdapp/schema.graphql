@@ -366,7 +366,7 @@ type BridgeXYZMutationReturn {
   #
   # KYC Status
   #
-  kyc_status: String
+  kycStatus: KYCStatus
   country: String
   # Should support multiple accounts at some point
   bankAccount: BridgeXYZBankAccount
@@ -925,6 +925,15 @@ enum ContributorType {
   GENERAL
 }
 
+enum KYCStatus {
+  NOT_STARTED
+  INCOMPLETE
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
 """
 Root query type
 """
@@ -1097,6 +1106,11 @@ type Profile @model {
   Is automatic offramp enabled
   """
   isAutoOfframpEnabled: Boolean
+  """
+  Whether the user has completed the Persona KYC Flow
+  Note: This doesn't indicate the outcome of the KYC check
+  """
+  hasCompletedKYCFlow: Boolean
 }
 
 """
