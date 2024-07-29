@@ -36,6 +36,10 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimed;
   }
 
+  if (stake.action?.expenditureId) {
+    return UserStakeStatus.Staking;
+  }
+
   const [, stakeVotingReputationAddress] =
     stake.action?.motionData?.databaseMotionId.split(/[-_]/) ?? [];
 
@@ -52,10 +56,6 @@ export const getStakeStatus = (
     // this means that Voting Reputation was reinstalled and now has new address
   ) {
     return UserStakeStatus.Lost;
-  }
-
-  if (stake.action?.expenditureId) {
-    return UserStakeStatus.Staking;
   }
 
   if (motionState === NetworkMotionState.Finalizable) {
