@@ -1,7 +1,7 @@
 import { useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { useEffect, type FC } from 'react';
+import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
@@ -36,10 +36,8 @@ import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarD
 import Motions from '../Motions/index.ts';
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
-import {
-  useGetFormActionErrors,
-  useHasEnoughMembersWithPermissions,
-} from './hooks.ts';
+import { useGetFormActionErrors } from './hooks.ts';
+import { MultiSigMembersError } from './partials/MultiSigMembersError/MultiSigMembersError.tsx';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
 import NoReputationError from './partials/NoReputationError.tsx';
 import PermissionSidebar from './partials/PermissionSidebar.tsx';
@@ -62,6 +60,19 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const { readonly } = useAdditionalFormOptionsContext();
   const { flatFormErrors } = useGetFormActionErrors();
 
+  const [areMemberPermissionsLoading, setAreMemberPermissionsLoading] =
+    useState(false);
+  // Until we choose Multi-Sig as the decision method we can safely assume this is true
+  const [canCreateAction, setCanCreateAction] = useState(true);
+
+  const updateMembersLoadingState = (isLoading: boolean) => {
+    setAreMemberPermissionsLoading(isLoading);
+  };
+
+  const updateCanCreateAction = (canCreate: boolean) => {
+    setCanCreateAction(canCreate);
+  };
+
   const {
     formState: {
       errors: { this: customError },
@@ -72,20 +83,22 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   const formValues = getValues();
 
+  const decisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
+
+  // if we switch decision method to something not multisig, we "stop" loading and assume we can create the action
+  useEffect(() => {
+    setAreMemberPermissionsLoading(false);
+    setCanCreateAction(true);
+  }, [decisionMethod]);
+
   const hasPermissions = useHasActionPermissions();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  const { hasEnoughMembersWithPermissions, isLoading } =
-    useHasEnoughMembersWithPermissions({
-      decisionMethod: formValues[DECISION_METHOD_FIELD_NAME],
-      selectedAction: formValues[ACTION_TYPE_FIELD_NAME],
-      createdIn: formValues[CREATED_IN_FIELD_NAME],
-    });
 
   const isSubmitDisabled =
     !selectedAction ||
     hasPermissions === false ||
-    !hasEnoughMembersWithPermissions ||
-    isLoading ||
+    areMemberPermissionsLoading ||
+    !canCreateAction ||
     hasNoDecisionMethods;
 
   const [isModalVisible, { toggleOn: showModal, toggleOff: hideModal }] =
@@ -134,9 +147,13 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             <ActionSidebarDescription />
           </div>
         )}
-        <SidebarBanner
-          hasEnoughMembersWithPermissions={hasEnoughMembersWithPermissions}
-        />
+        <SidebarBanner />
+        {decisionMethod === DecisionMethod.MultiSig && (
+          <MultiSigMembersError
+            updateCanCreateAction={updateCanCreateAction}
+            updateMembersLoadingState={updateMembersLoadingState}
+          />
+        )}
         {!readonly && <NoPermissionsError />}
         <ActionTypeSelect
           className={clsx(
