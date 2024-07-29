@@ -17,7 +17,7 @@ export interface FiltersContextValue {
   searchFilter: string;
   setSearchFilter: (searchValue: string) => void;
   motionStates: MotionState[];
-  decisionMethod: ActivityDecisionMethod | undefined;
+  decisionMethods: ActivityDecisionMethod[];
   actionTypesFilters: Action[];
   dateFilters: DateOptions;
   activeFilters: ActivityFeedFilters;
@@ -25,7 +25,7 @@ export interface FiltersContextValue {
   handleActionTypesFilterChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
-  handleDecisionMethodFilterChange: (
+  handleDecisionMethodsFilterChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   handleMotionStatesFilterChange: (

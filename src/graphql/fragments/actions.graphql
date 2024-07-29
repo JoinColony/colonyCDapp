@@ -277,6 +277,7 @@ fragment ColonyMultiSig on ColonyMultiSig {
   requiredPermissions
   transactionHash
   isExecuted
+  hasActionCompleted
   isRejected
   isDecision
   executedAt
