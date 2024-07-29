@@ -7,6 +7,7 @@ import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
+import { useUserHubContext } from '~common/Extensions/UserHubButton/UserHubContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useGetUserTokenBalanceQuery } from '~gql';
@@ -71,7 +72,21 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
     [nativeToken],
   );
 
+  const { closeUserHub } = useUserHubContext();
+
   const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
+
+  const handleActivateClick = () => {
+    closeUserHub();
+    toggleOnTokensModal();
+    setTokensModalType(TokensModalType.Activate);
+  };
+
+  const handleDeactivateClick = () => {
+    closeUserHub();
+    toggleOnTokensModal();
+    setTokensModalType(TokensModalType.Deactivate);
+  };
 
   return (
     <div>
@@ -104,10 +119,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                     icon={ArrowCircleDownRight}
                     iconSize={12}
                     text={formatText({ id: 'button.activate' })}
-                    onClick={() => {
-                      toggleOnTokensModal();
-                      setTokensModalType(TokensModalType.Activate);
-                    }}
+                    onClick={handleActivateClick}
                   />
                   <Button
                     mode="primaryOutline"
@@ -115,10 +127,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                     icon={ArrowCircleUpRight}
                     iconSize={12}
                     text={formatText({ id: 'button.deactivate' })}
-                    onClick={() => {
-                      toggleOnTokensModal();
-                      setTokensModalType(TokensModalType.Deactivate);
-                    }}
+                    onClick={handleDeactivateClick}
                   />
                 </div>
               )}
@@ -140,10 +149,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                 iconSize={12}
                 text={formatText({ id: 'button.activate' })}
                 isFullSize
-                onClick={() => {
-                  toggleOnTokensModal();
-                  setTokensModalType(TokensModalType.Activate);
-                }}
+                onClick={handleActivateClick}
               />
               <Button
                 mode="primaryOutline"
@@ -152,10 +158,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
                 iconSize={12}
                 text={formatText({ id: 'button.deactivate' })}
                 isFullSize
-                onClick={() => {
-                  toggleOnTokensModal();
-                  setTokensModalType(TokensModalType.Deactivate);
-                }}
+                onClick={handleDeactivateClick}
               />
             </div>
           )}

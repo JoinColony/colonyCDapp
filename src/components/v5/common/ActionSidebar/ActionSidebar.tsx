@@ -16,8 +16,10 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 
+import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
@@ -30,6 +32,7 @@ import { removeQueryParamFromUrl } from '~utils/urls.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
+import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
 import CompletedAction from '../CompletedAction/index.ts';
 import FourOFourMessage from '../FourOFourMessage/index.ts';
@@ -262,7 +265,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     >
       <div className="relative">
         <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-grow items-center gap-2">
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
@@ -272,7 +275,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               <X size={18} />
             </button>
             {!isMobile && (
-              <div className="flex items-center gap-4">
+              <div className="flex flex-grow items-center gap-4">
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
@@ -303,6 +306,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   />
                 )}
                 <MotionOutcomeBadge motionState={motionState} />
+                <UserNavigationWrapper
+                  className="ml-auto"
+                  txButton={<TxButton />}
+                  userHub={<UserHubButton />}
+                />
               </div>
             )}
             {isMobile && getShareButton()}

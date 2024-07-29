@@ -1,5 +1,11 @@
 import clsx from 'clsx';
-import React, { type FC, useState, useEffect } from 'react';
+import React, {
+  type FC,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+} from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { useSearchParams } from 'react-router-dom';
 
@@ -9,7 +15,6 @@ import { ADDRESS_ZERO } from '~constants';
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
@@ -26,9 +31,8 @@ import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { UserHubTabs } from '../UserHub/types.ts';
-
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
+import { UserHubContext } from './UserHubContext.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
@@ -38,7 +42,6 @@ const UserHubButton: FC = () => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
   const { transactions } = useGroupedTransactions();
   const [prevGroupStatus, setPrevGroupStatus] = useState<
     TransactionStatus | undefined
@@ -51,22 +54,10 @@ const UserHubButton: FC = () => {
   const walletAddress = wallet?.address;
 
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
-  const { isTokensModalOpen } = useTokensModalContext();
 
   const [, { toggleOff }] = mobileMenuToggle;
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
-
-  const ref = useDetectClickOutside({
-    onTriggered: (e) => {
-      // This stops the hub closing when clicking the pending button (which is outside)
-      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
-        setIsUserHubOpen(false);
-      } else {
-        setIsUserHubOpen(true);
-      }
-    },
-  });
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
     usePopperTooltip(
@@ -91,33 +82,34 @@ const UserHubButton: FC = () => {
       },
     );
 
-  // If visible is not true, then clicking buttons within the popover will close it
-  // So if isUserHubOpen is true, trigger a triggerRef click to ensure visible is true
-  useEffect(() => {
-    if (isUserHubOpen && !visible) {
+  const openUserHub = useCallback(() => {
+    if (!visible) {
       triggerRef?.click();
     }
-  }, [isUserHubOpen, visible, triggerRef]);
+  }, [triggerRef, visible]);
+
+  const closeUserHub = useCallback(() => {
+    if (visible) {
+      triggerRef?.click();
+    }
+  }, [triggerRef, visible]);
+
+  const ref = useDetectClickOutside({
+    onTriggered: (e) => {
+      // This stops the hub closing when clicking the pending button (which is outside)
+      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
+        // setIsUserHubOpen(false);
+      } else {
+        // setIsUserHubOpen(true);
+      }
+    },
+  });
 
   useEffect(() => {
-    if (transactionId !== previousTransactionId && (visible || isUserHubOpen)) {
-      triggerRef?.click();
-      setIsUserHubOpen(false);
+    if (transactionId !== previousTransactionId) {
+      closeUserHub();
     }
-  }, [
-    transactionId,
-    triggerRef,
-    previousTransactionId,
-    visible,
-    isUserHubOpen,
-  ]);
-
-  useEffect(() => {
-    if (isTokensModalOpen) {
-      triggerRef?.click();
-      setIsUserHubOpen(false);
-    }
-  }, [isTokensModalOpen, triggerRef]);
+  }, [transactionId, triggerRef, previousTransactionId, visible, closeUserHub]);
 
   useDisableBodyScroll(visible && isMobile);
 
@@ -137,12 +129,14 @@ const UserHubButton: FC = () => {
       (prevGroupStatus === TransactionStatus.Pending ||
         prevGroupStatus === TransactionStatus.Ready)
     ) {
-      setIsUserHubOpen(true);
+      openUserHub();
     }
     if (groupStatus !== prevGroupStatus) {
       setPrevGroupStatus(groupStatus);
     }
-  }, [transactions, prevGroupStatus]);
+  }, [transactions, prevGroupStatus, openUserHub]);
+
+  const value = useMemo(() => ({ closeUserHub }), [closeUserHub]);
 
   const userName =
     user?.profile?.displayName ??
@@ -157,7 +151,7 @@ const UserHubButton: FC = () => {
         ref={setTriggerRef}
         className={clsx(
           {
-            '!border-blue-400': visible || isUserHubOpen,
+            '!border-blue-400': visible,
           },
           'min-w-[3rem] md:hover:!border-blue-400',
         )}
@@ -192,25 +186,23 @@ const UserHubButton: FC = () => {
           ) : null}
         </div>
       </Button>
-      {(visible || isUserHubOpen) && (
-        <PopoverBase
-          setTooltipRef={setTooltipRef}
-          tooltipProps={getTooltipProps}
-          classNames={clsx(
-            'w-full border-none p-0 shadow-none sm:w-auto sm:rounded-lg sm:border sm:border-solid sm:border-gray-200 sm:shadow-default',
-            {
-              '!top-[calc(var(--top-content-height)-1.5rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
-                isMobile,
-            },
-          )}
-        >
-          <UserHub
-            defaultOpenedTab={
-              isUserHubOpen ? UserHubTabs.Transactions : undefined
-            }
-          />
-        </PopoverBase>
-      )}
+      <UserHubContext.Provider value={value}>
+        {visible && (
+          <PopoverBase
+            setTooltipRef={setTooltipRef}
+            tooltipProps={getTooltipProps}
+            classNames={clsx(
+              'w-full border-none p-0 shadow-none sm:w-auto sm:rounded-lg sm:border sm:border-solid sm:border-gray-200 sm:shadow-default',
+              {
+                '!top-[calc(var(--top-content-height)-1.5rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
+                  isMobile,
+              },
+            )}
+          >
+            <UserHub />
+          </PopoverBase>
+        )}
+      </UserHubContext.Provider>
     </div>
   );
 };
