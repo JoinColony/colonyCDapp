@@ -56,9 +56,9 @@ export const useManagePermissions = (
      * This effect handles the population of permissions-related form values when the
      * Manage Permissions form is given default values via the "Redo action" flow
      */
-    const { member, role, team } = defaultValues ?? {};
+    const { member, role, team, authority } = defaultValues ?? {};
 
-    if (member && role && team) {
+    if (member && role && team && authority) {
       configureFormRoles({
         colony,
         isSubmitted: false,
@@ -66,6 +66,7 @@ export const useManagePermissions = (
         role,
         setValue,
         team,
+        authority,
       });
     }
   }, [colony, defaultValues, setValue]);
@@ -124,6 +125,7 @@ export const useManagePermissions = (
             role,
             setValue,
             team,
+            authority,
           });
         }
       },
