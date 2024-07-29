@@ -1623,5 +1623,21 @@
     "expenditure.paymentOverview": "Payment overview",
     "expenditure.paymentOverview.totalPayments": "Total payments",
     "expenditure.paymentOverview.paid": "Paid",
-    "expenditure.paymentOverview.payableNow": "Payable now"
+    "expenditure.paymentOverview.payableNow": "Payable now",
+    "cryptoToFiat.forms.error.firstName": "Please enter your first name",
+    "cryptoToFiat.forms.error.lastName": "Please enter your last name",
+    "cryptoToFiat.forms.error.email": "Please enter your email in the format: name@example.com",
+    "cryptoToFiat.forms.error.accountOwner": "Please enter your full name",
+    "cryptoToFiat.forms.error.bankName": "Please enter a bank name",
+    "cryptoToFiat.forms.error.currency": "A preferred currency is required",
+    "cryptoToFiat.forms.error.bankAccount.usd.accountNumber-routingNumber": "Please enter an account and routing number",
+    "cryptoToFiat.forms.error.bankAccount.usd.accountNumber": "Please enter an account number",
+    "cryptoToFiat.forms.error.bankAccount.usd.routingNumber": "Please enter a routing number",
+    "cryptoToFiat.forms.error.bankAccount.eur.iban-swift-country": "Please enter an IBAN, SWIFT/BIC and select a Country",
+    "cryptoToFiat.forms.error.bankAccount.eur.iban-swift": "Please enter an IBAN and SWIFT/BIC",
+    "cryptoToFiat.forms.error.bankAccount.eur.iban-country": "Please enter an IBAN and select a Country",
+    "cryptoToFiat.forms.error.bankAccount.eur.swift-country": "Please enter a SWIFT/BIC and select a Country",
+    "cryptoToFiat.forms.error.bankAccount.eur.iban": "Please enter an IBAN",
+    "cryptoToFiat.forms.error.bankAccount.eur.swift": "Please enter a SWIFT/BIC",
+    "cryptoToFiat.forms.error.bankAccount.eur.country": "Please select a Country"
 }

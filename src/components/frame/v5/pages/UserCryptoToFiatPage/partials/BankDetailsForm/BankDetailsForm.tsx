@@ -13,6 +13,7 @@ import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx'
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 
 import { AccountDetailsInputs } from './AccountDetailsInputs.tsx';
+import { CurrencyFormattedOptionLabel } from './CurrencyFormattedOptionLabel.tsx';
 import { validationSchema } from './validation.ts';
 
 interface BankDetailsFormProps {
@@ -81,7 +82,7 @@ const BankDetailsForm: FC<BankDetailsFormProps> = ({
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-4"
         validationSchema={validationSchema}
         mode="onSubmit"
         defaultValues={defaultValues}
@@ -106,6 +107,7 @@ const BankDetailsForm: FC<BankDetailsFormProps> = ({
             name="currency"
             labelMessage={formatText(MSG.payoutCurrencyLabel)}
             options={CURRENCIES}
+            formatOptionLabel={CurrencyFormattedOptionLabel}
           />
         </FormRow>
 

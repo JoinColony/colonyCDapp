@@ -94,7 +94,7 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      <div className="px-6 py-12">
+      <div className="px-6 pb-6 pt-16">
         <Stepper activeStepKey={activeTab} items={stepItems} />
       </div>
     </ModalBase>

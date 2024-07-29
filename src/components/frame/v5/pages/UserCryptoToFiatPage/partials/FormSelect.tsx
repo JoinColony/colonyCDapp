@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { type Message } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
@@ -14,6 +13,8 @@ interface FormSelectProps {
   options: SelectOption[];
   handleChange?: any;
   placeholder?: string;
+  shouldSkipErrorMessage?: boolean;
+  formatOptionLabel?: (option: SelectOption) => JSX.Element;
 }
 
 export const FormSelect: FC<FormSelectProps> = ({
@@ -22,13 +23,14 @@ export const FormSelect: FC<FormSelectProps> = ({
   labelMessage,
   placeholder,
   handleChange,
+  shouldSkipErrorMessage,
+  formatOptionLabel,
 }) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-
-  const error = get(errors, name)?.message as Message | undefined;
+  const hasError = !!get(errors, name)?.message;
 
   return (
     <Controller
@@ -47,17 +49,18 @@ export const FormSelect: FC<FormSelectProps> = ({
           <Select
             {...field}
             options={options}
-            isError={!!error}
+            isError={hasError}
             isSearchable
             placeholder={placeholder}
+            formatOptionLabel={formatOptionLabel}
             onChange={(val) => {
               handleChange?.(val);
               field.onChange(val?.value);
             }}
           />
-          {error && (
+          {hasError && !shouldSkipErrorMessage && (
             <FormError isFullSize alignment="left">
-              {formatText(error)}
+              {formatText({ id: `cryptoToFiat.forms.error.${name}` })}
             </FormError>
           )}
         </>

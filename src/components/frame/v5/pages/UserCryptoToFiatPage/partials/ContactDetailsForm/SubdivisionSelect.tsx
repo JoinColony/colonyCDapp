@@ -31,6 +31,7 @@ export const SubdivisionSelect = () => {
     <div className="ml-1 flex-1">
       <FormSelect
         name="state"
+        placeholder="State"
         options={subdivisions.map((item) => ({
           value: item.code,
           label: item.name,

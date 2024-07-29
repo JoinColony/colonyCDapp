@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import React from 'react';
 
+import { useMobile } from '~hooks';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import CryptoToFiatBadge from '~v5/common/Pills/CryptoToFiatBadge.tsx/CryptoToFiatBadge.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -21,13 +23,13 @@ const Heading: React.FC<RowItemHeadingProps> = ({
 }) => {
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
         <section className="flex items-center gap-2 text-md font-bold">
           <section className="flex aspect-square h-6 items-center justify-center rounded-full bg-base-black text-sm text-base-white">
             {itemIndex}
           </section>
           <section className="flex items-end gap-1">
-            <h4>{title}</h4>
+            <h4 className="font-semibold">{title}</h4>
             <span className="text-xs font-thin leading-[19px] text-gray-600">
               ({accessory})
             </span>
@@ -56,9 +58,15 @@ const Body: React.FC<RowItemBodyProps> = ({
   ctaComponent,
   isDataLoading,
 }) => {
+  const isMobile = useMobile();
   return (
-    <div className="flex items-end justify-between">
-      <section className="max-w-[742px]">
+    <div
+      className={clsx('flex justify-between sm:items-end', {
+        'flex-col sm:flex-row': !ctaComponent,
+        'gap-12': !!ctaComponent,
+      })}
+    >
+      <section className="w-full max-w-[742px]">
         {descriptionComponent ?? (
           <div className="flex flex-col gap-1">
             {title && <h5 className="mr-1.5 text-1">{title}</h5>}
@@ -68,7 +76,11 @@ const Body: React.FC<RowItemBodyProps> = ({
           </div>
         )}
       </section>
-      <section className="flex min-w-[200px] justify-end">
+      <section
+        className={clsx('flex sm:min-w-[200px] sm:justify-end', {
+          'mt-6 w-full sm:mt-0 sm:w-auto': !ctaComponent,
+        })}
+      >
         {ctaComponent ?? (
           <LoadingSkeleton
             isLoading={isDataLoading}
@@ -79,6 +91,7 @@ const Body: React.FC<RowItemBodyProps> = ({
               text={ctaTitle}
               onClick={ctaOnClick}
               disabled={ctaDisabled}
+            isFullSize={isMobile}
             />
           </LoadingSkeleton>
         )}
@@ -92,7 +105,7 @@ const Container: React.FC<RowItemProps> = ({ children }) => {
 };
 
 Body.displayName = `${displayName}.Body`;
-Heading.displayName = `${displayName}.heading`;
+Heading.displayName = `${displayName}.Heading`;
 Container.displayName = `${displayName}.Container`;
 
 const RowItem = { Heading, Container, Body };

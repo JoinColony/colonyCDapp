@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -6,6 +5,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormInput } from '../FormInput.tsx';
+import { FormInputGroup } from '../FormInputGroup.tsx';
 import { FormRow } from '../FormRow.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
@@ -90,6 +90,7 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
         onSubmit={onSubmit}
         validationSchema={addressValidationSchema}
         mode="onSubmit"
+        className="flex flex-col gap-4"
       >
         {/* <FormRow>
           <FormDatepicker
@@ -106,48 +107,51 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
           />
         </FormRow> */}
 
-        <label className="mb-1.5 text-md font-medium text-gray-700">
-          {formatText(MSG.addressLabel)}
-        </label>
+        <FormInputGroup
+          groupLabel={formatText(MSG.addressLabel)}
+          groupName="address"
+          names={['address1', 'address2', 'city', 'postcode']}
+        >
+          <FormRow>
+            <CountrySelect />
+          </FormRow>
 
-        <FormRow>
-          <CountrySelect />
-        </FormRow>
-
-        <FormRow>
-          <FormInput
-            name="address1"
-            placeholder={formatText(MSG.address1Placeholder)}
-          />
-        </FormRow>
-        <FormRow>
-          <FormInput
-            name="address2"
-            placeholder={formatText(MSG.address2Placeholder)}
-          />
-        </FormRow>
-        <FormRow>
-          <div className="flex">
-            <div className="mr-1 flex-1">
-              <FormInput
-                name="city"
-                placeholder={formatText(MSG.cityPlaceholder)}
-              />
+          <FormRow>
+            <FormInput
+              name="address1"
+              placeholder={formatText(MSG.address1Placeholder)}
+            />
+          </FormRow>
+          <FormRow>
+            <FormInput
+              name="address2"
+              placeholder={formatText(MSG.address2Placeholder)}
+            />
+          </FormRow>
+          <FormRow>
+            <div className="flex">
+              <div className="mr-1 flex-1">
+                <FormInput
+                  name="city"
+                  placeholder={formatText(MSG.cityPlaceholder)}
+                />
+              </div>
+              <SubdivisionSelect />
             </div>
-            <SubdivisionSelect />
-          </div>
-        </FormRow>
+          </FormRow>
 
-        <FormRow>
-          <FormInput
-            name="postcode"
-            placeholder={formatText(MSG.postcodePlaceholder)}
-          />
-        </FormRow>
+          <FormRow>
+            <FormInput
+              name="postcode"
+              placeholder={formatText(MSG.postcodePlaceholder)}
+            />
+          </FormRow>
+        </FormInputGroup>
 
         <ModalFormCTAButtons
           cancelButton={{ onClick: onClose, title: MSG.cancelButtonTitle }}
           proceedButton={{ title: MSG.proceedButtonTitle }}
+          className="mt-4"
         />
       </Form>
     </div>

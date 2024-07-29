@@ -22,13 +22,21 @@ const MSG = defineMessages({
     id: `${displayName}.bankDetailsConfirmed`,
     defaultMessage: 'Bank details confirmed',
   },
-  bankInfoAddeddSuccessfully: {
-    id: `${displayName}.bankInfoAddeddSuccessfully`,
+  bankDetailsTitleSuccess: {
+    id: `${displayName}.bankDetailsTitleSuccess`,
+    defaultMessage: 'Bank details confirmed',
+  },
+  bankDetailsDescriptionSuccess: {
+    id: `${displayName}.bankDetailsDescriptionSuccess`,
     defaultMessage: 'Your information has been added successfully',
   },
-  bankDetailsError: {
-    id: `${displayName}.bankDetailsError`,
-    defaultMessage: 'Something went wrong :(',
+  bankDetailsTitleError: {
+    id: `${displayName}.bankDetailsTitleError`,
+    defaultMessage: 'Something went wrong',
+  },
+  bankDetailsDescriptionError: {
+    id: `${displayName}.bankDetailsDescriptionError`,
+    defaultMessage: 'Your bank details could not be updated at this time',
   },
 });
 
@@ -140,15 +148,19 @@ export const useBankDetailsFields = ({
       toast.success(
         <Toast
           type="success"
-          title={formatText(MSG.bankDetailsConfirmed)}
-          description={formatText(MSG.bankInfoAddeddSuccessfully)}
+          title={formatText(MSG.bankDetailsTitleSuccess)}
+          description={formatText(MSG.bankDetailsDescriptionSuccess)}
         />,
       );
 
       onClose();
     } else {
       toast.error(
-        <Toast type="error" title={formatText(MSG.bankDetailsError)} />,
+        <Toast
+          type="error"
+          title={formatText(MSG.bankDetailsTitleError)}
+          description={formatText(MSG.bankDetailsDescriptionError)}
+        />,
       );
     }
   };

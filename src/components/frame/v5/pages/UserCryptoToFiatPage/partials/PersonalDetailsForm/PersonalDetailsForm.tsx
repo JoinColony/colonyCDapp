@@ -80,7 +80,7 @@ const PersonalDetailsForm: FC<BankDetailsFormProps> = ({
       <ModalHeading title={MSG.title} subtitle={MSG.subtitle} />
       <Form
         onSubmit={onSubmit}
-        className="flex flex-col"
+        className="flex flex-col gap-4"
         validationSchema={validationSchema}
         mode="onSubmit"
       >

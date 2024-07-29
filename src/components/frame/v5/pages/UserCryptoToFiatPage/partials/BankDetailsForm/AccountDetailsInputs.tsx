@@ -6,6 +6,7 @@ import { getCountries } from '~utils/countries.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
+import { FormInputGroup } from '../FormInputGroup.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
 
@@ -26,36 +27,52 @@ const AccountDetailsInputs = () => {
   return (
     <>
       {currency === CURRENCY_VALUES[SupportedCurrencies.Eur] && (
-        <>
+        <FormInputGroup
+          groupLabel="Bank account"
+          groupName="bankAccount.eur"
+          names={['iban', 'swift', 'country']}
+        >
           <FormRow>
-            <FormInput name="iban" placeholder="IBAN" />
+            <FormInput shouldSkipErrorMessage name="iban" placeholder="IBAN" />
           </FormRow>
           <FormRow>
-            <FormInput name="swift" placeholder="SWIFT/BIC" />
+            <FormInput
+              shouldSkipErrorMessage
+              name="swift"
+              placeholder="SWIFT/BIC"
+            />
           </FormRow>
           <FormRow>
-            <FormSelect name="country" options={countriesOptions} />
+            <FormSelect
+              shouldSkipErrorMessage
+              name="country"
+              options={countriesOptions}
+            />
           </FormRow>
-        </>
+        </FormInputGroup>
       )}
 
       {currency === CURRENCY_VALUES[SupportedCurrencies.Usd] && (
-        <>
+        <FormInputGroup
+          groupLabel="Bank account"
+          groupName="bankAccount.usd"
+          names={['accountNumber', 'routingNumber']}
+        >
           <FormRow>
             <FormInput
+              shouldSkipErrorMessage
               name="accountNumber"
-              label="Account Number"
               placeholder="Account Number"
             />
           </FormRow>
           <FormRow>
             <FormInput
+              shouldSkipErrorMessage
               name="routingNumber"
-              label="Routing Number"
               placeholder="Routing Number"
             />
           </FormRow>
-        </>
+        </FormInputGroup>
       )}
     </>
   );

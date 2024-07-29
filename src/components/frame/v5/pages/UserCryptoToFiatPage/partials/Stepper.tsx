@@ -25,6 +25,10 @@ function Stepper<TKey extends React.Key>({
   const itemsToShow = items.filter((i) => !i.isHidden).length;
   const isOneItemShown = itemsToShow === 1;
 
+  const handleSetActiveStep = (index: number) => {
+    setOpenItemIndex(index);
+  };
+
   return items.length ? (
     <>
       <div className="flex w-full items-center gap-1">
@@ -72,12 +76,12 @@ function Stepper<TKey extends React.Key>({
               >
                 <div className="flex flex-col items-start gap-[.375rem]">
                   <StepperButton
+                    onClick={() => handleSetActiveStep(index)}
                     stage={
                       (index < activeItemIndex && StepStage.Completed) ||
                       (index === activeItemIndex && StepStage.Current) ||
                       StepStage.Upcoming
                     }
-                    disabled
                     className="relative z-base"
                     isHighlighted={index === openItemIndex}
                     {...restHeading}
