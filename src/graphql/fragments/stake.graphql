@@ -6,4 +6,5 @@ fragment UserStake on UserStake {
   }
   isClaimed
   createdAt
+  type
 }
