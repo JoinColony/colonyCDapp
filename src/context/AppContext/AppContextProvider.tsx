@@ -19,7 +19,6 @@ import { ActionTypes } from '~redux/index.ts';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
 import { getContext, ContextModule } from '../index.ts';
-import { TokenActivationProvider } from '../TokenActivationContext/TokenActivationContextProvider.tsx';
 
 import { AppContext, type AppContextValue } from './AppContext.ts';
 
@@ -198,9 +197,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <AppContext.Provider value={appContext}>
-      <TokenActivationProvider>{children}</TokenActivationProvider>
-    </AppContext.Provider>
+    <AppContext.Provider value={appContext}>{children}</AppContext.Provider>
   );
 };
 
