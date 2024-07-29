@@ -5,7 +5,9 @@ import React, {
   useMemo,
   useRef,
 } from 'react';
+import { useParams } from 'react-router-dom';
 
+import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 
 import {
@@ -16,6 +18,9 @@ import {
 export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
+  const { extensionId } = useParams();
+  const { refetchExtensionData } = useExtensionData(extensionId ?? '');
+
   const [isVisible, setIsVisible] = useState(false);
   const [actionType, setActionType] = useState<ActionTypes | null>(null);
   const callbackRef = useRef<RefWithGetValues | null>(null);
@@ -34,6 +39,10 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
     setActionType(null);
   };
 
+  const handleOnSuccess = () => {
+    refetchExtensionData();
+  };
+
   const value = useMemo(
     () => ({
       callbackRef,
@@ -42,6 +51,7 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
       handleGetValues,
       handleSetVisible,
       handleSetActionType,
+      handleOnSuccess,
       resetAll,
     }),
     [isVisible, actionType],

@@ -13,6 +13,7 @@ interface ExtensionSaveSettingsContextValues {
   handleGetValues: () => any;
   handleSetVisible: (value: boolean) => void;
   handleSetActionType: (value: ActionTypes) => void;
+  handleOnSuccess: () => void;
   resetAll: () => void;
   callbackRef: RefObject<RefWithGetValues | null>;
 }
@@ -24,6 +25,7 @@ export const ExtensionSaveSettingsContext =
     handleGetValues: noop,
     handleSetVisible: noop,
     handleSetActionType: noop,
+    handleOnSuccess: noop,
     resetAll: noop,
     callbackRef: { current: null },
   });

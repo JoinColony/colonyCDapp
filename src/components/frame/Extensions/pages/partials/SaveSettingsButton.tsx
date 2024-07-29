@@ -7,12 +7,16 @@ import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 const displayName = 'pages.ExtensionDetailsPage.SaveSettingsButton';
 
 const SaveSettingsButton = () => {
-  const { isVisible, actionType, handleGetValues } = useContext(
-    ExtensionSaveSettingsContext,
-  );
+  const { isVisible, actionType, handleGetValues, handleOnSuccess } =
+    useContext(ExtensionSaveSettingsContext);
 
   return isVisible && !!actionType ? (
-    <ActionButton useTxLoader actionType={actionType} values={handleGetValues}>
+    <ActionButton
+      useTxLoader
+      actionType={actionType}
+      values={handleGetValues}
+      onSuccess={handleOnSuccess}
+    >
       {formatText({ id: 'button.saveSettings' })}
     </ActionButton>
   ) : null;
