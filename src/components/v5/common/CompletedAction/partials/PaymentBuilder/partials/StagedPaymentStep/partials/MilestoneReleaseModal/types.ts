@@ -12,9 +12,10 @@ export interface MilestoneReleaseModalProps extends ModalProps {
   items: MilestoneItem[];
   hasAllMilestonesReleased: boolean;
   expenditure: Expenditure;
+  motionIds: number[];
 }
 
 export type MilestoneModalContentProps = Pick<
   MilestoneReleaseModalProps,
-  'onClose' | 'items' | 'hasAllMilestonesReleased'
+  'onClose' | 'items' | 'hasAllMilestonesReleased' | 'motionIds'
 >;

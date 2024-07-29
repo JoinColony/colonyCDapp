@@ -1,18 +1,21 @@
-import React, { useState, type FC } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { formatText } from '~utils/intl.ts';
-import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import ActionWithPermissionsInfo from '../../../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
+import MotionBox from '../../../MotionBox/MotionBox.tsx';
 import { type ReleaseActionItem } from '../../StagedPaymentStep.tsx';
-import { type MilestoneItem } from '../MilestoneReleaseModal/types.ts';
+import ReleasedBoxItem, {
+  type ReleaseBoxItem,
+} from '../ReleasedBoxItem/ReleasedBoxItem.tsx';
 
 const displayName =
   'v5.common.CompletedAction.partials.PaymentBuilder.partials.StagedReleaseStep.partials.ReleaseBox';
 
 interface ReleasedBoxProps {
-  items: MilestoneItem[];
+  items: ReleaseBoxItem[];
   releaseActions: ReleaseActionItem[];
 }
 
@@ -24,44 +27,48 @@ const MSG = defineMessages({
 });
 
 const ReleasedBox: FC<ReleasedBoxProps> = ({ items, releaseActions }) => {
-  const [selectedMilestone, setSelectedMilestone] =
-    useState<MilestoneItem | null>(null);
-  const actionInformation = releaseActions.find((action) =>
-    action.slotIds.includes(selectedMilestone?.slotId || 0),
-  );
+  const { selectedMilestoneMotion } = usePaymentBuilderContext();
+  const actionInformation =
+    selectedMilestoneMotion &&
+    releaseActions.find((action) =>
+      action.slotIds.includes(
+        Array.isArray(selectedMilestoneMotion.slotId)
+          ? selectedMilestoneMotion.slotId[0]
+          : selectedMilestoneMotion.slotId || 0,
+      ),
+    );
 
   return (
     <div className="mb-2">
       <div className="rounded-lg border border-gray-200 bg-base-white p-[1.125rem]">
         <h3 className="mb-2 text-1">{formatText(MSG.milestonePayments)}</h3>
-        <ul>
-          {items.map((item) => (
-            <li key={item.slotId} className="mb-2 last:mb-0">
-              <button
-                className="group flex w-full items-center justify-between gap-2"
-                type="button"
-                onClick={() => setSelectedMilestone(item)}
-              >
-                <span className="text-sm underline transition-colors group-hover:text-blue-400">
-                  {item.milestone}
-                </span>
-                <PillsBase
-                  className="bg-success-100 text-success-400"
-                  isCapitalized={false}
-                >
-                  {formatText({ id: 'action.passed' })}
-                </PillsBase>
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="max-h-[10.25rem] overflow-x-hidden overflow-y-scroll">
+          <ul className="flex flex-col gap-2 overflow-hidden">
+            {items.map((item) => (
+              <li key={item.uniqueId}>
+                <ReleasedBoxItem
+                  item={item}
+                  isReleasingMultipleMilestones={
+                    Array.isArray(item.slotId) ? item.slotId.length > 1 : false
+                  }
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      {selectedMilestone && (
+      {selectedMilestoneMotion && (
         <div className="mt-2">
-          <ActionWithPermissionsInfo
-            userAdddress={actionInformation?.userAddress}
-            createdAt={actionInformation?.createdAt}
-          />
+          {!selectedMilestoneMotion.transactionHash ? (
+            <ActionWithPermissionsInfo
+              userAdddress={actionInformation?.userAddress}
+              createdAt={actionInformation?.createdAt}
+            />
+          ) : (
+            <MotionBox
+              transactionId={selectedMilestoneMotion.transactionHash}
+            />
+          )}
         </div>
       )}
     </div>

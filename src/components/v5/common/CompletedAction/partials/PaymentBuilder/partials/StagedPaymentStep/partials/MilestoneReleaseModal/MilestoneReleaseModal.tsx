@@ -56,12 +56,18 @@ const MSG = defineMessages({
     id: `${displayName}.releaseAllPayments`,
     defaultMessage: 'Make payments',
   },
+  duplicatedMotion: {
+    id: `${displayName}.duplicatedMotion`,
+    defaultMessage:
+      'A request already exists for this milestone. You can use an alternative decision method, if you have the option to.',
+  },
 });
 
 const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
   onClose,
   items,
   hasAllMilestonesReleased,
+  motionIds,
 }) => {
   const {
     watch,
@@ -75,6 +81,10 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
 
   const noDecisionMethodAvailable = fundingDecisionMethodOptions.every(
     ({ isDisabled }) => isDisabled,
+  );
+
+  const hasMotionActive = items.some(({ slotId }) =>
+    motionIds.find((motionId) => motionId === slotId),
   );
 
   return (
@@ -100,6 +110,14 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
           options={fundingDecisionMethodOptions}
           name="decisionMethod"
         />
+        {method &&
+          method.value &&
+          method.value === DecisionMethod.Reputation &&
+          hasMotionActive && (
+            <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+              {formatText(MSG.duplicatedMotion)}
+            </div>
+          )}
         {method && method.value && (
           <div className="mt-4 rounded border border-gray-300 bg-base-bg p-[1.125rem]">
             <p className="text-sm text-gray-600">
@@ -155,6 +173,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
   onClose,
   hasAllMilestonesReleased,
   expenditure,
+  motionIds,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -219,6 +238,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
       >
         <MilestoneModalContent
           items={items}
+          motionIds={motionIds}
           onClose={onClose}
           hasAllMilestonesReleased={hasAllMilestonesReleased}
         />
