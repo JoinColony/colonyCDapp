@@ -37,18 +37,18 @@ const useStagedPaymentTableColumns = (
   isPaymentStep?: boolean,
   isLoading?: boolean,
 ) => {
-  const hasMoreThanOneToken = data.length > 1;
   const dataRef = useWrapWithRef(data);
+  const hasMoreThanOneToken = dataRef.current.length > 1;
   const isMobile = useMobile();
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
+  const hasMoreThanOneMilestone =
+    dataRef.current.filter((item) => !item.isClaimed).length > 1;
 
   const columns: ColumnDef<StagedPaymentRecipientsFieldModel, string>[] =
     useMemo(() => {
       const columnHelper =
         createColumnHelper<StagedPaymentRecipientsFieldModel>();
-      const hasMoreThanOneMilestone =
-        dataRef.current.filter((item) => !item.isClaimed).length > 1;
 
       return [
         columnHelper.accessor('milestone', {
@@ -156,6 +156,7 @@ const useStagedPaymentTableColumns = (
       ];
     }, [
       hasMoreThanOneToken,
+      hasMoreThanOneMilestone,
       isPaymentStep,
       isMobile,
       dataRef,

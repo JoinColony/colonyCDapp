@@ -160,15 +160,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     );
   }, [motions]);
 
-  const { selectedTransaction, setSelectedTransaction } =
-    usePaymentBuilderContext();
+  const {
+    selectedTransaction,
+    setSelectedTransaction,
+    selectedMilestoneMotion,
+  } = usePaymentBuilderContext();
 
   const {
     action: motionAction,
     motionState,
     refetchMotionState,
   } = useGetColonyAction(
-    selectedTransaction || fundingMotions?.[0]?.transactionHash,
+    selectedTransaction ||
+      fundingMotions?.[0]?.transactionHash ||
+      selectedMilestoneMotion?.transactionHash,
   );
 
   const selectedMotion = fundingMotions.find(
@@ -285,6 +290,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           key: ExpenditureStep.Payment,
           heading: {
             label: formatText({ id: 'expenditure.paymentStage.label' }),
+            decor:
+              !motionAction?.motionData?.motionStateHistory.hasPassed &&
+              !motionAction?.motionData?.motionStateHistory.hasFailed &&
+              !motionAction?.motionData?.motionStateHistory
+                .hasFailedNotFinalizable &&
+              motionStakes ? (
+                <MotionCountDownTimer
+                  key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
+                  motionState={motionState}
+                  motionId={motionId}
+                  motionStakes={motionStakes}
+                  refetchMotionState={refetchMotionState}
+                />
+              ) : null,
           },
           content: (
             <StagedPaymentStep

@@ -7,6 +7,7 @@ import React, {
 
 import useToggle from '~hooks/useToggle/index.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
+import { type ReleaseBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/ReleasedBoxItem/ReleasedBoxItem.tsx';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 
@@ -27,6 +28,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
     [],
   );
+  const [selectedMilestoneMotion, setSelectedMilestoneMotion] =
+    useState<ReleaseBoxItem | null>(null);
 
   const value = useMemo(
     () => ({
@@ -43,6 +46,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedTransaction,
       selectedMilestones,
       setSelectedMilestones,
+      selectedMilestoneMotion,
+      setSelectedMilestoneMotion,
     }),
     [
       toggleOnFundingModal,
@@ -58,6 +63,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedTransaction,
       selectedMilestones,
       setSelectedMilestones,
+      selectedMilestoneMotion,
+      setSelectedMilestoneMotion,
     ],
   );
 
