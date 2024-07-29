@@ -76,18 +76,16 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
 
   const { closeUserHub } = useUserHubContext();
 
-  const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
+  const { toggleOnTokensModal } = useTokensModalContext();
 
   const handleActivateClick = () => {
     closeUserHub();
-    toggleOnTokensModal();
-    setTokensModalType(TokensModalType.Activate);
+    toggleOnTokensModal(TokensModalType.Activate);
   };
 
   const handleDeactivateClick = () => {
     closeUserHub();
-    toggleOnTokensModal();
-    setTokensModalType(TokensModalType.Deactivate);
+    toggleOnTokensModal(TokensModalType.Deactivate);
   };
 
   return (

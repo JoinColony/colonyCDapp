@@ -20,7 +20,7 @@ const MSG = defineMessages({
 });
 
 const NotEnoughTokensInfo: FC = () => {
-  const { toggleOnTokensModal, setTokensModalType } = useTokensModalContext();
+  const { toggleOnTokensModal } = useTokensModalContext();
 
   return (
     <>
@@ -29,8 +29,7 @@ const NotEnoughTokensInfo: FC = () => {
         type="button"
         className="underline transition-all text-4 md:hover:opacity-80"
         onClick={() => {
-          toggleOnTokensModal();
-          setTokensModalType(TokensModalType.Activate);
+          toggleOnTokensModal(TokensModalType.Activate);
         }}
       >
         {formatText(MSG.activateTokens)}

@@ -1,20 +1,13 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  createContext,
-  useContext,
-} from 'react';
+import { createContext, useContext } from 'react';
 
 import noop from '~utils/noop.ts';
 import { type TokensModalType } from '~v5/common/TokensModal/consts.ts';
 
 export const TokensModalContext = createContext<{
-  toggleOnTokensModal: () => void;
-  setTokensModalType: Dispatch<SetStateAction<TokensModalType>>;
+  toggleOnTokensModal: (type: TokensModalType) => void;
   isTokensModalOpen: boolean;
 }>({
   toggleOnTokensModal: noop,
-  setTokensModalType: noop,
   isTokensModalOpen: false,
 });
 

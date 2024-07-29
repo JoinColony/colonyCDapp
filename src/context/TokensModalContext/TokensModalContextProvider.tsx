@@ -4,6 +4,7 @@ import React, {
   type PropsWithChildren,
   useMemo,
   useState,
+  useCallback,
 } from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
@@ -21,13 +22,20 @@ const TokensModalContextProvider: FC<PropsWithChildren> = ({ children }) => {
     { toggleOn: toggleOnTokensModal, toggleOff: toggleOffTokensModal },
   ] = useToggle();
 
+  const handleToggleOnModal = useCallback(
+    (type: TokensModalType) => {
+      toggleOnTokensModal();
+      setTokensModalType(type);
+    },
+    [toggleOnTokensModal],
+  );
+
   const value = useMemo(
     () => ({
-      toggleOnTokensModal,
-      setTokensModalType,
+      toggleOnTokensModal: handleToggleOnModal,
       isTokensModalOpen,
     }),
-    [toggleOnTokensModal, setTokensModalType, isTokensModalOpen],
+    [handleToggleOnModal, isTokensModalOpen],
   );
 
   return (
