@@ -85,6 +85,7 @@ const TxButton: FC = () => {
             <SpinnerGap className="animate-spin" size={14} />
           </span>
         }
+        data-openhubifclicked
       >
         {isMobile ? undefined : (
           <span>
