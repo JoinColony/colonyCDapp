@@ -7,7 +7,7 @@ import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
-import { useUserHubContext } from '~common/Extensions/UserHubButton/UserHubContext.ts';
+import { useUserHubContext } from '~common/Extensions/UserHubContext/UserHubContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useGetUserTokenBalanceQuery } from '~gql';
@@ -48,12 +48,14 @@ const ViewStakedButton: FC<ViewStakedButtonProps> = ({
   />
 );
 
-const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
+const Balance: FC<BalanceProps> = ({ nativeToken, wallet }) => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+
+  const { setActiveTab } = useUserHubContext();
 
   const { data: tokenBalanceQueryData } = useGetUserTokenBalanceQuery({
     variables: {
@@ -173,7 +175,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               </span>
               {!isMobile && (
                 <ViewStakedButton
-                  onClick={() => onTabChange(UserHubTabs.Stakes)}
+                  onClick={() => setActiveTab(UserHubTabs.Stakes)}
                 />
               )}
             </div>
@@ -188,7 +190,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
           {isMobile && (
             <div className="mt-3">
               <ViewStakedButton
-                onClick={() => onTabChange(UserHubTabs.Stakes)}
+                onClick={() => setActiveTab(UserHubTabs.Stakes)}
                 isFullSize
               />
             </div>

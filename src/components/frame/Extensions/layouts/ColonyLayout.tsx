@@ -94,7 +94,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         txButton={<TxButton />}
         userHub={<UserHubButton />}
         className={clsx(
-          'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
+          'modal-blur-navigation [.show-header-in-modal_&]:absolute [.show-header-in-modal_&]:right-6 [.show-header-in-modal_&]:top-8 [.show-header-in-modal_&]:z-userNavModal',
           {
             'relative z-userNav': !isTablet,
           },

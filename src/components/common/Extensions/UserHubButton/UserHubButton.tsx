@@ -31,8 +31,10 @@ import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
+import { UserHubTabs } from '../UserHub/types.ts';
+import { UserHubContext } from '../UserHubContext/UserHubContext.ts';
+
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
-import { UserHubContext } from './UserHubContext.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
@@ -49,6 +51,7 @@ const UserHubButton: FC = () => {
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
+  const [activeTab, setActiveTab] = useState(UserHubTabs.Balance);
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -56,8 +59,6 @@ const UserHubButton: FC = () => {
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
 
   const [, { toggleOff }] = mobileMenuToggle;
-
-  const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
     usePopperTooltip(
@@ -75,7 +76,7 @@ const UserHubButton: FC = () => {
           {
             name: 'offset',
             options: {
-              offset: popperTooltipOffset,
+              offset: isMobile ? [0, 1] : [0, 8],
             },
           },
         ],
@@ -97,10 +98,15 @@ const UserHubButton: FC = () => {
   const ref = useDetectClickOutside({
     onTriggered: (e) => {
       // This stops the hub closing when clicking the pending button (which is outside)
-      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
-        // setIsUserHubOpen(false);
-      } else {
-        // setIsUserHubOpen(true);
+      const targetEl = e.target as HTMLElement;
+      const parentEl = targetEl.parentElement;
+      if (
+        [targetEl, parentEl].some((el) =>
+          el?.getAttribute('data-openhubifclicked'),
+        )
+      ) {
+        openUserHub();
+        setActiveTab(UserHubTabs.Transactions);
       }
     },
   });
@@ -136,7 +142,10 @@ const UserHubButton: FC = () => {
     }
   }, [transactions, prevGroupStatus, openUserHub]);
 
-  const value = useMemo(() => ({ closeUserHub }), [closeUserHub]);
+  const value = useMemo(
+    () => ({ activeTab, setActiveTab, closeUserHub }),
+    [activeTab, closeUserHub],
+  );
 
   const userName =
     user?.profile?.displayName ??

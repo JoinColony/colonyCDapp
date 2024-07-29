@@ -16,7 +16,3 @@ export enum UserHubTabs {
   Transactions = 2,
   CryptoToFiat = 3,
 }
-
-export interface UserHubProps {
-  defaultOpenedTab?: UserHubTabs;
-}

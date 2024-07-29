@@ -7,11 +7,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Balance from './partials/Balance.tsx';
 import PendingReputation from './partials/PendingReputation/index.ts';
 import TotalReputation from './partials/TotalReputation.tsx';
-import { type ReputationTabProps } from './types.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.ReputationTab';
 
-const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
+const ReputationTab = () => {
   const { formatMessage } = useIntl();
   const {
     colony: { colonyAddress, nativeToken },
@@ -28,11 +27,7 @@ const ReputationTab = ({ onTabChange }: ReputationTabProps) => {
       <p className="mb-6 heading-5 md:mb-4">
         {formatMessage({ id: 'userHub.reputation' })}
       </p>
-      <Balance
-        nativeToken={nativeToken}
-        wallet={wallet}
-        onTabChange={onTabChange}
-      />
+      <Balance nativeToken={nativeToken} wallet={wallet} />
       <TotalReputation
         colonyAddress={colonyAddress}
         wallet={wallet}

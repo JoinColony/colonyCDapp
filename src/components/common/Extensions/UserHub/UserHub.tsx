@@ -1,19 +1,21 @@
 import clsx from 'clsx';
-import React, { type FC, useState, useContext } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
+
+import { useUserHubContext } from '../UserHubContext/UserHubContext.ts';
 
 import { tabList } from './consts.ts';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
-import { type UserHubProps, UserHubTabs } from './types.ts';
+import { UserHubTabs } from './types.ts';
 
 // @BETA: Disabled for now
 // import { COLONY_HOME_ROUTE } from '~routes';
@@ -33,12 +35,11 @@ const MSG = defineMessages({
   },
 });
 
-const UserHub: FC<UserHubProps> = ({
-  defaultOpenedTab = UserHubTabs.Balance,
-}) => {
+const UserHub: FC = () => {
   const isMobile = useMobile();
-  const featureFlags = useContext(FeatureFlagsContext);
-  const [selectedTab, setSelectedTab] = useState(defaultOpenedTab);
+  const featureFlags = useFeatureFlagsContext();
+
+  const { activeTab, setActiveTab } = useUserHubContext();
 
   const filteredTabList = tabList.filter(
     (tabItem) =>
@@ -46,10 +47,6 @@ const UserHub: FC<UserHubProps> = ({
       (!featureFlags[tabItem.featureFlag]?.isLoading &&
         featureFlags[tabItem.featureFlag]?.isEnabled),
   );
-
-  const handleTabChange = (newTab: UserHubTabs) => {
-    setSelectedTab(newTab);
-  };
 
   // @BETA: Disabled for now
   // const dashboardButton = (
@@ -62,18 +59,18 @@ const UserHub: FC<UserHubProps> = ({
     <div
       className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
         'sm:h-[27.75rem]':
-          selectedTab !== UserHubTabs.Balance &&
-          selectedTab !== UserHubTabs.CryptoToFiat,
-        'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
+          activeTab !== UserHubTabs.Balance &&
+          activeTab !== UserHubTabs.CryptoToFiat,
+        'sm:min-h-[27.75rem]': activeTab === UserHubTabs.Balance,
       })}
     >
       <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.85rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
             options={filteredTabList}
-            defaultValue={selectedTab}
-            value={selectedTab}
-            onChange={(value) => handleTabChange(value?.value as UserHubTabs)}
+            defaultValue={activeTab}
+            value={activeTab}
+            onChange={(value) => setActiveTab(value?.value as UserHubTabs)}
             className="w-full"
             hideSelectedOptions
           />
@@ -89,23 +86,23 @@ const UserHub: FC<UserHubProps> = ({
                   <li
                     className="w-full"
                     key={value}
-                    aria-selected={selectedTab === id}
+                    aria-selected={activeTab === id}
                     role="option"
                   >
                     <button
                       type="button"
-                      onKeyDown={() => setSelectedTab(id)}
-                      onClick={() => setSelectedTab(id)}
+                      onKeyDown={() => setActiveTab(id)}
+                      onClick={() => setActiveTab(id)}
                       className={clsx(
                         'flex w-full cursor-pointer items-center justify-between rounded p-4 py-2 text-md font-normal leading-5 text-gray-900 transition-all sm:hover:bg-gray-50',
                         {
-                          'bg-gray-50': selectedTab === id,
+                          'bg-gray-50': activeTab === id,
                         },
                       )}
                     >
                       <div
                         className={clsx('mr-2 flex flex-grow items-center', {
-                          'font-medium': selectedTab === id,
+                          'font-medium': activeTab === id,
                         })}
                       >
                         <span className="mr-2 flex shrink-0">
@@ -124,14 +121,12 @@ const UserHub: FC<UserHubProps> = ({
         )}
       </div>
       <div className="relative h-full w-full min-w-0">
-        {selectedTab === UserHubTabs.Balance && (
-          <ReputationTab onTabChange={handleTabChange} />
-        )}
-        {selectedTab === UserHubTabs.Stakes && <StakesTab />}
-        {selectedTab === UserHubTabs.Transactions && (
+        {activeTab === UserHubTabs.Balance && <ReputationTab />}
+        {activeTab === UserHubTabs.Stakes && <StakesTab />}
+        {activeTab === UserHubTabs.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
-        {selectedTab === UserHubTabs.CryptoToFiat && <CryptoToFiatTab />}
+        {activeTab === UserHubTabs.CryptoToFiat && <CryptoToFiatTab />}
       </div>
       {/* @BETA: Disabled for now */}
       {/* {isMobile && ( */}
