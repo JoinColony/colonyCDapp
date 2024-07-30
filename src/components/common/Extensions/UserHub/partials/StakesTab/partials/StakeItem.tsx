@@ -21,11 +21,11 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
-    expenditure?.actions?.items?.[0]?.metadata?.customTitle ||
+    expenditure?.creatingActions?.items?.[0]?.metadata?.customTitle ||
     stake.action?.type;
 
   const stakeItemTransctionHash = expenditure
-    ? expenditure?.actions?.items?.[0]?.transactionHash
+    ? expenditure?.creatingActions?.items?.[0]?.transactionHash
     : stake.action?.transactionHash;
 
   return (
