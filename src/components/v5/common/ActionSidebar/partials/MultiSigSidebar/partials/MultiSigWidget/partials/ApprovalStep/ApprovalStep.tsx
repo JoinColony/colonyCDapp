@@ -395,10 +395,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
                           multiSigId={multiSigData.nativeMultiSigId}
-                          isPending={
-                            expectedStep === VoteExpectedStep.cancel &&
-                            currentVote === MultiSigVote.Reject
-                          }
+                          isPending={expectedStep === VoteExpectedStep.cancel}
                           setExpectedStep={setExpectedStep}
                         />
                       ) : (
@@ -410,7 +407,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                           )}
                           isPending={
                             expectedStep === VoteExpectedStep.cancel &&
-                            currentVote !== MultiSigVote.Approve
+                            currentVote === MultiSigVote.Reject
                           }
                           setExpectedStep={setExpectedStep}
                           setCurrentVote={setCurrentVote}
