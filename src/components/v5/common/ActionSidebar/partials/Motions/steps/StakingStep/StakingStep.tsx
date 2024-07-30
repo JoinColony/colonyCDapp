@@ -8,12 +8,11 @@ import useToggle from '~hooks/useToggle/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { SystemMessages } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/hooks.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
-
-import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
 
 import { useStakingStep } from './hooks.tsx';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';

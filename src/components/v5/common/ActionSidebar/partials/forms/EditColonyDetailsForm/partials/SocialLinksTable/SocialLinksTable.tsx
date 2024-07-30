@@ -11,10 +11,9 @@ import {
   type SocialLinksTableProps,
 } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-
-import useHasNoDecisionMethods from '../../../../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 import SocialLinkModal from './partials/SocialLinkModal/index.ts';
 

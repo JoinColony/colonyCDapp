@@ -17,11 +17,11 @@ import {
   type GetColonyMotionQuery,
   type GetColonyMotionQueryVariables,
 } from '~gql';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 import { type ColonyMotion } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   type ChannelDefinition,
   createGroupTransaction,

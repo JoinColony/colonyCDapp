@@ -1,10 +1,10 @@
 import React, { type FC } from 'react';
 
+import { CURRENCIES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
+import { type BankDetailsFormValues } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { CURRENCIES } from '../../constants.ts';
-import { type BankDetailsFormValues } from '../../types.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';

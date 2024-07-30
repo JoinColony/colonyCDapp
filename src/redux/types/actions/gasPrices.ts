@@ -1,6 +1,5 @@
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type GasPricesProps } from '~redux/immutable/index.ts';
-
-import { type ActionTypes } from '../../actionTypes.ts';
 
 import { type ActionTypeWithPayload } from './index.ts';
 

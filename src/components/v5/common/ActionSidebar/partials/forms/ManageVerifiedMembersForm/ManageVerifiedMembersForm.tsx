@@ -5,13 +5,12 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
+import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
+import VerifiedMembersTable from '~v5/common/ActionSidebar/partials/MembersTable/index.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
-
-import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
-import DecisionMethodField from '../../DecisionMethodField/DecisionMethodField.tsx';
-import Description from '../../Description/Description.tsx';
-import VerifiedMembersTable from '../../MembersTable/index.ts';
 
 import { type ManageMembersType, getManageMembersOptions } from './consts.ts';
 import { useManageVerifiedMembers } from './hooks.ts';

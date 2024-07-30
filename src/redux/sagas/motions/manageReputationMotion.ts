@@ -8,10 +8,10 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
   createTransaction,
   createTransactionChannels,

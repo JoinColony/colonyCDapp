@@ -2,13 +2,13 @@ import { ClientType } from '@colony/colony-js';
 import { call, put, take } from 'redux-saga/effects';
 
 import { TransactionStatus } from '~gql';
+import { transactionSendError } from '~redux/actionCreators/index.ts';
+import { type ActionTypes } from '~redux/actionTypes.ts';
+import { type Action } from '~redux/types/actions/index.ts';
 import { getTransaction } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { mergePayload } from '~utils/actions.ts';
 
-import { transactionSendError } from '../../actionCreators/index.ts';
-import { type ActionTypes } from '../../actionTypes.ts';
-import { type Action } from '../../types/actions/index.ts';
 import { getColonyManager, metatransactionsEnabled } from '../utils/index.ts';
 
 import getMetatransactionPromise from './getMetatransactionPromise.ts';

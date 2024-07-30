@@ -6,8 +6,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ColonyVersionField';
 

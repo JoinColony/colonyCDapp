@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
+import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
+import { type BankDetailsFormValues } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import {
   CheckKycStatusDocument,
   SupportedCurrencies,
@@ -11,9 +13,6 @@ import {
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-
-import { CURRENCY_VALUES } from '../../constants.ts';
-import { type BankDetailsFormValues } from '../../types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsModal';
 

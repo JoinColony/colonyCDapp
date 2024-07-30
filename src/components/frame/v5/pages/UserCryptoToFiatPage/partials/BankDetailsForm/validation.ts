@@ -1,10 +1,9 @@
 import { type InferType, object, string } from 'yup';
 
+import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
 import { SupportedCurrencies } from '~gql';
 import { formErrorMessage, formatText } from '~utils/intl.ts';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
-
-import { CURRENCY_VALUES } from '../../constants.ts';
 
 import {
   BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
+import { useCryptoToFiatContext } from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContext.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import BankDetailsModal from '../BankDetailsModal/index.ts';
 import RowItem from '../RowItem/index.ts';
 

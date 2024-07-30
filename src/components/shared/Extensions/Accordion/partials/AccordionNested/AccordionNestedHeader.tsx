@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { type AccordionHeaderProps } from '../../types.ts';
+import { type AccordionHeaderProps } from '~shared/Extensions/Accordion/types.ts';
 
 const displayName =
   'Extensions.Accordion.partials.AccordionNested.AccordionNestedHeader';

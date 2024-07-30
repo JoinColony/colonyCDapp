@@ -2,10 +2,10 @@ import { Client as PersonaClient } from 'persona';
 import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useCryptoToFiatContext } from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
-import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';

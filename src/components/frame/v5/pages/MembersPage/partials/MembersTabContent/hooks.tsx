@@ -7,6 +7,10 @@ import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 // @BETA: Disabled for now
 // import { useMemberModalContext } from '~context/MemberModalContext';
+import {
+  type MemberCardItem,
+  type MemberItem,
+} from '~frame/v5/pages/MembersPage/types.ts';
 import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
@@ -14,8 +18,6 @@ import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
-
-import { type MemberCardItem, type MemberItem } from '../../types.ts';
 
 export const useMembersTabContentItems = (
   items: MemberItem[],

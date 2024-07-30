@@ -9,9 +9,8 @@ import { formatText } from '~utils/intl.ts';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
-
-import Modal from '../../shared/Modal/Modal.tsx';
 
 import { useTokensModal } from './hooks.ts';
 import { type TokensModalProps } from './types.ts';

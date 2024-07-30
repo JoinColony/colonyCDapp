@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
-
-import { waitForDbAfterExtensionAction } from '../../utils.tsx';
 
 export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
   const {

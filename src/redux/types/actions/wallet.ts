@@ -1,4 +1,4 @@
-import { type ActionTypes } from '../../actionTypes.ts';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 
 import { type ErrorActionType, type ActionType } from './index.ts';
 

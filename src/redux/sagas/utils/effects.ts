@@ -7,13 +7,12 @@ import {
   transactionSend,
   messageSign,
 } from '~redux/actionCreators/index.ts';
-import { transactionSetReady } from '~state/transactionState.ts';
-
 import {
   type ErrorActionType,
   type TakeFilter,
   type Action,
-} from '../../types/actions/index.ts';
+} from '~redux/types/actions/index.ts';
+import { transactionSetReady } from '~state/transactionState.ts';
 
 import { metatransactionsEnabled } from './getCanUserSendMetatransactions.ts';
 

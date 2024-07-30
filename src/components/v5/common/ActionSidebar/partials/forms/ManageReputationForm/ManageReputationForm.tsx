@@ -16,15 +16,14 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
+import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
+import { useUserSelect } from '~v5/common/ActionSidebar/partials/UserSelect/hooks.ts';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
-
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import Description from '../../Description/index.ts';
-import TeamsSelect from '../../TeamsSelect/index.ts';
-import { useUserSelect } from '../../UserSelect/hooks.ts';
-import UserSelect from '../../UserSelect/index.ts';
 
 import { ModificationOption, modificationOptions } from './consts.ts';
 import { useManageReputation } from './hooks.ts';

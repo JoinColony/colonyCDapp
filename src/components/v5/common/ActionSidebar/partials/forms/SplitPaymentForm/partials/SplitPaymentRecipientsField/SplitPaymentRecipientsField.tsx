@@ -6,10 +6,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { DistributionMethod } from '~v5/common/ActionSidebar/partials/consts.tsx';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-
-import { DistributionMethod } from '../../../../consts.tsx';
 
 import {
   useRecipientsFieldTableColumns,
