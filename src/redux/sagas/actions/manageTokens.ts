@@ -3,7 +3,7 @@ import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
-import { transactionAddParams } from '~redux/actionCreators/transactions.ts';
+import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -83,13 +83,12 @@ function* manageTokensAction({
 
     yield validateTokenAddresses({ tokenAddresses });
 
-    yield put(
-      transactionAddParams(manageTokens.id, [
-        JSON.stringify(getManageTokensOperation(tokenAddresses)),
-      ]),
-    );
+    yield;
+    transactionSetParams(manageTokens.id, [
+      JSON.stringify(getManageTokensOperation(tokenAddresses)),
+    ]);
 
-    yield initiateTransaction({ id: manageTokens.id });
+    yield initiateTransaction(manageTokens.id);
 
     const {
       payload: {

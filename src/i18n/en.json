@@ -310,7 +310,7 @@
     "transaction.ColonyClient.claimExpenditurePayout.title": "Claim Expenditure Payout",
     "transaction.ColonyClient.deprecateExtension.title": "Deprecate Colony Extension",
     "transaction.ColonyClient.editColony.title": "Edit Colony Details",
-    "transaction.ColonyClient.editColonyByDelta.title": "Edit colony by delta",
+    "transaction.ColonyClient.editColonyByDelta.title": "Edit Colony",
     "transaction.ColonyClient.editDomain.title": "Edit Team",
     "transaction.ColonyClient.finalizeExpenditure.title": "Finalize Expenditure",
     "transaction.ColonyClient.finalizeExpenditureViaArbitration.title": "Finalize Expenditure",
