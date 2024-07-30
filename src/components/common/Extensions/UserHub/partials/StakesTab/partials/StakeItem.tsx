@@ -22,7 +22,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
-    expenditure?.actions?.items?.[0]?.metadata?.customTitle ||
+    expenditure?.creatingActions?.items?.[0]?.metadata?.customTitle ||
     stake.action?.type;
 
   const { colonyName: colonyNameUrl } = useParams();
