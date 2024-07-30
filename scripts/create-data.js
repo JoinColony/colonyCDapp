@@ -12,6 +12,7 @@ const { poll } = require('ethers/lib/utils');
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
+const { nanoid } = require('nanoid');
 const { compareVersions } = require('compare-versions');
 const {
   ColonyTokenFactory,
@@ -22,6 +23,7 @@ const {
   getExtensionHash,
   colonyRoles2Hex,
   getChildIndex,
+  ClientType,
 } = require('@colony/colony-js');
 const { graphqlRequest } = require('./utils/graphqlRequest');
 const { abi: OneTxAbi } = require('@colony/abis/versions/hmwss/OneTxPayment');
@@ -152,6 +154,14 @@ const updateColonyContributor = /* GraphQL */ `
   }
 `;
 
+const createTransaction = /* GraphQL */ `
+  mutation CreateTransaction($input: CreateTransactionInput!) {
+    createTransaction(input: $input) {
+      id
+    }
+  }
+`;
+
 /*
  * Queries
  */
@@ -234,6 +244,51 @@ const readFile = (path) => {
   } catch (err) {
     console.error(err);
   }
+};
+
+const addTxToDb = async ({
+  colonyAddress,
+  context,
+  groupId,
+  groupIndex,
+  groupKey,
+  hash,
+  methodName,
+  params,
+  userAddress,
+}) => {
+  const txGroup = {
+    id: `${groupId}-${groupIndex}`,
+    groupId,
+    index: groupIndex,
+    key: groupKey,
+    description: null,
+    descriptionValues: null,
+    title: null,
+    titleValues: null,
+  };
+
+  const input = {
+    id: `${groupId}-${methodName}`,
+    context,
+    createdAt: new Date().toISOString(),
+    from: userAddress,
+    colonyAddress,
+    groupId,
+    group: txGroup,
+    hash,
+    methodContext: null,
+    methodName,
+    status: 'SUCCEEDED',
+    metatransaction: false,
+    title: null,
+    titleValues: null,
+    params: JSON.stringify(params),
+    identifier: colonyAddress,
+    options: JSON.stringify({}),
+  };
+
+  return graphqlRequest(createTransaction, { input }, GRAPHQL_URI, API_KEY);
 };
 
 /*
@@ -381,15 +436,42 @@ const mintTokens = async (
 
   // mint
   const mintTokens = await colonyClient.mintTokens(amount);
-  delay();
+  await delay();
   await mintTokens.wait();
-  delay();
+  await delay();
+
+  const batchKey = 'mintTokens';
+  const groupId = nanoid();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.ColonyClient,
+    groupId,
+    groupIndex: 0,
+    groupKey: batchKey,
+    hash: mintTokens.hash,
+    methodName: 'mintTokens',
+    params: [amount],
+    userAddress: signerOrWallet.address,
+  });
 
   // claim
   const claimColonyFunds = await colonyClient.claimColonyFunds(tokenAddress);
-  delay();
+  await delay();
   await claimColonyFunds.wait();
-  delay();
+  await delay();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.ColonyClient,
+    groupId,
+    groupIndex: 1,
+    groupKey: batchKey,
+    hash: claimColonyFunds.hash,
+    methodName: 'claimColonyFunds',
+    params: [amount],
+    userAddress: signerOrWallet.address,
+  });
 
   console.log(
     `Minted and claimed ${amount.toString()} tokens in colony "${colonyName}"`,
@@ -428,9 +510,7 @@ const createColony = async (
     version = await colonyNetwork.getCurrentColonyVersion();
   }
 
-  const populatedTransaction = await colonyNetwork.populateTransaction[
-    'createColonyForFrontend'
-  ](
+  const params = [
     constants.AddressZero,
     tokenName,
     tokenSymbol,
@@ -438,7 +518,11 @@ const createColony = async (
     version,
     '', // no point in storing ens name on the chain
     '',
-  );
+  ];
+
+  const populatedTransaction = await colonyNetwork.populateTransaction[
+    'createColonyForFrontend'
+  ](...params);
 
   populatedTransaction.gasPrice = BigNumber.from(1000000000);
 
@@ -500,15 +584,24 @@ const createColony = async (
   const createColonyEvent = events.find(
     (event) => !!event?.args?.colonyAddress,
   );
-  const createTokenAuthorityEvent = events.find(
-    (event) => !!event?.args?.tokenAuthorityAddress,
-  );
 
   const colonyAddress = utils.getAddress(createColonyEvent.args.colonyAddress);
   const tokenAddress = utils.getAddress(createColonyEvent.args.token);
-  const tokenAuthorityAddress = utils.getAddress(
-    createTokenAuthorityEvent.args.tokenAuthorityAddress,
-  );
+
+  const batchKey = 'createColony';
+  const groupId = nanoid();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.NetworkClient,
+    groupId,
+    groupIndex: 0,
+    groupKey: batchKey,
+    hash: colonyDeploymentTransaction.transactionHash,
+    methodName: 'createColonyForFrontend',
+    params,
+    userAddress: signerOrWallet.address,
+  });
 
   const colonyClient = ColonyFactory.connect(colonyAddress, signerOrWallet);
   const tokenClient = ColonyTokenFactory.connect(tokenAddress, signerOrWallet);
@@ -592,19 +685,38 @@ const createColony = async (
         1,
         ColonyRole.Architecture,
       );
+
+      const rootDomainId = 1;
+
       // estimate
       const estimateGas = await colonyClient.estimateGas[
         'addDomain(uint256,uint256,uint256)'
-      ](permissionDomainId, childSkillIndex, 1);
+      ](permissionDomainId, childSkillIndex, rootDomainId);
       // transactions
       const subdomainDeployment = await colonyClient[
         'addDomain(uint256,uint256,uint256)'
-      ](permissionDomainId, childSkillIndex, 1, {
+      ](permissionDomainId, childSkillIndex, rootDomainId, {
         gasLimit: estimateGas.div(BigNumber.from(10)).add(estimateGas),
       });
       await delay();
       // receipt events
       const subdomainTransactions = await subdomainDeployment.wait();
+
+      const domainGroupId = nanoid();
+      const domainBatchKey = 'createDomain';
+
+      await addTxToDb({
+        colonyAddress,
+        context: ClientType.ColonyClient,
+        groupId: domainGroupId,
+        groupIndex: 0,
+        groupKey: domainBatchKey,
+        hash: subdomainTransactions.transactionHash,
+        methodName: 'addDomain(uint256,uint256,uint256)',
+        params: [rootDomainId],
+        userAddress: signerOrWallet.address,
+      });
+
       await delay();
       const {
         args: { domainId: subdomainId },
@@ -643,16 +755,23 @@ const createColony = async (
     }
   }
 
-  // set authority
-  const setAuthority = await tokenClient.setAuthority(tokenAuthorityAddress);
-  await delay();
-  await setAuthority.wait();
-  await delay();
-
   // set owner
   const setOwner = await tokenClient.setOwner(colonyAddress);
   await delay();
-  await setOwner.wait();
+  const setOwnerTransaction = await setOwner.wait();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.TokenClient,
+    groupId,
+    groupIndex: 1,
+    groupKey: batchKey,
+    hash: setOwnerTransaction.transactionHash,
+    methodName: 'setOwner',
+    params: [colonyAddress],
+    userAddress: signerOrWallet.address,
+  });
+
   await delay();
 
   // deploy OneTxPayment and StakedExpenditure extensions
@@ -691,7 +810,20 @@ const createColony = async (
 
   const installExtensions = await colonyClient.multicall(installMulticallData);
   await delay();
-  await installExtensions.wait();
+  const installExtensionsTx = await installExtensions.wait();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.ColonyClient,
+    groupId,
+    groupIndex: 2,
+    groupKey: batchKey,
+    hash: installExtensionsTx.transactionHash,
+    methodName: 'multicall.installExtensions',
+    params: [],
+    userAddress: signerOrWallet.address,
+  });
+
   await delay(1000);
 
   // give permissions to extensions
@@ -762,6 +894,7 @@ const createColony = async (
       ]),
     ]),
   );
+
   setRolesMulticallData.push(
     colonyClient.interface.encodeFunctionData('setUserRoles', [
       permissionDomainId,
@@ -778,7 +911,20 @@ const createColony = async (
   const setExtensionRoles = await colonyClient.multicall(setRolesMulticallData);
 
   await delay();
-  await setExtensionRoles.wait();
+  const setExtensionRolesTx = await setExtensionRoles.wait();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.ColonyClient,
+    groupId,
+    groupIndex: 3,
+    groupKey: batchKey,
+    hash: setExtensionRolesTx.transactionHash,
+    methodName: 'setUserRoles',
+    params: [],
+    userAddress: signerOrWallet.address,
+  });
+
   await delay();
 
   const stakeFraction = BigNumber.from(1)
@@ -801,7 +947,20 @@ const createColony = async (
   );
 
   await delay();
-  await enableStakedExpenditure.wait();
+  const stakedExpenditureInitTx = await enableStakedExpenditure.wait();
+
+  await addTxToDb({
+    colonyAddress,
+    context: ClientType.StakedExpenditureClient,
+    groupId,
+    groupIndex: 4,
+    groupKey: batchKey,
+    hash: stakedExpenditureInitTx.transactionHash,
+    methodName: 'initialise',
+    params: [stakeFraction],
+    userAddress: signerOrWallet.address,
+  });
+
   await delay();
 
   return {
@@ -958,33 +1117,42 @@ const transferFundsBetweenPots = async (
           signerOrWallet,
         );
 
-      const estimatedGas = await colonyClient.estimateGas[
-        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
-      ](
-        permissionDomainId,
-        fromChildSkillIndex,
-        toChildSkillIndex,
+      const params = [
         rootDomain.nativeFundingPotId,
         domainsWithoutRoot[index].nativeFundingPotId,
         amount,
         tokenAddress,
-      );
+      ];
+
+      const estimatedGas = await colonyClient.estimateGas[
+        'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
+      ](permissionDomainId, fromChildSkillIndex, toChildSkillIndex, ...params);
 
       const transferFunds = await colonyClient[
         'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
-      ](
-        permissionDomainId,
-        fromChildSkillIndex,
-        toChildSkillIndex,
-        rootDomain.nativeFundingPotId,
-        domainsWithoutRoot[index].nativeFundingPotId,
-        amount,
-        tokenAddress,
-        { gasLimit: estimatedGas.div(BigNumber.from(10)).add(estimatedGas) },
-      );
-      delay();
-      await transferFunds.wait();
-      delay();
+      ](permissionDomainId, fromChildSkillIndex, toChildSkillIndex, ...params, {
+        gasLimit: estimatedGas.div(BigNumber.from(10)).add(estimatedGas),
+      });
+      await delay();
+      const transferFundsTransaction = await transferFunds.wait();
+
+      const batchKey = 'moveFunds';
+      const groupId = nanoid();
+
+      await addTxToDb({
+        colonyAddress,
+        context: ClientType.ColonyClient,
+        groupId,
+        groupIndex: 0,
+        groupKey: batchKey,
+        hash: transferFundsTransaction.transactionHash,
+        methodName:
+          'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)',
+        params,
+        userAddress: signerOrWallet.address,
+      });
+
+      await delay();
 
       console.log(
         `Sending ${amount
@@ -1046,30 +1214,7 @@ const userPayments = async (
             amount = BigNumber.from(`50000000000000000000`);
           }
 
-          // estimate
-          const estimatedGas =
-            await oneTxClient.estimateGas.makePaymentFundedFromDomain(
-              extensionPDID,
-              extensionCSI,
-              userPDID,
-              userCSI,
-              [users[userIndex]],
-              [tokenAddress],
-              [amount],
-              domains[domainIndex].nativeId,
-              /*
-               * NOTE Always make the payment in the global skill 0
-               * This will make it so that the user only receives reputation in the
-               * above domain, but none in the skill itself.
-               */
-              0,
-            );
-          // if we'd like to be fancy, all payments in one domain could
-          const oneTxPayment = await oneTxClient.makePaymentFundedFromDomain(
-            extensionPDID,
-            extensionCSI,
-            userPDID,
-            userCSI,
+          const params = [
             [users[userIndex]],
             [tokenAddress],
             [amount],
@@ -1080,13 +1225,47 @@ const userPayments = async (
              * above domain, but none in the skill itself.
              */
             0,
+          ];
+
+          // estimate
+          const estimatedGas =
+            await oneTxClient.estimateGas.makePaymentFundedFromDomain(
+              extensionPDID,
+              extensionCSI,
+              userPDID,
+              userCSI,
+              ...params,
+            );
+          // if we'd like to be fancy, all payments in one domain could
+          const oneTxPayment = await oneTxClient.makePaymentFundedFromDomain(
+            extensionPDID,
+            extensionCSI,
+            userPDID,
+            userCSI,
+            ...params,
             {
               gasLimit: estimatedGas.div(BigNumber.from(10)).add(estimatedGas),
             },
           );
-          delay();
-          await oneTxPayment.wait();
-          delay();
+          await delay();
+          const oneTxPaymentTransaction = await oneTxPayment.wait();
+
+          const batchKey = 'payment';
+          const groupId = nanoid();
+
+          await addTxToDb({
+            colonyAddress,
+            context: ClientType.OneTxPaymentClient,
+            groupId,
+            groupIndex: 0,
+            groupKey: batchKey,
+            hash: oneTxPaymentTransaction.transactionHash,
+            methodName: 'makePaymentFundedFromDomain',
+            params,
+            userAddress: signerOrWallet.address,
+          });
+
+          await delay();
 
           console.log(
             `Paying ${amount
@@ -1255,8 +1434,6 @@ const createUserAndColonyData = async () => {
     availableUsers.walletUsers[user.address] = user;
   });
 
-  delay(1000);
-
   const randomUsers = await createRandomUsersInBatches();
   randomUsers.forEach((user) => {
     availableUsers.randomUsers[user.address] = user;
@@ -1297,7 +1474,7 @@ const createUserAndColonyData = async () => {
       colonyName,
       oneTxExtensionAddress,
     } = await createColony(colonyData, leelaWallet);
-    delay();
+    await delay();
 
     availableColonies[newColonyAddress] = {
       colonyAddress: newColonyAddress,
@@ -1320,7 +1497,7 @@ const createUserAndColonyData = async () => {
         .slice(0, noOfMembers)
         .map(async (userAddress) => {
           await subscribeUserToColony(userAddress, newColonyAddress);
-          delay(100);
+          await delay(100);
         }),
     );
 
@@ -1438,7 +1615,7 @@ const createUserAndColonyData = async () => {
   await Promise.all(
     coloniesTokens.slice(0, 5).map(async (tokenAddress) => {
       addTokenToColonyTokens(planetExpressColony.colonyAddress, tokenAddress);
-      delay();
+      await delay();
     }),
   );
 

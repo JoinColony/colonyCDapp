@@ -139,6 +139,18 @@ const cache = new InMemoryCache({
             };
           },
         },
+        getTransactionsByUser: {
+          keyArgs: ['userAddress'],
+          merge(existing = [], incoming, { args }) {
+            if (!args?.nextToken) {
+              return incoming;
+            }
+            return {
+              ...incoming,
+              items: [...existing.items, ...incoming.items],
+            };
+          },
+        },
       },
     },
     ...cacheUpdates,

@@ -13,8 +13,8 @@ query GetUserTransactions($userAddress: ID!, $nextToken: String, $limit: Int) {
   }
 }
 
-query GetTransactionsByGroup($from: ID!, $groupId: ID!) {
-  getTransactionsByUserAndGroup(groupId: $groupId, from: { eq: $from }) {
+query GetTransactionsByGroup($userAddress: ID!, $groupId: ID!) {
+  getTransactionsByUserAndGroup(from: { eq: $userAddress }, groupId: $groupId) {
     items {
       ...Transaction
     }
@@ -28,10 +28,7 @@ query GetTransaction($id: ID!) {
 }
 
 query GetPendingTransactions($userAddress: ID!) {
-  getTransactionsByUser(
-    from: $userAddress
-    filter: { status: { eq: PENDING } }
-  ) {
+  getTransactionsByUserAndStatus(from: { eq: $userAddress }, status: PENDING) {
     items {
       id
     }

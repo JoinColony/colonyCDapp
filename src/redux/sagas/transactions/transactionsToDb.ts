@@ -185,7 +185,7 @@ function* updateTransactionInDb({
           query: GetTransactionsByGroupDocument,
           // group ids are unique, but check "from" is the same, just to be sure
           variables: {
-            from: utils.getAddress(from),
+            userAddress: utils.getAddress(from),
             groupId,
           },
         });
