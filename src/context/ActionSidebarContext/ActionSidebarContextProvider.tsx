@@ -57,6 +57,12 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { trackEvent } = useAnalyticsContext();
   const navigate = useNavigate();
 
+  const removeTxParamOnClose = useCallback(() => {
+    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM), {
+      replace: true,
+    });
+  }, [navigate]);
+
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
     const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
@@ -68,6 +74,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       return false;
     }
 
+    removeTxParamOnClose();
     return undefined;
   });
 
@@ -87,12 +94,6 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [toggleActionSidebarOn, trackEvent],
   );
 
-  const removeTxParamOnClose = () => {
-    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM), {
-      replace: true,
-    });
-  };
-
   const toggleOff = useCallback(() => {
     removeTxParamOnClose();
     return toggleActionSidebarOff();
@@ -103,7 +104,6 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!isActionSidebarOpen) {
         setActionSidebarInitialValues(initialValues);
       }
-
       return toggleActionSidebar();
     },
     [isActionSidebarOpen, toggleActionSidebar],

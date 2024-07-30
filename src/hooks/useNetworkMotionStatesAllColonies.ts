@@ -5,12 +5,13 @@ import {
 } from '@colony/colony-js';
 import { Extension } from '@colony/colony-js';
 import { type Provider } from '@ethersproject/providers';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetCurrentExtensionsVersionsQuery } from '~gql';
 import { notNull, notUndefined } from '~utils/arrays/index.ts';
+import { groupBy } from '~utils/lodash.ts';
 
 import { mapToInstalledExtensionData } from '../utils/extensions.ts';
 
@@ -18,7 +19,7 @@ import useJoinedColoniesWithExtensions from './useJoinedColoniesWithExtensions.t
 
 export type MotionStatesMap = Map<string, MotionState | null>;
 
-export type MotionStatesMapByColonies = Map<string, MotionStatesMap>;
+export type MotionStatesMapByColonies = Record<string, MotionStatesMap>;
 
 export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
 
@@ -54,7 +55,9 @@ const getInstalledExtensions = (colony, versionsData) => {
   return colonyExtensionsMap.filter(notNull);
 };
 
-const getVotingReputationAdress = (installedExtensions): string | undefined => {
+const getVotingReputationAddress = (
+  installedExtensions,
+): string | undefined => {
   const votingReputationExtension = installedExtensions.find(
     (extension) => extension.extensionId === Extension.VotingReputation,
   );
@@ -62,39 +65,48 @@ const getVotingReputationAdress = (installedExtensions): string | undefined => {
   return votingReputationExtension?.address;
 };
 
+const getVotingReputation = ({ colony, versionsData }) => {
+  return getVotingReputationAddress(
+    getInstalledExtensions(colony, versionsData),
+  );
+};
+
 /**
  * Hook that accepts an array of motion IDs and returns a map of motion IDs to their states
  * Make sure to memoize the array of motion IDs to avoid infinite loops
  */
 const useNetworkMotionStatesAllColonies = (
-  nativeMotionIds: string[],
+  motionIdsMap: { motionId: string; colonyAddress: string }[],
   skip?: boolean,
 ) => {
   const { wallet } = useAppContext();
-  const { joinedColoniesWithExtensions } = useJoinedColoniesWithExtensions(
-    wallet?.address,
-  );
 
-  const { data: versionsData } = useGetCurrentExtensionsVersionsQuery({
-    fetchPolicy: 'cache-and-network',
-  });
+  const {
+    joinedColoniesWithExtensions,
+    loading: joinedColoniesWithExtensionsLoading,
+  } = useJoinedColoniesWithExtensions();
 
-  const votingReputationByColony = joinedColoniesWithExtensions.reduce(
-    (prev, colony) => {
+  const { data: versionsData, loading: versionsLoading } =
+    useGetCurrentExtensionsVersionsQuery({
+      fetchPolicy: 'cache-and-network',
+    });
+
+  const votingReputationByColony = useMemo(() => {
+    return joinedColoniesWithExtensions.reduce((prev, colony) => {
+      if (!colony) {
+        return prev;
+      }
       return {
         ...prev,
-        [colony.colonyAddress]: getVotingReputationAdress(
-          getInstalledExtensions(colony, versionsData),
-        ),
+        [colony.colonyAddress]: getVotingReputation({ colony, versionsData }),
       };
-    },
-    {},
-  );
+    }, {});
+  }, [joinedColoniesWithExtensions, versionsData]);
 
   const [loading, setLoading] = useState(false);
 
   const [motionStatesMapByColonies, setMotionStatesMapByColonies] =
-    useState<MotionStatesMapByColonies>(new Map());
+    useState<MotionStatesMapByColonies>({});
 
   useEffect(() => {
     const { ethersProvider } = wallet || {};
@@ -104,38 +116,42 @@ const useNetworkMotionStatesAllColonies = (
     ).filter(notUndefined).length;
     if (
       skip ||
-      !nativeMotionIds.length ||
+      !motionIdsMap.length ||
       !votingReputationAddressesCount ||
       !ethersProvider
     ) {
       return;
     }
 
-    const existingMotionIdsMap = new Map();
-    motionStatesMapByColonies.forEach((value: MotionStatesMap) => {
-      value.forEach((v, k) => {
-        existingMotionIdsMap.set(k, v);
-      });
-    });
-
-    const newMotionIds = nativeMotionIds.filter(
-      (nativeMotionId) => !existingMotionIdsMap.has(nativeMotionId),
+    const groupedMotions = groupBy(
+      motionIdsMap,
+      (motion) => motion.colonyAddress,
     );
-    const deletedMotionIds = Array.from(existingMotionIdsMap.keys()).filter(
-      (nativeMotionId) => !nativeMotionIds.includes(nativeMotionId),
-    );
-    if (!newMotionIds.length && !deletedMotionIds.length) {
-      return;
-    }
 
     const fetchMotionStates = async () => {
       setLoading(true);
 
-      const statesMapByColony = new Map(motionStatesMapByColonies);
-
       await Promise.all(
-        Object.entries(votingReputationByColony).map(
-          async ([colony, votingReputationAddress]: [string, string]) => {
+        Object.entries(groupedMotions).map(
+          async ([colonyAddress, motionIdsArray]) => {
+            const motionStatesMap =
+              motionStatesMapByColonies?.[colonyAddress] || new Map();
+
+            const newMotionIds = motionIdsArray.filter(
+              (nativeMotionId) =>
+                !motionStatesMap?.has(nativeMotionId.motionId),
+            );
+            const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
+              (nativeMotionId) =>
+                !motionIdsArray.some((m) => m.motionId === nativeMotionId),
+            );
+            if (!newMotionIds.length && !deletedMotionIds.length) {
+              return;
+            }
+
+            const votingReputationAddress =
+              votingReputationByColony[colonyAddress];
+
             if (!votingReputationAddress) {
               return;
             }
@@ -147,42 +163,40 @@ const useNetworkMotionStatesAllColonies = (
             const statesMap = new Map();
 
             await Promise.all(
-              newMotionIds.map(async (nativeMotionId) => {
+              motionIdsArray.map(async ({ motionId: nativeMotionId }) => {
                 try {
                   const motionState =
                     await votingRepClient.getMotionState(nativeMotionId);
                   statesMap.set(nativeMotionId, motionState);
-                } catch {
+                } catch (e) {
+                  console.error(e);
                   statesMap.set(nativeMotionId, null);
                 }
               }),
             );
-
-            deletedMotionIds.forEach((nativeMotionId) =>
-              statesMap.delete(nativeMotionId),
-            );
-
-            statesMapByColony.set(colony, statesMap);
+            setMotionStatesMapByColonies((statesMapByColony) => ({
+              ...statesMapByColony,
+              [colonyAddress]: statesMap,
+            }));
           },
         ),
       );
-      setMotionStatesMapByColonies(statesMapByColony);
       setLoading(false);
     };
 
     fetchMotionStates();
   }, [
-    motionStatesMapByColonies,
-    nativeMotionIds,
+    motionIdsMap,
+    votingReputationByColony,
     skip,
     wallet,
-    votingReputationByColony,
+    motionStatesMapByColonies,
   ]);
 
   return {
     motionStatesMapByColonies,
     votingReputationByColony,
-    loading,
+    loading: loading || joinedColoniesWithExtensionsLoading || versionsLoading,
   };
 };
 

@@ -30,18 +30,21 @@ export const useStakesByFilterType = () => {
     [data],
   );
 
-  const motionIds = useMemo(
+  const motionIdsMap = useMemo(
     () =>
       userStakes
         .filter((stake) => !!stake.action?.motionData)
-        .map((stake) => stake.action?.motionData?.motionId ?? ''),
+        .map((stake) => ({
+          motionId: stake.action?.motionData?.motionId ?? '',
+          colonyAddress: stake.action?.colonyAddress ?? '',
+        })),
     [userStakes],
   );
   const {
     motionStatesMapByColonies,
     loading: motionStatesLoading,
     votingReputationByColony,
-  } = useNetworkMotionStatesAllColonies(motionIds);
+  } = useNetworkMotionStatesAllColonies(motionIdsMap);
 
   const stakesWithStatus = useMemo(
     () =>
@@ -72,8 +75,7 @@ export const useStakesByFilterType = () => {
 
   const filtersDataLoading = stakesFilterOptions.reduce(
     (loading, option) => {
-      const isFilterDataLoading =
-        stakesLoading || (option.requiresMotionState && motionStatesLoading);
+      const isFilterDataLoading = stakesLoading || motionStatesLoading;
       return {
         ...loading,
         [option.type]: isFilterDataLoading,
@@ -106,5 +108,9 @@ export const useStakesByFilterType = () => {
     }));
   };
 
-  return { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache };
+  return {
+    stakesByFilterType,
+    filtersDataLoading,
+    updateClaimedStakesCache,
+  };
 };

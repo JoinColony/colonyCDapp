@@ -28,7 +28,7 @@ export const getStakesTabItems = (
 
 export const getStakeStatus = (
   stake: UserStake,
-  statesMap: Map<string, MotionStatesMap>,
+  statesMap: Record<string, MotionStatesMap>,
   votingReputationByColony: Record<string, string>,
 ) => {
   if (stake.isClaimed) {
@@ -36,7 +36,7 @@ export const getStakeStatus = (
   }
 
   const colonyAddress = stake.action?.colonyAddress;
-  const currentColonyMotionState = statesMap?.get(colonyAddress ?? '');
+  const currentColonyMotionState = statesMap[colonyAddress ?? ''];
   const motionState = currentColonyMotionState?.get(
     stake.action?.motionData?.motionId ?? '',
   );

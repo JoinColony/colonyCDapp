@@ -16,35 +16,19 @@ query GetExtensionInstallationsCount($id: ID!) {
   }
 }
 
-query GetAllColoniesExtensions(
-  $contributorAddress: ID!
-  $sortDirection: ModelSortDirection = ASC
-  $limit: Int = 100
-  $nextToken: String
-  $isWatching: Boolean
-) {
-  getContributorsByAddress(
-    contributorAddress: $contributorAddress
-    sortDirection: $sortDirection
-    limit: $limit
-    nextToken: $nextToken
-    filter: { isWatching: { eq: $isWatching } }
-  ) {
+query GetAllColoniesExtensions {
+  listColonies {
     items {
-      id
-      createdAt
-      colony {
-        colonyAddress: id
-        name
-        extensions(filter: { isDeleted: { eq: false } }) {
-          items {
-            address: id
-            version
-            hash
-            isDeleted
-            isDeprecated
-            isInitialized
-          }
+      colonyAddress: id
+      name
+      extensions(filter: { isDeleted: { eq: false } }) {
+        items {
+          address: id
+          version
+          hash
+          isDeleted
+          isDeprecated
+          isInitialized
         }
       }
     }
