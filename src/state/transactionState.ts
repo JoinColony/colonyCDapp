@@ -291,7 +291,7 @@ export const addTransactionToDb = async (
 
   const input: CreateTransactionInput = {
     id,
-    context: context as ClientType,
+    context: context as unknown as ClientType,
     createdAt: txCreatedAt,
     error: null,
     from: fromAddress,

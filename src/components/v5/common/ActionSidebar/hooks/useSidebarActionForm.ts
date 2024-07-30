@@ -13,7 +13,7 @@ import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm/index
 import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm/index.ts';
 import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm/index.ts';
 import ManageReputationForm from '../partials/forms/ManageReputationForm/index.ts';
-import ManageTokensForm from '../partials/forms/ManageTokensForm/index.ts';
+import ManageTokensForm from '../partials/forms/ManageTokensForm/ManageTokensForm.tsx';
 import ManageVerifiedMembersForm from '../partials/forms/ManageVerifiedMembersForm/index.ts';
 import MintTokenForm from '../partials/forms/MintTokenForm/index.ts';
 import PaymentBuilderForm from '../partials/forms/PaymentBuilderForm/index.ts';

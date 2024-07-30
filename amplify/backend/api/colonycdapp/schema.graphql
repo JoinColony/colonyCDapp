@@ -860,6 +860,14 @@ enum ColonyActionType {
   An action related to finalizing an expenditure via a motion
   """
   FINALIZE_EXPENDITURE_MOTION
+  """
+  An action related to adding / removing approved colony tokens
+  """
+  MANAGE_TOKENS
+  """
+  An action related to adding / removing approved colony tokens
+  """
+  MANAGE_TOKENS_MOTION
 }
 
 """
@@ -1244,6 +1252,10 @@ type Token @model {
   Timestamp of the token model's creation in the database
   """
   createdAt: AWSDateTime!
+  """
+  If the token was validated by the Colony Team, meaning it shows up in the manage tokens list to add to your colony
+  """
+  validated: Boolean
 }
 
 type ContributorReputation @model {
@@ -1539,20 +1551,6 @@ type ColonyUnclaimedStake {
   unclaimedRewards: [StakerRewards!]!
 }
 
-"""
-Colony token modifications that are stored temporarily and commited to the database once the corresponding motion passes
-"""
-type PendingModifiedTokenAddresses {
-  """
-  List of tokens that were added to the Colony's token list
-  """
-  added: [String!]
-  """
-  List of tokens that were removed from the Colony's token list
-  """
-  removed: [String!]
-}
-
 enum ExternalLinks {
   Custom
   Whitepaper
@@ -1628,11 +1626,6 @@ type ColonyMetadata @model {
   """
   changelog: [ColonyMetadataChangelog!]
   """
-  Token addresses that were modified in a previous action (motion)
-  Only present on pendingColonyMetadata for consumption in block ingestor
-  """
-  modifiedTokenAddresses: PendingModifiedTokenAddresses
-  """
   Colony Objective
   """
   objective: ColonyObjective
@@ -1667,10 +1660,6 @@ type ColonyMetadataChangelog {
   Indicates whether the avatar has changed
   """
   hasAvatarChanged: Boolean!
-  """
-  Whether tokens have been added or removed from the Colony's token list
-  """
-  haveTokensChanged: Boolean!
   """
   Whether the colony description has changed
   """
@@ -3154,6 +3143,19 @@ type ColonyAction @model @searchable {
   Applicable to `EDIT_EXPENDITURE` action only
   """
   expenditureSlotChanges: ExpenditureSlotChanges
+  """
+  Approved tokens impacted by the action (used for manage tokens)
+  """
+  approvedTokenChanges: ApprovedTokenChanges
+}
+
+"""
+Token IDs
+"""
+type ApprovedTokenChanges {
+  added: [ID!]!
+  removed: [ID!]!
+  unaffected: [ID!]!
 }
 
 type ExpenditureSlotChanges {

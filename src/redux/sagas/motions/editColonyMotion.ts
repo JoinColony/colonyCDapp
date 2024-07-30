@@ -28,7 +28,6 @@ import {
   takeFrom,
   uploadAnnotation,
 } from '../utils/index.ts';
-import { getPendingModifiedTokenAddresses } from '../utils/updateColonyTokens.ts';
 
 function* editColonyMotion({
   payload: {
@@ -37,7 +36,6 @@ function* editColonyMotion({
     colonyDisplayName,
     colonyAvatarImage,
     colonyThumbnail,
-    tokenAddresses,
     colonyDescription,
     colonyExternalLinks,
     annotationMessage,
@@ -184,16 +182,6 @@ function* editColonyMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    const modifiedTokenAddresses = getPendingModifiedTokenAddresses(
-      colony,
-      tokenAddresses,
-    );
-
-    const haveTokensChanged = !!(
-      modifiedTokenAddresses.added.length ||
-      modifiedTokenAddresses.removed.length
-    );
-
     /*
      * Save the pending colony metadata in the database
      */
@@ -224,7 +212,6 @@ function* editColonyMotion({
                   colonyAvatarImage === undefined
                     ? false
                     : colonyAvatarImage !== colony.metadata.avatar,
-                haveTokensChanged,
                 hasDescriptionChanged:
                   metadata?.description !== colonyDescription,
                 haveExternalLinksChanged: !isEqual(
@@ -239,7 +226,6 @@ function* editColonyMotion({
                 oldSafes: colony.metadata.safes,
               },
             ],
-            modifiedTokenAddresses,
           },
         },
       });

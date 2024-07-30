@@ -120,14 +120,14 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.Initiator];
     case actionType.includes(ExtendedColonyActionType.UpdateColonyObjective):
       return [ActionTitleMessageKeys.Initiator];
-    case actionType.includes(ExtendedColonyActionType.UpdateTokens):
-      return [ActionTitleMessageKeys.Initiator];
     case safeActionTypes.some((type) => actionType.includes(type)):
       return [ActionTitleMessageKeys.SafeTransactionTitle];
     case actionType.includes(ColonyActionType.AddVerifiedMembers):
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.RemoveVerifiedMembers):
       return [ActionTitleMessageKeys.Members, ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ColonyActionType.ManageTokens):
+      return [ActionTitleMessageKeys.Initiator];
     default:
       return [];
   }

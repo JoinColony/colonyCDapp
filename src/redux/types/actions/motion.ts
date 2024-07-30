@@ -35,6 +35,7 @@ export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
+  EditColonyByDelta = 'editColonyByDelta',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
@@ -179,7 +180,6 @@ export type MotionActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
-        tokenAddresses?: Address[];
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
@@ -409,5 +409,21 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_MANAGE_TOKENS,
+      {
+        colonyAddress: Address;
+        colonyName: string;
+        tokenAddresses: Address[];
+        customActionTitle: string;
+        annotationMessage?: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_MANAGE_TOKENS_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
       MetaWithSetter<object>
     >;

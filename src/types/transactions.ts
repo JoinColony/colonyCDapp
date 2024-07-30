@@ -64,6 +64,7 @@ export enum MetamaskRpcErrors {
 }
 
 export enum TRANSACTION_METHODS {
+  AnnotateTransaction = 'annotateTransaction',
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
@@ -82,6 +83,7 @@ export enum TRANSACTION_METHODS {
   DeployTokenAuthority = 'deployTokenAuthority',
   Deposit = 'deposit',
   EditColony = 'editColony',
+  EditColonyByDelta = 'editColonyByDelta',
   EditDomain = 'editDomain',
   EnableExtension = 'enableExtension',
   EscalateMotion = 'escalateMotion',
@@ -90,6 +92,7 @@ export enum TRANSACTION_METHODS {
   FundExpenditure = 'fundExpenditure',
   InitiateSafeTransaction = 'initiateSafeTransaction',
   LockExpenditure = 'lockExpenditure',
+  ManageTokens = 'manageTokens',
   MintTokens = 'mintTokens',
   MoveFunds = 'moveFunds',
   Payment = 'payment',

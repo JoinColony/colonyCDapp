@@ -1,40 +1,22 @@
-import { isAddress } from '@ethersproject/address';
+import { isAddress } from 'ethers/lib/utils';
 import React, { useMemo } from 'react';
 
-import { getNetworkTokenList } from '~constants/tokens/index.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
-import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import TokenStatus from './partials/TokenStatus/TokenStatus.tsx';
 
-export const useTokenSelect = (inputValue: string) => {
-  // @TODO: `getNetworkTokenList` and `useGetAllTokens` return the same data - no need to use both
-  const predefinedTokens = getNetworkTokenList();
-  const allTokens = useGetAllTokens();
-  const { colony } = useColonyContext();
-  const isNativeToken = colony.nativeToken?.tokenAddress === inputValue;
-
-  const tokenOptions: SearchSelectOptionProps = {
-    key: 'tokens',
-    title: { id: 'manageTokensTable.availableTokens' },
-    options: predefinedTokens.map(({ token }) => ({
-      label: token.name,
-      value: token.tokenAddress,
-      token,
-    })),
-  };
+export const useTokenSelect = (inputValue: string | undefined) => {
+  const { options, isLoading } = useTokenSelectContext();
 
   const isRemoteTokenAddress = useMemo(
     () =>
-      inputValue &&
+      !!inputValue &&
       isAddress(inputValue) &&
-      !allTokens.some(({ token }) => token.tokenAddress === inputValue),
-    [inputValue, allTokens],
+      !options.some(({ token }) => token?.tokenAddress === inputValue),
+    [options, inputValue],
   );
 
   const { data: tokenData, loading } = useGetTokenFromEverywhereQuery({
@@ -47,38 +29,33 @@ export const useTokenSelect = (inputValue: string) => {
   });
 
   const renderButtonContent = () => {
-    if (!isRemoteTokenAddress) {
-      if (!inputValue) {
-        return formatText({ id: 'manageTokensTable.select' });
-      }
+    if (!inputValue) {
+      return formatText({ id: 'manageTokensTable.select' });
+    }
 
-      const selectedToken = allTokens.find(
-        ({ token }) => token.tokenAddress === inputValue,
-      )?.token;
-
+    if (isLoading || loading) {
       return (
-        <div className="flex items-center gap-2">
-          {selectedToken && (
-            <TokenAvatar
-              size={18}
-              tokenName={selectedToken.name}
-              tokenAddress={selectedToken.tokenAddress}
-              tokenAvatarSrc={selectedToken?.avatar ?? undefined}
-            />
-          )}
-          {selectedToken?.name}
-        </div>
+        <div className="h-[1.5rem] w-full max-w-[8.75rem] skeleton before:rounded" />
       );
     }
 
-    if (loading) {
-      return <SpinnerLoader appearance={{ size: 'small' }} />;
-    }
+    const selectedToken =
+      options.find(({ value }) => value === inputValue)?.token ||
+      tokenData?.getTokenFromEverywhere?.items?.[0];
 
-    return tokenData ? (
-      <TokenStatus status="success">
-        {tokenData.getTokenFromEverywhere?.items?.[0]?.name}
-      </TokenStatus>
+    return selectedToken ? (
+      <div className="flex w-full items-center gap-2">
+        <TokenAvatar
+          size={18}
+          tokenName={selectedToken.name}
+          tokenAddress={selectedToken.tokenAddress}
+          tokenAvatarSrc={selectedToken?.avatar ?? undefined}
+        />
+
+        <p className="truncate">
+          {selectedToken.name || selectedToken.tokenAddress}
+        </p>
+      </div>
     ) : (
       <TokenStatus status="error">
         {formatText({ id: 'manageTokensTable.notFound' })}
@@ -87,9 +64,6 @@ export const useTokenSelect = (inputValue: string) => {
   };
 
   return {
-    tokenOptions,
-    isRemoteTokenAddress,
     renderButtonContent,
-    isNativeToken,
   };
 };

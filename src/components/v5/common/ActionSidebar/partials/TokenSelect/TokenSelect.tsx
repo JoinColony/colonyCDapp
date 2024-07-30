@@ -1,24 +1,38 @@
 import clsx from 'clsx';
 import { isAddress } from 'ethers/lib/utils';
-import React, { type FC, useEffect, useState } from 'react';
+import React, { type FC, useEffect, useState, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 
+import { apolloClient } from '~apollo';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import TokenSelectContextProvider from '~context/TokenSelectContext/TokenSelectContextProvider.tsx';
+import {
+  GetTokenFromEverywhereDocument,
+  type GetTokenFromEverywhereQuery,
+  type GetTokenFromEverywhereQueryVariables,
+} from '~gql';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { FieldState } from '~v5/common/Fields/consts.ts';
-import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { useTokenSelect } from './hooks.tsx';
+import TokenSearchSelect from './partials/TokenSearchSelect/TokenSearchSelect.tsx';
 import { type TokenSelectProps } from './types.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.TokenSelect';
 
-const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
+const TokenSelectContent: FC<TokenSelectProps> = ({
+  name,
+  disabled = false,
+  readOnly: readOnlyProp,
+  filterOptionsFn,
+}) => {
   const { colony } = useColonyContext();
   const [searchError, setSearchError] = useState(false);
+  const [tokenError, setTokenError] = useState(false);
   const {
     field,
     fieldState: { error },
@@ -34,12 +48,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
       registerContainerRef,
     },
   ] = useToggle();
-  const {
-    tokenOptions,
-    isRemoteTokenAddress,
-    renderButtonContent,
-    isNativeToken,
-  } = useTokenSelect(field.value);
+  const { renderButtonContent } = useTokenSelect(field.value);
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
@@ -47,29 +56,40 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
     top: 8,
   });
   const { readonly } = useAdditionalFormOptionsContext();
+  const colonyTokens = useMemo(
+    () => colony.tokens?.items.filter(notNull) || [],
+    [colony.tokens?.items],
+  );
 
   useEffect(() => {
     if (!isTokenSelectVisible) {
       setSearchError(false);
+      setTokenError(false);
     }
   }, [isTokenSelectVisible]);
 
   return (
     <div className="w-full sm:relative">
-      {readonly ? (
-        <div className="flex text-md">{renderButtonContent()}</div>
+      {readonly || readOnlyProp ? (
+        <div
+          className={clsx('flex text-md', {
+            'text-negative-400': isError,
+          })}
+        >
+          {renderButtonContent()}
+        </div>
       ) : (
         <>
           <button
             type="button"
             ref={relativeElementRef}
             className={clsx(
-              'flex text-md transition-colors md:hover:text-blue-400',
+              'flex w-full text-md transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !isError && !disabled,
+                'text-gray-900': !isError && !disabled && field.value,
+                'text-gray-400': !isError && !disabled && !field.value,
                 'text-negative-400': isError,
                 'text-gray-300': disabled,
-                'pointer-events-none': isNativeToken,
               },
             )}
             onClick={toggleTokenSelect}
@@ -78,31 +98,44 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
             {renderButtonContent()}
           </button>
           {isTokenSelectVisible && (
-            <SearchSelect
-              showEmptyContent={!isRemoteTokenAddress}
-              items={[
-                isRemoteTokenAddress
-                  ? { ...tokenOptions, options: [] }
-                  : tokenOptions,
-              ]}
-              state={searchError ? FieldState.Error : undefined}
+            <TokenSearchSelect
+              state={searchError || tokenError ? FieldState.Error : undefined}
               message={
-                searchError ? (
+                searchError || tokenError ? (
                   <span className="text-sm text-negative-400">
-                    {formatText({ id: 'manageTokensTable.error' })}
+                    {formatText({
+                      id: searchError
+                        ? 'manageTokensTable.error'
+                        : 'manageTokensTable.tokenError',
+                    })}
                   </span>
                 ) : undefined
               }
-              onSearch={(query) => {
-                const isColonyNativeToken =
-                  colony.nativeToken?.tokenAddress === query;
-                setSearchError(isColonyNativeToken);
+              onSearch={async (query) => {
+                const isColonyToken = colonyTokens.some(
+                  ({ token: { tokenAddress } }) => tokenAddress === query,
+                );
+                setSearchError(isColonyToken);
 
-                if (isColonyNativeToken) {
+                if (isColonyToken || !isAddress(query)) {
                   return;
                 }
 
-                field.onChange(isAddress(query) ? query : undefined);
+                const {
+                  data: { getTokenFromEverywhere },
+                } = await apolloClient.query<
+                  GetTokenFromEverywhereQuery,
+                  GetTokenFromEverywhereQueryVariables
+                >({
+                  query: GetTokenFromEverywhereDocument,
+                  variables: {
+                    input: {
+                      tokenAddress: query,
+                    },
+                  },
+                });
+
+                setTokenError(!getTokenFromEverywhere);
               }}
               onSelect={(value) => {
                 field.onChange(value);
@@ -112,6 +145,7 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
               }}
+              filterOptionsFn={filterOptionsFn}
             />
           )}
         </>
@@ -119,6 +153,12 @@ const TokenSelect: FC<TokenSelectProps> = ({ name, disabled = false }) => {
     </div>
   );
 };
+
+const TokenSelect: FC<TokenSelectProps> = (props) => (
+  <TokenSelectContextProvider>
+    <TokenSelectContent {...props} />
+  </TokenSelectContextProvider>
+);
 
 TokenSelect.displayName = displayName;
 

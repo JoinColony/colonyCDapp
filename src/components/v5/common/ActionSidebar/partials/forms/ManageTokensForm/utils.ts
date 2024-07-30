@@ -29,7 +29,8 @@ export const getManageTokensPayload = (
   ];
 
   return {
-    colony,
+    colonyAddress: colony.colonyAddress,
+    colonyName: colony.name,
     tokenAddresses,
     annotationMessage: annotationMessage
       ? sanitizeHTML(annotationMessage)

@@ -1,6 +1,6 @@
 const { constants, utils, providers, Contract } = require('ethers');
+const { abi } = require('@colony/abis/versions/hmwss/MetaTxToken');
 
-const basicTokenAbi = require('./basicTokenAbi.json');
 const {
   graphqlRequest,
   getTokenType,
@@ -128,11 +128,7 @@ exports.handler = async (event) => {
        */
       const checksummedAddress = utils.getAddress(tokenAddress);
       const provider = new providers.StaticJsonRpcProvider(rpcURL);
-      const tokenFromChain = new Contract(
-        checksummedAddress,
-        basicTokenAbi,
-        provider,
-      );
+      const tokenFromChain = new Contract(checksummedAddress, abi, provider);
 
       const contractCode = await provider.getCode(checksummedAddress);
       // Check there is a contract deployed at this address
@@ -142,19 +138,26 @@ exports.handler = async (event) => {
         );
       }
 
+      tokenFromChain.interface.encodeFunctionData('totalSupply', []);
+
       // Call each of the following required ERC20 functions using their function selectors
       // If these contract calls succeed without throwing an error, it is likely an ERC20 token contract
       const erc20Functions = [
-        '0x18160ddd', // totalSupply
-        '0x70a08231', // balanceOf(address)
-        '0xa9059cbb', // transfer(address,uint256)
-        '0x095ea7b3', // approve(address,uint256)
-        '0xdd62ed3e', // allowance(address,address)
-        '0x23b872dd', // transferFrom(address,address,uint256)
+        tokenFromChain.interface.encodeFunctionData('totalSupply', []),
+        tokenFromChain.interface.encodeFunctionData('balanceOf', [
+          checksummedAddress,
+        ]),
+        tokenFromChain.interface.encodeFunctionData('allowance', [
+          checksummedAddress,
+          constants.AddressZero,
+        ]),
       ];
 
       for (const erc20Function of erc20Functions) {
-        await provider.call({ to: checksummedAddress, data: erc20Function });
+        await provider.estimateGas({
+          to: checksummedAddress,
+          data: erc20Function,
+        });
       }
 
       let name = checksummedAddress;

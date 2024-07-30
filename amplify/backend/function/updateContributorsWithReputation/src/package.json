@@ -8,7 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
-    "@colony/colony-js": "^7.1.0",
+    "@colony/colony-js": "^0.0.0-snapshot-69cce09-20240724101901",
     "@colony/events": "0.0.0-snapshot-20240329154314",
     "cross-fetch": "^4.0.0",
     "decimal.js": "^10.2.1",

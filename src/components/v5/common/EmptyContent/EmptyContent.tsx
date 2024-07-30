@@ -19,6 +19,7 @@ const EmptyContent: FC<EmptyContentProps> = ({
   className,
   withoutButtonIcon = false,
   buttonIcon: ButtonIcon = ShareNetwork,
+  isDropdown,
 }) => {
   const { formatMessage } = useIntl();
   const titleText =
@@ -47,9 +48,22 @@ const EmptyContent: FC<EmptyContentProps> = ({
           </div>
         )}
         {titleText && (
-          <h5 className="mt-3 text-gray-900 text-1">{titleText}</h5>
+          <h5
+            className={clsx('mt-3 text-gray-900', {
+              'text-1': !isDropdown,
+              'text-3': isDropdown,
+            })}
+          >
+            {titleText}
+          </h5>
         )}
-        <p className="mt-2 text-sm text-gray-600 sm:mt-3">{descriptionText}</p>
+        <p
+          className={clsx('text-sm text-gray-600', {
+            'mt-2 sm:mt-3': !isDropdown,
+          })}
+        >
+          {descriptionText}
+        </p>
         {onClick && (
           <Button
             mode="primaryOutline"

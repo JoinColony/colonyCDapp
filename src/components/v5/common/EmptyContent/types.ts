@@ -11,4 +11,5 @@ export interface EmptyContentProps {
   withoutButtonIcon?: boolean;
   className?: string;
   buttonIcon?: Icon;
+  isDropdown?: boolean;
 }

@@ -15,6 +15,7 @@ import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
 import ManageTeam from './partials/ManageTeam/index.ts';
+import ManageTokens from './partials/ManageTokens/ManageTokens.tsx';
 import MintTokens from './partials/MintTokens/index.ts';
 import PaymentBuilderWidget from './partials/PaymentBuilder/partials/PaymentBuilderWidget/PaymentBuilderWidget.tsx';
 import PaymentBuilder from './partials/PaymentBuilder/PaymentBuilder.tsx';
@@ -86,6 +87,9 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
           return <ManageReputation action={action} />; */
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilder action={action} />;
+      case ColonyActionType.ManageTokens:
+      case ColonyActionType.ManageTokensMotion:
+        return <ManageTokens action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -106,6 +110,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateDecisionMotion:
       case ColonyActionType.SetUserRolesMotion:
       case ColonyActionType.ColonyEditMotion:
+      case ColonyActionType.ManageTokensMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
         // @NOTE: Enabling those 2 above temporarily
