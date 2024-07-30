@@ -98,53 +98,21 @@ const SetUserRoles = ({ action }: Props) => {
     ? Authority.ViaMultiSig
     : Authority.Own;
 
-  /**
-   * Hack explained:
-   * If you give a user multi-sig permissions for the 1st time, this "_multisig" chunk gets added to the ID
-   * But the next time you give this user another multisig permission, this chunk is not added
-   * By chunk, I mean: 0x0000_2_0x0000_8293_roles VERSUS 0x0000_2_0x0000_8293_multisig_roles
-   * I cannot come up with a cleaner way to identify whether or not a user already has multisig prior
-   * And to get the user's real historic role, I needed to test with both the "_multisig" chunk and without
-   * I also don't know what other scenario will add the _multisig chunk to the ID
-   */
-
-  // Historic role without the "_multisig" ID chunk
-  const { data: historicRolesA } = useGetColonyHistoricRoleRolesQuery({
+  const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
       id: getHistoricRolesDatabaseId({
         blockNumber,
         colonyAddress,
         nativeId: fromDomain?.nativeId,
         recipientAddress,
+        isMultiSig: rolesAreMultiSig,
       }),
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  // Historic role with the "_multisig" ID chunk, only if the authority is Authority.ViaMultiSig
-  const { data: historicRolesB } = useGetColonyHistoricRoleRolesQuery({
-    variables: {
-      id: getHistoricRolesDatabaseId({
-        blockNumber,
-        colonyAddress,
-        nativeId: fromDomain?.nativeId,
-        recipientAddress,
-        isMultiSig: roleAuthority === Authority.ViaMultiSig,
-      }),
-    },
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const userColonyRolesA = transformActionRolesToColonyRoles(
-    historicRolesA?.getColonyHistoricRole,
-  );
-
-  const userColonyRolesB = transformActionRolesToColonyRoles(
-    historicRolesB?.getColonyHistoricRole,
-  );
-
-  const userColonyRoles = Array.from(
-    new Set([...userColonyRolesA, ...userColonyRolesB]),
+  const userColonyRoles = transformActionRolesToColonyRoles(
+    historicRoles?.getColonyHistoricRole,
   );
 
   const rolesTitle = formatRolesTitle(roles);
