@@ -8,8 +8,7 @@ import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/Use
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-
-import { useMotionContext } from '../../../../partials/MotionProvider/hooks.ts';
+import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/hooks.ts';
 
 import { getHandleStakeSuccessFn, getStakingTransformFn } from './helpers.ts';
 import { type StakingFormValues } from './types.ts';

@@ -5,12 +5,12 @@ import { useWatch } from 'react-hook-form';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-
 import {
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '../../consts.ts';
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+} from '~v5/common/ActionSidebar/consts.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+
 import TeamsSelect from '../TeamsSelect/index.ts';
 
 import { type CreatedInProps } from './types.ts';

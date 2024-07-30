@@ -22,12 +22,12 @@ import {
   type GetUserLiquidationAddressesQueryVariables,
   GetUserLiquidationAddressesDocument,
 } from '~gql';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action, type AllActions } from '~redux/types/actions/index.ts';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { clearLastWallet } from '~utils/autoLogin.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type Action, type AllActions } from '../../types/actions/index.ts';
 import {
   createGroupTransaction,
   createTransaction,

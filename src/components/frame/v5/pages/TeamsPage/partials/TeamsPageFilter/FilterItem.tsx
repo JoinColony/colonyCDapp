@@ -2,14 +2,13 @@ import { CaretDown } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { type TeamsPageFiltersField } from '~frame/v5/pages/TeamsPage/types.ts';
 import { type ModelSortDirection } from '~gql';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/PopoverBase.tsx';
-
-import { type TeamsPageFiltersField } from '../../types.ts';
 
 import { type TeamsPageFilterRootProps } from './types.ts';
 

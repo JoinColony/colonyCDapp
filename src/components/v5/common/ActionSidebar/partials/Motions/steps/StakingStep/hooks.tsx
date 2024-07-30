@@ -3,8 +3,7 @@ import { BigNumber } from 'ethers';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetUserReputationQuery } from '~gql';
 import useEnoughTokensForStaking from '~hooks/useEnoughTokensForStaking.ts';
-
-import { useMotionContext } from '../../partials/MotionProvider/hooks.ts';
+import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/hooks.ts';
 
 export const useStakingStep = () => {
   const { motionAction } = useMotionContext();

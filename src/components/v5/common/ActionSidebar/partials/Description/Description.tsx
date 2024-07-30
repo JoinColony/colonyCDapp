@@ -5,9 +5,9 @@ import { useFormContext } from 'react-hook-form';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { DESCRIPTION_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
-import { DESCRIPTION_FIELD_NAME } from '../../consts.ts';
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import DescriptionField from '../DescriptionField/index.ts';
 
 import { type DescriptionProps } from './types.ts';

@@ -8,8 +8,7 @@ import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-
-import { type MintTokenFormValues } from '../../forms/MintTokenForm/consts.ts';
+import { type MintTokenFormValues } from '~v5/common/ActionSidebar/partials/forms/MintTokenForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

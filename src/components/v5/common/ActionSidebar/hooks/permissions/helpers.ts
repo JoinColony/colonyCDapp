@@ -5,8 +5,7 @@ import { getAllUserRoles } from '~transformers/index.ts';
 import { type Colony } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
-
-import { ModificationOption } from '../../partials/forms/ManageReputationForm/consts.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
 
 export const getPermissionsNeededForAction = (
   actionType: Action,

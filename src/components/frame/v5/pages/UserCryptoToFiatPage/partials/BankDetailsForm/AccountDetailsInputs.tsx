@@ -1,10 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
 import { SupportedCurrencies } from '~gql';
 import { getCountries } from '~utils/countries.ts';
 
-import { CURRENCY_VALUES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';

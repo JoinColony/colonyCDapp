@@ -8,9 +8,8 @@ import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 import {
   type DecisionMethodOption,

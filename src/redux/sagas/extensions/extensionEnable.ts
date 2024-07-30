@@ -7,11 +7,11 @@ import {
 import { fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type Action } from '~redux/types/actions/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type Action } from '../../types/actions/index.ts';
 import {
   type ChannelDefinition,
   createTransaction,

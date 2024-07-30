@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 import TokenSelect from '../TokenSelect/index.ts';
 import TokenSymbol from '../TokenSelect/partials/TokenSymbol/index.ts';
 

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { Action } from '~constants/actions.ts';
-
-import { useActiveActionType } from '../../hooks/useActiveActionType.ts';
+import { useActiveActionType } from '~v5/common/ActionSidebar/hooks/useActiveActionType.ts';
 
 import CreateDecisionDescription from './partials/CreateDecisionDescription.tsx';
 import CreateNewDomainDescription from './partials/CreateNewDomainDescription.tsx';

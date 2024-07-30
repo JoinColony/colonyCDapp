@@ -3,6 +3,7 @@ import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
 import { type ExternalLink } from '~gql';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
   type Expenditure,
@@ -14,8 +15,6 @@ import {
   type SafeTransactionData,
 } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
-
-import { type ActionTypes } from '../../actionTypes.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {

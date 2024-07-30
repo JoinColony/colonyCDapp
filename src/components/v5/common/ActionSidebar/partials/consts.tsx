@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { type CardSelectOption } from '../../Fields/CardSelect/types.ts';
+import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
 export enum DistributionMethod {
   Equal = 'equal',

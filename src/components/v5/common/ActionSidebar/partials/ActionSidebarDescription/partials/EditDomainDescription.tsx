@@ -4,8 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
-
-import { type EditTeamFormValues } from '../../forms/EditTeamForm/consts.ts';
+import { type EditTeamFormValues } from '~v5/common/ActionSidebar/partials/forms/EditTeamForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

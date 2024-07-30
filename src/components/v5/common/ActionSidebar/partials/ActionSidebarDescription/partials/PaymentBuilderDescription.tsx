@@ -3,8 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~types/graphql.ts';
-
-import { type PaymentBuilderFormValues } from '../../forms/PaymentBuilderForm/hooks.ts';
+import { type PaymentBuilderFormValues } from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

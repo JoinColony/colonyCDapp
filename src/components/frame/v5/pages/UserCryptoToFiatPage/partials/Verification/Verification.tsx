@@ -2,10 +2,10 @@ import { Client as PersonaClient } from 'persona';
 import React, { type FC, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { type CryptoToFiatPageComponentProps } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';

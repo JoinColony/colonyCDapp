@@ -4,13 +4,12 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import BatchPaymentsTable from '~v5/common/ActionSidebar/partials/BatchPaymentsTable/index.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-
-import { type ActionFormBaseProps } from '../../../types.ts';
-import BatchPaymentsTable from '../../BatchPaymentsTable/index.ts';
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 

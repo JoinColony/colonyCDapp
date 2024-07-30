@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
+import { useFiltersContext } from '~frame/v5/pages/AgreementsPage/FiltersContext/index.ts';
+import { FiltersValues } from '~frame/v5/pages/AgreementsPage/FiltersContext/types.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { useFiltersContext } from '../../FiltersContext/index.ts';
-import { FiltersValues } from '../../FiltersContext/types.ts';
 import { DATE_FILTERS } from '../AgreementsPageFilters/partials/DateFilters/consts.ts';
 import { STATUS_FILTERS } from '../AgreementsPageFilters/partials/StatusFilters/consts.ts';
 import { getCustomDateLabel } from '../AgreementsPageFilters/utils.ts';

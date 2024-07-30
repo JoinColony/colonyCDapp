@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useFiltersContext } from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchInput from '~v5/common/Filter/partials/SearchInput/index.ts';
@@ -11,7 +12,6 @@ import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
-import { useFiltersContext } from '../../FiltersContext/FiltersContext.ts';
 import ActiveFiltersList from '../ActiveFiltersList/ActiveFiltersList.tsx';
 import AgreementsPageFiltersItem from '../AgreementsPageFiltersItem/index.ts';
 

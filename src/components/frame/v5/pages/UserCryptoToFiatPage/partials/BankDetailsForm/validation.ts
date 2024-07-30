@@ -1,9 +1,8 @@
 import { type InferType, object, string } from 'yup';
 
+import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
 import { SupportedCurrencies } from '~gql';
 import { intl } from '~utils/intl.ts';
-
-import { CURRENCY_VALUES } from '../../constants.ts';
 
 import { BIC_REGEX, IBAN_REGEX } from './constants.ts';
 

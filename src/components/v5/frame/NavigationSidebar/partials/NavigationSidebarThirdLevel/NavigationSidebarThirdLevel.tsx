@@ -6,9 +6,9 @@ import React, { type FC } from 'react';
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useTablet } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { thirdLevelContentAnimation } from '~v5/frame/NavigationSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
 
-import { thirdLevelContentAnimation } from '../../consts.ts';
 import useNavigationSidebarContext from '../NavigationSidebarContext/hooks.ts';
 
 import { type NavigationSidebarThirdLevelProps } from './types.ts';

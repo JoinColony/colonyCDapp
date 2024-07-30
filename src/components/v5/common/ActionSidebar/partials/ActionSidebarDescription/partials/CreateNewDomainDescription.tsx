@@ -3,8 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~gql';
-
-import { type CreateNewTeamFormValues } from '../../forms/CreateNewTeamForm/consts.ts';
+import { type CreateNewTeamFormValues } from '~v5/common/ActionSidebar/partials/forms/CreateNewTeamForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

@@ -12,11 +12,11 @@ import Numeral from '~shared/Numeral/index.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionProvider/hooks.ts';
 import FormFormattedInput from '~v5/common/Fields/InputBase/FormFormattedInput.tsx';
 import FormButtonRadioButtons from '~v5/common/Fields/RadioButtons/ButtonRadioButtons/FormButtonRadioButtons.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
-import { useMotionContext } from '../../../../partials/MotionProvider/hooks.ts';
 import StakingChart from '../StakingChart/StakingChart.tsx';
 
 import { getMaxStakeAmount, getPredictedPercentage } from './helpers.ts';

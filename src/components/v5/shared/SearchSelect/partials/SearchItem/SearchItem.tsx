@@ -8,10 +8,9 @@ import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import { sortDisabled } from '~v5/shared/SearchSelect/utils.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
-
-import { sortDisabled } from '../../utils.ts';
 
 import { type SearchItemProps } from './types.ts';
 

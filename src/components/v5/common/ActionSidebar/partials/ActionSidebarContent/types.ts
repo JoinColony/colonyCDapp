@@ -1,8 +1,7 @@
 import { type UseFormReturn } from 'react-hook-form';
 
 import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
-
-import { type ActionFormBaseProps } from '../../types.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   isMotion?: boolean;
