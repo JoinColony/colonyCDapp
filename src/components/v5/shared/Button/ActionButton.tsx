@@ -54,7 +54,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   return useTxLoader && (isLoading || loading) ? (
     <IconButton
       rounded="s"
-      isFullSize={isMobile}
+      isFullSize={props.isFullSize || isMobile}
       text={{ id: 'button.pending' }}
       icon={
         <span className="ml-2 flex shrink-0">
