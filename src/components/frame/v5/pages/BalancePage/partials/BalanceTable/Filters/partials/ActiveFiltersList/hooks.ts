@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
+import { useFiltersContext } from '~frame/v5/pages/BalancePage/partials/BalanceTable/Filters/FiltersContext/index.ts';
+import { FiltersValues } from '~frame/v5/pages/BalancePage/partials/BalanceTable/Filters/FiltersContext/types.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { useFiltersContext } from '../../FiltersContext/index.ts';
-import { FiltersValues } from '../../FiltersContext/types.ts';
 import { ATTRIBUTE_FILTERS } from '../filters/AttributeFilters/consts.ts';
 import { useGetTokenTypeFilters } from '../filters/TokenFilters/hooks.ts';
 

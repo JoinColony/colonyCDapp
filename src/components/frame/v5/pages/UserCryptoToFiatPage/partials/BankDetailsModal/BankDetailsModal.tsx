@@ -1,13 +1,13 @@
 import React, { useState, type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.ts';
 import { SupportedCurrencies } from '~gql';
 import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { CloseButton } from '~v5/shared/Button/index.ts';
 import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
 
-import { CURRENCY_VALUES } from '../../constants.ts';
 import BankDetailsForm from '../BankDetailsForm/index.ts';
 import ContactDetailsForm from '../ContactDetailsForm/index.ts';
 import Stepper from '../Stepper.tsx';

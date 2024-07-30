@@ -12,9 +12,8 @@ import {
   type PermissionsTableProps,
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
+import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import Table from '~v5/common/Table/index.ts';
-
-import { type ManagePermissionsFormValues } from '../../consts.ts';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
 

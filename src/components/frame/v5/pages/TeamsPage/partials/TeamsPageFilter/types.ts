@@ -1,11 +1,10 @@
 import { type Icon } from '@phosphor-icons/react';
 
-import { type ModelSortDirection } from '~gql';
-
 import {
   type TeamsPageFiltersField,
   type TeamsPageFilters,
-} from '../../types.ts';
+} from '~frame/v5/pages/TeamsPage/types.ts';
+import { type ModelSortDirection } from '~gql';
 
 export interface RootItem {
   name: TeamsPageFiltersField;

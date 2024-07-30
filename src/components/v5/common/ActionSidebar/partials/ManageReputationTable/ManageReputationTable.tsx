@@ -5,8 +5,7 @@ import { useMobile } from '~hooks';
 import Numeral from '~shared/Numeral/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
 import { type ManageReputationTableProps } from './types.ts';
 

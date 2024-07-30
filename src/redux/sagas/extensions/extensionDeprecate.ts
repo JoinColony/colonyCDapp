@@ -1,8 +1,9 @@
 import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type AllActions, type Action } from '../../types/actions/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
+
 import {
   createTransaction,
   getTxChannel,

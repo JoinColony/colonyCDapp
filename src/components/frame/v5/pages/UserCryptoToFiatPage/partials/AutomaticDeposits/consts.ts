@@ -1,11 +1,10 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
+import { type KycStatusData } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
-
-import { type KycStatusData } from '../../types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';

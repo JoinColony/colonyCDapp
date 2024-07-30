@@ -2,8 +2,7 @@ import { type ObjectSchema } from 'yup';
 
 import { type ActionTypes } from '~redux/index.ts';
 import { type Token } from '~types/graphql.ts';
-
-import { type ModalProps } from '../../shared/Modal/types.ts';
+import { type ModalProps } from '~v5/shared/Modal/types.ts';
 
 import { type TokensModalType } from './consts.ts';
 

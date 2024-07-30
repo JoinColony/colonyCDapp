@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
+import { type TransactionsItemProps } from '~common/Extensions/UserHub/partials/TransactionsTab/types.ts';
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { TransactionStatus } from '~gql';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { type TransactionsItemProps } from '../../types.ts';
 import TransactionsHeader from '../TransactionsHeader.tsx';
 
 import transactionsItemClasses from './TransactionsItem.styles.ts';

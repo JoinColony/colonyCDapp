@@ -4,9 +4,8 @@ import DOMPurify from 'dompurify';
 import React, { useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';
+import { ICON_SIZE } from '~v5/common/CompletedAction/consts.ts';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
-
-import { ICON_SIZE } from '../../consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.DescriptionRow';
 

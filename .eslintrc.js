@@ -144,7 +144,7 @@ module.exports = {
     '@limegrass/import-alias/import-alias': [
       'error',
       {
-        relativeImportOverrides: [{ depth: 1 }],
+        relativeImportOverrides: [{ path: '.', depth: 1 }],
       },
     ],
 

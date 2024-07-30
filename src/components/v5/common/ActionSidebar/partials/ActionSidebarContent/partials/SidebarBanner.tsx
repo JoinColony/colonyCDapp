@@ -11,14 +11,13 @@ import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
-import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
-import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
-
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
-} from '../../../consts.ts';
-import { useIsFieldDisabled } from '../../hooks.ts';
+} from '~v5/common/ActionSidebar/consts.ts';
+import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
+import ActionTypeNotification from '~v5/shared/ActionTypeNotification/ActionTypeNotification.tsx';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName =
   'v5.common.ActionSidebar.ActionSidebarContent.SidebarBanner';

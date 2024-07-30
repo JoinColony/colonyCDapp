@@ -7,9 +7,6 @@ import {
 import { type LogDescription, poll } from 'ethers/lib/utils';
 import { buffers, END, eventChannel, type Buffer } from 'redux-saga';
 
-import { type RequireProps } from '~types/index.ts';
-import { type MethodParams } from '~types/transactions.ts';
-
 import {
   transactionSendError,
   transactionEventDataError,
@@ -19,8 +16,10 @@ import {
   transactionSent,
   transactionHashReceived,
   transactionSucceeded,
-} from '../../actionCreators/index.ts';
-import { type TransactionType } from '../../immutable/index.ts';
+} from '~redux/actionCreators/index.ts';
+import { type TransactionType } from '~redux/immutable/index.ts';
+import { type RequireProps } from '~types/index.ts';
+import { type MethodParams } from '~types/transactions.ts';
 
 type TransactionResponseWithHash = RequireProps<TransactionResponse, 'hash'>;
 // @TODO typing here is not great but I have no idea how to improve it atm

@@ -1,8 +1,8 @@
 import React, { type FC, useState } from 'react';
 
+import { type CryptoToFiatPageComponentProps } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import BankDetailsModal from '../BankDetailsModal/index.ts';
 import RowItem from '../RowItem/index.ts';
 

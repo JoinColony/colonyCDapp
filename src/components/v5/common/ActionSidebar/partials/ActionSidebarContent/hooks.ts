@@ -2,8 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import useFlatFormErrors from '~hooks/useFlatFormErrors.ts';
 import { uniqBy } from '~utils/lodash.ts';
-
-import { REPUTATION_VALIDATION_FIELD_NAME } from '../../hooks/useReputationValidation.ts';
+import { REPUTATION_VALIDATION_FIELD_NAME } from '~v5/common/ActionSidebar/hooks/useReputationValidation.ts';
 
 export const useGetFormActionErrors = () => {
   const {

@@ -9,9 +9,8 @@ import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
-
-import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { validationSchema, type CreateDecisionFormValues } from './consts.ts';
 

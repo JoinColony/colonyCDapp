@@ -3,12 +3,12 @@ import { toast } from 'react-toastify';
 
 import { LEARN_MORE_CRYPTO_TO_FIAT } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { type CryptoToFiatPageComponentProps } from '~frame/v5/pages/UserCryptoToFiatPage/types.ts';
 import { KycStatus, useUpdateUserProfileMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { formatText } from '~utils/intl.ts';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { BODY_MSG, getBadgeProps, HEADING_MSG } from './consts.ts';

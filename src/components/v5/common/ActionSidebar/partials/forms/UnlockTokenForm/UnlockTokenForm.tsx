@@ -7,11 +7,10 @@ import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
-
-import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import Description from '../../Description/index.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
+import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useUnlockToken } from './hooks.ts';
 

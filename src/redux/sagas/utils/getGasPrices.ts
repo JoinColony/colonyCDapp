@@ -4,12 +4,11 @@ import { call, put, select } from 'redux-saga/effects';
 import { ETH_GAS_STATION, XDAI_GAS_STATION } from '~constants/externalUrls.ts';
 import { DEFAULT_NETWORK } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
+import { updateGasPrices } from '~redux/actionCreators/index.ts';
+import { type GasPricesProps } from '~redux/immutable/index.ts';
+import { gasPrices as gasPricesSelector } from '~redux/selectors/index.ts';
 import { Network } from '~types/network.ts';
 import { RpcMethods } from '~types/rpcMethods.ts';
-
-import { updateGasPrices } from '../../actionCreators/index.ts';
-import { type GasPricesProps } from '../../immutable/index.ts';
-import { gasPrices as gasPricesSelector } from '../../selectors/index.ts';
 
 interface EthGasStationAPIResponse {
   average: number;

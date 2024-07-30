@@ -3,9 +3,8 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import PaymentCounter from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentCounter/PaymentCounter.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
-
-import PaymentCounter from '../../../PaymentCounter/PaymentCounter.tsx';
 
 import { type ClaimStatusBadgeProps } from './types.ts';
 
