@@ -88,6 +88,6 @@ query GetColonyMemberInvite($id: ID!) {
 
 subscription OnUpdateColony {
   onUpdateColony {
-    ...Colony
+    lastUpdatedContributorsWithReputation
   }
 }

@@ -133,11 +133,19 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data } = useOnUpdateColonySubscription();
 
   useEffect(() => {
+    let timeout;
     // When the colony first loads, the reputation is updated asynchronously. This means that the currently
     // cached reputation might be out of date. If this is the case, we should refetch.
     if (data?.onUpdateColony?.lastUpdatedContributorsWithReputation) {
-      refetch();
+      // It looks hacky, but we need the timeout to ensure that opensearch has been updated before we refetch.
+      timeout = setTimeout(refetch, 2000);
     }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   }, [data?.onUpdateColony?.lastUpdatedContributorsWithReputation, refetch]);
 
   const allMembers = useMemo(
