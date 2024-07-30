@@ -14,6 +14,7 @@ import { type MeatballMenuProps } from './types.ts';
 const MeatballMenu: FC<MeatballMenuProps> = ({
   transactionHash,
   defaultValues,
+  enableRedoAction = true,
 }) => {
   const isMobile = useMobile();
   const {
@@ -22,6 +23,39 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
       { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
     ],
   } = useActionSidebarContext();
+
+  const items = [
+    ...(enableRedoAction
+      ? [
+          {
+            key: '1',
+            label: formatText({ id: 'completedAction.redoAction' }),
+            icon: Repeat,
+            onClick: () => {
+              toggleActionSidebarOff();
+
+              setTimeout(() => {
+                toggleActionSidebarOn({ ...defaultValues });
+              }, 500);
+            },
+          },
+        ]
+      : []),
+    {
+      key: '2',
+      label: (
+        <TransactionLink hash={transactionHash}>
+          {formatText(
+            { id: 'completedAction.view' },
+            {
+              blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
+            },
+          )}
+        </TransactionLink>
+      ),
+      icon: ArrowSquareOut,
+    },
+  ];
 
   return (
     <MeatBallMenu
@@ -32,34 +66,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
         withAutoTopPlacement: true,
         top: 12,
       }}
-      items={[
-        {
-          key: '1',
-          label: formatText({ id: 'completedAction.redoAction' }),
-          icon: Repeat,
-          onClick: () => {
-            toggleActionSidebarOff();
-
-            setTimeout(() => {
-              toggleActionSidebarOn({ ...defaultValues });
-            }, 500);
-          },
-        },
-        {
-          key: '2',
-          label: (
-            <TransactionLink hash={transactionHash}>
-              {formatText(
-                { id: 'completedAction.view' },
-                {
-                  blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
-                },
-              )}
-            </TransactionLink>
-          ),
-          icon: ArrowSquareOut,
-        },
-      ]}
+      items={items}
     />
   );
 };

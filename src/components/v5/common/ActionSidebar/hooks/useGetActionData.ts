@@ -17,7 +17,7 @@ import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/uti
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import {
   Authority,
-  AVAILABLE_ROLES,
+  AVAILABLE_PERMISSIONS,
 } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
@@ -297,7 +297,7 @@ const useGetActionData = (transactionId: string | undefined) => {
           team: fromDomain?.nativeId,
           permissions:
             role === UserRole.Custom
-              ? AVAILABLE_ROLES.reduce(
+              ? AVAILABLE_PERMISSIONS.reduce(
                   (result, currentRole) => ({
                     ...result,
                     [`role_${currentRole}`]: rolesList.includes(currentRole),

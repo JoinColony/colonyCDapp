@@ -1,5 +1,4 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
-import intersection from 'lodash/intersection';
 
 import { type ColonyFragment, type ColonyRoleFragment } from '~gql';
 import { type Address } from '~types/index.ts';
@@ -61,13 +60,13 @@ export const getUserRolesForDomain = ({
   userAddress,
   domainId,
   excludeInherited = false,
-  intersectingRoles = false,
+  onlyInheritedRoles = false,
 }: {
   colony: ColonyFragment;
   userAddress: Address;
   domainId: number;
   excludeInherited?: boolean;
-  intersectingRoles?: boolean;
+  onlyInheritedRoles?: boolean;
 }): ColonyRole[] => {
   const userRolesInAnyDomain = colony.roles?.items.find(
     (domainRole) =>
@@ -81,15 +80,12 @@ export const getUserRolesForDomain = ({
       domainRole?.targetAddress === userAddress,
   );
 
-  if (excludeInherited && userRolesInAnyDomain) {
-    return convertRolesToArray(userRolesInAnyDomain);
+  if (onlyInheritedRoles) {
+    return convertRolesToArray(userRolesInRootDomain);
   }
 
-  if (intersectingRoles && userRolesInAnyDomain && userRolesInRootDomain) {
-    return intersection(
-      convertRolesToArray(userRolesInAnyDomain),
-      convertRolesToArray(userRolesInRootDomain),
-    );
+  if (excludeInherited && userRolesInAnyDomain) {
+    return convertRolesToArray(userRolesInAnyDomain);
   }
 
   if (!excludeInherited && (userRolesInAnyDomain || userRolesInRootDomain)) {

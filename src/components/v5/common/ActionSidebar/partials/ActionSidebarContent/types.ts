@@ -8,6 +8,7 @@ export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   isMotion?: boolean;
   transactionId?: string;
   isExpenditure?: boolean;
+  actionFormProps: ActionFormProps;
 }
 
 export interface ActionSidebarContentProps {

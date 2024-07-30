@@ -7,7 +7,6 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import React, { type FC, useCallback } from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -27,11 +26,12 @@ import UserSelect from '../../UserSelect/index.ts';
 
 import {
   AuthorityOptions,
+  UserRoleModifier,
   type ManagePermissionsFormValues,
-  RemoveRoleOptionValue,
 } from './consts.ts';
-import { useManagePermissions } from './hooks.ts';
+import { useManagePermissionsForm } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
+import PermissionsRemovalModal from './partials/PermissionsRemovalModal/PermissionsRemovalModal.tsx';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
 import PermissionsOptions from './PermissionOptions.tsx';
 import { getRoleLabel } from './utils.ts';
@@ -41,7 +41,22 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
+  const {
+    errors,
+    isSubmitting,
+    formValues: {
+      team,
+      role,
+      member,
+      permissions,
+      _dbRoleForDomain: dbRoleForDomain,
+      _dbInheritedPermissions: dbInheritedPermissions,
+      _dbPermissionsForDomain: dbPermissionsForDomain,
+    },
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
+  } = useManagePermissionsForm(getFormOptions);
+
   const [
     isPermissionsModalOpen,
     {
@@ -49,8 +64,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
 
+  const isModRoleSelected = role === UserRole.Mod;
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
 
@@ -85,6 +100,12 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       ),
     }),
   );
+
+  const isRemovePermissionsErrorPresent =
+    role === UserRoleModifier.Remove && errors.role;
+
+  const showPermissionsTable =
+    member && team && role && !isRemovePermissionsErrorPresent;
 
   return (
     <>
@@ -123,6 +144,45 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </FormRow>
       <FormRow
+        icon={Signature}
+        fieldName="authority"
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.authority',
+            }),
+          },
+          content: isModRoleSelected
+            ? {
+                tooltipContent: formatText({
+                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
+                }),
+                selectTriggerRef: (triggerRef) => {
+                  if (!triggerRef) {
+                    return null;
+                  }
+
+                  return triggerRef.querySelector('span');
+                },
+              }
+            : undefined,
+        }}
+        title={formatText({ id: 'actionSidebar.authority' })}
+        isDisabled={hasNoDecisionMethods}
+      >
+        <FormCardSelect
+          disabled={isModRoleSelected || hasNoDecisionMethods}
+          name="authority"
+          options={AuthorityOptions}
+          title={formatText({
+            id: 'actionSidebar.managePermissions.authoritySelect.title',
+          })}
+          placeholder={formatText({
+            id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
+          })}
+        />
+      </FormRow>
+      <FormRow
         icon={Shield}
         fieldName="role"
         tooltips={{
@@ -152,55 +212,28 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           valueOverride={role}
         />
       </FormRow>
-      <FormRow
-        icon={Signature}
-        fieldName="authority"
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.authority',
-            }),
-          },
-          content: isModeRoleSelected
-            ? {
-                tooltipContent: formatText({
-                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
-                }),
-                selectTriggerRef: (triggerRef) => {
-                  if (!triggerRef) {
-                    return null;
-                  }
-
-                  return triggerRef.querySelector('span');
-                },
-              }
-            : undefined,
-        }}
-        title={formatText({ id: 'actionSidebar.authority' })}
-        isDisabled={hasNoDecisionMethods}
-      >
-        <FormCardSelect
-          disabled={isModeRoleSelected || hasNoDecisionMethods}
-          name="authority"
-          options={AuthorityOptions}
-          title={formatText({
-            id: 'actionSidebar.managePermissions.authoritySelect.title',
-          })}
-          placeholder={formatText({
-            id: 'actionSidebar.managePermissions.authoritySelect.placeholder',
-          })}
-        />
-      </FormRow>
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== RemoveRoleOptionValue.remove && (
+      {showPermissionsTable && (
         <PermissionsTable
           name="permissions"
-          role={role as UserRole}
           className="mt-7"
+          dbRoleForDomain={dbRoleForDomain}
+          dbPermissionsForDomain={dbPermissionsForDomain}
+          formRole={role}
+          dbInheritedPermissions={dbInheritedPermissions}
         />
       )}
+      <PermissionsRemovalModal
+        formRole={role}
+        formPermissions={permissions}
+        isFormSubmitting={isSubmitting}
+        dbRoleForDomain={dbRoleForDomain}
+        isOpen={showPermissionsRemovalWarning}
+        dbInheritedPermissions={dbInheritedPermissions}
+        onClose={() => setShowPermissionsRemovalWarning(false)}
+      />
     </>
   );
 };

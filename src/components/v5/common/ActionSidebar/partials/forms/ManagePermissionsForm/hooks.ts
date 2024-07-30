@@ -1,6 +1,6 @@
-import { Id } from '@colony/colony-js';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { ColonyRole, Id } from '@colony/colony-js';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
@@ -16,39 +16,46 @@ import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '../../../types.ts';
 
 import {
+  UserRoleModifier,
   type ManagePermissionsFormValues,
   validationSchema,
+  MANAGE_PERMISSIONS_ACTION_FORM_ID,
+  Authority,
 } from './consts.ts';
-import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
+import {
+  configureFormRoles,
+  getManagePermissionsPayload,
+  getFormPermissions,
+  getRemovedInheritedPermissions,
+} from './utils.ts';
 
-export const useManagePermissions = (
+export const useManagePermissionsForm = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const navigate = useNavigate();
 
+  const [showPermissionsRemovalWarning, setShowPermissionsRemovalWarning] =
+    useState(false);
+
   const {
     watch,
     trigger,
-    control,
     setValue,
-    setError,
     clearErrors,
-    formState: { errors, defaultValues, isSubmitted },
+    formState: { defaultValues, isSubmitted, errors, isValid, isSubmitting },
   } = useFormContext<ManagePermissionsFormValues>();
 
-  const formDecisionMethod = useWatch({
-    control,
-    name: 'decisionMethod',
-  });
+  const formValues = watch();
 
-  const formRole = useWatch({
-    control,
-    name: 'role',
-  });
-
-  const isModeRoleSelected = formRole === UserRole.Mod;
+  const {
+    team: formTeam,
+    permissions: formPermissions,
+    decisionMethod: formDecisionMethod,
+    _dbInheritedPermissions: dbInheritedPermissions,
+    role: formRole,
+  } = formValues;
 
   useEffect(() => {
     /**
@@ -70,6 +77,12 @@ export const useManagePermissions = (
   }, [colony, defaultValues, setValue]);
 
   useEffect(() => {
+    if (formRole === UserRole.Mod) {
+      setValue('authority', Authority.Own, { shouldValidate: true });
+    }
+  }, [formRole, setValue]);
+
+  useEffect(() => {
     const { unsubscribe } = watch(({ member, team, role }, { name }) => {
       if (isSubmitted) {
         if (role === UserRole.Custom) {
@@ -77,6 +90,12 @@ export const useManagePermissions = (
         } else {
           clearErrors('permissions');
         }
+      }
+
+      if (role === UserRoleModifier.Remove) {
+        trigger('role');
+      } else {
+        clearErrors('role');
       }
 
       if (
@@ -99,16 +118,21 @@ export const useManagePermissions = (
     });
 
     return () => unsubscribe();
-  }, [
-    clearErrors,
-    colony,
-    errors.permissions,
-    setError,
-    setValue,
-    isSubmitted,
-    trigger,
-    watch,
-  ]);
+  }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
+
+  const isRemovingRootRoleFromRootDomain = useMemo(
+    () =>
+      isValid &&
+      formTeam === Id.RootDomain &&
+      getRemovedInheritedPermissions({
+        dbInheritedPermissions,
+        formPermissions: getFormPermissions({
+          formPermissions,
+          formRole,
+        }),
+      }).includes(ColonyRole.Root),
+    [dbInheritedPermissions, formPermissions, formRole, formTeam, isValid],
+  );
 
   useActionFormBaseHook({
     getFormOptions,
@@ -132,11 +156,18 @@ export const useManagePermissions = (
       ),
       [colony, user, navigate],
     ),
-    mode: 'onSubmit',
+    id: MANAGE_PERMISSIONS_ACTION_FORM_ID,
+    primaryButton: {
+      type: isRemovingRootRoleFromRootDomain ? 'button' : 'submit',
+      onClick: useCallback(() => setShowPermissionsRemovalWarning(true), []),
+    },
   });
 
   return {
-    role: formRole,
-    isModeRoleSelected,
+    errors,
+    formValues,
+    isSubmitting,
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
   };
 };

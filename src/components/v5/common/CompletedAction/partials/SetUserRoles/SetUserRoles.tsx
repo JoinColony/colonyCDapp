@@ -6,6 +6,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import {
+  type ColonyActionFragment,
   ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
@@ -49,14 +50,16 @@ interface Props {
 }
 
 const transformActionRolesToColonyRoles = (
-  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
+  roles:
+    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
+    | ColonyActionFragment['roles'],
 ): ColonyRole[] => {
-  if (!historicRoles) return [];
+  if (!roles) return [];
 
-  const roleKeys = Object.keys(historicRoles);
+  const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => historicRoles[key])
+    .filter((key) => roles[key] !== null)
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -104,11 +107,18 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const userColonyRoles = transformActionRolesToColonyRoles(
+  const dbPermissionsOld = transformActionRolesToColonyRoles(roles);
+
+  // Historic role might sound like it's the old roles, but it's actually the
+  // most recent set or permissions for a user
+  const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole,
   );
 
-  const { name: roleName, role } = getRole(userColonyRoles);
+  const { name: roleNew, role: dbRoleForDomainNew } = getRole(dbPermissionsNew);
+
+  const { role: dbRoleForDomainOld } = getRole(dbPermissionsOld);
+
   const rolesTitle = formatRolesTitle(roles);
 
   return (
@@ -122,13 +132,18 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: AUTHORITY_OPTIONS[0].value,
-            role,
+            role: dbRoleForDomainNew,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: isMotion
               ? DecisionMethod.Reputation
               : DecisionMethod.Permissions,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
+          enableRedoAction={
+            // @TODO Add a boolean check for multi-sig motions
+            !!dbPermissionsNew.length ||
+            (!!action.motionData && !action.motionData?.isFinalized)
+          }
         />
       </div>
       <ActionSubtitle>
@@ -182,10 +197,18 @@ const SetUserRoles = ({ action }: Props) => {
           />
         )}
         <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.authority' })}
+          rowContent={AUTHORITY_OPTIONS[0].label}
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.authority',
+          })}
+          RowIcon={Signature}
+        />
+        <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            userColonyRoles.length
-              ? roleName
+            dbPermissionsNew.length
+              ? roleNew
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
                 })
@@ -194,14 +217,6 @@ const SetUserRoles = ({ action }: Props) => {
             id: 'actionSidebar.tooltip.managePermissions.permissions',
           })}
           RowIcon={ShieldStar}
-        />
-        <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.authority',
-          })}
-          RowIcon={Signature}
         />
         <DecisionMethodRow isMotion={action.isMotion || false} />
         {action.motionData?.motionDomain.metadata && (
@@ -213,13 +228,13 @@ const SetUserRoles = ({ action }: Props) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!userColonyRoles.length && (
-        <PermissionsTableRow
-          role={role}
-          domainId={action.fromDomain?.nativeId}
-          userColonyRoles={userColonyRoles}
-        />
-      )}
+      <PermissionsTableRow
+        dbPermissionsOld={dbPermissionsOld}
+        dbPermissionsNew={dbPermissionsNew}
+        domainId={action.fromDomain?.nativeId}
+        dbRoleForDomainNew={dbRoleForDomainNew}
+        dbRoleForDomainOld={dbRoleForDomainOld}
+      />
     </>
   );
 };

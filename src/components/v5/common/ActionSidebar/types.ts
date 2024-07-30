@@ -4,6 +4,7 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
+  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormBaseProps {
@@ -24,6 +25,8 @@ export type UseActionFormBaseHook = (
     | 'validationSchema'
     | 'mode'
     | 'reValidateMode'
+    | 'id'
+    | 'primaryButton'
   >,
 ) => void;
 
