@@ -2,9 +2,10 @@ import { isEqual } from 'lodash';
 import { addMethod, string, type TestOptionsMessage, array, object } from 'yup';
 
 import { isAddress } from '~utils/web3/index.ts';
-import { createValidationComparableObject } from '~utils/yup/utils.ts';
 
 import en from '../../i18n/en-validation.json';
+
+import { createValidationComparableObject } from './utils.ts';
 
 /*
  * Hex String Regex Test
