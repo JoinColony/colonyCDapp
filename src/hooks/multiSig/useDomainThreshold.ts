@@ -1,6 +1,5 @@
 import { type ColonyRole, Extension } from '@colony/colony-js';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
@@ -21,10 +20,6 @@ export const useDomainThreshold = ({
   requiredRoles,
   domainId,
 }: UseDomainThresholdParams): UseDomainThresholdResult => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
-
   const { extensionData, loading: loadingExtension } = useExtensionData(
     Extension.MultisigPermissions,
   );
@@ -55,7 +50,7 @@ export const useDomainThreshold = ({
     const matchingDomain = (domainThresholds ?? []).find(
       (thresholdEntry) =>
         thresholdEntry !== null &&
-        thresholdEntry.domainId === `${colonyAddress}_${domainId}`,
+        thresholdEntry.domainId === domainId.toString(),
     );
 
     // if we didn't find domain config, let's just assume we inherit from the colony
