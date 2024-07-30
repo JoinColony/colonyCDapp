@@ -105,7 +105,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
       isFullOnMobile
       onClose={onClose}
       icon={LockKey}
-      showHeaderProps={{ className: 'right-6 top-[2.0625rem]' }}
+      shouldShowHeader
     >
       <ActionForm<CreateStakedExpenditureFormFields>
         validationSchema={validationSchema}
