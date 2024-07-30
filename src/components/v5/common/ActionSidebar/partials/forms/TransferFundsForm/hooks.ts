@@ -27,7 +27,7 @@ export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
-  const tokenStatesMap = useTokenLockStates();
+  const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
     () =>
@@ -64,7 +64,7 @@ export const useValidationSchema = () => {
                 !shouldPreventPaymentsWithTokenInColony(
                   value || '',
                   colony,
-                  tokenStatesMap,
+                  tokenLockStatesMap,
                 ),
             ),
           createdIn: number().defined(),
@@ -81,7 +81,7 @@ export const useValidationSchema = () => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, selectedTeam, tokenStatesMap],
+    [colony, selectedTeam, tokenLockStatesMap],
   );
 
   return validationSchema;

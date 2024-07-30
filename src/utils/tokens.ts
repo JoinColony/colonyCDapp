@@ -134,9 +134,9 @@ export const getNativeTokenByChainId = (chainId: string): Token => {
 export const shouldPreventPaymentsWithTokenInColony = (
   tokenAddress: string,
   colony: ColonyFragment,
-  tokenStatesMap: Record<string, boolean>,
+  tokenLockStatesMap: Record<string, boolean>,
 ): boolean => {
-  const isTokenLocked = tokenStatesMap[tokenAddress] === false;
+  const isTokenLocked = tokenLockStatesMap[tokenAddress] === false;
   const isTokenNativeToThisColony =
     tokenAddress === colony.nativeToken.tokenAddress;
   const isTokenCreatedByThisColony = colony.status?.nativeToken?.mintable;

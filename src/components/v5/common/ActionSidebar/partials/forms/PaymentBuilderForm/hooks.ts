@@ -41,7 +41,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
-  const tokenStatesMap = useTokenLockStates();
+  const tokenLockStatesMap = useTokenLockStates();
 
   return useMemo(
     () =>
@@ -108,7 +108,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         !shouldPreventPaymentsWithTokenInColony(
                           value || '',
                           colony,
-                          tokenStatesMap,
+                          tokenLockStatesMap,
                         ),
                     ),
                   delay: string()
@@ -174,7 +174,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee, tokenStatesMap],
+    [colony, colonyTokens, networkInverseFee, tokenLockStatesMap],
   );
 };
 

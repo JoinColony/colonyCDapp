@@ -86,28 +86,12 @@ query GetColonyMemberInvite($id: ID!) {
   }
 }
 
-query GetColonyTokensWithLockedStates($name: String!) {
-  getColonyByName(name: $name) {
+query GetColonyTokenLockedState($nativeTokenId: ID!) {
+  getColoniesByNativeTokenId(nativeTokenId: $nativeTokenId, limit: 1) {
     items {
-      tokens {
-        items {
-          token {
-            colonies {
-              items {
-                colony {
-                  status {
-                    nativeToken {
-                      unlocked
-                    }
-                  }
-                  nativeTokenId
-                  name
-                }
-              }
-            }
-            name
-            id
-          }
+      status {
+        nativeToken {
+          unlocked
         }
       }
     }

@@ -1,47 +1,51 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type Token, useGetColonyTokensWithLockedStatesQuery } from '~gql';
+import { useGetColonyTokenLockedStateLazyQuery } from '~gql';
 
 const useTokenLockStates = (): Record<string, boolean> => {
   const {
-    colony: { name },
+    colony: { tokens },
   } = useColonyContext();
-  const { data } = useGetColonyTokensWithLockedStatesQuery({
-    variables: { name },
-  });
+  const [getColonyTokenLockedState] = useGetColonyTokenLockedStateLazyQuery();
+  const [tokenLockStatesMap, setTokenLockStatesMap] = useState({});
 
-  const tokenStatusMap = useMemo(() => {
-    if (!data) return {};
+  const fetchTokenStates = useCallback(async () => {
+    if (!tokens) {
+      return;
+    }
 
-    const tokens = data?.getColonyByName?.items?.[0]?.tokens?.items.flatMap(
-      (token) => token?.token,
+    const newTokenLockStatesMap = {};
+
+    const tokenStates = await Promise.all(
+      tokens.items.map(async (t) => {
+        if (!t) return undefined;
+
+        const { data } = await getColonyTokenLockedState({
+          variables: { nativeTokenId: t.token.tokenAddress },
+        });
+
+        const lockState =
+          data?.getColoniesByNativeTokenId?.items[0]?.status?.nativeToken
+            ?.unlocked;
+
+        return lockState;
+      }),
     );
 
-    return (tokens || []).reduce(
-      (map: Record<string, boolean>, token: Token) => {
-        if (!token) {
-          return map;
-        }
+    tokens.items.forEach((t, i) => {
+      if (!t || tokenStates[i] === undefined || tokenStates[i] === null) return;
+      newTokenLockStatesMap[t.token.tokenAddress] = tokenStates[i];
+    });
 
-        const colony = token.colonies?.items.find(
-          (colonyTokens) => colonyTokens?.colony.nativeTokenId === token.id,
-        );
+    setTokenLockStatesMap(newTokenLockStatesMap);
+  }, [getColonyTokenLockedState, tokens]);
 
-        if (!colony) {
-          return map;
-        }
+  useEffect(() => {
+    fetchTokenStates();
+  }, [fetchTokenStates]);
 
-        return {
-          ...map,
-          [token.id]: !!colony.colony.status?.nativeToken?.unlocked,
-        };
-      },
-      {},
-    );
-  }, [data]);
-
-  return tokenStatusMap;
+  return tokenLockStatesMap;
 };
 
 export default useTokenLockStates;

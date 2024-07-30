@@ -30,7 +30,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const fromDomainId: number | undefined = watch('from');
-  const tokenStatesMap = useTokenLockStates();
+  const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
     () =>
@@ -77,7 +77,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                 !shouldPreventPaymentsWithTokenInColony(
                   value || '',
                   colony,
-                  tokenStatesMap,
+                  tokenLockStatesMap,
                 ),
             ),
           createdIn: number().defined(),
@@ -111,7 +111,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, fromDomainId, networkInverseFee, tokenStatesMap],
+    [colony, fromDomainId, networkInverseFee, tokenLockStatesMap],
   );
 
   return validationSchema;
