@@ -1,4 +1,4 @@
-import { LockKey } from '@phosphor-icons/react';
+import { LockKey, SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -15,8 +15,8 @@ import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import AmountField from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
-import CloseButton from '~v5/shared/Button/CloseButton.tsx';
-import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
+import TxButton from '~v5/shared/Button/TxButton.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import useReputationValidation from '../../hooks/useReputationValidation.ts';
 
@@ -64,7 +64,7 @@ const MSG = defineMessages({
 
 const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
   isOpen,
-  onCloseClick,
+  onClose,
   formValues,
   actionType,
 }) => {
@@ -100,7 +100,13 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
     .required();
 
   return (
-    <ModalBase isOpen={isOpen} isFullOnMobile>
+    <Modal
+      isOpen={isOpen}
+      isFullOnMobile
+      onClose={onClose}
+      icon={LockKey}
+      showHeaderProps={{ className: 'right-6 top-[2.0625rem]' }}
+    >
       <ActionForm<CreateStakedExpenditureFormFields>
         validationSchema={validationSchema}
         defaultValues={{
@@ -111,6 +117,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
         }}
         mode="onSubmit"
         actionType={ActionTypes.STAKED_EXPENDITURE_CREATE}
+        className="h-full"
         transform={pipe(
           mapPayload(() =>
             getCreateStakedExpenditurePayload({
@@ -136,73 +143,74 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
             },
           }),
         )}
-        onSuccess={onCloseClick}
+        onSuccess={onClose}
       >
         {({ formState: { errors, isSubmitting } }) => (
-          <>
-            <span className="mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content">
-              <LockKey size={24} />
-            </span>
-            <CloseButton
-              aria-label={formatText({ id: 'ariaLabel.closeModal' })}
-              title={formatText({ id: 'button.cancel' })}
-              onClick={onCloseClick}
-              className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-            />
-            <div className="flex w-full flex-grow flex-col pb-6 pr-6 [-webkit-overflow-scrolling:touch]">
-              <div className="flex-grow">
-                <div>
-                  <h4 className="mb-2 heading-5">{formatText(MSG.title)}</h4>
-                  <p className="text-md text-gray-600">
-                    {formatText(MSG.description)}
-                  </p>
-                </div>
-                <div className="mt-6 flex justify-between gap-4 rounded-[.25rem] bg-gray-50 px-[.875rem] py-3 text-md text-gray-900">
-                  <p className="font-medium">
-                    {formatText(MSG.requiredStakeAmount)}
-                  </p>
-                  {isLoading ? (
-                    <SpinnerLoader appearance={{ size: 'medium' }} />
-                  ) : (
-                    <AmountField
-                      amount={stakeAmount || '0'}
-                      tokenAddress={tokenAddress}
-                    />
-                  )}
-                </div>
-                {(!hasEnoughTokens || errors.hasEnoughTokens) && (
-                  <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
-                    {formatText(MSG.notEnoughTokens)}
-                  </div>
-                )}
-                {(!stakeAmount || errors.stakeAmount) && (
-                  <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
-                    {formatText(MSG.reputationNotLoaded)}
-                  </div>
+          <div className="flex h-full w-full flex-grow flex-col">
+            <div className="flex-grow">
+              <div>
+                <h4 className="mb-2 heading-5">{formatText(MSG.title)}</h4>
+                <p className="text-md text-gray-600">
+                  {formatText(MSG.description)}
+                </p>
+              </div>
+              <div className="mt-6 flex justify-between gap-4 rounded-[.25rem] bg-gray-50 px-[.875rem] py-3 text-md text-gray-900">
+                <p className="font-medium">
+                  {formatText(MSG.requiredStakeAmount)}
+                </p>
+                {isLoading ? (
+                  <SpinnerLoader appearance={{ size: 'medium' }} />
+                ) : (
+                  <AmountField
+                    amount={stakeAmount || '0'}
+                    tokenAddress={tokenAddress}
+                  />
                 )}
               </div>
-              <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
-                <Button
-                  mode="primaryOutline"
+              {(!hasEnoughTokens || errors.hasEnoughTokens) && (
+                <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+                  {formatText(MSG.notEnoughTokens)}
+                </div>
+              )}
+              {(!stakeAmount || errors.stakeAmount) && (
+                <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
+                  {formatText(MSG.reputationNotLoaded)}
+                </div>
+              )}
+            </div>
+            <div className="mt-auto flex flex-col-reverse gap-3 sm:mt-8 sm:flex-row">
+              <Button
+                mode="primaryOutline"
+                className="w-full md:w-[calc(50%-.375rem)]"
+                onClick={onClose}
+              >
+                {formatText(MSG.cancel)}
+              </Button>
+              {isSubmitting || isLoading ? (
+                <TxButton
                   className="w-full md:w-[calc(50%-.375rem)]"
-                  onClick={onCloseClick}
-                >
-                  {formatText(MSG.cancel)}
-                </Button>
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="ml-1.5 flex shrink-0">
+                      <SpinnerGap className="animate-spin" size={14} />
+                    </span>
+                  }
+                />
+              ) : (
                 <Button
                   mode="primarySolid"
                   className="w-full md:w-[calc(50%-.375rem)]"
                   type="submit"
-                  loading={isSubmitting || isLoading}
                 >
                   {formatText(MSG.createPayment)}
                 </Button>
-              </div>
+              )}
             </div>
-          </>
+          </div>
         )}
       </ActionForm>
-    </ModalBase>
+    </Modal>
   );
 };
 
