@@ -1,11 +1,10 @@
 import { type FieldValues } from 'react-hook-form';
 
 import { type Action } from '~constants/actions.ts';
-import { type ModalBaseProps } from '~v5/shared/Modal/types.ts';
+import { type ModalProps } from '~v5/shared/Modal/types.ts';
 
 export interface CreateStakedExpenditureModalProps
-  extends Pick<ModalBaseProps, 'isOpen'> {
-  onCloseClick: () => void;
+  extends Pick<ModalProps, 'isOpen' | 'onClose'> {
   formValues: FieldValues;
   actionType: Action;
 }
