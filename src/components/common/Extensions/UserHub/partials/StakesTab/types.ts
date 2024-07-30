@@ -1,5 +1,4 @@
 import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
-import { type Token, type Colony } from '~types/graphql.ts';
 import {
   type UserStakeStatus,
   type UserStakeWithStatus,
@@ -8,13 +7,10 @@ import {
 export interface StakesListProps {
   loading: boolean;
   stakes: UserStakeWithStatus[];
-  colony: Colony;
 }
 
 export interface StakeItemProps {
   stake: UserStakeWithStatus;
-  nativeToken: Token;
-  colony: Colony;
 }
 
 export type StakesFilterType = 'all' | 'finalizable' | 'claimable';
