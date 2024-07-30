@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -15,23 +15,55 @@ import { notNull } from '~utils/arrays/index.ts';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 
-export const useGetAgreements = () => {
+const QUERY_PAGE_SIZE = 20;
+
+const useGetAllAgreements = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const { activeFilters, searchFilter } = useFiltersContext();
-  const { data, loading } = useGetColonyActionsQuery({
+
+  const { data, loading, fetchMore } = useGetColonyActionsQuery({
     variables: {
       colonyAddress,
       filter: {
         type: { eq: ColonyActionType.CreateDecisionMotion },
       },
       sortDirection: ModelSortDirection.Desc,
+      limit: QUERY_PAGE_SIZE,
     },
     fetchPolicy: 'network-only',
   });
 
   const agreementsData = data?.getActionsByColony?.items.filter(notNull);
+  const nextToken = data?.getActionsByColony?.nextToken;
+
+  const fetchNextPage = useCallback(
+    async (token) => {
+      await fetchMore({
+        variables: { nextToken: token },
+      });
+    },
+    [fetchMore],
+  );
+
+  useEffect(() => {
+    if (nextToken) {
+      fetchNextPage(nextToken);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nextToken]);
+
+  return {
+    agreementsData,
+    loading,
+  };
+};
+
+export const useGetAgreements = () => {
+  const { activeFilters, searchFilter } = useFiltersContext();
+
+  const { agreementsData, loading } = useGetAllAgreements();
+
   const motionIds = useMemo(
     () =>
       agreementsData
