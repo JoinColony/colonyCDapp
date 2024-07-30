@@ -188,12 +188,12 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
               </Button>
               {isSubmitting || isLoading ? (
                 <TxButton
-                  className="w-full md:w-[calc(50%-.375rem)]"
+                  className="w-full !text-md md:w-[calc(50%-.375rem)]"
                   rounded="s"
                   text={{ id: 'button.pending' }}
                   icon={
                     <span className="ml-1.5 flex shrink-0">
-                      <SpinnerGap className="animate-spin" size={14} />
+                      <SpinnerGap className="animate-spin" size={18} />
                     </span>
                   }
                 />
