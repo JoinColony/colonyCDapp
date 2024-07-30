@@ -143,12 +143,12 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                 <div className="flex w-full justify-center">
                   {isSubmitting ? (
                     <TxButton
-                      className="max-h-[2.5rem] w-full !text-md"
+                      className="w-full !text-md md:w-[calc(50%-.375rem)]"
                       rounded="s"
                       text={{ id: 'button.pending' }}
                       icon={
                         <span className="ml-1.5 flex shrink-0">
-                          <SpinnerGap className="animate-spin" size={14} />
+                          <SpinnerGap className="animate-spin" size={18} />
                         </span>
                       }
                     />

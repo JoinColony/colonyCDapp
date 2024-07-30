@@ -113,12 +113,12 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
               />
               {isSubmitting || isLoading ? (
                 <TxButton
-                  className="w-full"
+                  className="w-full !text-md md:w-[calc(50%-.375rem)]"
                   rounded="s"
                   text={{ id: 'button.pending' }}
                   icon={
                     <span className="ml-1.5 flex shrink-0">
-                      <SpinnerGap className="animate-spin" size={14} />
+                      <SpinnerGap className="animate-spin" size={18} />
                     </span>
                   }
                 />
