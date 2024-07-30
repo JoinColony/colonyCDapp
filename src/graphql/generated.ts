@@ -10115,7 +10115,7 @@ export const ExpenditureFragmentDoc = gql`
       ...ExpenditureStage
     }
   }
-  actions(filter: {type: {eq: CREATE_EXPENDITURE}}) {
+  creatingActions: actions(filter: {type: {eq: CREATE_EXPENDITURE}}) {
     items {
       metadata {
         customTitle
