@@ -10,8 +10,8 @@ import { Network } from '~types/network.ts';
 
 import { version } from '../../package.json';
 
-export * from './externalUrls.ts';
-export * from './extensions.ts';
+export * from '~constants/externalUrls.ts';
+export * from '~constants/extensions.ts';
 
 export type TokenInfo = {
   name: string;
