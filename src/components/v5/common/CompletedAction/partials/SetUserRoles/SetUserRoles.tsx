@@ -98,7 +98,31 @@ const SetUserRoles = ({ action }: Props) => {
     ? Authority.ViaMultiSig
     : Authority.Own;
 
-  const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
+  /**
+   * Hack explained:
+   * If you give a user multi-sig permissions for the 1st time, this "_multisig" chunk gets added to the ID
+   * But the next time you give this user another multisig permission, this chunk is not added
+   * By chunk, I mean: 0x0000_2_0x0000_8293_roles VERSUS 0x0000_2_0x0000_8293_multisig_roles
+   * I cannot come up with a cleaner way to identify whether or not a user already has multisig prior
+   * And to get the user's real historic role, I needed to test with both the "_multisig" chunk and without
+   * I also don't know what other scenario will add the _multisig chunk to the ID
+   */
+
+  // Historic role without the "_multisig" ID chunk
+  const { data: historicRolesA } = useGetColonyHistoricRoleRolesQuery({
+    variables: {
+      id: getHistoricRolesDatabaseId({
+        blockNumber,
+        colonyAddress,
+        nativeId: fromDomain?.nativeId,
+        recipientAddress,
+      }),
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  // Historic role with the "_multisig" ID chunk, only if the authority is Authority.ViaMultiSig
+  const { data: historicRolesB } = useGetColonyHistoricRoleRolesQuery({
     variables: {
       id: getHistoricRolesDatabaseId({
         blockNumber,
@@ -111,8 +135,16 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const userColonyRoles = transformActionRolesToColonyRoles(
-    historicRoles?.getColonyHistoricRole,
+  const userColonyRolesA = transformActionRolesToColonyRoles(
+    historicRolesA?.getColonyHistoricRole,
+  );
+
+  const userColonyRolesB = transformActionRolesToColonyRoles(
+    historicRolesB?.getColonyHistoricRole,
+  );
+
+  const userColonyRoles = Array.from(
+    new Set([...userColonyRolesA, ...userColonyRolesB]),
   );
 
   const rolesTitle = formatRolesTitle(roles);
@@ -201,6 +233,18 @@ const SetUserRoles = ({ action }: Props) => {
           />
         )}
         <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.authority' })}
+          rowContent={
+            rolesAreMultiSig
+              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
+              : formatText({ id: 'actionSidebar.authority.own' })
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.authority',
+          })}
+          RowIcon={Signature}
+        />
+        <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
             userColonyRoles.length
@@ -213,18 +257,6 @@ const SetUserRoles = ({ action }: Props) => {
             id: 'actionSidebar.tooltip.managePermissions.permissions',
           })}
           RowIcon={ShieldStar}
-        />
-        <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={
-            rolesAreMultiSig
-              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
-              : formatText({ id: 'actionSidebar.authority.own' })
-          }
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.authority',
-          })}
-          RowIcon={Signature}
         />
         <DecisionMethodRow
           isMotion={action.isMotion || false}

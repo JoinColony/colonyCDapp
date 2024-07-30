@@ -30,7 +30,7 @@ export const getHistoricRolesDatabaseId = ({
   nativeId: number | undefined;
   recipientAddress: string | null | undefined;
   blockNumber: number;
-  isMultiSig: boolean;
+  isMultiSig?: boolean;
 }) => {
   return `${colonyAddress}_${nativeId}_${recipientAddress}_${blockNumber}${isMultiSig ? '_multisig' : ''}_roles`;
 };
