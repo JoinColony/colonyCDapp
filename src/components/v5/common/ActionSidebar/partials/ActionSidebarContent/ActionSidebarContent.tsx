@@ -228,7 +228,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <CreateStakedExpenditureModal
           actionType={selectedActionType}
           isOpen={isCreateStakedExpenditureModalVisible}
-          onCloseClick={hideCreateStakedExpenditureModal}
+          onClose={hideCreateStakedExpenditureModal}
           formValues={formValues}
         />
       )}
