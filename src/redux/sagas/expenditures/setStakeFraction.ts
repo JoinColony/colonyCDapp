@@ -39,7 +39,7 @@ function* setStakeFractionAction({
 
     yield takeFrom(setStakeFraction.channel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: setStakeFraction.id });
+    yield initiateTransaction(setStakeFraction.id);
     yield takeFrom(
       setStakeFraction.channel,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
