@@ -1,4 +1,3 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -6,14 +5,11 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote, type ColonyActionType } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { ActionForm } from '~shared/Fields/index.ts';
-import { mapPayload } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import IconButton from '~v5/shared/Button/IconButton.tsx';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 import { VoteExpectedStep } from '../MultiSigWidget/types.ts';
 
@@ -44,7 +40,7 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  const transform = mapPayload(() => ({
+  const removeVotePayload = {
     colonyAddress: colony.colonyAddress,
     colonyDomains: extractColonyDomains(colony.domains),
     colonyRoles: extractColonyRoles(colony.roles),
@@ -56,34 +52,19 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
         actionType,
         createdIn: multiSigDomainId,
       }) || [],
-  }));
+  };
 
   return (
-    <ActionForm
+    <ActionButton
+      useTxLoader
+      isFullSize
+      isLoading={isPending}
       actionType={ActionTypes.MULTISIG_VOTE}
-      transform={transform}
       onSuccess={() => setExpectedStep(VoteExpectedStep.vote)}
+      values={removeVotePayload}
     >
-      {({ formState: { isSubmitting } }) =>
-        isSubmitting || isPending ? (
-          <IconButton
-            rounded="s"
-            isFullSize
-            text={{ id: 'button.pending' }}
-            icon={
-              <span className="ml-2 flex shrink-0">
-                <SpinnerGap size={18} className="animate-spin" />
-              </span>
-            }
-            className="!px-4 !text-md"
-          />
-        ) : (
-          <Button type="submit" isFullSize>
-            {formatText(MSG.remove)}
-          </Button>
-        )
-      }
-    </ActionForm>
+      {formatText(MSG.remove)}
+    </ActionButton>
   );
 };
 

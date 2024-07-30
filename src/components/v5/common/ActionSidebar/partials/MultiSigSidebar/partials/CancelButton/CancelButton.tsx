@@ -1,15 +1,11 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { ActionForm } from '~shared/Fields/index.ts';
-import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import IconButton from '~v5/shared/Button/IconButton.tsx';
+import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 import { VoteExpectedStep } from '../MultiSigWidget/types.ts';
 
@@ -36,37 +32,25 @@ const CancelButton: FC<CancelButtonProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  const transform = mapPayload(() => ({
+  const cancelPayload = {
     colonyAddress: colony.colonyAddress,
     motionId: multiSigId,
-  }));
+  };
 
   return (
-    <ActionForm
+    <ActionButton
+      isFullSize
+      useTxLoader
+      isLoading={isPending}
       actionType={ActionTypes.MULTISIG_CANCEL}
-      transform={transform}
-      onSuccess={() => setExpectedStep(VoteExpectedStep.cancel)}
+      onSuccess={() => {
+        setExpectedStep(VoteExpectedStep.cancel);
+      }}
+      values={cancelPayload}
+      mode="primaryOutline"
     >
-      {({ formState: { isSubmitting } }) =>
-        isPending || isSubmitting ? (
-          <IconButton
-            rounded="s"
-            isFullSize
-            text={{ id: 'button.pending' }}
-            icon={
-              <span className="ml-2 flex shrink-0">
-                <SpinnerGap size={18} className="animate-spin" />
-              </span>
-            }
-            className="!px-4 !text-md"
-          />
-        ) : (
-          <Button type="submit" mode="primaryOutline" isFullSize>
-            {formatText(MSG.buttonReject)}
-          </Button>
-        )
-      }
-    </ActionForm>
+      {formatText(MSG.buttonReject)}
+    </ActionButton>
   );
 };
 
