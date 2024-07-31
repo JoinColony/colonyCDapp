@@ -17,14 +17,6 @@ fragment Expenditure on Expenditure {
     expectedNumberOfPayouts
     expectedNumberOfTokens
   }
-  creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
-    items {
-      metadata {
-        customTitle
-      }
-      transactionHash: id
-    }
-  }
   finalizedAt
   createdAt
   motions {
@@ -43,6 +35,14 @@ fragment Expenditure on Expenditure {
     ...ExpenditureBalance
   }
   # @NOTE: If querying actions field multiple times proves slow, we could query it once and filter on the client
+  creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
+    items {
+      metadata {
+        customTitle
+      }
+      transactionHash: id
+    }
+  }
   lockingActions: actions(
     filter: {
       type: { eq: LOCK_EXPENDITURE }
