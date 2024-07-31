@@ -323,10 +323,6 @@ input BridgeUpdateBankAccountInput {
   account: BridgeCreateBankAccountInput!
 }
 
-type BridgeCheckKYCReturn {
-  kycStatus: KYCStatus
-}
-
 type BridgeCreateBankAccountReturn {
   success: Boolean
 }
@@ -335,41 +331,12 @@ type BridgeUpdateBankAccountReturn {
   success: Boolean
 }
 
-type BridgeIbanBankAccount {
-  id: String!
-  last4: String!
-  bic: String!
-  country: String!
-}
-
-type BridgeUsBankAccount {
-  last4: String!
-  routingNumber: String!
-}
-
-type BridgeXYZBankAccount {
-  id: String!
-  currency: String!
-  bankName: String!
-  accountOwner: String!
-  iban: BridgeIbanBankAccount
-  usAccount: BridgeUsBankAccount
-}
-
 type BridgeXYZMutationReturn {
   #
   # KYC Links
   #
   tos_link: String
   kyc_link: String
-
-  #
-  # KYC Status
-  #
-  kycStatus: KYCStatus
-  country: String
-  # Should support multiple accounts at some point
-  bankAccount: BridgeXYZBankAccount
 
   success: Boolean
 }
@@ -964,6 +931,9 @@ type Query {
   Fetch from the Bridge XYZ API
   """
   bridgeGetDrainsHistory: [BridgeDrain!]
+    @function(name: "bridgeXYZMutation-${env}")
+
+  bridgeCheckKYC: BridgeCheckKYCReturn
     @function(name: "bridgeXYZMutation-${env}")
 }
 

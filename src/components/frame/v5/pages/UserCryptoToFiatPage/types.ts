@@ -1,14 +1,6 @@
-import { type useCheckKycStatusMutation } from '~gql';
+import { type CheckKycStatusQuery } from '~gql';
 
-export type CheckKycStatusMutationReturnType = ReturnType<
-  typeof useCheckKycStatusMutation
->;
-
-export type KycStatusData = NonNullable<
-  CheckKycStatusMutationReturnType[1]['data']
->['bridgeXYZMutation'];
-
-export type KycBankAccountData = NonNullable<KycStatusData>['bankAccount'];
+export type KycStatusData = NonNullable<CheckKycStatusQuery['bridgeCheckKYC']>;
 
 export interface BankDetailsFormValues {
   currency: string;

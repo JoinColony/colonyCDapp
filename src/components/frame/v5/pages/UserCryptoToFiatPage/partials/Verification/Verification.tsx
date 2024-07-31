@@ -16,7 +16,7 @@ const Verification = () => {
 
   const { user } = useAppContext();
 
-  const { kycStatusData, isKycStatusDataLoading, getKycStatusData } =
+  const { kycStatusData, isKycStatusDataLoading, refetchKycData } =
     useCryptoToFiatContext();
 
   const [isModalOpened, setIsModalOpened] = useState(false);
@@ -51,7 +51,7 @@ const Verification = () => {
           },
         });
 
-        getKycStatusData();
+        refetchKycData();
       },
     });
 
@@ -79,7 +79,7 @@ const Verification = () => {
         <VerificationModal
           isOpened={isModalOpened}
           onClose={handleClose}
-          existingKycLink={kycStatusData?.kyc_link ?? ''}
+          existingKycLink={kycStatusData?.kycLink ?? ''}
           onTermsAcceptance={handleTermsAcceptance}
         />
       )}

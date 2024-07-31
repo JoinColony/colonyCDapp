@@ -7,6 +7,14 @@ enum KYCStatus {
   REJECTED
 }
 
+type BridgeCheckKYCReturn {
+  kycStatus: KYCStatus
+  kycLink: String
+  tosLink: String
+  bankAccount: BridgeBankAccount
+  liquidationAddress: String
+}
+
 type BridgeDrainReceipt {
   url: String!
 }
@@ -18,4 +26,25 @@ type BridgeDrain {
   state: String!
   createdAt: String!
   receipt: BridgeDrainReceipt!
+}
+
+type BridgeIbanBankAccount {
+  id: String!
+  last4: String!
+  bic: String!
+  country: String!
+}
+
+type BridgeUsBankAccount {
+  last4: String!
+  routingNumber: String!
+}
+
+type BridgeBankAccount {
+  id: String!
+  currency: String!
+  bankName: String!
+  accountOwner: String!
+  iban: BridgeIbanBankAccount
+  usAccount: BridgeUsBankAccount
 }
