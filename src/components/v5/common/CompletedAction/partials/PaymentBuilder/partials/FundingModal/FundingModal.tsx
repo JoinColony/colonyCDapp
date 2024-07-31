@@ -15,7 +15,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
@@ -130,7 +130,7 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
         </Button>
         <div className="flex w-full justify-center">
           {isSubmitting ? (
-            <TxButton
+            <IconButton
               className="w-full !text-md md:w-[calc(50%-.375rem)]"
               rounded="s"
               text={{ id: 'button.pending' }}
