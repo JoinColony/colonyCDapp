@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
@@ -17,7 +17,7 @@ import { useUnlockToken } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';
 
-const UnlockTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const UnlockTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { colony } = useColonyContext();
   const { status, nativeToken } = colony;
   const isNativeTokenUnlocked = !!status?.nativeToken?.unlocked;

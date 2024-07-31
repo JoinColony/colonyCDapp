@@ -13,7 +13,7 @@ import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
@@ -22,7 +22,7 @@ import { useCreateNewTeam } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
-const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const CreateNewTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
 
   useCreateNewTeam(getFormOptions);

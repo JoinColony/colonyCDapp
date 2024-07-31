@@ -5,13 +5,15 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { useEnterRecoveryMode } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.EnterRecoveryModeForm';
 
-const EnterRecoveryModeForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const EnterRecoveryModeForm: FC<CreateActionFormProps> = ({
+  getFormOptions,
+}) => {
   useEnterRecoveryMode(getFormOptions);
 
   return (

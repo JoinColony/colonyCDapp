@@ -7,7 +7,7 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
@@ -19,7 +19,7 @@ import { useSimplePayment } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
-const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const SimplePaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useSimplePayment(getFormOptions);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();

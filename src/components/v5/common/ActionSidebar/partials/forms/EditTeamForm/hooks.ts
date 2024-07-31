@@ -11,13 +11,13 @@ import { findDomainByNativeId } from '~utils/domains.ts';
 
 import { DECISION_METHOD_FIELD_NAME } from '../../../consts.ts';
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { validationSchema, type EditTeamFormValues } from './consts.ts';
 import { getEditDomainPayload } from './utils.tsx';
 
 export const useEditTeam = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { setValue } = useFormContext();

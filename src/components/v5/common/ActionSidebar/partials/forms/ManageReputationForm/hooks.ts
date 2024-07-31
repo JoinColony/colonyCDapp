@@ -17,7 +17,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import {
   getManageReputationPayload,
@@ -105,7 +105,7 @@ export type ManageReputationFormValues = InferType<
 >;
 
 export const useManageReputation = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const validationSchema = useValidationSchema();

@@ -7,14 +7,14 @@ import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCre
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import BatchPaymentsTable from '../../BatchPaymentsTable/index.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 
-const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
+const BatchPaymentForm: FC<CreateActionFormProps> = () => {
   const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
