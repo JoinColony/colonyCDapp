@@ -16,22 +16,57 @@ const TokenSelectContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const allTokens = useGetAllTokens();
 
-  const { data: tokensListData, loading } = useGetTokensListQuery({
+  const {
+    data: tokensListData,
+    loading,
+    fetchMore,
+  } = useGetTokensListQuery({
     variables: {
       isValidated: true,
     },
+    onCompleted: (receivedData) => {
+      if (receivedData?.listTokens?.nextToken) {
+        fetchMore({
+          variables: {
+            nextToken: receivedData.listTokens.nextToken,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+
+            // Here, combine the previous items with the newly fetched items
+            return {
+              ...prev,
+              listTokens: {
+                ...prev.listTokens,
+                items: [
+                  ...(prev?.listTokens?.items || []),
+                  ...(fetchMoreResult?.listTokens?.items || []),
+                ],
+                nextToken: fetchMoreResult?.listTokens?.nextToken,
+              },
+            };
+          },
+        });
+      }
+    },
   });
 
-  const predefinedTokens =
-    tokensListData?.listTokens?.items.filter(notNull) ?? [];
+  const predefinedTokens = useMemo(
+    () => tokensListData?.listTokens?.items.filter(notNull) || [],
+    [tokensListData],
+  );
 
-  const suggestedOptions: TokenSearchItemOption[] = predefinedTokens.map(
-    (item) => ({
+  const suggestedOptions: TokenSearchItemOption[] = predefinedTokens
+    .filter((token, index, self) => {
+      return (
+        index === self.findIndex((t) => t.tokenAddress === token.tokenAddress)
+      );
+    })
+    .map((item) => ({
       label: item.name,
       value: item.tokenAddress,
       token: item,
-    }),
-  );
+    }));
 
   const allTokensOptions: TokenSearchItemOption[] = [
     ...(allTokens.flatMap(({ token }) => token).filter(notNull) ?? []),

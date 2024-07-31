@@ -29,5 +29,6 @@ query GetTokensList($isValidated: Boolean, $nextToken: String, $limit: Int) {
     items {
       ...Token
     }
+    nextToken
   }
 }

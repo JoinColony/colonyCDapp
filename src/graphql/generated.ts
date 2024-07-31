@@ -235,10 +235,8 @@ export enum ClientType {
   TokenClient = 'TokenClient',
   TokenLockingClient = 'TokenLockingClient',
   TokenSupplierClient = 'TokenSupplierClient',
-  VestingSimpleClient = 'VestingSimpleClient',
   VotingReputationClient = 'VotingReputationClient',
-  WhitelistClient = 'WhitelistClient',
-  WrappedTokenClient = 'WrappedTokenClient'
+  WhitelistClient = 'WhitelistClient'
 }
 
 /** Represents a Colony within the Colony Network */
@@ -8135,9 +8133,9 @@ export type Transaction = {
   gasLimit?: Maybe<Scalars['String']>;
   /** The transaction's gas price */
   gasPrice?: Maybe<Scalars['String']>;
-  /** The group to which the transaction belongs, if any */
+  /** The group to which the transaction belongs */
   group: TransactionGroup;
-  /** The id of the group to which the transaction belongs, if any */
+  /** The id of the group to which the transaction belongs */
   groupId: Scalars['ID'];
   /** The transaction hash */
   hash?: Maybe<Scalars['String']>;
@@ -9523,7 +9521,7 @@ export type GetTokensListQueryVariables = Exact<{
 }>;
 
 
-export type GetTokensListQuery = { __typename?: 'Query', listTokens?: { __typename?: 'ModelTokenConnection', items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> } | null };
+export type GetTokensListQuery = { __typename?: 'Query', listTokens?: { __typename?: 'ModelTokenConnection', nextToken?: string | null, items: Array<{ __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null> } | null };
 
 export type GetUserTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -13186,6 +13184,7 @@ export const GetTokensListDocument = gql`
     items {
       ...Token
     }
+    nextToken
   }
 }
     ${TokenFragmentDoc}`;
