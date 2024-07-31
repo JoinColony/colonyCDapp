@@ -15,7 +15,7 @@ import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import AmountField from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import useReputationValidation from '../../hooks/useReputationValidation.ts';
@@ -187,7 +187,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
                 {formatText(MSG.cancel)}
               </Button>
               {isSubmitting || isLoading ? (
-                <TxButton
+                <IconButton
                   className="w-full !text-md md:w-[calc(50%-.375rem)]"
                   rounded="s"
                   text={{ id: 'button.pending' }}
