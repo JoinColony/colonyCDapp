@@ -7,7 +7,7 @@ const { getLiquidationAddresses } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUser, createLiquidationAddress } = require('../graphql');
+const { getUser } = require('../graphql');
 
 const KYC_STATUS = {
   NOT_STARTED: 'NOT_STARTED',
@@ -117,42 +117,48 @@ const checkKYCHandler = async (
     const response = await externalAccountRes.json();
 
     const externalAccounts = response.data;
-
-    // TODO: Support multiple accounts
     const firstAccount = externalAccounts?.[0];
 
-    const mappedAccount = firstAccount
-      ? {
-          id: firstAccount.id,
-          currency: firstAccount.currency,
-          bankName: firstAccount.bank_name,
-          accountOwner: firstAccount.account_owner_name,
-          iban: firstAccount.iban
-            ? {
-                last4: firstAccount.iban.last_4,
-                bic: firstAccount.iban.bic,
-                country: firstAccount.iban.country,
-              }
-            : null,
-          usAccount: firstAccount.account
-            ? {
-                last4: firstAccount.account.last_4,
-                routingNumber: firstAccount.account.routing_number,
-              }
-            : null,
-        }
-      : null;
+    if (!firstAccount) {
+      return {
+        kycStatus,
+        kyc_link: kycLink,
+        bankAccount: null,
+      };
+    }
+
+    const mappedAccount = {
+      id: firstAccount.id,
+      currency: firstAccount.currency,
+      bankName: firstAccount.bank_name,
+      accountOwner: firstAccount.account_owner_name,
+      iban: firstAccount.iban
+        ? {
+            last4: firstAccount.iban.last_4,
+            bic: firstAccount.iban.bic,
+            country: firstAccount.iban.country,
+          }
+        : null,
+      usAccount: firstAccount.account
+        ? {
+            last4: firstAccount.account.last_4,
+            routingNumber: firstAccount.account.routing_number,
+          }
+        : null,
+    };
 
     const liquidationAddresses = await getLiquidationAddresses(
       apiUrl,
       apiKey,
       bridgeCustomerId,
     );
-    const hasLiquidationAddress = liquidationAddresses.length > 0;
 
-    if (firstAccount && !hasLiquidationAddress) {
-      // They have external accounts. Create a liquidation address
-      console.log('Bank account exists, creating liquidation address');
+    let externalAccountLiquidationAddress = liquidationAddresses.find(
+      (address) => address.external_account_id === firstAccount.id,
+    )?.address;
+
+    if (!externalAccountLiquidationAddress) {
+      console.log('No liquidation address found for account, creating one');
       const liquidationAddressCreation = await fetch(
         `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
         {
@@ -176,32 +182,20 @@ const checkKYCHandler = async (
       const liquidationAddressCreationRes =
         await liquidationAddressCreation.json();
 
-      if (liquidationAddressCreation.status === 201) {
-        const liquidationAddress = liquidationAddressCreationRes.address;
-        await graphqlRequest(
-          createLiquidationAddress,
-          {
-            input: {
-              chainId: 42161,
-              liquidationAddress,
-              userAddress: checksummedWalletAddress,
-            },
-          },
-          graphqlURL,
-          appSyncApiKey,
-        );
-      } else {
-        console.error(
-          `Failed to create liquidation address: `,
-          liquidationAddressCreationRes,
+      if (liquidationAddressCreation.status !== 201) {
+        throw new Error(
+          `Failed to create liquidation address: ${liquidationAddressCreationRes}`,
         );
       }
+
+      externalAccountLiquidationAddress = liquidationAddressCreationRes.address;
     }
 
     return {
       kycStatus,
       kyc_link: kycLink,
       bankAccount: mappedAccount,
+      liquidationAddress: externalAccountLiquidationAddress,
     };
   } catch (e) {
     console.error(e);

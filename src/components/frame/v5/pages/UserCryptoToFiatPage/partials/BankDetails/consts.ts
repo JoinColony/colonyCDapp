@@ -2,10 +2,11 @@ import { WarningCircle } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
 import { KycStatus } from '~gql';
+import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
-import { type KycBankAccountData, type KycStatusData } from '../../types.ts';
+import { type KycStatusData } from '../../types.ts';
 import { type RowItemBodyProps } from '../RowItem/types.ts';
 
 import { BankDetailsStatus } from './types.ts';
@@ -73,8 +74,8 @@ export const getCTAScheme = ({
   bankAccountData,
   kycStatusData,
 }: {
-  kycStatusData: KycStatusData;
-  bankAccountData: KycBankAccountData;
+  kycStatusData?: KycStatusData | null;
+  bankAccountData?: BridgeBankAccount | null;
 }): Pick<RowItemBodyProps, 'ctaDisabled' | 'ctaTitle'> => {
   if (bankAccountData) {
     return {

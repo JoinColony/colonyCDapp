@@ -62,9 +62,23 @@ export type ApprovedTokenChangesInput = {
   unaffected: Array<Scalars['ID']>;
 };
 
+export type BridgeBankAccount = {
+  __typename?: 'BridgeBankAccount';
+  accountOwner: Scalars['String'];
+  bankName: Scalars['String'];
+  currency: Scalars['String'];
+  iban?: Maybe<BridgeIbanBankAccount>;
+  id: Scalars['String'];
+  usAccount?: Maybe<BridgeUsBankAccount>;
+};
+
 export type BridgeCheckKycReturn = {
   __typename?: 'BridgeCheckKYCReturn';
+  bankAccount?: Maybe<BridgeBankAccount>;
+  kycLink?: Maybe<Scalars['String']>;
   kycStatus?: Maybe<KycStatus>;
+  liquidationAddress?: Maybe<Scalars['String']>;
+  tosLink?: Maybe<Scalars['String']>;
 };
 
 export type BridgeCreateBankAccountInput = {
@@ -131,16 +145,6 @@ export type BridgeUsBankAccount = {
   routingNumber: Scalars['String'];
 };
 
-export type BridgeXyzBankAccount = {
-  __typename?: 'BridgeXYZBankAccount';
-  accountOwner: Scalars['String'];
-  bankName: Scalars['String'];
-  currency: Scalars['String'];
-  iban?: Maybe<BridgeIbanBankAccount>;
-  id: Scalars['String'];
-  usAccount?: Maybe<BridgeUsBankAccount>;
-};
-
 export type BridgeXyzMutationAccountInput = {
   account_number: Scalars['String'];
   routing_number: Scalars['String'];
@@ -183,9 +187,6 @@ export type BridgeXyzMutationInput = {
 
 export type BridgeXyzMutationReturn = {
   __typename?: 'BridgeXYZMutationReturn';
-  bankAccount?: Maybe<BridgeXyzBankAccount>;
-  country?: Maybe<Scalars['String']>;
-  kycStatus?: Maybe<KycStatus>;
   kyc_link?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['Boolean']>;
   tos_link?: Maybe<Scalars['String']>;
@@ -5718,6 +5719,7 @@ export type ProfileMetadataInput = {
 /** Root query type */
 export type Query = {
   __typename?: 'Query';
+  bridgeCheckKYC?: Maybe<BridgeCheckKycReturn>;
   /** Fetch from the Bridge XYZ API */
   bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
@@ -8900,7 +8902,7 @@ export type MotionStakesFragment = { __typename?: 'MotionStakes', raw: { __typen
 
 export type ColonyDecisionFragment = { __typename?: 'ColonyDecision', title: string, description: string, motionDomainId: number, walletAddress: string, createdAt: string, actionId: string, colonyAddress: string };
 
-export type BridgeBankAccountFragment = { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null };
+export type BridgeBankAccountFragment = { __typename?: 'BridgeBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null };
 
 export type BridgeDrainFragment = { __typename?: 'BridgeDrain', id: string, amount: string, currency: string, state: string, createdAt: string, receipt: { __typename?: 'BridgeDrainReceipt', url: string } };
 
@@ -9003,26 +9005,6 @@ export type CreateKycLinksMutationVariables = Exact<{
 
 
 export type CreateKycLinksMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null, tos_link?: string | null, kyc_link?: string | null } | null };
-
-export type UpdateBridgeCustomerMutationVariables = Exact<{
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  address?: InputMaybe<BridgeXyzMutationAddressInput>;
-  birthDate: Scalars['String'];
-  taxIdNumber: Scalars['String'];
-  signedAgreementId: Scalars['String'];
-  email: Scalars['String'];
-  currency: Scalars['String'];
-  iban?: InputMaybe<BridgeXyzMutationIbanInput>;
-}>;
-
-
-export type UpdateBridgeCustomerMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', success?: boolean | null } | null };
-
-export type CheckKycStatusMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CheckKycStatusMutation = { __typename?: 'Mutation', bridgeXYZMutation?: { __typename?: 'BridgeXYZMutationReturn', kycStatus?: KycStatus | null, kyc_link?: string | null, country?: string | null, bankAccount?: { __typename?: 'BridgeXYZBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type CreateBankAccountMutationVariables = Exact<{
   input: BridgeCreateBankAccountInput;
@@ -9252,6 +9234,11 @@ export type GetUserDrainsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUserDrainsQuery = { __typename?: 'Query', bridgeGetDrainsHistory?: Array<{ __typename?: 'BridgeDrain', id: string, amount: string, currency: string, state: string, createdAt: string, receipt: { __typename?: 'BridgeDrainReceipt', url: string } }> | null };
+
+export type CheckKycStatusQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CheckKycStatusQuery = { __typename?: 'Query', bridgeCheckKYC?: { __typename?: 'BridgeCheckKYCReturn', kycStatus?: KycStatus | null, kycLink?: string | null, liquidationAddress?: string | null, bankAccount?: { __typename?: 'BridgeBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -9593,7 +9580,7 @@ export type GetCurrentColonyVersionQueryVariables = Exact<{ [key: string]: never
 export type GetCurrentColonyVersionQuery = { __typename?: 'Query', getCurrentVersionByKey?: { __typename?: 'ModelCurrentVersionConnection', items: Array<{ __typename?: 'CurrentVersion', version: number } | null> } | null };
 
 export const BridgeBankAccountFragmentDoc = gql`
-    fragment BridgeBankAccount on BridgeXYZBankAccount {
+    fragment BridgeBankAccount on BridgeBankAccount {
   id
   currency
   bankName
@@ -10678,86 +10665,6 @@ export function useCreateKycLinksMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateKycLinksMutationHookResult = ReturnType<typeof useCreateKycLinksMutation>;
 export type CreateKycLinksMutationResult = Apollo.MutationResult<CreateKycLinksMutation>;
 export type CreateKycLinksMutationOptions = Apollo.BaseMutationOptions<CreateKycLinksMutation, CreateKycLinksMutationVariables>;
-export const UpdateBridgeCustomerDocument = gql`
-    mutation UpdateBridgeCustomer($firstName: String!, $lastName: String!, $address: BridgeXYZMutationAddressInput, $birthDate: String!, $taxIdNumber: String!, $signedAgreementId: String!, $email: String!, $currency: String!, $iban: BridgeXYZMutationIbanInput) {
-  bridgeXYZMutation(
-    input: {path: "v0/customers/{customerID}", body: {first_name: $firstName, last_name: $lastName, address: $address, birth_date: $birthDate, tax_identification_number: $taxIdNumber, signed_agreement_id: $signedAgreementId, email: $email, currency: $currency, iban: $iban}}
-  ) {
-    success
-  }
-}
-    `;
-export type UpdateBridgeCustomerMutationFn = Apollo.MutationFunction<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
-
-/**
- * __useUpdateBridgeCustomerMutation__
- *
- * To run a mutation, you first call `useUpdateBridgeCustomerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateBridgeCustomerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateBridgeCustomerMutation, { data, loading, error }] = useUpdateBridgeCustomerMutation({
- *   variables: {
- *      firstName: // value for 'firstName'
- *      lastName: // value for 'lastName'
- *      address: // value for 'address'
- *      birthDate: // value for 'birthDate'
- *      taxIdNumber: // value for 'taxIdNumber'
- *      signedAgreementId: // value for 'signedAgreementId'
- *      email: // value for 'email'
- *      currency: // value for 'currency'
- *      iban: // value for 'iban'
- *   },
- * });
- */
-export function useUpdateBridgeCustomerMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>(UpdateBridgeCustomerDocument, options);
-      }
-export type UpdateBridgeCustomerMutationHookResult = ReturnType<typeof useUpdateBridgeCustomerMutation>;
-export type UpdateBridgeCustomerMutationResult = Apollo.MutationResult<UpdateBridgeCustomerMutation>;
-export type UpdateBridgeCustomerMutationOptions = Apollo.BaseMutationOptions<UpdateBridgeCustomerMutation, UpdateBridgeCustomerMutationVariables>;
-export const CheckKycStatusDocument = gql`
-    mutation CheckKYCStatus {
-  bridgeXYZMutation(input: {path: "v0/kyc_links/{kycLinkID}", body: {}}) {
-    kycStatus
-    kyc_link
-    country
-    bankAccount {
-      ...BridgeBankAccount
-    }
-  }
-}
-    ${BridgeBankAccountFragmentDoc}`;
-export type CheckKycStatusMutationFn = Apollo.MutationFunction<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
-
-/**
- * __useCheckKycStatusMutation__
- *
- * To run a mutation, you first call `useCheckKycStatusMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCheckKycStatusMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [checkKycStatusMutation, { data, loading, error }] = useCheckKycStatusMutation({
- *   variables: {
- *   },
- * });
- */
-export function useCheckKycStatusMutation(baseOptions?: Apollo.MutationHookOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CheckKycStatusMutation, CheckKycStatusMutationVariables>(CheckKycStatusDocument, options);
-      }
-export type CheckKycStatusMutationHookResult = ReturnType<typeof useCheckKycStatusMutation>;
-export type CheckKycStatusMutationResult = Apollo.MutationResult<CheckKycStatusMutation>;
-export type CheckKycStatusMutationOptions = Apollo.BaseMutationOptions<CheckKycStatusMutation, CheckKycStatusMutationVariables>;
 export const CreateBankAccountDocument = gql`
     mutation CreateBankAccount($input: BridgeCreateBankAccountInput!) {
   bridgeCreateBankAccount(input: $input) {
@@ -11881,6 +11788,45 @@ export function useGetUserDrainsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetUserDrainsQueryHookResult = ReturnType<typeof useGetUserDrainsQuery>;
 export type GetUserDrainsLazyQueryHookResult = ReturnType<typeof useGetUserDrainsLazyQuery>;
 export type GetUserDrainsQueryResult = Apollo.QueryResult<GetUserDrainsQuery, GetUserDrainsQueryVariables>;
+export const CheckKycStatusDocument = gql`
+    query CheckKYCStatus {
+  bridgeCheckKYC {
+    kycStatus
+    kycLink
+    bankAccount {
+      ...BridgeBankAccount
+    }
+    liquidationAddress
+  }
+}
+    ${BridgeBankAccountFragmentDoc}`;
+
+/**
+ * __useCheckKycStatusQuery__
+ *
+ * To run a query within a React component, call `useCheckKycStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckKycStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckKycStatusQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCheckKycStatusQuery(baseOptions?: Apollo.QueryHookOptions<CheckKycStatusQuery, CheckKycStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckKycStatusQuery, CheckKycStatusQueryVariables>(CheckKycStatusDocument, options);
+      }
+export function useCheckKycStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckKycStatusQuery, CheckKycStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckKycStatusQuery, CheckKycStatusQueryVariables>(CheckKycStatusDocument, options);
+        }
+export type CheckKycStatusQueryHookResult = ReturnType<typeof useCheckKycStatusQuery>;
+export type CheckKycStatusLazyQueryHookResult = ReturnType<typeof useCheckKycStatusLazyQuery>;
+export type CheckKycStatusQueryResult = Apollo.QueryResult<CheckKycStatusQuery, CheckKycStatusQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {

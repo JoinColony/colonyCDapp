@@ -1,4 +1,4 @@
-fragment BridgeBankAccount on BridgeXYZBankAccount {
+fragment BridgeBankAccount on BridgeBankAccount {
   id
   currency
   bankName
