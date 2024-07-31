@@ -8,7 +8,7 @@ import {
 } from '~gql';
 import { canUseMetatransactions } from '~utils/checks/index.ts';
 
-export function* getCanUserSendMetatransactions() {
+export function* metatransactionsEnabled() {
   const metatransactionsAvailable = canUseMetatransactions();
 
   if (!metatransactionsAvailable) {

@@ -29,7 +29,6 @@ export interface TxConfig {
   options?: Overrides;
   params?: MethodParams;
   ready?: boolean;
-  metatransaction?: boolean;
   title?: MessageDescriptor;
   titleValues?: SimpleMessageValues;
 }

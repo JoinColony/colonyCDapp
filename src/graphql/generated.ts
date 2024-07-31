@@ -1681,7 +1681,6 @@ export type CreateTransactionInput = {
   id?: InputMaybe<Scalars['ID']>;
   identifier?: InputMaybe<Scalars['String']>;
   loadingRelated?: InputMaybe<Scalars['Boolean']>;
-  metatransaction: Scalars['Boolean'];
   methodContext?: InputMaybe<Scalars['String']>;
   methodName: Scalars['String'];
   options?: InputMaybe<Scalars['String']>;
@@ -4164,7 +4163,6 @@ export type ModelSubscriptionTransactionFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   identifier?: InputMaybe<ModelSubscriptionStringInput>;
   loadingRelated?: InputMaybe<ModelSubscriptionBooleanInput>;
-  metatransaction?: InputMaybe<ModelSubscriptionBooleanInput>;
   methodContext?: InputMaybe<ModelSubscriptionStringInput>;
   methodName?: InputMaybe<ModelSubscriptionStringInput>;
   options?: InputMaybe<ModelSubscriptionStringInput>;
@@ -4267,7 +4265,6 @@ export type ModelTransactionConditionInput = {
   hash?: InputMaybe<ModelStringInput>;
   identifier?: InputMaybe<ModelStringInput>;
   loadingRelated?: InputMaybe<ModelBooleanInput>;
-  metatransaction?: InputMaybe<ModelBooleanInput>;
   methodContext?: InputMaybe<ModelStringInput>;
   methodName?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelTransactionConditionInput>;
@@ -4304,7 +4301,6 @@ export type ModelTransactionFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   identifier?: InputMaybe<ModelStringInput>;
   loadingRelated?: InputMaybe<ModelBooleanInput>;
-  metatransaction?: InputMaybe<ModelBooleanInput>;
   methodContext?: InputMaybe<ModelStringInput>;
   methodName?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelTransactionFilterInput>;
@@ -8145,8 +8141,6 @@ export type Transaction = {
   identifier?: Maybe<Scalars['String']>;
   /** True if a related transaction is loading */
   loadingRelated?: Maybe<Scalars['Boolean']>;
-  /** True if the transaction is a metatransaction */
-  metatransaction: Scalars['Boolean'];
   /** Context in which method is used e.g. setOneTxRole */
   methodContext?: Maybe<Scalars['String']>;
   /** The name of the contract method used */
@@ -8658,7 +8652,6 @@ export type UpdateTransactionInput = {
   id: Scalars['ID'];
   identifier?: InputMaybe<Scalars['String']>;
   loadingRelated?: InputMaybe<Scalars['Boolean']>;
-  metatransaction?: InputMaybe<Scalars['Boolean']>;
   methodContext?: InputMaybe<Scalars['String']>;
   methodName?: InputMaybe<Scalars['String']>;
   options?: InputMaybe<Scalars['String']>;
@@ -8992,7 +8985,7 @@ export type UserTokenBalanceDataFragment = { __typename?: 'GetUserTokenBalanceRe
 
 export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null };
 
-export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } };
+export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } };
 
 export type UserFragment = { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null };
 
@@ -9173,7 +9166,7 @@ export type CreateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
+export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
 
 export type UpdateTransactionMutationVariables = Exact<{
   input: UpdateTransactionInput;
@@ -9530,7 +9523,7 @@ export type GetUserTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
+export type GetUserTransactionsQuery = { __typename?: 'Query', getTransactionsByUser?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
 
 export type GetTransactionsByGroupQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -9538,14 +9531,14 @@ export type GetTransactionsByGroupQueryVariables = Exact<{
 }>;
 
 
-export type GetTransactionsByGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
+export type GetTransactionsByGroupQuery = { __typename?: 'Query', getTransactionsByUserAndGroup?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null> } | null };
 
 export type GetTransactionQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, metatransaction: boolean, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
+export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
 
 export type GetPendingTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -10564,7 +10557,6 @@ export const TransactionFragmentDoc = gql`
   methodContext
   methodName
   status
-  metatransaction
   title
   titleValues
   options

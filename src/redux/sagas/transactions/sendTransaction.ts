@@ -9,7 +9,7 @@ import { mergePayload } from '~utils/actions.ts';
 import { transactionSendError } from '../../actionCreators/index.ts';
 import { type ActionTypes } from '../../actionTypes.ts';
 import { type Action } from '../../types/actions/index.ts';
-import { getColonyManager } from '../utils/index.ts';
+import { getColonyManager, metatransactionsEnabled } from '../utils/index.ts';
 
 import getMetatransactionPromise from './getMetatransactionPromise.ts';
 import getTransactionPromise from './getTransactionPromise.ts';
@@ -19,13 +19,14 @@ export default function* sendTransaction({
   meta: { id },
 }: Action<ActionTypes.TRANSACTION_SEND>) {
   const transaction = yield getTransaction(id, 'cache-first');
-  const { status, context, identifier, metatransaction, methodName } =
-    transaction;
+  const { status, context, identifier, methodName } = transaction;
 
   if (status !== TransactionStatus.Ready) {
     throw new Error(`Transaction ${id} is not ready to send.`);
   }
   const colonyManager = yield getColonyManager();
+
+  const metaTxEnabled = yield metatransactionsEnabled();
 
   let contextClient: any; // Disregard the `any`. The new ColonyJS messed up all the types
   if (context === ClientType.TokenClient) {
@@ -35,7 +36,7 @@ export default function* sendTransaction({
       identifier as string,
     );
   } else if (
-    metatransaction &&
+    metaTxEnabled &&
     methodName === TRANSACTION_METHODS.DeployTokenAuthority
   ) {
     contextClient = colonyManager.networkClient;
@@ -50,7 +51,7 @@ export default function* sendTransaction({
     throw new Error('Context client failed to instantiate');
   }
 
-  const promiseMethod = metatransaction
+  const promiseMethod = metaTxEnabled
     ? getMetatransactionPromise
     : getTransactionPromise;
 

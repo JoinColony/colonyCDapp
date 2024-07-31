@@ -51,7 +51,6 @@ interface TransactionRecordProps {
   receipt?: TransactionReceipt;
   status: TransactionStatus;
   loadingRelated?: boolean;
-  metatransaction: boolean;
   title?: MessageDescriptor;
   titleValues?: SimpleMessageValues;
 }

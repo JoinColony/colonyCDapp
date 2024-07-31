@@ -24,7 +24,6 @@ export type TransactionCreatedPayload = Pick<
   | 'identifier'
   | 'methodContext'
   | 'methodName'
-  | 'metatransaction'
   | 'options'
   | 'params'
   | 'status'

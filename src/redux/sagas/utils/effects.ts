@@ -15,7 +15,7 @@ import {
   type Action,
 } from '../../types/actions/index.ts';
 
-import { getCanUserSendMetatransactions } from './getCanUserSendMetatransactions.ts';
+import { metatransactionsEnabled } from './getCanUserSendMetatransactions.ts';
 
 /*
  * Effect to take a specific action from a channel.
@@ -100,7 +100,7 @@ export const takeLatestCancellable = (
 };
 
 export function* initiateTransaction(id: string) {
-  const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
+  const shouldSendMetatransaction = yield metatransactionsEnabled();
 
   yield transactionSetReady(id);
 
