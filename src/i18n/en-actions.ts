@@ -80,7 +80,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationReward} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Manage reputation}
-      ${ColonyActionType.CreateDecisionMotion} {Decision}
+      ${ColonyActionType.CreateDecisionMotion} {Agreement}
       ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}

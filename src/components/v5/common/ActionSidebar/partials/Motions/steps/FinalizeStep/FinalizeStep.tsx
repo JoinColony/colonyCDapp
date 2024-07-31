@@ -81,15 +81,18 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     return stopPollingAction;
   }, [isClaimed, stopPollingAction]);
 
-  /* Update colony object when motion gets finalized. */
+  /* Update colony object when motion gets finalized or is agreement. */
   useEffect(() => {
-    if (actionData.motionData.isFinalized && !hasFinalizedHandlerRun.current) {
+    if (
+      (isMotionAgreement || isMotionFinalized) &&
+      !hasFinalizedHandlerRun.current
+    ) {
       refetchColony();
       setIsPolling(false);
       handleMotionFinalized(actionData);
       hasFinalizedHandlerRun.current = true;
     }
-  }, [actionData, refetchColony]);
+  }, [isMotionAgreement, isMotionFinalized, actionData, refetchColony]);
 
   let action = {
     actionType: ActionTypes.MOTION_FINALIZE,

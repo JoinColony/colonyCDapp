@@ -26,11 +26,11 @@ interface CreateDecisionProps {
 const MSG = defineMessages({
   defaultTitle: {
     id: `${displayName}.defaultTitle`,
-    defaultMessage: 'Create decision',
+    defaultMessage: 'Create agreement',
   },
   subtitle: {
     id: `${displayName}.subtitle`,
-    defaultMessage: 'Decision by {user}',
+    defaultMessage: 'Agreement by {user}',
   },
 });
 

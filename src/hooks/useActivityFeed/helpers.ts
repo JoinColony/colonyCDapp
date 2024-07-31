@@ -141,9 +141,6 @@ export const getBaseSearchActionsFilterVariable = (
   showInActionsList: {
     eq: true,
   },
-  colonyDecisionId: {
-    exists: false,
-  },
   isMotionFinalization: {
     ne: true,
   },
