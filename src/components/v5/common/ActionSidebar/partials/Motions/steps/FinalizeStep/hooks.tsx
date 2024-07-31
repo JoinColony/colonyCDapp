@@ -26,7 +26,7 @@ import { WinningsItems } from './types.ts';
 
 export const useFinalizeStep = (actionData: MotionAction) => {
   const {
-    motionData: { motionId, gasEstimate, motionStateHistory },
+    motionData: { motionId, motionStateHistory },
     type,
     amount,
     fromDomain,
@@ -64,7 +64,6 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       colonyAddress,
       userAddress: user?.walletAddress || '',
       motionId,
-      gasEstimate,
     }),
   );
 

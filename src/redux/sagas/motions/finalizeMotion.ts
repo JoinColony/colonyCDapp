@@ -1,11 +1,8 @@
 import { ClientType } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { transactionUpdateGas } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -16,9 +13,10 @@ import {
 } from '../transactions/index.ts';
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
+// @TODO allow failure after a week if error is TransactionErrors.Estimate
 function* finalizeMotion({
   meta,
-  payload: { colonyAddress, motionId, gasEstimate },
+  payload: { colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -35,7 +33,7 @@ function* finalizeMotion({
       meta,
       config: {
         context: ClientType.VotingReputationClient,
-        methodName: 'finalizeMotion',
+        methodName: 'finalizeMotionWithoutFailure',
         identifier: colonyAddress,
         params: [motionId],
         ready: false,
@@ -45,16 +43,6 @@ function* finalizeMotion({
     yield takeFrom(
       finalizeMotionTransaction.channel,
       ActionTypes.TRANSACTION_CREATED,
-    );
-
-    const gasLimit = BigNumber.from(gasEstimate).lte(DEFAULT_GAS_LIMIT)
-      ? gasEstimate
-      : DEFAULT_GAS_LIMIT.toString();
-
-    yield put(
-      transactionUpdateGas(finalizeMotionTransaction.id, {
-        gasLimit,
-      }),
     );
 
     yield initiateTransaction(finalizeMotionTransaction.id);
