@@ -62,6 +62,11 @@ export type ApprovedTokenChangesInput = {
   unaffected: Array<Scalars['ID']>;
 };
 
+export type BridgeCheckKycReturn = {
+  __typename?: 'BridgeCheckKYCReturn';
+  kycStatus?: Maybe<KycStatus>;
+};
+
 export type BridgeCreateBankAccountInput = {
   accountOwner: Scalars['String'];
   address?: InputMaybe<BridgeXyzMutationAddressInput>;
@@ -184,16 +189,6 @@ export type BridgeXyzMutationReturn = {
   kyc_link?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['Boolean']>;
   tos_link?: Maybe<Scalars['String']>;
-};
-
-export type BridgeXyzQueryInput = {
-  path: Scalars['String'];
-};
-
-export type BridgeXyzQueryReturn = {
-  __typename?: 'BridgeXYZQueryReturn';
-  success?: Maybe<Scalars['Boolean']>;
-  transactionFee?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -5723,9 +5718,8 @@ export type ProfileMetadataInput = {
 /** Root query type */
 export type Query = {
   __typename?: 'Query';
-  bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
   /** Fetch from the Bridge XYZ API */
-  bridgeXYZQuery?: Maybe<BridgeXyzQueryReturn>;
+  bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getAnnotation?: Maybe<Annotation>;
@@ -5855,12 +5849,6 @@ export type Query = {
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
-};
-
-
-/** Root query type */
-export type QueryBridgeXyzQueryArgs = {
-  input: BridgeXyzQueryInput;
 };
 
 

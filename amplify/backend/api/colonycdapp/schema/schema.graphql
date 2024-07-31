@@ -251,10 +251,6 @@ input GetSafeTransactionStatusInput {
   chainId: String!
 }
 
-input BridgeXYZQueryInput {
-  path: String!
-}
-
 input BridgeXYZMutationAddressInput {
   street_line_1: String!
   street_line_2: String
@@ -327,6 +323,10 @@ input BridgeUpdateBankAccountInput {
   account: BridgeCreateBankAccountInput!
 }
 
+type BridgeCheckKYCReturn {
+  kycStatus: KYCStatus
+}
+
 type BridgeCreateBankAccountReturn {
   success: Boolean
 }
@@ -372,11 +372,6 @@ type BridgeXYZMutationReturn {
   bankAccount: BridgeXYZBankAccount
 
   success: Boolean
-}
-
-type BridgeXYZQueryReturn {
-  success: Boolean
-  transactionFee: String
 }
 
 """
@@ -918,15 +913,6 @@ enum ContributorType {
   GENERAL
 }
 
-enum KYCStatus {
-  NOT_STARTED
-  INCOMPLETE
-  PENDING
-  UNDER_REVIEW
-  APPROVED
-  REJECTED
-}
-
 """
 Root query type
 """
@@ -977,11 +963,8 @@ type Query {
   """
   Fetch from the Bridge XYZ API
   """
-  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
-    @function(name: "bridgeXYZQuery-${env}")
-
   bridgeGetDrainsHistory: [BridgeDrain!]
-    @function(name: "bridgeXYZQuery-${env}")
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
