@@ -15,7 +15,7 @@ import {
 import { MotionState } from '~utils/colonyMotions.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
-import MotionCountDownTimer from '~v5/common/CompletedAction/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';

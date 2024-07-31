@@ -10,7 +10,7 @@ import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
-import MotionCountDownTimer from '~v5/common/CompletedAction/partials/Motions/partials/MotionCountDownTimer/index.ts';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { type ActionDescriptionProps } from './types.ts';
