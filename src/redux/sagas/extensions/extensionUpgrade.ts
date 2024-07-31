@@ -2,6 +2,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
 import { type AllActions, type Action, ActionTypes } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -20,7 +21,7 @@ function* extensionUpgrade({
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
       group: {
-        key: 'upgradeExtension',
+        key: TRANSACTION_METHODS.UpgradeExtension,
         id: meta.id,
         index: 0,
       },

@@ -2,6 +2,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -20,7 +21,7 @@ export function* extensionUninstall({
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
       group: {
-        key: 'uninstallExtension',
+        key: TRANSACTION_METHODS.UninstallExtension,
         id: meta.id,
         index: 0,
       },

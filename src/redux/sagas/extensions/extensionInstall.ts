@@ -2,6 +2,7 @@ import { ClientType, getExtensionHash } from '@colony/colony-js';
 import { call, takeEvery, fork, put } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -23,7 +24,7 @@ export function* extensionInstall({
     yield fork(createTransaction, meta.id, {
       context: ClientType.ColonyClient,
       group: {
-        key: 'installExtension',
+        key: TRANSACTION_METHODS.InstallExtension,
         id: meta.id,
         index: 0,
       },
