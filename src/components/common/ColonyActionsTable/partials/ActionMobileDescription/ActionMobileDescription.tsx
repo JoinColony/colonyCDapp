@@ -7,7 +7,7 @@ import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
-import MotionCountDownTimer from '~v5/common/CompletedAction/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 

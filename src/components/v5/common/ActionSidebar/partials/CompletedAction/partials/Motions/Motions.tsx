@@ -11,9 +11,9 @@ import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
-import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
 import MotionProvider from './partials/MotionProvider/MotionProvider.tsx';
 import FinalizeStep from './steps/FinalizeStep/index.ts';
 import OutcomeStep from './steps/OutcomeStep/index.ts';
