@@ -23,7 +23,7 @@ export type UseActionFormBaseHook = (
   options: {
     getFormOptions: ActionFormBaseProps['getFormOptions'];
   } & Pick<
-    ActionFormProps<any>,
+    ActionFormOptions,
     | 'transform'
     | 'actionType'
     | 'defaultValues'
