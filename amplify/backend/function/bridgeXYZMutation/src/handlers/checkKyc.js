@@ -122,7 +122,7 @@ const checkKYCHandler = async (
     if (!firstAccount) {
       return {
         kycStatus,
-        kyc_link: kycLink,
+        kycLink,
         bankAccount: null,
       };
     }
@@ -193,7 +193,7 @@ const checkKYCHandler = async (
 
     return {
       kycStatus,
-      kyc_link: kycLink,
+      kycLink,
       bankAccount: mappedAccount,
       liquidationAddress: externalAccountLiquidationAddress,
     };

@@ -12,8 +12,8 @@ const isDev = process.env.ENV === 'dev';
 
 let graphqlURL = 'http://localhost:20002/graphql';
 let appSyncApiKey = 'da2-fakeApiId123456';
-let apiUrl = 'https://api.bridge.xyz';
-let apiKey = 'sk-live-47c8b97f6d9f7e4d1c13e6a541d49b98';
+let apiUrl = 'https://api.sandbox.bridge.xyz';
+let apiKey = 'xx';
 
 const setEnvVariables = async () => {
   if (!isDev) {
