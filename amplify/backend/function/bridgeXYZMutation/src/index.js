@@ -6,6 +6,7 @@ const {
 const {
   updateExternalAccountHandler,
 } = require('./handlers/updateExternalAccount');
+const { getDrainsHistoryHandler } = require('./handlers/getDrainsHistory');
 
 const isDev = process.env.ENV === 'dev';
 
@@ -26,7 +27,8 @@ const setEnvVariables = async () => {
   }
 };
 
-const BRIDGE_MUTATIONS = {
+const BRIDGE_OPERATIONS = {
+  GET_DRAINS_HISTORY: 'bridgeGetDrainsHistory',
   CREATE_EXTERNAL_ACCOUNT: 'bridgeCreateBankAccount',
   UPDATE_EXTERNAL_ACCOUNT: 'bridgeUpdateBankAccount',
 };
@@ -41,8 +43,9 @@ exports.handler = async (event) => {
   const { path } = event.arguments?.input || {};
 
   const handlers = {
-    [BRIDGE_MUTATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
-    [BRIDGE_MUTATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
+    [BRIDGE_OPERATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
+    [BRIDGE_OPERATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
+    [BRIDGE_OPERATIONS.GET_DRAINS_HISTORY]: getDrainsHistoryHandler,
     'v0/kyc_links': kycLinksHandler,
     'v0/kyc_links/{kycLinkID}': checkKYCHandler,
     default: () => {
