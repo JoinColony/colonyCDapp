@@ -2,6 +2,10 @@
   @apply rounded-e rounded-s border-gray-300 text-md font-normal text-gray-900;
 }
 
+.wrapper--error :global(.select__control) {
+  @apply border-negative-400;
+}
+
 .wrapper :global(.select__control--is-focused) {
   @apply border-blue-200 shadow-[0rem_0rem_0rem_.1875rem_#EFF8FF];
 }

@@ -1,21 +1,13 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { defineMessages } from 'react-intl';
 
 import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
 
-const displayName =
-  'v5.pages.UserCryptoToFiatpage.partials.ContactDetailsForm.CountrySelect';
-
-const MSG = defineMessages({
-  countryLabel: {
-    id: `${displayName}.countryLabel`,
-    defaultMessage: 'Country',
-  },
-});
+import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
+import { AddressFields } from './validation.ts';
 
 export const CountrySelect = () => {
   const countries = getCountries();
@@ -33,20 +25,21 @@ export const CountrySelect = () => {
 
   const handleSelect = () => {
     // if country changed user should choose state of new country
-    setValue('state', '');
+    setValue(AddressFields.STATE, '');
 
     // If no attempt to submit the form has been made yet, do not trigger state validation
     if (!isSubmitted) {
       return;
     }
-    trigger('state');
+    trigger(AddressFields.STATE);
   };
 
   return (
     <FormSelect
-      name="country"
+      name={AddressFields.COUNTRY}
       options={countriesOptions}
-      placeholder={formatText(MSG.countryLabel)}
+      shouldSkipErrorMessage
+      placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.countryPlaceholder)}
       handleChange={handleSelect}
     />
   );

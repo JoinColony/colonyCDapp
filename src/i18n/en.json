@@ -1639,5 +1639,15 @@
     "cryptoToFiat.forms.error.bankAccount.eur.swift-country": "Please enter a SWIFT/BIC and select a Country",
     "cryptoToFiat.forms.error.bankAccount.eur.iban": "Please enter an IBAN",
     "cryptoToFiat.forms.error.bankAccount.eur.swift": "Please enter a SWIFT/BIC",
-    "cryptoToFiat.forms.error.bankAccount.eur.country": "Please select a Country"
+    "cryptoToFiat.forms.error.bankAccount.eur.country": "Please select a Country",
+    "cryptoToFiat.forms.error.address": "Please provide your {fields} information",
+    "cryptoToFiat.forms.address.address1": "street",
+    "cryptoToFiat.forms.address.country": "country",
+    "cryptoToFiat.forms.address.city": "city",
+    "cryptoToFiat.forms.address.state": "state",
+    "cryptoToFiat.forms.address.postcode": "postcode",
+    "form.invalid": "Invalid {fieldName} format",
+    "form.length": "{fieldName} must be exactly {length} characters",
+    "form.min": "{fieldName} must be at least {length} characters",
+    "form.max": "{fieldName} must be a maximum of {length} characters"
 }

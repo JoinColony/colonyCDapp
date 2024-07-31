@@ -51,6 +51,7 @@ export const FormSelect: FC<FormSelectProps> = ({
             options={options}
             isError={hasError}
             isSearchable
+            isDisabled={!options || !options.length}
             placeholder={placeholder}
             formatOptionLabel={formatOptionLabel}
             onChange={(val) => {

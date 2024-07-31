@@ -57,8 +57,15 @@ export const humanReadableFileSize = (size: number) => {
  * @param {string} word The word / string to capitalize
  * @return {string} The capitalized string
  */
-export const capitalizeFirstLetter = (word: string): string =>
-  word && word.charAt(0).toUpperCase() + word.slice(1);
+export const capitalizeFirstLetter = (
+  word: string,
+  options?: { lowerCaseRemainingLetters?: boolean },
+): string =>
+  word &&
+  word.charAt(0).toUpperCase() +
+    (options?.lowerCaseRemainingLetters
+      ? word.slice(1).toLowerCase()
+      : word.slice(1));
 
 /**
  * Capitalize a word (converts the word to lower case, except for the first letter)

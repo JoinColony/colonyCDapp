@@ -1,7 +1,6 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
 import FormError from '~v5/shared/FormError/FormError.tsx';
 
@@ -11,18 +10,24 @@ interface FormInputGroupProps extends PropsWithChildren {
   names: string[];
   groupName: string;
   groupLabel?: string;
+  getErrorMessage: (groupName: string, errorFieldNames: string[]) => string;
 }
 export const FormInputGroup: FC<FormInputGroupProps> = ({
   names,
   groupName,
   groupLabel,
   children,
+  getErrorMessage,
 }) => {
   const {
     formState: { errors },
   } = useFormContext();
-  const errorFields = names.filter((name) => !!get(errors, name)?.message);
-  const hasGroupError = !!errorFields.length;
+
+  const errorRequiredFields = names.filter((name) => {
+    const error = get(errors, name);
+    return error?.type === 'required';
+  });
+  const hasGroupError = !!errorRequiredFields.length;
 
   return (
     <div className="flex flex-col gap-2">
@@ -31,9 +36,9 @@ export const FormInputGroup: FC<FormInputGroupProps> = ({
       {children}
       {hasGroupError && (
         <FormError isFullSize alignment="left">
-          {formatText({
-            id: `cryptoToFiat.forms.error.${groupName}.${errorFields.join('-')}`,
-          })}
+          {errorRequiredFields.length
+            ? getErrorMessage(groupName, errorRequiredFields)
+            : null}
         </FormError>
       )}
     </div>

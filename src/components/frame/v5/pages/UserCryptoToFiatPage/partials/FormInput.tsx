@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -11,37 +10,47 @@ interface FormInputProps {
   label?: string;
   placeholder?: string;
   shouldFocus?: boolean;
-  shouldSkipErrorMessage?: boolean;
+  shouldSkipRequiredErrorMessage?: boolean;
 }
 export const FormInput: FC<FormInputProps> = ({
   name,
   label,
   shouldFocus,
-  shouldSkipErrorMessage,
+  shouldSkipRequiredErrorMessage,
   placeholder,
 }) => {
   const {
     register,
     formState: { isSubmitting, errors },
   } = useFormContext();
-  const hasError = !!get(errors, name)?.message;
+  const error = get(errors, name);
+  const hasRequiredError = error?.type === 'required';
+  const hasError = !!error?.message;
+
+  let customErrorMessage = '';
+  if (hasError && !shouldSkipRequiredErrorMessage) {
+    customErrorMessage = formatText({ id: `cryptoToFiat.forms.error.${name}` });
+  }
+  if (hasError && !hasRequiredError) {
+    customErrorMessage = error?.message as string;
+  }
+
+  const shouldSkipErrorMessage =
+    shouldSkipRequiredErrorMessage && hasRequiredError;
 
   return (
-    <div className={clsx({ 'mb-5': hasError && !shouldSkipErrorMessage })}>
-      <Input
-        name={name}
-        register={register}
-        className="border-gray-300 text-md"
-        isDisabled={isSubmitting}
-        labelMessage={label}
-        shouldFocus={shouldFocus}
-        placeholder={placeholder}
-        isError={hasError}
-        shouldErrorMessageBeVisible={!shouldSkipErrorMessage}
-        customErrorMessage={
-          hasError ? formatText({ id: `cryptoToFiat.forms.error.${name}` }) : ''
-        }
-      />
-    </div>
+    <Input
+      name={name}
+      register={register}
+      className="border-gray-300 text-md"
+      isDisabled={isSubmitting}
+      labelMessage={label}
+      shouldFocus={shouldFocus}
+      placeholder={placeholder}
+      isError={hasError}
+      shouldErrorMessageBeVisible={!shouldSkipErrorMessage}
+      customErrorMessage={customErrorMessage}
+      allowLayoutShift
+    />
   );
 };

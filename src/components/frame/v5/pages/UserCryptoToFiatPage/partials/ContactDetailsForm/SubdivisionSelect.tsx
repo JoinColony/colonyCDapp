@@ -5,12 +5,16 @@ import {
   type SubdivisionData,
   getSubdivisionsByCountryCode,
 } from '~utils/subdivisions.ts';
+import { formatText } from '~utils/intl.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
 
+import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
+import { AddressFields } from './validation.ts';
+
 export const SubdivisionSelect = () => {
   const countryCode = useWatch({
-    name: 'country',
+    name: AddressFields.COUNTRY,
   });
 
   const [subdivisions, setSubdivisions] = useState<SubdivisionData[]>([]);
@@ -30,8 +34,9 @@ export const SubdivisionSelect = () => {
   return (
     <div className="ml-1 flex-1">
       <FormSelect
-        name="state"
-        placeholder="State"
+        name={AddressFields.STATE}
+        placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.stateLabel)}
+        shouldSkipErrorMessage
         options={subdivisions.map((item) => ({
           value: item.code,
           label: item.name,

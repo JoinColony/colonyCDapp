@@ -10,4 +10,5 @@ export interface ModalFormCTAButtonsProps {
     // defined using the defineMessages() function
     title: MessageDescriptor;
   };
+  isLoading?: boolean;
 }

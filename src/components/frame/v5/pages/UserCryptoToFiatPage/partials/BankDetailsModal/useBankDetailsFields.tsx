@@ -43,15 +43,15 @@ const MSG = defineMessages({
 interface UseBankDetailsParams {
   data?: BridgeBankAccount | null;
   onClose: () => void;
-  redirectToSecondTab: () => void;
 }
 export const useBankDetailsFields = ({
   onClose,
-  redirectToSecondTab,
   data,
 }: UseBankDetailsParams) => {
   const [createBankAccount] = useCreateBankAccountMutation();
   const [updateBankAccount] = useUpdateBankAccountMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showContactDetailsForm, setShowContactDetailsForm] = useState(false);
 
   const [bankDetailsFields, setBankDetailsFields] =
     useState<BankDetailsFormValues>({
@@ -71,6 +71,7 @@ export const useBankDetailsFields = ({
     });
 
   const handleSubmitForm = async (values: BankDetailsFormValues) => {
+    setIsLoading(true);
     const {
       bankName,
       accountNumber,
@@ -127,24 +128,26 @@ export const useBankDetailsFields = ({
 
     let isSuccess;
 
-    if (!data) {
-      const result = await createBankAccount({
-        variables: { input: accountInput },
-      });
-      isSuccess = !!result.data?.bridgeCreateBankAccount?.success;
-    } else {
-      const result = await updateBankAccount({
-        variables: {
-          input: {
-            id: data.id,
-            account: accountInput,
+    try {
+      if (!data) {
+        const result = await createBankAccount({
+          variables: { input: accountInput },
+        });
+        isSuccess = !!result.data?.bridgeCreateBankAccount?.success;
+      } else {
+        const result = await updateBankAccount({
+          variables: {
+            input: {
+              id: data.id,
+              account: accountInput,
+            },
           },
-        },
-      });
-      isSuccess = !!result.data?.bridgeUpdateBankAccount?.success;
-    }
+        });
+        isSuccess = !!result.data?.bridgeUpdateBankAccount?.success;
+      }
 
-    if (isSuccess) {
+      if (!isSuccess) throw new Error();
+
       toast.success(
         <Toast
           type="success"
@@ -154,7 +157,8 @@ export const useBankDetailsFields = ({
       );
 
       onClose();
-    } else {
+      setShowContactDetailsForm(false);
+    } catch (e) {
       toast.error(
         <Toast
           type="error"
@@ -162,6 +166,8 @@ export const useBankDetailsFields = ({
           description={formatText(MSG.bankDetailsDescriptionError)}
         />,
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -170,7 +176,7 @@ export const useBankDetailsFields = ({
       handleSubmitForm(values);
     } else {
       setBankDetailsFields({ ...values });
-      redirectToSecondTab();
+      setShowContactDetailsForm(true);
     }
   };
 
@@ -178,5 +184,11 @@ export const useBankDetailsFields = ({
     handleSubmitForm({ ...bankDetailsFields, ...values });
   };
 
-  return { bankDetailsFields, handleSubmitFirstStep, handleSubmitSecondStep };
+  return {
+    isLoading,
+    bankDetailsFields,
+    showContactDetailsForm,
+    handleSubmitFirstStep,
+    handleSubmitSecondStep,
+  };
 };
