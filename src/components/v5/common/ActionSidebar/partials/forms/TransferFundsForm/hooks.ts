@@ -17,7 +17,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { getTransferFundsPayload } from './utils.tsx';
 
@@ -77,7 +77,7 @@ export type TransferFundsFormValues = InferType<
 >;
 
 export const useTransferFunds = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, from } = useWatch<{

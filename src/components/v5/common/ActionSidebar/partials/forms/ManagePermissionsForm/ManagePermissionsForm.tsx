@@ -18,7 +18,7 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
@@ -40,7 +40,9 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
-const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const ManagePermissionsForm: FC<CreateActionFormProps> = ({
+  getFormOptions,
+}) => {
   const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,

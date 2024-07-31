@@ -22,7 +22,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {
@@ -169,7 +169,7 @@ export type PaymentBuilderFormValues = InferType<
 >;
 
 export const usePaymentBuilder = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;

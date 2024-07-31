@@ -2,7 +2,7 @@ import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
@@ -12,7 +12,7 @@ import { useMintToken } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.MintTokenForm';
 
-const MintTokenForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const MintTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useMintToken(getFormOptions);
 
   return (

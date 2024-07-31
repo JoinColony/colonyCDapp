@@ -17,7 +17,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 export const useValidationSchema = () => {
   const { colony } = useColonyContext();
@@ -92,7 +92,7 @@ export type SplitPaymentFormValues = InferType<
 >;
 
 export const useSplitPayment = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,

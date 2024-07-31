@@ -5,7 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
@@ -19,7 +19,7 @@ import { useManageVerifiedMembers } from './hooks.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm';
 
-const ManageVerifiedMembersForm: FC<ActionFormBaseProps> = ({
+const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
   getFormOptions,
 }) => {
   const { manageMembersOptions } = getManageMembersOptions();

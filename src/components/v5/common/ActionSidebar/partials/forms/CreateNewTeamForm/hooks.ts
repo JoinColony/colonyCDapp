@@ -10,13 +10,13 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { validationSchema, type CreateNewTeamFormValues } from './consts.ts';
 import { getCreateNewTeamPayload } from './utils.tsx';
 
 export const useCreateNewTeam = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({

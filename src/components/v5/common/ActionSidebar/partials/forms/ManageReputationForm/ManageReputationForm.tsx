@@ -16,7 +16,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import CreatedIn from '../../CreatedIn/index.ts';
@@ -30,7 +30,9 @@ import { ModificationOption, modificationOptions } from './consts.ts';
 import { useManageReputation } from './hooks.ts';
 import ManageReputationTable from './partials/ManageReputationTable/index.ts';
 
-const ManageReputationForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const ManageReputationForm: FC<CreateActionFormProps> = ({
+  getFormOptions,
+}) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const {
     team: selectedTeam,

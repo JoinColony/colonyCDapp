@@ -6,7 +6,12 @@ import {
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import React, { useCallback, type FC, type PropsWithChildren } from 'react';
+import React, {
+  useCallback,
+  useState,
+  type FC,
+  type PropsWithChildren,
+} from 'react';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -15,7 +20,7 @@ import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import { actionSidebarAnimation } from './consts.ts';
-import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import CreateAction from './partials/CreateAction/CreateAction.tsx';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -34,7 +39,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   } = useActionSidebarContext();
 
   const [isSidebarFullscreen, setIsSidebarFullscreen] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
   const toggleSidebarFullscreen = useCallback(() => {
     setIsSidebarFullscreen(!isSidebarFullscreen);
   }, [isSidebarFullscreen]);
@@ -117,7 +122,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      <ActionSidebarContent defaultValues={initialValues} />
+      <CreateAction defaultValues={initialValues} />
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({

@@ -1,6 +1,6 @@
 import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
 
-export interface ActionSidebarContentProps {
+export interface CreateActionProps {
   defaultValues: ActionFormProps<any>['defaultValues'];
   isMotion?: boolean;
 }

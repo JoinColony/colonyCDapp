@@ -20,7 +20,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
 
@@ -107,7 +107,7 @@ export type SimplePaymentFormValues = InferType<
 >;
 
 export const useSimplePayment = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();

@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
@@ -10,7 +10,7 @@ import { useCreateDecision } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.SinglePaymentForm';
 
-const CreateDecisionForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const CreateDecisionForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const isFieldDisabled = useIsFieldDisabled();
 
   useCreateDecision(getFormOptions);

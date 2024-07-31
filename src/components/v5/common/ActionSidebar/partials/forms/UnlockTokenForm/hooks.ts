@@ -10,13 +10,13 @@ import { mapPayload, pipe, withKey } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { type UnlockTokenFormValues, validationSchema } from './consts.ts';
 import { getUnlockTokenPayload } from './utils.tsx';
 
 export const useUnlockToken = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({

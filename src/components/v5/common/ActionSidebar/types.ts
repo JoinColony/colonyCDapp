@@ -6,7 +6,7 @@ export interface ActionButtonsProps {
   isActionDisabled?: boolean;
 }
 
-export interface ActionFormBaseProps {
+export interface CreateActionFormProps {
   getFormOptions: (
     formOptions: Omit<ActionFormProps<any>, 'children'> | undefined,
     form: UseFormReturn,
@@ -15,7 +15,7 @@ export interface ActionFormBaseProps {
 
 export type UseActionFormBaseHook = (
   options: {
-    getFormOptions: ActionFormBaseProps['getFormOptions'];
+    getFormOptions: CreateActionFormProps['getFormOptions'];
   } & Pick<
     ActionFormProps<any>,
     | 'transform'

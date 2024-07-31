@@ -13,7 +13,7 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import {
   type ManagePermissionsFormValues,
@@ -22,7 +22,7 @@ import {
 import { configureFormRoles, getManagePermissionsPayload } from './utils.ts';
 
 export const useManagePermissions = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
