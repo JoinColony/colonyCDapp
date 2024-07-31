@@ -20,7 +20,7 @@ const SocialLinks = ({
   return (
     <div
       className={clsx(
-        `${className} flex items-start gap-4 sm:flex-row sm:items-center`,
+        `${className} flex w-full flex-wrap items-start gap-4 sm:flex-row sm:items-center`,
         {
           // If there are labels to show, we want to stack the links vertically (on mobile only)
           'flex-col': showLabels,

@@ -26,6 +26,7 @@ import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
 import ManageMemberModal from '~v5/common/Modals/ManageMemberModal/index.ts';
 //* Hide Initially */
 // import { InviteMembersModal } from '~v5/common/Modals';
+import ColonySidebar from '~v5/common/Navigation/ColonySidebar/ColonySidebar.tsx';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
 //* Hide Initially */
 // import Button from '~v5/shared/Button';
@@ -33,7 +34,6 @@ import JoinButton from '~v5/shared/Button/JoinButton/index.ts';
 import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
 import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
-import ColonySidebar from './ColonySidebar.tsx';
 import { useCalamityBannerInfo } from './hooks.tsx';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
@@ -49,7 +49,8 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
+  const colonyContext = useColonyContext();
+  const { colony } = colonyContext;
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle, actionSidebarInitialValues } =
@@ -145,15 +146,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               ...breadcrumbs,
             ],
           },
-          userNavigation: getUserNavigation(isActionSidebarOpen),
+          colonyContext,
         }}
-        sidebar={
-          <ColonySidebar
-            txButton={<TxButton />}
-            userHub={<UserHubButton />}
-            transactionId={transactionId || undefined}
-          />
-        }
+        sidebar={<ColonySidebar />}
       >
         {children}
       </PageLayout>
@@ -181,7 +176,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }
       />
       {/* <InviteMembersModal
-        isOpen={isInviteMembersModalOpen}
+        isOpen={}
         onClose={() => setIsInviteMembersModalOpen(false)}
       /> */}
     </>

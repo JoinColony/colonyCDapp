@@ -1,24 +1,17 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import LandingPageSidebar from '~v5/common/Navigation/LandingPageSidebar/LandingPageSidebar.tsx';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
 
-import MainSidebar from './MainSidebar.tsx';
-import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
-import SimpleSidebar from './SimpleSidebar.tsx';
 import { type MainLayoutProps } from './types.ts';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
-const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
+const OutsideColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   children,
-  sidebar,
-  hasWideSidebar,
 }) => {
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
-  const { wallet } = useAppContext();
-  const Sidebar = sidebar || (wallet ? <MainSidebar /> : <SimpleSidebar />);
 
   return (
     <PageLayout
@@ -30,16 +23,14 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
                 breadcrumbs,
               }
             : undefined,
-        userNavigation: <UserNavigationWrapper />,
       }}
-      sidebar={Sidebar}
-      hasWideSidebar={hasWideSidebar}
+      sidebar={<LandingPageSidebar />}
     >
       {children}
     </PageLayout>
   );
 };
 
-MainLayout.displayName = displayName;
+OutsideColonyLayout.displayName = displayName;
 
-export default MainLayout;
+export default OutsideColonyLayout;

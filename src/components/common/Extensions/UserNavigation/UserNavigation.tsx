@@ -10,6 +10,7 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
+import { usePageLayoutContext } from '~v5/frame/PageLayout/context/PageLayoutContext.ts';
 import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
 import NetworkName from './partials/NetworkName/index.ts';
@@ -63,6 +64,16 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   useDisableBodyScroll(visible && isMobile);
 
+  const { setShowMobileColonyPicker, setShowMobileSidebar } =
+    usePageLayoutContext();
+
+  const onMenuClick = () => {
+    setShowMobileColonyPicker(false);
+    setShowMobileSidebar(false);
+    setOpenItemIndex(undefined);
+    toggleOff();
+  };
+
   return (
     <div className="flex gap-1 md:relative">
       {txButton}
@@ -96,10 +107,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         icon={isMobile ? GearSix : List}
         iconSize={isMobile ? 18 : 16}
         setTriggerRef={setTriggerRef}
-        onClick={() => {
-          setOpenItemIndex(undefined);
-          toggleOff();
-        }}
+        onClick={onMenuClick}
       />
       {visible && (
         <UserMenu

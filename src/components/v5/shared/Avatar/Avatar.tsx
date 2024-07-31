@@ -34,7 +34,7 @@ export const Avatar: FC<AvatarProps> = ({
 
   return (
     <img
-      className={clsx('rounded-full', className)}
+      className={clsx('aspect-square rounded-full', className)}
       src={source}
       alt={alt ?? formatText(MSG.defaultAlt, { address })}
       style={{

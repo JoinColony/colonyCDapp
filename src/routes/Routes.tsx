@@ -37,8 +37,8 @@ import ColonyHomePage from '~v5/frame/ColonyHome/index.ts';
 
 import ColonyMembersRoute from './ColonyMembersRoute.tsx';
 import ColonyRoute from './ColonyRoute.tsx';
-import MainRoute from './MainRoute.tsx';
 import NotFoundRoute from './NotFoundRoute.tsx';
+import OutsideOfColonyRoute from './OutsideOfColonyRoute.tsx';
 import RootRoute from './RootRoute.tsx';
 import {
   COLONY_BALANCES_ROUTE,
@@ -91,7 +91,7 @@ const Routes = () => {
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         {/* Main routes */}
-        <Route element={<MainRoute />}>
+        <Route element={<OutsideOfColonyRoute />}>
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
 

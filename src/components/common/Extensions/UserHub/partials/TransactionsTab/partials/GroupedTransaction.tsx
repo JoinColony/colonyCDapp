@@ -133,7 +133,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
             >
               {isMobile && <GroupedTransactionStatus status={status} />}
               <div className="flex w-full items-center justify-between gap-4">
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start overflow-hidden">
                   <div className="flex items-center gap-2">
                     <h4
                       className="truncate text-left text-1 sm:w-[190px]"
@@ -148,7 +148,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
                     )}
                   </div>
                   <p
-                    className="truncate text-left text-xs text-gray-600 sm:w-[250px]"
+                    className="w-full truncate text-left text-xs text-gray-600 sm:w-[250px]"
                     title={groupDescription}
                   >
                     {groupDescription}

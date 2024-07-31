@@ -17,6 +17,7 @@ const useJoinedColonies = (
     skip: !userAddress,
     fetchPolicy: 'cache-and-network',
   });
+
   const joinedColonies =
     data?.getContributorsByAddress?.items
       .filter(notNull)

@@ -66,7 +66,7 @@ const ColonyDetailsPage: FC = () => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  const boxClass = tw`relative rounded-lg border border-gray-200 bg-gray-25`;
+  const boxClass = tw`relative rounded-lg border border-gray-200 bg-gray-25 bg-teams-yellow-500`;
 
   return (
     <div className="pb-6">

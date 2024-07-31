@@ -10,6 +10,7 @@ import { type MessageDescriptor } from 'react-intl';
 import { type ActionTypes } from '~redux/index.ts';
 import { type SimpleMessageValues } from '~types/index.ts';
 import { type ActionTransformFnType } from '~utils/actions.ts';
+import { type TypedMessageDescriptor } from '~utils/intl.ts';
 
 import { type LinkProps } from '../Link/types.ts';
 
@@ -43,7 +44,7 @@ export interface ButtonContentProps {
   iconSize?: number;
   mode?: ButtonMode;
   isIconRight?: boolean;
-  text?: MessageDescriptor | string;
+  text?: TypedMessageDescriptor | MessageDescriptor | string;
   textValues?: SimpleMessageValues;
 }
 

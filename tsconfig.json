@@ -29,7 +29,7 @@
       "~types": ["src/types"],
       "~types/*": ["src/types/*"],
       "~utils/*": ["src/utils/*"],
-      "~v5/*": ["src/components/v5/*"]
+      "~v5/*": ["src/components/v5/*"],
     },
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,

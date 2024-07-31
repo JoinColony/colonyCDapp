@@ -19,7 +19,7 @@ const MSG = defineMessages({
 
 const ColonyAvatar: FC<ColonyAvatarProps> = ({
   colonyAddress,
-  chainIcon: Icon,
+  chainIcon: ChainIcon,
   colonyImageSrc,
   colonyName,
   size,
@@ -33,7 +33,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
         src={colonyImageSrc}
         address={colonyAddress}
       />
-      {Icon && (
+      {ChainIcon && (
         <figure
           className={`
             absolute
@@ -53,7 +53,7 @@ const ColonyAvatar: FC<ColonyAvatarProps> = ({
             bg-base-white
           `}
         >
-          <Icon size={14} />
+          <ChainIcon size={14} />
         </figure>
       )}
     </div>

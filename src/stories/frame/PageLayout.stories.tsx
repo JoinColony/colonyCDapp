@@ -187,7 +187,6 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
           },
         ],
       },
-      userNavigation: <p>user navigation</p>,
     },
     sidebar: <SideBar />,
   },

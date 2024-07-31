@@ -47,8 +47,8 @@ export const intl = <T = string>(
     cache,
   );
 
-export const isMessageDescriptor = (
-  message?: Message,
+export const isMessageDescriptor = <M>(
+  message?: Message | TypedMessage<M>,
 ): message is MessageDescriptor =>
   typeof message === 'object' &&
   ('id' in message || 'description' in message || 'defaultMessage' in message);
@@ -73,7 +73,20 @@ const addKeyToFormattedMessage = (
   return formattedMessage;
 };
 
+export type TypedMessageDescriptor<M = typeof colonyMessages> = Omit<
+  MessageDescriptor,
+  'id'
+> & {
+  id: keyof M;
+};
+
+export type TypedMessage<M> = TypedMessageDescriptor<M>;
+
 // Overloads. Ensures return type is correctly inferred from type of messageValues.
+export function formatText<M>(
+  message: TypedMessage<M & typeof colonyMessages>,
+  messageValues?: SimpleMessageValues,
+): string;
 export function formatText(
   message: Message,
   messageValues?: SimpleMessageValues,
@@ -94,8 +107,8 @@ export function formatText(
   keyForComplexMessageValues?: string,
 ): ReactNode;
 // Implementation
-export function formatText(
-  message: Message,
+export function formatText<M>(
+  message: Message | TypedMessage<M>,
   messageValues?: UniversalMessageValues,
   /*
    * If you're experiencing an infinite render loop when calling this function

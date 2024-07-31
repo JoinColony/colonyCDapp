@@ -5,7 +5,7 @@ import React, { type FC } from 'react';
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
-import ColonyLogo from '~images/logo-new.svg?react';
+import ColonyLogo from '~icons/ColonyLogo.tsx';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';

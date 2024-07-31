@@ -9,6 +9,7 @@ import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.
 import PageThemeContextProvider from '~context/PageThemeContext/PageThemeContextProvider.tsx';
 import { Theme } from '~frame/Extensions/themes/enum.ts';
 import { applyTheme } from '~frame/Extensions/themes/utils.ts';
+import PageLayoutContextProvider from '~v5/frame/PageLayout/context/PageLayoutContextProvider.tsx';
 
 const RootRouteInner = () => {
   const { isDarkMode } = usePageThemeContext();
@@ -27,13 +28,15 @@ const RootRouteInner = () => {
 
 const RootRoute = () => (
   <PageThemeContextProvider>
-    <AppContextProvider>
-      <FeatureFlagsContextProvider>
-        <CurrencyContextProvider>
-          <RootRouteInner />
-        </CurrencyContextProvider>
-      </FeatureFlagsContextProvider>
-    </AppContextProvider>
+    <PageLayoutContextProvider>
+      <AppContextProvider>
+        <FeatureFlagsContextProvider>
+          <CurrencyContextProvider>
+            <RootRouteInner />
+          </CurrencyContextProvider>
+        </FeatureFlagsContextProvider>
+      </AppContextProvider>
+    </PageLayoutContextProvider>
   </PageThemeContextProvider>
 );
 

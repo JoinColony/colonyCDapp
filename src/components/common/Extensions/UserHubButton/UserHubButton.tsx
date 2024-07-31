@@ -22,6 +22,7 @@ import {
 } from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
+import { usePageLayoutContext } from '~v5/frame/PageLayout/context/PageLayoutContext.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
@@ -47,6 +48,9 @@ const UserHubButton: FC = () => {
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
 
+  const { setShowMobileSidebar, setShowMobileColonyPicker } =
+    usePageLayoutContext();
+
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
 
@@ -55,7 +59,7 @@ const UserHubButton: FC = () => {
 
   const [, { toggleOff }] = mobileMenuToggle;
 
-  const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
+  const popperTooltipOffset = isMobile ? [0, 20] : [0, 8];
 
   const ref = useDetectClickOutside({
     onTriggered: (e) => {
@@ -122,6 +126,8 @@ const UserHubButton: FC = () => {
   useDisableBodyScroll(visible && isMobile);
 
   const handleButtonClick = () => {
+    setShowMobileColonyPicker(false);
+    setShowMobileSidebar(false);
     trackEvent(OPEN_USER_HUB_EVENT);
     setOpenItemIndex(undefined);
     toggleOff();
@@ -199,7 +205,7 @@ const UserHubButton: FC = () => {
           classNames={clsx(
             'w-full border-none p-0 shadow-none sm:w-auto sm:rounded-lg sm:border sm:border-solid sm:border-gray-200 sm:shadow-default',
             {
-              '!top-[calc(var(--top-content-height)-1.5rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
+              'h-[calc(100vh-var(--header-nav-section-height)-var(--top-content-height))]':
                 isMobile,
             },
           )}

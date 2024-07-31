@@ -6,5 +6,4 @@ export interface PageLayoutProps {
   sidebar: ReactNode;
   headerProps: PageHeaderProps;
   topContent?: ReactNode;
-  hasWideSidebar?: boolean;
 }

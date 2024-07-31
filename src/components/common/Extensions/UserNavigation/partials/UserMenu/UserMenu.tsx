@@ -38,19 +38,19 @@ const UserMenu: FC<UserMenuProps> = ({
   setTooltipRef,
   isVerified,
 }) => {
-  const isTablet = useTablet();
+  const isMobile = useTablet();
   const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
   const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<UserMenuItemName | null>(
     null,
   );
 
-  const caretIcon = isTablet ? (
+  const caretIcon = isMobile ? (
     <CaretDown size={12} />
   ) : (
     <CaretRight size={12} />
   );
-  const iconSize = isTablet ? 18 : 16;
+  const iconSize = isMobile ? 18 : 16;
   const { currency } = useCurrencyContext();
 
   const closeSubmenu = () => {
@@ -63,13 +63,10 @@ const UserMenu: FC<UserMenuProps> = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
-      withTooltipStyles={!isTablet}
+      withTooltipStyles={!isMobile}
       classNames={clsx(
-        'w-full overflow-hidden bg-base-white p-6 md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
-        {
-          '!top-full h-[calc(100dvh-var(--top-content-height))] !translate-y-0':
-            isTablet,
-        },
+        'mt-[21px] h-[calc(100vh-var(--header-nav-section-height)-var(--top-content-height))] w-full bg-base-white bg-base-white p-6',
+        'overflow-x-hidden sm:mt-0 sm:h-fit sm:w-80 sm:rounded-lg sm:border sm:border-gray-100 sm:shadow-default',
       )}
     >
       <div
@@ -91,7 +88,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </WalletConnectedTopMenu>
         ) : (
           <>
-            <div className="mb-6 flex w-full items-center gap-1 border-b border-b-gray-200 pb-6 md:mb-5 md:hidden md:pb-5">
+            <div className="mb-6 flex w-full items-center gap-1 border-b border-b-gray-200 pb-6 sm:mb-5 sm:hidden sm:pb-5">
               <Button
                 mode="tertiary"
                 size="small"

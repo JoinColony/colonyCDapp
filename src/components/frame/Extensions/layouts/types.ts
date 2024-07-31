@@ -13,7 +13,6 @@ export interface MainLayoutProps {
   hamburgerLabel?: NavigationSidebarProps['hamburgerLabel'];
   mainMenuItems?: NavigationSidebarProps['mainMenuItems'];
   sidebar?: ReactNode;
-  hasWideSidebar?: boolean;
 }
 
 export type ColonyLayoutProps = Omit<

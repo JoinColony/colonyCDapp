@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { COLONY_DOCS } from '~constants/index.ts';
-import { MainLayout } from '~frame/Extensions/layouts/index.ts';
+import { OutsideColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import {
   // CREATE_COLONY_ROUTE_BASE,
   LANDING_PAGE_ROUTE,
@@ -41,7 +41,7 @@ const MSG = defineMessages({
 });
 
 const FourOFour = () => (
-  <MainLayout>
+  <OutsideColonyLayout>
     <FourOFourMessage
       description={formatText(MSG.description)}
       links={
@@ -81,7 +81,7 @@ const FourOFour = () => (
         </ButtonLink>
       }
     />
-  </MainLayout>
+  </OutsideColonyLayout>
 );
 
 FourOFour.displayName = displayName;
