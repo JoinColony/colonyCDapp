@@ -269,6 +269,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {
+            actionFormProps?.onSuccess?.();
             client.refetchQueries({
               include: [SearchActionsDocument],
             });

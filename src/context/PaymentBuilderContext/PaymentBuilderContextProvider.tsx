@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 
+import { type ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 import { type ReleaseBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/ReleasedBoxItem/ReleasedBoxItem.tsx';
@@ -24,6 +25,9 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     isMilestoneModalOpen,
     { toggleOn: toggleOnMilestoneModal, toggleOff: toggleOffMilestoneModal },
   ] = useToggle();
+  const [expectedExpenditureType, setExpectedExpenditureType] = useState<
+    ExpenditureType | undefined
+  >(undefined);
   const [selectedTransaction, setSelectedTransaction] = useState<string>('');
   const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
     [],
@@ -41,6 +45,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       isMilestoneModalOpen,
       toggleOnReleaseModal,
       toggleOffReleaseModal,
+      expectedExpenditureType,
+      setExpectedExpenditureType,
       isReleaseModalOpen,
       selectedTransaction,
       setSelectedTransaction,
@@ -59,6 +65,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
+      expectedExpenditureType,
+      setExpectedExpenditureType,
       selectedTransaction,
       setSelectedTransaction,
       selectedMilestones,

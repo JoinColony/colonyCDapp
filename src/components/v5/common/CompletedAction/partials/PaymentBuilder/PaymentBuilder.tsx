@@ -1,13 +1,15 @@
 import { ColonyRole } from '@colony/colony-js';
 import { Copy, Prohibit } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureStatus, ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
@@ -62,8 +64,29 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { user: recipient } = useUserByAddress(
     expenditure?.slots?.[0]?.recipientAddress || '',
   );
+  const { expectedExpenditureType, setExpectedExpenditureType } =
+    usePaymentBuilderContext();
+  const {
+    actionSidebarToggle: [isActionSidebarOpen],
+  } = useActionSidebarContext();
 
-  if (loadingExpenditure) {
+  useEffect(() => {
+    if (!isActionSidebarOpen) {
+      setExpectedExpenditureType(undefined);
+      return;
+    }
+
+    if (expenditure?.type && expectedExpenditureType === undefined) {
+      setExpectedExpenditureType(expenditure.type);
+    }
+  }, [
+    expectedExpenditureType,
+    expenditure?.type,
+    setExpectedExpenditureType,
+    isActionSidebarOpen,
+  ]);
+
+  if (loadingExpenditure || expectedExpenditureType !== expenditure?.type) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4">
         <SpinnerLoader appearance={{ size: 'huge' }} />
