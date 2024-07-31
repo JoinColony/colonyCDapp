@@ -17,6 +17,10 @@ const updateExternalAccountHandler = async (
     throw new Error('Account details must be provided');
   }
 
+  if (account.currency === 'usd' && !account.address) {
+    throw new Error('Address must be provided for US accounts');
+  }
+
   const { data: graphQlData } = await graphqlRequest(
     getUser,
     {
@@ -62,8 +66,10 @@ const updateExternalAccountHandler = async (
     (address) => address.external_account_id === input.id,
   );
 
-  // @TODO: What if liquidation address is in different Fiat currency?
-  if (targetLiquidationAddress) {
+  if (
+    targetLiquidationAddress &&
+    targetLiquidationAddress.destination_currency === newAccount.currency
+  ) {
     const updateAddressRes = await fetch(
       `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${targetLiquidationAddress.id}`,
       {
