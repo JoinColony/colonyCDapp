@@ -25,7 +25,6 @@ fragment Transaction on Transaction {
   methodContext
   methodName
   status
-  metatransaction
   title
   titleValues
   options

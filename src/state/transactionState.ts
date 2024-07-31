@@ -49,7 +49,6 @@ export const convertTransactionType = ({
   hash,
   id,
   identifier,
-  metatransaction,
   methodContext,
   methodName,
   params,
@@ -77,7 +76,6 @@ export const convertTransactionType = ({
     from,
     id,
     identifier: identifier as AddressOrENSName,
-    metatransaction,
     methodName,
     status,
     group: txGroup,
@@ -258,7 +256,6 @@ export const addTransactionToDb = async (
     status,
     title,
     titleValues,
-    metatransaction,
   }: TransactionCreatedPayload,
 ) => {
   let colonyAddress = '0x';
@@ -302,7 +299,6 @@ export const addTransactionToDb = async (
     methodContext: methodContext || null,
     methodName,
     status,
-    metatransaction,
     title: JSON.stringify(title) || null,
     titleValues: JSON.stringify(titleValues) || null,
     params: txParams,

@@ -27,7 +27,6 @@ export const createTransactionAction = (
     options,
     params = [],
     ready,
-    metatransaction = false,
     title,
     titleValues,
   }: TxConfig,
@@ -45,7 +44,6 @@ export const createTransactionAction = (
     params,
     status:
       ready === false ? TransactionStatus.Created : TransactionStatus.Ready,
-    metatransaction,
     title,
     titleValues,
   },
@@ -124,11 +122,10 @@ export const transactionHashReceived = (
 export const transactionSucceeded = (
   id: string,
   payload: TransactionSucceededPayload,
-  metatransaction = false,
 ): AllActions => ({
   type: ActionTypes.TRANSACTION_SUCCEEDED,
   payload,
-  meta: { id, metatransaction },
+  meta: { id },
 });
 
 export const transactionPending = (id: string): AllActions => ({

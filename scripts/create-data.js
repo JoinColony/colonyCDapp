@@ -289,7 +289,6 @@ const addTxToDb = async ({
     methodContext: null,
     methodName,
     status: 'SUCCEEDED',
-    metatransaction: false,
     title: null,
     titleValues: null,
     params: JSON.stringify(params),

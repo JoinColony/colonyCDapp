@@ -124,7 +124,7 @@ const channelGetTransactionReceipt = async ({
 };
 
 const channelGetEventData = async ({
-  tx: { id, params = [], metatransaction },
+  tx: { id, params = [] },
   receipt,
   client,
   emit,
@@ -144,7 +144,7 @@ const channelGetEventData = async ({
     if (receipt.contractAddress) {
       txSucceededEvent.deployedContractAddress = receipt.contractAddress;
     }
-    emit(transactionSucceeded(id, txSucceededEvent, metatransaction));
+    emit(transactionSucceeded(id, txSucceededEvent));
     return eventData;
   } catch (caughtError) {
     console.error(caughtError);

@@ -19,14 +19,14 @@ import { filterUniqueAction } from '~utils/actions.ts';
 
 import { createTransactionAction } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
-import { takeFrom, getCanUserSendMetatransactions } from '../utils/index.ts';
+import { takeFrom, metatransactionsEnabled } from '../utils/index.ts';
 
 import estimateGasCost from './estimateGasCost.ts';
 import sendTransaction from './sendTransaction.ts';
 
 export function* createTransaction(id: string, config: TxConfig) {
   const { address: walletAddress } = getContext(ContextModule.Wallet);
-  const shouldSendMetatransaction = yield getCanUserSendMetatransactions();
+  const shouldSendMetatransaction = yield metatransactionsEnabled();
 
   if (!walletAddress) {
     throw new Error(
@@ -46,7 +46,6 @@ export function* createTransaction(id: string, config: TxConfig) {
     identifier: config.identifier,
     methodContext: config.methodContext,
     methodName: config.methodName,
-    metatransaction: config.metatransaction || false,
     options: config.options,
     params: config.params,
     status:
@@ -61,21 +60,6 @@ export function* createTransaction(id: string, config: TxConfig) {
     yield put(
       createTransactionAction(id, walletAddress, {
         ...config,
-        metatransaction:
-          /*
-           * This allows us to manually "force" a transaction to never be executed
-           * as a Metatransaction
-           *
-           * This is useful in places where we have transactions we don't want to
-           * pay for ourselves.
-           *
-           * However this is VERY DANGEROUS, so must be treated with the utmost care
-           * as it has very serious gas cost implications if the user is not aware
-           * they are sending a transaction on mainnet !!!
-           */
-          typeof config.metatransaction === 'boolean'
-            ? config.metatransaction
-            : true,
       }),
     );
   } else {

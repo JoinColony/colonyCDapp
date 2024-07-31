@@ -1812,10 +1812,6 @@ type Transaction @model {
       sortKeyFields: ["from"]
     )
   """
-  True if the transaction is a metatransaction
-  """
-  metatransaction: Boolean!
-  """
   A title to show in the UI
   """
   title: String # JSON string
