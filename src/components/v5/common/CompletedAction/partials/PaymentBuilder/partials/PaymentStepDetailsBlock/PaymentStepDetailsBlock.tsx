@@ -10,7 +10,7 @@ import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/r
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
@@ -168,7 +168,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
                 loadingContent={
-                  <TxButton
+                  <IconButton
                     className="mt-4 max-h-[2.5rem] w-full !text-md"
                     rounded="s"
                     text={{ id: 'button.pending' }}
