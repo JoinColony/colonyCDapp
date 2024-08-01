@@ -20,7 +20,7 @@ const MSG = defineMessages({
   message: {
     id: `${displayName}.message`,
     defaultMessage:
-      'Regulatory compliance requires users to fiat off-ramp must complete KYC/AML checks. It only takes a couple of minutes.',
+      'Regulatory compliance requires users to fiat off-ramp must complete KYC/AML checks. It only takes a couple of minutes (up to 1 business day if a manual check is required).',
   },
   completeVerification: {
     id: `${displayName}.completeVerification`,
