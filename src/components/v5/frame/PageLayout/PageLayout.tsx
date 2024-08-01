@@ -1,11 +1,8 @@
-import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren, useRef } from 'react';
-import { useMatch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { CSSCustomVariable } from '~constants/cssVariables.ts';
 import { useHeightResizeObserver } from '~hooks/useResizeObserver.ts';
-import { COLONY_HOME_ROUTE } from '~routes/index.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
 
 import PageHeader from './partials/PageHeader/index.ts';
@@ -20,7 +17,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   children,
 }) => {
   const topContentContainerRef = useRef<HTMLDivElement | null>(null);
-  const dashboardRoute = useMatch(COLONY_HOME_ROUTE);
 
   useHeightResizeObserver(
     topContentContainerRef,
@@ -48,14 +44,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               <PageHeader {...headerProps} />
             </section>
             <section className="w-full overflow-auto">
-              <div
-                className={clsx('mx-auto max-w-[1144px] px-6', {
-                  'pt-0': !!dashboardRoute,
-                  'pt-4': !dashboardRoute,
-                })}
-              >
-                {children}
-              </div>
+              <div className="mx-auto max-w-[1144px] px-6 pt-4">{children}</div>
             </section>
           </div>
         </div>

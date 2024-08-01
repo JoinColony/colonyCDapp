@@ -8,10 +8,10 @@ const displayName =
   'v5.frame.pageLayout.partials.PageHeader.partials.MobileSidebarToggle';
 
 const MobileSidebarToggle = () => {
-  const { toggleSidebar, setShowMobileColonyPicker } = usePageLayoutContext();
+  const { toggleSidebar, setShowTabletColonyPicker } = usePageLayoutContext();
 
   const onClick = () => {
-    setShowMobileColonyPicker(false);
+    setShowTabletColonyPicker(false);
     toggleSidebar();
   };
 

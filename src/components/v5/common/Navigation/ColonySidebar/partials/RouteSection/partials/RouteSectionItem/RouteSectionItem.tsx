@@ -1,18 +1,19 @@
 import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import noop from 'lodash/noop';
 import React, { useState } from 'react';
 import { useMatch, useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  sidebarButtonIconStyles,
-  sidebarButtonStyles,
-  sidebarButtonTextStyles,
-} from '~v5/common/Navigation/consts.ts';
+  sidebarButtonClass,
+  sidebarButtonIconClass,
+  sidebarButtonTextClass,
+} from '~v5/common/Navigation/sidebar.styles.ts';
 import { usePageLayoutContext } from '~v5/frame/PageLayout/context/PageLayoutContext.ts';
-import Button from '~v5/shared/Button/Button.tsx';
+import buttonClasses from '~v5/shared/Button/Button.styles.ts';
 
 import { motionVariants } from './consts.ts';
 import { type RouteSectionItemProps } from './types.ts';
@@ -39,65 +40,90 @@ const NavigationSectionItem: React.FC<RouteSectionItemProps> = ({
 
   const isAccordion = !!subItems;
 
-  const handleOnClick = () => {
+  const onClick = () => {
+    toggleSidebar();
+
+    const pathPrefix = routeType === 'colony' ? `/${colony.name}` : '';
+
+    const derivedPath = `${pathPrefix}/${path}`;
+
+    navigate(derivedPath);
+
     if (isAccordion) {
-      setIsAccordionExpanded((state) => !state);
-
-      return;
+      setIsAccordionExpanded(true);
     }
+  };
 
-    if (path && routeType) {
-      toggleSidebar();
+  const onToggleAccordion = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
 
-      const pathPrefix = routeType === 'colony' ? `/${colony.name}/` : '/';
-
-      const derivedPath = `${pathPrefix}${path}`;
-
-      navigate(derivedPath);
-    }
+    setIsAccordionExpanded((state) => !state);
   };
 
   return (
     <div>
-      <Button
-        onClick={handleOnClick}
-        className={clsx(sidebarButtonStyles, '!justify-between', {
-          '!bg-gray-800': !!matchingRoute,
-        })}
+      <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={noop}
+        onClick={onClick}
+        className={clsx(
+          buttonClasses.primarySolid,
+          sidebarButtonClass,
+          'flex h-10 items-center !justify-between gap-3 rounded-lg',
+          {
+            '!bg-gray-800': !!matchingRoute && !isAccordion,
+            '!pr-1': isAccordion,
+          },
+        )}
+        aria-label={`${path} page`}
       >
         <div className="flex flex-row items-center gap-3">
           {Icon ? (
-            <Icon className={sidebarButtonIconStyles} />
+            <Icon className={sidebarButtonIconClass} />
           ) : (
             <div className="w-5" />
           )}
-          <p className={sidebarButtonTextStyles}>{formatText(translation)}</p>
+          <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
         </div>
         {isAccordion && (
-          <CaretDown
-            className={clsx(
-              sidebarButtonIconStyles,
-              'h-[14px] transition-transform duration-200',
-              {
-                '-rotate-180': isAccordionExpanded,
-              },
-            )}
-          />
+          <div
+            onClick={onToggleAccordion}
+            onKeyDown={noop}
+            tabIndex={0}
+            role="button"
+            className="rounded-full p-2 transition-colors hover:bg-gray-900"
+          >
+            <CaretDown
+              className={clsx(
+                sidebarButtonIconClass,
+                'h-[14px] transition-transform duration-200',
+                {
+                  '-rotate-180': isAccordionExpanded,
+                },
+              )}
+            />
+          </div>
         )}
-      </Button>
+      </div>
       <AnimatePresence mode="wait">
-        {isAccordionExpanded &&
-          subItems?.map((subItem) => (
-            <motion.div
-              variants={motionVariants}
-              initial="collapsed"
-              animate="expanded"
-              exit="collapsed"
-              key={subItem.id}
-            >
-              <NavigationSectionItem {...subItem} />
-            </motion.div>
-          ))}
+        {isAccordionExpanded && (
+          <div className="mt-0.5 flex w-full flex-col gap-0.5">
+            {subItems?.map((subItem) => (
+              <motion.div
+                variants={motionVariants}
+                initial="collapsed"
+                animate="expanded"
+                exit="collapsed"
+                key={subItem.id}
+              >
+                <NavigationSectionItem {...subItem} />
+              </motion.div>
+            ))}
+          </div>
+        )}
       </AnimatePresence>
     </div>
   );

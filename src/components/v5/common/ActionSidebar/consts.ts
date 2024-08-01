@@ -28,9 +28,11 @@ export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
 export const actionSidebarAnimation: Variants = {
   hidden: {
     x: '100%',
+    opacity: 0,
   },
   visible: {
     x: 0,
+    opacity: 1,
   },
 };
 

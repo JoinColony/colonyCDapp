@@ -2,18 +2,11 @@ import { type Icon } from '@phosphor-icons/react';
 
 import { type TypedMessageDescriptor } from '~utils/intl.ts';
 
-type RouteSectionItemBaseProps = {
+export type RouteSectionItemProps = {
   id: string;
   icon?: Icon;
   routeType?: 'colony' | 'account';
   translation: TypedMessageDescriptor;
+  path: string;
+  subItems?: RouteSectionItemProps[];
 };
-
-export type RouteSectionItemProps = RouteSectionItemBaseProps &
-  (
-    | {
-        path: string;
-        subItems?: never;
-      }
-    | { subItems: RouteSectionItemProps[]; path?: never }
-  );

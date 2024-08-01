@@ -232,9 +232,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           fixed
           bottom-4
           right-0
-          top-0
+          top-[var(--top-content-height)]
           isolate
-          z-sidebar
+          z-top
           flex
           h-full
           w-full

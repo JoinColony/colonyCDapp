@@ -4,9 +4,9 @@ import ColonyLogo from '~icons/ColonyLogo.tsx';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
 import ColonySwitcher from '~v5/common/Navigation/ColonySwitcher/index.ts';
 
-const displayName = 'v5.common.Navigation.LandingPageSidebar';
+const displayName = 'v5.common.Navigation.BasicSidebar';
 
-const LandingPageSidebar = () => {
+const BasicSidebar = () => {
   return (
     <div className="hidden h-full w-[82.22px] flex-col items-center justify-between rounded-lg bg-gray-900 px-[18px] pb-4 pt-3 md:flex">
       <ColonySwitcher isLogoButton />
@@ -18,6 +18,6 @@ const LandingPageSidebar = () => {
   );
 };
 
-LandingPageSidebar.displayName = displayName;
+BasicSidebar.displayName = displayName;
 
-export default LandingPageSidebar;
+export default BasicSidebar;

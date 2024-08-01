@@ -35,7 +35,7 @@ const ColonyHome = () => {
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return (
-    <div className="flex flex-col gap-6 lg:gap-10">
+    <div className="-mt-4 flex flex-col gap-6 lg:gap-10">
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
         <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">

@@ -12,12 +12,12 @@ const displayName =
 export const JoinedColoniesList = () => {
   const { joinedColonies } = useAppContext();
 
-  const { setShowMobileColonyPicker } = usePageLayoutContext();
+  const { setShowTabletColonyPicker } = usePageLayoutContext();
 
   const navigate = useNavigate();
 
   const onColonyClick = (colonyName: string) => {
-    setShowMobileColonyPicker(false);
+    setShowTabletColonyPicker(false);
     navigate(`/${colonyName}`);
   };
 

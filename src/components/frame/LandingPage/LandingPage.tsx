@@ -19,8 +19,8 @@ import {
   USER_HOME_ROUTE,
 } from '~routes/index.ts';
 import Heading from '~shared/Heading/index.ts';
+import BasicSidebar from '~v5/common/Navigation/BasicSidebar/BasicSidebar.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
-import SimpleSidebar from '~v5/shared/SimpleSidebar/index.ts';
 
 import LandingPageItem from './LandingPageItem.tsx';
 
@@ -118,7 +118,7 @@ const LandingPage = () => {
     !!user?.privateBetaInviteCode?.shareableInvites;
 
   return (
-    <BasicPageLayout sidebar={<SimpleSidebar />}>
+    <BasicPageLayout sidebar={<BasicSidebar />}>
       <div className="w-full">
         <div className="mb-8">
           <div className="mb-4 flex items-center">

@@ -3,9 +3,10 @@ import clsx from 'clsx';
 import React from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTablet } from '~hooks';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
-import { sidebarButtonStyles } from '~v5/common/Navigation/consts.ts';
+import { sidebarButtonClass } from '~v5/common/Navigation/sidebar.styles.ts';
 import Button from '~v5/shared/Button/index.ts';
 
 import ColonySwitcherAvatar from './partials/ColonySwitcherAvatar/ColonySwitcherAvatar.tsx';
@@ -14,10 +15,8 @@ import { type ColonySwitcherProps } from './types.ts';
 
 const displayName = 'v5.common.Navigation.ColonySwitcher';
 
-const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
-  colonyContext,
-  isLogoButton,
-}) => {
+const ColonySwitcher: React.FC<ColonySwitcherProps> = ({ isLogoButton }) => {
+  const colonyContext = useColonyContext({ nullableContext: true });
   const isTablet = useTablet();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
@@ -33,13 +32,13 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
       <Button
         ref={setTriggerRef}
         type="button"
-        className={clsx(sidebarButtonStyles, '!py-1', {
+        className={clsx(sidebarButtonClass, '!py-1', {
           '!justify-center': isLogoButton,
           '!justify-between': !isLogoButton,
         })}
       >
         <section className="flex flex-row items-center gap-3">
-          <ColonySwitcherAvatar colonyContext={colonyContext} />
+          <ColonySwitcherAvatar />
           {colonyContext?.colony.name && (
             <p className="text-md font-semibold text-base-white">
               {capitalizeFirstLetter(colonyContext.colony.name)}

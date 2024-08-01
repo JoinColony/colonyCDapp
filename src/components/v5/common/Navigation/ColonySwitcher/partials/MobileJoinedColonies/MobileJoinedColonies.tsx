@@ -10,20 +10,20 @@ import Button from '~v5/shared/Button/index.ts';
 import JoinedColoniesList from '../JoinedColoniesList/JoinedColoniesList.tsx';
 
 const displayName =
-  'v4.common.Navigation.ColonySwitcher.partials.MobileJoinedColonies';
+  'v5.common.Navigation.ColonySwitcher.partials.MobileJoinedColonies';
 
 const MobileJoinedColonies = () => {
   const isTablet = useTablet();
 
   const ref = useRef<HTMLDivElement>(null);
 
-  const { showMobileColonyPicker } = usePageLayoutContext();
+  const { showTabletColonyPicker } = usePageLayoutContext();
 
-  useDisableBodyScroll(isTablet && showMobileColonyPicker);
+  useDisableBodyScroll(isTablet && showTabletColonyPicker);
 
   return (
     <AnimatePresence>
-      {showMobileColonyPicker && (
+      {showTabletColonyPicker && (
         <motion.div
           ref={ref}
           initial={{ opacity: 0, x: -100 }}

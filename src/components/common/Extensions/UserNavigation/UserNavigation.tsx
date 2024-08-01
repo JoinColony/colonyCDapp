@@ -61,12 +61,12 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   useDisableBodyScroll(visible && isMobile);
 
-  const { setShowMobileColonyPicker, setShowMobileSidebar } =
+  const { setShowTabletColonyPicker, setShowTabletSidebar } =
     usePageLayoutContext();
 
   const onMenuClick = () => {
-    setShowMobileColonyPicker(false);
-    setShowMobileSidebar(false);
+    setShowTabletColonyPicker(false);
+    setShowTabletSidebar(false);
   };
 
   return (

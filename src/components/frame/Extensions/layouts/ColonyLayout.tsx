@@ -49,8 +49,7 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
-  const colonyContext = useColonyContext();
-  const { colony } = colonyContext;
+  const { colony } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle, actionSidebarInitialValues } =
@@ -146,7 +145,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               ...breadcrumbs,
             ],
           },
-          colonyContext,
         }}
         sidebar={<ColonySidebar />}
       >
@@ -159,7 +157,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
             initialValues={actionSidebarInitialValues}
             className="modal-blur"
           >
-            {isTablet ? getUserNavigation() : undefined}
+            {isTablet ? getUserNavigation() : null}
           </ActionSidebar>
         )}
       </AnimatePresence>
@@ -176,7 +174,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }
       />
       {/* <InviteMembersModal
-        isOpen={}
+        isOpen={isInviteMembersModalOpen}
         onClose={() => setIsInviteMembersModalOpen(false)}
       /> */}
     </>

@@ -3,6 +3,7 @@ import React, { useRef, type FC } from 'react';
 
 import UserHubButton from '~common/Extensions/UserHubButton/UserHubButton.tsx';
 import { CSSCustomVariable } from '~constants/cssVariables.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
 import { useTablet } from '~hooks';
 import { useHeightResizeObserver } from '~hooks/useResizeObserver.ts';
@@ -12,15 +13,14 @@ import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 import PageHeading from '../PageHeading/index.ts';
 
 import MobileColonySwitcherToggle from './partials/MobileColonySwitcherToggle/MobileColonySwitcherToggle.tsx';
-import MobileSidebarToggle from './partials/MobileSidebarToggle/MobileSidebarToggle.tsx';
+import MobileSidebarToggle from './partials/MobileSidebarToggle/index.ts';
 import { type PageHeaderProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout.partials.PageHeader';
 
-const PageHeader: FC<PageHeaderProps> = ({
-  pageHeadingProps,
-  colonyContext,
-}) => {
+const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
+  const colonyContext = useColonyContext({ nullableContext: true });
+
   const navSectionRef = useRef<HTMLDivElement | null>(null);
 
   const isTablet = useTablet();
@@ -51,9 +51,7 @@ const PageHeader: FC<PageHeaderProps> = ({
             </section>
           )}
           <div className="flex items-center gap-3">
-            {isTablet && (
-              <MobileColonySwitcherToggle colonyContext={colonyContext} />
-            )}
+            {isTablet && <MobileColonySwitcherToggle />}
             {isTablet && colonyContext && <MobileSidebarToggle />}
           </div>
           <UserNavigationWrapper

@@ -17,7 +17,7 @@ import {
   COLONY_INCOMING_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
-  COLONY_STREAMING_ROUTE,
+  // COLONY_STREAMING_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_CRYPTO_TO_FIAT_ROUTE,
 } from '~routes';
@@ -29,7 +29,7 @@ export const sidebarNavigationScheme: RouteSectionItemProps[] = [
     id: 'dashboard',
     icon: Layout,
     translation: { id: 'navigation.dashboard' },
-    path: '/',
+    path: '',
     routeType: 'colony',
   },
   {
@@ -43,6 +43,8 @@ export const sidebarNavigationScheme: RouteSectionItemProps[] = [
     id: 'finances',
     icon: PresentationChart,
     translation: { id: 'navigation.finances' },
+    routeType: 'colony',
+    path: COLONY_BALANCES_ROUTE,
     subItems: [
       {
         id: 'balances',
@@ -56,12 +58,12 @@ export const sidebarNavigationScheme: RouteSectionItemProps[] = [
         path: COLONY_INCOMING_ROUTE,
         routeType: 'colony',
       },
-      {
-        id: 'streaming',
-        translation: { id: 'navigation.finances.streaming' },
-        path: COLONY_STREAMING_ROUTE,
-        routeType: 'colony',
-      },
+      // {
+      //   id: 'streaming',
+      //   translation: { id: 'navigation.finances.streaming' },
+      //   path: COLONY_STREAMING_ROUTE,
+      //   routeType: 'colony',
+      // },
       {
         id: 'crypto-to-fiat',
         translation: { id: 'userCryptoToFiatPage.title' },

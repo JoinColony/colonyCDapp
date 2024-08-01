@@ -1,7 +1,7 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import LandingPageSidebar from '~v5/common/Navigation/LandingPageSidebar/LandingPageSidebar.tsx';
+import BasicSidebar from '~v5/common/Navigation/BasicSidebar/BasicSidebar.tsx';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
@@ -24,7 +24,7 @@ const BasicPageLayout: FC<BasicPageLayoutProps> = ({ children, sidebar }) => {
               }
             : undefined,
       }}
-      sidebar={sidebar ?? <LandingPageSidebar />}
+      sidebar={sidebar ?? <BasicSidebar />}
     >
       {children}
     </PageLayout>

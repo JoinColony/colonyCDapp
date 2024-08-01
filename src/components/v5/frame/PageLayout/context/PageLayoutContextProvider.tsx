@@ -9,31 +9,31 @@ import React, {
 import { PageLayoutContext } from './PageLayoutContext.ts';
 
 const PageLayoutContextProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-  const [showMobileColonyPicker, setShowMobileColonyPicker] = useState(false);
+  const [showTabletSidebar, setShowTabletSidebar] = useState(false);
+  const [showTabletColonyPicker, setShowTabletColonyPicker] = useState(false);
 
   const toggleSidebar = useCallback(() => {
-    setShowMobileSidebar((state) => !state);
+    setShowTabletSidebar((state) => !state);
   }, []);
 
   const toggleMobileColonyPicker = useCallback(() => {
-    setShowMobileColonyPicker((state) => !state);
+    setShowTabletColonyPicker((state) => !state);
   }, []);
 
   const value = useMemo(
     () => ({
-      showMobileSidebar,
-      setShowMobileSidebar,
+      showTabletSidebar,
+      setShowTabletSidebar,
       toggleSidebar,
-      showMobileColonyPicker,
-      setShowMobileColonyPicker,
+      showTabletColonyPicker,
+      setShowTabletColonyPicker,
       toggleMobileColonyPicker,
     }),
     [
-      showMobileColonyPicker,
-      showMobileSidebar,
-      toggleMobileColonyPicker,
+      showTabletSidebar,
       toggleSidebar,
+      showTabletColonyPicker,
+      toggleMobileColonyPicker,
     ],
   );
 

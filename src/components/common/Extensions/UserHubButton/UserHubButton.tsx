@@ -47,7 +47,7 @@ const UserHubButton: FC = () => {
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
 
-  const { setShowMobileSidebar, setShowMobileColonyPicker } =
+  const { setShowTabletSidebar, setShowTabletColonyPicker } =
     usePageLayoutContext();
 
   const { trackEvent } = useAnalyticsContext();
@@ -55,7 +55,7 @@ const UserHubButton: FC = () => {
 
   const { isTokensModalOpen } = useTokensModalContext();
 
-  const popperTooltipOffset = isMobile ? [0, 20] : [0, 8];
+  const popperTooltipOffset = isMobile ? [0, 16] : [0, 8];
 
   const ref = useDetectClickOutside({
     onTriggered: (e) => {
@@ -122,8 +122,8 @@ const UserHubButton: FC = () => {
   useDisableBodyScroll(visible && isMobile);
 
   const handleButtonClick = () => {
-    setShowMobileColonyPicker(false);
-    setShowMobileSidebar(false);
+    setShowTabletColonyPicker(false);
+    setShowTabletSidebar(false);
     trackEvent(OPEN_USER_HUB_EVENT);
   };
 
