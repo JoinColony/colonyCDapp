@@ -17,6 +17,9 @@ import {
   type CreateExpenditureMetadataMutationVariables,
   type GetUserByAddressQueryVariables,
   GetUserByAddressDocument,
+  type GetUserLiquidationAddressQuery,
+  GetUserLiquidationAddressDocument,
+  type GetUserLiquidationAddressQueryVariables,
 } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
 import { type Address } from '~types';
@@ -302,11 +305,11 @@ export const getResolvedPayouts = (
   return resolvedPayouts;
 };
 
-// @TODO: Crypto-to-fiat
 interface MinimalPayout {
   recipientAddress: string;
   tokenAddress: string;
 }
+
 export const adjustRecipientAddress = async (
   { recipientAddress, tokenAddress }: MinimalPayout,
   network: Network,
@@ -317,7 +320,7 @@ export const adjustRecipientAddress = async (
     return recipientAddress;
   }
 
-  const { data } = await apolloClient.query<
+  const { data: userData } = await apolloClient.query<
     GetUserByAddressQuery,
     GetUserByAddressQueryVariables
   >({
@@ -327,14 +330,28 @@ export const adjustRecipientAddress = async (
     },
   });
 
-  const user = data?.getUserByAddress?.items[0];
-
-  if (!user) {
+  const user = userData?.getUserByAddress?.items[0];
+  if (!user || !user.profile?.isAutoOfframpEnabled) {
     return recipientAddress;
   }
 
-  // @TODO: Return liquidation address
-  return recipientAddress;
+  const { data: liquidationAddressData } = await apolloClient.query<
+    GetUserLiquidationAddressQuery,
+    GetUserLiquidationAddressQueryVariables
+  >({
+    query: GetUserLiquidationAddressDocument,
+    variables: {
+      userAddress: recipientAddress,
+    },
+  });
+  const liquidationAddress =
+    liquidationAddressData?.bridgeGetUserLiquidationAddress;
+
+  if (!liquidationAddress) {
+    return recipientAddress;
+  }
+
+  return liquidationAddress;
 };
 
 export const adjustPayoutsAddresses = async (

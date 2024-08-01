@@ -9249,6 +9249,13 @@ export type CheckKycStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CheckKycStatusQuery = { __typename?: 'Query', bridgeCheckKYC?: { __typename?: 'BridgeCheckKYCReturn', kycStatus?: KycStatus | null, kycLink?: string | null, liquidationAddress?: string | null, bankAccount?: { __typename?: 'BridgeBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null } | null } | null };
 
+export type GetUserLiquidationAddressQueryVariables = Exact<{
+  userAddress: Scalars['String'];
+}>;
+
+
+export type GetUserLiquidationAddressQuery = { __typename?: 'Query', bridgeGetUserLiquidationAddress?: string | null };
+
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -11836,6 +11843,39 @@ export function useCheckKycStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type CheckKycStatusQueryHookResult = ReturnType<typeof useCheckKycStatusQuery>;
 export type CheckKycStatusLazyQueryHookResult = ReturnType<typeof useCheckKycStatusLazyQuery>;
 export type CheckKycStatusQueryResult = Apollo.QueryResult<CheckKycStatusQuery, CheckKycStatusQueryVariables>;
+export const GetUserLiquidationAddressDocument = gql`
+    query GetUserLiquidationAddress($userAddress: String!) {
+  bridgeGetUserLiquidationAddress(userAddress: $userAddress)
+}
+    `;
+
+/**
+ * __useGetUserLiquidationAddressQuery__
+ *
+ * To run a query within a React component, call `useGetUserLiquidationAddressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserLiquidationAddressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserLiquidationAddressQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *   },
+ * });
+ */
+export function useGetUserLiquidationAddressQuery(baseOptions: Apollo.QueryHookOptions<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>(GetUserLiquidationAddressDocument, options);
+      }
+export function useGetUserLiquidationAddressLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>(GetUserLiquidationAddressDocument, options);
+        }
+export type GetUserLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressQuery>;
+export type GetUserLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressLazyQuery>;
+export type GetUserLiquidationAddressQueryResult = Apollo.QueryResult<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
