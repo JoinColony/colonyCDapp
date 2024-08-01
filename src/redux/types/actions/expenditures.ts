@@ -71,7 +71,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        annotationMessage?: string;
       },
       object
     >
