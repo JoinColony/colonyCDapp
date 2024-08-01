@@ -1,9 +1,9 @@
-import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
+import { ProceedButton } from './ProceedButton.tsx';
 import { type ModalFormCTAButtonsProps } from './types.ts';
 
 const displayName =
@@ -14,31 +14,20 @@ const ModalFormCTAButtons: React.FC<ModalFormCTAButtonsProps> = ({
   proceedButton,
   className,
   isLoading,
-}) => (
-  <section className={clsx('flex items-center gap-2', className)}>
-    <Button
-      type="button"
-      text={cancelButton?.title}
-      onClick={cancelButton?.onClick}
-      mode="primaryOutline"
-      className="flex-1"
-    />
-    {isLoading ? (
-      <TxButton
-        className="flex-1 !text-md"
-        rounded="s"
-        text={proceedButton.title}
-        icon={
-          <span className="ml-1.5 flex shrink-0">
-            <SpinnerGap className="animate-spin" size={14} />
-          </span>
-        }
+}) => {
+  return (
+    <section className={clsx('flex items-center gap-2', className)}>
+      <Button
+        type="button"
+        text={cancelButton?.title}
+        onClick={cancelButton?.onClick}
+        mode="primaryOutline"
+        className="flex-1"
       />
-    ) : (
-      <Button text={proceedButton.title} type="submit" className="flex-1" />
-    )}
-  </section>
-);
+      <ProceedButton isLoading={isLoading} text={proceedButton.title} />
+    </section>
+  );
+};
 
 ModalFormCTAButtons.displayName = displayName;
 

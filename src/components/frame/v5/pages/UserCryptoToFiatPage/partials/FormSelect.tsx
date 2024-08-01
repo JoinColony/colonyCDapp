@@ -1,5 +1,5 @@
-import React, { type FC } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import React from 'react';
+import { Controller, type Message, useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
@@ -7,30 +7,28 @@ import Select from '~v5/common/Fields/Select/Select.tsx';
 import { type SelectOption } from '~v5/common/Fields/Select/types.ts';
 import FormError from '~v5/shared/FormError/index.ts';
 
-interface FormSelectProps {
-  name: string;
+interface FormSelectProps<T> {
+  name: Extract<keyof T, string>;
   labelMessage?: string;
   options: SelectOption[];
   handleChange?: any;
   placeholder?: string;
-  shouldSkipErrorMessage?: boolean;
   formatOptionLabel?: (option: SelectOption) => JSX.Element;
 }
 
-export const FormSelect: FC<FormSelectProps> = ({
+export const FormSelect = <T,>({
   name,
   options,
   labelMessage,
   placeholder,
   handleChange,
-  shouldSkipErrorMessage,
   formatOptionLabel,
-}) => {
+}: FormSelectProps<T>) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-  const hasError = !!get(errors, name)?.message;
+  const error = get(errors, name)?.message as Message | undefined;
 
   return (
     <Controller
@@ -49,7 +47,7 @@ export const FormSelect: FC<FormSelectProps> = ({
           <Select
             {...field}
             options={options}
-            isError={hasError}
+            isError={!!error}
             isSearchable
             isDisabled={!options || !options.length}
             placeholder={placeholder}
@@ -59,9 +57,9 @@ export const FormSelect: FC<FormSelectProps> = ({
               field.onChange(val?.value);
             }}
           />
-          {hasError && !shouldSkipErrorMessage && (
+          {error && (
             <FormError isFullSize alignment="left">
-              {formatText({ id: `cryptoToFiat.forms.error.${name}` })}
+              {formatText(error)}
             </FormError>
           )}
         </>

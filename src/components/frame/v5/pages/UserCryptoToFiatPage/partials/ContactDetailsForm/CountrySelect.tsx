@@ -7,7 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import { FormSelect } from '../FormSelect.tsx';
 
 import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
-import { AddressFields } from './validation.ts';
+import { AddressFields, type ContactDetailsFormSchema } from './validation.ts';
 
 export const CountrySelect = () => {
   const countries = getCountries();
@@ -32,13 +32,15 @@ export const CountrySelect = () => {
       return;
     }
     trigger(AddressFields.STATE);
+    // if country changed postcode should be revalidated
+    trigger(AddressFields.POSTCODE);
   };
 
   return (
-    <FormSelect
+    <FormSelect<ContactDetailsFormSchema>
       name={AddressFields.COUNTRY}
       options={countriesOptions}
-      shouldSkipErrorMessage
+      labelMessage={formatText(CONTACT_DETAILS_FORM_MSGS.countryLabel)}
       placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.countryPlaceholder)}
       handleChange={handleSelect}
     />

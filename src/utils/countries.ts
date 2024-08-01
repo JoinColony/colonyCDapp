@@ -2,9 +2,10 @@ import countries from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 
 countries.registerLocale(enLocale);
+const { locale } = enLocale;
 
 const alpha2ToAlpha3 = countries.getAlpha2Codes();
-const countryNames = countries.getNames('en');
+const countryNames = countries.getNames(locale);
 
 export const COUNTRIES_WITHOUT_STATES = [
   'ASM',
@@ -104,14 +105,14 @@ export const getCountryByCode = (code: string): CountryData | undefined => {
   if (code.length === 2) {
     alpha2Code = code;
   } else if (code.length === 3) {
-    alpha2Code = countries.getAlpha2Code(code, 'en');
+    alpha2Code = countries.alpha3ToAlpha2(code);
   }
 
   if (!alpha2Code || FILTERED_COUNTRIES.includes(alpha2Code)) {
     return undefined;
   }
 
-  const name = countries.getName(alpha2Code, 'en');
+  const name = countries.getName(alpha2Code, locale);
 
   if (!name) {
     return undefined;

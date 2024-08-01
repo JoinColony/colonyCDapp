@@ -10,7 +10,7 @@ import { formatText } from '~utils/intl.ts';
 import { FormSelect } from '../FormSelect.tsx';
 
 import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
-import { AddressFields } from './validation.ts';
+import { AddressFields, type ContactDetailsFormSchema } from './validation.ts';
 
 export const SubdivisionSelect = () => {
   const countryCode = useWatch({
@@ -33,10 +33,10 @@ export const SubdivisionSelect = () => {
 
   return (
     <div className="ml-1 flex-1">
-      <FormSelect
+      <FormSelect<ContactDetailsFormSchema>
         name={AddressFields.STATE}
-        placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.stateLabel)}
-        shouldSkipErrorMessage
+        labelMessage={formatText(CONTACT_DETAILS_FORM_MSGS.stateLabel)}
+        placeholder={formatText(CONTACT_DETAILS_FORM_MSGS.statePlaceholder)}
         options={subdivisions.map((item) => ({
           value: item.code,
           label: item.name,

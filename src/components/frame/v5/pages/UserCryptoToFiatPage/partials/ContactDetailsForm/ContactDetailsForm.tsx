@@ -4,7 +4,6 @@ import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { FormInput } from '../FormInput.tsx';
-import { FormInputGroup } from '../FormInputGroup.tsx';
 import { FormRow } from '../FormRow.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
@@ -12,7 +11,11 @@ import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
 import { CountrySelect } from './CountrySelect.tsx';
 import { SubdivisionSelect } from './SubdivisionSelect.tsx';
-import { AddressFields, addressValidationSchema } from './validation.ts';
+import {
+  AddressFields,
+  addressValidationSchema,
+  type ContactDetailsFormSchema,
+} from './validation.ts';
 
 interface ContactDetailsFormProps {
   onSubmit: (values: any) => void;
@@ -25,30 +28,6 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
   onClose,
   isLoading,
 }) => {
-  const handleGroupErrorMessage = (
-    groupName: string,
-    errorFieldNames: string[],
-  ) => {
-    let fields = '';
-    errorFieldNames.forEach((errorFieldName, index) => {
-      let delimiter = '';
-      if (index < errorFieldNames.length - 2) {
-        delimiter = ', ';
-      }
-      if (index === errorFieldNames.length - 2) {
-        delimiter = ' and ';
-      }
-      fields +=
-        formatText({ id: `cryptoToFiat.forms.address.${errorFieldName}` }) +
-        delimiter;
-    });
-
-    return formatText(
-      { id: `cryptoToFiat.forms.error.${groupName}` },
-      { fields },
-    );
-  };
-
   return (
     <div>
       <ModalHeading
@@ -77,66 +56,52 @@ const ContactDetailsForm: FC<ContactDetailsFormProps> = ({
           />
         </FormRow> */}
 
-        <FormInputGroup
-          groupLabel={formatText(CONTACT_DETAILS_FORM_MSGS.addressLabel)}
-          groupName="address"
-          names={[
-            AddressFields.COUNTRY,
-            AddressFields.ADDRESS1,
-            AddressFields.ADDRESS2,
-            AddressFields.CITY,
-            AddressFields.STATE,
-            AddressFields.POSTCODE,
-          ]}
-          getErrorMessage={handleGroupErrorMessage}
-        >
-          <FormRow>
-            <CountrySelect />
-          </FormRow>
+        <FormRow>
+          <CountrySelect />
+        </FormRow>
 
-          <FormRow>
-            <FormInput
-              name={AddressFields.ADDRESS1}
-              shouldSkipRequiredErrorMessage
-              placeholder={formatText(
-                CONTACT_DETAILS_FORM_MSGS.address1Placeholder,
-              )}
-            />
-          </FormRow>
-          <FormRow>
-            <FormInput
-              name={AddressFields.ADDRESS2}
-              shouldSkipRequiredErrorMessage
-              placeholder={formatText(
-                CONTACT_DETAILS_FORM_MSGS.address2Placeholder,
-              )}
-            />
-          </FormRow>
-          <FormRow>
-            <div className="flex">
-              <div className="mr-1 flex-1">
-                <FormInput
-                  name={AddressFields.CITY}
-                  shouldSkipRequiredErrorMessage
-                  placeholder={formatText(
-                    CONTACT_DETAILS_FORM_MSGS.cityPlaceholder,
-                  )}
-                />
-              </div>
-              <SubdivisionSelect />
+        <FormRow>
+          <FormInput<ContactDetailsFormSchema>
+            name={AddressFields.ADDRESS1}
+            label={formatText(CONTACT_DETAILS_FORM_MSGS.address1Label)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.address1Placeholder,
+            )}
+          />
+        </FormRow>
+        <FormRow>
+          <FormInput<ContactDetailsFormSchema>
+            name={AddressFields.ADDRESS2}
+            label={formatText(CONTACT_DETAILS_FORM_MSGS.address2Label)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.address2Placeholder,
+            )}
+          />
+        </FormRow>
+        <FormRow>
+          <div className="flex">
+            <div className="mr-1 flex-1">
+              <FormInput<ContactDetailsFormSchema>
+                name={AddressFields.CITY}
+                label={formatText(CONTACT_DETAILS_FORM_MSGS.cityLabel)}
+                placeholder={formatText(
+                  CONTACT_DETAILS_FORM_MSGS.cityPlaceholder,
+                )}
+              />
             </div>
-          </FormRow>
+            <SubdivisionSelect />
+          </div>
+        </FormRow>
 
-          <FormRow>
-            <FormInput
-              name={AddressFields.POSTCODE}
-              shouldSkipRequiredErrorMessage
-              placeholder={formatText(
-                CONTACT_DETAILS_FORM_MSGS.postcodePlaceholder,
-              )}
-            />
-          </FormRow>
-        </FormInputGroup>
+        <FormRow>
+          <FormInput<ContactDetailsFormSchema>
+            name={AddressFields.POSTCODE}
+            label={formatText(CONTACT_DETAILS_FORM_MSGS.postcodeLabel)}
+            placeholder={formatText(
+              CONTACT_DETAILS_FORM_MSGS.postcodePlaceholder,
+            )}
+          />
+        </FormRow>
 
         <ModalFormCTAButtons
           cancelButton={{

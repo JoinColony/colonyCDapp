@@ -82,13 +82,6 @@ export const BANK_DETAILS_FORM_MSG = defineMessages({
   },
 });
 
-export const VALIDATION_MSG = defineMessages({
-  required: {
-    id: 'bankDetailsForm.validation.required',
-    defaultMessage: '{field} is a required field',
-  },
-});
-
 export const BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS = {
   accountNumber: {
     min: 8,

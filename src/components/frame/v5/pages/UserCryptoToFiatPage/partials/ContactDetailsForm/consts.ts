@@ -18,7 +18,7 @@ export const CONTACT_DETAILS_FORM_MSGS = defineMessages({
   },
   proceedButtonTitle: {
     id: `${displayName}.proceedButtonTitle`,
-    defaultMessage: 'Submit',
+    defaultMessage: 'Submit details',
   },
   addressLabel: {
     id: `${displayName}.addressLabel`,
@@ -26,15 +26,19 @@ export const CONTACT_DETAILS_FORM_MSGS = defineMessages({
   },
   address1Label: {
     id: `${displayName}.address1Placeholder`,
-    defaultMessage: 'Address line 1',
+    defaultMessage: 'Address',
   },
   address1Placeholder: {
     id: `${displayName}.address1Placeholder`,
-    defaultMessage: 'Address line 1',
+    defaultMessage: 'Street line one',
+  },
+  address2Label: {
+    id: `${displayName}.address2Placeholder`,
+    defaultMessage: 'Address 2',
   },
   address2Placeholder: {
     id: `${displayName}.address2Placeholder`,
-    defaultMessage: 'Address line 2',
+    defaultMessage: 'Street line two',
   },
   cityLabel: {
     id: `${displayName}.cityLabel`,
@@ -78,6 +82,10 @@ export const CONTACT_DETAILS_FORM_MSGS = defineMessages({
     defaultMessage: 'Select country',
   },
   stateLabel: {
+    id: `${displayName}.stateLabel`,
+    defaultMessage: 'State',
+  },
+  statePlaceholder: {
     id: `${displayName}.stateLabel`,
     defaultMessage: 'State',
   },

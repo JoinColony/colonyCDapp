@@ -84,49 +84,49 @@ const BankDetailsDescriptionComponent = ({
         </div>
 
         <div className="order-2 text-md font-normal sm:order-none">
-        <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-          {bankAccount?.bankName ?? '-'}
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.bankName ?? '-'}
           </LoadingSkeleton>
         </div>
 
         <div className="order-5 text-md font-normal sm:order-none">
-        <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-          {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
           </LoadingSkeleton>
         </div>
 
         <div className="order-7 text-md font-normal sm:order-none">
-        <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-          {bankAccount?.usAccount?.routingNumber ??
-            bankAccount?.iban?.bic ??
-            '-'}
-            </LoadingSkeleton>
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.usAccount?.routingNumber ??
+              bankAccount?.iban?.bic ??
+              '-'}
+          </LoadingSkeleton>
         </div>
 
         <div className="order-10 text-md font-normal sm:order-none">
-        <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-          {bankAccount?.currency ? (
-            <CurrencyLabel
-              currency={
-                bankAccount?.currency.toUpperCase() as SupportedCurrencies
-              }
-              labelClassName="font-normal"
-            />
-          ) : (
-            '-'
-          )}
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.currency ? (
+              <CurrencyLabel
+                currency={
+                  bankAccount?.currency.toUpperCase() as SupportedCurrencies
+                }
+                labelClassName="font-normal"
+              />
+            ) : (
+              '-'
+            )}
           </LoadingSkeleton>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { useMobile } from '~hooks';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import { useMobile } from '~hooks';
 import CryptoToFiatBadge from '~v5/common/Pills/CryptoToFiatBadge.tsx/CryptoToFiatBadge.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -91,7 +91,7 @@ const Body: React.FC<RowItemBodyProps> = ({
               text={ctaTitle}
               onClick={ctaOnClick}
               disabled={ctaDisabled}
-            isFullSize={isMobile}
+              isFullSize={isMobile}
             />
           </LoadingSkeleton>
         )}

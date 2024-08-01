@@ -14,7 +14,11 @@ import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 import { AccountDetailsInputs } from './AccountDetailsInputs.tsx';
 import { BANK_DETAILS_FORM_MSG } from './constants.ts';
 import { CurrencyFormattedOptionLabel } from './CurrencyFormattedOptionLabel.tsx';
-import { BankDetailsFields, validationSchema } from './validation.ts';
+import {
+  BankDetailsFields,
+  type BankDetailsFormSchema,
+  validationSchema,
+} from './validation.ts';
 
 interface BankDetailsFormProps {
   onSubmit: (values: any) => void;
@@ -43,7 +47,7 @@ const BankDetailsForm: FC<BankDetailsFormProps> = ({
         defaultValues={defaultValues}
       >
         <FormRow>
-          <FormInput
+          <FormInput<BankDetailsFormSchema>
             name={BankDetailsFields.ACCOUNT_OWNER}
             shouldFocus
             label={formatText(BANK_DETAILS_FORM_MSG.accountOwnerNameLabel)}
@@ -53,14 +57,14 @@ const BankDetailsForm: FC<BankDetailsFormProps> = ({
           />
         </FormRow>
         <FormRow>
-          <FormInput
+          <FormInput<BankDetailsFormSchema>
             name={BankDetailsFields.BANK_NAME}
             label={formatText(BANK_DETAILS_FORM_MSG.bankNameLabel)}
             placeholder={formatText(BANK_DETAILS_FORM_MSG.bankNamePlaceholder)}
           />
         </FormRow>
         <FormRow>
-          <FormSelect
+          <FormSelect<BankDetailsFormSchema>
             name={BankDetailsFields.CURRENCY}
             labelMessage={formatText(BANK_DETAILS_FORM_MSG.payoutCurrencyLabel)}
             options={CURRENCIES}

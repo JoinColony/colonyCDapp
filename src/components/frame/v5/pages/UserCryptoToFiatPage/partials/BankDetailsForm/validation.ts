@@ -1,7 +1,7 @@
 import { type InferType, object, string } from 'yup';
 
 import { SupportedCurrencies } from '~gql';
-import { formErrorMessage } from '~utils/intl.ts';
+import { formErrorMessage, formatText } from '~utils/intl.ts';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
@@ -60,7 +60,11 @@ export const validationSchema = object({
     {
       is: CURRENCY_VALUES[SupportedCurrencies.Usd],
       then: string()
-        .required()
+        .required(
+          formatText({
+            id: 'cryptoToFiat.forms.error.bankAccount.accountNumber',
+          }),
+        )
         .matches(
           /^[0-9]+$/,
           capitalizeFirstLetter(
@@ -95,7 +99,11 @@ export const validationSchema = object({
     {
       is: CURRENCY_VALUES[SupportedCurrencies.Usd],
       then: string()
-        .required()
+        .required(
+          formatText({
+            id: 'cryptoToFiat.forms.error.bankAccount.routingNumber',
+          }),
+        )
         .matches(
           /^[0-9]+$/,
           capitalizeFirstLetter(
@@ -119,4 +127,4 @@ export const validationSchema = object({
   ),
 }).defined();
 
-export type FormValues = InferType<typeof validationSchema>;
+export type BankDetailsFormSchema = InferType<typeof validationSchema>;
