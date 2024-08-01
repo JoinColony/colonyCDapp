@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import Onboarding, { Flow } from '~common/Onboarding/index.ts';
 import HeaderRow from '~common/Onboarding/wizardSteps/HeaderRow.tsx';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { OutsideColonyLayout } from '~frame/Extensions/layouts/index.ts';
+import { BasicPageLayout } from '~frame/Extensions/layouts/index.ts';
 import { useGetPrivateBetaCodeInviteValidityQuery } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
@@ -49,7 +49,7 @@ interface Props {
 }
 
 const SplashLayout = ({ children }: PropsWithChildren) => (
-  <OutsideColonyLayout>
+  <BasicPageLayout>
     <article className="mx-auto max-w-lg">
       <HeaderRow
         heading={{ id: 'colonyWelcome' }}
@@ -57,7 +57,7 @@ const SplashLayout = ({ children }: PropsWithChildren) => (
       />
       {children}
     </article>
-  </OutsideColonyLayout>
+  </BasicPageLayout>
 );
 
 const OnboardingPage = ({ flow }: Props) => {

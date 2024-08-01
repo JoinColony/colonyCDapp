@@ -4,13 +4,13 @@ import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingCo
 import LandingPageSidebar from '~v5/common/Navigation/LandingPageSidebar/LandingPageSidebar.tsx';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
 
-import { type MainLayoutProps } from './types.ts';
-
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
-const OutsideColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
-  children,
-}) => {
+interface BasicPageLayoutProps extends PropsWithChildren {
+  sidebar?: React.ReactNode;
+}
+
+const BasicPageLayout: FC<BasicPageLayoutProps> = ({ children, sidebar }) => {
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
 
   return (
@@ -24,13 +24,13 @@ const OutsideColonyLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
               }
             : undefined,
       }}
-      sidebar={<LandingPageSidebar />}
+      sidebar={sidebar ?? <LandingPageSidebar />}
     >
       {children}
     </PageLayout>
   );
 };
 
-OutsideColonyLayout.displayName = displayName;
+BasicPageLayout.displayName = displayName;
 
-export default OutsideColonyLayout;
+export default BasicPageLayout;

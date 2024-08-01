@@ -21,7 +21,6 @@ import {
   useGroupedTransactions,
 } from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import { usePageLayoutContext } from '~v5/frame/PageLayout/context/PageLayoutContext.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -54,10 +53,7 @@ const UserHubButton: FC = () => {
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
 
-  const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const { isTokensModalOpen } = useTokensModalContext();
-
-  const [, { toggleOff }] = mobileMenuToggle;
 
   const popperTooltipOffset = isMobile ? [0, 20] : [0, 8];
 
@@ -129,8 +125,6 @@ const UserHubButton: FC = () => {
     setShowMobileColonyPicker(false);
     setShowMobileSidebar(false);
     trackEvent(OPEN_USER_HUB_EVENT);
-    setOpenItemIndex(undefined);
-    toggleOff();
   };
 
   useEffect(() => {

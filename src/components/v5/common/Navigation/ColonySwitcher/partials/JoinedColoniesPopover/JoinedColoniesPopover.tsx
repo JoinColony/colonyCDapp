@@ -19,7 +19,7 @@ const JoinedColoniesPopover = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={getTooltipProps}
-      classNames="bg-white w-[252px] py-4 px-2 rounded-lg border-gray-200 border-[1px] shadow-none mt-4 gap-2"
+      classNames="z-top bg-white w-[252px] py-4 px-2 rounded-lg border-gray-200 border-[1px] shadow-none mt-4 gap-2"
     >
       <JoinedColoniesList />
       <section className="w-full px-2 pt-2">

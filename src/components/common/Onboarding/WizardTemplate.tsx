@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 
-import OutsideColonyLayout from '~frame/Extensions/layouts/OutsideColonyLayout.tsx';
+import { BasicPageLayout } from '~frame/Extensions/layouts/index.ts';
 import { type WizardOuterProps } from '~shared/Wizard/types.ts';
 
 import { type WizardType } from './types.ts';
@@ -32,7 +32,7 @@ const WizardTemplate = <F extends Record<string, any>>({
   templateProps: { sidebarValues, wizardType },
 }: PropsWithChildren<Props<F>>) => {
   return (
-    <OutsideColonyLayout
+    <BasicPageLayout
       sidebar={
         <WizardSidebar
           currentStep={step}
@@ -43,7 +43,7 @@ const WizardTemplate = <F extends Record<string, any>>({
       }
     >
       <article className="mx-auto max-w-lg">{children}</article>
-    </OutsideColonyLayout>
+    </BasicPageLayout>
   );
 };
 

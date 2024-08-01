@@ -9,7 +9,6 @@ import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
-import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import { usePageLayoutContext } from '~v5/frame/PageLayout/context/PageLayoutContext.ts';
 import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
@@ -33,8 +32,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
 }) => {
   const { wallet, connectWallet } = useAppContext();
   const isMobile = useMobile();
-  const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
-  const [, { toggleOff }] = mobileMenuToggle;
 
   const isWalletConnected = !!wallet?.address;
   const networkInfo = useGetCurrentNetwork();
@@ -70,8 +67,6 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const onMenuClick = () => {
     setShowMobileColonyPicker(false);
     setShowMobileSidebar(false);
-    setOpenItemIndex(undefined);
-    toggleOff();
   };
 
   return (

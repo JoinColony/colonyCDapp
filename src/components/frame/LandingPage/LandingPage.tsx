@@ -6,10 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import InvitationBlock from '~common/InvitationBlock/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import {
-  MainSidebar,
-  OutsideColonyLayout,
-} from '~frame/Extensions/layouts/index.ts';
+import { BasicPageLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
@@ -121,7 +118,7 @@ const LandingPage = () => {
     !!user?.privateBetaInviteCode?.shareableInvites;
 
   return (
-    <OutsideColonyLayout sidebar={user ? <MainSidebar /> : <SimpleSidebar />}>
+    <BasicPageLayout sidebar={<SimpleSidebar />}>
       <div className="w-full">
         <div className="mb-8">
           <div className="mb-4 flex items-center">
@@ -212,7 +209,7 @@ const LandingPage = () => {
         </div>
         {hasShareableInvitationCode && <InvitationBlock />}
       </div>
-    </OutsideColonyLayout>
+    </BasicPageLayout>
   );
 };
 
