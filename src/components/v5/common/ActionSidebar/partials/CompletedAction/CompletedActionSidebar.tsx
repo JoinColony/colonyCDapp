@@ -1,13 +1,25 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { type ReactNode, useEffect, useRef } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
+import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
+import { formatText } from '~utils/intl.ts';
+import FourOFourMessage from '~v5/common/FourOFourMessage/FourOFourMessage.tsx';
+import Button from '~v5/shared/Button/Button.tsx';
+import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
+import ActionSidebarLayout from '../ActionSidebarLayout/ActionSidebarLayout.tsx';
+import ShareButton from '../ShareButton.tsx';
+
+import useGetActionData from './hooks/useGetActionData.ts';
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
+import Badges from './partials/Badges.tsx';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
@@ -26,14 +38,137 @@ import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
-interface CompletedActionProps {
-  action: ColonyAction;
+interface Props {
+  transactionId: string;
+  userNavigation?: ReactNode;
 }
 
-const displayName = 'v5.common.CompletedAction';
+const displayName = 'v5.common.ActionSidebar.CompletedAction';
 
-const CompletedAction = ({ action }: CompletedActionProps) => {
+const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
   const { colony } = useColonyContext();
+  const location = useLocation();
+
+  const {
+    action,
+    isInvalidTransactionHash,
+    loadingAction,
+    isMotion,
+    motionState,
+    expenditure,
+    loadingExpenditure,
+    startPollingForAction,
+    stopPollingForAction,
+  } = useGetActionData(transactionId);
+
+  const {
+    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
+  } = useActionSidebarContext();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Remove the tx parameter from the query parameters when component is unmounted
+  useEffect(() => {
+    return () => {
+      searchParams.delete(TX_SEARCH_PARAM);
+      setSearchParams(searchParams);
+    };
+    // We only want to do this on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const timeout = useRef<NodeJS.Timeout>();
+  useEffect(() => {
+    clearTimeout(timeout.current);
+
+    // If the action has not been found for 20 seconds, then assume transaction doesn't exist.
+    if (loadingAction) {
+      timeout.current = setTimeout(() => {
+        stopPollingForAction();
+      }, 20000);
+    }
+
+    return () => {
+      clearTimeout(timeout.current);
+    };
+  }, [loadingAction, stopPollingForAction]);
+
+  if (loadingAction || loadingExpenditure) {
+    return (
+      <ActionSidebarLayout userNavigation={userNavigation}>
+        <div className="flex h-full flex-col items-center justify-center gap-4">
+          <SpinnerLoader appearance={{ size: 'huge' }} />
+          <p className="text-gray-600">
+            {formatText({ id: 'actionSidebar.loading' })}
+          </p>
+        </div>
+      </ActionSidebarLayout>
+    );
+  }
+
+  if (!action) {
+    return (
+      <ActionSidebarLayout userNavigation={userNavigation}>
+        <div className="pt-14">
+          <FourOFourMessage
+            description={formatText({
+              id: isInvalidTransactionHash
+                ? 'actionSidebar.fourOfour.descriptionInvalidHash'
+                : 'actionSidebar.fourOfour.description',
+            })}
+            links={
+              <>
+                {!isInvalidTransactionHash && (
+                  <Link
+                    to={COLONY_ACTIVITY_ROUTE}
+                    className="mb-2 text-sm text-blue-400 underline"
+                    onClick={toggleActionSidebarOff}
+                  >
+                    {formatText({
+                      id: 'actionSidebar.fourOfour.activityPageLink',
+                    })}
+                  </Link>
+                )}
+                <ButtonLink
+                  to={`${location.pathname}${location.search}`}
+                  onClick={toggleActionSidebarOff}
+                  className="mb-2 text-sm text-blue-400 underline"
+                >
+                  {formatText({
+                    id: 'actionSidebar.fourOfour.createNewAction',
+                  })}
+                </ButtonLink>
+              </>
+            }
+            primaryLinkButton={
+              isInvalidTransactionHash ? (
+                <ButtonLink
+                  mode="primarySolid"
+                  to={COLONY_ACTIVITY_ROUTE}
+                  className="flex-1"
+                  onClick={toggleActionSidebarOff}
+                >
+                  {formatText({
+                    id: 'actionSidebar.fourOfour.activityPageLink',
+                  })}
+                </ButtonLink>
+              ) : (
+                <Button
+                  mode="primarySolid"
+                  className="flex-1"
+                  onClick={startPollingForAction}
+                >
+                  {formatText({
+                    id: 'button.retry',
+                  })}
+                </Button>
+              )
+            }
+          />
+        </div>
+      </ActionSidebarLayout>
+    );
+  }
 
   const actionType = getExtendedActionType(action, colony.metadata);
 
@@ -122,17 +257,29 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
-      <div
-        className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
-          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
-        })}
-      >
-        {getActionContent()}
-      </div>
+    <ActionSidebarLayout
+      badges={
+        <Badges
+          action={action || undefined}
+          expenditure={expenditure || undefined}
+          isMotion={isMotion}
+          motionState={motionState}
+        />
+      }
+      shareButton={<ShareButton />}
+      userNavigation={userNavigation}
+    >
+      <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
+        <div
+          className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
+            'sm:w-[calc(100%-23.75rem)]': action.isMotion,
+          })}
+        >
+          {getActionContent()}
+        </div>
 
-      <div
-        className={`
+        <div
+          className={`
             w-full
             border-b
             border-b-gray-200
@@ -147,12 +294,13 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             sm:border-l
             sm:border-l-gray-200
           `}
-      >
-        {getSidebarWidgetContent()}
+        >
+          {getSidebarWidgetContent()}
+        </div>
       </div>
-    </div>
+    </ActionSidebarLayout>
   );
 };
 
-CompletedAction.displayName = displayName;
-export default CompletedAction;
+CompletedActionSidebar.displayName = displayName;
+export default CompletedActionSidebar;

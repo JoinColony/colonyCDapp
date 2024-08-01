@@ -1,4 +1,4 @@
-import { type FieldValues, type UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
 
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 
@@ -26,8 +26,3 @@ export type UseActionFormBaseHook = (
     | 'reValidateMode'
   >,
 ) => void;
-
-export interface ActionSidebarProps {
-  initialValues?: FieldValues;
-  className?: string;
-}

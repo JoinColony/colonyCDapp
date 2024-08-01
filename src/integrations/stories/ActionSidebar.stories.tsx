@@ -1,15 +1,15 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import CreateAction from '~v5/common/ActionSidebar/partials/CreateAction/CreateAction.tsx';
+import CreateActionSidebar from '~v5/common/ActionSidebar/partials/CreateAction/CreateActionSidebar.tsx';
 
-const actionSidebarMeta: Meta<typeof CreateAction> = {
+const actionSidebarMeta: Meta<typeof CreateActionSidebar> = {
   title: 'Action Sidebar',
-  component: CreateAction,
+  component: CreateActionSidebar,
 };
 
 export default actionSidebarMeta;
 
-export const Base: StoryObj<typeof CreateAction> = {
-  render: (args) => <CreateAction {...args} />,
+export const Base: StoryObj<typeof CreateActionSidebar> = {
+  render: (args) => <CreateActionSidebar {...args} />,
 };
