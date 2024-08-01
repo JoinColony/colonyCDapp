@@ -128,20 +128,18 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       return 0;
     },
   );
-  const hasEveryMotionEnded =
-    releaseMilestoneMotions &&
-    releaseMilestoneMotions.length > 0 &&
-    releaseMilestoneMotions.every(
-      (motion) =>
-        !motion?.motionStateHistory.hasPassed ||
-        !motion?.motionStateHistory.hasFailed ||
-        !motion?.motionStateHistory.hasFailedNotFinalizable,
-    );
+  const hasEveryMotionEnded = releaseMilestoneMotions?.every(
+    (motion) =>
+      motion?.motionStateHistory.hasPassed ||
+      motion?.motionStateHistory.hasFailed ||
+      motion?.motionStateHistory.hasFailedNotFinalizable,
+  );
+
   const activeMotionsIds = (releaseMilestoneMotions || [])
     .filter(
       (motion) =>
-        !motion?.motionStateHistory.hasPassed ||
-        !motion?.motionStateHistory.hasFailed ||
+        !motion?.motionStateHistory.hasPassed &&
+        !motion?.motionStateHistory.hasFailed &&
         !motion?.motionStateHistory.hasFailedNotFinalizable,
     )
     .flatMap((motion) => motion?.expenditureSlotIds || 0);
