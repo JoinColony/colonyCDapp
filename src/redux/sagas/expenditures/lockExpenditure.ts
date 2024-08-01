@@ -11,28 +11,19 @@ import {
   createTransactionChannels,
   waitForTxResult,
 } from '../transactions/index.ts';
-import {
-  initiateTransaction,
-  putError,
-  uploadAnnotation,
-} from '../utils/index.ts';
+import { initiateTransaction, putError } from '../utils/index.ts';
 
 export type LockExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_LOCK>['payload'];
 
 function* lockExpenditureAction({
-  payload: { colonyAddress, nativeExpenditureId, annotationMessage },
+  payload: { colonyAddress, nativeExpenditureId },
   meta,
 }: Action<ActionTypes.EXPENDITURE_LOCK>) {
   const batchKey = TRANSACTION_METHODS.LockExpenditure;
 
-  const {
-    lockExpenditure,
-    annotateLockExpenditure,
-  }: Record<string, ChannelDefinition> = yield createTransactionChannels(
-    meta.id,
-    ['lockExpenditure', 'annotateLockExpenditure'],
-  );
+  const { lockExpenditure }: Record<string, ChannelDefinition> =
+    yield createTransactionChannels(meta.id, ['lockExpenditure']);
 
   try {
     yield fork(createTransaction, lockExpenditure.id, {
@@ -46,44 +37,12 @@ function* lockExpenditureAction({
       identifier: colonyAddress,
       params: [nativeExpenditureId],
     });
-    if (annotationMessage) {
-      yield fork(createTransaction, annotateLockExpenditure.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 1,
-        },
-        ready: false,
-      });
-    }
 
     yield takeFrom(lockExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
 
-    if (annotationMessage) {
-      yield takeFrom(
-        annotateLockExpenditure.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
-    }
-
     yield initiateTransaction(lockExpenditure.id);
 
-    const {
-      payload: {
-        receipt: { transactionHash: txHash },
-      },
-    } = yield waitForTxResult(lockExpenditure.channel);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateLockExpenditure,
-        message: annotationMessage,
-        txHash,
-      });
-    }
+    yield waitForTxResult(lockExpenditure.channel);
 
     yield put<AllActions>({
       type: ActionTypes.EXPENDITURE_LOCK_SUCCESS,
@@ -92,10 +51,9 @@ function* lockExpenditureAction({
     });
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_LOCK_ERROR, error, meta);
+  } finally {
+    lockExpenditure.channel.close();
   }
-  [lockExpenditure, annotateLockExpenditure].forEach((channel) =>
-    channel.channel.close(),
-  );
 
   return null;
 }
