@@ -27,6 +27,7 @@ import {
 } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
+import { chunkArray } from '~utils/arrays/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
@@ -212,38 +213,45 @@ export function* claimExpenditurePayouts({
 
   const batchKey = 'claimExpenditurePayouts';
 
-  const { claimPayouts } = yield createTransactionChannels(metaId, [
-    'claimPayouts',
-  ]);
+  // In testing, this multicall would fail with more than 78 payouts
+  const chunks = chunkArray({ array: claimablePayouts, chunkSize: 78 });
 
-  try {
-    const multicallData = claimablePayouts.map((payout) =>
-      colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
-        nativeExpenditureId,
-        payout.slotId,
-        payout.tokenAddress,
-      ]),
+  for (let index = 0; index < chunks.length; index += 1) {
+    // Create a new transaction channel for each chunk
+    const { claimPayouts } = yield createTransactionChannels(
+      `${metaId}-${index}`,
+      ['claimPayouts'],
     );
 
-    yield fork(createTransaction, claimPayouts.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'multicall',
-      identifier: colonyAddress,
-      params: [multicallData],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
-      },
-      ready: false,
-    });
+    try {
+      const multicallData = chunks[index].map((payout) =>
+        colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+          nativeExpenditureId,
+          payout.slotId,
+          payout.tokenAddress,
+        ]),
+      );
 
-    yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
+      yield fork(createTransaction, claimPayouts.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'multicall',
+        identifier: colonyAddress,
+        params: [multicallData],
+        group: {
+          key: batchKey,
+          id: `${metaId}-${index}`, // Use the chunk index to ensure uniqueness
+          index,
+        },
+        ready: false,
+      });
 
-    yield initiateTransaction(claimPayouts.id);
-    yield waitForTxResult(claimPayouts.channel);
-  } finally {
-    claimPayouts.channel.close();
+      yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
+
+      yield initiateTransaction(claimPayouts.id);
+      yield waitForTxResult(claimPayouts.channel);
+    } finally {
+      claimPayouts.channel.close();
+    }
   }
 }
 

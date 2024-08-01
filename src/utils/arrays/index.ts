@@ -183,3 +183,32 @@ export type UnionOfArraysToArrayOfUnions<T extends unknown[]> = ItemType<T>[];
 export const unionOfArraysToArrayOfUnions = <T extends unknown[]>(
   array: T,
 ): UnionOfArraysToArrayOfUnions<T> => array;
+
+// Helper function to split the array into chunks
+export const chunkArray = <T>({
+  array,
+  chunkSize,
+}: {
+  array: T[];
+  chunkSize: number;
+}): T[][] => {
+  if (!Array.isArray(array)) {
+    throw new TypeError('Input should be an array');
+  }
+
+  if (typeof chunkSize !== 'number' || chunkSize <= 0) {
+    throw new TypeError('chunkSize should be a positive number');
+  }
+
+  const result: T[][] = new Array(Math.ceil(array.length / chunkSize));
+
+  for (
+    let index = 0, resultIndex = 0;
+    index < array.length;
+    index += chunkSize, resultIndex += 1
+  ) {
+    result[resultIndex] = array.slice(index, index + chunkSize);
+  }
+
+  return result;
+};
