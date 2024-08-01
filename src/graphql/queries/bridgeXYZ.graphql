@@ -14,3 +14,7 @@ query CheckKYCStatus {
     liquidationAddress
   }
 }
+
+query GetUserLiquidationAddress($userAddress: String!) {
+  bridgeGetUserLiquidationAddress(userAddress: $userAddress)
+}
