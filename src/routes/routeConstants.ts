@@ -32,6 +32,7 @@ export const COLONY_TEAMS_ROUTE = `teams`;
 export const COLONY_AGREEMENTS_ROUTE = `agreements`;
 export const COLONY_DECISIONS_PREVIEW_ROUTE = `decisions/preview`;
 export const COLONY_ACTIVITY_ROUTE = `activity`;
+export const COLONY_STREAMING_ROUTE = 'streaming';
 export const ACTIONS_PAGE_ROUTE = 'tx/:transactionHash';
 
 export const ACTIONS_QUERY_STRING = '?tx=:transactionHash';

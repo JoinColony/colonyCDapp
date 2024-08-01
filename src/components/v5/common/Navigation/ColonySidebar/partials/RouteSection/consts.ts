@@ -17,6 +17,7 @@ import {
   COLONY_INCOMING_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
+  COLONY_STREAMING_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_CRYPTO_TO_FIAT_ROUTE,
 } from '~routes';
@@ -58,7 +59,7 @@ export const sidebarNavigationScheme: RouteSectionItemProps[] = [
       {
         id: 'streaming',
         translation: { id: 'navigation.finances.streaming' },
-        path: COLONY_INCOMING_ROUTE,
+        path: COLONY_STREAMING_ROUTE,
         routeType: 'colony',
       },
       {
