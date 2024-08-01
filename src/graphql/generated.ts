@@ -5710,9 +5710,12 @@ export type ProfileMetadataInput = {
 /** Root query type */
 export type Query = {
   __typename?: 'Query';
+  /** Check bridge KYC status for the current user */
   bridgeCheckKYC?: Maybe<BridgeCheckKycReturn>;
-  /** Fetch from the Bridge XYZ API */
+  /** Get drains history for the current user */
   bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
+  /** Get liquidation address of a given user */
+  bridgeGetUserLiquidationAddress?: Maybe<Scalars['String']>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getAnnotation?: Maybe<Annotation>;
@@ -5842,6 +5845,12 @@ export type Query = {
   listUsers?: Maybe<ModelUserConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
+};
+
+
+/** Root query type */
+export type QueryBridgeGetUserLiquidationAddressArgs = {
+  userAddress: Scalars['String'];
 };
 
 

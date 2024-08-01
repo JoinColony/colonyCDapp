@@ -928,12 +928,21 @@ type Query {
     @function(name: "getSafeTransactionStatus-${env}")
 
   """
-  Fetch from the Bridge XYZ API
+  Get drains history for the current user
   """
   bridgeGetDrainsHistory: [BridgeDrain!]
     @function(name: "bridgeXYZMutation-${env}")
 
+  """
+  Check bridge KYC status for the current user
+  """
   bridgeCheckKYC: BridgeCheckKYCReturn
+    @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Get liquidation address of a given user
+  """
+  bridgeGetUserLiquidationAddress(userAddress: String!): String
     @function(name: "bridgeXYZMutation-${env}")
 }
 
