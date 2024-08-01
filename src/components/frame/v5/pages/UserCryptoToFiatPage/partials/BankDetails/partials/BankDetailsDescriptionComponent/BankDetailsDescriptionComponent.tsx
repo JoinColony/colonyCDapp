@@ -1,8 +1,11 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+
+import { TABLE_TD_LOADER_STYLES } from './consts.ts';
 
 const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetails.partials.BankDetailsDescriptionComponent';
@@ -38,10 +41,12 @@ interface BankDetailsDescriptionComponentProps {
   bankAccount: NonNullable<
     CheckKycStatusMutation['bridgeXYZMutation']
   >['bankAccount'];
+  isDataLoading: boolean;
 }
 
 const BankDetailsDescriptionComponent = ({
   bankAccount,
+  isDataLoading,
 }: BankDetailsDescriptionComponentProps) => {
   return (
     <div className="flex flex-col">
@@ -64,16 +69,42 @@ const BankDetailsDescriptionComponent = ({
         </thead>
         <tbody>
           <tr>
-            <td>{bankAccount?.bankName ?? '-'}</td>
             <td>
-              {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
+              <LoadingSkeleton
+                isLoading={isDataLoading}
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.bankName ?? '-'}
+              </LoadingSkeleton>
             </td>
             <td>
-              {bankAccount?.usAccount?.routingNumber ??
-                bankAccount?.iban?.bic ??
-                '-'}
+              <LoadingSkeleton
+                isLoading={isDataLoading}
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.usAccount?.last4 ??
+                  bankAccount?.iban?.last4 ??
+                  '-'}
+              </LoadingSkeleton>
             </td>
-            <td>{bankAccount?.currency ?? '-'}</td>
+            <td>
+              <LoadingSkeleton
+                isLoading={isDataLoading}
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.usAccount?.routingNumber ??
+                  bankAccount?.iban?.bic ??
+                  '-'}
+              </LoadingSkeleton>
+            </td>
+            <td>
+              <LoadingSkeleton
+                isLoading={isDataLoading}
+                className={TABLE_TD_LOADER_STYLES}
+              >
+                {bankAccount?.currency ?? ''}
+              </LoadingSkeleton>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { LEARN_MORE_CRYPTO_TO_FIAT } from '~constants';
@@ -8,7 +8,7 @@ import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { formatText } from '~utils/intl.ts';
 import Switch from '~v5/common/Fields/Switch/Switch.tsx';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
+import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { BODY_MSG, getBadgeProps, HEADING_MSG } from './consts.ts';
@@ -28,10 +28,9 @@ const BodyDescription = () => (
   </>
 );
 
-const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
-  order,
-  kycStatusData,
-}) => {
+const AutomaticDeposits = () => {
+  const { kycStatusData, isKycStatusDataLoading } = useCryptoToFiatContext();
+
   const { user, updateUser } = useAppContext();
 
   const [editUser, { loading: editUserLoading }] =
@@ -52,8 +51,9 @@ const AutomaticDeposits: FC<CryptoToFiatPageComponentProps> = ({
       <RowItem.Heading
         title={formatText(HEADING_MSG.headingTitle)}
         accessory={formatText(HEADING_MSG.headingAccessory)}
-        itemOrder={order}
+        itemIndex={3}
         badgeProps={badgeProps}
+        isDataLoading={isKycStatusDataLoading}
       />
       <RowItem.Body
         title={formatText(BODY_MSG.bodyTitle)}

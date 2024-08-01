@@ -1,34 +1,32 @@
 import { Client as PersonaClient } from 'persona';
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUpdateUserProfileMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
-import { type CryptoToFiatPageComponentProps } from '../../types.ts';
+import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import RowItem from '../RowItem/index.ts';
 
 import { MSG, displayName, getBadgeProps, getCTAProps } from './consts.ts';
 import VerificationModal from './VerificationModal.tsx';
 
-const Verification: FC<CryptoToFiatPageComponentProps> = ({
-  order,
-  kycStatusData,
-  refetchStatus,
-  kycStatusLoading,
-}) => {
+const Verification = () => {
   const [updateProfile] = useUpdateUserProfileMutation();
 
   const { user } = useAppContext();
+
+  const { kycStatusData, isKycStatusDataLoading, getKycStatusData } =
+    useCryptoToFiatContext();
 
   const [isModalOpened, setIsModalOpened] = useState(false);
   const handleOpen = () => setIsModalOpened(true);
   const handleClose = () => setIsModalOpened(false);
 
-  const { kycStatus } = kycStatusData ?? {};
+  const kycStatus = kycStatusData?.kycStatus;
 
   const badgeProps = getBadgeProps(kycStatus);
-  const ctaProps = getCTAProps(kycStatusLoading, kycStatus);
+  const ctaProps = getCTAProps(kycStatus);
 
   const handleTermsAcceptance = (kycLink: string) => {
     handleClose();
@@ -53,7 +51,7 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
           },
         });
 
-        refetchStatus();
+        getKycStatusData();
       },
     });
 
@@ -65,14 +63,16 @@ const Verification: FC<CryptoToFiatPageComponentProps> = ({
       <RowItem.Heading
         title={formatText(MSG.headingTitle)}
         accessory={formatText(MSG.headingAccessory)}
-        itemOrder={order}
+        itemIndex={1}
         badgeProps={badgeProps}
+        isDataLoading={isKycStatusDataLoading}
       />
       <RowItem.Body
         title={formatText(MSG.bodyTitle)}
         description={formatText(MSG.bodyDescription)}
         {...ctaProps}
         ctaOnClick={handleOpen}
+        isDataLoading={isKycStatusDataLoading}
       />
 
       {isModalOpened && (

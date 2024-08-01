@@ -5,7 +5,7 @@ import { KycStatus } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CryptoToFiatBadgeProps } from '~v5/common/Pills/CryptoToFiatBadge.tsx/types.ts';
 
-import { type KycStatusData } from '../../types.ts';
+import { type KycBankAccountData, type KycStatusData } from '../../types.ts';
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.AutomaticDeposits';
@@ -24,7 +24,7 @@ export const getBadgeProps = ({
   kycStatusData,
 }: {
   kycStatusData?: KycStatusData | null;
-  bankAccountData: KycStatusData['bankAccount'];
+  bankAccountData: KycBankAccountData;
   isAutoOfframEnabled: boolean;
 }): CryptoToFiatBadgeProps => {
   if (kycStatusData) {

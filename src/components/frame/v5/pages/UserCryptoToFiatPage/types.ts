@@ -1,16 +1,14 @@
-import { type CheckKycStatusMutation } from '~gql';
+import { type useCheckKycStatusMutation } from '~gql';
 
-// @TODO: Figure out proper types, with fragments
-export type KycStatusData = NonNullable<
-  CheckKycStatusMutation['bridgeXYZMutation']
+export type CheckKycStatusMutationReturnType = ReturnType<
+  typeof useCheckKycStatusMutation
 >;
 
-export interface CryptoToFiatPageComponentProps {
-  order: number;
-  kycStatusLoading: boolean;
-  kycStatusData?: KycStatusData | null;
-  refetchStatus: () => void;
-}
+export type KycStatusData = NonNullable<
+  CheckKycStatusMutationReturnType[1]['data']
+>['bridgeXYZMutation'];
+
+export type KycBankAccountData = NonNullable<KycStatusData>['bankAccount'];
 
 export interface BankDetailsFormValues {
   currency: string;

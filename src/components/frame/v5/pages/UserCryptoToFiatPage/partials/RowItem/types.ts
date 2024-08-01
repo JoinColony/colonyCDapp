@@ -11,7 +11,8 @@ export interface RowItemHeadingProps {
   title: ReactNode;
   accessory: ReactNode;
   badgeProps: CryptoToFiatBadgeProps;
-  itemOrder: number;
+  itemIndex: number;
+  isDataLoading: boolean;
 }
 
 export interface RowItemBodyProps {
@@ -22,6 +23,5 @@ export interface RowItemBodyProps {
   ctaDisabled?: boolean;
   ctaOnClick?: () => void;
   ctaComponent?: React.ReactNode;
-  ctaLoading?: boolean;
-  ctaHidden?: boolean;
+  isDataLoading?: boolean;
 }
