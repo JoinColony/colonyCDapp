@@ -2610,10 +2610,7 @@ type ColonyMultiSig @model {
   Colony address the multiSig belongs to
   """
   colonyAddress: ID!
-    @index(
-      name: "byColonyAddress"
-      queryField: "getMultiSigByColonyAddress"
-    )
+    @index(name: "byColonyAddress", queryField: "getMultiSigByColonyAddress")
   """
   The on chain id of the multiSig
   """
@@ -2633,7 +2630,8 @@ type ColonyMultiSig @model {
   """
   Signatures info
   """
-  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["id"])
+  signatures: [MultiSigUserSignature]
+    @hasMany(indexName: "byMultiSigId", fields: ["id"])
   """
   Required role for signing
   """
@@ -2717,7 +2715,8 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!]
+    @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
