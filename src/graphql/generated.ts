@@ -9542,10 +9542,11 @@ export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __t
 
 export type GetPendingTransactionsQueryVariables = Exact<{
   userAddress: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
+export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
 
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -13330,11 +13331,16 @@ export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQ
 export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransactionLazyQuery>;
 export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
 export const GetPendingTransactionsDocument = gql`
-    query GetPendingTransactions($userAddress: ID!) {
-  getTransactionsByUserAndStatus(from: {eq: $userAddress}, status: PENDING) {
+    query GetPendingTransactions($userAddress: ID!, $nextToken: String) {
+  getTransactionsByUserAndStatus(
+    from: {eq: $userAddress}
+    status: PENDING
+    nextToken: $nextToken
+  ) {
     items {
       id
     }
+    nextToken
   }
 }
     `;
@@ -13352,6 +13358,7 @@ export const GetPendingTransactionsDocument = gql`
  * const { data, loading, error } = useGetPendingTransactionsQuery({
  *   variables: {
  *      userAddress: // value for 'userAddress'
+ *      nextToken: // value for 'nextToken'
  *   },
  * });
  */

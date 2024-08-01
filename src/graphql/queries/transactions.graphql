@@ -27,10 +27,15 @@ query GetTransaction($id: ID!) {
   }
 }
 
-query GetPendingTransactions($userAddress: ID!) {
-  getTransactionsByUserAndStatus(from: { eq: $userAddress }, status: PENDING) {
+query GetPendingTransactions($userAddress: ID!, $nextToken: String) {
+  getTransactionsByUserAndStatus(
+    from: { eq: $userAddress }
+    status: PENDING
+    nextToken: $nextToken
+  ) {
     items {
       id
     }
+    nextToken
   }
 }

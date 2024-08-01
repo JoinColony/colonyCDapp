@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { TX_RETRY_TIMEOUT } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
@@ -12,8 +13,6 @@ import { useGroupedTransactionContent } from './hooks.tsx';
 import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.ts';
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
-
-const TX_RETRY_TIMEOUT = 1000 * 60 * 10;
 
 const displayName =
   'common.Extensions.UserHub.partials.TransactionsTab.partials.GroupedTransactionContent';
@@ -78,7 +77,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
 
   // Whether a retry of the transaction is possible
   const retryable =
-    createdAt.valueOf() > new Date().valueOf() - TX_RETRY_TIMEOUT;
+    createdAt.valueOf() > Date.now() - TX_RETRY_TIMEOUT * 60 * 1000;
 
   return (
     <li

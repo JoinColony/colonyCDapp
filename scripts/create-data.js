@@ -264,6 +264,7 @@ const addTxToDb = async ({
   hash,
   methodName,
   params,
+  status,
   userAddress,
 }) => {
   const txGroup = {
@@ -288,7 +289,7 @@ const addTxToDb = async ({
     hash,
     methodContext: null,
     methodName,
-    status: 'SUCCEEDED',
+    status,
     title: null,
     titleValues: null,
     params: JSON.stringify(params),
@@ -510,6 +511,7 @@ const mintTokens = async (
     hash: mintTokens.hash,
     methodName: 'mintTokens',
     params: [amount],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -528,6 +530,7 @@ const mintTokens = async (
     hash: claimColonyFunds.hash,
     methodName: 'claimColonyFunds',
     params: [amount],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -658,6 +661,7 @@ const createColony = async (
     hash: colonyDeploymentTransaction.transactionHash,
     methodName: 'createColonyForFrontend',
     params,
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -772,6 +776,7 @@ const createColony = async (
         hash: subdomainTransactions.transactionHash,
         methodName: 'addDomain(uint256,uint256,uint256)',
         params: [rootDomainId],
+        status: 'SUCCEEDED',
         userAddress: signerOrWallet.address,
       });
 
@@ -827,6 +832,7 @@ const createColony = async (
     hash: setOwnerTransaction.transactionHash,
     methodName: 'setOwner',
     params: [colonyAddress],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -879,6 +885,7 @@ const createColony = async (
     hash: installExtensionsTx.transactionHash,
     methodName: 'multicall.installExtensions',
     params: [],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -980,6 +987,7 @@ const createColony = async (
     hash: setExtensionRolesTx.transactionHash,
     methodName: 'setUserRoles',
     params: [],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -1016,6 +1024,7 @@ const createColony = async (
     hash: stakedExpenditureInitTx.transactionHash,
     methodName: 'initialise',
     params: [stakeFraction],
+    status: 'SUCCEEDED',
     userAddress: signerOrWallet.address,
   });
 
@@ -1207,6 +1216,7 @@ const transferFundsBetweenPots = async (
         methodName:
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)',
         params,
+        status: 'SUCCEEDED',
         userAddress: signerOrWallet.address,
       });
 
@@ -1320,6 +1330,7 @@ const userPayments = async (
             hash: oneTxPaymentTransaction.transactionHash,
             methodName: 'makePaymentFundedFromDomain',
             params,
+            status: 'SUCCEEDED',
             userAddress: signerOrWallet.address,
           });
 
@@ -1654,9 +1665,7 @@ const createUserAndColonyData = async () => {
     }
   }
 
-  const colonies = Object.keys(availableColonies).map(
-    (colonyAddress) => availableColonies[colonyAddress],
-  );
+  const colonies = Object.values(availableColonies);
   const coloniesTokens = colonies
     .map(({ colonyName, tokenAddress }) => {
       if (colonyName !== 'Planet Express') {

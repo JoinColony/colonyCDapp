@@ -1,4 +1,8 @@
-import { type MutationOptions, type FetchPolicy } from '@apollo/client';
+import {
+  type MutationOptions,
+  type FetchPolicy,
+  type FetchResult,
+} from '@apollo/client';
 import { type ClientTypeTokens } from '@colony/colony-js';
 import { utils } from 'ethers';
 import { useMemo } from 'react';
@@ -38,6 +42,8 @@ import { notNull } from '~utils/arrays/index.ts';
 import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 
 export const TX_PAGE_SIZE = 20;
+// In minutes
+export const TX_RETRY_TIMEOUT = 10;
 
 export const convertTransactionType = ({
   context,
@@ -535,31 +541,41 @@ export const failPendingTransactions = async () => {
   const userAddress = utils.getAddress(wallet.address);
   const apollo = getContext(ContextModule.ApolloClient);
 
-  const { data } = await apollo.query<
-    GetPendingTransactionsQuery,
-    GetPendingTransactionsQueryVariables
-  >({
-    query: GetPendingTransactionsDocument,
-    variables: {
-      userAddress,
-    },
-  });
+  let nextToken: string | null | undefined;
+  const promises: Promise<FetchResult<UpdateTransactionMutation>>[] = [];
 
-  const promises = data.getTransactionsByUserAndStatus?.items
-    .filter(notNull)
-    .map((tx) => {
-      return updateTransaction(
-        {
-          id: tx.id,
-          status: TransactionStatus.Failed,
-        },
-        // Optimisitc response, for quick UI updates
-        {
-          id: tx.id,
-          status: TransactionStatus.Failed,
-        },
-      );
+  do {
+    // This is a serial operiation (https://eslint.org/docs/latest/rules/no-await-in-loop#when-not-to-use-it)
+    // eslint-disable-next-line no-await-in-loop
+    const { data } = await apollo.query<
+      GetPendingTransactionsQuery,
+      GetPendingTransactionsQueryVariables
+    >({
+      query: GetPendingTransactionsDocument,
+      variables: {
+        nextToken,
+        userAddress,
+      },
     });
+    nextToken = data?.getTransactionsByUserAndStatus?.nextToken;
+
+    Array.prototype.push.apply(
+      promises,
+      data.getTransactionsByUserAndStatus?.items.filter(notNull).map((tx) => {
+        return updateTransaction(
+          {
+            id: tx.id,
+            status: TransactionStatus.Failed,
+          },
+          // Optimisitc response, for quick UI updates
+          {
+            id: tx.id,
+            status: TransactionStatus.Failed,
+          },
+        );
+      }),
+    );
+  } while (nextToken);
 
   if (!promises) {
     return;
