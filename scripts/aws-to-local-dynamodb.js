@@ -13,7 +13,7 @@ const ENV_NAME = process.env.ENV_NAME; // Used to identify AWS tables for a give
 // Local config
 const LOCAL_AWS_ACCESS_KEY_ID = 'fake';
 const LOCAL_AWS_SECRET_ACCESS_KEY = 'fake';
-const LOCAL_ENDPOINT_URL = 'http://localhost:62224'; // Local DynamoDB endpoint
+const LOCAL_ENDPOINT_URL = process.env.LOCAL_ENDPOINT_URL || 'http://localhost:62224'; // Local DynamoDB endpoint
 const LOCAL_REGION = 'us-fake-1';
 
 function createAwsSession() {

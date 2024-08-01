@@ -1,0 +1,22 @@
+FROM node:20.11.0-buster
+
+# Set working directory
+WORKDIR /app
+
+# Switch to root temporarily to ensure we have permissions to install packages
+USER root
+
+# Install dependencies
+RUN npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
+
+# Copy data cloning script
+COPY scripts/aws-to-local-dynamodb.js .
+
+# Change ownership of the app directory to the node user
+RUN chown -R node:node /app
+
+# Switch back to the node user
+USER node
+
+# Run data migration script from AWS DynamoDB to local DynamoDB
+CMD ["node", "aws-to-local-dynamodb.js"]
