@@ -7,6 +7,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
 import { ColonyActionType } from '~gql';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
@@ -14,6 +15,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -36,6 +38,11 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     colony: { colonyAddress, balances },
   } = useColonyContext();
   const { user } = useAppContext();
+
+  const { currentBlockTime } = useCurrentBlockTime();
+  const isMotionOlderThanWeek = currentBlockTime
+    ? getIsMotionOlderThanAWeek(actionData.createdAt, currentBlockTime * 1000)
+    : false;
 
   const domainBalance = getBalanceForTokenAndDomain(
     balances,
@@ -64,6 +71,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
       colonyAddress,
       userAddress: user?.walletAddress || '',
       motionId,
+      canMotionFail: isMotionOlderThanWeek,
     }),
   );
 

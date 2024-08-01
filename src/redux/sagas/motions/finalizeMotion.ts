@@ -11,14 +11,38 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils/index.ts';
 
-// @TODO allow failure after a week if error is TransactionErrors.Estimate
 function* finalizeMotion({
   meta,
-  payload: { colonyAddress, motionId },
+  payload: { colonyAddress, motionId, canMotionFail },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
+
+  const colonyManager = yield getColonyManager();
+  const votingReputationClient = yield colonyManager.getClient(
+    ClientType.VotingReputationClient,
+    colonyAddress,
+  );
+  let contractMethodToCall = 'finalizeMotionWithoutFailure';
+
+  // If motion is older than a week it can fail if the underlying action would fail
+  if (canMotionFail) {
+    // try to estimate gas, if it fails we call another contract
+    try {
+      yield votingReputationClient.estimateGas.finalizeMotionWithoutFailure(
+        motionId,
+      );
+    } catch (err) {
+      contractMethodToCall = 'finalizeMotion';
+    }
+  }
+
   try {
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,
@@ -33,7 +57,7 @@ function* finalizeMotion({
       meta,
       config: {
         context: ClientType.VotingReputationClient,
-        methodName: 'finalizeMotionWithoutFailure',
+        methodName: contractMethodToCall,
         identifier: colonyAddress,
         params: [motionId],
         ready: false,
