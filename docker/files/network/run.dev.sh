@@ -1,0 +1,33 @@
+cd colonyNetwork
+# Uncomment the line below if you need ganache to run in verbose mode
+# sed -i 's/100000000000000000000" >\/dev\/null 2>&1/100000000000000000000" --verbose/g' scripts/start-blockchain-client.sh
+# sed -i 's/--db $DBPATH/--db $DBPATH --server.host "0.0.0.0"/g' scripts/start-blockchain-client.sh
+pnpm run start:blockchain:client &
+# Colony Network Contracts
+npx hardhat compile
+npx hardhat deploy --network development
+
+
+# Export deployed addresses
+
+ETHER_ROUTER_ADDRESS=$(jq -r .etherRouterAddress etherrouter-address.json)
+MINER_ACCOUNT_ADDRESS=$(jq -r '.addresses | to_entries | .[5] | .value' ganache-accounts.json)
+BROADCASTER_ACCOUNT_PRIVKEY=$(jq -r '.private_keys | to_entries | .[17] | .value' ganache-accounts.json)
+
+# Copy over colony network build artifacts to aid in development
+# Some of the files are needed to be imported and used in the app for local dev
+
+rm --recursive --force /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
+mkdir --parents /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
+cp -R ./artifacts /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/
+cp ./etherrouter-address.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/etherrouter-address.json
+cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts/ganache-accounts.json
+
+# Reputation Miner
+
+cd packages/reputation-miner
+node ./bin/index.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &
+# Broadcaster Service
+
+cd ../metatransaction-broadcaster
+node ./bin/index.js --privateKey $BROADCASTER_ACCOUNT_PRIVKEY --gasPrice 1 --gasLimit 6000000 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --port 3004

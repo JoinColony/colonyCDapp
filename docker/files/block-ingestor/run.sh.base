@@ -9,5 +9,15 @@ wget http://network-files:3006/etherrouter-address.json
 
 # Write to env file...
 echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> .env
+source .env
+echo "CHAIN_NETWORK_CONTRACT: $CHAIN_NETWORK_CONTRACT"
+
+if [ $CHAIN_NETWORK_CONTRACT != "0x777760996135F0791E2e1a74aFAa060711197777" ]; then
+  echo "Network Contract is not dev environment... guessing forked?"
+  echo "NODE_ENV=forked" >> .env
+  echo "CHAIN_NETWORK=ArbitrumSepolia" >> .env
+fi
+
+source .env
 
 npm run start

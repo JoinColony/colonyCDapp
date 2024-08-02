@@ -1,88 +1,41 @@
 name: colony-cdapp-on-demand-env
 services:
   amplify-setup:
-    container_name: 'amplify-setup'
-    image: colony-cdapp-dev-env/base:latest
-    volumes:
-    - 'amplify-backend:/backend'
-    - 'amplify-mock-data:/mock-data'
-    - '../amplify/backend/:/backend-repo'
-    command: '/bin/bash -c "rm -rf /backend/* && rm -rf /mock-data/* && touch /backend/.initialized && touch /mock-data/.initialized && cp -r /backend-repo/* /backend/ && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: amplify-setup
 
   network-contracts:
-    container_name: 'network'
-    image: colony-cdapp-dev-env/network:latest
-    volumes:
-    - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-    - '8545:8545'
-    - '3002:3002'
-    - '3004:3004'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:3002']
-      interval: 5s
-      retries: 1000
-    depends_on:
-      amplify-setup:
-        condition: service_completed_successfully
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: network-contracts
+    environment:
+      ARCHIVE_RPC: ${ARCHIVE_RPC}
+      FORKED_NETWORK_ADDRESS: ${FORKED_NETWORK_ADDRESS}
+      LATEST_STATE_URL: ${LATEST_STATE_URL}
 
   reputation-monitor:
-    container_name: 'monitor'
-    image: colony-cdapp-dev-env/reputation-monitor:latest
-    volumes:
-    - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-    - '3001:3001'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: reputation-monitor
 
   mocking:
-    container_name: 'mocking'
-    image: colony-cdapp-dev-env/mocking:latest
-    ports:
-    - '3007:3000'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: mocking
 
   block-ingestor:
-    container_name: 'ingestor'
-    image: colony-cdapp-dev-env/block-ingestor:latest
-    volumes:
-    - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
-    ports:
-    - '10001:10001'
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: block-ingestor
     depends_on:
-      network-contracts:
-        condition: service_healthy
-      amplify:
-        condition: service_healthy
+      clone-dynamodb-data:
+        condition: service_completed_successfully
 
   amplify:
-    container_name: 'amplify'
-    image: colony-cdapp-dev-env/amplify:latest
-    volumes:
-    - 'amplify-backend:/colonyCDapp/amplify/backend'
-    - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
-      amplify-setup:
-        condition: service_completed_successfully
-    tty: true
-    environment:
-      DEBUG_COLORS: 'true'
-      TERM: xterm-256color
-      COLORTERM: truecolor
-    ports:
-    - '20002:20002'
-    - '9200:9200'
-    - '62224:62224'
-    healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:9200']
-      interval: 5s
-      retries: 1000
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: amplify
 
   clone-dynamodb-data:
     container_name: 'clone-dynamodb-data'
@@ -100,25 +53,14 @@ services:
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
 
   auth-proxy:
-    container_name: 'auth'
-    image: colony-cdapp-dev-env/auth-proxy:latest
-    ports:
-    - '3005:3005'
-    depends_on:
-      amplify:
-        condition: service_healthy
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: auth-proxy
 
   network-files:
-    container_name: 'network-files'
-    image: colony-cdapp-dev-env/base:latest
-    volumes:
-    - 'amplify-mock-data:/mock-data'
-    command: 'npx --yes http-server --cors --port 3006 /mock-data/colonyNetworkArtifacts'
-    ports:
-    - '3006:3006'
-    depends_on:
-      network-contracts:
-        condition: service_healthy
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: network-files
 
 volumes:
   amplify-backend:
