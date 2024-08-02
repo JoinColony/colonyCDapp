@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -32,26 +32,32 @@ const useGetAllAgreements = () => {
       limit: QUERY_PAGE_SIZE,
     },
     fetchPolicy: 'network-only',
+    onCompleted: (newData) => {
+      if (newData?.getActionsByColony?.nextToken) {
+        fetchMore({
+          variables: { nextToken: newData?.getActionsByColony?.nextToken },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
+
+            // Here, combine the previous items with the newly fetched items
+            return {
+              ...prev,
+              getActionsByColony: {
+                ...prev.getActionsByColony,
+                items: [
+                  ...(prev.getActionsByColony?.items ?? []),
+                  ...(fetchMoreResult.getActionsByColony?.items ?? []),
+                ],
+                nextToken: fetchMoreResult?.getActionsByColony?.nextToken,
+              },
+            };
+          },
+        });
+      }
+    },
   });
 
   const agreementsData = data?.getActionsByColony?.items.filter(notNull);
-  const nextToken = data?.getActionsByColony?.nextToken;
-
-  const fetchNextPage = useCallback(
-    async (token) => {
-      await fetchMore({
-        variables: { nextToken: token },
-      });
-    },
-    [fetchMore],
-  );
-
-  useEffect(() => {
-    if (nextToken) {
-      fetchNextPage(nextToken);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextToken]);
 
   return {
     agreementsData,
