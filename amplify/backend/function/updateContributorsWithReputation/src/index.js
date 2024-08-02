@@ -26,6 +26,7 @@ const {
   reputationMiningCycleMetadataId,
   updateReputationInDomain,
   getDomainDatabaseId,
+  calculatePercentageReputation,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -143,8 +144,6 @@ exports.handler = async (event) => {
     const allNativeDomainIds =
       data?.getColony?.domains?.items?.map(({ nativeId }) => nativeId) ?? [];
 
-    console.log({ allNativeDomainIds })
-
     const promiseResults = await Promise.allSettled(
       allNativeDomainIds.map(async (nativeDomainId) => {
         const { skillId } = await colonyClient.getDomain(nativeDomainId);
@@ -183,22 +182,20 @@ exports.handler = async (event) => {
 
         const totalAddresses = sortedAddresses.length;
 
-        console.log({ totalAddresses })
-
         const promiseStatuses = await Promise.allSettled(
           sortedAddresses.map(async ({ address, reputationBN }, idx) => {
             const contributorAddress = getAddress(address);
             const contributorRepDecimal = new Decimal(reputationBN.toString());
 
-            const colonyReputationPercentage = contributorRepDecimal
-              .mul(100)
-              .div(totalRepInColony.toString())
-              .toNumber() || 0;
+            const colonyReputationPercentage = calculatePercentageReputation(
+              reputationBN,
+              totalRepInColony,
+            );
 
-            const domainReputationPercentage = contributorRepDecimal
-              .mul(100)
-              .div(totalRepInDomain.toString())
-              .toNumber() || 0;
+            const domainReputationPercentage = calculatePercentageReputation(
+              reputationBN,
+              totalRepInDomain,
+            );
 
             const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
             const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
@@ -229,8 +226,6 @@ exports.handler = async (event) => {
                   new Date().toISOString();
 
                 const type = getContributorType(totalAddresses, idx, createdAt);
-
-                console.log({ type, colonyReputationPercentage, contributorAddress, contributorRepDecimal, domainReputationPercentage, reputation })
 
                 await updateColonyContributorInDb({
                   id: colonyContributorId,
