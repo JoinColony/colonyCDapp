@@ -83,8 +83,7 @@ function* manageTokensAction({
 
     yield validateTokenAddresses({ tokenAddresses });
 
-    yield;
-    transactionSetParams(manageTokens.id, [
+    yield transactionSetParams(manageTokens.id, [
       JSON.stringify(getManageTokensOperation(tokenAddresses)),
     ]);
 

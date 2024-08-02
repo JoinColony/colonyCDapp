@@ -13,7 +13,7 @@ import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 import { VoteExpectedStep } from '../MultiSigWidget/types.ts';
 
@@ -66,7 +66,7 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
     >
       {({ formState: { isSubmitting } }) =>
         isSubmitting || isPending ? (
-          <TxButton
+          <IconButton
             rounded="s"
             isFullSize
             text={{ id: 'button.pending' }}

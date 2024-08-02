@@ -7,7 +7,7 @@ import useMounted from '~hooks/useMounted.ts';
 import { getFormAction } from '~utils/actions.ts';
 
 import Button from './Button.tsx';
-import TxButton from './TxButton.tsx';
+import IconButton from './IconButton.tsx';
 import { type ActionButtonProps } from './types.ts';
 
 const ActionButton: FC<ActionButtonProps> = ({
@@ -52,7 +52,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   };
 
   return useTxLoader && (isLoading || loading) ? (
-    <TxButton
+    <IconButton
       rounded="s"
       isFullSize={isMobile}
       text={{ id: 'button.pending' }}

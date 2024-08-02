@@ -3,6 +3,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { clearContributorsAndRolesCache } from '~utils/members.ts';
 
 import {
@@ -21,6 +22,7 @@ function* setThresholds({
   meta,
 }: Action<ActionTypes.MULTISIG_SET_THRESHOLDS>) {
   const txChannel = yield call(getTxChannel, meta.id);
+  const batchKey = TRANSACTION_METHODS.SetMultiSigThresholds;
 
   const colonyManager = yield getColonyManager();
   const multiSigClient = yield colonyManager.getClient(
@@ -51,9 +53,14 @@ function* setThresholds({
       methodName: 'multicall',
       identifier: colonyAddress,
       params: [encodedMulticallData],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
     });
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     yield waitForTxResult(txChannel);
 

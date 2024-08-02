@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { takeEvery, call, fork, put } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -15,6 +16,7 @@ function* finalizeMultiSigAction({
   meta,
 }: Action<ActionTypes.MULTISIG_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
+  const batchKey = TRANSACTION_METHODS.FinalizeMultiSig;
 
   try {
     if (!colonyAddress || !multiSigId) {
@@ -26,11 +28,16 @@ function* finalizeMultiSigAction({
       methodName: 'executeWithoutFailure',
       identifier: colonyAddress,
       params: [multiSigId],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     const { type } = yield waitForTxResult(txChannel);
 
