@@ -9335,6 +9335,13 @@ export type GetColonyMemberInviteQueryVariables = Exact<{
 
 export type GetColonyMemberInviteQuery = { __typename?: 'Query', getColonyMemberInvite?: { __typename?: 'ColonyMemberInvite', invitesRemaining: number, colony: { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', avatar?: string | null, displayName: string, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', link: string, name: ExternalLinks }> | null } | null } } | null };
 
+export type GetColonyTokenLockedStateQueryVariables = Exact<{
+  nativeTokenId: Scalars['ID'];
+}>;
+
+
+export type GetColonyTokenLockedStateQuery = { __typename?: 'Query', getColoniesByNativeTokenId?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', status?: { __typename?: 'ColonyStatus', nativeToken?: { __typename?: 'NativeTokenStatus', unlocked?: boolean | null } | null } | null } | null> } | null };
+
 export type OnUpdateColonySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -12266,6 +12273,47 @@ export function useGetColonyMemberInviteLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetColonyMemberInviteQueryHookResult = ReturnType<typeof useGetColonyMemberInviteQuery>;
 export type GetColonyMemberInviteLazyQueryHookResult = ReturnType<typeof useGetColonyMemberInviteLazyQuery>;
 export type GetColonyMemberInviteQueryResult = Apollo.QueryResult<GetColonyMemberInviteQuery, GetColonyMemberInviteQueryVariables>;
+export const GetColonyTokenLockedStateDocument = gql`
+    query GetColonyTokenLockedState($nativeTokenId: ID!) {
+  getColoniesByNativeTokenId(nativeTokenId: $nativeTokenId, limit: 1) {
+    items {
+      status {
+        nativeToken {
+          unlocked
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetColonyTokenLockedStateQuery__
+ *
+ * To run a query within a React component, call `useGetColonyTokenLockedStateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyTokenLockedStateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyTokenLockedStateQuery({
+ *   variables: {
+ *      nativeTokenId: // value for 'nativeTokenId'
+ *   },
+ * });
+ */
+export function useGetColonyTokenLockedStateQuery(baseOptions: Apollo.QueryHookOptions<GetColonyTokenLockedStateQuery, GetColonyTokenLockedStateQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyTokenLockedStateQuery, GetColonyTokenLockedStateQueryVariables>(GetColonyTokenLockedStateDocument, options);
+      }
+export function useGetColonyTokenLockedStateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyTokenLockedStateQuery, GetColonyTokenLockedStateQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyTokenLockedStateQuery, GetColonyTokenLockedStateQueryVariables>(GetColonyTokenLockedStateDocument, options);
+        }
+export type GetColonyTokenLockedStateQueryHookResult = ReturnType<typeof useGetColonyTokenLockedStateQuery>;
+export type GetColonyTokenLockedStateLazyQueryHookResult = ReturnType<typeof useGetColonyTokenLockedStateLazyQuery>;
+export type GetColonyTokenLockedStateQueryResult = Apollo.QueryResult<GetColonyTokenLockedStateQuery, GetColonyTokenLockedStateQueryVariables>;
 export const OnUpdateColonyDocument = gql`
     subscription OnUpdateColony {
   onUpdateColony {

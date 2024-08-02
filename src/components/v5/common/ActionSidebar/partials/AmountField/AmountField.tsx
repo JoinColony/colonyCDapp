@@ -112,6 +112,7 @@ const AmountField: FC<AmountFieldProps> = ({
       <span
         className={clsx('text-md', {
           'text-gray-300': isDisabled,
+          'text-negative-400': tokenAddressError,
         })}
       >
         {multiLineTextEllipsis(activeToken.symbol, 5)}

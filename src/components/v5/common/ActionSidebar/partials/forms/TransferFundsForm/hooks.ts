@@ -5,10 +5,12 @@ import { type DeepPartial } from 'utility-types';
 import { type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
@@ -25,6 +27,7 @@ export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
+  const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
     () =>
@@ -51,7 +54,19 @@ export const useValidationSchema = () => {
                   colony,
                 }),
             ),
-          tokenAddress: string().address().required(),
+          tokenAddress: string()
+            .address()
+            .required()
+            .test(
+              'token-unlocked',
+              formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+              (value) =>
+                !shouldPreventPaymentsWithTokenInColony(
+                  value || '',
+                  colony,
+                  tokenLockStatesMap,
+                ),
+            ),
           createdIn: number().defined(),
           from: number().required(),
           to: number()
@@ -66,7 +81,7 @@ export const useValidationSchema = () => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, selectedTeam],
+    [colony, selectedTeam, tokenLockStatesMap],
   );
 
   return validationSchema;

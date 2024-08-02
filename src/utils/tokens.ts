@@ -8,6 +8,7 @@ import {
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
+import { type ColonyFragment } from '~gql';
 import {
   type Colony,
   type ColonyBalances,
@@ -128,4 +129,19 @@ export const getNativeTokenByChainId = (chainId: string): Token => {
     tokenAddress: ADDRESS_ZERO,
     ...selectedNetwork.nativeToken,
   };
+};
+
+export const shouldPreventPaymentsWithTokenInColony = (
+  tokenAddress: string,
+  colony: ColonyFragment,
+  tokenLockStatesMap: Record<string, boolean>,
+): boolean => {
+  const isTokenLocked = tokenLockStatesMap[tokenAddress] === false;
+  const isTokenNativeToThisColony =
+    tokenAddress === colony.nativeToken.tokenAddress;
+  const isTokenCreatedByThisColony = colony.status?.nativeToken?.mintable;
+
+  return (
+    isTokenLocked && (!isTokenNativeToThisColony || !isTokenCreatedByThisColony)
+  );
 };

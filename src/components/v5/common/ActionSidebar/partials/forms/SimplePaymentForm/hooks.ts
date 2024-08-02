@@ -6,12 +6,14 @@ import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { toFinite } from '~utils/lodash.ts';
+import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import {
@@ -28,6 +30,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
   const { watch } = useFormContext();
   const fromDomainId: number | undefined = watch('from');
+  const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
     () =>
@@ -64,7 +67,19 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                   networkInverseFee,
                 }),
             ),
-          tokenAddress: string().address().required(),
+          tokenAddress: string()
+            .address()
+            .required()
+            .test(
+              'token-unlocked',
+              formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+              (value) =>
+                !shouldPreventPaymentsWithTokenInColony(
+                  value || '',
+                  colony,
+                  tokenLockStatesMap,
+                ),
+            ),
           createdIn: number().defined(),
           recipientAddress: string().address().required(),
           from: number().required(),
@@ -96,7 +111,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, fromDomainId, networkInverseFee],
+    [colony, fromDomainId, networkInverseFee, tokenLockStatesMap],
   );
 
   return validationSchema;
