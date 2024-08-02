@@ -2,6 +2,7 @@ import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -23,7 +24,7 @@ function* reclaimExpenditureStake({
     yield fork(createTransaction, meta.id, {
       context: ClientType.StakedExpenditureClient,
       group: {
-        key: 'reclaimStake',
+        key: TRANSACTION_METHODS.ReclaimStake,
         id: meta.id,
         index: 0,
       },
