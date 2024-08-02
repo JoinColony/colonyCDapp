@@ -3,6 +3,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   createTransaction,
@@ -16,6 +17,7 @@ function* cancelMultiSig({
   meta,
 }: Action<ActionTypes.MULTISIG_CANCEL>) {
   const txChannel = yield call(getTxChannel, meta.id);
+  const batchKey = TRANSACTION_METHODS.CancelMultiSig;
 
   try {
     yield fork(createTransaction, meta.id, {
@@ -23,11 +25,16 @@ function* cancelMultiSig({
       methodName: 'cancel',
       identifier: colonyAddress,
       params: [motionId],
+      group: {
+        key: batchKey,
+        id: meta.id,
+        index: 0,
+      },
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
 
-    yield initiateTransaction({ id: meta.id });
+    yield initiateTransaction(meta.id);
 
     yield waitForTxResult(txChannel);
 

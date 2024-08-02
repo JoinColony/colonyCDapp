@@ -162,7 +162,7 @@ function* createEditDomainMultiSigMotion({
       yield takeFrom(annotateMotion.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield initiateTransaction({ id: createMotion.id });
+    yield initiateTransaction(createMotion.id);
 
     const {
       payload: {
