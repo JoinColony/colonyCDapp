@@ -1,12 +1,6 @@
-import {
-  type AnyColonyClient,
-  ClientType,
-  type Network,
-  Tokens,
-} from '@colony/colony-js';
+import { type AnyColonyClient, type Network, Tokens } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { fork } from 'redux-saga/effects';
 
 import { apolloClient } from '~apollo';
 import { DEV_USDC_ADDRESS, isDev } from '~constants';
@@ -18,7 +12,6 @@ import {
   type GetUserByAddressQueryVariables,
   GetUserByAddressDocument,
 } from '~gql';
-import { ActionTypes } from '~redux/index.ts';
 import { type Address } from '~types';
 import {
   type ExpenditurePayoutWithSlotId,
@@ -27,17 +20,10 @@ import {
 } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
 import { type MethodParams } from '~types/transactions.ts';
-import { chunkArray } from '~utils/arrays/index.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import {
-  createTransaction,
-  createTransactionChannels,
-  waitForTxResult,
-} from '../transactions/index.ts';
-
-import { initiateTransaction, takeFrom } from './effects.ts';
+import { chunkedMulticall } from './multicall.ts';
 
 const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
 
@@ -211,47 +197,41 @@ export function* claimExpenditurePayouts({
     return;
   }
 
-  const batchKey = 'claimExpenditurePayouts';
+  const {
+    createMulticallChannels,
+    createMulticallTransactions,
+    processMulticallTransactions,
+    closeMulticallChannels,
+  } = chunkedMulticall({
+    colonyAddress,
+    items: claimablePayouts,
+    // In testing, this multicall would fail with more than 78 payouts
+    chunkSize: 78,
+    metaId,
+    batchKey: 'claimExpenditurePayouts',
+    channelId: 'claimPayouts',
+  });
 
-  // In testing, this multicall would fail with more than 78 payouts
-  const chunks = chunkArray({ array: claimablePayouts, chunkSize: 78 });
+  yield createMulticallChannels();
 
-  for (let index = 0; index < chunks.length; index += 1) {
-    // Create a new transaction channel for each chunk
-    const { claimPayouts } = yield createTransactionChannels(
-      `${metaId}-${index}`,
-      ['claimPayouts'],
-    );
+  try {
+    yield* createMulticallTransactions();
+    yield processMulticallTransactions({
+      colonyClient,
+      encodeFunctionData: (payouts: ExpenditurePayoutWithSlotId[]) => {
+        const multicallData = payouts.map((payout) =>
+          colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
+            nativeExpenditureId,
+            payout.slotId,
+            payout.tokenAddress,
+          ]),
+        );
 
-    try {
-      const multicallData = chunks[index].map((payout) =>
-        colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
-          nativeExpenditureId,
-          payout.slotId,
-          payout.tokenAddress,
-        ]),
-      );
-
-      yield fork(createTransaction, claimPayouts.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'multicall',
-        identifier: colonyAddress,
-        params: [multicallData],
-        group: {
-          key: batchKey,
-          id: `${metaId}-${index}`, // Use the chunk index to ensure uniqueness
-          index,
-        },
-        ready: false,
-      });
-
-      yield takeFrom(claimPayouts.channel, ActionTypes.TRANSACTION_CREATED);
-
-      yield initiateTransaction(claimPayouts.id);
-      yield waitForTxResult(claimPayouts.channel);
-    } finally {
-      claimPayouts.channel.close();
-    }
+        return multicallData;
+      },
+    });
+  } finally {
+    closeMulticallChannels();
   }
 }
 
