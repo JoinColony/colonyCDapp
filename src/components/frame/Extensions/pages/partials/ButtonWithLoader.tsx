@@ -1,7 +1,8 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import Button, { TxButton } from '~v5/shared/Button/index.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import Button from '~v5/shared/Button/index.ts';
 import { type ButtonProps } from '~v5/shared/Button/types.ts';
 
 export const ButtonWithLoader: FC<
@@ -23,7 +24,7 @@ export const ButtonWithLoader: FC<
   onClick,
 }) =>
   isLoading ? (
-    <TxButton
+    <IconButton
       rounded="s"
       isFullSize={isFullSize}
       text={{ id: 'button.pending' }}
