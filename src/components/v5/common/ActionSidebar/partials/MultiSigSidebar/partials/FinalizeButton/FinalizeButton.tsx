@@ -9,7 +9,7 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.FinalizeButton';
@@ -47,7 +47,7 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
     >
       {({ formState: { isSubmitting } }) =>
         isPending || isSubmitting ? (
-          <TxButton
+          <IconButton
             rounded="s"
             isFullSize
             text={{ id: 'button.pending' }}
