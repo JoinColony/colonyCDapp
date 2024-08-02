@@ -157,7 +157,7 @@ function* handleMultiSigInstall(colonyAddress: string, metaId: string) {
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield initiateTransaction({ id: channels[userChannelId].id });
+    yield initiateTransaction(channels[userChannelId].id);
     yield waitForTxResult(channels[userChannelId].channel);
   }
 }

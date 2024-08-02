@@ -63,13 +63,13 @@ export enum MetamaskRpcErrors {
 }
 
 export enum TRANSACTION_METHODS {
-  AnnotateTransaction = 'annotateTransaction',
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   AnnotateTransaction = 'annotateTransaction',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
   CancelLockedExpenditure = 'cancelLockedExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',
+  CancelMultiSig = 'cancelMultiSig',
   ClaimColonyFunds = 'claimColonyFunds',
   ClaimExpenditure = 'claimExpenditure',
   CreateColony = 'createColony',
@@ -89,6 +89,7 @@ export enum TRANSACTION_METHODS {
   EscalateMotion = 'escalateMotion',
   FinalizeExpenditure = 'finalizeExpenditure',
   FinalizeMotion = 'finalizeMotion',
+  FinalizeMultiSig = 'finalizeMultiSig',
   FundExpenditure = 'fundExpenditure',
   InitiateSafeTransaction = 'initiateSafeTransaction',
   LockExpenditure = 'lockExpenditure',
@@ -99,7 +100,9 @@ export enum TRANSACTION_METHODS {
   ReleaseExpenditure = 'releaseExpenditure',
   RemoveVerifiedMembers = 'removeVerifiedMembers',
   SetUserRoles = 'setUserRoles',
+  SetMultiSigThresholds = 'setMultiSigThresholds',
   StakeMotion = 'stakeMotion',
   UnlockToken = 'unlockToken',
   Upgrade = 'upgrade',
+  VoteOnMultiSig = 'voteOnMultiSig',
 }
