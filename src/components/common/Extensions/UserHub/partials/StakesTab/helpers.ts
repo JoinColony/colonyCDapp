@@ -39,10 +39,11 @@ export const getStakeStatus = (
   const currentMotionId = stake.action?.motionData?.motionId ?? '';
   const motionMapName = `${colonyAddress}-${currentMotionId}`;
   const motionState = statesMap.get(motionMapName);
-  const reputationAddress =
+  const isVotingReputationEnabled =
     colonyAddress && votingReputationByColony[colonyAddress];
-  if (!reputationAddress || !motionState) {
-    return UserStakeStatus.Uninstalled;
+  // if voting reputation enabled, votingReputationAddress will be present in votingReputationByColony
+  if (!isVotingReputationEnabled || !motionState) {
+    return UserStakeStatus.Lost;
   }
 
   if (motionState === NetworkMotionState.Finalizable) {
