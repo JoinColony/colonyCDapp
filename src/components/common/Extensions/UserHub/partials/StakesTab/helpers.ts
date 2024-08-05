@@ -35,14 +35,22 @@ export const getStakeStatus = (
     return UserStakeStatus.Claimed;
   }
 
+  const [, stakeVotingReputationAddress] =
+    stake.action?.motionData?.databaseMotionId.split(/[-_]/) ?? [];
+
   const colonyAddress = stake.action?.colonyAddress ?? '';
   const currentMotionId = stake.action?.motionData?.motionId ?? '';
   const motionMapName = `${colonyAddress}-${currentMotionId}`;
   const motionState = statesMap.get(motionMapName);
-  const isVotingReputationEnabled =
+  const currentVotingReputationAddress =
     colonyAddress && votingReputationByColony[colonyAddress];
   // if voting reputation enabled, votingReputationAddress will be present in votingReputationByColony
-  if (!isVotingReputationEnabled || !motionState) {
+  if (
+    !currentVotingReputationAddress ||
+    !motionState ||
+    currentVotingReputationAddress !== stakeVotingReputationAddress
+    // this means that Voting Reputation was reinstalled and now has new address
+  ) {
     return UserStakeStatus.Lost;
   }
 
