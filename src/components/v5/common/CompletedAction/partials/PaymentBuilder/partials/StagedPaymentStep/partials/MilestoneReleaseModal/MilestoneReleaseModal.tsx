@@ -15,7 +15,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import DecisionMethodSelect from '../../../DecisionMethodSelect/DecisionMethodSelect.tsx';
@@ -142,7 +142,7 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
         </Button>
         <div className="flex w-full justify-center">
           {isSubmitting ? (
-            <TxButton
+            <IconButton
               className="max-h-[2.5rem] w-full !text-md"
               rounded="s"
               text={{ id: 'button.pending' }}

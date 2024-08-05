@@ -513,7 +513,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             })}
             content={
               expectedStepKey === ExpenditureStep.Payment ? (
-                <TxButton
+                <IconButton
                   className="max-h-[2.5rem] w-full !text-md"
                   rounded="s"
                   text={{ id: 'button.pending' }}
