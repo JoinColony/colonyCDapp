@@ -1654,6 +1654,13 @@ export type CreateStreamingPaymentMetadataInput = {
   limitAmount?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateTokenExchangeRateInput = {
+  date: Scalars['AWSDateTime'];
+  id?: InputMaybe<Scalars['ID']>;
+  marketPrice: Array<InputMaybe<MarketPriceInput>>;
+  tokenId: Scalars['String'];
+};
+
 export type CreateTokenInput = {
   avatar?: InputMaybe<Scalars['String']>;
   chainMetadata: ChainMetadataInput;
@@ -1900,6 +1907,10 @@ export type DeleteStreamingPaymentMetadataInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteTokenExchangeRateInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteTokenInput = {
   id: Scalars['ID'];
 };
@@ -1962,6 +1973,32 @@ export type Domain = {
   /** The amount of reputation in the domain, as a percentage of the total in the colony */
   reputationPercentage?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
+};
+
+/** Input data for fetching domain balance in/out values for a specific timeframe */
+export type DomainBalanceArguments = {
+  chainId?: InputMaybe<Scalars['String']>;
+  /** Address of the colony on the blockchain */
+  colonyAddress: Scalars['String'];
+  /** Address of the domain on the blockchain */
+  domainAddress: Scalars['String'];
+  selectedCurrency?: InputMaybe<Scalars['String']>;
+  timeframePeriod: Scalars['Int'];
+  timeframeType?: InputMaybe<TimeframeType>;
+};
+
+/** Return type for domain balance in/out values */
+export type DomainBalanceInOut = {
+  __typename?: 'DomainBalanceInOut';
+  totalIn?: Maybe<Scalars['String']>;
+  totalOut?: Maybe<Scalars['String']>;
+};
+
+/** Return type for domain balance  */
+export type DomainBalanceReturn = {
+  __typename?: 'DomainBalanceReturn';
+  last30Days?: Maybe<DomainBalanceInOut>;
+  timeframe?: Maybe<Array<Maybe<TimeframeDomainBalanceInOut>>>;
 };
 
 /** Variants of available domain colors as used in the dApp */
@@ -2442,6 +2479,18 @@ export type LiquidationAddress = {
   user?: Maybe<User>;
   /** The user address associated */
   userAddress: Scalars['ID'];
+};
+
+/** Represents a market price exchange rate for a specific currency */
+export type MarketPrice = {
+  __typename?: 'MarketPrice';
+  currency: SupportedCurrencies;
+  rate?: Maybe<Scalars['Float']>;
+};
+
+export type MarketPriceInput = {
+  currency: SupportedCurrencies;
+  rate?: InputMaybe<Scalars['Float']>;
 };
 
 export type ModelAnnotationConditionInput = {
@@ -4144,6 +4193,13 @@ export type ModelSubscriptionStringInput = {
   notIn?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type ModelSubscriptionTokenExchangeRateFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>>>;
+  date?: InputMaybe<ModelSubscriptionStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>>>;
+  tokenId?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionTokenFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionTokenFilterInput>>>;
   avatar?: InputMaybe<ModelSubscriptionStringInput>;
@@ -4250,6 +4306,28 @@ export type ModelTokenConnection = {
   __typename?: 'ModelTokenConnection';
   items: Array<Maybe<Token>>;
   nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelTokenExchangeRateConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelTokenExchangeRateConditionInput>>>;
+  date?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelTokenExchangeRateConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelTokenExchangeRateConditionInput>>>;
+  tokenId?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelTokenExchangeRateConnection = {
+  __typename?: 'ModelTokenExchangeRateConnection';
+  items: Array<Maybe<TokenExchangeRate>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelTokenExchangeRateFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelTokenExchangeRateFilterInput>>>;
+  date?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelTokenExchangeRateFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelTokenExchangeRateFilterInput>>>;
+  tokenId?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelTokenFilterInput = {
@@ -4626,6 +4704,7 @@ export type Mutation = {
   createStreamingPayment?: Maybe<StreamingPayment>;
   createStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   createToken?: Maybe<Token>;
+  createTokenExchangeRate?: Maybe<TokenExchangeRate>;
   createTransaction?: Maybe<Transaction>;
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
   createUniqueUser?: Maybe<User>;
@@ -4668,6 +4747,7 @@ export type Mutation = {
   deleteStreamingPayment?: Maybe<StreamingPayment>;
   deleteStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   deleteToken?: Maybe<Token>;
+  deleteTokenExchangeRate?: Maybe<TokenExchangeRate>;
   deleteTransaction?: Maybe<Transaction>;
   deleteUser?: Maybe<User>;
   deleteUserStake?: Maybe<UserStake>;
@@ -4710,6 +4790,7 @@ export type Mutation = {
   updateStreamingPayment?: Maybe<StreamingPayment>;
   updateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   updateToken?: Maybe<Token>;
+  updateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   updateTransaction?: Maybe<Transaction>;
   updateUser?: Maybe<User>;
   updateUserStake?: Maybe<UserStake>;
@@ -4986,6 +5067,13 @@ export type MutationCreateStreamingPaymentMetadataArgs = {
 export type MutationCreateTokenArgs = {
   condition?: InputMaybe<ModelTokenConditionInput>;
   input: CreateTokenInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateTokenExchangeRateArgs = {
+  condition?: InputMaybe<ModelTokenExchangeRateConditionInput>;
+  input: CreateTokenExchangeRateInput;
 };
 
 
@@ -5276,6 +5364,13 @@ export type MutationDeleteTokenArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteTokenExchangeRateArgs = {
+  condition?: InputMaybe<ModelTokenExchangeRateConditionInput>;
+  input: DeleteTokenExchangeRateInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteTransactionArgs = {
   condition?: InputMaybe<ModelTransactionConditionInput>;
   input: DeleteTransactionInput;
@@ -5562,6 +5657,13 @@ export type MutationUpdateTokenArgs = {
 
 
 /** Root mutation type */
+export type MutationUpdateTokenExchangeRateArgs = {
+  condition?: InputMaybe<ModelTokenExchangeRateConditionInput>;
+  input: UpdateTokenExchangeRateInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateTransactionArgs = {
   condition?: InputMaybe<ModelTransactionConditionInput>;
   input: UpdateTransactionInput;
@@ -5842,6 +5944,8 @@ export type Query = {
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
+  /** Fetch a domain total balance */
+  getDomainBalance?: Maybe<DomainBalanceReturn>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExpenditure?: Maybe<Expenditure>;
   getExpenditureMetadata?: Maybe<ExpenditureMetadata>;
@@ -5876,6 +5980,7 @@ export type Query = {
   getStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
+  getTokenExchangeRate?: Maybe<TokenExchangeRate>;
   /** Fetch a token's information. Tries to get the data from the DB first, if that fails, resolves to get data from chain */
   getTokenFromEverywhere?: Maybe<TokenFromEverywhereReturn>;
   getTokensByType?: Maybe<ModelTokenConnection>;
@@ -5933,6 +6038,7 @@ export type Query = {
   listSafeTransactions?: Maybe<ModelSafeTransactionConnection>;
   listStreamingPaymentMetadata?: Maybe<ModelStreamingPaymentMetadataConnection>;
   listStreamingPayments?: Maybe<ModelStreamingPaymentConnection>;
+  listTokenExchangeRates?: Maybe<ModelTokenExchangeRateConnection>;
   listTokens?: Maybe<ModelTokenConnection>;
   listTransactions?: Maybe<ModelTransactionConnection>;
   listUserStakes?: Maybe<ModelUserStakeConnection>;
@@ -5941,6 +6047,7 @@ export type Query = {
   listVoterRewardsHistories?: Maybe<ModelVoterRewardsHistoryConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
+  tokenExhangeRateByTokenId?: Maybe<ModelTokenExchangeRateConnection>;
 };
 
 
@@ -6217,6 +6324,12 @@ export type QueryGetDomainArgs = {
 
 
 /** Root query type */
+export type QueryGetDomainBalanceArgs = {
+  input?: InputMaybe<DomainBalanceArguments>;
+};
+
+
+/** Root query type */
 export type QueryGetDomainMetadataArgs = {
   id: Scalars['ID'];
 };
@@ -6468,6 +6581,12 @@ export type QueryGetTokenByAddressArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetTokenExchangeRateArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -6904,6 +7023,14 @@ export type QueryListStreamingPaymentsArgs = {
 
 
 /** Root query type */
+export type QueryListTokenExchangeRatesArgs = {
+  filter?: InputMaybe<ModelTokenExchangeRateFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
 export type QueryListTokensArgs = {
   filter?: InputMaybe<ModelTokenFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6970,6 +7097,17 @@ export type QuerySearchColonyContributorsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<InputMaybe<SearchableColonyContributorSortInput>>>;
+};
+
+
+/** Root query type */
+export type QueryTokenExhangeRateByTokenIdArgs = {
+  date?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelTokenExchangeRateFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  tokenId: Scalars['String'];
 };
 
 export type ReputationMiningCycleMetadata = {
@@ -7457,6 +7595,7 @@ export type Subscription = {
   onCreateStreamingPayment?: Maybe<StreamingPayment>;
   onCreateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   onCreateToken?: Maybe<Token>;
+  onCreateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onCreateTransaction?: Maybe<Transaction>;
   onCreateUser?: Maybe<User>;
   onCreateUserStake?: Maybe<UserStake>;
@@ -7497,6 +7636,7 @@ export type Subscription = {
   onDeleteStreamingPayment?: Maybe<StreamingPayment>;
   onDeleteStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   onDeleteToken?: Maybe<Token>;
+  onDeleteTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onDeleteTransaction?: Maybe<Transaction>;
   onDeleteUser?: Maybe<User>;
   onDeleteUserStake?: Maybe<UserStake>;
@@ -7537,6 +7677,7 @@ export type Subscription = {
   onUpdateStreamingPayment?: Maybe<StreamingPayment>;
   onUpdateStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
   onUpdateToken?: Maybe<Token>;
+  onUpdateTokenExchangeRate?: Maybe<TokenExchangeRate>;
   onUpdateTransaction?: Maybe<Transaction>;
   onUpdateUser?: Maybe<User>;
   onUpdateUserStake?: Maybe<UserStake>;
@@ -7717,6 +7858,11 @@ export type SubscriptionOnCreateStreamingPaymentMetadataArgs = {
 
 export type SubscriptionOnCreateTokenArgs = {
   filter?: InputMaybe<ModelSubscriptionTokenFilterInput>;
+};
+
+
+export type SubscriptionOnCreateTokenExchangeRateArgs = {
+  filter?: InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>;
 };
 
 
@@ -7920,6 +8066,11 @@ export type SubscriptionOnDeleteTokenArgs = {
 };
 
 
+export type SubscriptionOnDeleteTokenExchangeRateArgs = {
+  filter?: InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteTransactionArgs = {
   filter?: InputMaybe<ModelSubscriptionTransactionFilterInput>;
 };
@@ -8120,6 +8271,11 @@ export type SubscriptionOnUpdateTokenArgs = {
 };
 
 
+export type SubscriptionOnUpdateTokenExchangeRateArgs = {
+  filter?: InputMaybe<ModelSubscriptionTokenExchangeRateFilterInput>;
+};
+
+
 export type SubscriptionOnUpdateTransactionArgs = {
   filter?: InputMaybe<ModelSubscriptionTransactionFilterInput>;
 };
@@ -8156,6 +8312,20 @@ export enum SupportedCurrencies {
   Jpy = 'JPY',
   Krw = 'KRW',
   Usd = 'USD'
+}
+
+/** Return type for domain balance for a timeframe item */
+export type TimeframeDomainBalanceInOut = {
+  __typename?: 'TimeframeDomainBalanceInOut';
+  key: Scalars['String'];
+  value?: Maybe<DomainBalanceInOut>;
+};
+
+/** Variants of different timeframe periods we can request balance for */
+export enum TimeframeType {
+  Daily = 'DAILY',
+  Monthly = 'MONTHLY',
+  Weekly = 'WEEKLY'
 }
 
 /** Represents an ERC20-compatible token that is used by Colonies and users */
@@ -8202,6 +8372,20 @@ export type TokenUsersArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+/** Represents a table with token exchange rates */
+export type TokenExchangeRate = {
+  __typename?: 'TokenExchangeRate';
+  createdAt: Scalars['AWSDateTime'];
+  /** Exchange timestamp */
+  date: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  /** Exchange currency */
+  marketPrice: Array<Maybe<MarketPrice>>;
+  /** Unique identifier for the token id */
+  tokenId: Scalars['String'];
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 /** Input data for fetching a token's information from DB or chain */
@@ -8756,6 +8940,13 @@ export type UpdateStreamingPaymentMetadataInput = {
   endCondition?: InputMaybe<StreamingPaymentEndCondition>;
   id: Scalars['ID'];
   limitAmount?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateTokenExchangeRateInput = {
+  date?: InputMaybe<Scalars['AWSDateTime']>;
+  id: Scalars['ID'];
+  marketPrice?: InputMaybe<Array<InputMaybe<MarketPriceInput>>>;
+  tokenId?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateTokenInput = {
