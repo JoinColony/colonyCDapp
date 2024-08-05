@@ -9412,12 +9412,12 @@ export type GetExtensionInstallationsCountQueryVariables = Exact<{
 
 export type GetExtensionInstallationsCountQuery = { __typename?: 'Query', getExtensionInstallationsCount?: { __typename?: 'ExtensionInstallationsCount', oneTxPayment: number, stakedExpenditure: number, stagedExpenditure: number, streamingPayments: number, reputationWeighted: number } | null };
 
-export type GetAllColoniesExtensionsQueryVariables = Exact<{
+export type GetJoinedColoniesExtensionsQueryVariables = Exact<{
   contributorAddress: Scalars['ID'];
 }>;
 
 
-export type GetAllColoniesExtensionsQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } } | null> } | null };
+export type GetJoinedColoniesExtensionsQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } } | null> } | null };
 
 export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
   userOrLiquidationAddress: Scalars['ID'];
@@ -12725,8 +12725,8 @@ export function useGetExtensionInstallationsCountLazyQuery(baseOptions?: Apollo.
 export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountQuery>;
 export type GetExtensionInstallationsCountLazyQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountLazyQuery>;
 export type GetExtensionInstallationsCountQueryResult = Apollo.QueryResult<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>;
-export const GetAllColoniesExtensionsDocument = gql`
-    query GetAllColoniesExtensions($contributorAddress: ID!) {
+export const GetJoinedColoniesExtensionsDocument = gql`
+    query GetJoinedColoniesExtensions($contributorAddress: ID!) {
   getContributorsByAddress(contributorAddress: $contributorAddress) {
     items {
       id
@@ -12752,32 +12752,32 @@ export const GetAllColoniesExtensionsDocument = gql`
     `;
 
 /**
- * __useGetAllColoniesExtensionsQuery__
+ * __useGetJoinedColoniesExtensionsQuery__
  *
- * To run a query within a React component, call `useGetAllColoniesExtensionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllColoniesExtensionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetJoinedColoniesExtensionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetJoinedColoniesExtensionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllColoniesExtensionsQuery({
+ * const { data, loading, error } = useGetJoinedColoniesExtensionsQuery({
  *   variables: {
  *      contributorAddress: // value for 'contributorAddress'
  *   },
  * });
  */
-export function useGetAllColoniesExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>) {
+export function useGetJoinedColoniesExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetJoinedColoniesExtensionsQuery, GetJoinedColoniesExtensionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>(GetAllColoniesExtensionsDocument, options);
+        return Apollo.useQuery<GetJoinedColoniesExtensionsQuery, GetJoinedColoniesExtensionsQueryVariables>(GetJoinedColoniesExtensionsDocument, options);
       }
-export function useGetAllColoniesExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>) {
+export function useGetJoinedColoniesExtensionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetJoinedColoniesExtensionsQuery, GetJoinedColoniesExtensionsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>(GetAllColoniesExtensionsDocument, options);
+          return Apollo.useLazyQuery<GetJoinedColoniesExtensionsQuery, GetJoinedColoniesExtensionsQueryVariables>(GetJoinedColoniesExtensionsDocument, options);
         }
-export type GetAllColoniesExtensionsQueryHookResult = ReturnType<typeof useGetAllColoniesExtensionsQuery>;
-export type GetAllColoniesExtensionsLazyQueryHookResult = ReturnType<typeof useGetAllColoniesExtensionsLazyQuery>;
-export type GetAllColoniesExtensionsQueryResult = Apollo.QueryResult<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>;
+export type GetJoinedColoniesExtensionsQueryHookResult = ReturnType<typeof useGetJoinedColoniesExtensionsQuery>;
+export type GetJoinedColoniesExtensionsLazyQueryHookResult = ReturnType<typeof useGetJoinedColoniesExtensionsLazyQuery>;
+export type GetJoinedColoniesExtensionsQueryResult = Apollo.QueryResult<GetJoinedColoniesExtensionsQuery, GetJoinedColoniesExtensionsQueryVariables>;
 export const GetUserByUserOrLiquidationAddressDocument = gql`
     query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
   getUserByAddress(id: $userOrLiquidationAddress) {

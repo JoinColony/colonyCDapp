@@ -112,5 +112,6 @@ export const useStakesByFilterType = () => {
     stakesByFilterType,
     filtersDataLoading,
     updateClaimedStakesCache,
+    votingReputationByColony,
   };
 };

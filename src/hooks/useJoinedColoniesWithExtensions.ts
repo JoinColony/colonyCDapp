@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
-import { useGetAllColoniesExtensionsQuery } from '~gql';
+import { useGetJoinedColoniesExtensionsQuery } from '~gql';
 import { notNull } from '~utils/arrays/index.ts';
 
 const useJoinedColoniesWithExtensions = (userAddress?: string) => {
-  const { data, loading } = useGetAllColoniesExtensionsQuery({
+  const { data, loading } = useGetJoinedColoniesExtensionsQuery({
     variables: {
       contributorAddress: userAddress ?? ADDRESS_ZERO,
     },
