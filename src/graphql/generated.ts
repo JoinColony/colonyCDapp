@@ -1661,7 +1661,6 @@ export type CreateTransactionInput = {
   id?: InputMaybe<Scalars['ID']>;
   identifier?: InputMaybe<Scalars['String']>;
   loadingRelated?: InputMaybe<Scalars['Boolean']>;
-  metatransaction: Scalars['Boolean'];
   methodContext?: InputMaybe<Scalars['String']>;
   methodName: Scalars['String'];
   options?: InputMaybe<Scalars['String']>;
@@ -4121,7 +4120,6 @@ export type ModelSubscriptionTransactionFilterInput = {
   id?: InputMaybe<ModelSubscriptionIdInput>;
   identifier?: InputMaybe<ModelSubscriptionStringInput>;
   loadingRelated?: InputMaybe<ModelSubscriptionBooleanInput>;
-  metatransaction?: InputMaybe<ModelSubscriptionBooleanInput>;
   methodContext?: InputMaybe<ModelSubscriptionStringInput>;
   methodName?: InputMaybe<ModelSubscriptionStringInput>;
   options?: InputMaybe<ModelSubscriptionStringInput>;
@@ -4225,7 +4223,6 @@ export type ModelTransactionConditionInput = {
   hash?: InputMaybe<ModelStringInput>;
   identifier?: InputMaybe<ModelStringInput>;
   loadingRelated?: InputMaybe<ModelBooleanInput>;
-  metatransaction?: InputMaybe<ModelBooleanInput>;
   methodContext?: InputMaybe<ModelStringInput>;
   methodName?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelTransactionConditionInput>;
@@ -4262,7 +4259,6 @@ export type ModelTransactionFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   identifier?: InputMaybe<ModelStringInput>;
   loadingRelated?: InputMaybe<ModelBooleanInput>;
-  metatransaction?: InputMaybe<ModelBooleanInput>;
   methodContext?: InputMaybe<ModelStringInput>;
   methodName?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelTransactionFilterInput>;
@@ -8049,8 +8045,6 @@ export type Transaction = {
   identifier?: Maybe<Scalars['String']>;
   /** True if a related transaction is loading */
   loadingRelated?: Maybe<Scalars['Boolean']>;
-  /** True if the transaction is a metatransaction */
-  metatransaction: Scalars['Boolean'];
   /** Context in which method is used e.g. setOneTxRole */
   methodContext?: Maybe<Scalars['String']>;
   /** The name of the contract method used */
@@ -8557,7 +8551,6 @@ export type UpdateTransactionInput = {
   id: Scalars['ID'];
   identifier?: InputMaybe<Scalars['String']>;
   loadingRelated?: InputMaybe<Scalars['Boolean']>;
-  metatransaction?: InputMaybe<Scalars['Boolean']>;
   methodContext?: InputMaybe<Scalars['String']>;
   methodName?: InputMaybe<Scalars['String']>;
   options?: InputMaybe<Scalars['String']>;
