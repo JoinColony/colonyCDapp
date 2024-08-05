@@ -18,6 +18,8 @@ export type MotionStatesMapByColonies = Record<string, MotionStatesMap>;
 
 export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
 
+export type MotionId = { motionId: string; colonyAddress: string };
+
 const getVotingReputationAddressByColony = (colony) => {
   const colonyExtensions = colony?.extensions?.items?.filter(notNull);
   if (!colonyExtensions) {
@@ -61,11 +63,11 @@ const useJoinedColoniesWithExtensions = (userAddress?: string) => {
 };
 
 /**
- * Hook that accepts an array of motion IDs and returns a map of motion IDs to their states
+ * Hook that accepts an array of motion IDs object and returns a map of motion IDs to their states
  * Make sure to memoize the array of motion IDs to avoid infinite loops
  */
 const useNetworkMotionStatesAllColonies = (
-  motionIdsMap: { motionId: string; colonyAddress: string }[],
+  motionIdsMap: MotionId[],
   skip?: boolean,
 ) => {
   const { wallet } = useAppContext();
