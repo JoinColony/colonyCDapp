@@ -45,6 +45,10 @@ const MSG = defineMessages({
     id: `${displayName}.headingSuccess`,
     defaultMessage: 'Action was approved and executed.',
   },
+  headingFailed: {
+    id: `${displayName}.headingFailed`,
+    defaultMessage: "Action was approved but couldn't be executed.",
+  },
   headingRejected: {
     id: `${displayName}.headingRejected`,
     defaultMessage: 'Action was rejected and cannot be executed.',
@@ -193,7 +197,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   let stepTitle = MSG.heading;
 
-  if (isMultiSigExecuted) {
+  if (isMultiSigFailingExecution) {
+    stepTitle = MSG.headingFailed;
+  } else if (isMultiSigExecuted) {
     stepTitle = MSG.headingSuccess;
   } else if (isMultiSigRejected && rejectedByOwner) {
     stepTitle = MSG.headingRejectedByOwner;
