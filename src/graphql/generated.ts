@@ -9412,10 +9412,12 @@ export type GetExtensionInstallationsCountQueryVariables = Exact<{
 
 export type GetExtensionInstallationsCountQuery = { __typename?: 'Query', getExtensionInstallationsCount?: { __typename?: 'ExtensionInstallationsCount', oneTxPayment: number, stakedExpenditure: number, stagedExpenditure: number, streamingPayments: number, reputationWeighted: number } | null };
 
-export type GetAllColoniesExtensionsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllColoniesExtensionsQueryVariables = Exact<{
+  contributorAddress: Scalars['ID'];
+}>;
 
 
-export type GetAllColoniesExtensionsQuery = { __typename?: 'Query', listColonies?: { __typename?: 'ModelColonyConnection', nextToken?: string | null, items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } | null> } | null };
+export type GetAllColoniesExtensionsQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } } | null> } | null };
 
 export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
   userOrLiquidationAddress: Scalars['ID'];
@@ -12724,19 +12726,23 @@ export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof us
 export type GetExtensionInstallationsCountLazyQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountLazyQuery>;
 export type GetExtensionInstallationsCountQueryResult = Apollo.QueryResult<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>;
 export const GetAllColoniesExtensionsDocument = gql`
-    query GetAllColoniesExtensions {
-  listColonies {
+    query GetAllColoniesExtensions($contributorAddress: ID!) {
+  getContributorsByAddress(contributorAddress: $contributorAddress) {
     items {
-      colonyAddress: id
-      name
-      extensions(filter: {isDeleted: {eq: false}}) {
-        items {
-          address: id
-          version
-          hash
-          isDeleted
-          isDeprecated
-          isInitialized
+      id
+      createdAt
+      colony {
+        colonyAddress: id
+        name
+        extensions(filter: {isDeleted: {eq: false}}) {
+          items {
+            address: id
+            version
+            hash
+            isDeleted
+            isDeprecated
+            isInitialized
+          }
         }
       }
     }
@@ -12757,10 +12763,11 @@ export const GetAllColoniesExtensionsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllColoniesExtensionsQuery({
  *   variables: {
+ *      contributorAddress: // value for 'contributorAddress'
  *   },
  * });
  */
-export function useGetAllColoniesExtensionsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>) {
+export function useGetAllColoniesExtensionsQuery(baseOptions: Apollo.QueryHookOptions<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetAllColoniesExtensionsQuery, GetAllColoniesExtensionsQueryVariables>(GetAllColoniesExtensionsDocument, options);
       }

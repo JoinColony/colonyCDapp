@@ -1,10 +1,28 @@
-import { useGetAllColoniesExtensionsQuery } from '~gql';
+import { useMemo } from 'react';
 
-const useJoinedColoniesWithExtensions = () => {
-  const { data, loading } = useGetAllColoniesExtensionsQuery();
+import { ADDRESS_ZERO } from '~constants/index.ts';
+import { useGetAllColoniesExtensionsQuery } from '~gql';
+import { notNull } from '~utils/arrays/index.ts';
+
+const useJoinedColoniesWithExtensions = (userAddress?: string) => {
+  const { data, loading } = useGetAllColoniesExtensionsQuery({
+    variables: {
+      contributorAddress: userAddress ?? ADDRESS_ZERO,
+    },
+    skip: !userAddress,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const joinedColoniesWithExtensions = useMemo(() => {
+    return (
+      data?.getContributorsByAddress?.items
+        .filter(notNull)
+        .map((contributor) => contributor.colony) ?? []
+    );
+  }, [data?.getContributorsByAddress?.items]);
 
   return {
-    joinedColoniesWithExtensions: data?.listColonies?.items || [],
+    joinedColoniesWithExtensions,
     loading,
   };
 };

@@ -41,7 +41,7 @@ export const useStakesByFilterType = () => {
     [userStakes],
   );
   const {
-    motionStatesMapByColonies,
+    motionStatesMap,
     loading: motionStatesLoading,
     votingReputationByColony,
   } = useNetworkMotionStatesAllColonies(motionIdsMap);
@@ -52,11 +52,11 @@ export const useStakesByFilterType = () => {
         ...stake,
         status: getStakeStatus(
           stake,
-          motionStatesMapByColonies,
+          motionStatesMap,
           votingReputationByColony,
         ),
       })),
-    [userStakes, motionStatesMapByColonies, votingReputationByColony],
+    [userStakes, motionStatesMap, votingReputationByColony],
   );
 
   const stakesByFilterType = stakesFilterOptions.reduce(
