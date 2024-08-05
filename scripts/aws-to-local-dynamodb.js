@@ -58,7 +58,7 @@ async function getLocalTables(localClient) {
 
 function findMatchingAwsTable(localTable, awsTables) {
     const baseName = localTable.endsWith('Table') ? localTable.slice(0, -5) : localTable;
-    const pattern = new RegExp(`${baseName}-[a-z0-9]+-${ENV_NAME}$`);
+    const pattern = new RegExp(`^${baseName}-[a-z0-9]+-${ENV_NAME}$`);
     return awsTables.find(t => pattern.test(t));
 }
 
