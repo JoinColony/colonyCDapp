@@ -9,10 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useGetCurrentExtensionsVersionsQuery } from '~gql';
 import { notNull, notUndefined } from '~utils/arrays/index.ts';
-
-import { mapToInstalledExtensionData } from '../utils/extensions.ts';
 
 import useJoinedColoniesWithExtensions from './useJoinedColoniesWithExtensions.ts';
 
@@ -22,52 +19,19 @@ export type MotionStatesMapByColonies = Record<string, MotionStatesMap>;
 
 export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
 
-const getInstalledExtensions = (colony, versionsData) => {
+const getVotingReputationAddressByColony = (colony) => {
   const colonyExtensions = colony?.extensions?.items?.filter(notNull);
   if (!colonyExtensions) {
     return [];
   }
 
-  const extensionVersions =
-    versionsData?.listCurrentVersions?.items?.filter(notNull);
-
-  const colonyExtensionsMap = colonyExtensions.map((extension) => {
+  const currentExtensionAddress = colonyExtensions.find((extension) => {
     const extensionConfig = supportedExtensionsConfig.find(
-      (e) => getExtensionHash(e.extensionId) === extension?.hash,
+      (e) => getExtensionHash(e?.extensionId) === extension?.hash,
     );
-
-    const { version } =
-      extensionVersions?.find((e) => e?.extensionHash === extension.hash) || {};
-
-    // Unsupported extension
-    if (!extensionConfig || !version) {
-      return null;
-    }
-
-    return mapToInstalledExtensionData({
-      colony,
-      extensionConfig,
-      colonyExtension: extension,
-      version,
-    });
+    return extensionConfig?.extensionId === Extension.VotingReputation;
   });
-  return colonyExtensionsMap.filter(notNull);
-};
-
-const getVotingReputationAddress = (
-  installedExtensions,
-): string | undefined => {
-  const votingReputationExtension = installedExtensions.find(
-    (extension) => extension.extensionId === Extension.VotingReputation,
-  );
-
-  return votingReputationExtension?.address;
-};
-
-const getVotingReputation = ({ colony, versionsData }) => {
-  return getVotingReputationAddress(
-    getInstalledExtensions(colony, versionsData),
-  );
+  return currentExtensionAddress.address;
 };
 
 const getMotionName = ({ colonyAddress, motionId }) => {
@@ -89,11 +53,6 @@ const useNetworkMotionStatesAllColonies = (
     loading: joinedColoniesWithExtensionsLoading,
   } = useJoinedColoniesWithExtensions(wallet?.address);
 
-  const { data: versionsData, loading: versionsLoading } =
-    useGetCurrentExtensionsVersionsQuery({
-      fetchPolicy: 'cache-and-network',
-    });
-
   const votingReputationByColony = useMemo(() => {
     return joinedColoniesWithExtensions.reduce((prev, colony) => {
       if (!colony) {
@@ -101,10 +60,10 @@ const useNetworkMotionStatesAllColonies = (
       }
       return {
         ...prev,
-        [colony.colonyAddress]: getVotingReputation({ colony, versionsData }),
+        [colony.colonyAddress]: getVotingReputationAddressByColony(colony),
       };
     }, {});
-  }, [joinedColoniesWithExtensions, versionsData]);
+  }, [joinedColoniesWithExtensions]);
 
   const [loading, setLoading] = useState(false);
 
@@ -193,7 +152,7 @@ const useNetworkMotionStatesAllColonies = (
   return {
     motionStatesMap,
     votingReputationByColony,
-    loading: loading || joinedColoniesWithExtensionsLoading || versionsLoading,
+    loading: loading || joinedColoniesWithExtensionsLoading,
   };
 };
 
