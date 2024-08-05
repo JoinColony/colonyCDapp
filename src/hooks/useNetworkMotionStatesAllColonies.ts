@@ -7,11 +7,10 @@ import { Extension } from '@colony/colony-js';
 import { type Provider } from '@ethersproject/providers';
 import { useEffect, useMemo, useState } from 'react';
 
-import { supportedExtensionsConfig } from '~constants/index.ts';
+import { ADDRESS_ZERO, supportedExtensionsConfig } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useGetJoinedColoniesExtensionsQuery } from '~gql';
 import { notNull, notUndefined } from '~utils/arrays/index.ts';
-
-import useJoinedColoniesWithExtensions from './useJoinedColoniesWithExtensions.ts';
 
 export type MotionStatesMap = Map<string, MotionState | null>;
 
@@ -36,6 +35,29 @@ const getVotingReputationAddressByColony = (colony) => {
 
 const getMotionName = ({ colonyAddress, motionId }) => {
   return `${colonyAddress}-${motionId}`;
+};
+
+const useJoinedColoniesWithExtensions = (userAddress?: string) => {
+  const { data, loading } = useGetJoinedColoniesExtensionsQuery({
+    variables: {
+      contributorAddress: userAddress ?? ADDRESS_ZERO,
+    },
+    skip: !userAddress,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const joinedColoniesWithExtensions = useMemo(() => {
+    return (
+      data?.getContributorsByAddress?.items
+        .filter(notNull)
+        .map((contributor) => contributor.colony) ?? []
+    );
+  }, [data?.getContributorsByAddress?.items]);
+
+  return {
+    joinedColoniesWithExtensions,
+    loading,
+  };
 };
 
 /**
