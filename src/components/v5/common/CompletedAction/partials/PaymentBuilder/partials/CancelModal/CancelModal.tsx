@@ -1,4 +1,4 @@
-import { Prohibit } from '@phosphor-icons/react';
+import { Prohibit, SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { toast } from 'react-toastify';
 
@@ -10,6 +10,7 @@ import { type CancelExpenditurePayload } from '~redux/types/actions/expenditures
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button, { ActionButton } from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -118,14 +119,22 @@ const CancelModal: FC<CancelModalProps> = ({
                     {formatText({ id: 'button.cancel' })}
                   </Button>
                   <div className="flex w-full justify-center">
-                    <Button
-                      mode="primarySolid"
-                      isFullSize
-                      type="submit"
-                      loading={isSubmitting}
-                    >
-                      {formatText({ id: 'cancelModal.locked.submit' })}
-                    </Button>
+                    {isSubmitting ? (
+                      <IconButton
+                        className="w-full !text-md"
+                        rounded="s"
+                        text={{ id: 'button.pending' }}
+                        icon={
+                          <span className="ml-1.5 flex shrink-0">
+                            <SpinnerGap className="animate-spin" size={18} />
+                          </span>
+                        }
+                      />
+                    ) : (
+                      <Button mode="primarySolid" isFullSize type="submit">
+                        {formatText({ id: 'cancelModal.locked.submit' })}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </>
@@ -144,6 +153,18 @@ const CancelModal: FC<CancelModalProps> = ({
               mode="primarySolid"
               isFullSize
               values={payload}
+              loadingContent={
+                <IconButton
+                  className="w-full !text-md"
+                  rounded="s"
+                  text={{ id: 'button.pending' }}
+                  icon={
+                    <span className="ml-1.5 flex shrink-0">
+                      <SpinnerGap className="animate-spin" size={14} />
+                    </span>
+                  }
+                />
+              }
               onSuccess={() => {
                 onClose();
                 toast.success(

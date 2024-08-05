@@ -180,6 +180,12 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           isLoading={!expenditure.metadata?.stages?.length}
           isPaymentStep={expenditureStep === ExpenditureStep.Payment}
         />
+        <CancelModal
+          isOpen={isCancelModalOpen}
+          expenditure={expenditure}
+          onClose={toggleCancelModalOff}
+          refetchExpenditure={refetchExpenditure}
+        />
       </>
     );
   }
