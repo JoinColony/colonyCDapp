@@ -1,7 +1,6 @@
 import { Id } from '@colony/colony-js';
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
-import { type BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -113,113 +112,110 @@ export const useBalanceTableColumns = (
 ): ColumnDef<BalanceTableFieldModel, string>[] => {
   const isMobile = useMobile();
 
-  const columns: ColumnDef<BalanceTableFieldModel, string | BigNumber>[] =
-    useMemo(() => {
-      const columnHelper = createColumnHelper<BalanceTableFieldModel>();
+  const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(() => {
+    const columnHelper = createColumnHelper<BalanceTableFieldModel>();
 
-      return [
-        columnHelper.display({
-          id: 'asset',
-          header: () => formatText({ id: 'table.row.asset' }),
-          headCellClassName: isMobile ? 'pr-2' : undefined,
-          cell: ({ row }) => {
-            if (!row.original.token) return [];
+    return [
+      columnHelper.display({
+        id: 'asset',
+        header: () => formatText({ id: 'table.row.asset' }),
+        headCellClassName: isMobile ? 'pr-2' : undefined,
+        cell: ({ row }) => {
+          if (!row.original.token) return [];
 
-            if (row.original.loading) {
-              return <div className="h-4 w-40 skeleton" />;
-            }
+          if (row.original.loading) {
+            return <div className="h-4 w-40 skeleton" />;
+          }
 
-            return (
-              <TokenCell
-                token={row.original.token}
-                tokenAddress={nativeToken.tokenAddress}
-                nativeTokenStatus={nativeTokenStatus}
-              />
-            );
-          },
+          return (
+            <TokenCell
+              token={row.original.token}
+              tokenAddress={nativeToken.tokenAddress}
+              nativeTokenStatus={nativeTokenStatus}
+            />
+          );
+        },
+      }),
+      columnHelper.display({
+        id: 'symbol',
+        size: isMobile ? 60 : 100,
+        header: () => formatText({ id: 'table.row.symbol' }),
+        headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
+        cell: ({ row }) => {
+          if (row.original.loading) {
+            return <div className="h-4 w-12 skeleton" />;
+          }
+
+          return (
+            <span className="text-gray-600">
+              {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
+            </span>
+          );
+        },
+      }),
+      columnHelper.display({
+        id: 'type',
+        size: 130,
+        header: () => formatText({ id: 'table.row.type' }),
+        cell: ({ row }) => {
+          if (row.original.loading) {
+            return <div className="h-4 w-12 skeleton" />;
+          }
+
+          const isTokenNative =
+            row.original.token?.tokenAddress === nativeToken.tokenAddress;
+
+          return (
+            <span className="hidden sm:flex">
+              {isTokenNative && (
+                <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
+                  {formatText({ id: 'token.type.native' })}
+                </TokenTypeBadge>
+              )}
+            </span>
+          );
+        },
+      }),
+      columnHelper.accessor('balance', {
+        id: 'balance',
+        header: () => formatText({ id: 'table.row.balance' }),
+        size: isMobile ? 110 : 165,
+        headCellClassName: clsx('text-right', {
+          'pl-0 pr-2': isMobile,
         }),
-        columnHelper.display({
-          id: 'symbol',
-          size: isMobile ? 60 : 100,
-          header: () => formatText({ id: 'table.row.symbol' }),
-          headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
-          cell: ({ row }) => {
-            if (row.original.loading) {
-              return <div className="h-4 w-12 skeleton" />;
-            }
+        cell: ({ row }) => {
+          const currentTokenBalance = row.original.balance;
 
-            return (
-              <span className="text-gray-600">
-                {multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}
-              </span>
-            );
-          },
-        }),
-        columnHelper.display({
-          id: 'type',
-          size: 130,
-          header: () => formatText({ id: 'table.row.type' }),
-          cell: ({ row }) => {
-            if (row.original.loading) {
-              return <div className="h-4 w-12 skeleton" />;
-            }
+          if (row.original.loading) {
+            return <div className="ml-auto h-4 w-24 skeleton" />;
+          }
 
-            const isTokenNative =
-              row.original.token?.tokenAddress === nativeToken.tokenAddress;
-
-            return (
-              <span className="hidden sm:flex">
-                {isTokenNative && (
-                  <TokenTypeBadge tokenType={TOKEN_TYPE.native}>
-                    {formatText({ id: 'token.type.native' })}
-                  </TokenTypeBadge>
+          return (
+            <div className="ml-auto text-right">
+              <Numeral
+                value={currentTokenBalance}
+                decimals={getTokenDecimalsWithFallback(
+                  row.original.token?.decimals,
                 )}
-              </span>
-            );
-          },
-        }),
-        columnHelper.accessor('balance', {
-          id: 'balance',
-          header: () => formatText({ id: 'table.row.balance' }),
-          size: isMobile ? 110 : 165,
-          headCellClassName: clsx('text-right', {
-            'pl-0 pr-2': isMobile,
-          }),
-          cell: ({ row }) => {
-            const currentTokenBalance = row.original.balance;
-
-            if (row.original.loading) {
-              return <div className="ml-auto h-4 w-24 skeleton" />;
-            }
-
-            return (
-              <div className="ml-auto text-right">
-                <Numeral
-                  value={currentTokenBalance}
-                  decimals={getTokenDecimalsWithFallback(
-                    row.original.token?.decimals,
-                  )}
-                  className="block text-gray-900 text-1"
-                  suffix={` ${multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}`}
-                />
-                <CurrencyConversion
-                  tokenBalance={currentTokenBalance}
-                  tokenDecimals={
-                    row.original.token
-                      ? getTokenDecimalsWithFallback(
-                          row.original.token.decimals,
-                        )
-                      : 0
-                  }
-                  contractAddress={row.original.token?.tokenAddress ?? ''}
-                  className="block !text-sm text-gray-600"
-                />
-              </div>
-            );
-          },
-        }),
-      ];
-    }, [isMobile, nativeToken.tokenAddress, nativeTokenStatus]);
+                className="block text-gray-900 text-1"
+                suffix={` ${multiLineTextEllipsis(row.original.token?.symbol ?? '', 5)}`}
+              />
+              <CurrencyConversion
+                tokenBalance={currentTokenBalance}
+                tokenDecimals={
+                  row.original.token
+                    ? getTokenDecimalsWithFallback(row.original.token.decimals)
+                    : 0
+                }
+                contractAddress={row.original.token?.tokenAddress ?? ''}
+                className="block !text-sm text-gray-600"
+              />
+            </div>
+          );
+        },
+      }),
+    ];
+  }, [isMobile, nativeToken.tokenAddress, nativeTokenStatus]);
 
   return columns;
 };

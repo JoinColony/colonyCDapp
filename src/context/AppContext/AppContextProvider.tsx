@@ -1,4 +1,3 @@
-import { type Address } from '@web3-onboard/common';
 import { utils } from 'ethers';
 import React, {
   useState,
@@ -71,9 +70,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback(() => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
-      updatedWallet.address = utils.getAddress(
-        updatedWallet.address,
-      ) as Address;
+      updatedWallet.address = utils.getAddress(updatedWallet.address);
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
       if (updatedWallet.address !== wallet?.address) {

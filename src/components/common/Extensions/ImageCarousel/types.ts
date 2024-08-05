@@ -1,4 +1,4 @@
-import { type EmblaOptionsType } from 'embla-carousel';
+import { type EmblaOptionsType } from 'embla-carousel-react';
 
 export interface ImageCarouselProps {
   slideUrls?: string[];
