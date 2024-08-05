@@ -12,7 +12,7 @@ services:
     environment:
       ARCHIVE_RPC: ${ARCHIVE_RPC}
       FORKED_NETWORK_ADDRESS: ${FORKED_NETWORK_ADDRESS}
-      LATEST_STATE_URL: ${LATEST_STATE_URL}
+      REPUTATION_URL: ${REPUTATION_URL}
 
   reputation-monitor:
     extends:

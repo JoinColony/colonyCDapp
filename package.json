@@ -18,7 +18,7 @@
     "docker:compose:on-demand": "docker compose --file docker/colony-cdapp-dev-env-orchestration-on-demand.yaml",
     "docker:compose:core": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "docker:compose:all": "docker compose --file docker/colony-cdapp-dev-env-orchestration-all.yaml",
-    "on-demand": "npm run watch-amplify & npm run docker:build:core && npm run docker:build:clonedb && npm run docker:compose:on-demand up -- --force-recreate -V",
+    "on-demand": "echo \"NETWORK_ID=$NETWORK_ID\n\" >> .env.local && npm run prepare && npm run watch-amplify & npm run docker:build:core && npm run docker:build:clonedb && npm run docker:compose:on-demand up -- --force-recreate -V",
     "dev": "npm run watch-amplify & npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
     "dev:all": "npm run docker:build:all && npm run docker:compose:all up -- --force-recreate -V",
     "lint": "eslint src --fix --ext ts,tsx --report-unused-disable-directives",
