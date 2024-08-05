@@ -21,8 +21,7 @@ const UserStakeStatusBadge: FC<UserStakeStatusBadgeProps> = ({
       'bg-gray-100 text-gray-500':
         status === UserStakeStatus.Claimed ||
         status === UserStakeStatus.Unknown,
-      'bg-negative-100 text-negative-400':
-        status === UserStakeStatus.Uninstalled,
+      'bg-negative-100 text-negative-400': status === UserStakeStatus.Lost,
     })}
     {...rest}
   >
