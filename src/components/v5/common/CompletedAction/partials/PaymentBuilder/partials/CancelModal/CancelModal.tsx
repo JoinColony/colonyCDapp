@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/types/actions/expenditures.ts';
@@ -15,6 +16,7 @@ import Button, { ActionButton } from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
+import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
 
 import {
   cancelDecisionMethodDescriptions,
@@ -33,6 +35,7 @@ const CancelModal: FC<CancelModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const { setExpectedStepKey } = usePaymentBuilderContext();
 
   const payload: CancelExpenditurePayload = {
     colonyAddress: colony.colonyAddress,
@@ -59,6 +62,7 @@ const CancelModal: FC<CancelModalProps> = ({
       });
 
       setIsSubmitting(false);
+      setExpectedStepKey(ExpenditureStep.Cancel);
       onClose();
     } catch (err) {
       setIsSubmitting(false);
@@ -167,6 +171,7 @@ const CancelModal: FC<CancelModalProps> = ({
               }
               onSuccess={() => {
                 onClose();
+                setExpectedStepKey(ExpenditureStep.Cancel);
                 toast.success(
                   <Toast
                     type="success"

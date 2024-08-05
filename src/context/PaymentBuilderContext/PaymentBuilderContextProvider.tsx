@@ -7,6 +7,7 @@ import React, {
 
 import { type ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
+import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 import { type ReleaseBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/ReleasedBoxItem/ReleasedBoxItem.tsx';
 
@@ -34,6 +35,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
   const [selectedMilestoneMotion, setSelectedMilestoneMotion] =
     useState<ReleaseBoxItem | null>(null);
+  const [expectedStepKey, setExpectedStepKey] =
+    useState<ExpenditureStep | null>(null);
 
   const value = useMemo(
     () => ({
@@ -48,6 +51,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       expectedExpenditureType,
       setExpectedExpenditureType,
       isReleaseModalOpen,
+      expectedStepKey,
+      setExpectedStepKey,
       selectedTransaction,
       setSelectedTransaction,
       selectedMilestones,
@@ -67,6 +72,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       isReleaseModalOpen,
       expectedExpenditureType,
       setExpectedExpenditureType,
+      expectedStepKey,
+      setExpectedStepKey,
       selectedTransaction,
       setSelectedTransaction,
       selectedMilestones,

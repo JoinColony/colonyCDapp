@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { ExpenditureType } from '~gql';
 import noop from '~utils/noop.ts';
+import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 import { type ReleaseBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/ReleasedBoxItem/ReleasedBoxItem.tsx';
 
@@ -17,6 +18,8 @@ export const PaymentBuilderContext = createContext<{
   isReleaseModalOpen: boolean;
   expectedExpenditureType: ExpenditureType | undefined;
   setExpectedExpenditureType: (type: ExpenditureType | undefined) => void;
+  expectedStepKey: ExpenditureStep | null;
+  setExpectedStepKey: (step: ExpenditureStep | null) => void;
   selectedTransaction: string;
   setSelectedTransaction: (transaction: string) => void;
   selectedMilestoneMotion: ReleaseBoxItem | null;
@@ -34,6 +37,8 @@ export const PaymentBuilderContext = createContext<{
   toggleOffReleaseModal: noop,
   expectedExpenditureType: ExpenditureType.PaymentBuilder,
   setExpectedExpenditureType: noop,
+  expectedStepKey: null,
+  setExpectedStepKey: noop,
   isReleaseModalOpen: false,
   selectedTransaction: '',
   setSelectedTransaction: noop,

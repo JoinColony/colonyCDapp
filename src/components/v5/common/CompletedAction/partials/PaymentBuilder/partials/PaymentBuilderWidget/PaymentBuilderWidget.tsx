@@ -61,6 +61,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isReleaseModalOpen: isReleasePaymentModalOpen,
     toggleOffReleaseModal: hideReleasePaymentModal,
     toggleOnReleaseModal: showReleasePaymentModal,
+    expectedStepKey,
+    setExpectedStepKey,
   } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
@@ -89,8 +91,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const [activeStepKey, setActiveStepKey] =
     useState<ExpenditureStep>(expenditureStep);
-  const [expectedStepKey, setExpectedStepKey] =
-    useState<ExpenditureStep | null>(null);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
@@ -113,7 +113,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     if (expectedStepKey === expenditureStep) {
       setExpectedStepKey(null);
     }
-  }, [expectedStepKey, expenditureStep]);
+  }, [expectedStepKey, expenditureStep, setExpectedStepKey]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
     () =>
@@ -229,7 +229,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     ) {
       setExpectedStepKey(null);
     }
-  }, [expectedStepKey, hasEveryMotionEnded, fundingMotions]);
+  }, [
+    expectedStepKey,
+    hasEveryMotionEnded,
+    fundingMotions,
+    setExpectedStepKey,
+  ]);
 
   useEffect(() => {
     if (
@@ -351,7 +356,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               <ActionButton
                 disabled={
                   !expenditure?.ownerAddress ||
-                  walletAddress !== expenditure?.ownerAddress
+                  walletAddress !== expenditure?.ownerAddress ||
+                  expectedStepKey === ExpenditureStep.Cancel
                 }
                 onSuccess={() => {
                   setExpectedStepKey(ExpenditureStep.Funding);
@@ -460,6 +466,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                     ) : (
                       <Button
                         className="w-full"
+                        disabled={expectedStepKey === ExpenditureStep.Cancel}
                         onClick={showFundingModal}
                         text={formatText({
                           id: 'expenditure.fundingStage.button',
@@ -527,6 +534,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 <Button
                   className="w-full"
                   onClick={showReleasePaymentModal}
+                  disabled={expectedStepKey === ExpenditureStep.Cancel}
                   text={formatText({
                     id: 'expenditure.releaseStage.button',
                   })}
