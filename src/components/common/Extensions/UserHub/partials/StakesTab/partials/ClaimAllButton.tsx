@@ -3,6 +3,7 @@ import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import { type VotingReputationByColonyId } from '~hooks/useNetworkMotionStates.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';
 
@@ -11,7 +12,7 @@ const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 interface ClaimAllButtonProps {
   claimableStakes: UserStakeWithStatus[];
   updateClaimedStakesCache: (stakesIds: string[]) => void;
-  votingReputationByColony: any;
+  votingReputationByColony: VotingReputationByColonyId;
 }
 
 const ClaimAllButton = ({

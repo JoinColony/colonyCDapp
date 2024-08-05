@@ -1,9 +1,8 @@
 import React, { useEffect, useState, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetFullColonyByAddressQuery } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
@@ -26,9 +25,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
     stake.action?.decisionData?.title ||
     stake.action?.type;
 
-  const {
-    colony: { name: colonyName },
-  } = useColonyContext();
+  const { colonyName: colonyNameUrl } = useParams();
 
   const { data: stakeColonyData, loading: stakeColonyLoading } =
     useGetFullColonyByAddressQuery({
@@ -44,12 +41,12 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
   const stakeColonyName = stake.action?.colony.name ?? '';
 
   useEffect(() => {
-    if (colonyName !== stakeColonyName) {
+    if (colonyNameUrl !== stakeColonyName) {
       // For transactions from other colonies it should redirect to /{ownColony}?tx={hash}
       setNavigatePath(`/${stakeColonyName}`);
     }
   }, [
-    colonyName,
+    colonyNameUrl,
     stakeColonyName,
     setNavigatePath,
     stake.action?.transactionHash,
