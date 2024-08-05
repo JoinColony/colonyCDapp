@@ -9,6 +9,24 @@ input AMPLIFY {
 # but I never could get it to work
 
 """
+Input data for fetching domain balance in/out values for a specific timeframe
+"""
+input DomainBalanceArguments {
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: String!
+  """
+  Address of the domain on the blockchain
+  """
+  domainAddress: String!
+  chainId: String
+  selectedCurrency: SupportedCurrencies
+  timeframeType: TimeframeType
+  timeframePeriod: Int!
+}
+
+"""
 Input data for fetching a token's information from DB or chain
 """
 input TokenFromEverywhereArguments {
@@ -342,6 +360,30 @@ type BridgeXYZMutationReturn {
 }
 
 """
+Return type for domain balance in/out values
+"""
+type DomainBalanceInOut {
+  totalIn: String
+  totalOut: String
+}
+
+"""
+Return type for domain balance for a timeframe item
+"""
+type TimeframeDomainBalanceInOut {
+  key: String!
+  value: DomainBalanceInOut
+}
+
+"""
+Return type for domain balance 
+"""
+type DomainBalanceReturn {
+ last30Days: DomainBalanceInOut
+ timeframe: [TimeframeDomainBalanceInOut]
+}
+
+"""
 Return type for tokens gotten from DB or from chain
 """
 type TokenFromEverywhereReturn {
@@ -495,6 +537,15 @@ type VoterRewardsReturn {
   The actual reward amount
   """
   reward: String!
+}
+
+"""
+Variants of different timeframe periods we can request balance for
+"""
+enum TimeframeType {
+  DAILY
+  WEEKLY
+  MONTHLY
 }
 
 """
@@ -1036,6 +1087,14 @@ type Query {
   """
   bridgeGetGatewayFee: BridgeGatewayFeeReturn
     @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Fetch a domain total balance
+  """
+  getDomainBalance(
+    input: DomainBalanceArguments
+  ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
+
 }
 
 """
@@ -1107,6 +1166,32 @@ enum SupportedCurrencies {
 
 enum ExtendedSupportedCurrencies {
   USDC
+}
+
+"""
+Represents a market price exchange rate for a specific currency
+"""
+type MarketPrice {
+  currency: SupportedCurrencies!
+  rate: Float
+}
+
+"""
+Represents a table with token exchange rates
+"""
+type TokenExchangeRate @model {
+  """
+  Unique identifier for the token id
+  """
+  tokenId: String! @index(name: "byTokenId", queryField: "tokenExhangeRateByTokenId", sortKeyFields: ["date"], )
+  """
+  Exchange timestamp
+  """
+  date: AWSDateTime!
+  """
+  Exchange currency
+  """
+  marketPrice: [MarketPrice]!
 }
 
 """
