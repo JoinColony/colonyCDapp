@@ -36,6 +36,26 @@ const MSG = {
         'I understand that there is a risk of lost funds and past actions will disappear from the interface.',
     },
   }),
+  [Extension.StagedExpenditure]: defineMessages({
+    uninstallTitle: {
+      id: `${displayName}.${Extension.StakedExpenditure}.uninstallTitle`,
+      defaultMessage: 'Extension removal warning',
+    },
+    uninstallDescription: {
+      id: `${displayName}.${Extension.StakedExpenditure}.uninstallDescription`,
+      defaultMessage:
+        'Uninstalling this extension will remove the functionality to be able to complete unreleased Staged payments and create new ones. Ensure you understand the potential risks before continuing.',
+    },
+    uninstallWarning: {
+      id: `${displayName}.${Extension.StakedExpenditure}.uninstallWarning`,
+      defaultMessage:
+        '<ul><li>Please ensure that all funds in processes associated with this extension are released before uninstalling. Not doing so will result in permanent loss of the unclaimed funds.</li></ul>',
+    },
+    uninstallConfirmation: {
+      id: `${displayName}.${Extension.StakedExpenditure}.uninstallConfirmation`,
+      defaultMessage: 'I understand that unreleased funds cannot be released',
+    },
+  }),
   [Extension.StakedExpenditure]: defineMessages({
     uninstallTitle: {
       id: `${displayName}.${Extension.StakedExpenditure}.uninstallTitle`,

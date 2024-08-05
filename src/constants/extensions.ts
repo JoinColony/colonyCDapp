@@ -6,14 +6,15 @@ import ExtensionAdvancedPaymentsIcon from '~icons/ExtensionAdvancedPaymentsIcon.
 import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
 import ExtensionMultiSigIcon from '~icons/ExtensionMultiSigIcon.tsx';
 import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
-import advancedHero from '~images/assets/extensions/advanced-hero.png';
-import advancedInterface from '~images/assets/extensions/advanced-interface.png';
+import ExtensionStagedPaymentsIcon from '~icons/ExtensionStagedPaymentsIcon.tsx';
 import multiSigHero from '~images/assets/extensions/multi-sig-hero.png';
 import multiSigInterface from '~images/assets/extensions/multi-sig-interface.png';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
 import oneTransactionInterface from '~images/assets/extensions/one-transaction-interface.png';
 import reputationHero from '~images/assets/extensions/reputation-hero.png';
 import reputationInterface from '~images/assets/extensions/reputation-interface.png';
+import stagedHero from '~images/assets/extensions/staged-hero.png';
+import stagedInterface from '~images/assets/extensions/staged-interface.png';
 import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
 import streamingHero from '~images/assets/extensions/streaming-hero.png';
@@ -261,15 +262,16 @@ const stakedExpenditureMessages = {
 const stagedExpenditureMessages = {
   stagedExpenditureName: {
     id: `${stagedExpenditureName}.name`,
-    defaultMessage: 'Staged Expenditure',
+    defaultMessage: 'Staged Payments',
   },
   stagedExpenditureDescriptionShort: {
     id: `${stagedExpenditureName}.description`,
-    defaultMessage: 'Staged Expenditure extension.',
+    defaultMessage:
+      'A flexible milestone based payment option, allowing a payment to be broken down into separate milestones which may be released separately.',
   },
   stagedExpenditureDescriptionLong: {
     id: `${stagedExpenditureName}.descriptionLong`,
-    defaultMessage: 'Staged Expenditure extension.',
+    defaultMessage: `<p>The Staged Payments extension enhances the payment options for your team by introducing a flexible, milestone-based payment option. This feature allows payments to be segmented into distinct milestones, each of which can be released independently upon hitting or achieving those milestones.</p><p>This method not only ensures better management of project funds and accountability but also provides increased security and confidence for both contributors and payment creators.</p><p>Suitable for various scenarios such as project-based payments, periodic salary disbursements, budgeting, and target-based payments, making it a valuable addition to any team’s financial management toolkit.</p><h4>How the extension works</h4><ul><li>User creates a “Staged payment” action.</li><li>User can add the various stages of the payments as “Milestones” with a description and token amount for each milestone.</li><li>Getting approval and funding the payment is the same as other Advanced payment actions where you go through a Review and Funding step. The difference is in the Release step.</li><li>Each of the individual milestones in the payment can be released separately at any time, with the intention that they are released only when those milestones have been achieved.</li><li>If some of the milestone are not delivered, that payment can be canceled and those undelivered milestones will remain unpaid.</li></ul><h4>Useful for:</h4><ul><li>Making payments upon delivery of agreed project milestones.</li><li>Creating periodic payments, where pre-approved funds can be released as agreed.</li><li>Target based payments, where funds can be paid when a target has been achieved.</li></ul>`,
   },
   votingReputationPermissionArchitecture: {
     id: `${votingReputationName}.param.permission.architecture`,
@@ -551,18 +553,14 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     enabledAutomaticallyAfterInstall: true,
   },
   {
-    icon: ExtensionAdvancedPaymentsIcon,
-    imageURLs: [advancedHero, advancedInterface],
-    category: ExtensionCategory.Expenditures,
+    icon: ExtensionStagedPaymentsIcon,
+    imageURLs: [stagedHero, stagedInterface],
+    category: ExtensionCategory.Payments,
     extensionId: Extension.StagedExpenditure,
     name: MSG.stagedExpenditureName,
     descriptionShort: MSG.stagedExpenditureDescriptionShort,
     descriptionLong: MSG.stagedExpenditureDescriptionLong,
-    neededColonyPermissions: [
-      ColonyRole.Administration,
-      ColonyRole.Funding,
-      ColonyRole.Arbitration,
-    ],
+    neededColonyPermissions: [ColonyRole.Root],
     uninstallable: true,
     createdAt: 1692048380000,
   },
