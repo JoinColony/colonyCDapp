@@ -7,7 +7,7 @@ import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/Payment
 import { ColonyActionType, type Expenditure } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import TxButton from '~v5/shared/Button/TxButton.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
 import PaymentOverview from '../PaymentStepDetailsBlock/partials/PaymentOverview/PaymentOverview.tsx';
@@ -186,7 +186,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
               text={formatText(MSG.releaseNextMilestone)}
               content={
                 expectedStepKey === ExpenditureStep.Payment ? (
-                  <TxButton
+                  <IconButton
                     className="max-h-[2.5rem] w-full !text-md"
                     rounded="s"
                     text={{ id: 'button.pending' }}
