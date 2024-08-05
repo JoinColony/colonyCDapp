@@ -1,4 +1,4 @@
-import { Binoculars } from '@phosphor-icons/react';
+import { Binoculars, Smiley } from '@phosphor-icons/react';
 import { useInView } from 'framer-motion';
 import React, { useRef, type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
@@ -16,7 +16,7 @@ const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 const MSG = defineMessages({
   thisIsTheEnd: {
     id: `${displayName}.thisIsTheEnd`,
-    defaultMessage: "😎 You've reached the end",
+    defaultMessage: 'No more results',
   },
 });
 
@@ -75,7 +75,12 @@ const TransactionsTab: FC<TransactionsProps> = () => {
               </span>
             </>
           ) : (
-            !onePageOnly && <span>{formatText(MSG.thisIsTheEnd)}</span>
+            !onePageOnly && (
+              <div className="text-gray-400">
+                <Smiley className="mr-1 inline-block" />
+                <span className="text-xs">{formatText(MSG.thisIsTheEnd)}</span>
+              </div>
+            )
           )}
         </div>
       </div>
