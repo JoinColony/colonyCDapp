@@ -27,9 +27,15 @@ export enum BankDetailsFields {
 const { accountNumber, routingNumber } = BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS;
 
 export const validationSchema = object({
-  [BankDetailsFields.ACCOUNT_OWNER]: string().required(),
-  [BankDetailsFields.BANK_NAME]: string().required(),
-  [BankDetailsFields.CURRENCY]: string().required(),
+  [BankDetailsFields.ACCOUNT_OWNER]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.accountOwner' }),
+  ),
+  [BankDetailsFields.BANK_NAME]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.bankName' }),
+  ),
+  [BankDetailsFields.CURRENCY]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.currency' }),
+  ),
   [BankDetailsFields.COUNTRY]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string().required(),

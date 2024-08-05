@@ -45,7 +45,7 @@ const MSG = defineMessages({
   },
   kycTabHeading: {
     id: `${displayName}.kycTabHeading`,
-    defaultMessage: 'KYC form',
+    defaultMessage: 'KYC',
   },
 });
 
