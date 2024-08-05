@@ -1,0 +1,5 @@
+query GetDomainBalance($input: DomainBalanceArguments) {
+  getDomainBalance(input: $input) {
+    ...DomainBalanceReturn
+  }
+}
