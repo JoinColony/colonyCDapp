@@ -16,19 +16,23 @@ query GetExtensionInstallationsCount($id: ID!) {
   }
 }
 
-query GetAllColoniesExtensions {
-  listColonies {
+query GetAllColoniesExtensions($contributorAddress: ID!) {
+  getContributorsByAddress(contributorAddress: $contributorAddress) {
     items {
-      colonyAddress: id
-      name
-      extensions(filter: { isDeleted: { eq: false } }) {
-        items {
-          address: id
-          version
-          hash
-          isDeleted
-          isDeprecated
-          isInitialized
+      id
+      createdAt
+      colony {
+        colonyAddress: id
+        name
+        extensions(filter: { isDeleted: { eq: false } }) {
+          items {
+            address: id
+            version
+            hash
+            isDeleted
+            isDeprecated
+            isInitialized
+          }
         }
       }
     }
