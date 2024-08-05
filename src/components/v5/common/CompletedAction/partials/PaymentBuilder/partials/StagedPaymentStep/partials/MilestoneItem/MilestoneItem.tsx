@@ -22,8 +22,8 @@ const MilestoneItem: FC<MilestoneItemProps> = ({
 
   return (
     <div className="flex items-center justify-between gap-2 rounded bg-gray-50 px-3.5 py-3">
-      <p className="text-1">{milestone}</p>
-      <div className="flex items-center gap-2">
+      <p className="truncate text-1">{milestone}</p>
+      <div className="flex flex-shrink-0 items-center gap-2">
         <p className="text-md">{formattedAmount}</p>
         <div className="flex items-center gap-1">
           <TokenAvatar

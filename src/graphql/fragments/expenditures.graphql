@@ -86,7 +86,6 @@ fragment Expenditure on Expenditure {
   ) {
     items {
       ...ExpenditureAction
-      expenditureSlotIds
     }
   }
   editingActions: actions(
@@ -132,6 +131,7 @@ fragment ExpenditureAction on ColonyAction {
   id
   initiatorAddress
   createdAt
+  expenditureSlotIds
   initiatorUser {
     ...User
   }
