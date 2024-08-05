@@ -61,6 +61,7 @@ export const LAZY_CONSENSUS_EXTENSION = `https://docs.colony.io/use/governance/m
 export const PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const STREAMING_PAYMENTS = `https://docs.colony.io/use/making-payments/streaming-payments`;
 export const STAKING_ADVANCED_PAYMENTS = `https://docs.colony.io/use/making-payments/staking-payments`;
+export const STAGED_PAYMENTS = `https://help.colony.io/en/articles/9626927-staged-payments`;
 
 /*
  * Navigation
