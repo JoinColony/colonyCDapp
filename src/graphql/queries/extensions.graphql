@@ -16,7 +16,7 @@ query GetExtensionInstallationsCount($id: ID!) {
   }
 }
 
-query GetAllColoniesExtensions($contributorAddress: ID!) {
+query GetJoinedColoniesExtensions($contributorAddress: ID!) {
   getContributorsByAddress(contributorAddress: $contributorAddress) {
     items {
       id

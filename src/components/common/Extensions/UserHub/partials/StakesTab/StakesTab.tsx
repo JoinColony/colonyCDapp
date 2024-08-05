@@ -4,14 +4,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-// import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-// import { useMobile } from '~hooks/index.ts';
+import { useMobile } from '~hooks/index.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 
 import { stakesFilterOptions } from './consts.ts';
 import { getStakesTabItems } from './helpers.ts';
-// import ClaimAllButton from './partials/ClaimAllButton.tsx';
+import ClaimAllButton from './partials/ClaimAllButton.tsx';
 import StakesList from './partials/StakesList.tsx';
 import { useStakesByFilterType } from './useStakesByFilterType.ts';
 
@@ -19,8 +18,7 @@ const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
 const StakesTab = () => {
   const { formatMessage } = useIntl();
-  // const isMobile = useMobile();
-  // const { colony } = useColonyContext();
+  const isMobile = useMobile();
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
@@ -28,7 +26,8 @@ const StakesTab = () => {
   const {
     stakesByFilterType,
     filtersDataLoading,
-    // updateClaimedStakesCache
+    updateClaimedStakesCache,
+    votingReputationByColony,
   } = useStakesByFilterType();
 
   // Tabs are being used for selecting filter option
@@ -46,7 +45,7 @@ const StakesTab = () => {
   const filteredStakes = stakesByFilterType[activeFilterOption.type];
   const filterDataLoading = filtersDataLoading[activeFilterOption.type];
 
-  // const claimableStakes = stakesByFilterType.claimable;
+  const claimableStakes = stakesByFilterType.claimable;
 
   return (
     <div
@@ -56,13 +55,13 @@ const StakesTab = () => {
     >
       <div className="mb-4 flex items-center justify-between sm:px-6 sm:pt-6">
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
-        {/* {!isMobile && (
+        {!isMobile && (
           <ClaimAllButton
-            colonyAddress={colony.colonyAddress}
             claimableStakes={claimableStakes}
+            votingReputationByColony={votingReputationByColony}
             updateClaimedStakesCache={updateClaimedStakesCache}
           />
-        )} */}
+        )}
       </div>
       <Tabs
         items={tabItems}
