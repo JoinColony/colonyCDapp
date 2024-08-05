@@ -242,6 +242,7 @@
     "transaction.group.escalateMotion.description": "Escalate Motion",
     "transaction.group.finalizeMotion.title": "Finalize motion",
     "transaction.group.finalizeMotion.description": "Finalize motion",
+    "transaction.group.finalizeMultiSig.title": "Finalize motion",
     "transaction.group.deposit.title": "Activate tokens",
     "transaction.group.deposit.description": "Activate tokens",
     "transaction.group.deprecateExtension.title": "Deprecate Colony Extension",
