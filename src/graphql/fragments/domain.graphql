@@ -26,3 +26,17 @@ fragment DomainMetadata on DomainMetadata {
     newDescription
   }
 }
+
+fragment DomainBalanceReturn on DomainBalanceReturn {
+  last30Days {
+    totalIn
+    totalOut
+  }
+  timeframe {
+    key
+    value {
+      totalIn
+      totalOut
+    }
+  }
+}
