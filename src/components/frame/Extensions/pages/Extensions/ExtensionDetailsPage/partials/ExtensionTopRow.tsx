@@ -28,7 +28,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({ extensionData }) => {
 
   const isSetupRoute = pathname.split('/').pop() === 'setup';
 
-  const { neededColonyPermissions, isInitialized, isDeprecated, isEnabled } =
+  const { neededColonyPermissions, isInitialized, isDeprecated } =
     extensionData;
 
   const isVotingReputationExtension =
@@ -41,7 +41,6 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({ extensionData }) => {
   const showPermissionsBanner =
     isExtensionInstalled &&
     isInitialized &&
-    !isEnabled &&
     !isDeprecated &&
     !addressHasRoles({
       requiredRolesDomains: [Id.RootDomain],
