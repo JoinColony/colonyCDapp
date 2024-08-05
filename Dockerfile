@@ -3,7 +3,7 @@ FROM node:20.11-alpine3.19 as build-stage
 RUN apk add git
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN SKIP_HOOKS=true npm install
+RUN SKIP_HOOKS=true npm ci
 
 # Package the import-meta-env as single binary as we don't have node on the production container
 RUN npx @yao-pkg/pkg ./node_modules/@import-meta-env/cli/bin/import-meta-env.js \
