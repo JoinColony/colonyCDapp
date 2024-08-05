@@ -225,7 +225,7 @@ export const mapColonyActionToExpectedFormat = ({
       expenditureData
         ? getSelectedToken(
             colony,
-            expenditureData?.slots?.[0].payouts?.[0].tokenAddress || '',
+            expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
           )?.symbol
         : actionData.token?.symbol,
       ActionTitleMessageKeys.TokenSymbol,
@@ -233,7 +233,7 @@ export const mapColonyActionToExpectedFormat = ({
         expenditureData
           ? getSelectedToken(
               colony,
-              expenditureData?.slots?.[0].payouts?.[0].tokenAddress || '',
+              expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
             )?.symbol
           : actionData.token?.symbol,
       ),
