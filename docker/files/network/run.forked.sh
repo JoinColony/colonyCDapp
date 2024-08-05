@@ -47,7 +47,7 @@ cp ./ganache-accounts.json /colonyCDapp/amplify/mock-data/colonyNetworkArtifacts
 # Reputation Miner
 
 cd packages/reputation-miner
-CHAIN_ID=$CHAIN_ID node ./bin/forked.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &
+HARDHAT_NETWORK='localhost' CHAIN_ID=$CHAIN_ID node ./bin/forked.js --minerAddress $MINER_ACCOUNT_ADDRESS --syncFrom 1 --colonyNetworkAddress $ETHER_ROUTER_ADDRESS --oracle --auto --dbPath reputationStates.sqlite --oraclePort 3002 --processingDelay 1 &
 # Broadcaster Service
 
 cd ../metatransaction-broadcaster
