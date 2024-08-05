@@ -6,7 +6,7 @@ import {
 import React, { type FC, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { UserHubTabs } from '~common/Extensions/UserHub/types.ts';
+import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { useGetUserTokenBalanceQuery } from '~gql';
@@ -170,7 +170,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               </span>
               {!isMobile && (
                 <ViewStakedButton
-                  onClick={() => onTabChange(UserHubTabs.Stakes)}
+                  onClick={() => onTabChange(UserHubTab.Stakes)}
                 />
               )}
             </div>
@@ -185,7 +185,7 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
           {isMobile && (
             <div className="mt-3">
               <ViewStakedButton
-                onClick={() => onTabChange(UserHubTabs.Stakes)}
+                onClick={() => onTabChange(UserHubTab.Stakes)}
                 isFullSize
               />
             </div>

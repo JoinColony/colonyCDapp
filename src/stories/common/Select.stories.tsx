@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { tabList } from '~common/Extensions/UserHub/consts.ts';
-import { type UserHubTabs } from '~common/Extensions/UserHub/types.ts';
+import { type UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -22,7 +22,7 @@ const SelectWithLogic = () => {
       options={tabList}
       defaultValue={selectedTab}
       value={selectedTab}
-      onChange={(value) => setSelectedTab(value?.value as UserHubTabs)}
+      onChange={(value) => setSelectedTab(value?.value as UserHubTab)}
     />
   );
 };

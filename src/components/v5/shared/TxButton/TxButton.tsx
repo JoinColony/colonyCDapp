@@ -14,9 +14,13 @@ import noop from '~utils/noop.ts';
 
 import IconButton from '../Button/IconButton.tsx';
 
+interface Props {
+  onClick: () => void;
+}
+
 const displayName = 'v5.TxButton';
 
-const TxButton: FC = () => {
+const TxButton: FC<Props> = ({ onClick }) => {
   const isMobile = useMobile();
 
   const { transactions, groupState } = useGroupedTransactions();
@@ -76,6 +80,7 @@ const TxButton: FC = () => {
         className={clsx({
           '!min-w-0': isMobile,
         })}
+        onClick={onClick}
         icon={
           <span
             className={clsx('flex shrink-0', {
@@ -118,7 +123,6 @@ const TxButton: FC = () => {
             <Check className="text-base-white" size={14} />
           </span>
         }
-        data-openhubifclicked
       />
     );
   }
