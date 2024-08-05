@@ -11,6 +11,22 @@ input AMPLIFY {
 """
 Input data for fetching a token's information from DB or chain
 """
+input DomainBalanceArguments {
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: String!
+  """
+  Address of the domain on the blockchain
+  """
+  domainAddress: String!
+  chainId: String
+  selectedCurrency: String
+}
+
+"""
+Input data for fetching a token's information from DB or chain
+"""
 input TokenFromEverywhereArguments {
   """
   Address of the token on the blockchain
@@ -402,6 +418,34 @@ type TokenFromEverywhereReturn {
   List of tokens found
   """
   items: [Token]
+}
+
+type DomainBalance {
+  amount: String
+  networkFee: String
+  createdAt: String
+  updatedAt: String
+  token: Token
+}
+
+type DomainBalanceInOut {
+  totalIn: String
+  totalOut: String
+  in: [DomainBalance]
+  out: [DomainBalance]
+}
+
+type TimeframeDomainBalanceInOut {
+  key: String!
+  value: DomainBalanceInOut
+}
+
+"""
+Input data for fetching a token's information from DB or chain
+"""
+type DomainBalanceReturn {
+ last30Days: DomainBalanceInOut
+ timeframe: [TimeframeDomainBalanceInOut]
 }
 
 """
@@ -994,6 +1038,13 @@ type Query {
   """
   bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
     @function(name: "bridgeXYZQuery-${env}")
+
+  """
+  Fetch a domain total balance
+  """
+  getDomainBalance(
+    input: DomainBalanceArguments
+  ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
 }
 
 """
@@ -1053,6 +1104,29 @@ enum SupportedCurrencies {
   BRL # Brazilian Real
   ETH # Ethereum
   CLNY # Colony Network Token.
+}
+
+type MarketPrice {
+  currency: SupportedCurrencies!
+  rate: Float
+}
+
+"""
+Represents a table with token exchange rates
+"""
+type TokenExchangeRate @model {
+  """
+  Unique identifier for the token id
+  """
+  tokenId: String! @index(name: "byTokenId", queryField: "tokenExhangeRateByTokenId", sortKeyFields: ["date"], )
+  """
+  Exchange timestamp
+  """
+  date: AWSDateTime!
+  """
+  Exchange currency
+  """
+  marketPrice: [MarketPrice]!
 }
 
 """
