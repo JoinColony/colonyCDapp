@@ -31,14 +31,20 @@ export interface ColonyContextValue {
   };
 }
 
-export const useColonyContext = () => {
+type UseColonyContextReturnType<T extends boolean | undefined> = T extends true
+  ? ColonyContextValue | null
+  : ColonyContextValue;
+
+export const useColonyContext = <T extends boolean | undefined = false>(args?: {
+  nullableContext: T;
+}): UseColonyContextReturnType<T> => {
   const context = useContext(ColonyContext);
 
-  if (!context) {
+  if (!context && !args?.nullableContext) {
     throw new Error(
       'This hook must be used within the "ColonyContext" provider',
     );
   }
 
-  return context;
+  return context as UseColonyContextReturnType<T>;
 };

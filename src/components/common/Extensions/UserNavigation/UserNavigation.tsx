@@ -5,6 +5,7 @@ import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
@@ -25,6 +26,7 @@ const MSG = defineMessages({
   },
 });
 
+// @TODO: Rename this to something more explanatory
 const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,
   userHub,
@@ -34,6 +36,8 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isMobile = useMobile();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
+  const { setShowTabletColonyPicker, setShowTabletSidebar } =
+    usePageLayoutContext();
 
   const isWalletConnected = !!wallet?.address;
   const networkInfo = useGetCurrentNetwork();
@@ -62,6 +66,13 @@ const UserNavigation: FC<UserNavigationProps> = ({
     );
 
   useDisableBodyScroll(visible && isMobile);
+
+  const onUserMenuButtonClick = () => {
+    setOpenItemIndex(undefined);
+    toggleOff();
+    setShowTabletColonyPicker(false);
+    setShowTabletSidebar(false);
+  };
 
   return (
     <div className="flex gap-1 md:relative">
@@ -96,10 +107,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         icon={isMobile ? GearSix : List}
         iconSize={isMobile ? 18 : 16}
         setTriggerRef={setTriggerRef}
-        onClick={() => {
-          setOpenItemIndex(undefined);
-          toggleOff();
-        }}
+        onClick={onUserMenuButtonClick}
       />
       {visible && (
         <UserMenu

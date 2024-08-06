@@ -1,27 +1,25 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import PageLayout from '~v5/frame/PageLayout/index.ts';
+import { BasicPageSidebar } from '~v5/shared/Navigation/Sidebar/sidebars/BasicPageSidebar.tsx';
 
-import MainSidebar from './MainSidebar.tsx';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
-import SimpleSidebar from './SimpleSidebar.tsx';
 import { type MainLayoutProps } from './types.ts';
 
 const displayName = 'frame.Extensions.layouts.MainLayout';
 
+/** TODO: This should not be under the Extensions directory */
 const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   children,
   sidebar,
-  hasWideSidebar,
+  header,
 }) => {
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
-  const { wallet } = useAppContext();
-  const Sidebar = sidebar || (wallet ? <MainSidebar /> : <SimpleSidebar />);
 
   return (
     <PageLayout
+      // @TODO: Move page heading props logic inside the header component itself
       headerProps={{
         pageHeadingProps:
           pageHeadingTitle || breadcrumbs.length
@@ -32,8 +30,8 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
             : undefined,
         userNavigation: <UserNavigationWrapper />,
       }}
-      sidebar={Sidebar}
-      hasWideSidebar={hasWideSidebar}
+      sidebar={sidebar ?? <BasicPageSidebar />}
+      header={header}
     >
       {children}
     </PageLayout>
