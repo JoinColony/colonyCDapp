@@ -110,7 +110,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
       case ColonyActionType.CancelStreamingPaymentMotion:
-        // @NOTE: Enabling those 4 above temporarily
+      case ColonyActionType.EditStreamingPaymentMotion:
+        // @NOTE: Enabling those 5 above temporarily
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
         return <PaymentBuilderWidget action={action} />;
