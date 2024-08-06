@@ -42,9 +42,8 @@ export const getStakeStatus = (
     stake.action?.motionData?.databaseMotionId.split(/[-_]/) ?? [];
 
   const colonyAddress = stake.action?.colonyAddress ?? '';
-  const currentMotionId = stake.action?.motionData?.motionId ?? '';
-  const motionMapName = `${colonyAddress}-${currentMotionId}`;
-  const motionState = statesMap.get(motionMapName);
+  const databaseMotionId = stake.action?.motionData?.databaseMotionId ?? '';
+  const motionState = statesMap.get(databaseMotionId);
   const currentVotingReputationAddress =
     colonyAddress && votingReputationByColony[colonyAddress];
   // currentVotingReputationAddress will be present in votingReputationByColony if voting reputation enabled

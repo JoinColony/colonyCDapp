@@ -37,6 +37,7 @@ export const useStakesByFilterType = () => {
         .map((stake) => ({
           motionId: stake.action?.motionData?.motionId ?? '',
           colonyAddress: stake.action?.colonyAddress ?? '',
+          databaseMotionId: stake.action?.motionData?.databaseMotionId ?? '',
         })),
     [userStakes],
   );
