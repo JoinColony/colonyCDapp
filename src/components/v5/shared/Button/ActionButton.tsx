@@ -17,6 +17,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   transform,
   values,
   isLoading = false,
+  loadingContent,
   ...props
 }) => {
   const submitAction = submit || actionType;
@@ -47,7 +48,17 @@ const ActionButton: FC<ActionButtonProps> = ({
   };
 
   return (
-    <Button onClick={handleClick} loading={loading || isLoading} {...props} />
+    <>
+      {loadingContent && (loading || isLoading) ? (
+        loadingContent
+      ) : (
+        <Button
+          onClick={handleClick}
+          loading={loadingContent ? undefined : loading || isLoading}
+          {...props}
+        />
+      )}
+    </>
   );
 };
 

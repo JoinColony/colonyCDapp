@@ -68,7 +68,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
-        annotationMessage?: string;
       },
       object
     >
@@ -142,6 +141,7 @@ export type ExpendituresActionTypes =
         distributionType?: SplitPaymentDistributionType;
         activeBalance: string | undefined;
         tokenAddress: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >

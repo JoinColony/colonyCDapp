@@ -124,6 +124,14 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     fieldArrayMethods.remove();
   };
 
+  const isDataEmpty = value.every(
+    (item) =>
+      !item.recipient &&
+      !item.amount &&
+      !item.delay &&
+      item.tokenAddress === nativeToken?.tokenAddress,
+  );
+
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -141,8 +149,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           className={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
             {
-              '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.125rem]': isTablet,
-              '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
+              '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
+              '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[3.375rem] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
                 !isTablet,
               '[&_table]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
@@ -195,6 +203,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
         isOpen={isUploadModalOpen}
         onUpload={onUpload}
         onClose={toggleUploadModalOff}
+        isDataEmpty={isDataEmpty}
       />
     </div>
   );

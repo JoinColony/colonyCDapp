@@ -35,9 +35,12 @@ const useEnoughTokensForStaking = ({
     .add(userInactivatedTokens)
     .gte(requiredStake);
 
+  const hasEnoughActivatedTokens = userActivatedTokens.gte(requiredStake);
+
   return {
     loadingUserTokenBalance,
     hasEnoughTokens,
+    hasEnoughActivatedTokens,
     userActivatedTokens,
     userInactivatedTokens,
   };

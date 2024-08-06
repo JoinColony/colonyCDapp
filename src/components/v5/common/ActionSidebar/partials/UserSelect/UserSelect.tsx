@@ -91,7 +91,6 @@ const UserSelect: FC<UserSelectProps> = ({
 
   const userName = getUserName();
   const isUserAddressValid = field.value && isAddress(field.value);
-
   const toggler = (
     <>
       <button
@@ -173,8 +172,8 @@ const UserSelect: FC<UserSelectProps> = ({
       {tooltipContent ? (
         <Tooltip
           tooltipContent={tooltipContent}
-          trigger="hover"
-          placement="top"
+          trigger={!isUserAddressValid ? 'hover' : undefined}
+          placement={isUserAddressValid ? 'top' : 'bottom'}
         >
           {toggler}
         </Tooltip>

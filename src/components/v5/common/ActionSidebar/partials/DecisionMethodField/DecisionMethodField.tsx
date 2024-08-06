@@ -1,5 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
+import { useWatch } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -10,6 +11,8 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
+import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
+import { actionsWithStakingDecisionMethod } from '../../hooks/permissions/consts.ts';
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 import {
@@ -31,9 +34,14 @@ const DecisionMethodField = ({
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isStakedExpenditureEnabled } =
+    useEnabledExtensions();
+  const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+  const shouldShowStaking =
+    isStakedExpenditureEnabled &&
+    actionsWithStakingDecisionMethod.includes(actionType);
 
   const getDecisionMethods = () => {
     const decisionMethods: DecisionMethodOption[] = [
@@ -50,6 +58,14 @@ const DecisionMethodField = ({
             {
               label: formatText({ id: 'actionSidebar.method.reputation' }),
               value: DecisionMethod.Reputation,
+            },
+          ]
+        : []),
+      ...(shouldShowStaking
+        ? [
+            {
+              label: formatText({ id: 'actionSidebar.method.staking' }),
+              value: DecisionMethod.Staking,
             },
           ]
         : []),

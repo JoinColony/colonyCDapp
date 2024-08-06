@@ -27,6 +27,7 @@ import {
   uploadAnnotation,
   getPayoutsWithSlotIds,
   getEditDraftExpenditureMulticallData,
+  createActionMetadataInDB,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -34,6 +35,7 @@ export type CreateStakedExpenditurePayload =
 
 function* createStakedExpenditure({
   meta,
+  meta: { setTxHash },
   payload: {
     colonyAddress,
     payouts,
@@ -48,6 +50,7 @@ function* createStakedExpenditure({
     distributionType,
     activeBalance = '0',
     tokenAddress,
+    customActionTitle,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
   const colonyManager: ColonyManager = yield call(getColonyManager);
@@ -263,6 +266,10 @@ function* createStakedExpenditure({
     yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
+
     if (isStaged) {
       yield takeFrom(
         setExpenditureStaged.channel,
@@ -298,9 +305,7 @@ function* createStakedExpenditure({
       meta,
     });
 
-    // @TODO: Remove during advanced payments UI wiring
-    // eslint-disable-next-line no-console
-    console.log('Created expenditure ID:', expenditureId.toString());
+    setTxHash?.(txHash);
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {

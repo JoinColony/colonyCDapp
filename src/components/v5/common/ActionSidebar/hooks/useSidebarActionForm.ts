@@ -19,6 +19,7 @@ import MintTokenForm from '../partials/forms/MintTokenForm/index.ts';
 import PaymentBuilderForm from '../partials/forms/PaymentBuilderForm/index.ts';
 import SinglePaymentForm from '../partials/forms/SimplePaymentForm/index.ts';
 import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
+import StagedPaymentForm from '../partials/forms/StagedPaymentForm/StagedPaymentForm.tsx';
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
@@ -41,6 +42,7 @@ const useSidebarActionForm = () => {
       [Action.EditColonyDetails]: EditColonyDetailsForm,
       [Action.ManageColonyObjectives]: ManageColonyObjectivesForm,
       [Action.SplitPayment]: SplitPaymentForm,
+      [Action.StagedPayment]: StagedPaymentForm,
       [Action.ManageTokens]: ManageTokensForm,
       [Action.PaymentBuilder]: PaymentBuilderForm,
       [Action.BatchPayment]: BatchPaymentForm,

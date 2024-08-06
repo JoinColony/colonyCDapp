@@ -41,6 +41,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateExpenditure} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
+      ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -54,7 +55,8 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteraction} ${safeActionTitle}
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
-      ${ExtendedColonyActionType.SplitPayment} {Split Payment **change me**}
+      ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -90,6 +92,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.CreateExpenditure} {Advanced payment}
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
@@ -102,6 +105,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} {Contract interaction}
       ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
       ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} {Multiple transactions}
+      ${ExtendedColonyActionType.SplitPayment} {Split payment}
       other {Generic}
     }`,
 };

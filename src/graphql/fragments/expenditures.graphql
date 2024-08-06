@@ -10,8 +10,17 @@ fragment Expenditure on Expenditure {
   nativeDomainId
   metadata {
     fundFromDomainNativeId
+    distributionType
     stages {
       ...ExpenditureStage
+    }
+  }
+  creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
+    items {
+      metadata {
+        customTitle
+      }
+      transactionHash: id
     }
   }
   finalizedAt
@@ -24,6 +33,10 @@ fragment Expenditure on Expenditure {
   }
   type
   isStaked
+  userStake {
+    amount
+    isClaimed
+  }
   balances {
     ...ExpenditureBalance
   }

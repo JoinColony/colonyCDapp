@@ -22,6 +22,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       message,
       maxLength,
       shouldFocus,
+      withoutCounter,
       ...rest
     },
     ref,
@@ -60,16 +61,18 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
           value={value}
           {...rest}
         />
-        {state === FieldState.Error && notMaybe(maxLength) && (
-          <div
-            className={clsx('absolute right-0 flex justify-end text-4', {
-              'text-negative-400': state === FieldState.Error,
-              'text-gray-500': state !== FieldState.Error,
-            })}
-          >
-            {typeof value === 'string' && value.length}/{maxLength}
-          </div>
-        )}
+        {state === FieldState.Error &&
+          notMaybe(maxLength) &&
+          !withoutCounter && (
+            <div
+              className={clsx('absolute right-0 flex justify-end text-4', {
+                'text-negative-400': state === FieldState.Error,
+                'text-gray-500': state !== FieldState.Error,
+              })}
+            >
+              {typeof value === 'string' && value.length}/{maxLength}
+            </div>
+          )}
         {message}
       </div>
     );

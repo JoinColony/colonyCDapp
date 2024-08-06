@@ -1,37 +1,45 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import Decimal from 'decimal.js';
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { SplitPaymentDistributionType } from '~gql';
+import { useTablet } from '~hooks';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
-import Numeral from '~shared/Numeral/index.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import { DistributionMethod } from '~v5/common/ActionSidebar/partials/consts.tsx';
+import { getSelectedToken } from '~utils/tokens.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
-import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
+
+import SplitPaymentAmountField from '../SplitPaymentAmountField/SplitPaymentAmountField.tsx';
+import SplitPaymentPayoutsTotal from '../SplitPaymentPayoutsTotal/SplitPaymentPayoutsTotal.tsx';
+import SplitPaymentPercentField from '../SplitPaymentPercentField/SplitPaymentPercentField.tsx';
 
 import {
   type SplitPaymentRecipientsFieldModel,
   type SplitPaymentRecipientsTableModel,
 } from './types.ts';
+import { calculatePercentageValue } from './utils.ts';
 
 export const useRecipientsFieldTableColumns = ({
   name,
   token,
-  distributionMethod,
   data,
   amount,
   fieldArrayMethods: { update },
+  disabled,
 }: {
   name: string;
   token: Token;
-  distributionMethod: DistributionMethod;
   data: SplitPaymentRecipientsFieldModel[];
-  amount: number;
+  amount: string | undefined;
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
+  disabled?: boolean;
 }): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
+  const isTablet = useTablet();
   const columnHelper = useMemo(
     () => createColumnHelper<SplitPaymentRecipientsTableModel>(),
     [],
@@ -51,10 +59,14 @@ export const useRecipientsFieldTableColumns = ({
           id: 'recipient',
           header: () => formatText({ id: 'table.row.recipient' }),
           cell: ({ row }) => (
-            <UserSelect key={row.id} name={`${name}.${row.index}.recipient`} />
+            <UserSelect
+              key={row.id}
+              name={`${name}.${row.index}.recipient`}
+              disabled={disabled}
+            />
           ),
           footer: () => (
-            <span className="text-gray-400">
+            <span className="text-gray-400 text-4">
               {formatText({ id: 'table.footer.total' })}
             </span>
           ),
@@ -63,98 +75,110 @@ export const useRecipientsFieldTableColumns = ({
           id: 'amount',
           header: () => formatText({ id: 'table.row.amount' }),
           cell: ({ row }) => (
-            <div className="flex items-center gap-3">
-              <Numeral
-                className="text-md"
-                value={(getPercentValue(row.index) / 100) * amount}
-              />
-              <TokenAvatar
-                size={20}
-                tokenName={token.name}
-                tokenAddress={token.tokenAddress}
-                tokenAvatarSrc={token.avatar ?? undefined}
-              />
-              <span className="text-md">{token.symbol}</span>
-            </div>
+            <SplitPaymentAmountField
+              key={row.id}
+              name={`${name}.${row.index}.amount`}
+              tokenAddressFieldName={`${name}.${row.index}.tokenAddress`}
+              isDisabled={disabled}
+              onBlur={
+                amount
+                  ? () => {
+                      const percentCalculated = calculatePercentageValue(
+                        dataRef.current?.[row.index].amount,
+                        amount,
+                      );
+
+                      if (percentCalculated === getPercentValue(row.index)) {
+                        return;
+                      }
+
+                      update(row.index, {
+                        ...(dataRef.current?.[row.index] || {}),
+                        percent: percentCalculated,
+                      });
+                    }
+                  : undefined
+              }
+            />
           ),
           footer: () => (
-            <div className="flex items-center gap-3">
-              <Numeral
-                className="text-md font-semibold"
-                value={dataRef.current?.reduce(
-                  (acc, _, index) =>
-                    acc + (getPercentValue(index) / 100) * amount,
-                  0,
-                )}
+            <div className="flex items-center justify-end gap-9 md:justify-start">
+              <SplitPaymentPayoutsTotal
+                data={dataRef.current || []}
+                token={token}
+                convertToWEI
               />
-              <TokenAvatar
-                size={20}
-                tokenName={token.name}
-                tokenAddress={token.tokenAddress}
-                tokenAvatarSrc={token.avatar ?? undefined}
-              />
-              <span className="text-md font-semibold">{token.symbol}</span>
+              {isTablet && (
+                <span className="text-md font-medium text-gray-900">
+                  {parseFloat(
+                    (
+                      dataRef.current?.reduce(
+                        (acc, _, index) => acc + getPercentValue(index),
+                        0,
+                      ) || 0
+                    ).toFixed(4),
+                  )}
+                  %
+                </span>
+              )}
             </div>
           ),
         }),
         columnHelper.display({
           id: 'percent',
           header: () => formatText({ id: 'table.row.percent' }),
-          cell: ({ row }) =>
-            distributionMethod === DistributionMethod.Unequal ? (
-              <FormInputBase
-                autoWidth
-                onBlur={() => {
-                  const maxPercent =
-                    100 -
-                    (dataRef.current?.reduce(
-                      (acc, _, index) =>
-                        index === row.index
-                          ? acc
-                          : acc + getPercentValue(index),
-                      0,
-                    ) || 0);
+          cell: ({ row }) => (
+            <SplitPaymentPercentField
+              onBlur={
+                amount
+                  ? () => {
+                      const percentCalculated = getPercentValue(row.index);
 
-                  if (getPercentValue(row.index) <= maxPercent) {
-                    return;
-                  }
+                      const amountCalculated = new Decimal(amount)
+                        .mul(percentCalculated)
+                        .div(100)
+                        .toDecimalPlaces(
+                          token.decimals || DEFAULT_TOKEN_DECIMALS,
+                        )
+                        .toString();
 
-                  update(row.index, {
-                    ...(dataRef.current?.[row.index] || {}),
-                    percent: maxPercent,
-                  });
-                }}
-                wrapperClassName="flex-row flex"
-                min={0}
-                max={100}
-                key={row.id}
-                name={`${name}.${row.index}.percent`}
-                type="number"
-                mode="secondary"
-                suffix="%"
-              />
-            ) : (
-              <span className="text-md">
-                {parseFloat(getPercentValue(row.index).toFixed(2))}%
-              </span>
-            ),
-          footer: () => (
-            <span className="text-md font-semibold">
-              {parseFloat(
-                (
-                  dataRef.current?.reduce(
-                    (acc, _, index) => acc + getPercentValue(index),
-                    0,
-                  ) || 0
-                ).toFixed(2),
-              )}
-              %
-            </span>
+                      if (
+                        dataRef.current?.[row.index].amount === amountCalculated
+                      ) {
+                        return;
+                      }
+
+                      update(row.index, {
+                        ...(dataRef.current?.[row.index] || {}),
+                        amount: amountCalculated,
+                      });
+                    }
+                  : undefined
+              }
+              key={row.id}
+              name={`${name}.${row.index}.percent`}
+              disabled={disabled}
+            />
           ),
+          footer: !isTablet
+            ? () => (
+                <span className="text-md font-medium text-gray-900">
+                  {parseFloat(
+                    (
+                      dataRef.current?.reduce(
+                        (acc, _, index) => acc + getPercentValue(index),
+                        0,
+                      ) || 0
+                    ).toFixed(4),
+                  )}
+                  %
+                </span>
+              )
+            : undefined,
         }),
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [amount, columnHelper, distributionMethod, name, token],
+      [amount, columnHelper, name, token, disabled],
     );
 
   return columns;
@@ -166,29 +190,40 @@ export const useDistributionMethodUpdate = ({
   fieldArrayMethods: { update },
   amount,
 }: {
-  distributionMethod: DistributionMethod;
+  distributionMethod: SplitPaymentDistributionType | undefined;
   data: SplitPaymentRecipientsFieldModel[] | undefined;
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
-  amount: number;
+  amount: string | undefined;
 }) => {
   const { filteredContributors } = useMemberContext();
+  const { colony } = useColonyContext();
 
   useEffect(() => {
     (async () => {
       switch (distributionMethod) {
-        case DistributionMethod.Equal: {
+        case SplitPaymentDistributionType.Equal: {
           const percentPerRecipient = 100 / (data?.length || 1);
 
           data?.forEach((_, index) => {
             update(index, {
               ...(data[index] || {}),
-              percent: percentPerRecipient,
+              percent: Number(percentPerRecipient.toFixed(4)),
+              amount: amount
+                ? new Decimal(amount)
+                    .mul(percentPerRecipient)
+                    .div(100)
+                    .toDecimalPlaces(
+                      getSelectedToken(colony, data[index].tokenAddress || '')
+                        ?.decimals || DEFAULT_TOKEN_DECIMALS,
+                    )
+                    .toString()
+                : undefined,
             });
           });
 
           break;
         }
-        case DistributionMethod.ReputationPercentage: {
+        case SplitPaymentDistributionType.Reputation: {
           const selectedColonyMembers =
             data?.reduce<Record<string, ColonyContributor>>(
               (acc, { recipient }) => {
@@ -222,18 +257,50 @@ export const useDistributionMethodUpdate = ({
               return acc + Number(reputationPercentage);
             }, 0) || 0;
 
+          let sum = 0;
+
           data?.forEach(({ recipient }, index) => {
             const contributor = recipient
               ? selectedColonyMembers[recipient.toLowerCase()]
               : undefined;
 
+            const lastRecipientIndex = data
+              .map((item) => !!item.recipient)
+              .lastIndexOf(true);
+
+            const percent = contributor?.colonyReputationPercentage
+              ? Number(
+                  (
+                    (contributor.colonyReputationPercentage /
+                      totalReputationPercentage) *
+                    100
+                  ).toFixed(4),
+                )
+              : undefined;
+
+            sum = index === lastRecipientIndex ? sum : sum + (percent || 0);
+
+            const finalPercentage =
+              index === lastRecipientIndex
+                ? Number((100 - sum).toFixed(4))
+                : percent;
+
+            const amountCalculated =
+              amount && finalPercentage
+                ? new Decimal(amount)
+                    .mul(finalPercentage)
+                    .div(100)
+                    .toDecimalPlaces(
+                      getSelectedToken(colony, data[index].tokenAddress || '')
+                        ?.decimals || DEFAULT_TOKEN_DECIMALS,
+                    )
+                    .toString()
+                : undefined;
+
             update(index, {
               ...(data[index] || {}),
-              percent: contributor?.colonyReputationPercentage
-                ? (Number(contributor.colonyReputationPercentage) /
-                    totalReputationPercentage) *
-                  100
-                : 0,
+              percent: finalPercentage,
+              amount: amountCalculated,
             });
           });
 
@@ -245,11 +312,11 @@ export const useDistributionMethodUpdate = ({
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    distributionMethod,
     amount,
-    update,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    colony, // eslint-disable-next-line react-hooks/exhaustive-deps
     JSON.stringify(data),
+    distributionMethod,
     filteredContributors,
+    update,
   ]);
 };
