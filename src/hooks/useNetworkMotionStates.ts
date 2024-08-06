@@ -1,5 +1,4 @@
 import { type MotionState, VotingReputationFactory } from '@colony/colony-js';
-import { type Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -24,7 +23,7 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
   );
 
   useEffect(() => {
-    const { ethersProvider } = wallet || {};
+    const { ethersProvider, address } = wallet || {};
     if (
       skip ||
       !nativeMotionIds.length ||
@@ -44,9 +43,12 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
       return;
     }
 
+    // Properly initialize the signer with the current wallet address
+    const signer = ethersProvider.getSigner(address);
+
     const votingRepClient = VotingReputationFactory.connect(
       votingReputationAddress,
-      ethersProvider as unknown as Provider,
+      signer,
     );
 
     const fetchMotionStates = async () => {
