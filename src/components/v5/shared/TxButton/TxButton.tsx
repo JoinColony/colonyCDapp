@@ -5,7 +5,6 @@ import React, { useMemo, type FC, useState, useEffect } from 'react';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import {
-  TransactionGroupStatus,
   useGroupedTransactions,
   getGroupStatus,
 } from '~state/transactionState.ts';
@@ -19,7 +18,7 @@ const displayName = 'v5.TxButton';
 const TxButton: FC = () => {
   const isMobile = useMobile();
 
-  const { transactions, groupState } = useGroupedTransactions();
+  const { transactions } = useGroupedTransactions();
 
   // This will calculate the following from all transaction groups:
   // Total number of succeeded txs within pending groups / total number of txs in pending groups
@@ -46,26 +45,51 @@ const TxButton: FC = () => {
       );
   }, [transactions]);
 
+  const groupStatus = useMemo(() => {
+    if (
+      transactions &&
+      transactions.some((txGroup) => {
+        const status = getGroupStatus(txGroup);
+        if (status === TransactionStatus.Pending) {
+          return true;
+        }
+        return false;
+      })
+    ) {
+      return TransactionStatus.Pending;
+    }
+    if (
+      transactions &&
+      transactions[0] &&
+      getGroupStatus(transactions[0]) === TransactionStatus.Succeeded
+    ) {
+      return TransactionStatus.Succeeded;
+    }
+    return TransactionStatus.Ready;
+  }, [transactions]);
+
   const [showCompleted, setShowCompleted] = useState(false);
   const [showPending, setShowPending] = useState(false);
   // Shows the "Completed" messasge just a little longer after all transactions are completed
   useEffect(() => {
-    if (groupState === TransactionGroupStatus.Pending) {
+    if (groupStatus === TransactionStatus.Pending) {
       setShowPending(true);
-    } else if (groupState === TransactionGroupStatus.Done && showPending) {
+    } else if (groupStatus === TransactionStatus.Succeeded && showPending) {
       setShowPending(false);
       setShowCompleted(true);
       const timeoutId = setTimeout(() => {
         setShowCompleted(false);
       }, 5000);
       return () => {
-        if (!(groupState === TransactionGroupStatus.Done && showPending)) {
+        if (!(groupStatus === TransactionStatus.Succeeded && showPending)) {
           clearTimeout(timeoutId);
         }
       };
+    } else {
+      setShowPending(false);
     }
     return noop;
-  }, [groupState, showPending]);
+  }, [groupStatus, showPending]);
 
   if (showPending) {
     return (

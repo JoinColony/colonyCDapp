@@ -95,12 +95,6 @@ export const convertTransactionType = ({
   };
 };
 
-export enum TransactionGroupStatus {
-  Loading = 'Loading',
-  Pending = 'Pending',
-  Done = 'Done',
-}
-
 // Get the joint status of one transaction group
 export const getGroupStatus = (txGroup: TransactionType[]) => {
   if (txGroup.some((tx) => tx.status === TransactionStatus.Failed)) {
@@ -110,31 +104,6 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
     return TransactionStatus.Succeeded;
   }
   return TransactionStatus.Pending;
-};
-
-// Get the joint status of all transaction groups (not failed or succeeded)
-export const getGroupStatusAll = (
-  transactions: TransactionType[][],
-  loading: boolean,
-) => {
-  if (loading) {
-    return TransactionGroupStatus.Loading;
-  }
-  if (
-    transactions.some((txGroup) => {
-      const groupStatus = getGroupStatus(txGroup);
-      if (
-        groupStatus !== TransactionStatus.Succeeded &&
-        groupStatus !== TransactionStatus.Failed
-      ) {
-        return true;
-      }
-      return false;
-    })
-  ) {
-    return TransactionGroupStatus.Pending;
-  }
-  return TransactionGroupStatus.Done;
 };
 
 // Get the index of the first transaction in a group that is ready to sign
@@ -172,11 +141,7 @@ export const transactionCount = (transactions: TransactionType[]) =>
 export const useGroupedTransactions = () => {
   const { user } = useAppContext();
   const userAddress = utils.getAddress(user?.walletAddress as string);
-  const {
-    data,
-    loading,
-    fetchMore: fetchMoreApollo,
-  } = useGetUserTransactionsQuery({
+  const { data, fetchMore: fetchMoreApollo } = useGetUserTransactionsQuery({
     variables: {
       userAddress,
       limit: TX_PAGE_SIZE,
@@ -205,8 +170,6 @@ export const useGroupedTransactions = () => {
     );
   }, [data?.getTransactionsByUser?.items]);
 
-  const groupState = getGroupStatusAll(transactions, loading);
-
   const fetchMore = async () => {
     const nextToken = data?.getTransactionsByUser?.nextToken;
     if (!nextToken) {
@@ -222,7 +185,6 @@ export const useGroupedTransactions = () => {
   return {
     canFetchMore: !!data?.getTransactionsByUser?.nextToken,
     fetchMore,
-    groupState,
     onePageOnly: transactions.length <= TX_PAGE_SIZE,
     transactions,
   };
