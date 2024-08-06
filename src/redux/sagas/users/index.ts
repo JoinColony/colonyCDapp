@@ -333,6 +333,7 @@ function* userCryptoToFiatTransfer({
 
     const { chainId } = yield colonyManager.provider.getNetwork();
 
+    // @TODO: Needs to be replaced with bridgeGetUserLiquidationAddress query
     const { data } = yield apolloClient.query<
       GetUserLiquidationAddressesQuery,
       GetUserLiquidationAddressesQueryVariables
