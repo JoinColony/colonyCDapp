@@ -1,5 +1,10 @@
-import { ClientType, Id, getChildIndex } from '@colony/colony-js';
-import { takeEvery, fork, call, put } from 'redux-saga/effects';
+import {
+  ClientType,
+  Id,
+  type TokenLockingClient,
+  getChildIndex,
+} from '@colony/colony-js';
+import { takeEvery, call, put } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
@@ -9,20 +14,19 @@ import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
-  createTransaction,
   createTransactionChannels,
   waitForTxResult,
+  createGroupTransaction,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
   putError,
   takeFrom,
-  getSetExpenditureValuesFunctionParams,
   saveExpenditureMetadata,
   initiateTransaction,
   uploadAnnotation,
   getPayoutsWithSlotIds,
-  adjustPayoutsAddresses,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 
 export type CreateStakedExpenditurePayload =
@@ -41,21 +45,29 @@ function* createStakedExpenditure({
     stages,
     networkInverseFee,
     annotationMessage,
+    distributionType,
+    activeBalance = '0',
+    tokenAddress,
   },
 }: Action<ActionTypes.STAKED_EXPENDITURE_CREATE>) {
-  const colonyManager: ColonyManager = yield getColonyManager();
+  const colonyManager: ColonyManager = yield call(getColonyManager);
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
-  const { network } = colonyManager.networkClient;
 
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
-  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
+  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+
+  const tokenLockingClient: TokenLockingClient = yield colonyManager.getClient(
+    ClientType.TokenLockingClient,
+    colonyAddress,
+  );
 
   const {
+    approve,
+    deposit,
     approveStake,
     makeExpenditure,
     setExpenditureValues,
@@ -64,6 +76,8 @@ function* createStakedExpenditure({
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
     [
+      'approve',
+      'deposit',
       'approveStake',
       'makeExpenditure',
       'setExpenditureValues',
@@ -73,76 +87,118 @@ function* createStakedExpenditure({
   );
 
   try {
-    yield fork(createTransaction, approveStake.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'approveStake',
-      identifier: colonyAddress,
-      params: [stakedExpenditureAddress, createdInDomain.nativeId, stakeAmount],
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 0,
+    if (stakeAmount.gt(activeBalance)) {
+      const missingActiveTokens = stakeAmount.sub(activeBalance);
+
+      yield createGroupTransaction({
+        channel: approve,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenClient,
+          methodName: 'approve',
+          identifier: tokenAddress,
+          params: [tokenLockingClient.address, missingActiveTokens],
+          ready: false,
+        },
+      });
+
+      yield createGroupTransaction({
+        channel: deposit,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.TokenLockingClient,
+          methodName: 'deposit(address,uint256,bool)',
+          identifier: colonyAddress,
+          params: [tokenAddress, missingActiveTokens, false],
+          ready: false,
+        },
+      });
+    }
+
+    yield createGroupTransaction({
+      channel: approveStake,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'approveStake',
+        identifier: colonyAddress,
+        params: [
+          stakedExpenditureAddress,
+          createdInDomain.nativeId,
+          stakeAmount,
+        ],
+        ready: false,
       },
-      ready: false,
     });
 
-    yield fork(createTransaction, makeExpenditure.id, {
-      context: ClientType.StakedExpenditureClient,
-      methodName: 'makeExpenditureWithStake',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 1,
+    yield createGroupTransaction({
+      channel: makeExpenditure,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.StakedExpenditureClient,
+        methodName: 'makeExpenditureWithStake',
+        identifier: colonyAddress,
+        ready: false,
       },
-      ready: false,
     });
 
-    yield fork(createTransaction, setExpenditureValues.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'setExpenditureValues',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 2,
+    yield createGroupTransaction({
+      channel: setExpenditureValues,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'multicall',
+        identifier: colonyAddress,
+        ready: false,
       },
-      ready: false,
     });
 
     if (isStaged) {
-      yield fork(createTransaction, setExpenditureStaged.id, {
-        context: ClientType.StagedExpenditureClient,
-        methodName: 'setExpenditureStaged',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: 3,
+      yield createGroupTransaction({
+        channel: setExpenditureStaged,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.StagedExpenditureClient,
+          methodName: 'setExpenditureStaged',
+          identifier: colonyAddress,
+          ready: false,
         },
-        ready: false,
       });
     }
 
     if (annotationMessage) {
-      yield fork(createTransaction, annotateMakeStagedExpenditure.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        group: {
-          key: batchKey,
-          id: meta.id,
-          index: isStaged ? 4 : 3,
+      yield createGroupTransaction({
+        channel: annotateMakeStagedExpenditure,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          ready: false,
         },
-        ready: false,
       });
     }
+
+    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+    yield initiateTransaction(approve.id);
+    yield waitForTxResult(approve.channel);
+
+    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+    yield initiateTransaction(deposit.id);
+    yield waitForTxResult(deposit.channel);
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction(approveStake.id);
     yield waitForTxResult(approveStake.channel);
 
-    // Find a chill skill index as a proof the extension has permissions in the selected domain
+    // Find a child skill index as a proof the extension has permissions in the selected domain
     const childSkillIndex = yield getChildIndex(
       colonyClient.networkClient,
       colonyClient,
@@ -163,8 +219,8 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-
-    yield transactionSetParams(makeExpenditure.id, [
+    yield;
+    transactionSetParams(makeExpenditure.id, [
       Id.RootDomain,
       childSkillIndex,
       createdInDomain.nativeId,
@@ -194,15 +250,16 @@ function* createStakedExpenditure({
       setExpenditureValues.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
-    yield transactionSetParams(
-      setExpenditureValues.id,
-      getSetExpenditureValuesFunctionParams({
-        nativeExpenditureId: expenditureId,
-        payouts: payoutsWithSlotIds,
-        networkInverseFee,
-        isStaged,
-      }),
-    );
+
+    const multicallData = getEditDraftExpenditureMulticallData({
+      expenditureId,
+      payouts: payoutsWithSlotIds,
+      colonyClient,
+      networkInverseFee,
+      isStaged,
+    });
+
+    yield transactionSetParams(setExpenditureValues.id, [multicallData]);
     yield initiateTransaction(setExpenditureValues.id);
     yield waitForTxResult(setExpenditureValues.channel);
 
@@ -232,6 +289,7 @@ function* createStakedExpenditure({
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
+      distributionType,
     });
 
     yield put<AllActions>({
@@ -247,6 +305,8 @@ function* createStakedExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   } finally {
     [
+      approve,
+      deposit,
       approveStake,
       makeExpenditure,
       setExpenditureValues,

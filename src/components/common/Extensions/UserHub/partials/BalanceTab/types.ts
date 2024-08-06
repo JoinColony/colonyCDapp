@@ -3,11 +3,11 @@ import { type ColonyWallet } from '~types/wallet.ts';
 
 import { type UserHubTabs } from '../../types.ts';
 
-export interface ReputationTabProps {
+export interface BalanceTabProps {
   onTabChange: (newTab: UserHubTabs) => void;
 }
 
-export interface BalanceProps extends Pick<ReputationTabProps, 'onTabChange'> {
+export interface BalanceProps extends Pick<BalanceTabProps, 'onTabChange'> {
   nativeToken: Token;
   wallet: ColonyWallet;
 }

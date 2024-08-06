@@ -11,7 +11,8 @@ import finalizeExpenditureSaga from './finalizeExpenditure.ts';
 import fundExpenditureSaga from './fundExpenditure.ts';
 import lockExpenditureSaga from './lockExpenditure.ts';
 import reclaimExpenditureStakeSaga from './reclaimExpenditureStake.ts';
-import releaseExpenditureStageSaga from './releaseExpenditureStage.ts';
+import releaseExpenditureStagesSaga from './releaseExpenditureStages.ts';
+import setStakeFractionSaga from './setStakeFraction.ts';
 
 export default function* expendituresSagas() {
   yield all([
@@ -24,8 +25,9 @@ export default function* expendituresSagas() {
     call(claimExpenditureSaga),
     call(createStakedExpenditureSaga),
     call(reclaimExpenditureStakeSaga),
-    call(releaseExpenditureStageSaga),
+    call(releaseExpenditureStagesSaga),
     call(cancelStakedExpenditureSaga),
     call(createStreamingPaymentSaga),
+    call(setStakeFractionSaga),
   ]);
 }

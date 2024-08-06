@@ -1,6 +1,6 @@
 import { tw } from '~utils/css/index.ts';
 
-const reputationTabClasses = {
+const balanceTabClasses = {
   rowName: tw`min-w-[2.875rem] text-md`,
   row: tw`flex justify-between font-medium`,
   numeral: tw`ml-1 font-medium`,
@@ -8,4 +8,4 @@ const reputationTabClasses = {
   reputationValue: tw`mt-px text-blue-400`,
 };
 
-export default reputationTabClasses;
+export default balanceTabClasses;

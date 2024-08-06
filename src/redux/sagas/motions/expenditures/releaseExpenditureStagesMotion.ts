@@ -1,9 +1,9 @@
 import {
-  type AnyVotingReputationClient,
   ClientType,
   ColonyRole,
   getPermissionProofs,
   Id,
+  getChildIndex,
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
@@ -16,32 +16,32 @@ import {
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
 import {
-  getMulticallDataForStageRelease,
   getColonyManager,
   initiateTransaction,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 
-export type ReleaseExpenditureStageMotionPayload =
-  Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>['payload'];
+export type ReleaseExpenditureStagesMotionPayload =
+  Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES>['payload'];
 
-function* releaseExpenditureStageMotion({
+function* releaseExpenditureStagesMotion({
   payload: {
     colonyAddress,
     colonyName,
+    stagedExpenditureAddress,
+    votingReputationAddress,
     expenditure,
-    slotId,
+    slotIds,
     motionDomainId,
     tokenAddresses,
   },
   meta,
   meta: { setTxHash, id },
-}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE>) {
-  const { createMotion /* annotationMessage */ } = yield call(
-    createTransactionChannels,
-    id,
-    ['createMotion', 'annotateMotion'],
-  );
+}: Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES>) {
+  const { createMotion } = yield call(createTransactionChannels, id, [
+    'createMotion',
+    'annotateMotion',
+  ]);
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
@@ -55,19 +55,28 @@ function* releaseExpenditureStageMotion({
       );
     }
 
-    const votingReputationClient: AnyVotingReputationClient = yield call(
-      [colonyManager, colonyManager.getClient],
-      ClientType.VotingReputationClient,
+    const stagedExpenditureClient = yield colonyManager.getClient(
+      ClientType.StagedExpenditureClient,
       colonyAddress,
     );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      expenditure.nativeDomainId,
-      ColonyRole.Arbitration,
-      votingReputationClient.address,
-    );
+    const [userPermissionDomainId, userChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Arbitration,
+        votingReputationAddress,
+      );
+
+    const [extensionPermissionDomainId, extensionChildSkillIndex] =
+      yield getPermissionProofs(
+        colonyClient.networkClient,
+        colonyClient,
+        expenditure.nativeDomainId,
+        ColonyRole.Arbitration,
+        stagedExpenditureAddress,
+      );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
@@ -80,21 +89,35 @@ function* releaseExpenditureStageMotion({
       ADDRESS_ZERO,
     );
 
-    const encodedMulticallData: string[] = getMulticallDataForStageRelease({
-      expenditure,
-      slotId,
+    const childSkillIndex = yield call(
+      getChildIndex,
+      colonyClient.networkClient,
       colonyClient,
-      permissionDomainId,
-      childSkillIndex,
-      tokenAddresses,
-    });
+      motionDomainId,
+      expenditure.nativeDomainId,
+    );
 
-    const encodedReleaseStagedPaymentAction =
-      yield colonyClient.interface.encodeFunctionData('multicall', [
-        encodedMulticallData,
-      ]);
+    const multicallData = slotIds.map((slotId) =>
+      stagedExpenditureClient.interface.encodeFunctionData(
+        'releaseStagedPaymentViaArbitration',
+        [
+          userPermissionDomainId,
+          userChildSkillIndex,
+          extensionPermissionDomainId,
+          extensionChildSkillIndex,
+          expenditure.nativeId,
+          slotId,
+          tokenAddresses,
+        ],
+      ),
+    );
 
-    const batchKey = 'motion-release-expenditure-stage';
+    const encodedAction = stagedExpenditureClient.interface.encodeFunctionData(
+      'multicall',
+      [multicallData],
+    );
+
+    const batchKey = 'createMotion';
 
     yield createGroupTransaction({
       channel: createMotion,
@@ -107,19 +130,13 @@ function* releaseExpenditureStageMotion({
         params: [
           motionDomainId,
           childSkillIndex,
-          ADDRESS_ZERO,
-          encodedReleaseStagedPaymentAction,
+          stagedExpenditureAddress,
+          encodedAction,
           key,
           value,
           branchMask,
           siblings,
         ],
-        group: {
-          title: { id: 'transaction.group.createMotion.title' },
-          description: {
-            id: 'transaction.group.createMotion.description',
-          },
-        },
       },
     });
 
@@ -135,8 +152,8 @@ function* releaseExpenditureStageMotion({
     setTxHash?.(txHash);
 
     if (type === ActionTypes.TRANSACTION_SUCCEEDED) {
-      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS>>({
-        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS>>({
+        type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
         meta,
       });
 
@@ -152,10 +169,10 @@ function* releaseExpenditureStageMotion({
     );
   } catch (e) {
     console.error(e);
-    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR>>({
-      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+    yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR>>({
+      type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
       payload: {
-        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR,
+        name: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR,
         message: JSON.stringify(e),
       },
       meta,
@@ -166,9 +183,9 @@ function* releaseExpenditureStageMotion({
   }
 }
 
-export default function* releaseExpenditureStageSaga() {
+export default function* releaseExpenditureStagesSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
-    releaseExpenditureStageMotion,
+    ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
+    releaseExpenditureStagesMotion,
   );
 }

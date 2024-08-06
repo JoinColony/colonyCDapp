@@ -1,4 +1,9 @@
-import { type StreamingPaymentEndCondition } from '~gql';
+import { type BigNumber } from 'ethers';
+
+import {
+  type SplitPaymentDistributionType,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutWithSlotId,
@@ -52,6 +57,7 @@ export type ExpendituresActionTypes =
         networkInverseFee: string;
         annotationMessage?: string;
         customActionTitle?: string;
+        distributionType?: SplitPaymentDistributionType;
       },
       MetaWithSetter<object>
     >
@@ -127,12 +133,15 @@ export type ExpendituresActionTypes =
         createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
-        stakeAmount: string;
+        stakeAmount: BigNumber;
         stakedExpenditureAddress: Address;
         isStaged?: boolean;
         stages?: ExpenditureStageFieldValue[];
         networkInverseFee: string;
         annotationMessage?: string;
+        distributionType?: SplitPaymentDistributionType;
+        activeBalance: string | undefined;
+        tokenAddress: string;
       },
       MetaWithSetter<object>
     >
@@ -157,20 +166,26 @@ export type ExpendituresActionTypes =
       object
     >
   | UniqueActionType<
-      ActionTypes.RELEASE_EXPENDITURE_STAGE,
+      ActionTypes.RELEASE_EXPENDITURE_STAGES,
       {
         colonyAddress: Address;
         expenditure: Expenditure;
-        slotId: number;
+        slotIds: number[];
+        /**
+         * Addresses of all tokens present in the slots to be released
+         * This should be refactored if more control is needed over switch tokens are claimed
+         * per individual slots
+         */
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
         annotationMessage?: string;
+        userAddress: Address;
       },
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | ErrorActionType<ActionTypes.RELEASE_EXPENDITURE_STAGES_ERROR, object>
   | UniqueActionType<
-      ActionTypes.RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
       object,
       object
     >
@@ -208,4 +223,14 @@ export type ExpendituresActionTypes =
       ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
       object,
       object
-    >;
+    >
+  | UniqueActionType<
+      ActionTypes.SET_STAKE_FRACTION,
+      {
+        colonyAddress: Address;
+        stakeFraction: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.SET_STAKE_FRACTION_ERROR, object>
+  | UniqueActionType<ActionTypes.SET_STAKE_FRACTION_SUCCESS, object, object>;
