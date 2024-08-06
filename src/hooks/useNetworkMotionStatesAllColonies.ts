@@ -4,7 +4,6 @@ import {
   VotingReputationFactory,
 } from '@colony/colony-js';
 import { Extension } from '@colony/colony-js';
-import { type Provider } from '@ethersproject/providers';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ADDRESS_ZERO, supportedExtensionsConfig } from '~constants/index.ts';
@@ -124,6 +123,7 @@ const useNetworkMotionStatesAllColonies = (
     const fetchMotionStates = async () => {
       setLoading(true);
       const statesMap = new Map(motionStatesMap);
+      const signer = ethersProvider.getSigner(wallet?.address); // Properly initialize the signer with the current wallet address
 
       await Promise.all(
         newMotionIds.map(async (nativeMotion) => {
@@ -134,7 +134,7 @@ const useNetworkMotionStatesAllColonies = (
           }
           const votingRepClient = VotingReputationFactory.connect(
             votingReputationAddress,
-            ethersProvider as unknown as Provider,
+            signer,
           );
 
           const motionStateKey = nativeMotion.databaseMotionId;
