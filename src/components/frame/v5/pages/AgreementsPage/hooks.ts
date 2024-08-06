@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   useGetColonyActionsQuery,
   ColonyActionType,
   ModelSortDirection,
+  useGetColonyActionQuery,
 } from '~gql';
 import {
   filterActionByMotionState,
@@ -12,6 +14,7 @@ import {
 } from '~hooks/useActivityFeed/helpers.ts';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { isTransactionFormat } from '~utils/web3/index.ts';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 
@@ -22,7 +25,7 @@ const useGetAllAgreements = () => {
     colony: { colonyAddress },
   } = useColonyContext();
 
-  const { data, loading, fetchMore } = useGetColonyActionsQuery({
+  const { data, loading, fetchMore, refetch } = useGetColonyActionsQuery({
     variables: {
       colonyAddress,
       filter: {
@@ -62,13 +65,34 @@ const useGetAllAgreements = () => {
   return {
     agreementsData,
     loading,
+    refetchAgreements: refetch,
   };
 };
 
+export const useGetCurrentOpenedAgreement = () => {
+  const [searchParams] = useSearchParams();
+  const transactionHash = searchParams.get('tx');
+  const isInvalidTx = !isTransactionFormat(transactionHash ?? undefined);
+  const { data: actionData } = useGetColonyActionQuery({
+    skip: isInvalidTx,
+    variables: {
+      transactionHash: transactionHash ?? '',
+    },
+  });
+  const action = actionData?.getColonyAction;
+  const motionData = action?.motionData;
+
+  return action?.type === ColonyActionType.CreateDecisionMotion
+    ? motionData
+    : null;
+};
+
 export const useGetAgreements = () => {
+  const currentAgreement = useGetCurrentOpenedAgreement();
+
   const { activeFilters, searchFilter } = useFiltersContext();
 
-  const { agreementsData, loading } = useGetAllAgreements();
+  const { agreementsData, refetchAgreements, loading } = useGetAllAgreements();
 
   const motionIds = useMemo(
     () =>
@@ -77,6 +101,17 @@ export const useGetAgreements = () => {
         .filter(Boolean) || [],
     [agreementsData],
   );
+
+  useEffect(() => {
+    if (
+      !loading &&
+      currentAgreement?.motionId &&
+      !motionIds.includes(currentAgreement?.motionId)
+    ) {
+      refetchAgreements();
+    }
+  }, [currentAgreement?.motionId, motionIds, loading, refetchAgreements]);
+
   const {
     motionStatesMap,
     loading: motionStatesLoading,
