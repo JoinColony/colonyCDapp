@@ -7,6 +7,7 @@ import StakedExpenditureSettings from '../partials/StakedExpenditureSettings.tsx
 export const ExtensionsBadgeMap = {
   [Extension.VotingReputation]: 'governance',
   [Extension.OneTxPayment]: 'payments',
+  [Extension.StagedExpenditure]: 'payments',
 };
 
 export const SetupComponentMap = {
