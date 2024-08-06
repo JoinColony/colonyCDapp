@@ -1,6 +1,7 @@
+import { countryCodeToCurrencyMap } from '~constants/currency.ts';
 import { SupportedCurrencies } from '~gql';
 
-import { countryCodeToCurrencyMap, locationApiConfig } from './config.ts';
+import { locationApiConfig } from './config.ts';
 import { type IpLocationResponse, type IpifyResponse } from './types.ts';
 import { buildAPIEndpoint, fetchData } from './utils.ts';
 

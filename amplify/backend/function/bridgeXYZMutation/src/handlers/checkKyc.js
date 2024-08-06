@@ -1,6 +1,7 @@
 const fetch = require('cross-fetch');
 const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
+const { getLiquidationAddresses } = require('./utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
  * So that we can always ensure it follows the latest schema
@@ -128,24 +129,26 @@ const checkKYCHandler = async (
           accountOwner: firstAccount.account_owner_name,
           iban: firstAccount.iban
             ? {
-                // TODO: Remove fallbacks
-                last4: firstAccount.iban.last_4 ?? 'NOT MOCKED',
-                bic: firstAccount.iban.bic ?? 'NOT MOCKED',
-                country: firstAccount.iban.country ?? 'NOT MOCKED',
+                last4: firstAccount.iban.last_4,
+                bic: firstAccount.iban.bic,
+                country: firstAccount.iban.country,
               }
             : null,
           usAccount: firstAccount.account
             ? {
                 last4: firstAccount.account.last_4,
-                routingNumber:
-                  firstAccount.account.routing_number ?? 'NOT MOCKED',
+                routingNumber: firstAccount.account.routing_number,
               }
             : null,
         }
       : null;
 
-    const hasLiquidationAddress =
-      colonyUser.liquidationAddresses.items.length > 0;
+    const liquidationAddresses = await getLiquidationAddresses(
+      apiUrl,
+      apiKey,
+      bridgeCustomerId,
+    );
+    const hasLiquidationAddress = liquidationAddresses.length > 0;
 
     if (firstAccount && !hasLiquidationAddress) {
       // They have external accounts. Create a liquidation address
@@ -174,10 +177,8 @@ const checkKYCHandler = async (
         await liquidationAddressCreation.json();
 
       if (liquidationAddressCreation.status === 201) {
-        console.log(liquidationAddressCreationRes);
         const liquidationAddress = liquidationAddressCreationRes.address;
-        console.log(liquidationAddress, checksummedWalletAddress);
-        const r = await graphqlRequest(
+        await graphqlRequest(
           createLiquidationAddress,
           {
             input: {

@@ -7,6 +7,7 @@ import {
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { type BridgeDrain } from '~types/graphql.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
@@ -15,8 +16,6 @@ import {
   useFiatTransfersData,
   useFiatTransfersTableColumns,
 } from './hooks.tsx';
-
-import type { FormattedTransfer } from './types.ts';
 
 const displayName = 'v5.pages.FiatTransfersTable';
 
@@ -48,7 +47,7 @@ const FiatTransfersTable = () => {
   return (
     <div>
       <TableHeader title={formatMessage(MSG.tableTitle)} />
-      <Table<FormattedTransfer>
+      <Table<BridgeDrain>
         columns={columns}
         data={loading ? Array(3).fill({}) : sortedData}
         state={{ sorting }}

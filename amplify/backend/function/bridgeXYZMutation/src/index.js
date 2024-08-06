@@ -57,8 +57,11 @@ exports.handler = async (event) => {
     handlers[path] || handlers[event.fieldName] || handlers.default;
 
   try {
-    return handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
-  } catch {
+    return await handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+  } catch (error) {
+    console.error(
+      `bridgeXYZMutation handler ${handler.name} failed with error: ${error}`,
+    );
     return { success: false };
   }
 };
