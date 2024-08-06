@@ -180,9 +180,11 @@ export const disconnectWallet = (walletLabel: string) => {
 function* userLogout() {
   try {
     removeContext(ContextModule.ColonyManager);
+    const apolloClient = getContext(ContextModule.ApolloClient);
     const wallet = getContext(ContextModule.Wallet);
     disconnectWallet(wallet.label);
     yield deauthenticateWallet();
+    apolloClient.clearStore();
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });
