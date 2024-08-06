@@ -7,7 +7,7 @@ const { getLiquidationAddresses } = require('./utils');
  * So that we can always ensure it follows the latest schema
  * (currently it's just saved statically)
  */
-const { getUser } = require('../graphql');
+const { getUser, createLiquidationAddress } = require('../graphql');
 
 const KYC_STATUS = {
   NOT_STARTED: 'NOT_STARTED',
@@ -75,14 +75,11 @@ const checkKYCHandler = async (
 
     // Is it an existing KYC link or a new one?
     let kycLink;
-    let kycLinkId;
     let kycStatus;
     if (data.existing_kyc_link) {
-      kycLinkId = data.existing_kyc_link.id;
       kycLink = data.existing_kyc_link.kyc_link;
       kycStatus = data.existing_kyc_link.kyc_status;
     } else {
-      kycLinkId = data.id;
       kycLink = data.kyc_link;
       kycStatus = data.kyc_status;
     }
@@ -179,16 +176,38 @@ const checkKYCHandler = async (
         },
       );
 
+      console.log('hello world');
+
       const liquidationAddressCreationRes =
         await liquidationAddressCreation.json();
 
-      if (liquidationAddressCreation.status !== 201) {
-        throw new Error(
-          `Failed to create liquidation address: ${liquidationAddressCreationRes}`,
+      if (liquidationAddressCreation.status === 201) {
+        externalAccountLiquidationAddress =
+          liquidationAddressCreationRes.address;
+
+        console.log({ externalAccountLiquidationAddress });
+
+        // create liquidation address entry in the database
+        await graphqlRequest(
+          createLiquidationAddress,
+          {
+            input: {
+              chainId: 42161,
+              liquidationAddress: externalAccountLiquidationAddress,
+              userAddress: checksummedWalletAddress,
+            },
+          },
+          graphqlURL,
+          appSyncApiKey,
+        );
+
+        console.log('created');
+      } else {
+        console.error(
+          'Failed to create liquidation address: ',
+          liquidationAddressCreationRes,
         );
       }
-
-      externalAccountLiquidationAddress = liquidationAddressCreationRes.address;
     }
 
     return {
