@@ -18,7 +18,11 @@ export type MotionStatesMapByColonies = Record<string, MotionStatesMap>;
 
 export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
 
-export type MotionId = { motionId: string; colonyAddress: string };
+export type MotionId = {
+  motionId: string;
+  colonyAddress: string;
+  databaseMotionId: string;
+};
 
 const getVotingReputationAddressByColony = (colony) => {
   const colonyExtensions = colony?.extensions?.items?.filter(notNull);
@@ -32,11 +36,7 @@ const getVotingReputationAddressByColony = (colony) => {
     );
     return extensionConfig?.extensionId === Extension.VotingReputation;
   });
-  return currentExtensionAddress.address;
-};
-
-const getMotionName = ({ colonyAddress, motionId }) => {
-  return `${colonyAddress}-${motionId}`;
+  return currentExtensionAddress?.address;
 };
 
 const useJoinedColoniesWithExtensions = (userAddress?: string) => {
@@ -110,21 +110,11 @@ const useNetworkMotionStatesAllColonies = (
     }
 
     const newMotionIds = motionIdsMap.filter((motion) => {
-      const motionStateKey = getMotionName({
-        colonyAddress: motion.colonyAddress,
-        motionId: motion.motionId,
-      });
-      return !motionStatesMap.has(motionStateKey);
+      return !motionStatesMap.has(motion.databaseMotionId);
     });
     const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
       (nativeMotionKey) =>
-        !motionIdsMap.some(
-          (m) =>
-            getMotionName({
-              colonyAddress: m.colonyAddress,
-              motionId: m.motionId,
-            }) === nativeMotionKey,
-        ),
+        !motionIdsMap.some((m) => m.databaseMotionId === nativeMotionKey),
     );
 
     if (!newMotionIds.length && !deletedMotionIds.length) {
@@ -147,10 +137,7 @@ const useNetworkMotionStatesAllColonies = (
             ethersProvider as unknown as Provider,
           );
 
-          const motionStateKey = getMotionName({
-            colonyAddress: nativeMotion.colonyAddress,
-            motionId: nativeMotion.motionId,
-          });
+          const motionStateKey = nativeMotion.databaseMotionId;
           try {
             const motionState = await votingRepClient.getMotionState(
               nativeMotion.motionId,
