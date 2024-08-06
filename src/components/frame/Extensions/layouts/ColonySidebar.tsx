@@ -25,6 +25,11 @@ interface Props {
   transactionId?: string;
 }
 
+/**
+ * @deprecated
+ * We have a new sidebar now, <ColonyPageSidebar />
+ * Remove all components which are used exclusively for this component
+ */
 const ColonySidebar = ({ txButton, userHub, transactionId }: Props) => {
   const { mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;

@@ -9,7 +9,7 @@ import ColonyIcon from '~icons/ColonyIcon.tsx';
 import ColonyLogo from '~images/logo-new.svg?react';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
-import HamburgerButton from '~v5/shared/HamburgerButton/index.ts';
+import MobileColonyPageSidebarToggle from '~v5/shared/Navigation/Sidebar/partials/MobileColonyPageSidebarToggle/MobileColonyPageSidebarToggle.tsx';
 
 import {
   secondLevelContentAnimation,
@@ -25,13 +25,16 @@ import { type NavigationSidebarProps } from './types.ts';
 
 const displayName = 'v5.frame.NavigationSidebarContent';
 
+/**
+ * @deprecated
+ * Remove all components which are used exclusively for this component
+ */
 const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
   className,
   mainMenuItems,
   colonySwitcherProps,
   additionalMobileContent,
   mobileBottomContent,
-  hamburgerLabel,
 }) => {
   const isTablet = useTablet();
   const {
@@ -163,13 +166,13 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
               <>
                 {withMainMenu && (
                   <>
-                    <HamburgerButton
+                    <MobileColonyPageSidebarToggle
                       onClick={() => {
                         toggleMenu();
                         setOpenItemIndex(undefined);
                       }}
                       isOpen={isMenuOpen}
-                      label={hamburgerLabel}
+                      label={{ id: 'menu' }}
                     />
                     <NavigationSidebarMobileContentWrapper
                       mobileBottomContent={mobileBottomContent}

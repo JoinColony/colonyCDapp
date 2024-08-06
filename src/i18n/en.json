@@ -1,4 +1,6 @@
 {
+    "action.makePayment": "Make payment",
+    "action.manageColony": "Manage colony",
     "actionSidebar.colonyName": "Colony name",
     "button.createNewColony": "Create new colony",
     "button.createNewAction": "Create new action",
@@ -25,6 +27,8 @@
     "navigation.finances.description": "The financial overview, asset balances, revenue, and expenses of the colony.",
     "navigation.finances.overview": "Overview",
     "navigation.finances.balance": "Balance",
+    "navigation.finances.balances": "Balances",
+    "navigation.finances.incoming": "Incoming",
     "navigation.finances.incomingFunds": "Incoming funds",
     "navigation.finances.transactions": "Transactions",
     "navigation.finances.streamingPayments": "Streaming payments",

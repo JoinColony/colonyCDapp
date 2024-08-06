@@ -92,6 +92,7 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
   --onboard-gray-500: var(--color-gray-500);
   --onboard-gray-600: var(--color-gray-600);
   --onboard-gray-700: var(--color-gray-700);
+  --onboard-gray-800: var(--color-gray-800);
   --onboard-success-100: var(--color-success-100);
   --onboard-success-200: var(--color-success-200);
   --onboard-success-300: var(--color-success-400);

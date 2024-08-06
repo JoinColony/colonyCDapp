@@ -28,6 +28,7 @@ import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 
 import { currencyIcons, userMenuItems } from './consts.ts';
 import { UserMenuItemName, type UserMenuProps } from './types.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 
@@ -36,12 +37,15 @@ const UserMenu: FC<UserMenuProps> = ({
   setTooltipRef,
   isVerified,
 }) => {
+  // QUESTION: Why change on tablet, and not on mobile like the UserHub?
   const isTablet = useTablet();
   const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
   const { profile } = user || {};
   const [activeSubmenu, setActiveSubmenu] = useState<UserMenuItemName | null>(
     null,
   );
+  const { actionSidebarToggle } = useActionSidebarContext();
+  const [isActionSidebarOpen] = actionSidebarToggle;
 
   const caretIcon = isTablet ? (
     <CaretDown size={12} />
@@ -65,8 +69,10 @@ const UserMenu: FC<UserMenuProps> = ({
       classNames={clsx(
         'w-full overflow-hidden bg-base-white p-6 md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
         {
-          '!top-full h-[calc(100dvh-var(--top-content-height))] !translate-y-0':
-            isTablet,
+          '!top-[calc(var(--header-nav-section-height))] h-[calc(100vh-var(--top-content-height))] !translate-y-0':
+            isTablet && isActionSidebarOpen,
+          '!top-[calc(var(--header-nav-section-height)+var(--top-content-height))] h-[calc(100vh-var(--top-content-height))] !translate-y-0':
+            isTablet && !isActionSidebarOpen,
         },
       )}
     >
