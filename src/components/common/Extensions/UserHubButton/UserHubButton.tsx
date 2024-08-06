@@ -6,9 +6,11 @@ import { useSearchParams } from 'react-router-dom';
 import UserHub from '~common/Extensions/UserHub/index.ts';
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
 import { ADDRESS_ZERO } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
@@ -49,6 +51,8 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
+  const { actionSidebarToggle } = useActionSidebarContext();
+  const [isActionSidebarOpen] = actionSidebarToggle;
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -59,6 +63,9 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const prevIsTokensModalOpen = usePrevious(isTokensModalOpen);
 
   const [, { toggleOff }] = mobileMenuToggle;
+
+  const { setShowTabletColonyPicker, setShowTabletSidebar } =
+    usePageLayoutContext();
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
@@ -135,6 +142,8 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     trackEvent(OPEN_USER_HUB_EVENT);
     setOpenItemIndex(undefined);
     toggleOff();
+    setShowTabletColonyPicker(false);
+    setShowTabletSidebar(false);
   };
 
   useEffect(() => {
@@ -209,8 +218,10 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
           classNames={clsx(
             'w-full border-none bg-base-white p-0 shadow-none sm:w-auto sm:rounded-lg sm:border sm:border-solid sm:border-gray-200 sm:shadow-default',
             {
-              '!top-[calc(var(--top-content-height)-1.5rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
-                isMobile,
+              '!top-[calc(var(--header-nav-section-height)-1.4rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
+                isMobile && isActionSidebarOpen,
+              '!top-[calc(var(--header-nav-section-height)+var(--top-content-height)-1.4rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
+                isMobile && !isActionSidebarOpen,
             },
           )}
         >

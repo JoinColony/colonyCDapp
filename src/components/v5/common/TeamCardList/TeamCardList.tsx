@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import TeamCard from '../TeamCard/index.ts';
@@ -14,14 +13,7 @@ const TeamCardList: FC<TeamCardListProps> = ({ items, className }) => (
     )}
   >
     {items.map(({ key, ...item }) => (
-      <motion.li
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        key={key}
-      >
-        <TeamCard {...item} />
-      </motion.li>
+      <TeamCard key={key} {...item} />
     ))}
   </ul>
 );

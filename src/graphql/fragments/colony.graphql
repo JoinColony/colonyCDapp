@@ -199,6 +199,9 @@ fragment JoinedColony on Colony {
     chainId
     network
   }
+  nativeToken {
+    symbol
+  }
 }
 
 fragment JoinedColonyWithExtensions on Colony {
