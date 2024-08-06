@@ -198,4 +198,7 @@ fragment JoinedColony on Colony {
     chainId
     network
   }
+  nativeToken {
+    symbol
+  }
 }

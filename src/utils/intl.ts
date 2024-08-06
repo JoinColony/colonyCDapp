@@ -1,14 +1,14 @@
 import { createIntl, createIntlCache } from '@formatjs/intl';
 import { nanoid } from 'nanoid';
 import { type ReactNode, cloneElement, isValidElement } from 'react';
-import { type MessageDescriptor } from 'react-intl';
 
 import {
   type AnyMessageValues,
   type ComplexMessageValues,
-  type Message,
   type SimpleMessageValues,
   type UniversalMessageValues,
+  type Message,
+  type TypedMessageDescriptor,
 } from '~types/index.ts';
 
 import actionMessages from '../i18n/en-actions.ts';
@@ -47,9 +47,9 @@ export const intl = <T = string>(
     cache,
   );
 
-export const isMessageDescriptor = (
+export const isTypedMessageDescriptor = (
   message?: Message,
-): message is MessageDescriptor =>
+): message is TypedMessageDescriptor =>
   typeof message === 'object' &&
   ('id' in message || 'description' in message || 'defaultMessage' in message);
 
@@ -104,7 +104,7 @@ export function formatText(
    */
   keyForComplexMessageValues?: string,
 ) {
-  if (isMessageDescriptor(message)) {
+  if (isTypedMessageDescriptor(message)) {
     const formattedMessage = formatIntlMessage(message, messageValues);
     return addKeyToFormattedMessage(
       formattedMessage,

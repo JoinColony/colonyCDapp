@@ -1,3 +1,7 @@
+// @TODO
+// This component should not be in the Extensions directory
+// Move this inside v5/shared/Navigation/PageLayout/layouts/ColonyPageLayout
+
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import React, {
@@ -31,9 +35,9 @@ import PageLayout from '~v5/frame/PageLayout/index.ts';
 // import Button from '~v5/shared/Button';
 import JoinButton from '~v5/shared/Button/JoinButton/index.ts';
 import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
+import ColonyPageSidebar from '~v5/shared/Navigation/Sidebar/sidebars/ColonyPageSidebar/ColonyPageSidebar.tsx';
 import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
-import ColonySidebar from './ColonySidebar.tsx';
 import { useCalamityBannerInfo } from './hooks.tsx';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
@@ -88,6 +92,19 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [hasRecentlyCreatedColony, setIsColonyCreatedModalOpen]);
 
+  // @TODO Please move this logic inside the UserNavigationWrapper component
+  // Safely check if you're viewing a Colony page via useColonyContext({ nullableContext: true })
+  // Then conditionally pass along the components i.e.
+  // <UserNavigation
+  //   txButton={colonyContext ? <TxButton /> : null}
+  //   userHub={colonyContext ? <UserHubButton /> : <HeaderAvatar />}
+  //   extra={<><WhateverExtraComponents /></>}
+  // />
+  // Please DO NOT forget to port over the following styles:
+  // 'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
+  // {
+  // 'relative z-userNav': !isTablet,
+  // },
   const getUserNavigation = useCallback(
     (isHidden?: boolean) => (
       <UserNavigationWrapper
@@ -100,9 +117,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           },
         )}
         isHidden={isTablet && isHidden}
+        /** @TODO: Rename arbitrary props. Let's try to be more explicit about what components need to be added */
         extra={
           <>
             <JoinButton />
+            {/* @TODO: Create a new InviteMembersButton component that encapsulates relevant logic */}
             {/* Hide Initially */}
             {/* {!isActionSidebarOpen ? (
                 <Button
@@ -129,6 +148,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
             <CalamityBanner items={calamityBannerItems} />
           ) : undefined
         }
+        /** @TODO: Move this inside of the Header component */
         headerProps={{
           pageHeadingProps: {
             title: pageHeadingTitle,
@@ -145,15 +165,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               ...breadcrumbs,
             ],
           },
+          /** @TODO: Move this inside the Header component */
           userNavigation: getUserNavigation(isActionSidebarOpen),
         }}
-        sidebar={
-          <ColonySidebar
-            txButton={<TxButton />}
-            userHub={<UserHubButton />}
-            transactionId={transactionId || undefined}
-          />
-        }
+        sidebar={<ColonyPageSidebar />}
       >
         {children}
       </PageLayout>
@@ -180,6 +195,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
           user?.privateBetaInviteCode?.shareableInvites ?? 0
         }
       />
+      {/** @TODO: This should live within the button component responsible for triggering it */}
       {/* <InviteMembersModal
         isOpen={isInviteMembersModalOpen}
         onClose={() => setIsInviteMembersModalOpen(false)}
