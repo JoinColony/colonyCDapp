@@ -1,5 +1,5 @@
 const { kycLinksHandler } = require('./handlers/kycLinks');
-const { checkKYCHandler } = require('./handlers/checkKyc/checkKyc');
+const { checkKYCHandler } = require('./handlers/checkKyc');
 const {
   createExternalAccountHandler,
 } = require('./handlers/createExternalAccount');
