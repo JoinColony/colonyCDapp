@@ -1857,6 +1857,10 @@ type User @model {
     @hasMany(indexName: "byUserAddress", fields: ["id"])
 }
 
+"""
+NOTE: This model should only be used to lookup users by liquidation address
+To get the liquidation address of a user, use the `bridgeGetUserLiquidationAddress` query instead
+"""
 type LiquidationAddress @model {
   """
   Unique identifier for the liquidation address entry
@@ -3106,6 +3110,12 @@ type ExpenditureSlotChanges {
 type ColonyActionMetadata @model {
   id: ID!
   customTitle: String!
+  """
+  In case of crypto-to-fiat payment actions,
+  the address of the recipient whose liquidation address
+  the funds were sent to
+  """
+  originalRecipientAddress: ID
 }
 
 type ColonyDecision @model {
