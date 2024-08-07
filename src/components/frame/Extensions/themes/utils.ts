@@ -12,6 +12,7 @@ export const mapTheme = (variables: ITheme): IMappedTheme => {
     '--color-gray-500': variables.gray500 || '',
     '--color-gray-600': variables.gray600 || '',
     '--color-gray-700': variables.gray700 || '',
+    '--color-gray-800': variables.gray800 || '',
     '--color-gray-900': variables.gray900 || '',
     '--color-base-white': variables.baseWhite || '',
     '--color-base-black': variables.baseBlack || '',

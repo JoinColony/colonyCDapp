@@ -26,7 +26,7 @@ const FilterButton: FC<FilterButtonProps> = ({
       aria-label={formatMessage({ id: 'ariaLabel.filter' })}
       ref={setTriggerRef}
       onClick={onClick}
-      className={clsx(className, 'flex-shrink-0', {
+      className={clsx(className, 'flex-shrink-0 text-gray-900', {
         'border border-gray-900 text-gray-900': isOpen,
       })}
       mode="tertiary"

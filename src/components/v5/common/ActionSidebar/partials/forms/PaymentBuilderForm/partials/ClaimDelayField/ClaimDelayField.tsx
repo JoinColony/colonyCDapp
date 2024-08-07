@@ -60,7 +60,7 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
     <div
       className={clsx(
         className,
-        'relative inline-grid items-center gap-3 overflow-hidden text-md before:invisible before:col-start-1 before:row-start-1 before:w-auto before:min-w-[0.5em] before:resize-none before:whitespace-pre-wrap before:text-md before:content-[attr(data-value)]',
+        'relative inline-grid items-center gap-3 overflow-hidden bg-base-white text-md before:invisible before:col-start-1 before:row-start-1 before:w-auto before:min-w-[0.5em] before:resize-none before:whitespace-pre-wrap before:text-md before:content-[attr(data-value)]',
       )}
       ref={wrapperRef}
       data-value={field.value || placeholderValue}
@@ -70,7 +70,7 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
         ref={inputRef}
         name={name}
         className={clsx(
-          'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none text-md outline-none outline-0',
+          'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none bg-base-white text-md outline-none outline-0',
           {
             'text-gray-900 placeholder:text-gray-400': !isError && !disabled,
             'bg-transparent text-gray-400 placeholder:text-gray-300': disabled,

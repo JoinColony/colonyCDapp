@@ -194,7 +194,7 @@ export const useDonutChart = ({
           cx={size / 2}
           cy={size / 2}
           r={innerRadius}
-          fill="white" // Assuming the center should be white
+          fill="var(--color-base-white)" // Assuming the center should be white
         />
       </g>
     );
