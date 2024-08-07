@@ -35,7 +35,7 @@ interface Props {
 }
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
   const { user } = useAppContext();
 
   const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
@@ -58,6 +58,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
         colonyAddress: colony.colonyAddress,
         extensionData,
       });
+      refetchColony();
       setIsPermissionEnabled(true);
     } catch (err) {
       console.error(err);

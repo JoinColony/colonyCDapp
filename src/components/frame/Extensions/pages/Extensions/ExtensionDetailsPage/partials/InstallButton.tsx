@@ -31,14 +31,15 @@ import { ExtensionDetailsPageTabId } from '../types.ts';
 interface InstallButtonProps {
   extensionData: AnyExtensionData;
   isVisible?: boolean;
+  setIsEnabling: (isEnabling: boolean) => void;
 }
 
 const displayName = 'pages.ExtensionDetailsPage.InstallButton';
 
 const InstallButton = ({
   extensionData,
-
   isVisible,
+  setIsEnabling,
 }: InstallButtonProps) => {
   const {
     colony,
@@ -48,6 +49,7 @@ const InstallButton = ({
       nativeToken: { decimals },
     },
     isSupportedColonyVersion,
+    refetchColony,
   } = useColonyContext();
   const { setActiveTab, setWaitingForActionConfirmation } =
     useExtensionDetailsPageContext();
@@ -78,6 +80,7 @@ const InstallButton = ({
 
       setWaitingForActionConfirmation(true);
       try {
+        setIsEnabling(true);
         setIsPolling(true);
         const extensionRoles = getUserRolesForDomain({
           colony,
@@ -107,7 +110,10 @@ const InstallButton = ({
           refetchExtensionData,
         });
 
+        await refetchColony();
+
         setIsPolling(false);
+        setIsEnabling(false);
 
         toast.success(
           <Toast
@@ -153,6 +159,8 @@ const InstallButton = ({
     refetchExtensionData,
     setActiveTab,
     setWaitingForActionConfirmation,
+    refetchColony,
+    setIsEnabling,
   ]);
 
   const handleInstallSuccess = async () => {

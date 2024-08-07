@@ -26,6 +26,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   isSetupRoute,
   extensionStatusMode,
   extensionStatusText,
+  setIsEnabling,
 }) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
@@ -78,6 +79,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
         <InstallButton
           extensionData={extensionData}
           isVisible={isInstallButtonVisible}
+          setIsEnabling={setIsEnabling}
         />
         <EnableButton
           extensionData={extensionData}

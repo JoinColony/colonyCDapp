@@ -143,7 +143,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                 <div className="flex w-full justify-center">
                   {isSubmitting ? (
                     <IconButton
-                      className="w-full !text-md md:w-[calc(50%-.375rem)]"
+                      className="w-full !text-md"
                       rounded="s"
                       text={{ id: 'button.pending' }}
                       icon={
