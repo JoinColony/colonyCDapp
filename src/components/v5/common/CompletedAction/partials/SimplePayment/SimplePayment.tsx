@@ -4,6 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -63,6 +64,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
+    networkFee,
     initiatorUser,
     recipientAddress: actionRecipientAddress = '',
     recipientUser: actionRecipientUser,
@@ -76,12 +78,14 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
 
   const { motionDomain } = motionData || {};
 
+  const amountLessFee = useAmountLessFee(amount, networkFee);
+
   const formattedAmount = getFormattedTokenAmount(
-    amount || '1',
+    amountLessFee,
     token?.decimals,
   );
   const convertedValue = convertToDecimal(
-    amount || '',
+    amountLessFee,
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
@@ -159,10 +163,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
             id: 'actionSidebar.tooltip.simplePayment.recipient',
           })}
         />
-        <AmountRow
-          amount={action.amount || '1'}
-          token={action.token || undefined}
-        />
+        <AmountRow amount={amountLessFee} token={action.token || undefined} />
 
         <DecisionMethodRow isMotion={action.isMotion || false} />
 
