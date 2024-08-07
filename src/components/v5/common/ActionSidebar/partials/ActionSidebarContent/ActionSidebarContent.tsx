@@ -15,6 +15,7 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
@@ -222,9 +223,11 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {
-            client.refetchQueries({
-              include: [SearchActionsDocument],
-            });
+            if (isQueryActive('SearchActions')) {
+              client.refetchQueries({
+                include: [SearchActionsDocument],
+              });
+            }
           }}
         >
           <ActionSidebarFormContent

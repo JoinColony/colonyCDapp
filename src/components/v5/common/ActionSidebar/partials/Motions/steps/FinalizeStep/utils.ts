@@ -1,6 +1,7 @@
 import { apolloClient } from '~apollo';
 import { ColonyActionType, SearchActionsDocument } from '~gql';
 import { type MotionAction } from '~types/motions.ts';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 import { updateContributorVerifiedStatus } from '~utils/members.ts';
 
 export const handleMotionFinalized = (action: MotionAction) => {
@@ -26,7 +27,9 @@ export const handleMotionFinalized = (action: MotionAction) => {
       break;
     }
     case ColonyActionType.CreateDecisionMotion: {
-      apolloClient.refetchQueries({ include: [SearchActionsDocument] });
+      if (isQueryActive('SearchActions')) {
+        apolloClient.refetchQueries({ include: [SearchActionsDocument] });
+      }
 
       break;
     }
