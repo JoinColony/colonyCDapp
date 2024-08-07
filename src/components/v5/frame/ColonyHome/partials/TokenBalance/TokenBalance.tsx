@@ -1,8 +1,10 @@
+import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { COLONY_BALANCES_ROUTE } from '~routes/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -16,6 +18,7 @@ const TokenBalance = () => {
   const { search } = useLocation();
   const { currency } = useCurrencyContext();
   const totalFunds = useTotalFunds();
+  const { isDarkMode } = usePageThemeContext();
 
   return (
     <WidgetBox
@@ -31,7 +34,11 @@ const TokenBalance = () => {
       }
       href={COLONY_BALANCES_ROUTE}
       searchParams={search}
-      className="border-base-bg bg-base-bg"
+      className={clsx({
+        'border-base-bg bg-base-bg': !isDarkMode,
+        'border-gray-200 bg-base-white text-gray-900 hover:!border-gray-200 hover:!bg-gray-200':
+          isDarkMode,
+      })}
     />
   );
 };

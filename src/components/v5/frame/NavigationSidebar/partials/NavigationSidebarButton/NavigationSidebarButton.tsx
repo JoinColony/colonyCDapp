@@ -2,6 +2,7 @@ import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks/index.ts';
 
 import { type NavigationSidebarButtonProps } from './types.ts';
@@ -20,6 +21,7 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
   ...rest
 }) => {
   const isTablet = useTablet();
+  const { isDarkMode } = usePageThemeContext();
 
   return (
     <button
@@ -44,10 +46,13 @@ const NavigationSidebarButton: FC<NavigationSidebarButtonProps> = ({
         `,
         {
           'text-blue-400 md:bg-gray-900 md:text-base-white':
-            isActive && !isTablet,
+            isActive && !isTablet && !isDarkMode,
           'text-gray-900 md:hover:bg-gray-900 md:hover:text-base-white':
-            !isActive && !isHighlighted,
+            !isActive && !isHighlighted && !isDarkMode,
           'bg-blue-100 text-blue-400': isHighlighted,
+          'text-gray-900 md:hover:bg-gray-50':
+            !isActive && !isHighlighted && isDarkMode,
+          'bg-gray-50 text-gray-900': isActive && !isTablet && isDarkMode,
         },
       )}
       {...rest}

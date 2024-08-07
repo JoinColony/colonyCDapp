@@ -10,15 +10,13 @@ import {
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 
-// @BETA: Disabled for now
-// import ThemeSwitcher from '~common/Extensions/ThemeSwitcher';
-
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import ThemeSwitcher from '~v5/common/ThemeSwitcher/ThemeSwitcher.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -190,8 +188,9 @@ const UserMenu: FC<UserMenuProps> = ({
             </div>
           </div>
         )}
-        {/* @BETA: Disabled for now */}
-        {/* <ThemeSwitcher /> */}
+        <div className="mt-6">
+          <ThemeSwitcher />
+        </div>
       </div>
       <div
         className={clsx('transition-transform', {

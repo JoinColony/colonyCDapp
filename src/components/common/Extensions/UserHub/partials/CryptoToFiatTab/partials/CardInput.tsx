@@ -33,7 +33,7 @@ const CardInput: FC<CardInputProps> = ({
         onChange={onChange}
         className={clsx('w-full pr-16 text-xl outline-none', {
           'bg-transparent text-gray-300': isFormDisabled,
-          'text-gray-900': !isFormDisabled,
+          'bg-base-white text-gray-900': !isFormDisabled,
         })}
         disabled={isFormDisabled}
       />

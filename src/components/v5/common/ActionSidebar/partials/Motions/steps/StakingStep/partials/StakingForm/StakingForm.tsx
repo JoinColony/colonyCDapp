@@ -6,6 +6,7 @@ import moveDecimal from 'move-decimal-point';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
@@ -32,6 +33,7 @@ const StakingForm: FC<StakingFormProps> = ({
   disableForm,
 }) => {
   const { motionAction } = useMotionContext();
+  const { isDarkMode } = usePageThemeContext();
 
   const thresholdPercentValue = 10;
 
@@ -125,7 +127,9 @@ const StakingForm: FC<StakingFormProps> = ({
                           'border-gray-300 text-gray-300 [&_.icon]:text-gray-300':
                             disabled,
                           'border-negative-400 bg-negative-400 text-base-white':
-                            checked && !disabled,
+                            checked && !disabled && !isDarkMode,
+                          'border-negative-400 bg-negative-400 text-gray-900':
+                            checked && !disabled && isDarkMode,
                         }),
                       icon: ThumbsDown,
                       disabled: isFullyObjected || isRefetching,
@@ -141,7 +145,9 @@ const StakingForm: FC<StakingFormProps> = ({
                           'border-gray-300 text-gray-300 [&_.icon]:text-gray-300':
                             disabled,
                           'border-purple-400 bg-purple-400 text-base-white':
-                            checked && !disabled,
+                            checked && !disabled && !isDarkMode,
+                          'border-purple-400 bg-purple-400 text-gray-900':
+                            checked && !disabled && isDarkMode,
                         }),
                       icon: ThumbsUp,
                       disabled: isFullySupported || isRefetching,

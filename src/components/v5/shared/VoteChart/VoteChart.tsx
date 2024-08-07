@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
 
 import VoteChartBar from './partials/VoteChartBar/index.ts';
@@ -21,6 +22,7 @@ const VoteChart: FC<VoteChartProps> = ({
   thresholdLabel,
   className,
 }) => {
+  const { isDarkMode } = usePageThemeContext();
   const forValue =
     (percentageVotesFor < 0 && 0) ||
     (percentageVotesFor > 100 && 100) ||
@@ -73,8 +75,14 @@ const VoteChart: FC<VoteChartProps> = ({
         <div className="flex flex-1 flex-col items-center gap-1">
           <VoteChartBar
             value={againstValue}
-            barBackgroundClassName="bg-negative-300"
-            predictionBarClassName="border-negative-300 bg-negative-300"
+            barBackgroundClassName={
+              isDarkMode ? 'bg-negative-400' : 'bg-negative-300'
+            }
+            predictionBarClassName={
+              isDarkMode
+                ? 'bg-negative-400 border-negative-400'
+                : 'border-negative-300 bg-negative-300'
+            }
             predictedValue={predictedAgainstValue}
             direction={VoteChartBarDirection.Left}
           />
@@ -103,8 +111,14 @@ const VoteChart: FC<VoteChartProps> = ({
             <VoteChartBar
               value={forValue}
               predictedValue={predictedForValue}
-              barBackgroundClassName="bg-purple-200"
-              predictionBarClassName="border-purple-200 bg-purple-200"
+              barBackgroundClassName={
+                isDarkMode ? 'bg-purple-400' : 'bg-purple-200'
+              }
+              predictionBarClassName={
+                isDarkMode
+                  ? 'bg-purple-400 border-purple-400'
+                  : 'border-purple-200 bg-purple-200'
+              }
               direction={VoteChartBarDirection.Right}
             />
           </div>

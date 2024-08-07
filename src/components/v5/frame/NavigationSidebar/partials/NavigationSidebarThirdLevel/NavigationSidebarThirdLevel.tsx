@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { thirdLevelContentAnimation } from '~v5/frame/NavigationSidebar/consts.ts';
@@ -21,6 +22,7 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
   items,
 }) => {
   const isTablet = useTablet();
+  const { isDarkMode } = usePageThemeContext();
   const [isOpen, { toggle }] = useToggle();
   const { mobileMenuToggle, setOpenItemIndex } = useNavigationSidebarContext();
   const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
@@ -61,16 +63,13 @@ const NavigationSidebarThirdLevel: FC<NavigationSidebarThirdLevelProps> = ({
 
   return (
     <div
-      className={`
-        md:text-inherit
-        rounded-[.25rem]
-        bg-gray-900
-        px-4
-        py-2 text-base-white
-        md:rounded-none
-        md:bg-transparent
-        md:p-0
-      `}
+      className={clsx(
+        'md:text-inherit rounded-[.25rem] px-4 py-2 md:rounded-none md:bg-transparent md:p-0',
+        {
+          'md:text-inherit bg-gray-50 text-gray-900': isDarkMode,
+          'md:text-inherit bg-gray-900 text-base-white': !isDarkMode,
+        },
+      )}
     >
       {title && !isTablet && (
         <motion.h3

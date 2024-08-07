@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+
 import { type ProgressBarProps } from './types.ts';
 
 const ProgressBar: FC<ProgressBarProps> = ({
@@ -12,6 +14,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
   barClassName,
   className,
 }) => {
+  const { isDarkMode } = usePageThemeContext();
   if (progress > max || progress < 0) {
     throw new Error(`Progress bar value must be between between 0 and ${max}`);
   }
@@ -19,9 +22,11 @@ const ProgressBar: FC<ProgressBarProps> = ({
   return (
     <div className={clsx(className, 'flex items-center')}>
       <div
-        className={clsx('relative w-full rounded bg-gray-200', {
+        className={clsx('relative w-full rounded', {
           'h-2.5 rounded-lg': isTall,
           'h-2 rounded': !isTall,
+          'bg-gray-200': !isDarkMode,
+          'bg-gray-300': isDarkMode,
         })}
       >
         <span

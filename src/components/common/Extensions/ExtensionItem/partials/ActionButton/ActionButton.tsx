@@ -1,6 +1,8 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
@@ -16,6 +18,7 @@ const ActionButton: FC<ActionButtonProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
+  const { isDarkMode } = usePageThemeContext();
 
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -27,7 +30,12 @@ const ActionButton: FC<ActionButtonProps> = ({
       {isExtensionInstalled ? (
         <Link
           to={extensionUrl}
-          className="flex h-[2.5rem] items-center justify-center rounded-lg border border-gray-300 bg-base-white px-4 py-2.5 text-md font-medium text-gray-700 transition-all duration-normal hover:border-gray-900 hover:bg-gray-900 hover:!text-base-white disabled:text-gray-300"
+          className={clsx(
+            'flex h-[2.5rem] items-center justify-center rounded-lg border border-gray-300 bg-base-white px-4 py-2.5 text-md font-medium text-gray-700 transition-all duration-normal hover:border-gray-900 hover:bg-gray-900 hover:!text-base-white disabled:text-gray-300',
+            {
+              'text-gray-900': isDarkMode,
+            },
+          )}
           onClick={handleClick}
         >
           {formatMessage({ id: 'button.manage' })}
