@@ -6,6 +6,7 @@ export interface ActionButtonProps {
   extensionData: AnyExtensionData;
   isSetupRoute: boolean;
   waitingForActionConfirmation: boolean;
+  setIsEnabling: SetStateFn<boolean>;
   setWaitingForActionConfirmation: SetStateFn<boolean>;
   extensionStatusMode?: ExtensionStatusBadgeMode;
   extensionStatusText?: React.ReactNode;

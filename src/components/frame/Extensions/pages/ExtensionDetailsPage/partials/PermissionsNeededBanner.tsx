@@ -37,7 +37,7 @@ interface Props {
 }
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
   const { user } = useAppContext();
   const { checkExtensionEnabled } = useCheckExtensionEnabled(
     extensionData.extensionId ?? '',
@@ -62,6 +62,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
       extensionData,
     });
     await checkExtensionEnabled();
+    refetchColony();
   };
 
   const handleEnableClick = async () => {

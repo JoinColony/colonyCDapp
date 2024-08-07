@@ -1,5 +1,5 @@
 import { Id } from '@colony/colony-js';
-import { Wallet } from '@phosphor-icons/react';
+import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -16,6 +16,7 @@ import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
@@ -129,14 +130,22 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
           {formatText({ id: 'button.cancel' })}
         </Button>
         <div className="flex w-full justify-center">
-          <Button
-            mode="primarySolid"
-            isFullSize
-            type="submit"
-            loading={isSubmitting}
-          >
-            {formatText({ id: 'fundingModal.accept' })}
-          </Button>
+          {isSubmitting ? (
+            <IconButton
+              className="w-full !text-md"
+              rounded="s"
+              text={{ id: 'button.pending' }}
+              icon={
+                <span className="ml-1.5 flex shrink-0">
+                  <SpinnerGap className="animate-spin" size={18} />
+                </span>
+              }
+            />
+          ) : (
+            <Button mode="primarySolid" isFullSize type="submit">
+              {formatText({ id: 'fundingModal.accept' })}
+            </Button>
+          )}
         </div>
       </div>
     </>

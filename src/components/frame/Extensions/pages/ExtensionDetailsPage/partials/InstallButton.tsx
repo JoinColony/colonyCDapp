@@ -17,6 +17,7 @@ import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { getUserRolesForDomain } from '~transformers';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { userHasRole } from '~utils/checks/userHasRoles.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import {
   getDefaultStakeFraction,
   isInstalledExtensionData,
@@ -27,7 +28,6 @@ import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '../types.ts';
 import { waitForDbAfterExtensionAction } from '../utils.tsx';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 interface InstallButtonProps {
   extensionData: AnyExtensionData;
@@ -36,11 +36,7 @@ interface InstallButtonProps {
 
 const displayName = 'pages.ExtensionDetailsPage.InstallButton';
 
-const InstallButton = ({
-  extensionData,
-
-  isVisible,
-}: InstallButtonProps) => {
+const InstallButton = ({ extensionData, isVisible }: InstallButtonProps) => {
   const {
     colony,
     colony: {
@@ -49,6 +45,7 @@ const InstallButton = ({
       nativeToken: { decimals },
     },
     isSupportedColonyVersion,
+    refetchColony,
   } = useColonyContext();
   const { setActiveTab, setWaitingForActionConfirmation } =
     useExtensionDetailsPageContext();
@@ -108,6 +105,8 @@ const InstallButton = ({
           refetchExtensionData,
         });
 
+        await refetchColony();
+
         setIsPolling(false);
 
         toast.success(
@@ -154,6 +153,7 @@ const InstallButton = ({
     refetchExtensionData,
     setActiveTab,
     setWaitingForActionConfirmation,
+    refetchColony,
   ]);
 
   const handleInstallSuccess = async () => {
