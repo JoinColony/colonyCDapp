@@ -37,7 +37,7 @@ const ClaimAllButton = ({
     try {
       await claimAll({
         userAddress: user?.walletAddress ?? '',
-        motionIds: claimableStakes.map((stake) => ({
+        motionStates: claimableStakes.map((stake) => ({
           databaseMotionId: stake.action?.motionData?.databaseMotionId ?? '',
           colonyAddress: stake.action?.colonyAddress ?? '',
           extensionAddress:

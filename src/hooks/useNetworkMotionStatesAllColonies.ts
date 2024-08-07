@@ -95,6 +95,7 @@ const useNetworkMotionStatesAllColonies = (
   );
   useEffect(() => {
     const { ethersProvider } = wallet || {};
+    const signer = ethersProvider?.getSigner(wallet?.address); // Properly initialize the signer with the current wallet address
 
     const votingReputationAddressesCount = Object.values(
       votingReputationByColony,
@@ -103,7 +104,8 @@ const useNetworkMotionStatesAllColonies = (
       skip ||
       !motionIdsMap.length ||
       !votingReputationAddressesCount ||
-      !ethersProvider
+      !ethersProvider ||
+      !signer
     ) {
       return;
     }
@@ -123,13 +125,15 @@ const useNetworkMotionStatesAllColonies = (
     const fetchMotionStates = async () => {
       setLoading(true);
       const statesMap = new Map(motionStatesMap);
-      const signer = ethersProvider.getSigner(wallet?.address); // Properly initialize the signer with the current wallet address
 
       await Promise.all(
         newMotionIds.map(async (nativeMotion) => {
           const votingReputationAddress =
             votingReputationByColony[nativeMotion.colonyAddress];
+          const motionStateKey = nativeMotion.databaseMotionId;
+
           if (!votingReputationAddress) {
+            statesMap.set(motionStateKey, null);
             return;
           }
           const votingRepClient = VotingReputationFactory.connect(
@@ -137,7 +141,6 @@ const useNetworkMotionStatesAllColonies = (
             signer,
           );
 
-          const motionStateKey = nativeMotion.databaseMotionId;
           try {
             const motionState = await votingRepClient.getMotionState(
               nativeMotion.motionId,
