@@ -26,6 +26,7 @@ import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/Finali
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
+import PermissionsBox from '../PermissionsBox/PermissionsBox.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import RequestBox from '../RequestBox/RequestBox.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
@@ -50,6 +51,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isReleaseModalOpen: isReleasePaymentModalOpen,
     toggleOffReleaseModal: hideReleasePaymentModal,
     toggleOnReleaseModal: showReleasePaymentModal,
+    selectedTransaction,
+    setSelectedTransaction,
+    selectedPermissionAction,
   } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
@@ -146,9 +150,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     );
   }, [motions]);
 
-  const { selectedTransaction, setSelectedTransaction } =
-    usePaymentBuilderContext();
-
   const {
     action: motionAction,
     motionState,
@@ -230,6 +231,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   useEffect(() => {
     setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
   }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
+
+  const mappedFundingActionsItems = (fundingActionsItems || []).map((item) => ({
+    createdAt: item?.createdAt || '',
+    initiatorAddress: item?.initiatorAddress || '',
+  }));
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -375,11 +381,25 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 />
               </div>
             ) : undefined}
-            {fundingActionsItems?.[0] && (
-              <ActionWithPermissionsInfo
-                userAdddress={fundingActionsItems[0].initiatorAddress}
-                createdAt={fundingActionsItems[0]?.createdAt}
-              />
+            {fundingActionsItems && fundingActionsItems.length > 0 && (
+              <>
+                {fundingActionsItems.length === 1 ? (
+                  <ActionWithPermissionsInfo
+                    userAdddress={fundingActionsItems[0]?.initiatorAddress}
+                    createdAt={fundingActionsItems[0]?.createdAt}
+                  />
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <PermissionsBox items={mappedFundingActionsItems} />
+                    {selectedPermissionAction && (
+                      <ActionWithPermissionsInfo
+                        userAdddress={selectedPermissionAction.initiatorAddress}
+                        createdAt={selectedPermissionAction.createdAt}
+                      />
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </>
         ),
