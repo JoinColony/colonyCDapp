@@ -1,0 +1,172 @@
+[
+  {
+    "code": "LK-1",
+    "name": "Western Province",
+    "category": null
+  },
+  {
+    "code": "LK-2",
+    "name": "Central Province",
+    "category": null
+  },
+  {
+    "code": "LK-3",
+    "name": "Southern Province",
+    "category": null
+  },
+  {
+    "code": "LK-4",
+    "name": "Northern Province",
+    "category": null
+  },
+  {
+    "code": "LK-5",
+    "name": "Eastern Province",
+    "category": null
+  },
+  {
+    "code": "LK-6",
+    "name": "North Western Province",
+    "category": null
+  },
+  {
+    "code": "LK-7",
+    "name": "North Central Province",
+    "category": null
+  },
+  {
+    "code": "LK-8",
+    "name": "Uva Province",
+    "category": null
+  },
+  {
+    "code": "LK-9",
+    "name": "Sabaragamuwa Province",
+    "category": null
+  },
+  {
+    "code": "LK-11",
+    "name": "Colombo",
+    "category": null
+  },
+  {
+    "code": "LK-12",
+    "name": "Gampaha",
+    "category": null
+  },
+  {
+    "code": "LK-13",
+    "name": "Kalutara",
+    "category": null
+  },
+  {
+    "code": "LK-21",
+    "name": "Kandy",
+    "category": null
+  },
+  {
+    "code": "LK-22",
+    "name": "Matale",
+    "category": null
+  },
+  {
+    "code": "LK-23",
+    "name": "Nuwara Eliya",
+    "category": null
+  },
+  {
+    "code": "LK-31",
+    "name": "Galle",
+    "category": null
+  },
+  {
+    "code": "LK-32",
+    "name": "Matara",
+    "category": null
+  },
+  {
+    "code": "LK-33",
+    "name": "Hambantota",
+    "category": null
+  },
+  {
+    "code": "LK-41",
+    "name": "Jaffna",
+    "category": null
+  },
+  {
+    "code": "LK-42",
+    "name": "Kilinochchi",
+    "category": null
+  },
+  {
+    "code": "LK-43",
+    "name": "Mannar",
+    "category": null
+  },
+  {
+    "code": "LK-44",
+    "name": "Vavuniya",
+    "category": null
+  },
+  {
+    "code": "LK-45",
+    "name": "Mullaittivu",
+    "category": null
+  },
+  {
+    "code": "LK-51",
+    "name": "Batticaloa",
+    "category": null
+  },
+  {
+    "code": "LK-52",
+    "name": "Ampara",
+    "category": null
+  },
+  {
+    "code": "LK-53",
+    "name": "Trincomalee",
+    "category": null
+  },
+  {
+    "code": "LK-61",
+    "name": "Kurunegala",
+    "category": null
+  },
+  {
+    "code": "LK-62",
+    "name": "Puttalam",
+    "category": null
+  },
+  {
+    "code": "LK-71",
+    "name": "Anuradhapura",
+    "category": null
+  },
+  {
+    "code": "LK-72",
+    "name": "Polonnaruwa",
+    "category": null
+  },
+  {
+    "code": "LK-81",
+    "name": "Badulla",
+    "category": null
+  },
+  {
+    "code": "LK-82",
+    "name": "Monaragala",
+    "category": null
+  },
+  {
+    "code": "LK-91",
+    "name": "Ratnapura",
+    "category": null
+  },
+  {
+    "code": "LK-92",
+    "name": "Kegalla",
+    "category": null
+  }
+]

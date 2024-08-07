@@ -1,0 +1,137 @@
+[
+  {
+    "code": "EG-DK",
+    "name": "Dakahlia",
+    "category": null
+  },
+  {
+    "code": "EG-BA",
+    "name": "Red Sea",
+    "category": null
+  },
+  {
+    "code": "EG-BH",
+    "name": "Beheira",
+    "category": null
+  },
+  {
+    "code": "EG-FYM",
+    "name": "Faiyum",
+    "category": null
+  },
+  {
+    "code": "EG-GH",
+    "name": "Gharbia",
+    "category": null
+  },
+  {
+    "code": "EG-ALX",
+    "name": "Alexandria",
+    "category": null
+  },
+  {
+    "code": "EG-IS",
+    "name": "Ismailia",
+    "category": null
+  },
+  {
+    "code": "EG-GZ",
+    "name": "Giza",
+    "category": null
+  },
+  {
+    "code": "EG-MNF",
+    "name": "Monufia",
+    "category": null
+  },
+  {
+    "code": "EG-MN",
+    "name": "Minya",
+    "category": null
+  },
+  {
+    "code": "EG-C",
+    "name": "Cairo",
+    "category": null
+  },
+  {
+    "code": "EG-KB",
+    "name": "Qalyubia",
+    "category": null
+  },
+  {
+    "code": "EG-LX",
+    "name": "Luxor",
+    "category": null
+  },
+  {
+    "code": "EG-WAD",
+    "name": "New Valley",
+    "category": null
+  },
+  {
+    "code": "EG-SUZ",
+    "name": "Suez",
+    "category": null
+  },
+  {
+    "code": "EG-SHR",
+    "name": "Al Sharqia",
+    "category": null
+  },
+  {
+    "code": "EG-ASN",
+    "name": "Aswan",
+    "category": null
+  },
+  {
+    "code": "EG-AST",
+    "name": "Asyut",
+    "category": null
+  },
+  {
+    "code": "EG-BNS",
+    "name": "Beni Suef",
+    "category": null
+  },
+  {
+    "code": "EG-PTS",
+    "name": "Port Said",
+    "category": null
+  },
+  {
+    "code": "EG-DT",
+    "name": "Damietta",
+    "category": null
+  },
+  {
+    "code": "EG-JS",
+    "name": "South Sinai",
+    "category": null
+  },
+  {
+    "code": "EG-KFS",
+    "name": "Kafr el-Sheikh",
+    "category": null
+  },
+  {
+    "code": "EG-MT",
+    "name": "Matrouh",
+    "category": null
+  },
+  {
+    "code": "EG-KN",
+    "name": "Qena",
+    "category": null
+  },
+  {
+    "code": "EG-SIN",
+    "name": "North Sinai",
+    "category": null
+  },
+  {
+    "code": "EG-SHG",
+    "name": "Sohag",
+    "category": null
+  }
+]

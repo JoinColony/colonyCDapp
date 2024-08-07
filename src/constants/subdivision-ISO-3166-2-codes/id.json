@@ -1,0 +1,207 @@
+[
+  {
+    "code": "ID-JW",
+    "name": "Jawa",
+    "category": null
+  },
+  {
+    "code": "ID-KA",
+    "name": "Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-ML",
+    "name": "Maluku",
+    "category": null
+  },
+  {
+    "code": "ID-NU",
+    "name": "Nusa Tenggara",
+    "category": null
+  },
+  {
+    "code": "ID-PP",
+    "name": "Papua",
+    "category": null
+  },
+  {
+    "code": "ID-SL",
+    "name": "Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-SM",
+    "name": "Sumatera",
+    "category": null
+  },
+  {
+    "code": "ID-AC",
+    "name": "Aceh",
+    "category": null
+  },
+  {
+    "code": "ID-BA",
+    "name": "Bali",
+    "category": null
+  },
+  {
+    "code": "ID-BB",
+    "name": "Bangka Belitung Islands",
+    "category": null
+  },
+  {
+    "code": "ID-BT",
+    "name": "Banten",
+    "category": null
+  },
+  {
+    "code": "ID-BE",
+    "name": "Bengkulu",
+    "category": null
+  },
+  {
+    "code": "ID-GO",
+    "name": "Gorontalo",
+    "category": null
+  },
+  {
+    "code": "ID-JA",
+    "name": "Jambi",
+    "category": null
+  },
+  {
+    "code": "ID-JB",
+    "name": "West Java",
+    "category": null
+  },
+  {
+    "code": "ID-JT",
+    "name": "Central Java",
+    "category": null
+  },
+  {
+    "code": "ID-JI",
+    "name": "East Java",
+    "category": null
+  },
+  {
+    "code": "ID-KB",
+    "name": "West Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-KS",
+    "name": "South Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-KT",
+    "name": "Central Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-KI",
+    "name": "East Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-KU",
+    "name": "North Kalimantan",
+    "category": null
+  },
+  {
+    "code": "ID-KR",
+    "name": "Riau Islands",
+    "category": null
+  },
+  {
+    "code": "ID-LA",
+    "name": "Lampung",
+    "category": null
+  },
+  {
+    "code": "ID-MA",
+    "name": "Maluku",
+    "category": null
+  },
+  {
+    "code": "ID-MU",
+    "name": "North Maluku",
+    "category": null
+  },
+  {
+    "code": "ID-NB",
+    "name": "West Nusa Tenggara",
+    "category": null
+  },
+  {
+    "code": "ID-NT",
+    "name": "East Nusa Tenggara",
+    "category": null
+  },
+  {
+    "code": "ID-PA",
+    "name": "Papua",
+    "category": null
+  },
+  {
+    "code": "ID-PB",
+    "name": "West Papua",
+    "category": null
+  },
+  {
+    "code": "ID-RI",
+    "name": "Riau",
+    "category": null
+  },
+  {
+    "code": "ID-SR",
+    "name": "West Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-SN",
+    "name": "South Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-ST",
+    "name": "Central Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-SG",
+    "name": "Southeast Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-SA",
+    "name": "North Sulawesi",
+    "category": null
+  },
+  {
+    "code": "ID-SB",
+    "name": "West Sumatra",
+    "category": null
+  },
+  {
+    "code": "ID-SS",
+    "name": "South Sumatra",
+    "category": null
+  },
+  {
+    "code": "ID-SU",
+    "name": "North Sumatra",
+    "category": null
+  },
+  {
+    "code": "ID-JK",
+    "name": "Jakarta",
+    "category": null
+  },
+  {
+    "code": "ID-YO",
+    "name": "Yogyakarta",
+    "category": null
+  }
+]

@@ -1,0 +1,107 @@
+[
+  {
+    "code": "SE-K",
+    "name": "Blekinge län",
+    "category": null
+  },
+  {
+    "code": "SE-W",
+    "name": "Dalarnas län",
+    "category": null
+  },
+  {
+    "code": "SE-I",
+    "name": "Gotlands län",
+    "category": null
+  },
+  {
+    "code": "SE-X",
+    "name": "Gävleborgs län",
+    "category": null
+  },
+  {
+    "code": "SE-N",
+    "name": "Hallands län",
+    "category": null
+  },
+  {
+    "code": "SE-Z",
+    "name": "Jämtlands län",
+    "category": null
+  },
+  {
+    "code": "SE-F",
+    "name": "Jönköpings län",
+    "category": null
+  },
+  {
+    "code": "SE-H",
+    "name": "Kalmar län",
+    "category": null
+  },
+  {
+    "code": "SE-G",
+    "name": "Kronobergs län",
+    "category": null
+  },
+  {
+    "code": "SE-BD",
+    "name": "Norrbottens län",
+    "category": null
+  },
+  {
+    "code": "SE-M",
+    "name": "Skåne län",
+    "category": null
+  },
+  {
+    "code": "SE-AB",
+    "name": "Stockholms län",
+    "category": null
+  },
+  {
+    "code": "SE-D",
+    "name": "Södermanlands län",
+    "category": null
+  },
+  {
+    "code": "SE-C",
+    "name": "Uppsala län",
+    "category": null
+  },
+  {
+    "code": "SE-S",
+    "name": "Värmlands län",
+    "category": null
+  },
+  {
+    "code": "SE-AC",
+    "name": "Västerbottens län",
+    "category": null
+  },
+  {
+    "code": "SE-Y",
+    "name": "Västernorrlands län",
+    "category": null
+  },
+  {
+    "code": "SE-U",
+    "name": "Västmanlands län",
+    "category": null
+  },
+  {
+    "code": "SE-O",
+    "name": "Västra Götalands län",
+    "category": null
+  },
+  {
+    "code": "SE-T",
+    "name": "Örebro län",
+    "category": null
+  },
+  {
+    "code": "SE-E",
+    "name": "Östergötlands län",
+    "category": null
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "code": "LU-CA",
+    "name": "Capellen",
+    "category": null
+  },
+  {
+    "code": "LU-CL",
+    "name": "Clervaux",
+    "category": null
+  },
+  {
+    "code": "LU-DI",
+    "name": "Diekirch",
+    "category": null
+  },
+  {
+    "code": "LU-EC",
+    "name": "Echternach",
+    "category": null
+  },
+  {
+    "code": "LU-ES",
+    "name": "Esch-sur-Alzette",
+    "category": null
+  },
+  {
+    "code": "LU-GR",
+    "name": "Grevenmacher",
+    "category": null
+  },
+  {
+    "code": "LU-LU",
+    "name": "Luxembourg",
+    "category": null
+  },
+  {
+    "code": "LU-ME",
+    "name": "Mersch",
+    "category": null
+  },
+  {
+    "code": "LU-RD",
+    "name": "Redange",
+    "category": null
+  },
+  {
+    "code": "LU-RM",
+    "name": "Remich",
+    "category": null
+  },
+  {
+    "code": "LU-VD",
+    "name": "Vianden",
+    "category": null
+  },
+  {
+    "code": "LU-WI",
+    "name": "Wiltz",
+    "category": null
+  }
+]

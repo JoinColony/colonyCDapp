@@ -1,0 +1,72 @@
+[
+  {
+    "code": "GR-A",
+    "name": "Eastern Macedonia and Thrace",
+    "category": null
+  },
+  {
+    "code": "GR-I",
+    "name": "Attica",
+    "category": null
+  },
+  {
+    "code": "GR-G",
+    "name": "Western Greece",
+    "category": null
+  },
+  {
+    "code": "GR-C",
+    "name": "Western Macedonia",
+    "category": null
+  },
+  {
+    "code": "GR-F",
+    "name": "Ionian Islands",
+    "category": null
+  },
+  {
+    "code": "GR-D",
+    "name": "Epirus",
+    "category": null
+  },
+  {
+    "code": "GR-B",
+    "name": "Central Macedonia",
+    "category": null
+  },
+  {
+    "code": "GR-M",
+    "name": "Crete",
+    "category": null
+  },
+  {
+    "code": "GR-L",
+    "name": "Southern Aegean",
+    "category": null
+  },
+  {
+    "code": "GR-J",
+    "name": "Peloponnese",
+    "category": null
+  },
+  {
+    "code": "GR-H",
+    "name": "Central Greece",
+    "category": null
+  },
+  {
+    "code": "GR-E",
+    "name": "Thessaly",
+    "category": null
+  },
+  {
+    "code": "GR-K",
+    "name": "Northern Aegean",
+    "category": null
+  },
+  {
+    "code": "GR-69",
+    "name": "Ágion Óros",
+    "category": null
+  }
+]

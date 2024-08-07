@@ -1,0 +1,392 @@
+[
+  {
+    "code": "AZ-NX",
+    "name": "Nakhchivan",
+    "category": null
+  },
+  {
+    "code": "AZ-BA",
+    "name": "Baku",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-GA",
+    "name": "Ganja",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-LA",
+    "name": "Lankaran",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-MI",
+    "name": "Mingachevir",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-NA",
+    "name": "Naftalan",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-NV",
+    "name": "Nakhchivan",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-SA",
+    "name": "Shaki",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-SR",
+    "name": "Shirvan",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-SM",
+    "name": "Sumqayıt",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-XA",
+    "name": "Stepanakert",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-YE",
+    "name": "Yevlakh",
+    "category": "municipality"
+  },
+  {
+    "code": "AZ-ABS",
+    "name": "Absheron",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AGC",
+    "name": "Aghjabadi",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AGM",
+    "name": "Agdam",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AGS",
+    "name": "Agdash",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AGA",
+    "name": "Agstafa",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AGU",
+    "name": "Agsu",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-AST",
+    "name": "Astara",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-BAB",
+    "name": "Babek",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-BAL",
+    "name": "Balakan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-BAR",
+    "name": "Barda",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-BEY",
+    "name": "Beylagan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-BIL",
+    "name": "Bilasuvar",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-CAB",
+    "name": "Jabrayil",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-CAL",
+    "name": "Jalilabad",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-CUL",
+    "name": "Julfa",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-DAS",
+    "name": "Dashkasan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-FUZ",
+    "name": "Fuzuli",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-GAD",
+    "name": "Gadabay",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-GOR",
+    "name": "Goranboy",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-GOY",
+    "name": "Goychay",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-GYG",
+    "name": "Goygol",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-HAC",
+    "name": "Hajigabul",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-IMI",
+    "name": "Imishli",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-ISM",
+    "name": "Ismailli",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-KAL",
+    "name": "Kalbajar",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-KAN",
+    "name": "Kangarli",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-KUR",
+    "name": "Kurdamir",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-LAC",
+    "name": "Lachin",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-LAN",
+    "name": "Lankaran",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-LER",
+    "name": "Lerik",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-MAS",
+    "name": "Masally",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-NEF",
+    "name": "Neftchala",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-OGU",
+    "name": "Oghuz",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-ORD",
+    "name": "Ordubad",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QAB",
+    "name": "Qbala",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QAX",
+    "name": "Qakh",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QAZ",
+    "name": "Qazakh",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QOB",
+    "name": "Gobustan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QBA",
+    "name": "Quba",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QBI",
+    "name": "Qubadlı",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-QUS",
+    "name": "Qusar",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAT",
+    "name": "Saatly",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAB",
+    "name": "Sabirabad",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SBN",
+    "name": "Shabran",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAD",
+    "name": "Sadarak",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAH",
+    "name": "Shahbuz",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAK",
+    "name": "Shaki",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAL",
+    "name": "Salyan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SMI",
+    "name": "Shamakhi",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SKR",
+    "name": "Shamkir",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SMX",
+    "name": "Samukh",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SAR",
+    "name": "Sharur",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SIY",
+    "name": "Siazan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-SUS",
+    "name": "Shusha",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-TAR",
+    "name": "Tartar",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-TOV",
+    "name": "Tovuz",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-UCA",
+    "name": "Ujar",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-XAC",
+    "name": "Khachmaz",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-XIZ",
+    "name": "Khizi",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-XCI",
+    "name": "Khojaly",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-XVD",
+    "name": "Khojavend",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-YAR",
+    "name": "Yardymli",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-YEV",
+    "name": "Yevlakh",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-ZAN",
+    "name": "Zangilan",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-ZAQ",
+    "name": "Zaqatala",
+    "category": "rayon"
+  },
+  {
+    "code": "AZ-ZAR",
+    "name": "Zardab",
+    "category": "rayon"
+  }
+]

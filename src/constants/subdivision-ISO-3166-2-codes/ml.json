@@ -1,0 +1,57 @@
+[
+  {
+    "code": "ML-BKO",
+    "name": "Bamako",
+    "category": "district"
+  },
+  {
+    "code": "ML-7",
+    "name": "Gao",
+    "category": "region"
+  },
+  {
+    "code": "ML-1",
+    "name": "Kayes",
+    "category": "region"
+  },
+  {
+    "code": "ML-8",
+    "name": "Kidal",
+    "category": "region"
+  },
+  {
+    "code": "ML-2",
+    "name": "Koulikoro",
+    "category": "region"
+  },
+  {
+    "code": "ML-9",
+    "name": "Ménaka",
+    "category": "region"
+  },
+  {
+    "code": "ML-5",
+    "name": "Mopti",
+    "category": "region"
+  },
+  {
+    "code": "ML-4",
+    "name": "Ségou",
+    "category": "region"
+  },
+  {
+    "code": "ML-3",
+    "name": "Sikasso",
+    "category": "region"
+  },
+  {
+    "code": "ML-10",
+    "name": "Taoudénit(local variants are Taoudenni, Taoudéni)",
+    "category": "region"
+  },
+  {
+    "code": "ML-6",
+    "name": "Tombouctou",
+    "category": "region"
+  }
+]

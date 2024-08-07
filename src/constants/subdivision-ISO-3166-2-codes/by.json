@@ -1,0 +1,37 @@
+[
+  {
+    "code": "BY-BR",
+    "name": "Brest Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-HO",
+    "name": "Gomel Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-HR",
+    "name": "Grodno Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-MA",
+    "name": "Mogilev Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-MI",
+    "name": "Minsk Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-VI",
+    "name": "Vitebsk Region",
+    "category": "oblast"
+  },
+  {
+    "code": "BY-HM",
+    "name": "City of Minsk",
+    "category": "city"
+  }
+]

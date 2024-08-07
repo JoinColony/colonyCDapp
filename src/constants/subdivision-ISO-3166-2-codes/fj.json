@@ -1,0 +1,97 @@
+[
+  {
+    "code": "FJ-C",
+    "name": "Central",
+    "category": "division"
+  },
+  {
+    "code": "FJ-E",
+    "name": "Eastern",
+    "category": "division"
+  },
+  {
+    "code": "FJ-N",
+    "name": "Northern",
+    "category": "division"
+  },
+  {
+    "code": "FJ-W",
+    "name": "Western",
+    "category": "division"
+  },
+  {
+    "code": "FJ-R",
+    "name": "Rotuma",
+    "category": "dependency"
+  },
+  {
+    "code": "FJ-01",
+    "name": "Ba",
+    "category": null
+  },
+  {
+    "code": "FJ-02",
+    "name": "Bua",
+    "category": null
+  },
+  {
+    "code": "FJ-03",
+    "name": "Cakaudrove",
+    "category": null
+  },
+  {
+    "code": "FJ-04",
+    "name": "Kadavu",
+    "category": null
+  },
+  {
+    "code": "FJ-05",
+    "name": "Lau",
+    "category": null
+  },
+  {
+    "code": "FJ-06",
+    "name": "Lomaiviti",
+    "category": null
+  },
+  {
+    "code": "FJ-07",
+    "name": "Macuata",
+    "category": null
+  },
+  {
+    "code": "FJ-08",
+    "name": "Nadroga and Navosa",
+    "category": null
+  },
+  {
+    "code": "FJ-09",
+    "name": "Naitasiri",
+    "category": null
+  },
+  {
+    "code": "FJ-10",
+    "name": "Namosi",
+    "category": null
+  },
+  {
+    "code": "FJ-11",
+    "name": "Ra",
+    "category": null
+  },
+  {
+    "code": "FJ-12",
+    "name": "Rewa",
+    "category": null
+  },
+  {
+    "code": "FJ-13",
+    "name": "Serua",
+    "category": null
+  },
+  {
+    "code": "FJ-14",
+    "name": "Tailevu",
+    "category": null
+  }
+]

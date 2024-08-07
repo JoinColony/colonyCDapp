@@ -1,0 +1,127 @@
+[
+  {
+    "code": "SC-01",
+    "name": "Anse aux Pins",
+    "category": null
+  },
+  {
+    "code": "SC-02",
+    "name": "Anse Boileau",
+    "category": null
+  },
+  {
+    "code": "SC-03",
+    "name": "Anse Etoile",
+    "category": null
+  },
+  {
+    "code": "SC-05",
+    "name": "Anse Royale",
+    "category": null
+  },
+  {
+    "code": "SC-04",
+    "name": "Au Cap",
+    "category": null
+  },
+  {
+    "code": "SC-06",
+    "name": "Baie Lazare",
+    "category": null
+  },
+  {
+    "code": "SC-07",
+    "name": "Baie Sainte Anne",
+    "category": null
+  },
+  {
+    "code": "SC-08",
+    "name": "Beau Vallon",
+    "category": null
+  },
+  {
+    "code": "SC-09",
+    "name": "Bel Air",
+    "category": null
+  },
+  {
+    "code": "SC-10",
+    "name": "Bel Ombre",
+    "category": null
+  },
+  {
+    "code": "SC-11",
+    "name": "Cascade",
+    "category": null
+  },
+  {
+    "code": "SC-12",
+    "name": "Glacis",
+    "category": null
+  },
+  {
+    "code": "SC-13",
+    "name": "Grand Anse Mahe",
+    "category": null
+  },
+  {
+    "code": "SC-14",
+    "name": "Grand Anse Praslin",
+    "category": null
+  },
+  {
+    "code": "SC-15",
+    "name": "La Digue",
+    "category": null
+  },
+  {
+    "code": "SC-16",
+    "name": "English River",
+    "category": null
+  },
+  {
+    "code": "SC-24",
+    "name": "Les Mamelles",
+    "category": null
+  },
+  {
+    "code": "SC-17",
+    "name": "Mont Buxton",
+    "category": null
+  },
+  {
+    "code": "SC-18",
+    "name": "Mont Fleuri",
+    "category": null
+  },
+  {
+    "code": "SC-19",
+    "name": "Plaisance",
+    "category": null
+  },
+  {
+    "code": "SC-20",
+    "name": "Pointe Larue",
+    "category": null
+  },
+  {
+    "code": "SC-21",
+    "name": "Port Glaud",
+    "category": null
+  },
+  {
+    "code": "SC-25",
+    "name": "Roche Caiman",
+    "category": null
+  },
+  {
+    "code": "SC-22",
+    "name": "Saint Louis",
+    "category": null
+  },
+  {
+    "code": "SC-23",
+    "name": "Takamaka",
+    "category": null
+  }
+]

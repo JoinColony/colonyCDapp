@@ -1,0 +1,437 @@
+[
+  {
+    "code": "MA-05",
+    "name": "Béni Mellal-Khénifra",
+    "category": null
+  },
+  {
+    "code": "MA-06",
+    "name": "Casablanca-Settat",
+    "category": null
+  },
+  {
+    "code": "MA-12",
+    "name": "Dakhla-Oued Ed-Dahab",
+    "category": null
+  },
+  {
+    "code": "MA-08",
+    "name": "Drâa-Tafilalet",
+    "category": null
+  },
+  {
+    "code": "MA-03",
+    "name": "Fès-Meknès",
+    "category": null
+  },
+  {
+    "code": "MA-10",
+    "name": "Guelmim-Oued Noun (EH-partial)",
+    "category": null
+  },
+  {
+    "code": "MA-11",
+    "name": "Laâyoune-Sakia El Hamra (EH-partial)",
+    "category": null
+  },
+  {
+    "code": "MA-07",
+    "name": "Marrakech-Safi",
+    "category": null
+  },
+  {
+    "code": "MA-02",
+    "name": "L'Oriental",
+    "category": null
+  },
+  {
+    "code": "MA-04",
+    "name": "Rabat-Salé-Kénitra",
+    "category": null
+  },
+  {
+    "code": "MA-09",
+    "name": "Souss-Massa",
+    "category": null
+  },
+  {
+    "code": "MA-01",
+    "name": "Tanger-Tétouan-Al Hoceïma",
+    "category": null
+  },
+  {
+    "code": "MA-AGD",
+    "name": "Agadir-Ida-Ou-Tanane",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-AOU",
+    "name": "Aousserd",
+    "category": "province"
+  },
+  {
+    "code": "MA-ASZ",
+    "name": "Assa-Zag (EH-partial)",
+    "category": "province"
+  },
+  {
+    "code": "MA-AZI",
+    "name": "Azilal",
+    "category": "province"
+  },
+  {
+    "code": "MA-BEM",
+    "name": "Béni Mellal",
+    "category": "province"
+  },
+  {
+    "code": "MA-BES",
+    "name": "Benslimane",
+    "category": "province"
+  },
+  {
+    "code": "MA-BER",
+    "name": "Berkane",
+    "category": "province"
+  },
+  {
+    "code": "MA-BRR",
+    "name": "Berrechid",
+    "category": "province"
+  },
+  {
+    "code": "MA-BOD",
+    "name": "Boujdour",
+    "category": "province"
+  },
+  {
+    "code": "MA-BOM",
+    "name": "Boulemane",
+    "category": "province"
+  },
+  {
+    "code": "MA-CAS",
+    "name": "Casablanca [Dar el Beïda]",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-CHE",
+    "name": "Chefchaouen",
+    "category": "province"
+  },
+  {
+    "code": "MA-CHI",
+    "name": "Chichaoua",
+    "category": "province"
+  },
+  {
+    "code": "MA-CHT",
+    "name": "Chtouka-Ait Baha",
+    "category": "province"
+  },
+  {
+    "code": "MA-DRI",
+    "name": "Driouch",
+    "category": "province"
+  },
+  {
+    "code": "MA-ERR",
+    "name": "Errachidia",
+    "category": "province"
+  },
+  {
+    "code": "MA-ESM",
+    "name": "Es-Semara (EH-partial)",
+    "category": "province"
+  },
+  {
+    "code": "MA-ESI",
+    "name": "Essaouira",
+    "category": "province"
+  },
+  {
+    "code": "MA-FAH",
+    "name": "Fahs-Anjra",
+    "category": "province"
+  },
+  {
+    "code": "MA-FES",
+    "name": "Fès",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-FIG",
+    "name": "Figuig",
+    "category": "province"
+  },
+  {
+    "code": "MA-FQH",
+    "name": "Fquih Ben Salah",
+    "category": "province"
+  },
+  {
+    "code": "MA-GUE",
+    "name": "Guelmim",
+    "category": "province"
+  },
+  {
+    "code": "MA-GUF",
+    "name": "Guercif",
+    "category": "province"
+  },
+  {
+    "code": "MA-HAJ",
+    "name": "El Hajeb",
+    "category": "province"
+  },
+  {
+    "code": "MA-HAO",
+    "name": "Al Haouz",
+    "category": "province"
+  },
+  {
+    "code": "MA-HOC",
+    "name": "Al Hoceïma",
+    "category": "province"
+  },
+  {
+    "code": "MA-IFR",
+    "name": "Ifrane",
+    "category": "province"
+  },
+  {
+    "code": "MA-INE",
+    "name": "Inezgane-Ait Melloul",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-JDI",
+    "name": "El Jadida",
+    "category": "province"
+  },
+  {
+    "code": "MA-JRA",
+    "name": "Jerada",
+    "category": "province"
+  },
+  {
+    "code": "MA-KES",
+    "name": "El Kelâa des Sraghna",
+    "category": "province"
+  },
+  {
+    "code": "MA-KEN",
+    "name": "Kénitra",
+    "category": "province"
+  },
+  {
+    "code": "MA-KHE",
+    "name": "Khemisset",
+    "category": "province"
+  },
+  {
+    "code": "MA-KHN",
+    "name": "Khenifra",
+    "category": "province"
+  },
+  {
+    "code": "MA-KHO",
+    "name": "Khouribga",
+    "category": "province"
+  },
+  {
+    "code": "MA-LAA",
+    "name": "Laâyoune",
+    "category": "province"
+  },
+  {
+    "code": "MA-LAR",
+    "name": "Larache",
+    "category": "province"
+  },
+  {
+    "code": "MA-MAR",
+    "name": "Marrakech",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-MDF",
+    "name": "M’diq-Fnideq",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-MED",
+    "name": "Médiouna",
+    "category": "province"
+  },
+  {
+    "code": "MA-MEK",
+    "name": "Meknès",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-MID",
+    "name": "Midelt",
+    "category": "province"
+  },
+  {
+    "code": "MA-MOH",
+    "name": "Mohammadia",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-MOU",
+    "name": "Moulay Yacoub",
+    "category": "province"
+  },
+  {
+    "code": "MA-NAD",
+    "name": "Nador",
+    "category": "province"
+  },
+  {
+    "code": "MA-NOU",
+    "name": "Nouaceur",
+    "category": "province"
+  },
+  {
+    "code": "MA-OUA",
+    "name": "Ouarzazate",
+    "category": "province"
+  },
+  {
+    "code": "MA-OUD",
+    "name": "Oued Ed-Dahab",
+    "category": "province"
+  },
+  {
+    "code": "MA-OUZ",
+    "name": "Ouezzane",
+    "category": "province"
+  },
+  {
+    "code": "MA-OUJ",
+    "name": "Oujda-Angad",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-RAB",
+    "name": "Rabat",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-REH",
+    "name": "Rehamna",
+    "category": "province"
+  },
+  {
+    "code": "MA-SAF",
+    "name": "Safi",
+    "category": "province"
+  },
+  {
+    "code": "MA-SAL",
+    "name": "Salé",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-SEF",
+    "name": "Sefrou",
+    "category": "province"
+  },
+  {
+    "code": "MA-SET",
+    "name": "Settat",
+    "category": "province"
+  },
+  {
+    "code": "MA-SIB",
+    "name": "Sidi Bennour",
+    "category": "province"
+  },
+  {
+    "code": "MA-SIF",
+    "name": "Sidi Ifni",
+    "category": "province"
+  },
+  {
+    "code": "MA-SIK",
+    "name": "Sidi Kacem",
+    "category": "province"
+  },
+  {
+    "code": "MA-SIL",
+    "name": "Sidi Slimane",
+    "category": "province"
+  },
+  {
+    "code": "MA-SKH",
+    "name": "Skhirate-Témara",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-TNT",
+    "name": "Tan-Tan (EH-partial)",
+    "category": "province"
+  },
+  {
+    "code": "MA-TNG",
+    "name": "Tanger-Assilah",
+    "category": "prefecture"
+  },
+  {
+    "code": "MA-TAO",
+    "name": "Taounate",
+    "category": "province"
+  },
+  {
+    "code": "MA-TAI",
+    "name": "Taourirt",
+    "category": "province"
+  },
+  {
+    "code": "MA-TAF",
+    "name": "Tarfaya (EH-partial)",
+    "category": "province"
+  },
+  {
+    "code": "MA-TAR",
+    "name": "Taroudant",
+    "category": "province"
+  },
+  {
+    "code": "MA-TAT",
+    "name": "Tata",
+    "category": "province"
+  },
+  {
+    "code": "MA-TAZ",
+    "name": "Taza",
+    "category": "province"
+  },
+  {
+    "code": "MA-TET",
+    "name": "Tétouan",
+    "category": "province"
+  },
+  {
+    "code": "MA-TIN",
+    "name": "Tinghir",
+    "category": "province"
+  },
+  {
+    "code": "MA-TIZ",
+    "name": "Tiznit",
+    "category": "province"
+  },
+  {
+    "code": "MA-YUS",
+    "name": "Youssoufia",
+    "category": "province"
+  },
+  {
+    "code": "MA-ZAG",
+    "name": "Zagora",
+    "category": "province"
+  }
+]

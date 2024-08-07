@@ -1,0 +1,112 @@
+[
+  {
+    "code": "YE-SA",
+    "name": "Amānat al ‘Āşimah [city]",
+    "category": "municipality"
+  },
+  {
+    "code": "YE-AB",
+    "name": "Abyan",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-AD",
+    "name": "‘Adan",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-DA",
+    "name": "Aḑ Ḑāli‘",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-BA",
+    "name": "Al Bayḑā’",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-HU",
+    "name": "Al Ḩudaydah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-JA",
+    "name": "Al Jawf",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-MR",
+    "name": "Al Mahrah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-MW",
+    "name": "Al Maḩwīt",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-AM",
+    "name": "‘Amrān",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-SU",
+    "name": "Arkhabīl Suquţrá",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-DH",
+    "name": "Dhamār",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-HD",
+    "name": "Ḩaḑramawt",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-HJ",
+    "name": "Ḩajjah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-IB",
+    "name": "Ibb",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-LA",
+    "name": "Laḩij",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-MA",
+    "name": "Ma’rib",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-RA",
+    "name": "Raymah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-SD",
+    "name": "Şāʻdah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-SN",
+    "name": "Şanʻā’",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-SH",
+    "name": "Shabwah",
+    "category": "governorate"
+  },
+  {
+    "code": "YE-TA",
+    "name": "Tāʻizz",
+    "category": "governorate"
+  }
+]

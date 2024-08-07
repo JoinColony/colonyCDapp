@@ -1,0 +1,157 @@
+[
+  {
+    "code": "MW-C",
+    "name": "Central Region",
+    "category": null
+  },
+  {
+    "code": "MW-N",
+    "name": "Northern Region",
+    "category": null
+  },
+  {
+    "code": "MW-S",
+    "name": "Southern Region",
+    "category": null
+  },
+  {
+    "code": "MW-BA",
+    "name": "Balaka",
+    "category": null
+  },
+  {
+    "code": "MW-BL",
+    "name": "Blantyre",
+    "category": null
+  },
+  {
+    "code": "MW-CK",
+    "name": "Chikwawa",
+    "category": null
+  },
+  {
+    "code": "MW-CR",
+    "name": "Chiradzulu",
+    "category": null
+  },
+  {
+    "code": "MW-CT",
+    "name": "Chitipa",
+    "category": null
+  },
+  {
+    "code": "MW-DE",
+    "name": "Dedza",
+    "category": null
+  },
+  {
+    "code": "MW-DO",
+    "name": "Dowa",
+    "category": null
+  },
+  {
+    "code": "MW-KR",
+    "name": "Karonga",
+    "category": null
+  },
+  {
+    "code": "MW-KS",
+    "name": "Kasungu",
+    "category": null
+  },
+  {
+    "code": "MW-LK",
+    "name": "Likoma",
+    "category": null
+  },
+  {
+    "code": "MW-LI",
+    "name": "Lilongwe",
+    "category": null
+  },
+  {
+    "code": "MW-MH",
+    "name": "Machinga",
+    "category": null
+  },
+  {
+    "code": "MW-MG",
+    "name": "Mangochi",
+    "category": null
+  },
+  {
+    "code": "MW-MC",
+    "name": "Mchinji",
+    "category": null
+  },
+  {
+    "code": "MW-MU",
+    "name": "Mulanje",
+    "category": null
+  },
+  {
+    "code": "MW-MW",
+    "name": "Mwanza",
+    "category": null
+  },
+  {
+    "code": "MW-MZ",
+    "name": "Mzimba",
+    "category": null
+  },
+  {
+    "code": "MW-NE",
+    "name": "Neno",
+    "category": null
+  },
+  {
+    "code": "MW-NB",
+    "name": "Nkhata Bay",
+    "category": null
+  },
+  {
+    "code": "MW-NK",
+    "name": "Nkhotakota",
+    "category": null
+  },
+  {
+    "code": "MW-NS",
+    "name": "Nsanje",
+    "category": null
+  },
+  {
+    "code": "MW-NU",
+    "name": "Ntcheu",
+    "category": null
+  },
+  {
+    "code": "MW-NI",
+    "name": "Ntchisi",
+    "category": null
+  },
+  {
+    "code": "MW-PH",
+    "name": "Phalombe",
+    "category": null
+  },
+  {
+    "code": "MW-RU",
+    "name": "Rumphi",
+    "category": null
+  },
+  {
+    "code": "MW-SA",
+    "name": "Salima",
+    "category": null
+  },
+  {
+    "code": "MW-TH",
+    "name": "Thyolo",
+    "category": null
+  },
+  {
+    "code": "MW-ZO",
+    "name": "Zomba",
+    "category": null
+  }
+]

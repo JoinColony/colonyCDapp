@@ -1,0 +1,137 @@
+[
+  {
+    "code": "BR-AC",
+    "name": "Acre",
+    "category": "state"
+  },
+  {
+    "code": "BR-AL",
+    "name": "Alagoas",
+    "category": "state"
+  },
+  {
+    "code": "BR-AP",
+    "name": "Amapá",
+    "category": "state"
+  },
+  {
+    "code": "BR-AM",
+    "name": "Amazonas",
+    "category": "state"
+  },
+  {
+    "code": "BR-BA",
+    "name": "Bahia",
+    "category": "state"
+  },
+  {
+    "code": "BR-CE",
+    "name": "Ceará",
+    "category": "state"
+  },
+  {
+    "code": "BR-DF",
+    "name": "Distrito Federal",
+    "category": "federal district"
+  },
+  {
+    "code": "BR-ES",
+    "name": "Espírito Santo",
+    "category": "state"
+  },
+  {
+    "code": "BR-GO",
+    "name": "Goiás",
+    "category": "state"
+  },
+  {
+    "code": "BR-MA",
+    "name": "Maranhão",
+    "category": "state"
+  },
+  {
+    "code": "BR-MT",
+    "name": "Mato Grosso",
+    "category": "state"
+  },
+  {
+    "code": "BR-MS",
+    "name": "Mato Grosso do Sul",
+    "category": "state"
+  },
+  {
+    "code": "BR-MG",
+    "name": "Minas Gerais",
+    "category": "state"
+  },
+  {
+    "code": "BR-PA",
+    "name": "Pará",
+    "category": "state"
+  },
+  {
+    "code": "BR-PB",
+    "name": "Paraíba",
+    "category": "state"
+  },
+  {
+    "code": "BR-PR",
+    "name": "Paraná",
+    "category": "state"
+  },
+  {
+    "code": "BR-PE",
+    "name": "Pernambuco",
+    "category": "state"
+  },
+  {
+    "code": "BR-PI",
+    "name": "Piauí",
+    "category": "state"
+  },
+  {
+    "code": "BR-RJ",
+    "name": "Rio de Janeiro",
+    "category": "state"
+  },
+  {
+    "code": "BR-RN",
+    "name": "Rio Grande do Norte",
+    "category": "state"
+  },
+  {
+    "code": "BR-RS",
+    "name": "Rio Grande do Sul",
+    "category": "state"
+  },
+  {
+    "code": "BR-RO",
+    "name": "Rondônia",
+    "category": "state"
+  },
+  {
+    "code": "BR-RR",
+    "name": "Roraima",
+    "category": "state"
+  },
+  {
+    "code": "BR-SC",
+    "name": "Santa Catarina",
+    "category": "state"
+  },
+  {
+    "code": "BR-SP",
+    "name": "São Paulo",
+    "category": "state"
+  },
+  {
+    "code": "BR-SE",
+    "name": "Sergipe",
+    "category": "state"
+  },
+  {
+    "code": "BR-TO",
+    "name": "Tocantins",
+    "category": "state"
+  }
+]

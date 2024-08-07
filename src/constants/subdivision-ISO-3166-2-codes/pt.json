@@ -1,0 +1,102 @@
+[
+  {
+    "code": "PT-01",
+    "name": "Aveiro",
+    "category": "district"
+  },
+  {
+    "code": "PT-02",
+    "name": "Beja",
+    "category": "district"
+  },
+  {
+    "code": "PT-03",
+    "name": "Braga",
+    "category": "district"
+  },
+  {
+    "code": "PT-04",
+    "name": "Bragança",
+    "category": "district"
+  },
+  {
+    "code": "PT-05",
+    "name": "Castelo Branco",
+    "category": "district"
+  },
+  {
+    "code": "PT-06",
+    "name": "Coimbra",
+    "category": "district"
+  },
+  {
+    "code": "PT-07",
+    "name": "Évora",
+    "category": "district"
+  },
+  {
+    "code": "PT-08",
+    "name": "Faro",
+    "category": "district"
+  },
+  {
+    "code": "PT-09",
+    "name": "Guarda",
+    "category": "district"
+  },
+  {
+    "code": "PT-10",
+    "name": "Leiria",
+    "category": "district"
+  },
+  {
+    "code": "PT-11",
+    "name": "Lisboa",
+    "category": "district"
+  },
+  {
+    "code": "PT-12",
+    "name": "Portalegre",
+    "category": "district"
+  },
+  {
+    "code": "PT-13",
+    "name": "Porto",
+    "category": "district"
+  },
+  {
+    "code": "PT-14",
+    "name": "Santarém",
+    "category": "district"
+  },
+  {
+    "code": "PT-15",
+    "name": "Setúbal",
+    "category": "district"
+  },
+  {
+    "code": "PT-16",
+    "name": "Viana do Castelo",
+    "category": "district"
+  },
+  {
+    "code": "PT-17",
+    "name": "Vila Real",
+    "category": "district"
+  },
+  {
+    "code": "PT-18",
+    "name": "Viseu",
+    "category": "district"
+  },
+  {
+    "code": "PT-20",
+    "name": "Região Autónoma dos Açores",
+    "category": "autonomous region"
+  },
+  {
+    "code": "PT-30",
+    "name": "Região Autónoma da Madeira",
+    "category": "autonomous region"
+  }
+]

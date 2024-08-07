@@ -1,0 +1,107 @@
+[
+  {
+    "code": "MV-01",
+    "name": "Addu City",
+    "category": null
+  },
+  {
+    "code": "MV-MLE",
+    "name": "Male",
+    "category": null
+  },
+  {
+    "code": "MV-02",
+    "name": "North Ari Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-00",
+    "name": "South Ari Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-20",
+    "name": "South Maalhosmadulu",
+    "category": null
+  },
+  {
+    "code": "MV-17",
+    "name": "South Nilandhe Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-14",
+    "name": "North Nilandhe Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-27",
+    "name": "North Huvadhu Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-28",
+    "name": "South Huvadhu Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-29",
+    "name": "Fuvammulah",
+    "category": null
+  },
+  {
+    "code": "MV-07",
+    "name": "North Thiladhunmathi",
+    "category": null
+  },
+  {
+    "code": "MV-23",
+    "name": "South Thiladhunmathi",
+    "category": null
+  },
+  {
+    "code": "MV-26",
+    "name": "Male Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-05",
+    "name": "Hahdhunmathi",
+    "category": null
+  },
+  {
+    "code": "MV-03",
+    "name": "Faadhippolhu",
+    "category": null
+  },
+  {
+    "code": "MV-12",
+    "name": "Mulaku Atoll",
+    "category": null
+  },
+  {
+    "code": "MV-25",
+    "name": "South Miladhunmadulu",
+    "category": null
+  },
+  {
+    "code": "MV-13",
+    "name": "North Maalhosmadulu",
+    "category": null
+  },
+  {
+    "code": "MV-24",
+    "name": "North Miladhunmadulu",
+    "category": null
+  },
+  {
+    "code": "MV-08",
+    "name": "Kolhumadulu",
+    "category": null
+  },
+  {
+    "code": "MV-04",
+    "name": "Felidhu Atoll",
+    "category": null
+  }
+]

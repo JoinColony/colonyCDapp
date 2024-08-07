@@ -1,0 +1,407 @@
+[
+  {
+    "code": "TR-01",
+    "name": "Adana",
+    "category": null
+  },
+  {
+    "code": "TR-02",
+    "name": "Adıyaman",
+    "category": null
+  },
+  {
+    "code": "TR-03",
+    "name": "Afyonkarahisar",
+    "category": null
+  },
+  {
+    "code": "TR-04",
+    "name": "Ağrı",
+    "category": null
+  },
+  {
+    "code": "TR-68",
+    "name": "Aksaray",
+    "category": null
+  },
+  {
+    "code": "TR-05",
+    "name": "Amasya",
+    "category": null
+  },
+  {
+    "code": "TR-06",
+    "name": "Ankara",
+    "category": null
+  },
+  {
+    "code": "TR-07",
+    "name": "Antalya",
+    "category": null
+  },
+  {
+    "code": "TR-75",
+    "name": "Ardahan",
+    "category": null
+  },
+  {
+    "code": "TR-08",
+    "name": "Artvin",
+    "category": null
+  },
+  {
+    "code": "TR-09",
+    "name": "Aydın",
+    "category": null
+  },
+  {
+    "code": "TR-10",
+    "name": "Balıkesir",
+    "category": null
+  },
+  {
+    "code": "TR-74",
+    "name": "Bartın",
+    "category": null
+  },
+  {
+    "code": "TR-72",
+    "name": "Batman",
+    "category": null
+  },
+  {
+    "code": "TR-69",
+    "name": "Bayburt",
+    "category": null
+  },
+  {
+    "code": "TR-11",
+    "name": "Bilecik",
+    "category": null
+  },
+  {
+    "code": "TR-12",
+    "name": "Bingöl",
+    "category": null
+  },
+  {
+    "code": "TR-13",
+    "name": "Bitlis",
+    "category": null
+  },
+  {
+    "code": "TR-14",
+    "name": "Bolu",
+    "category": null
+  },
+  {
+    "code": "TR-15",
+    "name": "Burdur",
+    "category": null
+  },
+  {
+    "code": "TR-16",
+    "name": "Bursa",
+    "category": null
+  },
+  {
+    "code": "TR-17",
+    "name": "Çanakkale",
+    "category": null
+  },
+  {
+    "code": "TR-18",
+    "name": "Çankırı",
+    "category": null
+  },
+  {
+    "code": "TR-19",
+    "name": "Çorum",
+    "category": null
+  },
+  {
+    "code": "TR-20",
+    "name": "Denizli",
+    "category": null
+  },
+  {
+    "code": "TR-21",
+    "name": "Diyarbakır",
+    "category": null
+  },
+  {
+    "code": "TR-81",
+    "name": "Düzce",
+    "category": null
+  },
+  {
+    "code": "TR-22",
+    "name": "Edirne",
+    "category": null
+  },
+  {
+    "code": "TR-23",
+    "name": "Elazığ",
+    "category": null
+  },
+  {
+    "code": "TR-24",
+    "name": "Erzincan",
+    "category": null
+  },
+  {
+    "code": "TR-25",
+    "name": "Erzurum",
+    "category": null
+  },
+  {
+    "code": "TR-26",
+    "name": "Eskişehir",
+    "category": null
+  },
+  {
+    "code": "TR-27",
+    "name": "Gaziantep",
+    "category": null
+  },
+  {
+    "code": "TR-28",
+    "name": "Giresun",
+    "category": null
+  },
+  {
+    "code": "TR-29",
+    "name": "Gümüşhane",
+    "category": null
+  },
+  {
+    "code": "TR-30",
+    "name": "Hakkâri",
+    "category": null
+  },
+  {
+    "code": "TR-31",
+    "name": "Hatay",
+    "category": null
+  },
+  {
+    "code": "TR-76",
+    "name": "Iğdır",
+    "category": null
+  },
+  {
+    "code": "TR-32",
+    "name": "Isparta",
+    "category": null
+  },
+  {
+    "code": "TR-34",
+    "name": "İstanbul",
+    "category": null
+  },
+  {
+    "code": "TR-35",
+    "name": "İzmir",
+    "category": null
+  },
+  {
+    "code": "TR-46",
+    "name": "Kahramanmaraş",
+    "category": null
+  },
+  {
+    "code": "TR-78",
+    "name": "Karabük",
+    "category": null
+  },
+  {
+    "code": "TR-70",
+    "name": "Karaman",
+    "category": null
+  },
+  {
+    "code": "TR-36",
+    "name": "Kars",
+    "category": null
+  },
+  {
+    "code": "TR-37",
+    "name": "Kastamonu",
+    "category": null
+  },
+  {
+    "code": "TR-38",
+    "name": "Kayseri",
+    "category": null
+  },
+  {
+    "code": "TR-71",
+    "name": "Kırıkkale",
+    "category": null
+  },
+  {
+    "code": "TR-39",
+    "name": "Kırklareli",
+    "category": null
+  },
+  {
+    "code": "TR-40",
+    "name": "Kırşehir",
+    "category": null
+  },
+  {
+    "code": "TR-79",
+    "name": "Kilis",
+    "category": null
+  },
+  {
+    "code": "TR-41",
+    "name": "Kocaeli",
+    "category": null
+  },
+  {
+    "code": "TR-42",
+    "name": "Konya",
+    "category": null
+  },
+  {
+    "code": "TR-43",
+    "name": "Kütahya",
+    "category": null
+  },
+  {
+    "code": "TR-44",
+    "name": "Malatya",
+    "category": null
+  },
+  {
+    "code": "TR-45",
+    "name": "Manisa",
+    "category": null
+  },
+  {
+    "code": "TR-47",
+    "name": "Mardin",
+    "category": null
+  },
+  {
+    "code": "TR-33",
+    "name": "Mersin",
+    "category": null
+  },
+  {
+    "code": "TR-48",
+    "name": "Muğla",
+    "category": null
+  },
+  {
+    "code": "TR-49",
+    "name": "Muş",
+    "category": null
+  },
+  {
+    "code": "TR-50",
+    "name": "Nevşehir",
+    "category": null
+  },
+  {
+    "code": "TR-51",
+    "name": "Niğde",
+    "category": null
+  },
+  {
+    "code": "TR-52",
+    "name": "Ordu",
+    "category": null
+  },
+  {
+    "code": "TR-80",
+    "name": "Osmaniye",
+    "category": null
+  },
+  {
+    "code": "TR-53",
+    "name": "Rize",
+    "category": null
+  },
+  {
+    "code": "TR-54",
+    "name": "Sakarya",
+    "category": null
+  },
+  {
+    "code": "TR-55",
+    "name": "Samsun",
+    "category": null
+  },
+  {
+    "code": "TR-56",
+    "name": "Siirt",
+    "category": null
+  },
+  {
+    "code": "TR-57",
+    "name": "Sinop",
+    "category": null
+  },
+  {
+    "code": "TR-58",
+    "name": "Sivas",
+    "category": null
+  },
+  {
+    "code": "TR-63",
+    "name": "Şanlıurfa",
+    "category": null
+  },
+  {
+    "code": "TR-73",
+    "name": "Şırnak",
+    "category": null
+  },
+  {
+    "code": "TR-59",
+    "name": "Tekirdağ",
+    "category": null
+  },
+  {
+    "code": "TR-60",
+    "name": "Tokat",
+    "category": null
+  },
+  {
+    "code": "TR-61",
+    "name": "Trabzon",
+    "category": null
+  },
+  {
+    "code": "TR-62",
+    "name": "Tunceli",
+    "category": null
+  },
+  {
+    "code": "TR-64",
+    "name": "Uşak",
+    "category": null
+  },
+  {
+    "code": "TR-65",
+    "name": "Van",
+    "category": null
+  },
+  {
+    "code": "TR-77",
+    "name": "Yalova",
+    "category": null
+  },
+  {
+    "code": "TR-66",
+    "name": "Yozgat",
+    "category": null
+  },
+  {
+    "code": "TR-67",
+    "name": "Zonguldak",
+    "category": null
+  }
+]

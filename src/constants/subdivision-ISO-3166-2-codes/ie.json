@@ -1,0 +1,152 @@
+[
+  {
+    "code": "IE-C",
+    "name": "Connaught",
+    "category": null
+  },
+  {
+    "code": "IE-L",
+    "name": "Leinster",
+    "category": null
+  },
+  {
+    "code": "IE-M",
+    "name": "Munster",
+    "category": null
+  },
+  {
+    "code": "IE-U",
+    "name": "Ulster",
+    "category": null
+  },
+  {
+    "code": "IE-CW",
+    "name": "Carlow",
+    "category": null
+  },
+  {
+    "code": "IE-CN",
+    "name": "Cavan",
+    "category": null
+  },
+  {
+    "code": "IE-CE",
+    "name": "Clare",
+    "category": null
+  },
+  {
+    "code": "IE-CO",
+    "name": "Cork",
+    "category": null
+  },
+  {
+    "code": "IE-DL",
+    "name": "Donegal",
+    "category": null
+  },
+  {
+    "code": "IE-D",
+    "name": "Dublin",
+    "category": null
+  },
+  {
+    "code": "IE-G",
+    "name": "Galway",
+    "category": null
+  },
+  {
+    "code": "IE-KY",
+    "name": "Kerry",
+    "category": null
+  },
+  {
+    "code": "IE-KE",
+    "name": "Kildare",
+    "category": null
+  },
+  {
+    "code": "IE-KK",
+    "name": "Kilkenny",
+    "category": null
+  },
+  {
+    "code": "IE-LS",
+    "name": "Laois",
+    "category": null
+  },
+  {
+    "code": "IE-LM",
+    "name": "Leitrim",
+    "category": null
+  },
+  {
+    "code": "IE-LK",
+    "name": "Limerick",
+    "category": null
+  },
+  {
+    "code": "IE-LD",
+    "name": "Longford",
+    "category": null
+  },
+  {
+    "code": "IE-LH",
+    "name": "Louth",
+    "category": null
+  },
+  {
+    "code": "IE-MO",
+    "name": "Mayo",
+    "category": null
+  },
+  {
+    "code": "IE-MH",
+    "name": "Meath",
+    "category": null
+  },
+  {
+    "code": "IE-MN",
+    "name": "Monaghan",
+    "category": null
+  },
+  {
+    "code": "IE-OY",
+    "name": "Offaly",
+    "category": null
+  },
+  {
+    "code": "IE-RN",
+    "name": "Roscommon",
+    "category": null
+  },
+  {
+    "code": "IE-SO",
+    "name": "Sligo",
+    "category": null
+  },
+  {
+    "code": "IE-TA",
+    "name": "Tipperary",
+    "category": null
+  },
+  {
+    "code": "IE-WD",
+    "name": "Waterford",
+    "category": null
+  },
+  {
+    "code": "IE-WH",
+    "name": "Westmeath",
+    "category": null
+  },
+  {
+    "code": "IE-WX",
+    "name": "Wexford",
+    "category": null
+  },
+  {
+    "code": "IE-WW",
+    "name": "Wicklow",
+    "category": null
+  }
+]

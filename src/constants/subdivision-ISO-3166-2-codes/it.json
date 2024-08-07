@@ -1,0 +1,657 @@
+[
+  {
+    "code": "IT-65",
+    "name": "Abruzzo",
+    "category": null
+  },
+  {
+    "code": "IT-77",
+    "name": "Basilicata",
+    "category": null
+  },
+  {
+    "code": "IT-78",
+    "name": "Calabria",
+    "category": null
+  },
+  {
+    "code": "IT-72",
+    "name": "Campania",
+    "category": null
+  },
+  {
+    "code": "IT-45",
+    "name": "Emilia-Romagna",
+    "category": null
+  },
+  {
+    "code": "IT-62",
+    "name": "Lazio",
+    "category": null
+  },
+  {
+    "code": "IT-42",
+    "name": "Liguria",
+    "category": null
+  },
+  {
+    "code": "IT-25",
+    "name": "Lombardy",
+    "category": null
+  },
+  {
+    "code": "IT-57",
+    "name": "Marche",
+    "category": null
+  },
+  {
+    "code": "IT-67",
+    "name": "Molise",
+    "category": null
+  },
+  {
+    "code": "IT-21",
+    "name": "Piedmont",
+    "category": null
+  },
+  {
+    "code": "IT-75",
+    "name": "Apulia",
+    "category": null
+  },
+  {
+    "code": "IT-52",
+    "name": "Tuscany",
+    "category": null
+  },
+  {
+    "code": "IT-55",
+    "name": "Umbria",
+    "category": null
+  },
+  {
+    "code": "IT-34",
+    "name": "Veneto",
+    "category": null
+  },
+  {
+    "code": "IT-36",
+    "name": "Friuli Venezia Giulia",
+    "category": null
+  },
+  {
+    "code": "IT-88",
+    "name": "Sardinia",
+    "category": null
+  },
+  {
+    "code": "IT-82",
+    "name": "Sicily",
+    "category": null
+  },
+  {
+    "code": "IT-32",
+    "name": "Trentino-South Tyrol",
+    "category": null
+  },
+  {
+    "code": "IT-23",
+    "name": "Aosta Valley",
+    "category": null
+  },
+  {
+    "code": "IT-AL",
+    "name": "Alessandria",
+    "category": null
+  },
+  {
+    "code": "IT-AN",
+    "name": "Ancona",
+    "category": null
+  },
+  {
+    "code": "IT-AR",
+    "name": "Arezzo",
+    "category": null
+  },
+  {
+    "code": "IT-AP",
+    "name": "Ascoli Piceno",
+    "category": null
+  },
+  {
+    "code": "IT-AT",
+    "name": "Asti",
+    "category": null
+  },
+  {
+    "code": "IT-AV",
+    "name": "Avellino",
+    "category": null
+  },
+  {
+    "code": "IT-BT",
+    "name": "Barletta-Andria-Trani",
+    "category": null
+  },
+  {
+    "code": "IT-BL",
+    "name": "Belluno",
+    "category": null
+  },
+  {
+    "code": "IT-BN",
+    "name": "Benevento",
+    "category": null
+  },
+  {
+    "code": "IT-BG",
+    "name": "Bergamo",
+    "category": null
+  },
+  {
+    "code": "IT-BI",
+    "name": "Biella",
+    "category": null
+  },
+  {
+    "code": "IT-BS",
+    "name": "Brescia",
+    "category": null
+  },
+  {
+    "code": "IT-BR",
+    "name": "Brindisi",
+    "category": null
+  },
+  {
+    "code": "IT-CB",
+    "name": "Campobasso",
+    "category": null
+  },
+  {
+    "code": "IT-CE",
+    "name": "Caserta",
+    "category": null
+  },
+  {
+    "code": "IT-CZ",
+    "name": "Catanzaro",
+    "category": null
+  },
+  {
+    "code": "IT-CH",
+    "name": "Chieti",
+    "category": null
+  },
+  {
+    "code": "IT-CO",
+    "name": "Como",
+    "category": null
+  },
+  {
+    "code": "IT-CS",
+    "name": "Cosenza",
+    "category": null
+  },
+  {
+    "code": "IT-CR",
+    "name": "Cremona",
+    "category": null
+  },
+  {
+    "code": "IT-KR",
+    "name": "Crotone",
+    "category": null
+  },
+  {
+    "code": "IT-CN",
+    "name": "Cuneo",
+    "category": null
+  },
+  {
+    "code": "IT-FM",
+    "name": "Fermo",
+    "category": null
+  },
+  {
+    "code": "IT-FE",
+    "name": "Ferrara",
+    "category": null
+  },
+  {
+    "code": "IT-FG",
+    "name": "Foggia",
+    "category": null
+  },
+  {
+    "code": "IT-FC",
+    "name": "Forlì-Cesena",
+    "category": null
+  },
+  {
+    "code": "IT-FR",
+    "name": "Frosinone",
+    "category": null
+  },
+  {
+    "code": "IT-GR",
+    "name": "Grosseto",
+    "category": null
+  },
+  {
+    "code": "IT-IM",
+    "name": "Imperia",
+    "category": null
+  },
+  {
+    "code": "IT-IS",
+    "name": "Isernia",
+    "category": null
+  },
+  {
+    "code": "IT-SP",
+    "name": "La Spezia",
+    "category": null
+  },
+  {
+    "code": "IT-AQ",
+    "name": "L'Aquila",
+    "category": null
+  },
+  {
+    "code": "IT-LT",
+    "name": "Latina",
+    "category": null
+  },
+  {
+    "code": "IT-LE",
+    "name": "Lecce",
+    "category": null
+  },
+  {
+    "code": "IT-LC",
+    "name": "Lecco",
+    "category": null
+  },
+  {
+    "code": "IT-LI",
+    "name": "Livorno",
+    "category": null
+  },
+  {
+    "code": "IT-LO",
+    "name": "Lodi",
+    "category": null
+  },
+  {
+    "code": "IT-LU",
+    "name": "Lucca",
+    "category": null
+  },
+  {
+    "code": "IT-MC",
+    "name": "Macerata",
+    "category": null
+  },
+  {
+    "code": "IT-MN",
+    "name": "Mantova",
+    "category": null
+  },
+  {
+    "code": "IT-MS",
+    "name": "Massa-Carrara",
+    "category": null
+  },
+  {
+    "code": "IT-MT",
+    "name": "Matera",
+    "category": null
+  },
+  {
+    "code": "IT-MO",
+    "name": "Modena",
+    "category": null
+  },
+  {
+    "code": "IT-MB",
+    "name": "Monza e Brianza",
+    "category": null
+  },
+  {
+    "code": "IT-NO",
+    "name": "Novara",
+    "category": null
+  },
+  {
+    "code": "IT-NU",
+    "name": "Nuoro",
+    "category": null
+  },
+  {
+    "code": "IT-OR",
+    "name": "Oristano",
+    "category": null
+  },
+  {
+    "code": "IT-PD",
+    "name": "Padova",
+    "category": null
+  },
+  {
+    "code": "IT-PR",
+    "name": "Parma",
+    "category": null
+  },
+  {
+    "code": "IT-PV",
+    "name": "Pavia",
+    "category": null
+  },
+  {
+    "code": "IT-PG",
+    "name": "Perugia",
+    "category": null
+  },
+  {
+    "code": "IT-PU",
+    "name": "Pesaro e Urbino",
+    "category": null
+  },
+  {
+    "code": "IT-PE",
+    "name": "Pescara",
+    "category": null
+  },
+  {
+    "code": "IT-PC",
+    "name": "Piacenza",
+    "category": null
+  },
+  {
+    "code": "IT-PI",
+    "name": "Pisa",
+    "category": null
+  },
+  {
+    "code": "IT-PT",
+    "name": "Pistoia",
+    "category": null
+  },
+  {
+    "code": "IT-PZ",
+    "name": "Potenza",
+    "category": null
+  },
+  {
+    "code": "IT-PO",
+    "name": "Prato",
+    "category": null
+  },
+  {
+    "code": "IT-RA",
+    "name": "Ravenna",
+    "category": null
+  },
+  {
+    "code": "IT-RE",
+    "name": "Reggio Emilia",
+    "category": null
+  },
+  {
+    "code": "IT-RI",
+    "name": "Rieti",
+    "category": null
+  },
+  {
+    "code": "IT-RN",
+    "name": "Rimini",
+    "category": null
+  },
+  {
+    "code": "IT-RO",
+    "name": "Rovigo",
+    "category": null
+  },
+  {
+    "code": "IT-SA",
+    "name": "Salerno",
+    "category": null
+  },
+  {
+    "code": "IT-SS",
+    "name": "Sassari",
+    "category": null
+  },
+  {
+    "code": "IT-SV",
+    "name": "Savona",
+    "category": null
+  },
+  {
+    "code": "IT-SI",
+    "name": "Siena",
+    "category": null
+  },
+  {
+    "code": "IT-SO",
+    "name": "Sondrio",
+    "category": null
+  },
+  {
+    "code": "IT-SD",
+    "name": "Sud Sardegna",
+    "category": null
+  },
+  {
+    "code": "IT-TA",
+    "name": "Taranto",
+    "category": null
+  },
+  {
+    "code": "IT-TE",
+    "name": "Teramo",
+    "category": null
+  },
+  {
+    "code": "IT-TR",
+    "name": "Terni",
+    "category": null
+  },
+  {
+    "code": "IT-TV",
+    "name": "Treviso",
+    "category": null
+  },
+  {
+    "code": "IT-VA",
+    "name": "Varese",
+    "category": null
+  },
+  {
+    "code": "IT-VB",
+    "name": "Verbano-Cusio-Ossola",
+    "category": null
+  },
+  {
+    "code": "IT-VC",
+    "name": "Vercelli",
+    "category": null
+  },
+  {
+    "code": "IT-VR",
+    "name": "Verona",
+    "category": null
+  },
+  {
+    "code": "IT-VV",
+    "name": "Vibo Valentia",
+    "category": null
+  },
+  {
+    "code": "IT-VI",
+    "name": "Vicenza",
+    "category": null
+  },
+  {
+    "code": "IT-VT",
+    "name": "Viterbo",
+    "category": null
+  },
+  {
+    "code": "IT-BZ",
+    "name": "Bolzano, Bozen",
+    "category": null
+  },
+  {
+    "code": "IT-TN",
+    "name": "Trento",
+    "category": null
+  },
+  {
+    "code": "IT-AG",
+    "name": "Agrigento",
+    "category": null
+  },
+  {
+    "code": "IT-CL",
+    "name": "Caltanissetta",
+    "category": null
+  },
+  {
+    "code": "IT-EN",
+    "name": "Enna",
+    "category": null
+  },
+  {
+    "code": "IT-RG",
+    "name": "Ragusa",
+    "category": null
+  },
+  {
+    "code": "IT-SR",
+    "name": "Siracusa",
+    "category": null
+  },
+  {
+    "code": "IT-TP",
+    "name": "Trapani",
+    "category": null
+  },
+  {
+    "code": "IT-BA",
+    "name": "Bari",
+    "category": null
+  },
+  {
+    "code": "IT-BO",
+    "name": "Bologna",
+    "category": null
+  },
+  {
+    "code": "IT-CA",
+    "name": "Cagliari",
+    "category": null
+  },
+  {
+    "code": "IT-CT",
+    "name": "Catania",
+    "category": null
+  },
+  {
+    "code": "IT-FI",
+    "name": "Firenze",
+    "category": null
+  },
+  {
+    "code": "IT-GE",
+    "name": "Genova",
+    "category": null
+  },
+  {
+    "code": "IT-ME",
+    "name": "Messina",
+    "category": null
+  },
+  {
+    "code": "IT-MI",
+    "name": "Milano",
+    "category": null
+  },
+  {
+    "code": "IT-NA",
+    "name": "Napoli",
+    "category": null
+  },
+  {
+    "code": "IT-PA",
+    "name": "Palermo",
+    "category": null
+  },
+  {
+    "code": "IT-RC",
+    "name": "Reggio Calabria",
+    "category": null
+  },
+  {
+    "code": "IT-RM",
+    "name": "Roma",
+    "category": null
+  },
+  {
+    "code": "IT-TO",
+    "name": "Torino",
+    "category": null
+  },
+  {
+    "code": "IT-VE",
+    "name": "Venezia",
+    "category": null
+  },
+  {
+    "code": "IT-CI",
+    "name": "Carbonia-Iglesias",
+    "category": null
+  },
+  {
+    "code": "IT-GO",
+    "name": "Gorizia",
+    "category": null
+  },
+  {
+    "code": "IT-VS",
+    "name": "Medio Campidano",
+    "category": null
+  },
+  {
+    "code": "IT-OG",
+    "name": "Ogliastra",
+    "category": null
+  },
+  {
+    "code": "IT-OT",
+    "name": "Olbia-Tempio",
+    "category": null
+  },
+  {
+    "code": "IT-PN",
+    "name": "Pordenone",
+    "category": null
+  },
+  {
+    "code": "IT-TS",
+    "name": "Trieste",
+    "category": null
+  },
+  {
+    "code": "IT-UD",
+    "name": "Udine",
+    "category": null
+  },
+  {
+    "code": "IT-AO",
+    "name": "Aosta, Aoste",
+    "category": null
+  }
+]

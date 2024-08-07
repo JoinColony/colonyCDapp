@@ -1,0 +1,62 @@
+[
+  {
+    "code": "CG-BZV",
+    "name": "Brazzaville",
+    "category": "department"
+  },
+  {
+    "code": "CG-11",
+    "name": "Bouenza",
+    "category": "department"
+  },
+  {
+    "code": "CG-8",
+    "name": "Cuvette",
+    "category": "department"
+  },
+  {
+    "code": "CG-15",
+    "name": "Cuvette-Ouest",
+    "category": "department"
+  },
+  {
+    "code": "CG-5",
+    "name": "Kouilou",
+    "category": "department"
+  },
+  {
+    "code": "CG-2",
+    "name": "Lékoumou",
+    "category": "department"
+  },
+  {
+    "code": "CG-7",
+    "name": "Likouala",
+    "category": "department"
+  },
+  {
+    "code": "CG-9",
+    "name": "Niari",
+    "category": "department"
+  },
+  {
+    "code": "CG-14",
+    "name": "Plateaux",
+    "category": "department"
+  },
+  {
+    "code": "CG-16",
+    "name": "Pointe-Noire",
+    "category": "department"
+  },
+  {
+    "code": "CG-12",
+    "name": "Pool",
+    "category": "department"
+  },
+  {
+    "code": "CG-13",
+    "name": "Sangha",
+    "category": "department"
+  }
+]

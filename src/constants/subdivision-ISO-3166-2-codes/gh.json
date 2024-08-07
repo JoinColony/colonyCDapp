@@ -1,0 +1,87 @@
+[
+  {
+    "code": "GH-AF",
+    "name": "Ahafo",
+    "category": null
+  },
+  {
+    "code": "GH-AH",
+    "name": "Ashanti",
+    "category": null
+  },
+  {
+    "code": "GH-BO",
+    "name": "Bono",
+    "category": null
+  },
+  {
+    "code": "GH-BE",
+    "name": "Bono East",
+    "category": null
+  },
+  {
+    "code": "GH-CP",
+    "name": "Central",
+    "category": null
+  },
+  {
+    "code": "GH-EP",
+    "name": "Eastern",
+    "category": null
+  },
+  {
+    "code": "GH-AA",
+    "name": "Greater Accra",
+    "category": null
+  },
+  {
+    "code": "GH-NE",
+    "name": "North East",
+    "category": null
+  },
+  {
+    "code": "GH-NP",
+    "name": "Northern",
+    "category": null
+  },
+  {
+    "code": "GH-OT",
+    "name": "Oti",
+    "category": null
+  },
+  {
+    "code": "GH-SV",
+    "name": "Savannah",
+    "category": null
+  },
+  {
+    "code": "GH-UE",
+    "name": "Upper East",
+    "category": null
+  },
+  {
+    "code": "GH-UW",
+    "name": "Upper West",
+    "category": null
+  },
+  {
+    "code": "GH-TV",
+    "name": "Volta",
+    "category": null
+  },
+  {
+    "code": "GH-WP",
+    "name": "Western",
+    "category": null
+  },
+  {
+    "code": "GH-WN",
+    "name": "Western North",
+    "category": null
+  },
+  {
+    "code": "GH-BA",
+    "name": "Brong-Ahafo",
+    "category": null
+  }
+]

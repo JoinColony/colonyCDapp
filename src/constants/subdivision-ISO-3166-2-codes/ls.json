@@ -1,0 +1,52 @@
+[
+  {
+    "code": "LS-D",
+    "name": "Berea",
+    "category": null
+  },
+  {
+    "code": "LS-B",
+    "name": "Butha-Buthe",
+    "category": null
+  },
+  {
+    "code": "LS-C",
+    "name": "Leribe",
+    "category": null
+  },
+  {
+    "code": "LS-E",
+    "name": "Mafeteng",
+    "category": null
+  },
+  {
+    "code": "LS-A",
+    "name": "Maseru",
+    "category": null
+  },
+  {
+    "code": "LS-F",
+    "name": "Mohale's Hoek",
+    "category": null
+  },
+  {
+    "code": "LS-J",
+    "name": "Mokhotlong",
+    "category": null
+  },
+  {
+    "code": "LS-H",
+    "name": "Qacha's Nek",
+    "category": null
+  },
+  {
+    "code": "LS-G",
+    "name": "Quthing",
+    "category": null
+  },
+  {
+    "code": "LS-K",
+    "name": "Thaba-Tseka",
+    "category": null
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "code": "GQ-C",
+    "name": "Región Continental",
+    "category": null
+  },
+  {
+    "code": "GQ-I",
+    "name": "Región Insular",
+    "category": null
+  },
+  {
+    "code": "GQ-AN",
+    "name": "Annobón",
+    "category": null
+  },
+  {
+    "code": "GQ-BN",
+    "name": "Bioko Norte",
+    "category": null
+  },
+  {
+    "code": "GQ-BS",
+    "name": "Bioko Sur",
+    "category": null
+  },
+  {
+    "code": "GQ-CS",
+    "name": "Centro Sur",
+    "category": null
+  },
+  {
+    "code": "GQ-KN",
+    "name": "Kié-Ntem",
+    "category": null
+  },
+  {
+    "code": "GQ-LI",
+    "name": "Litoral",
+    "category": null
+  },
+  {
+    "code": "GQ-WN",
+    "name": "Wele-Nzas",
+    "category": null
+  }
+]

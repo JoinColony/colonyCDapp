@@ -1,0 +1,57 @@
+[
+  {
+    "code": "AM-ER",
+    "name": "Yerevan",
+    "category": "city"
+  },
+  {
+    "code": "AM-AG",
+    "name": "Aragatsotn",
+    "category": "region"
+  },
+  {
+    "code": "AM-AR",
+    "name": "Ararat",
+    "category": "region"
+  },
+  {
+    "code": "AM-AV",
+    "name": "Armavir",
+    "category": "region"
+  },
+  {
+    "code": "AM-GR",
+    "name": "Gegharkunik",
+    "category": "region"
+  },
+  {
+    "code": "AM-KT",
+    "name": "Kotayk",
+    "category": "region"
+  },
+  {
+    "code": "AM-LO",
+    "name": "Lori",
+    "category": "region"
+  },
+  {
+    "code": "AM-SH",
+    "name": "Shirak",
+    "category": "region"
+  },
+  {
+    "code": "AM-SU",
+    "name": "Syunik",
+    "category": "region"
+  },
+  {
+    "code": "AM-TV",
+    "name": "Tavush",
+    "category": "region"
+  },
+  {
+    "code": "AM-VD",
+    "name": "Vayots Dzor",
+    "category": "region"
+  }
+]

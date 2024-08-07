@@ -1,0 +1,702 @@
+[
+  {
+    "code": "FR-ARA",
+    "name": "Auvergne-Rhône-Alpes",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-BFC",
+    "name": "Bourgogne-Franche-Comté",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-BRE",
+    "name": "Bretagne",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-CVL",
+    "name": "Centre-Val de Loire",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-COR",
+    "name": "Corse",
+    "category": "collectivity"
+  },
+  {
+    "code": "FR-GES",
+    "name": "Grand-Est",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-GUA",
+    "name": "Guadeloupe",
+    "category": "overseas region"
+  },
+  {
+    "code": "FR-HDF",
+    "name": "Hauts-de-France",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-IDF",
+    "name": "Île-de-France",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-MAY",
+    "name": "Mayotte",
+    "category": "overseas region"
+  },
+  {
+    "code": "FR-NOR",
+    "name": "Normandie",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-NAQ",
+    "name": "Nouvelle-Aquitaine",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-OCC",
+    "name": "Occitanie",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-PDL",
+    "name": "Pays-de-la-Loire",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-PAC",
+    "name": "Provence-Alpes-Côte-d’Azur",
+    "category": "metropolitan region"
+  },
+  {
+    "code": "FR-LRE",
+    "name": "La Réunion",
+    "category": "overseas region"
+  },
+  {
+    "code": "FR-GP",
+    "name": "Guadeloupe",
+    "category": null
+  },
+  {
+    "code": "FR-YT",
+    "name": "Mayotte",
+    "category": null
+  },
+  {
+    "code": "FR-RE",
+    "name": "La Réunion",
+    "category": null
+  },
+  {
+    "code": "FR-01",
+    "name": "Ain",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-02",
+    "name": "Aisne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-03",
+    "name": "Allier",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-04",
+    "name": "Alpes-de-Haute-Provence",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-06",
+    "name": "Alpes-Maritimes",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-07",
+    "name": "Ardèche",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-08",
+    "name": "Ardennes",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-09",
+    "name": "Ariège",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-10",
+    "name": "Aube",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-11",
+    "name": "Aude",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-12",
+    "name": "Aveyron",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-67",
+    "name": "Bas-Rhin",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-13",
+    "name": "Bouches-du-Rhône",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-14",
+    "name": "Calvados",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-15",
+    "name": "Cantal",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-16",
+    "name": "Charente",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-17",
+    "name": "Charente-Maritime",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-18",
+    "name": "Cher",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-19",
+    "name": "Corrèze",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-2A",
+    "name": "Corse-du-Sud",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-21",
+    "name": "Côte-d'Or",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-22",
+    "name": "Côtes-d'Armor",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-23",
+    "name": "Creuse",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-79",
+    "name": "Deux-Sèvres",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-24",
+    "name": "Dordogne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-25",
+    "name": "Doubs",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-26",
+    "name": "Drôme",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-91",
+    "name": "Essonne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-27",
+    "name": "Eure",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-28",
+    "name": "Eure-et-Loir",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-29",
+    "name": "Finistère",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-30",
+    "name": "Gard",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-32",
+    "name": "Gers",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-33",
+    "name": "Gironde",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-GP",
+    "name": "Guadeloupe",
+    "category": "overseas department"
+  },
+  {
+    "code": "FR-2B",
+    "name": "Haute-Corse",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-31",
+    "name": "Haute-Garonne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-43",
+    "name": "Haute-Loire",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-52",
+    "name": "Haute-Marne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-05",
+    "name": "Hautes-Alpes",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-70",
+    "name": "Haute-Saône",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-74",
+    "name": "Haute-Savoie",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-65",
+    "name": "Hautes-Pyrénées",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-87",
+    "name": "Haute-Vienne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-68",
+    "name": "Haut-Rhin",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-92",
+    "name": "Hauts-de-Seine",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-34",
+    "name": "Hérault",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-35",
+    "name": "Ille-et-Vilaine",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-36",
+    "name": "Indre",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-37",
+    "name": "Indre-et-Loire",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-38",
+    "name": "Isère",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-39",
+    "name": "Jura",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-40",
+    "name": "Landes",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-42",
+    "name": "Loire",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-44",
+    "name": "Loire-Atlantique",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-45",
+    "name": "Loiret",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-41",
+    "name": "Loir-et-Cher",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-46",
+    "name": "Lot",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-47",
+    "name": "Lot-et-Garonne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-48",
+    "name": "Lozère",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-49",
+    "name": "Maine-et-Loire",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-50",
+    "name": "Manche",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-51",
+    "name": "Marne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-53",
+    "name": "Mayenne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-YT",
+    "name": "Mayotte",
+    "category": "overseas department"
+  },
+  {
+    "code": "FR-54",
+    "name": "Meurthe-et-Moselle",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-55",
+    "name": "Meuse",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-56",
+    "name": "Morbihan",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-57",
+    "name": "Moselle",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-58",
+    "name": "Nièvre",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-59",
+    "name": "Nord",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-60",
+    "name": "Oise",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-61",
+    "name": "Orne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-75",
+    "name": "Paris",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-62",
+    "name": "Pas-de-Calais",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-63",
+    "name": "Puy-de-Dôme",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-64",
+    "name": "Pyrénées-Atlantiques",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-66",
+    "name": "Pyrénées-Orientales",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-RE",
+    "name": "La Réunion",
+    "category": "overseas department"
+  },
+  {
+    "code": "FR-69",
+    "name": "Rhône3",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-71",
+    "name": "Saône-et-Loire",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-72",
+    "name": "Sarthe",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-73",
+    "name": "Savoie",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-77",
+    "name": "Seine-et-Marne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-76",
+    "name": "Seine-Maritime",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-93",
+    "name": "Seine-Saint-Denis",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-80",
+    "name": "Somme",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-81",
+    "name": "Tarn",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-82",
+    "name": "Tarn-et-Garonne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-90",
+    "name": "Territoire de Belfort",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-94",
+    "name": "Val-de-Marne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-95",
+    "name": "Val-d'Oise",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-83",
+    "name": "Var",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-84",
+    "name": "Vaucluse",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-85",
+    "name": "Vendée",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-86",
+    "name": "Vienne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-88",
+    "name": "Vosges",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-89",
+    "name": "Yonne",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-78",
+    "name": "Yvelines",
+    "category": "metropolitan department"
+  },
+  {
+    "code": "FR-CP",
+    "name": "Clipperton",
+    "category": "dependency"
+  },
+  {
+    "code": "FR-GF",
+    "name": "Guyane (française)",
+    "category": "overseas territorial collectivity&#91;4&#93;"
+  },
+  {
+    "code": "FR-MQ",
+    "name": "Martinique",
+    "category": "overseas territorial collectivity&#91;5&#93;"
+  },
+  {
+    "code": "FR-NC",
+    "name": "Nouvelle-Calédonie",
+    "category": "overseas territorial collectivity&#91;1&#93;"
+  },
+  {
+    "code": "FR-PF",
+    "name": "Polynésie française",
+    "category": "overseas territorial collectivity"
+  },
+  {
+    "code": "FR-BL",
+    "name": "Saint-Barthélemy",
+    "category": "overseas territorial collectivity"
+  },
+  {
+    "code": "FR-MF",
+    "name": "Saint-Martin",
+    "category": "overseas territorial collectivity"
+  },
+  {
+    "code": "FR-PM",
+    "name": "Saint-Pierre-et-Miquelon",
+    "category": "overseas territorial collectivity"
+  },
+  {
+    "code": "FR-TF",
+    "name": "Terres australes françaises",
+    "category": "overseas territorial collectivity&#91;6&#93;"
+  },
+  {
+    "code": "FR-WF",
+    "name": "Wallis-et-Futuna",
+    "category": "overseas territorial collectivity"
+  },
+  {
+    "code": "FR-BL",
+    "name": "Saint-Barthélemy",
+    "category": null
+  },
+  {
+    "code": "FR-GF",
+    "name": "Guyane (française)",
+    "category": null
+  },
+  {
+    "code": "FR-GP",
+    "name": "Guadeloupe",
+    "category": null
+  },
+  {
+    "code": "FR-MF",
+    "name": "Saint-Martin",
+    "category": null
+  },
+  {
+    "code": "FR-MQ",
+    "name": "Martinique",
+    "category": null
+  },
+  {
+    "code": "FR-NC",
+    "name": "Nouvelle-Calédonie",
+    "category": null
+  },
+  {
+    "code": "FR-PF",
+    "name": "Polynésie française",
+    "category": null
+  },
+  {
+    "code": "FR-PM",
+    "name": "Saint-Pierre-et-Miquelon",
+    "category": null
+  },
+  {
+    "code": "FR-RE",
+    "name": "La Réunion",
+    "category": null
+  },
+  {
+    "code": "FR-TF",
+    "name": "Terres australes françaises6",
+    "category": null
+  },
+  {
+    "code": "FR-WF",
+    "name": "Wallis-et-Futuna",
+    "category": null
+  },
+  {
+    "code": "FR-YT",
+    "name": "Mayotte",
+    "category": null
+  }
+]

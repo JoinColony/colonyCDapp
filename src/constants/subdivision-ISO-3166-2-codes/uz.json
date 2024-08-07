@@ -1,0 +1,72 @@
+[
+  {
+    "code": "UZ-TK",
+    "name": "Toshkent",
+    "category": "city"
+  },
+  {
+    "code": "UZ-AN",
+    "name": "Andijon",
+    "category": "region"
+  },
+  {
+    "code": "UZ-BU",
+    "name": "Buxoro",
+    "category": "region"
+  },
+  {
+    "code": "UZ-FA",
+    "name": "Farg‘ona",
+    "category": "region"
+  },
+  {
+    "code": "UZ-JI",
+    "name": "Jizzax",
+    "category": "region"
+  },
+  {
+    "code": "UZ-NG",
+    "name": "Namangan",
+    "category": "region"
+  },
+  {
+    "code": "UZ-NW",
+    "name": "Navoiy",
+    "category": "region"
+  },
+  {
+    "code": "UZ-QA",
+    "name": "Qashqadaryo",
+    "category": "region"
+  },
+  {
+    "code": "UZ-SA",
+    "name": "Samarqand",
+    "category": "region"
+  },
+  {
+    "code": "UZ-SI",
+    "name": "Sirdaryo",
+    "category": "region"
+  },
+  {
+    "code": "UZ-SU",
+    "name": "Surxondaryo",
+    "category": "region"
+  },
+  {
+    "code": "UZ-TO",
+    "name": "Toshkent",
+    "category": "region"
+  },
+  {
+    "code": "UZ-XO",
+    "name": "Xorazm",
+    "category": "region"
+  },
+  {
+    "code": "UZ-QR",
+    "name": "Qoraqalpog‘iston Respublikasi",
+    "category": "republic"
+  }
+]

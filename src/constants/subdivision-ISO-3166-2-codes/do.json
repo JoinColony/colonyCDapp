@@ -1,0 +1,212 @@
+[
+  {
+    "code": "DO-33",
+    "name": "Cibao Nordeste",
+    "category": null
+  },
+  {
+    "code": "DO-34",
+    "name": "Cibao Noroeste",
+    "category": null
+  },
+  {
+    "code": "DO-35",
+    "name": "Cibao Norte",
+    "category": null
+  },
+  {
+    "code": "DO-36",
+    "name": "Cibao Sur",
+    "category": null
+  },
+  {
+    "code": "DO-37",
+    "name": "El Valle",
+    "category": null
+  },
+  {
+    "code": "DO-38",
+    "name": "Enriquillo",
+    "category": null
+  },
+  {
+    "code": "DO-39",
+    "name": "Higuamo",
+    "category": null
+  },
+  {
+    "code": "DO-40",
+    "name": "Ozama",
+    "category": null
+  },
+  {
+    "code": "DO-41",
+    "name": "Valdesia",
+    "category": null
+  },
+  {
+    "code": "DO-42",
+    "name": "Yuma",
+    "category": null
+  },
+  {
+    "code": "DO-01",
+    "name": "Distrito Nacional (Santo Domingo)",
+    "category": "district"
+  },
+  {
+    "code": "DO-02",
+    "name": "Azua",
+    "category": "province"
+  },
+  {
+    "code": "DO-03",
+    "name": "Baoruco",
+    "category": "province"
+  },
+  {
+    "code": "DO-04",
+    "name": "Barahona",
+    "category": "province"
+  },
+  {
+    "code": "DO-05",
+    "name": "Dajabón",
+    "category": "province"
+  },
+  {
+    "code": "DO-06",
+    "name": "Duarte",
+    "category": "province"
+  },
+  {
+    "code": "DO-08",
+    "name": "El Seibo",
+    "category": "province"
+  },
+  {
+    "code": "DO-09",
+    "name": "Espaillat",
+    "category": "province"
+  },
+  {
+    "code": "DO-30",
+    "name": "Hato Mayor",
+    "category": "province"
+  },
+  {
+    "code": "DO-10",
+    "name": "Independencia",
+    "category": "province"
+  },
+  {
+    "code": "DO-11",
+    "name": "La Altagracia",
+    "category": "province"
+  },
+  {
+    "code": "DO-07",
+    "name": "Elías Piña",
+    "category": "province"
+  },
+  {
+    "code": "DO-12",
+    "name": "La Romana",
+    "category": "province"
+  },
+  {
+    "code": "DO-13",
+    "name": "La Vega",
+    "category": "province"
+  },
+  {
+    "code": "DO-14",
+    "name": "María Trinidad Sánchez",
+    "category": "province"
+  },
+  {
+    "code": "DO-28",
+    "name": "Monseñor Nouel",
+    "category": "province"
+  },
+  {
+    "code": "DO-15",
+    "name": "Monte Cristi",
+    "category": "province"
+  },
+  {
+    "code": "DO-29",
+    "name": "Monte Plata",
+    "category": "province"
+  },
+  {
+    "code": "DO-16",
+    "name": "Pedernales",
+    "category": "province"
+  },
+  {
+    "code": "DO-17",
+    "name": "Peravia",
+    "category": "province"
+  },
+  {
+    "code": "DO-18",
+    "name": "Puerto Plata",
+    "category": "province"
+  },
+  {
+    "code": "DO-19",
+    "name": "Hermanas Mirabal",
+    "category": "province"
+  },
+  {
+    "code": "DO-20",
+    "name": "Samaná",
+    "category": "province"
+  },
+  {
+    "code": "DO-21",
+    "name": "San Cristóbal",
+    "category": "province"
+  },
+  {
+    "code": "DO-31",
+    "name": "San José de Ocoa",
+    "category": "province"
+  },
+  {
+    "code": "DO-22",
+    "name": "San Juan",
+    "category": "province"
+  },
+  {
+    "code": "DO-23",
+    "name": "San Pedro de Macorís",
+    "category": "province"
+  },
+  {
+    "code": "DO-24",
+    "name": "Sánchez Ramírez",
+    "category": "province"
+  },
+  {
+    "code": "DO-25",
+    "name": "Santiago",
+    "category": "province"
+  },
+  {
+    "code": "DO-26",
+    "name": "Santiago Rodríguez",
+    "category": "province"
+  },
+  {
+    "code": "DO-32",
+    "name": "Santo Domingo",
+    "category": "province"
+  },
+  {
+    "code": "DO-27",
+    "name": "Valverde",
+    "category": "province"
+  }
+]

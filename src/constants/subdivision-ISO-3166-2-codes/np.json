@@ -1,0 +1,97 @@
+[
+  {
+    "code": "NP-1",
+    "name": "Central",
+    "category": null
+  },
+  {
+    "code": "NP-2",
+    "name": "Mid Western",
+    "category": null
+  },
+  {
+    "code": "NP-3",
+    "name": "Western",
+    "category": null
+  },
+  {
+    "code": "NP-4",
+    "name": "Eastern",
+    "category": null
+  },
+  {
+    "code": "NP-5",
+    "name": "Far Western",
+    "category": null
+  },
+  {
+    "code": "NP-BA",
+    "name": "Bagmati",
+    "category": null
+  },
+  {
+    "code": "NP-BH",
+    "name": "Bheri",
+    "category": null
+  },
+  {
+    "code": "NP-DH",
+    "name": "Dhawalagiri",
+    "category": null
+  },
+  {
+    "code": "NP-GA",
+    "name": "Gandaki",
+    "category": null
+  },
+  {
+    "code": "NP-JA",
+    "name": "Janakpur",
+    "category": null
+  },
+  {
+    "code": "NP-KA",
+    "name": "Karnali",
+    "category": null
+  },
+  {
+    "code": "NP-KO",
+    "name": "Kosi",
+    "category": null
+  },
+  {
+    "code": "NP-LU",
+    "name": "Lumbini",
+    "category": null
+  },
+  {
+    "code": "NP-MA",
+    "name": "Mahakali",
+    "category": null
+  },
+  {
+    "code": "NP-ME",
+    "name": "Mechi",
+    "category": null
+  },
+  {
+    "code": "NP-NA",
+    "name": "Narayani",
+    "category": null
+  },
+  {
+    "code": "NP-RA",
+    "name": "Rapti",
+    "category": null
+  },
+  {
+    "code": "NP-SA",
+    "name": "Sagarmatha",
+    "category": null
+  },
+  {
+    "code": "NP-SE",
+    "name": "Seti",
+    "category": null
+  }
+]

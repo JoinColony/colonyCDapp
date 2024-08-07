@@ -1,0 +1,87 @@
+[
+  {
+    "code": "KR-11",
+    "name": "Seoul",
+    "category": "special city"
+  },
+  {
+    "code": "KR-26",
+    "name": "Busan",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-27",
+    "name": "Daegu",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-30",
+    "name": "Daejeon",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-29",
+    "name": "Gwangju",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-28",
+    "name": "Incheon",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-31",
+    "name": "Ulsan",
+    "category": "metropolitan city"
+  },
+  {
+    "code": "KR-43",
+    "name": "North Chungcheong",
+    "category": "province"
+  },
+  {
+    "code": "KR-44",
+    "name": "South Chungcheong",
+    "category": "province"
+  },
+  {
+    "code": "KR-42",
+    "name": "Gangwon",
+    "category": "province"
+  },
+  {
+    "code": "KR-41",
+    "name": "Gyeonggi",
+    "category": "province"
+  },
+  {
+    "code": "KR-47",
+    "name": "North Gyeongsang",
+    "category": "province"
+  },
+  {
+    "code": "KR-48",
+    "name": "South Gyeongsang",
+    "category": "province"
+  },
+  {
+    "code": "KR-45",
+    "name": "North Jeolla",
+    "category": "province"
+  },
+  {
+    "code": "KR-46",
+    "name": "South Jeolla",
+    "category": "province"
+  },
+  {
+    "code": "KR-49",
+    "name": "Jeju",
+    "category": "special self-governing province"
+  },
+  {
+    "code": "KR-50",
+    "name": "Sejong",
+    "category": "special self-governing city"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "code": "KZ-ALA",
+    "name": "Almaty",
+    "category": "Almaty"
+  },
+  {
+    "code": "KZ-ALM",
+    "name": "Almaty oblysy",
+    "category": "Almatinskaja oblast'"
+  },
+  {
+    "code": "KZ-AKM",
+    "name": "Aqmola oblysy",
+    "category": "Akmolinskaja oblast'"
+  },
+  {
+    "code": "KZ-AKT",
+    "name": "Aqtöbe oblysy",
+    "category": "Aktjubinskaja oblast'"
+  },
+  {
+    "code": "KZ-AST",
+    "name": "Astana",
+    "category": "Astana"
+  },
+  {
+    "code": "KZ-ATY",
+    "name": "Atyraū oblysy",
+    "category": "Atyrauskaja oblast'"
+  },
+  {
+    "code": "KZ-ZAP",
+    "name": "Batys Qazaqstan oblysy",
+    "category": "Zapadno-Kazahstanskaja oblast'"
+  },
+  {
+    "code": "KZ-BAY",
+    "name": "Bayqongyr",
+    "category": "Bajkonyr"
+  },
+  {
+    "code": "KZ-MAN",
+    "name": "Mangghystaū oblysy",
+    "category": "Mangystauskaja oblast'"
+  },
+  {
+    "code": "KZ-PAV",
+    "name": "Pavlodar oblysy",
+    "category": "Pavlodarskaja oblast'"
+  },
+  {
+    "code": "KZ-KAR",
+    "name": "Qaraghandy oblysy",
+    "category": "Karagandinskaja oblast'"
+  },
+  {
+    "code": "KZ-KUS",
+    "name": "Qostanay oblysy",
+    "category": "Kostanajskaja oblast'"
+  },
+  {
+    "code": "KZ-KZY",
+    "name": "Qyzylorda oblysy",
+    "category": "Kyzylordinskaja oblast'"
+  },
+  {
+    "code": "KZ-VOS",
+    "name": "Shyghys Qazaqstan oblysy",
+    "category": "Vostočno-Kazahstanskaja oblast'"
+  },
+  {
+    "code": "KZ-SHY",
+    "name": "Shymkent",
+    "category": "Šimkent"
+  },
+  {
+    "code": "KZ-SEV",
+    "name": "Soltüstik Qazaqstan oblysy",
+    "category": "Severo-Kazahstanskaja oblast'"
+  },
+  {
+    "code": "KZ-YUZ",
+    "name": "Türkistan oblysy",
+    "category": "Turkestanskaja oblast'"
+  },
+  {
+    "code": "KZ-ZHA",
+    "name": "Zhambyl oblysy",
+    "category": "Žambylskaja oblast'"
+  }
+]

@@ -1,0 +1,207 @@
+[
+  {
+    "code": "GN-B",
+    "name": "Boké",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-F",
+    "name": "Faranah",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-K",
+    "name": "Kankan",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-D",
+    "name": "Kindia",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-L",
+    "name": "Labé",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-M",
+    "name": "Mamou",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-N",
+    "name": "Nzérékoré",
+    "category": "administrative region"
+  },
+  {
+    "code": "GN-C",
+    "name": "Conakry",
+    "category": "governorate"
+  },
+  {
+    "code": "GN-BE",
+    "name": "Beyla",
+    "category": null
+  },
+  {
+    "code": "GN-BF",
+    "name": "Boffa",
+    "category": null
+  },
+  {
+    "code": "GN-BK",
+    "name": "Boké",
+    "category": null
+  },
+  {
+    "code": "GN-CO",
+    "name": "Coyah",
+    "category": null
+  },
+  {
+    "code": "GN-DB",
+    "name": "Dabola",
+    "category": null
+  },
+  {
+    "code": "GN-DL",
+    "name": "Dalaba",
+    "category": null
+  },
+  {
+    "code": "GN-DI",
+    "name": "Dinguiraye",
+    "category": null
+  },
+  {
+    "code": "GN-DU",
+    "name": "Dubréka",
+    "category": null
+  },
+  {
+    "code": "GN-FA",
+    "name": "Faranah",
+    "category": null
+  },
+  {
+    "code": "GN-FO",
+    "name": "Forécariah",
+    "category": null
+  },
+  {
+    "code": "GN-FR",
+    "name": "Fria",
+    "category": null
+  },
+  {
+    "code": "GN-GA",
+    "name": "Gaoual",
+    "category": null
+  },
+  {
+    "code": "GN-GU",
+    "name": "Guékédou",
+    "category": null
+  },
+  {
+    "code": "GN-KA",
+    "name": "Kankan",
+    "category": null
+  },
+  {
+    "code": "GN-KE",
+    "name": "Kérouané",
+    "category": null
+  },
+  {
+    "code": "GN-KD",
+    "name": "Kindia",
+    "category": null
+  },
+  {
+    "code": "GN-KS",
+    "name": "Kissidougou",
+    "category": null
+  },
+  {
+    "code": "GN-KB",
+    "name": "Koubia",
+    "category": null
+  },
+  {
+    "code": "GN-KN",
+    "name": "Koundara",
+    "category": null
+  },
+  {
+    "code": "GN-KO",
+    "name": "Kouroussa",
+    "category": null
+  },
+  {
+    "code": "GN-LA",
+    "name": "Labé",
+    "category": null
+  },
+  {
+    "code": "GN-LE",
+    "name": "Lélouma",
+    "category": null
+  },
+  {
+    "code": "GN-LO",
+    "name": "Lola",
+    "category": null
+  },
+  {
+    "code": "GN-MC",
+    "name": "Macenta",
+    "category": null
+  },
+  {
+    "code": "GN-ML",
+    "name": "Mali",
+    "category": null
+  },
+  {
+    "code": "GN-MM",
+    "name": "Mamou",
+    "category": null
+  },
+  {
+    "code": "GN-MD",
+    "name": "Mandiana",
+    "category": null
+  },
+  {
+    "code": "GN-NZ",
+    "name": "Nzérékoré",
+    "category": null
+  },
+  {
+    "code": "GN-PI",
+    "name": "Pita",
+    "category": null
+  },
+  {
+    "code": "GN-SI",
+    "name": "Siguiri",
+    "category": null
+  },
+  {
+    "code": "GN-TE",
+    "name": "Télimélé",
+    "category": null
+  },
+  {
+    "code": "GN-TO",
+    "name": "Tougué",
+    "category": null
+  },
+  {
+    "code": "GN-YO",
+    "name": "Yomou",
+    "category": null
+  }
+]

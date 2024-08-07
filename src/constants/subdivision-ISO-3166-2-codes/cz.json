@@ -1,0 +1,452 @@
+[
+  {
+    "code": "CZ-31",
+    "name": "South Bohemia",
+    "category": "region"
+  },
+  {
+    "code": "CZ-64",
+    "name": "South Moravia",
+    "category": "region"
+  },
+  {
+    "code": "CZ-41",
+    "name": "Karlovy Vary",
+    "category": "region"
+  },
+  {
+    "code": "CZ-52",
+    "name": "Hradec Králové",
+    "category": "region"
+  },
+  {
+    "code": "CZ-51",
+    "name": "Liberec",
+    "category": "region"
+  },
+  {
+    "code": "CZ-80",
+    "name": "Moravia-Silesia",
+    "category": "region"
+  },
+  {
+    "code": "CZ-71",
+    "name": "Olomouc",
+    "category": "region"
+  },
+  {
+    "code": "CZ-53",
+    "name": "Pardubice",
+    "category": "region"
+  },
+  {
+    "code": "CZ-32",
+    "name": "Plzeň",
+    "category": "region"
+  },
+  {
+    "code": "CZ-10",
+    "name": "Prague",
+    "category": "capital city"
+  },
+  {
+    "code": "CZ-20",
+    "name": "Central Bohemia",
+    "category": "region"
+  },
+  {
+    "code": "CZ-42",
+    "name": "Ústí nad Labem",
+    "category": "region"
+  },
+  {
+    "code": "CZ-63",
+    "name": "Vysočina",
+    "category": "region"
+  },
+  {
+    "code": "CZ-72",
+    "name": "Zlín",
+    "category": "region"
+  },
+  {
+    "code": "CZ-201",
+    "name": "Benešov",
+    "category": null
+  },
+  {
+    "code": "CZ-202",
+    "name": "Beroun",
+    "category": null
+  },
+  {
+    "code": "CZ-641",
+    "name": "Blansko",
+    "category": null
+  },
+  {
+    "code": "CZ-642",
+    "name": "Brno-město",
+    "category": null
+  },
+  {
+    "code": "CZ-643",
+    "name": "Brno-venkov",
+    "category": null
+  },
+  {
+    "code": "CZ-801",
+    "name": "Bruntál",
+    "category": null
+  },
+  {
+    "code": "CZ-644",
+    "name": "Břeclav",
+    "category": null
+  },
+  {
+    "code": "CZ-511",
+    "name": "Česká Lípa",
+    "category": null
+  },
+  {
+    "code": "CZ-311",
+    "name": "České Budějovice",
+    "category": null
+  },
+  {
+    "code": "CZ-312",
+    "name": "Český Krumlov",
+    "category": null
+  },
+  {
+    "code": "CZ-421",
+    "name": "Děčín",
+    "category": null
+  },
+  {
+    "code": "CZ-321",
+    "name": "Domažlice",
+    "category": null
+  },
+  {
+    "code": "CZ-802",
+    "name": "Frýdek-Místek",
+    "category": null
+  },
+  {
+    "code": "CZ-631",
+    "name": "Havlíčkův Brod",
+    "category": null
+  },
+  {
+    "code": "CZ-645",
+    "name": "Hodonín",
+    "category": null
+  },
+  {
+    "code": "CZ-521",
+    "name": "Hradec Králové",
+    "category": null
+  },
+  {
+    "code": "CZ-411",
+    "name": "Cheb",
+    "category": null
+  },
+  {
+    "code": "CZ-422",
+    "name": "Chomutov",
+    "category": null
+  },
+  {
+    "code": "CZ-531",
+    "name": "Chrudim",
+    "category": null
+  },
+  {
+    "code": "CZ-512",
+    "name": "Jablonec nad Nisou",
+    "category": null
+  },
+  {
+    "code": "CZ-711",
+    "name": "Jeseník",
+    "category": null
+  },
+  {
+    "code": "CZ-522",
+    "name": "Jičín",
+    "category": null
+  },
+  {
+    "code": "CZ-632",
+    "name": "Jihlava",
+    "category": null
+  },
+  {
+    "code": "CZ-313",
+    "name": "Jindřichův Hradec",
+    "category": null
+  },
+  {
+    "code": "CZ-412",
+    "name": "Karlovy Vary",
+    "category": null
+  },
+  {
+    "code": "CZ-803",
+    "name": "Karviná",
+    "category": null
+  },
+  {
+    "code": "CZ-203",
+    "name": "Kladno",
+    "category": null
+  },
+  {
+    "code": "CZ-322",
+    "name": "Klatovy",
+    "category": null
+  },
+  {
+    "code": "CZ-204",
+    "name": "Kolín",
+    "category": null
+  },
+  {
+    "code": "CZ-721",
+    "name": "Kroměříž",
+    "category": null
+  },
+  {
+    "code": "CZ-205",
+    "name": "Kutná Hora",
+    "category": null
+  },
+  {
+    "code": "CZ-513",
+    "name": "Liberec",
+    "category": null
+  },
+  {
+    "code": "CZ-423",
+    "name": "Litoměřice",
+    "category": null
+  },
+  {
+    "code": "CZ-424",
+    "name": "Louny",
+    "category": null
+  },
+  {
+    "code": "CZ-206",
+    "name": "Mělník",
+    "category": null
+  },
+  {
+    "code": "CZ-207",
+    "name": "Mladá Boleslav",
+    "category": null
+  },
+  {
+    "code": "CZ-425",
+    "name": "Most",
+    "category": null
+  },
+  {
+    "code": "CZ-523",
+    "name": "Náchod",
+    "category": null
+  },
+  {
+    "code": "CZ-804",
+    "name": "Nový Jičín",
+    "category": null
+  },
+  {
+    "code": "CZ-208",
+    "name": "Nymburk",
+    "category": null
+  },
+  {
+    "code": "CZ-712",
+    "name": "Olomouc",
+    "category": null
+  },
+  {
+    "code": "CZ-805",
+    "name": "Opava",
+    "category": null
+  },
+  {
+    "code": "CZ-806",
+    "name": "Ostrava-město",
+    "category": null
+  },
+  {
+    "code": "CZ-532",
+    "name": "Pardubice",
+    "category": null
+  },
+  {
+    "code": "CZ-633",
+    "name": "Pelhřimov",
+    "category": null
+  },
+  {
+    "code": "CZ-314",
+    "name": "Písek",
+    "category": null
+  },
+  {
+    "code": "CZ-324",
+    "name": "Plzeň-jih",
+    "category": null
+  },
+  {
+    "code": "CZ-323",
+    "name": "Plzeň-město",
+    "category": null
+  },
+  {
+    "code": "CZ-325",
+    "name": "Plzeň-sever",
+    "category": null
+  },
+  {
+    "code": "CZ-209",
+    "name": "Praha-východ",
+    "category": null
+  },
+  {
+    "code": "CZ-20A",
+    "name": "Praha-západ",
+    "category": null
+  },
+  {
+    "code": "CZ-315",
+    "name": "Prachatice",
+    "category": null
+  },
+  {
+    "code": "CZ-713",
+    "name": "Prostějov",
+    "category": null
+  },
+  {
+    "code": "CZ-714",
+    "name": "Přerov",
+    "category": null
+  },
+  {
+    "code": "CZ-20B",
+    "name": "Příbram",
+    "category": null
+  },
+  {
+    "code": "CZ-20C",
+    "name": "Rakovník",
+    "category": null
+  },
+  {
+    "code": "CZ-326",
+    "name": "Rokycany",
+    "category": null
+  },
+  {
+    "code": "CZ-524",
+    "name": "Rychnov nad Kněžnou",
+    "category": null
+  },
+  {
+    "code": "CZ-514",
+    "name": "Semily",
+    "category": null
+  },
+  {
+    "code": "CZ-413",
+    "name": "Sokolov",
+    "category": null
+  },
+  {
+    "code": "CZ-316",
+    "name": "Strakonice",
+    "category": null
+  },
+  {
+    "code": "CZ-533",
+    "name": "Svitavy",
+    "category": null
+  },
+  {
+    "code": "CZ-715",
+    "name": "Šumperk",
+    "category": null
+  },
+  {
+    "code": "CZ-317",
+    "name": "Tábor",
+    "category": null
+  },
+  {
+    "code": "CZ-327",
+    "name": "Tachov",
+    "category": null
+  },
+  {
+    "code": "CZ-426",
+    "name": "Teplice",
+    "category": null
+  },
+  {
+    "code": "CZ-525",
+    "name": "Trutnov",
+    "category": null
+  },
+  {
+    "code": "CZ-634",
+    "name": "Třebíč",
+    "category": null
+  },
+  {
+    "code": "CZ-722",
+    "name": "Uherské Hradiště",
+    "category": null
+  },
+  {
+    "code": "CZ-427",
+    "name": "Ústí nad Labem",
+    "category": null
+  },
+  {
+    "code": "CZ-534",
+    "name": "Ústí nad Orlicí",
+    "category": null
+  },
+  {
+    "code": "CZ-723",
+    "name": "Vsetín",
+    "category": null
+  },
+  {
+    "code": "CZ-646",
+    "name": "Vyškov",
+    "category": null
+  },
+  {
+    "code": "CZ-724",
+    "name": "Zlín",
+    "category": null
+  },
+  {
+    "code": "CZ-647",
+    "name": "Znojmo",
+    "category": null
+  },
+  {
+    "code": "CZ-635",
+    "name": "Žďár nad Sázavou",
+    "category": null
+  }
+]

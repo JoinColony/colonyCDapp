@@ -1,0 +1,62 @@
+[
+  {
+    "code": "KP-01",
+    "name": "Pyongyang",
+    "category": "Phyeongyang"
+  },
+  {
+    "code": "KP-13",
+    "name": "Rason",
+    "category": "Raseon"
+  },
+  {
+    "code": "KP-14",
+    "name": "Nampo",
+    "category": "Nampho"
+  },
+  {
+    "code": "KP-02",
+    "name": "South Pyongan",
+    "category": "Phyeongannamto"
+  },
+  {
+    "code": "KP-03",
+    "name": "North Pyongan",
+    "category": "Phyeonganpukto"
+  },
+  {
+    "code": "KP-04",
+    "name": "Chagang",
+    "category": "Jakangto"
+  },
+  {
+    "code": "KP-05",
+    "name": "South Hwanghae",
+    "category": "Hwanghainamto"
+  },
+  {
+    "code": "KP-06",
+    "name": "North Hwanghae",
+    "category": "Hwanghaipukto"
+  },
+  {
+    "code": "KP-07",
+    "name": "Kangwon",
+    "category": "Kangweonto"
+  },
+  {
+    "code": "KP-08",
+    "name": "South Hamgyong",
+    "category": "Hamkyeongnamto"
+  },
+  {
+    "code": "KP-09",
+    "name": "North Hamgyong",
+    "category": "Hamkyeongpukto"
+  },
+  {
+    "code": "KP-10",
+    "name": "Ryanggang",
+    "category": "Ryangkangto"
+  }
+]

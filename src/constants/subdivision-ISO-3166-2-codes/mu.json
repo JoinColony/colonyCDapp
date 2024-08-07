@@ -1,0 +1,87 @@
+[
+  {
+    "code": "MU-BR",
+    "name": "Beau Bassin-Rose Hill",
+    "category": "city"
+  },
+  {
+    "code": "MU-CU",
+    "name": "Curepipe",
+    "category": "city"
+  },
+  {
+    "code": "MU-PU",
+    "name": "Port Louis",
+    "category": "city"
+  },
+  {
+    "code": "MU-QB",
+    "name": "Quatre Bornes",
+    "category": "city"
+  },
+  {
+    "code": "MU-VP",
+    "name": "Vacoas-Phoenix",
+    "category": "city"
+  },
+  {
+    "code": "MU-AG",
+    "name": "Agalega Islands",
+    "category": "dependency"
+  },
+  {
+    "code": "MU-CC",
+    "name": "Cargados Carajos Shoals(local variant is Saint Brandon Islands)",
+    "category": "dependency"
+  },
+  {
+    "code": "MU-RO",
+    "name": "Rodrigues Island",
+    "category": "dependency"
+  },
+  {
+    "code": "MU-BL",
+    "name": "Black River",
+    "category": "district"
+  },
+  {
+    "code": "MU-FL",
+    "name": "Flacq",
+    "category": "district"
+  },
+  {
+    "code": "MU-GP",
+    "name": "Grand Port",
+    "category": "district"
+  },
+  {
+    "code": "MU-MO",
+    "name": "Moka",
+    "category": "district"
+  },
+  {
+    "code": "MU-PA",
+    "name": "Pamplemousses",
+    "category": "district"
+  },
+  {
+    "code": "MU-PW",
+    "name": "Plaines Wilhems",
+    "category": "district"
+  },
+  {
+    "code": "MU-PL",
+    "name": "Port Louis",
+    "category": "district"
+  },
+  {
+    "code": "MU-RR",
+    "name": "Rivière du Rempart",
+    "category": "district"
+  },
+  {
+    "code": "MU-SA",
+    "name": "Savanne",
+    "category": "district"
+  }
+]

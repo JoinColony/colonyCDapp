@@ -1,0 +1,187 @@
+[
+  {
+    "code": "IN-AP",
+    "name": "Andhra Pradesh",
+    "category": "State"
+  },
+  {
+    "code": "IN-AR",
+    "name": "Arunachal Pradesh",
+    "category": "State"
+  },
+  {
+    "code": "IN-AS",
+    "name": "Assam",
+    "category": "State"
+  },
+  {
+    "code": "IN-BR",
+    "name": "Bihar",
+    "category": "State"
+  },
+  {
+    "code": "IN-CT",
+    "name": "Chhattisgarhnote 1",
+    "category": "State"
+  },
+  {
+    "code": "IN-GA",
+    "name": "Goa",
+    "category": "State"
+  },
+  {
+    "code": "IN-GJ",
+    "name": "Gujarat",
+    "category": "State"
+  },
+  {
+    "code": "IN-HR",
+    "name": "Haryana",
+    "category": "State"
+  },
+  {
+    "code": "IN-HP",
+    "name": "Himachal Pradesh",
+    "category": "State"
+  },
+  {
+    "code": "IN-JH",
+    "name": "Jharkhand",
+    "category": "State"
+  },
+  {
+    "code": "IN-KA",
+    "name": "Karnataka",
+    "category": "State"
+  },
+  {
+    "code": "IN-KL",
+    "name": "Kerala",
+    "category": "State"
+  },
+  {
+    "code": "IN-MP",
+    "name": "Madhya Pradesh",
+    "category": "State"
+  },
+  {
+    "code": "IN-MH",
+    "name": "Maharashtra",
+    "category": "State"
+  },
+  {
+    "code": "IN-MN",
+    "name": "Manipur",
+    "category": "State"
+  },
+  {
+    "code": "IN-ML",
+    "name": "Meghalaya",
+    "category": "State"
+  },
+  {
+    "code": "IN-MZ",
+    "name": "Mizoram",
+    "category": "State"
+  },
+  {
+    "code": "IN-NL",
+    "name": "Nagaland",
+    "category": "State"
+  },
+  {
+    "code": "IN-OR",
+    "name": "Odishanote 2",
+    "category": "State"
+  },
+  {
+    "code": "IN-PB",
+    "name": "Punjab",
+    "category": "State"
+  },
+  {
+    "code": "IN-RJ",
+    "name": "Rajasthan",
+    "category": "State"
+  },
+  {
+    "code": "IN-SK",
+    "name": "Sikkim",
+    "category": "State"
+  },
+  {
+    "code": "IN-TN",
+    "name": "Tamil Nadu",
+    "category": "State"
+  },
+  {
+    "code": "IN-TG",
+    "name": "Telangananote 3",
+    "category": "State"
+  },
+  {
+    "code": "IN-TR",
+    "name": "Tripura",
+    "category": "State"
+  },
+  {
+    "code": "IN-UT",
+    "name": "Uttarakhandnote 4",
+    "category": "State"
+  },
+  {
+    "code": "IN-UP",
+    "name": "Uttar Pradesh",
+    "category": "State"
+  },
+  {
+    "code": "IN-WB",
+    "name": "West Bengal",
+    "category": "State"
+  },
+  {
+    "code": "IN-AN",
+    "name": "Andaman and Nicobar Islands",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-CH",
+    "name": "Chandigarh",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-DN",
+    "name": "Dadra and Nagar Havelinote 5",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-DD",
+    "name": "Daman and Diunote 6",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-DL",
+    "name": "Delhi",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-JK",
+    "name": "Jammu and Kashmir",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-LA",
+    "name": "Ladakh",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-LD",
+    "name": "Lakshadweep",
+    "category": "Union territory"
+  },
+  {
+    "code": "IN-PY",
+    "name": "Puducherry",
+    "category": "Union territory"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "code": "GE-AB",
+    "name": "Abkhazia",
+    "category": "autonomous republic"
+  },
+  {
+    "code": "GE-AJ",
+    "name": "Ajaria",
+    "category": "autonomous republic"
+  },
+  {
+    "code": "GE-TB",
+    "name": "Tbilisi",
+    "category": "city"
+  },
+  {
+    "code": "GE-GU",
+    "name": "Guria",
+    "category": "region"
+  },
+  {
+    "code": "GE-IM",
+    "name": "Imereti",
+    "category": "region"
+  },
+  {
+    "code": "GE-KA",
+    "name": "K'akheti",
+    "category": "region"
+  },
+  {
+    "code": "GE-KK",
+    "name": "Kvemo Kartli",
+    "category": "region"
+  },
+  {
+    "code": "GE-MM",
+    "name": "Mtskheta-Mtianeti",
+    "category": "region"
+  },
+  {
+    "code": "GE-RL",
+    "name": "Rach'a-Lechkhumi-Kvemo Svaneti",
+    "category": "region"
+  },
+  {
+    "code": "GE-SZ",
+    "name": "Samegrelo-Zemo Svaneti",
+    "category": "region"
+  },
+  {
+    "code": "GE-SJ",
+    "name": "Samtskhe-Javakheti",
+    "category": "region"
+  },
+  {
+    "code": "GE-SK",
+    "name": "Shida Kartli",
+    "category": "region"
+  }
+]

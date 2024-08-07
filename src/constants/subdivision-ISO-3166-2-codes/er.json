@@ -1,0 +1,32 @@
+[
+  {
+    "code": "ER-MA",
+    "name": "Maekel",
+    "category": null
+  },
+  {
+    "code": "ER-DU",
+    "name": "Debub",
+    "category": null
+  },
+  {
+    "code": "ER-AN",
+    "name": "Anseba",
+    "category": null
+  },
+  {
+    "code": "ER-DK",
+    "name": "Southern Red Sea",
+    "category": null
+  },
+  {
+    "code": "ER-GB",
+    "name": "Gash-Barka",
+    "category": null
+  },
+  {
+    "code": "ER-SK",
+    "name": "Northern Red Sea",
+    "category": null
+  }
+]

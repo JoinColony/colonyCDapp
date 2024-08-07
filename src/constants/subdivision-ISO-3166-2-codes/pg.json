@@ -1,0 +1,112 @@
+[
+  {
+    "code": "PG-NCD",
+    "name": "National Capital District (Port Moresby)",
+    "category": "district"
+  },
+  {
+    "code": "PG-CPM",
+    "name": "Central",
+    "category": "province"
+  },
+  {
+    "code": "PG-CPK",
+    "name": "Chimbu",
+    "category": "province"
+  },
+  {
+    "code": "PG-EHG",
+    "name": "Eastern Highlands",
+    "category": "province"
+  },
+  {
+    "code": "PG-EBR",
+    "name": "East New Britain",
+    "category": "province"
+  },
+  {
+    "code": "PG-ESW",
+    "name": "East Sepik",
+    "category": "province"
+  },
+  {
+    "code": "PG-EPW",
+    "name": "Enga",
+    "category": "province"
+  },
+  {
+    "code": "PG-GPK",
+    "name": "Gulf",
+    "category": "province"
+  },
+  {
+    "code": "PG-HLA",
+    "name": "Hela",
+    "category": "province"
+  },
+  {
+    "code": "PG-JWK",
+    "name": "Jiwaka",
+    "category": "province"
+  },
+  {
+    "code": "PG-MPM",
+    "name": "Madang",
+    "category": "province"
+  },
+  {
+    "code": "PG-MRL",
+    "name": "Manus",
+    "category": "province"
+  },
+  {
+    "code": "PG-MBA",
+    "name": "Milne Bay",
+    "category": "province"
+  },
+  {
+    "code": "PG-MPL",
+    "name": "Morobe",
+    "category": "province"
+  },
+  {
+    "code": "PG-NIK",
+    "name": "New Ireland",
+    "category": "province"
+  },
+  {
+    "code": "PG-NPP",
+    "name": "Northern",
+    "category": "province"
+  },
+  {
+    "code": "PG-SAN",
+    "name": "West Sepik",
+    "category": "province"
+  },
+  {
+    "code": "PG-SHM",
+    "name": "Southern Highlands",
+    "category": "province"
+  },
+  {
+    "code": "PG-WPD",
+    "name": "Western",
+    "category": "province"
+  },
+  {
+    "code": "PG-WHM",
+    "name": "Western Highlands",
+    "category": "province"
+  },
+  {
+    "code": "PG-WBK",
+    "name": "West New Britain",
+    "category": "province"
+  },
+  {
+    "code": "PG-NSB",
+    "name": "Bougainville",
+    "category": "autonomous region"
+  }
+]

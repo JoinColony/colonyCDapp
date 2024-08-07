@@ -1,0 +1,92 @@
+[
+  {
+    "code": "NL-DR",
+    "name": "Drenthe",
+    "category": null
+  },
+  {
+    "code": "NL-FL",
+    "name": "Flevoland",
+    "category": null
+  },
+  {
+    "code": "NL-FR",
+    "name": "Friesland",
+    "category": null
+  },
+  {
+    "code": "NL-GE",
+    "name": "Gelderland",
+    "category": null
+  },
+  {
+    "code": "NL-GR",
+    "name": "Groningen",
+    "category": null
+  },
+  {
+    "code": "NL-LI",
+    "name": "Limburg",
+    "category": null
+  },
+  {
+    "code": "NL-NB",
+    "name": "North Brabant",
+    "category": null
+  },
+  {
+    "code": "NL-NH",
+    "name": "North Holland",
+    "category": null
+  },
+  {
+    "code": "NL-OV",
+    "name": "Overijssel",
+    "category": null
+  },
+  {
+    "code": "NL-UT",
+    "name": "Utrecht",
+    "category": null
+  },
+  {
+    "code": "NL-ZE",
+    "name": "Zeeland",
+    "category": null
+  },
+  {
+    "code": "NL-ZH",
+    "name": "South Holland",
+    "category": null
+  },
+  {
+    "code": "NL-AW",
+    "name": "Aruba",
+    "category": "country"
+  },
+  {
+    "code": "NL-CW",
+    "name": "Curaçao",
+    "category": "country"
+  },
+  {
+    "code": "NL-SX",
+    "name": "Sint Maarten",
+    "category": "country"
+  },
+  {
+    "code": "NL-BQ1",
+    "name": "Bonaire",
+    "category": "special municipality"
+  },
+  {
+    "code": "NL-BQ2",
+    "name": "Saba",
+    "category": "special municipality"
+  },
+  {
+    "code": "NL-BQ3",
+    "name": "Sint Eustatius",
+    "category": "special municipality"
+  }
+]

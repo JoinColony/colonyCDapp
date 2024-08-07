@@ -1,0 +1,242 @@
+[
+  {
+    "code": "DZ-01",
+    "name": "Adrar",
+    "category": null
+  },
+  {
+    "code": "DZ-44",
+    "name": "Aïn Defla",
+    "category": null
+  },
+  {
+    "code": "DZ-46",
+    "name": "Aïn Témouchent",
+    "category": null
+  },
+  {
+    "code": "DZ-16",
+    "name": "Alger",
+    "category": null
+  },
+  {
+    "code": "DZ-23",
+    "name": "Annaba",
+    "category": null
+  },
+  {
+    "code": "DZ-05",
+    "name": "Batna",
+    "category": null
+  },
+  {
+    "code": "DZ-08",
+    "name": "Béchar",
+    "category": null
+  },
+  {
+    "code": "DZ-06",
+    "name": "Béjaïa",
+    "category": null
+  },
+  {
+    "code": "DZ-07",
+    "name": "Biskra",
+    "category": null
+  },
+  {
+    "code": "DZ-09",
+    "name": "Blida",
+    "category": null
+  },
+  {
+    "code": "DZ-34",
+    "name": "Bordj Bou Arréridj",
+    "category": null
+  },
+  {
+    "code": "DZ-10",
+    "name": "Bouira",
+    "category": null
+  },
+  {
+    "code": "DZ-35",
+    "name": "Boumerdès",
+    "category": null
+  },
+  {
+    "code": "DZ-02",
+    "name": "Chlef",
+    "category": null
+  },
+  {
+    "code": "DZ-25",
+    "name": "Constantine",
+    "category": null
+  },
+  {
+    "code": "DZ-17",
+    "name": "Djelfa",
+    "category": null
+  },
+  {
+    "code": "DZ-32",
+    "name": "El Bayadh",
+    "category": null
+  },
+  {
+    "code": "DZ-39",
+    "name": "El Oued",
+    "category": null
+  },
+  {
+    "code": "DZ-36",
+    "name": "El Tarf",
+    "category": null
+  },
+  {
+    "code": "DZ-47",
+    "name": "Ghardaïa",
+    "category": null
+  },
+  {
+    "code": "DZ-24",
+    "name": "Guelma",
+    "category": null
+  },
+  {
+    "code": "DZ-33",
+    "name": "Illizi",
+    "category": null
+  },
+  {
+    "code": "DZ-18",
+    "name": "Jijel",
+    "category": null
+  },
+  {
+    "code": "DZ-40",
+    "name": "Khenchela",
+    "category": null
+  },
+  {
+    "code": "DZ-03",
+    "name": "Laghouat",
+    "category": null
+  },
+  {
+    "code": "DZ-28",
+    "name": "M'sila",
+    "category": null
+  },
+  {
+    "code": "DZ-29",
+    "name": "Mascara",
+    "category": null
+  },
+  {
+    "code": "DZ-26",
+    "name": "Médéa",
+    "category": null
+  },
+  {
+    "code": "DZ-43",
+    "name": "Mila",
+    "category": null
+  },
+  {
+    "code": "DZ-27",
+    "name": "Mostaganem",
+    "category": null
+  },
+  {
+    "code": "DZ-45",
+    "name": "Naama",
+    "category": null
+  },
+  {
+    "code": "DZ-31",
+    "name": "Oran",
+    "category": null
+  },
+  {
+    "code": "DZ-30",
+    "name": "Ouargla",
+    "category": null
+  },
+  {
+    "code": "DZ-04",
+    "name": "Oum el Bouaghi",
+    "category": null
+  },
+  {
+    "code": "DZ-48",
+    "name": "Relizane",
+    "category": null
+  },
+  {
+    "code": "DZ-20",
+    "name": "Saïda",
+    "category": null
+  },
+  {
+    "code": "DZ-19",
+    "name": "Sétif",
+    "category": null
+  },
+  {
+    "code": "DZ-22",
+    "name": "Sidi Bel Abbès",
+    "category": null
+  },
+  {
+    "code": "DZ-21",
+    "name": "Skikda",
+    "category": null
+  },
+  {
+    "code": "DZ-41",
+    "name": "Souk Ahras",
+    "category": null
+  },
+  {
+    "code": "DZ-11",
+    "name": "Tamanrasset",
+    "category": null
+  },
+  {
+    "code": "DZ-12",
+    "name": "Tébessa",
+    "category": null
+  },
+  {
+    "code": "DZ-14",
+    "name": "Tiaret",
+    "category": null
+  },
+  {
+    "code": "DZ-37",
+    "name": "Tindouf",
+    "category": null
+  },
+  {
+    "code": "DZ-42",
+    "name": "Tipaza",
+    "category": null
+  },
+  {
+    "code": "DZ-38",
+    "name": "Tissemsilt",
+    "category": null
+  },
+  {
+    "code": "DZ-15",
+    "name": "Tizi Ouzou",
+    "category": null
+  },
+  {
+    "code": "DZ-13",
+    "name": "Tlemcen",
+    "category": null
+  }
+]

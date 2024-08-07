@@ -1,0 +1,82 @@
+[
+  {
+    "code": "CL-AI",
+    "name": "Aisén del General Carlos Ibañez del Campo",
+    "category": null
+  },
+  {
+    "code": "CL-AN",
+    "name": "Antofagasta",
+    "category": null
+  },
+  {
+    "code": "CL-AP",
+    "name": "Arica y Parinacota",
+    "category": null
+  },
+  {
+    "code": "CL-AR",
+    "name": "La Araucanía",
+    "category": null
+  },
+  {
+    "code": "CL-AT",
+    "name": "Atacama",
+    "category": null
+  },
+  {
+    "code": "CL-BI",
+    "name": "Biobío",
+    "category": null
+  },
+  {
+    "code": "CL-CO",
+    "name": "Coquimbo",
+    "category": null
+  },
+  {
+    "code": "CL-LI",
+    "name": "Libertador General Bernardo O'Higgins",
+    "category": null
+  },
+  {
+    "code": "CL-LL",
+    "name": "Los Lagos",
+    "category": null
+  },
+  {
+    "code": "CL-LR",
+    "name": "Los Ríos",
+    "category": null
+  },
+  {
+    "code": "CL-MA",
+    "name": "Magallanes",
+    "category": null
+  },
+  {
+    "code": "CL-ML",
+    "name": "Maule",
+    "category": null
+  },
+  {
+    "code": "CL-NB",
+    "name": "Ñuble",
+    "category": null
+  },
+  {
+    "code": "CL-RM",
+    "name": "Región Metropolitana de Santiago",
+    "category": null
+  },
+  {
+    "code": "CL-TA",
+    "name": "Tarapacá",
+    "category": null
+  },
+  {
+    "code": "CL-VS",
+    "name": "Valparaíso",
+    "category": null
+  }
+]

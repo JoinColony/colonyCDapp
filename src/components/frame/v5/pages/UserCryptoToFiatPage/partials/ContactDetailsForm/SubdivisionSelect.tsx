@@ -1,7 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { getCountryByCode } from '~utils/countries.ts';
+import {
+  type SubdivisionData,
+  getSubdivisionsByCountryCode,
+} from '~utils/subdivisions.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
 
@@ -10,10 +13,20 @@ export const SubdivisionSelect = () => {
     name: 'country',
   });
 
-  const subdivisions = useMemo(
-    () => getCountryByCode(countryCode)?.subdivisions ?? [],
-    [countryCode],
-  );
+  const [subdivisions, setSubdivisions] = useState<SubdivisionData[]>([]);
+
+  useEffect(() => {
+    if (!countryCode) {
+      setSubdivisions([]);
+      return;
+    }
+
+    (async () => {
+      const data = await getSubdivisionsByCountryCode(countryCode);
+      setSubdivisions(data);
+    })();
+  }, [countryCode]);
+
   return (
     <div className="ml-1 flex-1">
       <FormSelect

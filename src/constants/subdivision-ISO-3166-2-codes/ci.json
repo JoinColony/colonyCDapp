@@ -1,0 +1,72 @@
+[
+  {
+    "code": "CI-AB",
+    "name": "Abidjan",
+    "category": "autonomous district"
+  },
+  {
+    "code": "CI-BS",
+    "name": "Bas-Sassandra",
+    "category": "district"
+  },
+  {
+    "code": "CI-CM",
+    "name": "Comoé",
+    "category": "district"
+  },
+  {
+    "code": "CI-DN",
+    "name": "Denguélé",
+    "category": "district"
+  },
+  {
+    "code": "CI-GD",
+    "name": "Gôh-Djiboua",
+    "category": "district"
+  },
+  {
+    "code": "CI-LC",
+    "name": "Lacs",
+    "category": "district"
+  },
+  {
+    "code": "CI-LG",
+    "name": "Lagunes",
+    "category": "district"
+  },
+  {
+    "code": "CI-MG",
+    "name": "Montagnes",
+    "category": "district"
+  },
+  {
+    "code": "CI-SM",
+    "name": "Sassandra-Marahoué",
+    "category": "district"
+  },
+  {
+    "code": "CI-SV",
+    "name": "Savanes",
+    "category": "district"
+  },
+  {
+    "code": "CI-VB",
+    "name": "Vallée du Bandama",
+    "category": "district"
+  },
+  {
+    "code": "CI-WR",
+    "name": "Woroba",
+    "category": "district"
+  },
+  {
+    "code": "CI-YM",
+    "name": "Yamoussoukro",
+    "category": "autonomous district"
+  },
+  {
+    "code": "CI-ZZ",
+    "name": "Zanzan",
+    "category": "district"
+  }
+]

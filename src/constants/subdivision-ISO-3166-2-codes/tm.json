@@ -1,0 +1,32 @@
+[
+  {
+    "code": "TM-A",
+    "name": "Ahal",
+    "category": "region"
+  },
+  {
+    "code": "TM-B",
+    "name": "Balkan",
+    "category": "region"
+  },
+  {
+    "code": "TM-D",
+    "name": "Daşoguz",
+    "category": "region"
+  },
+  {
+    "code": "TM-L",
+    "name": "Lebap",
+    "category": "region"
+  },
+  {
+    "code": "TM-M",
+    "name": "Mary",
+    "category": "region"
+  },
+  {
+    "code": "TM-S",
+    "name": "Aşgabat",
+    "category": "city"
+  }
+]

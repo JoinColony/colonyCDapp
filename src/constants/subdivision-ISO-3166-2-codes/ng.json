@@ -1,0 +1,187 @@
+[
+  {
+    "code": "NG-FC",
+    "name": "Abuja Federal Capital Territory",
+    "category": "capital territory"
+  },
+  {
+    "code": "NG-AB",
+    "name": "Abia",
+    "category": "state"
+  },
+  {
+    "code": "NG-AD",
+    "name": "Adamawa",
+    "category": "state"
+  },
+  {
+    "code": "NG-AK",
+    "name": "Akwa Ibom",
+    "category": "state"
+  },
+  {
+    "code": "NG-AN",
+    "name": "Anambra",
+    "category": "state"
+  },
+  {
+    "code": "NG-BA",
+    "name": "Bauchi",
+    "category": "state"
+  },
+  {
+    "code": "NG-BY",
+    "name": "Bayelsa",
+    "category": "state"
+  },
+  {
+    "code": "NG-BE",
+    "name": "Benue",
+    "category": "state"
+  },
+  {
+    "code": "NG-BO",
+    "name": "Borno",
+    "category": "state"
+  },
+  {
+    "code": "NG-CR",
+    "name": "Cross River",
+    "category": "state"
+  },
+  {
+    "code": "NG-DE",
+    "name": "Delta",
+    "category": "state"
+  },
+  {
+    "code": "NG-EB",
+    "name": "Ebonyi",
+    "category": "state"
+  },
+  {
+    "code": "NG-ED",
+    "name": "Edo",
+    "category": "state"
+  },
+  {
+    "code": "NG-EK",
+    "name": "Ekiti",
+    "category": "state"
+  },
+  {
+    "code": "NG-EN",
+    "name": "Enugu",
+    "category": "state"
+  },
+  {
+    "code": "NG-GO",
+    "name": "Gombe",
+    "category": "state"
+  },
+  {
+    "code": "NG-IM",
+    "name": "Imo",
+    "category": "state"
+  },
+  {
+    "code": "NG-JI",
+    "name": "Jigawa",
+    "category": "state"
+  },
+  {
+    "code": "NG-KD",
+    "name": "Kaduna",
+    "category": "state"
+  },
+  {
+    "code": "NG-KN",
+    "name": "Kano",
+    "category": "state"
+  },
+  {
+    "code": "NG-KT",
+    "name": "Katsina",
+    "category": "state"
+  },
+  {
+    "code": "NG-KE",
+    "name": "Kebbi",
+    "category": "state"
+  },
+  {
+    "code": "NG-KO",
+    "name": "Kogi",
+    "category": "state"
+  },
+  {
+    "code": "NG-KW",
+    "name": "Kwara",
+    "category": "state"
+  },
+  {
+    "code": "NG-LA",
+    "name": "Lagos",
+    "category": "state"
+  },
+  {
+    "code": "NG-NA",
+    "name": "Nasarawa",
+    "category": "state"
+  },
+  {
+    "code": "NG-NI",
+    "name": "Niger",
+    "category": "state"
+  },
+  {
+    "code": "NG-OG",
+    "name": "Ogun",
+    "category": "state"
+  },
+  {
+    "code": "NG-ON",
+    "name": "Ondo",
+    "category": "state"
+  },
+  {
+    "code": "NG-OS",
+    "name": "Osun",
+    "category": "state"
+  },
+  {
+    "code": "NG-OY",
+    "name": "Oyo",
+    "category": "state"
+  },
+  {
+    "code": "NG-PL",
+    "name": "Plateau",
+    "category": "state"
+  },
+  {
+    "code": "NG-RI",
+    "name": "Rivers",
+    "category": "state"
+  },
+  {
+    "code": "NG-SO",
+    "name": "Sokoto",
+    "category": "state"
+  },
+  {
+    "code": "NG-TA",
+    "name": "Taraba",
+    "category": "state"
+  },
+  {
+    "code": "NG-YO",
+    "name": "Yobe",
+    "category": "state"
+  },
+  {
+    "code": "NG-ZA",
+    "name": "Zamfara",
+    "category": "state"
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "code": "NI-BO",
+    "name": "Boaco",
+    "category": "department"
+  },
+  {
+    "code": "NI-CA",
+    "name": "Carazo",
+    "category": "department"
+  },
+  {
+    "code": "NI-CI",
+    "name": "Chinandega",
+    "category": "department"
+  },
+  {
+    "code": "NI-CO",
+    "name": "Chontales",
+    "category": "department"
+  },
+  {
+    "code": "NI-ES",
+    "name": "Estelí",
+    "category": "department"
+  },
+  {
+    "code": "NI-GR",
+    "name": "Granada",
+    "category": "department"
+  },
+  {
+    "code": "NI-JI",
+    "name": "Jinotega",
+    "category": "department"
+  },
+  {
+    "code": "NI-LE",
+    "name": "León",
+    "category": "department"
+  },
+  {
+    "code": "NI-MD",
+    "name": "Madriz",
+    "category": "department"
+  },
+  {
+    "code": "NI-MN",
+    "name": "Managua",
+    "category": "department"
+  },
+  {
+    "code": "NI-MS",
+    "name": "Masaya",
+    "category": "department"
+  },
+  {
+    "code": "NI-MT",
+    "name": "Matagalpa",
+    "category": "department"
+  },
+  {
+    "code": "NI-NS",
+    "name": "Nueva Segovia",
+    "category": "department"
+  },
+  {
+    "code": "NI-SJ",
+    "name": "Río San Juan",
+    "category": "department"
+  },
+  {
+    "code": "NI-RI",
+    "name": "Rivas",
+    "category": "department"
+  },
+  {
+    "code": "NI-AN",
+    "name": "Costa Caribe Norte",
+    "category": "autonomous region"
+  },
+  {
+    "code": "NI-AS",
+    "name": "Costa Caribe Sur",
+    "category": "autonomous region"
+  }
+]

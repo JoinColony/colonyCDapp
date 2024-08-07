@@ -1,0 +1,82 @@
+[
+  {
+    "code": "PS-BTH",
+    "name": "Bethlehem",
+    "category": null
+  },
+  {
+    "code": "PS-DEB",
+    "name": "Deir El Balah",
+    "category": null
+  },
+  {
+    "code": "PS-GZA",
+    "name": "Gaza",
+    "category": null
+  },
+  {
+    "code": "PS-HBN",
+    "name": "Hebron",
+    "category": null
+  },
+  {
+    "code": "PS-JEN",
+    "name": "Jenin",
+    "category": null
+  },
+  {
+    "code": "PS-JRH",
+    "name": "Jericho and Al Aghwar",
+    "category": null
+  },
+  {
+    "code": "PS-JEM",
+    "name": "Jerusalem",
+    "category": null
+  },
+  {
+    "code": "PS-KYS",
+    "name": "Khan Yunis",
+    "category": null
+  },
+  {
+    "code": "PS-NBS",
+    "name": "Nablus",
+    "category": null
+  },
+  {
+    "code": "PS-NGZ",
+    "name": "North Gaza",
+    "category": null
+  },
+  {
+    "code": "PS-QQA",
+    "name": "Qalqilya",
+    "category": null
+  },
+  {
+    "code": "PS-RFH",
+    "name": "Rafah",
+    "category": null
+  },
+  {
+    "code": "PS-RBH",
+    "name": "Ramallah",
+    "category": null
+  },
+  {
+    "code": "PS-SLT",
+    "name": "Salfit",
+    "category": null
+  },
+  {
+    "code": "PS-TBS",
+    "name": "Tubas",
+    "category": null
+  },
+  {
+    "code": "PS-TKM",
+    "name": "Tulkarm",
+    "category": null
+  }
+]

@@ -1,0 +1,187 @@
+[
+  {
+    "code": "MD-GA",
+    "name": "Găgăuzia, Unitatea teritorială autonomă (UTAG)",
+    "category": "autonomous territorial unit"
+  },
+  {
+    "code": "MD-BA",
+    "name": "Bălți",
+    "category": "city"
+  },
+  {
+    "code": "MD-BD",
+    "name": "Bender [Tighina]",
+    "category": "city"
+  },
+  {
+    "code": "MD-CU",
+    "name": "Chișinău",
+    "category": "city"
+  },
+  {
+    "code": "MD-AN",
+    "name": "Anenii Noi",
+    "category": "district"
+  },
+  {
+    "code": "MD-BS",
+    "name": "Basarabeasca",
+    "category": "district"
+  },
+  {
+    "code": "MD-BR",
+    "name": "Briceni",
+    "category": "district"
+  },
+  {
+    "code": "MD-CA",
+    "name": "Cahul",
+    "category": "district"
+  },
+  {
+    "code": "MD-CT",
+    "name": "Cantemir",
+    "category": "district"
+  },
+  {
+    "code": "MD-CL",
+    "name": "Călărași",
+    "category": "district"
+  },
+  {
+    "code": "MD-CS",
+    "name": "Căușeni",
+    "category": "district"
+  },
+  {
+    "code": "MD-CM",
+    "name": "Cimișlia",
+    "category": "district"
+  },
+  {
+    "code": "MD-CR",
+    "name": "Criuleni",
+    "category": "district"
+  },
+  {
+    "code": "MD-DO",
+    "name": "Dondușeni",
+    "category": "district"
+  },
+  {
+    "code": "MD-DR",
+    "name": "Drochia",
+    "category": "district"
+  },
+  {
+    "code": "MD-DU",
+    "name": "Dubăsari",
+    "category": "district"
+  },
+  {
+    "code": "MD-ED",
+    "name": "Edineț",
+    "category": "district"
+  },
+  {
+    "code": "MD-FA",
+    "name": "Fălești",
+    "category": "district"
+  },
+  {
+    "code": "MD-FL",
+    "name": "Florești",
+    "category": "district"
+  },
+  {
+    "code": "MD-GL",
+    "name": "Glodeni",
+    "category": "district"
+  },
+  {
+    "code": "MD-HI",
+    "name": "Hîncești",
+    "category": "district"
+  },
+  {
+    "code": "MD-IA",
+    "name": "Ialoveni",
+    "category": "district"
+  },
+  {
+    "code": "MD-LE",
+    "name": "Leova",
+    "category": "district"
+  },
+  {
+    "code": "MD-NI",
+    "name": "Nisporeni",
+    "category": "district"
+  },
+  {
+    "code": "MD-OC",
+    "name": "Ocnița",
+    "category": "district"
+  },
+  {
+    "code": "MD-OR",
+    "name": "Orhei",
+    "category": "district"
+  },
+  {
+    "code": "MD-RE",
+    "name": "Rezina",
+    "category": "district"
+  },
+  {
+    "code": "MD-RI",
+    "name": "Rîșcani",
+    "category": "district"
+  },
+  {
+    "code": "MD-SI",
+    "name": "Sîngerei",
+    "category": "district"
+  },
+  {
+    "code": "MD-SO",
+    "name": "Soroca",
+    "category": "district"
+  },
+  {
+    "code": "MD-ST",
+    "name": "Strășeni",
+    "category": "district"
+  },
+  {
+    "code": "MD-SD",
+    "name": "Șoldănești",
+    "category": "district"
+  },
+  {
+    "code": "MD-SV",
+    "name": "Ștefan Vodă",
+    "category": "district"
+  },
+  {
+    "code": "MD-TA",
+    "name": "Taraclia",
+    "category": "district"
+  },
+  {
+    "code": "MD-TE",
+    "name": "Telenești",
+    "category": "district"
+  },
+  {
+    "code": "MD-UN",
+    "name": "Ungheni",
+    "category": "district"
+  },
+  {
+    "code": "MD-SN",
+    "name": "Stînga Nistrului, unitatea teritorială din",
+    "category": "territorial unit"
+  }
+]

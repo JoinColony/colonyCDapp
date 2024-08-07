@@ -1,0 +1,292 @@
+[
+  {
+    "code": "BF-01",
+    "name": "Boucle du Mouhoun",
+    "category": null
+  },
+  {
+    "code": "BF-02",
+    "name": "Cascades",
+    "category": null
+  },
+  {
+    "code": "BF-03",
+    "name": "Centre",
+    "category": null
+  },
+  {
+    "code": "BF-04",
+    "name": "Centre-Est",
+    "category": null
+  },
+  {
+    "code": "BF-05",
+    "name": "Centre-Nord",
+    "category": null
+  },
+  {
+    "code": "BF-06",
+    "name": "Centre-Ouest",
+    "category": null
+  },
+  {
+    "code": "BF-07",
+    "name": "Centre-Sud",
+    "category": null
+  },
+  {
+    "code": "BF-08",
+    "name": "Est",
+    "category": null
+  },
+  {
+    "code": "BF-09",
+    "name": "Hauts-Bassins",
+    "category": null
+  },
+  {
+    "code": "BF-10",
+    "name": "Nord",
+    "category": null
+  },
+  {
+    "code": "BF-11",
+    "name": "Plateau-Central",
+    "category": null
+  },
+  {
+    "code": "BF-12",
+    "name": "Sahel",
+    "category": null
+  },
+  {
+    "code": "BF-13",
+    "name": "Sud-Ouest",
+    "category": null
+  },
+  {
+    "code": "BF-BAL",
+    "name": "Balé",
+    "category": null
+  },
+  {
+    "code": "BF-BAM",
+    "name": "Bam",
+    "category": null
+  },
+  {
+    "code": "BF-BAN",
+    "name": "Banwa",
+    "category": null
+  },
+  {
+    "code": "BF-BAZ",
+    "name": "Bazèga",
+    "category": null
+  },
+  {
+    "code": "BF-BGR",
+    "name": "Bougouriba",
+    "category": null
+  },
+  {
+    "code": "BF-BLG",
+    "name": "Boulgou",
+    "category": null
+  },
+  {
+    "code": "BF-BLK",
+    "name": "Boulkiemdé",
+    "category": null
+  },
+  {
+    "code": "BF-COM",
+    "name": "Comoé",
+    "category": null
+  },
+  {
+    "code": "BF-GAN",
+    "name": "Ganzourgou",
+    "category": null
+  },
+  {
+    "code": "BF-GNA",
+    "name": "Gnagna",
+    "category": null
+  },
+  {
+    "code": "BF-GOU",
+    "name": "Gourma",
+    "category": null
+  },
+  {
+    "code": "BF-HOU",
+    "name": "Houet",
+    "category": null
+  },
+  {
+    "code": "BF-IOB",
+    "name": "Ioba",
+    "category": null
+  },
+  {
+    "code": "BF-KAD",
+    "name": "Kadiogo",
+    "category": null
+  },
+  {
+    "code": "BF-KEN",
+    "name": "Kénédougou",
+    "category": null
+  },
+  {
+    "code": "BF-KMD",
+    "name": "Komondjari",
+    "category": null
+  },
+  {
+    "code": "BF-KMP",
+    "name": "Kompienga",
+    "category": null
+  },
+  {
+    "code": "BF-KOS",
+    "name": "Kossi",
+    "category": null
+  },
+  {
+    "code": "BF-KOP",
+    "name": "Koulpélogo",
+    "category": null
+  },
+  {
+    "code": "BF-KOT",
+    "name": "Kouritenga",
+    "category": null
+  },
+  {
+    "code": "BF-KOW",
+    "name": "Kourwéogo",
+    "category": null
+  },
+  {
+    "code": "BF-LER",
+    "name": "Léraba",
+    "category": null
+  },
+  {
+    "code": "BF-LOR",
+    "name": "Loroum",
+    "category": null
+  },
+  {
+    "code": "BF-MOU",
+    "name": "Mouhoun",
+    "category": null
+  },
+  {
+    "code": "BF-NAO",
+    "name": "Nahouri",
+    "category": null
+  },
+  {
+    "code": "BF-NAM",
+    "name": "Namentenga",
+    "category": null
+  },
+  {
+    "code": "BF-NAY",
+    "name": "Nayala",
+    "category": null
+  },
+  {
+    "code": "BF-NOU",
+    "name": "Noumbiel",
+    "category": null
+  },
+  {
+    "code": "BF-OUB",
+    "name": "Oubritenga",
+    "category": null
+  },
+  {
+    "code": "BF-OUD",
+    "name": "Oudalan",
+    "category": null
+  },
+  {
+    "code": "BF-PAS",
+    "name": "Passoré",
+    "category": null
+  },
+  {
+    "code": "BF-PON",
+    "name": "Poni",
+    "category": null
+  },
+  {
+    "code": "BF-SNG",
+    "name": "Sanguié",
+    "category": null
+  },
+  {
+    "code": "BF-SMT",
+    "name": "Sanmatenga",
+    "category": null
+  },
+  {
+    "code": "BF-SEN",
+    "name": "Séno",
+    "category": null
+  },
+  {
+    "code": "BF-SIS",
+    "name": "Sissili",
+    "category": null
+  },
+  {
+    "code": "BF-SOM",
+    "name": "Soum",
+    "category": null
+  },
+  {
+    "code": "BF-SOR",
+    "name": "Sourou",
+    "category": null
+  },
+  {
+    "code": "BF-TAP",
+    "name": "Tapoa",
+    "category": null
+  },
+  {
+    "code": "BF-TUI",
+    "name": "Tuy",
+    "category": null
+  },
+  {
+    "code": "BF-YAG",
+    "name": "Yagha",
+    "category": null
+  },
+  {
+    "code": "BF-YAT",
+    "name": "Yatenga",
+    "category": null
+  },
+  {
+    "code": "BF-ZIR",
+    "name": "Ziro",
+    "category": null
+  },
+  {
+    "code": "BF-ZON",
+    "name": "Zondoma",
+    "category": null
+  },
+  {
+    "code": "BF-ZOU",
+    "name": "Zoundwéogo",
+    "category": null
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "code": "PK-IS",
+    "name": "Islamabad",
+    "category": "federal capital territory"
+  },
+  {
+    "code": "PK-BA",
+    "name": "Balochistan",
+    "category": "province"
+  },
+  {
+    "code": "PK-KP",
+    "name": "Khyber Pakhtunkhwa",
+    "category": "province"
+  },
+  {
+    "code": "PK-PB",
+    "name": "Punjab",
+    "category": "province"
+  },
+  {
+    "code": "PK-SD",
+    "name": "Sindh",
+    "category": "province"
+  },
+  {
+    "code": "PK-JK",
+    "name": "Azad Jammu and Kashmir(local variant is AJ&amp;K)",
+    "category": "Pakistan administered area"
+  },
+  {
+    "code": "PK-GB",
+    "name": "Gilgit-Baltistan",
+    "category": "Pakistan administered area"
+  },
+  {
+    "code": "PK-TA",
+    "name": "Federally Administered Tribal Areas",
+    "category": "territory"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "code": "AU-NSW",
+    "name": "New South Wales",
+    "category": "state"
+  },
+  {
+    "code": "AU-QLD",
+    "name": "Queensland",
+    "category": "state"
+  },
+  {
+    "code": "AU-SA",
+    "name": "South Australia",
+    "category": "state"
+  },
+  {
+    "code": "AU-TAS",
+    "name": "Tasmania",
+    "category": "state"
+  },
+  {
+    "code": "AU-VIC",
+    "name": "Victoria",
+    "category": "state"
+  },
+  {
+    "code": "AU-WA",
+    "name": "Western Australia",
+    "category": "state"
+  },
+  {
+    "code": "AU-ACT",
+    "name": "Australian Capital Territory",
+    "category": "territory"
+  },
+  {
+    "code": "AU-NT",
+    "name": "Northern Territory",
+    "category": "territory"
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "code": "PL-02",
+    "name": "Lower Silesia",
+    "category": null
+  },
+  {
+    "code": "PL-04",
+    "name": "Kuyavia-Pomerania",
+    "category": null
+  },
+  {
+    "code": "PL-06",
+    "name": "Lublin",
+    "category": null
+  },
+  {
+    "code": "PL-08",
+    "name": "Lubusz",
+    "category": null
+  },
+  {
+    "code": "PL-10",
+    "name": "Łódź",
+    "category": null
+  },
+  {
+    "code": "PL-12",
+    "name": "Lesser Poland",
+    "category": null
+  },
+  {
+    "code": "PL-14",
+    "name": "Mazovia",
+    "category": null
+  },
+  {
+    "code": "PL-16",
+    "name": "Opole (Upper Silesia)",
+    "category": null
+  },
+  {
+    "code": "PL-18",
+    "name": "Subcarpathia",
+    "category": null
+  },
+  {
+    "code": "PL-20",
+    "name": "Podlaskie",
+    "category": null
+  },
+  {
+    "code": "PL-22",
+    "name": "Pomerania",
+    "category": null
+  },
+  {
+    "code": "PL-24",
+    "name": "Silesia",
+    "category": null
+  },
+  {
+    "code": "PL-26",
+    "name": "Holy Cross",
+    "category": null
+  },
+  {
+    "code": "PL-28",
+    "name": "Warmia-Masuria",
+    "category": null
+  },
+  {
+    "code": "PL-30",
+    "name": "Greater Poland",
+    "category": null
+  },
+  {
+    "code": "PL-32",
+    "name": "West Pomerania",
+    "category": null
+  }
+]

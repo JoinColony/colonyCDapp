@@ -1,0 +1,122 @@
+[
+  {
+    "code": "EC-A",
+    "name": "Azuay",
+    "category": null
+  },
+  {
+    "code": "EC-B",
+    "name": "Bolívar",
+    "category": null
+  },
+  {
+    "code": "EC-F",
+    "name": "Cañar",
+    "category": null
+  },
+  {
+    "code": "EC-C",
+    "name": "Carchi",
+    "category": null
+  },
+  {
+    "code": "EC-H",
+    "name": "Chimborazo",
+    "category": null
+  },
+  {
+    "code": "EC-X",
+    "name": "Cotopaxi",
+    "category": null
+  },
+  {
+    "code": "EC-O",
+    "name": "El Oro",
+    "category": null
+  },
+  {
+    "code": "EC-E",
+    "name": "Esmeraldas",
+    "category": null
+  },
+  {
+    "code": "EC-W",
+    "name": "Galápagos",
+    "category": null
+  },
+  {
+    "code": "EC-G",
+    "name": "Guayas",
+    "category": null
+  },
+  {
+    "code": "EC-I",
+    "name": "Imbabura",
+    "category": null
+  },
+  {
+    "code": "EC-L",
+    "name": "Loja",
+    "category": null
+  },
+  {
+    "code": "EC-R",
+    "name": "Los Ríos",
+    "category": null
+  },
+  {
+    "code": "EC-M",
+    "name": "Manabí",
+    "category": null
+  },
+  {
+    "code": "EC-S",
+    "name": "Morona Santiago",
+    "category": null
+  },
+  {
+    "code": "EC-N",
+    "name": "Napo",
+    "category": null
+  },
+  {
+    "code": "EC-D",
+    "name": "Orellana",
+    "category": null
+  },
+  {
+    "code": "EC-Y",
+    "name": "Pastaza",
+    "category": null
+  },
+  {
+    "code": "EC-P",
+    "name": "Pichincha",
+    "category": null
+  },
+  {
+    "code": "EC-SE",
+    "name": "Santa Elena",
+    "category": null
+  },
+  {
+    "code": "EC-SD",
+    "name": "Santo Domingo de los Tsáchilas",
+    "category": null
+  },
+  {
+    "code": "EC-U",
+    "name": "Sucumbíos",
+    "category": null
+  },
+  {
+    "code": "EC-T",
+    "name": "Tungurahua",
+    "category": null
+  },
+  {
+    "code": "EC-Z",
+    "name": "Zamora Chinchipe",
+    "category": null
+  }
+]
