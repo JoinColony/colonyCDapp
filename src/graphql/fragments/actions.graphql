@@ -52,6 +52,7 @@ fragment ColonyAction on ColonyAction {
     ...Token
   }
   amount
+  networkFee
   tokenAddress
   token {
     # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
