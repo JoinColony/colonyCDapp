@@ -1,5 +1,5 @@
 import { Extension, Id } from '@colony/colony-js';
-import React, { type FC } from 'react';
+import React, { useState, type FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -25,6 +25,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({ extensionData }) => {
   const { pathname } = useLocation();
   const { setWaitingForActionConfirmation, waitingForActionConfirmation } =
     useExtensionDetailsPageContext();
+  const [isEnabling, setIsEnabling] = useState(false);
 
   const isSetupRoute = pathname.split('/').pop() === 'setup';
 
@@ -51,17 +52,16 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({ extensionData }) => {
 
   return (
     <>
-      {!isSetupRoute &&
-        !waitingForActionConfirmation &&
-        showPermissionsBanner && (
-          <PermissionsNeededBanner extensionData={extensionData} />
-        )}
+      {!isSetupRoute && !isEnabling && showPermissionsBanner && (
+        <PermissionsNeededBanner extensionData={extensionData} />
+      )}
       <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <ActionButtons
             waitingForActionConfirmation={waitingForActionConfirmation}
             setWaitingForActionConfirmation={setWaitingForActionConfirmation}
             isSetupRoute={isSetupRoute}
+            setIsEnabling={setIsEnabling}
             extensionData={extensionData}
             extensionStatusMode={ExtensionsBadgeMap[extensionData.extensionId]}
             extensionStatusText={formatText({
