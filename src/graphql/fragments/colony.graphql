@@ -199,3 +199,25 @@ fragment JoinedColony on Colony {
     network
   }
 }
+
+fragment JoinedColonyWithExtensions on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    ...ColonyMetadata
+  }
+  chainMetadata {
+    chainId
+    network
+  }
+  extensions(filter: { isDeleted: { eq: false } }) {
+    items {
+      address: id
+      version
+      hash
+      isDeleted
+      isDeprecated
+      isInitialized
+    }
+  }
+}

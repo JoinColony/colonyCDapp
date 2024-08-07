@@ -134,7 +134,7 @@ export type MotionActionTypes =
         userAddress: Address;
         colonyAddress: Address;
         extensionAddress: Address;
-        motionIds: {
+        motionStates: {
           databaseMotionId: string;
           colonyAddress: string;
           extensionAddress: string;

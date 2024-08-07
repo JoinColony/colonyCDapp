@@ -8932,6 +8932,8 @@ export type ColonyObjectiveFragment = { __typename?: 'ColonyObjective', title: s
 
 export type JoinedColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null } };
 
+export type JoinedColonyWithExtensionsFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null };
+
 export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
 
 export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
@@ -9417,7 +9419,7 @@ export type GetJoinedColoniesExtensionsQueryVariables = Exact<{
 }>;
 
 
-export type GetJoinedColoniesExtensionsQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } } | null> } | null };
+export type GetJoinedColoniesExtensionsQuery = { __typename?: 'Query', getContributorsByAddress?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', id: string, createdAt: string, colony: { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null } } | null> } | null };
 
 export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
   userOrLiquidationAddress: Scalars['ID'];
@@ -9697,6 +9699,29 @@ export const JoinedColonyFragmentDoc = gql`
   chainMetadata {
     chainId
     network
+  }
+}
+    ${ColonyMetadataFragmentDoc}`;
+export const JoinedColonyWithExtensionsFragmentDoc = gql`
+    fragment JoinedColonyWithExtensions on Colony {
+  colonyAddress: id
+  name
+  metadata {
+    ...ColonyMetadata
+  }
+  chainMetadata {
+    chainId
+    network
+  }
+  extensions(filter: {isDeleted: {eq: false}}) {
+    items {
+      address: id
+      version
+      hash
+      isDeleted
+      isDeprecated
+      isInitialized
+    }
   }
 }
     ${ColonyMetadataFragmentDoc}`;
@@ -12732,24 +12757,13 @@ export const GetJoinedColoniesExtensionsDocument = gql`
       id
       createdAt
       colony {
-        colonyAddress: id
-        name
-        extensions(filter: {isDeleted: {eq: false}}) {
-          items {
-            address: id
-            version
-            hash
-            isDeleted
-            isDeprecated
-            isInitialized
-          }
-        }
+        ...JoinedColonyWithExtensions
       }
     }
     nextToken
   }
 }
-    `;
+    ${JoinedColonyWithExtensionsFragmentDoc}`;
 
 /**
  * __useGetJoinedColoniesExtensionsQuery__

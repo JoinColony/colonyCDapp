@@ -22,18 +22,7 @@ query GetJoinedColoniesExtensions($contributorAddress: ID!) {
       id
       createdAt
       colony {
-        colonyAddress: id
-        name
-        extensions(filter: { isDeleted: { eq: false } }) {
-          items {
-            address: id
-            version
-            hash
-            isDeleted
-            isDeprecated
-            isInitialized
-          }
-        }
+        ...JoinedColonyWithExtensions
       }
     }
     nextToken
