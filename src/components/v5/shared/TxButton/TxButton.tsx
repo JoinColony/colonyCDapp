@@ -80,7 +80,6 @@ const TxButton: FC<Props> = ({ onClick }) => {
         className={clsx({
           '!min-w-0': isMobile,
         })}
-        onClick={onClick}
         icon={
           <span
             className={clsx('flex shrink-0', {
@@ -90,6 +89,7 @@ const TxButton: FC<Props> = ({ onClick }) => {
             <SpinnerGap className="animate-spin" size={14} />
           </span>
         }
+        onClick={onClick}
       >
         {isMobile ? undefined : (
           <span>
@@ -123,6 +123,7 @@ const TxButton: FC<Props> = ({ onClick }) => {
             <Check className="text-base-white" size={14} />
           </span>
         }
+        onClick={onClick}
       />
     );
   }
