@@ -1,6 +1,8 @@
+import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 
 import { ExpenditureStatus } from '~gql';
+import useExtensionsData from '~hooks/useExtensionsData.ts';
 import { type Expenditure } from '~types/graphql.ts';
 
 import { ExpenditureStep } from './types.ts';
@@ -104,4 +106,15 @@ export const getCancelStepIndex = (
   }
 
   return undefined;
+};
+
+export const useGetExtensionInstalled = () => {
+  const { installedExtensionsData } = useExtensionsData();
+  const stagedExpenditureExtension = installedExtensionsData.find(
+    (extension) => extension.extensionId === Extension.StagedExpenditure,
+  );
+
+  return {
+    isStagedExtensionInstalled: !!stagedExpenditureExtension,
+  };
 };

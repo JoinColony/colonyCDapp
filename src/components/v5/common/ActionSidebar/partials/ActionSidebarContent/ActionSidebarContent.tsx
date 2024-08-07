@@ -98,6 +98,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const selectedDecisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
   const shouldShowCreateStakedExpenditureModal =
     actionsWithStakingDecisionMethod.includes(selectedActionType) &&
+    (selectedActionType === Action.PaymentBuilder ||
+      selectedActionType === Action.StagedPayment) &&
     selectedDecisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
@@ -120,7 +122,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   return (
     <>
-      <div className="flex-grow overflow-y-auto px-6">
+      <div className="flex-grow overflow-y-auto overflow-x-hidden px-6">
         <FormTextareaBase
           name={TITLE_FIELD_NAME}
           placeholder={formatText({ id: 'placeholder.title' })}
@@ -268,6 +270,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {
+            actionFormProps?.onSuccess?.();
             client.refetchQueries({
               include: [SearchActionsDocument],
             });

@@ -542,7 +542,11 @@ export const paymentSupportedExtensionsConfig: ExtensionConfig[] = [
     name: MSG.stagedExpenditureName,
     descriptionShort: MSG.stagedExpenditureDescriptionShort,
     descriptionLong: MSG.stagedExpenditureDescriptionLong,
-    neededColonyPermissions: [ColonyRole.Root],
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
     uninstallable: true,
     createdAt: 1692048380000,
   },
