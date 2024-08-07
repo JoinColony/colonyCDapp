@@ -1,6 +1,6 @@
 import countries from 'i18n-iso-countries';
 
-import { FILTERED_COUNTRIES } from './countries.ts';
+import { COUNTRIES_WITHOUT_STATES, FILTERED_COUNTRIES } from './countries.ts';
 
 export interface SubdivisionData {
   name: string;
@@ -31,6 +31,10 @@ export const getSubdivisionsByAlpha2Code = async (
 export const getSubdivisionsByCountryCode = async (
   code: string,
 ): Promise<SubdivisionData[]> => {
+  if (COUNTRIES_WITHOUT_STATES.includes(code)) {
+    return [];
+  }
+
   let alpha2Code: string | undefined;
 
   if (!code) {
