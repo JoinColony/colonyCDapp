@@ -1,11 +1,16 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
+import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useGetColonyExpendituresQuery, ColonyActionType } from '~gql';
+import {
+  useGetColonyExpendituresQuery,
+  ColonyActionType,
+  ExpenditureType,
+} from '~gql';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -30,6 +35,10 @@ import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import RequestBox from '../RequestBox/RequestBox.tsx';
+import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
+import StagedPaymentStep, {
+  type ReleaseActionItem,
+} from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -63,12 +72,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     fundingActions,
     finalizingActions,
     cancellingActions,
+    releaseActions,
     finalizedAt,
     createdAt,
     isStaked,
     userStake,
     ownerAddress,
     motions,
+    slots,
+    metadata,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
   const { items: fundingActionsItems } = fundingActions || {};
@@ -148,15 +160,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     );
   }, [motions]);
 
-  const { selectedTransaction, setSelectedTransaction } =
-    usePaymentBuilderContext();
+  const {
+    selectedTransaction,
+    setSelectedTransaction,
+    selectedMilestoneMotion,
+  } = usePaymentBuilderContext();
 
   const {
     action: motionAction,
     motionState,
     refetchMotionState,
   } = useGetColonyAction(
-    selectedTransaction || fundingMotions?.[0]?.transactionHash,
+    selectedTransaction ||
+      fundingMotions?.[0]?.transactionHash ||
+      selectedMilestoneMotion?.transactionHash,
   );
 
   const selectedMotion = fundingMotions.find(
@@ -232,6 +249,78 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   useEffect(() => {
     setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
   }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
+
+  const milestones: MilestoneItem[] = useMemo(
+    () =>
+      (metadata?.stages || []).map((item) => {
+        const payout = (slots || []).find((slot) => slot.id === item.slotId);
+        const amount = payout?.payouts?.[0].amount;
+        const tokenAddress = payout?.payouts?.[0].tokenAddress;
+        const isClaimed = payout?.payouts?.[0].isClaimed;
+
+        return {
+          milestone: item.name,
+          amount: amount || '0',
+          tokenAddress: tokenAddress || ADDRESS_ZERO,
+          slotId: item.slotId,
+          isClaimed: isClaimed || false,
+        };
+      }),
+    [slots, metadata],
+  );
+  const mappedReleaseActions: ReleaseActionItem[] = useMemo(() => {
+    const { items } = releaseActions || {};
+
+    if (!items) return [];
+
+    return items.map((releaseAction) => {
+      const { expenditureSlotIds } = releaseAction || {};
+
+      return {
+        userAddress: releaseAction?.initiatorAddress || '',
+        createdAt: releaseAction?.createdAt || '',
+        slotIds: expenditureSlotIds || [],
+      };
+    });
+  }, [releaseActions]);
+
+  const paymentStep =
+    expenditure?.type === ExpenditureType.Staged
+      ? {
+          key: ExpenditureStep.Payment,
+          heading: {
+            label: formatText({ id: 'expenditure.paymentStage.label' }),
+            decor:
+              !motionAction?.motionData?.motionStateHistory.hasPassed &&
+              !motionAction?.motionData?.motionStateHistory.hasFailed &&
+              !motionAction?.motionData?.motionStateHistory
+                .hasFailedNotFinalizable &&
+              motionStakes ? (
+                <MotionCountDownTimer
+                  key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
+                  motionState={motionState}
+                  motionId={motionId}
+                  motionStakes={motionStakes}
+                  refetchMotionState={refetchMotionState}
+                />
+              ) : null,
+          },
+          content: (
+            <StagedPaymentStep
+              items={milestones}
+              expenditure={expenditure}
+              expectedStepKey={expectedStepKey}
+              releaseActions={mappedReleaseActions}
+            />
+          ),
+        }
+      : {
+          key: ExpenditureStep.Payment,
+          heading: {
+            label: formatText({ id: 'expenditure.paymentStage.label' }),
+          },
+          content: <PaymentStepDetailsBlock expenditure={expenditure} />,
+        };
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -410,12 +499,17 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     },
     {
       key: ExpenditureStep.Release,
-      heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
+      heading: {
+        label: formatText({ id: 'expenditure.releaseStage.label' }),
+      },
       content:
         expenditureStep === ExpenditureStep.Release ? (
           <StepDetailsBlock
             text={formatText({
-              id: 'expenditure.releaseStage.info',
+              id:
+                expenditure?.type === ExpenditureType.Staged
+                  ? 'expenditure.releaseStage.staged.info'
+                  : 'expenditure.releaseStage.info',
             })}
             content={
               expectedStepKey === ExpenditureStep.Payment ? (
@@ -462,11 +556,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           </>
         ),
     },
-    {
-      key: ExpenditureStep.Payment,
-      heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: <PaymentStepDetailsBlock expenditure={expenditure} />,
-    },
+    paymentStep,
   ];
 
   const currentIndex = getCancelStepIndex(expenditure);

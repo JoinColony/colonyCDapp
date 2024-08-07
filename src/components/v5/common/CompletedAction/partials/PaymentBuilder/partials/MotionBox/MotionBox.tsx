@@ -2,6 +2,7 @@ import { MotionState as NetworkMotionState } from '@colony/colony-js';
 import React, { type FC, useEffect, useState, useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -127,7 +128,9 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
         <React.Fragment key={key}>{isVisible && content}</React.Fragment>
       ))}
     </MotionProvider>
-  ) : null;
+  ) : (
+    <SpinnerLoader />
+  );
 };
 
 export default MotionBox;

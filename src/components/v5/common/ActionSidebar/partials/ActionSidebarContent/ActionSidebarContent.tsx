@@ -98,6 +98,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const selectedDecisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
   const shouldShowCreateStakedExpenditureModal =
     actionsWithStakingDecisionMethod.includes(selectedActionType) &&
+    selectedActionType === Action.PaymentBuilder &&
     selectedDecisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
@@ -268,6 +269,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           className="flex h-full flex-col"
           innerRef={formRef}
           onSuccess={() => {
+            actionFormProps?.onSuccess?.();
             client.refetchQueries({
               include: [SearchActionsDocument],
             });

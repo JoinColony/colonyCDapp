@@ -95,6 +95,10 @@ const AmountField: FC<AmountFieldProps> = ({
       wrapperRef.current.dataset.value = formattedValue;
     }
 
+    if (wrapperRef.current && formattedValue === '') {
+      wrapperRef.current.dataset.value = placeholderValue;
+    }
+
     onChange?.();
 
     field.onChange(unformattedValue.replace('-', ''));
