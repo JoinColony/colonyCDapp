@@ -28,6 +28,7 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
           tokenAddress: ADDRESS_ZERO,
           nativeTokenDecimals: DEFAULT_TOKEN_DECIMALS,
           nativeTokenSymbol: DEFAULT_NETWORK_TOKEN.symbol,
+          name: '',
         },
       },
       colonyAddress: ADDRESS_ZERO,

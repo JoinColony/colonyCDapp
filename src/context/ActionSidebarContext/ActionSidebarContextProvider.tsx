@@ -97,7 +97,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const toggleOff = useCallback(() => {
     removeTxParamOnClose();
     return toggleActionSidebarOff();
-  }, [toggleActionSidebarOff]);
+  }, [toggleActionSidebarOff, removeTxParamOnClose]);
 
   const toggle = useCallback(
     (initialValues) => {

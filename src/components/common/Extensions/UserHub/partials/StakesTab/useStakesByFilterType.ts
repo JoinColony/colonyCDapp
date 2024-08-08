@@ -30,7 +30,7 @@ export const useStakesByFilterType = () => {
     [data],
   );
 
-  const motionIdsMap = useMemo(
+  const userMotionStakes = useMemo(
     () =>
       userStakes
         .filter((stake) => !!stake.action?.motionData)
@@ -41,11 +41,12 @@ export const useStakesByFilterType = () => {
         })),
     [userStakes],
   );
+
   const {
     motionStatesMap,
     loading: motionStatesLoading,
     votingReputationByColony,
-  } = useNetworkMotionStatesAllColonies(motionIdsMap);
+  } = useNetworkMotionStatesAllColonies(userMotionStakes);
 
   const stakesWithStatus = useMemo(
     () =>

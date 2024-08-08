@@ -141,7 +141,7 @@ const getActionTitleValues = ({
   expenditureData,
 }: {
   actionData: ColonyAction;
-  colony: Colony;
+  colony: Pick<Colony, 'metadata' | 'nativeToken'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
 }) => {
