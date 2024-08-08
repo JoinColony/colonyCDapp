@@ -314,6 +314,8 @@
     "transaction.group.paymentAction.description": "Expenditure Payment",
     "transaction.group.tokenUnlockAction.title": "Unlock Token",
     "transaction.group.tokenUnlockAction.description": "Unlocking native Token",
+    "transaction.group.releaseExpenditure.title": "Release Expenditure",
+    "transaction.group.releaseExpenditure.description": "Releasing expenditure",
 
     "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
     "transaction.ColonyClient.addDomain(uint256,uint256,uint256).title": "Create Team",

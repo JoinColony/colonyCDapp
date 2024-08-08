@@ -4,6 +4,7 @@ import React, { useEffect, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ColonyActionType, type Expenditure } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -27,9 +28,22 @@ const MSG = defineMessages({
     id: `${displayName}.releaseNextMilestone`,
     defaultMessage: 'Releases the next milestone payment.',
   },
-  releaseNextButton: {
-    id: `${displayName}.releaseNextButton`,
-    defaultMessage: 'Release next payment',
+  makeNextButton: {
+    id: `${displayName}.makeNextButton`,
+    defaultMessage: 'Make next payment',
+  },
+  extensionUninstalled: {
+    id: `${displayName}.extensionUninstalled`,
+    defaultMessage: 'Staged payment extension was uninstalled',
+  },
+  extensionDescription: {
+    id: `${displayName}.extensionDescription`,
+    defaultMessage:
+      'The extension used to create this action has been uninstalled. We recommend canceling this action.',
+  },
+  cancelPayment: {
+    id: `${displayName}.cancelPayment`,
+    defaultMessage: 'Cancel payment',
   },
 });
 
@@ -59,7 +73,9 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     selectedMilestones,
     setSelectedMilestones,
     setSelectedMilestoneMotion,
+    toggleOnCancelModal,
   } = usePaymentBuilderContext();
+  const { isStagedExpenditureEnabled } = useEnabledExtensions();
 
   const firstMilestone = items
     .sort((a, b) => a.slotId - b.slotId)
@@ -156,6 +172,11 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
   const motionMilestonesRef = React.useRef(motionMilestones);
 
   useEffect(() => {
+    if (!isStagedExpenditureEnabled) {
+      setSelectedMilestoneMotion(null);
+      return;
+    }
+
     if (motionMilestonesRef.current.length !== motionMilestones.length) {
       if (!motionMilestones) {
         return;
@@ -165,7 +186,11 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       );
       motionMilestonesRef.current = motionMilestones;
     }
-  }, [motionMilestones, setSelectedMilestoneMotion]);
+  }, [
+    motionMilestones,
+    setSelectedMilestoneMotion,
+    isStagedExpenditureEnabled,
+  ]);
 
   return (
     <>
@@ -181,7 +206,24 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
             (releaseMilestoneMotions || []).length > 0) && (
             <ReleasedBox items={releaseItems} releaseActions={releaseActions} />
           )}
-          {hasEveryMotionEnded && (
+          {!isStagedExpenditureEnabled && (
+            <StepDetailsBlock
+              text={formatText(MSG.extensionUninstalled)}
+              content={
+                <>
+                  <div className="-ml-[1.125rem] -mr-[1.125rem] -mt-[1.125rem] bg-negative-100 p-[1.125rem] text-sm text-negative-400">
+                    {formatText(MSG.extensionDescription)}
+                  </div>
+                  <div className="pt-[1.125rem]">
+                    <Button onClick={toggleOnCancelModal} isFullSize>
+                      {formatText(MSG.cancelPayment)}
+                    </Button>
+                  </div>
+                </>
+              }
+            />
+          )}
+          {hasEveryMotionEnded && isStagedExpenditureEnabled && (
             <StepDetailsBlock
               text={formatText(MSG.releaseNextMilestone)}
               content={
@@ -200,7 +242,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
                   <Button
                     className="w-full"
                     onClick={releaseNextMilestone}
-                    text={formatText(MSG.releaseNextButton)}
+                    text={formatText(MSG.makeNextButton)}
                   />
                 )
               }

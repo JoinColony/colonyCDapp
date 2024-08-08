@@ -68,6 +68,7 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
   items,
   hasAllMilestonesReleased,
   motionIds,
+  expenditure,
 }) => {
   const {
     watch,
@@ -77,6 +78,7 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
 
   const fundingDecisionMethodOptions = useMilestoneReleaseDecisionMethods(
     Action.StagedPayment,
+    expenditure,
   );
 
   const noDecisionMethodAvailable = fundingDecisionMethodOptions.every(
@@ -237,6 +239,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         defaultValues={{ decisionMethod: {} }}
       >
         <MilestoneModalContent
+          expenditure={expenditure}
           items={items}
           motionIds={motionIds}
           onClose={onClose}

@@ -17,5 +17,5 @@ export interface MilestoneReleaseModalProps extends ModalProps {
 
 export type MilestoneModalContentProps = Pick<
   MilestoneReleaseModalProps,
-  'onClose' | 'items' | 'hasAllMilestonesReleased' | 'motionIds'
+  'onClose' | 'items' | 'hasAllMilestonesReleased' | 'motionIds' | 'expenditure'
 >;

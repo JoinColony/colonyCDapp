@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import { ADDRESS_ZERO } from '~constants';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useMobile, useTablet } from '~hooks';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
@@ -42,6 +43,7 @@ const useStagedPaymentTableColumns = (
   const isMobile = useMobile();
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
+  const { isStagedExpenditureEnabled } = useEnabledExtensions();
   const hasMoreThanOneMilestone =
     dataRef.current.filter((item) => !item.isClaimed).length > 1;
 
@@ -102,9 +104,12 @@ const useStagedPaymentTableColumns = (
                     itemClassName="justify-end md:justify-start"
                     buttonClassName="justify-end md:justify-start"
                   />
-                  {isMobile && isPaymentStep && hasMoreThanOneMilestone && (
-                    <ReleaseAllButton items={dataRef.current} />
-                  )}
+                  {isMobile &&
+                    isPaymentStep &&
+                    hasMoreThanOneMilestone &&
+                    isStagedExpenditureEnabled && (
+                      <ReleaseAllButton items={dataRef.current} />
+                    )}
                 </>
               )
             : undefined,
@@ -131,23 +136,29 @@ const useStagedPaymentTableColumns = (
                       {formatText(MSG.released)}
                     </PillsBase>
                   ) : (
-                    <button
-                      key={row.id}
-                      type="button"
-                      className="w-full text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
-                      onClick={() => {
-                        if (!currentMilestone) return;
+                    <>
+                      {isStagedExpenditureEnabled ? (
+                        <button
+                          key={row.id}
+                          type="button"
+                          className="w-full text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
+                          onClick={() => {
+                            if (!currentMilestone) return;
 
-                        setSelectedMilestones([currentMilestone]);
-                        showModal();
-                      }}
-                    >
-                      {formatText(MSG.payNow)}
-                    </button>
+                            setSelectedMilestones([currentMilestone]);
+                            showModal();
+                          }}
+                        >
+                          {formatText(MSG.payNow)}
+                        </button>
+                      ) : undefined}
+                    </>
                   );
                 },
                 footer:
-                  !isMobile && hasMoreThanOneMilestone
+                  !isMobile &&
+                  hasMoreThanOneMilestone &&
+                  isStagedExpenditureEnabled
                     ? () => <ReleaseAllButton items={dataRef.current} />
                     : undefined,
               }),
@@ -163,6 +174,7 @@ const useStagedPaymentTableColumns = (
       isLoading,
       setSelectedMilestones,
       showModal,
+      isStagedExpenditureEnabled,
     ]);
 
   return columns;

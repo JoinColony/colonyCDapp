@@ -11,7 +11,6 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureStatus, ExpenditureType } from '~gql';
-import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -46,6 +45,15 @@ const MSG = defineMessages({
     id: `${displayName}.defaultTitle`,
     defaultMessage: 'Advanced payment',
   },
+  uninstalledExtension: {
+    id: `${displayName}.uninstalledExtension`,
+    defaultMessage:
+      'The extension used to create this action has been uninstalled. We recommend canceling this action.',
+  },
+  cancelPayment: {
+    id: `${displayName}.cancelPayment`,
+    defaultMessage: 'Cancel payment',
+  },
 });
 
 const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
@@ -53,10 +61,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, transactionHash } = action;
-  const [
-    isCancelModalOpen,
-    { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
-  ] = useToggle();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
@@ -64,8 +68,13 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { user: recipient } = useUserByAddress(
     expenditure?.slots?.[0]?.recipientAddress || '',
   );
-  const { expectedExpenditureType, setExpectedExpenditureType } =
-    usePaymentBuilderContext();
+  const {
+    expectedExpenditureType,
+    setExpectedExpenditureType,
+    isCancelModalOpen,
+    toggleOnCancelModal,
+    toggleOffCancelModal,
+  } = usePaymentBuilderContext();
   const {
     actionSidebarToggle: [isActionSidebarOpen],
   } = useActionSidebarContext();
@@ -138,7 +147,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
             key: '1',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
-            onClick: toggleCancelModalOn,
+            onClick: toggleOnCancelModal,
           },
         ]
       : []),
@@ -180,6 +189,12 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           isLoading={!expenditure.metadata?.stages?.length}
           isPaymentStep={expenditureStep === ExpenditureStep.Payment}
         />
+        <CancelModal
+          isOpen={isCancelModalOpen}
+          expenditure={expenditure}
+          onClose={toggleOffCancelModal}
+          refetchExpenditure={refetchExpenditure}
+        />
       </>
     );
   }
@@ -208,7 +223,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       <CancelModal
         isOpen={isCancelModalOpen}
         expenditure={expenditure}
-        onClose={toggleCancelModalOff}
+        onClose={toggleOffCancelModal}
         refetchExpenditure={refetchExpenditure}
       />
     </>

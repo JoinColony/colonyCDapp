@@ -143,6 +143,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const isFundingMotion =
     motions?.items?.length &&
     motions.items?.[0]?.action?.type === ColonyActionType.FundExpenditureMotion;
+  const isPaymentMotion =
+    motions?.items?.length &&
+    motions.items?.[0]?.action?.type ===
+      ColonyActionType.ReleaseStagedPaymentsMotion;
   const fundingMotions = useMemo(() => {
     return (
       motions?.items
@@ -291,6 +295,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           heading: {
             label: formatText({ id: 'expenditure.paymentStage.label' }),
             decor:
+              isPaymentMotion &&
               !motionAction?.motionData?.motionStateHistory.hasPassed &&
               !motionAction?.motionData?.motionStateHistory.hasFailed &&
               !motionAction?.motionData?.motionStateHistory

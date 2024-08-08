@@ -7,5 +7,6 @@ export const actionsWithoutReputationDecisionMethod = [
 
 export const actionsWithStakingDecisionMethod = [
   Action.PaymentBuilder,
+  Action.StagedPayment,
   Action.SplitPayment,
 ];

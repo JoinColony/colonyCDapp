@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
@@ -39,6 +39,7 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
 }) => {
   const { setSelectedMilestoneMotion, selectedMilestoneMotion } =
     usePaymentBuilderContext();
+  const { isStagedExpenditureEnabled } = useEnabledExtensions();
   const { motionState, loadingAction } = useGetColonyAction(
     item?.transactionHash,
   );
@@ -47,7 +48,13 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
     <button
       className="group flex w-full items-center justify-between gap-2"
       type="button"
-      onClick={() => setSelectedMilestoneMotion(item)}
+      onClick={() => {
+        if (!isStagedExpenditureEnabled) {
+          return;
+        }
+
+        setSelectedMilestoneMotion(item);
+      }}
     >
       <span
         className={clsx(
@@ -72,7 +79,7 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
       ) : (
         <>
           {loadingAction ? (
-            <SpinnerLoader />
+            <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
           ) : (
             <ActionBadge motionState={motionState} />
           )}
