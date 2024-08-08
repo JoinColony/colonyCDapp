@@ -61,14 +61,12 @@ const useGetPaymentBuilderColumns = ({
       paymentBuilderColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) =>
-          isLoading ? (
-            <div className="flex w-full items-center">
-              <div className="h-4 w-full overflow-hidden rounded skeleton" />
-            </div>
-          ) : (
-            <RecipientField address={row.original.recipient} />
-          ),
+        cell: ({ row }) => (
+          <RecipientField
+            isLoading={!!isLoading}
+            address={row.original.recipient}
+          />
+        ),
         footer: hasMoreThanOneToken
           ? () => (
               <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
