@@ -494,6 +494,12 @@ export type ColonyActionMetadata = {
   createdAt: Scalars['AWSDateTime'];
   customTitle: Scalars['String'];
   id: Scalars['ID'];
+  /**
+   * In case of crypto-to-fiat payment actions,
+   * the address of the recipient whose liquidation address
+   * the funds were sent to
+   */
+  originalRecipientAddress?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -1287,6 +1293,7 @@ export type CreateColonyActionInput = {
 export type CreateColonyActionMetadataInput = {
   customTitle: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
+  originalRecipientAddress?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateColonyContributorInput = {
@@ -2400,6 +2407,10 @@ export enum KycStatus {
   UnderReview = 'UNDER_REVIEW'
 }
 
+/**
+ * NOTE: This model should only be used to lookup users by liquidation address
+ * To get the liquidation address of a user, use the `bridgeGetUserLiquidationAddress` query instead
+ */
 export type LiquidationAddress = {
   __typename?: 'LiquidationAddress';
   /** The chain id the colony is on */
@@ -2548,6 +2559,7 @@ export type ModelColonyActionMetadataConditionInput = {
   customTitle?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyActionMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataConditionInput>>>;
+  originalRecipientAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyActionMetadataConnection = {
@@ -2562,6 +2574,7 @@ export type ModelColonyActionMetadataFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataFilterInput>>>;
+  originalRecipientAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyActionTypeInput = {
@@ -3706,6 +3719,7 @@ export type ModelSubscriptionColonyActionMetadataFilterInput = {
   customTitle?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>>>;
+  originalRecipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionColonyContributorFilterInput = {
@@ -8246,6 +8260,7 @@ export type UpdateColonyActionInput = {
 export type UpdateColonyActionMetadataInput = {
   customTitle?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
+  originalRecipientAddress?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateColonyContributorInput = {
@@ -9405,6 +9420,7 @@ export type GetExtensionInstallationsCountQuery = { __typename?: 'Query', getExt
 
 export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
   userOrLiquidationAddress: Scalars['ID'];
+  chainId: Scalars['Int'];
 }>;
 
 
@@ -12694,13 +12710,16 @@ export type GetExtensionInstallationsCountQueryHookResult = ReturnType<typeof us
 export type GetExtensionInstallationsCountLazyQueryHookResult = ReturnType<typeof useGetExtensionInstallationsCountLazyQuery>;
 export type GetExtensionInstallationsCountQueryResult = Apollo.QueryResult<GetExtensionInstallationsCountQuery, GetExtensionInstallationsCountQueryVariables>;
 export const GetUserByUserOrLiquidationAddressDocument = gql`
-    query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
+    query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!, $chainId: Int!) {
   getUserByAddress(id: $userOrLiquidationAddress) {
     items {
       ...User
     }
   }
-  getUserByLiquidationAddress(liquidationAddress: $userOrLiquidationAddress) {
+  getUserByLiquidationAddress(
+    liquidationAddress: $userOrLiquidationAddress
+    filter: {chainId: {eq: $chainId}}
+  ) {
     items {
       ...LiquidationAddress
     }
@@ -12722,6 +12741,7 @@ ${LiquidationAddressFragmentDoc}`;
  * const { data, loading, error } = useGetUserByUserOrLiquidationAddressQuery({
  *   variables: {
  *      userOrLiquidationAddress: // value for 'userOrLiquidationAddress'
+ *      chainId: // value for 'chainId'
  *   },
  * });
  */

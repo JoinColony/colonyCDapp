@@ -3,6 +3,7 @@ import {
   useGetUserByUserOrLiquidationAddressQuery,
 } from '~gql';
 import { type Address } from '~types/index.ts';
+import { getChainId } from '~utils/chainId.ts';
 
 const useUserByAddress = (
   address: Address,
@@ -20,6 +21,7 @@ const useUserByAddress = (
     useGetUserByUserOrLiquidationAddressQuery({
       variables: {
         userOrLiquidationAddress: address,
+        chainId: Number(getChainId()),
       },
       fetchPolicy: 'cache-and-network',
       skip: !tryLiquidationAddress || !address,

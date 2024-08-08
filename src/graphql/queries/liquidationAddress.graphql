@@ -1,10 +1,16 @@
-query GetUserByUserOrLiquidationAddress($userOrLiquidationAddress: ID!) {
+query GetUserByUserOrLiquidationAddress(
+  $userOrLiquidationAddress: ID!
+  $chainId: Int!
+) {
   getUserByAddress(id: $userOrLiquidationAddress) {
     items {
       ...User
     }
   }
-  getUserByLiquidationAddress(liquidationAddress: $userOrLiquidationAddress) {
+  getUserByLiquidationAddress(
+    liquidationAddress: $userOrLiquidationAddress
+    filter: { chainId: { eq: $chainId } }
+  ) {
     items {
       ...LiquidationAddress
     }
