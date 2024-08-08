@@ -9,7 +9,7 @@ import { defineMessages } from 'react-intl';
 import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { type UserHubTabList, UserHubTabs } from './types.ts';
+import { type UserHubTabList, UserHubTab } from './types.ts';
 
 export const menuMessages = defineMessages({
   balance: {
@@ -32,27 +32,27 @@ export const menuMessages = defineMessages({
 
 export const tabList: UserHubTabList = [
   {
-    id: UserHubTabs.Balance,
+    id: UserHubTab.Balance,
     label: formatText(menuMessages.balance),
-    value: UserHubTabs.Balance,
+    value: UserHubTab.Balance,
     icon: Invoice,
   },
   {
-    id: UserHubTabs.Stakes,
+    id: UserHubTab.Stakes,
     label: formatText(menuMessages.stakes),
-    value: UserHubTabs.Stakes,
+    value: UserHubTab.Stakes,
     icon: CoinVertical,
   },
   {
-    id: UserHubTabs.Transactions,
+    id: UserHubTab.Transactions,
     label: formatText(menuMessages.transactions),
-    value: UserHubTabs.Transactions,
+    value: UserHubTab.Transactions,
     icon: Receipt,
   },
   {
-    id: UserHubTabs.CryptoToFiat,
+    id: UserHubTab.CryptoToFiat,
     label: formatText(menuMessages.cryptoToFiat),
-    value: UserHubTabs.CryptoToFiat,
+    value: UserHubTab.CryptoToFiat,
     icon: CreditCard,
     featureFlag: FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS,
   },

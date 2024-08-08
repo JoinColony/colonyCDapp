@@ -13,12 +13,16 @@ import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
-import { type UserHubProps, UserHubTabs } from './types.ts';
+import { UserHubTab } from './types.ts';
 
 // @BETA: Disabled for now
 // import { COLONY_HOME_ROUTE } from '~routes';
 // @BETA: Disabled for now
 // import ButtonLink from '~v5/shared/Button/ButtonLink';
+
+interface Props {
+  initialOpenTab?: UserHubTab;
+}
 
 const displayName = 'common.Extensions.UserHub.partials.UserHub';
 
@@ -33,12 +37,10 @@ const MSG = defineMessages({
   },
 });
 
-const UserHub: FC<UserHubProps> = ({
-  defaultOpenedTab = UserHubTabs.Balance,
-}) => {
+const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
   const isMobile = useMobile();
   const featureFlags = useContext(FeatureFlagsContext);
-  const [selectedTab, setSelectedTab] = useState(defaultOpenedTab);
+  const [selectedTab, setSelectedTab] = useState(initialOpenTab);
 
   const filteredTabList = tabList.filter(
     (tabItem) =>
@@ -47,7 +49,7 @@ const UserHub: FC<UserHubProps> = ({
         featureFlags[tabItem.featureFlag]?.isEnabled),
   );
 
-  const handleTabChange = (newTab: UserHubTabs) => {
+  const handleTabChange = (newTab: UserHubTab) => {
     setSelectedTab(newTab);
   };
 
@@ -62,9 +64,9 @@ const UserHub: FC<UserHubProps> = ({
     <div
       className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
         'sm:h-[27.75rem]':
-          selectedTab !== UserHubTabs.Balance &&
-          selectedTab !== UserHubTabs.CryptoToFiat,
-        'sm:min-h-[27.75rem]': selectedTab === UserHubTabs.Balance,
+          selectedTab !== UserHubTab.Balance &&
+          selectedTab !== UserHubTab.CryptoToFiat,
+        'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
       })}
     >
       <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.85rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
@@ -73,7 +75,7 @@ const UserHub: FC<UserHubProps> = ({
             options={filteredTabList}
             defaultValue={selectedTab}
             value={selectedTab}
-            onChange={(value) => handleTabChange(value?.value as UserHubTabs)}
+            onChange={(value) => handleTabChange(value?.value as UserHubTab)}
             className="w-full"
             hideSelectedOptions
           />
@@ -124,14 +126,14 @@ const UserHub: FC<UserHubProps> = ({
         )}
       </div>
       <div className="relative h-full w-full min-w-0">
-        {selectedTab === UserHubTabs.Balance && (
+        {selectedTab === UserHubTab.Balance && (
           <ReputationTab onTabChange={handleTabChange} />
         )}
-        {selectedTab === UserHubTabs.Stakes && <StakesTab />}
-        {selectedTab === UserHubTabs.Transactions && (
+        {selectedTab === UserHubTab.Stakes && <StakesTab />}
+        {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
-        {selectedTab === UserHubTabs.CryptoToFiat && <CryptoToFiatTab />}
+        {selectedTab === UserHubTab.CryptoToFiat && <CryptoToFiatTab />}
       </div>
       {/* @BETA: Disabled for now */}
       {/* {isMobile && ( */}

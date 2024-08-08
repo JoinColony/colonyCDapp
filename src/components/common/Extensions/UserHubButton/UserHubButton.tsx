@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useState, useEffect } from 'react';
+import React, { type FC, useState, useEffect, useCallback } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { useSearchParams } from 'react-router-dom';
 
@@ -12,7 +12,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
-import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes';
@@ -26,19 +25,23 @@ import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
-import { UserHubTabs } from '../UserHub/types.ts';
+import { UserHubTab } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
 
+interface Props {
+  openTab?: UserHubTab;
+  onOpen: () => void;
+}
+
 const displayName = 'common.Extensions.UserNavigation.partials.UserHubButton';
 
-const UserHubButton: FC = () => {
+const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const isMobile = useMobile();
   const {
     colony: { colonyAddress },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const [isUserHubOpen, setIsUserHubOpen] = useState(false);
   const { transactions } = useGroupedTransactions();
   const [prevGroupStatus, setPrevGroupStatus] = useState<
     TransactionStatus | undefined
@@ -52,21 +55,14 @@ const UserHubButton: FC = () => {
 
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const { isTokensModalOpen } = useTokensModalContext();
+  // Note that this will change once we have a better modal transaction experience
+  const prevIsTokensModalOpen = usePrevious(isTokensModalOpen);
 
   const [, { toggleOff }] = mobileMenuToggle;
 
   const popperTooltipOffset = isMobile ? [0, 1] : [0, 8];
 
-  const ref = useDetectClickOutside({
-    onTriggered: (e) => {
-      // This stops the hub closing when clicking the pending button (which is outside)
-      if (!(e.target as HTMLElement)?.getAttribute('data-openhubifclicked')) {
-        setIsUserHubOpen(false);
-      } else {
-        setIsUserHubOpen(true);
-      }
-    },
-  });
+  const [initialOpenTab, setInitialOpenTab] = useState<UserHubTab>();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
     usePopperTooltip(
@@ -76,7 +72,6 @@ const UserHubButton: FC = () => {
         placement: isMobile ? 'bottom' : 'bottom-end',
         trigger: 'click',
         interactive: true,
-        onVisibleChange: () => {},
         closeOnOutsideClick: true,
       },
       {
@@ -91,35 +86,50 @@ const UserHubButton: FC = () => {
       },
     );
 
-  // If visible is not true, then clicking buttons within the popover will close it
-  // So if isUserHubOpen is true, trigger a triggerRef click to ensure visible is true
-  useEffect(() => {
-    if (isUserHubOpen && !visible) {
+  // This is how we should open the userhub now, from this file. It keeps the state in popper
+  // Important! The user hub can't be closed from outside programmatically!
+  const openUserHub = useCallback(
+    (tab?: UserHubTab) => {
+      if (!visible) {
+        setInitialOpenTab(tab);
+        triggerRef?.click();
+      }
+    },
+    [triggerRef, visible],
+  );
+
+  const closeUserHub = useCallback(() => {
+    if (visible) {
       triggerRef?.click();
     }
-  }, [isUserHubOpen, visible, triggerRef]);
+  }, [visible, triggerRef]);
 
   useEffect(() => {
-    if (transactionId !== previousTransactionId && (visible || isUserHubOpen)) {
-      triggerRef?.click();
-      setIsUserHubOpen(false);
+    // openTab signals that we want to open the UserHub from outside with a specific tab
+    // This immediately gets reset (onOpen) once the UserHub is open to prevent recursion
+    if (openTab) {
+      openUserHub(openTab);
+      onOpen();
     }
-  }, [
-    transactionId,
-    triggerRef,
-    previousTransactionId,
-    visible,
-    isUserHubOpen,
-  ]);
+    // once it's visible, we clear out the initial open tab again to open it with the default tab the next time
+    if (!openTab && visible) {
+      setInitialOpenTab(undefined);
+    }
+  }, [setInitialOpenTab, onOpen, openUserHub, openTab, triggerRef, visible]);
 
   useEffect(() => {
-    if (isTokensModalOpen) {
-      triggerRef?.click();
-      setIsUserHubOpen(false);
+    if (transactionId !== previousTransactionId) {
+      closeUserHub();
     }
-  }, [isTokensModalOpen, triggerRef]);
+  }, [transactionId, previousTransactionId, closeUserHub]);
 
-  useDisableBodyScroll(visible && isMobile);
+  useEffect(() => {
+    if (isTokensModalOpen && isTokensModalOpen !== prevIsTokensModalOpen) {
+      closeUserHub();
+    }
+  }, [isTokensModalOpen, prevIsTokensModalOpen, closeUserHub]);
+
+  useDisableBodyScroll(isMobile && visible);
 
   const handleButtonClick = () => {
     trackEvent(OPEN_USER_HUB_EVENT);
@@ -137,19 +147,19 @@ const UserHubButton: FC = () => {
       (prevGroupStatus === TransactionStatus.Pending ||
         prevGroupStatus === TransactionStatus.Ready)
     ) {
-      setIsUserHubOpen(true);
+      openUserHub(UserHubTab.Transactions);
     }
     if (groupStatus !== prevGroupStatus) {
       setPrevGroupStatus(groupStatus);
     }
-  }, [transactions, prevGroupStatus]);
+  }, [transactions, prevGroupStatus, openUserHub]);
 
   const userName =
     user?.profile?.displayName ??
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
   return (
-    <div ref={ref} className="flex-shrink-0">
+    <div className="flex-shrink-0">
       <Button
         mode="tertiary"
         size="large"
@@ -157,7 +167,7 @@ const UserHubButton: FC = () => {
         ref={setTriggerRef}
         className={clsx(
           {
-            '!border-blue-400': visible || isUserHubOpen,
+            '!border-blue-400': visible,
           },
           'min-w-[3rem] md:hover:!border-blue-400',
         )}
@@ -192,7 +202,7 @@ const UserHubButton: FC = () => {
           ) : null}
         </div>
       </Button>
-      {(visible || isUserHubOpen) && (
+      {visible && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -204,11 +214,7 @@ const UserHubButton: FC = () => {
             },
           )}
         >
-          <UserHub
-            defaultOpenedTab={
-              isUserHubOpen ? UserHubTabs.Transactions : undefined
-            }
-          />
+          <UserHub initialOpenTab={initialOpenTab} />
         </PopoverBase>
       )}
     </div>

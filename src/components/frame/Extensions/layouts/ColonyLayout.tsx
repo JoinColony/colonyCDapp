@@ -5,13 +5,14 @@ import React, {
   type PropsWithChildren,
   useCallback,
   useEffect,
-  // useState,
+  useState,
 } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 //* Hide Initially */
 // import { defineMessages } from 'react-intl';
 // import { PaperPlaneTilt } from '@phosphor-icons/react';
 
+import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -58,6 +59,18 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
     actionSidebarToggle;
   const isTablet = useTablet();
 
+  const [userHubTab, setUserHubTab] = useState<UserHubTab>();
+  const openUserHub = useCallback((tab?: UserHubTab) => {
+    if (tab) {
+      setUserHubTab(tab);
+    } else {
+      setUserHubTab(UserHubTab.Balance);
+    }
+  }, []);
+  const clearTab = useCallback(() => {
+    setUserHubTab(undefined);
+  }, []);
+
   const {
     isMemberModalOpen,
     setIsMemberModalOpen,
@@ -91,8 +104,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const getUserNavigation = useCallback(
     (isHidden?: boolean) => (
       <UserNavigationWrapper
-        txButton={<TxButton />}
-        userHub={<UserHubButton />}
+        txButton={
+          <TxButton onClick={() => openUserHub(UserHubTab.Transactions)} />
+        }
+        userHub={<UserHubButton openTab={userHubTab} onOpen={clearTab} />}
         className={clsx(
           'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
           {
@@ -118,7 +133,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }
       />
     ),
-    [isTablet],
+    [isTablet, userHubTab, openUserHub, clearTab],
   );
 
   return (
@@ -149,8 +164,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         }}
         sidebar={
           <ColonySidebar
-            txButton={<TxButton />}
-            userHub={<UserHubButton />}
+            txButton={
+              <TxButton onClick={() => openUserHub(UserHubTab.Transactions)} />
+            }
+            userHub={<UserHubButton openTab={userHubTab} onOpen={clearTab} />}
             transactionId={transactionId || undefined}
           />
         }

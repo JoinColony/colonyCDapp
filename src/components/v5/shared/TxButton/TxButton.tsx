@@ -14,9 +14,13 @@ import noop from '~utils/noop.ts';
 
 import IconButton from '../Button/IconButton.tsx';
 
+interface Props {
+  onClick: () => void;
+}
+
 const displayName = 'v5.TxButton';
 
-const TxButton: FC = () => {
+const TxButton: FC<Props> = ({ onClick }) => {
   const isMobile = useMobile();
 
   const { transactions, groupState } = useGroupedTransactions();
@@ -85,6 +89,7 @@ const TxButton: FC = () => {
             <SpinnerGap className="animate-spin" size={14} />
           </span>
         }
+        onClick={onClick}
       >
         {isMobile ? undefined : (
           <span>
@@ -118,7 +123,7 @@ const TxButton: FC = () => {
             <Check className="text-base-white" size={14} />
           </span>
         }
-        data-openhubifclicked
+        onClick={onClick}
       />
     );
   }
