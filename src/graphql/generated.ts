@@ -494,12 +494,6 @@ export type ColonyActionMetadata = {
   createdAt: Scalars['AWSDateTime'];
   customTitle: Scalars['String'];
   id: Scalars['ID'];
-  /**
-   * In case of crypto-to-fiat payment actions,
-   * the address of the recipient whose liquidation address
-   * the funds were sent to
-   */
-  originalRecipientAddress?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -1298,7 +1292,6 @@ export type CreateColonyActionInput = {
 export type CreateColonyActionMetadataInput = {
   customTitle: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
-  originalRecipientAddress?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateColonyContributorInput = {
@@ -2565,7 +2558,6 @@ export type ModelColonyActionMetadataConditionInput = {
   customTitle?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelColonyActionMetadataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataConditionInput>>>;
-  originalRecipientAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyActionMetadataConnection = {
@@ -2580,7 +2572,6 @@ export type ModelColonyActionMetadataFilterInput = {
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelColonyActionMetadataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyActionMetadataFilterInput>>>;
-  originalRecipientAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelColonyActionTypeInput = {
@@ -3727,7 +3718,6 @@ export type ModelSubscriptionColonyActionMetadataFilterInput = {
   customTitle?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionMetadataFilterInput>>>;
-  originalRecipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionColonyContributorFilterInput = {
@@ -8269,7 +8259,6 @@ export type UpdateColonyActionInput = {
 export type UpdateColonyActionMetadataInput = {
   customTitle?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
-  originalRecipientAddress?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateColonyContributorInput = {
