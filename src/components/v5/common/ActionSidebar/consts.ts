@@ -1,4 +1,3 @@
-import { type Variants } from 'framer-motion';
 import { object, string } from 'yup';
 
 // Do not import these from `./hooks` to avoid circular dependencies
@@ -24,15 +23,6 @@ export const TEAM_FIELD_NAME = 'team';
 export const MEMBER_FIELD_NAME = 'member';
 
 export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
-
-export const actionSidebarAnimation: Variants = {
-  hidden: {
-    x: '100%',
-  },
-  visible: {
-    x: 0,
-  },
-};
 
 function isValidDescriptionLength(description: string) {
   const strippedDescription = stripHTMLFromText(description);

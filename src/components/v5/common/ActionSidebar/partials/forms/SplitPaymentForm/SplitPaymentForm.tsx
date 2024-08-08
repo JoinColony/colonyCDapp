@@ -8,7 +8,7 @@ import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCre
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
@@ -19,7 +19,7 @@ import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField/
 
 const displayName = 'v5.common.ActionSidebar.partials.SplitPaymentForm';
 
-const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const SplitPaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { currentToken, distributionMethod, amount } =
     useSplitPayment(getFormOptions);
 

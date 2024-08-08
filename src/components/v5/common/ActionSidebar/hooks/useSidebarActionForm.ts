@@ -22,11 +22,11 @@ import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
-import { type ActionFormBaseProps } from '../types.ts';
+import { type CreateActionFormProps } from '../types.ts';
 
 const useSidebarActionForm = () => {
   const actionFormComponents = useMemo<
-    Partial<Record<Action, FC<ActionFormBaseProps>>>
+    Partial<Record<Action, FC<CreateActionFormProps>>>
   >(
     () => ({
       [Action.SimplePayment]: SinglePaymentForm,

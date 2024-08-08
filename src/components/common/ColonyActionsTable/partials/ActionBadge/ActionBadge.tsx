@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import ExpenditureActionStatusBadge from '~v5/common/ActionSidebar/partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 

@@ -11,12 +11,12 @@ import { type DecisionDraft } from '~utils/decisions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { validationSchema, type CreateDecisionFormValues } from './consts.ts';
 
 export const useCreateDecision = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const {
     colony: { colonyAddress, name: colonyName },

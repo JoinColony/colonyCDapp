@@ -10,7 +10,7 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import {
   validationSchema,
@@ -19,7 +19,7 @@ import {
 import { getManageColonyObjectivesPayload } from './utils.tsx';
 
 export const useManageColonyObjectives = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { metadata } = colony;

@@ -8,7 +8,7 @@ import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
@@ -18,7 +18,7 @@ import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsFi
 
 const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
-const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const PaymentBuilderForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   usePaymentBuilder(getFormOptions);
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 

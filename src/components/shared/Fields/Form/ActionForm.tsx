@@ -56,7 +56,6 @@ const ActionForm = <V extends Record<string, any>>({
   error,
   actionType,
   transform,
-  innerRef,
   ...props
 }: ActionFormProps<V>) => {
   const asyncFunction = useAsyncFunction({
@@ -77,14 +76,7 @@ const ActionForm = <V extends Record<string, any>>({
     }
   };
 
-  return (
-    <Form
-      {...props}
-      onSubmit={handleSubmit}
-      onError={onSubmitError}
-      innerRef={innerRef}
-    />
-  );
+  return <Form {...props} onSubmit={handleSubmit} onError={onSubmitError} />;
 };
 
 ActionForm.displayName = displayName;

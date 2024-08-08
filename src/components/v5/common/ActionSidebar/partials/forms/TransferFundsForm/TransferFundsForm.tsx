@@ -8,7 +8,7 @@ import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCre
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 
 import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 import AmountRow from '../../AmountRow/AmountRow.tsx';
 import CreatedIn from '../../CreatedIn/index.ts';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
@@ -18,7 +18,7 @@ import { useTransferFunds } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 
-const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const TransferFundsForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useTransferFunds(getFormOptions);
 
   const { watch } = useFormContext();

@@ -10,14 +10,14 @@ import { mapPayload, pipe } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import { type CreateActionFormProps } from '../../../types.ts';
 
 import { getEditColonyDetailsValidationSchema } from './consts.ts';
 import { type EditColonyDetailsFormValues } from './types.ts';
 import { getEditColonyDetailsPayload } from './utils.tsx';
 
 export const useEditColonyDetails = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { metadata } = colony || {};
