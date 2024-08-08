@@ -1,0 +1,167 @@
+[
+  {
+    "code": "NO-02",
+    "name": "Akershus",
+    "category": "county"
+  },
+  {
+    "code": "NO-09",
+    "name": "Aust-Agder",
+    "category": "county"
+  },
+  {
+    "code": "NO-06",
+    "name": "Buskerud",
+    "category": "county"
+  },
+  {
+    "code": "NO-20",
+    "name": "Finnmark / Finnmárku",
+    "category": "county"
+  },
+  {
+    "code": "NO-04",
+    "name": "Hedmark",
+    "category": "county"
+  },
+  {
+    "code": "NO-12",
+    "name": "Hordaland",
+    "category": "county"
+  },
+  {
+    "code": "NO-15",
+    "name": "Møre og Romsdal",
+    "category": "county"
+  },
+  {
+    "code": "NO-18",
+    "name": "Nordland",
+    "category": "county"
+  },
+  {
+    "code": "NO-05",
+    "name": "Oppland",
+    "category": "county"
+  },
+  {
+    "code": "NO-03",
+    "name": "Oslo",
+    "category": "county"
+  },
+  {
+    "code": "NO-11",
+    "name": "Rogaland",
+    "category": "county"
+  },
+  {
+    "code": "NO-14",
+    "name": "Sogn og Fjordane",
+    "category": "county"
+  },
+  {
+    "code": "NO-08",
+    "name": "Telemark",
+    "category": "county"
+  },
+  {
+    "code": "NO-19",
+    "name": "Troms / Romsa",
+    "category": "county"
+  },
+  {
+    "code": "NO-50",
+    "name": "Trøndelag",
+    "category": "county"
+  },
+  {
+    "code": "NO-10",
+    "name": "Vest-Agder",
+    "category": "county"
+  },
+  {
+    "code": "NO-07",
+    "name": "Vestfold",
+    "category": "county"
+  },
+  {
+    "code": "NO-01",
+    "name": "Østfold",
+    "category": "county"
+  },
+  {
+    "code": "NO-22",
+    "name": "Jan Mayen",
+    "category": "arctic region"
+  },
+  {
+    "code": "NO-21",
+    "name": "Svalbard",
+    "category": "arctic region"
+  },
+  {
+    "code": "NO-42",
+    "name": "Agder",
+    "category": "county"
+  },
+  {
+    "code": "NO-34",
+    "name": "Innlandet",
+    "category": "county"
+  },
+  {
+    "code": "NO-15",
+    "name": "Møre og Romsdal",
+    "category": "county"
+  },
+  {
+    "code": "NO-18",
+    "name": "Nordland",
+    "category": "county"
+  },
+  {
+    "code": "NO-03",
+    "name": "Oslo",
+    "category": "county"
+  },
+  {
+    "code": "NO-11",
+    "name": "Rogaland",
+    "category": "county"
+  },
+  {
+    "code": "NO-54",
+    "name": "Troms og Finnmark / Romsa ja Finnmárku",
+    "category": "county"
+  },
+  {
+    "code": "NO-50",
+    "name": "Trøndelag",
+    "category": "county"
+  },
+  {
+    "code": "NO-38",
+    "name": "Vestfold og Telemark",
+    "category": "county"
+  },
+  {
+    "code": "NO-46",
+    "name": "Vestland",
+    "category": "county"
+  },
+  {
+    "code": "NO-30",
+    "name": "Viken",
+    "category": "county"
+  },
+  {
+    "code": "NO-22",
+    "name": "Jan Mayen",
+    "category": "arctic region"
+  },
+  {
+    "code": "NO-21",
+    "name": "Svalbard",
+    "category": "arctic region"
+  }
+]

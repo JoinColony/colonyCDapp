@@ -1,0 +1,42 @@
+[
+  {
+    "code": "NE-8",
+    "name": "Niamey",
+    "category": "urban community"
+  },
+  {
+    "code": "NE-1",
+    "name": "Agadez",
+    "category": "region"
+  },
+  {
+    "code": "NE-2",
+    "name": "Diffa",
+    "category": "region"
+  },
+  {
+    "code": "NE-3",
+    "name": "Dosso",
+    "category": "region"
+  },
+  {
+    "code": "NE-4",
+    "name": "Maradi",
+    "category": "region"
+  },
+  {
+    "code": "NE-5",
+    "name": "Tahoua",
+    "category": "region"
+  },
+  {
+    "code": "NE-6",
+    "name": "Tillabéri",
+    "category": "region"
+  },
+  {
+    "code": "NE-7",
+    "name": "Zinder",
+    "category": "region"
+  }
+]

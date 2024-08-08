@@ -1,0 +1,82 @@
+[
+  {
+    "code": "CU-15",
+    "name": "Artemisa",
+    "category": "province"
+  },
+  {
+    "code": "CU-09",
+    "name": "Camagüey",
+    "category": "province"
+  },
+  {
+    "code": "CU-08",
+    "name": "Ciego de Ávila",
+    "category": "province"
+  },
+  {
+    "code": "CU-06",
+    "name": "Cienfuegos",
+    "category": "province"
+  },
+  {
+    "code": "CU-12",
+    "name": "Granma",
+    "category": "province"
+  },
+  {
+    "code": "CU-14",
+    "name": "Guantánamo",
+    "category": "province"
+  },
+  {
+    "code": "CU-11",
+    "name": "Holguín",
+    "category": "province"
+  },
+  {
+    "code": "CU-03",
+    "name": "La Habana",
+    "category": "province"
+  },
+  {
+    "code": "CU-10",
+    "name": "Las Tunas",
+    "category": "province"
+  },
+  {
+    "code": "CU-04",
+    "name": "Matanzas",
+    "category": "province"
+  },
+  {
+    "code": "CU-16",
+    "name": "Mayabeque",
+    "category": "province"
+  },
+  {
+    "code": "CU-01",
+    "name": "Pinar del Río",
+    "category": "province"
+  },
+  {
+    "code": "CU-07",
+    "name": "Sancti Spíritus",
+    "category": "province"
+  },
+  {
+    "code": "CU-13",
+    "name": "Santiago de Cuba",
+    "category": "province"
+  },
+  {
+    "code": "CU-05",
+    "name": "Villa Clara",
+    "category": "province"
+  },
+  {
+    "code": "CU-99",
+    "name": "Isla de la Juventud",
+    "category": "special municipality"
+  }
+]

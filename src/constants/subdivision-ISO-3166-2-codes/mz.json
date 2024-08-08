@@ -1,0 +1,57 @@
+[
+  {
+    "code": "MZ-MPM",
+    "name": "Maputo",
+    "category": "city"
+  },
+  {
+    "code": "MZ-P",
+    "name": "Cabo Delgado",
+    "category": "province"
+  },
+  {
+    "code": "MZ-G",
+    "name": "Gaza",
+    "category": "province"
+  },
+  {
+    "code": "MZ-I",
+    "name": "Inhambane",
+    "category": "province"
+  },
+  {
+    "code": "MZ-B",
+    "name": "Manica",
+    "category": "province"
+  },
+  {
+    "code": "MZ-L",
+    "name": "Maputo",
+    "category": "province"
+  },
+  {
+    "code": "MZ-N",
+    "name": "Nampula",
+    "category": "province"
+  },
+  {
+    "code": "MZ-A",
+    "name": "Niassa",
+    "category": "province"
+  },
+  {
+    "code": "MZ-S",
+    "name": "Sofala",
+    "category": "province"
+  },
+  {
+    "code": "MZ-T",
+    "name": "Tete",
+    "category": "province"
+  },
+  {
+    "code": "MZ-Q",
+    "name": "Zambézia",
+    "category": "province"
+  }
+]

@@ -1,0 +1,132 @@
+[
+  {
+    "code": "PE-LMA",
+    "name": "Municipalidad Metropolitana de Lima",
+    "category": "municipality"
+  },
+  {
+    "code": "PE-AMA",
+    "name": "Amazonas",
+    "category": "region"
+  },
+  {
+    "code": "PE-ANC",
+    "name": "Ancash",
+    "category": "region"
+  },
+  {
+    "code": "PE-APU",
+    "name": "Apurímac",
+    "category": "region"
+  },
+  {
+    "code": "PE-ARE",
+    "name": "Arequipa",
+    "category": "region"
+  },
+  {
+    "code": "PE-AYA",
+    "name": "Ayacucho",
+    "category": "region"
+  },
+  {
+    "code": "PE-CAJ",
+    "name": "Cajamarca",
+    "category": "region"
+  },
+  {
+    "code": "PE-CUS",
+    "name": "Cusco",
+    "category": "region"
+  },
+  {
+    "code": "PE-CAL",
+    "name": "El Callao",
+    "category": "region"
+  },
+  {
+    "code": "PE-HUV",
+    "name": "Huancavelica",
+    "category": "region"
+  },
+  {
+    "code": "PE-HUC",
+    "name": "Huánuco",
+    "category": "region"
+  },
+  {
+    "code": "PE-ICA",
+    "name": "Ica",
+    "category": "region"
+  },
+  {
+    "code": "PE-JUN",
+    "name": "Junín",
+    "category": "region"
+  },
+  {
+    "code": "PE-LAL",
+    "name": "La Libertad",
+    "category": "region"
+  },
+  {
+    "code": "PE-LAM",
+    "name": "Lambayeque",
+    "category": "region"
+  },
+  {
+    "code": "PE-LIM",
+    "name": "Lima",
+    "category": "region"
+  },
+  {
+    "code": "PE-LOR",
+    "name": "Loreto",
+    "category": "region"
+  },
+  {
+    "code": "PE-MDD",
+    "name": "Madre de Dios",
+    "category": "region"
+  },
+  {
+    "code": "PE-MOQ",
+    "name": "Moquegua",
+    "category": "region"
+  },
+  {
+    "code": "PE-PAS",
+    "name": "Pasco",
+    "category": "region"
+  },
+  {
+    "code": "PE-PIU",
+    "name": "Piura",
+    "category": "region"
+  },
+  {
+    "code": "PE-PUN",
+    "name": "Puno",
+    "category": "region"
+  },
+  {
+    "code": "PE-SAM",
+    "name": "San Martín",
+    "category": "region"
+  },
+  {
+    "code": "PE-TAC",
+    "name": "Tacna",
+    "category": "region"
+  },
+  {
+    "code": "PE-TUM",
+    "name": "Tumbes",
+    "category": "region"
+  },
+  {
+    "code": "PE-UCA",
+    "name": "Ucayali",
+    "category": "region"
+  }
+]

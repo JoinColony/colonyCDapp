@@ -1,0 +1,402 @@
+[
+  {
+    "code": "MK-801",
+    "name": "Aerodrom",
+    "category": null
+  },
+  {
+    "code": "MK-802",
+    "name": "Aračinovo",
+    "category": null
+  },
+  {
+    "code": "MK-201",
+    "name": "Berovo",
+    "category": null
+  },
+  {
+    "code": "MK-501",
+    "name": "Bitola",
+    "category": null
+  },
+  {
+    "code": "MK-401",
+    "name": "Bogdanci",
+    "category": null
+  },
+  {
+    "code": "MK-601",
+    "name": "Bogovinje",
+    "category": null
+  },
+  {
+    "code": "MK-402",
+    "name": "Bosilovo",
+    "category": null
+  },
+  {
+    "code": "MK-602",
+    "name": "Brvenica",
+    "category": null
+  },
+  {
+    "code": "MK-803",
+    "name": "Butel",
+    "category": null
+  },
+  {
+    "code": "MK-814",
+    "name": "Centar",
+    "category": null
+  },
+  {
+    "code": "MK-313",
+    "name": "Centar Župa",
+    "category": null
+  },
+  {
+    "code": "MK-815",
+    "name": "Čair",
+    "category": null
+  },
+  {
+    "code": "MK-109",
+    "name": "Čaška",
+    "category": null
+  },
+  {
+    "code": "MK-210",
+    "name": "Češinovo-Obleševo",
+    "category": null
+  },
+  {
+    "code": "MK-816",
+    "name": "Čučer-Sandevo",
+    "category": null
+  },
+  {
+    "code": "MK-303",
+    "name": "Debar",
+    "category": null
+  },
+  {
+    "code": "MK-304",
+    "name": "Debarca",
+    "category": null
+  },
+  {
+    "code": "MK-203",
+    "name": "Delčevo",
+    "category": null
+  },
+  {
+    "code": "MK-502",
+    "name": "Demir Hisar",
+    "category": null
+  },
+  {
+    "code": "MK-103",
+    "name": "Demir Kapija",
+    "category": null
+  },
+  {
+    "code": "MK-406",
+    "name": "Dojran",
+    "category": null
+  },
+  {
+    "code": "MK-503",
+    "name": "Dolneni",
+    "category": null
+  },
+  {
+    "code": "MK-804",
+    "name": "Gazi Baba",
+    "category": null
+  },
+  {
+    "code": "MK-405",
+    "name": "Gevgelija",
+    "category": null
+  },
+  {
+    "code": "MK-805",
+    "name": "Gjorče Petrov",
+    "category": null
+  },
+  {
+    "code": "MK-604",
+    "name": "Gostivar",
+    "category": null
+  },
+  {
+    "code": "MK-102",
+    "name": "Gradsko",
+    "category": null
+  },
+  {
+    "code": "MK-807",
+    "name": "Ilinden",
+    "category": null
+  },
+  {
+    "code": "MK-606",
+    "name": "Jegunovce",
+    "category": null
+  },
+  {
+    "code": "MK-205",
+    "name": "Karbinci",
+    "category": null
+  },
+  {
+    "code": "MK-808",
+    "name": "Karpoš",
+    "category": null
+  },
+  {
+    "code": "MK-104",
+    "name": "Kavadarci",
+    "category": null
+  },
+  {
+    "code": "MK-307",
+    "name": "Kičevo",
+    "category": null
+  },
+  {
+    "code": "MK-809",
+    "name": "Kisela Voda",
+    "category": null
+  },
+  {
+    "code": "MK-206",
+    "name": "Kočani",
+    "category": null
+  },
+  {
+    "code": "MK-407",
+    "name": "Konče",
+    "category": null
+  },
+  {
+    "code": "MK-701",
+    "name": "Kratovo",
+    "category": null
+  },
+  {
+    "code": "MK-702",
+    "name": "Kriva Palanka",
+    "category": null
+  },
+  {
+    "code": "MK-504",
+    "name": "Krivogaštani",
+    "category": null
+  },
+  {
+    "code": "MK-505",
+    "name": "Kruševo",
+    "category": null
+  },
+  {
+    "code": "MK-703",
+    "name": "Kumanovo",
+    "category": null
+  },
+  {
+    "code": "MK-704",
+    "name": "Lipkovo",
+    "category": null
+  },
+  {
+    "code": "MK-105",
+    "name": "Lozovo",
+    "category": null
+  },
+  {
+    "code": "MK-207",
+    "name": "Makedonska Kamenica",
+    "category": null
+  },
+  {
+    "code": "MK-308",
+    "name": "Makedonski Brod",
+    "category": null
+  },
+  {
+    "code": "MK-607",
+    "name": "Mavrovo i Rostuše",
+    "category": null
+  },
+  {
+    "code": "MK-506",
+    "name": "Mogila",
+    "category": null
+  },
+  {
+    "code": "MK-106",
+    "name": "Negotino",
+    "category": null
+  },
+  {
+    "code": "MK-507",
+    "name": "Novaci",
+    "category": null
+  },
+  {
+    "code": "MK-408",
+    "name": "Novo Selo",
+    "category": null
+  },
+  {
+    "code": "MK-310",
+    "name": "Ohrid",
+    "category": null
+  },
+  {
+    "code": "MK-208",
+    "name": "Pehčevo",
+    "category": null
+  },
+  {
+    "code": "MK-810",
+    "name": "Petrovec",
+    "category": null
+  },
+  {
+    "code": "MK-311",
+    "name": "Plasnica",
+    "category": null
+  },
+  {
+    "code": "MK-508",
+    "name": "Prilep",
+    "category": null
+  },
+  {
+    "code": "MK-209",
+    "name": "Probištip",
+    "category": null
+  },
+  {
+    "code": "MK-409",
+    "name": "Radoviš",
+    "category": null
+  },
+  {
+    "code": "MK-705",
+    "name": "Rankovce",
+    "category": null
+  },
+  {
+    "code": "MK-509",
+    "name": "Resen",
+    "category": null
+  },
+  {
+    "code": "MK-107",
+    "name": "Rosoman",
+    "category": null
+  },
+  {
+    "code": "MK-811",
+    "name": "Saraj",
+    "category": null
+  },
+  {
+    "code": "MK-812",
+    "name": "Sopište",
+    "category": null
+  },
+  {
+    "code": "MK-706",
+    "name": "Staro Nagoričane",
+    "category": null
+  },
+  {
+    "code": "MK-312",
+    "name": "Struga",
+    "category": null
+  },
+  {
+    "code": "MK-410",
+    "name": "Strumica",
+    "category": null
+  },
+  {
+    "code": "MK-813",
+    "name": "Studeničani",
+    "category": null
+  },
+  {
+    "code": "MK-108",
+    "name": "Sveti Nikole",
+    "category": null
+  },
+  {
+    "code": "MK-211",
+    "name": "Štip",
+    "category": null
+  },
+  {
+    "code": "MK-817",
+    "name": "Šuto Orizari",
+    "category": null
+  },
+  {
+    "code": "MK-608",
+    "name": "Tearce",
+    "category": null
+  },
+  {
+    "code": "MK-609",
+    "name": "Tetovo",
+    "category": null
+  },
+  {
+    "code": "MK-403",
+    "name": "Valandovo",
+    "category": null
+  },
+  {
+    "code": "MK-404",
+    "name": "Vasilevo",
+    "category": null
+  },
+  {
+    "code": "MK-101",
+    "name": "Veles",
+    "category": null
+  },
+  {
+    "code": "MK-301",
+    "name": "Vevčani",
+    "category": null
+  },
+  {
+    "code": "MK-202",
+    "name": "Vinica",
+    "category": null
+  },
+  {
+    "code": "MK-603",
+    "name": "Vrapčište",
+    "category": null
+  },
+  {
+    "code": "MK-806",
+    "name": "Zelenikovo",
+    "category": null
+  },
+  {
+    "code": "MK-204",
+    "name": "Zrnovci",
+    "category": null
+  },
+  {
+    "code": "MK-605",
+    "name": "Želino",
+    "category": null
+  }
+]

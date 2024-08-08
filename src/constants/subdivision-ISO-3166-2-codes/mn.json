@@ -1,0 +1,112 @@
+[
+  {
+    "code": "MN-1",
+    "name": "Ulaanbaatar",
+    "category": "capital city"
+  },
+  {
+    "code": "MN-073",
+    "name": "Arhangay",
+    "category": "province"
+  },
+  {
+    "code": "MN-069",
+    "name": "Bayanhongor",
+    "category": "province"
+  },
+  {
+    "code": "MN-071",
+    "name": "Bayan-Ölgiy",
+    "category": "province"
+  },
+  {
+    "code": "MN-067",
+    "name": "Bulgan",
+    "category": "province"
+  },
+  {
+    "code": "MN-037",
+    "name": "Darhan uul",
+    "category": "province"
+  },
+  {
+    "code": "MN-061",
+    "name": "Dornod",
+    "category": "province"
+  },
+  {
+    "code": "MN-063",
+    "name": "Dornogovĭ",
+    "category": "province"
+  },
+  {
+    "code": "MN-059",
+    "name": "Dundgovĭ",
+    "category": "province"
+  },
+  {
+    "code": "MN-057",
+    "name": "Dzavhan",
+    "category": "province"
+  },
+  {
+    "code": "MN-065",
+    "name": "Govĭ-Altay",
+    "category": "province"
+  },
+  {
+    "code": "MN-064",
+    "name": "Govĭ-Sümber",
+    "category": "province"
+  },
+  {
+    "code": "MN-039",
+    "name": "Hentiy",
+    "category": "province"
+  },
+  {
+    "code": "MN-043",
+    "name": "Hovd",
+    "category": "province"
+  },
+  {
+    "code": "MN-041",
+    "name": "Hövsgöl",
+    "category": "province"
+  },
+  {
+    "code": "MN-053",
+    "name": "Ömnögovĭ",
+    "category": "province"
+  },
+  {
+    "code": "MN-035",
+    "name": "Orhon",
+    "category": "province"
+  },
+  {
+    "code": "MN-055",
+    "name": "Övörhangay",
+    "category": "province"
+  },
+  {
+    "code": "MN-049",
+    "name": "Selenge",
+    "category": "province"
+  },
+  {
+    "code": "MN-051",
+    "name": "Sühbaatar",
+    "category": "province"
+  },
+  {
+    "code": "MN-047",
+    "name": "Töv",
+    "category": "province"
+  },
+  {
+    "code": "MN-046",
+    "name": "Uvs",
+    "category": "province"
+  }
+]

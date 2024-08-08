@@ -1,0 +1,132 @@
+[
+  {
+    "code": "CH-AG",
+    "name": "Aargau",
+    "category": null
+  },
+  {
+    "code": "CH-AR",
+    "name": "Appenzell Ausserrhoden",
+    "category": null
+  },
+  {
+    "code": "CH-AI",
+    "name": "Appenzell Innerrhoden",
+    "category": null
+  },
+  {
+    "code": "CH-BL",
+    "name": "Basel-Landschaft",
+    "category": null
+  },
+  {
+    "code": "CH-BS",
+    "name": "Basel-Stadt",
+    "category": null
+  },
+  {
+    "code": "CH-BE",
+    "name": "Bern , Berne",
+    "category": null
+  },
+  {
+    "code": "CH-FR",
+    "name": "Fribourg , Freiburg",
+    "category": null
+  },
+  {
+    "code": "CH-GE",
+    "name": "Genève",
+    "category": null
+  },
+  {
+    "code": "CH-GL",
+    "name": "Glarus",
+    "category": null
+  },
+  {
+    "code": "CH-GR",
+    "name": "Graubünden , Grigioni , Grischun , Grisons",
+    "category": null
+  },
+  {
+    "code": "CH-JU",
+    "name": "Jura",
+    "category": null
+  },
+  {
+    "code": "CH-LU",
+    "name": "Luzern",
+    "category": null
+  },
+  {
+    "code": "CH-NE",
+    "name": "Neuchâtel",
+    "category": null
+  },
+  {
+    "code": "CH-NW",
+    "name": "Nidwalden",
+    "category": null
+  },
+  {
+    "code": "CH-OW",
+    "name": "Obwalden",
+    "category": null
+  },
+  {
+    "code": "CH-SG",
+    "name": "Sankt Gallen",
+    "category": null
+  },
+  {
+    "code": "CH-SH",
+    "name": "Schaffhausen",
+    "category": null
+  },
+  {
+    "code": "CH-SZ",
+    "name": "Schwyz",
+    "category": null
+  },
+  {
+    "code": "CH-SO",
+    "name": "Solothurn",
+    "category": null
+  },
+  {
+    "code": "CH-TG",
+    "name": "Thurgau",
+    "category": null
+  },
+  {
+    "code": "CH-TI",
+    "name": "Ticino",
+    "category": null
+  },
+  {
+    "code": "CH-UR",
+    "name": "Uri",
+    "category": null
+  },
+  {
+    "code": "CH-VS",
+    "name": "Valais , Wallis",
+    "category": null
+  },
+  {
+    "code": "CH-VD",
+    "name": "Vaud",
+    "category": null
+  },
+  {
+    "code": "CH-ZG",
+    "name": "Zug",
+    "category": null
+  },
+  {
+    "code": "CH-ZH",
+    "name": "Zürich",
+    "category": null
+  }
+]

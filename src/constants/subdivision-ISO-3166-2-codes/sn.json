@@ -1,0 +1,72 @@
+[
+  {
+    "code": "SN-DK",
+    "name": "Dakar",
+    "category": null
+  },
+  {
+    "code": "SN-DB",
+    "name": "Diourbel",
+    "category": null
+  },
+  {
+    "code": "SN-FK",
+    "name": "Fatick",
+    "category": null
+  },
+  {
+    "code": "SN-KA",
+    "name": "Kaffrine",
+    "category": null
+  },
+  {
+    "code": "SN-KL",
+    "name": "Kaolack",
+    "category": null
+  },
+  {
+    "code": "SN-KE",
+    "name": "Kédougou",
+    "category": null
+  },
+  {
+    "code": "SN-KD",
+    "name": "Kolda",
+    "category": null
+  },
+  {
+    "code": "SN-LG",
+    "name": "Louga",
+    "category": null
+  },
+  {
+    "code": "SN-MT",
+    "name": "Matam",
+    "category": null
+  },
+  {
+    "code": "SN-SL",
+    "name": "Saint-Louis",
+    "category": null
+  },
+  {
+    "code": "SN-SE",
+    "name": "Sédhiou",
+    "category": null
+  },
+  {
+    "code": "SN-TC",
+    "name": "Tambacounda",
+    "category": null
+  },
+  {
+    "code": "SN-TH",
+    "name": "Thiès",
+    "category": null
+  },
+  {
+    "code": "SN-ZG",
+    "name": "Ziguinchor",
+    "category": null
+  }
+]

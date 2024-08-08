@@ -1,0 +1,67 @@
+[
+  {
+    "code": "PA-1",
+    "name": "Bocas del Toro",
+    "category": "province"
+  },
+  {
+    "code": "PA-4",
+    "name": "Chiriquí",
+    "category": "province"
+  },
+  {
+    "code": "PA-2",
+    "name": "Coclé",
+    "category": "province"
+  },
+  {
+    "code": "PA-3",
+    "name": "Colón",
+    "category": "province"
+  },
+  {
+    "code": "PA-5",
+    "name": "Darién",
+    "category": "province"
+  },
+  {
+    "code": "PA-EM",
+    "name": "Emberá",
+    "category": "indigenous region"
+  },
+  {
+    "code": "PA-KY",
+    "name": "Guna Yala(local variant is Kuna Yala)",
+    "category": "indigenous region"
+  },
+  {
+    "code": "PA-6",
+    "name": "Herrera",
+    "category": "province"
+  },
+  {
+    "code": "PA-7",
+    "name": "Los Santos",
+    "category": "province"
+  },
+  {
+    "code": "PA-NB",
+    "name": "Ngöbe-Buglénote 1",
+    "category": "indigenous region"
+  },
+  {
+    "code": "PA-8",
+    "name": "Panamá",
+    "category": "province"
+  },
+  {
+    "code": "PA-10",
+    "name": "Panamá Oeste",
+    "category": "province"
+  },
+  {
+    "code": "PA-9",
+    "name": "Veraguas",
+    "category": "province"
+  }
+]

@@ -1,0 +1,347 @@
+[
+  {
+    "code": "ES-AN",
+    "name": "Andalusia",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-AR",
+    "name": "Aragon",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-AS",
+    "name": "Principality of Asturias",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CN",
+    "name": "Canary Islands",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CB",
+    "name": "Cantabria",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CL",
+    "name": "Castile and León",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CM",
+    "name": "Castile-La Mancha",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CT",
+    "name": "Catalonia",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-CE",
+    "name": "Ceuta",
+    "category": "autonomous city in North Africa"
+  },
+  {
+    "code": "ES-EX",
+    "name": "Extremadura",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-GA",
+    "name": "Galicia",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-IB",
+    "name": "Balearic Islands",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-RI",
+    "name": "La Rioja",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-MD",
+    "name": "Community of Madrid",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-ML",
+    "name": "Melilla",
+    "category": "autonomous city in North Africa"
+  },
+  {
+    "code": "ES-MC",
+    "name": "Region of Murcia",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-NC",
+    "name": "Chartered Community of Navarre",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-PV",
+    "name": "Basque Country",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-VC",
+    "name": "Valencian Community",
+    "category": "autonomous community"
+  },
+  {
+    "code": "ES-C",
+    "name": "A Coruña  [La Coruña]",
+    "category": null
+  },
+  {
+    "code": "ES-VI",
+    "name": "ÁlavaAraba",
+    "category": null
+  },
+  {
+    "code": "ES-AB",
+    "name": "Albacete",
+    "category": null
+  },
+  {
+    "code": "ES-A",
+    "name": "AlicanteAlacant",
+    "category": null
+  },
+  {
+    "code": "ES-AL",
+    "name": "Almería",
+    "category": null
+  },
+  {
+    "code": "ES-O",
+    "name": "Asturias",
+    "category": null
+  },
+  {
+    "code": "ES-AV",
+    "name": "Ávila",
+    "category": null
+  },
+  {
+    "code": "ES-BA",
+    "name": "Badajoz",
+    "category": null
+  },
+  {
+    "code": "ES-PM",
+    "name": "Balears  [Baleares]",
+    "category": null
+  },
+  {
+    "code": "ES-B",
+    "name": "Barcelona  [Barcelona]",
+    "category": null
+  },
+  {
+    "code": "ES-BI",
+    "name": "Bizkaia",
+    "category": null
+  },
+  {
+    "code": "ES-BU",
+    "name": "Burgos",
+    "category": null
+  },
+  {
+    "code": "ES-CC",
+    "name": "Cáceres",
+    "category": null
+  },
+  {
+    "code": "ES-CA",
+    "name": "Cádiz",
+    "category": null
+  },
+  {
+    "code": "ES-S",
+    "name": "Cantabria",
+    "category": null
+  },
+  {
+    "code": "ES-CS",
+    "name": "CastellónCastelló",
+    "category": null
+  },
+  {
+    "code": "ES-CR",
+    "name": "Ciudad Real",
+    "category": null
+  },
+  {
+    "code": "ES-CO",
+    "name": "Córdoba",
+    "category": null
+  },
+  {
+    "code": "ES-CU",
+    "name": "Cuenca",
+    "category": null
+  },
+  {
+    "code": "ES-SS",
+    "name": "Gipuzkoa",
+    "category": null
+  },
+  {
+    "code": "ES-GI",
+    "name": "Girona  [Gerona]",
+    "category": null
+  },
+  {
+    "code": "ES-GR",
+    "name": "Granada",
+    "category": null
+  },
+  {
+    "code": "ES-GU",
+    "name": "Guadalajara",
+    "category": null
+  },
+  {
+    "code": "ES-H",
+    "name": "Huelva",
+    "category": null
+  },
+  {
+    "code": "ES-HU",
+    "name": "Huesca",
+    "category": null
+  },
+  {
+    "code": "ES-J",
+    "name": "Jaén",
+    "category": null
+  },
+  {
+    "code": "ES-LO",
+    "name": "La Rioja",
+    "category": null
+  },
+  {
+    "code": "ES-GC",
+    "name": "Las Palmas",
+    "category": null
+  },
+  {
+    "code": "ES-LE",
+    "name": "León",
+    "category": null
+  },
+  {
+    "code": "ES-L",
+    "name": "Lleida  [Lérida]",
+    "category": null
+  },
+  {
+    "code": "ES-LU",
+    "name": "Lugo  [Lugo]",
+    "category": null
+  },
+  {
+    "code": "ES-M",
+    "name": "Madrid",
+    "category": null
+  },
+  {
+    "code": "ES-MA",
+    "name": "Málaga",
+    "category": null
+  },
+  {
+    "code": "ES-MU",
+    "name": "Murcia",
+    "category": null
+  },
+  {
+    "code": "ES-NA",
+    "name": "NavarraNafarroa",
+    "category": null
+  },
+  {
+    "code": "ES-OR",
+    "name": "Ourense  [Orense]",
+    "category": null
+  },
+  {
+    "code": "ES-P",
+    "name": "Palencia",
+    "category": null
+  },
+  {
+    "code": "ES-PO",
+    "name": "Pontevedra  [Pontevedra]",
+    "category": null
+  },
+  {
+    "code": "ES-SA",
+    "name": "Salamanca",
+    "category": null
+  },
+  {
+    "code": "ES-TF",
+    "name": "Santa Cruz de Tenerife",
+    "category": null
+  },
+  {
+    "code": "ES-SG",
+    "name": "Segovia",
+    "category": null
+  },
+  {
+    "code": "ES-SE",
+    "name": "Sevilla",
+    "category": null
+  },
+  {
+    "code": "ES-SO",
+    "name": "Soria",
+    "category": null
+  },
+  {
+    "code": "ES-T",
+    "name": "Tarragona  [Tarragona]",
+    "category": null
+  },
+  {
+    "code": "ES-TE",
+    "name": "Teruel",
+    "category": null
+  },
+  {
+    "code": "ES-TO",
+    "name": "Toledo",
+    "category": null
+  },
+  {
+    "code": "ES-V",
+    "name": "ValenciaValència",
+    "category": null
+  },
+  {
+    "code": "ES-VA",
+    "name": "Valladolid",
+    "category": null
+  },
+  {
+    "code": "ES-ZA",
+    "name": "Zamora",
+    "category": null
+  },
+  {
+    "code": "ES-Z",
+    "name": "Zaragoza",
+    "category": null
+  }
+]

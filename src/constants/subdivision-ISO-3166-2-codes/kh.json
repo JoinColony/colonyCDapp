@@ -1,0 +1,127 @@
+[
+  {
+    "code": "KH-12",
+    "name": "Phnom Penh",
+    "category": "autonomous municipality"
+  },
+  {
+    "code": "KH-2",
+    "name": "Baat Dambang",
+    "category": "province"
+  },
+  {
+    "code": "KH-1",
+    "name": "Banteay Mean Chey",
+    "category": "province"
+  },
+  {
+    "code": "KH-3",
+    "name": "Kampong Chaam",
+    "category": "province"
+  },
+  {
+    "code": "KH-4",
+    "name": "Kampong Chhnang",
+    "category": "province"
+  },
+  {
+    "code": "KH-5",
+    "name": "Kampong Spueu",
+    "category": "province"
+  },
+  {
+    "code": "KH-6",
+    "name": "Kampong Thum",
+    "category": "province"
+  },
+  {
+    "code": "KH-7",
+    "name": "Kampot",
+    "category": "province"
+  },
+  {
+    "code": "KH-8",
+    "name": "Kandaal",
+    "category": "province"
+  },
+  {
+    "code": "KH-9",
+    "name": "Kaoh Kong",
+    "category": "province"
+  },
+  {
+    "code": "KH-10",
+    "name": "Kracheh",
+    "category": "province"
+  },
+  {
+    "code": "KH-23",
+    "name": "Kaeb",
+    "category": "province"
+  },
+  {
+    "code": "KH-24",
+    "name": "Pailin",
+    "category": "province"
+  },
+  {
+    "code": "KH-18",
+    "name": "Preah Sihanouk",
+    "category": "province"
+  },
+  {
+    "code": "KH-11",
+    "name": "Mondol Kiri",
+    "category": "province"
+  },
+  {
+    "code": "KH-22",
+    "name": "Otdar Mean Chey",
+    "category": "province"
+  },
+  {
+    "code": "KH-15",
+    "name": "Pousaat",
+    "category": "province"
+  },
+  {
+    "code": "KH-13",
+    "name": "Preah Vihear",
+    "category": "province"
+  },
+  {
+    "code": "KH-14",
+    "name": "Prey Veaeng",
+    "category": "province"
+  },
+  {
+    "code": "KH-16",
+    "name": "Rotanak Kiri",
+    "category": "province"
+  },
+  {
+    "code": "KH-17",
+    "name": "Siem Reab",
+    "category": "province"
+  },
+  {
+    "code": "KH-19",
+    "name": "Stueng Traeng",
+    "category": "province"
+  },
+  {
+    "code": "KH-20",
+    "name": "Svaay Rieng",
+    "category": "province"
+  },
+  {
+    "code": "KH-21",
+    "name": "Taakaev",
+    "category": "province"
+  },
+  {
+    "code": "KH-25",
+    "name": "Tbong Khmum",
+    "category": "province"
+  }
+]

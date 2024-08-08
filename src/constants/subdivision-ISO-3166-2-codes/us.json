@@ -1,0 +1,317 @@
+[
+  {
+    "code": "US-AL",
+    "name": "Alabama",
+    "category": "state"
+  },
+  {
+    "code": "US-AK",
+    "name": "Alaska",
+    "category": "state"
+  },
+  {
+    "code": "US-AZ",
+    "name": "Arizona",
+    "category": "state"
+  },
+  {
+    "code": "US-AR",
+    "name": "Arkansas",
+    "category": "state"
+  },
+  {
+    "code": "US-CA",
+    "name": "California",
+    "category": "state"
+  },
+  {
+    "code": "US-CO",
+    "name": "Colorado",
+    "category": "state"
+  },
+  {
+    "code": "US-CT",
+    "name": "Connecticut",
+    "category": "state"
+  },
+  {
+    "code": "US-DE",
+    "name": "Delaware",
+    "category": "state"
+  },
+  {
+    "code": "US-FL",
+    "name": "Florida",
+    "category": "state"
+  },
+  {
+    "code": "US-GA",
+    "name": "Georgia",
+    "category": "state"
+  },
+  {
+    "code": "US-HI",
+    "name": "Hawaii",
+    "category": "state"
+  },
+  {
+    "code": "US-ID",
+    "name": "Idaho",
+    "category": "state"
+  },
+  {
+    "code": "US-IL",
+    "name": "Illinois",
+    "category": "state"
+  },
+  {
+    "code": "US-IN",
+    "name": "Indiana",
+    "category": "state"
+  },
+  {
+    "code": "US-IA",
+    "name": "Iowa",
+    "category": "state"
+  },
+  {
+    "code": "US-KS",
+    "name": "Kansas",
+    "category": "state"
+  },
+  {
+    "code": "US-KY",
+    "name": "Kentucky",
+    "category": "state"
+  },
+  {
+    "code": "US-LA",
+    "name": "Louisiana",
+    "category": "state"
+  },
+  {
+    "code": "US-ME",
+    "name": "Maine",
+    "category": "state"
+  },
+  {
+    "code": "US-MD",
+    "name": "Maryland",
+    "category": "state"
+  },
+  {
+    "code": "US-MA",
+    "name": "Massachusetts",
+    "category": "state"
+  },
+  {
+    "code": "US-MI",
+    "name": "Michigan",
+    "category": "state"
+  },
+  {
+    "code": "US-MN",
+    "name": "Minnesota",
+    "category": "state"
+  },
+  {
+    "code": "US-MS",
+    "name": "Mississippi",
+    "category": "state"
+  },
+  {
+    "code": "US-MO",
+    "name": "Missouri",
+    "category": "state"
+  },
+  {
+    "code": "US-MT",
+    "name": "Montana",
+    "category": "state"
+  },
+  {
+    "code": "US-NE",
+    "name": "Nebraska",
+    "category": "state"
+  },
+  {
+    "code": "US-NV",
+    "name": "Nevada",
+    "category": "state"
+  },
+  {
+    "code": "US-NH",
+    "name": "New Hampshire",
+    "category": "state"
+  },
+  {
+    "code": "US-NJ",
+    "name": "New Jersey",
+    "category": "state"
+  },
+  {
+    "code": "US-NM",
+    "name": "New Mexico",
+    "category": "state"
+  },
+  {
+    "code": "US-NY",
+    "name": "New York",
+    "category": "state"
+  },
+  {
+    "code": "US-NC",
+    "name": "North Carolina",
+    "category": "state"
+  },
+  {
+    "code": "US-ND",
+    "name": "North Dakota",
+    "category": "state"
+  },
+  {
+    "code": "US-OH",
+    "name": "Ohio",
+    "category": "state"
+  },
+  {
+    "code": "US-OK",
+    "name": "Oklahoma",
+    "category": "state"
+  },
+  {
+    "code": "US-OR",
+    "name": "Oregon",
+    "category": "state"
+  },
+  {
+    "code": "US-PA",
+    "name": "Pennsylvania",
+    "category": "state"
+  },
+  {
+    "code": "US-RI",
+    "name": "Rhode Island",
+    "category": "state"
+  },
+  {
+    "code": "US-SC",
+    "name": "South Carolina",
+    "category": "state"
+  },
+  {
+    "code": "US-SD",
+    "name": "South Dakota",
+    "category": "state"
+  },
+  {
+    "code": "US-TN",
+    "name": "Tennessee",
+    "category": "state"
+  },
+  {
+    "code": "US-TX",
+    "name": "Texas",
+    "category": "state"
+  },
+  {
+    "code": "US-UT",
+    "name": "Utah",
+    "category": "state"
+  },
+  {
+    "code": "US-VT",
+    "name": "Vermont",
+    "category": "state"
+  },
+  {
+    "code": "US-VA",
+    "name": "Virginia",
+    "category": "state"
+  },
+  {
+    "code": "US-WA",
+    "name": "Washington",
+    "category": "state"
+  },
+  {
+    "code": "US-WV",
+    "name": "West Virginia",
+    "category": "state"
+  },
+  {
+    "code": "US-WI",
+    "name": "Wisconsin",
+    "category": "state"
+  },
+  {
+    "code": "US-WY",
+    "name": "Wyoming",
+    "category": "state"
+  },
+  {
+    "code": "US-DC",
+    "name": "District of Columbia",
+    "category": "district"
+  },
+  {
+    "code": "US-AS",
+    "name": "American Samoa",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-GU",
+    "name": "Guam",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-MP",
+    "name": "Northern Mariana Islands",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-PR",
+    "name": "Puerto Rico",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-UM",
+    "name": "United States Minor Outlying Islands",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-VI",
+    "name": "Virgin Islands, U.S.",
+    "category": "outlying area"
+  },
+  {
+    "code": "US-AS",
+    "name": "American Samoa",
+    "category": null
+  },
+  {
+    "code": "US-GU",
+    "name": "Guam",
+    "category": null
+  },
+  {
+    "code": "US-MP",
+    "name": "Northern Mariana Islands",
+    "category": null
+  },
+  {
+    "code": "US-PR",
+    "name": "Puerto Rico",
+    "category": null
+  },
+  {
+    "code": "US-UM",
+    "name": "United States Minor Outlying Islands",
+    "category": null
+  },
+  {
+    "code": "US-VI",
+    "name": "Virgin Islands, U.S.",
+    "category": null
+  }
+]

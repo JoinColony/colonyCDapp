@@ -1,0 +1,27 @@
+[
+  {
+    "code": "GL-AV",
+    "name": "Avannaata Kommunia",
+    "category": null
+  },
+  {
+    "code": "GL-KU",
+    "name": "Kommune Kujalleq",
+    "category": null
+  },
+  {
+    "code": "GL-QT",
+    "name": "Kommune Qeqertalik",
+    "category": null
+  },
+  {
+    "code": "GL-SM",
+    "name": "Kommuneqarfik Sermersooq",
+    "category": null
+  },
+  {
+    "code": "GL-QE",
+    "name": "Qeqqata Kommunia",
+    "category": null
+  }
+]

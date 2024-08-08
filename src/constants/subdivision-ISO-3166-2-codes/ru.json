@@ -1,0 +1,417 @@
+[
+  {
+    "code": "RU-AD",
+    "name": "Adygeya, Respublika",
+    "category": "Adygeja, Respublika"
+  },
+  {
+    "code": "RU-AL",
+    "name": "Altay, Respublika",
+    "category": "Altaj, Respublika"
+  },
+  {
+    "code": "RU-BA",
+    "name": "Bashkortostan, Respublika",
+    "category": "Baškortostan, Respublika"
+  },
+  {
+    "code": "RU-BU",
+    "name": "Buryatiya, Respublika",
+    "category": "Burjatija, Respublika"
+  },
+  {
+    "code": "RU-CE",
+    "name": "Chechenskaya Respublika",
+    "category": "Čečenskaja Respublika"
+  },
+  {
+    "code": "RU-CU",
+    "name": "Chuvashskaya Respublika",
+    "category": "Čuvašskaja Respublika"
+  },
+  {
+    "code": "RU-DA",
+    "name": "Dagestan, Respublika",
+    "category": "Dagestan, Respublika"
+  },
+  {
+    "code": "RU-IN",
+    "name": "Ingushetiya, Respublika",
+    "category": "Ingušetija, Respublika"
+  },
+  {
+    "code": "RU-KB",
+    "name": "Kabardino-Balkarskaya Respublika",
+    "category": "Kabardino-Balkarskaja Respublika"
+  },
+  {
+    "code": "RU-KL",
+    "name": "Kalmykiya, Respublika",
+    "category": "Kalmykija, Respublika"
+  },
+  {
+    "code": "RU-KC",
+    "name": "Karachayevo-Cherkesskaya Respublika",
+    "category": "Karačaevo-Čerkesskaja Respublika"
+  },
+  {
+    "code": "RU-KR",
+    "name": "Kareliya, Respublika",
+    "category": "Karelija, Respublika"
+  },
+  {
+    "code": "RU-KK",
+    "name": "Khakasiya, Respublika",
+    "category": "Hakasija, Respublika"
+  },
+  {
+    "code": "RU-KO",
+    "name": "Komi, Respublika",
+    "category": "Komi, Respublika"
+  },
+  {
+    "code": "RU-ME",
+    "name": "Mariy El, Respublika",
+    "category": "Marij Èl, Respublika"
+  },
+  {
+    "code": "RU-MO",
+    "name": "Mordoviya, Respublika",
+    "category": "Mordovija, Respublika"
+  },
+  {
+    "code": "RU-SA",
+    "name": "Saha, Respublika",
+    "category": "Sakha, Respublika(local variant is Yakutiya)"
+  },
+  {
+    "code": "RU-SE",
+    "name": "Severnaya Osetiya, Respublika(local variant is Alaniya [Respublika Severnaya Osetiya Alaniya])",
+    "category": "Severnaja Osetija, Respublika(local variant is Alanija [Respublika Severnaja Osetija-Alanija])"
+  },
+  {
+    "code": "RU-TA",
+    "name": "Tatarstan, Respublika",
+    "category": "Tatarstan, Respublika"
+  },
+  {
+    "code": "RU-TY",
+    "name": "Tyva, Respublika",
+    "category": "Tyva, Respublika(local variant is Tuva)"
+  },
+  {
+    "code": "RU-UD",
+    "name": "Udmurtskaya Respublika",
+    "category": "Udmurtskaja Respublika"
+  },
+  {
+    "code": "RU-ALT",
+    "name": "Altayskiy kray",
+    "category": "Altajskij kraj"
+  },
+  {
+    "code": "RU-KAM",
+    "name": "Kamchatskiy kray",
+    "category": "Kamčatskij kraj"
+  },
+  {
+    "code": "RU-KHA",
+    "name": "Khabarovskiy kray",
+    "category": "Habarovskij kraj"
+  },
+  {
+    "code": "RU-KDA",
+    "name": "Krasnodarskiy kray",
+    "category": "Krasnodarskij kraj"
+  },
+  {
+    "code": "RU-KYA",
+    "name": "Krasnoyarskiy kray",
+    "category": "Krasnojarskij kraj"
+  },
+  {
+    "code": "RU-PER",
+    "name": "Permskiy kray",
+    "category": "Permskij kraj"
+  },
+  {
+    "code": "RU-PRI",
+    "name": "Primorskiy kray",
+    "category": "Primorskij kraj"
+  },
+  {
+    "code": "RU-STA",
+    "name": "Stavropol'skiy kray",
+    "category": "Stavropol'skij kraj"
+  },
+  {
+    "code": "RU-ZAB",
+    "name": "Zabaykal'skiy kray",
+    "category": "Zabajkal'skij kraj"
+  },
+  {
+    "code": "RU-AMU",
+    "name": "Amurskaya oblast'",
+    "category": "Amurskaja oblast'"
+  },
+  {
+    "code": "RU-ARK",
+    "name": "Arkhangel'skaya oblast'",
+    "category": "Arhangel'skaja oblast'"
+  },
+  {
+    "code": "RU-AST",
+    "name": "Astrakhanskaya oblast'",
+    "category": "Astrahanskaja oblast'"
+  },
+  {
+    "code": "RU-BEL",
+    "name": "Belgorodskaya oblast'",
+    "category": "Belgorodskaja oblast'"
+  },
+  {
+    "code": "RU-BRY",
+    "name": "Bryanskaya oblast'",
+    "category": "Brjanskaja oblast'"
+  },
+  {
+    "code": "RU-CHE",
+    "name": "Chelyabinskaya oblast'",
+    "category": "Čeljabinskaja oblast'"
+  },
+  {
+    "code": "RU-IRK",
+    "name": "Irkutskaya oblast'",
+    "category": "Irkutskaja oblast'"
+  },
+  {
+    "code": "RU-IVA",
+    "name": "Ivanovskaya oblast'",
+    "category": "Ivanovskaja oblast'"
+  },
+  {
+    "code": "RU-KGD",
+    "name": "Kaliningradskaya oblast'",
+    "category": "Kaliningradskaja oblast'"
+  },
+  {
+    "code": "RU-KLU",
+    "name": "Kaluzhskaya oblast'",
+    "category": "Kalužskaja oblast'"
+  },
+  {
+    "code": "RU-KEM",
+    "name": "Kemerovskaya oblast'",
+    "category": "Kemerovskaja oblast'"
+  },
+  {
+    "code": "RU-KIR",
+    "name": "Kirovskaya oblast'",
+    "category": "Kirovskaja oblast'"
+  },
+  {
+    "code": "RU-KOS",
+    "name": "Kostromskaya oblast'",
+    "category": "Kostromskaja oblast'"
+  },
+  {
+    "code": "RU-KGN",
+    "name": "Kurganskaya oblast'",
+    "category": "Kurganskaja oblast'"
+  },
+  {
+    "code": "RU-KRS",
+    "name": "Kurskaya oblast'",
+    "category": "Kurskaja oblast'"
+  },
+  {
+    "code": "RU-LEN",
+    "name": "Leningradskaya oblast'",
+    "category": "Leningradskaja oblast'"
+  },
+  {
+    "code": "RU-LIP",
+    "name": "Lipetskaya oblast'",
+    "category": "Lipeckaja oblast'"
+  },
+  {
+    "code": "RU-MAG",
+    "name": "Magadanskaya oblast'",
+    "category": "Magadanskaja oblast'"
+  },
+  {
+    "code": "RU-MOS",
+    "name": "Moskovskaya oblast'",
+    "category": "Moskovskaja oblast'"
+  },
+  {
+    "code": "RU-MUR",
+    "name": "Murmanskaya oblast'",
+    "category": "Murmanskaja oblast'"
+  },
+  {
+    "code": "RU-NIZ",
+    "name": "Nizhegorodskaya oblast'",
+    "category": "Nižegorodskaja oblast'"
+  },
+  {
+    "code": "RU-NGR",
+    "name": "Novgorodskaya oblast'",
+    "category": "Novgorodskaja oblast'"
+  },
+  {
+    "code": "RU-NVS",
+    "name": "Novosibirskaya oblast'",
+    "category": "Novosibirskaja oblast'"
+  },
+  {
+    "code": "RU-OMS",
+    "name": "Omskaya oblast'",
+    "category": "Omskaja oblast'"
+  },
+  {
+    "code": "RU-ORE",
+    "name": "Orenburgskaya oblast'",
+    "category": "Orenburgskaja oblast'"
+  },
+  {
+    "code": "RU-ORL",
+    "name": "Orlovskaya oblast'",
+    "category": "Orlovskaja oblast'"
+  },
+  {
+    "code": "RU-PNZ",
+    "name": "Penzenskaya oblast'",
+    "category": "Penzenskaja oblast'"
+  },
+  {
+    "code": "RU-PSK",
+    "name": "Pskovskaya oblast'",
+    "category": "Pskovskaja oblast'"
+  },
+  {
+    "code": "RU-ROS",
+    "name": "Rostovskaya oblast'",
+    "category": "Rostovskaja oblast'"
+  },
+  {
+    "code": "RU-RYA",
+    "name": "Ryazanskaya oblast'",
+    "category": "Rjazanskaja oblast'"
+  },
+  {
+    "code": "RU-SAK",
+    "name": "Sakhalinskaya oblast'",
+    "category": "Sahalinskaja oblast'"
+  },
+  {
+    "code": "RU-SAM",
+    "name": "Samarskaya oblast'",
+    "category": "Samarskaja oblast'"
+  },
+  {
+    "code": "RU-SAR",
+    "name": "Saratovskaya oblast'",
+    "category": "Saratovskaja oblast'"
+  },
+  {
+    "code": "RU-SMO",
+    "name": "Smolenskaya oblast'",
+    "category": "Smolenskaja oblast'"
+  },
+  {
+    "code": "RU-SVE",
+    "name": "Sverdlovskaya oblast'",
+    "category": "Sverdlovskaja oblast'"
+  },
+  {
+    "code": "RU-TAM",
+    "name": "Tambovskaya oblast'",
+    "category": "Tambovskaja oblast'"
+  },
+  {
+    "code": "RU-TOM",
+    "name": "Tomskaya oblast'",
+    "category": "Tomskaja oblast'"
+  },
+  {
+    "code": "RU-TUL",
+    "name": "Tul'skaya oblast'",
+    "category": "Tul'skaja oblast'"
+  },
+  {
+    "code": "RU-TVE",
+    "name": "Tverskaya oblast'",
+    "category": "Tverskaja oblast'"
+  },
+  {
+    "code": "RU-TYU",
+    "name": "Tyumenskaya oblast'",
+    "category": "Tjumenskaja oblast'"
+  },
+  {
+    "code": "RU-ULY",
+    "name": "Ul'yanovskaya oblast'",
+    "category": "Ul'janovskaja oblast'"
+  },
+  {
+    "code": "RU-VLA",
+    "name": "Vladimirskaya oblast'",
+    "category": "Vladimirskaja oblast'"
+  },
+  {
+    "code": "RU-VGG",
+    "name": "Volgogradskaya oblast'",
+    "category": "Volgogradskaja oblast'"
+  },
+  {
+    "code": "RU-VLG",
+    "name": "Vologodskaya oblast'",
+    "category": "Vologodskaja oblast'"
+  },
+  {
+    "code": "RU-VOR",
+    "name": "Voronezhskaya oblast'",
+    "category": "Voronežskaja oblast'"
+  },
+  {
+    "code": "RU-YAR",
+    "name": "Yaroslavskaya oblast'",
+    "category": "Jaroslavskaja oblast'"
+  },
+  {
+    "code": "RU-MOW",
+    "name": "Moskva",
+    "category": "Moskva"
+  },
+  {
+    "code": "RU-SPE",
+    "name": "Sankt-Peterburg",
+    "category": "Sankt-Peterburg"
+  },
+  {
+    "code": "RU-YEV",
+    "name": "Yevreyskaya avtonomnaya oblast'",
+    "category": "Evrejskaja avtonomnaja oblast'"
+  },
+  {
+    "code": "RU-CHU",
+    "name": "Chukotskiy avtonomnyy okrug",
+    "category": "Čukotskij avtonomnyj okrug"
+  },
+  {
+    "code": "RU-KHM",
+    "name": "Khanty-Mansiyskiy avtonomnyy okrug",
+    "category": "Hanty-Mansijskij avtonomnyj okrug(local variant is Jugra)"
+  },
+  {
+    "code": "RU-NEN",
+    "name": "Nenetskiy avtonomnyy okrug",
+    "category": "Neneckij avtonomnyj okrug"
+  },
+  {
+    "code": "RU-YAN",
+    "name": "Yamalo-Nenetskiy avtonomnyy okrug",
+    "category": "Jamalo-Neneckij avtonomnyj okrug"
+  }
+]

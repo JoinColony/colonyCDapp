@@ -1,0 +1,17 @@
+[
+  {
+    "code": "BA-BIH",
+    "name": "Federation of Bosnia and Herzegovina",
+    "category": "entity"
+  },
+  {
+    "code": "BA-SRP",
+    "name": "Republika Srpska",
+    "category": "entity"
+  },
+  {
+    "code": "BA-BRC",
+    "name": "Brčko District",
+    "category": "district with special status"
+  }
+]

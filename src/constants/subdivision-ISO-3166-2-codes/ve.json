@@ -1,0 +1,127 @@
+[
+  {
+    "code": "VE-W",
+    "name": "Dependencias Federales",
+    "category": "federal dependency"
+  },
+  {
+    "code": "VE-A",
+    "name": "Distrito Capital",
+    "category": "capital district"
+  },
+  {
+    "code": "VE-Z",
+    "name": "Amazonas",
+    "category": "state"
+  },
+  {
+    "code": "VE-B",
+    "name": "Anzoátegui",
+    "category": "state"
+  },
+  {
+    "code": "VE-C",
+    "name": "Apure",
+    "category": "state"
+  },
+  {
+    "code": "VE-D",
+    "name": "Aragua",
+    "category": "state"
+  },
+  {
+    "code": "VE-E",
+    "name": "Barinas",
+    "category": "state"
+  },
+  {
+    "code": "VE-F",
+    "name": "Bolívar",
+    "category": "state"
+  },
+  {
+    "code": "VE-G",
+    "name": "Carabobo",
+    "category": "state"
+  },
+  {
+    "code": "VE-H",
+    "name": "Cojedes",
+    "category": "state"
+  },
+  {
+    "code": "VE-Y",
+    "name": "Delta Amacuro",
+    "category": "state"
+  },
+  {
+    "code": "VE-I",
+    "name": "Falcón",
+    "category": "state"
+  },
+  {
+    "code": "VE-J",
+    "name": "Guárico",
+    "category": "state"
+  },
+  {
+    "code": "VE-K",
+    "name": "Lara",
+    "category": "state"
+  },
+  {
+    "code": "VE-L",
+    "name": "Mérida",
+    "category": "state"
+  },
+  {
+    "code": "VE-M",
+    "name": "Miranda",
+    "category": "state"
+  },
+  {
+    "code": "VE-N",
+    "name": "Monagas",
+    "category": "state"
+  },
+  {
+    "code": "VE-O",
+    "name": "Nueva Esparta",
+    "category": "state"
+  },
+  {
+    "code": "VE-P",
+    "name": "Portuguesa",
+    "category": "state"
+  },
+  {
+    "code": "VE-R",
+    "name": "Sucre",
+    "category": "state"
+  },
+  {
+    "code": "VE-S",
+    "name": "Táchira",
+    "category": "state"
+  },
+  {
+    "code": "VE-T",
+    "name": "Trujillo",
+    "category": "state"
+  },
+  {
+    "code": "VE-X",
+    "name": "Vargas",
+    "category": "state"
+  },
+  {
+    "code": "VE-U",
+    "name": "Yaracuy",
+    "category": "state"
+  },
+  {
+    "code": "VE-V",
+    "name": "Zulia",
+    "category": "state"
+  }
+]

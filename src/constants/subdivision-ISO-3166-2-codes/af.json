@@ -1,0 +1,172 @@
+[
+  {
+    "code": "AF-BDS",
+    "name": "Badakhshan",
+    "category": null
+  },
+  {
+    "code": "AF-BDG",
+    "name": "Badghis",
+    "category": null
+  },
+  {
+    "code": "AF-BGL",
+    "name": "Baghlan",
+    "category": null
+  },
+  {
+    "code": "AF-BAL",
+    "name": "Balkh",
+    "category": null
+  },
+  {
+    "code": "AF-BAM",
+    "name": "Bamyan",
+    "category": null
+  },
+  {
+    "code": "AF-DAY",
+    "name": "Daykundi",
+    "category": null
+  },
+  {
+    "code": "AF-FRA",
+    "name": "Farah",
+    "category": null
+  },
+  {
+    "code": "AF-FYB",
+    "name": "Faryab",
+    "category": null
+  },
+  {
+    "code": "AF-GHA",
+    "name": "Ghazni",
+    "category": null
+  },
+  {
+    "code": "AF-GHO",
+    "name": "Ghōr",
+    "category": null
+  },
+  {
+    "code": "AF-HEL",
+    "name": "Helmand",
+    "category": null
+  },
+  {
+    "code": "AF-HER",
+    "name": "Herat",
+    "category": null
+  },
+  {
+    "code": "AF-JOW",
+    "name": "Jowzjan",
+    "category": null
+  },
+  {
+    "code": "AF-KAB",
+    "name": "Kabul",
+    "category": null
+  },
+  {
+    "code": "AF-KAN",
+    "name": "Kandahar",
+    "category": null
+  },
+  {
+    "code": "AF-KAP",
+    "name": "Kapisa",
+    "category": null
+  },
+  {
+    "code": "AF-KHO",
+    "name": "Khost",
+    "category": null
+  },
+  {
+    "code": "AF-KNR",
+    "name": "Kunar",
+    "category": null
+  },
+  {
+    "code": "AF-KDZ",
+    "name": "Kunduz",
+    "category": null
+  },
+  {
+    "code": "AF-LAG",
+    "name": "Laghman",
+    "category": null
+  },
+  {
+    "code": "AF-LOG",
+    "name": "Logar",
+    "category": null
+  },
+  {
+    "code": "AF-NAN",
+    "name": "Nangarhar",
+    "category": null
+  },
+  {
+    "code": "AF-NIM",
+    "name": "Nimruz",
+    "category": null
+  },
+  {
+    "code": "AF-NUR",
+    "name": "Nuristan",
+    "category": null
+  },
+  {
+    "code": "AF-PKA",
+    "name": "Paktika",
+    "category": null
+  },
+  {
+    "code": "AF-PIA",
+    "name": "Paktia",
+    "category": null
+  },
+  {
+    "code": "AF-PAN",
+    "name": "Panjshir",
+    "category": null
+  },
+  {
+    "code": "AF-PAR",
+    "name": "Parwan",
+    "category": null
+  },
+  {
+    "code": "AF-SAM",
+    "name": "Samangan",
+    "category": null
+  },
+  {
+    "code": "AF-SAR",
+    "name": "Sar-e Pol",
+    "category": null
+  },
+  {
+    "code": "AF-TAK",
+    "name": "Takhar",
+    "category": null
+  },
+  {
+    "code": "AF-URU",
+    "name": "Urozgan",
+    "category": null
+  },
+  {
+    "code": "AF-WAR",
+    "name": "Maidan Wardak",
+    "category": null
+  },
+  {
+    "code": "AF-ZAB",
+    "name": "Zabul",
+    "category": null
+  }
+]

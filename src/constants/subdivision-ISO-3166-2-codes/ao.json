@@ -1,0 +1,92 @@
+[
+  {
+    "code": "AO-BGO",
+    "name": "Bengo",
+    "category": null
+  },
+  {
+    "code": "AO-BGU",
+    "name": "Benguela",
+    "category": null
+  },
+  {
+    "code": "AO-BIE",
+    "name": "Bié",
+    "category": null
+  },
+  {
+    "code": "AO-CAB",
+    "name": "Cabinda",
+    "category": null
+  },
+  {
+    "code": "AO-CNN",
+    "name": "Cunene",
+    "category": null
+  },
+  {
+    "code": "AO-HUA",
+    "name": "Huambo",
+    "category": null
+  },
+  {
+    "code": "AO-HUI",
+    "name": "Huíla",
+    "category": null
+  },
+  {
+    "code": "AO-CCU",
+    "name": "Kuando Kubango",
+    "category": null
+  },
+  {
+    "code": "AO-CNO",
+    "name": "Kwanza Norte",
+    "category": null
+  },
+  {
+    "code": "AO-CUS",
+    "name": "Kwanza Sul",
+    "category": null
+  },
+  {
+    "code": "AO-LUA",
+    "name": "Luanda",
+    "category": null
+  },
+  {
+    "code": "AO-LNO",
+    "name": "Lunda Norte",
+    "category": null
+  },
+  {
+    "code": "AO-LSU",
+    "name": "Lunda Sul",
+    "category": null
+  },
+  {
+    "code": "AO-MAL",
+    "name": "Malange",
+    "category": null
+  },
+  {
+    "code": "AO-MOX",
+    "name": "Moxico",
+    "category": null
+  },
+  {
+    "code": "AO-NAM",
+    "name": "Namibe",
+    "category": null
+  },
+  {
+    "code": "AO-UIG",
+    "name": "Uíge",
+    "category": null
+  },
+  {
+    "code": "AO-ZAI",
+    "name": "Zaire",
+    "category": null
+  }
+]

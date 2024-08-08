@@ -1,0 +1,52 @@
+[
+  {
+    "code": "SS-EC",
+    "name": "Central Equatoria",
+    "category": null
+  },
+  {
+    "code": "SS-EE",
+    "name": "Eastern Equatoria",
+    "category": null
+  },
+  {
+    "code": "SS-JG",
+    "name": "Jonglei",
+    "category": null
+  },
+  {
+    "code": "SS-LK",
+    "name": "Lakes",
+    "category": null
+  },
+  {
+    "code": "SS-BN",
+    "name": "Northern Bahr el Ghazal",
+    "category": null
+  },
+  {
+    "code": "SS-UY",
+    "name": "Unity",
+    "category": null
+  },
+  {
+    "code": "SS-NU",
+    "name": "Upper Nile",
+    "category": null
+  },
+  {
+    "code": "SS-WR",
+    "name": "Warrap",
+    "category": null
+  },
+  {
+    "code": "SS-BW",
+    "name": "Western Bahr el Ghazal",
+    "category": null
+  },
+  {
+    "code": "SS-EW",
+    "name": "Western Equatoria",
+    "category": null
+  }
+]

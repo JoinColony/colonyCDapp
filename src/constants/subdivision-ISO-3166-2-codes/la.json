@@ -1,0 +1,92 @@
+[
+  {
+    "code": "LA-VT",
+    "name": "Viangchan",
+    "category": "prefecture"
+  },
+  {
+    "code": "LA-AT",
+    "name": "Attapu",
+    "category": "province"
+  },
+  {
+    "code": "LA-BK",
+    "name": "Bokèo",
+    "category": "province"
+  },
+  {
+    "code": "LA-BL",
+    "name": "Bolikhamxai",
+    "category": "province"
+  },
+  {
+    "code": "LA-CH",
+    "name": "Champasak",
+    "category": "province"
+  },
+  {
+    "code": "LA-HO",
+    "name": "Houaphan",
+    "category": "province"
+  },
+  {
+    "code": "LA-KH",
+    "name": "Khammouan",
+    "category": "province"
+  },
+  {
+    "code": "LA-LM",
+    "name": "Louang Namtha",
+    "category": "province"
+  },
+  {
+    "code": "LA-LP",
+    "name": "Louangphabang",
+    "category": "province"
+  },
+  {
+    "code": "LA-OU",
+    "name": "Oudômxai",
+    "category": "province"
+  },
+  {
+    "code": "LA-PH",
+    "name": "Phôngsali",
+    "category": "province"
+  },
+  {
+    "code": "LA-SL",
+    "name": "Salavan",
+    "category": "province"
+  },
+  {
+    "code": "LA-SV",
+    "name": "Savannakhét",
+    "category": "province"
+  },
+  {
+    "code": "LA-VI",
+    "name": "Viangchan",
+    "category": "province"
+  },
+  {
+    "code": "LA-XA",
+    "name": "Xaignabouli",
+    "category": "province"
+  },
+  {
+    "code": "LA-XE",
+    "name": "Xékong",
+    "category": "province"
+  },
+  {
+    "code": "LA-XI",
+    "name": "Xiangkhouang",
+    "category": "province"
+  },
+  {
+    "code": "LA-XS",
+    "name": "Xaisômboun",
+    "category": "province"
+  }
+]

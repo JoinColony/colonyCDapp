@@ -1,0 +1,122 @@
+[
+  {
+    "code": "AR-C",
+    "name": "Ciudad Autónoma de Buenos Aires",
+    "category": "city"
+  },
+  {
+    "code": "AR-B",
+    "name": "Buenos Aires",
+    "category": "province"
+  },
+  {
+    "code": "AR-K",
+    "name": "Catamarca",
+    "category": "province"
+  },
+  {
+    "code": "AR-H",
+    "name": "Chaco",
+    "category": "province"
+  },
+  {
+    "code": "AR-U",
+    "name": "Chubut",
+    "category": "province"
+  },
+  {
+    "code": "AR-X",
+    "name": "Córdoba",
+    "category": "province"
+  },
+  {
+    "code": "AR-W",
+    "name": "Corrientes",
+    "category": "province"
+  },
+  {
+    "code": "AR-E",
+    "name": "Entre Ríos",
+    "category": "province"
+  },
+  {
+    "code": "AR-P",
+    "name": "Formosa",
+    "category": "province"
+  },
+  {
+    "code": "AR-Y",
+    "name": "Jujuy",
+    "category": "province"
+  },
+  {
+    "code": "AR-L",
+    "name": "La Pampa",
+    "category": "province"
+  },
+  {
+    "code": "AR-F",
+    "name": "La Rioja",
+    "category": "province"
+  },
+  {
+    "code": "AR-M",
+    "name": "Mendoza",
+    "category": "province"
+  },
+  {
+    "code": "AR-N",
+    "name": "Misiones",
+    "category": "province"
+  },
+  {
+    "code": "AR-Q",
+    "name": "Neuquén",
+    "category": "province"
+  },
+  {
+    "code": "AR-R",
+    "name": "Río Negro",
+    "category": "province"
+  },
+  {
+    "code": "AR-A",
+    "name": "Salta",
+    "category": "province"
+  },
+  {
+    "code": "AR-J",
+    "name": "San Juan",
+    "category": "province"
+  },
+  {
+    "code": "AR-D",
+    "name": "San Luis",
+    "category": "province"
+  },
+  {
+    "code": "AR-Z",
+    "name": "Santa Cruz",
+    "category": "province"
+  },
+  {
+    "code": "AR-S",
+    "name": "Santa Fe",
+    "category": "province"
+  },
+  {
+    "code": "AR-G",
+    "name": "Santiago del Estero",
+    "category": "province"
+  },
+  {
+    "code": "AR-V",
+    "name": "Tierra del Fuego",
+    "category": "province"
+  },
+  {
+    "code": "AR-T",
+    "name": "Tucumán",
+    "category": "province"
+  }
+]

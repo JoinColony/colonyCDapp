@@ -1,0 +1,142 @@
+[
+  {
+    "code": "BG-01",
+    "name": "Blagoevgrad",
+    "category": null
+  },
+  {
+    "code": "BG-02",
+    "name": "Burgas",
+    "category": null
+  },
+  {
+    "code": "BG-08",
+    "name": "Dobrich",
+    "category": null
+  },
+  {
+    "code": "BG-07",
+    "name": "Gabrovo",
+    "category": null
+  },
+  {
+    "code": "BG-26",
+    "name": "Haskovo",
+    "category": null
+  },
+  {
+    "code": "BG-09",
+    "name": "Kardzhali",
+    "category": null
+  },
+  {
+    "code": "BG-10",
+    "name": "Kyustendil",
+    "category": null
+  },
+  {
+    "code": "BG-11",
+    "name": "Lovech",
+    "category": null
+  },
+  {
+    "code": "BG-12",
+    "name": "Montana",
+    "category": null
+  },
+  {
+    "code": "BG-13",
+    "name": "Pazardzhik",
+    "category": null
+  },
+  {
+    "code": "BG-14",
+    "name": "Pernik",
+    "category": null
+  },
+  {
+    "code": "BG-15",
+    "name": "Pleven",
+    "category": null
+  },
+  {
+    "code": "BG-16",
+    "name": "Plovdiv",
+    "category": null
+  },
+  {
+    "code": "BG-17",
+    "name": "Razgrad",
+    "category": null
+  },
+  {
+    "code": "BG-18",
+    "name": "Ruse",
+    "category": null
+  },
+  {
+    "code": "BG-27",
+    "name": "Shumen",
+    "category": null
+  },
+  {
+    "code": "BG-19",
+    "name": "Silistra",
+    "category": null
+  },
+  {
+    "code": "BG-20",
+    "name": "Sliven",
+    "category": null
+  },
+  {
+    "code": "BG-21",
+    "name": "Smolyan",
+    "category": null
+  },
+  {
+    "code": "BG-23",
+    "name": "Sofia",
+    "category": null
+  },
+  {
+    "code": "BG-22",
+    "name": "Sofia (stolitsa)",
+    "category": null
+  },
+  {
+    "code": "BG-24",
+    "name": "Stara Zagora",
+    "category": null
+  },
+  {
+    "code": "BG-25",
+    "name": "Targovishte",
+    "category": null
+  },
+  {
+    "code": "BG-03",
+    "name": "Varna",
+    "category": null
+  },
+  {
+    "code": "BG-04",
+    "name": "Veliko Tarnovo",
+    "category": null
+  },
+  {
+    "code": "BG-05",
+    "name": "Vidin",
+    "category": null
+  },
+  {
+    "code": "BG-06",
+    "name": "Vratsa",
+    "category": null
+  },
+  {
+    "code": "BG-28",
+    "name": "Yambol",
+    "category": null
+  }
+]

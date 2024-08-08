@@ -1,0 +1,47 @@
+[
+  {
+    "code": "AT-1",
+    "name": "Burgenland",
+    "category": null
+  },
+  {
+    "code": "AT-2",
+    "name": "Carinthia",
+    "category": null
+  },
+  {
+    "code": "AT-3",
+    "name": "Lower Austria",
+    "category": null
+  },
+  {
+    "code": "AT-4",
+    "name": "Upper Austria",
+    "category": null
+  },
+  {
+    "code": "AT-5",
+    "name": "Salzburg",
+    "category": null
+  },
+  {
+    "code": "AT-6",
+    "name": "Styria",
+    "category": null
+  },
+  {
+    "code": "AT-7",
+    "name": "Tyrol",
+    "category": null
+  },
+  {
+    "code": "AT-8",
+    "name": "Vorarlberg",
+    "category": null
+  },
+  {
+    "code": "AT-9",
+    "name": "Vienna",
+    "category": null
+  }
+]

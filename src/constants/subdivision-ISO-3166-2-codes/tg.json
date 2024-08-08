@@ -1,0 +1,27 @@
+[
+  {
+    "code": "TG-C",
+    "name": "Centrale",
+    "category": null
+  },
+  {
+    "code": "TG-K",
+    "name": "Kara",
+    "category": null
+  },
+  {
+    "code": "TG-M",
+    "name": "Maritime (Région)",
+    "category": null
+  },
+  {
+    "code": "TG-P",
+    "name": "Plateaux",
+    "category": null
+  },
+  {
+    "code": "TG-S",
+    "name": "Savanes",
+    "category": null
+  }
+]

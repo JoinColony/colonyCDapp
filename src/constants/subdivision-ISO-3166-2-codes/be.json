@@ -1,0 +1,67 @@
+[
+  {
+    "code": "BE-BRU",
+    "name": "Brussels-Capital Region",
+    "category": null
+  },
+  {
+    "code": "BE-VLG",
+    "name": "Flemish Region",
+    "category": null
+  },
+  {
+    "code": "BE-WAL",
+    "name": "Walloon Region",
+    "category": null
+  },
+  {
+    "code": "BE-VAN",
+    "name": "Antwerpen",
+    "category": null
+  },
+  {
+    "code": "BE-WBR",
+    "name": "Brabant wallon",
+    "category": null
+  },
+  {
+    "code": "BE-WHT",
+    "name": "Hainaut",
+    "category": null
+  },
+  {
+    "code": "BE-WLG",
+    "name": "Liège",
+    "category": null
+  },
+  {
+    "code": "BE-VLI",
+    "name": "Limburg",
+    "category": null
+  },
+  {
+    "code": "BE-WLX",
+    "name": "Luxembourg",
+    "category": null
+  },
+  {
+    "code": "BE-WNA",
+    "name": "Namur",
+    "category": null
+  },
+  {
+    "code": "BE-VOV",
+    "name": "Oost-Vlaanderen",
+    "category": null
+  },
+  {
+    "code": "BE-VBR",
+    "name": "Vlaams-Brabant",
+    "category": null
+  },
+  {
+    "code": "BE-VWV",
+    "name": "West-Vlaanderen",
+    "category": null
+  }
+]

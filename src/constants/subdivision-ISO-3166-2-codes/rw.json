@@ -1,0 +1,27 @@
+[
+  {
+    "code": "RW-01",
+    "name": "City of Kigali",
+    "category": "city"
+  },
+  {
+    "code": "RW-02",
+    "name": "Eastern",
+    "category": "province"
+  },
+  {
+    "code": "RW-03",
+    "name": "Northern",
+    "category": "province"
+  },
+  {
+    "code": "RW-04",
+    "name": "Western",
+    "category": "province"
+  },
+  {
+    "code": "RW-05",
+    "name": "Southern",
+    "category": "province"
+  }
+]

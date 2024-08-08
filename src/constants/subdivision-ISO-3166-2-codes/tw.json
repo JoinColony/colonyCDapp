@@ -1,0 +1,112 @@
+[
+  {
+    "code": "TW-CHA",
+    "name": "Changhua",
+    "category": "county"
+  },
+  {
+    "code": "TW-CYI",
+    "name": "Chiayi",
+    "category": "city"
+  },
+  {
+    "code": "TW-CYQ",
+    "name": "Chiayi",
+    "category": "county"
+  },
+  {
+    "code": "TW-HSZ",
+    "name": "Hsinchu",
+    "category": "city"
+  },
+  {
+    "code": "TW-HSQ",
+    "name": "Hsinchu",
+    "category": "county"
+  },
+  {
+    "code": "TW-HUA",
+    "name": "Hualien",
+    "category": "county"
+  },
+  {
+    "code": "TW-KHH",
+    "name": "Kaohsiung",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-KEE",
+    "name": "Keelung",
+    "category": "city"
+  },
+  {
+    "code": "TW-KIN",
+    "name": "Kinmen",
+    "category": "county"
+  },
+  {
+    "code": "TW-LIE",
+    "name": "Lienchiang",
+    "category": "county"
+  },
+  {
+    "code": "TW-MIA",
+    "name": "Miaoli",
+    "category": "county"
+  },
+  {
+    "code": "TW-NAN",
+    "name": "Nantou",
+    "category": "county"
+  },
+  {
+    "code": "TW-NWT",
+    "name": "New Taipei",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-PEN",
+    "name": "Penghu",
+    "category": "county"
+  },
+  {
+    "code": "TW-PIF",
+    "name": "Pingtung",
+    "category": "county"
+  },
+  {
+    "code": "TW-TXG",
+    "name": "Taichung",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-TNN",
+    "name": "Tainan",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-TPE",
+    "name": "Taipei",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-TTT",
+    "name": "Taitung",
+    "category": "county"
+  },
+  {
+    "code": "TW-TAO",
+    "name": "Taoyuan",
+    "category": "special municipality"
+  },
+  {
+    "code": "TW-ILA",
+    "name": "Yilan",
+    "category": "county"
+  },
+  {
+    "code": "TW-YUN",
+    "name": "Yunlin",
+    "category": "county"
+  }
+]

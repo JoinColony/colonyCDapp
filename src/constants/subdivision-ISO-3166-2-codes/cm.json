@@ -1,0 +1,52 @@
+[
+  {
+    "code": "CM-AD",
+    "name": "Adamaoua",
+    "category": null
+  },
+  {
+    "code": "CM-CE",
+    "name": "Centre",
+    "category": null
+  },
+  {
+    "code": "CM-ES",
+    "name": "East",
+    "category": null
+  },
+  {
+    "code": "CM-EN",
+    "name": "Far North",
+    "category": null
+  },
+  {
+    "code": "CM-LT",
+    "name": "Littoral",
+    "category": null
+  },
+  {
+    "code": "CM-NO",
+    "name": "North",
+    "category": null
+  },
+  {
+    "code": "CM-NW",
+    "name": "North-West",
+    "category": null
+  },
+  {
+    "code": "CM-SU",
+    "name": "South",
+    "category": null
+  },
+  {
+    "code": "CM-SW",
+    "name": "South-West",
+    "category": null
+  },
+  {
+    "code": "CM-OU",
+    "name": "West",
+    "category": null
+  }
+]

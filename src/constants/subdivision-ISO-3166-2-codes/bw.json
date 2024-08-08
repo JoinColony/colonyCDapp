@@ -1,0 +1,82 @@
+[
+  {
+    "code": "BW-CE",
+    "name": "Central",
+    "category": "district"
+  },
+  {
+    "code": "BW-CH",
+    "name": "Chobe",
+    "category": "district"
+  },
+  {
+    "code": "BW-FR",
+    "name": "Francistown",
+    "category": "city"
+  },
+  {
+    "code": "BW-GA",
+    "name": "Gaborone",
+    "category": "city"
+  },
+  {
+    "code": "BW-GH",
+    "name": "Ghanzi",
+    "category": "district"
+  },
+  {
+    "code": "BW-JW",
+    "name": "Jwaneng",
+    "category": "town"
+  },
+  {
+    "code": "BW-KG",
+    "name": "Kgalagadi",
+    "category": "district"
+  },
+  {
+    "code": "BW-KL",
+    "name": "Kgatleng",
+    "category": "district"
+  },
+  {
+    "code": "BW-KW",
+    "name": "Kweneng",
+    "category": "district"
+  },
+  {
+    "code": "BW-LO",
+    "name": "Lobatse",
+    "category": "town"
+  },
+  {
+    "code": "BW-NE",
+    "name": "North East",
+    "category": "district"
+  },
+  {
+    "code": "BW-NW",
+    "name": "North West",
+    "category": "district"
+  },
+  {
+    "code": "BW-SP",
+    "name": "Selibe Phikwe",
+    "category": "town"
+  },
+  {
+    "code": "BW-SE",
+    "name": "South East",
+    "category": "district"
+  },
+  {
+    "code": "BW-SO",
+    "name": "Southern",
+    "category": "district"
+  },
+  {
+    "code": "BW-ST",
+    "name": "Sowa Town",
+    "category": "town"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "code": "CV-B",
+    "name": "Ilhas de Barlavento",
+    "category": null
+  },
+  {
+    "code": "CV-S",
+    "name": "Ilhas de Sotavento",
+    "category": null
+  },
+  {
+    "code": "CV-BV",
+    "name": "Boa Vista",
+    "category": null
+  },
+  {
+    "code": "CV-BR",
+    "name": "Brava",
+    "category": null
+  },
+  {
+    "code": "CV-MA",
+    "name": "Maio",
+    "category": null
+  },
+  {
+    "code": "CV-MO",
+    "name": "Mosteiros",
+    "category": null
+  },
+  {
+    "code": "CV-PA",
+    "name": "Paul",
+    "category": null
+  },
+  {
+    "code": "CV-PN",
+    "name": "Porto Novo",
+    "category": null
+  },
+  {
+    "code": "CV-PR",
+    "name": "Praia",
+    "category": null
+  },
+  {
+    "code": "CV-RB",
+    "name": "Ribeira Brava",
+    "category": null
+  },
+  {
+    "code": "CV-RG",
+    "name": "Ribeira Grande",
+    "category": null
+  },
+  {
+    "code": "CV-RS",
+    "name": "Ribeira Grande de Santiago",
+    "category": null
+  },
+  {
+    "code": "CV-SL",
+    "name": "Sal",
+    "category": null
+  },
+  {
+    "code": "CV-CA",
+    "name": "Santa Catarina",
+    "category": null
+  },
+  {
+    "code": "CV-CF",
+    "name": "Santa Catarina do Fogo",
+    "category": null
+  },
+  {
+    "code": "CV-CR",
+    "name": "Santa Cruz",
+    "category": null
+  },
+  {
+    "code": "CV-SD",
+    "name": "São Domingos",
+    "category": null
+  },
+  {
+    "code": "CV-SF",
+    "name": "São Filipe",
+    "category": null
+  },
+  {
+    "code": "CV-SO",
+    "name": "São Lourenço dos Órgãos",
+    "category": null
+  },
+  {
+    "code": "CV-SM",
+    "name": "São Miguel",
+    "category": null
+  },
+  {
+    "code": "CV-SS",
+    "name": "São Salvador do Mundo",
+    "category": null
+  },
+  {
+    "code": "CV-SV",
+    "name": "São Vicente",
+    "category": null
+  },
+  {
+    "code": "CV-TA",
+    "name": "Tarrafal",
+    "category": null
+  },
+  {
+    "code": "CV-TS",
+    "name": "Tarrafal de São Nicolau",
+    "category": null
+  }
+]

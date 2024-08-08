@@ -1,0 +1,112 @@
+[
+  {
+    "code": "GT-AV",
+    "name": "Alta Verapaz",
+    "category": null
+  },
+  {
+    "code": "GT-BV",
+    "name": "Baja Verapaz",
+    "category": null
+  },
+  {
+    "code": "GT-CM",
+    "name": "Chimaltenango",
+    "category": null
+  },
+  {
+    "code": "GT-CQ",
+    "name": "Chiquimula",
+    "category": null
+  },
+  {
+    "code": "GT-PR",
+    "name": "El Progreso",
+    "category": null
+  },
+  {
+    "code": "GT-ES",
+    "name": "Escuintla",
+    "category": null
+  },
+  {
+    "code": "GT-GU",
+    "name": "Guatemala",
+    "category": null
+  },
+  {
+    "code": "GT-HU",
+    "name": "Huehuetenango",
+    "category": null
+  },
+  {
+    "code": "GT-IZ",
+    "name": "Izabal",
+    "category": null
+  },
+  {
+    "code": "GT-JA",
+    "name": "Jalapa",
+    "category": null
+  },
+  {
+    "code": "GT-JU",
+    "name": "Jutiapa",
+    "category": null
+  },
+  {
+    "code": "GT-PE",
+    "name": "Petén",
+    "category": null
+  },
+  {
+    "code": "GT-QZ",
+    "name": "Quetzaltenango",
+    "category": null
+  },
+  {
+    "code": "GT-QC",
+    "name": "Quiché",
+    "category": null
+  },
+  {
+    "code": "GT-RE",
+    "name": "Retalhuleu",
+    "category": null
+  },
+  {
+    "code": "GT-SA",
+    "name": "Sacatepéquez",
+    "category": null
+  },
+  {
+    "code": "GT-SM",
+    "name": "San Marcos",
+    "category": null
+  },
+  {
+    "code": "GT-SR",
+    "name": "Santa Rosa",
+    "category": null
+  },
+  {
+    "code": "GT-SO",
+    "name": "Sololá",
+    "category": null
+  },
+  {
+    "code": "GT-SU",
+    "name": "Suchitepéquez",
+    "category": null
+  },
+  {
+    "code": "GT-TO",
+    "name": "Totonicapán",
+    "category": null
+  },
+  {
+    "code": "GT-ZA",
+    "name": "Zacapa",
+    "category": null
+  }
+]

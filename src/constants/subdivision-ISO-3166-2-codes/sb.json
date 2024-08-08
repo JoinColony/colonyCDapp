@@ -1,0 +1,52 @@
+[
+  {
+    "code": "SB-CT",
+    "name": "Capital Territory (Honiara)",
+    "category": "capital territory"
+  },
+  {
+    "code": "SB-CE",
+    "name": "Central",
+    "category": "province"
+  },
+  {
+    "code": "SB-CH",
+    "name": "Choiseul",
+    "category": "province"
+  },
+  {
+    "code": "SB-GU",
+    "name": "Guadalcanal",
+    "category": "province"
+  },
+  {
+    "code": "SB-IS",
+    "name": "Isabel",
+    "category": "province"
+  },
+  {
+    "code": "SB-MK",
+    "name": "Makira-Ulawa",
+    "category": "province"
+  },
+  {
+    "code": "SB-ML",
+    "name": "Malaita",
+    "category": "province"
+  },
+  {
+    "code": "SB-RB",
+    "name": "Rennell and Bellona",
+    "category": "province"
+  },
+  {
+    "code": "SB-TE",
+    "name": "Temotu",
+    "category": "province"
+  },
+  {
+    "code": "SB-WE",
+    "name": "Western",
+    "category": "province"
+  }
+]

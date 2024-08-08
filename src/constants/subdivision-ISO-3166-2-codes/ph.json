@@ -1,0 +1,492 @@
+[
+  {
+    "code": "PH-14",
+    "name": "Autonomous Region in Muslim Mindanaob",
+    "category": null
+  },
+  {
+    "code": "PH-05",
+    "name": "Bicol",
+    "category": null
+  },
+  {
+    "code": "PH-02",
+    "name": "Cagayan Valley",
+    "category": null
+  },
+  {
+    "code": "PH-40",
+    "name": "Calabarzon",
+    "category": null
+  },
+  {
+    "code": "PH-13",
+    "name": "Caraga",
+    "category": null
+  },
+  {
+    "code": "PH-03",
+    "name": "Central Luzon",
+    "category": null
+  },
+  {
+    "code": "PH-07",
+    "name": "Central Visayas",
+    "category": null
+  },
+  {
+    "code": "PH-15",
+    "name": "Cordillera Administrative Region",
+    "category": null
+  },
+  {
+    "code": "PH-11",
+    "name": "Davao",
+    "category": null
+  },
+  {
+    "code": "PH-08",
+    "name": "Eastern Visayas",
+    "category": null
+  },
+  {
+    "code": "PH-01",
+    "name": "Ilocos",
+    "category": null
+  },
+  {
+    "code": "PH-41",
+    "name": "Mimaropa",
+    "category": null
+  },
+  {
+    "code": "PH-00",
+    "name": "National Capital Region",
+    "category": null
+  },
+  {
+    "code": "PH-10",
+    "name": "Northern Mindanao",
+    "category": null
+  },
+  {
+    "code": "PH-12",
+    "name": "Soccsksargen",
+    "category": null
+  },
+  {
+    "code": "PH-06",
+    "name": "Western Visayas",
+    "category": null
+  },
+  {
+    "code": "PH-09",
+    "name": "Zamboanga Peninsula",
+    "category": null
+  },
+  {
+    "code": "PH-ABR",
+    "name": "Abra",
+    "category": null
+  },
+  {
+    "code": "PH-AGN",
+    "name": "Agusan del Norte",
+    "category": null
+  },
+  {
+    "code": "PH-AGS",
+    "name": "Agusan del Sur",
+    "category": null
+  },
+  {
+    "code": "PH-AKL",
+    "name": "Aklan",
+    "category": null
+  },
+  {
+    "code": "PH-ALB",
+    "name": "Albay",
+    "category": null
+  },
+  {
+    "code": "PH-ANT",
+    "name": "Antique",
+    "category": null
+  },
+  {
+    "code": "PH-APA",
+    "name": "Apayao",
+    "category": null
+  },
+  {
+    "code": "PH-AUR",
+    "name": "Aurora",
+    "category": null
+  },
+  {
+    "code": "PH-BAS",
+    "name": "Basilan",
+    "category": null
+  },
+  {
+    "code": "PH-BAN",
+    "name": "Bataan",
+    "category": null
+  },
+  {
+    "code": "PH-BTN",
+    "name": "Batanes",
+    "category": null
+  },
+  {
+    "code": "PH-BTG",
+    "name": "Batangas",
+    "category": null
+  },
+  {
+    "code": "PH-BEN",
+    "name": "Benguet",
+    "category": null
+  },
+  {
+    "code": "PH-BIL",
+    "name": "Biliran",
+    "category": null
+  },
+  {
+    "code": "PH-BOH",
+    "name": "Bohol",
+    "category": null
+  },
+  {
+    "code": "PH-BUK",
+    "name": "Bukidnon",
+    "category": null
+  },
+  {
+    "code": "PH-BUL",
+    "name": "Bulacan",
+    "category": null
+  },
+  {
+    "code": "PH-CAG",
+    "name": "Cagayan",
+    "category": null
+  },
+  {
+    "code": "PH-CAN",
+    "name": "Camarines Norte",
+    "category": null
+  },
+  {
+    "code": "PH-CAS",
+    "name": "Camarines Sur",
+    "category": null
+  },
+  {
+    "code": "PH-CAM",
+    "name": "Camiguin",
+    "category": null
+  },
+  {
+    "code": "PH-CAP",
+    "name": "Capiz",
+    "category": null
+  },
+  {
+    "code": "PH-CAT",
+    "name": "Catanduanes",
+    "category": null
+  },
+  {
+    "code": "PH-CAV",
+    "name": "Cavite",
+    "category": null
+  },
+  {
+    "code": "PH-CEB",
+    "name": "Cebu",
+    "category": null
+  },
+  {
+    "code": "PH-COM",
+    "name": "Compostela Valley (Davao de Oro)b",
+    "category": null
+  },
+  {
+    "code": "PH-NCO",
+    "name": "Cotabato",
+    "category": null
+  },
+  {
+    "code": "PH-DAV",
+    "name": "Davao del Norte",
+    "category": null
+  },
+  {
+    "code": "PH-DAS",
+    "name": "Davao del Sur",
+    "category": null
+  },
+  {
+    "code": "PH-DVO",
+    "name": "Davao Occidental",
+    "category": null
+  },
+  {
+    "code": "PH-DAO",
+    "name": "Davao Oriental",
+    "category": null
+  },
+  {
+    "code": "PH-DIN",
+    "name": "Dinagat Islands",
+    "category": null
+  },
+  {
+    "code": "PH-EAS",
+    "name": "Eastern Samar",
+    "category": null
+  },
+  {
+    "code": "PH-GUI",
+    "name": "Guimaras",
+    "category": null
+  },
+  {
+    "code": "PH-IFU",
+    "name": "Ifugao",
+    "category": null
+  },
+  {
+    "code": "PH-ILN",
+    "name": "Ilocos Norte",
+    "category": null
+  },
+  {
+    "code": "PH-ILS",
+    "name": "Ilocos Sur",
+    "category": null
+  },
+  {
+    "code": "PH-ILI",
+    "name": "Iloilo",
+    "category": null
+  },
+  {
+    "code": "PH-ISA",
+    "name": "Isabela",
+    "category": null
+  },
+  {
+    "code": "PH-KAL",
+    "name": "Kalinga",
+    "category": null
+  },
+  {
+    "code": "PH-LUN",
+    "name": "La Union",
+    "category": null
+  },
+  {
+    "code": "PH-LAG",
+    "name": "Laguna",
+    "category": null
+  },
+  {
+    "code": "PH-LAN",
+    "name": "Lanao del Norte",
+    "category": null
+  },
+  {
+    "code": "PH-LAS",
+    "name": "Lanao del Sur",
+    "category": null
+  },
+  {
+    "code": "PH-LEY",
+    "name": "Leyte",
+    "category": null
+  },
+  {
+    "code": "PH-MAG",
+    "name": "Maguindanao",
+    "category": null
+  },
+  {
+    "code": "PH-MAD",
+    "name": "Marinduque",
+    "category": null
+  },
+  {
+    "code": "PH-MAS",
+    "name": "Masbate",
+    "category": null
+  },
+  {
+    "code": "PH-MDC",
+    "name": "Mindoro Occidental",
+    "category": null
+  },
+  {
+    "code": "PH-MDR",
+    "name": "Mindoro Oriental",
+    "category": null
+  },
+  {
+    "code": "PH-MSC",
+    "name": "Misamis Occidental",
+    "category": null
+  },
+  {
+    "code": "PH-MSR",
+    "name": "Misamis Oriental",
+    "category": null
+  },
+  {
+    "code": "PH-MOU",
+    "name": "Mountain Province",
+    "category": null
+  },
+  {
+    "code": "PH-NEC",
+    "name": "Negros Occidental",
+    "category": null
+  },
+  {
+    "code": "PH-NER",
+    "name": "Negros Oriental",
+    "category": null
+  },
+  {
+    "code": "PH-NSA",
+    "name": "Northern Samar",
+    "category": null
+  },
+  {
+    "code": "PH-NUE",
+    "name": "Nueva Ecija",
+    "category": null
+  },
+  {
+    "code": "PH-NUV",
+    "name": "Nueva Vizcaya",
+    "category": null
+  },
+  {
+    "code": "PH-PLW",
+    "name": "Palawan",
+    "category": null
+  },
+  {
+    "code": "PH-PAM",
+    "name": "Pampanga",
+    "category": null
+  },
+  {
+    "code": "PH-PAN",
+    "name": "Pangasinan",
+    "category": null
+  },
+  {
+    "code": "PH-QUE",
+    "name": "Quezon",
+    "category": null
+  },
+  {
+    "code": "PH-QUI",
+    "name": "Quirino",
+    "category": null
+  },
+  {
+    "code": "PH-RIZ",
+    "name": "Rizal",
+    "category": null
+  },
+  {
+    "code": "PH-ROM",
+    "name": "Romblon",
+    "category": null
+  },
+  {
+    "code": "PH-WSA",
+    "name": "Samar (Western Samar)",
+    "category": null
+  },
+  {
+    "code": "PH-SAR",
+    "name": "Sarangani",
+    "category": null
+  },
+  {
+    "code": "PH-SIG",
+    "name": "Siquijor",
+    "category": null
+  },
+  {
+    "code": "PH-SOR",
+    "name": "Sorsogon",
+    "category": null
+  },
+  {
+    "code": "PH-SCO",
+    "name": "South Cotabato",
+    "category": null
+  },
+  {
+    "code": "PH-SLE",
+    "name": "Southern Leyte",
+    "category": null
+  },
+  {
+    "code": "PH-SUK",
+    "name": "Sultan Kudarat",
+    "category": null
+  },
+  {
+    "code": "PH-SLU",
+    "name": "Sulu",
+    "category": null
+  },
+  {
+    "code": "PH-SUN",
+    "name": "Surigao del Norte",
+    "category": null
+  },
+  {
+    "code": "PH-SUR",
+    "name": "Surigao del Sur",
+    "category": null
+  },
+  {
+    "code": "PH-TAR",
+    "name": "Tarlac",
+    "category": null
+  },
+  {
+    "code": "PH-TAW",
+    "name": "Tawi-Tawi",
+    "category": null
+  },
+  {
+    "code": "PH-ZMB",
+    "name": "Zambales",
+    "category": null
+  },
+  {
+    "code": "PH-ZAN",
+    "name": "Zamboanga del Norte",
+    "category": null
+  },
+  {
+    "code": "PH-ZAS",
+    "name": "Zamboanga del Sur",
+    "category": null
+  },
+  {
+    "code": "PH-ZSI",
+    "name": "Zamboanga Sibugay",
+    "category": null
+  }
+]

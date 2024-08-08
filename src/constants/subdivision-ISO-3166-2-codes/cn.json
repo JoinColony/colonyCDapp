@@ -1,0 +1,187 @@
+[
+  {
+    "code": "CN-AH",
+    "name": "Anhui Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-BJ",
+    "name": "Beijing Shi",
+    "category": "municipality"
+  },
+  {
+    "code": "CN-CQ",
+    "name": "Chongqing Shi",
+    "category": "municipality"
+  },
+  {
+    "code": "CN-FJ",
+    "name": "Fujian Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-GD",
+    "name": "Guangdong Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-GS",
+    "name": "Gansu Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-GX",
+    "name": "Guangxi Zhuangzu Zizhiqu",
+    "category": "autonomous region"
+  },
+  {
+    "code": "CN-GZ",
+    "name": "Guizhou Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HA",
+    "name": "Henan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HB",
+    "name": "Hubei Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HE",
+    "name": "Hebei Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HI",
+    "name": "Hainan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HK",
+    "name": "Hong Kong SAR Xianggang Tebiexingzhengqu",
+    "category": "special administrative region"
+  },
+  {
+    "code": "CN-HL",
+    "name": "Heilongjiang Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HN",
+    "name": "Hunan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-JL",
+    "name": "Jilin Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-JS",
+    "name": "Jiangsu Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-JX",
+    "name": "Jiangxi Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-LN",
+    "name": "Liaoning Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-MO",
+    "name": "Macao SAR Macau SAR Aomen Tebiexingzhengqu",
+    "category": "special administrative region"
+  },
+  {
+    "code": "CN-NM",
+    "name": "Nei Mongol Zizhiqu",
+    "category": "autonomous region"
+  },
+  {
+    "code": "CN-NX",
+    "name": "Ningxia Huizi Zizhiqu",
+    "category": "autonomous region"
+  },
+  {
+    "code": "CN-QH",
+    "name": "Qinghai Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-SC",
+    "name": "Sichuan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-SD",
+    "name": "Shandong Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-SH",
+    "name": "Shanghai Shi",
+    "category": "municipality"
+  },
+  {
+    "code": "CN-SN",
+    "name": "Shaanxi Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-SX",
+    "name": "Shanxi Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-TJ",
+    "name": "Tianjin Shi",
+    "category": "municipality"
+  },
+  {
+    "code": "CN-TW",
+    "name": "Taiwan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-XJ",
+    "name": "Xinjiang Uygur Zizhiqu",
+    "category": "autonomous region"
+  },
+  {
+    "code": "CN-XZ",
+    "name": "Xizang Zizhiqu",
+    "category": "autonomous region"
+  },
+  {
+    "code": "CN-YN",
+    "name": "Yunnan Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-ZJ",
+    "name": "Zhejiang Sheng",
+    "category": "province"
+  },
+  {
+    "code": "CN-HK",
+    "name": "Hong Kong SAR Xianggang Tebiexingzhengqu",
+    "category": null
+  },
+  {
+    "code": "CN-MO",
+    "name": "Macao SAR Macau SAR Aomen Tebiexingzhengqu",
+    "category": null
+  },
+  {
+    "code": "CN-TW",
+    "name": "Taiwan Sheng",
+    "category": null
+  }
+]

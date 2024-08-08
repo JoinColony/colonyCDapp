@@ -1,0 +1,92 @@
+[
+  {
+    "code": "PY-ASU",
+    "name": "Asunción",
+    "category": "capital"
+  },
+  {
+    "code": "PY-16",
+    "name": "Alto Paraguay",
+    "category": "department"
+  },
+  {
+    "code": "PY-10",
+    "name": "Alto Paraná",
+    "category": "department"
+  },
+  {
+    "code": "PY-13",
+    "name": "Amambay",
+    "category": "department"
+  },
+  {
+    "code": "PY-19",
+    "name": "Boquerón",
+    "category": "department"
+  },
+  {
+    "code": "PY-5",
+    "name": "Caaguazú",
+    "category": "department"
+  },
+  {
+    "code": "PY-6",
+    "name": "Caazapá",
+    "category": "department"
+  },
+  {
+    "code": "PY-14",
+    "name": "Canindeyú",
+    "category": "department"
+  },
+  {
+    "code": "PY-11",
+    "name": "Central",
+    "category": "department"
+  },
+  {
+    "code": "PY-1",
+    "name": "Concepción",
+    "category": "department"
+  },
+  {
+    "code": "PY-3",
+    "name": "Cordillera",
+    "category": "department"
+  },
+  {
+    "code": "PY-4",
+    "name": "Guairá",
+    "category": "department"
+  },
+  {
+    "code": "PY-7",
+    "name": "Itapúa",
+    "category": "department"
+  },
+  {
+    "code": "PY-8",
+    "name": "Misiones",
+    "category": "department"
+  },
+  {
+    "code": "PY-12",
+    "name": "Ñeembucú",
+    "category": "department"
+  },
+  {
+    "code": "PY-9",
+    "name": "Paraguarí",
+    "category": "department"
+  },
+  {
+    "code": "PY-15",
+    "name": "Presidente Hayes",
+    "category": "department"
+  },
+  {
+    "code": "PY-2",
+    "name": "San Pedro",
+    "category": "department"
+  }
+]

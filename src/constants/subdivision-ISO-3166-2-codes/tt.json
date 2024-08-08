@@ -1,0 +1,77 @@
+[
+  {
+    "code": "TT-CTT",
+    "name": "Couva–Tabaquite–Talparo",
+    "category": "region"
+  },
+  {
+    "code": "TT-DMN",
+    "name": "Diego Martin",
+    "category": "region"
+  },
+  {
+    "code": "TT-MRC",
+    "name": "Mayaro-Rio Claro",
+    "category": "region"
+  },
+  {
+    "code": "TT-PED",
+    "name": "Penal-Debe",
+    "category": "region"
+  },
+  {
+    "code": "TT-PRT",
+    "name": "Princes Town",
+    "category": "region"
+  },
+  {
+    "code": "TT-SJL",
+    "name": "San Juan-Laventille",
+    "category": "region"
+  },
+  {
+    "code": "TT-SGE",
+    "name": "Sangre Grande",
+    "category": "region"
+  },
+  {
+    "code": "TT-SIP",
+    "name": "Siparia",
+    "category": "region"
+  },
+  {
+    "code": "TT-TUP",
+    "name": "Tunapuna-Piarco",
+    "category": "region"
+  },
+  {
+    "code": "TT-ARI",
+    "name": "Arima",
+    "category": "municipality"
+  },
+  {
+    "code": "TT-CHA",
+    "name": "Chaguanas",
+    "category": "municipality"
+  },
+  {
+    "code": "TT-PTF",
+    "name": "Point Fortin",
+    "category": "municipality"
+  },
+  {
+    "code": "TT-POS",
+    "name": "Port of Spain",
+    "category": "municipality"
+  },
+  {
+    "code": "TT-SFO",
+    "name": "San Fernando",
+    "category": "municipality"
+  },
+  {
+    "code": "TT-TOB",
+    "name": "Tobago",
+    "category": "ward"
+  }
+]

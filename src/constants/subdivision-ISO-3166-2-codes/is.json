@@ -1,0 +1,42 @@
+[
+  {
+    "code": "IS-1",
+    "name": "Höfuðborgarsvæðið",
+    "category": null
+  },
+  {
+    "code": "IS-2",
+    "name": "Suðurnes",
+    "category": null
+  },
+  {
+    "code": "IS-3",
+    "name": "Vesturland",
+    "category": null
+  },
+  {
+    "code": "IS-4",
+    "name": "Vestfirðir",
+    "category": null
+  },
+  {
+    "code": "IS-5",
+    "name": "Norðurland vestra",
+    "category": null
+  },
+  {
+    "code": "IS-6",
+    "name": "Norðurland eystra",
+    "category": null
+  },
+  {
+    "code": "IS-7",
+    "name": "Austurland",
+    "category": null
+  },
+  {
+    "code": "IS-8",
+    "name": "Suðurland",
+    "category": null
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "code": "ET-AA",
+    "name": "Addis Ababa",
+    "category": "administration"
+  },
+  {
+    "code": "ET-DD",
+    "name": "Dire Dawa",
+    "category": "administration"
+  },
+  {
+    "code": "ET-AF",
+    "name": "Afar",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-AM",
+    "name": "Amara",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-BE",
+    "name": "Benshangul-Gumaz",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-GA",
+    "name": "Gambela Peoples",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-HA",
+    "name": "Harari People",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-OR",
+    "name": "Oromia",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-SO",
+    "name": "Somali",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-TI",
+    "name": "Tigrai",
+    "category": "regional state"
+  },
+  {
+    "code": "ET-SN",
+    "name": "Southern Nations, Nationalities and Peoples",
+    "category": "regional state"
+  }
+]

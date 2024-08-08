@@ -1,0 +1,97 @@
+[
+  {
+    "code": "FI-01",
+    "name": "Åland",
+    "category": null
+  },
+  {
+    "code": "FI-02",
+    "name": "South Karelia",
+    "category": null
+  },
+  {
+    "code": "FI-03",
+    "name": "Southern Ostrobothnia",
+    "category": null
+  },
+  {
+    "code": "FI-04",
+    "name": "Southern Savonia",
+    "category": null
+  },
+  {
+    "code": "FI-05",
+    "name": "Kainuu",
+    "category": null
+  },
+  {
+    "code": "FI-06",
+    "name": "Tavastia Proper",
+    "category": null
+  },
+  {
+    "code": "FI-07",
+    "name": "Central Ostrobothnia",
+    "category": null
+  },
+  {
+    "code": "FI-08",
+    "name": "Central Finland",
+    "category": null
+  },
+  {
+    "code": "FI-09",
+    "name": "Kymenlaakso",
+    "category": null
+  },
+  {
+    "code": "FI-10",
+    "name": "Lapland",
+    "category": null
+  },
+  {
+    "code": "FI-11",
+    "name": "Pirkanmaa",
+    "category": null
+  },
+  {
+    "code": "FI-12",
+    "name": "Ostrobothnia",
+    "category": null
+  },
+  {
+    "code": "FI-13",
+    "name": "North Karelia",
+    "category": null
+  },
+  {
+    "code": "FI-14",
+    "name": "Northern Ostrobothnia",
+    "category": null
+  },
+  {
+    "code": "FI-15",
+    "name": "Northern Savonia",
+    "category": null
+  },
+  {
+    "code": "FI-16",
+    "name": "Päijänne Tavastia",
+    "category": null
+  },
+  {
+    "code": "FI-17",
+    "name": "Satakunta",
+    "category": null
+  },
+  {
+    "code": "FI-18",
+    "name": "Uusimaa",
+    "category": null
+  },
+  {
+    "code": "FI-19",
+    "name": "Southwest Finland",
+    "category": null
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "code": "LR-BM",
+    "name": "Bomi",
+    "category": null
+  },
+  {
+    "code": "LR-BG",
+    "name": "Bong",
+    "category": null
+  },
+  {
+    "code": "LR-GP",
+    "name": "Gbarpolu",
+    "category": null
+  },
+  {
+    "code": "LR-GB",
+    "name": "Grand Bassa",
+    "category": null
+  },
+  {
+    "code": "LR-CM",
+    "name": "Grand Cape Mount",
+    "category": null
+  },
+  {
+    "code": "LR-GG",
+    "name": "Grand Gedeh",
+    "category": null
+  },
+  {
+    "code": "LR-GK",
+    "name": "Grand Kru",
+    "category": null
+  },
+  {
+    "code": "LR-LO",
+    "name": "Lofa",
+    "category": null
+  },
+  {
+    "code": "LR-MG",
+    "name": "Margibi",
+    "category": null
+  },
+  {
+    "code": "LR-MY",
+    "name": "Maryland",
+    "category": null
+  },
+  {
+    "code": "LR-MO",
+    "name": "Montserrado",
+    "category": null
+  },
+  {
+    "code": "LR-NI",
+    "name": "Nimba",
+    "category": null
+  },
+  {
+    "code": "LR-RI",
+    "name": "River Cess",
+    "category": null
+  },
+  {
+    "code": "LR-RG",
+    "name": "River Gee",
+    "category": null
+  },
+  {
+    "code": "LR-SI",
+    "name": "Sinoe",
+    "category": null
+  }
+]

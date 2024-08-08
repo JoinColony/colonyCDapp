@@ -1,0 +1,62 @@
+[
+  {
+    "code": "AL-01",
+    "name": "Berat",
+    "category": null
+  },
+  {
+    "code": "AL-09",
+    "name": "Dibër",
+    "category": null
+  },
+  {
+    "code": "AL-02",
+    "name": "Durrës",
+    "category": null
+  },
+  {
+    "code": "AL-03",
+    "name": "Elbasan",
+    "category": null
+  },
+  {
+    "code": "AL-04",
+    "name": "Fier",
+    "category": null
+  },
+  {
+    "code": "AL-05",
+    "name": "Gjirokastër",
+    "category": null
+  },
+  {
+    "code": "AL-06",
+    "name": "Korçë",
+    "category": null
+  },
+  {
+    "code": "AL-07",
+    "name": "Kukës",
+    "category": null
+  },
+  {
+    "code": "AL-08",
+    "name": "Lezhë",
+    "category": null
+  },
+  {
+    "code": "AL-10",
+    "name": "Shkodër",
+    "category": null
+  },
+  {
+    "code": "AL-11",
+    "name": "Tiranë",
+    "category": null
+  },
+  {
+    "code": "AL-12",
+    "name": "Vlorë",
+    "category": null
+  }
+]

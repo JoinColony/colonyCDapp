@@ -1,0 +1,212 @@
+[
+  {
+    "code": "RO-AB",
+    "name": "Alba",
+    "category": "department"
+  },
+  {
+    "code": "RO-AR",
+    "name": "Arad",
+    "category": "department"
+  },
+  {
+    "code": "RO-AG",
+    "name": "Argeș",
+    "category": "department"
+  },
+  {
+    "code": "RO-BC",
+    "name": "Bacău",
+    "category": "department"
+  },
+  {
+    "code": "RO-BH",
+    "name": "Bihor",
+    "category": "department"
+  },
+  {
+    "code": "RO-BN",
+    "name": "Bistrița-Năsăud",
+    "category": "department"
+  },
+  {
+    "code": "RO-BT",
+    "name": "Botoșani",
+    "category": "department"
+  },
+  {
+    "code": "RO-BV",
+    "name": "Brașov",
+    "category": "department"
+  },
+  {
+    "code": "RO-BR",
+    "name": "Brăila",
+    "category": "department"
+  },
+  {
+    "code": "RO-BZ",
+    "name": "Buzău",
+    "category": "department"
+  },
+  {
+    "code": "RO-CS",
+    "name": "Caraș-Severin",
+    "category": "department"
+  },
+  {
+    "code": "RO-CL",
+    "name": "Călărași",
+    "category": "department"
+  },
+  {
+    "code": "RO-CJ",
+    "name": "Cluj",
+    "category": "department"
+  },
+  {
+    "code": "RO-CT",
+    "name": "Constanța",
+    "category": "department"
+  },
+  {
+    "code": "RO-CV",
+    "name": "Covasna",
+    "category": "department"
+  },
+  {
+    "code": "RO-DB",
+    "name": "Dâmbovița",
+    "category": "department"
+  },
+  {
+    "code": "RO-DJ",
+    "name": "Dolj",
+    "category": "department"
+  },
+  {
+    "code": "RO-GL",
+    "name": "Galați",
+    "category": "department"
+  },
+  {
+    "code": "RO-GR",
+    "name": "Giurgiu",
+    "category": "department"
+  },
+  {
+    "code": "RO-GJ",
+    "name": "Gorj",
+    "category": "department"
+  },
+  {
+    "code": "RO-HR",
+    "name": "Harghita",
+    "category": "department"
+  },
+  {
+    "code": "RO-HD",
+    "name": "Hunedoara",
+    "category": "department"
+  },
+  {
+    "code": "RO-IL",
+    "name": "Ialomița",
+    "category": "department"
+  },
+  {
+    "code": "RO-IS",
+    "name": "Iași",
+    "category": "department"
+  },
+  {
+    "code": "RO-IF",
+    "name": "Ilfov",
+    "category": "department"
+  },
+  {
+    "code": "RO-MM",
+    "name": "Maramureș",
+    "category": "department"
+  },
+  {
+    "code": "RO-MH",
+    "name": "Mehedinți",
+    "category": "department"
+  },
+  {
+    "code": "RO-MS",
+    "name": "Mureș",
+    "category": "department"
+  },
+  {
+    "code": "RO-NT",
+    "name": "Neamț",
+    "category": "department"
+  },
+  {
+    "code": "RO-OT",
+    "name": "Olt",
+    "category": "department"
+  },
+  {
+    "code": "RO-PH",
+    "name": "Prahova",
+    "category": "department"
+  },
+  {
+    "code": "RO-SM",
+    "name": "Satu Mare",
+    "category": "department"
+  },
+  {
+    "code": "RO-SJ",
+    "name": "Sălaj",
+    "category": "department"
+  },
+  {
+    "code": "RO-SB",
+    "name": "Sibiu",
+    "category": "department"
+  },
+  {
+    "code": "RO-SV",
+    "name": "Suceava",
+    "category": "department"
+  },
+  {
+    "code": "RO-TR",
+    "name": "Teleorman",
+    "category": "department"
+  },
+  {
+    "code": "RO-TM",
+    "name": "Timiș",
+    "category": "department"
+  },
+  {
+    "code": "RO-TL",
+    "name": "Tulcea",
+    "category": "department"
+  },
+  {
+    "code": "RO-VS",
+    "name": "Vaslui",
+    "category": "department"
+  },
+  {
+    "code": "RO-VL",
+    "name": "Vâlcea",
+    "category": "department"
+  },
+  {
+    "code": "RO-VN",
+    "name": "Vrancea",
+    "category": "department"
+  },
+  {
+    "code": "RO-B",
+    "name": "București",
+    "category": "municipality"
+  }
+]

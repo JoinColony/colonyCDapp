@@ -1,0 +1,362 @@
+[
+  {
+    "code": "BD-A",
+    "name": "Barisal",
+    "category": null
+  },
+  {
+    "code": "BD-B",
+    "name": "Chittagong",
+    "category": null
+  },
+  {
+    "code": "BD-C",
+    "name": "Dhaka",
+    "category": null
+  },
+  {
+    "code": "BD-D",
+    "name": "Khulna",
+    "category": null
+  },
+  {
+    "code": "BD-H",
+    "name": "Mymensingh",
+    "category": null
+  },
+  {
+    "code": "BD-E",
+    "name": "Rajshahi",
+    "category": null
+  },
+  {
+    "code": "BD-F",
+    "name": "Rangpur",
+    "category": null
+  },
+  {
+    "code": "BD-G",
+    "name": "Sylhet",
+    "category": null
+  },
+  {
+    "code": "BD-05",
+    "name": "Bagerhat",
+    "category": null
+  },
+  {
+    "code": "BD-01",
+    "name": "Bandarban",
+    "category": null
+  },
+  {
+    "code": "BD-02",
+    "name": "Barguna",
+    "category": null
+  },
+  {
+    "code": "BD-06",
+    "name": "Barisal",
+    "category": null
+  },
+  {
+    "code": "BD-07",
+    "name": "Bhola",
+    "category": null
+  },
+  {
+    "code": "BD-03",
+    "name": "Bogra",
+    "category": null
+  },
+  {
+    "code": "BD-04",
+    "name": "Brahmanbaria",
+    "category": null
+  },
+  {
+    "code": "BD-09",
+    "name": "Chandpur",
+    "category": null
+  },
+  {
+    "code": "BD-45",
+    "name": "Chapai Nawabganj",
+    "category": null
+  },
+  {
+    "code": "BD-10",
+    "name": "Chittagong",
+    "category": null
+  },
+  {
+    "code": "BD-12",
+    "name": "Chuadanga",
+    "category": null
+  },
+  {
+    "code": "BD-08",
+    "name": "Comilla",
+    "category": null
+  },
+  {
+    "code": "BD-11",
+    "name": "Cox's Bazar",
+    "category": null
+  },
+  {
+    "code": "BD-13",
+    "name": "Dhaka",
+    "category": null
+  },
+  {
+    "code": "BD-14",
+    "name": "Dinajpur",
+    "category": null
+  },
+  {
+    "code": "BD-15",
+    "name": "Faridpur",
+    "category": null
+  },
+  {
+    "code": "BD-16",
+    "name": "Feni",
+    "category": null
+  },
+  {
+    "code": "BD-19",
+    "name": "Gaibandha",
+    "category": null
+  },
+  {
+    "code": "BD-18",
+    "name": "Gazipur",
+    "category": null
+  },
+  {
+    "code": "BD-17",
+    "name": "Gopalganj",
+    "category": null
+  },
+  {
+    "code": "BD-20",
+    "name": "Habiganj",
+    "category": null
+  },
+  {
+    "code": "BD-21",
+    "name": "Jamalpur",
+    "category": null
+  },
+  {
+    "code": "BD-22",
+    "name": "Jessore",
+    "category": null
+  },
+  {
+    "code": "BD-25",
+    "name": "Jhalakathi",
+    "category": null
+  },
+  {
+    "code": "BD-23",
+    "name": "Jhenaidah",
+    "category": null
+  },
+  {
+    "code": "BD-24",
+    "name": "Joypurhat",
+    "category": null
+  },
+  {
+    "code": "BD-29",
+    "name": "Khagrachhari",
+    "category": null
+  },
+  {
+    "code": "BD-27",
+    "name": "Khulna",
+    "category": null
+  },
+  {
+    "code": "BD-26",
+    "name": "Kishoreganj",
+    "category": null
+  },
+  {
+    "code": "BD-28",
+    "name": "Kurigram",
+    "category": null
+  },
+  {
+    "code": "BD-30",
+    "name": "Kushtia",
+    "category": null
+  },
+  {
+    "code": "BD-31",
+    "name": "Lakshmipur",
+    "category": null
+  },
+  {
+    "code": "BD-32",
+    "name": "Lalmonirhat",
+    "category": null
+  },
+  {
+    "code": "BD-36",
+    "name": "Madaripur",
+    "category": null
+  },
+  {
+    "code": "BD-37",
+    "name": "Magura",
+    "category": null
+  },
+  {
+    "code": "BD-33",
+    "name": "Manikganj",
+    "category": null
+  },
+  {
+    "code": "BD-39",
+    "name": "Meherpur",
+    "category": null
+  },
+  {
+    "code": "BD-38",
+    "name": "Moulvibazar",
+    "category": null
+  },
+  {
+    "code": "BD-35",
+    "name": "Munshiganj",
+    "category": null
+  },
+  {
+    "code": "BD-34",
+    "name": "Mymensingh",
+    "category": null
+  },
+  {
+    "code": "BD-48",
+    "name": "Naogaon",
+    "category": null
+  },
+  {
+    "code": "BD-43",
+    "name": "Narail",
+    "category": null
+  },
+  {
+    "code": "BD-40",
+    "name": "Narayanganj",
+    "category": null
+  },
+  {
+    "code": "BD-42",
+    "name": "Narsingdi",
+    "category": null
+  },
+  {
+    "code": "BD-44",
+    "name": "Natore",
+    "category": null
+  },
+  {
+    "code": "BD-41",
+    "name": "Netrakona",
+    "category": null
+  },
+  {
+    "code": "BD-46",
+    "name": "Nilphamari",
+    "category": null
+  },
+  {
+    "code": "BD-47",
+    "name": "Noakhali",
+    "category": null
+  },
+  {
+    "code": "BD-49",
+    "name": "Pabna",
+    "category": null
+  },
+  {
+    "code": "BD-52",
+    "name": "Panchagarh",
+    "category": null
+  },
+  {
+    "code": "BD-51",
+    "name": "Patuakhali",
+    "category": null
+  },
+  {
+    "code": "BD-50",
+    "name": "Pirojpur",
+    "category": null
+  },
+  {
+    "code": "BD-53",
+    "name": "Rajbari",
+    "category": null
+  },
+  {
+    "code": "BD-54",
+    "name": "Rajshahi",
+    "category": null
+  },
+  {
+    "code": "BD-56",
+    "name": "Rangamati",
+    "category": null
+  },
+  {
+    "code": "BD-55",
+    "name": "Rangpur",
+    "category": null
+  },
+  {
+    "code": "BD-58",
+    "name": "Satkhira",
+    "category": null
+  },
+  {
+    "code": "BD-62",
+    "name": "Shariatpur",
+    "category": null
+  },
+  {
+    "code": "BD-57",
+    "name": "Sherpur",
+    "category": null
+  },
+  {
+    "code": "BD-59",
+    "name": "Sirajganj",
+    "category": null
+  },
+  {
+    "code": "BD-61",
+    "name": "Sunamganj",
+    "category": null
+  },
+  {
+    "code": "BD-60",
+    "name": "Sylhet",
+    "category": null
+  },
+  {
+    "code": "BD-63",
+    "name": "Tangail",
+    "category": null
+  },
+  {
+    "code": "BD-64",
+    "name": "Thakurgaon",
+    "category": null
+  }
+]

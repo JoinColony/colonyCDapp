@@ -1,0 +1,62 @@
+[
+  {
+    "code": "GW-L",
+    "name": "Leste",
+    "category": null
+  },
+  {
+    "code": "GW-N",
+    "name": "Norte",
+    "category": null
+  },
+  {
+    "code": "GW-S",
+    "name": "Sul",
+    "category": null
+  },
+  {
+    "code": "GW-BS",
+    "name": "Bissau",
+    "category": "autonomous sector"
+  },
+  {
+    "code": "GW-BA",
+    "name": "Bafatá",
+    "category": "region"
+  },
+  {
+    "code": "GW-BM",
+    "name": "Biombo",
+    "category": "region"
+  },
+  {
+    "code": "GW-BL",
+    "name": "Bolama",
+    "category": "region"
+  },
+  {
+    "code": "GW-CA",
+    "name": "Cacheu",
+    "category": "region"
+  },
+  {
+    "code": "GW-GA",
+    "name": "Gabú",
+    "category": "region"
+  },
+  {
+    "code": "GW-OI",
+    "name": "Oio",
+    "category": "region"
+  },
+  {
+    "code": "GW-QU",
+    "name": "Quinara",
+    "category": "region"
+  },
+  {
+    "code": "GW-TO",
+    "name": "Tombali",
+    "category": "region"
+  }
+]

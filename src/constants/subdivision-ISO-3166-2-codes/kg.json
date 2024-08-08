@@ -1,0 +1,47 @@
+[
+  {
+    "code": "KG-GB",
+    "name": "Bishkek",
+    "category": "city"
+  },
+  {
+    "code": "KG-GO",
+    "name": "Osh",
+    "category": "city"
+  },
+  {
+    "code": "KG-B",
+    "name": "Batken",
+    "category": "region"
+  },
+  {
+    "code": "KG-C",
+    "name": "Chüy",
+    "category": "region"
+  },
+  {
+    "code": "KG-J",
+    "name": "Jalal-Abad",
+    "category": "region"
+  },
+  {
+    "code": "KG-N",
+    "name": "Naryn",
+    "category": "region"
+  },
+  {
+    "code": "KG-O",
+    "name": "Osh",
+    "category": "region"
+  },
+  {
+    "code": "KG-T",
+    "name": "Talas",
+    "category": "region"
+  },
+  {
+    "code": "KG-Y",
+    "name": "Ysyk-Köl",
+    "category": "region"
+  }
+]

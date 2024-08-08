@@ -1,0 +1,87 @@
+[
+  {
+    "code": "CF-BGF",
+    "name": "Bangui",
+    "category": "commune"
+  },
+  {
+    "code": "CF-BB",
+    "name": "Bamingui-Bangoran",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-BK",
+    "name": "Basse-Kotto",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-HK",
+    "name": "Haute-Kotto",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-HM",
+    "name": "Haut-Mbomou",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-HS",
+    "name": "Haute-Sangha/Mambéré-Kadéï",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-KG",
+    "name": "Kémo-Gribingui",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-LB",
+    "name": "Lobaye",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-MB",
+    "name": "Mbomou",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-NM",
+    "name": "Nana-Mambéré",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-MP",
+    "name": "Ombella-Mpoko",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-UK",
+    "name": "Ouaka",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-AC",
+    "name": "Ouham",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-OP",
+    "name": "Ouham-Pendé",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-VK",
+    "name": "Vakaga",
+    "category": "prefecture"
+  },
+  {
+    "code": "CF-KB",
+    "name": "Gribingui",
+    "category": "economic prefecture"
+  },
+  {
+    "code": "CF-SE",
+    "name": "Sangha",
+    "category": "economic prefecture"
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "code": "SL-W",
+    "name": "Western Area (Freetown)",
+    "category": "area"
+  },
+  {
+    "code": "SL-E",
+    "name": "Eastern",
+    "category": "province"
+  },
+  {
+    "code": "SL-N",
+    "name": "Northern",
+    "category": "province"
+  },
+  {
+    "code": "SL-NW",
+    "name": "North Western",
+    "category": "province"
+  },
+  {
+    "code": "SL-S",
+    "name": "Southern",
+    "category": "province"
+  }
+]

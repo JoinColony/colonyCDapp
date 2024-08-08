@@ -1,0 +1,37 @@
+[
+  {
+    "code": "GD-01",
+    "name": "Saint Andrew",
+    "category": "parish"
+  },
+  {
+    "code": "GD-02",
+    "name": "Saint David",
+    "category": "parish"
+  },
+  {
+    "code": "GD-03",
+    "name": "Saint George",
+    "category": "parish"
+  },
+  {
+    "code": "GD-04",
+    "name": "Saint John",
+    "category": "parish"
+  },
+  {
+    "code": "GD-05",
+    "name": "Saint Mark",
+    "category": "parish"
+  },
+  {
+    "code": "GD-06",
+    "name": "Saint Patrick",
+    "category": "parish"
+  },
+  {
+    "code": "GD-10",
+    "name": "Southern Grenadine Islands",
+    "category": "dependency"
+  }
+]

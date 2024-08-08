@@ -1,0 +1,27 @@
+[
+  {
+    "code": "TJ-DU",
+    "name": "Dushanbe",
+    "category": "capital territory"
+  },
+  {
+    "code": "TJ-GB",
+    "name": "Kŭhistoni Badakhshon",
+    "category": "autonomous region"
+  },
+  {
+    "code": "TJ-KT",
+    "name": "Khatlon",
+    "category": "region"
+  },
+  {
+    "code": "TJ-SU",
+    "name": "Sughd",
+    "category": "region"
+  },
+  {
+    "code": "TJ-RA",
+    "name": "nohiyahoi tobei jumhurí",
+    "category": "districts under republic administration"
+  }
+]

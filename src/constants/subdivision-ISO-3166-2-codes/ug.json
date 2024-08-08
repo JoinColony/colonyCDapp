@@ -1,0 +1,662 @@
+[
+  {
+    "code": "UG-C",
+    "name": "Central",
+    "category": null
+  },
+  {
+    "code": "UG-E",
+    "name": "Eastern",
+    "category": null
+  },
+  {
+    "code": "UG-N",
+    "name": "Northern",
+    "category": null
+  },
+  {
+    "code": "UG-W",
+    "name": "Western",
+    "category": null
+  },
+  {
+    "code": "UG-314",
+    "name": "Abim",
+    "category": "district"
+  },
+  {
+    "code": "UG-301",
+    "name": "Adjumani",
+    "category": "district"
+  },
+  {
+    "code": "UG-322",
+    "name": "Agago",
+    "category": "district"
+  },
+  {
+    "code": "UG-323",
+    "name": "Alebtong",
+    "category": "district"
+  },
+  {
+    "code": "UG-315",
+    "name": "Amolatar",
+    "category": "district"
+  },
+  {
+    "code": "UG-324",
+    "name": "Amudat",
+    "category": "district"
+  },
+  {
+    "code": "UG-216",
+    "name": "Amuria",
+    "category": "district"
+  },
+  {
+    "code": "UG-316",
+    "name": "Amuru",
+    "category": "district"
+  },
+  {
+    "code": "UG-302",
+    "name": "Apac",
+    "category": "district"
+  },
+  {
+    "code": "UG-303",
+    "name": "Arua",
+    "category": "district"
+  },
+  {
+    "code": "UG-217",
+    "name": "Budaka",
+    "category": "district"
+  },
+  {
+    "code": "UG-218",
+    "name": "Bududa",
+    "category": "district"
+  },
+  {
+    "code": "UG-201",
+    "name": "Bugiri",
+    "category": "district"
+  },
+  {
+    "code": "UG-235",
+    "name": "Bugweri",
+    "category": "district"
+  },
+  {
+    "code": "UG-420",
+    "name": "Buhweju",
+    "category": "district"
+  },
+  {
+    "code": "UG-117",
+    "name": "Buikwe",
+    "category": "district"
+  },
+  {
+    "code": "UG-219",
+    "name": "Bukedea",
+    "category": "district"
+  },
+  {
+    "code": "UG-118",
+    "name": "Bukomansibi",
+    "category": "district"
+  },
+  {
+    "code": "UG-220",
+    "name": "Bukwa",
+    "category": "district"
+  },
+  {
+    "code": "UG-225",
+    "name": "Bulambuli",
+    "category": "district"
+  },
+  {
+    "code": "UG-416",
+    "name": "Buliisa",
+    "category": "district"
+  },
+  {
+    "code": "UG-401",
+    "name": "Bundibugyo",
+    "category": "district"
+  },
+  {
+    "code": "UG-430",
+    "name": "Bunyangabu",
+    "category": "district"
+  },
+  {
+    "code": "UG-402",
+    "name": "Bushenyi",
+    "category": "district"
+  },
+  {
+    "code": "UG-202",
+    "name": "Busia",
+    "category": "district"
+  },
+  {
+    "code": "UG-221",
+    "name": "Butaleja",
+    "category": "district"
+  },
+  {
+    "code": "UG-119",
+    "name": "Butambala",
+    "category": "district"
+  },
+  {
+    "code": "UG-233",
+    "name": "Butebo",
+    "category": "district"
+  },
+  {
+    "code": "UG-120",
+    "name": "Buvuma",
+    "category": "district"
+  },
+  {
+    "code": "UG-226",
+    "name": "Buyende",
+    "category": "district"
+  },
+  {
+    "code": "UG-317",
+    "name": "Dokolo",
+    "category": "district"
+  },
+  {
+    "code": "UG-121",
+    "name": "Gomba",
+    "category": "district"
+  },
+  {
+    "code": "UG-304",
+    "name": "Gulu",
+    "category": "district"
+  },
+  {
+    "code": "UG-403",
+    "name": "Hoima",
+    "category": "district"
+  },
+  {
+    "code": "UG-417",
+    "name": "Ibanda",
+    "category": "district"
+  },
+  {
+    "code": "UG-203",
+    "name": "Iganga",
+    "category": "district"
+  },
+  {
+    "code": "UG-418",
+    "name": "Isingiro",
+    "category": "district"
+  },
+  {
+    "code": "UG-204",
+    "name": "Jinja",
+    "category": "district"
+  },
+  {
+    "code": "UG-318",
+    "name": "Kaabong",
+    "category": "district"
+  },
+  {
+    "code": "UG-404",
+    "name": "Kabale",
+    "category": "district"
+  },
+  {
+    "code": "UG-405",
+    "name": "Kabarole",
+    "category": "district"
+  },
+  {
+    "code": "UG-213",
+    "name": "Kaberamaido",
+    "category": "district"
+  },
+  {
+    "code": "UG-427",
+    "name": "Kagadi",
+    "category": "district"
+  },
+  {
+    "code": "UG-428",
+    "name": "Kakumiro",
+    "category": "district"
+  },
+  {
+    "code": "UG-101",
+    "name": "Kalangala",
+    "category": "district"
+  },
+  {
+    "code": "UG-222",
+    "name": "Kaliro",
+    "category": "district"
+  },
+  {
+    "code": "UG-122",
+    "name": "Kalungu",
+    "category": "district"
+  },
+  {
+    "code": "UG-102",
+    "name": "Kampala",
+    "category": "city"
+  },
+  {
+    "code": "UG-205",
+    "name": "Kamuli",
+    "category": "district"
+  },
+  {
+    "code": "UG-413",
+    "name": "Kamwenge",
+    "category": "district"
+  },
+  {
+    "code": "UG-414",
+    "name": "Kanungu",
+    "category": "district"
+  },
+  {
+    "code": "UG-206",
+    "name": "Kapchorwa",
+    "category": "district"
+  },
+  {
+    "code": "UG-236",
+    "name": "Kapelebyong",
+    "category": "district"
+  },
+  {
+    "code": "UG-126",
+    "name": "Kasanda",
+    "category": "district"
+  },
+  {
+    "code": "UG-406",
+    "name": "Kasese",
+    "category": "district"
+  },
+  {
+    "code": "UG-207",
+    "name": "Katakwi",
+    "category": "district"
+  },
+  {
+    "code": "UG-112",
+    "name": "Kayunga",
+    "category": "district"
+  },
+  {
+    "code": "UG-407",
+    "name": "Kibaale",
+    "category": "district"
+  },
+  {
+    "code": "UG-103",
+    "name": "Kiboga",
+    "category": "district"
+  },
+  {
+    "code": "UG-227",
+    "name": "Kibuku",
+    "category": "district"
+  },
+  {
+    "code": "UG-432",
+    "name": "Kikuube",
+    "category": "district"
+  },
+  {
+    "code": "UG-419",
+    "name": "Kiruhura",
+    "category": "district"
+  },
+  {
+    "code": "UG-421",
+    "name": "Kiryandongo",
+    "category": "district"
+  },
+  {
+    "code": "UG-408",
+    "name": "Kisoro",
+    "category": "district"
+  },
+  {
+    "code": "UG-305",
+    "name": "Kitgum",
+    "category": "district"
+  },
+  {
+    "code": "UG-319",
+    "name": "Koboko",
+    "category": "district"
+  },
+  {
+    "code": "UG-325",
+    "name": "Kole",
+    "category": "district"
+  },
+  {
+    "code": "UG-306",
+    "name": "Kotido",
+    "category": "district"
+  },
+  {
+    "code": "UG-208",
+    "name": "Kumi",
+    "category": "district"
+  },
+  {
+    "code": "UG-333",
+    "name": "Kwania",
+    "category": "district"
+  },
+  {
+    "code": "UG-228",
+    "name": "Kween",
+    "category": "district"
+  },
+  {
+    "code": "UG-123",
+    "name": "Kyankwanzi",
+    "category": "district"
+  },
+  {
+    "code": "UG-422",
+    "name": "Kyegegwa",
+    "category": "district"
+  },
+  {
+    "code": "UG-415",
+    "name": "Kyenjojo",
+    "category": "district"
+  },
+  {
+    "code": "UG-125",
+    "name": "Kyotera",
+    "category": "district"
+  },
+  {
+    "code": "UG-326",
+    "name": "Lamwo",
+    "category": "district"
+  },
+  {
+    "code": "UG-307",
+    "name": "Lira",
+    "category": "district"
+  },
+  {
+    "code": "UG-229",
+    "name": "Luuka",
+    "category": "district"
+  },
+  {
+    "code": "UG-104",
+    "name": "Luwero",
+    "category": "district"
+  },
+  {
+    "code": "UG-124",
+    "name": "Lwengo",
+    "category": "district"
+  },
+  {
+    "code": "UG-114",
+    "name": "Lyantonde",
+    "category": "district"
+  },
+  {
+    "code": "UG-223",
+    "name": "Manafwa",
+    "category": "district"
+  },
+  {
+    "code": "UG-320",
+    "name": "Maracha",
+    "category": "district"
+  },
+  {
+    "code": "UG-105",
+    "name": "Masaka",
+    "category": "district"
+  },
+  {
+    "code": "UG-409",
+    "name": "Masindi",
+    "category": "district"
+  },
+  {
+    "code": "UG-214",
+    "name": "Mayuge",
+    "category": "district"
+  },
+  {
+    "code": "UG-209",
+    "name": "Mbale",
+    "category": "district"
+  },
+  {
+    "code": "UG-410",
+    "name": "Mbarara",
+    "category": "district"
+  },
+  {
+    "code": "UG-423",
+    "name": "Mitooma",
+    "category": "district"
+  },
+  {
+    "code": "UG-115",
+    "name": "Mityana",
+    "category": "district"
+  },
+  {
+    "code": "UG-308",
+    "name": "Moroto",
+    "category": "district"
+  },
+  {
+    "code": "UG-309",
+    "name": "Moyo",
+    "category": "district"
+  },
+  {
+    "code": "UG-106",
+    "name": "Mpigi",
+    "category": "district"
+  },
+  {
+    "code": "UG-107",
+    "name": "Mubende",
+    "category": "district"
+  },
+  {
+    "code": "UG-108",
+    "name": "Mukono",
+    "category": "district"
+  },
+  {
+    "code": "UG-334",
+    "name": "Nabilatuk",
+    "category": "district"
+  },
+  {
+    "code": "UG-311",
+    "name": "Nakapiripirit",
+    "category": "district"
+  },
+  {
+    "code": "UG-116",
+    "name": "Nakaseke",
+    "category": "district"
+  },
+  {
+    "code": "UG-109",
+    "name": "Nakasongola",
+    "category": "district"
+  },
+  {
+    "code": "UG-230",
+    "name": "Namayingo",
+    "category": "district"
+  },
+  {
+    "code": "UG-234",
+    "name": "Namisindwa",
+    "category": "district"
+  },
+  {
+    "code": "UG-224",
+    "name": "Namutumba",
+    "category": "district"
+  },
+  {
+    "code": "UG-327",
+    "name": "Napak",
+    "category": "district"
+  },
+  {
+    "code": "UG-310",
+    "name": "Nebbi",
+    "category": "district"
+  },
+  {
+    "code": "UG-231",
+    "name": "Ngora",
+    "category": "district"
+  },
+  {
+    "code": "UG-424",
+    "name": "Ntoroko",
+    "category": "district"
+  },
+  {
+    "code": "UG-411",
+    "name": "Ntungamo",
+    "category": "district"
+  },
+  {
+    "code": "UG-328",
+    "name": "Nwoya",
+    "category": "district"
+  },
+  {
+    "code": "UG-331",
+    "name": "Omoro",
+    "category": "district"
+  },
+  {
+    "code": "UG-329",
+    "name": "Otuke",
+    "category": "district"
+  },
+  {
+    "code": "UG-321",
+    "name": "Oyam",
+    "category": "district"
+  },
+  {
+    "code": "UG-312",
+    "name": "Pader",
+    "category": "district"
+  },
+  {
+    "code": "UG-332",
+    "name": "Pakwach",
+    "category": "district"
+  },
+  {
+    "code": "UG-210",
+    "name": "Pallisa",
+    "category": "district"
+  },
+  {
+    "code": "UG-110",
+    "name": "Rakai",
+    "category": "district"
+  },
+  {
+    "code": "UG-429",
+    "name": "Rubanda",
+    "category": "district"
+  },
+  {
+    "code": "UG-425",
+    "name": "Rubirizi",
+    "category": "district"
+  },
+  {
+    "code": "UG-431",
+    "name": "Rukiga",
+    "category": "district"
+  },
+  {
+    "code": "UG-412",
+    "name": "Rukungiri",
+    "category": "district"
+  },
+  {
+    "code": "UG-111",
+    "name": "Sembabule",
+    "category": "district"
+  },
+  {
+    "code": "UG-232",
+    "name": "Serere",
+    "category": "district"
+  },
+  {
+    "code": "UG-426",
+    "name": "Sheema",
+    "category": "district"
+  },
+  {
+    "code": "UG-215",
+    "name": "Sironko",
+    "category": "district"
+  },
+  {
+    "code": "UG-211",
+    "name": "Soroti",
+    "category": "district"
+  },
+  {
+    "code": "UG-212",
+    "name": "Tororo",
+    "category": "district"
+  },
+  {
+    "code": "UG-113",
+    "name": "Wakiso",
+    "category": "district"
+  },
+  {
+    "code": "UG-313",
+    "name": "Yumbe",
+    "category": "district"
+  },
+  {
+    "code": "UG-330",
+    "name": "Zombo",
+    "category": "district"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "code": "OM-DA",
+    "name": "Ad Dākhilīyah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-BS",
+    "name": "Shamāl al Bāţinah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-BJ",
+    "name": "Janūb al Bāţinah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-WU",
+    "name": "Al Wusţá",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-SS",
+    "name": "Shamāl ash Sharqīyah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-SJ",
+    "name": "Janūb ash Sharqīyah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-ZA",
+    "name": "Az̧ Z̧āhirah",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-BU",
+    "name": "Al Buraymī",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-MA",
+    "name": "Masqaţ",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-MU",
+    "name": "Musandam",
+    "category": "governorate"
+  },
+  {
+    "code": "OM-ZU",
+    "name": "Z̧ufār",
+    "category": "governorate"
+  }
+]

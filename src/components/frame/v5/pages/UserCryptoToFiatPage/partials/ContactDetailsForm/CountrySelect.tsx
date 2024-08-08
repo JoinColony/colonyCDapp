@@ -25,11 +25,21 @@ export const CountrySelect = () => {
     country: item,
   }));
 
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    trigger,
+    formState: { isSubmitted },
+  } = useFormContext();
 
   const handleSelect = () => {
     // if country changed user should choose state of new country
     setValue('state', '');
+
+    // If no attempt to submit the form has been made yet, do not trigger state validation
+    if (!isSubmitted) {
+      return;
+    }
+    trigger('state');
   };
 
   return (

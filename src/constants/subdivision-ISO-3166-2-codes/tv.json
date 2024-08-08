@@ -1,0 +1,42 @@
+[
+  {
+    "code": "TV-FUN",
+    "name": "Funafuti",
+    "category": "town council"
+  },
+  {
+    "code": "TV-NMG",
+    "name": "Nanumaga",
+    "category": "island council"
+  },
+  {
+    "code": "TV-NMA",
+    "name": "Nanumea",
+    "category": "island council"
+  },
+  {
+    "code": "TV-NIT",
+    "name": "Niutao",
+    "category": "island council"
+  },
+  {
+    "code": "TV-NUI",
+    "name": "Nui",
+    "category": "island council"
+  },
+  {
+    "code": "TV-NKF",
+    "name": "Nukufetau",
+    "category": "island council"
+  },
+  {
+    "code": "TV-NKL",
+    "name": "Nukulaelae",
+    "category": "island council"
+  },
+  {
+    "code": "TV-VAI",
+    "name": "Vaitupu",
+    "category": "island council"
+  }
+]

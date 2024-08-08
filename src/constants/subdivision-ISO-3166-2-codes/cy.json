@@ -1,0 +1,32 @@
+[
+  {
+    "code": "CY-04",
+    "name": "Famagusta",
+    "category": null
+  },
+  {
+    "code": "CY-06",
+    "name": "Kyrenia",
+    "category": null
+  },
+  {
+    "code": "CY-03",
+    "name": "Larnaca",
+    "category": null
+  },
+  {
+    "code": "CY-01",
+    "name": "Nicosia",
+    "category": null
+  },
+  {
+    "code": "CY-02",
+    "name": "Limassol",
+    "category": null
+  },
+  {
+    "code": "CY-05",
+    "name": "Paphos",
+    "category": null
+  }
+]

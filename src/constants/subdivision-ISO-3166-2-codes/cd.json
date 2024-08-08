@@ -1,0 +1,132 @@
+[
+  {
+    "code": "CD-KN",
+    "name": "Kinshasa",
+    "category": "city"
+  },
+  {
+    "code": "CD-BC",
+    "name": "Kongo Central",
+    "category": "province"
+  },
+  {
+    "code": "CD-EQ",
+    "name": "Equator",
+    "category": "province"
+  },
+  {
+    "code": "CD-KE",
+    "name": "Kasai-Oriental",
+    "category": "province"
+  },
+  {
+    "code": "CD-MA",
+    "name": "Maniema",
+    "category": "province"
+  },
+  {
+    "code": "CD-NK",
+    "name": "North Kivu",
+    "category": "province"
+  },
+  {
+    "code": "CD-SK",
+    "name": "South Kivu",
+    "category": "province"
+  },
+  {
+    "code": "CD-BU",
+    "name": "Bas-Uele",
+    "category": "province"
+  },
+  {
+    "code": "CD-HK",
+    "name": "Haut-Katanga",
+    "category": "province"
+  },
+  {
+    "code": "CD-HL",
+    "name": "Haut-Lomami",
+    "category": "province"
+  },
+  {
+    "code": "CD-HU",
+    "name": "Haut-Uele",
+    "category": "province"
+  },
+  {
+    "code": "CD-IT",
+    "name": "Ituri",
+    "category": "province"
+  },
+  {
+    "code": "CD-KC",
+    "name": "Kasai Central",
+    "category": "province"
+  },
+  {
+    "code": "CD-KG",
+    "name": "Kwango",
+    "category": "province"
+  },
+  {
+    "code": "CD-KL",
+    "name": "Kwilu",
+    "category": "province"
+  },
+  {
+    "code": "CD-KS",
+    "name": "Kasai",
+    "category": "province"
+  },
+  {
+    "code": "CD-LO",
+    "name": "Lomami",
+    "category": "province"
+  },
+  {
+    "code": "CD-LU",
+    "name": "Lualaba",
+    "category": "province"
+  },
+  {
+    "code": "CD-MN",
+    "name": "Mai-Ndombe",
+    "category": "province"
+  },
+  {
+    "code": "CD-MO",
+    "name": "Mongala",
+    "category": "province"
+  },
+  {
+    "code": "CD-NU",
+    "name": "North Ubangi",
+    "category": "province"
+  },
+  {
+    "code": "CD-SA",
+    "name": "Sankuru",
+    "category": "province"
+  },
+  {
+    "code": "CD-SU",
+    "name": "South Ubangi",
+    "category": "province"
+  },
+  {
+    "code": "CD-TA",
+    "name": "Tanganyika",
+    "category": "province"
+  },
+  {
+    "code": "CD-TO",
+    "name": "Tshopo",
+    "category": "province"
+  },
+  {
+    "code": "CD-TU",
+    "name": "Tshuapa",
+    "category": "province"
+  }
+]

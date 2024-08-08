@@ -1,0 +1,167 @@
+[
+  {
+    "code": "CO-DC",
+    "name": "Distrito Capital de Bogotá",
+    "category": "capital district"
+  },
+  {
+    "code": "CO-AMA",
+    "name": "Amazonas",
+    "category": "department"
+  },
+  {
+    "code": "CO-ANT",
+    "name": "Antioquia",
+    "category": "department"
+  },
+  {
+    "code": "CO-ARA",
+    "name": "Arauca",
+    "category": "department"
+  },
+  {
+    "code": "CO-ATL",
+    "name": "Atlántico",
+    "category": "department"
+  },
+  {
+    "code": "CO-BOL",
+    "name": "Bolívar",
+    "category": "department"
+  },
+  {
+    "code": "CO-BOY",
+    "name": "Boyacá",
+    "category": "department"
+  },
+  {
+    "code": "CO-CAL",
+    "name": "Caldas",
+    "category": "department"
+  },
+  {
+    "code": "CO-CAQ",
+    "name": "Caquetá",
+    "category": "department"
+  },
+  {
+    "code": "CO-CAS",
+    "name": "Casanare",
+    "category": "department"
+  },
+  {
+    "code": "CO-CAU",
+    "name": "Cauca",
+    "category": "department"
+  },
+  {
+    "code": "CO-CES",
+    "name": "Cesar",
+    "category": "department"
+  },
+  {
+    "code": "CO-COR",
+    "name": "Córdoba",
+    "category": "department"
+  },
+  {
+    "code": "CO-CUN",
+    "name": "Cundinamarca",
+    "category": "department"
+  },
+  {
+    "code": "CO-CHO",
+    "name": "Chocó",
+    "category": "department"
+  },
+  {
+    "code": "CO-GUA",
+    "name": "Guainía",
+    "category": "department"
+  },
+  {
+    "code": "CO-GUV",
+    "name": "Guaviare",
+    "category": "department"
+  },
+  {
+    "code": "CO-HUI",
+    "name": "Huila",
+    "category": "department"
+  },
+  {
+    "code": "CO-LAG",
+    "name": "La Guajira",
+    "category": "department"
+  },
+  {
+    "code": "CO-MAG",
+    "name": "Magdalena",
+    "category": "department"
+  },
+  {
+    "code": "CO-MET",
+    "name": "Meta",
+    "category": "department"
+  },
+  {
+    "code": "CO-NAR",
+    "name": "Nariño",
+    "category": "department"
+  },
+  {
+    "code": "CO-NSA",
+    "name": "Norte de Santander",
+    "category": "department"
+  },
+  {
+    "code": "CO-PUT",
+    "name": "Putumayo",
+    "category": "department"
+  },
+  {
+    "code": "CO-QUI",
+    "name": "Quindío",
+    "category": "department"
+  },
+  {
+    "code": "CO-RIS",
+    "name": "Risaralda",
+    "category": "department"
+  },
+  {
+    "code": "CO-SAP",
+    "name": "San Andrés, Providencia y Santa Catalina",
+    "category": "department"
+  },
+  {
+    "code": "CO-SAN",
+    "name": "Santander",
+    "category": "department"
+  },
+  {
+    "code": "CO-SUC",
+    "name": "Sucre",
+    "category": "department"
+  },
+  {
+    "code": "CO-TOL",
+    "name": "Tolima",
+    "category": "department"
+  },
+  {
+    "code": "CO-VAC",
+    "name": "Valle del Cauca",
+    "category": "department"
+  },
+  {
+    "code": "CO-VAU",
+    "name": "Vaupés",
+    "category": "department"
+  },
+  {
+    "code": "CO-VID",
+    "name": "Vichada",
+    "category": "department"
+  }
+]

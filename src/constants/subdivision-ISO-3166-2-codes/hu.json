@@ -1,0 +1,217 @@
+[
+  {
+    "code": "HU-BU",
+    "name": "Budapest",
+    "category": "capital city"
+  },
+  {
+    "code": "HU-BK",
+    "name": "Bács-Kiskun",
+    "category": "county"
+  },
+  {
+    "code": "HU-BA",
+    "name": "Baranya",
+    "category": "county"
+  },
+  {
+    "code": "HU-BE",
+    "name": "Békés",
+    "category": "county"
+  },
+  {
+    "code": "HU-BZ",
+    "name": "Borsod-Abaúj-Zemplén",
+    "category": "county"
+  },
+  {
+    "code": "HU-CS",
+    "name": "Csongrád",
+    "category": "county"
+  },
+  {
+    "code": "HU-FE",
+    "name": "Fejér",
+    "category": "county"
+  },
+  {
+    "code": "HU-GS",
+    "name": "Győr-Moson-Sopron",
+    "category": "county"
+  },
+  {
+    "code": "HU-HB",
+    "name": "Hajdú-Bihar",
+    "category": "county"
+  },
+  {
+    "code": "HU-HE",
+    "name": "Heves",
+    "category": "county"
+  },
+  {
+    "code": "HU-JN",
+    "name": "Jász-Nagykun-Szolnok",
+    "category": "county"
+  },
+  {
+    "code": "HU-KE",
+    "name": "Komárom-Esztergom",
+    "category": "county"
+  },
+  {
+    "code": "HU-NO",
+    "name": "Nógrád",
+    "category": "county"
+  },
+  {
+    "code": "HU-PE",
+    "name": "Pest",
+    "category": "county"
+  },
+  {
+    "code": "HU-SO",
+    "name": "Somogy",
+    "category": "county"
+  },
+  {
+    "code": "HU-SZ",
+    "name": "Szabolcs-Szatmár-Bereg",
+    "category": "county"
+  },
+  {
+    "code": "HU-TO",
+    "name": "Tolna",
+    "category": "county"
+  },
+  {
+    "code": "HU-VA",
+    "name": "Vas",
+    "category": "county"
+  },
+  {
+    "code": "HU-VE",
+    "name": "Veszprém",
+    "category": "county"
+  },
+  {
+    "code": "HU-ZA",
+    "name": "Zala",
+    "category": "county"
+  },
+  {
+    "code": "HU-BC",
+    "name": "Békéscsaba",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-DE",
+    "name": "Debrecen",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-DU",
+    "name": "Dunaújváros",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-EG",
+    "name": "Eger",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-ER",
+    "name": "Érd",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-GY",
+    "name": "Győr",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-HV",
+    "name": "Hódmezővásárhely",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-KV",
+    "name": "Kaposvár",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-KM",
+    "name": "Kecskemét",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-MI",
+    "name": "Miskolc",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-NK",
+    "name": "Nagykanizsa",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-NY",
+    "name": "Nyíregyháza",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-PS",
+    "name": "Pécs",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-ST",
+    "name": "Salgótarján",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SN",
+    "name": "Sopron",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SD",
+    "name": "Szeged",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SF",
+    "name": "Székesfehérvár",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SS",
+    "name": "Szekszárd",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SK",
+    "name": "Szolnok",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-SH",
+    "name": "Szombathely",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-TB",
+    "name": "Tatabánya",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-VM",
+    "name": "Veszprém",
+    "category": "city with county rights"
+  },
+  {
+    "code": "HU-ZE",
+    "name": "Zalaegerszeg",
+    "category": "city with county rights"
+  }
+]

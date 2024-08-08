@@ -1,0 +1,32 @@
+[
+  {
+    "code": "DJ-AS",
+    "name": "Ali Sabieh",
+    "category": "region"
+  },
+  {
+    "code": "DJ-AR",
+    "name": "Arta",
+    "category": "region"
+  },
+  {
+    "code": "DJ-DI",
+    "name": "Dikhil",
+    "category": "region"
+  },
+  {
+    "code": "DJ-OB",
+    "name": "Obock",
+    "category": "region"
+  },
+  {
+    "code": "DJ-TA",
+    "name": "Tadjourah",
+    "category": "region"
+  },
+  {
+    "code": "DJ-DJ",
+    "name": "Djibouti",
+    "category": "city"
+  }
+]

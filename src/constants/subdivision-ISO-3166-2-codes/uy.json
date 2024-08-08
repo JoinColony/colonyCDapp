@@ -1,0 +1,97 @@
+[
+  {
+    "code": "UY-AR",
+    "name": "Artigas",
+    "category": null
+  },
+  {
+    "code": "UY-CA",
+    "name": "Canelones",
+    "category": null
+  },
+  {
+    "code": "UY-CL",
+    "name": "Cerro Largo",
+    "category": null
+  },
+  {
+    "code": "UY-CO",
+    "name": "Colonia",
+    "category": null
+  },
+  {
+    "code": "UY-DU",
+    "name": "Durazno",
+    "category": null
+  },
+  {
+    "code": "UY-FS",
+    "name": "Flores",
+    "category": null
+  },
+  {
+    "code": "UY-FD",
+    "name": "Florida",
+    "category": null
+  },
+  {
+    "code": "UY-LA",
+    "name": "Lavalleja",
+    "category": null
+  },
+  {
+    "code": "UY-MA",
+    "name": "Maldonado",
+    "category": null
+  },
+  {
+    "code": "UY-MO",
+    "name": "Montevideo",
+    "category": null
+  },
+  {
+    "code": "UY-PA",
+    "name": "Paysandú",
+    "category": null
+  },
+  {
+    "code": "UY-RN",
+    "name": "Río Negro",
+    "category": null
+  },
+  {
+    "code": "UY-RV",
+    "name": "Rivera",
+    "category": null
+  },
+  {
+    "code": "UY-RO",
+    "name": "Rocha",
+    "category": null
+  },
+  {
+    "code": "UY-SA",
+    "name": "Salto",
+    "category": null
+  },
+  {
+    "code": "UY-SJ",
+    "name": "San José",
+    "category": null
+  },
+  {
+    "code": "UY-SO",
+    "name": "Soriano",
+    "category": null
+  },
+  {
+    "code": "UY-TA",
+    "name": "Tacuarembó",
+    "category": null
+  },
+  {
+    "code": "UY-TT",
+    "name": "Treinta y Tres",
+    "category": null
+  }
+]

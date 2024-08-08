@@ -1,0 +1,32 @@
+[
+  {
+    "code": "GM-B",
+    "name": "Banjul",
+    "category": "city"
+  },
+  {
+    "code": "GM-M",
+    "name": "Central River",
+    "category": "division"
+  },
+  {
+    "code": "GM-L",
+    "name": "Lower River",
+    "category": "division"
+  },
+  {
+    "code": "GM-N",
+    "name": "North Bank",
+    "category": "division"
+  },
+  {
+    "code": "GM-U",
+    "name": "Upper River",
+    "category": "division"
+  },
+  {
+    "code": "GM-W",
+    "name": "Western",
+    "category": "division"
+  }
+]
