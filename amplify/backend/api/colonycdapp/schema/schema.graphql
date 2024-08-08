@@ -3110,12 +3110,6 @@ type ExpenditureSlotChanges {
 type ColonyActionMetadata @model {
   id: ID!
   customTitle: String!
-  """
-  In case of crypto-to-fiat payment actions,
-  the address of the recipient whose liquidation address
-  the funds were sent to
-  """
-  originalRecipientAddress: ID
 }
 
 type ColonyDecision @model {
