@@ -18,9 +18,6 @@ import {
   type CreateUniqueUserMutationVariables,
   GetProfileByEmailDocument,
   GetUserByNameDocument,
-  type GetUserLiquidationAddressesQuery,
-  type GetUserLiquidationAddressesQueryVariables,
-  GetUserLiquidationAddressesDocument,
 } from '~gql';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -331,21 +328,18 @@ function* userCryptoToFiatTransfer({
       throw new Error(`USDC token address not found on network ${network}`);
     }
 
-    const apolloClient = getContext(ContextModule.ApolloClient);
-
-    const { chainId } = yield colonyManager.provider.getNetwork();
-
     // @TODO: Needs to be replaced with bridgeGetUserLiquidationAddress query
-    const { data } = yield apolloClient.query<
-      GetUserLiquidationAddressesQuery,
-      GetUserLiquidationAddressesQueryVariables
-    >({
-      query: GetUserLiquidationAddressesDocument,
-      variables: {
-        userAddress: utils.getAddress(wallet.address),
-        chainId,
-      },
-    });
+    // const { data } = yield apolloClient.query<
+    //   GetUserLiquidationAddressesQuery,
+    //   GetUserLiquidationAddressesQueryVariables
+    // >({
+    //   query: GetUserLiquidationAddressesDocument,
+    //   variables: {
+    //     userAddress: utils.getAddress(wallet.address),
+    //     chainId,
+    //   },
+    // });
+    const data = {} as any;
 
     const liquidationAddress =
       data.getLiquidationAddressesByUserAddress?.items[0]?.liquidationAddress;

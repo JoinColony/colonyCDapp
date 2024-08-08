@@ -9426,14 +9426,6 @@ export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
 
 export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
-export type GetUserLiquidationAddressesQueryVariables = Exact<{
-  userAddress: Scalars['ID'];
-  chainId: Scalars['Int'];
-}>;
-
-
-export type GetUserLiquidationAddressesQuery = { __typename?: 'Query', getLiquidationAddressesByUserAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
-
 export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -12756,47 +12748,6 @@ export function useGetUserByUserOrLiquidationAddressLazyQuery(baseOptions?: Apol
 export type GetUserByUserOrLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserByUserOrLiquidationAddressQuery>;
 export type GetUserByUserOrLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserByUserOrLiquidationAddressLazyQuery>;
 export type GetUserByUserOrLiquidationAddressQueryResult = Apollo.QueryResult<GetUserByUserOrLiquidationAddressQuery, GetUserByUserOrLiquidationAddressQueryVariables>;
-export const GetUserLiquidationAddressesDocument = gql`
-    query GetUserLiquidationAddresses($userAddress: ID!, $chainId: Int!) {
-  getLiquidationAddressesByUserAddress(
-    userAddress: $userAddress
-    filter: {chainId: {eq: $chainId}}
-  ) {
-    items {
-      ...LiquidationAddress
-    }
-  }
-}
-    ${LiquidationAddressFragmentDoc}`;
-
-/**
- * __useGetUserLiquidationAddressesQuery__
- *
- * To run a query within a React component, call `useGetUserLiquidationAddressesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserLiquidationAddressesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserLiquidationAddressesQuery({
- *   variables: {
- *      userAddress: // value for 'userAddress'
- *      chainId: // value for 'chainId'
- *   },
- * });
- */
-export function useGetUserLiquidationAddressesQuery(baseOptions: Apollo.QueryHookOptions<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>(GetUserLiquidationAddressesDocument, options);
-      }
-export function useGetUserLiquidationAddressesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>(GetUserLiquidationAddressesDocument, options);
-        }
-export type GetUserLiquidationAddressesQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressesQuery>;
-export type GetUserLiquidationAddressesLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressesLazyQuery>;
-export type GetUserLiquidationAddressesQueryResult = Apollo.QueryResult<GetUserLiquidationAddressesQuery, GetUserLiquidationAddressesQueryVariables>;
 export const GetReputationMiningCycleMetadataDocument = gql`
     query GetReputationMiningCycleMetadata {
   getReputationMiningCycleMetadata(id: "REPUTATION_MINING_CYCLE_METADATA") {

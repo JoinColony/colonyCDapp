@@ -16,14 +16,3 @@ query GetUserByUserOrLiquidationAddress(
     }
   }
 }
-
-query GetUserLiquidationAddresses($userAddress: ID!, $chainId: Int!) {
-  getLiquidationAddressesByUserAddress(
-    userAddress: $userAddress
-    filter: { chainId: { eq: $chainId } }
-  ) {
-    items {
-      ...LiquidationAddress
-    }
-  }
-}
