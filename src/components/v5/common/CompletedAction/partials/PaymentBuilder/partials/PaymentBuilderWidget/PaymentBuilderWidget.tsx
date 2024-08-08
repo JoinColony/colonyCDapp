@@ -314,6 +314,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           isFundingMotion &&
           !hasMotionPassed &&
           !isFundingMotionFailed &&
+          motionState !== MotionState.FailedNotFinalizable &&
+          motionState !== MotionState.Failed &&
           motionStakes ? (
             <MotionCountDownTimer
               key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
