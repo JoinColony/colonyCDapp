@@ -25,6 +25,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     initiatorUser: user,
     initiatorAddress,
     metadata,
+    decisionData,
     isMotion,
     motionData,
     motionState,
@@ -94,7 +95,10 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
               },
             )}
           >
-            {metadata?.customTitle || actionMetadataDescription || '-'}
+            {metadata?.customTitle ||
+              decisionData?.title ||
+              actionMetadataDescription ||
+              '-'}
           </p>
           {colony && (
             <p
