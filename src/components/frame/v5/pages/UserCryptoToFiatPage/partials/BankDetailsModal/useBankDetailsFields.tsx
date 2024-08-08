@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import {
+  CheckKycStatusDocument,
   SupportedCurrencies,
   useCreateBankAccountMutation,
   useUpdateBankAccountMutation,
@@ -42,8 +43,12 @@ export const useBankDetailsFields = ({
   redirectToSecondTab,
   data,
 }: UseBankDetailsParams) => {
-  const [createBankAccount] = useCreateBankAccountMutation();
-  const [updateBankAccount] = useUpdateBankAccountMutation();
+  const [createBankAccount] = useCreateBankAccountMutation({
+    refetchQueries: [CheckKycStatusDocument],
+  });
+  const [updateBankAccount] = useUpdateBankAccountMutation({
+    refetchQueries: [CheckKycStatusDocument],
+  });
 
   const [bankDetailsFields, setBankDetailsFields] =
     useState<BankDetailsFormValues>({

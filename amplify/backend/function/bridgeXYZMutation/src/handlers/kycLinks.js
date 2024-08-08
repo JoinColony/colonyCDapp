@@ -51,12 +51,16 @@ const kycLinksHandler = async (
      */
     const tosLink = data?.tos_link ?? data?.existing_kyc_link?.tos_link;
     if (!tosLink) {
-      throw new Error('TOS link missing from Bridge XYZ response');
+      throw new Error(
+        `TOS link missing from Bridge XYZ response: ${data.toString()}`,
+      );
     }
 
     const customerId = extractCustomerId(tosLink);
     if (!customerId) {
-      throw new Error('Could not extract customer ID from TOS link');
+      throw new Error(
+        `Could not extract customer ID from TOS link: ${tosLink}`,
+      );
     }
 
     const userByCustomerIdQuery = await graphqlRequest(

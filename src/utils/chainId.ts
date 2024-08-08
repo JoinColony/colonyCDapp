@@ -1,5 +1,9 @@
 import { BigNumber } from 'ethers';
 
+import { DEFAULT_NETWORK_INFO } from '~constants';
+
+export const getChainId = (): string => DEFAULT_NETWORK_INFO.chainId;
+
 /**
  * web3-onboard stores chainId as hex strings. E.g. ganache id of 2656691 is stored as "0x2889b3".
  * This utility converts the chain id to its hex equivalent.

@@ -85,7 +85,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
-  const { user } = useUserByAddress(actionRecipientAddress as string, true);
+  const { user } = useUserByAddress(actionRecipientAddress ?? '', true);
   const recipientAddress = user?.walletAddress ?? actionRecipientAddress;
   const recipientUser = user ?? actionRecipientUser;
 

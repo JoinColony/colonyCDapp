@@ -42,6 +42,7 @@ const updateExternalAccountHandler = async (
     },
   );
 
+  // Exit if deleting account fails to avoid creating multiple accounts
   if (deleteAccountRes.status !== 200) {
     throw Error(
       `Error deleting external account: ${await deleteAccountRes.text()}`,
@@ -57,6 +58,8 @@ const updateExternalAccountHandler = async (
 
   /**
    * Update liquidation addresses associated with the deleted account
+   * Only if the currency is the same as the new account
+   * Otherwise, creating new liquidation address is handled elsewhere
    */
   const liquidationAddresses = await getLiquidationAddresses(
     apiUrl,
@@ -88,32 +91,6 @@ const updateExternalAccountHandler = async (
     if (updateAddressRes.status !== 200) {
       throw Error(
         `Error updating liquidation address: ${await updateAddressRes.text()}`,
-      );
-    }
-  } else {
-    const createAddressRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Idempotency-Key': newAccount.id,
-          'Api-Key': apiKey,
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          chain: 'arbitrum',
-          currency: 'usdc',
-          external_account_id: newAccount.id,
-          destination_payment_rail:
-            newAccount.currency === 'usd' ? 'ach' : 'sepa',
-          destination_currency: newAccount.currency,
-        }),
-      },
-    );
-
-    if (createAddressRes.status !== 201) {
-      throw Error(
-        `Error creating liquidation address: ${await createAddressRes.text()}`,
       );
     }
   }
