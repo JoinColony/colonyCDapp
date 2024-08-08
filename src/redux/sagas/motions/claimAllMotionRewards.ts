@@ -46,7 +46,7 @@ export type CurrentColonyMotion = ColonyMotion & {
 
 function* claimAllMotionRewards({
   meta,
-  payload: { userAddress, motionStates },
+  payload: { userAddress, userStakes },
 }: Action<ActionTypes.MOTION_CLAIM_ALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
@@ -59,7 +59,7 @@ function* claimAllMotionRewards({
       databaseMotionId,
       colonyAddress,
       extensionAddress,
-    } of motionStates) {
+    } of userStakes) {
       const {
         data: { getColonyMotion },
       }: ApolloQueryResult<GetColonyMotionQuery> = yield apolloClient.query<

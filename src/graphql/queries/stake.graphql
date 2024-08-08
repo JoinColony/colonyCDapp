@@ -5,16 +5,3 @@ query GetUserStakes($userAddress: ID!) {
     }
   }
 }
-
-query GetUserStakesByColony($userAddress: ID!, $colonyAddress: ID!) {
-  getUserStakes(
-    userAddress: $userAddress
-    filter: { colonyAddress: { eq: $colonyAddress } }
-    limit: 10000
-    sortDirection: DESC
-  ) {
-    items {
-      ...UserStake
-    }
-  }
-}

@@ -9,21 +9,20 @@ import { useEffect, useMemo, useState } from 'react';
 import { ADDRESS_ZERO, supportedExtensionsConfig } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetJoinedColoniesExtensionsQuery } from '~gql';
+import { type JoinedColonyWithExtensions } from '~types/graphql.ts';
 import { notNull, notUndefined } from '~utils/arrays/index.ts';
 
 export type MotionStatesMap = Map<string, MotionState | null>;
 
-export type MotionStatesMapByColonies = Record<string, MotionStatesMap>;
-
-export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
-
-export type MotionId = {
+export type UserMotionStake = {
   motionId: string;
   colonyAddress: string;
   databaseMotionId: string;
 };
 
-const getVotingReputationAddressByColony = (colony) => {
+const getVotingReputationAddressByColony = (
+  colony: JoinedColonyWithExtensions,
+) => {
   const colonyExtensions = colony?.extensions?.items?.filter(notNull);
   if (!colonyExtensions) {
     return [];
@@ -38,7 +37,7 @@ const getVotingReputationAddressByColony = (colony) => {
   return currentExtensionAddress?.address;
 };
 
-const useJoinedColoniesWithExtensions = (userAddress?: string) => {
+const useGetVotingReputationByColony = (userAddress?: string) => {
   const { data, loading } = useGetJoinedColoniesExtensionsQuery({
     variables: {
       contributorAddress: userAddress ?? ADDRESS_ZERO,
@@ -55,27 +54,6 @@ const useJoinedColoniesWithExtensions = (userAddress?: string) => {
     );
   }, [data?.getContributorsByAddress?.items]);
 
-  return {
-    joinedColoniesWithExtensions,
-    loading,
-  };
-};
-
-/**
- * Hook that accepts an array of motion IDs object and returns a map of motion IDs to their states
- * Make sure to memoize the array of motion IDs to avoid infinite loops
- */
-const useNetworkMotionStatesAllColonies = (
-  motionIdsMap: MotionId[],
-  skip?: boolean,
-) => {
-  const { wallet } = useAppContext();
-
-  const {
-    joinedColoniesWithExtensions,
-    loading: joinedColoniesWithExtensionsLoading,
-  } = useJoinedColoniesWithExtensions(wallet?.address);
-
   const votingReputationByColony = useMemo(() => {
     return joinedColoniesWithExtensions.reduce((prev, colony) => {
       if (!colony) {
@@ -88,11 +66,31 @@ const useNetworkMotionStatesAllColonies = (
     }, {});
   }, [joinedColoniesWithExtensions]);
 
+  return {
+    votingReputationByColony,
+    loading,
+  };
+};
+
+/**
+ * Hook that accepts an array of UserMotionStake and returns a map of motion IDs to their states
+ * Make sure to memoize the array of motion IDs to avoid infinite loops
+ */
+const useNetworkMotionStatesAllColonies = (
+  userMotionStakes: UserMotionStake[],
+  skip?: boolean,
+) => {
+  const { wallet } = useAppContext();
+
+  const { votingReputationByColony, loading: votingReputationLoading } =
+    useGetVotingReputationByColony(wallet?.address);
+
   const [loading, setLoading] = useState(false);
 
   const [motionStatesMap, setMotionStatesMap] = useState<MotionStatesMap>(
     new Map(),
   );
+
   useEffect(() => {
     const { ethersProvider } = wallet || {};
     const signer = ethersProvider?.getSigner(wallet?.address); // Properly initialize the signer with the current wallet address
@@ -102,7 +100,7 @@ const useNetworkMotionStatesAllColonies = (
     ).filter(notUndefined).length;
     if (
       skip ||
-      !motionIdsMap.length ||
+      !userMotionStakes.length ||
       !votingReputationAddressesCount ||
       !ethersProvider ||
       !signer
@@ -110,15 +108,15 @@ const useNetworkMotionStatesAllColonies = (
       return;
     }
 
-    const newMotionIds = motionIdsMap.filter((motion) => {
+    const newMotionStakes = userMotionStakes.filter((motion) => {
       return !motionStatesMap.has(motion.databaseMotionId);
     });
-    const deletedMotionIds = Array.from(motionStatesMap.keys()).filter(
-      (nativeMotionKey) =>
-        !motionIdsMap.some((m) => m.databaseMotionId === nativeMotionKey),
+    const deletedDatabaseIds = Array.from(motionStatesMap.keys()).filter(
+      (databaseMotionId) =>
+        !userMotionStakes.some((m) => m.databaseMotionId === databaseMotionId),
     );
 
-    if (!newMotionIds.length && !deletedMotionIds.length) {
+    if (!newMotionStakes.length && !deletedDatabaseIds.length) {
       return;
     }
 
@@ -127,10 +125,10 @@ const useNetworkMotionStatesAllColonies = (
       const statesMap = new Map(motionStatesMap);
 
       await Promise.all(
-        newMotionIds.map(async (nativeMotion) => {
+        newMotionStakes.map(async (motionStake) => {
           const votingReputationAddress =
-            votingReputationByColony[nativeMotion.colonyAddress];
-          const motionStateKey = nativeMotion.databaseMotionId;
+            votingReputationByColony[motionStake.colonyAddress];
+          const motionStateKey = motionStake.databaseMotionId;
 
           if (!votingReputationAddress) {
             statesMap.set(motionStateKey, null);
@@ -143,7 +141,7 @@ const useNetworkMotionStatesAllColonies = (
 
           try {
             const motionState = await votingRepClient.getMotionState(
-              nativeMotion.motionId,
+              motionStake.motionId,
             );
             statesMap.set(motionStateKey, motionState);
           } catch (e) {
@@ -152,8 +150,8 @@ const useNetworkMotionStatesAllColonies = (
           }
         }),
       );
-      deletedMotionIds.forEach((nativeMotionId) =>
-        statesMap.delete(nativeMotionId),
+      deletedDatabaseIds.forEach((databaseMotionId) =>
+        statesMap.delete(databaseMotionId),
       );
 
       setMotionStatesMap(statesMap);
@@ -161,12 +159,18 @@ const useNetworkMotionStatesAllColonies = (
     };
 
     fetchMotionStates();
-  }, [motionIdsMap, votingReputationByColony, skip, wallet, motionStatesMap]);
+  }, [
+    userMotionStakes,
+    votingReputationByColony,
+    skip,
+    wallet,
+    motionStatesMap,
+  ]);
 
   return {
     motionStatesMap,
     votingReputationByColony,
-    loading: loading || joinedColoniesWithExtensionsLoading,
+    loading: loading || votingReputationLoading,
   };
 };
 

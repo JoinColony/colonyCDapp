@@ -1,9 +1,8 @@
-import React, { useEffect, useState, type FC } from 'react';
+import React, { useEffect, useMemo, useState, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
-import { useGetFullColonyByAddressQuery } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
@@ -27,18 +26,22 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
 
   const { colonyName: colonyNameUrl } = useParams();
 
-  const { data: stakeColonyData, loading: stakeColonyLoading } =
-    useGetFullColonyByAddressQuery({
-      variables: {
-        address: stake.action?.colonyAddress || '',
-      },
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'cache-first',
-    });
-
-  const stakeColony = stakeColonyData?.getColonyByAddress?.items[0];
-
   const stakeColonyName = stake.action?.colony.name ?? '';
+
+  const stakeColony = useMemo(() => {
+    if (!stake.action) {
+      return null;
+    }
+    return {
+      nativeToken: {
+        decimals: stake.action?.colony.nativeToken.nativeTokenDecimals,
+        symbol: stake.action?.colony.nativeToken.nativeTokenSymbol,
+        tokenAddress: stake.action?.colony.nativeToken.tokenAddress,
+        name: stake.action?.colony.nativeToken.name,
+      },
+      metadata: stake.action?.colony.metadata,
+    };
+  }, [stake.action]);
 
   useEffect(() => {
     if (colonyNameUrl !== stakeColonyName) {
@@ -81,34 +84,26 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
             <UserStakeStatusBadge status={stake.status} />
           </div>
           <div className="flex text-xs">
-            {stakeColonyLoading ? (
-              <div className="flex w-full items-center py-1.5">
-                <div className="h-2 w-full overflow-hidden rounded skeleton" />
-              </div>
-            ) : (
-              <>
-                <div className="mr-2 font-medium">
-                  {stakeColony && (
-                    <Numeral
-                      value={stake.amount}
-                      decimals={stakeColony.nativeToken.decimals}
-                      suffix={` ${stakeColony.nativeToken.symbol}`}
-                    />
-                  )}
-                </div>
-                <div className="text-gray-600">
-                  {stake.action && stakeColony
-                    ? formatMessage(
-                        { id: 'action.title' },
-                        getActionTitleValues({
-                          actionData: stake.action,
-                          colony: stakeColony,
-                        }),
-                      )
-                    : '-'}
-                </div>
-              </>
-            )}
+            <div className="mr-2 font-medium">
+              {stakeColony && (
+                <Numeral
+                  value={stake.amount}
+                  decimals={stakeColony.nativeToken.decimals}
+                  suffix={` ${stakeColony.nativeToken.symbol}`}
+                />
+              )}
+            </div>
+            <div className="text-gray-600">
+              {stake.action && stakeColony
+                ? formatMessage(
+                    { id: 'action.title' },
+                    getActionTitleValues({
+                      actionData: stake.action,
+                      colony: stakeColony,
+                    }),
+                  )
+                : '-'}
+            </div>
           </div>
         </div>
       </button>
