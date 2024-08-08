@@ -5,10 +5,15 @@ import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import { type StepDetailsBlockProps } from './types.ts';
 
-const StepDetailsBlock: FC<StepDetailsBlockProps> = ({ text, content }) => (
+const StepDetailsBlock: FC<StepDetailsBlockProps> = ({
+  text,
+  content,
+  className,
+}) => (
   <MenuWithStatusText
     statusTextSectionProps={{
       status: StatusTypes.Info,
+      className,
       children: text,
       textClassName: 'text-4 text-gray-900',
       iconAlignment: 'top',

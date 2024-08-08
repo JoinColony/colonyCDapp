@@ -78,6 +78,16 @@ fragment Expenditure on Expenditure {
       ...ExpenditureAction
     }
   }
+  releaseActions: actions(
+    filter: {
+      type: { eq: RELEASE_STAGED_PAYMENTS }
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
   editingActions: actions(
     filter: {
       type: { eq: EDIT_EXPENDITURE }
@@ -121,6 +131,7 @@ fragment ExpenditureAction on ColonyAction {
   id
   initiatorAddress
   createdAt
+  expenditureSlotIds
   initiatorUser {
     ...User
   }

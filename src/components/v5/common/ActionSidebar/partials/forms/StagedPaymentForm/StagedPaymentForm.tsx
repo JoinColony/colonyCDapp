@@ -1,6 +1,7 @@
 import { UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
@@ -56,7 +57,9 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <UserSelect name={RECIPIENT_FIELD_NAME} />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField
+        filterOptionsFn={({ value }) => value !== DecisionMethod.Reputation}
+      />
       <CreatedIn />
       <Description />
       <StagedPaymentRecipientsField name="stages" />
