@@ -108,7 +108,8 @@ export const useUploadCSVFile = (
 
           const truncatedData = result.data.slice(dataDelimiterIndex + 2);
 
-          if (truncatedData.length > 400) {
+          // Max number of payments is 400, but the format requires two header rows
+          if (truncatedData.length > 402) {
             setError(DropzoneErrors.STRUCTURE);
             return;
           }

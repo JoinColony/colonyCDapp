@@ -4,6 +4,7 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
+import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -24,6 +25,7 @@ import {
   createActionMetadataInDB,
   adjustPayoutsAddresses,
 } from '../utils/index.ts';
+import { chunkedMulticall } from '../utils/multicall.ts';
 
 export type CreateExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_CREATE>['payload'];
@@ -53,22 +55,35 @@ function* createExpenditure({
   const batchKey = TRANSACTION_METHODS.CreateExpenditure;
 
   const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(adjustedPayouts);
 
   const {
     makeExpenditure,
-    setExpenditureValues,
     setExpenditureStaged,
     annotateMakeExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    [
-      'makeExpenditure',
-      'setExpenditureValues',
-      'setExpenditureStaged',
-      'annotateMakeExpenditure',
-    ],
+    ['makeExpenditure', 'setExpenditureStaged', 'annotateMakeExpenditure'],
   );
+
+  const {
+    createMulticallChannels,
+    createMulticallTransactions,
+    processMulticallTransactions,
+    closeMulticallChannels,
+    finalMulticallGroupIndex,
+  } = chunkedMulticall({
+    colonyAddress,
+    items: getPayoutsWithSlotIds(adjustedPayouts),
+    // In testing, if this was called with more than 164 payouts
+    // the resulting transaction receipt was too big to update the transaction in the db
+    chunkSize: 164,
+    metaId: meta.id,
+    batchKey,
+    startIndex: 1,
+    channelId: 'setExpenditureValues',
+  });
+
+  yield createMulticallChannels();
 
   try {
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -91,17 +106,9 @@ function* createExpenditure({
       ready: false,
     });
 
-    yield fork(createTransaction, setExpenditureValues.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'multicall',
-      identifier: colonyAddress,
-      group: {
-        key: batchKey,
-        id: meta.id,
-        index: 1,
-      },
-      ready: false,
-    });
+    yield* createMulticallTransactions();
+
+    const nextIndex = finalMulticallGroupIndex + 1;
 
     if (isStaged) {
       yield fork(createTransaction, setExpenditureStaged.id, {
@@ -111,7 +118,7 @@ function* createExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: 2,
+          index: nextIndex,
         },
         ready: false,
       });
@@ -125,7 +132,7 @@ function* createExpenditure({
         group: {
           key: batchKey,
           id: meta.id,
-          index: isStaged ? 3 : 2,
+          index: isStaged ? nextIndex + 1 : nextIndex,
         },
         ready: false,
       });
@@ -149,53 +156,59 @@ function* createExpenditure({
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 
-    yield takeFrom(
-      setExpenditureValues.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
+    yield processMulticallTransactions({
+      colonyClient,
+      encodeFunctionData: (
+        payoutsWithSlotIds: ExpenditurePayoutFieldValue[],
+      ) => {
+        const multicallData: string[] = [];
+        multicallData.push(
+          colonyClient.interface.encodeFunctionData(
+            'setExpenditureRecipients',
+            [
+              expenditureId,
+              payoutsWithSlotIds.map((payout) => payout.slotId),
+              payoutsWithSlotIds.map((payout) => payout.recipientAddress),
+            ],
+          ),
+        );
 
-    const multicallData: string[] = [];
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.recipientAddress),
-      ]),
-    );
+        multicallData.push(
+          colonyClient.interface.encodeFunctionData(
+            'setExpenditureClaimDelays',
+            [
+              expenditureId,
+              payoutsWithSlotIds.map((payout) => payout.slotId),
+              payoutsWithSlotIds.map((payout) => payout.claimDelay),
+            ],
+          ),
+        );
 
-    multicallData.push(
-      colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
-        expenditureId,
-        payoutsWithSlotIds.map((payout) => payout.slotId),
-        payoutsWithSlotIds.map((payout) => payout.claimDelay),
-      ]),
-    );
+        const tokenAddresses = new Set(
+          payoutsWithSlotIds.map((payout) => payout.tokenAddress),
+        );
 
-    const tokenAddresses = new Set(
-      payoutsWithSlotIds.map((payout) => payout.tokenAddress),
-    );
+        tokenAddresses.forEach((tokenAddress) => {
+          const tokenPayouts = payoutsWithSlotIds.filter(
+            (payout) => payout.tokenAddress === tokenAddress,
+          );
+          const tokenAmounts = tokenPayouts.map((payout) =>
+            getPayoutAmount(payout, networkInverseFee),
+          );
 
-    tokenAddresses.forEach((tokenAddress) => {
-      const tokenPayouts = payoutsWithSlotIds.filter(
-        (payout) => payout.tokenAddress === tokenAddress,
-      );
-      const tokenAmounts = tokenPayouts.map((payout) =>
-        getPayoutAmount(payout, networkInverseFee),
-      );
+          multicallData.push(
+            colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
+              expenditureId,
+              tokenPayouts.map((payout) => payout.slotId),
+              tokenAddress,
+              tokenAmounts,
+            ]),
+          );
+        });
 
-      multicallData.push(
-        colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
-          expenditureId,
-          tokenPayouts.map((payout) => payout.slotId),
-          tokenAddress,
-          tokenAmounts,
-        ]),
-      );
+        return multicallData;
+      },
     });
-
-    yield transactionSetParams(setExpenditureValues.id, [multicallData]);
-    yield initiateTransaction(setExpenditureValues.id);
-    yield waitForTxResult(setExpenditureValues.channel);
 
     if (customActionTitle) {
       yield createActionMetadataInDB(txHash, customActionTitle);
@@ -244,12 +257,11 @@ function* createExpenditure({
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
 
-  [
-    makeExpenditure,
-    setExpenditureValues,
-    setExpenditureStaged,
-    annotateMakeExpenditure,
-  ].forEach((channel) => channel.channel.close());
+  [makeExpenditure, setExpenditureStaged, annotateMakeExpenditure].forEach(
+    (channel) => channel.channel.close(),
+  );
+
+  closeMulticallChannels();
 
   return null;
 }
