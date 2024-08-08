@@ -11,6 +11,7 @@ import {
   ExtendedClientType,
 } from '~types/transactions.ts';
 import { isFullWallet } from '~types/wallet.ts';
+import { getChainId } from '~utils/chainId.ts';
 import {
   generateMetatransactionErrorMessage,
   generateMetamaskTypedDataSignatureErrorMessage,
@@ -18,7 +19,6 @@ import {
 
 import { type TransactionType } from '../../immutable/index.ts';
 import {
-  getChainId,
   generateEIP2612TypedData,
   generateMetatransactionMessage,
   broadcastMetatransaction,

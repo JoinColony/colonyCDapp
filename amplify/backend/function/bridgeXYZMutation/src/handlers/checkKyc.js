@@ -176,16 +176,12 @@ const checkKYCHandler = async (
         },
       );
 
-      console.log('hello world');
-
       const liquidationAddressCreationRes =
         await liquidationAddressCreation.json();
 
       if (liquidationAddressCreation.status === 201) {
         externalAccountLiquidationAddress =
           liquidationAddressCreationRes.address;
-
-        console.log({ externalAccountLiquidationAddress });
 
         // create liquidation address entry in the database
         await graphqlRequest(
@@ -200,8 +196,6 @@ const checkKYCHandler = async (
           graphqlURL,
           appSyncApiKey,
         );
-
-        console.log('created');
       } else {
         console.error(
           'Failed to create liquidation address: ',
