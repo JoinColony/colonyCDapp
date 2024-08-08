@@ -38,13 +38,21 @@ export const validationSchema = object({
   ),
   [BankDetailsFields.COUNTRY]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
-    then: string().required(),
+    then: string().required(
+      formatText({
+        id: 'cryptoToFiat.forms.error.bankAccount.country',
+      }),
+    ),
     otherwise: string().notRequired(),
   }),
   [BankDetailsFields.IBAN]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
-      .required()
+      .required(
+        formatText({
+          id: 'cryptoToFiat.forms.error.bankAccount.iban',
+        }),
+      )
       .matches(
         IBAN_REGEX,
         formErrorMessage(BANK_DETAILS_FORM_MSG.ibanLabel, 'invalid'),
@@ -54,7 +62,11 @@ export const validationSchema = object({
   [BankDetailsFields.SWIFT]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
-      .required()
+      .required(
+        formatText({
+          id: 'cryptoToFiat.forms.error.bankAccount.swift',
+        }),
+      )
       .matches(
         BIC_REGEX,
         formErrorMessage(BANK_DETAILS_FORM_MSG.swiftLabel, 'invalid'),

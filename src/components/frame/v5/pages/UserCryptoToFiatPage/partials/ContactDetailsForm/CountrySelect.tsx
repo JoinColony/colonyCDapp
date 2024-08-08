@@ -32,6 +32,7 @@ export const CountrySelect = () => {
       return;
     }
     trigger(AddressFields.STATE);
+    trigger(AddressFields.CITY);
     // if country changed postcode should be revalidated
     trigger(AddressFields.POSTCODE);
   };

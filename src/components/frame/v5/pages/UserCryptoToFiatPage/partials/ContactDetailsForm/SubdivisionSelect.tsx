@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 
+import { formatText } from '~utils/intl.ts';
 import {
   type SubdivisionData,
   getSubdivisionsByCountryCode,
 } from '~utils/subdivisions.ts';
-import { formatText } from '~utils/intl.ts';
 
 import { FormSelect } from '../FormSelect.tsx';
 

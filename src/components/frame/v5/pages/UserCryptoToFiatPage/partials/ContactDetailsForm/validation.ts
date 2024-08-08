@@ -1,7 +1,10 @@
 import * as Yup from 'yup';
 
 import { postalCodesRegex } from '~constants/postalCodesRegex.ts';
-import { getCountryByCode } from '~utils/countries.ts';
+import {
+  getCountryByCode,
+  COUNTRIES_WITHOUT_STATES,
+} from '~utils/countries.ts';
 import { formErrorMessage, formatText } from '~utils/intl.ts';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 
@@ -16,8 +19,6 @@ export enum AddressFields {
   POSTCODE = 'postcode',
 }
 
-import { COUNTRIES_WITHOUT_STATES } from '~utils/countries.ts';
-
 export const addressValidationSchema = Yup.object({
   [AddressFields.ADDRESS1]: Yup.string().required(
     formatText({ id: 'cryptoToFiat.forms.error.address.address1' }),
@@ -27,14 +28,14 @@ export const addressValidationSchema = Yup.object({
     formatText({ id: 'cryptoToFiat.forms.error.address.country' }),
   ),
   [AddressFields.CITY]: Yup.string().when(AddressFields.COUNTRY, {
-    is: (country) => COUNTRIES_WITHOUT_STATES.includes(country),
+    is: (country) => !country || COUNTRIES_WITHOUT_STATES.includes(country),
     then: Yup.string().notRequired(),
     otherwise: Yup.string().required(
       formatText({ id: 'cryptoToFiat.forms.error.address.city' }),
     ),
   }),
   [AddressFields.STATE]: Yup.string().when(AddressFields.COUNTRY, {
-    is: (country) => COUNTRIES_WITHOUT_STATES.includes(country),
+    is: (country) => !country || COUNTRIES_WITHOUT_STATES.includes(country),
     then: Yup.string().notRequired(),
     otherwise: Yup.string().required(
       formatText({ id: 'cryptoToFiat.forms.error.address.state' }),

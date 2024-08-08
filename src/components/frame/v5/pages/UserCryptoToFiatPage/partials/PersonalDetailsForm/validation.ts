@@ -1,6 +1,7 @@
 import { type InferType, object, string } from 'yup';
 
 import { formErrorMessage, formatText } from '~utils/intl.ts';
+import { capitalizeFirstLetter } from '~utils/strings.ts';
 
 import { PERSONAL_DETAILS_FORM_MSGS } from './constants.ts';
 
@@ -12,7 +13,12 @@ export const validationSchema = object({
     formatText({ id: 'cryptoToFiat.forms.error.personalDetails.lastName' }),
   ),
   email: string()
-    .email(formErrorMessage(PERSONAL_DETAILS_FORM_MSGS.emailLabel, 'invalid'))
+    .email(
+      capitalizeFirstLetter(
+        formErrorMessage(PERSONAL_DETAILS_FORM_MSGS.emailLabel, 'invalid'),
+        { lowerCaseRemainingLetters: true },
+      ),
+    )
     .required(
       formatText({ id: 'cryptoToFiat.forms.error.personalDetails.email' }),
     ),
