@@ -26,3 +26,8 @@ export type UseActionFormBaseHook = (
     | 'reValidateMode'
   >,
 ) => void;
+
+export enum ActionSidebarWidth {
+  Default,
+  Wide,
+}

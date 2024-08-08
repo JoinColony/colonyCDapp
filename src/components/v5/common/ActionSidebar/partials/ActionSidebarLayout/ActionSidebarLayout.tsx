@@ -19,12 +19,15 @@ import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
+import { ActionSidebarWidth } from '../../types.ts';
+
 const displayName = 'v5.common.ActionSidebar.ActionSidebarLayout';
 
 interface Props {
   badges?: ReactNode;
   shareButton?: ReactNode;
   userNavigation?: ReactNode;
+  width?: ActionSidebarWidth;
 }
 
 const actionSidebarAnimation: Variants = {
@@ -41,6 +44,7 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
   children,
   shareButton,
   userNavigation,
+  width = ActionSidebarWidth.Default,
 }) => {
   const {
     actionSidebarToggle: [
@@ -92,8 +96,9 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
           md:rounded-l-lg
         `,
         {
-          'md:max-w-full': isSidebarMaximized,
-          'md:max-w-[43.375rem]': !isSidebarMaximized,
+          'md:max-w-[44rem]': width === ActionSidebarWidth.Default,
+          'md:max-w-[67rem]': width === ActionSidebarWidth.Wide,
+          'md:!max-w-full': isSidebarMaximized,
         },
       )}
       ref={registerContainerRef}

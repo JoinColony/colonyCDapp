@@ -14,6 +14,7 @@ import FourOFourMessage from '~v5/common/FourOFourMessage/FourOFourMessage.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
+import { ActionSidebarWidth } from '../../types.ts';
 import ActionSidebarLayout from '../ActionSidebarLayout/ActionSidebarLayout.tsx';
 import ShareButton from '../ShareButton.tsx';
 
@@ -95,7 +96,10 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
 
   if (loadingAction || loadingExpenditure) {
     return (
-      <ActionSidebarLayout userNavigation={userNavigation}>
+      <ActionSidebarLayout
+        userNavigation={userNavigation}
+        width={ActionSidebarWidth.Wide}
+      >
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />
           <p className="text-gray-600">
@@ -108,7 +112,10 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
 
   if (!action) {
     return (
-      <ActionSidebarLayout userNavigation={userNavigation}>
+      <ActionSidebarLayout
+        userNavigation={userNavigation}
+        width={ActionSidebarWidth.Wide}
+      >
         <div className="pt-14">
           <FourOFourMessage
             description={formatText({
@@ -268,6 +275,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
       }
       shareButton={<ShareButton />}
       userNavigation={userNavigation}
+      width={ActionSidebarWidth.Wide}
     >
       <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
         <div
