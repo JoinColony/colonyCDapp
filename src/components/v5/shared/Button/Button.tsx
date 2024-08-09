@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { forwardRef, type PropsWithChildren } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
@@ -33,6 +34,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
     },
     ref,
   ) => {
+    const { isDarkMode } = usePageThemeContext();
     const titleText =
       typeof title === 'string' ? title : title && formatText(title);
     const ariaLabelText =
@@ -71,6 +73,13 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                 [buttonClasses.senary]: mode === 'senary',
                 [buttonClasses.septenary]: mode === 'septenary',
                 [buttonClasses.completed]: mode === 'completed',
+                'text-gray-900':
+                  (mode === 'primaryOutline' ||
+                    mode === 'secondaryOutline' ||
+                    mode === 'secondarySolid' ||
+                    mode === 'completed' ||
+                    mode === 'primaryOutlineFull') &&
+                  isDarkMode,
                 'pointer-events-none': disabled,
                 'w-full': isFullSize,
                 'bg-blue-400 text-base-white': mode === 'filled',

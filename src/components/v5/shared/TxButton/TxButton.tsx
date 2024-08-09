@@ -2,6 +2,7 @@ import { Check, SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo, type FC, useState, useEffect } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
 import {
@@ -22,6 +23,7 @@ const displayName = 'v5.TxButton';
 
 const TxButton: FC<Props> = ({ onClick }) => {
   const isMobile = useMobile();
+  const { isDarkMode } = usePageThemeContext();
 
   const { transactions, groupState } = useGroupedTransactions();
 
@@ -120,7 +122,13 @@ const TxButton: FC<Props> = ({ onClick }) => {
               'ml-1.5': !isMobile,
             })}
           >
-            <Check className="text-base-white" size={14} />
+            <Check
+              className={clsx({
+                'text-base-white': !isDarkMode,
+                'text-gray-900': isDarkMode,
+              })}
+              size={14}
+            />
           </span>
         }
         onClick={onClick}

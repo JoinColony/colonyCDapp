@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
@@ -49,6 +50,7 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
     isThirdLevelMenuOpen,
     { toggleOn: toggleOnThirdLevelMenu, toggleOff: toggleOffThirdLevelMenu },
   ] = thirdLevelMenuToggle;
+  const { isDarkMode } = usePageThemeContext();
 
   useDisableBodyScroll((isMenuOpen || openItemIndex === 0) && isTablet);
 
@@ -92,6 +94,9 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
           md:border
           md:py-0
         `,
+        {
+          'bg-gray-100': isDarkMode,
+        },
       )}
       ref={registerContainerRef}
     >
@@ -248,7 +253,15 @@ const NavigationSidebarContent: FC<NavigationSidebarProps> = ({
                 animate={isThirdLevelMenuOpen ? 'visible' : 'hidden'}
                 className="absolute bottom-0 left-[calc(100%-.625rem)] top-0 -z-base h-full overflow-hidden"
               >
-                <div className="h-full overflow-auto rounded-r-lg bg-gray-900 pb-6 pl-9 pr-6 pt-[1.8125rem] text-base-white">
+                <div
+                  className={clsx(
+                    'h-full overflow-auto rounded-r-lg pb-6 pl-9 pr-6 pt-[1.8125rem] text-base-white',
+                    {
+                      'bg-gray-50 text-gray-900': isDarkMode,
+                      'bg-gray-900 text-base-white': !isDarkMode,
+                    },
+                  )}
+                >
                   <NavigationSidebarThirdLevel
                     title={relatedActions?.title}
                     items={relatedActions?.items || []}
