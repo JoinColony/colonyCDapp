@@ -110,6 +110,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
   useBackNavigation({ extensionData });
 
   const {
+    isFormDisabled,
     thresholdType,
     isFixedThresholdError,
     fixedThresholdErrorMessage,
@@ -165,6 +166,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
               name="multiSig.config.majorityApproval"
               onChange={handleGlobalThresholdTypeChange}
               item={{
+                disabled: isFormDisabled,
                 value: MultiSigThresholdType.MAJORITY_APPROVAL,
                 label: formatText(MSG.thresholdMajorityApprovalTitle),
                 description: formatText(
@@ -181,6 +183,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
               name="multiSig.config.fixedThreshold"
               onChange={handleGlobalThresholdTypeChange}
               item={{
+                disabled: isFormDisabled,
                 value: MultiSigThresholdType.FIXED_THRESHOLD,
                 label: formatText(MSG.thresholdFixedTitle),
                 description: formatText(MSG.thresholdFixedDescription),
@@ -243,6 +246,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-md font-medium">{name}</p>
                         <Select
+                          isDisabled={isFormDisabled}
                           menuPosition="fixed"
                           menuShouldScrollIntoView={false}
                           className="w-full sm:w-72"
@@ -309,6 +313,7 @@ const MultiSigPageSetup: FC<MultiSigPageSetupProps> = ({ extensionData }) => {
                             {...inputGroupSharedConfig}
                             onKeyDown={handleOnKeyDown}
                             isError={isError}
+                            isDisabled={isFormDisabled}
                             errorMessage={errorMessage}
                             appendMessage={formatText(
                               MSG.thresholdFixedFormApprovals,
