@@ -24,7 +24,14 @@ const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
   const labelText = formatText(label);
 
   return (
-    <div className='relative w-full after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.375rem)] after:w-[calc(100%+0.375rem)] after:rounded-[0.7rem] after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""] hover:after:border-blue-100'>
+    <div
+      className={clsx(
+        'relative w-full after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.375rem)] after:w-[calc(100%+0.375rem)] after:rounded-[0.7rem] after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""]',
+        {
+          'hover:after:border-blue-100': !disabled,
+        },
+      )}
+    >
       <input
         type="radio"
         name={name}

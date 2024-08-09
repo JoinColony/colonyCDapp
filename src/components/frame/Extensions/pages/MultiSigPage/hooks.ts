@@ -1,10 +1,13 @@
+import { ColonyRole, Id } from '@colony/colony-js';
 import { useContext, useEffect, useImperativeHandle, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ExtensionSaveSettingsContext } from '~context/ExtensionSaveSettingsContext/ExtensionSaveSettingsContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
+import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import {
@@ -37,7 +40,17 @@ export const useThresholdData = ({ extensionData }) => {
 
   const {
     colony: { colonyAddress, domains },
+    colony,
   } = useColonyContext();
+
+  const { user } = useAppContext();
+  const userHasRoles = addressHasRoles({
+    requiredRolesDomain: Id.RootDomain,
+    colony,
+    requiredRoles: [ColonyRole.Root],
+    address: user?.walletAddress || '',
+  });
+  const isFormDisabled = !userHasRoles;
 
   const {
     register,
@@ -75,6 +88,13 @@ export const useThresholdData = ({ extensionData }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isFormDisabled) {
+      handleSetVisible(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormDisabled]);
 
   useEffect(() => {
     if (!domains || !domains.items || !multiSigConfig) {
@@ -149,6 +169,7 @@ export const useThresholdData = ({ extensionData }) => {
   };
 
   return {
+    isFormDisabled,
     thresholdType,
     isFixedThresholdError: !!errors.globalThreshold,
     fixedThresholdErrorMessage: errors.globalThreshold?.message,
