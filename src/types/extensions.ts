@@ -39,6 +39,7 @@ export interface ExtensionConfig {
   createdAt: number;
   icon: Icon;
   imageURLs: string[];
+  enabledAutomaticallyAfterInstall?: boolean;
 }
 
 export type InstalledExtensionData = ExtensionConfig &

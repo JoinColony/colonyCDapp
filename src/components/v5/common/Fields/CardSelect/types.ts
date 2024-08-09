@@ -40,6 +40,7 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
       className?: string;
       onClick?: () => void;
       'aria-label'?: string;
+      value?: TValue;
     },
     children: React.ReactNode,
   ) => React.ReactElement | null | undefined;
