@@ -101,6 +101,10 @@ import {
 //   return null;
 // }
 
+type UserLogoutParams = {
+  payload?: { shouldRemoveWalletContext: boolean };
+};
+
 function* usernameCreate({
   meta,
   meta: { navigate, updateUser, colonyName },
@@ -167,19 +171,27 @@ function* usernameCreate({
   return null;
 }
 
-export const disconnectWallet = (walletLabel: string) => {
+export const disconnectWallet = (
+  walletLabel: string,
+  shouldRemoveWalletContext = true,
+) => {
   const onboard = getContext(ContextModule.Onboard);
   onboard.disconnectWallet({ label: walletLabel });
-  removeContext(ContextModule.Wallet);
+
+  if (shouldRemoveWalletContext) {
+    removeContext(ContextModule.Wallet);
+  }
   clearLastWallet();
 };
 
-function* userLogout() {
+export function* userLogout(data?: UserLogoutParams) {
+  const shouldRemoveWalletContext =
+    data?.payload?.shouldRemoveWalletContext ?? true;
   try {
     removeContext(ContextModule.ColonyManager);
     const apolloClient = getContext(ContextModule.ApolloClient);
     const wallet = getContext(ContextModule.Wallet);
-    disconnectWallet(wallet.label);
+    disconnectWallet(wallet.label, shouldRemoveWalletContext);
     yield deauthenticateWallet();
     apolloClient.clearStore();
     yield put<AllActions>({

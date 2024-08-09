@@ -24,9 +24,13 @@ import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 import setupTransactionsSaga from './transactions/transactionsToDb.ts';
-import { disconnectWallet, setupUsersSagas } from './users/index.ts';
+import {
+  disconnectWallet,
+  setupUsersSagas,
+  userLogout,
+} from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
-import { getBasicWallet, getWallet } from './wallet/index.ts';
+import { getWallet } from './wallet/index.ts';
 // import vestingSagas from './vesting';
 import getOnboard from './wallet/onboard.ts';
 
@@ -69,11 +73,6 @@ function* setupContextDependentSagas() {
   ]);
 }
 
-function* initializeBasicWallet(lastWallet: LastWallet) {
-  const wallet = yield call(getBasicWallet, lastWallet);
-  setContext(ContextModule.Wallet, wallet);
-}
-
 function* initializeFullWallet(lastWallet: LastWallet | null) {
   const wallet = yield call(getWallet, lastWallet);
   setContext(ContextModule.Wallet, wallet);
@@ -87,7 +86,7 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
  * context that depends on it (the wallet itself, the DDB, the ColonyManager),
  * and then any other context that depends on that.
  */
-export default function* setupUserContext() {
+export function* setupUserContext() {
   try {
     /* Instantiate the onboard object and load into context */
     const onboard = yield getOnboard();
@@ -127,14 +126,7 @@ export default function* setupUserContext() {
 
     const lastWallet = getLastWallet();
 
-    if (!wallet && lastWallet) {
-      // Perform quick login, then run background task to fully login
-      yield call(initializeBasicWallet, lastWallet);
-      yield fork(initializeFullWallet, lastWallet);
-    } else {
-      // Perfom full wallet login
-      yield call(initializeFullWallet, lastWallet);
-    }
+    yield call(initializeFullWallet, lastWallet);
 
     yield put<AllActions>({
       type: ActionTypes.WALLET_OPEN_SUCCESS,
@@ -167,4 +159,16 @@ export default function* setupUserContext() {
     return yield putError(ActionTypes.WALLET_OPEN_ERROR, caughtError, {});
   }
   return null;
+}
+
+export function* cleanupOnWalletError() {
+  try {
+    const wallet = getContext(ContextModule.Wallet);
+
+    if (wallet) {
+      yield call(userLogout);
+    }
+  } catch {
+    // silent
+  }
 }

@@ -111,16 +111,19 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   /*
    * Handle wallet disconnection
    */
-  const disconnectWallet = useCallback(async () => {
-    try {
-      await userLogout(undefined);
-    } catch (error) {
-      console.error('Could not disconnect wallet', error);
-      return;
-    }
-    setWallet(null);
-    setUser(null);
-  }, [setWallet, setUser, userLogout]);
+  const disconnectWallet = useCallback(
+    async ({ shouldRemoveWalletContext = true } = {}) => {
+      try {
+        await userLogout({ shouldRemoveWalletContext });
+      } catch (error) {
+        console.error('Could not disconnect wallet', error);
+        return;
+      }
+      setWallet(null);
+      setUser(null);
+    },
+    [setWallet, setUser, userLogout],
+  );
 
   /*
    * When the user switches account in Metamask, re-initiate the wallet connect flow
@@ -132,10 +135,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       method: 'eth_accounts',
     });
     const loggedInAccount = accounts[0];
+    await disconnectWallet({ shouldRemoveWalletContext: false });
     if (loggedInAccount) {
       connectWallet();
     }
-  }, [connectWallet]);
+  }, [connectWallet, disconnectWallet]);
 
   const previousAccountChange = usePrevious(handleAccountChange);
 

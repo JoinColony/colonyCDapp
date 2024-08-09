@@ -3,7 +3,7 @@ import { call, takeLatest } from 'redux-saga/effects';
 import { ActionTypes } from '../actionTypes.ts';
 
 import ipfsSagas from './ipfs.ts';
-import setupUserContext from './setupUserContext.ts';
+import { setupUserContext, cleanupOnWalletError } from './setupUserContext.ts';
 
 export default function* rootSaga() {
   /*
@@ -12,6 +12,7 @@ export default function* rootSaga() {
    * -> ddb, colonyJS, etc and all subsequent actions
    */
   yield takeLatest(ActionTypes.WALLET_OPEN, setupUserContext);
+  yield takeLatest(ActionTypes.WALLET_OPEN_ERROR, cleanupOnWalletError);
   // Everything else that does not require a wallet
   yield call(ipfsSagas);
 }
