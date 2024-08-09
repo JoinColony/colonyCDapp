@@ -48,7 +48,11 @@ export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
     ColonyActionType.UnlockTokenMotion,
     ColonyActionType.UnlockTokenMultisig,
   ],
-  [Action.ManageTokens]: [ColonyActionType.ManageTokens],
+  [Action.ManageTokens]: [
+    ColonyActionType.ManageTokens,
+    ColonyActionType.ManageTokensMotion,
+    ColonyActionType.ManageTokensMultisig,
+  ],
   [Action.CreateNewTeam]: [
     ColonyActionType.CreateDomain,
     ColonyActionType.CreateDomainMotion,

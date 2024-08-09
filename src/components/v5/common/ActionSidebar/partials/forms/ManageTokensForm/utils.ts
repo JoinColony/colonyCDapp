@@ -1,5 +1,7 @@
 import { ADDRESS_ZERO } from '~constants/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { getMotionPayload } from '~utils/motions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
@@ -13,6 +15,7 @@ export const getManageTokensPayload = (
     selectedTokenAddresses,
     description: annotationMessage,
     title,
+    decisionMethod,
   } = values;
 
   const tokenAddresses = [
@@ -28,7 +31,7 @@ export const getManageTokensPayload = (
     ),
   ];
 
-  return {
+  const commonPayload = {
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     tokenAddresses,
@@ -37,4 +40,16 @@ export const getManageTokensPayload = (
       : undefined,
     customActionTitle: title,
   };
+
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
+    return {
+      ...commonPayload,
+      ...getMotionPayload(decisionMethod === DecisionMethod.MultiSig, colony),
+    };
+  }
+
+  return commonPayload;
 };

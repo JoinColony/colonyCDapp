@@ -39,10 +39,6 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
     setActionType(null);
   };
 
-  const handleOnSuccess = () => {
-    refetchExtensionData();
-  };
-
   const value = useMemo(
     () => ({
       callbackRef,
@@ -51,10 +47,10 @@ export const ExtensionSaveSettingsContextProvider: FC<PropsWithChildren> = ({
       handleGetValues,
       handleSetVisible,
       handleSetActionType,
-      handleOnSuccess,
+      handleOnSuccess: refetchExtensionData,
       resetAll,
     }),
-    [isVisible, actionType],
+    [isVisible, actionType, refetchExtensionData],
   );
 
   return (

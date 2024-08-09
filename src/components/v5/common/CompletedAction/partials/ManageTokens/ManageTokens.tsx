@@ -38,6 +38,10 @@ const ManageTokens = ({ action }: ManageTokensProps) => {
 
   const { initiatorUser, approvedTokenChanges } = action;
 
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
@@ -67,11 +71,7 @@ const ManageTokens = ({ action }: ManageTokensProps) => {
           isMultisig={action.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />

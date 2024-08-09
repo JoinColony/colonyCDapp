@@ -66,6 +66,9 @@ export const getRolesNeededForMultiSigAction = ({
     case ColonyActionType.VersionUpgradeMultisig:
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.UpgradeColonyVersion;
       break;
+    case ColonyActionType.ManageTokensMultisig:
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageTokens;
+      break;
     default:
       permissions = undefined;
       break;
