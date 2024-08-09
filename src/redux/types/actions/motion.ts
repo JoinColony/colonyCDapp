@@ -464,6 +464,9 @@ export type MotionActionTypes =
         tokenAddresses: Address[];
         customActionTitle: string;
         annotationMessage?: string;
+        isMultiSig: boolean;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
       },
       MetaWithSetter<object>
     >
