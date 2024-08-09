@@ -21,7 +21,7 @@ const BodyDescription = () => (
     {'. '}
     <a
       href={LEARN_MORE_CRYPTO_TO_FIAT}
-      className="font-bold text-gray-900 underline transition-colors hover:text-blue-400"
+      className="font-medium text-gray-900 underline transition-colors hover:text-blue-400"
     >
       {formatText({ id: 'navigation.learnMore' })}
     </a>

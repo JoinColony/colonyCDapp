@@ -81,7 +81,7 @@ export const HEADING_MSG = defineMessages({
   },
   headingAccessory: {
     id: `${displayName}.headingAccessory`,
-    defaultMessage: 'optional',
+    defaultMessage: 'Optional',
   },
 });
 

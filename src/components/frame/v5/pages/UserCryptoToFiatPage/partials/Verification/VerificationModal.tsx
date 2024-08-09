@@ -45,7 +45,7 @@ const MSG = defineMessages({
   },
   kycTabHeading: {
     id: `${displayName}.kycTabHeading`,
-    defaultMessage: 'KYC form',
+    defaultMessage: 'KYC',
   },
 });
 
@@ -81,7 +81,6 @@ const VerificationModal: FC<VerificationModalProps> = ({
       isFullOnMobile={false}
       isOpen={isOpened}
       onRequestClose={onClose}
-      isTopSectionWithBackground
     >
       <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
@@ -89,7 +88,7 @@ const VerificationModal: FC<VerificationModalProps> = ({
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
       />
-      <div className="px-6 py-12">
+      <div className="px-6 pb-6 pt-16">
         <Stepper
           activeStepKey={activeTab}
           items={[
@@ -142,6 +141,7 @@ const VerificationModal: FC<VerificationModalProps> = ({
                       <iframe
                         title="Terms iframe"
                         src={termsLink}
+                        scrolling="no"
                         className="min-h-[20.2rem] min-w-[25rem]"
                       />
                     )}

@@ -15,6 +15,10 @@
   }
 }
 
+iframe {
+  @apply overflow-hidden;
+}
+
 .rts___tabs {
   @apply py-0;
 }

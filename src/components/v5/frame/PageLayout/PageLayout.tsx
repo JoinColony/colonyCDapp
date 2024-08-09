@@ -67,7 +67,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnFocusLoss
         pauseOnHover
         closeButton={CloseButton}
-        className="modal-blur"
       />
       <div className="w-full md:flex md:h-screen md:flex-col" ref={wrapperRef}>
         {/* This div has to always be rendered, otherwise the height of the top content wrapper won't be calculated correctly */}

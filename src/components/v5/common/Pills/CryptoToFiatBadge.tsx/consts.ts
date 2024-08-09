@@ -6,7 +6,7 @@ export const badgeThemes: CryptoToFiatBadgeTheme = {
     iconClassName: 'text-negative-400 h-3',
   },
   green: {
-    className: 'bg-teams-green-100 text-teams-green-400',
+    className: 'bg-success-100 text-success-400',
   },
   orange: {
     className: 'bg-orange-100 text-orange-400',
