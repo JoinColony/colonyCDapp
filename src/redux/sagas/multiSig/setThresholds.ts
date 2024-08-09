@@ -1,4 +1,5 @@
 import { ClientType } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/actionTypes.ts';
@@ -42,7 +43,7 @@ function* setThresholds({
     for (const { skillId, threshold } of domainThresholds) {
       encodedMulticallData.push(
         multiSigClient.interface.encodeFunctionData('setDomainSkillThreshold', [
-          skillId,
+          BigNumber.from(skillId),
           threshold,
         ]),
       );

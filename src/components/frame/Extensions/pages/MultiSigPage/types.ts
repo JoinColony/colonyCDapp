@@ -6,7 +6,7 @@ export enum MultiSigThresholdType {
 
 export interface DomainThresholdConfig {
   id: string;
-  nativeSkillId: number;
+  nativeSkillId: string;
   type: MultiSigThresholdType;
   name: string;
   isError?: boolean;
