@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+
 import tooltipClasses from './Tooltip.styles.ts';
 import { type TooltipProps } from './types.ts';
 
@@ -44,6 +46,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
     },
     popperOptions,
   );
+  const { isDarkMode } = usePageThemeContext();
 
   return (
     <>
@@ -91,7 +94,12 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
             )}
           >
             {isSuccess ? (
-              <div className="flex items-center gap-2 text-base-white">
+              <div
+                className={clsx('flex items-center gap-2', {
+                  'text-base-white': !isDarkMode,
+                  'text-gray-900': isDarkMode,
+                })}
+              >
                 <Check size={12} />
                 {tooltipContent}
               </div>

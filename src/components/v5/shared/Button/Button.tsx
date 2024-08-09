@@ -77,6 +77,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
                   (mode === 'primaryOutline' ||
                     mode === 'secondaryOutline' ||
                     mode === 'secondarySolid' ||
+                    mode === 'completed' ||
                     mode === 'primaryOutlineFull') &&
                   isDarkMode,
                 'pointer-events-none': disabled,
