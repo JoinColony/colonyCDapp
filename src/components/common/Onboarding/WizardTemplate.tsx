@@ -41,7 +41,6 @@ const WizardTemplate = <F extends Record<string, any>>({
           sidebarTitleValues={{ wizardType }}
         />
       }
-      hasWideSidebar
     >
       <article className="mx-auto max-w-lg">{children}</article>
     </MainLayout>
