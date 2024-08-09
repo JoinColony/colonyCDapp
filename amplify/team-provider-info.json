@@ -1,4 +1,9 @@
 {
   "dev": {
+    "categories": {
+      "function": {
+        "fetchDomainBalance": {}
+      }
+    }
   }
 }
