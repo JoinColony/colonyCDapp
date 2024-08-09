@@ -2,7 +2,8 @@ import { type ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink } from '~gql';
+import { type ColonyRoleFragment, type ExternalLink } from '~gql';
+import { type Authority } from '~types/authority.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
   type Expenditure,
@@ -13,7 +14,10 @@ import {
   type Safe,
   type SafeTransactionData,
 } from '~types/graphql.ts';
-import { type Address } from '~types/index.ts';
+import {
+  type Address,
+  type ManageVerifiedMembersOperation,
+} from '~types/index.ts';
 
 import { type ActionTypes } from '../../actionTypes.ts';
 
@@ -33,9 +37,9 @@ import {
 
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
+  MoveFunds = 'moveFunds',
   Upgrade = 'upgrade',
   UnlockToken = 'unlockToken',
-  EditColonyByDelta = 'editColonyByDelta',
 }
 
 export type ExpenditureFundMotionPayload = Omit<
@@ -68,6 +72,28 @@ export type MotionFinalizePayload = {
   motionId: string;
   gasEstimate: string;
 };
+
+export type MotionDomainCreateEditPayload = {
+  colonyAddress: Address;
+  isCreateDomain: boolean;
+  customActionTitle: string;
+  domain?: Domain;
+  colonyName?: string;
+  domainName: string;
+  domainColor?: DomainColor;
+  domainPurpose?: string;
+  annotationMessage?: string;
+  parentDomainId?: number;
+  isMultiSig: boolean;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  domainCreatedInNativeId: number;
+};
+interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
+  colonyDomains: Domain[];
+  colonyRoles: ColonyRoleFragment[];
+  isMultiSig?: boolean;
+}
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -142,19 +168,7 @@ export type MotionActionTypes =
   | UniqueActionTypeWithoutPayload<ActionTypes.MOTION_CLAIM_ALL_SUCCESS, object>
   | UniqueActionType<
       ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-      {
-        colonyAddress: Address;
-        isCreateDomain: boolean;
-        motionDomainId: number;
-        customActionTitle: string;
-        domain?: Domain;
-        colonyName?: string;
-        domainName: string;
-        domainColor?: DomainColor;
-        domainPurpose?: string;
-        annotationMessage?: string;
-        parentId?: number;
-      },
+      MotionDomainCreateEditPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR, object>
@@ -163,8 +177,34 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT,
+      MotionDomainCreateEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_ERROR,
+      object
+    >
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
       ActionTypes.MOTION_EXPENDITURE_PAYMENT,
-      OneTxPaymentPayload,
+      OneTxPaymentMotionPayload,
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR, object>
@@ -180,6 +220,10 @@ export type MotionActionTypes =
         colonyDisplayName?: string;
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
+        tokenAddresses?: Address[];
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
@@ -204,6 +248,10 @@ export type MotionActionTypes =
         toDomain: Domain;
         amount: BigNumber;
         annotationMessage?: string;
+        isMultiSig?: boolean;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        createdInDomain: Domain;
       },
       MetaWithSetter<object>
     >
@@ -219,8 +267,11 @@ export type MotionActionTypes =
         customActionTitle: string;
         colonyAddress: Address;
         colonyName?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
         motionParams: [BigNumber] | [string];
         annotationMessage?: string;
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >
@@ -235,8 +286,12 @@ export type MotionActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
-        motionDomainId: string;
+        authority: Authority;
+        motionDomainId: number;
         annotationMessage?: string;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >
@@ -268,14 +323,21 @@ export type MotionActionTypes =
         motionDomainId: number;
         annotationMessage?: string;
         isSmitingReputation?: boolean;
+        isMultiSig?: boolean;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
       },
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.MOTION_ADD_VERIFIED_MEMBERS,
+      ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS,
       {
+        operation: ManageVerifiedMembersOperation;
         colonyAddress: Address;
         colonyName: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
         members: string[];
         domainId: number;
         annotationMessage?: string;
@@ -283,27 +345,9 @@ export type MotionActionTypes =
       },
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS_ERROR, object>
   | UniqueActionType<
-      ActionTypes.MOTION_ADD_VERIFIED_MEMBERS_SUCCESS,
-      object,
-      object
-    >
-  | UniqueActionType<
-      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS,
-      {
-        colonyAddress: Address;
-        colonyName: string;
-        members: string[];
-        domainId: number;
-        annotationMessage?: string;
-        customActionTitle: string;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_ERROR, object>
-  | UniqueActionType<
-      ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
+      ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS_SUCCESS,
       object,
       object
     >

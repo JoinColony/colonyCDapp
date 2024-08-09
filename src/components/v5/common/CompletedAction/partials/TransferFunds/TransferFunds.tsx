@@ -1,10 +1,9 @@
 import { ArrowDownRight } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { DecisionMethod } from '~types/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type Domain, type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -22,6 +21,7 @@ import {
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
@@ -58,6 +58,7 @@ const MSG = defineMessages({
 });
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -67,11 +68,11 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     fromDomain,
     toDomain,
     isMotion,
+    isMultiSig,
     motionData,
+    multiSigData,
     annotation,
   } = action;
-
-  const { motionDomain } = motionData || {};
 
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
@@ -81,6 +82,18 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     amount || '',
     getTokenDecimalsWithFallback(token?.decimals),
   );
+
+  const motionDomain: Domain | null | undefined = useMemo(() => {
+    if (isMotion) {
+      return motionData?.motionDomain;
+    }
+
+    if (isMultiSig) {
+      return multiSigData?.multiSigDomain;
+    }
+
+    return null;
+  }, [motionData, multiSigData, isMotion, isMultiSig]);
 
   return (
     <>
@@ -95,12 +108,11 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             [TO_FIELD_NAME]: toDomain?.nativeId,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
-            [CREATED_IN_FIELD_NAME]: isMotion
-              ? motionDomain?.nativeId
-              : fromDomain?.nativeId,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [CREATED_IN_FIELD_NAME]:
+              isMotion || isMultiSig
+                ? motionDomain?.nativeId
+                : fromDomain?.nativeId,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
@@ -152,12 +164,13 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           token={action.token || undefined}
         />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {!!motionDomain?.metadata && (
+          <CreatedInRow motionDomainMetadata={motionDomain.metadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (

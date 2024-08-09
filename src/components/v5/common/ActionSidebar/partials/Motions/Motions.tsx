@@ -1,4 +1,7 @@
-import { MotionState as NetworkMotionState } from '@colony/colony-js';
+import {
+  Extension,
+  MotionState as NetworkMotionState,
+} from '@colony/colony-js';
 import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { right as RightPlacementType } from '@popperjs/core';
 import clsx from 'clsx';
@@ -6,11 +9,13 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
 import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
@@ -43,6 +48,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     stopPollingForAction,
     refetchAction,
   } = useGetColonyAction(transactionId);
+
+  const { loading: loadingExtensions, votingReputationExtensionData } =
+    useEnabledExtensions();
+
+  const isVotingReputationExtensionUninstalled =
+    !loadingExtensions && !votingReputationExtensionData;
 
   const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
@@ -87,7 +98,11 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       .gt(0);
 
   const items = useMemo(() => {
-    if (loadingAction) {
+    if (
+      loadingAction ||
+      loadingExtensions ||
+      isVotingReputationExtensionUninstalled
+    ) {
       return [];
     }
     return [
@@ -101,7 +116,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.staking.label' }) || '',
           decor:
-            activeStepKey === NetworkMotionState.Staking && motionStakes ? (
+            activeStepKey === NetworkMotionState.Staking &&
+            motionStakes &&
+            motionState ? (
               <MotionCountDownTimer
                 motionState={motionState}
                 motionId={motionId}
@@ -167,7 +184,9 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         heading: {
           label: formatText({ id: 'motion.reveal.label' }) || '',
           decor:
-            activeStepKey === NetworkMotionState.Reveal && motionStakes ? (
+            activeStepKey === NetworkMotionState.Reveal &&
+            motionStakes &&
+            motionState ? (
               <MotionCountDownTimer
                 motionState={motionState}
                 motionId={motionId}
@@ -278,19 +297,22 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     ];
   }, [
     loadingAction,
+    loadingExtensions,
+    isVotingReputationExtensionUninstalled,
     activeStepKey,
     motionStakes,
     motionState,
     motionId,
     refetchMotionState,
+    networkMotionState,
+    motionData,
     action,
     startPollingForAction,
     stopPollingForAction,
     transactionId,
     isFullyStaked,
     motionStakedAndFinalizable,
-    motionData,
-    networkMotionState,
+    rootHash,
     motionStateHistory?.hasPassed,
     motionStateHistory?.hasFailed,
     motionStateHistory?.hasFailedNotFinalizable,
@@ -298,10 +320,16 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     hasVotedMotionPassed,
     refetchAction,
     canInteract,
-    rootHash,
   ]);
 
-  return loadingAction ? (
+  if (
+    networkMotionState === NetworkMotionState.Null ||
+    isVotingReputationExtensionUninstalled
+  ) {
+    return <UninstalledMessage extension={Extension.VotingReputation} />;
+  }
+
+  return loadingAction || loadingExtensions ? (
     <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
     <MotionProvider

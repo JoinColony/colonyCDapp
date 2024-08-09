@@ -1,5 +1,6 @@
 import { Extension, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -15,14 +16,37 @@ interface ExtensionsTopRowProps {
   extensionData: AnyExtensionData;
   waitingForEnableConfirmation: boolean;
   isSetupRoute: boolean;
+  onActiveTabChange: (activeTab: number) => void;
 }
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionTopRow';
+
+const MSG = defineMessages({
+  governance: {
+    id: `${displayName}.governance`,
+    defaultMessage: 'Governance',
+  },
+  payments: {
+    id: `${displayName}.payments`,
+    defaultMessage: 'Payments',
+  },
+  decisionMethod: {
+    id: `${displayName}.decisionMethod`,
+    defaultMessage: 'Decision method',
+  },
+});
+
+// For the time being we can fallback to payments so I don't have to guess what Extension.TokenSupplier would have as a message
+const extensionStatusTextMap = {
+  [Extension.VotingReputation]: MSG.governance,
+  [Extension.MultisigPermissions]: MSG.decisionMethod,
+};
 
 const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   extensionData,
   waitingForEnableConfirmation,
   isSetupRoute,
+  onActiveTabChange,
 }) => {
   const { colony } = useColonyContext();
 
@@ -30,15 +54,12 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   const { neededColonyPermissions, address, isInitialized, isDeprecated } =
     extensionData;
 
-  const isVotingReputationExtension =
-    extensionData.extensionId === Extension.VotingReputation;
-
   // If the extension itself doesn't have the correct permissions, show the banner
   const showPermissionsBanner =
     isInitialized &&
     !isDeprecated &&
     !addressHasRoles({
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
       colony,
       requiredRoles: neededColonyPermissions,
       address: address || '',
@@ -49,18 +70,17 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       {!isSetupRoute && showPermissionsBanner && (
         <PermissionsNeededBanner extensionData={extensionData} />
       )}
-      <div className="flex flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
+      <div className="flex flex-col flex-wrap justify-between sm:h-10 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <ActionButtons
+            onActiveTabChange={onActiveTabChange}
             waitingForEnableConfirmation={waitingForEnableConfirmation}
             isSetupRoute={isSetupRoute}
             extensionData={extensionData}
             extensionStatusMode={ExtensionsBadgeMap[extensionData.extensionId]}
-            extensionStatusText={formatText({
-              id: isVotingReputationExtension
-                ? 'status.governance'
-                : 'status.payments',
-            })}
+            extensionStatusText={formatText(
+              extensionStatusTextMap[extensionData.extensionId] ?? MSG.payments,
+            )}
           />
         </div>
       </div>

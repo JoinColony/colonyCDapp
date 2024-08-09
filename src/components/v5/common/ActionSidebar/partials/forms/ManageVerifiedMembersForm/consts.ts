@@ -1,27 +1,23 @@
 import { array, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
+import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 import { type CardSelectOption } from '~v5/common/Fields/CardSelect/types.ts';
 
-export enum ManageMembersType {
-  Add = 'Add',
-  Remove = 'Remove',
-}
-
 export const getManageMembersOptions = (): {
-  manageMembersOptions: CardSelectOption<ManageMembersType>[];
+  manageMembersOptions: CardSelectOption<ManageVerifiedMembersOperation>[];
 } => {
   return {
     manageMembersOptions: [
       {
         label: formatText({ id: 'actionSidebar.option.addMembers' }),
-        value: ManageMembersType.Add,
+        value: ManageVerifiedMembersOperation.Add,
       },
       {
         label: formatText({ id: 'actionSidebar.option.removeMembers' }),
-        value: ManageMembersType.Remove,
+        value: ManageVerifiedMembersOperation.Remove,
       },
     ],
   };

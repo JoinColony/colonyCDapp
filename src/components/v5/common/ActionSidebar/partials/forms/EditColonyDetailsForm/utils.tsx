@@ -1,4 +1,6 @@
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { getMotionPayload } from '~utils/motions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 
 import { type EditColonyDetailsFormValues } from './types.ts';
@@ -17,7 +19,7 @@ export const getEditColonyDetailsPayload = (
   } = values;
   const { image: colonyAvatarImage, thumbnail: colonyThumbnail } = avatar ?? {};
 
-  return {
+  const baseDomainPayload = {
     colony,
     colonyDisplayName,
     colonyDescription,
@@ -34,5 +36,17 @@ export const getEditColonyDetailsPayload = (
       ? sanitizeHTML(annotationMessage)
       : undefined,
     customActionTitle: title,
+  };
+
+  if (values.decisionMethod === DecisionMethod.Permissions) {
+    return baseDomainPayload;
+  }
+
+  return {
+    ...baseDomainPayload,
+    ...getMotionPayload(
+      values.decisionMethod === DecisionMethod.MultiSig,
+      colony,
+    ),
   };
 };

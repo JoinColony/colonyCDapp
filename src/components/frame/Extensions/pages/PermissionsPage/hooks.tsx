@@ -8,7 +8,7 @@ import {
   CopySimple,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
@@ -55,7 +55,7 @@ export const defaultPermissionsPageFilterValue:
   '7': false,
 };
 
-export const useGetPermissionPageFilters = () => {
+export const useGetPermissionPageFilters = (isMultiSig = false) => {
   const isMobile = useMobile();
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState<
@@ -78,10 +78,14 @@ export const useGetPermissionPageFilters = () => {
             : 'permissionsPage.filter.filterBy',
         }),
         items: [
-          {
-            label: formatText({ id: 'filter.option.mod' }),
-            value: UserRole.Mod,
-          },
+          ...(!isMultiSig
+            ? [
+                {
+                  label: formatText({ id: 'filter.option.mod' }),
+                  value: UserRole.Mod,
+                },
+              ]
+            : []),
           {
             label: formatText({ id: 'filter.option.payer' }),
             value: UserRole.Payer,
@@ -132,7 +136,7 @@ export const useGetPermissionPageFilters = () => {
   return { filters, searchValue, filterValue };
 };
 
-export const useGetMembersForPermissions = () => {
+export const useGetMembersForPermissions = (isMultiSig = false) => {
   const {
     availableExtensionsData,
     installedExtensionsData,
@@ -346,7 +350,8 @@ export const useGetMembersForPermissions = () => {
     ],
   );
 
-  const { filters, filterValue, searchValue } = useGetPermissionPageFilters();
+  const { filters, filterValue, searchValue } =
+    useGetPermissionPageFilters(isMultiSig);
   const isFilterActive = Object.values(filterValue).some((value) => value);
 
   const filteredMembers = useMemo(() => {
@@ -356,8 +361,10 @@ export const useGetMembersForPermissions = () => {
           return true;
         }
 
-        if (member.role) {
-          const memberRole = UserRole[member.role.name];
+        const role = isMultiSig ? member.multiSigRole : member.role;
+
+        if (role) {
+          const memberRole = UserRole[role.name];
           const isPermissionChecked = Object.keys(filterValue).some(
             (key) => !Number.isNaN(Number(key)) && filterValue[key],
           );
@@ -366,7 +373,7 @@ export const useGetMembersForPermissions = () => {
             if (!isPermissionChecked) {
               return true;
             }
-            return member.role.permissions.some(
+            return role.permissions.some(
               (permission) => filterValue[permission],
             );
           }
@@ -380,7 +387,7 @@ export const useGetMembersForPermissions = () => {
     );
 
     return filteredMembersList;
-  }, [mappedMembers, isFilterActive, filterValue]);
+  }, [mappedMembers, isFilterActive, isMultiSig, filterValue]);
 
   const filteredExtensions = useMemo(() => {
     const filteredExtensionsList = Object.values(mappedExtensions).filter(
@@ -415,13 +422,15 @@ export const useGetMembersForPermissions = () => {
     return filteredExtensionsList;
   }, [filterValue, mappedExtensions, isFilterActive]);
 
-  const searchedMembers = filteredMembers.filter(
-    ({ member }) =>
+  const searchedMembers = filteredMembers.filter(({ member }) => {
+    const role = isMultiSig ? member.multiSigRole : member.role;
+    return (
       member.user?.profile?.displayName
         ?.toLowerCase()
         .includes(searchValue.toLowerCase()) ||
-      member.role?.name.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+      role?.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  });
 
   const searchedExtensions = filteredExtensions.filter(
     ({ extension }) =>
@@ -429,56 +438,81 @@ export const useGetMembersForPermissions = () => {
       extension.role?.name.toLowerCase().includes(searchValue.toLowerCase()),
   );
 
-  const itemsByRole: ItemsByRole = useMemo(() => {
-    const memberItems = searchedMembers.reduce((acc, memberCard) => {
-      if (memberCard.member.role) {
-        const roleName = memberCard.member.role.name.toLowerCase();
-
-        if (!acc[roleName]) {
-          acc[roleName] = [];
+  const getItemsByRole = useCallback(
+    (multiSig = false) => {
+      const memberItems = searchedMembers.reduce((acc, memberCard) => {
+        const role = multiSig
+          ? memberCard.member.multiSigRole
+          : memberCard.member.role;
+        if (role) {
+          const roleName = role.name.toLowerCase();
+          if (!acc[roleName]) {
+            acc[roleName] = [];
+          }
+          acc[roleName].push({ type: 'member', data: memberCard });
         }
-        acc[roleName].push({ type: 'member', data: memberCard });
-      }
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
-    const extensionItems = searchedExtensions.reduce((acc, extensionCard) => {
-      if (extensionCard.extension.role) {
-        const roleName = extensionCard.extension.role.name.toLowerCase();
-        if (!acc[roleName]) {
-          acc[roleName] = [];
+      if (multiSig) {
+        return {
+          [UserRole.Mod]: [...(memberItems[UserRole.Mod] || [])],
+          [UserRole.Payer]: [...(memberItems[UserRole.Payer] || [])],
+          [UserRole.Admin]: [...(memberItems[UserRole.Admin] || [])],
+          [UserRole.Owner]: [...(memberItems[UserRole.Owner] || [])],
+          [UserRole.Custom]: [...(memberItems[UserRole.Custom] || [])],
+        };
+      }
+
+      const extensionItems = searchedExtensions.reduce((acc, extensionCard) => {
+        if (extensionCard.extension.role) {
+          const roleName = extensionCard.extension.role.name.toLowerCase();
+          if (!acc[roleName]) {
+            acc[roleName] = [];
+          }
+          acc[roleName].push({ type: 'extension', data: extensionCard });
         }
-        acc[roleName].push({ type: 'extension', data: extensionCard });
-      }
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
-    return {
-      [UserRole.Mod]: [
-        ...(memberItems[UserRole.Mod] || []),
-        ...(extensionItems[UserRole.Mod] || []),
-      ],
-      [UserRole.Payer]: [
-        ...(memberItems[UserRole.Payer] || []),
-        ...(extensionItems[UserRole.Payer] || []),
-      ],
-      [UserRole.Admin]: [
-        ...(memberItems[UserRole.Admin] || []),
-        ...(extensionItems[UserRole.Admin] || []),
-      ],
-      [UserRole.Owner]: [
-        ...(memberItems[UserRole.Owner] || []),
-        ...(extensionItems[UserRole.Owner] || []),
-      ],
-      [UserRole.Custom]: [
-        ...(memberItems[UserRole.Custom] || []),
-        ...(extensionItems[UserRole.Custom] || []),
-      ],
-    };
-  }, [searchedExtensions, searchedMembers]);
+      return {
+        [UserRole.Mod]: [
+          ...(memberItems[UserRole.Mod] || []),
+          ...(extensionItems[UserRole.Mod] || []),
+        ],
+        [UserRole.Payer]: [
+          ...(memberItems[UserRole.Payer] || []),
+          ...(extensionItems[UserRole.Payer] || []),
+        ],
+        [UserRole.Admin]: [
+          ...(memberItems[UserRole.Admin] || []),
+          ...(extensionItems[UserRole.Admin] || []),
+        ],
+        [UserRole.Owner]: [
+          ...(memberItems[UserRole.Owner] || []),
+          ...(extensionItems[UserRole.Owner] || []),
+        ],
+        [UserRole.Custom]: [
+          ...(memberItems[UserRole.Custom] || []),
+          ...(extensionItems[UserRole.Custom] || []),
+        ],
+      };
+    },
+    [searchedExtensions, searchedMembers],
+  );
+
+  const itemsByRole: ItemsByRole = useMemo(
+    () => getItemsByRole(),
+    [getItemsByRole],
+  );
+  const itemsByMultiSigRole: ItemsByRole = useMemo(
+    () => getItemsByRole(true),
+    [getItemsByRole],
+  );
 
   return {
     itemsByRole,
+    itemsByMultiSigRole,
     filters,
     isLoading: loading || extensionLoading,
   };

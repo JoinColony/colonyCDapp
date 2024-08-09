@@ -10,6 +10,7 @@ import {
   filterActionByMotionState,
   makeWithMotionStateMapper,
 } from '~hooks/useActivityFeed/helpers.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
@@ -19,6 +20,12 @@ export const useGetAgreements = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
+  const {
+    loading: loadingExtensions,
+    votingReputationExtensionData,
+    multiSigExtensionData,
+  } = useEnabledExtensions();
+
   const { activeFilters, searchFilter } = useFiltersContext();
   const { data, loading } = useGetColonyActionsQuery({
     variables: {
@@ -47,13 +54,23 @@ export const useGetAgreements = () => {
   const agreements = useMemo(
     () =>
       (agreementsData?.filter(notNull) ?? []).map(
-        makeWithMotionStateMapper(motionStatesMap),
+        makeWithMotionStateMapper(
+          motionStatesMap,
+          votingReputationExtensionData,
+          multiSigExtensionData,
+        ),
       ),
-    [agreementsData, motionStatesMap],
+    [
+      agreementsData,
+      motionStatesMap,
+      multiSigExtensionData,
+      votingReputationExtensionData,
+    ],
   );
 
   const loadingMotionStateFilter =
-    motionStatesLoading && !!activeFilters?.motionStates?.length;
+    (motionStatesLoading || loadingExtensions) &&
+    !!activeFilters?.motionStates?.length;
 
   const filteredAgreements = agreements
     .filter((agreement) =>

@@ -6,6 +6,7 @@ import {
   SearchableSortDirection,
   useSearchActionsQuery,
 } from '~gql';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 import useNetworkMotionStates from '../useNetworkMotionStates.ts';
@@ -35,6 +36,12 @@ const useActivityFeed = (
   const { colony } = useColonyContext();
 
   const { colonyAddress } = colony;
+
+  const {
+    loading: loadingExtensions,
+    votingReputationExtensionData,
+    multiSigExtensionData,
+  } = useEnabledExtensions();
 
   const [pageNumber, setPageNumber] = useState(1);
   /**
@@ -68,6 +75,7 @@ const useActivityFeed = (
         .filter(Boolean) || [],
     [items],
   );
+
   const {
     motionStatesMap,
     loading: motionStatesLoading,
@@ -77,9 +85,18 @@ const useActivityFeed = (
   const actions = useMemo(
     () =>
       (items?.filter(notNull) ?? []).map(
-        makeWithMotionStateMapper(motionStatesMap),
+        makeWithMotionStateMapper(
+          motionStatesMap,
+          votingReputationExtensionData,
+          multiSigExtensionData,
+        ),
       ),
-    [items, motionStatesMap],
+    [
+      items,
+      motionStatesMap,
+      multiSigExtensionData,
+      votingReputationExtensionData,
+    ],
   );
 
   const loadingMotionStateFilter =
@@ -143,7 +160,7 @@ const useActivityFeed = (
   return {
     loadingFirstPage,
     loadingNextPage,
-    loadingMotionStates: motionStatesLoading,
+    loadingMotionStates: loadingExtensions || motionStatesLoading,
     actions: visibleActions,
     hasNextPage,
     hasPrevPage,

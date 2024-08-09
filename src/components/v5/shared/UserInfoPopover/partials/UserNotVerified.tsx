@@ -2,9 +2,9 @@ import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import { ManageMembersType } from '~v5/common/ActionSidebar/partials/forms/ManageVerifiedMembersForm/consts.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 const displayName = 'v5.UserInfoPopover.partials.UserNotVerified';
@@ -46,7 +46,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
               toggleActionSidebarOn({
                 [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
                 members: [{ value: walletAddress }],
-                manageMembers: ManageMembersType.Add,
+                manageMembers: ManageVerifiedMembersOperation.Add,
               });
             }, timeout);
           }}

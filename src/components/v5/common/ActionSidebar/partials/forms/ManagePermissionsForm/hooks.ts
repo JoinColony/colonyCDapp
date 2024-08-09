@@ -9,6 +9,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 
@@ -47,17 +48,22 @@ export const useManagePermissions = (
     control,
     name: 'role',
   });
+  const isModRoleSelected = formRole === UserRole.Mod;
 
-  const isModeRoleSelected = formRole === UserRole.Mod;
+  useEffect(() => {
+    if (isModRoleSelected) {
+      setValue('authority', Authority.Own);
+    }
+  }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
     /**
      * This effect handles the population of permissions-related form values when the
      * Manage Permissions form is given default values via the "Redo action" flow
      */
-    const { member, role, team } = defaultValues ?? {};
+    const { member, role, team, authority } = defaultValues ?? {};
 
-    if (member && role && team) {
+    if (member && role && team && authority) {
       configureFormRoles({
         colony,
         isSubmitted: false,
@@ -65,38 +71,43 @@ export const useManagePermissions = (
         role,
         setValue,
         team,
+        authority,
       });
     }
   }, [colony, defaultValues, setValue]);
 
   useEffect(() => {
-    const { unsubscribe } = watch(({ member, team, role }, { name }) => {
-      if (isSubmitted) {
-        if (role === UserRole.Custom) {
-          trigger('permissions');
-        } else {
-          clearErrors('permissions');
+    const { unsubscribe } = watch(
+      ({ member, team, role, authority }, { name }) => {
+        if (isSubmitted) {
+          if (role === UserRole.Custom) {
+            trigger('permissions');
+          } else {
+            clearErrors('permissions');
+          }
         }
-      }
 
-      if (
-        !name ||
-        !['team', 'member'].includes(name) ||
-        !notMaybe(team) ||
-        !notMaybe(member)
-      ) {
-        return;
-      }
+        if (
+          !name ||
+          !['team', 'member', 'authority'].includes(name) ||
+          !notMaybe(team) ||
+          !notMaybe(member) ||
+          !notMaybe(authority)
+        ) {
+          return;
+        }
 
-      configureFormRoles({
-        colony,
-        isSubmitted,
-        member,
-        role,
-        setValue,
-        team,
-      });
-    });
+        configureFormRoles({
+          colony,
+          isSubmitted,
+          member,
+          role,
+          setValue,
+          team,
+          authority,
+        });
+      },
+    );
 
     return () => unsubscribe();
   }, [
@@ -108,15 +119,17 @@ export const useManagePermissions = (
     isSubmitted,
     trigger,
     watch,
+    isModRoleSelected,
   ]);
 
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
     actionType:
-      formDecisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_USER_ROLES_SET
-        : ActionTypes.MOTION_USER_ROLES_SET,
+      formDecisionMethod === DecisionMethod.Reputation ||
+      formDecisionMethod === DecisionMethod.MultiSig
+        ? ActionTypes.MOTION_USER_ROLES_SET
+        : ActionTypes.ACTION_USER_ROLES_SET,
     defaultValues: useMemo<DeepPartial<ManagePermissionsFormValues>>(
       () => ({
         createdIn: Id.RootDomain,
@@ -137,6 +150,6 @@ export const useManagePermissions = (
 
   return {
     role: formRole,
-    isModeRoleSelected,
+    isModRoleSelected,
   };
 };

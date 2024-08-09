@@ -48,7 +48,7 @@ const SpecificSidePanel: FC<SpecificSidePanelProps> = ({ extensionData }) => {
                     <ExtensionStatusBadge
                       key={status}
                       mode={status}
-                      text={status}
+                      text={formatMessage({ id: `extension.status.${status}` })}
                     />
                   ))}
                 </div>

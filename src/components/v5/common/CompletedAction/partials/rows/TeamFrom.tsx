@@ -18,6 +18,7 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   const getTooltipContent = () => {
     switch (actionType) {
       case ColonyActionType.SetUserRoles:
+      case ColonyActionType.SetUserRolesMultisig:
       case ColonyActionType.EmitDomainReputationPenalty:
       case ColonyActionType.EmitDomainReputationReward:
         return formatText({
@@ -32,6 +33,7 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   const getRowTitle = () => {
     switch (actionType) {
       case ColonyActionType.SetUserRoles:
+      case ColonyActionType.SetUserRolesMultisig:
       case ColonyActionType.EmitDomainReputationPenalty:
       case ColonyActionType.EmitDomainReputationReward:
         return formatText({ id: 'actionSidebar.team' });

@@ -1,9 +1,5 @@
 .wrapper :global(.select__control) {
-  @apply rounded-e rounded-s border-gray-300 text-md font-medium text-gray-900;
-}
-
-.wrapper--error :global(.select__control) {
-  @apply border-negative-400;
+  @apply rounded-e rounded-s border-gray-300 text-md font-normal text-gray-900;
 }
 
 .wrapper :global(.select__control--is-focused) {
@@ -35,7 +31,7 @@
 }
 
 .menu {
-  @apply my-1 rounded-e rounded-s border border-gray-300 shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)];
+  @apply !my-1 rounded-e rounded-s border border-gray-300 !shadow-[0px_0px_2px_0px_rgba(16,24,40,0.05)];
 }
 
 .menu :global(.select__menu-list) {
@@ -43,7 +39,11 @@
 }
 
 .menu :global(.select__option) {
-  @apply cursor-pointer rounded-e rounded-s text-gray-900 transition-all;
+  @apply cursor-pointer rounded-e rounded-s text-md font-normal text-gray-900 transition-all;
+}
+
+.menu :global(.select__option):hover {
+  @apply bg-gray-50;
 }
 
 .menu :global(.select__option:not(.with-link)) {
@@ -59,9 +59,9 @@
 }
 
 .menu :global(.select__option--is-selected) {
-  @apply bg-transparent font-medium text-blue-400;
+  @apply bg-transparent font-medium;
 }
 
 .menu :global(.select__option--is-focused) {
-  @apply bg-transparent sm:bg-gray-200;
+  @apply bg-transparent sm:bg-gray-50;
 }

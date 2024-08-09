@@ -21,7 +21,11 @@ interface Props {
 const MSG = defineMessages({
   nativeToken: {
     id: `${displayName}.nativeToken`,
-    defaultMessage: 'Native',
+    defaultMessage: 'Native Token',
+  },
+  nativeTokenDescription: {
+    id: `${displayName}.nativeTokenDescription`,
+    defaultMessage: 'This token was created by this Colony.',
   },
   viewOnEtherscan: {
     id: `${displayName}.viewOnEtherscan`,
@@ -37,10 +41,10 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
     <div
       className={clsx(
         className,
-        'flex w-80 flex-col items-center gap-6 p-6 text-gray-900',
+        'flex w-80 flex-col items-center gap-4 p-6 text-gray-900 sm:w-[380px]',
       )}
     >
-      <div className="flex w-full flex-row items-center gap-4">
+      <div className="flex w-full flex-row items-center gap-4 pr-6 sm:pr-0">
         <TokenAvatar
           size={60}
           tokenName={token.name}
@@ -60,7 +64,13 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
         </div>
       </div>
 
-      <div className="flex w-full flex-row items-center">
+      {isTokenNative && (
+        <p className="w-full text-md text-gray-600">
+          {formatMessage(MSG.nativeTokenDescription)}
+        </p>
+      )}
+
+      <div className="flex w-full flex-row items-center border-t border-gray-200 pt-4">
         <a
           className="flex flex-row items-center gap-2 text-md hover:text-blue-400"
           target="_blank"
@@ -70,7 +80,7 @@ const TokenInfo = ({ token, isTokenNative, className }: Props) => {
             addressOrHash: tokenAddress,
           })}
         >
-          <ArrowSquareOut size={14} />
+          <ArrowSquareOut size={18} />
           {formatMessage(MSG.viewOnEtherscan, {
             blockExplorerName: DEFAULT_NETWORK_INFO.blockExplorerName,
           })}

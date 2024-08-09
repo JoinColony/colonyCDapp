@@ -139,6 +139,8 @@ export enum ExtendedColonyActionType {
   SafeTransferNftMotion = 'SAFE_TRANSFER_NFT_MOTION',
   SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
   SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
+  UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
+  UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
 }
 
 /**
@@ -167,4 +169,5 @@ export enum SystemMessages {
 export enum DecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
+  MultiSig = 'MultiSig',
 }

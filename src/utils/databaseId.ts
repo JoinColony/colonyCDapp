@@ -1,3 +1,5 @@
+import { type ColonyActionFragment } from '~gql';
+
 export const getDomainDatabaseId = (
   colonyAddress: string,
   nativeDomainId: number,
@@ -24,11 +26,13 @@ export const getHistoricRolesDatabaseId = ({
   nativeId,
   recipientAddress,
   blockNumber,
+  isMultiSig,
 }: {
   colonyAddress: string;
   nativeId: number | undefined;
   recipientAddress: string | null | undefined;
   blockNumber: number;
+  isMultiSig?: ColonyActionFragment['rolesAreMultiSig'];
 }) => {
-  return `${colonyAddress}_${nativeId}_${recipientAddress}_${blockNumber}_roles`;
+  return `${colonyAddress}_${nativeId}_${recipientAddress}_${blockNumber}${isMultiSig ? '_multisig' : ''}_roles`;
 };

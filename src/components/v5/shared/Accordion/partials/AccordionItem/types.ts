@@ -7,4 +7,5 @@ export interface AccordionItemProps {
   icon?: Icon;
   className?: string;
   iconSize?: number;
+  withDelimiter?: boolean;
 }

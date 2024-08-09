@@ -32,6 +32,7 @@ const SelectBaseInner = <T extends SelectBaseOption>(
       value={selectedOption || null}
       defaultValue={defaultSelectedOption}
       ref={ref}
+      menuShouldScrollIntoView={false}
     />
   );
 };

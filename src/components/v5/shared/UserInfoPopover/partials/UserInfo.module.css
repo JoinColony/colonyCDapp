@@ -1,0 +1,29 @@
+.userInfoDomainsWrapper {
+  /* @TODO remove when we use tailwind-scrollbar */
+}
+
+/* The scrollbar itself */
+.userInfoDomainsWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* The container (or track) of the scrollbar */
+.userInfoDomainsWrapper::-webkit-scrollbar-track {
+  width: 0.3125rem;
+  background-color: transparent;
+}
+
+/* The actual scrollbar handle */
+.userInfoDomainsWrapper::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: var(--color-gray-100);
+}
+
+/* When the scrollbar is being hovered or clicked */
+.userInfoDomainsWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray-300);
+}
+
+.userInfoDomainsWrapper::-webkit-scrollbar-corner {
+  display: none;
+}

@@ -18,6 +18,8 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import ReenableButton from '../ExtensionDetailsPage/partials/ExtensionDetails/ReenableButton.tsx';
 
+import { ButtonWithLoader } from './ButtonWithLoader.tsx';
+
 interface EnableButtonProps {
   userHasRoot: boolean;
   extensionData: AnyExtensionData;
@@ -49,7 +51,7 @@ const EnableButton = ({
       address: user.walletAddress,
       colony,
       requiredRoles: [ColonyRole.Architecture],
-      requiredRolesDomains: [Id.RootDomain],
+      requiredRolesDomain: Id.RootDomain,
     });
 
   /* To enable, a user must have the root permission. They also need architecture for the permissions tx to be successful. */
@@ -90,14 +92,14 @@ const EnableButton = ({
     }
 
     return (
-      <Button
+      <ButtonWithLoader
         type="submit"
         disabled={!isValid}
         isFullSize={isMobile}
-        loading={isSubmitting || waitingForEnableConfirmation}
+        isLoading={isSubmitting || waitingForEnableConfirmation}
       >
         {formatText({ id: 'button.enable' })}
-      </Button>
+      </ButtonWithLoader>
     );
   }
 

@@ -11,6 +11,10 @@ const MOTION_STATES_TO_SHOW = [
   MotionState.Failed,
   MotionState.Passed,
   MotionState.FailedNotFinalizable,
+  MotionState.Open,
+  MotionState.Rejected,
+  MotionState.Invalid,
+  MotionState.Uninstalled,
 ];
 
 const MotionOutcomeBadge = ({ motionState }: MotionOutcomeBadgeProps) => {

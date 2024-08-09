@@ -7,8 +7,8 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import ImageCarousel from '~common/Extensions/ImageCarousel/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ExtensionSaveSettingsContextProvider } from '~context/ExtensionSaveSettingsContext/ExtensionSaveSettingsContextProvider.tsx';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -21,6 +21,7 @@ import { formatText } from '~utils/intl.ts';
 import { SetupComponentMap } from './consts.ts';
 import ExtensionInfo from './ExtensionInfo.tsx';
 import ExtensionsTopRow from './ExtensionTopRow.tsx';
+import { useCheckExtensionEnabled } from './hooks.ts';
 import ExtensionDetails from './partials/ExtensionDetails/index.ts';
 import {
   createExtensionSetupInitialValues,
@@ -32,16 +33,16 @@ import { getValidationSchema } from './validation.ts';
 const displayName = 'frame.Extensions.pages.ExtensionDetailsPage';
 
 const ExtensionDetailsPage: FC = () => {
+  // @TODO replace this with a proper use of context
+  const [activeTab, setActiveTab] = useState(0);
   const { extensionId } = useParams();
   const { pathname } = useLocation();
   const {
     colony: { colonyAddress, name: colonyName },
-    refetchColony,
   } = useColonyContext();
   const navigate = useNavigate();
-  const { extensionData, loading, refetchExtensionData } = useExtensionData(
-    extensionId ?? '',
-  );
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
+  const { checkExtensionEnabled } = useCheckExtensionEnabled(extensionId ?? '');
   const [waitingForEnableConfirmation, setWaitingForEnableConfirmation] =
     useState(false);
 
@@ -80,8 +81,7 @@ const ExtensionDetailsPage: FC = () => {
     colonyName,
     extensionData,
     navigate,
-    refetchColony,
-    refetchExtensionData,
+    checkExtensionEnabled,
     setWaitingForEnableConfirmation,
   });
 
@@ -95,38 +95,42 @@ const ExtensionDetailsPage: FC = () => {
       defaultValues={defaultValues}
       onSuccess={handleFormSuccess}
     >
-      <div className="grid grid-cols-6 gap-4 pb-6 md:gap-x-12 md:gap-y-6">
-        <div className="order-1 col-span-6">
-          <ExtensionsTopRow
-            extensionData={extensionData}
-            isSetupRoute={isSetupRoute}
-            waitingForEnableConfirmation={waitingForEnableConfirmation}
-          />
-        </div>
-        <div className="order-2 col-span-6 lg:col-span-4">
-          {!isSetupRoute && (
-            <ImageCarousel slideUrls={extensionData.imageURLs} />
-          )}
-        </div>
-        <div className="order-3 col-span-6 md:order-4 md:col-span-2 lg:order-3 lg:row-span-2">
-          <ExtensionDetails extensionData={extensionData} />
-        </div>
-        <div className="order-4 col-span-6 md:order-3 md:col-span-4 lg:order-4 lg:mt-6">
-          <Routes>
-            <Route
-              path="/"
-              element={<ExtensionInfo extensionData={extensionData} />}
+      <ExtensionSaveSettingsContextProvider>
+        <div className="mt-6 grid grid-cols-6 gap-4 pb-6 sm:mt-0 md:gap-x-12 md:gap-y-6">
+          <div className="order-1 col-span-6">
+            <ExtensionsTopRow
+              extensionData={extensionData}
+              isSetupRoute={isSetupRoute}
+              waitingForEnableConfirmation={waitingForEnableConfirmation}
+              onActiveTabChange={setActiveTab}
             />
-            {SetupComponent && (
+          </div>
+          <div className="order-3 hidden md:col-span-2 md:block lg:row-span-2">
+            <ExtensionDetails extensionData={extensionData} />
+          </div>
+          <div className="order-2 col-span-6 md:order-2 md:col-span-4 lg:order-2">
+            <Routes>
               <Route
-                path={COLONY_EXTENSION_SETUP_ROUTE}
-                element={<SetupComponent extensionData={extensionData} />}
+                path="/"
+                element={
+                  <ExtensionInfo
+                    activeTab={activeTab}
+                    onActiveTabChange={setActiveTab}
+                    extensionData={extensionData}
+                  />
+                }
               />
-            )}
-            <Route path="*" element={<NotFoundRoute />} />
-          </Routes>
+              {SetupComponent && (
+                <Route
+                  path={COLONY_EXTENSION_SETUP_ROUTE}
+                  element={<SetupComponent extensionData={extensionData} />}
+                />
+              )}
+              <Route path="*" element={<NotFoundRoute />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </ExtensionSaveSettingsContextProvider>
     </ActionForm>
   );
 };

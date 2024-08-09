@@ -2,9 +2,9 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { ManageVerifiedMembersOperation } from '~types';
 import { ColonyActionType } from '~types/graphql.ts';
 
-import { ManageMembersType } from '../../forms/ManageVerifiedMembersForm/consts.ts';
 import { type ManageVerifiedMembersFormValues } from '../../forms/ManageVerifiedMembersForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
@@ -46,7 +46,7 @@ export const ManageVerifiedMembersDescription = () => {
       id="action.title"
       values={{
         actionType:
-          manageMembers === ManageMembersType.Add
+          manageMembers === ManageVerifiedMembersOperation.Add
             ? ColonyActionType.AddVerifiedMembers
             : ColonyActionType.RemoveVerifiedMembers,
         members: membersCount,

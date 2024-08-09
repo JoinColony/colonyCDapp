@@ -10,6 +10,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionTypeRow,
   CreatedInRow,
@@ -40,7 +41,13 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
 
   return (
     <>
-      <ActionTitle>{title}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{title}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={action.transactionHash}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
@@ -57,7 +64,10 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

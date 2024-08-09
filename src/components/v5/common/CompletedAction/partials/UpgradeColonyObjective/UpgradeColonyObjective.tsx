@@ -2,16 +2,28 @@ import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  TITLE_FIELD_NAME,
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  COLONY_OBJECTIVE_TITLE_FIELD_NAME,
+  COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import { ICON_SIZE } from '../../consts.ts';
+import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionTypeRow,
   CreatedInRow,
@@ -49,12 +61,41 @@ const MSG = defineMessages({
 });
 
 const UpgradeColonyObjective = ({ action }: Props) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, colony, isMotion, pendingColonyMetadata } = action;
+  const {
+    transactionHash,
+    initiatorUser,
+    colony,
+    isMotion,
+    isMultiSig,
+    pendingColonyMetadata,
+    annotation,
+  } = action;
+
+  const objectiveData =
+    isMotion || isMultiSig
+      ? pendingColonyMetadata?.objective
+      : colony.metadata?.objective;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
+            [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
+            [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
+              objectiveData?.description,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
@@ -69,28 +110,22 @@ const UpgradeColonyObjective = ({ action }: Props) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow
+          actionType={getExtendedActionType(action, colony.metadata)}
+        />
         <div className="flex items-center gap-2">
           <Article size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveTitle)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.title
-              : colony.metadata?.objective?.title}
-          </span>
+          <span>{objectiveData?.title}</span>
         </div>
         <div className="flex items-center gap-2">
           <FileText size={ICON_SIZE} />
           <span>{formatText(MSG.objectiveDescription)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.description
-              : colony.metadata?.objective?.description}
-          </span>
+          <span>{objectiveData?.description}</span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -98,14 +133,12 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           <span>{formatText(MSG.objectiveProgress)}</span>
         </div>
         <div>
-          <span>
-            {isMotion
-              ? pendingColonyMetadata?.objective?.progress
-              : colony.metadata?.objective?.progress}
-            %
-          </span>
+          <span>{objectiveData?.progress}%</span>
         </div>
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}

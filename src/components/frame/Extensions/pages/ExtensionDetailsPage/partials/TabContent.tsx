@@ -1,8 +1,11 @@
 import React, { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import ImageCarousel from '~common/Extensions/ImageCarousel/ImageCarousel.tsx';
 import SupportingDocuments from '~common/Extensions/SupportingDocuments/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
+
+import ExtensionDetails from './ExtensionDetails/ExtensionDetails.tsx';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.TabContent';
@@ -30,6 +33,12 @@ const TabContent: FC<TabContentProps> = ({ extensionData }) => {
 
   return (
     <div>
+      <div className="mb-6">
+        <ImageCarousel slideUrls={extensionData.imageURLs} />
+      </div>
+      <div className="mb-9 md:hidden">
+        <ExtensionDetails extensionData={extensionData} />
+      </div>
       <div className="text-md text-gray-600">
         <FormattedMessage
           {...descriptionLong}

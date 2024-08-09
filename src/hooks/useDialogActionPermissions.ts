@@ -9,13 +9,13 @@ const useDialogActionPermissions = ({
   colony,
   isVotingExtensionEnabled,
   requiredRoles,
-  requiredRolesDomains,
+  requiredRolesDomain,
   hasReputation,
 }: {
   colony: Colony;
   isVotingExtensionEnabled: boolean;
   requiredRoles: ColonyRole[];
-  requiredRolesDomains: number[];
+  requiredRolesDomain: number;
   hasReputation: boolean;
 }): [boolean, boolean] => {
   const { wallet } = useAppContext();
@@ -25,7 +25,7 @@ const useDialogActionPermissions = ({
   const hasRoles = addressHasRoles({
     colony,
     requiredRoles,
-    requiredRolesDomains,
+    requiredRolesDomain,
     address: wallet?.address ?? '',
   });
   const onlyForceAction =

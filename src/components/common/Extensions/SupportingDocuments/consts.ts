@@ -6,6 +6,8 @@ import {
   PAYMENTS,
   LAZY_CONSENSUS_EXTENSION,
   STREAMING_PAYMENTS,
+  MULTI_SIG_EXTENSION,
+  PERMISSIONS,
 } from '~constants/index.ts';
 
 const supportingDocumentsMessages = defineMessages({
@@ -24,6 +26,14 @@ const supportingDocumentsMessages = defineMessages({
   streamingPaymentsLink: {
     id: 'SupportingDocuments.StreamingPayments.paymentsLink',
     defaultMessage: 'Streaming Payments',
+  },
+  permissionsLink: {
+    id: 'SupportingDocuments.MultiSig.permissionsLink',
+    defaultMessage: 'Understanding Permissions',
+  },
+  multiSigExtensionLink: {
+    id: 'SupportingDocuments.MultiSig.extensionLink',
+    defaultMessage: 'Multi-Sig Extension',
   },
 });
 
@@ -48,6 +58,16 @@ export const links = {
     {
       url: STREAMING_PAYMENTS,
       message: supportingDocumentsMessages.streamingPaymentsLink,
+    },
+  ],
+  [Extension.MultisigPermissions]: [
+    {
+      url: PERMISSIONS,
+      message: supportingDocumentsMessages.permissionsLink,
+    },
+    {
+      url: MULTI_SIG_EXTENSION,
+      message: supportingDocumentsMessages.multiSigExtensionLink,
     },
   ],
 };
