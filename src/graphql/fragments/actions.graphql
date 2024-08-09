@@ -210,7 +210,6 @@ fragment ColonyMotion on ColonyMotion {
     ...Annotation
   }
   isDecision
-  gasEstimate
   transactionHash
   action {
     type
