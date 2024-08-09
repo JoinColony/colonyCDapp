@@ -28,7 +28,7 @@ export const getInitialDomainConfig = (domain, multiSigConfig) => {
 
   return {
     id: domain.id,
-    nativeSkillId: Number(domain.nativeSkillId),
+    nativeSkillId: domain.nativeSkillId,
     type,
     name,
     threshold: existingThreshold || colonyThreshold || 0,
