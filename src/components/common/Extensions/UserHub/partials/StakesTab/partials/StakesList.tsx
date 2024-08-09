@@ -12,7 +12,7 @@ import styles from './StakesList.module.css';
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
 
-const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
+const StakesList = ({ stakes, loading }: StakesListProps) => {
   if (loading) {
     return (
       <div className="mx-auto w-fit pt-6">
@@ -29,12 +29,7 @@ const StakesList = ({ stakes, loading, colony }: StakesListProps) => {
       )}
     >
       {stakes.map((stake) => (
-        <StakeItem
-          key={stake.id}
-          stake={stake}
-          nativeToken={colony.nativeToken}
-          colony={colony}
-        />
+        <StakeItem key={stake.id} stake={stake} />
       ))}
     </div>
   );

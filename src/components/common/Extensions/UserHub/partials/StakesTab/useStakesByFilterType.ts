@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetUserStakesQuery } from '~gql';
-import useNetworkMotionStates from '~hooks/useNetworkMotionStates.ts';
+import useNetworkMotionStatesAllColonies from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
@@ -12,9 +11,6 @@ import { getStakeStatus } from './helpers.ts';
 import { type StakesFilterType } from './types.ts';
 
 export const useStakesByFilterType = () => {
-  const {
-    colony: { colonyAddress },
-  } = useColonyContext();
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
 
@@ -25,7 +21,6 @@ export const useStakesByFilterType = () => {
   } = useGetUserStakesQuery({
     variables: {
       userAddress: walletAddress ?? '',
-      colonyAddress,
     },
     skip: !walletAddress,
     fetchPolicy: 'cache-and-network',
@@ -35,23 +30,35 @@ export const useStakesByFilterType = () => {
     [data],
   );
 
-  const motionIds = useMemo(
+  const userMotionStakes = useMemo(
     () =>
       userStakes
         .filter((stake) => !!stake.action?.motionData)
-        .map((stake) => stake.action?.motionData?.motionId ?? ''),
+        .map((stake) => ({
+          motionId: stake.action?.motionData?.motionId ?? '',
+          colonyAddress: stake.action?.colonyAddress ?? '',
+          databaseMotionId: stake.action?.motionData?.databaseMotionId ?? '',
+        })),
     [userStakes],
   );
-  const { motionStatesMap, loading: motionStatesLoading } =
-    useNetworkMotionStates(motionIds);
+
+  const {
+    motionStatesMap,
+    loading: motionStatesLoading,
+    votingReputationByColony,
+  } = useNetworkMotionStatesAllColonies(userMotionStakes);
 
   const stakesWithStatus = useMemo(
     () =>
       userStakes.map((stake) => ({
         ...stake,
-        status: getStakeStatus(stake, motionStatesMap),
+        status: getStakeStatus(
+          stake,
+          motionStatesMap,
+          votingReputationByColony,
+        ),
       })),
-    [userStakes, motionStatesMap],
+    [userStakes, motionStatesMap, votingReputationByColony],
   );
 
   const stakesByFilterType = stakesFilterOptions.reduce(
@@ -70,8 +77,7 @@ export const useStakesByFilterType = () => {
 
   const filtersDataLoading = stakesFilterOptions.reduce(
     (loading, option) => {
-      const isFilterDataLoading =
-        stakesLoading || (option.requiresMotionState && motionStatesLoading);
+      const isFilterDataLoading = stakesLoading || motionStatesLoading;
       return {
         ...loading,
         [option.type]: isFilterDataLoading,
@@ -104,5 +110,10 @@ export const useStakesByFilterType = () => {
     }));
   };
 
-  return { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache };
+  return {
+    stakesByFilterType,
+    filtersDataLoading,
+    updateClaimedStakesCache,
+    votingReputationByColony,
+  };
 };

@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
@@ -20,13 +19,16 @@ const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 const StakesTab = () => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
 
   const [activeTab, setActiveTab] = useState(0);
   const activeFilterOption = stakesFilterOptions[activeTab];
 
-  const { stakesByFilterType, filtersDataLoading, updateClaimedStakesCache } =
-    useStakesByFilterType();
+  const {
+    stakesByFilterType,
+    filtersDataLoading,
+    updateClaimedStakesCache,
+    votingReputationByColony,
+  } = useStakesByFilterType();
 
   // Tabs are being used for selecting filter option
   const handleOnTabClick = useCallback((_, id: number) => {
@@ -55,8 +57,8 @@ const StakesTab = () => {
         <p className="heading-5">{formatMessage({ id: 'stakes' })}</p>
         {!isMobile && (
           <ClaimAllButton
-            colonyAddress={colony.colonyAddress}
             claimableStakes={claimableStakes}
+            votingReputationByColony={votingReputationByColony}
             updateClaimedStakesCache={updateClaimedStakesCache}
           />
         )}
@@ -73,7 +75,7 @@ const StakesTab = () => {
             'h-full': !filteredStakes.length,
           })}
         >
-          {!filteredStakes.length ? (
+          {!filteredStakes.length && !filterDataLoading ? (
             <EmptyContent
               title={{ id: 'empty.content.title.stakes' }}
               description={{ id: 'empty.content.subtitle.stakes' }}
@@ -92,7 +94,6 @@ const StakesTab = () => {
                 <StakesList
                   stakes={filteredStakes}
                   loading={filterDataLoading}
-                  colony={colony}
                 />
               </motion.div>
             </AnimatePresence>

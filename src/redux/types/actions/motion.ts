@@ -134,7 +134,11 @@ export type MotionActionTypes =
         userAddress: Address;
         colonyAddress: Address;
         extensionAddress: Address;
-        motionIds: string[];
+        userStakes: {
+          databaseMotionId: string;
+          colonyAddress: string;
+          extensionAddress: string;
+        }[];
       },
       object
     >

@@ -13,6 +13,7 @@ export const stakesFilterOptions: StakesFilterOption[] = [
       UserStakeStatus.Claimable,
       UserStakeStatus.Claimed,
       UserStakeStatus.Unknown,
+      UserStakeStatus.Lost,
     ],
   },
   {
