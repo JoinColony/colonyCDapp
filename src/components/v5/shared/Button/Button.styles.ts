@@ -26,7 +26,7 @@ const buttonClasses = {
     md:hover:bg-gray-50 md:hover:font-medium`,
   septenary: tw`border border-gray-200 bg-base-white text-gray-700 disabled:text-gray-300
     md:hover:border-gray-900 md:hover:bg-gray-900 md:hover:text-base-white`,
-  completed: tw`border-success-400 bg-success-400 text-base-white`,
+  completed: tw`border border-success-400 bg-success-400 text-base-white`,
 };
 
 export default buttonClasses;

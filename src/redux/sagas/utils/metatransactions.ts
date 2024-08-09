@@ -1,13 +1,10 @@
 import { type BigNumberish, utils, type TypedDataField } from 'ethers';
 
-import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { type Address } from '~types/index.ts';
 import { isFullWallet } from '~types/wallet.ts';
 
 import { generateBroadcasterHumanReadableError } from './errorMessages.ts';
-
-export const getChainId = (): string => DEFAULT_NETWORK_INFO.chainId;
 
 export const signTypedData = async ({
   domain,

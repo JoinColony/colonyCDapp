@@ -27,8 +27,8 @@ const Heading: React.FC<RowItemHeadingProps> = ({
             {itemIndex}
           </section>
           <section className="flex items-end gap-1">
-            <h4>{title}</h4>
-            <span className="text-xs font-thin leading-[19px] text-gray-600">
+            <h1 className="text-lg font-semibold">{title}</h1>
+            <span className="text-sm font-thin leading-[22px] text-gray-600">
               ({accessory})
             </span>
           </section>

@@ -12,6 +12,7 @@ import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
+import { useCryptoToFiatContext } from '../../context/CryptoToFiatContext.ts';
 import { type BankDetailsFormValues } from '../../types.ts';
 
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsModal';
@@ -44,6 +45,8 @@ export const useBankDetailsFields = ({
 }: UseBankDetailsParams) => {
   const [createBankAccount] = useCreateBankAccountMutation();
   const [updateBankAccount] = useUpdateBankAccountMutation();
+
+  const { getKycStatusData } = useCryptoToFiatContext();
 
   const [bankDetailsFields, setBankDetailsFields] =
     useState<BankDetailsFormValues>({
@@ -144,6 +147,8 @@ export const useBankDetailsFields = ({
           description={formatText(MSG.bankInfoAddeddSuccessfully)}
         />,
       );
+
+      getKycStatusData();
 
       onClose();
     } else {
