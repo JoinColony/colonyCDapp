@@ -156,6 +156,14 @@ fragment UserMotionStakes on UserMotionStakes {
   }
 }
 
+fragment UserMotionReward on UserMotionReward {
+  userAddress
+  user {
+    ...User
+  }
+  amount
+}
+
 fragment ColonyMotion on ColonyMotion {
   databaseMotionId: id
   motionId: nativeMotionId
@@ -164,6 +172,11 @@ fragment ColonyMotion on ColonyMotion {
   }
   usersStakes {
     ...UserMotionStakes
+  }
+  userRewards {
+    items {
+      ...UserMotionReward
+    }
   }
   remainingStakes
   userMinStake

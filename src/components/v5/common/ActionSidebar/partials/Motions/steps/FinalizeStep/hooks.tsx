@@ -89,11 +89,12 @@ export const useClaimConfig = (
 ) => {
   const {
     motionData: {
+      isFinalized: isMotionFinalized,
       stakerRewards,
       usersStakes,
+      userRewards,
       databaseMotionId,
       remainingStakes,
-      isFinalized,
     },
     transactionHash,
   } = actionData;
@@ -150,14 +151,20 @@ export const useClaimConfig = (
     }
   }, [stakerReward?.isClaimed, isClaimed]);
 
-  const totals = useMemo(
-    () =>
-      stakerReward &&
-      BigNumber.from(stakerReward?.rewards?.yay).add(
-        stakerReward?.rewards.nay || '',
-      ),
-    [stakerReward],
-  );
+  const userVoteRewardAmount = useMemo(() => {
+    if (!userAddress || !userRewards?.items) {
+      return 0;
+    }
+    const userReward = userRewards.items.find(
+      (rewardItem) => rewardItem?.userAddress === userAddress,
+    );
+
+    if (!userReward) {
+      return 0;
+    }
+
+    return userReward.amount;
+  }, [userAddress, userRewards]);
 
   const userTotalStake = useMemo(
     () =>
@@ -167,12 +174,28 @@ export const useClaimConfig = (
       ),
     [userStake],
   );
-  const userWinnings = totals?.sub(userTotalStake || 0);
+
+  const totals = useMemo(() => {
+    const total = BigNumber.from(userVoteRewardAmount);
+
+    if (stakerReward) {
+      return total.add(
+        BigNumber.from(stakerReward?.rewards?.yay).add(
+          stakerReward?.rewards.nay || '',
+        ),
+      );
+    }
+
+    return total;
+  }, [stakerReward, userVoteRewardAmount]);
+
+  // if user will receive a staking reward, we need to not count it as a reward, it's just a net zero
+  const userWinnings = stakerReward ? totals.sub(userTotalStake || 0) : totals;
 
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = totals ? !totals.isZero() : false;
+  const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(getSafePollingInterval());
@@ -190,30 +213,35 @@ export const useClaimConfig = (
     }),
   );
 
-  const items: DescriptionListItem[] = [
-    {
-      key: WinningsItems.Staked,
-      label: formatText({ id: 'motion.finalizeStep.staked' }),
-      value: (
-        <div>
-          <Numeral
-            value={userTotalStake || 0}
-            decimals={nativeTokenDecimals}
-            suffix={nativeTokenSymbol}
-          />
-        </div>
-      ),
-    },
-  ];
-  if (isFinalized) {
-    items.push(
+  const getDescriptionItems = (): DescriptionListItem[] => {
+    if (!isMotionFailedNotFinalizable && !isMotionFinalized) {
+      return [];
+    }
+
+    const rewardValue = isMotionFailedNotFinalizable ? 0 : userWinnings || 0;
+    const totalValue = isMotionFailedNotFinalizable ? 0 : totals || 0;
+
+    return [
+      {
+        key: WinningsItems.Staked,
+        label: formatText({ id: 'motion.finalizeStep.staked' }),
+        value: (
+          <div>
+            <Numeral
+              value={userTotalStake || 0}
+              decimals={nativeTokenDecimals}
+              suffix={nativeTokenSymbol}
+            />
+          </div>
+        ),
+      },
       {
         key: WinningsItems.Winnings,
         label: formatText({ id: 'motion.finalizeStep.winnings' }),
         value: (
           <div>
             <Numeral
-              value={userWinnings || 0}
+              value={rewardValue}
               decimals={nativeTokenDecimals}
               suffix={nativeTokenSymbol}
             />
@@ -226,45 +254,17 @@ export const useClaimConfig = (
         value: (
           <div>
             <Numeral
-              value={totals || 0}
+              value={totalValue}
               decimals={nativeTokenDecimals}
               suffix={nativeTokenSymbol}
             />
           </div>
         ),
       },
-    );
-  }
-  if (isMotionFailedNotFinalizable) {
-    items.push(
-      {
-        key: WinningsItems.Winnings,
-        label: formatText({ id: 'motion.finalizeStep.winnings' }),
-        value: (
-          <div>
-            <Numeral
-              value={0}
-              decimals={nativeTokenDecimals}
-              suffix={nativeTokenSymbol}
-            />
-          </div>
-        ),
-      },
-      {
-        key: WinningsItems.Total,
-        label: formatText({ id: 'motion.finalizeStep.total' }),
-        value: (
-          <div>
-            <Numeral
-              value={0}
-              decimals={nativeTokenDecimals}
-              suffix={nativeTokenSymbol}
-            />
-          </div>
-        ),
-      },
-    );
-  }
+    ];
+  };
+
+  const items = getDescriptionItems();
 
   return {
     items,

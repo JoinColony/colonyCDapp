@@ -159,25 +159,27 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           key: FinalizeStepSections.Finalize,
           content: (
             <ActionForm {...action} onSuccess={handleSuccess}>
-              <div className="mb-2">
-                <h4 className="mb-3 flex items-center justify-between text-1">
-                  {formatText({ id: 'motion.finalizeStep.title' })}
-                  {isClaimed && (
-                    <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
-                      {formatText({ id: 'motion.finalizeStep.claimed' })}
-                    </PillsBase>
-                  )}
-                </h4>
-              </div>
-              {items && (
-                <DescriptionList
-                  items={items}
-                  className={clsx({
-                    'mb-6':
-                      !isMotionFailedNotFinalizable &&
-                      (!isMotionFinalized || (!isClaimed && canClaimStakes)),
-                  })}
-                />
+              {items.length > 0 && (
+                <>
+                  <div className="mb-2">
+                    <h4 className="mb-3 flex items-center justify-between text-1">
+                      {formatText({ id: 'motion.finalizeStep.title' })}
+                      {isClaimed && (
+                        <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                          {formatText({ id: 'motion.finalizeStep.claimed' })}
+                        </PillsBase>
+                      )}
+                    </h4>
+                  </div>
+                  <DescriptionList
+                    items={items}
+                    className={clsx({
+                      'mb-6':
+                        !isMotionFailedNotFinalizable &&
+                        (!isMotionFinalized || (!isClaimed && canClaimStakes)),
+                    })}
+                  />
+                </>
               )}
               {canInteract && (
                 <>
