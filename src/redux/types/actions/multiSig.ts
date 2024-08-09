@@ -15,7 +15,7 @@ import {
 } from './index.ts';
 
 type DomainThreshold = {
-  skillId: number;
+  skillId: string;
   threshold: number;
 };
 
