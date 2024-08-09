@@ -707,8 +707,8 @@ export enum ColonyActionType {
 >>>>>>> 5af95eea6 (feat: get eligible signees from the API)
   /** An action related to adding / removing approved colony tokens */
   ManageTokens = 'MANAGE_TOKENS',
-  /** An action related to adding / removing approved colony tokens */
   ManageTokensMotion = 'MANAGE_TOKENS_MOTION',
+  ManageTokensMultisig = 'MANAGE_TOKENS_MULTISIG',
   /** An action related to minting tokens within a Colony */
   MintTokens = 'MINT_TOKENS',
   /** An action related to minting tokens within a Colony via a motion */
