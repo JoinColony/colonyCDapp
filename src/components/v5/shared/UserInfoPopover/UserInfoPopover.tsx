@@ -32,8 +32,6 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
-  const { profile } = user || {};
-  const { avatar, displayName: userName } = profile || {};
 
   const {
     colony: { colonyAddress },
@@ -63,6 +61,9 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
   const { bio } = contributor?.user?.profile || {};
   const { isVerified, type: contributorType } = contributor || {};
   const domains = useContributorBreakdown(contributor);
+  const resolvedUser = contributor?.user ?? user;
+  const { profile } = resolvedUser || {};
+  const { avatar, displayName: userName } = profile || {};
 
   const onOpenModal = useCallback(() => {
     setIsOpen(true);
@@ -107,7 +108,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
       disabled={isColonyMembersDataLoading || isColonyContributorDataLoading}
     >
       {typeof children === 'function'
-        ? children((contributor?.user || user) ?? undefined)
+        ? children(resolvedUser ?? undefined)
         : children}
 
       {withVerifiedBadge && isVerified && (
