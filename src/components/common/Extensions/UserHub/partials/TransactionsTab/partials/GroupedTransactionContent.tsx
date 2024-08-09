@@ -68,7 +68,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     isShowingCancelConfirmation,
     toggleCancelConfirmation,
     handleCancelTransaction,
-    canBeSigned,
   } = useGroupedTransactionContent({
     id,
     status,
@@ -93,15 +92,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           {`${(group?.index || idx) + 1}. `} {titleText}
         </div>
 
-        {isCancelable && canBeSigned ? (
-          <CancelTransaction
-            isShowingCancelConfirmation={isShowingCancelConfirmation}
-            handleCancelTransaction={handleCancelTransaction}
-            toggleCancelConfirmation={toggleCancelConfirmation}
-          />
-        ) : (
-          <TransactionStatus status={status} hasError={!!error} />
-        )}
+        <TransactionStatus status={status} hasError={!!error} />
       </div>
       {failed && error && retryable && (
         <div className="mt-2 md:mr-2">

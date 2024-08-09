@@ -168,12 +168,6 @@ const channelStart = async ({
   try {
     const sentTx = await channelSendTransaction(tx, txPromise, emit);
     if (!sentTx) {
-      emit(
-        transactionUnsuccessfulError(
-          tx.id,
-          new Error('The transaction was unsuccessful'),
-        ),
-      );
       return null;
     }
 
@@ -192,16 +186,6 @@ const channelStart = async ({
         client,
         emit,
       });
-    } else {
-      /**
-       * @todo Use revert reason strings (once supported) in transactions.
-       */
-      emit(
-        transactionUnsuccessfulError(
-          tx.id,
-          new Error('The transaction was unsuccessful'),
-        ),
-      );
     }
 
     return null;
