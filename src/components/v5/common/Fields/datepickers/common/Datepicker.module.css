@@ -1,9 +1,14 @@
+.wrapper--simple,
+.wrapper--simple :global(.react-datepicker__month-container) {
+  @apply w-full;
+}
+
 .wrapper:global(.react-datepicker) {
-  @apply bg-transparent border-none rounded-none text-gray-700 text-[.875rem] font-inter;
+  @apply rounded-none border-none bg-transparent font-inter text-[.875rem] text-gray-700;
 }
 
 .wrapper :global(.react-datepicker__header) {
-  @apply bg-transparent border-none rounded-none p-0;
+  @apply rounded-none border-none bg-transparent p-0;
 }
 
 .wrapper :global(.react-datepicker__day-names) {
@@ -12,15 +17,15 @@
 
 .wrapper :global(.react-datepicker__day-name),
 .wrapper :global(.react-datepicker__day) {
-  @apply h-10 w-10 inline-flex justify-center items-center m-0 flex-shrink-0;
+  @apply m-0 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center;
 }
 
 .wrapper :global(.react-datepicker__day-name) {
-  @apply text-2 text-gray-900;
+  @apply text-gray-900 text-2;
 }
 
 .wrapper :global(.react-datepicker__day) {
-  @apply text-md text-gray-700 rounded-none;
+  @apply rounded-none text-md text-gray-700;
 }
 
 .wrapper :global(.react-datepicker__day--disabled),
@@ -47,7 +52,7 @@
 }
 
 .wrapper :global(.react-datepicker__day-content) {
-  @apply h-full w-full flex justify-center items-center rounded-full transition font-normal;
+  @apply flex h-full w-full items-center justify-center rounded-full font-normal transition;
 }
 
 .wrapper
@@ -55,10 +60,12 @@
     .react-datepicker__day:not(
         .react-datepicker__day--in-range,
         .react-datepicker__day--in-selecting-range
+          .react-datepicker__day--keyboard-selected
+          .react-datepicker__day--selected
       ):hover
       .react-datepicker__day-content
   ) {
-  @apply bg-blue-400 text-base-white;
+  @apply sm:bg-gray-100 sm:text-gray-700;
 }
 
 .wrapper
@@ -104,6 +111,8 @@
   :global(
     .react-datepicker__day--selecting-range-start .react-datepicker__day-content
   ),
+.wrapper--simple
+  :global(.react-datepicker__day--selected .react-datepicker__day-content),
 .wrapper
   :global(
     .react-datepicker__day--selecting-range-end .react-datepicker__day-content
@@ -130,7 +139,15 @@
 }
 
 .wrapper :global(.react-datepicker__month) {
-  @apply m-0 px-6 pb-5;
+  @apply m-0 pb-5;
+}
+
+.wrapper:not(.wrapper--simple) :global(.react-datepicker__month) {
+  @apply px-6;
+}
+
+.wrapper--simple :global(.react-datepicker__month) {
+  @apply px-4;
 }
 
 .wrapper :global(.react-datepicker__week) {
@@ -142,5 +159,96 @@
 }
 
 .wrapper :global(.react-datepicker__children-container) {
-  @apply w-auto m-0 p-0;
+  @apply m-0 w-auto p-0;
+}
+
+.wrapper :global(.react-datepicker__input-time-container) {
+  @apply float-none m-0 flex items-center gap-3 border-t border-t-gray-200 px-4 py-4;
+}
+
+.wrapper :global(.react-datepicker-time__caption) {
+  @apply flex-shrink-0 text-md text-gray-900;
+}
+
+.wrapper :global(.react-datepicker-time__input-container) {
+  @apply flex-grow;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+  ) {
+  @apply ml-0 w-full;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input
+  ) {
+  @apply w-full rounded border border-gray-300 bg-base-white px-3.5 py-2 text-md text-gray-900 outline-0 placeholder:text-gray-400 focus:border-blue-200 focus:shadow-light-blue focus:outline-none;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-datetime-edit-fields-wrapper
+  ) {
+  @apply flex items-center;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-datetime-edit-hour-field
+  ),
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-datetime-edit-minute-field
+  ),
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-datetime-edit-ampm-field
+  ) {
+  @apply rounded p-0.5 text-gray-900 transition focus:bg-blue-100;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-inner-spin-button
+  ),
+.wrapper
+  :global(
+    .react-datepicker__input-time-container
+      .react-datepicker-time__input-container
+      .react-datepicker-time__input
+      input::-webkit-clear-button
+  ) {
+  @apply hidden;
+}
+
+.wrapper--simple :global(.react-datepicker__day-names) {
+  @apply px-4;
+}
+
+.wrapper--simple :global(.react-datepicker__week),
+.wrapper--simple :global(.react-datepicker__day-names) {
+  @apply flex justify-between sm:justify-center;
 }

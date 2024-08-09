@@ -1,0 +1,55 @@
+.wrapper {
+  @apply w-full;
+}
+
+.wrapper :global(.react-datepicker__triangle),
+.wrapper :global(.react-datepicker__header--time--only) {
+  @apply hidden;
+}
+
+.wrapper :global(.react-datepicker--time-only) {
+  @apply w-full rounded border border-gray-300 font-inter shadow-select;
+}
+
+.wrapper :global(.react-datepicker__time-container) {
+  @apply float-none !w-full;
+}
+
+.wrapper :global(.react-datepicker__time-container .react-datepicker__time) {
+  @apply rounded-none bg-transparent;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__time-container
+      .react-datepicker__time
+      .react-datepicker__time-box
+  ) {
+  @apply w-full rounded-none;
+}
+
+.wrapper :global(.react-datepicker__time-list) {
+  @apply !box-border rounded-none !px-2 py-4;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__time-container
+      .react-datepicker__time
+      .react-datepicker__time-box
+      ul.react-datepicker__time-list
+      li.react-datepicker__time-list-item
+  ) {
+  @apply flex h-[2.1875rem] w-full items-center rounded px-4 py-1 text-left text-md text-gray-900 transition sm:hover:bg-gray-50;
+}
+
+.wrapper
+  :global(
+    .react-datepicker__time-container
+      .react-datepicker__time
+      .react-datepicker__time-box
+      ul.react-datepicker__time-list
+      li.react-datepicker__time-list-item--selected
+  ) {
+  @apply bg-gray-50 font-medium sm:hover:bg-gray-50;
+}
