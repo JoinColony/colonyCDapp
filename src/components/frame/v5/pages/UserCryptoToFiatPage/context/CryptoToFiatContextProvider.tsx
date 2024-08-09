@@ -1,26 +1,24 @@
-import React, { type PropsWithChildren, useEffect, useMemo } from 'react';
+import React, { type PropsWithChildren, useMemo } from 'react';
 
-import { useCheckKycStatusMutation } from '~gql';
+import { useCheckKycStatusQuery } from '~gql';
 
 import { CryptoToFiatContext } from './CryptoToFiatContext.ts';
 
 const CryptoToFiatContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [getKycStatusData, { loading, data }] = useCheckKycStatusMutation();
-
-  useEffect(() => {
-    getKycStatusData();
-  }, [getKycStatusData]);
+  const { data, loading, refetch } = useCheckKycStatusQuery({
+    fetchPolicy: 'cache-and-network',
+  });
 
   const value = useMemo(
     () => ({
-      getKycStatusData,
-      kycStatusData: data?.bridgeXYZMutation,
-      bankAccountData: data?.bridgeXYZMutation?.bankAccount,
+      refetchKycData: refetch,
+      kycStatusData: data?.bridgeCheckKYC,
+      bankAccountData: data?.bridgeCheckKYC?.bankAccount,
       isKycStatusDataLoading: loading,
     }),
-    [data, getKycStatusData, loading],
+    [data?.bridgeCheckKYC, loading, refetch],
   );
 
   return (

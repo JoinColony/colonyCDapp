@@ -1,16 +1,14 @@
 import { createContext, useContext } from 'react';
 
-import {
-  type KycStatusData,
-  type CheckKycStatusMutationReturnType,
-  type KycBankAccountData,
-} from '../types.ts';
+import { type BridgeBankAccount } from '~types/graphql.ts';
+
+import { type KycStatusData } from '../types.ts';
 
 interface CryptoToFiatPageContext {
-  kycStatusData: KycStatusData;
-  bankAccountData: KycBankAccountData;
-  getKycStatusData: CheckKycStatusMutationReturnType[0];
-  isKycStatusDataLoading: CheckKycStatusMutationReturnType[1]['loading'];
+  kycStatusData?: KycStatusData | null;
+  bankAccountData?: BridgeBankAccount | null;
+  refetchKycData: () => void;
+  isKycStatusDataLoading: boolean;
 }
 
 export const CryptoToFiatContext = createContext<

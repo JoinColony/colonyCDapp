@@ -43,7 +43,7 @@ const AutomaticDeposits = () => {
   const badgeProps = getBadgeProps({
     kycStatusData,
     isAutoOfframEnabled,
-    bankAccountData: kycStatusData?.bankAccount,
+    bankAccountData: kycStatusData?.bankAccount ?? null,
   });
 
   return (

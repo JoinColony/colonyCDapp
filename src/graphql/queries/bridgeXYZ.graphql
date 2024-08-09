@@ -3,3 +3,18 @@ query GetUserDrains {
     ...BridgeDrain
   }
 }
+
+query CheckKYCStatus {
+  bridgeCheckKYC {
+    kycStatus
+    kycLink
+    bankAccount {
+      ...BridgeBankAccount
+    }
+    liquidationAddress
+  }
+}
+
+query GetUserLiquidationAddress($userAddress: String!) {
+  bridgeGetUserLiquidationAddress(userAddress: $userAddress)
+}

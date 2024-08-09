@@ -1,5 +1,4 @@
 const { kycLinksHandler } = require('./handlers/kycLinks');
-const { putCustomerHandler } = require('./handlers/putCustomer');
 const { checkKYCHandler } = require('./handlers/checkKyc');
 const {
   createExternalAccountHandler,
@@ -7,6 +6,10 @@ const {
 const {
   updateExternalAccountHandler,
 } = require('./handlers/updateExternalAccount');
+const { getDrainsHistoryHandler } = require('./handlers/getDrainsHistory');
+const {
+  getUserLiquidationAddressHandler,
+} = require('./handlers/getUserLiquidationAddress');
 
 const isDev = process.env.ENV === 'dev';
 
@@ -27,7 +30,10 @@ const setEnvVariables = async () => {
   }
 };
 
-const BRIDGE_MUTATIONS = {
+const BRIDGE_OPERATIONS = {
+  GET_DRAINS_HISTORY: 'bridgeGetDrainsHistory',
+  CHECK_KYC: 'bridgeCheckKYC',
+  GET_USER_LIQUIDATION_ADDRESS: 'bridgeGetUserLiquidationAddress',
   CREATE_EXTERNAL_ACCOUNT: 'bridgeCreateBankAccount',
   UPDATE_EXTERNAL_ACCOUNT: 'bridgeUpdateBankAccount',
 };
@@ -42,11 +48,13 @@ exports.handler = async (event) => {
   const { path } = event.arguments?.input || {};
 
   const handlers = {
-    [BRIDGE_MUTATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
-    [BRIDGE_MUTATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
+    [BRIDGE_OPERATIONS.CREATE_EXTERNAL_ACCOUNT]: createExternalAccountHandler,
+    [BRIDGE_OPERATIONS.UPDATE_EXTERNAL_ACCOUNT]: updateExternalAccountHandler,
+    [BRIDGE_OPERATIONS.GET_DRAINS_HISTORY]: getDrainsHistoryHandler,
+    [BRIDGE_OPERATIONS.CHECK_KYC]: checkKYCHandler,
+    [BRIDGE_OPERATIONS.GET_USER_LIQUIDATION_ADDRESS]:
+      getUserLiquidationAddressHandler,
     'v0/kyc_links': kycLinksHandler,
-    'v0/customers/{customerID}': putCustomerHandler,
-    'v0/kyc_links/{kycLinkID}': checkKYCHandler,
     default: () => {
       console.log('Running default handler');
       return null;

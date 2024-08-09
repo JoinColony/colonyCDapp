@@ -2,13 +2,13 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
-import { type CheckKycStatusMutation } from '~gql';
+import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 import { TABLE_TD_LOADER_STYLES } from './consts.ts';
 
 const displayName =
-  'v5.pages.UserCryptoToFiatPage.partials.BankDetails.partials.BankDetailsDescriptionComponent';
+  'v5.pages.UserCryptoToFiatPage.partials.BankDetails.partials.BankDetailsDescription';
 
 const MSG = defineMessages({
   componentTitle: {
@@ -37,17 +37,15 @@ const MSG = defineMessages({
   },
 });
 
-interface BankDetailsDescriptionComponentProps {
-  bankAccount: NonNullable<
-    CheckKycStatusMutation['bridgeXYZMutation']
-  >['bankAccount'];
+interface BankDetailsDescriptionProps {
   isDataLoading: boolean;
+  bankAccount?: BridgeBankAccount | null;
 }
 
-const BankDetailsDescriptionComponent = ({
+const BankDetailsDescription = ({
   bankAccount,
   isDataLoading,
-}: BankDetailsDescriptionComponentProps) => {
+}: BankDetailsDescriptionProps) => {
   return (
     <div className="flex flex-col">
       <p className="mb-3 text-md">{formatMessage(MSG.componentTitle)}</p>
@@ -112,6 +110,6 @@ const BankDetailsDescriptionComponent = ({
   );
 };
 
-BankDetailsDescriptionComponent.displayName = displayName;
+BankDetailsDescription.displayName = displayName;
 
-export default BankDetailsDescriptionComponent;
+export default BankDetailsDescription;
