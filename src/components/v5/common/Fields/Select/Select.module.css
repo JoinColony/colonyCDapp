@@ -10,6 +10,10 @@
   @apply border-blue-200 !shadow-none;
 }
 
+.wrapper :global(.select__control--is-disabled) {
+  @apply bg-transparent text-gray-300;
+}
+
 .wrapper :global(.select__placeholder) {
   @apply font-normal text-gray-400;
 }

@@ -24,7 +24,15 @@ const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
   const labelText = formatText(label);
 
   return (
-    <div className='relative w-full after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.375rem)] after:w-[calc(100%+0.375rem)] after:rounded-[0.7rem] after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""] hover:after:border-blue-100'>
+    <div
+      className={clsx(
+        'relative w-full after:absolute after:-left-[0.1875rem] after:-top-[0.1875rem] after:block after:h-[calc(100%+0.375rem)] after:w-[calc(100%+0.375rem)] after:rounded-[0.7rem] after:border-[0.1875rem] after:border-transparent after:transition-all after:duration-normal after:content-[""]',
+        {
+          'hover:after:border-blue-100': !disabled,
+          '!gray-300': disabled,
+        },
+      )}
+    >
       <input
         type="radio"
         name={name}
@@ -34,7 +42,7 @@ const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
         disabled={disabled}
         checked={checked}
         className={clsx('peer/radio hidden', {
-          'pointer-events-none opacity-50': disabled,
+          'pointer-events-none': disabled,
         })}
         onChange={(e) => onChange?.(e.target.value)}
       />
@@ -49,19 +57,29 @@ const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
           after:translate-x-[calc(50%+1px)] after:translate-y-[calc(50%+1px)] after:rounded-full after:bg-blue-400 
           after:opacity-0 after:transition-all after:duration-normal hover:border-blue-200 
           peer-checked/radio:border-blue-400 peer-checked/radio:before:border-blue-400 
-          peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25`,
+          peer-checked/radio:after:opacity-100 peer-focus/radio:border-blue-200 peer-focus/radio:before:bg-gray-25
+          peer-disabled/radio:border-gray-300 
+          peer-disabled/radio:before:border-gray-200 
+          peer-disabled/radio:after:bg-gray-300 
+          peer-checked/radio:peer-disabled/radio:before:border-gray-300`,
           {
             'before:top-4 after:top-4': !!badge,
             '!border-negative-400 after:bg-negative-400 peer-checked/radio:before:border-negative-400':
               isError && checked,
-            'pointer-events-none border-gray-300 opacity-50': disabled,
+            'pointer-events-none': disabled,
           },
         )}
       >
         <div className={badge && 'flex justify-between gap-2'}>
           <div className="self-center">
             <div className={tooltip && 'inline-flex items-center '}>
-              <span className="block">{labelText}</span>
+              <span
+                className={clsx('block', {
+                  'text-gray-300': disabled,
+                })}
+              >
+                {labelText}
+              </span>
               {tooltip && (
                 <div className="ml-2 flex items-center text-gray-400">
                   <Tooltip {...tooltip}>
@@ -71,7 +89,11 @@ const RadioBase: FC<RadioBaseProps & PropsWithChildren> = ({
               )}
             </div>
             {description && (
-              <span className="mt-1 block text-sm text-gray-600">
+              <span
+                className={clsx('mt-1 block text-sm text-gray-600', {
+                  '!text-gray-300': disabled,
+                })}
+              >
                 {formatText(description)}
               </span>
             )}
