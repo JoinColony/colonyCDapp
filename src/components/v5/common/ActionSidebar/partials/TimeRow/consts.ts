@@ -1,7 +1,10 @@
+import { StreamingPaymentEndCondition } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type CardSelectOptionsGroup } from '~v5/common/Fields/CardSelect/types.ts';
 
 import { CUSTOM_DATE_VALUE } from './partials/TimeRowField/consts.ts';
+
+export const START_IMMEDIATELY_VALUE = 'start_immediately';
 
 export const START_OPTIONS: CardSelectOptionsGroup<string>[] = [
   {
@@ -9,7 +12,7 @@ export const START_OPTIONS: CardSelectOptionsGroup<string>[] = [
     title: formatText({ id: 'actionSidebar.starts.options.title' }),
     options: [
       {
-        value: 'start_immediately',
+        value: START_IMMEDIATELY_VALUE,
         label: formatText({
           id: 'actionSidebar.starts.options.startImidiately',
         }),
@@ -30,19 +33,19 @@ export const END_OPTIONS: CardSelectOptionsGroup<string>[] = [
     title: formatText({ id: 'actionSidebar.ends.options.title' }),
     options: [
       {
-        value: 'when_cancelled',
+        value: StreamingPaymentEndCondition.WhenCancelled,
         label: formatText({
           id: 'actionSidebar.ends.options.whenCancelled',
         }),
       },
       {
-        value: 'limit_reached',
+        value: StreamingPaymentEndCondition.LimitReached,
         label: formatText({
           id: 'actionSidebar.ends.options.limitReached',
         }),
       },
       {
-        value: CUSTOM_DATE_VALUE,
+        value: StreamingPaymentEndCondition.FixedTime,
         label: formatText({
           id: 'actionSidebar.ends.options.fixedTime',
         }),

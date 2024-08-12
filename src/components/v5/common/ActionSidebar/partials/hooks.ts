@@ -85,6 +85,11 @@ export const useIsFieldDisabled = () => {
     loading: stagedExpenditureLoading,
   } = useExtensionData(Extension.StagedExpenditure);
 
+  const {
+    extensionData: streamingPaymentExtensionData,
+    loading: streamingPaymentLoading,
+  } = useExtensionData(Extension.StreamingPayments);
+
   const selectedAction = useActiveActionType();
 
   const isVotingReputationExtensionEnabled =
@@ -109,6 +114,19 @@ export const useIsFieldDisabled = () => {
     selectedAction === Action.StagedPayment &&
     !isStagedExpenditureExtensionEnabled &&
     !stagedExpenditureLoading
+  ) {
+    return true;
+  }
+
+  const isStreamingPyamentExtensionEnabled =
+    streamingPaymentExtensionData &&
+    isInstalledExtensionData(streamingPaymentExtensionData) &&
+    streamingPaymentExtensionData.isEnabled;
+
+  if (
+    selectedAction === Action.StreamingPayment &&
+    !isStreamingPyamentExtensionEnabled &&
+    !streamingPaymentLoading
   ) {
     return true;
   }

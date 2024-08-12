@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { type FC, useRef, useState } from 'react';
+import React, { type FC, useRef, useState, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -19,8 +19,12 @@ import DatepickerCustomHeader from './partials/DatepickerCustomHeader/Datepicker
 import DatepickerCustomInput from './partials/DatepickerCustomInput/DatepickerCustomInput.tsx';
 import DatepickerTimePicker from './partials/DatepickerTimePicker/DatepickerTimePicker.tsx';
 import { type DatepickerWithTimeProps } from './types.ts';
+import { daysFromRefDate } from './utils.ts';
 
 import styles from '../common/Datepicker.module.css';
+
+const maxTimeMinDay = new Date().setHours(23, 59, 0, 0);
+const minTimeMaxDay = new Date().setHours(0, 0, 0, 0);
 
 const DatepickerWithTime: FC<DatepickerWithTimeProps> = ({
   cancelButtonProps,
@@ -36,6 +40,8 @@ const DatepickerWithTime: FC<DatepickerWithTimeProps> = ({
   inline,
   withCloseButton,
   onClose,
+  minDate = new Date('1970-01-01'),
+  maxDate = new Date('99999-01-01'),
   ...rest
 }) => {
   const isMobile = useMobile();
@@ -46,6 +52,19 @@ const DatepickerWithTime: FC<DatepickerWithTimeProps> = ({
   const [selectedTime, setSelectedTime] = useState<Date | null>(
     selectedProp || null,
   );
+
+  const minDays = useMemo(() => daysFromRefDate(minDate), [minDate]);
+  const maxDays = useMemo(() => daysFromRefDate(maxDate), [maxDate]);
+  const selDays = useMemo(() => daysFromRefDate(selectedDate), [selectedDate]);
+
+  const isMinDay = selDays === minDays;
+  const isMaxDay = selDays === maxDays;
+
+  const maxDayMinTime = isMaxDay ? new Date(minTimeMaxDay) : null;
+  const maxDayMaxTime = isMinDay ? new Date(maxTimeMinDay) : null;
+
+  const minTime = isMinDay ? minDate : maxDayMinTime;
+  const maxTime = isMaxDay ? maxDate : maxDayMaxTime;
 
   const resetValues = () => {
     setSelectedDate(selectedProp || null);
@@ -130,6 +149,10 @@ const DatepickerWithTime: FC<DatepickerWithTimeProps> = ({
         onChange(selectedDate, event);
         onClose?.();
       }}
+      minDate={minDate}
+      maxDate={maxDate}
+      minTime={minTime ?? undefined}
+      maxTime={maxTime ?? undefined}
       customTimeInput={
         <div className="react-datepicker-ignore-onclickoutside relative">
           <DatepickerTimePicker
@@ -151,6 +174,10 @@ const DatepickerWithTime: FC<DatepickerWithTimeProps> = ({
                 onClose?.();
               }
             }}
+            minDate={minDate}
+            maxDate={maxDate}
+            minTime={minTime ?? undefined}
+            maxTime={maxTime ?? undefined}
             onBlur={(event) => {
               if (isMobile) {
                 return;

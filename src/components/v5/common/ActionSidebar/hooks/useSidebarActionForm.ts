@@ -20,6 +20,7 @@ import PaymentBuilderForm from '../partials/forms/PaymentBuilderForm/index.ts';
 import SinglePaymentForm from '../partials/forms/SimplePaymentForm/index.ts';
 import SplitPaymentForm from '../partials/forms/SplitPaymentForm/index.ts';
 import StagedPaymentForm from '../partials/forms/StagedPaymentForm/StagedPaymentForm.tsx';
+import StreamingPaymentForm from '../partials/forms/StreamingPaymentForm/StreamingPaymentForm.tsx';
 import TransferFundsForm from '../partials/forms/TransferFundsForm/index.ts';
 import UnlockTokenForm from '../partials/forms/UnlockTokenForm/index.ts';
 import UpgradeColonyForm from '../partials/forms/UpgradeColonyForm/index.ts';
@@ -49,6 +50,7 @@ const useSidebarActionForm = () => {
       [Action.ManageVerifiedMembers]: ManageVerifiedMembersForm,
       [Action.ManageReputation]: ManageReputationForm,
       [Action.ArbitraryTxs]: ArbitraryTxsForm,
+      [Action.StreamingPayment]: StreamingPaymentForm,
     }),
     [],
   );
