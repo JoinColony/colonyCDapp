@@ -105,6 +105,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <PaymentBuilder action={action} />;
       case ColonyActionType.ManageTokens:
       case ColonyActionType.ManageTokensMotion:
+      case ColonyActionType.ManageTokensMultisig:
         return <ManageTokens action={action} />;
       default:
         console.warn('Unsupported action display', action);
