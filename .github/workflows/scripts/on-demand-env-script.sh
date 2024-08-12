@@ -299,52 +299,52 @@ npm ci
 echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
 
 env
-# # Build and run Docker images
-# npm run on-demand &
+# Build and run Docker images
+npm run on-demand &
 
-# # Wait for graphql port to come up
-# while ! nc -z localhost 20002; do
-#   sleep 10
-# done
-# # Believe it or not but this checks whether amplify is actually ready
-# while true; do
-#     AMPLIFY_READY=$(curl -X POST -H "x-api-key: da2-fakeApiId123456" -H "Content-Type: application/json" -d '{"query":"query { __schema { types { name } } }"}' -s http://localhost:20002/graphql | jq 'has("data")')
+# Wait for graphql port to come up
+while ! nc -z localhost 20002; do
+  sleep 10
+done
+# Believe it or not but this checks whether amplify is actually ready
+while true; do
+    AMPLIFY_READY=$(curl -X POST -H "x-api-key: da2-fakeApiId123456" -H "Content-Type: application/json" -d '{"query":"query { __schema { types { name } } }"}' -s http://localhost:20002/graphql | jq 'has("data")')
 
-#     if [[ "$AMPLIFY_READY" == "true" ]]; then
-#         echo "Amplify seems to be up. Going our merry way."
-#         break
-#     else
-#         echo "Amplify is not up yet, waiting..."
-#         sleep 10
-#     fi
-# done
+    if [[ "$AMPLIFY_READY" == "true" ]]; then
+        echo "Amplify seems to be up. Going our merry way."
+        break
+    else
+        echo "Amplify is not up yet, waiting..."
+        sleep 10
+    fi
+done
 
-# # Wait for auth proxy to come up
-# while ! nc -z localhost 3001; do
-#   sleep 5
-# done
+# Wait for auth proxy to come up
+while ! nc -z localhost 3001; do
+  sleep 5
+done
 
-# # Wait for block ingestor to come up
-# while ! nc -z localhost 10001; do
-#   sleep 5
-# done
+# Wait for block ingestor to come up
+while ! nc -z localhost 10001; do
+  sleep 5
+done
 
 # Seed database (pass --yes to skip confirmation)
 # node ./scripts/create-data.js --yes
 
-# # Start frontend
-# npm run frontend &
+# Start frontend
+npm run frontend &
 
-# # Wait for frontend service to come up
-# while ! nc -zv localhost 9091; do
-#   echo "Waiting for port 9091 to be open..."
-#   sleep 10
-# done
-# echo "Port 9091 is now open!"
+# Wait for frontend service to come up
+while ! nc -zv localhost 9091; do
+  echo "Waiting for port 9091 to be open..."
+  sleep 10
+done
+echo "Port 9091 is now open!"
 
-# # Send completion notification on Discord
-# curl -H "Content-Type: application/json" \
-#      -X POST \
-#      -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
-#      $DISCORD_WEBHOOK
-# echo "Completion message posted!"
+# Send completion notification on Discord
+curl -H "Content-Type: application/json" \
+     -X POST \
+     -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
+     $DISCORD_WEBHOOK
+echo "Completion message posted!"
