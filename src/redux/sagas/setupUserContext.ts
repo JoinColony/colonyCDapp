@@ -6,11 +6,7 @@ import { authenticateWallet } from '~auth/index.ts';
 import { getContext, setContext, ContextModule } from '~context/index.ts';
 import { failPendingTransactions } from '~state/transactionState.ts';
 import { type ColonyWallet } from '~types/wallet.ts';
-import {
-  getLastWallet,
-  type LastWallet,
-  setLastWallet,
-} from '~utils/autoLogin.ts';
+import { getLastWallet, type LastWallet } from '~utils/autoLogin.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
@@ -24,11 +20,7 @@ import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
 import setupTransactionsSaga from './transactions/transactionsToDb.ts';
-import {
-  disconnectWallet,
-  setupUsersSagas,
-  userLogout,
-} from './users/index.ts';
+import { setupUsersSagas, userLogout } from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
 import { getWallet } from './wallet/index.ts';
 // import vestingSagas from './vesting';
@@ -99,32 +91,36 @@ export function* setupUserContext() {
 
     try {
       wallet = getContext(ContextModule.Wallet);
-
-      const selectedMetamaskAddress = yield getMetamaskAddress();
-      /*
-       * If the wallet we've pulled from context does not have the same address as the selected account
-       * in Metamask, it's because the user just switched their account in metamask.
-       */
-      if (
-        selectedMetamaskAddress &&
-        wallet.address !== selectedMetamaskAddress &&
-        wallet.label === ONBOARD_METAMASK_WALLET_LABEL
-      ) {
-        disconnectWallet(wallet.label); // disconnect previous wallet
-
-        // replace it in local storage with the wallet the user switched to
-        setLastWallet({
-          type: ONBOARD_METAMASK_WALLET_LABEL,
-          address: selectedMetamaskAddress,
-        });
-
-        wallet = undefined;
-      }
     } catch {
       // wallet not seen in context yet
     }
 
     const lastWallet = getLastWallet();
+    const selectedMetamaskAddress = yield getMetamaskAddress();
+
+    /*
+     * If the wallet we've pulled from context does not have the same address as the selected account
+     * in Metamask, it's because the user just switched their account in metamask.
+     */
+    if (
+      !wallet &&
+      lastWallet &&
+      selectedMetamaskAddress &&
+      lastWallet.address.toLocaleLowerCase() !==
+        selectedMetamaskAddress.toLocaleLowerCase() &&
+      lastWallet.type === ONBOARD_METAMASK_WALLET_LABEL
+    ) {
+      const connectedLastWallet = yield call(getWallet, lastWallet);
+      setContext(ContextModule.Wallet, connectedLastWallet); // need to set last wallet to context for proper logout
+
+      return yield putError(
+        ActionTypes.WALLET_OPEN_ERROR,
+        Error(
+          'Your wallet is not authenticated. Please reconnect your wallet.',
+        ),
+        {},
+      );
+    }
 
     yield call(initializeFullWallet, lastWallet);
 
