@@ -1,6 +1,6 @@
-import { ColonyRole, Extension, Id } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -37,8 +37,6 @@ interface Props {
 }
 
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
-  const shouldDisplay =
-    extensionData.extensionId !== Extension.MultisigPermissions;
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { checkExtensionEnabled } = useCheckExtensionEnabled(
@@ -75,16 +73,6 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     }
   };
 
-  useEffect(() => {
-    if (extensionData.extensionId === Extension.MultisigPermissions) {
-      if (colony.colonyAddress) {
-        // Enable Extension.MultisigPermissions by default
-        enableAndCheckStatus();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [extensionData.extensionId, colony.colonyAddress]);
-
   const getBanner = () => {
     if (isPermissionEnabled) {
       return (
@@ -111,7 +99,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     );
   };
 
-  return shouldDisplay ? <div className="mb-6">{getBanner()}</div> : null;
+  return <div className="mb-6">{getBanner()}</div>;
 };
 
 PermissionsNeededBanner.displayName = displayName;
