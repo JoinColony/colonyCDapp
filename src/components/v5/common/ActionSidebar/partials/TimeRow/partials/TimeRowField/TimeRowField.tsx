@@ -10,7 +10,6 @@ import { FieldState } from '~v5/common/Fields/consts.ts';
 import { DEFAULT_DATE_TIME_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import DatepickerWithTime from '~v5/common/Fields/datepickers/DatepickerWithTime/DatepickerWithTime.tsx';
 
-import { CUSTOM_DATE_VALUE } from './consts.ts';
 import { type TimeRowFieldProps } from './types.ts';
 
 const displayName =
@@ -21,6 +20,8 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
   options,
   placeholder: placeholderProp,
   selectedValueWrapperClassName,
+  minDate,
+  customDateValue,
 }) => {
   const isMobile = useMobile();
   const [isDatepickerVisible, setIsDatepickerVisible] = useState(false);
@@ -32,7 +33,7 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
   });
 
   const [value, setValue] = useState(
-    isDate(field.value) ? CUSTOM_DATE_VALUE : field.value,
+    isDate(field.value) ? customDateValue : field.value,
   );
 
   return (
@@ -46,7 +47,7 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
         'pb-0': isDatepickerVisible,
       })}
       renderSelectedValue={(selectedValue, placeholder) => {
-        if (selectedValue?.value === CUSTOM_DATE_VALUE) {
+        if (selectedValue?.value === customDateValue) {
           return (
             <div className={selectedValueWrapperClassName}>
               {field.value
@@ -65,7 +66,7 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
         { value: itemValue, onClick, className, ...props },
         children,
       ) => {
-        const isCustomDate = itemValue === CUSTOM_DATE_VALUE;
+        const isCustomDate = itemValue === customDateValue;
 
         return isCustomDate ? (
           <div className="flex w-full flex-col">
@@ -74,7 +75,7 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
               onClick={() => {
                 setIsDatepickerVisible(true);
                 if (!isDate(field.value)) {
-                  field.onChange('');
+                  field.onChange(itemValue);
                 }
               }}
               className={clsx(className, {
@@ -95,6 +96,7 @@ const TimeRowField: FC<TimeRowFieldProps> = ({
                   }}
                   inline
                   onClose={onClick}
+                  minDate={minDate}
                 />
               </div>
             )}

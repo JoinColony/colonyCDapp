@@ -4,4 +4,5 @@ export interface TimeRowProps extends Pick<ActionFormRowProps, 'tooltips'> {
   name: string;
   title?: React.ReactNode;
   type?: 'start' | 'end';
+  minDate?: Date;
 }

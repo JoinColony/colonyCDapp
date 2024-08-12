@@ -41,11 +41,27 @@ export enum ActionTitleMessageKeys {
   MilestonesCount = 'milestonesCount',
   Milestones = 'milestones',
   StagedAmount = 'stagedAmount',
+  Period = 'period',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
+    case actionType === ColonyActionType.Payment:
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+      ];
+    case actionType.includes(ColonyActionType.CreateStreamingPayment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.Period,
+      ];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
         ActionTitleMessageKeys.Amount,
