@@ -50,6 +50,7 @@ export const getPermissionsNeededForAction = (
     case Action.EnterRecoveryMode:
       return [ColonyRole.Recovery];
     case Action.PaymentBuilder:
+    case Action.StreamingPayment:
       return [ColonyRole.Administration];
     default:
       return undefined;

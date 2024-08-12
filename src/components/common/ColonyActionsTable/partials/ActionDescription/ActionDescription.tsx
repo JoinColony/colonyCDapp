@@ -49,6 +49,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState || null,
   );
 
+  // @todo: add streaming payment data
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
     getActionTitleValues({

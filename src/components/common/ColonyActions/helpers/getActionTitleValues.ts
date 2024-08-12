@@ -36,11 +36,20 @@ export enum ActionTitleMessageKeys {
   SafeTransactionTitle = 'safeTransactionTitle',
   RecipientsNumber = 'recipientsNumber',
   TokensNumber = 'tokensNumber',
+  Period = 'period',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
+    case actionType.includes(ColonyActionType.CreateStreamingPayment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.Period,
+      ];
     case actionType.includes(ColonyActionType.Payment):
       return [
         ActionTitleMessageKeys.Recipient,

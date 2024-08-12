@@ -248,5 +248,7 @@ export const mapColonyActionToExpectedFormat = ({
         (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
       ),
     ).size,
+    // @todo: update this to use the actual period value
+    [ActionTitleMessageKeys.Period]: 'Day',
   };
 };

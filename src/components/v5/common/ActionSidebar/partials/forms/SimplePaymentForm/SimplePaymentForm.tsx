@@ -13,7 +13,6 @@ import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '../../DecisionMethodField/index.ts';
 import Description from '../../Description/index.ts';
 import TeamsSelect from '../../TeamsSelect/index.ts';
-import TimeRow from '../../TimeRow/TimeRow.tsx';
 import UserSelect from '../../UserSelect/index.ts';
 
 import { useSimplePayment } from './hooks.ts';
@@ -75,9 +74,6 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {/* @todo: remove before merging to master, it's added only to test this field before streaming payments form will be ready */}
-      <TimeRow name="starts" />
-      <TimeRow name="ends" type="end" />
       {/* Disabled for now */}
       {/* <TransactionTable name="payments" /> */}
     </>

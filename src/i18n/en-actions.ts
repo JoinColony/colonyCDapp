@@ -54,6 +54,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} ${safeActionTitle}
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment **change me**}
+      ${ColonyActionType.CreateStreamingPayment} {Stream {amount} {tokenSymbol} / {period} to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -100,6 +101,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.SafeContractInteractionMotion} {Contract interaction}
       ${ExtendedColonyActionType.SafeMultipleTransactions} {Multiple transactions}
       ${ExtendedColonyActionType.SafeMultipleTransactionsMotion} {Multiple transactions}
+      ${ColonyActionType.CreateStreamingPayment} {Streaming payment}
       other {Generic}
     }`,
 };
