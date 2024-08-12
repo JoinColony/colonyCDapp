@@ -1,10 +1,8 @@
 import { type CardSelectOptionsGroup } from '~v5/common/Fields/CardSelect/types.ts';
 
-export interface TimeRowFieldProps {
+export interface AmountPerPeriodRowFieldProps {
   name: string;
   options: CardSelectOptionsGroup<string>[];
   placeholder: string;
   selectedValueWrapperClassName?: string;
-  minDate?: Date;
-  customDateValue: string;
 }

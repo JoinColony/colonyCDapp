@@ -57,6 +57,7 @@ function* createStreamingPaymentAction({
     annotationMessage,
   },
   meta,
+  meta: { setTxHash },
 }: Action<ActionTypes.STREAMING_PAYMENT_CREATE>) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -250,6 +251,8 @@ function* createStreamingPaymentAction({
       payload: {},
       meta,
     });
+
+    setTxHash?.(txHash);
   } catch (error) {
     return yield putError(
       ActionTypes.STREAMING_PAYMENT_CREATE_ERROR,

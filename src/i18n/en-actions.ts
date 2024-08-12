@@ -91,6 +91,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment {tokensNumber, plural, one {of {stagedAmount} {tokenSymbol}} other {with {tokensNumber} tokens}} to {recipient} with {milestonesCount} {milestonesCount, plural, one {milestone} other {milestones}} by {initiator}}
+      ${ColonyActionType.CreateStreamingPayment} {Stream {amount} {tokenSymbol} / {period} to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -160,6 +161,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective}
       ${ExtendedColonyActionType.SplitPayment} {Split payment}
+      ${ColonyActionType.CreateStreamingPayment} {Streaming payment}
       other {Generic}
     }`,
 };
