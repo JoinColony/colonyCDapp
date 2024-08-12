@@ -55,7 +55,7 @@ export const getSimplePaymentPayload = (
     title,
     amount,
     tokenAddress,
-    recipientAddress,
+    recipient,
     payments,
     decisionMethod,
   } = values;
@@ -69,16 +69,13 @@ export const getSimplePaymentPayload = (
     payments: [
       getPaymentPayload({
         colony,
-        recipientAddress,
+        recipientAddress: recipient,
         amount: amount.toString(),
         tokenAddress,
         networkInverseFee,
       }),
       ...payments.map(
-        ({
-          recipientAddress: paymentRecipientAddress,
-          amount: paymentAmount,
-        }) =>
+        ({ recipient: paymentRecipientAddress, amount: paymentAmount }) =>
           getPaymentPayload({
             colony,
             recipientAddress: paymentRecipientAddress,
