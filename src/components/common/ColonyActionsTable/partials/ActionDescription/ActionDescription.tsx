@@ -61,6 +61,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   const { networkInverseFee } = useNetworkInverseFee();
 
+  // @todo: add streaming payment data
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
     useGetActionTitleValues({
