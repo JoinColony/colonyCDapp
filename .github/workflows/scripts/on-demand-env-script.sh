@@ -289,6 +289,7 @@ export VITE_GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
 # backend
 export AWS_APPSYNC_KEY=da2-fakeApiId123456
 export AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
+export ON_DEMAND_ENV=true
 EOL
 
 # Install dependencies
@@ -298,7 +299,7 @@ npm ci
 echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
 
 # Build and run Docker images
-npm run dev &
+npm run on-demand &
 
 # Wait for graphql port to come up
 while ! nc -z localhost 20002; do

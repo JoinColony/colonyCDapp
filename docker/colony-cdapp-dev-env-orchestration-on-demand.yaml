@@ -47,6 +47,7 @@ services:
     environment:
       LOCAL_ENDPOINT_URL: http://amplify:62224
       ENV_NAME: ${ENV_NAME}
+      ON_DEMAND: ${ON_DEMAND}
       AWS_REGION: ${AWS_REGION}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}

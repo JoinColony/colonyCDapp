@@ -9,6 +9,7 @@ const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 const AWS_SESSION_TOKEN = process.env.AWS_SESSION_TOKEN;
 const AWS_REGION = process.env.AWS_REGION;
 const ENV_NAME = process.env.ENV_NAME; // Used to identify AWS tables for a given environment, using table suffix
+const ON_DEMAND_ENV = process.env.ON_DEMAND_ENV === 'true'; // Used to determine local vs ec2 credentials
 
 // Local config
 const LOCAL_AWS_ACCESS_KEY_ID = 'fake';
@@ -17,14 +18,19 @@ const LOCAL_ENDPOINT_URL = process.env.LOCAL_ENDPOINT_URL || 'http://localhost:6
 const LOCAL_REGION = 'us-fake-1';
 
 function createAwsSession() {
-    return new DynamoDBClient({
-        credentials: {
+    const config = {
+        region: AWS_REGION,
+    };
+
+    if (!ON_DEMAND_ENV) {
+        config.credentials = {
             accessKeyId: AWS_ACCESS_KEY_ID,
             secretAccessKey: AWS_SECRET_ACCESS_KEY,
             sessionToken: AWS_SESSION_TOKEN,
-        },
-        region: AWS_REGION,
-    });
+        };
+    }
+
+    return new DynamoDBClient(config);
 }
 
 function createLocalClient() {

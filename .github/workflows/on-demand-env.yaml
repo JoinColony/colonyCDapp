@@ -43,6 +43,10 @@ jobs:
         COMMIT_HASH=${{ github.event.inputs.commitHash }}
         DISCORD_WEBHOOK=${{ secrets.DISCORD_WEBHOOK }}
         DISCORD_USER_ID=${{ github.event.inputs.discordUserId }}
+        ARCHIVE_RPC=${{ secrets.ON_DEMAND_ENV_ARCHIVE_RPC }}
+        FORKED_NETWORK_ADDRESS=${{ secrets.ON_DEMAND_ENV_FORKED_NETWORK_ADDRESS }}
+        REPUTATION_URL=${{ secrets.ON_DEMAND_ENV_REPUTATION_URL }}
+        NETWORK_ID=${{ secrets.ON_DEMAND_ENV_NETWORK_ID }}
         
         # Make a copy of the original script
         cp ./.github/workflows/scripts/on-demand-env-script.sh ./temp-on-demand-env-script.sh
@@ -53,6 +57,10 @@ jobs:
         sed -i "4iexport COMMIT_HASH=$COMMIT_HASH" ./temp-on-demand-env-script.sh
         sed -i "5iexport DISCORD_WEBHOOK=$DISCORD_WEBHOOK" ./temp-on-demand-env-script.sh
         sed -i "6iexport DISCORD_USER_ID=$DISCORD_USER_ID" ./temp-on-demand-env-script.sh
+        sed -i "7iexport ARCHIVE_RPC=$ARCHIVE_RPC" ./temp-on-demand-env-script.sh
+        sed -i "8iexport FORKED_NETWORK_ADDRESS=$FORKED_NETWORK_ADDRESS" ./temp-on-demand-env-script.sh
+        sed -i "9iexport REPUTATION_URL=$REPUTATION_URL" ./temp-on-demand-env-script.sh
+        sed -i "10iexport NETWORK_ID=$NETWORK_ID" ./temp-on-demand-env-script.sh
 
     - name: Provision EC2 instance
       run: |
