@@ -13,6 +13,10 @@ const DatepickerTimePicker: FC<DatepickerTimePickerProps> = ({
   selected,
   onChange,
   onBlur,
+  minDate,
+  maxDate,
+  minTime,
+  maxTime,
 }) => {
   const isMobile = useMobile();
 
@@ -45,6 +49,10 @@ const DatepickerTimePicker: FC<DatepickerTimePickerProps> = ({
             }
           : undefined
       }
+      minDate={minDate}
+      maxDate={maxDate}
+      minTime={minTime}
+      maxTime={maxTime}
     />
   );
 };

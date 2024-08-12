@@ -62,6 +62,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   const amountLessFee = useAmountLessFee(amount, networkFee);
 
+  // @todo: add streaming payment data
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
     getActionTitleValues({

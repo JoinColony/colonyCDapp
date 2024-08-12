@@ -34,10 +34,10 @@ const useActionsList = () => {
           //   label: { id: 'actions.stagedPayment' },
           //   value: Action.StagedPayment,
           // },
-          // {
-          //   label: { id: 'actions.streamingPayment' },
-          //   value: Action.StreamingPayment,
-          // },
+          {
+            label: { id: 'actions.streamingPayment' },
+            value: Action.StreamingPayment,
+          },
         ],
       },
       {
