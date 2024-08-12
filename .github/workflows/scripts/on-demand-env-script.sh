@@ -66,7 +66,7 @@ ENCODED_LOG_GROUP_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quo
 ENCODED_LOG_STREAM_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$INSTANCE_ID'))")
 
 # Construct the CloudWatch Logs URL
-AWS_REGION="eu-west-2"
+export AWS_REGION="eu-west-2"
 CLOUDWATCH_URL="https://console.aws.amazon.com/cloudwatch/home?region=$AWS_REGION#logsV2:log-groups/log-group/$ENCODED_LOG_GROUP_NAME/log-events/$ENCODED_LOG_STREAM_NAME"
 
 # Create JSON payload for the Discord notification with embed, because of how long the CW URL would be
