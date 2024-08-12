@@ -1,58 +1,148 @@
 import { type InferType, object, string } from 'yup';
 
 import { SupportedCurrencies } from '~gql';
-import { intl } from '~utils/intl.ts';
+import { formErrorMessage, formatText } from '~utils/intl.ts';
+import { capitalizeFirstLetter } from '~utils/strings.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
 
-import { BIC_REGEX, IBAN_REGEX } from './constants.ts';
+import {
+  BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS,
+  BANK_DETAILS_FORM_MSG,
+  BIC_REGEX,
+  IBAN_REGEX,
+} from './constants.ts';
 
-const { formatMessage } = intl({
-  'error.iban': 'Invalid IBAN format',
-  'error.bic': 'Invalid SWIFT/BIC format',
-});
+export enum BankDetailsFields {
+  ACCOUNT_OWNER = 'accountOwner',
+  BANK_NAME = 'bankName',
+  CURRENCY = 'currency',
+  COUNTRY = 'country',
+  IBAN = 'iban',
+  SWIFT = 'swift',
+  ACCOUNT_NUMBER = 'accountNumber',
+  ROUTING_NUMBER = 'routingNumber',
+}
+
+const { accountNumber, routingNumber } = BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS;
 
 export const validationSchema = object({
-  accountOwner: string().required(),
-  bankName: string().required(),
-  currency: string().required(),
-  country: string().when('currency', {
+  [BankDetailsFields.ACCOUNT_OWNER]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.accountOwner' }),
+  ),
+  [BankDetailsFields.BANK_NAME]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.bankName' }),
+  ),
+  [BankDetailsFields.CURRENCY]: string().required(
+    formatText({ id: 'cryptoToFiat.forms.error.bankAccount.currency' }),
+  ),
+  [BankDetailsFields.COUNTRY]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
-    then: string().required(),
+    then: string().required(
+      formatText({
+        id: 'cryptoToFiat.forms.error.bankAccount.country',
+      }),
+    ),
     otherwise: string().notRequired(),
   }),
-  iban: string().when('currency', {
+  [BankDetailsFields.IBAN]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
-      .matches(IBAN_REGEX, formatMessage({ id: 'error.iban' }))
-      .required(),
+      .required(
+        formatText({
+          id: 'cryptoToFiat.forms.error.bankAccount.iban',
+        }),
+      )
+      .matches(
+        IBAN_REGEX,
+        formErrorMessage(BANK_DETAILS_FORM_MSG.ibanLabel, 'invalid'),
+      ),
     otherwise: string().notRequired(),
   }),
-  swift: string().when('currency', {
+  [BankDetailsFields.SWIFT]: string().when(BankDetailsFields.CURRENCY, {
     is: CURRENCY_VALUES[SupportedCurrencies.Eur],
     then: string()
-      .matches(BIC_REGEX, formatMessage({ id: 'error.bic' }))
-      .required(),
+      .required(
+        formatText({
+          id: 'cryptoToFiat.forms.error.bankAccount.swift',
+        }),
+      )
+      .matches(
+        BIC_REGEX,
+        formErrorMessage(BANK_DETAILS_FORM_MSG.swiftLabel, 'invalid'),
+      ),
     otherwise: string().notRequired(),
   }),
-  accountNumber: string().when('currency', {
-    is: CURRENCY_VALUES[SupportedCurrencies.Usd],
-    then: string()
-      .required()
-      .matches(/^[0-9]+$/)
-      .min(8)
-      .max(17),
-    otherwise: string().notRequired(),
-  }),
-  routingNumber: string().when('currency', {
-    is: CURRENCY_VALUES[SupportedCurrencies.Usd],
-    then: string()
-      .required()
-      .matches(/^[0-9]+$/)
-      .min(9)
-      .max(9),
-    otherwise: string().notRequired(),
-  }),
+  [BankDetailsFields.ACCOUNT_NUMBER]: string().when(
+    BankDetailsFields.CURRENCY,
+    {
+      is: CURRENCY_VALUES[SupportedCurrencies.Usd],
+      then: string()
+        .required(
+          formatText({
+            id: 'cryptoToFiat.forms.error.bankAccount.accountNumber',
+          }),
+        )
+        .matches(
+          /^[0-9]+$/,
+          capitalizeFirstLetter(
+            formErrorMessage(
+              BANK_DETAILS_FORM_MSG.accountNumberLabel,
+              'invalid',
+            ),
+            { lowerCaseRemainingLetters: true },
+          ),
+        )
+        .min(
+          accountNumber.min,
+          formErrorMessage(
+            BANK_DETAILS_FORM_MSG.accountNumberLabel,
+            'min',
+            accountNumber.min,
+          ),
+        )
+        .max(
+          accountNumber.max,
+          formErrorMessage(
+            BANK_DETAILS_FORM_MSG.accountNumberLabel,
+            'max',
+            accountNumber.max,
+          ),
+        ),
+      otherwise: string().notRequired(),
+    },
+  ),
+  [BankDetailsFields.ROUTING_NUMBER]: string().when(
+    BankDetailsFields.CURRENCY,
+    {
+      is: CURRENCY_VALUES[SupportedCurrencies.Usd],
+      then: string()
+        .required(
+          formatText({
+            id: 'cryptoToFiat.forms.error.bankAccount.routingNumber',
+          }),
+        )
+        .matches(
+          /^[0-9]+$/,
+          capitalizeFirstLetter(
+            formErrorMessage(
+              BANK_DETAILS_FORM_MSG.routingNumberLabel,
+              'invalid',
+            ),
+            { lowerCaseRemainingLetters: true },
+          ),
+        )
+        .length(
+          routingNumber.length,
+          formErrorMessage(
+            BANK_DETAILS_FORM_MSG.routingNumberLabel,
+            'length',
+            routingNumber.length,
+          ),
+        ),
+      otherwise: string().notRequired(),
+    },
+  ),
 }).defined();
 
-export type FormValues = InferType<typeof validationSchema>;
+export type BankDetailsFormSchema = InferType<typeof validationSchema>;

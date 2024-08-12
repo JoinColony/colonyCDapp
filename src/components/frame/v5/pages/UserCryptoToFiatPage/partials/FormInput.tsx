@@ -1,23 +1,22 @@
-import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import React from 'react';
+import { type Message, useFormContext } from 'react-hook-form';
 
-import { type Message } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
 import Input from '~v5/common/Fields/Input/index.ts';
 
-interface FormInputProps {
-  name: string;
+interface FormInputProps<T> {
+  name: Extract<keyof T, string>;
   label?: string;
   placeholder?: string;
   shouldFocus?: boolean;
 }
-export const FormInput: FC<FormInputProps> = ({
+export const FormInput = <T,>({
   name,
   label,
   shouldFocus,
   placeholder,
-}) => {
+}: FormInputProps<T>) => {
   const {
     register,
     formState: { isSubmitting, errors },
@@ -35,6 +34,7 @@ export const FormInput: FC<FormInputProps> = ({
       placeholder={placeholder}
       isError={!!error}
       customErrorMessage={error ? formatText(error) : ''}
+      allowLayoutShift
     />
   );
 };

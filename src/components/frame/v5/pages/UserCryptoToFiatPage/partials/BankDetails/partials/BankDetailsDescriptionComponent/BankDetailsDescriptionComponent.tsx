@@ -2,8 +2,10 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
-import { type CheckKycStatusMutation } from '~gql';
+import { type SupportedCurrencies, type CheckKycStatusMutation } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+
+import { CurrencyLabel } from '../../../CurrencyLabel.tsx';
 
 import { TABLE_TD_LOADER_STYLES } from './consts.ts';
 
@@ -15,9 +17,13 @@ const MSG = defineMessages({
     id: `${displayName}.componentTitle`,
     defaultMessage: 'Bank, address and currency information',
   },
-  tableTitle: {
-    id: `${displayName}.tableTitle`,
+  tableBankDetailsTitle: {
+    id: `${displayName}.tableBankDetailsTitle`,
     defaultMessage: 'Bank details',
+  },
+  tableCurrencyTitle: {
+    id: `${displayName}.tableCurrencyTitle`,
+    defaultMessage: 'Currency',
   },
   columnHeadingBankName: {
     id: `${displayName}.columnHeadingBankName`,
@@ -50,64 +56,80 @@ const BankDetailsDescriptionComponent = ({
 }: BankDetailsDescriptionComponentProps) => {
   return (
     <div className="flex flex-col">
-      <p className="mb-3 text-md">{formatMessage(MSG.componentTitle)}</p>
-      <p className="mb-1 text-sm font-bold">{formatMessage(MSG.tableTitle)}</p>
-      <table className="w-full max-w-[670px] table-fixed">
-        <thead>
-          <tr className="text-left text-xs text-gray-500">
-            <th className="font-thin">
-              {formatMessage(MSG.columnHeadingBankName)}
-            </th>
-            <th className="font-thin">
-              {formatMessage(MSG.columnHeadingAccountNumber)}
-            </th>
-            <th className="font-thin">{formatMessage(MSG.columnHeadingBic)}</th>
-            <th className="font-thin">
-              {formatMessage(MSG.columnHeadingPayoutCurrency)}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-                {bankAccount?.bankName ?? '-'}
-              </LoadingSkeleton>
-            </td>
-            <td>
-              <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-                {bankAccount?.usAccount?.last4 ??
-                  bankAccount?.iban?.last4 ??
-                  '-'}
-              </LoadingSkeleton>
-            </td>
-            <td>
-              <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-                {bankAccount?.usAccount?.routingNumber ??
-                  bankAccount?.iban?.bic ??
-                  '-'}
-              </LoadingSkeleton>
-            </td>
-            <td>
-              <LoadingSkeleton
-                isLoading={isDataLoading}
-                className={TABLE_TD_LOADER_STYLES}
-              >
-                {bankAccount?.currency ?? ''}
-              </LoadingSkeleton>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <p className="mb-4 text-md font-medium">
+        {formatMessage(MSG.componentTitle)}
+      </p>
+      <div className="grid w-full min-w-full max-w-[670px] grid-flow-row grid-cols-1 gap-y-1 sm:grid-cols-4 sm:gap-x-4">
+        <div className="order-0 col-span-1 mb-1 text-left text-sm font-semibold sm:order-none sm:col-span-3">
+          {formatMessage(MSG.tableBankDetailsTitle)}
+        </div>
+        <div className="order-8 col-span-1 mb-1 mt-3 text-left text-sm font-semibold sm:order-none sm:mt-0">
+          {formatMessage(MSG.tableCurrencyTitle)}
+        </div>
+
+        <div className="order-1 col-span-1 text-left text-xs font-thin text-gray-500 sm:order-none">
+          {formatMessage(MSG.columnHeadingBankName)}
+        </div>
+
+        <div className="order-4 col-span-1 mt-3 text-left text-xs font-thin text-gray-500 sm:order-none sm:mt-0">
+          {formatMessage(MSG.columnHeadingAccountNumber)}
+        </div>
+
+        <div className="order-6 col-span-1 mt-3 text-left text-xs font-thin text-gray-500 sm:order-none sm:mt-0">
+          {formatMessage(MSG.columnHeadingBic)}
+        </div>
+
+        <div className="order-8 col-span-1 text-left text-xs font-thin text-gray-500 sm:order-none">
+          {formatMessage(MSG.columnHeadingPayoutCurrency)}
+        </div>
+
+        <div className="order-2 text-md font-normal sm:order-none">
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.bankName ?? '-'}
+          </LoadingSkeleton>
+        </div>
+
+        <div className="order-5 text-md font-normal sm:order-none">
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.usAccount?.last4 ?? bankAccount?.iban?.last4 ?? '-'}
+          </LoadingSkeleton>
+        </div>
+
+        <div className="order-7 text-md font-normal sm:order-none">
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.usAccount?.routingNumber ??
+              bankAccount?.iban?.bic ??
+              '-'}
+          </LoadingSkeleton>
+        </div>
+
+        <div className="order-10 text-md font-normal sm:order-none">
+          <LoadingSkeleton
+            isLoading={isDataLoading}
+            className={TABLE_TD_LOADER_STYLES}
+          >
+            {bankAccount?.currency ? (
+              <CurrencyLabel
+                currency={
+                  bankAccount?.currency.toUpperCase() as SupportedCurrencies
+                }
+                labelClassName="font-normal"
+              />
+            ) : (
+              '-'
+            )}
+          </LoadingSkeleton>
+        </div>
+      </div>
     </div>
   );
 };

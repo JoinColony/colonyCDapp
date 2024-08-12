@@ -114,3 +114,53 @@ export function formatText(
 
   return message;
 }
+
+/**
+ * @param fieldName { id: 'name', defaultMessage: 'Name' }
+ * @param validationMessage 'required'
+ * @returns `{fieldName} is a required field`
+ * ---
+ * @param fieldName { id: 'name', defaultMessage: 'Name' }
+ * @param validationMessage 'length'
+ * @param length null | undefined
+ * @throws `length is required when validationMessage is min, max or length`
+ * ---
+ * @param fieldName { id: 'name', defaultMessage: 'Name' }
+ * @param validationMessage 'min'
+ * @param length 3
+ * @returns `{fieldName} must be at least {length} characters`
+ * ---
+ */
+export function formErrorMessage(
+  fieldName: MessageDescriptor,
+  validationMessage: 'required' | 'invalid',
+): string;
+export function formErrorMessage(
+  fieldName: MessageDescriptor,
+  validationMessage: 'min' | 'max' | 'length',
+  length: number,
+): string;
+export function formErrorMessage(
+  fieldName: MessageDescriptor,
+  validationMessage: 'required' | 'min' | 'max' | 'invalid' | 'length',
+  length?: number,
+) {
+  if (
+    (validationMessage === 'min' ||
+      validationMessage === 'max' ||
+      validationMessage === 'length') &&
+    length === undefined
+  ) {
+    throw new Error(
+      'length is required when validationMessage is min, max or length',
+    );
+  }
+
+  return formatText(
+    { id: `form.${validationMessage}` },
+    {
+      fieldName: formatText(fieldName),
+      length,
+    },
+  );
+}

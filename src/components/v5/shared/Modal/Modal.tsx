@@ -41,7 +41,8 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       onRequestClose={onClose}
       isOpen={isOpen}
       {...{ isFullOnMobile, ...props }}
-      isTopSectionWithBackground={isTopSectionWithBackground}
+      isHighlighted={isTopSectionWithBackground}
+      hasPadding={!isTopSectionWithBackground}
     >
       {Icon && (
         <span

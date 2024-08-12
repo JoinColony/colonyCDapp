@@ -20,6 +20,7 @@ const Input: FC<InputProps> = ({
   errorMaxChar = false,
   placeholder,
   shouldNumberOfCharsBeVisible = false,
+  shouldErrorMessageBeVisible = true,
   isError,
   customErrorMessage,
   defaultValue,
@@ -141,7 +142,7 @@ const Input: FC<InputProps> = ({
           <InputPills message={successfulMessage} status="success" />
         )}
 
-        {isErrorStatus && !isTyping && (
+        {shouldErrorMessageBeVisible && isErrorStatus && !isTyping && (
           <>
             {isDecoratedError ? (
               <InputPills message={customErrorMessage} status="error" />

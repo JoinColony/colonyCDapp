@@ -11,7 +11,8 @@ const displayName = 'v5.ModalBase';
 const ModalBase: FC<ModalBaseProps> = ({
   role = 'dialog',
   isFullOnMobile,
-  isTopSectionWithBackground,
+  hasPadding,
+  isHighlighted,
   isOpen,
   ...props
 }) => {
@@ -39,8 +40,9 @@ const ModalBase: FC<ModalBaseProps> = ({
           'max-h-[calc(100%-4rem)] w-[calc(100vw-3rem)] rounded-xl border border-gray-200 shadow-default':
             !isFullOnMobile,
           base: 'z-base outline-0',
-          'pl-6 pt-6': !isTopSectionWithBackground,
-          'border-2 border-purple-200 pl-0 pt-0': isTopSectionWithBackground,
+          'pl-6 pt-6': hasPadding,
+          'pl-0 pt-0': !hasPadding,
+          'border-2 border-purple-200': isHighlighted,
         },
       )}
       shouldFocusAfterRender

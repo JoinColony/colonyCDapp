@@ -3,11 +3,15 @@ import { useFormContext } from 'react-hook-form';
 
 import { SupportedCurrencies } from '~gql';
 import { getCountries } from '~utils/countries.ts';
+import { formatText } from '~utils/intl.ts';
 
 import { CURRENCY_VALUES } from '../../constants.ts';
 import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import { FormSelect } from '../FormSelect.tsx';
+
+import { BANK_DETAILS_FORM_MSG } from './constants.ts';
+import { BankDetailsFields, type BankDetailsFormSchema } from './validation.ts';
 
 const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetailsForm.AccountDetailsInputs';
@@ -28,13 +32,26 @@ const AccountDetailsInputs = () => {
       {currency === CURRENCY_VALUES[SupportedCurrencies.Eur] && (
         <>
           <FormRow>
-            <FormInput name="iban" placeholder="IBAN" />
+            <FormInput<BankDetailsFormSchema>
+              name={BankDetailsFields.IBAN}
+              label={formatText(BANK_DETAILS_FORM_MSG.ibanLabel)}
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.ibanLabel)}
+            />
           </FormRow>
           <FormRow>
-            <FormInput name="swift" placeholder="SWIFT/BIC" />
+            <FormInput<BankDetailsFormSchema>
+              name={BankDetailsFields.SWIFT}
+              label={formatText(BANK_DETAILS_FORM_MSG.swiftLabel)}
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.swiftLabel)}
+            />
           </FormRow>
           <FormRow>
-            <FormSelect name="country" options={countriesOptions} />
+            <FormSelect<BankDetailsFormSchema>
+              name={BankDetailsFields.COUNTRY}
+              options={countriesOptions}
+              labelMessage={formatText(BANK_DETAILS_FORM_MSG.countryLabel)}
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.countryPlaceholder)}
+            />
           </FormRow>
         </>
       )}
@@ -42,17 +59,17 @@ const AccountDetailsInputs = () => {
       {currency === CURRENCY_VALUES[SupportedCurrencies.Usd] && (
         <>
           <FormRow>
-            <FormInput
-              name="accountNumber"
-              label="Account Number"
-              placeholder="Account Number"
+            <FormInput<BankDetailsFormSchema>
+              name={BankDetailsFields.ACCOUNT_NUMBER}
+              label={formatText(BANK_DETAILS_FORM_MSG.accountNumberLabel)}
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.accountNumberLabel)}
             />
           </FormRow>
           <FormRow>
-            <FormInput
-              name="routingNumber"
-              label="Routing Number"
-              placeholder="Routing Number"
+            <FormInput<BankDetailsFormSchema>
+              name={BankDetailsFields.ROUTING_NUMBER}
+              label={formatText(BANK_DETAILS_FORM_MSG.routingNumberLabel)}
+              placeholder={formatText(BANK_DETAILS_FORM_MSG.routingNumberLabel)}
             />
           </FormRow>
         </>

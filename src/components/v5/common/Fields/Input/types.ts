@@ -9,6 +9,7 @@ export type InputProps = {
   errorMaxChar?: boolean;
   placeholder?: string;
   shouldNumberOfCharsBeVisible?: boolean;
+  shouldErrorMessageBeVisible?: boolean;
   isError?: boolean;
   isErrorStatus?: boolean;
   customErrorMessage?: string;
