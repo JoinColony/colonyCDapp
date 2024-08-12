@@ -47,7 +47,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       </ActionFormRow>
       <ActionFormRow
         icon={UserFocus}
-        fieldName="recipientAddress"
+        fieldName="recipient"
         tooltips={{
           label: {
             tooltipContent: formatText({
@@ -58,7 +58,7 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         title={formatText({ id: 'actionSidebar.recipient' })}
         isDisabled={hasNoDecisionMethods}
       >
-        <UserSelect name="recipientAddress" disabled={hasNoDecisionMethods} />
+        <UserSelect name="recipient" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <AmountRow
         domainId={selectedTeam}
