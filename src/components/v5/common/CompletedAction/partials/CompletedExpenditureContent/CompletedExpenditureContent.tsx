@@ -1,8 +1,10 @@
-import { UserFocus } from '@phosphor-icons/react';
+import { Repeat, UserFocus } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
+import { type FieldValues } from 'react-hook-form';
 
 import { ADDRESS_ZERO } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ExpenditureType } from '~gql';
 import { useMobile } from '~hooks';
 import { type AnyActionType, DecisionMethod } from '~types/actions.ts';
@@ -43,6 +45,7 @@ interface CompletedExpenditureContentProps {
   expenditure: Expenditure;
   expenditureMeatballOptions: MeatBallMenuItem[];
   tokensCount?: number;
+  redoActionValues: FieldValues;
 }
 
 const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
@@ -57,8 +60,15 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   expenditure,
   expenditureMeatballOptions,
   tokensCount,
+  redoActionValues,
 }) => {
   const isMobile = useMobile();
+  const {
+    actionSidebarToggle: [
+      ,
+      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
+    ],
+  } = useActionSidebarContext();
 
   return (
     <>
@@ -71,7 +81,21 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
           dropdownPlacementProps={{
             top: 12,
           }}
-          items={expenditureMeatballOptions}
+          items={[
+            {
+              key: '3',
+              label: formatText({ id: 'completedAction.redoAction' }),
+              icon: Repeat,
+              onClick: () => {
+                toggleActionSidebarOff();
+
+                setTimeout(() => {
+                  toggleActionSidebarOn({ ...redoActionValues });
+                }, 500);
+              },
+            },
+            ...expenditureMeatballOptions,
+          ]}
         />
       </div>
       <ActionSubtitle>
