@@ -230,15 +230,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //       [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           //     }),
           // },
-          // {
-          //   key: '3',
-          //   label: formatText({ id: 'actions.streamingPayment' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
-          //     }),
-          //   disabled: true,
-          // },
+          {
+            key: '3',
+            label: formatText({ id: 'actions.streamingPayment' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
+              }),
+          },
           // {
           //   key: '4',
           //   label: formatText({ id: 'actions.splitPayment' }),

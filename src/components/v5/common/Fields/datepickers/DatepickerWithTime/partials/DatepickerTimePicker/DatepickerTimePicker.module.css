@@ -40,7 +40,7 @@
       ul.react-datepicker__time-list
       li.react-datepicker__time-list-item
   ) {
-  @apply flex h-[2.1875rem] w-full items-center rounded px-4 py-1 text-left text-md text-gray-900 transition sm:hover:bg-gray-50;
+  @apply flex h-[2.1875rem] w-full items-center rounded px-4 py-1 text-left text-md text-gray-900 transition sm:enabled:hover:bg-gray-50;
 }
 
 .wrapper
@@ -51,5 +51,9 @@
       ul.react-datepicker__time-list
       li.react-datepicker__time-list-item--selected
   ) {
-  @apply bg-gray-50 font-medium sm:hover:bg-gray-50;
+  @apply bg-gray-50 font-medium sm:enabled:hover:bg-gray-50;
+}
+
+.wrapper :global(.react-datepicker__time-list-item--disabled) {
+  @apply opacity-50;
 }

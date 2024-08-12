@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import { supportedExtensionsConfig } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -41,6 +42,11 @@ const MSG = defineMessages({
     id: `${displayName}.viewExtension`,
     defaultMessage: 'View extension',
   },
+  extensionNotInstalled: {
+    id: `${displayName}.extensionNotInstalled`,
+    defaultMessage:
+      'You need to install the {extensionName} extension to create this action.',
+  },
 });
 
 export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
@@ -72,6 +78,17 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return isFieldDisabled
           ? formatText(MSG.createDecisionError)
           : undefined;
+      case Action.StreamingPayment: {
+        const extensionName = supportedExtensionsConfig.find(
+          (extension) => extension.extensionId === Extension.StreamingPayments,
+        )?.name;
+
+        return isFieldDisabled && extensionName
+          ? formatText(MSG.extensionNotInstalled, {
+              extensionName: formatText(extensionName),
+            })
+          : undefined;
+      }
       default:
         return undefined;
     }

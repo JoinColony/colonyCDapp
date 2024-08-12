@@ -9,6 +9,7 @@ import isPast from 'date-fns/isPast';
 import React from 'react';
 import { useWatch } from 'react-hook-form';
 
+import { StreamingPaymentEndCondition } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
@@ -16,12 +17,19 @@ import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 import { END_OPTIONS, START_OPTIONS } from './consts.ts';
+import { CUSTOM_DATE_VALUE } from './partials/TimeRowField/consts.ts';
 import TimeRowField from './partials/TimeRowField/TimeRowField.tsx';
 import { type TimeRowProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.TimeRow';
 
-const TimeRow = ({ title, tooltips, type = 'start', name }: TimeRowProps) => {
+const TimeRow = ({
+  title,
+  tooltips,
+  type = 'start',
+  name,
+  minDate,
+}: TimeRowProps) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const selectedDate = useWatch({ name });
 
@@ -54,6 +62,12 @@ const TimeRow = ({ title, tooltips, type = 'start', name }: TimeRowProps) => {
                 ? 'actionSidebar.starts.placeholder'
                 : 'actionSidebar.ends.placeholder',
           })}
+          minDate={minDate}
+          customDateValue={
+            type === 'start'
+              ? CUSTOM_DATE_VALUE
+              : StreamingPaymentEndCondition.FixedTime
+          }
         />
       </div>
       {isDateInPast && (

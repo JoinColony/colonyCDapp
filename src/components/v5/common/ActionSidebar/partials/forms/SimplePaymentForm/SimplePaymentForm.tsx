@@ -12,7 +12,6 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import TimeRow from '~v5/common/ActionSidebar/partials/TimeRow/TimeRow.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useSimplePayment } from './hooks.ts';
@@ -74,9 +73,6 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {/* @todo: remove before merging to master, it's added only to test this field before streaming payments form will be ready */}
-      <TimeRow name="starts" />
-      <TimeRow name="ends" type="end" />
       {/* Disabled for now */}
       {/* <TransactionTable name="payments" /> */}
     </>
