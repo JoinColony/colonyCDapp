@@ -47,6 +47,7 @@ jobs:
         FORKED_NETWORK_ADDRESS=${{ secrets.ON_DEMAND_ENV_FORKED_NETWORK_ADDRESS }}
         REPUTATION_URL=${{ secrets.ON_DEMAND_ENV_REPUTATION_URL }}
         NETWORK_ID=${{ secrets.ON_DEMAND_ENV_NETWORK_ID }}
+        ENV_NAME=${{ vars.ON_DEMAND_ENV_DYNAMODB_ENV_NAME }}
         
         # Make a copy of the original script
         cp ./.github/workflows/scripts/on-demand-env-script.sh ./temp-on-demand-env-script.sh
@@ -61,6 +62,7 @@ jobs:
         sed -i "8iexport FORKED_NETWORK_ADDRESS=$FORKED_NETWORK_ADDRESS" ./temp-on-demand-env-script.sh
         sed -i "9iexport REPUTATION_URL=$REPUTATION_URL" ./temp-on-demand-env-script.sh
         sed -i "10iexport NETWORK_ID=$NETWORK_ID" ./temp-on-demand-env-script.sh
+        sed -i "11iexport ENV_NAME=$ENV_NAME" ./temp-on-demand-env-script.sh
 
     - name: Provision EC2 instance
       run: |

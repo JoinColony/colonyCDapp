@@ -143,9 +143,14 @@ async function copyTableData(awsTable, localTable, awsClient, localClient) {
 }
 
 async function compareAndCopyTables() {
-    if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_SESSION_TOKEN || !AWS_REGION || !ENV_NAME) {
-        console.error("Error: AWS credentials and config are not set in environment variables.");
-        console.error("Please set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION, ENV_NAME.");
+    if (!ON_DEMAND_ENV) {
+        if (!AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY || !AWS_SESSION_TOKEN || !AWS_REGION || !ENV_NAME) {
+            console.error("Error: AWS credentials and config are not set in environment variables.");
+            console.error("Please set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION, ENV_NAME.");
+            return;
+        }
+    } else if (!AWS_REGION || !ENV_NAME) {
+        console.error("Error: AWS_REGION and ENV_NAME must be set even in ON_DEMAND_ENV mode.");
         return;
     }
 
