@@ -318,5 +318,15 @@ export const mapColonyActionToExpectedFormat = ({
       ActionTitleMessageKeys.SplitAmount,
       !!expenditureData?.slots,
     ),
+    [ActionTitleMessageKeys.RecipientsNumber]: new Set(
+      expenditureData?.slots.map((slot) => slot.recipientAddress),
+    ).size,
+    [ActionTitleMessageKeys.TokensNumber]: new Set(
+      expenditureData?.slots?.flatMap(
+        (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
+      ),
+    ).size,
+    // @todo: update this to use the actual period value
+    [ActionTitleMessageKeys.Period]: 'Day',
   };
 };
