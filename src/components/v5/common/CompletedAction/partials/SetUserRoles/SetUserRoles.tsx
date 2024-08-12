@@ -9,6 +9,7 @@ import {
   ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
+  type ColonyActionRoles,
 } from '~gql';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -50,14 +51,16 @@ interface Props {
 }
 
 const transformActionRolesToColonyRoles = (
-  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
+  roles:
+    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
+    | ColonyActionRoles,
 ): ColonyRole[] => {
-  if (!historicRoles) return [];
+  if (!roles) return [];
 
-  const roleKeys = Object.keys(historicRoles);
+  const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => historicRoles[key])
+    .filter((key) => roles[key])
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -111,8 +114,9 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
+  // if it's the first time assigning roles, we use the action roles
   const userColonyRoles = transformActionRolesToColonyRoles(
-    historicRoles?.getColonyHistoricRole,
+    historicRoles?.getColonyHistoricRole || roles,
   );
 
   const rolesTitle = formatRolesTitle(roles);
