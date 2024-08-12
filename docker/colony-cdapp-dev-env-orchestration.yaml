@@ -26,6 +26,40 @@ services:
       amplify-setup:
         condition: service_completed_successfully
 
+  network-contracts-remote:
+    container_name: 'network-remote'
+    image: colony-cdapp-dev-env/network-remote:latest
+    volumes:
+      - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
+    ports:
+      - '8546:8545'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8545']
+      interval: 5s
+      retries: 1000
+    depends_on:
+      amplify-setup:
+        condition: service_completed_successfully
+    environment:
+      CHAIN_ID: 265669101
+
+  network-contracts-remote-2:
+    container_name: 'network-remote-2'
+    image: colony-cdapp-dev-env/network-remote:latest
+    volumes:
+      - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
+    ports:
+      - '8547:8545'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8545']
+      interval: 5s
+      retries: 1000
+    depends_on:
+      amplify-setup:
+        condition: service_completed_successfully
+    environment:
+      CHAIN_ID: 265669102
+
   reputation-monitor:
     container_name: 'monitor'
     image: colony-cdapp-dev-env/reputation-monitor:latest
@@ -93,6 +127,19 @@ services:
       - '3006:3006'
     depends_on:
       network-contracts:
+        condition: service_healthy
+
+  wormhole-relayer:
+    container_name: 'wormhole-relayer'
+    image: colony-cdapp-dev-env/network-wormhole-relayer:latest
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    depends_on:
+      network-contracts:
+        condition: service_healthy
+      network-contracts-remote:
+        condition: service_healthy
+      network-contracts-remote-2:
         condition: service_healthy
 
 volumes:
