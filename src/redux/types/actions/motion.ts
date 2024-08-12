@@ -66,7 +66,7 @@ export type MotionFinalizePayload = {
   userAddress: Address;
   colonyAddress: Address;
   motionId: string;
-  gasEstimate: string;
+  canMotionFail?: boolean;
 };
 
 export type MotionActionTypes =

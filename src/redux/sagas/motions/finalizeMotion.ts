@@ -1,11 +1,8 @@
 import { ClientType } from '@colony/colony-js';
-import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { DEFAULT_GAS_LIMIT } from '~constants/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { transactionUpdateGas } from '../../actionCreators/index.ts';
 import { ActionTypes } from '../../actionTypes.ts';
 import { type AllActions, type Action } from '../../types/actions/index.ts';
 import {
@@ -14,13 +11,38 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
-import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
+import {
+  getColonyManager,
+  initiateTransaction,
+  putError,
+  takeFrom,
+} from '../utils/index.ts';
 
 function* finalizeMotion({
   meta,
-  payload: { colonyAddress, motionId, gasEstimate },
+  payload: { colonyAddress, motionId, canMotionFail },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
+
+  const colonyManager = yield getColonyManager();
+  const votingReputationClient = yield colonyManager.getClient(
+    ClientType.VotingReputationClient,
+    colonyAddress,
+  );
+  let contractMethodToCall = 'finalizeMotionWithoutFailure';
+
+  // If motion is older than a week it can fail if the underlying action would fail
+  if (canMotionFail) {
+    // try to estimate gas, if it fails we call another contract
+    try {
+      yield votingReputationClient.estimateGas.finalizeMotionWithoutFailure(
+        motionId,
+      );
+    } catch (err) {
+      contractMethodToCall = 'finalizeMotion';
+    }
+  }
+
   try {
     const { finalizeMotionTransaction } = yield createTransactionChannels(
       meta.id,
@@ -35,7 +57,7 @@ function* finalizeMotion({
       meta,
       config: {
         context: ClientType.VotingReputationClient,
-        methodName: 'finalizeMotion',
+        methodName: contractMethodToCall,
         identifier: colonyAddress,
         params: [motionId],
         ready: false,
@@ -45,16 +67,6 @@ function* finalizeMotion({
     yield takeFrom(
       finalizeMotionTransaction.channel,
       ActionTypes.TRANSACTION_CREATED,
-    );
-
-    const gasLimit = BigNumber.from(gasEstimate).lte(DEFAULT_GAS_LIMIT)
-      ? gasEstimate
-      : DEFAULT_GAS_LIMIT.toString();
-
-    yield put(
-      transactionUpdateGas(finalizeMotionTransaction.id, {
-        gasLimit,
-      }),
     );
 
     yield initiateTransaction(finalizeMotionTransaction.id);

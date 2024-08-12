@@ -2625,12 +2625,6 @@ type ColonyMotion @model {
     @index(name: "byTransactionHash", queryField: "getMotionByTransactionHash")
 
   """
-  An option to manually specify the amount of gas to estimate for the finalization of this motion.
-  Particularly useful for "heavy" actions, such as a multicall.
-  """
-  gasEstimate: String!
-
-  """
   Expenditure associated with the motion, if any
   """
   expenditureId: ID
