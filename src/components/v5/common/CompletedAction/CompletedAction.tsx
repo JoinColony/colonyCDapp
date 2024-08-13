@@ -79,6 +79,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
         return <EditColonyDetails action={action} />;
+      /**
+       * @deprecated
+       * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
+       */
       case ExtendedColonyActionType.UpdateColonyObjective:
         return <UpgradeColonyObjective action={action} />;
       // @TODO: Connect this to the reputation actions

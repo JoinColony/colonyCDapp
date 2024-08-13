@@ -580,6 +580,10 @@ export const getExtendedActionType = (
   const changelogItem = getChangelogItem(actionData, metadata);
 
   if (changelogItem?.hasObjectiveChanged) {
+    /**
+     * @deprecated
+     * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
+     */
     return ExtendedColonyActionType.UpdateColonyObjective;
   }
 

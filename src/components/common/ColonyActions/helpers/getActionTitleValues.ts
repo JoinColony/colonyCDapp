@@ -118,6 +118,10 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.ChainName];
     case actionType.includes(ColonyActionType.CreateDecisionMotion):
       return [ActionTitleMessageKeys.Initiator];
+    /**
+     * @deprecated
+     * This is still needed to allow users to view existing Colony Objectives Actions
+     */
     case actionType.includes(ExtendedColonyActionType.UpdateColonyObjective):
       return [ActionTitleMessageKeys.Initiator];
     case safeActionTypes.some((type) => actionType.includes(type)):

@@ -18,6 +18,10 @@ export enum Action {
   UpgradeColonyVersion = 'upgrade-colony-version',
   EnterRecoveryMode = 'enter-recovery-mode',
   CreateNewIntegration = 'create-new-integration',
+  /**
+   * @deprecated
+   * This is still being used by our filters context for some components to filter by Colony Objectives Action type
+   */
   ManageColonyObjectives = 'manage-colony-objectives',
   UserPermissions = 'user-permissions',
   SimpleDiscussion = 'simple-discussion',

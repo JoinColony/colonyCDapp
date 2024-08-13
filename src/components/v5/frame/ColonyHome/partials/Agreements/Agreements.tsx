@@ -87,7 +87,7 @@ const Agreements = () => {
                 id: 'dashboard.agreements.widget.noData',
               })}
               actionTitle={formatText({
-                id: 'dashboard.agreements.widget.createObjective',
+                id: 'dashboard.agreements.widget.createNewAgreement',
               })}
               className="px-[1.8rem] py-[1.2rem]"
               onClick={openCreateDecision}
@@ -96,7 +96,12 @@ const Agreements = () => {
         </>
       }
       contentClassName="w-full"
-      className="col-span-2 h-fit flex-1 flex-col bg-base-white p-6 lg:col-span-1"
+      className={clsx(
+        'flex-col items-start bg-base-white p-6 sm:hover:text-gray-900',
+        {
+          'pb-10': !newestAgreement && !loading,
+        },
+      )}
       href={agreements ? COLONY_AGREEMENTS_ROUTE : undefined}
     />
   );

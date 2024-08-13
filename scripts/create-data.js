@@ -91,8 +91,6 @@ const CHAR_LIMITS = {
   },
   COLONY: {
     MAX_COLONY_DISPLAY_NAME: 20,
-    MAX_COLONY_OBJECTIVE_TITLE: 60,
-    MAX_COLONY_OBJECTIVE_DESCRIPTION: 200,
   },
 };
 
@@ -550,7 +548,6 @@ const createColony = async (
     colonyDescription,
     colonySocialLinks = [],
     colonyAvatar,
-    colonyObjective = {},
     version,
     token: {
       name: tokenName = 'Generic Token',
@@ -678,19 +675,6 @@ const createColony = async (
   }
   if (colonySocialLinks && colonySocialLinks.length) {
     metadata.externalLinks = colonySocialLinks;
-  }
-  if (colonyObjective?.title && colonyObjective?.description) {
-    metadata.objective = {
-      ...colonyObjective,
-      title: colonyObjective.title.slice(
-        0,
-        CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_TITLE,
-      ),
-      description: colonyObjective.description.slice(
-        0,
-        CHAR_LIMITS.COLONY.MAX_COLONY_OBJECTIVE_DESCRIPTION,
-      ),
-    };
   }
 
   const colonyExists = await tryFetchGraphqlQuery(getColonyMetadata, {

@@ -10,7 +10,6 @@ import CreateNewTeamForm from '../partials/forms/CreateNewTeamForm/index.ts';
 import EditColonyDetailsForm from '../partials/forms/EditColonyDetailsForm/index.ts';
 import EditTeamForm from '../partials/forms/EditTeamForm/index.ts';
 import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm/index.ts';
-import ManageColonyObjectivesForm from '../partials/forms/ManageColonyObjectivesForm/index.ts';
 import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm/index.ts';
 import ManageReputationForm from '../partials/forms/ManageReputationForm/index.ts';
 import ManageTokensForm from '../partials/forms/ManageTokensForm/ManageTokensForm.tsx';
@@ -39,7 +38,6 @@ const useSidebarActionForm = () => {
       [Action.EditExistingTeam]: EditTeamForm,
       [Action.EnterRecoveryMode]: EnterRecoveryModeForm,
       [Action.EditColonyDetails]: EditColonyDetailsForm,
-      [Action.ManageColonyObjectives]: ManageColonyObjectivesForm,
       [Action.SplitPayment]: SplitPaymentForm,
       [Action.ManageTokens]: ManageTokensForm,
       [Action.PaymentBuilder]: PaymentBuilderForm,

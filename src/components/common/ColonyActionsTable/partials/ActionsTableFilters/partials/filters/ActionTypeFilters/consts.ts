@@ -78,6 +78,10 @@ export const ACTION_TYPES_FILTERS = [
   //   name: Action.EnterRecoveryMode,
   // },
   {
+    /**
+     * @deprecated
+     * This is still needed to allow users to filter the Activity Table by the Colony Objective Action type
+     */
     label: formatText({ id: 'actions.manageColonyObjectives' }),
     name: Action.ManageColonyObjectives,
   },

@@ -126,6 +126,10 @@ export type ActionUserRoles = {
 };
 
 export enum ExtendedColonyActionType {
+  /**
+   * @deprecated
+   * This is still needed to allow users to view existing Colony Objective actions
+   */
   UpdateColonyObjective = 'UPDATE_COLONY_OBJECTIVE',
   RemoveSafe = 'REMOVE_SAFE',
   AddSafe = 'ADD_SAFE',

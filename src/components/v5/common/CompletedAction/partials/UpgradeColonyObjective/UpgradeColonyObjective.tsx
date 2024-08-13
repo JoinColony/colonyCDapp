@@ -48,6 +48,10 @@ const MSG = defineMessages({
   },
 });
 
+/**
+ * @deprecated
+ * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
+ */
 const UpgradeColonyObjective = ({ action }: Props) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, colony, isMotion, pendingColonyMetadata } = action;

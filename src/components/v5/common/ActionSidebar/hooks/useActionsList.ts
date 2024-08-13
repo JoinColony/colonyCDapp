@@ -120,10 +120,6 @@ const useActionsList = () => {
           //   label: { id: 'actions.enterRecoveryMode' },
           //   value: Action.EnterRecoveryMode,
           // },
-          {
-            label: { id: 'actions.manageColonyObjectives' },
-            value: Action.ManageColonyObjectives,
-          },
           // {
           //   label: { id: 'actions.createNewIntegration' },
           //   value: Action.CreateNewIntegration,
