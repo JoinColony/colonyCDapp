@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, type FC, useEffect } from 'react';
+import React, { useState, type FC, useMemo, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { findFirstUserRoleWithColonyRoles } from '~constants/permissions.ts';
@@ -18,7 +18,6 @@ import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import CancelButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/CancelButton/CancelButton.tsx';
-import { VoteExpectedStep } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/types.ts';
 import {
   getAllUserSignatures,
   getIsMultiSigExecutable,
@@ -120,11 +119,10 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   createdAt,
 }) => {
   const { user } = useAppContext();
-  const [activeStep, setActiveStep] = useState<VoteExpectedStep | null>(null);
-  const [expectedStep, setExpectedStep] = useState<VoteExpectedStep | null>(
-    null,
-  );
-  const [currentVote, setCurrentVote] = useState<MultiSigVote | null>(null);
+
+  const [isApproving, setIsApproving] = useState(false);
+  const [isRejecting, setIsRejecting] = useState(false);
+  const [isRemovingVote, setIsRemovingVote] = useState(false);
 
   const isOwner = user?.walletAddress === initiatorAddress;
 
@@ -141,22 +139,20 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     : false;
   const signatures = (multiSigData?.signatures?.items ?? []).filter(notMaybe);
 
-  const userSignature = signatures.find(
-    (signature) => signature?.userAddress === user?.walletAddress,
+  const userSignature = useMemo(
+    () =>
+      signatures.find(
+        (signature) => signature?.userAddress === user?.walletAddress,
+      ),
+    [signatures, user?.walletAddress],
   );
 
+  // When the signature value changes (added or removed), set all loading states to 0
   useEffect(() => {
-    if (userSignature) {
-      setActiveStep(VoteExpectedStep.cancel);
-      setCurrentVote(null);
-    } else {
-      setActiveStep(VoteExpectedStep.vote);
-    }
-
-    if (expectedStep === activeStep) {
-      setExpectedStep(null);
-    }
-  }, [activeStep, expectedStep, userSignature]);
+    setIsApproving(false);
+    setIsRejecting(false);
+    setIsRemovingVote(false);
+  }, [userSignature]);
 
   const { isLoading: areEligibleSigneesLoading, uniqueEligibleSignees } =
     useEligibleSignees({
@@ -364,56 +360,59 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                         {formatText(MSG.changeDescription)}
                       </p>
                       <RemoveVoteButton
-                        setExpectedStep={setExpectedStep}
-                        isPending={expectedStep === VoteExpectedStep.vote}
+                        isLoading={isRemovingVote}
                         actionType={actionType}
                         multiSigId={multiSigData.nativeMultiSigId}
                         multiSigDomainId={Number(
                           multiSigData.nativeMultiSigDomainId,
                         )}
+                        handleLoadingChange={(isLoading) => {
+                          setIsRemovingVote(isLoading);
+                        }}
                       />
                     </>
                   ) : (
                     <div className="mt-6 flex flex-col gap-2">
                       <VoteButton
+                        isLoading={isApproving}
                         actionType={actionType}
                         multiSigId={multiSigData.nativeMultiSigId}
                         multiSigDomainId={Number(
                           multiSigData.nativeMultiSigDomainId,
                         )}
-                        isPending={
-                          expectedStep === VoteExpectedStep.cancel &&
-                          currentVote === MultiSigVote.Approve
-                        }
-                        setExpectedStep={setExpectedStep}
-                        setCurrentVote={setCurrentVote}
+                        handleLoadingChange={(isLoading) => {
+                          setIsApproving(isLoading);
+                        }}
                         voteType={MultiSigVote.Approve}
                         buttonProps={{
-                          disabled: expectedStep === VoteExpectedStep.cancel,
+                          disabled: isRejecting,
                         }}
                       />
                       {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
+                          isLoading={isRejecting}
                           multiSigId={multiSigData.nativeMultiSigId}
-                          isPending={expectedStep === VoteExpectedStep.cancel}
-                          setExpectedStep={setExpectedStep}
+                          handleLoadingChange={(isLoading) => {
+                            setIsRejecting(isLoading);
+                          }}
+                          buttonProps={{
+                            disabled: isApproving,
+                          }}
                         />
                       ) : (
                         <VoteButton
                           actionType={actionType}
+                          isLoading={isRejecting}
                           multiSigId={multiSigData.nativeMultiSigId}
                           multiSigDomainId={Number(
                             multiSigData.nativeMultiSigDomainId,
                           )}
-                          isPending={
-                            expectedStep === VoteExpectedStep.cancel &&
-                            currentVote === MultiSigVote.Reject
-                          }
-                          setExpectedStep={setExpectedStep}
-                          setCurrentVote={setCurrentVote}
+                          handleLoadingChange={(isLoading) => {
+                            setIsRejecting(isLoading);
+                          }}
                           voteType={MultiSigVote.Reject}
                           buttonProps={{
-                            disabled: expectedStep === VoteExpectedStep.cancel,
+                            disabled: isApproving,
                             mode: 'primaryOutline',
                           }}
                         />
