@@ -101,6 +101,7 @@ export function* setupUserContext() {
     /*
      * If the wallet we've pulled from context does not have the same address as the selected account
      * in Metamask, it's because the user just switched their account in metamask.
+     * In this case we just logout previous user and disconnect wallet.
      */
     if (
       !wallet &&
@@ -110,9 +111,6 @@ export function* setupUserContext() {
         selectedMetamaskAddress.toLocaleLowerCase() &&
       lastWallet.type === ONBOARD_METAMASK_WALLET_LABEL
     ) {
-      const connectedLastWallet = yield call(getWallet, lastWallet);
-      setContext(ContextModule.Wallet, connectedLastWallet); // need to set last wallet to context for proper logout
-
       return yield putError(
         ActionTypes.WALLET_OPEN_ERROR,
         Error(
@@ -158,13 +156,5 @@ export function* setupUserContext() {
 }
 
 export function* cleanupOnWalletError() {
-  try {
-    const wallet = getContext(ContextModule.Wallet);
-
-    if (wallet) {
-      yield call(userLogout);
-    }
-  } catch {
-    // silent
-  }
+  yield call(userLogout);
 }
