@@ -332,6 +332,18 @@ done
 # Seed database (pass --yes to skip confirmation)
 # node ./scripts/create-data.js --yes
 
+# Temporary fix to get frontend running
+export BSCSCAN_API_KEY="test"
+export ETHERSCAN_API_KEY="test"
+export GOOGLE_TAG_MANAGER_ID="test"
+export PINATA_API_KEY="test"
+export PINATA_API_SECRET="test"
+export COINGECKO_API_KEY="test"
+export COINGECKO_API_URL="test"
+export POSTHOG_KEY="test"
+export POSTHOG_HOST="test"
+export PERSONA_ENVIRONMENT_ID="test"
+
 # Start frontend
 npm run frontend &
 
