@@ -12,6 +12,7 @@ import {
   type ActivityFeedFilters,
   type ActivityDecisionMethod,
 } from '~hooks/useActivityFeed/types.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { type AnyActionType } from '~types/actions.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
 
@@ -36,6 +37,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     pastYear: false,
     custom: undefined,
   });
+  const { dateFromCurrentBlockTime } = useCurrentBlockTime();
 
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +117,9 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const activeFilters: ActivityFeedFilters = useMemo(() => {
-    const date = getDateFilter(dateFilters);
+    const date = dateFromCurrentBlockTime
+      ? getDateFilter(dateFilters, dateFromCurrentBlockTime)
+      : null;
     const actionTypes = actionTypesFilters.reduce<AnyActionType[]>(
       (result, actionType) => {
         const apiActionTypes = ACTION_TYPE_TO_API_ACTION_TYPES_MAP[actionType];
@@ -142,6 +146,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, [
     actionTypesFilters,
+    dateFromCurrentBlockTime,
     dateFilters,
     decisionMethod,
     motionStates,
