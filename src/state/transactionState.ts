@@ -41,6 +41,8 @@ import {
 import { notNull } from '~utils/arrays/index.ts';
 import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 
+import { DEFAULT_TX_HASH } from './consts.ts';
+
 export const TX_PAGE_SIZE = 20;
 // In minutes
 export const TX_RETRY_TIMEOUT = 10;
@@ -86,7 +88,7 @@ export const convertTransactionType = ({
     status,
     group: txGroup,
     groupId,
-    hash: hash || '0x0',
+    hash: hash || DEFAULT_TX_HASH,
     methodContext: methodContext ?? undefined,
     params: JSON.parse(params ?? '[]'),
     title: title ? JSON.parse(title) : undefined,
@@ -106,7 +108,13 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
   if (txGroup.some((tx) => tx.status === TransactionStatus.Failed)) {
     return TransactionStatus.Failed;
   }
-  if (txGroup.every((tx) => tx.status === TransactionStatus.Succeeded)) {
+  if (
+    txGroup.every(
+      (tx) =>
+        tx.status === TransactionStatus.Succeeded &&
+        tx.hash !== DEFAULT_TX_HASH,
+    )
+  ) {
     return TransactionStatus.Succeeded;
   }
   return TransactionStatus.Pending;
