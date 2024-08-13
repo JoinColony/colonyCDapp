@@ -6,7 +6,11 @@ import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutConte
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
-export const ColonySwitcherAvatar = () => {
+export const ColonySwitcherAvatar = ({
+  enableMobileAndDesktopLayoutBreakpoints,
+}: {
+  enableMobileAndDesktopLayoutBreakpoints?: boolean;
+}) => {
   const colonyContext = useColonyContext({ nullableContext: true });
 
   const { showTabletColonyPicker } = usePageLayoutContext();
@@ -22,6 +26,7 @@ export const ColonySwitcherAvatar = () => {
         'flex-shrink-0 rounded-full shadow-[0_0_0_4px] shadow-transparent transition-shadow duration-[250] md:shadow-none',
         {
           '!shadow-blue-400': showTabletColonyPicker,
+          'sm:!shadow-none': enableMobileAndDesktopLayoutBreakpoints,
         },
       )}
     >
