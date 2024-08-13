@@ -124,7 +124,8 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           data={currentClaims}
           getSortedRowModel={getSortedRowModel()}
           columns={columns}
-          className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] rounded-none border-0 border-gray-200 px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:border-y"
+          className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:!rounded-none [&_th]:border-y"
+          tableClassName="rounded-none border-none"
           initialState={{
             sorting: [
               {
