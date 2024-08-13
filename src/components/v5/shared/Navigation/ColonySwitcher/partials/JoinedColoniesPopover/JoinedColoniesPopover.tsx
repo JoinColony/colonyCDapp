@@ -16,6 +16,7 @@ const JoinedColoniesPopover = ({
   visible,
   setTooltipRef,
   getTooltipProps,
+  enableMobileAndDesktopLayoutBreakpoints,
 }: JoinedColoniesPopoverProps) => {
   const { wallet, connectWallet } = useAppContext();
 
@@ -28,10 +29,16 @@ const JoinedColoniesPopover = ({
       <div className="flex max-h-[calc(536px)] flex-col gap-4 overflow-hidden">
         {wallet ? (
           <div className="flex flex-col gap-1.5 overflow-y-auto">
-            <JoinedColoniesList />
+            <JoinedColoniesList
+              enableMobileAndDesktopLayoutBreakpoints={
+                enableMobileAndDesktopLayoutBreakpoints
+              }
+            />
           </div>
         ) : (
-          <ConnectWalletSection />
+          <div className="px-2 pt-2">
+            <ConnectWalletSection />
+          </div>
         )}
         <div className="w-full flex-shrink-0 px-2 pb-2">
           {wallet ? (

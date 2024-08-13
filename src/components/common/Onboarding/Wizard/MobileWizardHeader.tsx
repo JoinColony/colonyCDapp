@@ -4,16 +4,11 @@ import { FormattedMessage } from 'react-intl';
 import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
-import { type WizardSidebarStep } from './WizardSidebar.tsx';
+import { type WizardProps } from './types.ts';
 
-const displayName = 'routes.WizardRoute.WizardSidebar.MobileWizardSidebar';
+const displayName = 'common.Onboarding.WizardSidebar.MobileWizardHeader';
 
-interface Props {
-  currentStep: number;
-  wizardSteps: WizardSidebarStep[];
-}
-
-const MobileWizardSidebar = ({ currentStep, wizardSteps }: Props) => {
+const MobileWizardHeader = ({ currentStep, wizardSteps }: WizardProps) => {
   const steps: StepperItem<number>[] = [];
   let stepsCount = 0;
 
@@ -62,6 +57,6 @@ const MobileWizardSidebar = ({ currentStep, wizardSteps }: Props) => {
   );
 };
 
-MobileWizardSidebar.displayName = displayName;
+MobileWizardHeader.displayName = displayName;
 
-export default MobileWizardSidebar;
+export default MobileWizardHeader;

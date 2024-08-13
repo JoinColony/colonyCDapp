@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { capitalizeFirstLetter } from '~utils/strings.ts';
@@ -16,11 +17,17 @@ const JoinedColonyItem = ({
   colonyAddress,
   tokenSymbol,
   isActiveColony,
+  enableMobileAndDesktopLayoutBreakpoints,
 }: JoinedColonyItemProps) => {
   return (
     <button
       type="button"
-      className="group flex h-[50px] w-full flex-row items-center justify-start gap-3 rounded px-6 py-8 hover:bg-gray-50 md:px-2 md:py-0"
+      className={clsx(
+        'group flex h-[50px] w-full flex-row items-center justify-start gap-3 rounded px-6 py-8 hover:bg-gray-50 md:px-2 md:py-0',
+        {
+          'sm:px-2 sm:py-0': enableMobileAndDesktopLayoutBreakpoints,
+        },
+      )}
       onClick={() => !isActiveColony && onClick(name)}
     >
       <div className="w-8">

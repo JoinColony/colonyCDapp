@@ -1,6 +1,7 @@
 // @TODO
 // Move this inside v5/shared/Navigation/PageLayout
 
+import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 
@@ -8,7 +9,7 @@ import { CSSCustomVariable } from '~constants/cssCustomVariables.ts';
 import { useHeightResizeObserver } from '~hooks/useHeightResizeObserver.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
 
-import PageHeader from './partials/PageHeader/index.ts';
+import PageHeader from './partials/PageHeader/PageHeader.tsx';
 import { type PageLayoutProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout';
@@ -19,6 +20,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   headerProps,
   topContent,
   children,
+  enableMobileAndDesktopLayoutBreakpoints,
 }) => {
   const topContentContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,13 +43,30 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
       <div className="flex h-screen w-screen flex-col">
         <section ref={topContentContainerRef}>{topContent}</section>
         <div className="flex h-[calc(100vh-var(--top-content-height))] flex-row">
-          <section className="md:py-4 md:pl-4">{sidebar}</section>
+          <section
+            className={clsx('md:py-4 md:pl-4', {
+              'sm:py-4 sm:pl-4': enableMobileAndDesktopLayoutBreakpoints,
+            })}
+          >
+            {sidebar}
+          </section>
           <div className="flex w-full flex-col items-center">
-            <section className="w-full md:px-6 md:pt-8">
-              {header ?? <PageHeader {...headerProps} />}
+            <section
+              className={clsx('w-full md:px-6 md:pt-7', {
+                'sm:px-6 sm:pt-7': enableMobileAndDesktopLayoutBreakpoints,
+              })}
+            >
+              {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section className="w-full overflow-auto">
-              <div className="mx-auto max-w-[1144px] px-6 pb-4 md:pt-4">
+              <div
+                className={clsx(
+                  'mx-auto max-w-[1144px] px-6 pb-4 pt-6 md:pt-0',
+                  {
+                    '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
+                  },
+                )}
+              >
                 {children}
               </div>
             </section>
