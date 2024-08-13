@@ -32,6 +32,7 @@ const DateFilters: FC = () => {
                 name={name}
                 isChecked={isChecked}
                 onChange={handleDateFilterChange}
+                disabled={!!dateFilters.custom}
               >
                 {label}
               </Checkbox>
@@ -52,6 +53,10 @@ const DateFilters: FC = () => {
             '!fixed !inset-auto !left-1/2 !top-1/2 w-full !-translate-x-1/2 !-translate-y-1/2':
               isMobile,
           })}
+          // I can't just use Object.values().some(Boolean) since I really need to specifically check if it's true, and not if it's truthy
+          disabled={Object.values(dateFilters).find(
+            (dateFilter) => dateFilter === true,
+          )}
         />
       </div>
     </div>
