@@ -7,4 +7,5 @@ export interface JoinedColonyItemProps {
   colonyAddress: string;
   onClick: (name: string) => void;
   isActiveColony: boolean;
+  enableMobileAndDesktopLayoutBreakpoints?: boolean;
 }

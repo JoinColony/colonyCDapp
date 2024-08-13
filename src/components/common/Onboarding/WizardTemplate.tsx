@@ -1,15 +1,18 @@
 import React, { type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { MainLayout } from '~frame/Extensions/layouts/index.ts';
+import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
+import { useMobile } from '~hooks';
 import { type WizardOuterProps } from '~shared/Wizard/types.ts';
+import PageLayout from '~v5/frame/PageLayout/PageLayout.tsx';
+import PageHeader from '~v5/frame/PageLayout/partials/PageHeader/PageHeader.tsx';
 
 import { type WizardType } from './types.ts';
-import WizardSidebar, {
-  type WizardSidebarStep,
-} from './WizardSidebar/index.ts';
+import DesktopWizardSidebar from './Wizard/DesktopWizardSidebar.tsx';
+import MobileWizardHeader from './Wizard/MobileWizardHeader.tsx';
+import { type WizardStep } from './Wizard/types.ts';
 
-const displayName = 'frame.WizardTemplate';
+const displayName = 'common.Onboarding.WizardTemplate';
 
 const MSG = defineMessages({
   sidebarTitle: {
@@ -20,7 +23,7 @@ const MSG = defineMessages({
 });
 
 export interface TemplateProps {
-  sidebarValues: WizardSidebarStep[];
+  sidebarValues: WizardStep[];
   wizardType: WizardType;
 }
 
@@ -31,19 +34,42 @@ const WizardTemplate = <F extends Record<string, any>>({
   step,
   templateProps: { sidebarValues, wizardType },
 }: PropsWithChildren<Props<F>>) => {
+  const isMobile = useMobile();
+
   return (
-    <MainLayout
+    <PageLayout
+      enableMobileAndDesktopLayoutBreakpoints
       sidebar={
-        <WizardSidebar
-          currentStep={step}
-          wizardSteps={sidebarValues}
-          sidebarTitle={MSG.sidebarTitle}
-          sidebarTitleValues={{ wizardType }}
-        />
+        !isMobile && (
+          <DesktopWizardSidebar
+            currentStep={step}
+            wizardSteps={sidebarValues}
+            sidebarTitle={MSG.sidebarTitle}
+            sidebarTitleValues={{ wizardType }}
+            enableMobileAndDesktopLayoutBreakpoints
+          />
+        )
+      }
+      header={
+        <div className="mb-6">
+          {isMobile ? (
+            <PageHeader userNavigation={<UserNavigationWrapper />} />
+          ) : (
+            <UserNavigationWrapper />
+          )}
+          {isMobile && (
+            <MobileWizardHeader
+              currentStep={step}
+              wizardSteps={sidebarValues}
+              sidebarTitle={MSG.sidebarTitle}
+              sidebarTitleValues={{ wizardType }}
+            />
+          )}
+        </div>
       }
     >
       <article className="mx-auto max-w-lg">{children}</article>
-    </MainLayout>
+    </PageLayout>
   );
 };
 

@@ -19,7 +19,7 @@ const displayName = 'v5.shared.Navigation.Sidebar.sidebars.ColonyPageSidebar';
 const ColonyPageSidebarContent = () => (
   <section className="flex flex-col gap-4">
     <SidebarActionsSection />
-    <div className="mx-auto h-0.5 w-[184px] bg-gray-700" />
+    <div className="mx-auto h-0.5 !w-[184px] bg-gray-700" />
     <SidebarRoutesSection />
   </section>
 );

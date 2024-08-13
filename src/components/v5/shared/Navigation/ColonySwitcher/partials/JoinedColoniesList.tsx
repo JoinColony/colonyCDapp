@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +12,11 @@ import { EmptyJoinedColoniesSection } from './TitleSections/EmptyJoinedColoniesS
 const displayName =
   'v5.common.Navigation.ColonySwitcher.partials.JoinedColoniesList';
 
-export const JoinedColoniesList = () => {
+export const JoinedColoniesList = ({
+  enableMobileAndDesktopLayoutBreakpoints,
+}: {
+  enableMobileAndDesktopLayoutBreakpoints?: boolean;
+}) => {
   const { joinedColonies } = useAppContext();
   const hasJoinedColonies = !!joinedColonies.length;
   const colonyContext = useColonyContext({ nullableContext: true });
@@ -40,9 +45,16 @@ export const JoinedColoniesList = () => {
                 onClick={handleColonyClick}
                 tokenSymbol={nativeToken.symbol}
                 isActiveColony={isActiveColony}
+                enableMobileAndDesktopLayoutBreakpoints={
+                  enableMobileAndDesktopLayoutBreakpoints
+                }
               />
               {index < joinedColonies.length - 1 && (
-                <hr className="mx-6 border-gray-200 md:mx-2" />
+                <hr
+                  className={clsx('mx-6 border-gray-200 md:mx-2', {
+                    'sm:mx-2': enableMobileAndDesktopLayoutBreakpoints,
+                  })}
+                />
               )}
             </Fragment>
           );

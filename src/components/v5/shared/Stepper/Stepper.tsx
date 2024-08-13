@@ -101,12 +101,9 @@ function Stepper<TKey extends React.Key>({
           </button>
         )}
         <ul
-          className={clsx(
-            'relative flex w-full justify-between gap-3 sm:flex-col sm:justify-start sm:gap-0',
-            {
-              'overflow-auto no-scrollbar': withArrowsOnMobile,
-            },
-          )}
+          className={clsx('relative flex w-full flex-row justify-start gap-0', {
+            'overflow-auto no-scrollbar': withArrowsOnMobile,
+          })}
           ref={listRef}
         >
           {items.map(
@@ -176,7 +173,6 @@ function Stepper<TKey extends React.Key>({
                   <InView
                     as="div"
                     onChange={(inView) => handleChange(key, inView)}
-                    className="z-base flex flex-col items-start gap-[.375rem] sm:flex-row sm:items-center"
                   >
                     <StepperButton
                       stage={
