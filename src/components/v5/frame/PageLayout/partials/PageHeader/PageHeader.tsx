@@ -44,7 +44,7 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
   );
 
   return (
-    <header className="bg-pink w-full">
+    <header className="w-full">
       <section ref={navSectionRef}>
         <div
           className={clsx(
