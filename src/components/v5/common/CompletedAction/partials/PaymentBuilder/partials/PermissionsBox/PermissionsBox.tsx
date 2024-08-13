@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { FormattedDate } from 'react-intl';
 
@@ -10,7 +11,8 @@ import MenuContainer from '~v5/shared/MenuContainer/MenuContainer.tsx';
 import { type PermissionsBoxProps } from './types.ts';
 
 const PermissionsBox: FC<PermissionsBoxProps> = ({ items }) => {
-  const { setSelectedPermissionAction } = usePaymentBuilderContext();
+  const { selectedPermissionAction, setSelectedPermissionAction } =
+    usePaymentBuilderContext();
 
   return (
     <MenuContainer
@@ -27,12 +29,24 @@ const PermissionsBox: FC<PermissionsBoxProps> = ({ items }) => {
           <li className="mb-2 w-full last:mb-0" key={createdAt}>
             <button
               type="button"
-              className="group flex w-full items-center justify-between text-gray-600 outline-none transition-all hover:text-blue-400"
+              className={clsx(
+                'group flex w-full items-center justify-between outline-none transition-all hover:text-blue-400',
+                {
+                  'text-blue-400':
+                    selectedPermissionAction?.createdAt === createdAt,
+                  'text-gray-600':
+                    selectedPermissionAction?.createdAt !== createdAt,
+                },
+              )}
               onClick={() =>
                 setSelectedPermissionAction({ createdAt, initiatorAddress })
               }
             >
-              <span className="text-sm group-hover:underline">
+              <span
+                className={clsx('text-sm group-hover:underline', {
+                  underline: selectedPermissionAction?.createdAt === createdAt,
+                })}
+              >
                 <FormattedDate
                   value={new Date(createdAt)}
                   day="numeric"
