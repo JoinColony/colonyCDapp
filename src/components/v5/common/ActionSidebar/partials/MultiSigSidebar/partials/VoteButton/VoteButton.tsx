@@ -12,8 +12,6 @@ import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { type ButtonProps } from '~v5/shared/Button/types.ts';
 
-import { VoteExpectedStep } from '../MultiSigWidget/types.ts';
-
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.VoteButton';
 
@@ -22,9 +20,8 @@ interface VoteButtonProps {
   multiSigId: string;
   multiSigDomainId: number;
   voteType: Exclude<MultiSigVote, MultiSigVote.None>;
-  isPending: boolean;
-  setExpectedStep: (step: VoteExpectedStep | null) => void;
-  setCurrentVote: (vote: MultiSigVote | null) => void;
+  handleLoadingChange: (isLoading: boolean) => void;
+  isLoading: boolean;
   buttonProps?: ButtonProps;
 }
 
@@ -45,9 +42,8 @@ const VoteButton: FC<VoteButtonProps> = ({
   multiSigDomainId,
   voteType,
   buttonProps,
-  setExpectedStep,
-  setCurrentVote,
-  isPending,
+  handleLoadingChange,
+  isLoading,
 }) => {
   const { colony } = useColonyContext();
 
@@ -57,7 +53,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   };
 
   const getVotePayload = () => {
-    setCurrentVote(voteType);
+    handleLoadingChange(true);
 
     return {
       colonyAddress: colony.colonyAddress,
@@ -78,13 +74,10 @@ const VoteButton: FC<VoteButtonProps> = ({
     <ActionButton
       isFullSize
       useTxLoader
-      isLoading={isPending}
       actionType={ActionTypes.MULTISIG_VOTE}
-      onSuccess={() => {
-        setExpectedStep(VoteExpectedStep.cancel);
-      }}
+      isLoading={isLoading}
       onError={() => {
-        setExpectedStep(null);
+        handleLoadingChange(false);
       }}
       values={getVotePayload}
       {...buttonProps}

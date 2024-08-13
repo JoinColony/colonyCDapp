@@ -6,16 +6,16 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-
-import { VoteExpectedStep } from '../MultiSigWidget/types.ts';
+import { type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.CancelButton';
 
 interface CancelButtonProps {
   multiSigId: string;
-  isPending: boolean;
-  setExpectedStep: (step: VoteExpectedStep) => void;
+  handleLoadingChange: (isLoading: boolean) => void;
+  isLoading: boolean;
+  buttonProps?: ButtonProps;
 }
 
 const MSG = defineMessages({
@@ -27,27 +27,33 @@ const MSG = defineMessages({
 
 const CancelButton: FC<CancelButtonProps> = ({
   multiSigId,
-  isPending,
-  setExpectedStep,
+  handleLoadingChange,
+  isLoading,
+  buttonProps,
 }) => {
   const { colony } = useColonyContext();
 
-  const cancelPayload = {
-    colonyAddress: colony.colonyAddress,
-    motionId: multiSigId,
+  const getCancelPayload = () => {
+    handleLoadingChange(true);
+
+    return {
+      colonyAddress: colony.colonyAddress,
+      motionId: multiSigId,
+    };
   };
 
   return (
     <ActionButton
       isFullSize
       useTxLoader
-      isLoading={isPending}
+      isLoading={isLoading}
       actionType={ActionTypes.MULTISIG_CANCEL}
-      onSuccess={() => {
-        setExpectedStep(VoteExpectedStep.cancel);
+      values={getCancelPayload}
+      onError={() => {
+        handleLoadingChange(false);
       }}
-      values={cancelPayload}
       mode="primaryOutline"
+      {...buttonProps}
     >
       {formatText(MSG.buttonReject)}
     </ActionButton>
