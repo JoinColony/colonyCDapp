@@ -22,7 +22,7 @@ const WizardSidebarItemFlowLine = ({
   return (
     <div className="absolute top-[13px] flex h-[calc(100%+8px)] w-2.5 flex-col items-center gap-2.5">
       <div
-        className={clsx('h-full w-px bg-gray-900', {
+        className={clsx('h-full w-px bg-base-white', {
           'h-6': currentStep < stepId || currentStep > lastSubid,
         })}
       />

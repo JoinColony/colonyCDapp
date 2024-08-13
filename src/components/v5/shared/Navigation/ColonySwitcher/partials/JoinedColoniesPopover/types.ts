@@ -6,4 +6,5 @@ export interface JoinedColoniesPopoverProps {
   visible: PopperTooltip['visible'];
   setTooltipRef: PopperTooltip['setTooltipRef'];
   getTooltipProps: PopperTooltip['getTooltipProps'];
+  enableMobileAndDesktopLayoutBreakpoints?: boolean;
 }

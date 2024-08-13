@@ -4,7 +4,6 @@ import React from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useTablet } from '~hooks';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -18,18 +17,18 @@ const displayName = 'v5.common.Navigation.ColonySwitcher';
 
 const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
   isLogoButton,
-}: {
-  isLogoButton?: boolean;
+  offset,
+  className,
+  enableMobileAndDesktopLayoutBreakpoints,
 }) => {
   const colonyContext = useColonyContext({ nullableContext: true });
-  const isTablet = useTablet();
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: 'right',
       trigger: 'click',
       interactive: true,
-      offset: [-20, 18],
+      offset: offset ?? [-20, 18],
     });
 
   return (
@@ -37,13 +36,17 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
       <Button
         ref={setTriggerRef}
         type="button"
-        className={clsx(sidebarButtonClass, '!py-[6px]', {
+        className={clsx(sidebarButtonClass, className, '!py-[6px]', {
           '!justify-center': isLogoButton,
           '!justify-between': !isLogoButton,
         })}
       >
         <section className="flex flex-row items-center gap-3 overflow-hidden">
-          <ColonySwitcherAvatar />
+          <ColonySwitcherAvatar
+            enableMobileAndDesktopLayoutBreakpoints={
+              enableMobileAndDesktopLayoutBreakpoints
+            }
+          />
           {colonyContext?.colony.name && (
             <p className="truncate text-md font-semibold text-base-white">
               {capitalizeFirstLetter(colonyContext.colony.name)}
@@ -56,13 +59,14 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
           </section>
         )}
       </Button>
-      {!isTablet && (
-        <JoinedColoniesPopover
-          visible={visible}
-          getTooltipProps={getTooltipProps}
-          setTooltipRef={setTooltipRef}
-        />
-      )}
+      <JoinedColoniesPopover
+        visible={visible}
+        getTooltipProps={getTooltipProps}
+        setTooltipRef={setTooltipRef}
+        enableMobileAndDesktopLayoutBreakpoints={
+          enableMobileAndDesktopLayoutBreakpoints
+        }
+      />
     </>
   );
 };
