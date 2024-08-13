@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { type WizardSidebarStep } from './WizardSidebar.tsx';
+import { type WizardStep } from './types.ts';
 import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine.tsx';
 import WizardSidebarSubItem from './WizardSidebarSubItem.tsx';
 
 const displayName = 'routes.WizardRoute.WizardSidebar.WizardSidebarItem';
 
-interface Props extends WizardSidebarStep {
+interface Props extends WizardStep {
   currentStep: number;
   isLastItem: boolean;
 }
@@ -40,19 +40,13 @@ const WizardSidebarItem = ({
       <div className="relative flex items-center">
         <div
           className={clsx('h-2.5 w-2.5 rounded-full', {
-            'bg-gray-900': currentStep >= stepId && hasSubItems,
-            'border border-gray-900': currentStep < stepId,
-            'bg-blue-400': !hasSubItems && currentStep === stepId,
+            'bg-base-white':
+              (currentStep >= stepId && hasSubItems) ||
+              (!hasSubItems && currentStep === stepId),
+            'border border-base-white': currentStep < stepId,
           })}
         />
-        <span
-          className={clsx(
-            'ml-4 text-sm font-semibold',
-            currentStep === stepId && !hasSubItems
-              ? 'text-blue-400'
-              : 'text-gray-900',
-          )}
-        >
+        <span className="ml-4 text-sm font-semibold text-base-white">
           <FormattedMessage {...stepText} />
         </span>
       </div>

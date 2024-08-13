@@ -3,15 +3,12 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { type Optional } from 'utility-types';
 
-import { type WizardSidebarStep } from './WizardSidebar.tsx';
+import { type WizardStep } from './types.ts';
 
 const displayName =
   'routes.WizardRoute.WizardSidebar.WizardSidebarItem.WizardSidebarSubItem';
 
-export type WizardSidebarSubStep = Optional<
-  WizardSidebarStep,
-  'subItems' | 'text'
->;
+export type WizardSidebarSubStep = Optional<WizardStep, 'subItems' | 'text'>;
 
 interface Props extends Pick<WizardSidebarSubStep, 'text'> {
   isActive: boolean;
@@ -19,8 +16,8 @@ interface Props extends Pick<WizardSidebarSubStep, 'text'> {
 
 const WizardSidebarSubItem = ({ text: stepText, isActive }: Props) => (
   <span
-    className={clsx('ml-[26px] text-xs', {
-      'font-semibold text-blue-400': isActive,
+    className={clsx('ml-[26px] text-xs text-base-white', {
+      'font-semibold underline': isActive,
     })}
   >
     <FormattedMessage {...stepText} />
