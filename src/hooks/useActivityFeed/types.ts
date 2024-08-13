@@ -20,6 +20,7 @@ export interface ActivityFeedFilters {
   dateTo?: Date;
   decisionMethod?: ActivityDecisionMethod;
   search?: string;
+  dates?: { dateFrom?: Date; dateTo?: Date }[];
 }
 
 export type ActivityFeedSort = SearchActionsQueryVariables['sort'];

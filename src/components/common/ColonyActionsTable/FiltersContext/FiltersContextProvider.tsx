@@ -115,7 +115,8 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const activeFilters: ActivityFeedFilters = useMemo(() => {
-    const date = getDateFilter(dateFilters);
+    const dateFiltersData = getDateFilter(dateFilters);
+
     const actionTypes = actionTypesFilters.reduce<AnyActionType[]>(
       (result, actionType) => {
         const apiActionTypes = ACTION_TYPE_TO_API_ACTION_TYPES_MAP[actionType];
@@ -132,7 +133,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     return {
       ...(motionStates.length ? { motionStates } : {}),
       ...(actionTypes.length ? { actionTypes } : {}),
-      ...(date || {}),
+      ...(dateFiltersData ? { dates: dateFiltersData } : {}),
       ...(decisionMethod
         ? {
             decisionMethod,

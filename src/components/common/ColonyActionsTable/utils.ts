@@ -44,7 +44,7 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
 
 export const getDateFilter = (
   dateFilter: DateOptions | undefined,
-): Pick<ActivityFeedFilters, 'dateFrom' | 'dateTo'> | undefined => {
+): Pick<ActivityFeedFilters, 'dateFrom' | 'dateTo'>[] | undefined => {
   if (!dateFilter) {
     return undefined;
   }
@@ -54,57 +54,80 @@ export const getDateFilter = (
     dateTo: now,
   };
 
-  switch (true) {
-    case dateFilter.pastHour: {
-      return {
+  let filter = undefined as
+    | Pick<ActivityFeedFilters, 'dateFrom' | 'dateTo'>[]
+    | undefined;
+
+  if (dateFilter.pastHour) {
+    filter = [
+      {
         dateFrom: sub(now, { hours: 1 }),
         ...baseFilter,
-      };
-    }
-    case dateFilter.pastDay: {
-      return {
+      },
+    ];
+  }
+
+  if (dateFilter.pastDay) {
+    filter = [
+      {
         dateFrom: sub(now, { days: 1 }),
         ...baseFilter,
-      };
-    }
-    case dateFilter.pastWeek: {
-      return {
+      },
+      {
+        dateFrom: sub(now, { days: 1 }),
+        ...baseFilter,
+      },
+    ];
+  }
+
+  if (dateFilter.pastWeek) {
+    filter = [
+      {
         dateFrom: sub(now, { weeks: 1 }),
         ...baseFilter,
-      };
-    }
-    case dateFilter.pastMonth: {
-      return {
+      },
+    ];
+  }
+
+  if (dateFilter.pastMonth) {
+    filter = [
+      {
         dateFrom: sub(now, { months: 1 }),
         ...baseFilter,
-      };
-    }
-    case dateFilter.pastYear: {
-      return {
+      },
+    ];
+  }
+
+  if (dateFilter.pastYear) {
+    filter = [
+      {
         dateFrom: sub(now, { years: 1 }),
         ...baseFilter,
-      };
-    }
-    case !!dateFilter.custom: {
-      const filteredDates = dateFilter.custom?.filter(
-        (date): date is string => !!date,
-      );
+      },
+    ];
+  }
 
-      if (!filteredDates) {
-        return undefined;
-      }
+  if (dateFilter.custom) {
+    const filteredDates = dateFilter.custom?.filter(
+      (date): date is string => !!date,
+    );
 
-      const [from, to] = filteredDates;
-
-      return {
-        dateFrom: new Date(from),
-        dateTo: new Date(to),
-      };
-    }
-    default: {
+    if (!filteredDates) {
       return undefined;
     }
+
+    const [from, to] = filteredDates;
+
+    filter = [
+      ...(filter ?? []),
+      {
+        dateFrom: new Date(from),
+        dateTo: new Date(to),
+      },
+    ];
   }
+
+  return filter;
 };
 
 export const getCustomDateLabel = (dateRange?: DateOptions['custom']) => {

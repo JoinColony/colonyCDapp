@@ -148,31 +148,51 @@ export const getBaseSearchActionsFilterVariable = (
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
-  { dateFrom, dateTo, decisionMethod, teamId }: ActivityFeedFilters = {},
+  { decisionMethod, teamId, dates }: ActivityFeedFilters = {},
 ): SearchActionsFilterVariable => {
-  const dateFilter =
-    dateFrom && dateTo
-      ? {
-          createdAt: {
-            range: [dateFrom?.toISOString(), dateTo?.toISOString()],
-          },
-        }
-      : {
-          ...(dateFrom
-            ? {
-                createdAt: {
-                  gte: dateFrom?.toISOString(),
-                },
-              }
-            : {}),
-          ...(dateTo
-            ? {
-                createdAt: {
-                  lte: dateTo?.toISOString(),
-                },
-              }
-            : {}),
+  const getDateFilter = () => {
+    const orArray = [] as (
+      | { createdAt: { gte?: string; lte?: string } }
+      | { createdAt: { range: [string, string] } }
+    )[];
+
+    if (dates) {
+      if (dates.length) {
+        dates.forEach(({ dateFrom, dateTo }) => {
+          if (dateFrom && dateTo) {
+            orArray.push({
+              createdAt: {
+                range: [dateFrom.toISOString(), dateTo.toISOString()],
+              },
+            });
+          } else if (dateFrom) {
+            orArray.push({
+              createdAt: {
+                gte: dateFrom.toISOString(),
+              },
+            });
+          } else if (dateTo) {
+            orArray.push({
+              createdAt: {
+                lte: dateTo.toISOString(),
+              },
+            });
+          }
+        });
+      }
+
+      if (orArray.length > 1) {
+        return {
+          or: orArray,
         };
+      }
+
+      return orArray[0];
+    }
+
+    return {};
+  };
+
   const decisionMethodFilter =
     decisionMethod !== undefined
       ? {
@@ -196,7 +216,7 @@ export const getSearchActionsFilterVariable = (
   return {
     ...getBaseSearchActionsFilterVariable(colonyAddress),
     ...(teamId !== undefined ? { fromDomainId: { eq: teamId } } : {}),
-    ...dateFilter,
+    ...getDateFilter(),
     ...(decisionMethodFilter || {}),
   };
 };

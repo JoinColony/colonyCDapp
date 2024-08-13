@@ -22,6 +22,7 @@ const useActionsTableData = (pageSize: number) => {
     },
   ]);
   const { activeFilters } = useFiltersContext();
+
   const {
     actions,
     pageNumber,
