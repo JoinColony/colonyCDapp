@@ -18,6 +18,7 @@ import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
+import { useFinalizeSuccessCallback } from '../../../hooks.ts';
 import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
@@ -40,6 +41,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   refetchAction,
   motionState,
 }) => {
+  const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const hasFinalizedHandlerRun = useRef(false);
@@ -70,6 +72,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
     setIsPolling(true);
+    onFinalizeSuccessCallback(actionData);
   };
 
   /* Stop polling when mounted / dismounted */

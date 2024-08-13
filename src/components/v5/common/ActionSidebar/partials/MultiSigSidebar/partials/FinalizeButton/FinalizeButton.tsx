@@ -6,10 +6,13 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
+
+import { useFinalizeSuccessCallback } from '../../../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.FinalizeButton';
@@ -19,6 +22,7 @@ interface FinalizeButtonProps {
   isPending: boolean;
   setIsPending: (isPending: boolean) => void;
   isMotionOlderThanAWeek: boolean;
+  action: ColonyAction;
 }
 
 const MSG = defineMessages({
@@ -33,19 +37,26 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
   isPending,
   setIsPending,
   isMotionOlderThanAWeek,
+  action,
 }) => {
   const { colony } = useColonyContext();
+  const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const transform = mapPayload(() => ({
     colonyAddress: colony.colonyAddress,
     multiSigId,
     canActionFail: isMotionOlderThanAWeek,
   }));
 
+  const onSuccessHandler = () => {
+    setIsPending(true);
+    onFinalizeSuccessCallback(action);
+  };
+
   return (
     <ActionForm
       actionType={ActionTypes.MULTISIG_FINALIZE}
       transform={transform}
-      onSuccess={() => setIsPending(true)}
+      onSuccess={onSuccessHandler}
       onError={() => setIsPending(false)}
     >
       {({ formState: { isSubmitting } }) =>
