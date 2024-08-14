@@ -89,8 +89,6 @@ export const useIsFieldDisabled = () => {
 };
 
 export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
-  const { startPollingColonyData, stopPollingColonyData } = useColonyContext();
-
   const claimMintTokens = useAsyncFunction<ClaimMintTokensActionParams, void>({
     submit: ActionTypes.MOTION_CLAIM_MINT_TOKENS,
     error: ActionTypes.MOTION_CLAIM_MINT_TOKENS_ERROR,
@@ -106,14 +104,9 @@ export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
           claimMintTokens({
             nativeTokenAddress: action.tokenAddress,
             colonyAddress: action.colonyAddress,
-          })
-            .then(() => {
-              startPollingColonyData(1_000);
-              setTimeout(stopPollingColonyData, 10_000);
-            })
-            .catch(() => {
-              console.error(`An error occured while claiming tokens`);
-            });
+          }).catch(() => {
+            console.error(`An error occured while claiming tokens`);
+          });
         }
 
         break;
