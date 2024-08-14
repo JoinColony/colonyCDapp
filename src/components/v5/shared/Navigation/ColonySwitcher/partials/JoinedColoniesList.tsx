@@ -5,12 +5,14 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 
 import JoinedColonyItem from './JoinedColonyItem/index.ts';
+import { NoColoniesJoinedSection } from './TitleSections/NoColoniesJoinedSection.tsx';
 
 const displayName =
   'v5.common.Navigation.ColonySwitcher.partials.JoinedColoniesList';
 
 export const JoinedColoniesList = () => {
   const { joinedColonies } = useAppContext();
+  const hasJoinedColonies = !!joinedColonies.length;
 
   const { setShowTabletColonyPicker } = usePageLayoutContext();
 
@@ -21,7 +23,7 @@ export const JoinedColoniesList = () => {
     navigate(`/${colonyName}`);
   };
 
-  return (
+  return hasJoinedColonies ? (
     <>
       {joinedColonies.map(
         ({ colonyAddress, metadata, name, nativeToken }, index) => (
@@ -38,6 +40,8 @@ export const JoinedColoniesList = () => {
         ),
       )}
     </>
+  ) : (
+    <NoColoniesJoinedSection />
   );
 };
 
