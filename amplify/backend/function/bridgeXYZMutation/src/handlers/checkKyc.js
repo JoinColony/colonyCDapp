@@ -75,14 +75,11 @@ const checkKYCHandler = async (
 
     // Is it an existing KYC link or a new one?
     let kycLink;
-    let kycLinkId;
     let kycStatus;
     if (data.existing_kyc_link) {
-      kycLinkId = data.existing_kyc_link.id;
       kycLink = data.existing_kyc_link.kyc_link;
       kycStatus = data.existing_kyc_link.kyc_status;
     } else {
-      kycLinkId = data.id;
       kycLink = data.kyc_link;
       kycStatus = data.kyc_status;
     }
@@ -117,42 +114,48 @@ const checkKYCHandler = async (
     const response = await externalAccountRes.json();
 
     const externalAccounts = response.data;
-
-    // TODO: Support multiple accounts
     const firstAccount = externalAccounts?.[0];
 
-    const mappedAccount = firstAccount
-      ? {
-          id: firstAccount.id,
-          currency: firstAccount.currency,
-          bankName: firstAccount.bank_name,
-          accountOwner: firstAccount.account_owner_name,
-          iban: firstAccount.iban
-            ? {
-                last4: firstAccount.iban.last_4,
-                bic: firstAccount.iban.bic,
-                country: firstAccount.iban.country,
-              }
-            : null,
-          usAccount: firstAccount.account
-            ? {
-                last4: firstAccount.account.last_4,
-                routingNumber: firstAccount.account.routing_number,
-              }
-            : null,
-        }
-      : null;
+    if (!firstAccount) {
+      return {
+        kycStatus,
+        kycLink,
+        bankAccount: null,
+      };
+    }
+
+    const mappedAccount = {
+      id: firstAccount.id,
+      currency: firstAccount.currency,
+      bankName: firstAccount.bank_name,
+      accountOwner: firstAccount.account_owner_name,
+      iban: firstAccount.iban
+        ? {
+            last4: firstAccount.iban.last_4,
+            bic: firstAccount.iban.bic,
+            country: firstAccount.iban.country,
+          }
+        : null,
+      usAccount: firstAccount.account
+        ? {
+            last4: firstAccount.account.last_4,
+            routingNumber: firstAccount.account.routing_number,
+          }
+        : null,
+    };
 
     const liquidationAddresses = await getLiquidationAddresses(
       apiUrl,
       apiKey,
       bridgeCustomerId,
     );
-    const hasLiquidationAddress = liquidationAddresses.length > 0;
 
-    if (firstAccount && !hasLiquidationAddress) {
-      // They have external accounts. Create a liquidation address
-      console.log('Bank account exists, creating liquidation address');
+    let externalAccountLiquidationAddress = liquidationAddresses.find(
+      (address) => address.external_account_id === firstAccount.id,
+    )?.address;
+
+    if (!externalAccountLiquidationAddress) {
+      console.log('No liquidation address found for account, creating one');
       const liquidationAddressCreation = await fetch(
         `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
         {
@@ -177,13 +180,16 @@ const checkKYCHandler = async (
         await liquidationAddressCreation.json();
 
       if (liquidationAddressCreation.status === 201) {
-        const liquidationAddress = liquidationAddressCreationRes.address;
+        externalAccountLiquidationAddress =
+          liquidationAddressCreationRes.address;
+
+        // create liquidation address entry in the database
         await graphqlRequest(
           createLiquidationAddress,
           {
             input: {
               chainId: 42161,
-              liquidationAddress,
+              liquidationAddress: externalAccountLiquidationAddress,
               userAddress: checksummedWalletAddress,
             },
           },
@@ -192,7 +198,7 @@ const checkKYCHandler = async (
         );
       } else {
         console.error(
-          `Failed to create liquidation address: `,
+          'Failed to create liquidation address: ',
           liquidationAddressCreationRes,
         );
       }
@@ -200,8 +206,9 @@ const checkKYCHandler = async (
 
     return {
       kycStatus,
-      kyc_link: kycLink,
+      kycLink,
       bankAccount: mappedAccount,
+      liquidationAddress: externalAccountLiquidationAddress,
     };
   } catch (e) {
     console.error(e);

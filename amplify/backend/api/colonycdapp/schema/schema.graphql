@@ -251,10 +251,6 @@ input GetSafeTransactionStatusInput {
   chainId: String!
 }
 
-input BridgeXYZQueryInput {
-  path: String!
-}
-
 input BridgeXYZMutationAddressInput {
   street_line_1: String!
   street_line_2: String
@@ -335,27 +331,6 @@ type BridgeUpdateBankAccountReturn {
   success: Boolean
 }
 
-type BridgeIbanBankAccount {
-  id: String!
-  last4: String!
-  bic: String!
-  country: String!
-}
-
-type BridgeUsBankAccount {
-  last4: String!
-  routingNumber: String!
-}
-
-type BridgeXYZBankAccount {
-  id: String!
-  currency: String!
-  bankName: String!
-  accountOwner: String!
-  iban: BridgeIbanBankAccount
-  usAccount: BridgeUsBankAccount
-}
-
 type BridgeXYZMutationReturn {
   #
   # KYC Links
@@ -363,20 +338,7 @@ type BridgeXYZMutationReturn {
   tos_link: String
   kyc_link: String
 
-  #
-  # KYC Status
-  #
-  kycStatus: KYCStatus
-  country: String
-  # Should support multiple accounts at some point
-  bankAccount: BridgeXYZBankAccount
-
   success: Boolean
-}
-
-type BridgeXYZQueryReturn {
-  success: Boolean
-  transactionFee: String
 }
 
 """
@@ -918,15 +880,6 @@ enum ContributorType {
   GENERAL
 }
 
-enum KYCStatus {
-  NOT_STARTED
-  INCOMPLETE
-  PENDING
-  UNDER_REVIEW
-  APPROVED
-  REJECTED
-}
-
 """
 Root query type
 """
@@ -975,13 +928,22 @@ type Query {
     @function(name: "getSafeTransactionStatus-${env}")
 
   """
-  Fetch from the Bridge XYZ API
+  Get drains history for the current user
   """
-  bridgeXYZQuery(input: BridgeXYZQueryInput!): BridgeXYZQueryReturn
-    @function(name: "bridgeXYZQuery-${env}")
-
   bridgeGetDrainsHistory: [BridgeDrain!]
-    @function(name: "bridgeXYZQuery-${env}")
+    @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Check bridge KYC status for the current user
+  """
+  bridgeCheckKYC: BridgeCheckKYCReturn
+    @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Get liquidation address of a given user
+  """
+  bridgeGetUserLiquidationAddress(userAddress: String!): String
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
@@ -1895,6 +1857,10 @@ type User @model {
     @hasMany(indexName: "byUserAddress", fields: ["id"])
 }
 
+"""
+NOTE: This model should only be used to lookup users by liquidation address
+To get the liquidation address of a user, use the `bridgeGetUserLiquidationAddress` query instead
+"""
 type LiquidationAddress @model {
   """
   Unique identifier for the liquidation address entry
