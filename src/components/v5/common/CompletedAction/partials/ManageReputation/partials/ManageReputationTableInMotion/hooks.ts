@@ -1,6 +1,5 @@
 import { BigNumber } from 'ethers';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { calculatePercentageReputation } from '~utils/reputation.ts';
@@ -42,7 +41,7 @@ export const useManageReputationTableData = ({
 
   const formattedReputationPoints = getFormattedTokenValue(
     BigNumber.from(userReputation || 0).toString(),
-    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
+    getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
   const newReputation = calculateNewValue(userReputation, amount, isSmite);
@@ -58,7 +57,7 @@ export const useManageReputationTableData = ({
 
   const formattedNewReputationPoints = getFormattedTokenValue(
     newReputation || 0,
-    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
+    getTokenDecimalsWithFallback(nativeToken.decimals),
   );
   const amountPercentageValue =
     typeof newPercentageReputation === 'number' &&

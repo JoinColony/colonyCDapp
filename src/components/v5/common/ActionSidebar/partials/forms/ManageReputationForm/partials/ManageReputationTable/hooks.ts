@@ -4,7 +4,6 @@ import moveDecimal from 'move-decimal-point';
 import { useRef } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { getInputTextWidth } from '~utils/elements.ts';
@@ -26,10 +25,7 @@ export const useReputationAmountField = (maxWidth: number | undefined) => {
   const formattingOptions: FormatNumeralOptions = {
     delimiter: ',',
     numeralPositiveOnly: true,
-    numeralDecimalScale: getTokenDecimalsWithFallback(
-      nativeToken.decimals,
-      DEFAULT_TOKEN_DECIMALS,
-    ),
+    numeralDecimalScale: getTokenDecimalsWithFallback(nativeToken.decimals),
   };
 
   const adjustInputWidth = () => {
@@ -83,7 +79,7 @@ export const useReputationFields = () => {
 
   const formattedReputationPoints = getFormattedTokenValue(
     BigNumber.from(userReputation || '0').toString(),
-    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
+    getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
   const isSmite = selectedModification === ModificationOption.RemoveReputation;
@@ -91,10 +87,7 @@ export const useReputationFields = () => {
   const amountValueCalculated = BigNumber.from(
     moveDecimal(
       amount || '0',
-      getTokenDecimalsWithFallback(
-        nativeToken.decimals,
-        DEFAULT_TOKEN_DECIMALS,
-      ),
+      getTokenDecimalsWithFallback(nativeToken.decimals),
     ),
   ).toString();
 
@@ -115,7 +108,7 @@ export const useReputationFields = () => {
 
   const formattedNewReputationPoints = getFormattedTokenValue(
     newReputation || 0,
-    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
+    getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
   const amountPercentageValue =

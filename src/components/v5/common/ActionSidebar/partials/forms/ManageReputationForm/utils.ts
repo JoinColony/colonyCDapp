@@ -3,7 +3,6 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion.ts';
 import { type Colony } from '~types/graphql.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -65,10 +64,7 @@ export const reputationAmountChangeValidation = ({
   const amountValueCalculated = BigNumber.from(
     moveDecimal(
       value !== '' ? value : '0',
-      getTokenDecimalsWithFallback(
-        nativeToken.decimals,
-        DEFAULT_TOKEN_DECIMALS,
-      ),
+      getTokenDecimalsWithFallback(nativeToken.decimals),
     ),
   ).toString();
 
@@ -90,12 +86,6 @@ export const moreThanZeroAmountValidation = (
   const { nativeToken } = colony;
 
   return BigNumber.from(
-    moveDecimal(
-      value,
-      getTokenDecimalsWithFallback(
-        nativeToken.decimals,
-        DEFAULT_TOKEN_DECIMALS,
-      ),
-    ),
+    moveDecimal(value, getTokenDecimalsWithFallback(nativeToken.decimals)),
   ).gt(0);
 };

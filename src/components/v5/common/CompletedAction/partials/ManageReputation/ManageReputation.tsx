@@ -136,19 +136,13 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
             reputationChange: amount
               ? formatReputationChange(
                   amount,
-                  getTokenDecimalsWithFallback(
-                    nativeToken.decimals,
-                    DEFAULT_TOKEN_DECIMALS,
-                  ),
+                  getTokenDecimalsWithFallback(nativeToken.decimals),
                 )
               : '0',
             reputationChangeNumeral: positiveAmountValue ? (
               <Numeral
                 value={positiveAmountValue}
-                decimals={getTokenDecimalsWithFallback(
-                  nativeToken.decimals,
-                  DEFAULT_TOKEN_DECIMALS,
-                )}
+                decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
               />
             ) : (
               formatText({

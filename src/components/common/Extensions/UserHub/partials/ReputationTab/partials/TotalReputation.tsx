@@ -3,7 +3,6 @@ import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { calculatePercentageReputation, ZeroValue } from '~utils/reputation.ts';
@@ -37,7 +36,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
 
   const formattedReputationPoints = getFormattedTokenValue(
     new Decimal(userReputation || 0).toString(),
-    getTokenDecimalsWithFallback(nativeToken.decimals, DEFAULT_TOKEN_DECIMALS),
+    getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
   return (

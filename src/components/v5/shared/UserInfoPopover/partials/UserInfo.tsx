@@ -3,7 +3,6 @@ import { Star, User } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { getRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ContributorType } from '~gql';
@@ -143,7 +142,6 @@ const UserInfo: FC<UserInfoProps> = ({
                               suffix=" pts"
                               decimals={getTokenDecimalsWithFallback(
                                 colony.nativeToken.decimals,
-                                DEFAULT_TOKEN_DECIMALS,
                               )}
                             />
                           }

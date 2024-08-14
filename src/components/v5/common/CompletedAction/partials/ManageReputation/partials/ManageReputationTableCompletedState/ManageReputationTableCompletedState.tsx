@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
@@ -65,10 +64,7 @@ const ManageReputationTableCompletedState: FC<
     <p className="text-md font-normal text-gray-900">
       <Numeral
         value={amount}
-        decimals={getTokenDecimalsWithFallback(
-          nativeToken.decimals,
-          DEFAULT_TOKEN_DECIMALS,
-        )}
+        decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
         suffix={` ${formatText({
           id: 'actionSidebar.manageReputation.points',
         })}`}
