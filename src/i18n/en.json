@@ -3,6 +3,7 @@
     "action.manageColony": "Manage colony",
     "actionSidebar.colonyName": "Colony name",
     "button.createNewColony": "Create new colony",
+    "button.connectWallet": "Connect wallet",
     "button.createNewAction": "Create new action",
     "navigation.colonySwitcher.title": "Select a Colony",
     "navigation.newAction": "Create action",
