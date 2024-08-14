@@ -1,7 +1,6 @@
 import { type CreateUserFormValues } from '~common/Onboarding/wizardSteps/StepCreateUser/types.ts';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Address } from '~types/index.ts';
-
-import { type ActionTypes } from '../../actionTypes.ts';
 
 import {
   type ActionType,

@@ -1,6 +1,8 @@
 import { MotionVote } from '~utils/colonyMotions.ts';
-
-import { opposeOption, supportOption } from '../../consts.ts';
+import {
+  opposeOption,
+  supportOption,
+} from '~v5/common/ActionSidebar/partials/Motions/consts.ts';
 
 export const renderVoteRadioButtons = (
   hasUserVoted: boolean,

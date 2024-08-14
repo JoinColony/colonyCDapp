@@ -12,12 +12,12 @@ import {
   type UpdateDomainMetadataMutation,
   type UpdateDomainMetadataMutationVariables,
 } from '~gql';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
-import { transactionPending } from '../../actionCreators/index.ts';
 import {
   createGroupTransaction,
   createTransactionChannels,

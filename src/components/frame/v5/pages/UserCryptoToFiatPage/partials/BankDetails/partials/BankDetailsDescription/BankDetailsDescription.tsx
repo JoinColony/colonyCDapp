@@ -2,11 +2,10 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import { CurrencyLabel } from '~frame/v5/pages/UserCryptoToFiatPage/partials/CurrencyLabel.tsx';
 import { type SupportedCurrencies } from '~gql';
 import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
-
-import { CurrencyLabel } from '../../../CurrencyLabel.tsx';
 
 import { TABLE_TD_LOADER_STYLES } from './consts.ts';
 

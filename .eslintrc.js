@@ -26,6 +26,7 @@ module.exports = {
     'jsdoc',
     'react-hooks',
     'react-refresh',
+    '@limegrass/import-alias',
   ],
   overrides: [
     {
@@ -138,6 +139,12 @@ module.exports = {
           },
         ],
         warnOnUnassignedImports: true,
+      },
+    ],
+    '@limegrass/import-alias/import-alias': [
+      'error',
+      {
+        relativeImportOverrides: [{ path: '.', depth: 1 }],
       },
     ],
 

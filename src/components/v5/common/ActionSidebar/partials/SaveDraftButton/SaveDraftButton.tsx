@@ -9,9 +9,8 @@ import { useMobile } from '~hooks';
 import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Button from '~v5/shared/Button/index.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
 
 const SaveDraftButton: FC = () => {
   const [isDraftSaved, setIsDraftSaved] = useState(false);

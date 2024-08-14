@@ -2,16 +2,16 @@ import { ClientType } from '@colony/colony-js';
 import { BigNumber, type Contract } from 'ethers';
 import { call, put } from 'redux-saga/effects';
 
-import { getTransaction } from '~state/transactionState.ts';
-
 import {
   transactionUpdateGas,
   transactionEstimateError,
   transactionSend,
   transactionUpdateOptions,
-} from '../../actionCreators/index.ts';
-import { type ActionTypes } from '../../actionTypes.ts';
-import { type Action } from '../../types/actions/index.ts';
+} from '~redux/actionCreators/index.ts';
+import { type ActionTypes } from '~redux/actionTypes.ts';
+import { type Action } from '~redux/types/actions/index.ts';
+import { getTransaction } from '~state/transactionState.ts';
+
 import { getGasPrices, getColonyManager } from '../utils/index.ts';
 
 /*

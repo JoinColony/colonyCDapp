@@ -3,6 +3,7 @@ import { type TransactionResponse } from '@ethersproject/providers';
 import { Contract, type BigNumberish, utils } from 'ethers';
 
 import { ContextModule, getContext } from '~context/index.ts';
+import { type TransactionType } from '~redux/immutable/index.ts';
 import {
   type MethodParams,
   MetatransactionFlavour,
@@ -17,7 +18,6 @@ import {
   generateMetamaskTypedDataSignatureErrorMessage,
 } from '~utils/web3/index.ts';
 
-import { type TransactionType } from '../../immutable/index.ts';
 import {
   generateEIP2612TypedData,
   generateMetatransactionMessage,

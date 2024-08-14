@@ -1,7 +1,6 @@
+import { type MemberItem } from '~frame/v5/pages/MembersPage/types.ts';
 import { type EmptyContentProps } from '~v5/common/EmptyContent/types.ts';
 import { type TextButtonProps } from '~v5/shared/Button/types.ts';
-
-import { type MemberItem } from '../../types.ts';
 
 export interface MembersTabContentProps {
   items: MemberItem[];

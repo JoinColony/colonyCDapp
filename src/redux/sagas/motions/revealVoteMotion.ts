@@ -7,9 +7,9 @@ import { utils, providers } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 
-import { ActionTypes } from '../../actionTypes.ts';
-import { type AllActions, type Action } from '../../types/actions/index.ts';
 import { signMessage } from '../messages/index.ts';
 import {
   createGroupTransaction,

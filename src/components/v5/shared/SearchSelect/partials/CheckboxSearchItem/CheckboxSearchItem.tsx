@@ -9,10 +9,9 @@ import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+import { sortDisabled } from '~v5/shared/SearchSelect/utils.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
-
-import { sortDisabled } from '../../utils.ts';
 
 import { type CheckboxSearchItemProps } from './types.ts';
 

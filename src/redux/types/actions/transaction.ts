@@ -1,12 +1,11 @@
 import { type TransactionReceipt } from '@ethersproject/providers';
 
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type TransactionError,
   type TransactionType,
 } from '~redux/immutable/index.ts';
 import { type TxConfig, type MethodParams } from '~types/transactions.ts';
-
-import { type ActionTypes } from '../../actionTypes.ts';
 
 import {
   type ActionTypeWithMeta,

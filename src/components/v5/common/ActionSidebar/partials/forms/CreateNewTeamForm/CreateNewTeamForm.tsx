@@ -8,15 +8,14 @@ import {
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
+import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-
-import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import Description from '../../Description/index.ts';
 
 import { useCreateNewTeam } from './hooks.ts';
 

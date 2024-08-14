@@ -13,8 +13,7 @@ import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-
-import { ModificationOption } from '../../consts.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
 
 import { calculateNewValue } from './utils.ts';
 

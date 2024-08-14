@@ -2,7 +2,7 @@ import { type ContractClient } from '@colony/colony-js';
 import { type TransactionResponse } from '@ethersproject/providers';
 import { type Overrides } from 'ethers';
 
-import { type TransactionType } from '../../immutable/index.ts';
+import { type TransactionType } from '~redux/immutable/index.ts';
 
 /*
  * Given a method and a transaction record, create a promise for sending the

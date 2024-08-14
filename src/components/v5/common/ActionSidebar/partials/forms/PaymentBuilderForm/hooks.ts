@@ -22,9 +22,8 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-
-import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
+import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { CLAIM_DELAY_MAX_VALUE } from './partials/ClaimDelayField/consts.ts';
 import {

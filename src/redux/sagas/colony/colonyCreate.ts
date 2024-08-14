@@ -33,6 +33,7 @@ import {
   type GetFullColonyByNameQuery,
   type GetFullColonyByNameQueryVariables,
 } from '~gql';
+import { transactionPending } from '~redux/actionCreators/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import {
   transactionSetIdentifier,
@@ -42,7 +43,6 @@ import {
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { createAddress } from '~utils/web3/index.ts';
 
-import { transactionPending } from '../../actionCreators/index.ts';
 import {
   type ChannelDefinition,
   createGroupTransaction,

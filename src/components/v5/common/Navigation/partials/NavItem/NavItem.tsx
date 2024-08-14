@@ -1,9 +1,8 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import { type NavItemProps } from '~v5/common/Navigation/types.ts';
 import NavLink from '~v5/shared/NavLink/index.ts';
-
-import { type NavItemProps } from '../../types.ts';
 
 const displayName = 'v5.common.Navigation.partials.NavItem';
 

@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 
 import { type ColonyMotion } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
+import {
+  supportOption,
+  opposeOption,
+} from '~v5/common/ActionSidebar/partials/Motions/consts.ts';
 import { type UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
-
-import { supportOption, opposeOption } from '../../consts.ts';
 
 import { type VoteStatuses } from './partials/VoteStatuses/types.ts';
 

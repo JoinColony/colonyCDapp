@@ -1,4 +1,4 @@
-import { type SearchSelectOption } from '../../types.ts';
+import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 export interface SearchItemProps {
   options: SearchSelectOption[];

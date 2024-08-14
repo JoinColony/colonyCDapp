@@ -5,9 +5,8 @@ import React, { type FC, useState, useLayoutEffect } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import { range } from '~utils/lodash.ts';
+import DatepickerYearDropdown from '~v5/common/Fields/datepickers/common/DatepickerYearDropdown/index.ts';
 import InputBase from '~v5/common/Fields/InputBase/index.ts';
-
-import DatepickerYearDropdown from '../../../common/DatepickerYearDropdown/index.ts';
 
 import { type DatepickerCustomHeaderProps } from './types.ts';
 

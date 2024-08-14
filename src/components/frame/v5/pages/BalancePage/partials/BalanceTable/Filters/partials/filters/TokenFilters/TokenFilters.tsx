@@ -1,11 +1,10 @@
 import React, { type FC } from 'react';
 
+import { useFiltersContext } from '~frame/v5/pages/BalancePage/partials/BalanceTable/Filters/FiltersContext/FiltersContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
-
-import { useFiltersContext } from '../../../FiltersContext/FiltersContext.ts';
 
 import { useGetTokenTypeFilters } from './hooks.ts';
 

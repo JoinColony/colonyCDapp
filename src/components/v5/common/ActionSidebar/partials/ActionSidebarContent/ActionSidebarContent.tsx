@@ -16,21 +16,21 @@ import { DecisionMethod } from '~types/actions.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
-
-import ActionTypeSelect from '../../ActionTypeSelect.tsx';
+import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
 import {
   ACTION_TYPE_FIELD_NAME,
   CREATED_IN_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
-} from '../../consts.ts';
-import useHasActionPermissions from '../../hooks/permissions/useHasActionPermissions.ts';
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
-import useActionFormProps from '../../hooks/useActionFormProps.ts';
-import useSidebarActionForm from '../../hooks/useSidebarActionForm.ts';
+} from '~v5/common/ActionSidebar/consts.ts';
+import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
+import useSidebarActionForm from '~v5/common/ActionSidebar/hooks/useSidebarActionForm.ts';
+import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
+import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import Motions from '../Motions/index.ts';

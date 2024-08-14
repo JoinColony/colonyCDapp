@@ -1,9 +1,8 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { currencyIcons } from '~common/Extensions/UserNavigation/partials/UserMenu/consts.ts';
 import { type SupportedCurrencies } from '~gql';
-
-import { currencyIcons } from '../../../../../common/Extensions/UserNavigation/partials/UserMenu/consts.ts';
 
 interface CurrencyLabelProps {
   currency: SupportedCurrencies;

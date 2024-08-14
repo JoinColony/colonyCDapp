@@ -1,12 +1,11 @@
 import React, { type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
-
-import { type ActionFormBaseProps } from '../../../types.ts';
-import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import Description from '../../Description/index.ts';
+import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
+import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useMintToken } from './hooks.ts';
 

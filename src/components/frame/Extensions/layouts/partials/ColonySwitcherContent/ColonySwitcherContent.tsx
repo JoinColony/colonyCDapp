@@ -3,12 +3,12 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { getChainIcon } from '~frame/Extensions/layouts/utils.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 
-import { getChainIcon } from '../../utils.ts';
 import ColonySwitcherItem from '../ColonySwitcherItem/index.ts';
 
 import { useColonySwitcherContent } from './hooks.ts';

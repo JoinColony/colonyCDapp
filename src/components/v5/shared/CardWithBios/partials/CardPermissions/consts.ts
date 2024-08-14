@@ -6,7 +6,7 @@ import {
   Scales,
 } from '@phosphor-icons/react';
 
-import { type Permissions } from '../../types.ts';
+import { type Permissions } from '~v5/shared/CardWithBios/types.ts';
 
 export const permissions: Permissions[] = [
   {

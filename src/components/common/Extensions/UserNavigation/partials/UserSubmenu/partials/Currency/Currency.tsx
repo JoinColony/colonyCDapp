@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { currencyIcons } from '~common/Extensions/UserNavigation/partials/UserMenu/consts.ts';
+import CoinGeckoAttribution from '~common/Extensions/UserNavigation/partials/UserSubmenu/CoinGeckoAttribution.tsx';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 
-import { currencyIcons } from '../../../UserMenu/consts.ts';
-import CoinGeckoAttribution from '../../CoinGeckoAttribution.tsx';
 import MenuList from '../MenuList/index.ts';
 import MenuListItem from '../MenuListItem/index.ts';
 import { actionItemClass, actionItemLabelClass } from '../submenu.styles.ts';

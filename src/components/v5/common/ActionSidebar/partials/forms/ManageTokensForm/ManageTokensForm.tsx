@@ -1,10 +1,10 @@
 import React, { type FC } from 'react';
 
-import useHasNoDecisionMethods from '../../../hooks/permissions/useHasNoDecisionMethods.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedIn from '../../CreatedIn/index.ts';
-import DecisionMethodField from '../../DecisionMethodField/index.ts';
-import Description from '../../Description/index.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
+import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useManageTokens } from './hooks.ts';
 import TokensTable from './partials/TokensTable/TokensTable.tsx';

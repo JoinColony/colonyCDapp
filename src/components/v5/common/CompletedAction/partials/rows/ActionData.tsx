@@ -4,8 +4,10 @@ import React from 'react';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type Message } from '~types';
 import { formatText } from '~utils/intl.ts';
-
-import { DEFAULT_TOOLTIP_POSITION, ICON_SIZE } from '../../consts.ts';
+import {
+  DEFAULT_TOOLTIP_POSITION,
+  ICON_SIZE,
+} from '~v5/common/CompletedAction/consts.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionData';
 

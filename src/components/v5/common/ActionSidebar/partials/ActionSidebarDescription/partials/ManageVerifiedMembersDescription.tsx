@@ -3,9 +3,8 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ColonyActionType } from '~types/graphql.ts';
-
-import { ManageMembersType } from '../../forms/ManageVerifiedMembersForm/consts.ts';
-import { type ManageVerifiedMembersFormValues } from '../../forms/ManageVerifiedMembersForm/utils.ts';
+import { ManageMembersType } from '~v5/common/ActionSidebar/partials/forms/ManageVerifiedMembersForm/consts.ts';
+import { type ManageVerifiedMembersFormValues } from '~v5/common/ActionSidebar/partials/forms/ManageVerifiedMembersForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 
