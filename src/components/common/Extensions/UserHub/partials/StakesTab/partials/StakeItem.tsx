@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -17,8 +17,6 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
 
-  const [navigatePath, setNavigatePath] = useState(window.location.pathname);
-
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
     stake.action?.decisionData?.title ||
@@ -28,32 +26,29 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
 
   const stakeColonyName = stake.action?.colony.name ?? '';
 
-  const stakeColony = useMemo(() => {
-    if (!stake.action) {
+  const partialStakeColony = useMemo(() => {
+    if (!stake.action?.colony) {
       return null;
     }
+
+    const { nativeToken, metadata } = stake.action.colony;
+
     return {
       nativeToken: {
-        decimals: stake.action?.colony.nativeToken.nativeTokenDecimals,
-        symbol: stake.action?.colony.nativeToken.nativeTokenSymbol,
-        tokenAddress: stake.action?.colony.nativeToken.tokenAddress,
-        name: stake.action?.colony.nativeToken.name,
+        decimals: nativeToken.nativeTokenDecimals,
+        symbol: nativeToken.nativeTokenSymbol,
+        tokenAddress: nativeToken.tokenAddress,
+        name: nativeToken.name,
       },
-      metadata: stake.action?.colony.metadata,
+      metadata,
     };
   }, [stake.action]);
 
-  useEffect(() => {
-    if (colonyNameUrl !== stakeColonyName) {
-      // For transactions from other colonies it should redirect to /{ownColony}?tx={hash}
-      setNavigatePath(`/${stakeColonyName}`);
-    }
-  }, [
-    colonyNameUrl,
-    stakeColonyName,
-    setNavigatePath,
-    stake.action?.transactionHash,
-  ]);
+  const navigatePath = useMemo(() => {
+    return colonyNameUrl !== stakeColonyName
+      ? `/${stakeColonyName}`
+      : window.location.pathname;
+  }, [colonyNameUrl, stakeColonyName]);
 
   return (
     <li className="flex flex-col border-b border-gray-100 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
@@ -85,21 +80,21 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
           </div>
           <div className="flex text-xs">
             <div className="mr-2 font-medium">
-              {stakeColony && (
+              {partialStakeColony && (
                 <Numeral
                   value={stake.amount}
-                  decimals={stakeColony.nativeToken.decimals}
-                  suffix={` ${stakeColony.nativeToken.symbol}`}
+                  decimals={partialStakeColony.nativeToken.decimals}
+                  suffix={` ${partialStakeColony.nativeToken.symbol}`}
                 />
               )}
             </div>
             <div className="text-gray-600">
-              {stake.action && stakeColony
+              {stake.action && partialStakeColony
                 ? formatMessage(
                     { id: 'action.title' },
                     getActionTitleValues({
                       actionData: stake.action,
-                      colony: stakeColony,
+                      colony: partialStakeColony,
                     }),
                   )
                 : '-'}

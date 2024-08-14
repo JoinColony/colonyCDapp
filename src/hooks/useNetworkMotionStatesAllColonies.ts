@@ -6,13 +6,14 @@ import {
 import { Extension } from '@colony/colony-js';
 import { useEffect, useMemo, useState } from 'react';
 
-import { ADDRESS_ZERO, supportedExtensionsConfig } from '~constants/index.ts';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetJoinedColoniesExtensionsQuery } from '~gql';
 import { type JoinedColonyWithExtensions } from '~types/graphql.ts';
 import { notNull, notUndefined } from '~utils/arrays/index.ts';
 
 export type MotionStatesMap = Map<string, MotionState | null>;
+export type VotingReputationByColonyAddress = Record<string, string>;
 
 export type UserMotionStake = {
   motionId: string;
@@ -28,13 +29,12 @@ const getVotingReputationAddressByColony = (
     return [];
   }
 
-  const currentExtensionAddress = colonyExtensions.find((extension) => {
-    const extensionConfig = supportedExtensionsConfig.find(
-      (e) => getExtensionHash(e?.extensionId) === extension?.hash,
-    );
-    return extensionConfig?.extensionId === Extension.VotingReputation;
-  });
-  return currentExtensionAddress?.address;
+  const votingRepExtension = colonyExtensions.find(
+    (extension) =>
+      extension.hash === getExtensionHash(Extension.VotingReputation),
+  );
+
+  return votingRepExtension?.address;
 };
 
 const useGetVotingReputationByColony = (userAddress?: string) => {
@@ -74,7 +74,7 @@ const useGetVotingReputationByColony = (userAddress?: string) => {
 
 /**
  * Hook that accepts an array of UserMotionStake and returns a map of motion IDs to their states
- * Make sure to memoize the array of motion IDs to avoid infinite loops
+ * Make sure to memoize the array of UserMotionStakes to avoid infinite loops
  */
 const useNetworkMotionStatesAllColonies = (
   userMotionStakes: UserMotionStake[],

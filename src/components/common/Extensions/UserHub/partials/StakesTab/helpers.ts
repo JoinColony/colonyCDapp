@@ -1,9 +1,7 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
-import {
-  type VotingReputationByColonyId,
-  type MotionStatesMap,
-} from '~hooks/useNetworkMotionStates.ts';
+import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
+import { type VotingReputationByColonyAddress } from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { type UserStake } from '~types/graphql.ts';
 import { UserStakeStatus } from '~types/userStake.ts';
 
@@ -32,7 +30,7 @@ export const getStakesTabItems = (
 export const getStakeStatus = (
   stake: UserStake,
   statesMap: MotionStatesMap,
-  votingReputationByColony: VotingReputationByColonyId,
+  votingReputationByColony: VotingReputationByColonyAddress,
 ) => {
   if (stake.isClaimed) {
     return UserStakeStatus.Claimed;
