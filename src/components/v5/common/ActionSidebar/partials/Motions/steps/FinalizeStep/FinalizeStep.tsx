@@ -11,6 +11,7 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
+import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -18,7 +19,6 @@ import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
-import { useFinalizeSuccessCallback } from '../../../hooks.ts';
 import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';

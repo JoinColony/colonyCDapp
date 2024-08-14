@@ -9,10 +9,9 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
-
-import { useFinalizeSuccessCallback } from '../../../hooks.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.FinalizeButton';
