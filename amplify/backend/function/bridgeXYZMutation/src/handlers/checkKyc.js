@@ -1,4 +1,5 @@
 const fetch = require('cross-fetch');
+const { utils } = require('ethers');
 const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
 const { getLiquidationAddresses } = require('./utils');
@@ -183,13 +184,17 @@ const checkKYCHandler = async (
         externalAccountLiquidationAddress =
           liquidationAddressCreationRes.address;
 
+        const checksummedLiquidationAddress = utils.getAddress(
+          externalAccountLiquidationAddress,
+        );
+
         // create liquidation address entry in the database
         await graphqlRequest(
           createLiquidationAddress,
           {
             input: {
               chainId: 42161,
-              liquidationAddress: externalAccountLiquidationAddress,
+              liquidationAddress: checksummedLiquidationAddress,
               userAddress: checksummedWalletAddress,
             },
           },
