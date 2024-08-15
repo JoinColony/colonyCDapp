@@ -2,7 +2,6 @@ import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
@@ -61,10 +60,7 @@ const ManageReputationDescription: FC = () => {
         initiator: <CurrentUser />,
         reputationChange: formatReputationChange(
           toFinite(amount),
-          getTokenDecimalsWithFallback(
-            nativeToken.decimals,
-            DEFAULT_TOKEN_DECIMALS,
-          ),
+          getTokenDecimalsWithFallback(nativeToken.decimals),
         ),
         reputationChangeNumeral: amount ? (
           <Numeral value={toFinite(amount)} />

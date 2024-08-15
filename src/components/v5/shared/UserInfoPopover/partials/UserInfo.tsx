@@ -4,11 +4,13 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ContributorType } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
@@ -26,6 +28,7 @@ const UserInfo: FC<UserInfoProps> = ({
 }) => {
   const aboutDescriptionText = formatText(aboutDescription);
   const isTopContributorType = contributorType === ContributorType.Top;
+  const { colony } = useColonyContext();
 
   return (
     <div
@@ -134,7 +137,13 @@ const UserInfo: FC<UserInfoProps> = ({
                         <Tooltip
                           className="flex min-w-[4.5rem] items-center justify-end text-sm text-blue-400"
                           tooltipContent={
-                            <Numeral value={reputationRaw} suffix=" pts" />
+                            <Numeral
+                              value={reputationRaw}
+                              suffix=" pts"
+                              decimals={getTokenDecimalsWithFallback(
+                                colony.nativeToken.decimals,
+                              )}
+                            />
                           }
                         >
                           <Star size={12} />

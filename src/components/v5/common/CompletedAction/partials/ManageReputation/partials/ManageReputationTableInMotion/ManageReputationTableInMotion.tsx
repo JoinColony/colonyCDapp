@@ -1,6 +1,5 @@
 import React, { type FC } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -40,10 +39,7 @@ const ManageReputationTableInMotion: FC<ManageReputationTableInMotionProps> = ({
         <p className="flex flex-wrap items-center gap-x-2 text-md font-normal text-gray-900">
           <Numeral
             value={amount}
-            decimals={getTokenDecimalsWithFallback(
-              nativeToken.decimals,
-              DEFAULT_TOKEN_DECIMALS,
-            )}
+            decimals={getTokenDecimalsWithFallback(nativeToken.decimals)}
           />
           <span className="flex-shrink-0">
             {formatText(
