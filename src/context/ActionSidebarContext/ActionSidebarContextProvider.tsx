@@ -7,11 +7,14 @@ import React, {
   useState,
 } from 'react';
 import { type FieldValues } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 import { useTablet } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
+import { TX_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import { isChildOf } from '~utils/checks/isChildOf.ts';
 import { getElementWithSelector } from '~utils/elements.ts';
+import { removeQueryParamFromUrl } from '~utils/urls.ts';
 
 import {
   useAnalyticsContext,
@@ -52,6 +55,13 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     },
   ] = useToggle();
   const { trackEvent } = useAnalyticsContext();
+  const navigate = useNavigate();
+
+  const removeTxParamOnClose = useCallback(() => {
+    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM), {
+      replace: true,
+    });
+  }, [navigate]);
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
@@ -64,6 +74,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       return false;
     }
 
+    removeTxParamOnClose();
     return undefined;
   });
 
@@ -84,15 +95,15 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const toggleOff = useCallback(() => {
+    removeTxParamOnClose();
     return toggleActionSidebarOff();
-  }, [toggleActionSidebarOff]);
+  }, [toggleActionSidebarOff, removeTxParamOnClose]);
 
   const toggle = useCallback(
     (initialValues) => {
       if (!isActionSidebarOpen) {
         setActionSidebarInitialValues(initialValues);
       }
-
       return toggleActionSidebar();
     },
     [isActionSidebarOpen, toggleActionSidebar],

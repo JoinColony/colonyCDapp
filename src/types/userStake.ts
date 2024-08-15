@@ -6,6 +6,7 @@ export enum UserStakeStatus {
   Claimable = 'Claimable',
   Claimed = 'Claimed',
   Unknown = 'Unknown',
+  Lost = 'Lost',
 }
 
 export interface UserStakeWithStatus extends UserStake {

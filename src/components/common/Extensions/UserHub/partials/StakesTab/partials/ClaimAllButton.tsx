@@ -3,27 +3,26 @@ import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import { type VotingReputationByColonyAddress } from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type UserStakeWithStatus } from '~types/userStake.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.StakesTab';
 
 interface ClaimAllButtonProps {
-  colonyAddress: string;
   claimableStakes: UserStakeWithStatus[];
   updateClaimedStakesCache: (stakesIds: string[]) => void;
+  votingReputationByColony: VotingReputationByColonyAddress;
 }
 
 const ClaimAllButton = ({
-  colonyAddress,
   claimableStakes,
+  votingReputationByColony,
   updateClaimedStakesCache,
 }: ClaimAllButtonProps) => {
   const { formatMessage } = useIntl();
 
   const { user } = useAppContext();
-  const { votingReputationAddress } = useEnabledExtensions();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,11 +37,12 @@ const ClaimAllButton = ({
     try {
       await claimAll({
         userAddress: user?.walletAddress ?? '',
-        colonyAddress,
-        extensionAddress: votingReputationAddress ?? '',
-        motionIds: claimableStakes.map(
-          (stake) => stake.action?.motionData?.databaseMotionId ?? '',
-        ),
+        userStakes: claimableStakes.map((stake) => ({
+          databaseMotionId: stake.action?.motionData?.databaseMotionId ?? '',
+          colonyAddress: stake.action?.colonyAddress ?? '',
+          extensionAddress:
+            votingReputationByColony[stake.action?.colonyAddress ?? ''] ?? '',
+        })),
       });
       updateClaimedStakesCache(claimableStakes.map((stake) => stake.id));
     } catch {

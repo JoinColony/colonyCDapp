@@ -15,3 +15,16 @@ query GetExtensionInstallationsCount($id: ID!) {
     reputationWeighted
   }
 }
+
+query GetJoinedColoniesExtensions($contributorAddress: ID!) {
+  getContributorsByAddress(contributorAddress: $contributorAddress) {
+    items {
+      id
+      createdAt
+      colony {
+        ...JoinedColonyWithExtensions
+      }
+    }
+    nextToken
+  }
+}

@@ -39,23 +39,27 @@ import {
 export type ClaimAllMotionRewardsPayload =
   Action<ActionTypes.MOTION_CLAIM_ALL>['payload'];
 
+export type CurrentColonyMotion = ColonyMotion & {
+  colonyAddress: string;
+  extensionAddress: string;
+};
+
 function* claimAllMotionRewards({
   meta,
-  payload: {
-    userAddress,
-    colonyAddress,
-    extensionAddress,
-    motionIds: databaseMotionIds,
-  },
+  payload: { userAddress, userStakes },
 }: Action<ActionTypes.MOTION_CLAIM_ALL>) {
   const txChannel = yield call(getTxChannel, meta.id);
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
     const colonyManager: ColonyManager = yield call(getColonyManager);
 
-    const motions: ColonyMotion[] = [];
+    const motions: CurrentColonyMotion[] = [];
 
-    for (const databaseMotionId of databaseMotionIds) {
+    for (const {
+      databaseMotionId,
+      colonyAddress,
+      extensionAddress,
+    } of userStakes) {
       const {
         data: { getColonyMotion },
       }: ApolloQueryResult<GetColonyMotionQuery> = yield apolloClient.query<
@@ -74,7 +78,7 @@ function* claimAllMotionRewards({
         );
       }
 
-      motions.push(getColonyMotion);
+      motions.push({ ...getColonyMotion, colonyAddress, extensionAddress });
     }
 
     const [motionsWithYayClaim, motionsWithNayClaim] = getMotionsWithClaims(
@@ -87,11 +91,6 @@ function* claimAllMotionRewards({
     if (!allMotionClaims.length) {
       throw new Error('A motion with claims needs to be provided');
     }
-
-    const colonyClient = yield colonyManager.getClient(
-      ClientType.ColonyClient,
-      colonyAddress,
-    );
 
     const channelNames: string[] = [];
 
@@ -109,6 +108,12 @@ function* claimAllMotionRewards({
       yield Promise.all(
         Object.keys(channels).map(async (id) => {
           const currentMotion = motions.find(({ motionId }) => motionId === id);
+
+          const { colonyAddress, extensionAddress } = allMotionClaims[id];
+          const colonyClient = await colonyManager.getClient(
+            ClientType.ColonyClient,
+            colonyAddress,
+          );
 
           const [permissionDomainId, childSkillIndex] =
             await getPermissionProofs(
@@ -128,7 +133,7 @@ function* claimAllMotionRewards({
               methodName: 'claimReward',
               identifier: colonyAddress,
               params: [
-                allMotionClaims[id],
+                allMotionClaims[id].motionId,
                 permissionDomainId,
                 childSkillIndex,
                 userAddress,
@@ -175,12 +180,23 @@ export default function* claimAllMotionRewardsSaga() {
  * with outstanding claims by the given user
  */
 
-function getMotionsWithClaims(motions: ColonyMotion[], userAddress: Address) {
-  const motionsWithYayClaims: string[] = [];
-  const motionsWithNayClaims: string[] = [];
+function getMotionsWithClaims(
+  motions: CurrentColonyMotion[],
+  userAddress: Address,
+) {
+  const motionsWithYayClaims: {
+    motionId: string;
+    extensionAddress: string;
+    colonyAddress: string;
+  }[] = [];
+  const motionsWithNayClaims: {
+    motionId: string;
+    extensionAddress: string;
+    colonyAddress: string;
+  }[] = [];
 
   motions.forEach((motion) => {
-    const { motionId, stakerRewards } = motion;
+    const { motionId, stakerRewards, colonyAddress, extensionAddress } = motion;
     const currentUserRewards = stakerRewards.find(
       ({ address }) => address === userAddress,
     );
@@ -196,11 +212,19 @@ function getMotionsWithClaims(motions: ColonyMotion[], userAddress: Address) {
       }
 
       if (nay !== '0') {
-        motionsWithNayClaims.push(motionId);
+        motionsWithNayClaims.push({
+          motionId,
+          extensionAddress,
+          colonyAddress,
+        });
       }
 
       if (yay !== '0') {
-        motionsWithYayClaims.push(motionId);
+        motionsWithYayClaims.push({
+          motionId,
+          extensionAddress,
+          colonyAddress,
+        });
       }
     }
   });

@@ -1,6 +1,7 @@
 import { MotionState as NetworkMotionState } from '@colony/colony-js';
 
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
+import { type VotingReputationByColonyAddress } from '~hooks/useNetworkMotionStatesAllColonies.ts';
 import { type UserStake } from '~types/graphql.ts';
 import { UserStakeStatus } from '~types/userStake.ts';
 
@@ -29,14 +30,28 @@ export const getStakesTabItems = (
 export const getStakeStatus = (
   stake: UserStake,
   statesMap: MotionStatesMap,
+  votingReputationByColony: VotingReputationByColonyAddress,
 ) => {
   if (stake.isClaimed) {
     return UserStakeStatus.Claimed;
   }
 
-  const motionState = statesMap.get(stake.action?.motionData?.motionId ?? '');
-  if (!motionState) {
-    return UserStakeStatus.Unknown;
+  const [, stakeVotingReputationAddress] =
+    stake.action?.motionData?.databaseMotionId.split(/[-_]/) ?? [];
+
+  const colonyAddress = stake.action?.colonyAddress ?? '';
+  const databaseMotionId = stake.action?.motionData?.databaseMotionId ?? '';
+  const motionState = statesMap.get(databaseMotionId);
+  const currentVotingReputationAddress =
+    colonyAddress && votingReputationByColony[colonyAddress];
+  // currentVotingReputationAddress will be present in votingReputationByColony if voting reputation enabled
+  if (
+    !currentVotingReputationAddress ||
+    !motionState ||
+    currentVotingReputationAddress !== stakeVotingReputationAddress
+    // this means that Voting Reputation was reinstalled and now has new address
+  ) {
+    return UserStakeStatus.Lost;
   }
 
   if (motionState === NetworkMotionState.Finalizable) {

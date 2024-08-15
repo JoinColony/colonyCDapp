@@ -1,10 +1,11 @@
-import React, { type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 import UserStakeStatusBadge from '~v5/common/Pills/UserStakeStatusBadge/index.ts';
 
 import { type StakeItemProps } from '../types.ts';
@@ -12,7 +13,7 @@ import { type StakeItemProps } from '../types.ts';
 const displayName =
   'common.Extensions.UserHub.partials.StakesTab.partials.StakeItem';
 
-const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
+const StakeItem: FC<StakeItemProps> = ({ stake }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
 
@@ -21,13 +22,45 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
     stake.action?.decisionData?.title ||
     stake.action?.type;
 
+  const { colonyName: colonyNameUrl } = useParams();
+
+  const stakeColonyName = stake.action?.colony.name ?? '';
+
+  const partialStakeColony = useMemo(() => {
+    if (!stake.action?.colony) {
+      return null;
+    }
+
+    const { nativeToken, metadata } = stake.action.colony;
+
+    return {
+      nativeToken: {
+        decimals: nativeToken.nativeTokenDecimals,
+        symbol: nativeToken.nativeTokenSymbol,
+        tokenAddress: nativeToken.tokenAddress,
+        name: nativeToken.name,
+      },
+      metadata,
+    };
+  }, [stake.action]);
+
+  const navigatePath = useMemo(() => {
+    return colonyNameUrl !== stakeColonyName
+      ? `/${stakeColonyName}`
+      : window.location.pathname;
+  }, [colonyNameUrl, stakeColonyName]);
+
   return (
-    <li className="flex flex-col border-b border-gray-100 py-3.5 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
+    <li className="flex flex-col border-b border-gray-100 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
       <button
         type="button"
         onClick={() =>
           navigate(
-            `${window.location.pathname}?${TX_SEARCH_PARAM}=${stake.action?.transactionHash}`,
+            setQueryParamOnUrl(
+              navigatePath,
+              TX_SEARCH_PARAM,
+              stake.action?.transactionHash ?? '',
+            ),
             {
               replace: true,
             },
@@ -42,21 +75,27 @@ const StakeItem: FC<StakeItemProps> = ({ nativeToken, stake, colony }) => {
                 <FormattedDate value={stake.createdAt} />
               </span>
             </div>
+
             <UserStakeStatusBadge status={stake.status} />
           </div>
           <div className="flex text-xs">
             <div className="mr-2 font-medium">
-              <Numeral
-                value={stake.amount}
-                decimals={nativeToken.decimals}
-                suffix={` ${nativeToken.symbol}`}
-              />
+              {partialStakeColony && (
+                <Numeral
+                  value={stake.amount}
+                  decimals={partialStakeColony.nativeToken.decimals}
+                  suffix={` ${partialStakeColony.nativeToken.symbol}`}
+                />
+              )}
             </div>
             <div className="text-gray-600">
-              {stake.action
+              {stake.action && partialStakeColony
                 ? formatMessage(
                     { id: 'action.title' },
-                    getActionTitleValues({ actionData: stake.action, colony }),
+                    getActionTitleValues({
+                      actionData: stake.action,
+                      colony: partialStakeColony,
+                    }),
                   )
                 : '-'}
             </div>
