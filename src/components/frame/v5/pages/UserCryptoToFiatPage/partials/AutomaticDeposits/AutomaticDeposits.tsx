@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 
 import { LEARN_MORE_CRYPTO_TO_FIAT } from '~constants';
@@ -36,9 +36,7 @@ const AutomaticDeposits = () => {
   const [editUser, { loading: editUserLoading }] =
     useUpdateUserProfileMutation();
 
-  const [isAutoOfframEnabled, setIsAutoOfframEnabled] = useState(
-    !!user?.profile?.isAutoOfframpEnabled,
-  );
+  const isAutoOfframEnabled = !!user?.profile?.isAutoOfframpEnabled;
 
   const badgeProps = getBadgeProps({
     kycStatusData,
@@ -62,20 +60,16 @@ const AutomaticDeposits = () => {
           <Switch
             checked={isAutoOfframEnabled}
             onChange={async () => {
-              const newValue = !isAutoOfframEnabled;
-
-              setIsAutoOfframEnabled(newValue);
-
               await editUser({
                 variables: {
                   input: {
                     id: user?.walletAddress ?? '',
-                    isAutoOfframpEnabled: newValue,
+                    isAutoOfframpEnabled: !user?.profile?.isAutoOfframpEnabled,
                   },
                 },
               });
 
-              updateUser(user?.walletAddress ?? '', true);
+              await updateUser(user?.walletAddress ?? '', true);
 
               toast.success(
                 <Toast
