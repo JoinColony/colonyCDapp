@@ -41,7 +41,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
             <Trash size={18} />
           </button>
         </div>
-        <span className="text-left text-sm text-gray-600">
+        <span className="break-all text-left text-sm text-gray-600">
           {fileRejections}
         </span>
         <TextButton
