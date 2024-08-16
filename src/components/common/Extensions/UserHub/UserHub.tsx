@@ -125,7 +125,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
           </>
         )}
       </div>
-      <div className="relative h-full w-full min-w-0">
+      <div className="relative h-full w-full min-w-0 overflow-y-auto">
         {selectedTab === UserHubTab.Balance && (
           <ReputationTab onTabChange={handleTabChange} />
         )}

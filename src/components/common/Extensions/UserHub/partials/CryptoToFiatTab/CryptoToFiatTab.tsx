@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { KycStatus, useCheckKycStatusQuery } from '~gql';
 import { ActionTypes } from '~redux';
-import { USER_HOME_ROUTE } from '~routes';
+import { USER_CRYPTO_TO_FIAT_ROUTE, USER_HOME_ROUTE } from '~routes';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -27,7 +28,7 @@ const MSG = defineMessages({
 });
 
 const CryptoToFiatTab = () => {
-  const { data } = useCheckKycStatusQuery();
+  const { data, loading: isKycStatusLoading } = useCheckKycStatusQuery();
 
   const { formatMessage } = useIntl();
   const { transform, validationSchema } = useTransferForm();
@@ -42,22 +43,27 @@ const CryptoToFiatTab = () => {
     setSuccess(false);
   };
 
-  // @TODO add a loader
+  const showKycCard = isKycStatusLoading || verificationRequired;
 
   return (
     <div className="px-6">
       <div className="flex justify-between pt-6">
         <p className="heading-5">{formatText(MSG.cryptoToFiat)}</p>
         {/* @TODO: Update to complete link */}
-        <Link
-          to={`${USER_HOME_ROUTE}`}
-          className="text-xs text-blue-400 hover:underline"
+        <LoadingSkeleton
+          isLoading={isKycStatusLoading}
+          className="h-[18px] w-[59px] rounded"
         >
-          {formatMessage(MSG.updateDetails)}
-        </Link>
+          <Link
+            to={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
+            className="text-xs text-blue-400 hover:underline"
+          >
+            {formatMessage(MSG.updateDetails)}
+          </Link>
+        </LoadingSkeleton>
       </div>
       <div className="pt-4">
-        {verificationRequired && <KycCard />}
+        {showKycCard && <KycCard isKycStatusLoading={isKycStatusLoading} />}
         {!success ? (
           <ActionForm
             actionType={ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER}
@@ -71,7 +77,10 @@ const CryptoToFiatTab = () => {
               setSuccess(true);
             }}
           >
-            <TransferForm isFormDisabled={verificationRequired} />
+            <TransferForm
+              isFormDisabled={verificationRequired}
+              isKycStatusLoading={isKycStatusLoading}
+            />
           </ActionForm>
         ) : (
           <Success resetForm={handleReset} />

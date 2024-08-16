@@ -247,7 +247,7 @@ module.exports = {
             right: '-1px',
             bottom: '-1px',
             'z-index': 1,
-            'background-color': theme('colors.gray.200'),
+            'background-color': theme('colors.gray.100'),
             'background-repeat': 'no-repeat',
             'min-height': '1em',
             'background-image':

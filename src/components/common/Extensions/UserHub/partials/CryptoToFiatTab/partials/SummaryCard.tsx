@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.SummaryCard';
@@ -38,9 +39,10 @@ const MSG = defineMessages({
 
 interface SummaryCardProps {
   isFormDisabled: boolean;
+  isLoading: boolean;
 }
 
-const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled }) => {
+const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled, isLoading }) => {
   // @TODO: Calculate proper values
   const gatewayAmount = 0;
 
@@ -56,31 +58,52 @@ const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled }) => {
         'mt-5 flex flex-col gap-2 rounded-lg border border-gray-200 px-4 py-5 text-sm',
         {
           'bg-gray-50 text-gray-300': isFormDisabled,
+          'bg-transparent': isLoading,
         },
       )}
     >
       <div className="flex justify-between">
-        <p>{formatMessage(MSG.gatewayFee)}</p>
+        <LoadingSkeleton
+          className="h-[18px] w-[99px] rounded"
+          isLoading={isLoading}
+        >
+          <p>{formatMessage(MSG.gatewayFee)}</p>
+        </LoadingSkeleton>
         <div className="flex items-center gap-2">
-          <p className="font-semibold">{gatewayAmount} USDC</p>
+          <LoadingSkeleton
+            className="h-[18px] w-[59px] rounded"
+            isLoading={isLoading}
+          >
+            <p className="font-semibold">{gatewayAmount} USDC</p>
+          </LoadingSkeleton>
           {/* @TODO: This should have a tooltip */}
           <Info
             size={12}
             className={clsx('text-gray-400', {
-              'text-gray-300': isFormDisabled,
+              '!text-gray-300': isFormDisabled || isLoading,
             })}
           />
         </div>
       </div>
       <div className="flex justify-between">
-        <p>{formatMessage(MSG[feeType])}</p>
+        <LoadingSkeleton
+          className="h-[18px] w-[59px] rounded"
+          isLoading={isLoading}
+        >
+          <p>{formatMessage(MSG[feeType])}</p>
+        </LoadingSkeleton>
         <div className="flex items-center gap-2">
-          <p className="font-semibold">{feeAmount} USDC</p>
+          <LoadingSkeleton
+            className="h-[18px] w-[59px] rounded"
+            isLoading={isLoading}
+          >
+            <p className="font-semibold">{feeAmount} USDC</p>
+          </LoadingSkeleton>
           {/* @TODO: This should have a tooltip */}
           <Info
             size={12}
             className={clsx('text-gray-400', {
-              'text-gray-300': isFormDisabled,
+              '!text-gray-300': isFormDisabled || isLoading,
             })}
           />
         </div>
@@ -89,16 +112,26 @@ const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled }) => {
       <div className="my-1 border-b" />
 
       <div className="flex justify-between">
-        <p className="font-semibold">{formatMessage(MSG.receive)}</p>
+        <LoadingSkeleton
+          className="h-[18px] w-[99px] rounded"
+          isLoading={isLoading}
+        >
+          <p className="font-semibold">{formatMessage(MSG.receive)}</p>
+        </LoadingSkeleton>
         <div className="flex items-center gap-2">
-          <p className="font-semibold">
-            {receiveAmount} {selectedCurrency}
-          </p>
+          <LoadingSkeleton
+            className="h-[18px] w-[59px] rounded"
+            isLoading={isLoading}
+          >
+            <p className="font-semibold">
+              {receiveAmount} {selectedCurrency}
+            </p>
+          </LoadingSkeleton>
           {/* @TODO: This should have a tooltip */}
           <Info
             size={12}
             className={clsx('text-gray-400', {
-              'text-gray-300': isFormDisabled,
+              '!text-gray-300': isFormDisabled || isLoading,
             })}
           />
         </div>
