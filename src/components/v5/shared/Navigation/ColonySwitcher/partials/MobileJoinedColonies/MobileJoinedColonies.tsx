@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useRef } from 'react';
 
-import { LEARN_MORE_PAYMENTS } from '~constants/externalUrls.ts';
+import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
@@ -45,14 +45,19 @@ const MobileJoinedColonies = () => {
           /** Unfortunately, it's a bit tricky to string interpolate tailwind classes */
           className={clsx(
             'top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
-            'fixed left-0 z-userNavModal flex h-[calc(100vh-var(--header-nav-section-height)-var(--top-content-height))] w-full flex-col justify-between overflow-y-auto rounded-none bg-base-white px-[10px] py-6 no-scrollbar',
-            'md:static md:h-full md:w-[216px] md:rounded-lg',
+            'fixed left-0 z-userNavModal flex h-[calc(100vh-var(--header-nav-section-height)-var(--top-content-height))] w-full flex-col justify-between rounded-none bg-base-white',
           )}
         >
-          <div className="flex h-fit w-full flex-col gap-3">
-            {wallet ? <JoinedColoniesList /> : <ConnectWalletSection />}
+          <div className="flex h-fit w-full flex-col overflow-y-auto">
+            {wallet ? (
+              <JoinedColoniesList />
+            ) : (
+              <div className="p-6">
+                <ConnectWalletSection />
+              </div>
+            )}
           </div>
-          <section className="flex w-full flex-col gap-6 px-2">
+          <section className="flex w-full flex-col gap-6 px-6 pb-6">
             <div className="border-b border-gray-200" />
             {wallet ? (
               <Button
@@ -70,11 +75,8 @@ const MobileJoinedColonies = () => {
               />
             )}
             <LearnMore
-              message={{
-                id: `${displayName}.helpText`,
-                defaultMessage: 'Need help and guidance? <a>Visit our docs</a>',
-              }}
-              href={LEARN_MORE_PAYMENTS}
+              message={{ id: 'learnMoreComponent.helpAndGuidance' }}
+              href={LEARN_MORE_COLONY_HELP_GENERAL}
             />
           </section>
         </motion.div>

@@ -9,17 +9,17 @@ const displayName =
   'v5.frame.PageLayout.partials.PageHeader.partials.MobileColonySwitcherToggle';
 
 const MobileColonySwitcherToggle = () => {
-  const { toggleMobileColonyPicker, setShowTabletSidebar } =
+  const { toggleTabletColonyPicker, setShowTabletSidebar } =
     usePageLayoutContext();
 
-  const onClick = () => {
+  const handleClick = () => {
     setShowTabletSidebar(false);
-    toggleMobileColonyPicker();
+    toggleTabletColonyPicker();
   };
 
   return (
     <>
-      <button onClick={onClick} type="button" className="flex-shrink-0">
+      <button onClick={handleClick} type="button" className="flex-shrink-0">
         <ColonySwitcherAvatar />
       </button>
       <MobileJoinedColonies />
