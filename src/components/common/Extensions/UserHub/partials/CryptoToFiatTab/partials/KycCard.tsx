@@ -2,7 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { USER_HOME_ROUTE } from '~routes';
+import { USER_CRYPTO_TO_FIAT_ROUTE, USER_HOME_ROUTE } from '~routes';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
@@ -20,7 +20,7 @@ const MSG = defineMessages({
   message: {
     id: `${displayName}.message`,
     defaultMessage:
-      'Regulatory compliance requires users to fiat off-ramp must complete KYC/AML checks. It only takes a couple of minutes (up to 1 business day if a manual check is required).',
+      'Regulatory compliance requires users to verify their account by completing KYC/AML checks. It only takes a couple of minutes.',
   },
   completeVerification: {
     id: `${displayName}.completeVerification`,
@@ -42,8 +42,7 @@ const KycCard = () => {
       <p className="text-sm text-gray-600">{formatMessage(MSG.message)}</p>
       <ButtonLink
         mode="primarySolid"
-        // @TODO: Update to complete link
-        to={USER_HOME_ROUTE}
+        to={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
         className="mt-3.5"
         size="small"
         text={formatMessage(MSG.completeVerification)}

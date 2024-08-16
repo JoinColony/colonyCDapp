@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { KycStatus, useCheckKycStatusQuery } from '~gql';
 import { ActionTypes } from '~redux';
 import { USER_HOME_ROUTE } from '~routes';
 import { ActionForm } from '~shared/Fields/index.ts';
@@ -26,17 +27,22 @@ const MSG = defineMessages({
 });
 
 const CryptoToFiatTab = () => {
+  const { data } = useCheckKycStatusQuery();
+
   const { formatMessage } = useIntl();
   const { transform, validationSchema } = useTransferForm();
   // @TODO: Check this correctly updates on submission
   const [success, setSuccess] = useState(false);
 
-  // @TODO: Get verification status from user context
-  const verificationRequired = false;
+  const verificationRequired =
+    data?.bridgeCheckKYC?.kycStatus !== KycStatus.Approved ||
+    !data?.bridgeCheckKYC?.liquidationAddress;
 
   const handleReset = () => {
     setSuccess(false);
   };
+
+  // @TODO add a loader
 
   return (
     <div className="px-6">
