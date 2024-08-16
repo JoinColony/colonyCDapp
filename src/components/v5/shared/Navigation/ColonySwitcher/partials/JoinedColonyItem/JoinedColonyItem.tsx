@@ -3,6 +3,7 @@ import React from 'react';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 
+import { ActiveColonyIndicator } from './partials/ActiveColonyIndicator.tsx';
 import { type JoinedColonyItemProps } from './types.ts';
 
 const displayName =
@@ -14,14 +15,15 @@ const JoinedColonyItem = ({
   name,
   colonyAddress,
   tokenSymbol,
+  isActiveColony,
 }: JoinedColonyItemProps) => {
   return (
     <button
       type="button"
-      className="group flex h-[37px] flex-row items-center justify-start gap-3 rounded-lg p-2 hover:bg-gray-50"
-      onClick={() => onClick(name)}
+      className="group flex h-[50px] w-full flex-row items-center justify-start gap-3 rounded px-6 py-8 hover:bg-gray-50 md:px-2 md:py-0"
+      onClick={() => !isActiveColony && onClick(name)}
     >
-      <section className="w-8">
+      <div className="w-8">
         <ColonyAvatar
           colonyAddress={colonyAddress}
           className="w-8 flex-shrink-0"
@@ -32,15 +34,18 @@ const JoinedColonyItem = ({
               : undefined
           }
         />
-      </section>
-      <section className="flex w-full flex-col overflow-hidden text-left">
+      </div>
+      <div className="flex w-full flex-col overflow-hidden text-left">
         <p className="truncate text-md font-semibold text-gray-900">
           {capitalizeFirstLetter(name)}
         </p>
         <p className="truncate text-sm font-normal uppercase text-gray-700">
           {tokenSymbol}
         </p>
-      </section>
+      </div>
+      <div className="flex flex-1 flex-row items-center justify-end">
+        <ActiveColonyIndicator isActive={isActiveColony} />
+      </div>
     </button>
   );
 };

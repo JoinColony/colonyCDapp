@@ -67,6 +67,7 @@ export const STREAMING_PAYMENTS = `https://docs.colony.io/use/making-payments/st
 export const LEARN_MORE_PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const LEARN_MORE_DECISIONS = `https://docs.colony.io/use/decisions`;
 export const LEARN_MORE_ADMIN = `https://docs.colony.io/use/admin`;
+export const LEARN_MORE_COLONY_HELP_GENERAL = `https://help.colony.io/en/`;
 /*
  * Safe Control
  */
