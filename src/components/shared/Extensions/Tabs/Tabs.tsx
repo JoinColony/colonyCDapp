@@ -38,7 +38,7 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
       {items.map(({ id, title, notificationNumber }) => (
         <Tab
           key={id}
-          className={clsx({
+          className={clsx('!bg-transparent', {
             '!font-semibold': id === activeTab,
             'text-gray-700': id !== activeTab,
           })}

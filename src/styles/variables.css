@@ -15,6 +15,7 @@
     77
   ); /* Used for colony name display (colony simplified) */
 
+  --rts-primary-color: transparent !important; /* Besides using the bg-transparent for a Tab item, we enforce rts to use transparent as primary color */
   --grey-dark: rgb(47, 47, 47);
   --text-disabled: rgb(194, 204, 204);
   --colony-light-blue: rgb(238, 242, 245);
