@@ -6,4 +6,5 @@ export interface JoinedColonyItemProps {
   tokenSymbol: string;
   colonyAddress: string;
   onClick: (name: string) => void;
+  isActiveColony: boolean;
 }
