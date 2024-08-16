@@ -3,7 +3,6 @@ import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
-import { useTablet } from '~hooks';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
@@ -12,8 +11,6 @@ export const ColonySwitcherAvatar = () => {
 
   const { showTabletColonyPicker } = usePageLayoutContext();
 
-  const isTablet = useTablet();
-
   const colonyAvatarSrc = colonyContext?.colony?.metadata?.avatar
     ? colonyContext.colony.metadata?.thumbnail ??
       colonyContext.colony.metadata?.avatar
@@ -21,10 +18,12 @@ export const ColonySwitcherAvatar = () => {
 
   return (
     <div
-      className={clsx('rounded-full border-2 border-base-white', {
-        'border-blue-400': showTabletColonyPicker && isTablet,
-        'border-gray-900': !colonyContext && !isTablet,
-      })}
+      className={clsx(
+        'flex-shrink-0 rounded-full shadow-[0_0_0_4px] shadow-transparent transition-shadow duration-[250] md:shadow-none',
+        {
+          '!shadow-blue-400': showTabletColonyPicker,
+        },
+      )}
     >
       {colonyContext ? (
         <Avatar

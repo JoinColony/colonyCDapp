@@ -202,7 +202,7 @@
     "wallet.metamask": "MetaMask",
     "text.learnMore": "Learn More",
     "learn.more": "Learn more",
-
+    "learnMoreComponent.helpAndGuidance": "Need help and guidance? <a>Visit our docs</a>",
     "transaction.cancel.title": "Transaction cancelled",
     "transaction.cancel.description": "Transaction cancelled by user",
     "transaction.debug.description": "DEBUG: context: {context} methodName: {methodName}",

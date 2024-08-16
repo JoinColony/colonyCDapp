@@ -42,10 +42,10 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
           '!justify-between': !isLogoButton,
         })}
       >
-        <section className="flex flex-row items-center gap-3">
+        <section className="flex flex-row items-center gap-3 overflow-hidden">
           <ColonySwitcherAvatar />
           {colonyContext?.colony.name && (
-            <p className="text-md font-semibold text-base-white">
+            <p className="truncate text-md font-semibold text-base-white">
               {capitalizeFirstLetter(colonyContext.colony.name)}
             </p>
           )}

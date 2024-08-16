@@ -57,7 +57,7 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
         >
           <div>
             {!isTablet && breadcrumbs && (
-              <section className="flex-shrink-0 ">
+              <section className="flex-shrink-0">
                 <PageHeading breadcrumbs={breadcrumbs} />
               </section>
             )}

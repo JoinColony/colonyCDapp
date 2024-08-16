@@ -10,7 +10,7 @@ interface PageLayoutContextValue {
   toggleTabletSidebar: () => void;
   showTabletColonyPicker: boolean;
   setShowTabletColonyPicker: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleMobileColonyPicker: () => void;
+  toggleTabletColonyPicker: () => void;
   setUserHubTab: React.Dispatch<React.SetStateAction<UserHubTab | undefined>>;
   userHubTab: UserHubTab | undefined;
   clearUserHubTab: () => void;
@@ -22,7 +22,7 @@ export const PageLayoutContext = createContext<PageLayoutContextValue>({
   toggleTabletSidebar: () => {},
   showTabletColonyPicker: false,
   setShowTabletColonyPicker: () => {},
-  toggleMobileColonyPicker: () => {},
+  toggleTabletColonyPicker: () => {},
   setUserHubTab: () => {},
   userHubTab: UserHubTab.Balance,
   clearUserHubTab: () => {},

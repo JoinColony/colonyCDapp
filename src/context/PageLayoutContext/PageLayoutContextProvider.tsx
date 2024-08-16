@@ -19,7 +19,7 @@ const PageLayoutContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setShowTabletSidebar((state) => !state);
   }, []);
 
-  const toggleMobileColonyPicker = useCallback(() => {
+  const toggleTabletColonyPicker = useCallback(() => {
     setShowTabletColonyPicker((state) => !state);
   }, []);
 
@@ -34,7 +34,7 @@ const PageLayoutContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleTabletSidebar,
       showTabletColonyPicker,
       setShowTabletColonyPicker,
-      toggleMobileColonyPicker,
+      toggleTabletColonyPicker,
       setUserHubTab,
       userHubTab,
       clearUserHubTab,
@@ -43,7 +43,7 @@ const PageLayoutContextProvider: FC<PropsWithChildren> = ({ children }) => {
       showTabletSidebar,
       toggleTabletSidebar,
       showTabletColonyPicker,
-      toggleMobileColonyPicker,
+      toggleTabletColonyPicker,
       userHubTab,
       clearUserHubTab,
     ],
