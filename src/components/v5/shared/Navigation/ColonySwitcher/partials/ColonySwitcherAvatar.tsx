@@ -5,7 +5,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
 import Avatar from '~v5/shared/Avatar/index.ts';
 
-export const ColonySwitcherAvatar = () => {
+export const ColonySwitcherAvatar = ({ className }: { className?: string }) => {
   const colonyContext = useColonyContext({ nullableContext: true });
 
   const colonyAvatarSrc = colonyContext?.colony?.metadata?.avatar
@@ -14,7 +14,7 @@ export const ColonySwitcherAvatar = () => {
     : undefined;
 
   return (
-    <div className={clsx('rounded-full')}>
+    <div className={clsx('rounded-full ', className)}>
       {colonyContext ? (
         <Avatar
           address={colonyContext.colony.colonyAddress}

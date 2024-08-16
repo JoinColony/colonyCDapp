@@ -64,8 +64,7 @@ const ColonySidebar = ({ txButton, userHub, transactionId }: Props) => {
           </Button>
           <LearnMore
             message={{
-              id: `${displayName}.helpText`,
-              defaultMessage: 'Need help and guidance? <a>Visit our docs</a>',
+              id: 'learnMoreComponent.helpAndGuidance',
             }}
             href={LEARN_MORE_PAYMENTS}
           />
