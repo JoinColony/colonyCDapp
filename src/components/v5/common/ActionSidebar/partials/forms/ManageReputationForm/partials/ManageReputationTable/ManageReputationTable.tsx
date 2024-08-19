@@ -83,7 +83,8 @@ const ManageReputationTable: FC = () => {
         className={clsx('flex-shrink outline-none outline-0', {
           'placeholder:text-negative-400': !!error,
           'bg-transparent placeholder:text-gray-300': isChangeFieldDisabled,
-          'placeholder:text-gray-400': !isChangeFieldDisabled && !error,
+          'bg-base-white placeholder:text-gray-400':
+            !isChangeFieldDisabled && !error,
         })}
         placeholder={formatText({ id: 'actionSidebar.enterValue' })}
         value={value}

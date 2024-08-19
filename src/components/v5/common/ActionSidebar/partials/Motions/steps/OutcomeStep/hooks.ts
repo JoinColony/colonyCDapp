@@ -1,16 +1,25 @@
+import { ThumbsDown, ThumbsUp } from '@phosphor-icons/react';
 import { useMemo } from 'react';
 
 import { type ColonyMotion } from '~types/graphql.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
-import {
-  supportOption,
-  opposeOption,
-} from '~v5/common/ActionSidebar/partials/Motions/consts.ts';
+import { formatText } from '~utils/intl.ts';
 import { type UserAvatarsItem } from '~v5/shared/UserAvatars/types.ts';
 
 import { type VoteStatuses } from './partials/VoteStatuses/types.ts';
 
 export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
+  const supportOption = {
+    label: formatText({ id: 'motion.support' }),
+    id: 'support',
+    icon: ThumbsUp,
+  };
+  const opposeOption = {
+    label: formatText({ id: 'motion.oppose' }),
+    id: 'oppose',
+    icon: ThumbsDown,
+  };
+
   const voteStatuses: VoteStatuses[] = useMemo(() => {
     if (!motionData) return [];
     const {
@@ -35,7 +44,15 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
         status: MotionVote.Nay,
       },
     ];
-  }, [motionData]);
+  }, [
+    motionData,
+    opposeOption.icon,
+    opposeOption.id,
+    opposeOption.label,
+    supportOption.icon,
+    supportOption.id,
+    supportOption.label,
+  ]);
 
   const stakingData = useMemo(() => {
     if (!motionData) return undefined;
@@ -82,7 +99,15 @@ export const useOutcomeStep = (motionData: ColonyMotion | null | undefined) => {
       stakers,
       stakeVoteStatuses,
     };
-  }, [motionData]);
+  }, [
+    motionData,
+    opposeOption.icon,
+    opposeOption.id,
+    opposeOption.label,
+    supportOption.icon,
+    supportOption.id,
+    supportOption.label,
+  ]);
 
   return {
     voteStatuses,

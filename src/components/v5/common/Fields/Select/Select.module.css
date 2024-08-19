@@ -1,5 +1,5 @@
 .wrapper :global(.select__control) {
-  @apply rounded-e rounded-s border-gray-300 text-md font-normal text-gray-900;
+  @apply rounded-e rounded-s border-gray-300 bg-base-white text-md font-normal text-gray-900;
 }
 
 .wrapper--error :global(.select__control) {
@@ -7,7 +7,7 @@
 }
 
 .wrapper :global(.select__control--is-focused) {
-  @apply border-blue-200 shadow-[0rem_0rem_0rem_.1875rem_#EFF8FF];
+  @apply border-blue-200 !shadow-none;
 }
 
 .wrapper :global(.select__placeholder) {
@@ -19,7 +19,7 @@
 }
 
 .wrapper :global(.select__single-value) {
-  @apply m-0;
+  @apply m-0 text-gray-900;
 }
 
 .wrapper :global(.select__indicator) {
@@ -39,7 +39,7 @@
 }
 
 .menu :global(.select__menu-list) {
-  @apply px-1.5 py-2;
+  @apply bg-base-white px-1.5 py-2;
 }
 
 .menu :global(.select__option) {

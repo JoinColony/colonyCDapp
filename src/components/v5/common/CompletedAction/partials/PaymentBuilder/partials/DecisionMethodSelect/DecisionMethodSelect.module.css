@@ -1,5 +1,5 @@
 .wrapper :global(.select__control) {
-  @apply rounded-e rounded-s border-gray-300 text-md font-medium text-gray-900;
+  @apply rounded-e rounded-s border-gray-300 bg-base-white text-md font-medium text-gray-900;
 }
 
 .wrapper :global(.select__placeholder) {
@@ -15,7 +15,7 @@
 }
 
 .wrapper :global(.select__single-value) {
-  @apply m-0;
+  @apply m-0 text-gray-900;
 }
 
 .wrapper :global(.select__indicator) {
@@ -35,7 +35,7 @@
 }
 
 .menu :global(.select__menu-list) {
-  @apply px-1.5 py-2;
+  @apply bg-base-white px-1.5 py-2;
 }
 
 .menu :global(.select__option) {

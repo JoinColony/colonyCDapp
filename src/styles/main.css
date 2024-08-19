@@ -63,11 +63,15 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
 
 :root {
   --onboard-connect-sidebar-background: var(--color-gray-200);
+  --onboard-main-scroll-container-background: var(--color-base-white);
   --onboard-connect-sidebar-color: var(--color-gray-900);
   --onboard-modal-border-radius: 0.5rem;
   --onboard-modal-box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
   --onboard-wallet-app-icon-border-color: transparent;
   --onboard-wallet-button-background: var(--color-gray-25);
+  --onboard-connect-header-color: var(--color-gray-900);
+  --onboard-wallet-button-color: var(--color-gray-900);
+  --onboard-wallet-button-color-hover: var(--color-gray-900);
   --onboard-wallet-button-background-hover: var(--color-blue-100);
   --onboard-wallet-button-border-color: var(--color-gray-100);
   --onboard-wallet-button-box-shadow-hover: 0px 0px 0px 1px

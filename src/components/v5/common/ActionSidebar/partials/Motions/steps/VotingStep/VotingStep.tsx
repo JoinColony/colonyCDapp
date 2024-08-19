@@ -17,7 +17,7 @@ import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
 import { type VotingStepProps, VotingStepSections } from './types.ts';
-import { renderVoteRadioButtons } from './utils.tsx';
+import { useRenderVoteRadioButtons } from './utils.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.VotingStep';
@@ -61,6 +61,10 @@ const VotingStep: FC<VotingStepProps> = ({
 
   const isSupportVote = currentUserVote === MotionVote.Yay;
   const isOpposeVote = currentUserVote === MotionVote.Nay;
+  const votingItems = useRenderVoteRadioButtons(
+    hasUserVoted,
+    currentUserVote || 0,
+  );
 
   return (
     <MenuWithStatusText
@@ -144,13 +148,7 @@ const VotingStep: FC<VotingStepProps> = ({
                         {formatText({ id: 'motion.votingStep.title' })}
                       </h4>
                     )}
-                    <FormButtonRadioButtons
-                      items={renderVoteRadioButtons(
-                        hasUserVoted,
-                        currentUserVote || 0,
-                      )}
-                      name="vote"
-                    />
+                    <FormButtonRadioButtons items={votingItems} name="vote" />
                   </div>
                 )}
               </div>

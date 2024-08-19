@@ -1,7 +1,9 @@
+import clsx from 'clsx';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,6 +16,7 @@ const Members = () => {
   const { search } = useLocation();
 
   const selectedDomain = useGetSelectedDomainFilter();
+  const { isDarkMode } = usePageThemeContext();
   const nativeDomainId = selectedDomain?.nativeId;
   const {
     totalMembers: members,
@@ -61,7 +64,11 @@ const Members = () => {
         />
       }
       searchParams={search}
-      className="border-base-bg bg-base-bg"
+      className={clsx({
+        'border-base-bg bg-base-bg': !isDarkMode,
+        'border-gray-200 bg-base-white text-gray-900 hover:!border-gray-200 hover:!bg-gray-200':
+          isDarkMode,
+      })}
     />
   );
 };

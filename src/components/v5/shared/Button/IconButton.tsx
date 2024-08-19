@@ -2,6 +2,7 @@
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
@@ -25,6 +26,7 @@ const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
   isFullSize,
   ...rest
 }) => {
+  const { isDarkMode } = usePageThemeContext();
   const titleText = title ? formatText(title) : undefined;
   const buttonText = text ? formatText(text, textValues) : undefined;
   const ariaLabelText = ariaLabel ? formatText(ariaLabel) : undefined;
@@ -36,12 +38,14 @@ const IconButton: FC<PropsWithChildren<IconButtonProps>> = ({
       ) : (
         <button
           className={clsx(
-            'flex min-w-[6.25rem] items-center justify-center bg-blue-400 px-3.5 py-2.5 text-sm font-medium text-base-white transition-all duration-normal hover:bg-blue-300 disabled:bg-gray-300',
+            'flex min-w-[6.25rem] items-center justify-center bg-blue-400 px-3.5 py-2.5 text-sm font-medium transition-all duration-normal hover:bg-blue-300 disabled:bg-gray-300',
             {
               'rounded-lg': rounded === 's',
               'rounded-full': rounded === 'l',
               'pointer-events-none': disabled,
               'w-full': isFullSize,
+              'text-base-white': !isDarkMode,
+              'text-gray-900': isDarkMode,
             },
             className,
           )}

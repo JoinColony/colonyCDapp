@@ -44,7 +44,7 @@ const Textarea: FC<TextareaProps> = ({
           'relative min-h-[5.75rem] w-full rounded border bg-base-white',
           {
             'border-gray-300': !isTyping,
-            'border-blue-200 shadow-light-blue': isTyping,
+            'border-blue-200': isTyping,
             'border-negative-400': isErrorStatus,
           },
         )}

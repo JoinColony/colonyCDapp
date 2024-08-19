@@ -50,7 +50,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full resize-none text-md outline-none',
+            'w-full resize-none bg-base-white text-md outline-none',
             {
               'placeholder:text-gray-400': !disabled,
               'pointer-events-none text-gray-300 placeholder:text-gray-300':

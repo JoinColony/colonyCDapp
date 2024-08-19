@@ -147,12 +147,15 @@ const AmountField: FC<AmountFieldProps> = ({
         }}
         readOnly={readonly || isDisabled}
         name={name}
-        className={clsx('flex-shrink text-gray-900 outline-none outline-0', {
-          'placeholder:text-gray-400': !isError && !isDisabled,
-          'placeholder:text-gray-300': isDisabled,
-          'text-negative-400 placeholder:text-negative-400':
-            !isDisabled && isError,
-        })}
+        className={clsx(
+          'flex-shrink bg-base-white text-gray-900 outline-none outline-0',
+          {
+            'placeholder:text-gray-400': !isError && !isDisabled,
+            'placeholder:text-gray-300': isDisabled,
+            'text-negative-400 placeholder:text-negative-400':
+              !isDisabled && isError,
+          },
+        )}
         placeholder={
           placeholder ||
           formatText({

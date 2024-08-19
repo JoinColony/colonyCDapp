@@ -3,6 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import useActionsCount from '~hooks/useActionsCount.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_ACTIVITY_ROUTE } from '~routes/index.ts';
@@ -18,6 +19,7 @@ const TotalActions = () => {
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const nativeDomainId = selectedDomain?.nativeId;
+  const { isDarkMode } = usePageThemeContext();
 
   const { actionsCount: totalActions, loading } = useActionsCount({
     domainId: nativeDomainId,
@@ -42,7 +44,9 @@ const TotalActions = () => {
       }
       className={clsx('text-base-white', {
         [teamColor]: selectedDomain,
-        'border-gray-900 bg-gray-900': !selectedDomain,
+        'border-gray-900 bg-gray-900': !selectedDomain && !isDarkMode,
+        'bg-gray-200 text-gray-900 hover:!border-gray-200 hover:!bg-base-white':
+          !selectedDomain && isDarkMode,
       })}
       href={COLONY_ACTIVITY_ROUTE}
       searchParams={searchParams}

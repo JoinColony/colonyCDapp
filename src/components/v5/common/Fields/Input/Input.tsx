@@ -71,17 +71,13 @@ const Input: FC<InputProps> = ({
         type="text"
         name={name}
         placeholder={placeholder}
-        className={clsx(
-          className,
-          'input-round input focus:border-blue-200 focus:shadow-light-blue',
-          {
-            'border-gray-300': !isTyping,
-            'border-blue-200 shadow-light-blue': isTyping,
-            'border-negative-400 focus:border-negative-400 focus:shadow-none':
-              isErrorStatus,
-            'text-gray-400': isDisabled,
-          },
-        )}
+        className={clsx(className, 'input-round input focus:border-blue-200', {
+          'border-gray-300': !isTyping,
+          'border-blue-200': isTyping,
+          'border-negative-400 focus:border-negative-400 focus:shadow-none':
+            isErrorStatus,
+          'text-gray-400': isDisabled,
+        })}
         defaultValue={defaultValue}
         onChange={(e) => {
           onChange(e);

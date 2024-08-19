@@ -88,7 +88,7 @@ const FormattedInput: FC<FormattedInputProps> = ({
             'w-full pr-[var(--button-width)] text-md outline-0 placeholder:text-gray-400 focus:outline-none',
             {
               'pointer-events-none text-gray-400': disabled,
-              'rounded border border-gray-300 bg-base-white py-3 pl-3.5 focus:border-blue-200 focus:shadow-light-blue':
+              'rounded border border-gray-300 bg-base-white py-3 pl-3.5 focus:border-blue-200':
                 mode === 'primary',
               'border-none': mode === 'secondary',
               'pl-[var(--custom-prefix-width)]': customPrefix,

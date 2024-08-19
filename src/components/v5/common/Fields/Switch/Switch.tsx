@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React, { useId } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+
 import { type SwitchProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.Switch';
@@ -8,6 +10,7 @@ const displayName = 'v5.common.Fields.Switch';
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
   ({ id, disabled: disabledProp, readOnly, className, ...rest }, ref) => {
     const generatedId = useId();
+    const { isDarkMode } = usePageThemeContext();
     const disabled = disabledProp || readOnly;
 
     return (
@@ -28,9 +31,13 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         />
         <div
           className={clsx(
-            'h-5 w-9 rounded-full border-2 border-gray-200 bg-gray-200',
+            'h-5 w-9 rounded-full border-2',
             "after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-base-white after:shadow-sm after:transition after:content-['']",
             'peer-checked:border-gray-900 peer-checked:bg-gray-900 peer-checked:after:translate-x-full',
+            {
+              'border-gray-200 bg-gray-200': !isDarkMode,
+              'border-gray-300 bg-gray-300': isDarkMode,
+            },
           )}
         />
       </label>
