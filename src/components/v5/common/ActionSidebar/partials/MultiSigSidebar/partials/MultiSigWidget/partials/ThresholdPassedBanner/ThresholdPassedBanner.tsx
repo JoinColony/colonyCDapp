@@ -8,8 +8,7 @@ import { type MultiSigUserSignature } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { getMultipleRolesText } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
-
-import { useRelevantUserRoles } from '../../../../hooks/useRelevantUserRoles.ts';
+import { useRelevantUserRoles } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/hooks/useRelevantUserRoles.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.ThresholdPassedBanner';

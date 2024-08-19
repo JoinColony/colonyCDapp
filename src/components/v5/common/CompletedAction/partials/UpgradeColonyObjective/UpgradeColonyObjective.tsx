@@ -6,8 +6,6 @@ import { Action } from '~constants/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
-import { ICON_SIZE } from '~v5/common/CompletedAction/consts.ts';
-import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import {
   TITLE_FIELD_NAME,
   ACTION_TYPE_FIELD_NAME,
@@ -16,8 +14,10 @@ import {
   COLONY_OBJECTIVE_TITLE_FIELD_NAME,
   COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { ICON_SIZE } from '~v5/common/CompletedAction/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
-import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,

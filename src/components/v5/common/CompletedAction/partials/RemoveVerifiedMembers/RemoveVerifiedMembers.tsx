@@ -12,9 +12,9 @@ import {
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
-import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
