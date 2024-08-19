@@ -10,14 +10,12 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { type AllActions, type Action } from '~redux/types/actions/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
   waitForTxResult,
-} from '../../transactions/index.ts';
+} from '~redux/sagas/transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -25,7 +23,9 @@ import {
   getColonyManager,
   uploadAnnotation,
   initiateTransaction,
-} from '../../utils/index.ts';
+} from '~redux/sagas/utils/index.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
 

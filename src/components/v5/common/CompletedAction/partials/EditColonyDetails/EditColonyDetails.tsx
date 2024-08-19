@@ -14,10 +14,10 @@ import {
   COLONY_AVATAR_FIELD_NAME,
   COLONY_NAME_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/ColonyAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
-import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,
