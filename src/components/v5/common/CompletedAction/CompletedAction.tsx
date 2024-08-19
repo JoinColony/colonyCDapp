@@ -25,8 +25,8 @@ import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
-import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
+import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
   action: ColonyAction;

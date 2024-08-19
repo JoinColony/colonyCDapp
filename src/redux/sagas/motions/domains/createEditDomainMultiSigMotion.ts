@@ -4,16 +4,13 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ContextModule, getContext } from '~context/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
-
-import { ActionTypes } from '../../../actionTypes.ts';
-import { type AllActions, type Action } from '../../../types/actions/index.ts';
+import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
   waitForTxResult,
-} from '../../transactions/index.ts';
+} from '~redux/sagas/transactions/index.ts';
 import {
   putError,
   takeFrom,
@@ -22,7 +19,9 @@ import {
   uploadAnnotation,
   initiateTransaction,
   getPermissionProofsLocal,
-} from '../../utils/index.ts';
+} from '~redux/sagas/utils/index.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
 

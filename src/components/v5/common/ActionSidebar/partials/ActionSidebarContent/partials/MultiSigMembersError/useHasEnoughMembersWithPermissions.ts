@@ -4,8 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { type Action } from '~constants/actions.ts';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
-
-import { getPermissionsNeededForAction } from '../../../../hooks/permissions/helpers.ts';
+import { getPermissionsNeededForAction } from '~v5/common/ActionSidebar/hooks/permissions/helpers.ts';
 
 interface UseHasEnoughMembersWithPermissionsResult {
   hasEnoughMembersWithPermissions: boolean;

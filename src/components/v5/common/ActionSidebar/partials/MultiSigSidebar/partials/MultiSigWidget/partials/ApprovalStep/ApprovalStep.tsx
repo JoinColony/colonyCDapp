@@ -17,16 +17,8 @@ import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
-import ProgressBar from '~v5/shared/ProgressBar/ProgressBar.tsx';
-import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
-import StatusText from '~v5/shared/StatusText/StatusText.tsx';
-
-import CancelButton from '../../../CancelButton/CancelButton.tsx';
-import RemoveVoteButton from '../../../RemoveVoteButton/RemoveVoteButton.tsx';
-import Signees from '../../../Signees/Signees.tsx';
-import VoteButton from '../../../VoteButton/VoteButton.tsx';
-import { VoteExpectedStep } from '../../types.ts';
+import CancelButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/CancelButton/CancelButton.tsx';
+import { VoteExpectedStep } from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/types.ts';
 import {
   getAllUserSignatures,
   getIsMultiSigExecutable,
@@ -35,7 +27,15 @@ import {
   getNumberOfRejections,
   getSignaturesPerRole,
   hasWeekPassed,
-} from '../../utils.ts';
+} from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/utils.ts';
+import RemoveVoteButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/RemoveVoteButton/RemoveVoteButton.tsx';
+import Signees from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/Signees/Signees.tsx';
+import VoteButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/VoteButton/VoteButton.tsx';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
+import ProgressBar from '~v5/shared/ProgressBar/ProgressBar.tsx';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
+
 import MultiSigPills from '../MultiSigPills/MultiSigPills.tsx';
 import ThresholdPassedBanner from '../ThresholdPassedBanner/ThresholdPassedBanner.tsx';
 

@@ -22,10 +22,10 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
-import { useDecisionMethod } from '../../hooks.ts';
 import {
   ActionDataGrid,
   ActionSubtitle,

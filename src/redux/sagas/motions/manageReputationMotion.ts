@@ -8,9 +8,9 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {

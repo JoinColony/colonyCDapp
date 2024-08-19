@@ -2,7 +2,7 @@ import { apolloClient } from '~apollo';
 import { type Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
-import { isQueryActive } from '~utils/isQueryActive';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
   clearContributorsAndRolesCache,
   updateContributorVerifiedStatus,

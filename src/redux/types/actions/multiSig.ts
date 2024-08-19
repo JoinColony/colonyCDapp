@@ -1,10 +1,9 @@
 import { type ColonyRole } from '@colony/colony-js';
 
 import { type ColonyRoleFragment, type MultiSigVote } from '~gql';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Domain } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
-
-import { type ActionTypes } from '../../actionTypes.ts';
 
 import {
   type MetaWithSetter,

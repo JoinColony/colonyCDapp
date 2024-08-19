@@ -8,18 +8,17 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
-import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
-
-import FinalizeButton from '../../../FinalizeButton/FinalizeButton.tsx';
+import FinalizeButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/FinalizeButton/FinalizeButton.tsx';
 import {
   getIsMultiSigExecutable,
   getNumberOfApprovals,
   getNumberOfRejections,
   getSignaturesPerRole,
   hasWeekPassed,
-} from '../../utils.ts';
+} from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/utils.ts';
+import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.FinalizeStep';

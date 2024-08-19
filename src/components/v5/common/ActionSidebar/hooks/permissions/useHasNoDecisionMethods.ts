@@ -6,8 +6,8 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import {
   getPermissionsDomainIdForAction,
