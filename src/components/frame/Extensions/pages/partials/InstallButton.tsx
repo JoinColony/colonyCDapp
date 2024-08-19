@@ -33,7 +33,7 @@ const InstallButton = ({
   onActiveTabChange,
 }: InstallButtonProps) => {
   const {
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress, name: colonyName, version: colonyVersion },
     isSupportedColonyVersion,
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
@@ -91,7 +91,11 @@ const InstallButton = ({
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
-      disabled={isInstallDisabled || !isSupportedColonyVersion}
+      disabled={
+        isInstallDisabled ||
+        !isSupportedColonyVersion ||
+        (extensionData.neededColonyVersion || 0) > colonyVersion
+      }
     >
       {formatText({ id: 'button.install' })}
     </ActionButton>
