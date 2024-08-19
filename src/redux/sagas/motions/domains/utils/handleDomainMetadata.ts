@@ -6,14 +6,13 @@ import {
   CreateDomainMetadataDocument,
   DomainColor,
 } from '~gql';
+import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   createActionMetadataInDB,
   getUpdatedDomainMetadataChangelog,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
 import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
-
-import { type ActionTypes } from '../../../../actionTypes.ts';
 
 type Params = Pick<
   Action<ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT>['payload'],

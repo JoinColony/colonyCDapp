@@ -3,12 +3,12 @@ import { Star, User, UsersThree } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   UserRole,
   type UserRoleMeta,
   getRole,
 } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ContributorType } from '~gql';
 import {
   type DomainWithPermissionsAndReputation,
@@ -19,8 +19,8 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { getTeamColor } from '~utils/teams.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import PermissionsBadge from '~v5/common/Pills/PermissionsBadge/index.ts';
 import UserStatus from '~v5/common/Pills/UserStatus/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';

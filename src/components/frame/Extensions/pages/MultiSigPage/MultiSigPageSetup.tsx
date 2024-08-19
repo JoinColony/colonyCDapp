@@ -2,6 +2,7 @@ import { CaretDown } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { InputGroup } from '~common/Extensions/Fields/InputGroup/InputGroup.tsx';
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
 import useToggle from '~hooks/useToggle/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
@@ -9,7 +10,6 @@ import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 
-import { InputGroup } from '../../../../common/Extensions/Fields/InputGroup/InputGroup.tsx';
 import ExtensionDetails from '../ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails.tsx';
 
 import { useBackNavigation, useThresholdData } from './hooks.ts';
