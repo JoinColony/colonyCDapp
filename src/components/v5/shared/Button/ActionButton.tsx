@@ -37,6 +37,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   });
 
   const handleClick = async () => {
+    if (props.disabled) return;
     let result;
     setLoading(true);
     try {
