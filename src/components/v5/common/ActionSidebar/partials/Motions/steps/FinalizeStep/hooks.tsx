@@ -92,7 +92,7 @@ export const useClaimConfig = (
       isFinalized: isMotionFinalized,
       stakerRewards,
       usersStakes,
-      userRewards,
+      voterRewards,
       databaseMotionId,
       remainingStakes,
     },
@@ -152,11 +152,11 @@ export const useClaimConfig = (
   }, [stakerReward?.isClaimed, isClaimed]);
 
   const userVoteRewardAmount = useMemo(() => {
-    if (!userAddress || !userRewards?.items) {
+    if (!userAddress || !voterRewards?.items) {
       return 0;
     }
-    const userReward = userRewards.items.find(
-      (rewardItem) => rewardItem?.userAddress === userAddress,
+    const userReward = voterRewards.items.find(
+      (voterReward) => voterReward?.userAddress === userAddress,
     );
 
     if (!userReward) {
@@ -164,7 +164,7 @@ export const useClaimConfig = (
     }
 
     return userReward.amount;
-  }, [userAddress, userRewards]);
+  }, [userAddress, voterRewards]);
 
   const userTotalStake = useMemo(
     () =>
@@ -181,7 +181,7 @@ export const useClaimConfig = (
     if (stakerReward) {
       return total.add(
         BigNumber.from(stakerReward?.rewards?.yay).add(
-          stakerReward?.rewards.nay || '',
+          stakerReward?.rewards.nay || '0',
         ),
       );
     }

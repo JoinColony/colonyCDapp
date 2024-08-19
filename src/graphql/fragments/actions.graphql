@@ -156,7 +156,7 @@ fragment UserMotionStakes on UserMotionStakes {
   }
 }
 
-fragment UserMotionReward on UserMotionReward {
+fragment VoterRewardsHistory on VoterRewardsHistory {
   userAddress
   user {
     ...User
@@ -173,11 +173,6 @@ fragment ColonyMotion on ColonyMotion {
   usersStakes {
     ...UserMotionStakes
   }
-  userRewards {
-    items {
-      ...UserMotionReward
-    }
-  }
   remainingStakes
   userMinStake
   requiredStake
@@ -192,6 +187,11 @@ fragment ColonyMotion on ColonyMotion {
       nay
     }
     isClaimed
+  }
+  voterRewards {
+    items {
+      ...VoterRewardsHistory
+    }
   }
   isFinalized
   voterRecord {

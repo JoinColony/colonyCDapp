@@ -2276,14 +2276,14 @@ type StakerRewards {
 }
 
 """
-Other user motion rewards such as voting
+Other motion voting rewards
 """
-type UserMotionReward @model {
+type VoterRewardsHistory @model {
   id: ID!
   userAddress: ID!
     @index(
       name: "byUser"
-      queryField: "getUserRewards"
+      queryField: "getUserVoterRewards"
       sortKeyFields: ["createdAt"]
     )
   user: User! @hasOne(fields: ["userAddress"])
@@ -2292,7 +2292,7 @@ type UserMotionReward @model {
   motionId: ID!
     @index(
       name: "byMotionId"
-      queryField: "getMotionUserRewards"
+      queryField: "getMotionVoterRewards"
       sortKeyFields: ["createdAt"]
     )
   createdAt: AWSDateTime!
@@ -2531,7 +2531,7 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  userRewards: [UserMotionReward!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
