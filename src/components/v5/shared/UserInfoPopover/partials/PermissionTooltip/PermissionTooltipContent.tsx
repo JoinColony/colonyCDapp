@@ -3,7 +3,6 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { getRole, UserRole } from '~constants/permissions.ts';
-import { type AvailablePermission } from '~hooks/members/types.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName = 'v5.UserInfoPopover.partials.PermissionTooltipContent';
@@ -25,8 +24,8 @@ const MSG = defineMessages({
 });
 
 interface PermissionTooltipContentProps {
-  userPermissions: AvailablePermission[];
-  userInheritedPermissions: AvailablePermission[];
+  userPermissions: ColonyRole[];
+  userInheritedPermissions: ColonyRole[];
   rolePrepend?: string;
 }
 
