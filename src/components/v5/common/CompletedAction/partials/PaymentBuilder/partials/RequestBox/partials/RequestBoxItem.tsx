@@ -31,7 +31,7 @@ const RequestBoxItem: FC<RequestBoxItemProps> = ({
     <button
       type="button"
       className={clsx(
-        'relative flex w-full items-center justify-between text-gray-600 outline-none transition-colors',
+        'group flex w-full items-center justify-between text-gray-600 outline-none transition-all',
         {
           'hover:text-blue-400': isMotionFailed || !isSingleItem,
         },
@@ -49,7 +49,11 @@ const RequestBoxItem: FC<RequestBoxItemProps> = ({
         }
       }}
     >
-      <span className="text-sm">
+      <span
+        className={clsx('text-sm', {
+          'group-hover:underline': isMotionFailed || !isSingleItem,
+        })}
+      >
         <FormattedDate
           value={new Date(date)}
           day="numeric"
