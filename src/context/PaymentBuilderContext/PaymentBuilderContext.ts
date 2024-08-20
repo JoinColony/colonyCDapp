@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
+import { type ExpenditureAction } from '~types/graphql.ts';
 import noop from '~utils/noop.ts';
-import { type PermissionsBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PermissionsBox/types.ts';
 
 export const PaymentBuilderContext = createContext<{
   toggleOnFundingModal: () => void;
@@ -10,8 +10,8 @@ export const PaymentBuilderContext = createContext<{
   toggleOnReleaseModal: () => void;
   toggleOffReleaseModal: () => void;
   isReleaseModalOpen: boolean;
-  selectedPermissionAction: PermissionsBoxItem | undefined;
-  setSelectedPermissionAction: (data: PermissionsBoxItem) => void;
+  selectedPermissionAction: ExpenditureAction | undefined;
+  setSelectedPermissionAction: (data: ExpenditureAction) => void;
   selectedTransaction: string;
   setSelectedTransaction: (transaction: string) => void;
 }>({

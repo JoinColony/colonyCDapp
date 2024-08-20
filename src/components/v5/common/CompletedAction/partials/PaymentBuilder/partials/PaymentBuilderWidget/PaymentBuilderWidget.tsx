@@ -4,7 +4,7 @@ import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useGetColonyExpendituresQuery, ColonyActionType } from '~gql';
+import { useGetColonyExpendituresQuery } from '~gql';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -24,15 +24,17 @@ import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPe
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
 import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
+import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
-import PermissionsBox from '../PermissionsBox/PermissionsBox.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import RequestBox from '../RequestBox/RequestBox.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import { SpinnerGap } from '@phosphor-icons/react';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
@@ -70,10 +72,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isStaked,
     userStake,
     ownerAddress,
-    motions,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
-  const { items: fundingActionsItems } = fundingActions || {};
 
   const expenditureStep = getExpenditureStep(expenditure);
 
@@ -130,25 +130,28 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   };
 
   const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
-  const isFundingMotion =
-    motions?.items?.length &&
-    motions.items?.[0]?.action?.type === ColonyActionType.FundExpenditureMotion;
-  const fundingMotions = useMemo(() => {
-    return (
-      motions?.items
-        .filter(notNull)
-        .filter(
-          (motion) =>
-            motion?.action?.type === ColonyActionType.FundExpenditureMotion,
-        )
-        .sort((a, b) => {
-          if (a?.createdAt && b?.createdAt) {
-            return Date.parse(b.createdAt) - Date.parse(a.createdAt);
-          }
-          return 0;
-        }) || []
-    );
-  }, [motions]);
+
+  const fundingActionItems =
+    fundingActions?.items.filter(notNull).sort((a, b) => {
+      if (a?.createdAt && b?.createdAt) {
+        return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      }
+      return 0;
+    }) ?? [];
+
+  const fundingMotions = fundingActionItems.filter(
+    (actionItem) => !!actionItem.motionData,
+  );
+
+  const fundingActionsAndMotions = [
+    ...fundingActionItems,
+    ...fundingMotions,
+  ].sort((a, b) => {
+    if (a?.createdAt && b?.createdAt) {
+      return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+    }
+    return 0;
+  });
 
   const {
     action: motionAction,
@@ -160,7 +163,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const selectedMotion = fundingMotions.find(
     (motion) => motion?.transactionHash === selectedTransaction,
-  );
+  )?.motionData;
 
   useEffect(() => {
     if (
@@ -180,26 +183,29 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     ? selectedMotion?.stakerRewards &&
       selectedMotion?.stakerRewards.length > 0 &&
       selectedMotion?.stakerRewards.every((reward) => reward.isClaimed)
-    : fundingMotions?.[0]?.stakerRewards &&
-      fundingMotions?.[0].stakerRewards.length > 0 &&
-      fundingMotions[0].stakerRewards.every((reward) => reward.isClaimed);
+    : fundingMotions?.[0]?.motionData?.stakerRewards &&
+      fundingMotions?.[0]?.motionData?.stakerRewards.length > 0 &&
+      fundingMotions[0]?.motionData?.stakerRewards.every(
+        (reward) => reward.isClaimed,
+      );
 
   const isFundingMotionFailed = selectedMotion
     ? selectedMotion?.motionStateHistory.hasFailed ||
       selectedMotion?.motionStateHistory.hasFailedNotFinalizable
-    : fundingMotions?.[0]?.motionStateHistory.hasFailed ||
-      fundingMotions?.[0]?.motionStateHistory.hasFailedNotFinalizable;
+    : fundingMotions?.[0]?.motionData?.motionStateHistory.hasFailed ||
+      fundingMotions?.[0]?.motionData?.motionStateHistory
+        .hasFailedNotFinalizable;
   const hasMotionPassed = selectedMotion
     ? selectedMotion?.motionStateHistory.hasPassed
-    : fundingMotions?.[0]?.motionStateHistory.hasPassed;
+    : fundingMotions?.[0]?.motionData?.motionStateHistory.hasPassed;
   const hasEveryMotionEnded =
     fundingMotions &&
     fundingMotions.length > 0 &&
     fundingMotions.every(
       (motion) =>
-        motion?.motionStateHistory.hasPassed ||
-        motion?.motionStateHistory.hasFailed ||
-        motion?.motionStateHistory.hasFailedNotFinalizable,
+        motion?.motionData?.motionStateHistory.hasPassed ||
+        motion?.motionData?.motionStateHistory.hasFailed ||
+        motion?.motionData?.motionStateHistory.hasFailedNotFinalizable,
     );
 
   useEffect(() => {
@@ -231,11 +237,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   useEffect(() => {
     setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
   }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
-
-  const mappedFundingActionsItems = (fundingActionsItems || []).map((item) => ({
-    createdAt: item?.createdAt || '',
-    initiatorAddress: item?.initiatorAddress || '',
-  }));
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
@@ -304,11 +305,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       heading: {
         label: formatText({ id: 'expenditure.fundingStage.label' }),
         decor:
-          isFundingMotion &&
+          // isFundingMotion &&
           !hasMotionPassed &&
           !isFundingMotionFailed &&
-          motionState &&
-          motionStakes ? (
+          motionStakes &&
+          motionState ? (
             <MotionCountDownTimer
               key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
               motionState={motionState}
@@ -321,52 +322,69 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       content:
         expenditureStep === ExpenditureStep.Funding ? (
           <>
-            {isFundingMotion && !isFundingMotionFailed && !isFundingClaimed ? (
-              <div className="flex flex-col gap-2">
-                <RequestBox
-                  title={formatText({ id: 'expenditure.fundingRequest.title' })}
-                  motions={fundingMotions}
-                />
-                <MotionBox
-                  transactionId={
-                    selectedTransaction ||
-                    fundingMotions?.[0].transactionHash ||
-                    ''
+            {
+              /* isFundingMotion && */ !isFundingMotionFailed &&
+              !isFundingClaimed ? (
+                <div className="flex flex-col gap-2">
+                  <RequestBox
+                    title={formatText({
+                      id: 'expenditure.fundingRequest.title',
+                    })}
+                    motions={[]}
+                  />
+                  <MotionBox
+                    transactionId={
+                      selectedTransaction ||
+                      fundingMotions?.[0].transactionHash ||
+                      ''
+                    }
+                  />
+                </div>
+              ) : (
+                <StepDetailsBlock
+                  text={formatText({
+                    id: 'expenditure.fundingStage.info',
+                  })}
+                  content={
+                    <>
+                      {fundingMotions && fundingMotions.length > 0 && (
+                        <RequestBox
+                          withoutPadding
+                          title={formatText({
+                            id: 'expenditure.fundingRequest.title',
+                          })}
+                          motions={[]}
+                        />
+                      )}
+                      {expectedStepKey === ExpenditureStep.Release ? (
+                        <IconButton
+                          className="w-full"
+                          rounded="s"
+                          text={{ id: 'button.pending' }}
+                          icon={
+                            <span className="ml-1.5 flex shrink-0">
+                              <SpinnerGap className="animate-spin" size={14} />
+                            </span>
+                          }
+                        />
+                      ) : (
+                        <Button
+                          className="w-full"
+                          onClick={showFundingModal}
+                          text={formatText({
+                            id: 'expenditure.fundingStage.button',
+                          })}
+                        />
+                      )}
+                    </>
                   }
                 />
-              </div>
-            ) : (
-              <StepDetailsBlock
-                text={formatText({
-                  id: 'expenditure.fundingStage.info',
-                })}
-                content={
-                  <>
-                    {fundingMotions && fundingMotions.length > 0 && (
-                      <RequestBox
-                        withoutPadding
-                        title={formatText({
-                          id: 'expenditure.fundingRequest.title',
-                        })}
-                        motions={fundingMotions}
-                      />
-                    )}
-                    <Button
-                      className="w-full"
-                      onClick={showFundingModal}
-                      text={formatText({
-                        id: 'expenditure.fundingStage.button',
-                      })}
-                      loading={expectedStepKey === ExpenditureStep.Release}
-                    />
-                  </>
-                }
-              />
-            )}
+              )
+            }
           </>
         ) : (
           <>
-            {isFundingMotion ? (
+            {/* {isFundingMotion ? (
               <div className="flex flex-col gap-2">
                 <RequestBox
                   title={formatText({ id: 'expenditure.fundingRequest.title' })}
@@ -380,27 +398,27 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                   }
                 />
               </div>
-            ) : undefined}
-            {fundingActionsItems && fundingActionsItems.length > 0 && (
+            ) : undefined} */}
+            {fundingActionsAndMotions.length > 0 ? (
               <>
-                {fundingActionsItems.length === 1 ? (
+                {/* {fundingActionsItems.length === 1 ? (
                   <ActionWithPermissionsInfo
                     userAdddress={fundingActionsItems[0]?.initiatorAddress}
                     createdAt={fundingActionsItems[0]?.createdAt}
                   />
-                ) : (
-                  <div className="flex flex-col gap-2">
-                    <PermissionsBox items={mappedFundingActionsItems} />
-                    {selectedPermissionAction && (
-                      <ActionWithPermissionsInfo
-                        userAdddress={selectedPermissionAction.initiatorAddress}
-                        createdAt={selectedPermissionAction.createdAt}
-                      />
-                    )}
-                  </div>
-                )}
+                ) : ( */}
+                <div className="flex flex-col gap-2">
+                  <FundingRequests actions={fundingActionItems} />
+                  {selectedPermissionAction && (
+                    <ActionWithPermissionsInfo
+                      userAdddress={selectedPermissionAction.initiatorAddress}
+                      createdAt={selectedPermissionAction.createdAt}
+                    />
+                  )}
+                </div>
+                {/* )} */}
               </>
-            )}
+            ) : null}
           </>
         ),
     },
