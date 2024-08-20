@@ -235,6 +235,7 @@ fragment ColonyMotion on ColonyMotion {
     type
   }
   createdAt
+  expenditureSlotIds
 }
 
 fragment MotionMessage on MotionMessage {
