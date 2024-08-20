@@ -26,11 +26,12 @@ const FundingRequests: FC<FundingRequestsProps> = ({ actions }) => {
       </h5>
       <ul className="max-h-[6.25rem] overflow-y-auto overflow-x-hidden">
         {actions.map((action) => {
-          const { createdAt } = action;
-          const isSelected = selectedPermissionAction?.createdAt === createdAt;
+          const { transactionHash, createdAt } = action;
+          const isSelected =
+            selectedPermissionAction?.transactionHash === transactionHash;
 
           return (
-            <li className="mb-2 w-full last:mb-0" key={createdAt}>
+            <li className="mb-2 w-full last:mb-0" key={transactionHash}>
               <button
                 type="button"
                 className={clsx(
@@ -44,8 +45,7 @@ const FundingRequests: FC<FundingRequestsProps> = ({ actions }) => {
               >
                 <span
                   className={clsx('text-sm group-hover:underline', {
-                    underline:
-                      selectedPermissionAction?.createdAt === createdAt,
+                    underline: isSelected,
                   })}
                 >
                   <FormattedDate
