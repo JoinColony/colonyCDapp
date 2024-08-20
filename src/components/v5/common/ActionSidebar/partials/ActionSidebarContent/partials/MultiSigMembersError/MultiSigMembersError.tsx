@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { WarningCircle } from '@phosphor-icons/react';
 import { useEffect, type FC } from 'react';
 import React from 'react';
@@ -6,7 +7,8 @@ import { FormattedMessage } from 'react-intl';
 
 import {
   ACTION_TYPE_FIELD_NAME,
-  CREATED_IN_FIELD_NAME,
+  FROM_FIELD_NAME,
+  TEAM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 
@@ -27,13 +29,18 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
   updateCanCreateAction,
 }) => {
   const { watch } = useFormContext();
-  const [selectedAction, createdIn] = watch([
+  const [selectedAction, fromDomain, team] = watch([
     ACTION_TYPE_FIELD_NAME,
-    CREATED_IN_FIELD_NAME,
+    FROM_FIELD_NAME,
+    TEAM_FIELD_NAME,
   ]);
+  const domainId = fromDomain ?? team ?? Id.RootDomain;
 
   const { isLoading, hasEnoughMembersWithPermissions } =
-    useHasEnoughMembersWithPermissions({ createdIn, selectedAction });
+    useHasEnoughMembersWithPermissions({
+      domainId,
+      selectedAction,
+    });
 
   useEffect(() => {
     updateMembersLoadingState(isLoading);

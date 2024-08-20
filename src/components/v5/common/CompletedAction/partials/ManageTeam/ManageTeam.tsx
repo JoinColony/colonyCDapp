@@ -85,8 +85,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       actionDomainMetadata?.name;
   }
 
-  const domain =
-    action.motionData?.motionDomain ?? action.multiSigData?.multiSigDomain;
+  const domain = action.motionData?.motionDomain ?? null;
   const motionDomainMetadata = domain?.metadata;
 
   const actionType = [

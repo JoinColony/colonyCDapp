@@ -1,3 +1,4 @@
+import { type ColonyRole } from '@colony/colony-js';
 import clsx from 'clsx';
 import React, { useState, type FC, useMemo, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
@@ -5,9 +6,9 @@ import { defineMessages } from 'react-intl';
 import { findFirstUserRoleWithColonyRoles } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import {
-  type ColonyActionType,
   type ColonyMultiSigFragment,
   MultiSigVote,
+  type ColonyActionType,
 } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
@@ -16,10 +17,11 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
+import { getDomainIdsForEligibleSignees } from '~utils/multiSig/index.ts';
 import CancelButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/CancelButton/CancelButton.tsx';
 import {
   getAllUserSignatures,
+  getDomainIdForActionType,
   getIsMultiSigExecutable,
   getNotSignedUsers,
   getNumberOfApprovals,
@@ -42,11 +44,11 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.ApprovalStep';
 
 interface ApprovalStepProps {
-  thresholdPerRole: Threshold;
   actionType: ColonyActionType;
+  thresholdPerRole: Threshold;
   multiSigData: ColonyMultiSigFragment;
+  requiredRoles: ColonyRole[];
   initiatorAddress: string;
-  createdAt: string;
 }
 
 const MSG = defineMessages({
@@ -112,12 +114,13 @@ const voteOrder = {
 };
 
 const ApprovalStep: FC<ApprovalStepProps> = ({
-  thresholdPerRole,
   actionType,
+  thresholdPerRole,
   multiSigData,
   initiatorAddress,
-  createdAt,
+  requiredRoles,
 }) => {
+  const { createdAt } = multiSigData;
   const { user } = useAppContext();
 
   const [isApproving, setIsApproving] = useState(false);
@@ -125,12 +128,6 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const [isRemovingVote, setIsRemovingVote] = useState(false);
 
   const isOwner = user?.walletAddress === initiatorAddress;
-
-  const requiredRoles =
-    getRolesNeededForMultiSigAction({
-      actionType,
-      createdIn: Number(multiSigData.nativeMultiSigDomainId),
-    }) || [];
 
   const doesActionRequireMultipleRoles = requiredRoles.length > 1;
   const { currentBlockTime } = useCurrentBlockTime();
@@ -156,7 +153,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   const { isLoading: areEligibleSigneesLoading, uniqueEligibleSignees } =
     useEligibleSignees({
-      domainId: Number(multiSigData.nativeMultiSigDomainId),
+      domainIds: getDomainIdsForEligibleSignees(
+        getDomainIdForActionType(
+          actionType,
+          multiSigData.nativeMultiSigDomainId,
+        ),
+      ),
       requiredRoles,
     });
 
@@ -361,7 +363,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       </p>
                       <RemoveVoteButton
                         isLoading={isRemovingVote}
-                        actionType={actionType}
+                        requiredRoles={requiredRoles}
                         multiSigId={multiSigData.nativeMultiSigId}
                         multiSigDomainId={Number(
                           multiSigData.nativeMultiSigDomainId,
@@ -375,7 +377,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                     <div className="mt-6 flex flex-col gap-2">
                       <VoteButton
                         isLoading={isApproving}
-                        actionType={actionType}
+                        requiredRoles={requiredRoles}
                         multiSigId={multiSigData.nativeMultiSigId}
                         multiSigDomainId={Number(
                           multiSigData.nativeMultiSigDomainId,
@@ -401,8 +403,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                         />
                       ) : (
                         <VoteButton
-                          actionType={actionType}
                           isLoading={isRejecting}
+                          requiredRoles={requiredRoles}
                           multiSigId={multiSigData.nativeMultiSigId}
                           multiSigDomainId={Number(
                             multiSigData.nativeMultiSigDomainId,

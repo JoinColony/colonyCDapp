@@ -1,21 +1,21 @@
+import { type ColonyRole } from '@colony/colony-js';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { MultiSigVote, type ColonyActionType } from '~gql';
+import { MultiSigVote } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
-import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.RemoveVoteButton';
 
 interface RemoveVoteButtonProps {
-  actionType: ColonyActionType;
+  requiredRoles: ColonyRole[];
   multiSigId: string;
   multiSigDomainId: number;
   handleLoadingChange: (isLoading: boolean) => void;
@@ -30,7 +30,7 @@ const MSG = defineMessages({
 });
 
 const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
-  actionType,
+  requiredRoles,
   multiSigId,
   multiSigDomainId,
   handleLoadingChange,
@@ -48,11 +48,7 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
       vote: MultiSigVote.None,
       domainId: multiSigDomainId,
       multiSigId,
-      roles:
-        getRolesNeededForMultiSigAction({
-          actionType,
-          createdIn: multiSigDomainId,
-        }) || [],
+      roles: requiredRoles,
     };
   };
 

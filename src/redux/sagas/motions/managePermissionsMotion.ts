@@ -114,9 +114,8 @@ function* managePermissionsMotion({
 
       if (isMultiSig) {
         // Creating a multi-sig motion
-
         const requiredCreatedInRoles =
-          createdInDomainId === Id.RootDomain
+          teamDomainId === Id.RootDomain
             ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
             : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
 
@@ -133,7 +132,7 @@ function* managePermissionsMotion({
             networkClient: colonyClient.networkClient,
             colonyRoles,
             colonyDomains,
-            requiredDomainId: createdInDomainId,
+            requiredDomainId: teamDomainId,
             requiredColonyRoles: requiredCreatedInRoles,
             // The address of the multi-sig client
             permissionAddress: multiSigClient.address,
@@ -162,7 +161,7 @@ function* managePermissionsMotion({
             networkClient: colonyClient.networkClient,
             colonyRoles,
             colonyDomains,
-            requiredDomainId: createdInDomainId,
+            requiredDomainId: teamDomainId,
             requiredColonyRoles: requiredCreatedInRoles,
             // The address of the user creating the multi-sig motion
             permissionAddress: initiatorAddress,
@@ -193,7 +192,6 @@ function* managePermissionsMotion({
       }
 
       // Creating a reputation motion
-
       const requiredTeamRoles =
         teamDomainId === Id.RootDomain
           ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain

@@ -1,4 +1,4 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { ColonyRole } from '@colony/colony-js';
 
 import { apolloClient } from '~apollo';
 import {
@@ -34,7 +34,7 @@ const COLONY_ROLE_TO_FILTER_KEY: Record<
 
 interface GetEligibleSigneesParams {
   colonyAddress: string;
-  domainId: number;
+  domainIds: number[];
   requiredRoles: ColonyRole[];
 }
 
@@ -56,11 +56,9 @@ export interface GetEligibleSigneesResult {
 
 export async function getEligibleSignees({
   colonyAddress,
-  domainId,
+  domainIds,
   requiredRoles,
 }: GetEligibleSigneesParams): Promise<GetEligibleSigneesResult> {
-  const domainIds =
-    domainId === Id.RootDomain ? [Id.RootDomain] : [Id.RootDomain, domainId];
   const signeesPerRole: SigneesPerRole = {};
   const uniqueEligibleSignees: SigneeEntry = {};
 

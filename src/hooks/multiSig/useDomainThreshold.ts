@@ -24,9 +24,10 @@ export const useDomainThreshold = ({
     Extension.MultisigPermissions,
   );
 
+  // for majority approval we just want users in the afflicted domain
   const { countPerRole, isLoading: loadingEligibleSignees } =
     useEligibleSignees({
-      domainId,
+      domainIds: [domainId],
       requiredRoles,
     });
 
@@ -72,16 +73,10 @@ export const useDomainThreshold = ({
       return thresholdMap;
     }
 
-    if (!Object.values(countPerRole).every((count) => count > 0)) {
-      console.warn(
-        'Not every required role has a member with multisig permissions',
-      );
-      return null;
-    }
-
+    // if there are no members, the default is still 1
     const thresholdPerRole = Object.entries(countPerRole).reduce(
       (acc, [role, count]) => {
-        acc[role] = Math.floor(count / 2) + 1;
+        acc[role] = count ? Math.floor(count / 2) + 1 : 1;
         return acc;
       },
       {},
