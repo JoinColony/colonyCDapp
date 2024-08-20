@@ -19,11 +19,6 @@ fragment Expenditure on Expenditure {
   }
   finalizedAt
   createdAt
-  motions {
-    items {
-      ...ColonyMotion
-    }
-  }
   type
   isStaked
   userStake {
@@ -53,7 +48,13 @@ fragment Expenditure on Expenditure {
     }
   }
   fundingActions: actions(
-    filter: { type: { eq: MOVE_FUNDS }, isMotionFinalization: { ne: true } }
+    filter: {
+      or: [
+        { type: { eq: MOVE_FUNDS } }
+        { type: { eq: FUND_EXPENDITURE_MOTION } }
+      ]
+      isMotionFinalization: { ne: true }
+    }
   ) {
     items {
       ...ExpenditureAction
@@ -119,10 +120,13 @@ fragment ExpenditureBalance on ExpenditureBalance {
 }
 
 fragment ExpenditureAction on ColonyAction {
-  id
+  transactionHash: id
   initiatorAddress
   createdAt
   initiatorUser {
     ...User
+  }
+  motionData {
+    ...ColonyMotion
   }
 }
