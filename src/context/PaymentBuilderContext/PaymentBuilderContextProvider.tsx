@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
-import { type PermissionsBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PermissionsBox/types.ts';
+import { type ExpenditureAction } from '~types/graphql.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 
@@ -21,7 +21,7 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   ] = useToggle();
   const [selectedTransaction, setSelectedTransaction] = useState<string>('');
   const [selectedPermissionAction, setSelectedPermissionAction] = useState<
-    PermissionsBoxItem | undefined
+    ExpenditureAction | undefined
   >(undefined);
 
   const value = useMemo(
