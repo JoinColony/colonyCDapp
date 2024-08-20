@@ -54,7 +54,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
         {callToAction ? (
           <div
             className={clsx(
-              'flex-shrink-0 text-xs font-medium underline md:hover:no-underline',
+              'flex-shrink-0 text-xs font-medium underline underline-offset-2 md:hover:no-underline',
               callToActionClassName,
             )}
           >
