@@ -16,6 +16,7 @@ export const getMembersList = (
   colony: ColonyFragment,
 ): MemberItem[] => {
   const isAllTeamsSelected = selectedTeamId === undefined;
+  const colonyRoles = extractColonyRoles(colony.roles);
 
   return members.map((contributor) => {
     const {
@@ -28,7 +29,7 @@ export const getMembersList = (
     } = contributor;
 
     const domainRoles = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
+      colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       intersectingRoles: true,
@@ -39,7 +40,7 @@ export const getMembersList = (
       : undefined;
 
     const domainRolesWithoutInherited = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
+      colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       excludeInherited: true,
@@ -99,11 +100,14 @@ export const getMembersList = (
       isRoleInherited:
         isAllTeamsSelected || selectedTeamId === Id.RootDomain
           ? false
-          : !domainRolesWithoutInherited.length ||
-            !domainMultiSigRolesWithoutInherited.length,
+          : !domainRolesWithoutInherited.length,
       multiSigRole: isAllTeamsSelected
         ? highestTierMultiSigRoleMeta
         : domainMultiSigRolesMeta,
+      isMultisigRoleInherited:
+        isAllTeamsSelected || selectedTeamId === Id.RootDomain
+          ? false
+          : !domainMultiSigRolesWithoutInherited.length,
       contributorType: type ?? undefined,
     };
   });

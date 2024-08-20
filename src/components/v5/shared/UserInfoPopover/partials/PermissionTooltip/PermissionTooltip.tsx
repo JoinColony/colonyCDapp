@@ -1,8 +1,8 @@
-import { ColonyRole } from '@colony/colony-js';
 import { User, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { getInheritedPermissions } from '~constants/permissions.ts';
 import { type AvailablePermission } from '~hooks/members/types.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -32,20 +32,11 @@ const PermissionTooltip: FC<PermissionTooltipProps> = ({
   userPermissionsInDomain,
   userPermissionsInParentDomain,
 }) => {
-  const getInheritedPermissions = (): AvailablePermission[] => {
-    if (isRootDomain) {
-      return [];
-    }
-
-    return userPermissionsInParentDomain.filter(
-      (permission) =>
-        permission !== ColonyRole.Root &&
-        permission !== ColonyRole.Recovery &&
-        !userPermissionsInDomain.includes(permission),
-    );
-  };
-
-  const userInheritedPermissions = getInheritedPermissions();
+  const userInheritedPermissions = getInheritedPermissions({
+    parentPermissions: userPermissionsInParentDomain,
+    currentPermissions: userPermissionsInDomain,
+    isRootDomain,
+  });
 
   const hasPermissions =
     userPermissionsInDomain.length > 0 || userInheritedPermissions.length > 0;
