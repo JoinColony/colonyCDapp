@@ -1,7 +1,7 @@
-import { type ColonyRole } from '@colony/colony-js';
+import { Id, type ColonyRole } from '@colony/colony-js';
 import { isBefore, parseISO, subWeeks } from 'date-fns';
 
-import { MultiSigVote } from '~gql';
+import { ColonyActionType, MultiSigVote } from '~gql';
 import { type MultiSigUserSignature } from '~types/graphql.ts';
 import { type Threshold, type EligibleSignee } from '~types/multiSig.ts';
 
@@ -162,4 +162,19 @@ export const getIsMultiSigExecutable = (
     });
 
   return isMultiSigExecutable;
+};
+
+export const getDomainIdForActionType = (
+  actionType: ColonyActionType,
+  multiSigDomainId: string,
+): number => {
+  // @NOTE this will find the parent domain, but as it stands we just return root
+  if (
+    actionType === ColonyActionType.SetUserRolesMultisig &&
+    Number(multiSigDomainId) !== Id.RootDomain
+  ) {
+    return Id.RootDomain;
+  }
+
+  return Number(multiSigDomainId);
 };

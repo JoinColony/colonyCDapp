@@ -1,9 +1,9 @@
 import { ArrowDownRight } from '@phosphor-icons/react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { type Domain, type ColonyAction } from '~types/graphql.ts';
+import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -70,7 +70,6 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     isMotion,
     isMultiSig,
     motionData,
-    multiSigData,
     annotation,
   } = action;
 
@@ -83,17 +82,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     getTokenDecimalsWithFallback(token?.decimals),
   );
 
-  const motionDomain: Domain | null | undefined = useMemo(() => {
-    if (isMotion) {
-      return motionData?.motionDomain;
-    }
-
-    if (isMultiSig) {
-      return multiSigData?.multiSigDomain;
-    }
-
-    return null;
-  }, [motionData, multiSigData, isMotion, isMultiSig]);
+  const motionDomain = motionData?.motionDomain ?? null;
 
   return (
     <>

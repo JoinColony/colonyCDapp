@@ -14,7 +14,11 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
-import { getIsMultiSigExecutable, getSignaturesPerRole } from './utils.ts';
+import {
+  getDomainIdForActionType,
+  getIsMultiSigExecutable,
+  getSignaturesPerRole,
+} from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -40,14 +44,24 @@ const MSG = defineMessages({
 
 const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   const { type: actionType, multiSigData } = action;
-  const requiredRoles =
-    getRolesNeededForMultiSigAction({
-      actionType,
-      createdIn: Number(multiSigData.nativeMultiSigDomainId),
-    }) || [];
+
+  // this is only because managing permissions in a subdomain requires signees in the parent domain
+  const domainForSignees = getDomainIdForActionType(
+    actionType,
+    multiSigData.nativeMultiSigDomainId,
+  );
+
+  const requiredRoles = useMemo(() => {
+    return (
+      getRolesNeededForMultiSigAction({
+        actionType,
+        createdIn: Number(multiSigData.nativeMultiSigDomainId),
+      }) || []
+    );
+  }, [actionType, multiSigData.nativeMultiSigDomainId]);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
-    domainId: Number(multiSigData.nativeMultiSigDomainId),
+    domainId: domainForSignees,
     requiredRoles,
   });
 
@@ -72,11 +86,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
         key: MultiSigState.Approval,
         content: (
           <ApprovalStep
+            actionType={actionType}
             thresholdPerRole={thresholdPerRole}
             multiSigData={multiSigData}
-            actionType={actionType}
+            requiredRoles={requiredRoles}
             initiatorAddress={action.initiatorAddress}
-            createdAt={multiSigData.createdAt}
           />
         ),
         heading: {
@@ -91,7 +105,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
             multiSigData={multiSigData}
             initiatorAddress={action.initiatorAddress}
             action={action}
-            createdAt={multiSigData.createdAt}
           />
         ),
         heading: {
@@ -99,7 +112,14 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
         },
       },
     ];
-  }, [isLoading, thresholdPerRole, multiSigData, actionType, action]);
+  }, [
+    isLoading,
+    actionType,
+    thresholdPerRole,
+    multiSigData,
+    requiredRoles,
+    action,
+  ]);
 
   const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(
     MultiSigState.Approval,

@@ -112,7 +112,7 @@ export const validationSchema = object()
   .shape<ManagePermissionsFormValues>({
     member: string().required(),
     team: number().required(),
-    createdIn: number().required(),
+    createdIn: number().defined(),
     role: string()
       .test(
         ROLE_FIELD_NAME,

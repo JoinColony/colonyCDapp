@@ -118,3 +118,9 @@ export const getMultiSigPayload = (
 export function isMultiSig(action: ColonyAction): action is MultiSigAction {
   return !!action.multiSigData && !!action.multiSigId;
 }
+
+export const getDomainIdsForEligibleSignees = (domainId: number): number[] => {
+  return domainId === Id.RootDomain
+    ? [Id.RootDomain]
+    : [Id.RootDomain, domainId];
+};

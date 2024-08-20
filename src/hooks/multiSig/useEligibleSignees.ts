@@ -8,7 +8,7 @@ import {
 } from '~utils/multiSig/getEligibleSignees.ts';
 
 interface UseEligibleSigneesParams {
-  domainId: number;
+  domainIds: number[];
   requiredRoles: ColonyRole[];
 }
 
@@ -18,7 +18,7 @@ interface UseEligibleSigneesResult extends GetEligibleSigneesResult {
 }
 
 export const useEligibleSignees = ({
-  domainId,
+  domainIds,
   requiredRoles,
 }: UseEligibleSigneesParams): UseEligibleSigneesResult => {
   const {
@@ -32,18 +32,21 @@ export const useEligibleSignees = ({
     signeesPerRole: {},
   });
 
-  // Since it's an array fetched from a function, we "memo" this by stringify it to prevent it always triggering the useEffect
+  // Since they are both arrays fetched from a function, we "memo" this by stringifying them to prevent always triggering the useEffect
   const requiredRolesString = JSON.stringify(requiredRoles);
+  const domainIdsString = JSON.stringify(domainIds);
 
   useEffect(() => {
     async function fetchEligibleSignees() {
       const parsedRequiredRoles = JSON.parse(requiredRolesString);
+      const parsedDomainIds = JSON.parse(domainIdsString);
+
       try {
         setIsLoading(true);
         const response = await getEligibleSigneesApi({
           requiredRoles: parsedRequiredRoles,
           colonyAddress,
-          domainId,
+          domainIds: parsedDomainIds,
         });
         setSigneesResult(response);
       } catch (error) {
@@ -55,7 +58,7 @@ export const useEligibleSignees = ({
     }
 
     fetchEligibleSignees();
-  }, [colonyAddress, domainId, requiredRolesString]);
+  }, [colonyAddress, domainIdsString, requiredRolesString]);
 
   return {
     isLoading,

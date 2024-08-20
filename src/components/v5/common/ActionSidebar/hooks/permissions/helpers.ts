@@ -42,7 +42,7 @@ export const getPermissionsNeededForAction = (
     case Action.ManagePermissions: {
       const { decisionMethod, createdIn, team } = formValues;
 
-      const isMotion = decisionMethod !== DecisionMethod.Permissions;
+      const isMotion = decisionMethod === DecisionMethod.Reputation;
 
       let createdInDomain;
       if (!isMotion) {
@@ -125,7 +125,6 @@ export const getPermissionsDomainIdForAction = (
       }
       return undefined;
     case Action.ManageReputation:
-    case Action.ManagePermissions:
     case Action.EditExistingTeam:
       if (!isMotion) {
         return team;
@@ -134,6 +133,12 @@ export const getPermissionsDomainIdForAction = (
         return createdIn;
       }
       return undefined;
+    // @TODO this should return the parent domain when nested domains are a thing
+    case Action.ManagePermissions:
+      if (!team) {
+        return undefined;
+      }
+      return Id.RootDomain;
     default:
       if (!isMotion) {
         return Id.RootDomain;
