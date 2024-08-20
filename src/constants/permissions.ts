@@ -176,3 +176,24 @@ export const findFirstUserRoleWithColonyRoles = ({
 
   return matchingUserRole.name;
 };
+
+export const getInheritedPermissions = ({
+  parentPermissions,
+  currentPermissions,
+  isRootDomain,
+}: {
+  parentPermissions: ColonyRole[];
+  currentPermissions: ColonyRole[];
+  isRootDomain: boolean;
+}): ColonyRole[] => {
+  if (isRootDomain) {
+    return [];
+  }
+
+  return parentPermissions.filter(
+    (permission) =>
+      permission !== ColonyRole.Root &&
+      permission !== ColonyRole.Recovery &&
+      !currentPermissions.includes(permission),
+  );
+};
