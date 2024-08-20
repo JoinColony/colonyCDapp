@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { type Action } from '~constants/actions.ts';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
+import { getDomainIdsForEligibleSignees } from '~utils/multiSig/index.ts';
 import { getPermissionsNeededForAction } from '~v5/common/ActionSidebar/hooks/permissions/helpers.ts';
 
 interface UseHasEnoughMembersWithPermissionsResult {
@@ -13,10 +14,10 @@ interface UseHasEnoughMembersWithPermissionsResult {
 
 export const useHasEnoughMembersWithPermissions = ({
   selectedAction,
-  createdIn,
+  domainId,
 }: {
   selectedAction: Action;
-  createdIn: number;
+  domainId: number;
 }): UseHasEnoughMembersWithPermissionsResult => {
   const { watch } = useFormContext();
   const formValues = watch();
@@ -34,13 +35,13 @@ export const useHasEnoughMembersWithPermissions = ({
 
   const { thresholdPerRole, isLoading: isDomainThresholdLoading } =
     useDomainThreshold({
-      domainId: createdIn,
+      domainId,
       requiredRoles: multiSigRoles,
     });
 
   const { countPerRole, isLoading: areEligibleSigneesLoading } =
     useEligibleSignees({
-      domainId: createdIn,
+      domainIds: getDomainIdsForEligibleSignees(domainId),
       requiredRoles: multiSigRoles,
     });
 

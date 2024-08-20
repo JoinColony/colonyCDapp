@@ -126,9 +126,7 @@ const SetUserRoles = ({ action }: Props) => {
     roleAuthority === Authority.ViaMultiSig,
   );
 
-  const metadata =
-    action.motionData?.motionDomain.metadata ??
-    action.multiSigData?.multiSigDomain.metadata;
+  const metadata = action.motionData?.motionDomain.metadata;
 
   return (
     <>

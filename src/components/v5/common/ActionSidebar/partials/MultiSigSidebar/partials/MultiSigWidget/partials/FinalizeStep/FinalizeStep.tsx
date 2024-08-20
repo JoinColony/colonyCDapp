@@ -138,7 +138,6 @@ const formatDate = (value: string | undefined) => {
 interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
   initiatorAddress: string;
-  createdAt: string;
   thresholdPerRole: Threshold;
   action: ColonyAction;
 }
@@ -146,10 +145,10 @@ interface FinalizeStepProps {
 const FinalizeStep: FC<FinalizeStepProps> = ({
   multiSigData,
   initiatorAddress,
-  createdAt,
   action,
   thresholdPerRole,
 }) => {
+  const { createdAt } = multiSigData;
   const [isFinalizePending, setIsFinalizePending] = useState(false);
 
   const { currentBlockTime } = useCurrentBlockTime();
