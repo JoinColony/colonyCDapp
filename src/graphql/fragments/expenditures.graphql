@@ -22,7 +22,6 @@ fragment Expenditure on Expenditure {
   motions {
     items {
       ...ColonyMotion
-      expenditureSlotIds
     }
   }
   type

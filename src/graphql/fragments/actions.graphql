@@ -243,6 +243,7 @@ fragment ColonyMotion on ColonyMotion {
   }
   createdAt
   createdBy
+  expenditureSlotIds
 }
 
 fragment MotionMessage on MotionMessage {
