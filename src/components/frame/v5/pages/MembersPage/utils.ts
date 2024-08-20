@@ -1,11 +1,69 @@
-import { ColonyRole, Id } from '@colony/colony-js';
+import { Id } from '@colony/colony-js';
 
-import { getRole } from '~constants/permissions.ts';
+import {
+  getInheritedPermissions,
+  getRole,
+  type UserRoleMeta,
+} from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
-import { getAllUserRoles, getUserRolesForDomain } from '~transformers/index.ts';
+import { getUserRolesForDomain } from '~transformers/index.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
+
+interface RoleInfo {
+  role: UserRoleMeta | undefined;
+  isInherited: boolean;
+}
+
+interface GetRoleInfoParams {
+  colonyRoles: ReturnType<typeof extractColonyRoles>;
+  contributorAddress: string;
+  selectedTeamId: number | undefined;
+  isRootDomain: boolean;
+  isMultiSig: boolean;
+}
+
+const getRoleInfo = ({
+  colonyRoles,
+  contributorAddress,
+  selectedTeamId,
+  isRootDomain,
+  isMultiSig,
+}: GetRoleInfoParams): RoleInfo => {
+  const currentTeamPermissions = getUserRolesForDomain({
+    colonyRoles,
+    userAddress: contributorAddress,
+    domainId: selectedTeamId || Id.RootDomain,
+    excludeInherited: true,
+    isMultiSig,
+  });
+
+  const parentPermissions = getUserRolesForDomain({
+    colonyRoles,
+    userAddress: contributorAddress,
+    domainId: Id.RootDomain,
+    isMultiSig,
+  });
+
+  const inheritedPermissions = getInheritedPermissions({
+    parentPermissions,
+    currentPermissions: currentTeamPermissions,
+    isRootDomain,
+  });
+
+  // inheritedPermissions contains only a difference between parrent and current permissions
+  // in case current role is higher inheritedPermissions.length would be 0
+  if (inheritedPermissions.length > 0) {
+    return { role: getRole(parentPermissions), isInherited: true };
+  }
+
+  if (currentTeamPermissions.length > 0) {
+    return { role: getRole(currentTeamPermissions), isInherited: false };
+  }
+
+  return { role: undefined, isInherited: false };
+};
 
 export const getMembersList = (
   members: ColonyContributorFragment[],
@@ -13,6 +71,8 @@ export const getMembersList = (
   colony: ColonyFragment,
 ): MemberItem[] => {
   const isAllTeamsSelected = selectedTeamId === undefined;
+  const isRootDomain = selectedTeamId === Id.RootDomain;
+  const colonyRoles = extractColonyRoles(colony.roles);
 
   return members.map((contributor) => {
     const {
@@ -20,66 +80,30 @@ export const getMembersList = (
       colonyReputationPercentage,
       user,
       isVerified,
-      roles,
       reputation,
       type,
-      hasPermissions,
     } = contributor;
 
-    const hasRoleInTeam = roles?.items?.some((item) => {
-      const domainId = item?.domain?.nativeId;
-
-      return isAllTeamsSelected
-        ? hasPermissions
-        : domainId === selectedTeamId || domainId === Id.RootDomain;
+    const { role: roleTest, isInherited: isRoleInherited } = getRoleInfo({
+      colonyRoles,
+      contributorAddress,
+      selectedTeamId,
+      isRootDomain,
+      isMultiSig: false,
     });
 
-    const permissionsInTeam = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-      excludeInherited: true,
-    });
-
-    const allPermissions = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-    });
+    const { role: multiSigRole, isInherited: isMultiSigRoleInherited } =
+      getRoleInfo({
+        colonyRoles,
+        contributorAddress,
+        selectedTeamId,
+        isRootDomain,
+        isMultiSig: true,
+      });
 
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
-
-    const allMultiSigRoles = getAllUserRoles(
-      extractColonyRoles(colony.roles),
-      contributorAddress,
-      true,
-    );
-    const allMultiSigRolesFiltered =
-      hasRoleInTeam && (!selectedTeamId || selectedTeamId === Id.RootDomain)
-        ? allMultiSigRoles
-        : allMultiSigRoles?.filter(
-            (role) => role !== ColonyRole.Root && role !== ColonyRole.Recovery,
-          );
-    const permissionMultiSigRole =
-      hasRoleInTeam && allMultiSigRolesFiltered?.length
-        ? getRole(allMultiSigRolesFiltered)
-        : undefined;
-
-    const parentRole = allPermissions.length
-      ? getRole(
-          allPermissions.filter((role) =>
-            selectedTeamId !== Id.RootDomain && !isAllTeamsSelected
-              ? role !== ColonyRole.Root && role !== ColonyRole.Recovery
-              : true,
-          ),
-        )
-      : undefined;
-
-    const roleTest = permissionsInTeam.length
-      ? getRole(permissionsInTeam)
-      : parentRole;
 
     return {
       user,
@@ -89,8 +113,9 @@ export const getMembersList = (
         ? colonyReputationPercentage
         : teamReputationPercentage,
       role: roleTest,
-      isRoleInherited: !permissionsInTeam.length && !!roleTest,
-      multiSigRole: permissionMultiSigRole,
+      isRoleInherited,
+      multiSigRole,
+      isMultiSigRoleInherited,
       contributorType: type ?? undefined,
     };
   });

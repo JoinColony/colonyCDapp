@@ -9,6 +9,7 @@ export interface MemberItem {
   role?: UserRoleMeta;
   isRoleInherited?: boolean;
   multiSigRole?: UserRoleMeta;
+  isMultiSigRoleInherited?: boolean;
   isVerified: boolean;
   reputation?: number;
   contributorType?: ContributorType;
