@@ -23,7 +23,7 @@ import {
 } from '~routes';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { ExtendedColonyActionType } from '~types/actions.ts';
+import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -118,7 +118,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     return null;
   }
 
-  const { slots = [], metadata, status } = expenditure;
+  const { slots = [], metadata, status, isStaked } = expenditure;
   const { fundFromDomainNativeId, distributionType } = metadata || {};
 
   const selectedTeam = findDomainByNativeId(fundFromDomainNativeId, colony);
