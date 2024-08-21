@@ -31,6 +31,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
 };
 
 export enum Action {
+  PaymentGroup = 'payment-group',
   SimplePayment = 'simple-payment',
   PaymentBuilder = 'payment-builder',
   BatchPayment = 'batch-payment',

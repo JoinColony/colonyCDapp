@@ -16,6 +16,7 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Action } from '~constants/actions.ts';
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -34,20 +35,31 @@ import CompletedAction from '../CompletedAction/index.ts';
 import FourOFourMessage from '../FourOFourMessage/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
-import { actionSidebarAnimation } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
+import PaymentGroup from './partials/PaymentGroup/PaymentGroup.tsx';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
+// @TODO: refactor and move to separate file
+const useGetNonFormComponent = () => {
+  const { actionSidebarInitialValues } = useActionSidebarContext();
+  switch (actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME]) {
+    case Action.PaymentGroup:
+      return PaymentGroup;
+    default:
+      return null;
+  }
+};
+
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
-  initialValues,
   transactionId,
   className,
 }) => {
@@ -70,7 +82,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       { toggle: toggleActionSidebarOff, registerContainerRef },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
+    actionSidebarInitialValues,
   } = useActionSidebarContext();
+
+  const NonFormComponent = useGetNonFormComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
 
@@ -181,12 +196,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
+    if (NonFormComponent) {
+      return <NonFormComponent />;
+    }
+
     return (
       <ActionSidebarContent
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={initialValues}
+        defaultValues={actionSidebarInitialValues}
         isMotion={!!isMotion}
       />
     );
