@@ -30,7 +30,6 @@ import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
-import RequestBox from '../RequestBox/RequestBox.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -279,15 +278,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 })}
                 content={
                   <>
-                    {sortedFundingActions.length > 0 && (
-                      <RequestBox
-                        withoutPadding
-                        title={formatText({
-                          id: 'expenditure.fundingRequest.title',
-                        })}
-                        motions={[]}
-                      />
-                    )}
                     {expectedStepKey === ExpenditureStep.Release ? (
                       <IconButton
                         className="w-full"
