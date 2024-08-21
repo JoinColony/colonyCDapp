@@ -1,5 +1,5 @@
 import { SpinnerGap } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
@@ -7,7 +7,8 @@ import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 
-import { getConvertedAmount } from './helpers.ts';
+import { getConvertedAmount, getFormattedStringNumeral } from './helpers.ts';
+import { TransferFields } from './hooks.ts';
 import ReceiveCard from './ReceiveCard.tsx';
 import SummaryCard from './SummaryCard.tsx';
 import WithdrawCard from './WithdrawCard.tsx';
@@ -28,12 +29,28 @@ const TransferForm = ({
 
   // @TODO: get actual token balance
   const balance = 123000000;
+  // @TODO: Get actual conversion rate
+  const conversionRate = parseFloat('0.93');
+
+  useEffect(() => {
+    setValue(TransferFields.BALANCE, balance);
+  }, [balance, setValue]);
 
   const handleSetMax = () => {
     // @TODO: Get actual conversion rate
-    const convertedAmount = getConvertedAmount(balance, 2);
-    setValue('amount', balance);
-    setValue('convertedAmount', convertedAmount);
+    const convertedAmount = getConvertedAmount(balance, conversionRate);
+    setValue(
+      TransferFields.AMOUNT,
+      getFormattedStringNumeral(balance.toString()),
+      { shouldValidate: true },
+    );
+    setValue(
+      TransferFields.CONVERTED_AMOUNT,
+      getFormattedStringNumeral(convertedAmount.toString()),
+      {
+        shouldValidate: true,
+      },
+    );
   };
 
   return (

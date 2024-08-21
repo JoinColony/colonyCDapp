@@ -1,15 +1,23 @@
+import { format } from 'date-fns';
+import get from 'lodash/get';
 import React, { type ChangeEvent, type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { type Message, useFormContext, useWatch } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
-import EthereumIcon from '~icons/EthereumIcon.tsx';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 import CardHeader from './CardHeader.tsx';
 import CardInput from './CardInput.tsx';
 import CardWrapper from './CardWrapper.tsx';
-import { getUnconvertedAmount } from './helpers.ts';
+import {
+  getFormattedStringNumeral,
+  getUnconvertedAmount,
+  getUnformattedStringNumeral,
+} from './helpers.ts';
+import { TransferFields } from './hooks.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.ReceiveCard';
 
@@ -22,6 +30,10 @@ const MSG = defineMessages({
     id: `${displayName}.oneUSDC`,
     defaultMessage: '1 USDC: ',
   },
+  conversionRateTooltip: {
+    id: `${displayName}.conversionRateTooltip`,
+    defaultMessage: 'Conversion rate. Last updated {date}',
+  },
 });
 
 interface ReceiveCardProps {
@@ -30,30 +42,47 @@ interface ReceiveCardProps {
   isLoading: boolean;
 }
 
+const CONVERTED_AMOUNT_TRANSFER_FIELD_NAME = TransferFields.CONVERTED_AMOUNT;
+
 const ReceiveCard: FC<ReceiveCardProps> = ({
   isFormDisabled,
   handleSetMax,
   isLoading,
 }) => {
-  const name = 'convertedAmount';
+  const {
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+  const amountValue = useWatch({ name: CONVERTED_AMOUNT_TRANSFER_FIELD_NAME });
+  const error = get(errors, CONVERTED_AMOUNT_TRANSFER_FIELD_NAME)?.message as
+    | Message
+    | undefined;
 
-  const { getValues, setValue, getFieldState } = useFormContext();
-
-  const { error } = getFieldState(name);
-
-  const amountValue = getValues(name);
+  const { currency: selectedCurrency } = useCurrencyContext();
 
   // @TODO: Get actual conversion rate
-  const conversionRate = '0.93';
-  //  @TODO: Get selected currency from user preferences
-  const selectedCurrency = 'EUR';
+  const conversionRate = parseFloat('0.93');
+  const conversionDate = new Date();
+  const formattedConversionDateTime = format(conversionDate, `LLL dd 'at' p`);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const formattedAmount = Number(event.target.value);
-    // @TODO: Get actual conversion amount
-    const tokenAmount = getUnconvertedAmount(formattedAmount, 2);
-    setValue(name, formattedAmount);
-    setValue('amount', tokenAmount);
+    const unformattedValue = getUnformattedStringNumeral(event.target.value);
+    const formattedValue = getFormattedStringNumeral(event.target.value);
+    const numberValue = parseFloat(unformattedValue);
+
+    const tokenAmount = Number.isNaN(numberValue)
+      ? 0
+      : getUnconvertedAmount(numberValue, conversionRate);
+    const formattedTokenAmount = getFormattedStringNumeral(
+      tokenAmount.toString(),
+    );
+
+    setValue(CONVERTED_AMOUNT_TRANSFER_FIELD_NAME, formattedValue, {
+      shouldValidate: true,
+    });
+    setValue(TransferFields.AMOUNT, formattedTokenAmount, {
+      shouldValidate: true,
+    });
   };
 
   const hasError = !!error;
@@ -75,26 +104,33 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
             className="h-4 w-[70px] rounded"
             isLoading={isLoading}
           >
-            <p>
-              {formatMessage(MSG.oneUSDC)}
-              <span className="font-medium">
-                {conversionRate} {selectedCurrency}
-              </span>
-            </p>
+            <Tooltip
+              tooltipContent={formatMessage(MSG.conversionRateTooltip, {
+                date: formattedConversionDateTime,
+              })}
+              placement="top-end"
+              contentWrapperClassName="font-bold max-w-full"
+              offset={[8, 12]}
+            >
+              <p>
+                {formatMessage(MSG.oneUSDC)}
+                <span className="font-medium">
+                  {conversionRate} {selectedCurrency}
+                </span>
+              </p>
+            </Tooltip>
           </LoadingSkeleton>
         </CardHeader>
         <CardInput
           isFormDisabled={isFormDisabled}
-          // @TODO: Swap out correct icon
-          icon={EthereumIcon}
           value={amountValue}
           onChange={handleChange}
           symbol={selectedCurrency}
-          name={name}
+          name={CONVERTED_AMOUNT_TRANSFER_FIELD_NAME}
           isLoading={isLoading}
         />
       </CardWrapper>
-      {hasError && <p className="text-sm text-negative-400">{error.message}</p>}
+      {hasError && <p className="text-sm text-negative-400">{error}</p>}
     </>
   );
 };

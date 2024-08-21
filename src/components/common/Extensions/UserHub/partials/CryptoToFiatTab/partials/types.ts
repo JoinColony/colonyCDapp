@@ -2,6 +2,7 @@
 
 export interface TransferFormValues {
   amount: number;
+  balance: number;
   convertedAmount: number;
 }
 

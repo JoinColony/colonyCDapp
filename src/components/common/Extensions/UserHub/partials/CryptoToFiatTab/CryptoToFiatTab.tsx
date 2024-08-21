@@ -13,6 +13,8 @@ import { useTransferForm } from './partials/hooks.ts';
 import KycCard from './partials/KycCard.tsx';
 import Success from './partials/Success.tsx';
 import TransferForm from './partials/TransferForm.tsx';
+// import { useCryptoToFiatContext } from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContext.ts';
+// import { KycStatus } from '~gql';
 
 const displayName = 'common.Extensions.UserHub.partials.CryptoToFiatTab';
 
@@ -32,8 +34,11 @@ const CryptoToFiatTab = () => {
 
   const { formatMessage } = useIntl();
   const { transform, validationSchema } = useTransferForm();
+
   // @TODO: Check this correctly updates on submission
   const [success, setSuccess] = useState(false);
+
+  const cryptoToFiatLink = `${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`;
 
   const verificationRequired =
     data?.bridgeCheckKYC?.kycStatus !== KycStatus.Approved ||
@@ -55,7 +60,7 @@ const CryptoToFiatTab = () => {
           className="h-[18px] w-[59px] rounded"
         >
           <Link
-            to={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
+            to={cryptoToFiatLink}
             className="text-xs text-blue-400 hover:underline"
           >
             {formatMessage(MSG.updateDetails)}
@@ -63,11 +68,18 @@ const CryptoToFiatTab = () => {
         </LoadingSkeleton>
       </div>
       <div className="pt-4">
-        {showKycCard && <KycCard isKycStatusLoading={isKycStatusLoading} />}
+        {showKycCard && (
+          <KycCard
+            isKycStatusLoading={isKycStatusLoading}
+            link={cryptoToFiatLink}
+          />
+        )}
         {!success ? (
           <ActionForm
             actionType={ActionTypes.USER_CRYPTO_TO_FIAT_TRANSFER}
             validationSchema={validationSchema}
+            mode="onChange"
+            reValidateMode="onChange"
             transform={transform}
             defaultValues={{
               amount: 0,

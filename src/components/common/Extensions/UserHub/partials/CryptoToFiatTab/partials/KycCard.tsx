@@ -1,10 +1,9 @@
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React from 'react';
+import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
-import { USER_CRYPTO_TO_FIAT_ROUTE, USER_HOME_ROUTE } from '~routes';
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 
@@ -30,7 +29,12 @@ const MSG = defineMessages({
   },
 });
 
-const KycCard = ({ isKycStatusLoading }: { isKycStatusLoading: boolean }) => {
+interface KycCardProps {
+  link: string;
+  isKycStatusLoading: boolean;
+}
+
+const KycCard: FC<KycCardProps> = ({ link, isKycStatusLoading }) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -76,7 +80,7 @@ const KycCard = ({ isKycStatusLoading }: { isKycStatusLoading: boolean }) => {
       >
         <ButtonLink
           mode="primarySolid"
-          to={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
+          to={link}
           size="small"
           text={formatMessage(MSG.completeVerification)}
         />

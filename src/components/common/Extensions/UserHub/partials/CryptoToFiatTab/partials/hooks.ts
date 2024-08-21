@@ -11,30 +11,50 @@ const MSG = defineMessages({
     id: 'common.Extensions.UserHub.partials.TransferForm.amountRequired',
     defaultMessage: 'A withdraw amount is required',
   },
-  amountGreaterThanTwenty: {
-    id: 'common.Extensions.UserHub.partials.TransferForm.amountGreaterThanTwenty',
-    defaultMessage: 'Minimum withdraw amount is 20 USDC',
+  amountGreaterThanBalance: {
+    id: 'common.Extensions.UserHub.partials.TransferForm.amountGreaterThanBalance',
+    defaultMessage: 'Not enough funds available',
+  },
+  amountLessThanOne: {
+    id: 'common.Extensions.UserHub.partials.TransferForm.amountLessThanOne',
+    defaultMessage: 'Minimum withdraw amount is 1 USDC',
   },
 });
+
+export enum TransferFields {
+  AMOUNT = 'amount',
+  BALANCE = 'balance',
+  CONVERTED_AMOUNT = 'convertedAmount',
+}
+
+const getNullableFloat = (value: string | null | undefined) =>
+  !value || value === '.'
+    ? null
+    : parseFloat(value.toString().replace(/,/g, ''));
 
 export const useTransferForm = () => {
   const validationSchema: ObjectSchema<TransferFormValues> = object()
     .shape({
-      amount: number()
+      [TransferFields.BALANCE]: number(),
+      [TransferFields.AMOUNT]: number()
+        .nullable()
+        .transform((_, original) => getNullableFloat(original))
+        .min(1, formatText(MSG.amountLessThanOne))
         .test(
-          'amount-more-than-twenty',
-          formatText(MSG.amountGreaterThanTwenty),
-          (value) => {
+          'amount-over-max',
+          formatText(MSG.amountGreaterThanBalance),
+          (value, context) => {
             if (!value) {
-              return false;
+              return true;
             }
-
-            return value > 20;
+            return value <= context.parent.balance;
           },
         )
-        // @TODO: Add test for amount is not greater than balance
         .required(formatText(MSG.amountRequired)),
-      convertedAmount: number(),
+      [TransferFields.CONVERTED_AMOUNT]: number()
+        .nullable()
+        .transform((_, original) => getNullableFloat(original))
+        .required(''),
     })
     .defined();
 

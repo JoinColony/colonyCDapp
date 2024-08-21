@@ -46,6 +46,17 @@ const topAndBottomStartPlacementClasses = tw`
     group-data-[popper-placement='top-start']:!transform-none
 `;
 
+const topAndBottomEndPlacementClasses = tw`
+    group-data-[popper-placement='bottom-end']:!left-full
+    group-data-[popper-placement='bottom-end']:!top-full
+    group-data-[popper-placement='top-end']:!left-full
+    group-data-[popper-placement='top-end']:!top-full
+    group-data-[popper-placement='bottom-end']:!-translate-x-[150%]
+    group-data-[popper-placement='bottom-end']:!translate-y-1/2
+    group-data-[popper-placement='top-end']:!-translate-x-[150%]
+    group-data-[popper-placement='top-end']:!translate-y-1/2
+`;
+
 const rightPlacementClasses = tw`
     group-data-[popper-placement*='right']:-ml-2
     group-data-[popper-placement*='right']:w-2.5
@@ -70,6 +81,7 @@ const tooltipClasses = {
     ${topPlacementClasses}
     ${leftPlacementClasses}
     ${bottomPlacementClasses}
+    ${topAndBottomEndPlacementClasses}
     ${topAndBottomStartPlacementClasses}
     ${rightPlacementClasses}
   `,

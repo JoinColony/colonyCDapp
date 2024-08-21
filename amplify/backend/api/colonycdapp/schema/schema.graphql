@@ -1002,7 +1002,11 @@ enum SupportedCurrencies {
   INR # Indian Rupee
   BRL # Brazilian Real
   ETH # Ethereum
-  CLNY # Colony Network Token.
+  CLNY # Colony Network Token
+}
+
+enum ExtendedSupportedCurrencies {
+  USDC
 }
 
 """

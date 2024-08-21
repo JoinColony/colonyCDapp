@@ -2231,6 +2231,10 @@ export enum ExpenditureType {
   Staged = 'STAGED'
 }
 
+export enum ExtendedSupportedCurrencies {
+  Usdc = 'USDC'
+}
+
 export type ExtensionInstallationsCount = {
   __typename?: 'ExtensionInstallationsCount';
   createdAt: Scalars['AWSDateTime'];

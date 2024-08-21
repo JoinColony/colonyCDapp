@@ -1,3 +1,5 @@
+import { formatNumeral, unformatNumeral } from 'cleave-zen';
+
 import { mapPayload, pipe } from '~utils/actions.ts';
 
 export const getTransferTransformFn = ({
@@ -26,3 +28,12 @@ export const getUnconvertedAmount = (
 ) => {
   return amount / conversionRate;
 };
+
+export const getUnformattedStringNumeral = (value) => unformatNumeral(value);
+export const getFormattedStringNumeral = (value) =>
+  formatNumeral(value, {
+    delimiter: ',',
+    numeralPositiveOnly: true,
+    numeralDecimalScale: 4,
+    numeralDecimalMark: '.',
+  });

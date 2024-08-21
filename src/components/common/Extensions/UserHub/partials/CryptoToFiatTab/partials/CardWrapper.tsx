@@ -17,11 +17,14 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
 }) => {
   return (
     <div
-      className={clsx('rounded-lg border border-gray-200 p-4', {
-        'bg-gray-50': isFormDisabled,
-        'border-negative-400': hasError,
-        'bg-transparent': isLoading,
-      })}
+      className={clsx(
+        'rounded-lg border border-gray-200 p-4 hover:border-blue-400',
+        {
+          'bg-gray-50': isFormDisabled,
+          'border-negative-400': hasError,
+          'bg-transparent': isLoading,
+        },
+      )}
     >
       {children}
     </div>
