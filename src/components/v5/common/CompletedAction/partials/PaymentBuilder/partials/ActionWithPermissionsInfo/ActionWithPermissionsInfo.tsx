@@ -64,9 +64,13 @@ const formatDate = (value: string | undefined) => {
 };
 
 const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
-  userAdddress,
-  createdAt,
+  action,
 }) => {
+  if (!action) {
+    return null;
+  }
+
+  const { createdAt, initiatorAddress } = action ?? {};
   const formattedDate = formatDate(createdAt);
 
   return (
@@ -94,7 +98,7 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                   id: 'action.executed.permissions.overview',
                 })}
               </h4>
-              {userAdddress && (
+              {initiatorAddress && (
                 <>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="text-sm text-gray-600">
@@ -106,7 +110,7 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                       <UserPopover
                         size={18}
                         textClassName="text-sm"
-                        walletAddress={userAdddress || ''}
+                        walletAddress={initiatorAddress}
                       />
                     </div>
                   </div>
@@ -116,7 +120,7 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                         id: 'action.executed.permissions.permission',
                       })}
                     </span>
-                    <PermissionRow contributorAddress={userAdddress} />
+                    <PermissionRow contributorAddress={initiatorAddress} />
                   </div>
                 </>
               )}
