@@ -4,18 +4,13 @@ import { FormattedDate } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
-import { getBlockExplorerLink } from '~utils/external/index.ts';
-import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import { type FundingRequestItemProps } from './types.ts';
 
 const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
-  const { isCopied, handleClipboardCopy } = useCopyToClipboard();
   const { motionState, loadingAction } = useGetColonyAction(
     action.transactionHash,
   );
@@ -27,11 +22,7 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
 
   const isMotion = !!action.motionData;
 
-  const isMotionFailed =
-    motionState === MotionState.Failed ||
-    motionState === MotionState.FailedNotFinalizable;
-
-  const content = (
+  return (
     <button
       type="button"
       className={clsx(
@@ -42,22 +33,12 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
         },
       )}
       onClick={() => {
-        if (!isMotion || !isMotionFailed) {
-          setSelectedFundingAction(action);
-        } else {
-          handleClipboardCopy(
-            getBlockExplorerLink({
-              linkType: 'tx',
-              addressOrHash: action.transactionHash,
-            }),
-          );
-        }
+        setSelectedFundingAction(action);
       }}
     >
       <span
         className={clsx('text-sm', {
           underline: isSelected,
-          'group-hover:underline': isMotionFailed,
         })}
       >
         <FormattedDate
@@ -76,24 +57,6 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
       )}
     </button>
   );
-
-  if (isMotionFailed) {
-    return (
-      <Tooltip
-        isOpen={isCopied}
-        isSuccess
-        isFullWidthContent
-        placement="top"
-        tooltipContent={formatText({
-          id: 'colony.tooltip.url.copied',
-        })}
-      >
-        {content}
-      </Tooltip>
-    );
-  }
-
-  return content;
 };
 
 export default FundingRequestItem;
