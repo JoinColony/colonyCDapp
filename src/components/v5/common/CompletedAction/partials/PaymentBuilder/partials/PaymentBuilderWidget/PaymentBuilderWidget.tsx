@@ -9,7 +9,7 @@ import { useGetColonyExpendituresQuery } from '~gql';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { notNull } from '~utils/arrays/index.ts';
+import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -33,7 +33,11 @@ import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx'
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
+import {
+  getCancelStepIndex,
+  getExpenditureStep,
+  isExpenditureFullyFunded,
+} from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
@@ -123,6 +127,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   };
 
   const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
+  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const sortedFundingActions = useMemo(
     () =>
@@ -148,30 +153,29 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     MotionState.Reveal,
   ].includes(fundingMotionState);
 
-  // @TODO: Keep this one
-  // useEffect(() => {
-  //   const { motionStateHistory } = selectedFundingAction?.motionData ?? {};
-  //   if (
-  //     motionStateHistory &&
-  //     (motionStateHistory.hasFailed ||
-  //       motionStateHistory.hasFailedNotFinalizable)
-  //   ) {
-  //     setSelectedFundingAction(null);
-  //   }
-  // }, [selectedFundingAction?.motionData, setSelectedFundingAction]);
-
-  const isFundingMotionFailed =
-    fundingMotionState === MotionState.Failed ||
-    fundingMotionState === MotionState.FailedNotFinalizable;
-
-  const isFundingMotionClaimed =
-    selectedFundingMotion?.stakerRewards.length &&
-    selectedFundingMotion?.stakerRewards.every((reward) => reward.isClaimed);
-
+  const allFundingMotions = sortedFundingActions
+    .map((fundingAction) => fundingAction.motionData)
+    .filter(notMaybe);
+  const isAnyFundingMotionInProgress = allFundingMotions.some(
+    (motion) =>
+      !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
+  );
+  const shouldShowFundingButton =
+    !isAnyFundingMotionInProgress && !isExpenditureFunded;
   useEffect(() => {
-    // @TODO: Check if not failed
     if (!selectedFundingAction && sortedFundingActions.length > 0) {
       setSelectedFundingAction(sortedFundingActions[0]);
+    }
+
+    if (
+      selectedFundingAction &&
+      !sortedFundingActions.some(
+        (fundingAction) =>
+          fundingAction.transactionHash ===
+          selectedFundingAction.transactionHash,
+      )
+    ) {
+      setSelectedFundingAction(null);
     }
   }, [selectedFundingAction, setSelectedFundingAction, sortedFundingActions]);
 
@@ -258,68 +262,53 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             />
           ) : null,
       },
-      content:
-        expenditureStep === ExpenditureStep.Funding ? (
-          <div className="flex flex-col gap-2">
-            {sortedFundingActions.length > 0 && (
-              <FundingRequests actions={sortedFundingActions} />
-            )}
+      content: (
+        <div className="flex flex-col gap-2">
+          {sortedFundingActions.length > 0 && (
+            <FundingRequests actions={sortedFundingActions} />
+          )}
 
-            {selectedFundingMotion &&
-            !isFundingMotionFailed &&
-            !isFundingMotionClaimed ? (
-              <MotionBox
-                transactionId={selectedFundingMotion.transactionHash}
-              />
-            ) : (
-              <StepDetailsBlock
-                text={formatText({
-                  id: 'expenditure.fundingStage.info',
-                })}
-                content={
-                  <>
-                    {expectedStepKey === ExpenditureStep.Release ? (
-                      <IconButton
-                        className="w-full"
-                        rounded="s"
-                        text={{ id: 'button.pending' }}
-                        icon={
-                          <span className="ml-1.5 flex shrink-0">
-                            <SpinnerGap className="animate-spin" size={14} />
-                          </span>
-                        }
-                      />
-                    ) : (
-                      <Button
-                        className="w-full"
-                        onClick={showFundingModal}
-                        text={formatText({
-                          id: 'expenditure.fundingStage.button',
-                        })}
-                      />
-                    )}
-                  </>
-                }
-              />
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {sortedFundingActions.length > 0 && (
-              <FundingRequests actions={sortedFundingActions} />
-            )}
+          {selectedFundingMotion && (
+            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+          )}
 
-            {selectedFundingMotion && (
-              <MotionBox
-                transactionId={selectedFundingMotion.transactionHash}
-              />
-            )}
+          {selectedFundingAction && !selectedFundingMotion && (
+            <ActionWithPermissionsInfo action={selectedFundingAction} />
+          )}
 
-            {selectedFundingAction && !selectedFundingMotion && (
-              <ActionWithPermissionsInfo action={selectedFundingAction} />
-            )}
-          </div>
-        ),
+          {shouldShowFundingButton && (
+            <StepDetailsBlock
+              text={formatText({
+                id: 'expenditure.fundingStage.info',
+              })}
+              content={
+                <>
+                  {expectedStepKey === ExpenditureStep.Release ? (
+                    <IconButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                    />
+                  )}
+                </>
+              }
+            />
+          )}
+        </div>
+      ),
     },
     {
       key: ExpenditureStep.Release,
