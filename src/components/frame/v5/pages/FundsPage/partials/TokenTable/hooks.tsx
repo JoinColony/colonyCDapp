@@ -1,6 +1,6 @@
 import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { BigNumber } from 'ethers';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import Numeral from '~shared/Numeral/index.ts';
 import { type ColonyClaims } from '~types/graphql.ts';
@@ -10,6 +10,28 @@ import AcceptButton from '../AcceptButton/index.ts';
 
 export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
   const columnHelper = useMemo(() => createColumnHelper<ColonyClaims>(), []);
+
+  const getClaimButtonCell = useCallback((claim: ColonyClaims) => {
+    if (claim.isClaimed) {
+      return (
+        <p className="w-full text-right text-sm text-gray-400">
+          {formatText({ id: 'incomingFundsPage.table.accepted' })}
+        </p>
+      );
+    }
+
+    if (!BigNumber.from(claim.amount).isZero()) {
+      return (
+        <AcceptButton tokenAddresses={[claim.token?.tokenAddress || '']}>
+          {formatText({ id: 'button.accept' })}
+        </AcceptButton>
+      );
+    }
+
+    // The claim amount might be zero, for example if there are no native chain token claims (they are still shown even when there is nothing to claim).
+    // In this case, don't render anything in this cell.
+    return null;
+  }, []);
 
   const columns: ColumnDef<
     ColonyClaims,
@@ -42,23 +64,13 @@ export const useTokenTableColumns = (): ColumnDef<ColonyClaims, string>[] => {
         cell: ({ row }) => {
           return (
             <div className="flex w-full items-center justify-end">
-              {row.original.isClaimed ? (
-                <p className="w-full text-right text-sm text-gray-400">
-                  {formatText({ id: 'incomingFundsPage.table.accepted' })}
-                </p>
-              ) : (
-                <AcceptButton
-                  tokenAddresses={[row.original.token?.tokenAddress || '']}
-                >
-                  {formatText({ id: 'button.accept' })}
-                </AcceptButton>
-              )}
+              {getClaimButtonCell(row.original)}
             </div>
           );
         },
       }),
     ],
-    [columnHelper],
+    [columnHelper, getClaimButtonCell],
   );
 
   return columns;

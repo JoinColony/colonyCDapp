@@ -1,9 +1,11 @@
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDown, WarningCircle } from '@phosphor-icons/react';
 import { getSortedRowModel } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 
+import { ADDRESS_ZERO } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
@@ -24,6 +26,14 @@ import { useTokenTableColumns } from './hooks.tsx';
 import { type TokenTableProps } from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.TokenTable';
+
+const MSG = defineMessages({
+  nativeChainTokenWarning: {
+    id: `${displayName}.nativeChainTokenWarning`,
+    defaultMessage:
+      'Previously accepted incoming funds are not able to be displayed for this token',
+  },
+});
 
 const TokenTable: FC<TokenTableProps> = ({ token }) => {
   const isMobile = useMobile();
@@ -60,6 +70,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
   });
 
   const isTokenNative = token?.tokenAddress === nativeToken.tokenAddress;
+  const isTokenNativeChainToken = token?.tokenAddress === ADDRESS_ZERO;
 
   const handleToggleToken = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -142,6 +153,14 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           // In other words, it's always sorting by all columns.
           isMultiSortEvent={() => true}
         />
+        {isTokenNativeChainToken && (
+          <div className="flex items-center gap-1 border-t border-gray-100 px-[1.125rem] py-4">
+            <WarningCircle size={14} />
+            <p className="text-sm font-normal">
+              {formatText(MSG.nativeChainTokenWarning)}
+            </p>
+          </div>
+        )}
       </AccordionItem>
       {isMobile ? (
         <Modal
