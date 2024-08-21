@@ -2276,6 +2276,29 @@ type StakerRewards {
 }
 
 """
+Other motion voting rewards
+"""
+type VoterRewardsHistory @model {
+  id: ID!
+  userAddress: ID!
+    @index(
+      name: "byUser"
+      queryField: "getUserVoterRewards"
+      sortKeyFields: ["createdAt"]
+    )
+  user: User! @hasOne(fields: ["userAddress"])
+  colonyAddress: ID!
+  amount: String!
+  motionId: ID!
+    @index(
+      name: "byMotionId"
+      queryField: "getMotionVoterRewards"
+      sortKeyFields: ["createdAt"]
+    )
+  createdAt: AWSDateTime!
+}
+
+"""
 Input used to modify a voter record of a user for a motion
 """
 input VoterRecordInput {
@@ -2505,6 +2528,10 @@ type ColonyMotion @model {
   List of staker rewards users will be receiving for a motion
   """
   stakerRewards: [StakerRewards!]!
+  """
+  List of other rewards users will be receiving for a motion, such as voting
+  """
+  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """

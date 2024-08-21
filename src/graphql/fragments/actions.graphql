@@ -156,6 +156,14 @@ fragment UserMotionStakes on UserMotionStakes {
   }
 }
 
+fragment VoterRewardsHistory on VoterRewardsHistory {
+  userAddress
+  user {
+    ...User
+  }
+  amount
+}
+
 fragment ColonyMotion on ColonyMotion {
   databaseMotionId: id
   motionId: nativeMotionId
@@ -179,6 +187,11 @@ fragment ColonyMotion on ColonyMotion {
       nay
     }
     isClaimed
+  }
+  voterRewards {
+    items {
+      ...VoterRewardsHistory
+    }
   }
   isFinalized
   voterRecord {
