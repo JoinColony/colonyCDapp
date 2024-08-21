@@ -7,25 +7,25 @@ import { formatText } from '~utils/intl.ts';
 import { BaseTitleSection } from './BaseTitleSection.tsx';
 
 const displayName =
-  'v5.common.Navigation.ColonySwitcher.partials.NoColoniesJoinedSection';
+  'v5.common.Navigation.ColonySwitcher.partials.EmptyJoinedColoniesSection';
 
 const MSG = defineMessages({
-  noColoniesJoinedSectionTitle: {
-    id: `${displayName}.noColoniesJoinedSectionTitle`,
+  emptyJoinedColoniesSectionTitle: {
+    id: `${displayName}.emptyJoinedColoniesSectionTitle`,
     defaultMessage: 'No colonies joined',
   },
-  noColoniesJoinedSectionDescription: {
-    id: `${displayName}.noColoniesJoinedSectionDescription`,
+  emptyJoinedColoniesSectionDescription: {
+    id: `${displayName}.emptyJoinedColoniesSectionDescription`,
     defaultMessage: 'Once you join or create a colony, they will appear here.',
   },
 });
 
-export const NoColoniesJoinedSection = () => {
+export const EmptyJoinedColoniesSection = () => {
   return (
     <BaseTitleSection
       icon={SmileyMelting}
-      title={formatText(MSG.noColoniesJoinedSectionTitle)}
-      description={formatText(MSG.noColoniesJoinedSectionDescription)}
+      title={formatText(MSG.emptyJoinedColoniesSectionTitle)}
+      description={formatText(MSG.emptyJoinedColoniesSectionDescription)}
     />
   );
 };

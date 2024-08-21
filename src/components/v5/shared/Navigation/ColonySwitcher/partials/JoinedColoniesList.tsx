@@ -5,7 +5,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 
 import JoinedColonyItem from './JoinedColonyItem/index.ts';
-import { NoColoniesJoinedSection } from './TitleSections/NoColoniesJoinedSection.tsx';
+import { EmptyJoinedColoniesSection } from './TitleSections/EmptyJoinedColoniesSection.tsx';
 
 const displayName =
   'v5.common.Navigation.ColonySwitcher.partials.JoinedColoniesList';
@@ -41,7 +41,7 @@ export const JoinedColoniesList = () => {
       )}
     </>
   ) : (
-    <NoColoniesJoinedSection />
+    <EmptyJoinedColoniesSection />
   );
 };
 
