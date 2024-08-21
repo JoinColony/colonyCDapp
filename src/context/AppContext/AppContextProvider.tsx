@@ -126,9 +126,12 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
    * When the user switches account in Metamask, re-initiate the wallet connect flow
    * so as to update their wallet details in the app's memory.
    */
-  const handleAccountChange = useCallback(() => {
+  const handleAccountChange = useCallback(async () => {
     // @ts-ignore
-    const loggedInAccount = window.ethereum?.selectedAddress;
+    const accounts = await window.ethereum.request({
+      method: 'eth_accounts',
+    });
+    const loggedInAccount = accounts[0];
     if (loggedInAccount) {
       connectWallet();
     }
