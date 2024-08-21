@@ -1,7 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
 import claimAllMotionRewardsSaga from './claimAllMotionRewards.ts';
-import claimMintTokensMotionSaga from './claimMintTokens.ts';
 import claimMotionRewardsSaga from './claimMotionRewards.ts';
 // import escalateMotionSaga from './escalateMotion';
 import createDecisionMotionSaga from './createDecisionMotion.ts';
@@ -36,7 +35,6 @@ export default function* actionsSagas() {
     call(revealVoteMotionSaga),
     call(finalizeMotionSaga),
     call(claimMotionRewardsSaga),
-    call(claimMintTokensMotionSaga),
     call(claimAllMotionRewardsSaga),
     call(rootMotionSaga),
     call(createEditDomainReputationMotionSaga),

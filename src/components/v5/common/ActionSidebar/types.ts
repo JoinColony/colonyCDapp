@@ -37,7 +37,7 @@ export interface ActionSidebarProps {
 
 export type ClaimMintTokensActionParams = {
   colonyAddress: Address;
-  nativeTokenAddress: Address;
+  tokenAddresses: Address[];
 };
 
 export type FinalizeSuccessCallback = {

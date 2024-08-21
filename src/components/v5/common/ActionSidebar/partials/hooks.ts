@@ -91,9 +91,9 @@ export const useIsFieldDisabled = () => {
 
 export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
   const claimMintTokens = useAsyncFunction<ClaimMintTokensActionParams, void>({
-    submit: ActionTypes.MOTION_CLAIM_MINT_TOKENS,
-    error: ActionTypes.MOTION_CLAIM_MINT_TOKENS_ERROR,
-    success: ActionTypes.MOTION_CLAIM_MINT_TOKENS_SUCCESS,
+    submit: ActionTypes.CLAIM_TOKEN,
+    error: ActionTypes.CLAIM_TOKEN_ERROR,
+    success: ActionTypes.CLAIM_TOKEN_SUCCESS,
   });
 
   // We want to trigger this callback only when the Finalize button is pressed
@@ -103,7 +103,7 @@ export const useFinalizeSuccessCallback = (): FinalizeSuccessCallback => {
       case ColonyActionType.MintTokensMultisig: {
         if (action.tokenAddress) {
           claimMintTokens({
-            nativeTokenAddress: action.tokenAddress,
+            tokenAddresses: [action.tokenAddress],
             colonyAddress: action.colonyAddress,
           }).catch(() => {
             console.error(`An error occured while claiming tokens`);
