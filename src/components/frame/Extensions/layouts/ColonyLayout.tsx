@@ -57,8 +57,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
-  const { actionSidebarToggle, actionSidebarInitialValues } =
-    useActionSidebarContext();
+  const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
     actionSidebarToggle;
   const isTablet = useTablet();
@@ -182,7 +181,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         {isActionSidebarOpen && (
           <ActionSidebar
             transactionId={transactionId || undefined}
-            initialValues={actionSidebarInitialValues}
             className="modal-blur"
           >
             {isTablet ? getUserNavigation() : undefined}
