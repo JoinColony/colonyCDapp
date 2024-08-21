@@ -3,6 +3,7 @@ import {
   FilePlus,
   ShareNetwork,
   Binoculars,
+  Repeat,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
@@ -36,7 +37,8 @@ import useRenderRowLink from './useRenderRowLink.tsx';
 import useRenderSubComponent from './useRenderSubComponent.tsx';
 
 export const useActionsTableProps = (
-  props: Omit<ColonyActionsTableProps, 'withHeader'>,
+  props: Omit<ColonyActionsTableProps, 'withHeader' | 'actionProps'>,
+  setAction: (actionHash: string) => void,
 ) => {
   const {
     className,
@@ -119,6 +121,12 @@ export const useActionsTableProps = (
         ),
         icon: ShareNetwork,
         onClick: () => false,
+      },
+      {
+        key: '4',
+        label: formatText({ id: 'completedAction.redoAction' }),
+        icon: Repeat,
+        onClick: () => setAction(transactionHash),
       },
     ],
   });

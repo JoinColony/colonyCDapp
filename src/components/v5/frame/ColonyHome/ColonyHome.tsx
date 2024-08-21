@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
@@ -15,6 +15,7 @@ import {
 import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 // import TmpAdvancedPayments from '~v5/payments/TmpAdvancedPayments.tsx';
+import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import Agreements from './partials/Agreements/index.ts';
@@ -32,6 +33,10 @@ const ColonyHome = () => {
   const isMobile = useMobile();
   const selectedDomain = useGetSelectedDomainFilter();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
+  const [selectedAction, setSelectedAction] = useState<string | undefined>(
+    undefined,
+  );
+  const { defaultValues } = useGetActionData(selectedAction || undefined);
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
@@ -57,6 +62,11 @@ const ColonyHome = () => {
         <div className="w-full">
           <FiltersContextProvider>
             <ColonyActionsTable
+              actionProps={{
+                selectedAction,
+                setSelectedAction,
+                defaultValues,
+              }}
               className="w-full [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem]"
               pageSize={7}
               withHeader={false}
