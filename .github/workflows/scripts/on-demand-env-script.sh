@@ -66,7 +66,7 @@ ENCODED_LOG_GROUP_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quo
 ENCODED_LOG_STREAM_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$INSTANCE_ID'))")
 
 # Construct the CloudWatch Logs URL
-AWS_REGION="eu-west-2"
+export AWS_REGION="eu-west-2"
 CLOUDWATCH_URL="https://console.aws.amazon.com/cloudwatch/home?region=$AWS_REGION#logsV2:log-groups/log-group/$ENCODED_LOG_GROUP_NAME/log-events/$ENCODED_LOG_STREAM_NAME"
 
 # Create JSON payload for the Discord notification with embed, because of how long the CW URL would be
@@ -275,8 +275,8 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-nvm install
-nvm use
+nvm install 20
+nvm use 20
 
 # Set env vars (these will override the .env.local file)
 # frontend
@@ -298,6 +298,7 @@ npm ci
 # For the authentication proxy
 echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
 
+env
 # Build and run Docker images
 npm run on-demand &
 
@@ -329,7 +330,19 @@ while ! nc -z localhost 10001; do
 done
 
 # Seed database (pass --yes to skip confirmation)
-node ./scripts/create-data.js --yes
+# node ./scripts/create-data.js --yes
+
+# Temporary fix to get frontend running
+export BSCSCAN_API_KEY="test"
+export ETHERSCAN_API_KEY="test"
+export GOOGLE_TAG_MANAGER_ID="test"
+export PINATA_API_KEY="test"
+export PINATA_API_SECRET="test"
+export COINGECKO_API_KEY="test"
+export COINGECKO_API_URL="test"
+export POSTHOG_KEY="test"
+export POSTHOG_HOST="test"
+export PERSONA_ENVIRONMENT_ID="test"
 
 # Start frontend
 npm run frontend &
