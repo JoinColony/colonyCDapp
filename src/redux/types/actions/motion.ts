@@ -474,17 +474,4 @@ export type MotionActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
       MetaWithSetter<object>
-    >
-  | UniqueActionType<
-      ActionTypes.MOTION_CLAIM_MINT_TOKENS,
-      {
-        colonyAddress: Address;
-        nativeTokenAddress: Address;
-      },
-      MetaWithSetter<object>
-    >
-  | ErrorActionType<ActionTypes.MOTION_CLAIM_MINT_TOKENS_ERROR, object>
-  | ActionTypeWithMeta<
-      ActionTypes.MOTION_CLAIM_MINT_TOKENS_SUCCESS,
-      MetaWithSetter<object>
     >;
