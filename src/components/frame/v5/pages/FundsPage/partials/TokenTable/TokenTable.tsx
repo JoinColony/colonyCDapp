@@ -154,8 +154,10 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           isMultiSortEvent={() => true}
         />
         {isTokenNativeChainToken && (
-          <div className="flex items-center gap-1 border-t border-gray-100 px-[1.125rem] py-4">
-            <WarningCircle size={14} />
+          <div className="flex items-center border-t border-gray-100 px-[1.125rem] py-4">
+            <div className="mr-1">
+              <WarningCircle size={14} />
+            </div>
             <p className="text-sm font-normal">
               {formatText(MSG.nativeChainTokenWarning)}
             </p>

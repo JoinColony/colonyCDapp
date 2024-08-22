@@ -68,7 +68,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     }
   }
 
-  // If the unclaimed balance is 0, or unclaimed balance is 0, still return a claim with amount zero.
+  // If the balance is 0, or unclaimed balance is 0, still return a claim with amount zero.
   // This is because we want to always show native chain tokens in the incoming funds table.
   return colonyFundsClaim;
 };
