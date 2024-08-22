@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 
 import { type Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
@@ -48,10 +49,9 @@ export const ActionGroupingItem: FC<ActionGroupingItemProps> = ({
       <div className={clsx('mb-2 rounded p-[7px]', bgColorClass)}>
         <Icon size={22} className={iconColorClass} />
       </div>
-      {/* @TODO: check how new status will come + translations */}
       {isNew && (
         <PillsBase className="absolute right-5 top-6 bg-success-100 text-success-400">
-          New
+          {formatText({ id: 'badge.new' })}
         </PillsBase>
       )}
       <h3 className="text-md font-semibold text-gray-800">{title}</h3>
