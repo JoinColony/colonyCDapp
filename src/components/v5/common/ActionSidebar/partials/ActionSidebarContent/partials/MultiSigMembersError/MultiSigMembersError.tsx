@@ -1,10 +1,11 @@
 import { Id } from '@colony/colony-js';
 import { WarningCircle } from '@phosphor-icons/react';
-import { useEffect, type FC } from 'react';
+import { useEffect, type FC, useMemo } from 'react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   FROM_FIELD_NAME,
@@ -34,7 +35,18 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
     FROM_FIELD_NAME,
     TEAM_FIELD_NAME,
   ]);
-  const domainId = fromDomain ?? team ?? Id.RootDomain;
+
+  const domainId = useMemo(() => {
+    // for both of these actions you need roles in the parent domain
+    if (
+      selectedAction === Action.TransferFunds ||
+      selectedAction === Action.ManagePermissions
+    ) {
+      return Id.RootDomain;
+    }
+
+    return fromDomain ?? team ?? Id.RootDomain;
+  }, [fromDomain, selectedAction, team]);
 
   const { isLoading, hasEnoughMembersWithPermissions } =
     useHasEnoughMembersWithPermissions({

@@ -140,7 +140,7 @@ function* manageReputationMotion({
             networkClient: colonyClient.networkClient,
             colonyRoles,
             colonyDomains,
-            requiredDomainId: motionDomainId,
+            requiredDomainId: domainId,
             requiredColonyRoles: requiredRoles,
             permissionAddress: multiSigPermissionsClient.address,
             isMultiSig: false,

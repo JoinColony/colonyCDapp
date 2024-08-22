@@ -147,7 +147,7 @@ function* managePermissionsAction({
     const requiredRoles =
       domainId === Id.RootDomain
         ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
+        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
 
     const initiatorAddress = yield colonyClient.signer.getAddress();
 

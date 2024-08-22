@@ -154,6 +154,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const { isLoading: areEligibleSigneesLoading, uniqueEligibleSignees } =
     useEligibleSignees({
       domainIds: getDomainIdsForEligibleSignees(
+        // @TODO remove this helper once network fixes the manage permissions motion to be created in the parent domain
         getDomainIdForActionType(
           actionType,
           multiSigData.nativeMultiSigDomainId,
