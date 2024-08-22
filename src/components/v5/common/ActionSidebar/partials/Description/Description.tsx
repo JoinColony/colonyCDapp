@@ -1,6 +1,5 @@
 import { Pencil } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
@@ -20,10 +19,8 @@ const Description: FC<DescriptionProps> = ({
 }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const { readonly } = useAdditionalFormOptionsContext();
-  const { watch } = useFormContext();
-  const descriptionValue = watch(DESCRIPTION_FIELD_NAME);
 
-  return !(readonly && !descriptionValue) ? (
+  return !readonly ? (
     <ActionFormRow
       icon={Pencil}
       fieldName={DESCRIPTION_FIELD_NAME}
