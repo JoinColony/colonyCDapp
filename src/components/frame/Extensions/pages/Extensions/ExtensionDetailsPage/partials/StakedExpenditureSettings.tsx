@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
+import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -59,15 +60,27 @@ const StakedExpenditureSettings: FC<
       </div>
       <h3 className="mb-6 text-gray-900 heading-5">{formatText(MSG.title)}</h3>
       {showForm ? (
-        <div className="flex justify-between text-gray-900">
-          <ContentTypeText
-            title="Required Stake"
-            subTitle="What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?"
-          />
-          <div className="ml-6 shrink-0">
-            <SpecialPercentageInput name="params.stakeFraction" />
-          </div>
-        </div>
+        <>
+          {extensionData.initializationParams?.length && (
+            <>
+              {extensionData.initializationParams.map(
+                ({ title, description, paramName, complementaryLabel }) => (
+                  <div className="flex justify-between text-gray-900">
+                    <ContentTypeText title={title} subTitle={description} />
+                    <div className="ml-6 shrink-0">
+                      {complementaryLabel === 'percent' && (
+                        <SpecialPercentageInput name={`params.${paramName}`} />
+                      )}
+                      {complementaryLabel === 'hours' && (
+                        <SpecialHourInput name={`params.${paramName}`} />
+                      )}
+                    </div>
+                  </div>
+                ),
+              )}
+            </>
+          )}
+        </>
       ) : (
         children
       )}

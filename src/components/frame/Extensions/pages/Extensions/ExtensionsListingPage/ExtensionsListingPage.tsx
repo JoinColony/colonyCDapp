@@ -1,12 +1,18 @@
-import React, { type FC, useMemo } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import ExtensionItem from '~common/Extensions/ExtensionItem/index.ts';
+import {
+  decisionMethodSupportedExtensionsConfig,
+  paymentSupportedExtensionsConfig,
+} from '~constants';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
-import { type AnyExtensionData } from '~types/extensions.ts';
+import { sortExtensionByName } from '~utils/arrays/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
+
+import { getExtensionData } from './utils.ts';
 
 const displayName = 'frame.Extensions.pages.Extensions.ExtensionsListingPage';
 
@@ -19,34 +25,44 @@ const MSG = defineMessages({
     id: `${displayName}.availableExtensions`,
     defaultMessage: 'Available Extensions',
   },
+  decisionMethods: {
+    id: `${displayName}.decisionMethods`,
+    defaultMessage: 'Decision methods',
+  },
+  payments: {
+    id: `${displayName}.payments`,
+    defaultMessage: 'Payments',
+  },
 });
 
 const ExtensionsListingPage: FC = () => {
   const { availableExtensionsData, installedExtensionsData } =
     useExtensionsData();
-
   useSetPageHeadingTitle(formatText(MSG.title));
 
-  const allExtensions: AnyExtensionData[] = useMemo(
-    () => [...availableExtensionsData, ...installedExtensionsData],
-    [availableExtensionsData, installedExtensionsData],
-  );
-
-  const categorizedExtensions: Record<string, AnyExtensionData[]> =
-    allExtensions.reduce((acc, extension) => {
-      if (!acc[extension.category]) {
-        acc[extension.category] = [];
-      }
-
-      acc[extension.category].push(extension);
-
-      return acc;
-    }, {});
+  const categorizedExtensions = [
+    {
+      category: formatText(MSG.decisionMethods),
+      extensions: getExtensionData(
+        decisionMethodSupportedExtensionsConfig,
+        availableExtensionsData,
+        installedExtensionsData,
+      ).sort(sortExtensionByName),
+    },
+    {
+      category: formatText(MSG.payments),
+      extensions: getExtensionData(
+        paymentSupportedExtensionsConfig,
+        availableExtensionsData,
+        installedExtensionsData,
+      ).sort(sortExtensionByName),
+    },
+  ];
 
   return (
     <div>
       <h2 className="mb-6 heading-4">{formatText(MSG.availableExtensions)}</h2>
-      {Object.entries(categorizedExtensions).map(([category, extensions]) => (
+      {categorizedExtensions.map(({ category, extensions }) => (
         <div
           key={category}
           className="mb-6 border-b border-gray-100 last:mb-0 last:border-none"
