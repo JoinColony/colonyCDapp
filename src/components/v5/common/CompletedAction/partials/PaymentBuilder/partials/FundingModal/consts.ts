@@ -10,14 +10,19 @@ import {
 } from '~utils/tokens.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 
-export const fundingDecisionMethodDescriptions = {
-  [DecisionMethod.Permissions]: formatText({
-    id: 'fundingModal.permissionsDescription',
-  }),
+export const getFundingDecisionMethodDescriptions = (userRole: string) => ({
+  [DecisionMethod.Permissions]: formatText(
+    {
+      id: 'fundingModal.permissionsDescription',
+    },
+    {
+      permission: userRole,
+    },
+  ),
   [DecisionMethod.Reputation]: formatText({
     id: 'fundingModal.reputationDescription',
   }),
-};
+});
 
 export const getValidationSchema = (
   selectedTeam: number | undefined,
