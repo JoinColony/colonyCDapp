@@ -16,6 +16,7 @@ interface UseDomainThresholdResult {
   isLoading: boolean;
 }
 
+// The priority is 1. Domain fixed threshold 2. Global threshold 3. Domain majority approval
 export const useDomainThreshold = ({
   requiredRoles,
   domainId,
@@ -54,13 +55,12 @@ export const useDomainThreshold = ({
         thresholdEntry.domainId === domainId.toString(),
     );
 
-    // if we didn't find domain config, let's just assume we inherit from the colony
     const thresholdConfig =
-      matchingDomain !== undefined && matchingDomain !== null
+      matchingDomain && matchingDomain?.domainThreshold > 0
         ? matchingDomain.domainThreshold
         : colonyThreshold;
 
-    // if it's not majority approval
+    // if either the domain or the global threshold aren't majority approval
     if (thresholdConfig > 0) {
       const thresholdMap: { [role: number]: number } = {};
 
@@ -74,13 +74,14 @@ export const useDomainThreshold = ({
     }
 
     // if there are no members, the default is still 1
-    const thresholdPerRole = Object.entries(countPerRole).reduce(
-      (acc, [role, count]) => {
-        acc[role] = count ? Math.floor(count / 2) + 1 : 1;
-        return acc;
-      },
-      {},
-    );
+    const thresholdPerRole = requiredRoles.reduce((acc, role) => {
+      const signeesForRole = countPerRole[role] ?? 0;
+
+      return {
+        ...acc,
+        [role]: Math.floor(signeesForRole / 2) + 1,
+      };
+    }, {});
 
     return thresholdPerRole;
   };
