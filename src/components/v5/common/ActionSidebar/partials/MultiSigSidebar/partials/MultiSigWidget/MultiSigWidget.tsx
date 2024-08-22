@@ -14,11 +14,7 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
-import {
-  getDomainIdForActionType,
-  getIsMultiSigExecutable,
-  getSignaturesPerRole,
-} from './utils.ts';
+import { getIsMultiSigExecutable, getSignaturesPerRole } from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -46,11 +42,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   const { type: actionType, multiSigData } = action;
 
   // this is only because managing permissions in a subdomain requires signees in the parent domain
-  const domainForSignees = getDomainIdForActionType(
-    actionType,
-    multiSigData.nativeMultiSigDomainId,
-  );
-
   const requiredRoles = useMemo(() => {
     return (
       getRolesNeededForMultiSigAction({
@@ -61,7 +52,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   }, [actionType, multiSigData.nativeMultiSigDomainId]);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
-    domainId: domainForSignees,
+    domainId: Number(multiSigData.nativeMultiSigDomainId),
     requiredRoles,
   });
 

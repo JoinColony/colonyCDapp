@@ -68,7 +68,6 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     fromDomain,
     toDomain,
     isMotion,
-    isMultiSig,
     motionData,
     annotation,
   } = action;
@@ -98,10 +97,9 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-            [CREATED_IN_FIELD_NAME]:
-              isMotion || isMultiSig
-                ? motionDomain?.nativeId
-                : fromDomain?.nativeId,
+            [CREATED_IN_FIELD_NAME]: isMotion
+              ? motionDomain?.nativeId
+              : fromDomain?.nativeId,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
