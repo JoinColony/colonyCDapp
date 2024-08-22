@@ -1,9 +1,11 @@
 import {
-  Waves,
   HandCoins,
   Money,
-  ArrowsOutLineHorizontal,
-  Steps,
+
+  // @TODO: uncomment when streaming payment,split payment and staged payment will be ready
+  // Waves,
+  // ArrowsOutLineHorizontal,
+  // Steps,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
@@ -26,27 +28,28 @@ export const GROUPING_LIST = [
     Icon: HandCoins,
     action: Action.PaymentBuilder,
   },
-  {
-    title: formatText({ id: 'actions.streamingPayment' }),
-    description: formatText({
-      id: 'actions.description.streamingPayment',
-    }),
-    Icon: Waves,
-    action: Action.StreamingPayment,
-  },
-  {
-    title: formatText({ id: 'actions.splitPayment' }),
-    description: formatText({ id: 'actions.description.splitPayment' }),
-    Icon: ArrowsOutLineHorizontal,
-    action: Action.SplitPayment,
-  },
-  {
-    title: formatText({ id: 'actions.stagedPayment' }),
-    description: formatText({
-      id: 'actions.description.stagedPayment',
-    }),
-    Icon: Steps,
-    action: Action.StagedPayment,
-    isNew: true,
-  },
+  // @TODO: uncomment when streaming payment,split payment and staged payment will be ready
+  // {
+  //   title: formatText({ id: 'actions.streamingPayment' }),
+  //   description: formatText({
+  //     id: 'actions.description.streamingPayment',
+  //   }),
+  //   Icon: Waves,
+  //   action: Action.StreamingPayment,
+  // },
+  // {
+  //   title: formatText({ id: 'actions.splitPayment' }),
+  //   description: formatText({ id: 'actions.description.splitPayment' }),
+  //   Icon: ArrowsOutLineHorizontal,
+  //   action: Action.SplitPayment,
+  // },
+  // {
+  //   title: formatText({ id: 'actions.stagedPayment' }),
+  //   description: formatText({
+  //     id: 'actions.description.stagedPayment',
+  //   }),
+  //   Icon: Steps,
+  //   action: Action.StagedPayment,
+  //   isNew: true,
+  // },
 ];
