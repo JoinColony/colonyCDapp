@@ -18,3 +18,10 @@ query CheckKYCStatus {
 query GetUserLiquidationAddress($userAddress: String!) {
   bridgeGetUserLiquidationAddress(userAddress: $userAddress)
 }
+
+query GetGatewayFee {
+  bridgeGetGatewayFee {
+    transactionFeePercentage
+    success
+  }
+}

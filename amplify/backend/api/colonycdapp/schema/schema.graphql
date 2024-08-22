@@ -944,6 +944,11 @@ type Query {
   """
   bridgeGetUserLiquidationAddress(userAddress: String!): String
     @function(name: "bridgeXYZMutation-${env}")
+  """
+  Get bridge gateway fee
+  """
+  bridgeGetGatewayFee: BridgeGatewayFeeReturn
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """

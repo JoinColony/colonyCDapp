@@ -14,7 +14,7 @@ const displayName = 'common.Extensions.UserHub.partials.SummaryAmmountRow';
 interface SummaryAmountRowProps {
   isHighlighted?: boolean;
   description: string;
-  amount: number;
+  amount: string;
   currency: ExtendedSupportedCurrencies | SupportedCurrencies;
   tooltipContent: string;
   isDisabled?: boolean;
