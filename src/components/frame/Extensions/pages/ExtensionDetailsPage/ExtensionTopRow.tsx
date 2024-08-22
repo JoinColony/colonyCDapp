@@ -1,4 +1,11 @@
-import { Extension, Id } from '@colony/colony-js';
+import {
+  type ColonyVersion,
+  Extension,
+  type ExtensionVersion,
+  Id,
+  isExtensionCompatible,
+  getExtensionLowestCompatibleColonyVersion,
+} from '@colony/colony-js';
 import { WarningCircle } from '@phosphor-icons/react';
 import React, { useCallback, type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -82,6 +89,17 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
       address: address || '',
     });
 
+  const extensionCompatible = isExtensionCompatible(
+    Extension.MultisigPermissions,
+    extensionData.availableVersion as ExtensionVersion,
+    colony.version as ColonyVersion,
+  );
+
+  const minimumColonyVersion = getExtensionLowestCompatibleColonyVersion(
+    Extension.MultisigPermissions,
+    extensionData.availableVersion as ExtensionVersion,
+  );
+
   const handleUpgradeColony = useCallback(
     () =>
       toggleActionSidebarOn({
@@ -92,7 +110,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 
   return (
     <>
-      {(extensionData.neededColonyVersion || 0) > colony.version && (
+      {!extensionCompatible && (
         <div className="pb-6">
           <NotificationBanner
             status="error"
@@ -104,7 +122,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
             }
           >
             {formatText(MSG.colonyVersionTooLow, {
-              minimumColonyVersion: extensionData.neededColonyVersion,
+              minimumColonyVersion,
             })}
           </NotificationBanner>
         </div>
