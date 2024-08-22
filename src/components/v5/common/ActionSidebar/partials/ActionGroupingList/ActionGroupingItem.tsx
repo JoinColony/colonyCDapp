@@ -54,7 +54,7 @@ export const ActionGroupingItem: FC<ActionGroupingItemProps> = ({
           {formatText({ id: 'badge.new' })}
         </PillsBase>
       )}
-      <h3 className="text-md font-semibold text-gray-800">{title}</h3>
+      <h3 className="text-md font-semibold text-gray-900">{title}</h3>
       <p className="mt-1 text-sm text-gray-600">{description}</p>
     </button>
   );
