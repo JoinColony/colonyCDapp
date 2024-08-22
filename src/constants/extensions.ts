@@ -585,7 +585,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
       ColonyRole.Architecture,
       ColonyRole.Funding,
     ],
-    neededColonyVersion: 16,
     uninstallable: true,
     createdAt: 1713173071843,
   },

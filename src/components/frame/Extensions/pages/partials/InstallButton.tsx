@@ -1,4 +1,9 @@
-import { Extension } from '@colony/colony-js';
+import {
+  type ColonyVersion,
+  Extension,
+  type ExtensionVersion,
+  isExtensionCompatible,
+} from '@colony/colony-js';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -40,6 +45,11 @@ const InstallButton = ({
   const [isInstallDisabled, setIsInstallDisabled] = useState(false);
   const [isPolling, setIsPolling] = useState(false);
   const navigate = useNavigate();
+  const extensionCompatible = isExtensionCompatible(
+    Extension.MultisigPermissions,
+    extensionData.availableVersion as ExtensionVersion,
+    colonyVersion as ColonyVersion,
+  );
 
   const isMobile = useMobile();
 
@@ -92,9 +102,7 @@ const InstallButton = ({
       onError={handleInstallError}
       isFullSize={isMobile}
       disabled={
-        isInstallDisabled ||
-        !isSupportedColonyVersion ||
-        (extensionData.neededColonyVersion || 0) > colonyVersion
+        isInstallDisabled || !isSupportedColonyVersion || !extensionCompatible
       }
     >
       {formatText({ id: 'button.install' })}
