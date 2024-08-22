@@ -5,12 +5,15 @@ import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
+import { getRole } from '~constants/permissions.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { type ExpenditureFundMotionPayload } from '~redux/types/actions/motion.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';
@@ -22,7 +25,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
-  fundingDecisionMethodDescriptions,
+  getFundingDecisionMethodDescriptions,
   getValidationSchema,
 } from './consts.ts';
 import { useFundingDecisionMethods } from './hooks.ts';
@@ -50,12 +53,19 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   teamName,
   actionType,
 }) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
   const {
     watch,
     formState: { isSubmitting, errors },
     trigger,
   } = useFormContext();
   const method = watch('decisionMethod');
+
+  const userPermissions = getAllUserRoles(colony, user?.walletAddress);
+  const userRole = getRole(userPermissions);
+  const fundingDecisionMethodDescriptions =
+    getFundingDecisionMethodDescriptions(userRole.name);
 
   const fundingDecisionMethodOptions = useFundingDecisionMethods(actionType);
 
