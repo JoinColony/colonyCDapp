@@ -120,10 +120,15 @@ const CancelModal: FC<CancelModalProps> = ({
                   )}
                 </div>
                 <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
-                  <Button mode="primaryOutline" isFullSize onClick={onClose}>
+                  <Button
+                    mode="primaryOutline"
+                    isFullSize
+                    className="w-full md:w-[calc(50%-.375rem)]"
+                    onClick={onClose}
+                  >
                     {formatText({ id: 'button.cancel' })}
                   </Button>
-                  <div className="flex w-full justify-center">
+                  <div className="flex w-full justify-center md:w-[calc(50%-.375rem)]">
                     <Button
                       mode="primarySolid"
                       isFullSize
@@ -140,10 +145,15 @@ const CancelModal: FC<CancelModalProps> = ({
         </Form>
       ) : (
         <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
-          <Button mode="primaryOutline" isFullSize onClick={onClose}>
+          <Button
+            mode="primaryOutline"
+            className="w-full md:w-[calc(50%-.375rem)]"
+            isFullSize
+            onClick={onClose}
+          >
             {formatText({ id: 'button.cancel' })}
           </Button>
-          <div className="flex w-full justify-center">
+          <div className="flex w-full justify-center md:w-[calc(50%-.375rem)]">
             <ActionButton
               actionType={ActionTypes.EXPENDITURE_CANCEL}
               type="submit"
