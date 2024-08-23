@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { call } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -6,8 +6,10 @@ import {
   type CreateAnnotationMutation,
   type CreateAnnotationMutationVariables,
 } from '~gql';
-import { transactionPending } from '~redux/actionCreators/index.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  transactionSetPending,
+} from '~state/transactionState.ts';
 
 import {
   waitForTxResult,
@@ -57,7 +59,7 @@ export function* uploadAnnotation({
   txHash: string;
   actionId?: string;
 }) {
-  yield put(transactionPending(txChannel.id));
+  yield transactionSetPending(txChannel.id);
 
   /*
    * Upload annotation metadata to IPFS

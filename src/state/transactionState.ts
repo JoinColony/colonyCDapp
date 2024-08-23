@@ -31,6 +31,7 @@ import {
   type CreateTransactionInput,
 } from '~gql';
 import { type TransactionType } from '~redux/immutable/index.ts';
+import { onTransactionPending } from '~redux/sagas/transactions/transactionsToDb.ts';
 import { type TransactionCreatedPayload } from '~redux/types/actions/transaction.ts';
 import { type AddressOrENSName } from '~types';
 import { type Transaction } from '~types/graphql.ts';
@@ -459,6 +460,19 @@ export const deleteTransaction = async (id: string) => {
       );
     },
   });
+};
+
+// Update the transaction status to pending in the database
+export const transactionSetPending = async (id: string) => {
+  onTransactionPending(id);
+  const wallet = getContext(ContextModule.Wallet);
+  const walletAddress = utils.getAddress(wallet.address);
+  const input = {
+    id,
+    from: walletAddress,
+    status: TransactionStatus.Pending,
+  };
+  return updateTransaction(input, input);
 };
 
 // Update the transaction status to ready in the database (important before sending it!)

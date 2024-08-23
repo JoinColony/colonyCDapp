@@ -8,10 +8,12 @@ import { BigNumber } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import { transactionPending } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  transactionSetPending,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -76,7 +78,7 @@ function* escalateMotion({
       ActionTypes.TRANSACTION_CREATED,
     );
 
-    yield put(transactionPending(escalateMotionTransaction.id));
+    yield transactionSetPending(escalateMotionTransaction.id);
 
     const { domainId, rootHash } = yield call(
       [votingReputationClient, votingReputationClient.getMotion],

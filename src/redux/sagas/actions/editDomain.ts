@@ -12,9 +12,11 @@ import {
   type UpdateDomainMetadataMutation,
   type UpdateDomainMetadataMutationVariables,
 } from '~gql';
-import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  transactionSetPending,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
 
@@ -105,7 +107,7 @@ function* editDomainAction({
       );
     }
 
-    yield put(transactionPending(editDomain.id));
+    yield transactionSetPending(editDomain.id);
 
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,

@@ -152,7 +152,7 @@ function* createDecisionMotion({
       },
     });
 
-    // yield put(transactionPending(annotateMotion.id));
+    // yield transactionSetPending(annotateMotion.id);
 
     // yield put(
     //   transactionAddParams(annotateMotion.id, [
