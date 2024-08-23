@@ -6,18 +6,21 @@ const displayName = 'common.Extensions.UserHub.partials.CardWrapper';
 interface CardWrapperProps {
   isFormDisabled: boolean;
   hasError: boolean;
+  isLoading: boolean;
 }
 
 const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
   isFormDisabled,
   hasError,
   children,
+  isLoading,
 }) => {
   return (
     <div
       className={clsx('rounded-lg border border-gray-200 p-4', {
         'bg-gray-50': isFormDisabled,
         'border-negative-400': hasError,
+        'bg-transparent': isLoading,
       })}
     >
       {children}

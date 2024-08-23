@@ -2,6 +2,7 @@ import React, { type ChangeEvent, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
@@ -28,12 +29,14 @@ interface WithdrawCardProps {
   isFormDisabled: boolean;
   balance: number;
   handleSetMax: () => void;
+  isLoading: boolean;
 }
 
 const WithdrawCard: FC<WithdrawCardProps> = ({
   isFormDisabled,
   balance,
   handleSetMax,
+  isLoading,
 }) => {
   const name = 'amount';
 
@@ -55,17 +58,27 @@ const WithdrawCard: FC<WithdrawCardProps> = ({
 
   return (
     <>
-      <CardWrapper isFormDisabled={isFormDisabled} hasError={hasError}>
+      <CardWrapper
+        isFormDisabled={isFormDisabled}
+        hasError={hasError}
+        isLoading={isLoading}
+      >
         <CardHeader
           title={formatMessage(MSG.withdraw)}
           isFormDisabled={isFormDisabled}
           handleSetMax={handleSetMax}
+          isLoading={isLoading}
         >
-          <Numeral
-            prefix={formatMessage(MSG.balance)}
-            value={balance}
-            decimals={6}
-          />
+          <LoadingSkeleton
+            className="h-4 w-[70px] rounded"
+            isLoading={isLoading}
+          >
+            <Numeral
+              prefix={formatMessage(MSG.balance)}
+              value={balance}
+              decimals={6}
+            />
+          </LoadingSkeleton>
         </CardHeader>
         <CardInput
           isFormDisabled={isFormDisabled}
@@ -74,6 +87,7 @@ const WithdrawCard: FC<WithdrawCardProps> = ({
           onChange={handleChange}
           symbol="USDC"
           name={name}
+          isLoading={isLoading}
         />
       </CardWrapper>
       {hasError && <p className="text-sm text-negative-400">{error.message}</p>}

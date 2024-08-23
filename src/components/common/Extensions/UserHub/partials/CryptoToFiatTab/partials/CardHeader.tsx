@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.CardWrapper';
@@ -17,6 +18,7 @@ interface CardWrapperProps {
   title: string;
   isFormDisabled: boolean;
   handleSetMax: () => void;
+  isLoading: boolean;
 }
 
 const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
@@ -24,17 +26,23 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
   isFormDisabled,
   handleSetMax,
   children,
+  isLoading,
 }) => {
   return (
     <div className="flex justify-between">
-      <p
-        className={clsx('text-sm', {
-          'text-gray-600': !isFormDisabled,
-          'text-gray-300': isFormDisabled,
-        })}
+      <LoadingSkeleton
+        isLoading={isLoading}
+        className="h-[18px] w-[55px] rounded"
       >
-        {title}
-      </p>
+        <p
+          className={clsx('text-sm', {
+            'text-gray-600': !isFormDisabled,
+            'text-gray-300': isFormDisabled,
+          })}
+        >
+          {title}
+        </p>
+      </LoadingSkeleton>
       <div className="flex gap-2 text-sm">
         <div
           className={clsx({
@@ -44,17 +52,19 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
         >
           {children}
         </div>
-        <button
-          type="button"
-          onClick={handleSetMax}
-          className={clsx('font-semibold', {
-            'text-blue-400': !isFormDisabled,
-            'text-gray-300': isFormDisabled,
-          })}
-          disabled={isFormDisabled}
-        >
-          {formatMessage(MSG.max)}
-        </button>
+        <LoadingSkeleton isLoading={isLoading} className="h-4 w-[21px] rounded">
+          <button
+            type="button"
+            onClick={handleSetMax}
+            className={clsx('font-semibold', {
+              'text-blue-400': !isFormDisabled,
+              'text-gray-300': isFormDisabled,
+            })}
+            disabled={isFormDisabled}
+          >
+            {formatMessage(MSG.max)}
+          </button>
+        </LoadingSkeleton>
       </div>
     </div>
   );

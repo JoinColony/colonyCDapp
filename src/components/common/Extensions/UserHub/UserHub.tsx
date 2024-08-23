@@ -69,7 +69,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
       })}
     >
-      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.85rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
+      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[216px] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
             options={filteredTabList}
@@ -125,7 +125,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
           </>
         )}
       </div>
-      <div className="relative h-full w-full min-w-0">
+      <div className="relative h-full w-full min-w-0 overflow-y-auto">
         {selectedTab === UserHubTab.Balance && (
           <ReputationTab onTabChange={handleTabChange} />
         )}

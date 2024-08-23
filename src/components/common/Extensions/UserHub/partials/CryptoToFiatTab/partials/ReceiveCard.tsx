@@ -2,6 +2,7 @@ import React, { type ChangeEvent, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
@@ -26,11 +27,13 @@ const MSG = defineMessages({
 interface ReceiveCardProps {
   isFormDisabled: boolean;
   handleSetMax: () => void;
+  isLoading: boolean;
 }
 
 const ReceiveCard: FC<ReceiveCardProps> = ({
   isFormDisabled,
   handleSetMax,
+  isLoading,
 }) => {
   const name = 'convertedAmount';
 
@@ -57,18 +60,28 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
 
   return (
     <>
-      <CardWrapper isFormDisabled={isFormDisabled} hasError={hasError}>
+      <CardWrapper
+        isFormDisabled={isFormDisabled}
+        hasError={hasError}
+        isLoading={isLoading}
+      >
         <CardHeader
           title={formatMessage(MSG.receive)}
           isFormDisabled={isFormDisabled}
           handleSetMax={handleSetMax}
+          isLoading={isLoading}
         >
-          <p>
-            {formatMessage(MSG.oneUSDC)}
-            <span className="font-medium">
-              {conversionRate} {selectedCurrency}
-            </span>
-          </p>
+          <LoadingSkeleton
+            className="h-4 w-[70px] rounded"
+            isLoading={isLoading}
+          >
+            <p>
+              {formatMessage(MSG.oneUSDC)}
+              <span className="font-medium">
+                {conversionRate} {selectedCurrency}
+              </span>
+            </p>
+          </LoadingSkeleton>
         </CardHeader>
         <CardInput
           isFormDisabled={isFormDisabled}
@@ -78,6 +91,7 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
           onChange={handleChange}
           symbol={selectedCurrency}
           name={name}
+          isLoading={isLoading}
         />
       </CardWrapper>
       {hasError && <p className="text-sm text-negative-400">{error.message}</p>}

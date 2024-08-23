@@ -2,6 +2,7 @@ import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -13,7 +14,13 @@ import WithdrawCard from './WithdrawCard.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.TransferForm';
 
-const TransferForm = ({ isFormDisabled }: { isFormDisabled: boolean }) => {
+const TransferForm = ({
+  isFormDisabled,
+  isKycStatusLoading,
+}: {
+  isFormDisabled: boolean;
+  isKycStatusLoading: boolean;
+}) => {
   const {
     formState: { isSubmitting, isLoading },
     setValue,
@@ -36,12 +43,17 @@ const TransferForm = ({ isFormDisabled }: { isFormDisabled: boolean }) => {
           isFormDisabled={isFormDisabled}
           balance={balance}
           handleSetMax={handleSetMax}
+          isLoading={isKycStatusLoading}
         />
         <ReceiveCard
           isFormDisabled={isFormDisabled}
           handleSetMax={handleSetMax}
+          isLoading={isKycStatusLoading}
         />
-        <SummaryCard isFormDisabled={isFormDisabled} />
+        <SummaryCard
+          isFormDisabled={isFormDisabled}
+          isLoading={isKycStatusLoading}
+        />
       </div>
       {isSubmitting || isLoading ? (
         <IconButton
@@ -55,14 +67,20 @@ const TransferForm = ({ isFormDisabled }: { isFormDisabled: boolean }) => {
           }
         />
       ) : (
-        <Button
-          mode="primarySolid"
-          type="submit"
-          text={formatText({ id: `button.transfer` })}
-          className="my-6"
-          isFullSize
-          disabled={isFormDisabled}
-        />
+        <div className="mb-6 mt-20 sm:mt-6">
+          <LoadingSkeleton
+            className="my-6 h-10 w-full rounded-lg"
+            isLoading={isKycStatusLoading}
+          >
+            <Button
+              mode="primarySolid"
+              type="submit"
+              text={formatText({ id: `button.transfer` })}
+              isFullSize
+              disabled={isFormDisabled}
+            />
+          </LoadingSkeleton>
+        </div>
       )}
     </>
   );

@@ -6,6 +6,8 @@ import React, {
   type FC,
 } from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
+
 const displayName = 'common.Extensions.UserHub.partials.CardInput';
 
 interface CardInputProps {
@@ -15,6 +17,7 @@ interface CardInputProps {
   name: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  isLoading: boolean;
 }
 
 const CardInput: FC<CardInputProps> = ({
@@ -24,19 +27,22 @@ const CardInput: FC<CardInputProps> = ({
   name,
   value,
   onChange,
+  isLoading,
 }) => {
   return (
-    <div className="relative flex">
-      <input
-        name={name}
-        value={value}
-        onChange={onChange}
-        className={clsx('w-full pr-16 text-xl outline-none', {
-          'bg-transparent text-gray-300': isFormDisabled,
-          'bg-base-white text-gray-900': !isFormDisabled,
-        })}
-        disabled={isFormDisabled}
-      />
+    <div className={clsx('relative flex', { 'pt-2': isLoading })}>
+      <LoadingSkeleton isLoading={isLoading} className="h-5 w-[26px] rounded">
+        <input
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={clsx('w-full pr-16 text-xl outline-none', {
+            'bg-transparent text-gray-300': isFormDisabled,
+            'text-gray-900': !isFormDisabled,
+          })}
+          disabled={isFormDisabled}
+        />
+      </LoadingSkeleton>
       <div
         className={clsx(
           'absolute right-0 top-1 flex items-center gap-1 text-md font-medium',
@@ -46,8 +52,15 @@ const CardInput: FC<CardInputProps> = ({
           },
         )}
       >
-        <Icon size={18} />
-        <p>{symbol}</p>
+        <LoadingSkeleton
+          className="aspect-square w-[18px] rounded-full"
+          isLoading={isLoading}
+        >
+          <Icon size={18} />
+        </LoadingSkeleton>
+        <LoadingSkeleton className="h-5 w-10 rounded" isLoading={isLoading}>
+          <p>{symbol}</p>
+        </LoadingSkeleton>
       </div>
     </div>
   );
