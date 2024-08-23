@@ -232,7 +232,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
       <SplitPaymentTable
         items={slots}
         status={status}
-        isLoading={!slots.length}
+        isLoading={!slots.length || !!loadingExpenditure}
       />
 
       <CancelModal

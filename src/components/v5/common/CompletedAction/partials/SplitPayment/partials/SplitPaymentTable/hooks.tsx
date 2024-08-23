@@ -2,7 +2,9 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
@@ -23,6 +25,8 @@ export const useGetSplitPaymentColumns = (
   const isTablet = useTablet();
   const splitPaymentColumnHelper = createColumnHelper<SplitPaymentTableModel>();
   const { colony } = useColonyContext();
+  const { loading: isColonyContributorDataLoading } = useMemberContext();
+  const isDataLoading = isLoading || isColonyContributorDataLoading;
 
   const amount = data.reduce((acc, curr) => {
     if (!curr) {
@@ -39,14 +43,11 @@ export const useGetSplitPaymentColumns = (
       splitPaymentColumnHelper.accessor('recipient', {
         enableSorting: false,
         header: formatText({ id: 'table.row.recipient' }),
-        cell: ({ row }) =>
-          isLoading ? (
-            <div className="flex w-full items-center">
-              <div className="h-4 w-full overflow-hidden rounded skeleton" />
-            </div>
-          ) : (
+        cell: ({ row }) => (
+          <LoadingSkeleton isLoading={isLoading} className="h-4 w-full rounded">
             <RecipientField address={row.original.recipient} />
-          ),
+          </LoadingSkeleton>
+        ),
         footer: () => (
           <span className="flex min-h-[1.875rem] items-center text-gray-400 text-4">
             {formatText({ id: 'table.footer.total' })}
@@ -59,18 +60,27 @@ export const useGetSplitPaymentColumns = (
         footer: () => {
           const token = getSelectedToken(colony, data[0]?.tokenAddress);
 
-          return token ? (
-            <div className="flex items-center justify-end gap-9 md:justify-start">
-              <SplitPaymentPayoutsTotal data={data} token={token} />
-              {isTablet && (
-                <span className="text-md font-medium text-gray-900">100%</span>
-              )}
-            </div>
-          ) : null;
+          return (
+            <LoadingSkeleton
+              isLoading={isDataLoading}
+              className="h-4 w-full rounded"
+            >
+              {token ? (
+                <div className="flex items-center justify-end gap-9 md:justify-start">
+                  <SplitPaymentPayoutsTotal data={data} token={token} />
+                  {isTablet && (
+                    <span className="text-md font-medium text-gray-900">
+                      100%
+                    </span>
+                  )}
+                </div>
+              ) : null}
+            </LoadingSkeleton>
+          );
         },
         cell: ({ row }) => (
           <AmountField
-            isLoading={isLoading}
+            isLoading={isDataLoading}
             amount={row.original.amount}
             tokenAddress={row.original.tokenAddress}
           />
@@ -86,19 +96,25 @@ export const useGetSplitPaymentColumns = (
             ? calculatePercentageValue(data?.[row.index].amount, amount)
             : 0;
 
-          return isLoading ? (
-            <div className="flex w-full items-center">
-              <div className="h-4 w-full overflow-hidden rounded skeleton" />
-            </div>
-          ) : (
-            <span className="text-md font-medium text-gray-900">
-              {parseFloat(percentCalculated.toFixed(4))}%
-            </span>
+          return (
+            <LoadingSkeleton
+              isLoading={isDataLoading}
+              className="h-4 w-full rounded"
+            >
+              <span className="text-md font-medium text-gray-900">
+                {parseFloat(percentCalculated.toFixed(4))}%
+              </span>
+            </LoadingSkeleton>
           );
         },
         footer: !isTablet
           ? () => (
-              <span className="text-md font-medium text-gray-900">100%</span>
+              <LoadingSkeleton
+                isLoading={isDataLoading}
+                className="h-4 w-full rounded"
+              >
+                <span className="text-md font-medium text-gray-900">100%</span>
+              </LoadingSkeleton>
             )
           : undefined,
       }),
@@ -107,6 +123,7 @@ export const useGetSplitPaymentColumns = (
       amount,
       colony,
       data,
+      isDataLoading,
       isLoading,
       isTablet,
       splitPaymentColumnHelper,
