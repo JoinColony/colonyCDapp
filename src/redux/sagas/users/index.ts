@@ -200,7 +200,7 @@ export function* userLogout(data?: UserLogoutParams) {
     }
     disconnectWallet(walletLabel, shouldRemoveWalletContext);
     yield deauthenticateWallet();
-    apolloClient.clearStore();
+    apolloClient.resetStore();
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });
