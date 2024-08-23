@@ -2,6 +2,12 @@ import { type CheckKycStatusQuery } from '~gql';
 
 export type KycStatusData = NonNullable<CheckKycStatusQuery['bridgeCheckKYC']>;
 
+export type KycBankAccountData = NonNullable<KycStatusData>['bankAccount'];
+export interface CryptoToFiatPageComponentProps {
+  kycStatusData: KycStatusData | null;
+  kycStatusDataIsLoading: boolean;
+}
+
 export interface BankDetailsFormValues {
   currency: string;
   bankName: string;
