@@ -11,6 +11,7 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
+import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -40,6 +41,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   refetchAction,
   motionState,
 }) => {
+  const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const hasFinalizedHandlerRun = useRef(false);
@@ -70,6 +72,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
     setIsPolling(true);
+    onFinalizeSuccessCallback(actionData);
   };
 
   /* Stop polling when mounted / dismounted */

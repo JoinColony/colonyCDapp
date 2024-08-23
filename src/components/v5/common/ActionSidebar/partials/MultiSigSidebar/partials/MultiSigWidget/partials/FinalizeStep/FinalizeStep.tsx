@@ -246,6 +246,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         isPending={isFinalizePending}
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
+                        action={action}
                       />
                     )}
                   </div>
