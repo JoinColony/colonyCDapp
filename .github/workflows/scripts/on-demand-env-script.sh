@@ -66,17 +66,26 @@ ENCODED_LOG_GROUP_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quo
 ENCODED_LOG_STREAM_NAME=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$INSTANCE_ID'))")
 
 # Construct the CloudWatch Logs URL
-export AWS_REGION="eu-west-2"
 CLOUDWATCH_URL="https://console.aws.amazon.com/cloudwatch/home?region=$AWS_REGION#logsV2:log-groups/log-group/$ENCODED_LOG_GROUP_NAME/log-events/$ENCODED_LOG_STREAM_NAME"
 
 # Create JSON payload for the Discord notification with embed, because of how long the CW URL would be
 read -r -d '' PAYLOAD << EOM
 {
+  "content": "Hey <@$DISCORD_USER_ID>, your on demand environment is getting ready!",
   "embeds": [
     {
-      "title": "Dev Environment Setup",
-      "description": "Hey <@$DISCORD_USER_ID>, your dev environment is getting ready, you can keep an eye on it [here]($CLOUDWATCH_URL).",
-      "color": 5814783
+      "title": "On-Demand Environment Setup",
+      "description": "You can keep an eye on the setup process using the CloudWatch link below.",
+      "color": 5814783,
+      "fields": [
+        {
+          "name": "CloudWatch Logs",
+          "value": "[Click here to view logs]($CLOUDWATCH_URL)"
+        }
+      ],
+      "footer": {
+        "text": "The environment will be ready soon. You will get notified when it's up and running."
+      }
     }
   ]
 }
@@ -115,8 +124,8 @@ fi
 # Create a user and password for HTTP Basic Authentication
 sudo mkdir -p /etc/nginx
 # sudo htpasswd -cb /etc/nginx/.htpasswd user yourpassword
-PASSWORD=$(aws ssm get-parameter --region eu-west-2 --name "/qa/pr-environment/password" --with-decryption --query "Parameter.Value" --output text)
-USERNAME=$(aws ssm get-parameter --region eu-west-2 --name "/qa/pr-environment/username" --query "Parameter.Value" --output text)
+PASSWORD=$(aws ssm get-parameter --region $AWS_REGION --name "/qa/pr-environment/password" --with-decryption --query "Parameter.Value" --output text)
+USERNAME=$(aws ssm get-parameter --region $AWS_REGION --name "/qa/pr-environment/username" --query "Parameter.Value" --output text)
 
 sudo htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
 
@@ -125,10 +134,13 @@ PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
 
 # Use the IP address in the OpenSSL command
 sudo mkdir -p /etc/nginx/ssl
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt \
-    -subj "/CN=$PUBLIC_IP"
 
+aws ssm get-parameter --region $AWS_REGION --name "/qa/pr-environment/cert" --with-decryption --query "Parameter.Value" --output text | sudo tee /etc/nginx/ssl/nginx.crt > /dev/null
+aws ssm get-parameter --region $AWS_REGION --name "/qa/pr-environment/cert-key" --with-decryption --query "Parameter.Value" --output text | sudo tee /etc/nginx/ssl/nginx.key > /dev/null
+
+# Set proper permissions
+sudo chmod 644 /etc/nginx/ssl/nginx.crt
+sudo chmod 600 /etc/nginx/ssl/nginx.key
 
 # Create a new Nginx configuration file for reverse proxy with authentication
 cat <<EOL | sudo tee /etc/nginx/sites-available/myapp
@@ -354,9 +366,84 @@ while ! nc -zv localhost 9091; do
 done
 echo "Port 9091 is now open!"
 
-# Send completion notification on Discord
+# Get the commit hash of the checked out code
+COMMIT_HASH=$(git rev-parse HEAD)
+
+# Create the FQDN using the commit hash
+FQDN="${COMMIT_HASH:0:8}.${ONDEMAND_SUBDOMAIN}.colony.io"
+
+# Check if record exists
+EXISTING_RECORD=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=A&name=${FQDN}" \
+     -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+     -H "Content-Type: application/json")
+
+RECORD_ID=$(echo $EXISTING_RECORD | jq -r '.result[0].id')
+
+# Prepare the record data
+RECORD_DATA='{
+    "type": "A",
+    "name": "'$FQDN'",
+    "content": "'$PUBLIC_IP'",
+    "ttl": 120,
+    "proxied": true
+}'
+
+echo "Creating DNS record for on demand environment"
+if [ -n "$RECORD_ID" ] && [ "$RECORD_ID" != "null" ]; then
+    # Update existing record
+    RESPONSE=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${RECORD_ID}" \
+         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+         -H "Content-Type: application/json" \
+         --data "$RECORD_DATA")
+    echo "Updated existing record for ${FQDN}"
+else
+    # Create new record
+    RESPONSE=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records" \
+         -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+         -H "Content-Type: application/json" \
+         --data "$RECORD_DATA")
+    echo "Created new record for ${FQDN}"
+fi
+
+# Check if the operation was successful
+if [ "$(echo $RESPONSE | jq -r '.success')" != "true" ]; then
+    echo "Error: $(echo $RESPONSE | jq -r '.errors[0].message')"
+    exit 1
+fi
+
+# Construct the full URL
+FULL_URL="https://${FQDN}"
+
+# Create JSON payload for the Discord notification
+read -r -d '' PAYLOAD << EOF
+{
+  "content": "Hey <@${DISCORD_USER_ID}>, your on demand environment for ${SOURCE_USED} is ready to use at ${FULL_URL} !",
+  "embeds": [{
+    "title": "Environment Details",
+    "color": 5814783,
+    "fields": [
+      {
+        "name": "Source",
+        "value": "${SOURCE_USED}",
+        "inline": true
+      },
+      {
+        "name": "URL",
+        "value": "${FULL_URL}",
+        "inline": true
+      }
+    ],
+    "footer": {
+      "text": "Click the URL above to open your environment"
+    }
+  }]
+}
+EOF
+
+# Send notification on Discord
 curl -H "Content-Type: application/json" \
      -X POST \
-     -d '{"content":"Hey <@'"$DISCORD_USER_ID"'>, your dev environment for '"$SOURCE_USED"' is ready to use at [IP: '"$PUBLIC_IP"'](https://'"$PUBLIC_IP"') !"}' \
+     -d "${PAYLOAD}" \
      $DISCORD_WEBHOOK
-echo "Completion message posted!"
+
+echo "Notification message posted!"

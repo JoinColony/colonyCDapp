@@ -48,6 +48,10 @@ jobs:
         REPUTATION_URL=${{ secrets.ON_DEMAND_ENV_REPUTATION_URL }}
         NETWORK_ID=${{ secrets.ON_DEMAND_ENV_NETWORK_ID }}
         ENV_NAME=${{ vars.ON_DEMAND_ENV_DYNAMODB_ENV_NAME }}
+        CLOUDFLARE_ZONE_ID=${{ secret.CLOUDFLARE_ZONE_ID }}
+        CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
+        ON_DEMAND_SUBDOMAIN=${{ vars.ON_DEMAND_SUBDOMAIN }}
+        AWS_REGION=${{ vars.AWS_REGION }}
         
         # Make a copy of the original script
         cp ./.github/workflows/scripts/on-demand-env-script.sh ./temp-on-demand-env-script.sh
@@ -63,6 +67,10 @@ jobs:
         sed -i "9iexport REPUTATION_URL=$REPUTATION_URL" ./temp-on-demand-env-script.sh
         sed -i "10iexport NETWORK_ID=$NETWORK_ID" ./temp-on-demand-env-script.sh
         sed -i "11iexport ENV_NAME=$ENV_NAME" ./temp-on-demand-env-script.sh
+        sed -i "12iexport CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID" ./temp-on-demand-env-script.sh
+        sed -i "13iexport CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN" ./temp-on-demand-env-script.sh
+        sed -i "14iexport ON_DEMAND_SUBDOMAIN=$ON_DEMAND_SUBDOMAIN" ./temp-on-demand-env-script.sh
+        sed -i "15iexport AWS_REGION=$AWS_REGION" ./temp-on-demand-env-script.sh
 
     - name: Provision EC2 instance
       run: |
