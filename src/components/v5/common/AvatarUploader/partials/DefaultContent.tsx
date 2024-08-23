@@ -1,28 +1,45 @@
 import { CloudArrowUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { useMobile } from '~hooks/index.ts';
+import Button from '~v5/shared/Button/Button.tsx';
 
 import { useFormatFormats } from '../hooks.ts';
 import { type DefaultContentProps } from '../types.ts';
 
 const displayName = 'v5.common.AvatarUploader.partials.DefaultContent';
 
+const MSG = defineMessages({
+  changeAvatar: {
+    id: `${displayName}.changeAvatar`,
+    defaultMessage: 'Change avatar',
+  },
+  removeAvatar: {
+    id: `${displayName}.removeAvatar`,
+    defaultMessage: 'Remove avatar',
+  },
+});
+
 const DefaultContent: FC<DefaultContentProps> = ({
   open,
   isSimplified,
   isDragAccept,
   fileOptions: { fileFormat, fileDimension, fileSize },
+  handleFileRemove,
+  showUploader,
+  setShowUploader,
+  showRemoveAvatarButton,
 }) => {
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
   const isSimpleOnMobile = isSimplified && isMobile;
   const formattedFormats = useFormatFormats(fileFormat);
+  const shouldShowUploader = showUploader || !setShowUploader;
 
-  return (
+  return shouldShowUploader ? (
     <div
       className={clsx(
         'flex w-full flex-col items-center rounded border px-6 hover:border-blue-400 hover:bg-blue-100',
@@ -85,6 +102,24 @@ const DefaultContent: FC<DefaultContentProps> = ({
             )}
           </span>
         </>
+      )}
+    </div>
+  ) : (
+    <div className="flex w-full flex-col gap-4 sm:flex-row">
+      <Button
+        size="small"
+        text={MSG.changeAvatar}
+        className="sm:!w-fit"
+        onClick={() => setShowUploader(true)}
+      />
+      {showRemoveAvatarButton && (
+        <Button
+          size="small"
+          mode="tertiary"
+          text={MSG.removeAvatar}
+          className="sm:!w-fit"
+          onClick={handleFileRemove}
+        />
       )}
     </div>
   );
