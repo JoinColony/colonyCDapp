@@ -130,7 +130,7 @@ const CancelModal: FC<CancelModalProps> = ({
                       type="submit"
                       loading={isSubmitting}
                     >
-                      {formatText({ id: 'cancelModal.locked.submit' })}
+                      {formatText({ id: 'cancelModal.submit' })}
                     </Button>
                   </div>
                 </div>
@@ -141,7 +141,7 @@ const CancelModal: FC<CancelModalProps> = ({
       ) : (
         <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
           <Button mode="primaryOutline" isFullSize onClick={onClose}>
-            {formatText({ id: 'cancelModal.cancel' })}
+            {formatText({ id: 'button.cancel' })}
           </Button>
           <div className="flex w-full justify-center">
             <ActionButton
