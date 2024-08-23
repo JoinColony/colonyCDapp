@@ -46,7 +46,7 @@ export const ActionGroupingItem: FC<ActionGroupingItemProps> = ({
       type="button"
       className="relative my-[1px] flex h-full w-full flex-col items-start rounded-lg border border-gray-200 p-5 text-left transition-colors hover:bg-gray-25"
     >
-      <div className={clsx('mb-2 rounded p-[7px]', bgColorClass)}>
+      <div className={clsx('mb-2 rounded-lg p-[7px]', bgColorClass)}>
         <Icon size={22} className={iconColorClass} />
       </div>
       {isNew && (
@@ -54,7 +54,7 @@ export const ActionGroupingItem: FC<ActionGroupingItemProps> = ({
           {formatText({ id: 'badge.new' })}
         </PillsBase>
       )}
-      <h3 className="text-md font-semibold text-gray-900">{title}</h3>
+      <h3 className="text-md font-medium text-gray-900">{title}</h3>
       <p className="mt-1 text-sm text-gray-600">{description}</p>
     </button>
   );
