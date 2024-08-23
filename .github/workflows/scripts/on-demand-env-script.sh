@@ -294,7 +294,7 @@ nvm use 20
 COMMIT_HASH=$(git rev-parse HEAD)
 
 # Create the FQDN using the commit hash
-FQDN="${COMMIT_HASH:0:8}.${ON_DEMAND_SUBDOMAIN}.colony.io"
+FQDN="${COMMIT_HASH:0:8}.colony.io"
 
 # Set env vars (these will override the .env.local file)
 # frontend
@@ -371,8 +371,6 @@ while ! nc -zv localhost 9091; do
   sleep 10
 done
 echo "Port 9091 is now open!"
-
-
 
 # Check if record exists
 EXISTING_RECORD=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=A&name=${FQDN}" \

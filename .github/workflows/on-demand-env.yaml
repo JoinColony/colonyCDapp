@@ -50,7 +50,6 @@ jobs:
         ENV_NAME=${{ vars.ON_DEMAND_ENV_DYNAMODB_ENV_NAME }}
         CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
         CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}
-        ON_DEMAND_SUBDOMAIN=${{ vars.ON_DEMAND_SUBDOMAIN }}
         AWS_REGION=${{ vars.AWS_REGION }}
         
         # Make a copy of the original script
@@ -69,8 +68,7 @@ jobs:
         sed -i "11iexport ENV_NAME=$ENV_NAME" ./temp-on-demand-env-script.sh
         sed -i "12iexport CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID" ./temp-on-demand-env-script.sh
         sed -i "13iexport CLOUDFLARE_API_TOKEN=$CLOUDFLARE_API_TOKEN" ./temp-on-demand-env-script.sh
-        sed -i "14iexport ON_DEMAND_SUBDOMAIN=$ON_DEMAND_SUBDOMAIN" ./temp-on-demand-env-script.sh
-        sed -i "15iexport AWS_REGION=$AWS_REGION" ./temp-on-demand-env-script.sh
+        sed -i "14iexport AWS_REGION=$AWS_REGION" ./temp-on-demand-env-script.sh
 
     - name: Provision EC2 instance
       run: |
