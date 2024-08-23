@@ -11,7 +11,7 @@ import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
 type ThemeColor = 'blue' | 'success' | 'purple' | 'orange';
 
-export interface ActionGroupingItemProps {
+export interface GroupedActionItemProps {
   title: string;
   description: string;
   Icon: Icon;
@@ -20,7 +20,7 @@ export interface ActionGroupingItemProps {
   isNew?: boolean;
 }
 
-export const ActionGroupingItem: FC<ActionGroupingItemProps> = ({
+export const GroupedActionItem: FC<GroupedActionItemProps> = ({
   title,
   description,
   Icon,

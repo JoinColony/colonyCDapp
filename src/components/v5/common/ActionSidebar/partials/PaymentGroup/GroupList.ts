@@ -11,7 +11,7 @@ import {
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const GROUPING_LIST = [
+export const GROUP_LIST = [
   {
     title: formatText({ id: 'actions.simplePayment' }),
     description: formatText({

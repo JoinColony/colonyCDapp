@@ -4,7 +4,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import PaymentGroup from '../partials/PaymentGroup/index.ts';
 
-const useGetActionGroupingComponent = () => {
+const useGetGroupedActionComponent = () => {
   const { actionSidebarInitialValues } = useActionSidebarContext();
   switch (actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME]) {
     case Action.PaymentGroup:
@@ -14,4 +14,4 @@ const useGetActionGroupingComponent = () => {
   }
 };
 
-export default useGetActionGroupingComponent;
+export default useGetGroupedActionComponent;
