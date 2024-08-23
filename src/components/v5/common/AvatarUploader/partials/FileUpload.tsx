@@ -20,9 +20,6 @@ const FileUpload: FC<FileUploadProps> = ({
   isSimplified,
   fileOptions,
   SuccessComponent,
-  showUploader,
-  setShowUploader,
-  isAvatarAvailable,
 }) => {
   const [showDefault, setShowDefault] = useState(false);
   const {
@@ -56,10 +53,6 @@ const FileUpload: FC<FileUploadProps> = ({
       open={open}
       fileOptions={fileOptions}
       isDragAccept={isDragAccept}
-      handleFileRemove={handleFileRemove}
-      showUploader={showUploader}
-      setShowUploader={setShowUploader}
-      showRemoveAvatarButton={isAvatarAvailable}
     />
   );
 

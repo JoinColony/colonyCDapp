@@ -8,8 +8,6 @@ import { type FileReaderFile } from '~utils/fileReader/types.ts';
 
 import { type DropzoneErrors } from './utils.ts';
 
-import type React from 'react';
-
 export type SuccessContentProps = Pick<
   ErrorContentProps,
   'open' | 'handleFileRemove'
@@ -43,9 +41,6 @@ export interface FileUploadProps {
   isSimplified?: boolean;
   fileOptions: FileUploadOptions;
   SuccessComponent?: React.FC<SuccessContentProps>;
-  showUploader?: boolean;
-  setShowUploader?: React.Dispatch<React.SetStateAction<boolean>>;
-  isAvatarAvailable?: boolean;
 }
 
 export interface AvatarUploaderProps {
@@ -55,18 +50,13 @@ export interface AvatarUploaderProps {
   fileOptions: FileUploadOptions;
   SuccessComponent?: React.FC<SuccessContentProps>;
   uploaderText?: string;
+  uploaderShownByDefault?: boolean;
 }
 
-export interface DefaultContentProps
-  extends Pick<ErrorContentProps, 'open'>,
-    Pick<
-      FileUploadProps,
-      'handleFileRemove' | 'showUploader' | 'setShowUploader'
-    > {
+export interface DefaultContentProps extends Pick<ErrorContentProps, 'open'> {
   isSimplified?: boolean;
   isDragAccept: boolean;
   fileOptions: FileUploadOptions;
-  showRemoveAvatarButton?: boolean;
 }
 
 export interface ProgressContentProps {
