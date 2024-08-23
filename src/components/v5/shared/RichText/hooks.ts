@@ -105,14 +105,21 @@ export const useRichText = ({
       content: field.value,
       onUpdate: (props) => {
         const trimmedText = props.editor.getText().trim();
-        const isCreatingHeading = !!props.editor.getAttributes('heading');
-        const isCreatingList = !!props.editor.getAttributes('list');
+        const isCreatingHeading = !!Object.keys(
+          props.editor.getAttributes('heading'),
+        ).length;
+        const isCreatingList = !!Object.keys(props.editor.getAttributes('list'))
+          .length;
         const html =
           (props.editor.isEmpty || trimmedText.length === 0) &&
           !isCreatingHeading &&
           !isCreatingList
             ? ''
             : props.editor.getHTML();
+
+        if (!html) {
+          return;
+        }
 
         field.onChange(html);
       },
