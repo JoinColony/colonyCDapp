@@ -32,14 +32,15 @@ import getOnboard from './wallet/onboard.ts';
 
 const ONBOARD_METAMASK_WALLET_LABEL = 'MetaMask';
 
-const getMetamaskAddress = () => {
+const getMetamaskAddress = async () => {
   // try/catch just in case createAddress errors
   try {
     if (window.ethereum) {
-      return createAddress(
-        // @ts-ignore
-        window.ethereum.selectedAddress,
-      );
+      // @ts-ignore
+      const accounts = await window.ethereum.request({
+        method: 'eth_accounts',
+      });
+      return createAddress(accounts[0]);
     }
   } catch {
     // silent
@@ -100,7 +101,7 @@ export default function* setupUserContext() {
     try {
       wallet = getContext(ContextModule.Wallet);
 
-      const selectedMetamaskAddress = getMetamaskAddress();
+      const selectedMetamaskAddress = yield getMetamaskAddress();
       /*
        * If the wallet we've pulled from context does not have the same address as the selected account
        * in Metamask, it's because the user just switched their account in metamask.
