@@ -1,12 +1,12 @@
 import React, { type FC, type PropsWithChildren } from 'react';
 
-interface ActionGroupingWrapperProps {
+interface GroupedActionWrapperProps {
   title: string;
   description: string;
 }
 
-export const ActionGroupingWrapper: FC<
-  PropsWithChildren<ActionGroupingWrapperProps>
+export const GroupedActionWrapper: FC<
+  PropsWithChildren<GroupedActionWrapperProps>
 > = ({ title, description, children }) => {
   return (
     <div className="overflow-auto px-6 py-8 pr-8">
