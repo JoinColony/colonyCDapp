@@ -38,7 +38,7 @@ import PillsBase from '../Pills/PillsBase.tsx';
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
-import useGetActionGroupingComponent from './hooks/useGetActionGroupingComponent.tsx';
+import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
@@ -72,7 +72,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     actionSidebarInitialValues,
   } = useActionSidebarContext();
 
-  const ActionGroupingComponent = useGetActionGroupingComponent();
+  const GroupedActionComponent = useGetGroupedActionComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
 
@@ -188,8 +188,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
-    if (ActionGroupingComponent) {
-      return <ActionGroupingComponent />;
+    if (GroupedActionComponent) {
+      return <GroupedActionComponent />;
     }
 
     return (
