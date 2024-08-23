@@ -290,17 +290,23 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 20
 nvm use 20
 
+# Get the commit hash of the checked out code
+COMMIT_HASH=$(git rev-parse HEAD)
+
+# Create the FQDN using the commit hash
+FQDN="${COMMIT_HASH:0:8}.${ON_DEMAND_SUBDOMAIN}.colony.io"
+
 # Set env vars (these will override the .env.local file)
 # frontend
-export AUTH_PROXY_ENDPOINT=https://${PUBLIC_IP}:13005
-export METATX_BROADCASTER_ENDPOINT=http://${PUBLIC_IP}:13004
-export REPUTATION_ORACLE_ENDPOINT=https://${PUBLIC_IP}:3002/reputation/local
-export URL=https://${PUBLIC_IP}
-export VITE_NETWORK_FILES_ENDPOINT=https://${PUBLIC_IP}:13006
-export VITE_GANACHE_RPC_URL=https://${PUBLIC_IP}:8546
+export AUTH_PROXY_ENDPOINT=https://${FQDN}:13005
+export METATX_BROADCASTER_ENDPOINT=http://${FQDN}:13004
+export REPUTATION_ORACLE_ENDPOINT=https://${FQDN}:3002/reputation/local
+export URL=https://${FQDN}
+export VITE_NETWORK_FILES_ENDPOINT=https://${FQDN}:13006
+export VITE_GANACHE_RPC_URL=https://${FQDN}:8546
 # backend
 export AWS_APPSYNC_KEY=da2-fakeApiId123456
-export AWS_APPSYNC_GRAPHQL_URL=https://${PUBLIC_IP}:20003/graphql
+export AWS_APPSYNC_GRAPHQL_URL=https://${FQDN}:20003/graphql
 export ON_DEMAND_ENV=true
 EOL
 
@@ -308,7 +314,7 @@ EOL
 npm ci
 
 # For the authentication proxy
-echo "ORIGIN_URL=https://${PUBLIC_IP}" >> ./docker/files/auth/env.base
+echo "ORIGIN_URL=https://${FQDN}" >> ./docker/files/auth/env.base
 
 env
 # Build and run Docker images
@@ -366,11 +372,7 @@ while ! nc -zv localhost 9091; do
 done
 echo "Port 9091 is now open!"
 
-# Get the commit hash of the checked out code
-COMMIT_HASH=$(git rev-parse HEAD)
 
-# Create the FQDN using the commit hash
-FQDN="${COMMIT_HASH:0:8}.${ONDEMAND_SUBDOMAIN}.colony.io"
 
 # Check if record exists
 EXISTING_RECORD=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records?type=A&name=${FQDN}" \

@@ -27,7 +27,7 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -120,8 +120,3 @@ jobs:
           aws ec2 create-tags \
               --resources $INSTANCE_ID \
               --tags Key=Name,Value=dev-env-github-run-number-${GITHUB_RUN_NUMBER}-minutes-${ENV_DURATION}   
-
-    - name: Fetch instance public IP
-      run: |
-        INSTANCE_IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-        echo "INSTANCE_IP=$INSTANCE_IP" >> $GITHUB_ENV
