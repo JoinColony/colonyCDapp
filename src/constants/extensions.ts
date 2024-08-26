@@ -235,7 +235,7 @@ const stakedExpenditureMessages = {
   },
   stakedExpenditureStakeFractionDescription: {
     id: `${stakedExpenditureName}.param.stakeFraction.description`,
-    defaultMessage: `What percentage of the team's reputation, in token terms, should need to stake to create an expenditure?\n\n<span>e.g. if a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to create an expenditure.</span>`,
+    defaultMessage: `The percentage of a team's reputation, in token terms, that is required to stake in order to create Advanced payment, Split payment, and Staged payment actions.`,
   },
 };
 
@@ -315,23 +315,7 @@ const MSG = defineMessages({
   ...streamingPaymentsMessage,
 });
 
-export const supportedExtensionsConfig: ExtensionConfig[] = [
-  {
-    extensionId: Extension.OneTxPayment,
-    category: ExtensionCategory.Payments,
-    name: MSG.oneTxPaymentName,
-    descriptionShort: MSG.oneTxPaymentDescriptionShort,
-    descriptionLong: MSG.oneTxPaymentDescriptionLong,
-    icon: ExtensionOneTransactionPaymentIcon,
-    neededColonyPermissions: [
-      ColonyRole.Administration,
-      ColonyRole.Funding,
-      ColonyRole.Arbitration,
-    ],
-    imageURLs: [oneTransactionHero, oneTransactionInterface],
-    uninstallable: false,
-    createdAt: 1557698400000,
-  },
+export const decisionMethodSupportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.VotingReputation,
     category: ExtensionCategory.DecisionMethods,
@@ -494,6 +478,25 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1603915271852,
   },
+];
+
+export const paymentSupportedExtensionsConfig: ExtensionConfig[] = [
+  {
+    extensionId: Extension.OneTxPayment,
+    category: ExtensionCategory.Payments,
+    name: MSG.oneTxPaymentName,
+    descriptionShort: MSG.oneTxPaymentDescriptionShort,
+    descriptionLong: MSG.oneTxPaymentDescriptionLong,
+    icon: ExtensionOneTransactionPaymentIcon,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    imageURLs: [oneTransactionHero, oneTransactionInterface],
+    uninstallable: false,
+    createdAt: 1557698400000,
+  },
   // @BETA: Disabled for now
   {
     icon: ExtensionAdvancedPaymentsIcon,
@@ -555,4 +558,9 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1692048380000,
   },
+];
+
+export const supportedExtensionsConfig: ExtensionConfig[] = [
+  ...decisionMethodSupportedExtensionsConfig,
+  ...paymentSupportedExtensionsConfig,
 ];

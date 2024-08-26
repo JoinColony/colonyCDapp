@@ -1,3 +1,6 @@
+import { type AnyExtensionData } from '~types/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+
 /**
  * Sort an array of objects by multiple properties.
  */
@@ -183,3 +186,8 @@ export type UnionOfArraysToArrayOfUnions<T extends unknown[]> = ItemType<T>[];
 export const unionOfArraysToArrayOfUnions = <T extends unknown[]>(
   array: T,
 ): UnionOfArraysToArrayOfUnions<T> => array;
+
+export const sortExtensionByName = (
+  extensionA: AnyExtensionData,
+  extensionB: AnyExtensionData,
+) => formatText(extensionA.name).localeCompare(formatText(extensionB.name));
