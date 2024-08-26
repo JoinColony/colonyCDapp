@@ -46,7 +46,7 @@ const InstallButton = ({
   const [isPolling, setIsPolling] = useState(false);
   const navigate = useNavigate();
   const extensionCompatible = isExtensionCompatible(
-    Extension.MultisigPermissions,
+    extensionData.extensionId,
     extensionData.availableVersion as ExtensionVersion,
     colonyVersion as ColonyVersion,
   );
