@@ -90,13 +90,13 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
     });
 
   const extensionCompatible = isExtensionCompatible(
-    Extension.MultisigPermissions,
+    extensionData.extensionId,
     extensionData.availableVersion as ExtensionVersion,
     colony.version as ColonyVersion,
   );
 
   const minimumColonyVersion = getExtensionLowestCompatibleColonyVersion(
-    Extension.MultisigPermissions,
+    extensionData.extensionId,
     extensionData.availableVersion as ExtensionVersion,
   );
 
