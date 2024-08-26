@@ -4,7 +4,7 @@ import {
   type FetchResult,
 } from '@apollo/client';
 import { type ClientTypeTokens } from '@colony/colony-js';
-import { utils } from 'ethers';
+import { utils, BigNumber } from 'ethers';
 import { useMemo } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -75,6 +75,22 @@ export const convertTransactionType = ({
     titleValues: group.titleValues ? JSON.parse(group.titleValues) : undefined,
   };
 
+  const convertedParams = JSON.parse(params ?? '[]').map((param) => {
+    // @NOTE Try to convert BigNumber params back to Ethers BigNumber
+    //
+    // When the transaction gets saved in the database, the BigNumber objects get stringified
+    // meaning it will loose its BigNumber properties and prototypes
+    // Converting it back will create an Object shaped like a BigNumber, but it won't have the prototype, hence
+    // it won't be a proper BigNumber object, and won't have the methods like add, sub, etc.
+    //
+    // Here we're trying to convert it back to a Ethers BigNumber object by "trying to be smart" and checking if
+    // the object has a "tyhpe" property, with the value "BigNumber" (which is what Ethers uses), as well as a "hex" property
+    if (param?.type === 'BigNumber' && param?.hex) {
+      return BigNumber.from(param);
+    }
+    return param;
+  });
+
   return {
     context: context as ClientTypeTokens | ExtendedClientType,
     createdAt: new Date(createdAt),
@@ -88,7 +104,7 @@ export const convertTransactionType = ({
     groupId,
     hash: hash || '0x0',
     methodContext: methodContext ?? undefined,
-    params: JSON.parse(params ?? '[]'),
+    params: convertedParams,
     title: title ? JSON.parse(title) : undefined,
     titleValues: titleValues ? JSON.parse(titleValues) : undefined,
     options: options ? JSON.parse(options) : undefined,
