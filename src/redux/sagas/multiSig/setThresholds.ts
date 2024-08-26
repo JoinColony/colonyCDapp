@@ -11,11 +11,14 @@ import {
   createTransaction,
   waitForTxResult,
   getTxChannel,
+  type ChannelDefinition,
+  createTransactionChannels,
 } from '../transactions/index.ts';
 import {
   getColonyManager,
   initiateTransaction,
   putError,
+  takeFrom,
 } from '../utils/index.ts';
 
 function* setThresholds({
@@ -32,6 +35,8 @@ function* setThresholds({
   );
 
   try {
+    const { setThresholdsMulticall }: Record<string, ChannelDefinition> =
+      yield createTransactionChannels(meta.id, ['setThresholdsMulticall']);
     const encodedMulticallData: string[] = [];
 
     encodedMulticallData.push(
@@ -49,7 +54,7 @@ function* setThresholds({
       );
     }
 
-    yield fork(createTransaction, meta.id, {
+    yield fork(createTransaction, setThresholdsMulticall.id, {
       context: ClientType.MultisigPermissionsClient,
       methodName: 'multicall',
       identifier: colonyAddress,
@@ -61,9 +66,13 @@ function* setThresholds({
       },
     });
 
-    yield initiateTransaction(meta.id);
+    yield takeFrom(
+      setThresholdsMulticall.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
+    yield initiateTransaction(setThresholdsMulticall.id);
 
-    yield waitForTxResult(txChannel);
+    yield waitForTxResult(setThresholdsMulticall.channel);
 
     yield put<AllActions>({
       type: ActionTypes.MULTISIG_SET_THRESHOLDS_SUCCESS,
