@@ -23,7 +23,7 @@ const DashboardHeader = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-end gap-3">
+      <div className="flex items-center gap-4">
         <h1 className="truncate capitalize text-gray-900 heading-2">
           {colonyName}
         </h1>
