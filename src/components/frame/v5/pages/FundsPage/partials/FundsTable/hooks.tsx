@@ -3,6 +3,7 @@ import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { isEqual } from 'lodash';
 import React, { useMemo, useState } from 'react';
 
+import { ADDRESS_ZERO } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -53,6 +54,11 @@ export const useFundsTable = (): UseFundsTableProps => {
       colony.tokens?.items.filter(notNull).sort((a, b) => {
         if (!a.token || !b.token) return 0;
 
+        // Native chain tokens should always be last
+        if (a.token.tokenAddress === ADDRESS_ZERO) {
+          return 1;
+        }
+
         return a.token.name
           .toLowerCase()
           .localeCompare(b.token.name.toLowerCase());
@@ -82,6 +88,11 @@ export const useFundsTable = (): UseFundsTableProps => {
     })
     .sort((a, b) => {
       if (!a.token || !b.token) return 0;
+
+      // Native chain tokens should always be last
+      if (a.token.tokenAddress === ADDRESS_ZERO) {
+        return 1;
+      }
 
       return a.token.name
         .toLowerCase()

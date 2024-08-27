@@ -1,4 +1,4 @@
-const { constants, providers, Contract } = require('ethers');
+const { constants, providers, Contract, BigNumber } = require('ethers');
 const basicColonyAbi = require('./basicColonyAbi.json');
 
 let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
@@ -31,6 +31,15 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     provider,
   );
 
+  const colonyFundsClaim = {
+    __typeName: 'ColonyFundsClaim',
+    amount: BigNumber.from(0).toString(),
+    id: `${chainId}_${constants.AddressZero}_0`,
+    createdAt: now,
+    updatedAt: now,
+    createdAtBlock: block,
+  };
+
   const balance = await provider.getBalance(colonyAddress);
 
   /*
@@ -53,14 +62,13 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
 
     if (unclaimedBalance.gt(0)) {
       return {
-        __typeName: 'ColonyFundsClaim',
+        ...colonyFundsClaim,
         amount: unclaimedBalance.toString(),
-        id: `${chainId}_${constants.AddressZero}_0`,
-        createdAt: now,
-        updatedAt: now,
-        createdAtBlock: block,
       };
     }
   }
-  return null;
+
+  // If the balance is 0, or unclaimed balance is 0, still return a claim with amount zero.
+  // This is because we want to always show native chain tokens in the incoming funds table.
+  return colonyFundsClaim;
 };
