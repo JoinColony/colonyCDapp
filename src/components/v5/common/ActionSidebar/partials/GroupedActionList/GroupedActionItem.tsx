@@ -9,7 +9,37 @@ import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 import { ACTION_TYPE_FIELD_NAME } from '../../consts.ts';
 
-type ThemeColor = 'blue' | 'success' | 'purple' | 'orange';
+type ThemeColor = 'blue' | 'success' | 'purple' | 'warning';
+
+const getIconClassesByColor = (color: ThemeColor) => {
+  let iconColorClass = '';
+  let bgColorClass = '';
+
+  switch (color) {
+    case 'blue':
+      iconColorClass = `text-blue-400`;
+      bgColorClass = `bg-blue-100`;
+      break;
+    case 'success':
+      iconColorClass = `text-success-400`;
+      bgColorClass = `bg-success-100`;
+      break;
+    case 'purple':
+      iconColorClass = `text-purple-400`;
+      bgColorClass = `bg-purple-100`;
+      break;
+    case 'warning':
+      iconColorClass = `text-warning-400`;
+      bgColorClass = `bg-warning-100`;
+      break;
+    default:
+      break;
+  }
+  return {
+    iconColorClass,
+    bgColorClass,
+  };
+};
 
 export interface GroupedActionItemProps {
   title: string;
@@ -37,9 +67,8 @@ export const GroupedActionItem: FC<GroupedActionItemProps> = ({
       [ACTION_TYPE_FIELD_NAME]: action,
     });
   };
-  const iconColorClass = `text-${color}-400`;
-  const bgColorClass = `bg-${color}-100`;
 
+  const { bgColorClass, iconColorClass } = getIconClassesByColor(color);
   return (
     <button
       onClick={onClick}
