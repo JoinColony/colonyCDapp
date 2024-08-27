@@ -1831,11 +1831,6 @@ type Transaction @model {
   The current status of the transaction
   """
   status: TransactionStatus!
-    @index(
-      name: "byStatus"
-      queryField: "getTransactionsByUserAndStatus"
-      sortKeyFields: ["from"]
-    )
   """
   A title to show in the UI
   """

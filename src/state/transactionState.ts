@@ -557,11 +557,11 @@ export const failPendingTransactions = async () => {
         userAddress,
       },
     });
-    nextToken = data?.getTransactionsByUserAndStatus?.nextToken;
+    nextToken = data?.getTransactionsByUser?.nextToken;
 
     Array.prototype.push.apply(
       promises,
-      data.getTransactionsByUserAndStatus?.items.filter(notNull).map((tx) => {
+      data.getTransactionsByUser?.items.filter(notNull).map((tx) => {
         return updateTransaction(
           {
             id: tx.id,
