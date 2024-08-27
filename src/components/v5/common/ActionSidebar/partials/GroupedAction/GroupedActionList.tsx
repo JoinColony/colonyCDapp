@@ -9,7 +9,7 @@ export const GroupedActionList: FC<
 > = ({ children, title }) => {
   return (
     <>
-      {!!title && <h3 className="pb-1 heading-5">{title}</h3>}
+      {!!title && <h3 className="py-2 heading-5">{title}</h3>}
       <section className="grid grid-cols-1 gap-4 py-2 pb-4 sm:grid-cols-2">
         {children}
       </section>

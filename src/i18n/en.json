@@ -925,7 +925,7 @@
     "actions.enterRecoveryMode": "Enter recovery mode",
     "actions.description.enterRecoveryMode": "Multi-phase projects with upfront allocation",
     "actions.createNewIntegration": "Create new integration",
-    "actions.manageColony": "Manage colony",
+    "actions.manageColony": "Manage the colony",
     "actions.description.manageColony": "Everything you need to manage teams and the Colony in one easy place. Set permissions, create teams, mint tokens and more.",
     "actions.manageColonyObjectives": "Manage objective",
     "actions.userPermissions": "User permissions",
