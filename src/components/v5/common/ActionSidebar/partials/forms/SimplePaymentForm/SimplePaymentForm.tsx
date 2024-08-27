@@ -73,6 +73,8 @@ const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
+      {/* This input is needed for default values when changing the action */}
+      <input name="payments" className="hidden" />
       {/* Disabled for now */}
       {/* <TransactionTable name="payments" /> */}
     </>

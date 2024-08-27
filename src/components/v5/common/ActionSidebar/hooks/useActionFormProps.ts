@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type Action } from '~constants/actions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
@@ -26,6 +27,7 @@ const useActionFormProps = (
     mode: 'onChange',
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
   });
+  const { colony } = useColonyContext();
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
     async (formOptions, form) => {
@@ -34,7 +36,11 @@ const useActionFormProps = (
       }
 
       const { defaultValues: formDefaultValues, transform } = formOptions;
-      const { title, [ACTION_TYPE_FIELD_NAME]: actionType } = form.getValues();
+      const {
+        title,
+        [ACTION_TYPE_FIELD_NAME]: actionType,
+        tokenAddress,
+      } = form.getValues();
 
       const formOptionsWithDefaults = {
         ...(typeof formDefaultValues === 'function'
@@ -43,6 +49,10 @@ const useActionFormProps = (
         ...(defaultValues || {}),
         title,
         [ACTION_TYPE_FIELD_NAME]: actionType,
+        tokenAddress:
+          tokenAddress ||
+          defaultValues?.tokenAddress ||
+          colony.nativeToken.tokenAddress,
       };
 
       setActionFormProps({
@@ -90,7 +100,7 @@ const useActionFormProps = (
         keepDirtyValues: true,
       });
     },
-    [isReadonly, defaultValues, navigate],
+    [defaultValues, colony.nativeToken.tokenAddress, isReadonly, navigate],
   );
 
   return {
