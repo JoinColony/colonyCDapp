@@ -102,11 +102,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
 
-  const actionNotFound =
-    transactionId && !action && !loadingAction && !loadingExpenditure;
+  const isLoading = loadingAction || loadingExpenditure;
+
+  const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (loadingAction || loadingExpenditure) {
+    if (isLoading) {
       return (
         <div className="flex h-full flex-col items-center justify-center gap-4">
           <SpinnerLoader appearance={{ size: 'huge' }} />

@@ -5,6 +5,7 @@ import React, { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
+import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { TX_SEARCH_PARAM } from '~routes';
@@ -93,7 +94,8 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     values.group?.key &&
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
       values.group.key as TRANSACTION_METHODS,
-    );
+    ) &&
+    status === TransactionStatus.Succeeded;
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
