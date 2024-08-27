@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import useToggle from '~hooks/useToggle/index.ts';
-import { type PermissionsBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PermissionsBox/types.ts';
+import { type ExpenditureAction } from '~types/graphql.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 
@@ -19,10 +19,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     isReleaseModalOpen,
     { toggleOn: toggleOnReleaseModal, toggleOff: toggleOffReleaseModal },
   ] = useToggle();
-  const [selectedTransaction, setSelectedTransaction] = useState<string>('');
-  const [selectedPermissionAction, setSelectedPermissionAction] = useState<
-    PermissionsBoxItem | undefined
-  >(undefined);
+  const [selectedFundingAction, setSelectedFundingAction] =
+    useState<ExpenditureAction | null>(null);
 
   const value = useMemo(
     () => ({
@@ -32,10 +30,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
-      selectedPermissionAction,
-      setSelectedPermissionAction,
-      selectedTransaction,
-      setSelectedTransaction,
+      selectedFundingAction,
+      setSelectedFundingAction,
     }),
     [
       toggleOnFundingModal,
@@ -44,10 +40,7 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOnReleaseModal,
       toggleOffReleaseModal,
       isReleaseModalOpen,
-      selectedPermissionAction,
-      setSelectedPermissionAction,
-      selectedTransaction,
-      setSelectedTransaction,
+      selectedFundingAction,
     ],
   );
 
