@@ -2,9 +2,8 @@ import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
-import { useLocation, useMatch } from 'react-router-dom';
+import { useMatch, useParams } from 'react-router-dom';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
@@ -24,21 +23,19 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
   path,
   translation,
   icon: Icon,
-  routeType,
   subItems,
   onClick,
+  isColonyRoute,
 }) => {
-  const { colony } = useColonyContext();
+  const { colonyName } = useParams();
 
-  const { pathname } = useLocation();
+  const derivedPath = isColonyRoute
+    ? `/${colonyName}${path ? `/${path}` : ''}`
+    : `${path}`;
 
-  const matchingRoute = useMatch(`${colony.name}/${path}`);
+  const matchingRoute = useMatch(derivedPath);
 
-  const [isAccordionExpanded, setIsAccordionExpanded] = useState(
-    !!subItems
-      ?.map((subItem) => subItem.path)
-      ?.find((subItemPath) => pathname.endsWith(subItemPath)),
-  );
+  const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
 
   const { toggleTabletSidebar } = usePageLayoutContext();
 
@@ -67,16 +64,10 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
     }
   };
 
-  const getPath = () => {
-    const pathPrefix = routeType === 'colony' ? `/${colony.name}` : '';
-
-    return `${pathPrefix}/${path}`;
-  };
-
   return (
     <>
       <Link
-        to={getPath()}
+        to={derivedPath}
         onClick={handleClick}
         aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
         className={clsx(sidebarButtonClass, {
@@ -86,7 +77,7 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
       >
         <div className="flex flex-row items-center gap-3">
           {Icon ? (
-            <Icon className={clsx(sidebarButtonIconClass)} />
+            <Icon className={sidebarButtonIconClass} />
           ) : (
             <div className="w-5" />
           )}
@@ -121,9 +112,15 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
             animate="expanded"
             exit="collapsed"
           >
-            {subItems?.map((subItem) => (
-              <SidebarRouteItem key={subItem.id} {...subItem} />
-            ))}
+            {subItems?.map(
+              ({ isColonyRoute: isSubItemColonyRoute, ...subItem }) => (
+                <SidebarRouteItem
+                  key={`sidebar-${subItem.translation.id}`}
+                  isColonyRoute={isSubItemColonyRoute}
+                  {...subItem}
+                />
+              ),
+            )}
           </motion.ul>
         )}
       </AnimatePresence>
