@@ -1,9 +1,18 @@
-import React, { type PropsWithChildren, type FC } from 'react';
+import React, { type PropsWithChildren, type FC, type ReactNode } from 'react';
 
-export const GroupedActionList: FC<PropsWithChildren> = ({ children }) => {
+interface GroupedActionListProps {
+  title?: ReactNode | string;
+}
+
+export const GroupedActionList: FC<
+  PropsWithChildren<GroupedActionListProps>
+> = ({ children, title }) => {
   return (
-    <section className="grid grid-cols-1 gap-4 py-2 sm:grid-cols-2">
-      {children}
-    </section>
+    <>
+      {!!title && <h3 className="pb-1 heading-5">{title}</h3>}
+      <section className="grid grid-cols-1 gap-4 py-2 pb-4 sm:grid-cols-2">
+        {children}
+      </section>
+    </>
   );
 };
