@@ -38,6 +38,7 @@ export enum Action {
   SplitPayment = 'split-payment',
   StagedPayment = 'staged-payment',
   StreamingPayment = 'streaming-payment',
+  ManageColony = 'manage-colony',
   CreateDecision = 'create-decision',
   TransferFunds = 'transfer-funds',
   MintTokens = 'mint-tokens',
