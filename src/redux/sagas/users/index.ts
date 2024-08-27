@@ -23,7 +23,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/actions/index.ts';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { clearLastWallet } from '~utils/autoLogin.ts';
+import { clearLastWallet, getLastWallet } from '~utils/autoLogin.ts';
 
 import {
   createGroupTransaction,
@@ -101,6 +101,10 @@ import {
 //   return null;
 // }
 
+type UserLogoutParams = {
+  payload?: { shouldRemoveWalletContext: boolean };
+};
+
 function* usernameCreate({
   meta,
   meta: { navigate, updateUser, colonyName },
@@ -167,21 +171,36 @@ function* usernameCreate({
   return null;
 }
 
-export const disconnectWallet = (walletLabel: string) => {
+export const disconnectWallet = (
+  walletLabel: string,
+  shouldRemoveWalletContext = true,
+) => {
   const onboard = getContext(ContextModule.Onboard);
   onboard.disconnectWallet({ label: walletLabel });
-  removeContext(ContextModule.Wallet);
+
+  if (shouldRemoveWalletContext) {
+    removeContext(ContextModule.Wallet);
+  }
   clearLastWallet();
 };
 
-function* userLogout() {
+export function* userLogout(data?: UserLogoutParams) {
+  const shouldRemoveWalletContext =
+    data?.payload?.shouldRemoveWalletContext ?? true;
   try {
     removeContext(ContextModule.ColonyManager);
     const apolloClient = getContext(ContextModule.ApolloClient);
-    const wallet = getContext(ContextModule.Wallet);
-    disconnectWallet(wallet.label);
+    let walletLabel;
+    try {
+      const wallet = getContext(ContextModule.Wallet);
+      walletLabel = wallet.label;
+    } catch {
+      const lastWallet = getLastWallet();
+      walletLabel = lastWallet?.type;
+    }
+    disconnectWallet(walletLabel, shouldRemoveWalletContext);
     yield deauthenticateWallet();
-    apolloClient.clearStore();
+    apolloClient.resetStore();
     yield put<AllActions>({
       type: ActionTypes.USER_LOGOUT_SUCCESS,
     });
