@@ -10,7 +10,7 @@ export const SidebarActionsSection = () => (
     <SidebarActionItem
       translation={{ id: 'action.makePayment' }}
       Icon={Money}
-      action={Action.SimplePayment}
+      action={Action.PaymentGroup}
     />
     <SidebarActionItem
       translation={{ id: 'action.manageColony' }}
