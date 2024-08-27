@@ -4,10 +4,12 @@ import SidebarRouteItem from '~v5/shared/Navigation/Sidebar/partials/SidebarRout
 
 import { sidebarNavigationScheme } from '../consts.ts';
 
-export const SidebarRoutesSection = () => (
-  <section className="flex w-full flex-col gap-0 md:gap-0.5">
-    {sidebarNavigationScheme.map((scheme) => (
-      <SidebarRouteItem key={scheme.id} {...scheme} />
-    ))}
-  </section>
-);
+export const SidebarRoutesSection = () => {
+  return (
+    <section className="flex w-full flex-col gap-0 md:gap-0.5">
+      {sidebarNavigationScheme.map((scheme) => (
+        <SidebarRouteItem key={scheme.translation.id} {...scheme} />
+      ))}
+    </section>
+  );
+};

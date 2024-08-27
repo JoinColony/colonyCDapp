@@ -5,4 +5,5 @@ export interface ColonySwitcherProps {
   offset?: PopperConfig['offset'];
   className?: string;
   enableMobileAndDesktopLayoutBreakpoints?: boolean;
+  showColonySwitcherText?: boolean;
 }

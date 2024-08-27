@@ -24,87 +24,75 @@ import { type SidebarRouteItemProps } from '~v5/shared/Navigation/Sidebar/partia
 
 export const sidebarNavigationScheme: SidebarRouteItemProps[] = [
   {
-    id: 'dashboard',
     icon: Layout,
     translation: { id: 'navigation.dashboard' },
     path: '',
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'activity',
     icon: ClockCountdown,
     translation: { id: 'teamsPage.links.activity' },
     path: COLONY_ACTIVITY_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'finances',
     icon: PresentationChart,
     translation: { id: 'navigation.finances' },
-    routeType: 'colony',
     path: COLONY_BALANCES_ROUTE,
+    isColonyRoute: true,
     subItems: [
       {
-        id: 'balances',
         translation: { id: 'navigation.finances.balances' },
         path: COLONY_BALANCES_ROUTE,
-        routeType: 'colony',
+        isColonyRoute: true,
       },
       {
-        id: 'incoming',
         translation: { id: 'navigation.finances.incoming' },
         path: COLONY_INCOMING_ROUTE,
-        routeType: 'colony',
+        isColonyRoute: true,
       },
       // @TODO: Uncomment once these pages are available
       // {
       //   id: 'streaming',
       //   translation: { id: 'navigation.finances.streaming' },
       //   path: COLONY_STREAMING_ROUTE,
-      //   routeType: 'colony',
       // },
       // {
       //   id: 'crypto-to-fiat',
       //   translation: { id: 'userCryptoToFiatPage.title' },
       //   path: `account/${USER_CRYPTO_TO_FIAT_ROUTE}`,
-      //   routeType: 'account',
       // },
     ],
   },
   {
-    id: 'teams',
     icon: UsersThree,
     translation: { id: 'navigation.members.teams' },
     path: COLONY_TEAMS_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'agreements',
     icon: FileText,
     translation: { id: 'navigation.agreements' },
     path: COLONY_AGREEMENTS_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'members',
     icon: AddressBook,
     translation: { id: 'navigation.members' },
     path: COLONY_MEMBERS_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'permissions',
     icon: UserSwitch,
     translation: { id: 'navigation.members.permissions' },
     path: COLONY_PERMISSIONS_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
   {
-    id: 'extensions',
     icon: GearSix,
     translation: { id: 'navigation.admin.extensions' },
     path: COLONY_EXTENSIONS_ROUTE,
-    routeType: 'colony',
+    isColonyRoute: true,
   },
 ];
 
