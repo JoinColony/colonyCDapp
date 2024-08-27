@@ -71,6 +71,7 @@ import {
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants.ts';
+import UserRoute from './UserRoute.tsx';
 
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
@@ -90,9 +91,11 @@ const Routes = () => {
         <Route element={<MainRoute />}>
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
+        </Route>
 
-          {/* User routes */}
-          <Route path={USER_HOME_ROUTE} element={<UserProfilePage />}>
+        {/* User routes */}
+        <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
+          <Route element={<UserProfilePage />}>
             <Route
               path={USER_EDIT_PROFILE_ROUTE}
               element={<UserAccountPage />}

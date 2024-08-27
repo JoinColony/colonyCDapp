@@ -1,9 +1,11 @@
 import { CaretUpDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
+import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { formatText } from '~utils/intl.ts';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -15,11 +17,19 @@ import { type ColonySwitcherProps } from './types.ts';
 
 const displayName = 'v5.common.Navigation.ColonySwitcher';
 
+const MSG = defineMessages({
+  selectColony: {
+    id: `${displayName}.selectColony`,
+    defaultMessage: 'Select colony',
+  },
+});
+
 const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
   isLogoButton,
   offset,
   className,
   enableMobileAndDesktopLayoutBreakpoints,
+  showColonySwitcherText = false,
 }) => {
   const colonyContext = useColonyContext({ nullableContext: true });
 
@@ -52,9 +62,11 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
               enableMobileAndDesktopLayoutBreakpoints
             }
           />
-          {colonyName && (
+          {showColonySwitcherText && (
             <p className="truncate text-md font-semibold text-base-white">
-              {capitalizeFirstLetter(colonyName)}
+              {colonyName
+                ? capitalizeFirstLetter(colonyName)
+                : formatText(MSG.selectColony)}
             </p>
           )}
         </section>
