@@ -63,6 +63,7 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows/index.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 import SplitPaymentTable from './partials/SplitPaymentTable/SplitPaymentTable.tsx';
 
@@ -167,7 +168,10 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
             distributionMethod: distributionType,
             [TEAM_FIELD_NAME]: fundFromDomainNativeId,
-            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [AMOUNT_FIELD_NAME]: getFormattedTokenAmount(
+              amount,
+              splitToken?.decimals,
+            ),
             payments: slots.map((slot) => {
               const currentAmount = moveDecimal(
                 slot.payouts?.[0].amount,
