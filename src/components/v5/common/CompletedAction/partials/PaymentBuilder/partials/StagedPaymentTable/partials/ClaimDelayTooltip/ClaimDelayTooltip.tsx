@@ -29,25 +29,18 @@ const MSG = defineMessages({
   },
 });
 
-const tmpCurrent = new Date();
-
 const ClaimDelayTooltip: FC<ClaimDelayTooltipProps> = ({
   finalizedAt,
   claimDelay,
 }) => {
-  // @TODO: Hardcoded just for testing purpose - use claimDelay and finalizedAt from props
-  const tmpDelay = '2592060000';
   const currentTime = new Date();
-  // const maxClaimDelayTime = new Date(
-  //   (finalizedAt + parseFloat(claimDelay)) * 1000,
-  // );
-  const tempMaxClaimDelayTime = new Date(
-    tmpCurrent.getTime() + parseFloat(tmpDelay),
+  const maxClaimDelayTime = new Date(
+    (finalizedAt + parseFloat(claimDelay)) * 1000,
   );
 
-  const secondsLeft = differenceInSeconds(tempMaxClaimDelayTime, currentTime);
+  const secondsLeft = differenceInSeconds(maxClaimDelayTime, currentTime);
   const moreThanMonth =
-    differenceInMonths(tempMaxClaimDelayTime, currentTime) !== 0;
+    differenceInMonths(maxClaimDelayTime, currentTime) !== 0;
 
   const [timeLeft, setTimeLeft] = useState<number>(-1);
 
