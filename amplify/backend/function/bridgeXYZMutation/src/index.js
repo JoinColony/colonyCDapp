@@ -7,6 +7,7 @@ const {
   updateExternalAccountHandler,
 } = require('./handlers/updateExternalAccount');
 const { getDrainsHistoryHandler } = require('./handlers/getDrainsHistory');
+const { getGatewayFeeHandler } = require('./handlers/getGatewayFee.js');
 const {
   getUserLiquidationAddressHandler,
 } = require('./handlers/getUserLiquidationAddress');
@@ -36,6 +37,7 @@ const BRIDGE_OPERATIONS = {
   GET_USER_LIQUIDATION_ADDRESS: 'bridgeGetUserLiquidationAddress',
   CREATE_EXTERNAL_ACCOUNT: 'bridgeCreateBankAccount',
   UPDATE_EXTERNAL_ACCOUNT: 'bridgeUpdateBankAccount',
+  GET_GATEWAY_FEE: 'bridgeGetGatewayFee',
 };
 
 exports.handler = async (event) => {
@@ -54,6 +56,7 @@ exports.handler = async (event) => {
     [BRIDGE_OPERATIONS.CHECK_KYC]: checkKYCHandler,
     [BRIDGE_OPERATIONS.GET_USER_LIQUIDATION_ADDRESS]:
       getUserLiquidationAddressHandler,
+    [BRIDGE_OPERATIONS.GET_GATEWAY_FEE]: getGatewayFeeHandler,
     'v0/kyc_links': kycLinksHandler,
     default: () => {
       console.log('Running default handler');

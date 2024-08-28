@@ -2,24 +2,19 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { ExtendedSupportedCurrencies } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
+import { useTransferFees } from './hooks.ts';
 import SummaryAmountRow from './SummaryAmountRow.tsx';
+import { FeeType } from './types.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.SummaryCard';
-
-enum FeeType {
-  Wire = 'Wire',
-  SEPA = 'SEPA',
-  ACH = 'ACH',
-}
 
 const MSG = defineMessages({
   gatewayFee: {
     id: `${displayName}.gatewayFee`,
-    defaultMessage: 'Gateway fee (1%)',
+    defaultMessage: 'Gateway fee ({percentage}%)',
   },
   gatewayFeeTooltip: {
     id: `${displayName}.gatewayFeeTooltip`,
@@ -58,15 +53,16 @@ interface SummaryCardProps {
 }
 
 const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled, isLoading }) => {
-  const { currency: selectedCurrency } = useCurrencyContext();
   const fromCurrency = ExtendedSupportedCurrencies.Usdc;
-  // @TODO: Calculate proper values
-  const gatewayAmount = 0;
 
-  const feeAmount = 0;
-  const feeType = FeeType.Wire;
-
-  const receiveAmount = 0;
+  const {
+    gatewayPercentage,
+    gatewayAmount,
+    feeType,
+    feeAmount,
+    receiveAmount,
+    selectedCurrency,
+  } = useTransferFees();
 
   return (
     <div
@@ -79,7 +75,9 @@ const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled, isLoading }) => {
       )}
     >
       <SummaryAmountRow
-        description={formatMessage(MSG.gatewayFee)}
+        description={formatMessage(MSG.gatewayFee, {
+          percentage: gatewayPercentage * 100,
+        })}
         amount={gatewayAmount}
         currency={fromCurrency}
         tooltipContent={formatMessage(MSG.gatewayFeeTooltip)}

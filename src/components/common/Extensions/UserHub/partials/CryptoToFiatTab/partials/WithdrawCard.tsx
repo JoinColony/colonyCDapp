@@ -34,6 +34,7 @@ const MSG = defineMessages({
 interface WithdrawCardProps {
   isFormDisabled: boolean;
   balance: number;
+  conversionRate: number;
   handleSetMax: () => void;
   isLoading: boolean;
 }
@@ -43,11 +44,10 @@ const AMOUNT_TRANSFER_FIELD_NAME = TransferFields.AMOUNT;
 const WithdrawCard: FC<WithdrawCardProps> = ({
   isFormDisabled,
   balance,
+  conversionRate,
   handleSetMax,
   isLoading,
 }) => {
-  // @TODO: Get actual conversion rate
-  const conversionRate = parseFloat('0.93');
 
   const {
     setValue,
@@ -67,9 +67,7 @@ const WithdrawCard: FC<WithdrawCardProps> = ({
       ? 0
       : getConvertedAmount(numberValue, conversionRate);
 
-    const formattedConvertedAmount = getFormattedStringNumeral(
-      convertedAmount.toString(),
-    );
+    const formattedConvertedAmount = getFormattedStringNumeral(convertedAmount);
 
     setValue(AMOUNT_TRANSFER_FIELD_NAME, formattedValue, {
       shouldValidate: true,

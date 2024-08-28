@@ -92,6 +92,12 @@ export const POLYGON_TOKEN: TokenInfo = {
   decimals: 18,
 };
 
+export const USDC_TOKEN: TokenInfo = {
+  name: 'USD Coin',
+  symbol: 'USDC',
+  decimals: 0,
+};
+
 export const GNOSIS_NETWORK: NetworkInfo = {
   name: 'Gnosis Chain',
   chainId: '100',

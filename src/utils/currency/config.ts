@@ -1,4 +1,4 @@
-import { ETHER_TOKEN, XDAI_TOKEN } from '~constants';
+import { ETHER_TOKEN, USDC_TOKEN, XDAI_TOKEN } from '~constants';
 import { SupportedCurrencies } from '~gql';
 import { Network } from '~types/network.ts';
 
@@ -19,6 +19,7 @@ export const currencyApiConfig = {
         from: 'ids',
         to: 'vs_currencies',
         api: 'x_cg_demo_api_key',
+        includeLastUpdatedAt: 'include_last_updated_at',
       },
     },
   },
@@ -58,6 +59,7 @@ export const coinGeckoMappings = {
   networkTokens: {
     [ETHER_TOKEN.symbol]: 'ethereum',
     [XDAI_TOKEN.symbol]: 'xdai',
+    [USDC_TOKEN.symbol]: 'usd-coin',
   },
 };
 

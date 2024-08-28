@@ -5,7 +5,6 @@ import { type Message, useFormContext, useWatch } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
-import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
@@ -17,7 +16,7 @@ import {
   getUnconvertedAmount,
   getUnformattedStringNumeral,
 } from './helpers.ts';
-import { TransferFields } from './hooks.ts';
+import { TransferFields, useBankAccountCurrency } from './hooks.ts';
 
 const displayName = 'common.Extensions.UserHub.partials.ReceiveCard';
 
@@ -38,6 +37,8 @@ const MSG = defineMessages({
 
 interface ReceiveCardProps {
   isFormDisabled: boolean;
+  conversionRate: number;
+  conversionDate: Date;
   handleSetMax: () => void;
   isLoading: boolean;
 }
@@ -46,6 +47,8 @@ const CONVERTED_AMOUNT_TRANSFER_FIELD_NAME = TransferFields.CONVERTED_AMOUNT;
 
 const ReceiveCard: FC<ReceiveCardProps> = ({
   isFormDisabled,
+  conversionRate,
+  conversionDate,
   handleSetMax,
   isLoading,
 }) => {
@@ -58,11 +61,8 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
     | Message
     | undefined;
 
-  const { currency: selectedCurrency } = useCurrencyContext();
+  const selectedCurrency = useBankAccountCurrency();
 
-  // @TODO: Get actual conversion rate
-  const conversionRate = parseFloat('0.93');
-  const conversionDate = new Date();
   const formattedConversionDateTime = format(conversionDate, `LLL dd 'at' p`);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -73,9 +73,7 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
     const tokenAmount = Number.isNaN(numberValue)
       ? 0
       : getUnconvertedAmount(numberValue, conversionRate);
-    const formattedTokenAmount = getFormattedStringNumeral(
-      tokenAmount.toString(),
-    );
+    const formattedTokenAmount = getFormattedStringNumeral(tokenAmount);
 
     setValue(CONVERTED_AMOUNT_TRANSFER_FIELD_NAME, formattedValue, {
       shouldValidate: true,
@@ -115,7 +113,7 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
               <p>
                 {formatMessage(MSG.oneUSDC)}
                 <span className="font-medium">
-                  {conversionRate} {selectedCurrency}
+                  {getFormattedStringNumeral(conversionRate)} {selectedCurrency}
                 </span>
               </p>
             </Tooltip>
