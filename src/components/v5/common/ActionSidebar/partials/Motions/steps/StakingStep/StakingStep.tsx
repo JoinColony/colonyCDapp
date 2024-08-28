@@ -1,4 +1,4 @@
-import { CaretDown, CheckCircle } from '@phosphor-icons/react';
+import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { formatRelative } from 'date-fns';
 import React, { type FC } from 'react';
@@ -12,7 +12,6 @@ import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/part
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
-import StatusText from '~v5/shared/StatusText/index.ts';
 
 import { useStakingStep } from './hooks.tsx';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';
@@ -51,10 +50,6 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const isStaked = !!usersStakes?.length;
   const isFullyStaked =
     objectingStakesPercentageValue === 100 &&
-    supportingStakesPercentageValue === 100;
-
-  const showFullySupportedPassInfo =
-    objectingStakesPercentageValue !== 100 &&
     supportingStakesPercentageValue === 100;
 
   const votingPhaseStartedMessage = motionData.messages?.items.find(
@@ -97,19 +92,6 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
           ),
           iconAlignment: 'top',
           iconSize: 16,
-          content: showFullySupportedPassInfo ? (
-            <StatusText
-              status={StatusTypes.Info}
-              className="mt-2"
-              icon={CheckCircle}
-              iconClassName="text-blue-400"
-              textClassName="text-4 text-gray-900"
-              iconAlignment="top"
-              iconSize={16}
-            >
-              {formatText({ id: 'motion.staking.passIfNotOpposed' })}
-            </StatusText>
-          ) : undefined,
           status:
             (objectingStakesPercentageValue === 100 ||
               supportingStakesPercentageValue === 100) &&
