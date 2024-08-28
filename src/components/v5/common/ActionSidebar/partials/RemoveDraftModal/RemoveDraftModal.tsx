@@ -35,7 +35,7 @@ const RemoveDraftModal: FC<RemoveDraftModalProps> = ({
   }
 
   return (
-    <ModalBase isOpen={isOpen} isFullOnMobile hasPadding>
+    <ModalBase isOpen={isOpen} isFullOnMobile withPadding>
       <span className="mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content">
         <WarningCircle size={24} />
       </span>
