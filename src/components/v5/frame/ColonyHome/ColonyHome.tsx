@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Joyride from 'react-joyride';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
@@ -27,6 +28,27 @@ import TotalActions from './partials/TotalActions/index.ts';
 
 const displayName = 'v5.frame.ColonyHome';
 
+const steps = [
+  {
+    target: '.rep-chart',
+    content: 'This chart represents the influence of each team in the colony.',
+  },
+  {
+    target: '[data-tour="agreements-chart"]',
+    content: 'Here you can see recent agreements.',
+  },
+  {
+    target: '.recent-actions',
+    content:
+      'You can also see a list of all recent actions including their status.',
+  },
+  {
+    target: '.view-actions',
+    content:
+      'You can also go to the full actions page for easier viewing, searching and filtering.',
+  },
+];
+
 const ColonyHome = () => {
   const isMobile = useMobile();
   const selectedDomain = useGetSelectedDomainFilter();
@@ -35,6 +57,16 @@ const ColonyHome = () => {
     undefined,
   );
   const { defaultValues } = useGetActionData(selectedAction || undefined);
+
+  const [run, setRun] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setRun(true);
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer); // Cleanup the timer on unmount
+  }, []);
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
 
@@ -53,7 +85,7 @@ const ColonyHome = () => {
           <ReputationChart />
           <Agreements />
         </div>
-        <div className="w-full">
+        <div className="recent-actions w-full">
           <FiltersContextProvider>
             <ColonyActionsTable
               actionProps={{
@@ -81,7 +113,7 @@ const ColonyHome = () => {
               }}
               additionalPaginationButtonsContent={
                 <Link
-                  className="text-sm text-gray-700 underline"
+                  className="view-actions text-sm text-gray-700 underline"
                   to={setQueryParamOnUrl(
                     COLONY_ACTIVITY_ROUTE,
                     TEAM_SEARCH_PARAM,
@@ -96,6 +128,22 @@ const ColonyHome = () => {
         </div>
       </div>
       <LeaveColonyModal />
+      <Joyride
+        run={run}
+        steps={steps}
+        continuous
+        styles={{
+          options: {
+            arrowColor: 'rgb(255 255 255)',
+            backgroundColor: 'rgb(255 255 255)',
+            overlayColor: 'rgba(256, 256, 256, 0.1)',
+            primaryColor: 'rgb(0 0 0)',
+            textColor: 'rgb(0 0 0)',
+            width: 300,
+            zIndex: 1000,
+          },
+        }}
+      />
     </div>
   );
 };
