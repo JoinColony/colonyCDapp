@@ -556,6 +556,8 @@ export const failPendingTransactions = async () => {
         nextToken,
         userAddress,
       },
+      // We don't want this to touch the cache at all, as this is only used for this function
+      fetchPolicy: 'no-cache',
     });
     nextToken = data?.getTransactionsByUser?.nextToken;
 
