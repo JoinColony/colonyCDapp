@@ -1,6 +1,5 @@
 import {
   ArrowDownRight,
-  Buildings,
   ChartBar,
   ChatsCircle,
   HandHeart,
@@ -9,7 +8,6 @@ import {
   PuzzlePiece,
   UsersFour,
   UsersThree,
-  Wrench,
   Signature,
   // @BETA: Disabled for now
   // SealCheck,
@@ -23,11 +21,9 @@ import {
 
 import {
   COLONY_ACTIVITY_ROUTE,
-  COLONY_ADVANCED_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   COLONY_BALANCES_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
-  COLONY_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_INCOMING_ROUTE,
   COLONY_MEMBERS_ROUTE,
@@ -135,12 +131,6 @@ export const agreementsMenu: NavigationSidebarLinksListProps['items'] = [
 ];
 
 export const adminMenu: NavigationSidebarLinksListProps['items'] = [
-  {
-    key: '1',
-    label: formatText({ id: 'navigation.admin.colonyDetails' }),
-    to: COLONY_DETAILS_ROUTE,
-    icon: Buildings,
-  },
   // @BETA: Disabled for now
   // {
   //   key: '2',
@@ -171,12 +161,6 @@ export const adminMenu: NavigationSidebarLinksListProps['items'] = [
   //     text: formatText({ id: 'extension.status.coming-soon' }),
   //   },
   // },
-  {
-    key: '6',
-    label: formatText({ id: 'navigation.admin.advancedSettings' }),
-    to: COLONY_ADVANCED_ROUTE,
-    icon: Wrench,
-  },
 ];
 
 // @todo: update routes when pages will be ready
@@ -197,11 +181,4 @@ export const dashboardMenu: NavigationSidebarLinksListProps['items'] = [
     to: COLONY_ACTIVITY_ROUTE,
     icon: PresentationChart,
   },
-  // Disabled for now
-  // {
-  //   key: '2',
-  //   label: formatText({ id: 'navigation.dashboard.about' }),
-  //   to: COLONY_DETAILS_ROUTE,
-  //   icon: BookOpenText,
-  // },
 ];
