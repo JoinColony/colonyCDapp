@@ -1,12 +1,11 @@
-import { Extension, Id } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import {
@@ -14,18 +13,16 @@ import {
   COLONY_EXTENSION_SETUP_ROUTE,
 } from '~routes/index.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { getUserRolesForDomain } from '~transformers';
 import { type AnyExtensionData } from '~types/extensions.ts';
-import { userHasRole } from '~utils/checks/userHasRoles.ts';
-import {
-  getDefaultStakeFraction,
-  isInstalledExtensionData,
-} from '~utils/extensions.ts';
+import { getDefaultStakeFraction } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
 import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
-import { waitForDbAfterExtensionAction } from '../ExtensionDetailsPageContent/utils.tsx';
+import {
+  waitForColonyPermissions,
+  waitForDbAfterExtensionAction,
+} from '../ExtensionDetailsPageContent/utils.tsx';
 import { ExtensionDetailsPageTabId } from '../types.ts';
 
 interface InstallButtonProps {
@@ -41,16 +38,15 @@ const InstallButton = ({
   isVisible,
 }: InstallButtonProps) => {
   const {
-    colony,
     colony: {
       colonyAddress,
       name: colonyName,
       nativeToken: { decimals },
     },
+    refetchColony,
     isSupportedColonyVersion,
   } = useColonyContext();
-  const { setActiveTab, setWaitingForActionConfirmation } =
-    useExtensionDetailsPageContext();
+  const { setActiveTab } = useExtensionDetailsPageContext();
 
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const [isInstallDisabled, setIsInstallDisabled] = useState(false);
@@ -58,50 +54,14 @@ const InstallButton = ({
   const navigate = useNavigate();
 
   const isMobile = useMobile();
-  const isStakedExpenditureExtension =
-    extensionData.extensionId === Extension.StakedExpenditure;
 
-  const handleEnableExtensionAsyncFunction = useAsyncFunction({
-    submit: ActionTypes.EXTENSION_ENABLE,
-    error: ActionTypes.EXTENSION_ENABLE_ERROR,
-    success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
-  });
+  const handleInstallSuccess = async () => {
+    setIsInstallDisabled(true);
+    setIsPolling(true);
 
-  const isExtensionInstalled =
-    extensionData && isInstalledExtensionData(extensionData);
-
-  useEffect(() => {
-    const handleEnableExtension = async () => {
-      if (!isExtensionInstalled) {
-        return;
-      }
-
-      setWaitingForActionConfirmation(true);
-      try {
-        setIsPolling(true);
-        const extensionRoles = getUserRolesForDomain({
-          colony,
-          userAddress: extensionData.address,
-          domainId: Id.RootDomain,
-        });
-
-        const missingPermissions = extensionData.neededColonyPermissions.filter(
-          (neededRole) => {
-            return !userHasRole(extensionRoles, neededRole);
-          },
-        );
-
-        const updatedExtensionData = {
-          ...extensionData,
-          missingColonyPermissions: missingPermissions,
-        };
-
-        await handleEnableExtensionAsyncFunction({
-          colonyAddress,
-          extensionData: updatedExtensionData,
-          stakeFraction: getDefaultStakeFraction(decimals),
-        });
-
+    try {
+      if (extensionData.enabledAutomaticallyAfterInstall) {
+        await waitForColonyPermissions({ extensionData, refetchColony });
         await waitForDbAfterExtensionAction({
           method: ExtensionMethods.ENABLE,
           refetchExtensionData,
@@ -112,70 +72,32 @@ const InstallButton = ({
         toast.success(
           <Toast
             type="success"
-            title={{ id: 'extensionEnable.toast.title.success' }}
+            title={{ id: 'extensionInstallAndEnable.toast.title.success' }}
             description={{
-              id: 'extensionEnable.toast.description.success',
+              id: 'extensionInstallAndEnable.toast.description.success',
             }}
           />,
         );
 
         setActiveTab(ExtensionDetailsPageTabId.Settings);
-      } catch {
-        toast.error(
+      } else {
+        await waitForDbAfterExtensionAction({
+          method: ExtensionMethods.INSTALL,
+          refetchExtensionData,
+        });
+
+        setIsPolling(false);
+
+        toast.success(
           <Toast
-            type="error"
-            title={{ id: 'extensionEnable.toast.title.error' }}
-            description={{ id: 'extensionEnable.toast.description.error' }}
+            type="success"
+            title={{ id: 'extensionInstall.toast.title.success' }}
+            description={{
+              id: 'extensionInstall.toast.description.success',
+            }}
           />,
         );
-      } finally {
-        setWaitingForActionConfirmation(false);
-        setIsPolling(false);
       }
-    };
-
-    if (
-      isExtensionInstalled &&
-      !extensionData.isEnabled &&
-      isStakedExpenditureExtension &&
-      !extensionData.isDeprecated
-    ) {
-      handleEnableExtension();
-    }
-  }, [
-    colony,
-    colonyAddress,
-    decimals,
-    extensionData,
-    handleEnableExtensionAsyncFunction,
-    isExtensionInstalled,
-    isStakedExpenditureExtension,
-    refetchExtensionData,
-    setActiveTab,
-    setWaitingForActionConfirmation,
-  ]);
-
-  const handleInstallSuccess = async () => {
-    setIsInstallDisabled(true);
-    setIsPolling(true);
-
-    try {
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.INSTALL,
-        refetchExtensionData,
-      });
-
-      setIsPolling(false);
-
-      toast.success(
-        <Toast
-          type="success"
-          title={{ id: 'extensionInstall.toast.title.success' }}
-          description={{
-            id: 'extensionInstall.toast.description.success',
-          }}
-        />,
-      );
 
       if (extensionData.extensionId === Extension.VotingReputation) {
         navigate(
@@ -210,9 +132,13 @@ const InstallButton = ({
 
   return (
     <ActionButton
-      actionType={ActionTypes.EXTENSION_INSTALL}
+      actionType={ActionTypes.EXTENSION_INSTALL_AND_ENABLE}
       isLoading={isPolling}
-      values={{ colonyAddress, extensionData }}
+      values={{
+        colonyAddress,
+        extensionData,
+        stakeFraction: getDefaultStakeFraction(decimals),
+      }}
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
