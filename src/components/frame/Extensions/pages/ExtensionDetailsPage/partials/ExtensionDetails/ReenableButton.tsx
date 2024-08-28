@@ -1,3 +1,4 @@
+import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
 import { ButtonWithLoader } from '~frame/Extensions/pages/partials/ButtonWithLoader.tsx';
@@ -32,6 +33,7 @@ const ReenableButton = ({
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>
       <Modal
+        icon={Question}
         title={formatText({ id: 'extensionReEnable.modal.title' })}
         subTitle={formatText({
           id: 'extensionReEnable.modal.subTitle',
