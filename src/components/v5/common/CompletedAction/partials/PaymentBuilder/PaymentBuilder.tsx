@@ -184,6 +184,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           slots={slots}
         />
         <StagedPaymentTable
+          finalizedAt={finalizedAt || 0}
           stages={expenditure.metadata?.stages || []}
           slots={slots}
           isLoading={!expenditure.metadata?.stages?.length}

@@ -17,6 +17,7 @@ import Table from '~v5/common/Table/Table.tsx';
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
+import ClaimDelayTooltip from './partials/ClaimDelayTooltip/ClaimDelayTooltip.tsx';
 import ReleaseAllButton from './partials/ReleaseAllButton/ReleaseAllButton.tsx';
 import { type StagedPaymentTableProps } from './types.ts';
 
@@ -33,11 +34,19 @@ const MSG = defineMessages({
   },
 });
 
-const useStagedPaymentTableColumns = (
-  data: MilestoneItem[],
-  isPaymentStep?: boolean,
-  isLoading?: boolean,
-) => {
+interface StagedPaymentTableColumnsProps {
+  data: MilestoneItem[];
+  finalizedAt: number;
+  isPaymentStep?: boolean;
+  isLoading?: boolean;
+}
+
+const useStagedPaymentTableColumns = ({
+  data,
+  finalizedAt,
+  isPaymentStep,
+  isLoading,
+}: StagedPaymentTableColumnsProps) => {
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = dataRef.current.length > 1;
   const isMobile = useMobile();
@@ -118,7 +127,7 @@ const useStagedPaymentTableColumns = (
           ? [
               columnHelper.display({
                 id: 'release',
-                staticSize: '90px',
+                staticSize: '96px',
                 enableSorting: false,
                 cell: ({ row }) => {
                   const { original } = row;
@@ -138,19 +147,25 @@ const useStagedPaymentTableColumns = (
                   ) : (
                     <>
                       {isStagedExtensionInstalled ? (
-                        <button
-                          key={row.id}
-                          type="button"
-                          className="w-full text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
-                          onClick={() => {
-                            if (!currentMilestone) return;
+                        <div className="flex items-center justify-end gap-3">
+                          <button
+                            key={row.id}
+                            type="button"
+                            className="w-auto flex-shrink-0 text-left underline transition-colors text-3 hover:text-blue-400 sm:text-center"
+                            onClick={() => {
+                              if (!currentMilestone) return;
 
-                            setSelectedMilestones([currentMilestone]);
-                            showModal();
-                          }}
-                        >
-                          {formatText(MSG.payNow)}
-                        </button>
+                              setSelectedMilestones([currentMilestone]);
+                              showModal();
+                            }}
+                          >
+                            {formatText(MSG.payNow)}
+                          </button>
+                          <ClaimDelayTooltip
+                            finalizedAt={finalizedAt}
+                            claimDelay={row.original.claimDelay || '0'}
+                          />
+                        </div>
                       ) : undefined}
                     </>
                   );
@@ -175,6 +190,7 @@ const useStagedPaymentTableColumns = (
       setSelectedMilestones,
       showModal,
       isStagedExtensionInstalled,
+      finalizedAt,
     ]);
 
   return columns;
@@ -185,6 +201,7 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
   slots,
   isPaymentStep,
   isLoading,
+  finalizedAt,
 }) => {
   const isTablet = useTablet();
   const data: MilestoneItem[] = useMemo(
@@ -201,12 +218,18 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
           tokenAddress: tokenAddress || ADDRESS_ZERO,
           slotId: item.slotId,
           isClaimed: isClaimed || false,
+          claimDelay: payout?.claimDelay || '0',
         };
       }),
     [stages, slots],
   );
 
-  const columns = useStagedPaymentTableColumns(data, isPaymentStep, isLoading);
+  const columns = useStagedPaymentTableColumns({
+    data,
+    finalizedAt,
+    isPaymentStep,
+    isLoading,
+  });
 
   return (
     <div>

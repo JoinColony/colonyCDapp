@@ -11,4 +11,5 @@ export interface StagedPaymentRecipientsFieldModel {
   amount?: string;
   tokenAddress?: string;
   slotId?: number;
+  claimDelay?: string;
 }
