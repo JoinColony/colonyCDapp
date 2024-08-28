@@ -8,6 +8,8 @@ import {
   Legend,
 } from 'chart.js';
 
+import { backgroundOverlayPlugin as BackgroundOverlayPlugin } from './plugins/backgroundOverlay.ts';
+
 export const initialiseChart = () => {
   ChartJS.register(
     CategoryScale,
@@ -16,5 +18,6 @@ export const initialiseChart = () => {
     Title,
     Tooltip,
     Legend,
+    BackgroundOverlayPlugin,
   );
 };

@@ -24,6 +24,7 @@ import Objective from './partials/Objective/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
 import TotalActions from './partials/TotalActions/index.ts';
+import TotalInOutBalance from './partials/TotalInOutBalance/TotalInOutBalance.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
 
@@ -43,6 +44,9 @@ const ColonyHome = () => {
           <Members />
           <TokenBalance />
         </div>
+      </div>
+      <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-3">
+        <TotalInOutBalance />
       </div>
       <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-[39%_1fr]">
         <div className="flex w-full flex-1 flex-col gap-6 sm:grid sm:grid-cols-2 sm:gap-[1.125rem] lg:flex lg:flex-col lg:gap-[1.125rem]">

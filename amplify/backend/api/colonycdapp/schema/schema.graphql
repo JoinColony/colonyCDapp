@@ -21,7 +21,7 @@ input DomainBalanceArguments {
   """
   domainAddress: String!
   chainId: String
-  selectedCurrency: String
+  selectedCurrency: SupportedCurrencies
   timeframeType: TimeframeType
   timeframePeriod: Int!
 }
