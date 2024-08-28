@@ -26,7 +26,11 @@ const useCurrentBlockTime = () => {
     fetchCurrentBlockTime();
   }, [fetchCurrentBlockTime]);
 
-  return { currentBlockTime, fetchCurrentBlockTime };
+  const dateFromCurrentBlockTime = currentBlockTime
+    ? new Date(currentBlockTime * 1000)
+    : null;
+
+  return { currentBlockTime, fetchCurrentBlockTime, dateFromCurrentBlockTime };
 };
 
 export default useCurrentBlockTime;

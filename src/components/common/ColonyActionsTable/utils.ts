@@ -46,47 +46,17 @@ export const makeLoadingRows = (pageSize: number): ActivityFeedColonyAction[] =>
 
 export const getDateFilter = (
   dateFilter: DateOptions | undefined,
+  dateFromCurrentBlockTime: Date,
 ): Pick<ActivityFeedFilters, 'dateFrom' | 'dateTo'> | undefined => {
   if (!dateFilter) {
     return undefined;
   }
 
-  const now = new Date();
   const baseFilter = {
-    dateTo: now,
+    dateTo: dateFromCurrentBlockTime,
   };
 
   switch (true) {
-    case dateFilter.pastHour: {
-      return {
-        dateFrom: sub(now, { hours: 1 }),
-        ...baseFilter,
-      };
-    }
-    case dateFilter.pastDay: {
-      return {
-        dateFrom: sub(now, { days: 1 }),
-        ...baseFilter,
-      };
-    }
-    case dateFilter.pastWeek: {
-      return {
-        dateFrom: sub(now, { weeks: 1 }),
-        ...baseFilter,
-      };
-    }
-    case dateFilter.pastMonth: {
-      return {
-        dateFrom: sub(now, { months: 1 }),
-        ...baseFilter,
-      };
-    }
-    case dateFilter.pastYear: {
-      return {
-        dateFrom: sub(now, { years: 1 }),
-        ...baseFilter,
-      };
-    }
     case !!dateFilter.custom: {
       const filteredDates = dateFilter.custom?.filter(
         (date): date is string => !!date,
@@ -101,6 +71,36 @@ export const getDateFilter = (
       return {
         dateFrom: new Date(from),
         dateTo: new Date(to),
+      };
+    }
+    case dateFilter.pastYear: {
+      return {
+        dateFrom: sub(dateFromCurrentBlockTime, { years: 1 }),
+        ...baseFilter,
+      };
+    }
+    case dateFilter.pastMonth: {
+      return {
+        dateFrom: sub(dateFromCurrentBlockTime, { months: 1 }),
+        ...baseFilter,
+      };
+    }
+    case dateFilter.pastWeek: {
+      return {
+        dateFrom: sub(dateFromCurrentBlockTime, { weeks: 1 }),
+        ...baseFilter,
+      };
+    }
+    case dateFilter.pastDay: {
+      return {
+        dateFrom: sub(dateFromCurrentBlockTime, { days: 1 }),
+        ...baseFilter,
+      };
+    }
+    case dateFilter.pastHour: {
+      return {
+        dateFrom: sub(dateFromCurrentBlockTime, { hours: 1 }),
+        ...baseFilter,
       };
     }
     default: {
