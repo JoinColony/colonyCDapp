@@ -49,12 +49,20 @@ export type ColonyActionTypes =
   | ErrorActionType<ActionTypes.RECOVERY_MODE_ENTER_ERROR, object>
   | UniqueActionType<ActionTypes.RECOVERY_MODE_ENTER_SUCCESS, object, object>
   | UniqueActionType<
-      ActionTypes.EXTENSION_INSTALL,
-      { colonyAddress: Address; extensionData: InstallableExtensionData },
+      ActionTypes.EXTENSION_INSTALL_AND_ENABLE,
+      {
+        colonyAddress: Address;
+        extensionData: InstallableExtensionData;
+        defaultParams?: Record<string, any>;
+      },
       WithKey
     >
-  | UniqueActionType<ActionTypes.EXTENSION_INSTALL_SUCCESS, object, object>
-  | ErrorActionType<ActionTypes.EXTENSION_INSTALL_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.EXTENSION_INSTALL_AND_ENABLE_SUCCESS,
+      object,
+      object
+    >
+  | ErrorActionType<ActionTypes.EXTENSION_INSTALL_AND_ENABLE_ERROR, object>
   | UniqueActionType<
       ActionTypes.EXTENSION_ENABLE,
       {
