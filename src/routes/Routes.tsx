@@ -3,8 +3,6 @@ import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
 import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
-import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
 import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
@@ -53,11 +51,9 @@ import {
   COLONY_EXTENSION_DETAILS_ROUTE,
   USER_INVITE_ROUTE,
   COLONY_REPUTATION_ROUTE,
-  COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
   COLONY_INCORPORATION_ROUTE,
-  COLONY_ADVANCED_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_VERIFIED_ROUTE,
   COLONY_TEAMS_ROUTE,
@@ -172,8 +168,6 @@ const Routes = () => {
           </Route>
 
           {/* Colony settings routes */}
-          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
-
           <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
           {/* Enable the following routes in dev mode */}
@@ -195,7 +189,6 @@ const Routes = () => {
             path={COLONY_EXTENSION_DETAILS_ROUTE}
             element={<ExtensionDetailsPage />}
           />
-          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
 
         {/* OLD Colony routes -- remove when going live */}
@@ -216,7 +209,6 @@ const Routes = () => {
 
           {/* Colony settings routes */}
 
-          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
           <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
           <Route
             path={COLONY_PERMISSIONS_ROUTE}
@@ -235,7 +227,6 @@ const Routes = () => {
             path={COLONY_INCORPORATION_ROUTE}
             element={<IncorporationPage />}
           />
-          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
 
         {/*
