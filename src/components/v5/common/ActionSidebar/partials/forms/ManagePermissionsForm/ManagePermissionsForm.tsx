@@ -40,7 +40,7 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModeRoleSelected } = useManagePermissions(getFormOptions);
+  const { role, isModRoleSelected } = useManagePermissions(getFormOptions);
   const [
     isPermissionsModalOpen,
     {
@@ -160,7 +160,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
               id: 'actionSidebar.tooltip.authority',
             }),
           },
-          content: isModeRoleSelected
+          content: isModRoleSelected
             ? {
                 tooltipContent: formatText({
                   id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
@@ -179,7 +179,7 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
-          disabled={isModeRoleSelected || hasNoDecisionMethods}
+          disabled={isModRoleSelected || hasNoDecisionMethods}
           name="authority"
           options={AuthorityOptions}
           title={formatText({

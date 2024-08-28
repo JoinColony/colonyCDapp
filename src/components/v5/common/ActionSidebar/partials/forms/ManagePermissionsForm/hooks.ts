@@ -15,6 +15,7 @@ import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormB
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import {
+  Authority,
   type ManagePermissionsFormValues,
   validationSchema,
 } from './consts.ts';
@@ -47,7 +48,7 @@ export const useManagePermissions = (
     name: 'role',
   });
 
-  const isModeRoleSelected = formRole === UserRole.Mod;
+  const isModRoleSelected = formRole === UserRole.Mod;
 
   useEffect(() => {
     /**
@@ -67,6 +68,12 @@ export const useManagePermissions = (
       });
     }
   }, [colony, defaultValues, setValue]);
+
+  useEffect(() => {
+    if (isModRoleSelected) {
+      setValue('authority', Authority.Own);
+    }
+  }, [isModRoleSelected, setValue]);
 
   useEffect(() => {
     const { unsubscribe } = watch(({ member, team, role }, { name }) => {
@@ -136,6 +143,6 @@ export const useManagePermissions = (
 
   return {
     role: formRole,
-    isModeRoleSelected,
+    isModRoleSelected,
   };
 };
