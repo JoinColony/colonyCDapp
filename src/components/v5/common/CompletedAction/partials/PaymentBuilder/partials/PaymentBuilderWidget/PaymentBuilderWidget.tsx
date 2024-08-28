@@ -11,6 +11,7 @@ import {
   ColonyActionType,
   ExpenditureType,
 } from '~gql';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -43,11 +44,7 @@ import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import {
-  getCancelStepIndex,
-  getExpenditureStep,
-  useGetExtensionInstalled,
-} from './utils.ts';
+import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
@@ -58,7 +55,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
-  const { isStagedExtensionInstalled } = useGetExtensionInstalled();
+  const { isStagedExtensionInstalled } = useEnabledExtensions();
 
   const {
     isFundingModalOpen,

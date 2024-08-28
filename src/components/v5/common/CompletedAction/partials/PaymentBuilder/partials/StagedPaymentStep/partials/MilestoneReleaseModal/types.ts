@@ -13,6 +13,7 @@ export interface MilestoneReleaseModalProps extends ModalProps {
   hasAllMilestonesReleased: boolean;
   expenditure: Expenditure;
   motionIds: number[];
+  setIsMotionPending: (isMotionPending: boolean) => void;
 }
 
 export type MilestoneModalContentProps = Pick<

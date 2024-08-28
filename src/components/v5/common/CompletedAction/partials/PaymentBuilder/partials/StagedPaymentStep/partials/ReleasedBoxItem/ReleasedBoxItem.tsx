@@ -4,11 +4,11 @@ import { defineMessages } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-import { useGetExtensionInstalled } from '../../../PaymentBuilderWidget/utils.ts';
 import { type MilestoneItem } from '../MilestoneReleaseModal/types.ts';
 
 const displayName =
@@ -39,7 +39,7 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
 }) => {
   const { setSelectedMilestoneMotion, selectedMilestoneMotion } =
     usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useGetExtensionInstalled();
+  const { isStagedExtensionInstalled } = useEnabledExtensions();
   const { motionState, loadingAction } = useGetColonyAction(
     item?.transactionHash,
   );

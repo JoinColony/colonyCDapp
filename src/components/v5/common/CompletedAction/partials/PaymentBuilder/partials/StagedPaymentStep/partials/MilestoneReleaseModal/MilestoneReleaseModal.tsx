@@ -176,6 +176,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
   hasAllMilestonesReleased,
   expenditure,
   motionIds,
+  setIsMotionPending,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -224,6 +225,7 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         await releaseExpenditureStage(payload);
       }
 
+      setIsMotionPending(true);
       onClose();
     } catch (err) {
       console.error(err);

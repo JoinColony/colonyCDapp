@@ -15,6 +15,7 @@ export interface EnabledExtensionData {
   isStagedExpenditureEnabled: boolean;
   stagedExpenditureAddress: Address | undefined;
   isStreamingPaymentsEnabled: boolean;
+  isStagedExtensionInstalled: boolean;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
@@ -47,6 +48,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isStagedExpenditureEnabled: !!stagedExpenditureExtension?.isEnabled,
     stagedExpenditureAddress: stagedExpenditureExtension?.address,
     isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
+    isStagedExtensionInstalled: !!stagedExpenditureExtension,
     shortPollExtensions,
   };
 };

@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import { ADDRESS_ZERO } from '~constants';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useMobile, useTablet } from '~hooks';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
@@ -14,7 +15,6 @@ import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import Table from '~v5/common/Table/Table.tsx';
 
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
-import { useGetExtensionInstalled } from '../PaymentBuilderWidget/utils.ts';
 import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 import ReleaseAllButton from './partials/ReleaseAllButton/ReleaseAllButton.tsx';
@@ -43,7 +43,7 @@ const useStagedPaymentTableColumns = (
   const isMobile = useMobile();
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useGetExtensionInstalled();
+  const { isStagedExtensionInstalled } = useEnabledExtensions();
   const hasMoreThanOneMilestone =
     dataRef.current.filter((item) => !item.isClaimed).length > 1;
 

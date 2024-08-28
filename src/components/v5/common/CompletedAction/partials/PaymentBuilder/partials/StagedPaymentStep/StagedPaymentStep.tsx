@@ -1,16 +1,17 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
-import React, { useEffect, type FC } from 'react';
+import React, { useEffect, type FC, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ColonyActionType, type Expenditure } from '~types/graphql.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
-import { useGetExtensionInstalled } from '../PaymentBuilderWidget/utils.ts';
 import PaymentOverview from '../PaymentStepDetailsBlock/partials/PaymentOverview/PaymentOverview.tsx';
 import { getSummedTokens } from '../PaymentStepDetailsBlock/utils.ts';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
@@ -74,7 +75,8 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     setSelectedMilestones,
     setSelectedMilestoneMotion,
   } = usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useGetExtensionInstalled();
+  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const [isMotionPending, setIsMotionPending] = useState(false);
 
   const firstMilestone = items
     .sort((a, b) => a.slotId - b.slotId)
@@ -90,10 +92,12 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     notReleasedMilestones,
     selectedMilestones,
   );
-  const releaseMilestoneMotions = expenditure.motions?.items.filter(
-    (motion) =>
-      motion?.action?.type === ColonyActionType.ReleaseStagedPaymentsMotion,
-  );
+  const releaseMilestoneMotions = expenditure.motions?.items
+    .filter(
+      (motion) =>
+        motion?.action?.type === ColonyActionType.ReleaseStagedPaymentsMotion,
+    )
+    .filter(notMaybe);
   const motionMilestones: ReleaseBoxItem[] = (
     releaseMilestoneMotions || []
   ).map((motion, index) => {
@@ -143,8 +147,9 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       return 0;
     },
   );
-  const hasEveryMotionEnded = releaseMilestoneMotions?.every(
-    (motion) => motion?.isFinalized,
+  const isAnyPaymentMotionInProgress = releaseMilestoneMotions?.some(
+    (motion) =>
+      !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
   );
 
   const activeMotionsIds = (releaseMilestoneMotions || [])
@@ -165,7 +170,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     ),
   );
 
-  const motionMilestonesRef = React.useRef(motionMilestones);
+  const milestonesRef = React.useRef(releaseItems);
 
   useEffect(() => {
     if (!isStagedExtensionInstalled) {
@@ -173,20 +178,15 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       return;
     }
 
-    if (motionMilestonesRef.current.length !== motionMilestones.length) {
-      if (!motionMilestones) {
+    if (milestonesRef.current.length !== releaseItems.length) {
+      if (!releaseItems) {
         return;
       }
-      setSelectedMilestoneMotion(
-        motionMilestones?.[motionMilestones.length - 1],
-      );
-      motionMilestonesRef.current = motionMilestones;
+      setSelectedMilestoneMotion(releaseItems?.[releaseItems.length - 1]);
+      setIsMotionPending(false);
+      milestonesRef.current = releaseItems;
     }
-  }, [
-    motionMilestones,
-    setSelectedMilestoneMotion,
-    isStagedExtensionInstalled,
-  ]);
+  }, [releaseItems, setSelectedMilestoneMotion, isStagedExtensionInstalled]);
 
   return (
     <>
@@ -212,31 +212,34 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
               }
             />
           )}
-          {hasEveryMotionEnded && isStagedExtensionInstalled && (
-            <StepDetailsBlock
-              text={formatText(MSG.releaseNextMilestone)}
-              content={
-                expectedStepKey === ExpenditureStep.Payment ? (
-                  <IconButton
-                    className="max-h-[2.5rem] w-full !text-md"
-                    rounded="s"
-                    text={{ id: 'button.pending' }}
-                    icon={
-                      <span className="ml-1.5 flex shrink-0">
-                        <SpinnerGap className="animate-spin" size={14} />
-                      </span>
-                    }
-                  />
-                ) : (
-                  <Button
-                    className="w-full"
-                    onClick={releaseNextMilestone}
-                    text={formatText(MSG.makeNextButton)}
-                  />
-                )
-              }
-            />
-          )}
+          {!isAnyPaymentMotionInProgress &&
+            !allPaid &&
+            isStagedExtensionInstalled && (
+              <StepDetailsBlock
+                text={formatText(MSG.releaseNextMilestone)}
+                content={
+                  expectedStepKey === ExpenditureStep.Payment ||
+                  isMotionPending ? (
+                    <IconButton
+                      className="max-h-[2.5rem] w-full !text-md"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={releaseNextMilestone}
+                      text={formatText(MSG.makeNextButton)}
+                    />
+                  )
+                }
+              />
+            )}
         </>
       )}
       <MilestoneReleaseModal
@@ -246,6 +249,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
         isOpen={isMilestoneModalOpen}
         hasAllMilestonesReleased={hasAllMilestonesReleased}
         onClose={hideModal}
+        setIsMotionPending={setIsMotionPending}
       />
     </>
   );
