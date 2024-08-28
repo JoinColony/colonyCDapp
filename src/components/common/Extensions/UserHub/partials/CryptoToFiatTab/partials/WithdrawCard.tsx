@@ -48,7 +48,6 @@ const WithdrawCard: FC<WithdrawCardProps> = ({
   handleSetMax,
   isLoading,
 }) => {
-
   const {
     setValue,
     formState: { errors },

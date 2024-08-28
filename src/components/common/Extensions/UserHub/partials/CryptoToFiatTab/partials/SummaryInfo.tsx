@@ -14,14 +14,15 @@ interface SummaryInfoProps {
 const SummaryInfo: FC<SummaryInfoProps> = ({ isDisabled, tooltipContent }) => {
   return (
     <Tooltip
-      tooltipContent={tooltipContent}
+      tooltipContent={!isDisabled ? tooltipContent : null}
       placement="top-end"
       offset={[8, 12]}
     >
       <Info
         size={12}
-        className={clsx('text-gray-400', {
+        className={clsx('', {
           'text-gray-300': isDisabled,
+          'text-gray-400': !isDisabled,
         })}
       />
     </Tooltip>

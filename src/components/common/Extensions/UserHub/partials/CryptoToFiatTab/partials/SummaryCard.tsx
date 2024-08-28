@@ -69,7 +69,7 @@ const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled, isLoading }) => {
       className={clsx(
         'mt-5 flex flex-col gap-2 rounded-lg border border-gray-200 px-4 py-5 text-sm',
         {
-          'bg-gray-50 text-gray-300': isFormDisabled,
+          'text-gray-300': isFormDisabled,
           'bg-transparent': isLoading,
         },
       )}

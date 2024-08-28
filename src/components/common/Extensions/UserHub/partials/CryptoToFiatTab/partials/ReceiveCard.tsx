@@ -103,9 +103,13 @@ const ReceiveCard: FC<ReceiveCardProps> = ({
             isLoading={isLoading}
           >
             <Tooltip
-              tooltipContent={formatMessage(MSG.conversionRateTooltip, {
-                date: formattedConversionDateTime,
-              })}
+              tooltipContent={
+                !isFormDisabled
+                  ? formatMessage(MSG.conversionRateTooltip, {
+                      date: formattedConversionDateTime,
+                    })
+                  : null
+              }
               placement="top-end"
               contentWrapperClassName="font-bold max-w-full"
               offset={[8, 12]}

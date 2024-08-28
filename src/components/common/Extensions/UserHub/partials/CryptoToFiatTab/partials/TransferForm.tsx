@@ -2,9 +2,9 @@ import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { ExtendedSupportedCurrencies } from '~gql';
 import { useCurrencyConversionRate } from '~hooks/useCurrencyConversionRate.ts';
-import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
