@@ -4,7 +4,6 @@ import { FormattedDate } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
@@ -49,7 +48,7 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
         />
       </span>
       {loadingAction ? (
-        <SpinnerLoader />
+        <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
       ) : (
         <ActionBadge
           motionState={isMotion ? motionState : MotionState.Passed}
