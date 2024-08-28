@@ -10,7 +10,6 @@ export const METACOLONY_HOME_ROUTE = '/meta';
 // @todo remove when going live
 export const COLONY_OLD_HOME_ROUTE = '/old/:colonyName/*';
 export const COLONY_HOME_ROUTE = ':colonyName/';
-export const COLONY_DETAILS_ROUTE = `details`;
 export const COLONY_ADMIN_ROUTE = `admin`;
 export const COLONY_REPUTATION_ROUTE = `reputation`;
 export const COLONY_PERMISSIONS_ROUTE = `permissions`;
@@ -18,7 +17,6 @@ export const COLONY_MULTISIG_ROUTE = `permissions/multisig`;
 export const COLONY_EXTENSIONS_ROUTE = `extensions`;
 export const COLONY_INTEGRATIONS_ROUTE = `integrations`;
 export const COLONY_INCORPORATION_ROUTE = `incorporation`;
-export const COLONY_ADVANCED_ROUTE = `advanced`;
 export const COLONY_EXTENSION_DETAILS_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:extensionId/*`;
 export const COLONY_EXTENSION_SETUP_ROUTE = `setup`;
 export const COLONY_EXTENSION_DETAILS_SETUP_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:extensionId/${COLONY_EXTENSION_SETUP_ROUTE}`;

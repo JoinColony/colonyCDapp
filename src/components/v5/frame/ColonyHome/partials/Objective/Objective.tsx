@@ -4,7 +4,6 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -14,6 +13,8 @@ import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 
 const displayName = 'v5.frame.ColonyHome.Objective';
 
+// @INFO: This entire component will be removed as part of colonyCDapp#2942
+// But for the sake of testing, I've just removed the hyperlink
 const Objective = () => {
   const selectedDomain = useGetSelectedDomainFilter();
   const nativeDomainId = selectedDomain?.nativeId ?? undefined;
@@ -73,7 +74,6 @@ const Objective = () => {
       }
       contentClassName="w-full"
       className="flex-1 flex-col bg-base-white p-6"
-      href={objective ? COLONY_DETAILS_ROUTE : undefined}
       onClick={openManageObjectives}
     />
   );
