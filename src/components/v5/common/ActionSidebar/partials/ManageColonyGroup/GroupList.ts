@@ -10,7 +10,7 @@ import {
   HouseLine,
   Upload,
   UserCircleCheck,
-  TrafficCone,
+  // TrafficCone,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
@@ -111,12 +111,13 @@ export const GROUP_ADMIN_LIST = [
     Icon: UserCircleCheck,
     action: Action.ManageVerifiedMembers,
   },
-  {
-    title: formatText({ id: 'actions.enterRecoveryMode' }),
-    description: formatText({
-      id: 'actions.description.enterRecoveryMode',
-    }),
-    Icon: TrafficCone,
-    action: Action.EnterRecoveryMode,
-  },
+  // @TODO: Uncomment when recovery mode will be ready
+  // {
+  //   title: formatText({ id: 'actions.recoveryMode' }),
+  //   description: formatText({
+  //     id: 'actions.description.recoveryMode',
+  //   }),
+  //   Icon: TrafficCone,
+  //   action: Action.EnterRecoveryMode,
+  // },
 ];
