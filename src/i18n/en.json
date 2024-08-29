@@ -1701,6 +1701,7 @@
     "dashboard.team.widget.subtitle": "Influence by team",
     "dashboard.team.widget.noData": "There are no teams in the Colony.",
     "dashboard.team.widget.createTeam": "Create a new team",
+    "dashboard.team.cards.createTeam": "Create team",
     "dashboard.agreements.widget.title": "Agreements",
     "dashboard.agreements.widget.noData": "There are no agreements to display.",
     "dashboard.agreements.widget.createNewAgreement": "Create a new agreement",
