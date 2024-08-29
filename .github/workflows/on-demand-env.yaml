@@ -3,6 +3,13 @@ name: Deploy Development Environment
 on:
   workflow_dispatch:
     inputs:
+      network_id:
+        description: 'Network id used for chain data'
+        required: true
+        type: choice
+        options:
+        - ganache
+        - arbitrumSepolia
       prNumber:
         description: 'Pull Request Number'
         required: false
@@ -46,7 +53,7 @@ jobs:
         ARCHIVE_RPC=${{ secrets.ON_DEMAND_ENV_ARCHIVE_RPC }}
         FORKED_NETWORK_ADDRESS=${{ secrets.ON_DEMAND_ENV_FORKED_NETWORK_ADDRESS }}
         REPUTATION_URL=${{ secrets.ON_DEMAND_ENV_REPUTATION_URL }}
-        NETWORK_ID=${{ secrets.ON_DEMAND_ENV_NETWORK_ID }}
+        NETWORK_ID=${{ github.event.inputs.network_id }}
         ENV_NAME=${{ vars.ON_DEMAND_ENV_DYNAMODB_ENV_NAME }}
         CLOUDFLARE_ZONE_ID=${{ secrets.CLOUDFLARE_ZONE_ID }}
         CLOUDFLARE_API_TOKEN=${{ secrets.CLOUDFLARE_API_TOKEN }}

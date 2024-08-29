@@ -316,9 +316,15 @@ npm ci
 # For the authentication proxy
 echo "ORIGIN_URL=https://${FQDN}" >> ./docker/files/auth/env.base
 
-env
 # Build and run Docker images
-npm run on-demand &
+if [ "$NETWORK_ID" == "ganache" ]; then
+    npm run dev &
+elif [ "$NETWORK_ID" == "arbitrumSepolia" ]; then
+    npm run on-demand &
+else
+    echo "Invalid NETWORK_ID"
+    exit 1
+fi
 
 # Wait for graphql port to come up
 while ! nc -z localhost 20002; do
@@ -361,6 +367,11 @@ export COINGECKO_API_URL="test"
 export POSTHOG_KEY="test"
 export POSTHOG_HOST="test"
 export PERSONA_ENVIRONMENT_ID="test"
+
+# Seed database (pass --yes to skip confirmation)
+if [ "$NETWORK_ID" == "ganache" ]; then
+  node ./scripts/create-data.js --yes
+fi
 
 # Start frontend
 npm run frontend &
@@ -447,3 +458,10 @@ curl -H "Content-Type: application/json" \
      $DISCORD_WEBHOOK
 
 echo "Notification message posted!"
+
+
+sudo certbot certonly \
+  --dns-cloudflare \
+  --dns-cloudflare-credentials ~/.secrets/certbot/cloudflare.ini \
+  -d 'colony.io' \
+  -d '*.colony.io'
