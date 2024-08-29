@@ -1754,14 +1754,10 @@ export type CreateMotionMessageInput = {
   vote?: InputMaybe<Scalars['String']>;
 };
 
-export type CreateMultiSigUserSignatureInput = {
-  colonyAddress: Scalars['ID'];
-  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+export type CreateNotificationsDataInput = {
   id?: InputMaybe<Scalars['ID']>;
-  multiSigId: Scalars['ID'];
-  role: Scalars['Int'];
-  userAddress: Scalars['ID'];
-  vote: MultiSigVote;
+  magicbellUserId?: InputMaybe<Scalars['ID']>;
+  userId: Scalars['ID'];
 };
 
 export type CreatePrivateBetaInviteCodeInput = {
@@ -1892,6 +1888,7 @@ export type CreateUserInput = {
   bridgeCustomerId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   profileId?: InputMaybe<Scalars['ID']>;
+  userNotificationsDataId?: InputMaybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
@@ -2061,7 +2058,7 @@ export type DeleteMotionMessageInput = {
   id: Scalars['ID'];
 };
 
-export type DeleteMultiSigUserSignatureInput = {
+export type DeleteNotificationsDataInput = {
   id: Scalars['ID'];
 };
 
@@ -3809,40 +3806,26 @@ export type ModelMotionMessageFilterInput = {
   vote?: InputMaybe<ModelStringInput>;
 };
 
-export type ModelMultiSigUserSignatureConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureConditionInput>>>;
-  colonyAddress?: InputMaybe<ModelIdInput>;
-  createdAt?: InputMaybe<ModelStringInput>;
-  multiSigId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureConditionInput>>>;
-  role?: InputMaybe<ModelIntInput>;
-  userAddress?: InputMaybe<ModelIdInput>;
-  vote?: InputMaybe<ModelMultiSigVoteInput>;
+export type ModelNotificationsDataConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
+  magicbellUserId?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelNotificationsDataConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
+  userId?: InputMaybe<ModelIdInput>;
 };
 
-export type ModelMultiSigUserSignatureConnection = {
-  __typename?: 'ModelMultiSigUserSignatureConnection';
-  items: Array<Maybe<MultiSigUserSignature>>;
+export type ModelNotificationsDataConnection = {
+  __typename?: 'ModelNotificationsDataConnection';
+  items: Array<Maybe<NotificationsData>>;
   nextToken?: Maybe<Scalars['String']>;
 };
 
-export type ModelMultiSigUserSignatureFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelIdInput>;
-  createdAt?: InputMaybe<ModelStringInput>;
-  id?: InputMaybe<ModelIdInput>;
-  multiSigId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelMultiSigUserSignatureFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelMultiSigUserSignatureFilterInput>>>;
-  role?: InputMaybe<ModelIntInput>;
-  userAddress?: InputMaybe<ModelIdInput>;
-  vote?: InputMaybe<ModelMultiSigVoteInput>;
-};
-
-export type ModelMultiSigVoteInput = {
-  eq?: InputMaybe<MultiSigVote>;
-  ne?: InputMaybe<MultiSigVote>;
+export type ModelNotificationsDataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
+  magicbellUserId?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelNotificationsDataFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
+  userId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelPrivateBetaInviteCodeConditionInput = {
@@ -4508,16 +4491,11 @@ export type ModelSubscriptionMotionMessageFilterInput = {
   vote?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
-export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
-  id?: InputMaybe<ModelSubscriptionIdInput>;
-  multiSigId?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>>>;
-  role?: InputMaybe<ModelSubscriptionIntInput>;
-  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  vote?: InputMaybe<ModelSubscriptionStringInput>;
+export type ModelSubscriptionNotificationsDataFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
+  magicbellUserId?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
+  userId?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
@@ -4847,6 +4825,7 @@ export type ModelUserConditionInput = {
   not?: InputMaybe<ModelUserConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
+  userNotificationsDataId?: InputMaybe<ModelIdInput>;
   userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
@@ -4863,6 +4842,7 @@ export type ModelUserFilterInput = {
   not?: InputMaybe<ModelUserFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
+  userNotificationsDataId?: InputMaybe<ModelIdInput>;
   userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
@@ -5168,7 +5148,7 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
-  createMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  createNotificationsData?: Maybe<NotificationsData>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5213,7 +5193,7 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
-  deleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  deleteNotificationsData?: Maybe<NotificationsData>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5260,7 +5240,7 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
-  updateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  updateNotificationsData?: Maybe<NotificationsData>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5501,9 +5481,9 @@ export type MutationCreateMotionMessageArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateMultiSigUserSignatureArgs = {
-  condition?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
-  input: CreateMultiSigUserSignatureInput;
+export type MutationCreateNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: CreateNotificationsDataInput;
 };
 
 
@@ -5808,9 +5788,9 @@ export type MutationDeleteMotionMessageArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteMultiSigUserSignatureArgs = {
-  condition?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
-  input: DeleteMultiSigUserSignatureInput;
+export type MutationDeleteNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: DeleteNotificationsDataInput;
 };
 
 
@@ -6121,9 +6101,9 @@ export type MutationUpdateMotionMessageArgs = {
 
 
 /** Root mutation type */
-export type MutationUpdateMultiSigUserSignatureArgs = {
-  condition?: InputMaybe<ModelMultiSigUserSignatureConditionInput>;
-  input: UpdateMultiSigUserSignatureInput;
+export type MutationUpdateNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: UpdateNotificationsDataInput;
 };
 
 
@@ -6315,6 +6295,18 @@ export enum Network {
   Mainnet = 'MAINNET'
 }
 
+/** Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences. */
+export type NotificationsData = {
+  __typename?: 'NotificationsData';
+  createdAt: Scalars['AWSDateTime'];
+  id: Scalars['ID'];
+  /** Unique identifier for the user in Magicbell */
+  magicbellUserId?: Maybe<Scalars['ID']>;
+  updatedAt: Scalars['AWSDateTime'];
+  /** Unique identifier for the user */
+  userId: Scalars['ID'];
+};
+
 export type Payment = {
   __typename?: 'Payment';
   /** Payment amount, excluding network fee */
@@ -6502,10 +6494,7 @@ export type Query = {
   /** Get the timeout for the current period of a motion */
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getMotionVoterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
-  getMultiSigByColonyAddress?: Maybe<ModelColonyMultiSigConnection>;
-  getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
-  getMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-  getMultiSigUserSignatureByMultiSigId?: Maybe<ModelMultiSigUserSignatureConnection>;
+  getNotificationsData?: Maybe<NotificationsData>;
   getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -6572,7 +6561,7 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
-  listMultiSigUserSignatures?: Maybe<ModelMultiSigUserSignatureConnection>;
+  listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
@@ -7070,38 +7059,8 @@ export type QueryGetMotionVoterRewardsArgs = {
 
 
 /** Root query type */
-export type QueryGetMultiSigByColonyAddressArgs = {
-  colonyAddress: Scalars['ID'];
-  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetMultiSigByTransactionHashArgs = {
-  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  transactionHash: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetMultiSigUserSignatureArgs = {
+export type QueryGetNotificationsDataArgs = {
   id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetMultiSigUserSignatureByMultiSigIdArgs = {
-  filter?: InputMaybe<ModelMultiSigUserSignatureFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  multiSigId: Scalars['ID'];
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -7602,8 +7561,8 @@ export type QueryListMotionMessagesArgs = {
 
 
 /** Root query type */
-export type QueryListMultiSigUserSignaturesArgs = {
-  filter?: InputMaybe<ModelMultiSigUserSignatureFilterInput>;
+export type QueryListNotificationsDataArgs = {
+  filter?: InputMaybe<ModelNotificationsDataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -8249,7 +8208,7 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
-  onCreateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  onCreateNotificationsData?: Maybe<NotificationsData>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8292,7 +8251,7 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
-  onDeleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  onDeleteNotificationsData?: Maybe<NotificationsData>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8335,7 +8294,7 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
-  onUpdateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+  onUpdateNotificationsData?: Maybe<NotificationsData>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8493,8 +8452,8 @@ export type SubscriptionOnCreateMotionMessageArgs = {
 };
 
 
-export type SubscriptionOnCreateMultiSigUserSignatureArgs = {
-  filter?: InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>;
+export type SubscriptionOnCreateNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -8708,8 +8667,8 @@ export type SubscriptionOnDeleteMotionMessageArgs = {
 };
 
 
-export type SubscriptionOnDeleteMultiSigUserSignatureArgs = {
-  filter?: InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>;
+export type SubscriptionOnDeleteNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -8923,8 +8882,8 @@ export type SubscriptionOnUpdateMotionMessageArgs = {
 };
 
 
-export type SubscriptionOnUpdateMultiSigUserSignatureArgs = {
-  filter?: InputMaybe<ModelSubscriptionMultiSigUserSignatureFilterInput>;
+export type SubscriptionOnUpdateNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -9609,14 +9568,10 @@ export type UpdateMotionMessageInput = {
   vote?: InputMaybe<Scalars['String']>;
 };
 
-export type UpdateMultiSigUserSignatureInput = {
-  colonyAddress?: InputMaybe<Scalars['ID']>;
-  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+export type UpdateNotificationsDataInput = {
   id: Scalars['ID'];
-  multiSigId?: InputMaybe<Scalars['ID']>;
-  role?: InputMaybe<Scalars['Int']>;
-  userAddress?: InputMaybe<Scalars['ID']>;
-  vote?: InputMaybe<MultiSigVote>;
+  magicbellUserId?: InputMaybe<Scalars['ID']>;
+  userId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdatePrivateBetaInviteCodeInput = {
@@ -9739,6 +9694,7 @@ export type UpdateUserInput = {
   bridgeCustomerId?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   profileId?: InputMaybe<Scalars['ID']>;
+  userNotificationsDataId?: InputMaybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
@@ -9778,6 +9734,8 @@ export type User = {
   /** Unique identifier for the user (wallet address) */
   id: Scalars['ID'];
   liquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
+  /** Notifications data for the user */
+  notificationsData?: Maybe<NotificationsData>;
   /** A user who has been invited by colony will be able to pass on the private beta invite */
   privateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   /** Profile information of the user */
@@ -9788,6 +9746,7 @@ export type User = {
   tokens?: Maybe<ModelUserTokensConnection>;
   transactionHistory?: Maybe<ModelTransactionConnection>;
   updatedAt: Scalars['AWSDateTime'];
+  userNotificationsDataId?: Maybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: Maybe<Scalars['ID']>;
 };
 
@@ -9995,11 +9954,11 @@ export type MotionStakeValuesFragment = { __typename?: 'MotionStakeValues', yay:
 
 export type UserMotionStakesFragment = { __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } };
 
-export type VoterRewardsHistoryFragment = { __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } };
+export type VoterRewardsHistoryFragment = { __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } };
 
 export type ColonyMotionFragment = { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null };
 
-export type MotionMessageFragment = { __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+export type MotionMessageFragment = { __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null };
 
 export type VoterRecordFragment = { __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null };
 
@@ -10073,7 +10032,7 @@ export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, 
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
-export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null };
 
 export type ColonyUserRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
 
@@ -10095,11 +10054,13 @@ export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mint
 
 export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } };
 
-export type UserFragment = { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null };
+export type UserFragment = { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null };
 
 export type UserDisplayFragment = { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, displayNameChanged?: string | null, avatar?: string | null, thumbnail?: string | null } | null };
 
 export type ProfileFragment = { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null };
+
+export type NotificationsDataFragment = { __typename?: 'NotificationsData', magicbellUserId?: string | null };
 
 export type CreateColonyActionMetadataMutationVariables = Exact<{
   input: CreateColonyActionMetadataInput;
@@ -10570,7 +10531,7 @@ export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
+export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null } | null> } | null };
 
 export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10698,7 +10659,7 @@ export type GetUserByAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null };
+export type GetUserByAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null };
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
@@ -10712,7 +10673,7 @@ export type GetUserByNameQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByNameQuery = { __typename?: 'Query', getProfileByUsername?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null };
+export type GetUserByNameQuery = { __typename?: 'Query', getProfileByUsername?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } } | null> } | null };
 
 export type GetUsersQueryVariables = Exact<{
   filter?: InputMaybe<ModelUserFilterInput>;
@@ -10720,7 +10681,7 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', listUsers?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null };
+export type GetUsersQuery = { __typename?: 'Query', listUsers?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null };
 
 export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 

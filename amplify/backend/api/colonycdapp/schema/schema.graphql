@@ -1996,6 +1996,24 @@ type User @model {
   """
   liquidationAddresses: [LiquidationAddress!]
     @hasMany(indexName: "byUserAddress", fields: ["id"])
+  """
+  Notifications data for the user
+  """
+  notificationsData: NotificationsData @hasOne
+}
+
+"""
+Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences.
+"""
+type NotificationsData @model {
+  """
+  Unique identifier for the user
+  """
+  userId: ID!
+  """
+  Unique identifier for the user in Magicbell
+  """
+  magicbellUserId: ID
 }
 
 """
