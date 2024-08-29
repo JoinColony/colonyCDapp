@@ -1714,7 +1714,6 @@ export type CreateUserInput = {
   bridgeCustomerId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   profileId?: InputMaybe<Scalars['ID']>;
-  userNotificationsDataId?: InputMaybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
@@ -4388,7 +4387,6 @@ export type ModelUserConditionInput = {
   not?: InputMaybe<ModelUserConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserConditionInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
-  userNotificationsDataId?: InputMaybe<ModelIdInput>;
   userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
@@ -4405,7 +4403,6 @@ export type ModelUserFilterInput = {
   not?: InputMaybe<ModelUserFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelUserFilterInput>>>;
   profileId?: InputMaybe<ModelIdInput>;
-  userNotificationsDataId?: InputMaybe<ModelIdInput>;
   userPrivateBetaInviteCodeId?: InputMaybe<ModelIdInput>;
 };
 
@@ -8922,7 +8919,6 @@ export type UpdateUserInput = {
   bridgeCustomerId?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   profileId?: InputMaybe<Scalars['ID']>;
-  userNotificationsDataId?: InputMaybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
@@ -8974,7 +8970,6 @@ export type User = {
   tokens?: Maybe<ModelUserTokensConnection>;
   transactionHistory?: Maybe<ModelTransactionConnection>;
   updatedAt: Scalars['AWSDateTime'];
-  userNotificationsDataId?: Maybe<Scalars['ID']>;
   userPrivateBetaInviteCodeId?: Maybe<Scalars['ID']>;
 };
 
@@ -9465,6 +9460,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string } | null };
+
+export type CreateNotificationsDataMutationVariables = Exact<{
+  input: CreateNotificationsDataInput;
+}>;
+
+
+export type CreateNotificationsDataMutation = { __typename?: 'Mutation', createNotificationsData?: { __typename?: 'NotificationsData', id: string } | null };
 
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -11791,6 +11793,39 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const CreateNotificationsDataDocument = gql`
+    mutation CreateNotificationsData($input: CreateNotificationsDataInput!) {
+  createNotificationsData(input: $input) {
+    id
+  }
+}
+    `;
+export type CreateNotificationsDataMutationFn = Apollo.MutationFunction<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
+
+/**
+ * __useCreateNotificationsDataMutation__
+ *
+ * To run a mutation, you first call `useCreateNotificationsDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNotificationsDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNotificationsDataMutation, { data, loading, error }] = useCreateNotificationsDataMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateNotificationsDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>(CreateNotificationsDataDocument, options);
+      }
+export type CreateNotificationsDataMutationHookResult = ReturnType<typeof useCreateNotificationsDataMutation>;
+export type CreateNotificationsDataMutationResult = Apollo.MutationResult<CreateNotificationsDataMutation>;
+export type CreateNotificationsDataMutationOptions = Apollo.BaseMutationOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
