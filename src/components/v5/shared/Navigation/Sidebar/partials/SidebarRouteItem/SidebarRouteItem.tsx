@@ -3,19 +3,17 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { noop } from 'lodash';
 import React, { useState } from 'react';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
-import buttonClasses from '~v5/shared/Button/Button.styles.ts';
-
 import {
   sidebarButtonClass,
   sidebarButtonIconClass,
   sidebarButtonTextClass,
-} from '../../sidebar.styles';
+} from '~v5/shared/Navigation/Sidebar/sidebar.styles';
 
 import { motionVariants } from './consts.ts';
 import { type SidebarRouteItemProps } from './types.ts';
@@ -34,9 +32,15 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
 
   const navigate = useNavigate();
 
+  const { pathname } = useLocation();
+
   const matchingRoute = useMatch(`${colony.name}/${path}`);
 
-  const [isAccordionExpanded, setIsAccordionExpanded] = useState(false);
+  const [isAccordionExpanded, setIsAccordionExpanded] = useState(
+    !!subItems
+      ?.map((subItem) => subItem.path)
+      ?.find((subItemPath) => pathname.endsWith(subItemPath)),
+  );
 
   const { toggleTabletSidebar } = usePageLayoutContext();
 
@@ -77,28 +81,28 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
         onClick={handleClick}
         onKeyDown={noop}
         tabIndex={0}
-        className={clsx(buttonClasses.primarySolid, sidebarButtonClass, {
-          '!bg-gray-800': !!matchingRoute && !isAccordion,
+        className={clsx(sidebarButtonClass, {
+          '!bg-gray-100 md:!bg-gray-800': !!matchingRoute && !isAccordion,
           '!pr-1': isAccordion,
         })}
         aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
       >
         <div className="flex flex-row items-center gap-3">
           {Icon ? (
-            <Icon className={sidebarButtonIconClass} />
+            <Icon className={clsx(sidebarButtonIconClass)} />
           ) : (
             <div className="w-5" />
           )}
           <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
         </div>
         {isAccordion && (
-          <div className="flex w-full justify-end">
+          <div className="flex w-full justify-end pr-1.5 md:pr-0">
             <div
               onClick={onToggleAccordion}
               onKeyDown={noop}
               tabIndex={0}
               role="button"
-              className="flex aspect-square h-[22px] items-center justify-center rounded-[4px] transition-colors hover:bg-gray-900"
+              className="flex aspect-square h-[22px] items-center justify-center rounded-[4px] transition-colors hover:bg-base-white md:hover:bg-gray-900"
             >
               <CaretDown
                 className={clsx(
@@ -113,7 +117,7 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
           </div>
         )}
       </div>
-      <AnimatePresence presenceAffectsLayout>
+      <AnimatePresence initial={false} presenceAffectsLayout>
         {isAccordionExpanded && (
           <motion.ul
             className="flex w-full flex-col gap-0.5 overflow-hidden"
