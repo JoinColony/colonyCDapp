@@ -396,7 +396,7 @@ RECORD_DATA='{
     "name": "'$FQDN'",
     "content": "'$PUBLIC_IP'",
     "ttl": 120,
-    "proxied": true
+    "proxied": false
 }'
 
 echo "Creating DNS record for on demand environment"
