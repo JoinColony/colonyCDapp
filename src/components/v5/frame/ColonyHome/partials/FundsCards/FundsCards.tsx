@@ -4,6 +4,7 @@ import React from 'react';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
@@ -32,7 +33,7 @@ export const FundsCards = () => {
         <WidgetCards.Item
           variant="dashed"
           icon={Plus}
-          title="Create team"
+          title={formatText({ id: 'dashboard.team.cards.createTeam' })}
           onClick={onNewTeamClick}
           className="justify-center uppercase text-gray-200"
         />
