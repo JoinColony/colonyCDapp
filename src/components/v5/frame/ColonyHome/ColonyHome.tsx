@@ -19,7 +19,6 @@ import Link from '~v5/shared/Link/index.ts';
 import Agreements from './partials/Agreements/index.ts';
 import DashboardHeader from './partials/DashboardHeader/index.ts';
 import LeaveColonyModal from './partials/LeaveColonyModal/index.ts';
-import Members from './partials/Members/index.ts';
 import Objective from './partials/Objective/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
@@ -40,7 +39,6 @@ const ColonyHome = () => {
         <DashboardHeader />
         <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">
           <TotalActions />
-          <Members />
           <TokenBalance />
         </div>
       </div>
