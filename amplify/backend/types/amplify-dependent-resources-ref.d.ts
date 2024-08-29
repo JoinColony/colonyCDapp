@@ -101,6 +101,13 @@ export type AmplifyDependentResourcesAttributes = {
       Name: 'string';
       Region: 'string';
     };
+    initializeUser: {
+      Arn: 'string';
+      LambdaExecutionRole: 'string';
+      LambdaExecutionRoleArn: 'string';
+      Name: 'string';
+      Region: 'string';
+    };
     qaSSMtest: {
       Arn: 'string';
       LambdaExecutionRole: 'string';

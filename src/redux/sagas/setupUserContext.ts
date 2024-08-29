@@ -70,9 +70,10 @@ function* setupContextDependentSagas() {
 function* initializeFullWallet(lastWallet: LastWallet | null) {
   const wallet = yield call(getWallet, lastWallet);
   setContext(ContextModule.Wallet, wallet);
+  // We're forking the next one as we don't really need to wait for it
+  yield fork(failPendingTransactions);
   yield call(getGasPrices);
   yield call(authenticateWallet);
-  yield call(failPendingTransactions);
 }
 
 /*

@@ -26,28 +26,3 @@ query GetTransaction($id: ID!) {
     ...Transaction
   }
 }
-
-query GetPendingTransactions($userAddress: ID!, $nextToken: String) {
-  getTransactionsByUser(
-    from: $userAddress
-    filter: {
-      and: [
-        { deleted: { ne: true } }
-        {
-          or: [
-            { status: { eq: CREATED } }
-            { status: { eq: READY } }
-            { status: { eq: PENDING } }
-          ]
-        }
-      ]
-    }
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      status
-    }
-    nextToken
-  }
-}

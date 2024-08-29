@@ -196,6 +196,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "initializeUser": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "qaSSMtest": {
       "build": true,
       "dependsOn": [
