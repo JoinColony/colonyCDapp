@@ -24,7 +24,7 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();
 
-  const [showPropgress, setShowPropgress] = useState<boolean>();
+  const [showProgress, setShowProgress] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [file, setFileName] = useState({ fileName: '', fileSize: '' });
 
@@ -58,7 +58,7 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
       }
     } finally {
       setIsLoading(false);
-      setShowPropgress(false);
+      setShowProgress(false);
     }
   };
 
@@ -78,7 +78,7 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
     handleFileReject,
     handleFileRemove,
     handleFileUpload,
-    showPropgress,
+    showProgress,
     uploadProgress,
     file,
   };

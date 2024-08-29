@@ -168,6 +168,7 @@ export const useUserProfilePageForm = () => {
             updateFn: updateAvatarFn,
             uploaderText,
             SuccessComponent: IconSuccessContent,
+            uploaderShownByDefault: false,
           },
         },
       ],
