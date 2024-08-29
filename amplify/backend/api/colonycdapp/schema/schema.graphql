@@ -944,6 +944,11 @@ type Query {
   """
   bridgeGetUserLiquidationAddress(userAddress: String!): String
     @function(name: "bridgeXYZMutation-${env}")
+  """
+  Get bridge gateway fee
+  """
+  bridgeGetGatewayFee: BridgeGatewayFeeReturn
+    @function(name: "bridgeXYZMutation-${env}")
 }
 
 """
@@ -1002,7 +1007,11 @@ enum SupportedCurrencies {
   INR # Indian Rupee
   BRL # Brazilian Real
   ETH # Ethereum
-  CLNY # Colony Network Token.
+  CLNY # Colony Network Token
+}
+
+enum ExtendedSupportedCurrencies {
+  USDC
 }
 
 """

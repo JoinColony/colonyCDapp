@@ -1,6 +1,6 @@
 import { type Icon, Lifebuoy, Code, Briefcase } from '@phosphor-icons/react';
 
-import { SupportedCurrencies } from '~gql';
+import { ExtendedSupportedCurrencies, SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
 import FlagBrazilIcon from '~icons/FlagBrazilIcon.tsx';
@@ -11,6 +11,7 @@ import FlagJapanIcon from '~icons/FlagJapanIcon.tsx';
 import FlagSouthKoreaIcon from '~icons/FlagSouthKoreaIcon.tsx';
 import FlagUkIcon from '~icons/FlagUkIcon.tsx';
 import FlagUsIcon from '~icons/FlagUsIcon.tsx';
+import UsdcTokenIcon from '~icons/UsdcTokenIcon.tsx';
 
 import { UserMenuItemName } from './types.ts';
 
@@ -25,6 +26,7 @@ export const currencyIcons = {
   [SupportedCurrencies.Brl]: FlagBrazilIcon,
   [SupportedCurrencies.Eth]: EthereumIcon,
   [SupportedCurrencies.Clny]: ClnyTokenIcon,
+  [ExtendedSupportedCurrencies.Usdc]: UsdcTokenIcon,
 };
 
 export const userMenuItems: Array<{

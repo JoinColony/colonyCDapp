@@ -15,6 +15,11 @@ type BridgeCheckKYCReturn {
   liquidationAddress: String
 }
 
+type BridgeGatewayFeeReturn {
+  transactionFeePercentage: Float
+  success: Boolean
+}
+
 type BridgeDrainReceipt {
   url: String!
 }

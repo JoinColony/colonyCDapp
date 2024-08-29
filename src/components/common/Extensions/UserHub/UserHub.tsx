@@ -3,6 +3,7 @@ import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import CryptoToFiatContextProvider from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContextProvider.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
@@ -133,7 +134,11 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
-        {selectedTab === UserHubTab.CryptoToFiat && <CryptoToFiatTab />}
+        {selectedTab === UserHubTab.CryptoToFiat && (
+          <CryptoToFiatContextProvider>
+            <CryptoToFiatTab />
+          </CryptoToFiatContextProvider>
+        )}
       </div>
       {/* @BETA: Disabled for now */}
       {/* {isMobile && ( */}

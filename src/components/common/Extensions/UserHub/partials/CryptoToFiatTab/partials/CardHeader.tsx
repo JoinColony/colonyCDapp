@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
-const displayName = 'common.Extensions.UserHub.partials.CardWrapper';
+const displayName = 'common.Extensions.UserHub.partials.CardHeader';
 
 const MSG = defineMessages({
   max: {
@@ -14,14 +14,14 @@ const MSG = defineMessages({
   },
 });
 
-interface CardWrapperProps {
+interface CardHeaderProps {
   title: string;
   isFormDisabled: boolean;
   handleSetMax: () => void;
   isLoading: boolean;
 }
 
-const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
+const CardHeader: FC<PropsWithChildren<CardHeaderProps>> = ({
   title,
   isFormDisabled,
   handleSetMax,
@@ -57,7 +57,7 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
             type="button"
             onClick={handleSetMax}
             className={clsx('font-semibold', {
-              'text-blue-400': !isFormDisabled,
+              'text-blue-400 hover:text-blue-300': !isFormDisabled,
               'text-gray-300': isFormDisabled,
             })}
             disabled={isFormDisabled}
@@ -70,6 +70,6 @@ const CardWrapper: FC<PropsWithChildren<CardWrapperProps>> = ({
   );
 };
 
-CardWrapper.displayName = displayName;
+CardHeader.displayName = displayName;
 
-export default CardWrapper;
+export default CardHeader;

@@ -1,18 +1,14 @@
-import { type IconProps } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, {
-  type ChangeEventHandler,
-  type ComponentType,
-  type FC,
-} from 'react';
+import React, { type ChangeEventHandler, type FC } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
+import { CurrencyLabel } from '~frame/v5/pages/UserCryptoToFiatPage/partials/CurrencyLabel.tsx';
+import { type SupportedCurrencies } from '~gql';
 
 const displayName = 'common.Extensions.UserHub.partials.CardInput';
 
 interface CardInputProps {
   isFormDisabled: boolean;
-  icon: ComponentType<IconProps>;
   symbol: string;
   name: string;
   value: string;
@@ -22,7 +18,6 @@ interface CardInputProps {
 
 const CardInput: FC<CardInputProps> = ({
   isFormDisabled,
-  icon: Icon,
   symbol,
   name,
   value,
@@ -36,9 +31,9 @@ const CardInput: FC<CardInputProps> = ({
           name={name}
           value={value}
           onChange={onChange}
-          className={clsx('w-full pr-16 text-xl outline-none', {
+          className={clsx('w-full pr-16 text-xl font-semibold outline-none', {
             'bg-transparent text-gray-300': isFormDisabled,
-            'text-gray-900': !isFormDisabled,
+            'bg-base-white text-gray-900': !isFormDisabled,
           })}
           disabled={isFormDisabled}
         />
@@ -52,15 +47,11 @@ const CardInput: FC<CardInputProps> = ({
           },
         )}
       >
-        <LoadingSkeleton
-          className="aspect-square w-[18px] rounded-full"
+        <CurrencyLabel
+          currency={symbol as SupportedCurrencies}
+          labelClassName="font-normal"
           isLoading={isLoading}
-        >
-          <Icon size={18} />
-        </LoadingSkeleton>
-        <LoadingSkeleton className="h-5 w-10 rounded" isLoading={isLoading}>
-          <p>{symbol}</p>
-        </LoadingSkeleton>
+        />
       </div>
     </div>
   );

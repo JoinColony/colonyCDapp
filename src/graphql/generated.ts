@@ -110,6 +110,12 @@ export type BridgeDrainReceipt = {
   url: Scalars['String'];
 };
 
+export type BridgeGatewayFeeReturn = {
+  __typename?: 'BridgeGatewayFeeReturn';
+  success?: Maybe<Scalars['Boolean']>;
+  transactionFeePercentage?: Maybe<Scalars['Float']>;
+};
+
 export type BridgeIbanAccountInput = {
   account_number: Scalars['String'];
   bic: Scalars['String'];
@@ -2229,6 +2235,10 @@ export enum ExpenditureStatus {
 export enum ExpenditureType {
   PaymentBuilder = 'PAYMENT_BUILDER',
   Staged = 'STAGED'
+}
+
+export enum ExtendedSupportedCurrencies {
+  Usdc = 'USDC'
 }
 
 export type ExtensionInstallationsCount = {
@@ -5806,6 +5816,8 @@ export type Query = {
   bridgeCheckKYC?: Maybe<BridgeCheckKycReturn>;
   /** Get drains history for the current user */
   bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
+  /** Get bridge gateway fee */
+  bridgeGetGatewayFee?: Maybe<BridgeGatewayFeeReturn>;
   /** Get liquidation address of a given user */
   bridgeGetUserLiquidationAddress?: Maybe<Scalars['String']>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
@@ -9422,6 +9434,11 @@ export type GetUserLiquidationAddressQueryVariables = Exact<{
 
 export type GetUserLiquidationAddressQuery = { __typename?: 'Query', bridgeGetUserLiquidationAddress?: string | null };
 
+export type GetGatewayFeeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGatewayFeeQuery = { __typename?: 'Query', bridgeGetGatewayFee?: { __typename?: 'BridgeGatewayFeeReturn', transactionFeePercentage?: number | null, success?: boolean | null } | null };
+
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -12082,6 +12099,41 @@ export function useGetUserLiquidationAddressLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetUserLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressQuery>;
 export type GetUserLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressLazyQuery>;
 export type GetUserLiquidationAddressQueryResult = Apollo.QueryResult<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>;
+export const GetGatewayFeeDocument = gql`
+    query GetGatewayFee {
+  bridgeGetGatewayFee {
+    transactionFeePercentage
+    success
+  }
+}
+    `;
+
+/**
+ * __useGetGatewayFeeQuery__
+ *
+ * To run a query within a React component, call `useGetGatewayFeeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGatewayFeeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGatewayFeeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGatewayFeeQuery(baseOptions?: Apollo.QueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
+      }
+export function useGetGatewayFeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
+        }
+export type GetGatewayFeeQueryHookResult = ReturnType<typeof useGetGatewayFeeQuery>;
+export type GetGatewayFeeLazyQueryHookResult = ReturnType<typeof useGetGatewayFeeLazyQuery>;
+export type GetGatewayFeeQueryResult = Apollo.QueryResult<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {

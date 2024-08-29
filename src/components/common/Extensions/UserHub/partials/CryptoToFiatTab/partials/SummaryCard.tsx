@@ -1,27 +1,33 @@
-import { Info } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import LoadingSkeleton from '~common/LoadingSkeleton/index.ts';
+import { ExtendedSupportedCurrencies } from '~gql';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
-const displayName = 'common.Extensions.UserHub.partials.SummaryCard';
+import { useTransferFees } from './hooks.ts';
+import SummaryAmountRow from './SummaryAmountRow.tsx';
+import { FeeType } from './types.ts';
 
-enum FeeType {
-  Wire = 'Wire',
-  SEPA = 'SEPA',
-  ACH = 'ACH',
-}
+const displayName = 'common.Extensions.UserHub.partials.SummaryCard';
 
 const MSG = defineMessages({
   gatewayFee: {
     id: `${displayName}.gatewayFee`,
-    defaultMessage: 'Gateway fee (1%)',
+    defaultMessage: 'Gateway fee ({percentage}%)',
+  },
+  gatewayFeeTooltip: {
+    id: `${displayName}.gatewayFeeTooltip`,
+    defaultMessage: 'Gateway fees are charges for processing the transaction',
   },
   receive: {
     id: `${displayName}.receive`,
     defaultMessage: 'You will receive:',
+  },
+  receiveTooltip: {
+    id: `${displayName}.receiveTooltip`,
+    defaultMessage:
+      'Exact amount may vary based on currency conversion rate at the time of processing',
   },
   [FeeType.Wire]: {
     id: `${displayName}.wire`,
@@ -35,6 +41,10 @@ const MSG = defineMessages({
     id: `${displayName}.ACH`,
     defaultMessage: 'ACH fee',
   },
+  feeTypeTooltip: {
+    id: `${displayName}.wireTooltip`,
+    defaultMessage: 'Transaction costs based on your bank and currency',
+  },
 });
 
 interface SummaryCardProps {
@@ -43,99 +53,57 @@ interface SummaryCardProps {
 }
 
 const SummaryCard: FC<SummaryCardProps> = ({ isFormDisabled, isLoading }) => {
-  // @TODO: Calculate proper values
-  const gatewayAmount = 0;
+  const fromCurrency = ExtendedSupportedCurrencies.Usdc;
 
-  const feeAmount = 0;
-  const feeType = FeeType.Wire;
-
-  const receiveAmount = 0;
-  const selectedCurrency = 'EUR';
+  const {
+    gatewayPercentage,
+    gatewayAmount,
+    feeType,
+    feeAmount,
+    receiveAmount,
+    selectedCurrency,
+  } = useTransferFees();
 
   return (
     <div
       className={clsx(
         'mt-5 flex flex-col gap-2 rounded-lg border border-gray-200 px-4 py-5 text-sm',
         {
-          'bg-gray-50 text-gray-300': isFormDisabled,
+          'text-gray-300': isFormDisabled,
           'bg-transparent': isLoading,
         },
       )}
     >
-      <div className="flex justify-between">
-        <LoadingSkeleton
-          className="h-[18px] w-[99px] rounded"
-          isLoading={isLoading}
-        >
-          <p>{formatMessage(MSG.gatewayFee)}</p>
-        </LoadingSkeleton>
-        <div className="flex items-center gap-2">
-          <LoadingSkeleton
-            className="h-[18px] w-[59px] rounded"
-            isLoading={isLoading}
-          >
-            <p className="font-semibold">{gatewayAmount} USDC</p>
-          </LoadingSkeleton>
-          {/* @TODO: This should have a tooltip */}
-          <Info
-            size={12}
-            className={clsx('text-gray-400', {
-              '!text-gray-300': isFormDisabled || isLoading,
-            })}
-          />
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <LoadingSkeleton
-          className="h-[18px] w-[59px] rounded"
-          isLoading={isLoading}
-        >
-          <p>{formatMessage(MSG[feeType])}</p>
-        </LoadingSkeleton>
-        <div className="flex items-center gap-2">
-          <LoadingSkeleton
-            className="h-[18px] w-[59px] rounded"
-            isLoading={isLoading}
-          >
-            <p className="font-semibold">{feeAmount} USDC</p>
-          </LoadingSkeleton>
-          {/* @TODO: This should have a tooltip */}
-          <Info
-            size={12}
-            className={clsx('text-gray-400', {
-              '!text-gray-300': isFormDisabled || isLoading,
-            })}
-          />
-        </div>
-      </div>
+      <SummaryAmountRow
+        description={formatMessage(MSG.gatewayFee, {
+          percentage: gatewayPercentage * 100,
+        })}
+        amount={gatewayAmount}
+        currency={fromCurrency}
+        tooltipContent={formatMessage(MSG.gatewayFeeTooltip)}
+        isDisabled={isFormDisabled}
+        isLoading={isLoading}
+      />
+      <SummaryAmountRow
+        description={formatMessage(MSG[feeType])}
+        amount={feeAmount}
+        currency={fromCurrency}
+        tooltipContent={formatMessage(MSG.feeTypeTooltip)}
+        isDisabled={isFormDisabled}
+        isLoading={isLoading}
+      />
 
       <div className="my-1 border-b" />
 
-      <div className="flex justify-between">
-        <LoadingSkeleton
-          className="h-[18px] w-[99px] rounded"
-          isLoading={isLoading}
-        >
-          <p className="font-semibold">{formatMessage(MSG.receive)}</p>
-        </LoadingSkeleton>
-        <div className="flex items-center gap-2">
-          <LoadingSkeleton
-            className="h-[18px] w-[59px] rounded"
-            isLoading={isLoading}
-          >
-            <p className="font-semibold">
-              {receiveAmount} {selectedCurrency}
-            </p>
-          </LoadingSkeleton>
-          {/* @TODO: This should have a tooltip */}
-          <Info
-            size={12}
-            className={clsx('text-gray-400', {
-              '!text-gray-300': isFormDisabled || isLoading,
-            })}
-          />
-        </div>
-      </div>
+      <SummaryAmountRow
+        description={formatMessage(MSG.receive)}
+        amount={receiveAmount}
+        currency={selectedCurrency}
+        tooltipContent={formatMessage(MSG.receiveTooltip)}
+        isDisabled={isFormDisabled}
+        isLoading={isLoading}
+        isHighlighted
+      />
     </div>
   );
 };
