@@ -28,7 +28,7 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
       placement: 'right',
       trigger: 'click',
       interactive: true,
-      offset: offset ?? [-20, 18],
+      offset: offset ?? [-20, 16],
     });
 
   return (
