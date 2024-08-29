@@ -41,7 +41,6 @@ function* createEditDomainMultiSigMotion({
     customActionTitle,
     colonyDomains,
     colonyRoles,
-    domainCreatedInNativeId,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -108,7 +107,7 @@ function* createEditDomainMultiSigMotion({
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: domainCreatedInNativeId, // This will be dynamically set by the user via the 'Created in' form field
+        requiredDomainId: domainNativeId,
         requiredColonyRoles: requiredRoles,
         permissionAddress: userAddress,
         isMultiSig: true,

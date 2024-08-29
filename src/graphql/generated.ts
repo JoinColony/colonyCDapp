@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5af95eea6 (feat: get eligible signees from the API)
-=======
->>>>>>> 674968d57 (fix: update inherited roles in permissions page)
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -117,6 +108,12 @@ export type BridgeDrain = {
 export type BridgeDrainReceipt = {
   __typename?: 'BridgeDrainReceipt';
   url: Scalars['String'];
+};
+
+export type BridgeGatewayFeeReturn = {
+  __typename?: 'BridgeGatewayFeeReturn';
+  success?: Maybe<Scalars['Boolean']>;
+  transactionFeePercentage?: Maybe<Scalars['Float']>;
 };
 
 export type BridgeIbanAccountInput = {
@@ -2387,6 +2384,10 @@ export enum ExpenditureStatus {
 export enum ExpenditureType {
   PaymentBuilder = 'PAYMENT_BUILDER',
   Staged = 'STAGED'
+}
+
+export enum ExtendedSupportedCurrencies {
+  Usdc = 'USDC'
 }
 
 export type ExtensionInstallationsCount = {
@@ -6193,6 +6194,8 @@ export type Query = {
   bridgeCheckKYC?: Maybe<BridgeCheckKycReturn>;
   /** Get drains history for the current user */
   bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
+  /** Get bridge gateway fee */
+  bridgeGetGatewayFee?: Maybe<BridgeGatewayFeeReturn>;
   /** Get liquidation address of a given user */
   bridgeGetUserLiquidationAddress?: Maybe<Scalars['String']>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
@@ -9995,6 +9998,11 @@ export type GetUserLiquidationAddressQueryVariables = Exact<{
 
 export type GetUserLiquidationAddressQuery = { __typename?: 'Query', bridgeGetUserLiquidationAddress?: string | null };
 
+export type GetGatewayFeeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGatewayFeeQuery = { __typename?: 'Query', bridgeGetGatewayFee?: { __typename?: 'BridgeGatewayFeeReturn', transactionFeePercentage?: number | null, success?: boolean | null } | null };
+
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
@@ -12754,6 +12762,41 @@ export function useGetUserLiquidationAddressLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetUserLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressQuery>;
 export type GetUserLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressLazyQuery>;
 export type GetUserLiquidationAddressQueryResult = Apollo.QueryResult<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>;
+export const GetGatewayFeeDocument = gql`
+    query GetGatewayFee {
+  bridgeGetGatewayFee {
+    transactionFeePercentage
+    success
+  }
+}
+    `;
+
+/**
+ * __useGetGatewayFeeQuery__
+ *
+ * To run a query within a React component, call `useGetGatewayFeeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGatewayFeeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGatewayFeeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGatewayFeeQuery(baseOptions?: Apollo.QueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
+      }
+export function useGetGatewayFeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
+        }
+export type GetGatewayFeeQueryHookResult = ReturnType<typeof useGetGatewayFeeQuery>;
+export type GetGatewayFeeLazyQueryHookResult = ReturnType<typeof useGetGatewayFeeLazyQuery>;
+export type GetGatewayFeeQueryResult = Apollo.QueryResult<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
@@ -14655,35 +14698,4 @@ export function useGetCurrentColonyVersionLazyQuery(baseOptions?: Apollo.LazyQue
         }
 export type GetCurrentColonyVersionQueryHookResult = ReturnType<typeof useGetCurrentColonyVersionQuery>;
 export type GetCurrentColonyVersionLazyQueryHookResult = ReturnType<typeof useGetCurrentColonyVersionLazyQuery>;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
-=======
-export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
->>>>>>> f7dbfbfe3 (fix: realign after rebase)
-=======
-export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
-<<<<<<< HEAD
-=======
->>>>>>> fdd116091 (feat: allow any user to cancel a multi-sig after a week, remove the)
-<<<<<<< HEAD
->>>>>>> 100ff1959 (feat: allow any user to cancel a multi-sig after a week, remove the)
-=======
-=======
->>>>>>> 5c6b462b7 (Feat: add rejectedAt, rejectedBy and executedBy for ColonyMultiSig)
->>>>>>> cc6643096 (Feat: add rejectedAt, rejectedBy and executedBy for ColonyMultiSig)
-=======
->>>>>>> a22bc38a8 (Fix reinstall states)
-=======
-export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
->>>>>>> 5af95eea6 (feat: get eligible signees from the API)
-=======
-export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
->>>>>>> 64e83e297 (fix: display different text if multisig executed but action failed,)
->>>>>>> 0c4bf9a1d (fix: display different text if multisig executed but action failed,)
-=======
-export type GetCurrentColonyVersionQueryResult = Apollo.QueryResult<GetCurrentColonyVersionQuery, GetCurrentColonyVersionQueryVariables>;
->>>>>>> 674968d57 (fix: update inherited roles in permissions page)
