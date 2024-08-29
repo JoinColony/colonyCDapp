@@ -1976,7 +1976,7 @@ type User @model {
   """
   Notifications data for the user
   """
-  notificationsData: NotificationsData @hasOne
+  notificationsData: NotificationsData @hasOne(fields: "id")
 }
 
 """
