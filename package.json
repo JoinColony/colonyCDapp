@@ -209,6 +209,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.0",
+    "magicbell": "^3.3.0",
     "move-decimal-point": "^0.0.4",
     "nanoid": "^3.1.31",
     "node-fetch": "^2.6.7",

@@ -5,6 +5,7 @@ import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
 import ColonyFiltersContextProvider from '~context/GlobalFiltersContext/ColonyFiltersContextProvider.tsx';
+import NotificationsContextProvider from '~context/NotificationsContext/NotificationsContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
 import PageLayoutContextProvider from '~context/PageLayoutContext/PageLayoutContextProvider.tsx';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
@@ -33,7 +34,9 @@ const RootRoute = () => (
         <ColonyFiltersContextProvider>
           <FeatureFlagsContextProvider>
             <CurrencyContextProvider>
-              <RootRouteInner />
+              <NotificationsContextProvider>
+                <RootRouteInner />
+              </NotificationsContextProvider>
             </CurrencyContextProvider>
           </FeatureFlagsContextProvider>
         </ColonyFiltersContextProvider>
