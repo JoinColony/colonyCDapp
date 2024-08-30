@@ -21,6 +21,7 @@ import {
   type Expenditure,
   type ExpenditureStage,
   type ExpenditureSlot,
+  type StreamingPayment,
 } from '~types/graphql.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
@@ -29,6 +30,7 @@ import { getAmountLessFee } from '~utils/getAmountLessFee.ts';
 import { formatText, intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
+import { getAmountPerValue } from '~utils/streamingPayments.ts';
 import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
@@ -213,11 +215,13 @@ export const useMapColonyActionToExpectedFormat = ({
   keyFallbackValues = {},
   expenditureData,
   networkInverseFee,
+  streamingPaymentData,
 }: {
   actionData: ColonyAction | null | undefined;
   colony: Pick<Colony, 'nativeToken' | 'tokens'> | undefined;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
+  streamingPaymentData?: StreamingPayment;
   networkInverseFee?: string;
 }) => {
   const getFormattedValueWithFallback = (
@@ -301,13 +305,17 @@ export const useMapColonyActionToExpectedFormat = ({
       <Numeral
         value={getAmount(
           actionData.type,
-          actionData.amount,
+          streamingPaymentData ? streamingPaymentData.amount : actionData.amount,
           actionData.networkFee,
         )}
-        decimals={getTokenDecimalsWithFallback(actionData.token?.decimals)}
+        decimals={getTokenDecimalsWithFallback(streamingPaymentData
+          ? streamingPaymentData.token?.decimals
+          : actionData.token?.decimals)}
       />,
       ActionTitleMessageKeys.Amount,
-      notMaybe(actionData?.amount),
+      notMaybe(
+        streamingPaymentData ? streamingPaymentData.amount : actionData?.amount,
+      ),
     ),
     [ActionTitleMessageKeys.Direction]: formattedRolesTitle,
     [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
@@ -330,23 +338,14 @@ export const useMapColonyActionToExpectedFormat = ({
       ActionTitleMessageKeys.ToDomain,
       notMaybe(actionData.toDomain?.metadata?.name),
     ),
-    [ActionTitleMessageKeys.TokenSymbol]: getFormattedValueWithFallback(
-      expenditureData
-        ? getSelectedToken(
-            colony,
-            expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
-          )?.symbol
-        : actionData.token?.symbol,
-      ActionTitleMessageKeys.TokenSymbol,
-      notMaybe(
-        expenditureData
-          ? getSelectedToken(
-              colony,
-              expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
-            )?.symbol
-          : actionData.token?.symbol,
-      ),
-    ),
+    [ActionTitleMessageKeys.TokenSymbol]:
+      getSelectedToken(
+        colony,
+        expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress ?? '',
+      )?.symbol ??
+      getSelectedToken(colony, streamingPaymentData?.tokenAddress ?? '')
+        ?.symbol ??
+      actionData.token?.symbol,
     [ActionTitleMessageKeys.ReputationChangeNumeral]:
       getFormattedValueWithFallback(
         actionData.amount && (
@@ -441,6 +440,8 @@ export const useMapColonyActionToExpectedFormat = ({
       ),
     ).size,
     // @todo: update this to use the actual period value
-    [ActionTitleMessageKeys.Period]: 'Day',
+    [ActionTitleMessageKeys.Period]: streamingPaymentData
+      ? getAmountPerValue(streamingPaymentData.interval).toLowerCase()
+      : undefined,
   };
 };

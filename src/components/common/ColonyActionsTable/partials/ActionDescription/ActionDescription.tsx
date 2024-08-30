@@ -10,6 +10,7 @@ import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCo
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
+import { useGetStreamingPaymentData } from '~v5/common/ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
@@ -43,7 +44,11 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   const { expenditure, loadingExpenditure } =
     useGetExpenditureData(expenditureId);
 
-  const isLoading = loading || loadingExpenditure || loadingUser;
+  const { streamingPaymentData, loadingStreamingPayment } =
+    useGetStreamingPaymentData(expenditureId);
+
+  const isLoading =
+    loading || loadingExpenditure || loadingStreamingPayment || loadingUser;
 
   const walletAddress = user?.walletAddress || initiatorAddress || ADDRESS_ZERO;
   const refetchMotionState = () => {
@@ -61,7 +66,6 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   const { networkInverseFee } = useNetworkInverseFee();
 
-  // @todo: add streaming payment data
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
     useGetActionTitleValues({
@@ -73,6 +77,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
       colony,
       expenditureData: expenditure ?? undefined,
       networkInverseFee,
+      streamingPaymentData: streamingPaymentData ?? undefined,
     }),
   );
 

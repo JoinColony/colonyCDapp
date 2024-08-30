@@ -7,6 +7,7 @@ import {
   ColonyActionType,
   type Colony,
   type Expenditure,
+  type StreamingPayment,
 } from '~types/graphql.ts';
 import {
   getExtendedActionType,
@@ -181,12 +182,14 @@ const useGetActionTitleValues = ({
   keyFallbackValues,
   expenditureData,
   networkInverseFee,
+  streamingPaymentData,
 }: {
   actionData: ColonyAction | null | undefined;
   colony: Pick<Colony, 'metadata' | 'nativeToken'> | undefined;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
   networkInverseFee?: string;
+  streamingPaymentData?: StreamingPayment;
 }) => {
   const { isMotion, pendingColonyMetadata } = actionData || {};
 
@@ -196,6 +199,7 @@ const useGetActionTitleValues = ({
     keyFallbackValues,
     expenditureData,
     networkInverseFee,
+    streamingPaymentData,
   });
 
   if (!actionData || !colony) {
