@@ -83,7 +83,6 @@ const ColonyDetailsPage: FC = () => {
               <h2 className="heading-2">{colonyDisplayName}</h2>
               {nativeToken && (
                 <NativeTokenPill
-                  variant="secondary"
                   token={nativeToken}
                   isLocked={isNativeTokenLocked}
                 />
