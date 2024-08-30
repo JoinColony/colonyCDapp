@@ -1762,7 +1762,7 @@
     "colony.tooltip.contractAddress.copy": "Copy contract address",
     "dashboard.burgerMenu.item.aboutColony": "About this colony",
     "dashboard.burgerMenu.item.share": "Share",
-    "dashboard.burgerMenu.item.colonyAddress": "Copy Colony address",
+    "dashboard.burgerMenu.item.colonyAddress": "Copy colony address",
     "dashboard.burgerMenu.item.notifications": "Notifications",
     "dashboard.burgerMenu.item.leaveColony": "Leave this colony",
     "dashboard.burgerMenu.item.externalLinks": "External links",
