@@ -70,6 +70,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "createUserNotificationsData": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "fetchColonyBalances": {
       "build": true,
       "dependsOn": [

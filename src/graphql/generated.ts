@@ -110,12 +110,6 @@ export type BridgeDrainReceipt = {
   url: Scalars['String'];
 };
 
-export type BridgeGatewayFeeReturn = {
-  __typename?: 'BridgeGatewayFeeReturn';
-  success?: Maybe<Scalars['Boolean']>;
-  transactionFeePercentage?: Maybe<Scalars['Float']>;
-};
-
 export type BridgeIbanAccountInput = {
   account_number: Scalars['String'];
   bic: Scalars['String'];
@@ -232,7 +226,6 @@ export enum ClientType {
   FundingQueueClient = 'FundingQueueClient',
   LightTokenClient = 'LightTokenClient',
   MotionTargetClient = 'MotionTargetClient',
-  MultisigPermissionsClient = 'MultisigPermissionsClient',
   NetworkClient = 'NetworkClient',
   OneTxPaymentClient = 'OneTxPaymentClient',
   ReputationBootstrapperClient = 'ReputationBootstrapperClient',
@@ -434,8 +427,6 @@ export type ColonyAction = {
    * @TODO: Make this field non-nullable
    */
   isMotionFinalization?: Maybe<Scalars['Boolean']>;
-  /** Will be true if the action is a multiSig motion */
-  isMultiSig?: Maybe<Scalars['Boolean']>;
   /** Members impacted by the action (used for add/remove verified members) */
   members?: Maybe<Array<Scalars['ID']>>;
   /** Metadata associated with the action (Eg. Custom action title) */
@@ -446,10 +437,6 @@ export type ColonyAction = {
   motionDomainId?: Maybe<Scalars['Int']>;
   /** The internal database id of the motion */
   motionId?: Maybe<Scalars['ID']>;
-  /** Expanded `ColonyMultiSig` for the corresponding `multiSigId` */
-  multiSigData?: Maybe<ColonyMultiSig>;
-  /** The internal database id of the multiSig */
-  multiSigId?: Maybe<Scalars['ID']>;
   /** The network fee amount, if applicable */
   networkFee?: Maybe<Scalars['String']>;
   /** The resulting new Colony version, if applicable */
@@ -478,8 +465,6 @@ export type ColonyAction = {
   recipientUser?: Maybe<User>;
   /** Colony roles that are associated with the action */
   roles?: Maybe<ColonyActionRoles>;
-  /** Colony roles that are associated with the action are multi sig roles */
-  rolesAreMultiSig?: Maybe<Scalars['Boolean']>;
   /** The reputation root hash at the time of the creation of the action */
   rootHash: Scalars['String'];
   /** Safe transactions associated with the action */
@@ -549,37 +534,26 @@ export enum ColonyActionType {
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
-  AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
   CancelExpenditureMotion = 'CANCEL_EXPENDITURE_MOTION',
-  /** An action related to a multiSig to cancel a staked expenditure */
-  CancelStakedExpenditureMultisig = 'CANCEL_STAKED_EXPENDITURE_MULTISIG',
   /** An action related to editing a Colony's details */
   ColonyEdit = 'COLONY_EDIT',
   /** An action related to editing a Colony's details via a motion */
   ColonyEditMotion = 'COLONY_EDIT_MOTION',
-  /** An action related to editing a Colony's details via multiSig */
-  ColonyEditMultisig = 'COLONY_EDIT_MULTISIG',
   /** An action related to a creating a Decision within a Colony via a motion */
   CreateDecisionMotion = 'CREATE_DECISION_MOTION',
-  /** An action related to a creating a Decision within a Colony via multiSig */
-  CreateDecisionMultisig = 'CREATE_DECISION_MULTISIG',
   /** An action related to creating a domain within a Colony */
   CreateDomain = 'CREATE_DOMAIN',
   /** An action related to creating a domain within a Colony via a motion */
   CreateDomainMotion = 'CREATE_DOMAIN_MOTION',
-  /** An action related to creating a domain within a Colony via multiSig */
-  CreateDomainMultisig = 'CREATE_DOMAIN_MULTISIG',
   /** An action related to creating an expenditure (advanced payment) */
   CreateExpenditure = 'CREATE_EXPENDITURE',
   /** An action related to editing a domain's details */
   EditDomain = 'EDIT_DOMAIN',
   /** An action related to editing a domain's details via a motion */
   EditDomainMotion = 'EDIT_DOMAIN_MOTION',
-  /** An action related to editing a domain's details via multiSig */
-  EditDomainMultisig = 'EDIT_DOMAIN_MULTISIG',
   /** An action related to editing an expenditure */
   EditExpenditure = 'EDIT_EXPENDITURE',
   /** An action related to creating a motion to edit an expenditure */
@@ -588,22 +562,16 @@ export enum ColonyActionType {
   EmitDomainReputationPenalty = 'EMIT_DOMAIN_REPUTATION_PENALTY',
   /** An action related to a domain reputation penalty within a Colony (smite) via a motion */
   EmitDomainReputationPenaltyMotion = 'EMIT_DOMAIN_REPUTATION_PENALTY_MOTION',
-  /** An action related to a domain reputation penalty within a Colony (smite) via multiSig */
-  EmitDomainReputationPenaltyMultisig = 'EMIT_DOMAIN_REPUTATION_PENALTY_MULTISIG',
   /** An action related to a domain reputation reward within a Colony */
   EmitDomainReputationReward = 'EMIT_DOMAIN_REPUTATION_REWARD',
   /** An action related to a domain reputation reward within a Colony via a motion */
   EmitDomainReputationRewardMotion = 'EMIT_DOMAIN_REPUTATION_REWARD_MOTION',
-  /** An action related to a domain reputation reward within a Colony via multiSig */
-  EmitDomainReputationRewardMultisig = 'EMIT_DOMAIN_REPUTATION_REWARD_MULTISIG',
   /** An action related to finalizing an expenditure */
   FinalizeExpenditure = 'FINALIZE_EXPENDITURE',
   /** An action related to finalizing an expenditure via a motion */
   FinalizeExpenditureMotion = 'FINALIZE_EXPENDITURE_MOTION',
   /** An action related to creating a motion for funding an expenditure */
   FundExpenditureMotion = 'FUND_EXPENDITURE_MOTION',
-  /** An action related to creating a multiSig for funding an expenditure */
-  FundExpenditureMultisig = 'FUND_EXPENDITURE_MULTISIG',
   /** A generic or unspecified Colony action */
   Generic = 'GENERIC',
   /** An action related to locking an expenditure */
@@ -611,37 +579,28 @@ export enum ColonyActionType {
   /** An action related to the creation of safe transactions via Safe Control */
   MakeArbitraryTransaction = 'MAKE_ARBITRARY_TRANSACTION',
   MakeArbitraryTransactionsMotion = 'MAKE_ARBITRARY_TRANSACTIONS_MOTION',
-  MakeArbitraryTransactionsMultisig = 'MAKE_ARBITRARY_TRANSACTIONS_MULTISIG',
   /** An action related to adding / removing approved colony tokens */
   ManageTokens = 'MANAGE_TOKENS',
+  /** An action related to adding / removing approved colony tokens */
   ManageTokensMotion = 'MANAGE_TOKENS_MOTION',
-  ManageTokensMultisig = 'MANAGE_TOKENS_MULTISIG',
   /** An action related to minting tokens within a Colony */
   MintTokens = 'MINT_TOKENS',
   /** An action related to minting tokens within a Colony via a motion */
   MintTokensMotion = 'MINT_TOKENS_MOTION',
-  /** An action related to minting tokens within a Colony via multiSig */
-  MintTokensMultisig = 'MINT_TOKENS_MULTISIG',
   /** An action related to moving funds between domains */
   MoveFunds = 'MOVE_FUNDS',
   /** An action related to moving funds between domains via a motion */
   MoveFundsMotion = 'MOVE_FUNDS_MOTION',
-  /** An action related to moving funds between domains via multiSig */
-  MoveFundsMultisig = 'MOVE_FUNDS_MULTISIG',
   /** An action related to making multiple payments within a Colony */
   MultiplePayment = 'MULTIPLE_PAYMENT',
   /** An action related to making multiple payments within a Colony */
   MultiplePaymentMotion = 'MULTIPLE_PAYMENT_MOTION',
-  /** A multiSig action related to making multiple payments within a Colony */
-  MultiplePaymentMultisig = 'MULTIPLE_PAYMENT_MULTISIG',
   /** An motion action placeholder that should not be used */
   NullMotion = 'NULL_MOTION',
   /** An action related to a payment within a Colony */
   Payment = 'PAYMENT',
   /** An action related to a payment that was created via a motion within a Colony */
   PaymentMotion = 'PAYMENT_MOTION',
-  /** An action related to a payment that was created via multiSig within a Colony */
-  PaymentMultisig = 'PAYMENT_MULTISIG',
   /** An action related to the recovery functionality of a Colony */
   Recovery = 'RECOVERY',
   /** An action related to a motion to release a staged payment */
@@ -651,29 +610,20 @@ export enum ColonyActionType {
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
   RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',
-  RemoveVerifiedMembersMultisig = 'REMOVE_VERIFIED_MEMBERS_MULTISIG',
   /** An action related to creating a motion to release an expenditure stage */
   SetExpenditureStateMotion = 'SET_EXPENDITURE_STATE_MOTION',
-  /** An action related to creating a multiSig to release an expenditure stage */
-  SetExpenditureStateMultisig = 'SET_EXPENDITURE_STATE_MULTISIG',
   /** An action related to setting user roles within a Colony */
   SetUserRoles = 'SET_USER_ROLES',
   /** An action related to setting user roles within a Colony via a motion */
   SetUserRolesMotion = 'SET_USER_ROLES_MOTION',
-  /** An action related to setting user roles within a Colony via multiSig */
-  SetUserRolesMultisig = 'SET_USER_ROLES_MULTISIG',
   /** An action related to unlocking a token within a Colony */
   UnlockToken = 'UNLOCK_TOKEN',
   /** An action related to unlocking a token within a Colony via a motion */
   UnlockTokenMotion = 'UNLOCK_TOKEN_MOTION',
-  /** An action related to unlocking a token within a Colony via multiSig */
-  UnlockTokenMultisig = 'UNLOCK_TOKEN_MULTISIG',
   /** An action related to upgrading a Colony's version */
   VersionUpgrade = 'VERSION_UPGRADE',
   /** An action related to upgrading a Colony's version via a motion */
   VersionUpgradeMotion = 'VERSION_UPGRADE_MOTION',
-  /** An action related to upgrading a Colony's version via multiSig */
-  VersionUpgradeMultisig = 'VERSION_UPGRADE_MULTISIG',
   /** An action unrelated to the currently viewed Colony */
   WrongColony = 'WRONG_COLONY'
 }
@@ -879,11 +829,9 @@ export type ColonyHistoricRole = {
   domainId: Scalars['ID'];
   /**
    * Unique identifier for the role snapshot
-   * Format: `<colonyAddress>_<domainNativeId>_<userAddress>_<blockNumber>_roles`  or `<colonyAddress>_<domainNativeId>_<userAddress>_<blockNumber>_multisig_roles`
+   * Format: `colonyAddress_domainNativeId_userAddress_blockNumber_roles`
    */
   id: Scalars['ID'];
-  /** Will be true if the colony role is a multi sig role */
-  isMultiSig?: Maybe<Scalars['Boolean']>;
   /** Recovery role */
   role_0?: Maybe<Scalars['Boolean']>;
   /** Root role */
@@ -1064,7 +1012,7 @@ export type ColonyMotion = {
    * It's a tuple: `[nayRemaining, yayRemaining]`
    */
   remainingStakes: Array<Scalars['String']>;
-  /** The amount of reputaion that has submitted a vote */
+  /** The amount of reputation that has submitted a vote */
   repSubmitted: Scalars['String'];
   /** The total required stake for one side to be activated */
   requiredStake: Scalars['String'];
@@ -1106,64 +1054,6 @@ export type ColonyMotionVoterRewardsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-/** Represents a MultiSig motion within a Colony */
-export type ColonyMultiSig = {
-  __typename?: 'ColonyMultiSig';
-  action?: Maybe<ColonyAction>;
-  /** Colony address the multiSig belongs to */
-  colonyAddress: Scalars['ID'];
-  /** The timestamp when the motion was created at */
-  createdAt: Scalars['AWSDateTime'];
-  /** The timestamp when the motion was finalized */
-  executedAt?: Maybe<Scalars['AWSDateTime']>;
-  /** Wallet address of the user finalizing the motion */
-  executedBy?: Maybe<Scalars['ID']>;
-  /** Extended user object for given executedBy */
-  executedByUser?: Maybe<User>;
-  /** Whether the underlying action completed */
-  hasActionCompleted: Scalars['Boolean'];
-  /**
-   * The internal database id of the multiSig
-   * To ensure uniqueness, we format as: `chainId-multiSigExtnAddress_nativeMultiSigId`
-   */
-  id: Scalars['ID'];
-  /** Whether the multiSig is a Simple Decision */
-  isDecision: Scalars['Boolean'];
-  /** Whether the multiSig was executed or not */
-  isExecuted: Scalars['Boolean'];
-  /** Whether the multiSig was cancelled or not */
-  isRejected: Scalars['Boolean'];
-  /** Expanded domain in which the multiSig was created */
-  multiSigDomain: Domain;
-  /** Unique identifier of the multiSigs domain in the database */
-  multiSigDomainId: Scalars['ID'];
-  /** The on chain id of the domain associated with the motion */
-  nativeMultiSigDomainId: Scalars['String'];
-  /** The on chain id of the multiSig */
-  nativeMultiSigId: Scalars['ID'];
-  /** The timestamp when the motion was rejected */
-  rejectedAt?: Maybe<Scalars['AWSDateTime']>;
-  /** Wallet address of the user rejecting the motion */
-  rejectedBy?: Maybe<Scalars['ID']>;
-  /** Extended user object for given rejectedBy */
-  rejectedByUser?: Maybe<User>;
-  /** Required role for signing */
-  requiredPermissions: Scalars['Int'];
-  signatures?: Maybe<ModelMultiSigUserSignatureConnection>;
-  /** The transaction hash of the creteMotion (multisig) action */
-  transactionHash: Scalars['ID'];
-  updatedAt: Scalars['AWSDateTime'];
-};
-
-
-/** Represents a MultiSig motion within a Colony */
-export type ColonyMultiSigSignaturesArgs = {
-  filter?: InputMaybe<ModelMultiSigUserSignatureFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
 export type ColonyObjective = {
   __typename?: 'ColonyObjective';
   /** Description of the objective with a limit of 120 characters */
@@ -1193,11 +1083,9 @@ export type ColonyRole = {
   domainId: Scalars['ID'];
   /**
    * Unique identifier for the role snapshot
-   * Format: `<colonyAddress>_<domainNativeId>_<userAddress>_roles` or `<colonyAddress>_<domainNativeId>_<userAddress>_multisig_roles`
+   * Format: `<colonyAddress>_<domainNativeId>_<userAddress>_roles`
    */
   id: Scalars['ID'];
-  /** Will be true if the colony role is a multi sig role */
-  isMultiSig?: Maybe<Scalars['Boolean']>;
   /** Block at which permissions were update last */
   latestBlock: Scalars['Int'];
   /** Recovery role */
@@ -1374,11 +1262,9 @@ export type CreateColonyActionInput = {
   initiatorAddress: Scalars['ID'];
   isMotion?: InputMaybe<Scalars['Boolean']>;
   isMotionFinalization?: InputMaybe<Scalars['Boolean']>;
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
-  multiSigId?: InputMaybe<Scalars['ID']>;
   networkFee?: InputMaybe<Scalars['String']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   paymentId?: InputMaybe<Scalars['Int']>;
@@ -1387,7 +1273,6 @@ export type CreateColonyActionInput = {
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   roles?: InputMaybe<ColonyActionRolesInput>;
-  rolesAreMultiSig?: InputMaybe<Scalars['Boolean']>;
   rootHash: Scalars['String'];
   showInActionsList: Scalars['Boolean'];
   toDomainId?: InputMaybe<Scalars['ID']>;
@@ -1476,7 +1361,6 @@ export type CreateColonyHistoricRoleInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
   role_2?: InputMaybe<Scalars['Boolean']>;
@@ -1552,31 +1436,11 @@ export type CreateColonyMotionInput = {
   voterRecord: Array<VoterRecordInput>;
 };
 
-export type CreateColonyMultiSigInput = {
-  colonyAddress: Scalars['ID'];
-  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
-  executedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  executedBy?: InputMaybe<Scalars['ID']>;
-  hasActionCompleted: Scalars['Boolean'];
-  id?: InputMaybe<Scalars['ID']>;
-  isDecision: Scalars['Boolean'];
-  isExecuted: Scalars['Boolean'];
-  isRejected: Scalars['Boolean'];
-  multiSigDomainId: Scalars['ID'];
-  nativeMultiSigDomainId: Scalars['String'];
-  nativeMultiSigId: Scalars['ID'];
-  rejectedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  rejectedBy?: InputMaybe<Scalars['ID']>;
-  requiredPermissions: Scalars['Int'];
-  transactionHash: Scalars['ID'];
-};
-
 export type CreateColonyRoleInput = {
   colonyAddress: Scalars['ID'];
   colonyRolesId?: InputMaybe<Scalars['ID']>;
   domainId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   latestBlock: Scalars['Int'];
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
@@ -1675,7 +1539,6 @@ export type CreateExpenditureMetadataInput = {
 
 export type CreateExtensionInstallationsCountInput = {
   id?: InputMaybe<Scalars['ID']>;
-  multiSigPermissions: Scalars['Int'];
   oneTxPayment: Scalars['Int'];
   reputationWeighted: Scalars['Int'];
   stagedExpenditure: Scalars['Int'];
@@ -1704,12 +1567,6 @@ export type CreateMotionMessageInput = {
   motionId: Scalars['ID'];
   name: Scalars['String'];
   vote?: InputMaybe<Scalars['String']>;
-};
-
-export type CreateNotificationsDataInput = {
-  id?: InputMaybe<Scalars['ID']>;
-  magicbellUserId?: InputMaybe<Scalars['ID']>;
-  userId: Scalars['ID'];
 };
 
 export type CreatePrivateBetaInviteCodeInput = {
@@ -1938,10 +1795,6 @@ export type DeleteColonyMotionInput = {
   id: Scalars['ID'];
 };
 
-export type DeleteColonyMultiSigInput = {
-  id: Scalars['ID'];
-};
-
 export type DeleteColonyRoleInput = {
   id: Scalars['ID'];
 };
@@ -1995,10 +1848,6 @@ export type DeleteLiquidationAddressInput = {
 };
 
 export type DeleteMotionMessageInput = {
-  id: Scalars['ID'];
-};
-
-export type DeleteNotificationsDataInput = {
   id: Scalars['ID'];
 };
 
@@ -2366,16 +2215,11 @@ export enum ExpenditureType {
   Staged = 'STAGED'
 }
 
-export enum ExtendedSupportedCurrencies {
-  Usdc = 'USDC'
-}
-
 export type ExtensionInstallationsCount = {
   __typename?: 'ExtensionInstallationsCount';
   createdAt: Scalars['AWSDateTime'];
   /** The model id. It's the chain id the of the colony the extension belongs to */
   id: Scalars['ID'];
-  multiSigPermissions: Scalars['Int'];
   oneTxPayment: Scalars['Int'];
   reputationWeighted: Scalars['Int'];
   stagedExpenditure: Scalars['Int'];
@@ -2387,8 +2231,6 @@ export type ExtensionInstallationsCount = {
 /** Map of parameters that extensions are initialised with */
 export type ExtensionParams = {
   __typename?: 'ExtensionParams';
-  /** Params for MultiSig */
-  multiSig?: Maybe<MultiSigParams>;
   /** Initialization parameters for the `StakedExpenditure` extension */
   stakedExpenditure?: Maybe<StakedExpenditureParams>;
   /** Initialization parameters for the `VotingReputation` extension */
@@ -2396,7 +2238,6 @@ export type ExtensionParams = {
 };
 
 export type ExtensionParamsInput = {
-  multiSig?: InputMaybe<MultiSigParamsInput>;
   stakedExpenditure?: InputMaybe<StakedExpenditureParamsInput>;
   votingReputation?: InputMaybe<VotingReputationParamsInput>;
 };
@@ -2423,14 +2264,6 @@ export enum ExternalLinks {
   Whitepaper = 'Whitepaper',
   Youtube = 'Youtube'
 }
-
-export type FailedTransaction = {
-  __typename?: 'FailedTransaction';
-  /** Transaction id */
-  id: Scalars['ID'];
-  /** The current status of the transaction */
-  status: TransactionStatus;
-};
 
 export enum FilteringMethod {
   /** Apply an intersection filter */
@@ -2566,16 +2399,6 @@ export type IngestorStats = {
   value: Scalars['String'];
 };
 
-export type InitializeUserInput = {
-  /** The user's wallet address */
-  userAddress: Scalars['ID'];
-};
-
-export type InitializeUserReturn = {
-  __typename?: 'InitializeUserReturn';
-  failedTransactions: Array<FailedTransaction>;
-};
-
 export enum KycStatus {
   Approved = 'APPROVED',
   Incomplete = 'INCOMPLETE',
@@ -2672,11 +2495,9 @@ export type ModelColonyActionConditionInput = {
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
   isMotionFinalization?: InputMaybe<ModelBooleanInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
-  multiSigId?: InputMaybe<ModelIdInput>;
   networkFee?: InputMaybe<ModelStringInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionConditionInput>;
@@ -2685,7 +2506,6 @@ export type ModelColonyActionConditionInput = {
   pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
-  rolesAreMultiSig?: InputMaybe<ModelBooleanInput>;
   rootHash?: InputMaybe<ModelStringInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
@@ -2718,11 +2538,9 @@ export type ModelColonyActionFilterInput = {
   initiatorAddress?: InputMaybe<ModelIdInput>;
   isMotion?: InputMaybe<ModelBooleanInput>;
   isMotionFinalization?: InputMaybe<ModelBooleanInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   members?: InputMaybe<ModelIdInput>;
   motionDomainId?: InputMaybe<ModelIntInput>;
   motionId?: InputMaybe<ModelIdInput>;
-  multiSigId?: InputMaybe<ModelIdInput>;
   networkFee?: InputMaybe<ModelStringInput>;
   newColonyVersion?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyActionFilterInput>;
@@ -2731,7 +2549,6 @@ export type ModelColonyActionFilterInput = {
   pendingColonyMetadataId?: InputMaybe<ModelIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelIdInput>;
   recipientAddress?: InputMaybe<ModelIdInput>;
-  rolesAreMultiSig?: InputMaybe<ModelBooleanInput>;
   rootHash?: InputMaybe<ModelStringInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
@@ -2945,7 +2762,6 @@ export type ModelColonyHistoricRoleConditionInput = {
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   domainId?: InputMaybe<ModelIdInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyHistoricRoleConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleConditionInput>>>;
   role_0?: InputMaybe<ModelBooleanInput>;
@@ -2971,7 +2787,6 @@ export type ModelColonyHistoricRoleFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   not?: InputMaybe<ModelColonyHistoricRoleFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyHistoricRoleFilterInput>>>;
   role_0?: InputMaybe<ModelBooleanInput>;
@@ -3085,61 +2900,11 @@ export type ModelColonyMotionFilterInput = {
   userMinStake?: InputMaybe<ModelStringInput>;
 };
 
-export type ModelColonyMultiSigConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonyMultiSigConditionInput>>>;
-  colonyAddress?: InputMaybe<ModelIdInput>;
-  createdAt?: InputMaybe<ModelStringInput>;
-  executedAt?: InputMaybe<ModelStringInput>;
-  executedBy?: InputMaybe<ModelIdInput>;
-  hasActionCompleted?: InputMaybe<ModelBooleanInput>;
-  isDecision?: InputMaybe<ModelBooleanInput>;
-  isExecuted?: InputMaybe<ModelBooleanInput>;
-  isRejected?: InputMaybe<ModelBooleanInput>;
-  multiSigDomainId?: InputMaybe<ModelIdInput>;
-  nativeMultiSigDomainId?: InputMaybe<ModelStringInput>;
-  nativeMultiSigId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelColonyMultiSigConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonyMultiSigConditionInput>>>;
-  rejectedAt?: InputMaybe<ModelStringInput>;
-  rejectedBy?: InputMaybe<ModelIdInput>;
-  requiredPermissions?: InputMaybe<ModelIntInput>;
-  transactionHash?: InputMaybe<ModelIdInput>;
-};
-
-export type ModelColonyMultiSigConnection = {
-  __typename?: 'ModelColonyMultiSigConnection';
-  items: Array<Maybe<ColonyMultiSig>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelColonyMultiSigFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelColonyMultiSigFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelIdInput>;
-  createdAt?: InputMaybe<ModelStringInput>;
-  executedAt?: InputMaybe<ModelStringInput>;
-  executedBy?: InputMaybe<ModelIdInput>;
-  hasActionCompleted?: InputMaybe<ModelBooleanInput>;
-  id?: InputMaybe<ModelIdInput>;
-  isDecision?: InputMaybe<ModelBooleanInput>;
-  isExecuted?: InputMaybe<ModelBooleanInput>;
-  isRejected?: InputMaybe<ModelBooleanInput>;
-  multiSigDomainId?: InputMaybe<ModelIdInput>;
-  nativeMultiSigDomainId?: InputMaybe<ModelStringInput>;
-  nativeMultiSigId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelColonyMultiSigFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelColonyMultiSigFilterInput>>>;
-  rejectedAt?: InputMaybe<ModelStringInput>;
-  rejectedBy?: InputMaybe<ModelIdInput>;
-  requiredPermissions?: InputMaybe<ModelIntInput>;
-  transactionHash?: InputMaybe<ModelIdInput>;
-};
-
 export type ModelColonyRoleConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
   colonyAddress?: InputMaybe<ModelIdInput>;
   colonyRolesId?: InputMaybe<ModelIdInput>;
   domainId?: InputMaybe<ModelIdInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyRoleConditionInput>>>;
@@ -3164,7 +2929,6 @@ export type ModelColonyRoleFilterInput = {
   colonyRolesId?: InputMaybe<ModelIdInput>;
   domainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
-  isMultiSig?: InputMaybe<ModelBooleanInput>;
   latestBlock?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelColonyRoleFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelColonyRoleFilterInput>>>;
@@ -3465,7 +3229,6 @@ export type ModelExpenditureTypeInput = {
 
 export type ModelExtensionInstallationsCountConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExtensionInstallationsCountConditionInput>>>;
-  multiSigPermissions?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExtensionInstallationsCountConditionInput>;
   oneTxPayment?: InputMaybe<ModelIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExtensionInstallationsCountConditionInput>>>;
@@ -3484,7 +3247,6 @@ export type ModelExtensionInstallationsCountConnection = {
 export type ModelExtensionInstallationsCountFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelExtensionInstallationsCountFilterInput>>>;
   id?: InputMaybe<ModelIdInput>;
-  multiSigPermissions?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelExtensionInstallationsCountFilterInput>;
   oneTxPayment?: InputMaybe<ModelIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExtensionInstallationsCountFilterInput>>>;
@@ -3638,28 +3400,6 @@ export type ModelMotionMessageFilterInput = {
   not?: InputMaybe<ModelMotionMessageFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelMotionMessageFilterInput>>>;
   vote?: InputMaybe<ModelStringInput>;
-};
-
-export type ModelNotificationsDataConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
-  magicbellUserId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelNotificationsDataConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
-  userId?: InputMaybe<ModelIdInput>;
-};
-
-export type ModelNotificationsDataConnection = {
-  __typename?: 'ModelNotificationsDataConnection';
-  items: Array<Maybe<NotificationsData>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelNotificationsDataFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
-  magicbellUserId?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelNotificationsDataFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
-  userId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelPrivateBetaInviteCodeConditionInput = {
@@ -3944,11 +3684,9 @@ export type ModelSubscriptionColonyActionFilterInput = {
   initiatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   isMotion?: InputMaybe<ModelSubscriptionBooleanInput>;
   isMotionFinalization?: InputMaybe<ModelSubscriptionBooleanInput>;
-  isMultiSig?: InputMaybe<ModelSubscriptionBooleanInput>;
   members?: InputMaybe<ModelSubscriptionIdInput>;
   motionDomainId?: InputMaybe<ModelSubscriptionIntInput>;
   motionId?: InputMaybe<ModelSubscriptionIdInput>;
-  multiSigId?: InputMaybe<ModelSubscriptionIdInput>;
   networkFee?: InputMaybe<ModelSubscriptionStringInput>;
   newColonyVersion?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
@@ -3956,7 +3694,6 @@ export type ModelSubscriptionColonyActionFilterInput = {
   pendingColonyMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   pendingDomainMetadataId?: InputMaybe<ModelSubscriptionIdInput>;
   recipientAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  rolesAreMultiSig?: InputMaybe<ModelSubscriptionBooleanInput>;
   rootHash?: InputMaybe<ModelSubscriptionStringInput>;
   showInActionsList?: InputMaybe<ModelSubscriptionBooleanInput>;
   toDomainId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4046,7 +3783,6 @@ export type ModelSubscriptionColonyHistoricRoleFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  isMultiSig?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyHistoricRoleFilterInput>>>;
   role_0?: InputMaybe<ModelSubscriptionBooleanInput>;
   role_1?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -4098,33 +3834,11 @@ export type ModelSubscriptionColonyMotionFilterInput = {
   userMinStake?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
-export type ModelSubscriptionColonyMultiSigFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMultiSigFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
-  createdAt?: InputMaybe<ModelSubscriptionStringInput>;
-  executedAt?: InputMaybe<ModelSubscriptionStringInput>;
-  executedBy?: InputMaybe<ModelSubscriptionIdInput>;
-  hasActionCompleted?: InputMaybe<ModelSubscriptionBooleanInput>;
-  id?: InputMaybe<ModelSubscriptionIdInput>;
-  isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
-  isExecuted?: InputMaybe<ModelSubscriptionBooleanInput>;
-  isRejected?: InputMaybe<ModelSubscriptionBooleanInput>;
-  multiSigDomainId?: InputMaybe<ModelSubscriptionIdInput>;
-  nativeMultiSigDomainId?: InputMaybe<ModelSubscriptionStringInput>;
-  nativeMultiSigId?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyMultiSigFilterInput>>>;
-  rejectedAt?: InputMaybe<ModelSubscriptionStringInput>;
-  rejectedBy?: InputMaybe<ModelSubscriptionIdInput>;
-  requiredPermissions?: InputMaybe<ModelSubscriptionIntInput>;
-  transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
-};
-
 export type ModelSubscriptionColonyRoleFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
   colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   domainId?: InputMaybe<ModelSubscriptionIdInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  isMultiSig?: InputMaybe<ModelSubscriptionBooleanInput>;
   latestBlock?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyRoleFilterInput>>>;
   role_0?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -4234,7 +3948,6 @@ export type ModelSubscriptionExpenditureMetadataFilterInput = {
 export type ModelSubscriptionExtensionInstallationsCountFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionExtensionInstallationsCountFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
-  multiSigPermissions?: InputMaybe<ModelSubscriptionIntInput>;
   oneTxPayment?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExtensionInstallationsCountFilterInput>>>;
   reputationWeighted?: InputMaybe<ModelSubscriptionIntInput>;
@@ -4308,13 +4021,6 @@ export type ModelSubscriptionMotionMessageFilterInput = {
   name?: InputMaybe<ModelSubscriptionStringInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionMotionMessageFilterInput>>>;
   vote?: InputMaybe<ModelSubscriptionStringInput>;
-};
-
-export type ModelSubscriptionNotificationsDataFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
-  magicbellUserId?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
-  userId?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
@@ -4851,53 +4557,10 @@ export type MotionStateHistoryInput = {
   yaySideFullyStakedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
-export type MultiSigDomainConfig = {
-  __typename?: 'MultiSigDomainConfig';
-  domainId: Scalars['ID'];
-  domainThreshold: Scalars['Int'];
-};
-
-export type MultiSigDomainConfigInput = {
-  domainId: Scalars['ID'];
-  domainThreshold: Scalars['Int'];
-};
-
-export type MultiSigParams = {
-  __typename?: 'MultiSigParams';
-  colonyThreshold: Scalars['Int'];
-  domainThresholds?: Maybe<Array<Maybe<MultiSigDomainConfig>>>;
-};
-
-export type MultiSigParamsInput = {
-  colonyThreshold: Scalars['Int'];
-  domainThresholds?: InputMaybe<Array<InputMaybe<MultiSigDomainConfigInput>>>;
-};
-
-export type MultiSigUserSignature = {
-  __typename?: 'MultiSigUserSignature';
-  colonyAddress: Scalars['ID'];
-  createdAt: Scalars['AWSDateTime'];
-  id: Scalars['ID'];
-  multiSigId: Scalars['ID'];
-  role: Scalars['Int'];
-  updatedAt: Scalars['AWSDateTime'];
-  user: User;
-  userAddress: Scalars['ID'];
-  vote: MultiSigVote;
-};
-
-export enum MultiSigVote {
-  Approve = 'Approve',
-  None = 'None',
-  Reject = 'Reject'
-}
-
 /** Root mutation type */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Create a Bridge XYZ Bank Account */
   bridgeCreateBankAccount?: Maybe<BridgeCreateBankAccountReturn>;
-  /** Update a Bridge XYZ Bank Account */
   bridgeUpdateBankAccount?: Maybe<BridgeUpdateBankAccountReturn>;
   /** Post to the Bridge XYZ API */
   bridgeXYZMutation?: Maybe<BridgeXyzMutationReturn>;
@@ -4915,7 +4578,6 @@ export type Mutation = {
   createColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   createColonyMetadata?: Maybe<ColonyMetadata>;
   createColonyMotion?: Maybe<ColonyMotion>;
-  createColonyMultiSig?: Maybe<ColonyMultiSig>;
   createColonyRole?: Maybe<ColonyRole>;
   createColonyTokens?: Maybe<ColonyTokens>;
   createContractEvent?: Maybe<ContractEvent>;
@@ -4930,7 +4592,6 @@ export type Mutation = {
   createIngestorStats?: Maybe<IngestorStats>;
   createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
-  createNotificationsData?: Maybe<NotificationsData>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -4958,7 +4619,6 @@ export type Mutation = {
   deleteColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   deleteColonyMetadata?: Maybe<ColonyMetadata>;
   deleteColonyMotion?: Maybe<ColonyMotion>;
-  deleteColonyMultiSig?: Maybe<ColonyMultiSig>;
   deleteColonyRole?: Maybe<ColonyRole>;
   deleteColonyTokens?: Maybe<ColonyTokens>;
   deleteContractEvent?: Maybe<ContractEvent>;
@@ -4973,7 +4633,6 @@ export type Mutation = {
   deleteIngestorStats?: Maybe<IngestorStats>;
   deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
-  deleteNotificationsData?: Maybe<NotificationsData>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -4987,8 +4646,6 @@ export type Mutation = {
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
-  /** Initialize user (for now only cancels pending transactions) */
-  initializeUser: InitializeUserReturn;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -5001,7 +4658,6 @@ export type Mutation = {
   updateColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   updateColonyMetadata?: Maybe<ColonyMetadata>;
   updateColonyMotion?: Maybe<ColonyMotion>;
-  updateColonyMultiSig?: Maybe<ColonyMultiSig>;
   updateColonyRole?: Maybe<ColonyRole>;
   updateColonyTokens?: Maybe<ColonyTokens>;
   updateContractEvent?: Maybe<ContractEvent>;
@@ -5018,7 +4674,6 @@ export type Mutation = {
   updateIngestorStats?: Maybe<IngestorStats>;
   updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
-  updateNotificationsData?: Maybe<NotificationsData>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5146,13 +4801,6 @@ export type MutationCreateColonyMotionArgs = {
 
 
 /** Root mutation type */
-export type MutationCreateColonyMultiSigArgs = {
-  condition?: InputMaybe<ModelColonyMultiSigConditionInput>;
-  input: CreateColonyMultiSigInput;
-};
-
-
-/** Root mutation type */
 export type MutationCreateColonyRoleArgs = {
   condition?: InputMaybe<ModelColonyRoleConditionInput>;
   input: CreateColonyRoleInput;
@@ -5247,13 +4895,6 @@ export type MutationCreateLiquidationAddressArgs = {
 export type MutationCreateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: CreateMotionMessageInput;
-};
-
-
-/** Root mutation type */
-export type MutationCreateNotificationsDataArgs = {
-  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
-  input: CreateNotificationsDataInput;
 };
 
 
@@ -5439,13 +5080,6 @@ export type MutationDeleteColonyMotionArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteColonyMultiSigArgs = {
-  condition?: InputMaybe<ModelColonyMultiSigConditionInput>;
-  input: DeleteColonyMultiSigInput;
-};
-
-
-/** Root mutation type */
 export type MutationDeleteColonyRoleArgs = {
   condition?: InputMaybe<ModelColonyRoleConditionInput>;
   input: DeleteColonyRoleInput;
@@ -5544,13 +5178,6 @@ export type MutationDeleteMotionMessageArgs = {
 
 
 /** Root mutation type */
-export type MutationDeleteNotificationsDataArgs = {
-  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
-  input: DeleteNotificationsDataInput;
-};
-
-
-/** Root mutation type */
 export type MutationDeletePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: DeletePrivateBetaInviteCodeInput;
@@ -5642,12 +5269,6 @@ export type MutationDeleteVoterRewardsHistoryArgs = {
 
 
 /** Root mutation type */
-export type MutationInitializeUserArgs = {
-  input: InitializeUserInput;
-};
-
-
-/** Root mutation type */
 export type MutationUpdateAnnotationArgs = {
   condition?: InputMaybe<ModelAnnotationConditionInput>;
   input: UpdateAnnotationInput;
@@ -5728,13 +5349,6 @@ export type MutationUpdateColonyMetadataArgs = {
 export type MutationUpdateColonyMotionArgs = {
   condition?: InputMaybe<ModelColonyMotionConditionInput>;
   input: UpdateColonyMotionInput;
-};
-
-
-/** Root mutation type */
-export type MutationUpdateColonyMultiSigArgs = {
-  condition?: InputMaybe<ModelColonyMultiSigConditionInput>;
-  input: UpdateColonyMultiSigInput;
 };
 
 
@@ -5839,13 +5453,6 @@ export type MutationUpdateLiquidationAddressArgs = {
 export type MutationUpdateMotionMessageArgs = {
   condition?: InputMaybe<ModelMotionMessageConditionInput>;
   input: UpdateMotionMessageInput;
-};
-
-
-/** Root mutation type */
-export type MutationUpdateNotificationsDataArgs = {
-  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
-  input: UpdateNotificationsDataInput;
 };
 
 
@@ -6030,18 +5637,6 @@ export enum Network {
   Mainnet = 'MAINNET'
 }
 
-/** Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences. */
-export type NotificationsData = {
-  __typename?: 'NotificationsData';
-  createdAt: Scalars['AWSDateTime'];
-  id: Scalars['ID'];
-  /** Unique identifier for the user in Magicbell */
-  magicbellUserId?: Maybe<Scalars['ID']>;
-  updatedAt: Scalars['AWSDateTime'];
-  /** Unique identifier for the user */
-  userId: Scalars['ID'];
-};
-
 export type Payment = {
   __typename?: 'Payment';
   /** Payment amount, excluding network fee */
@@ -6162,8 +5757,6 @@ export type Query = {
   bridgeCheckKYC?: Maybe<BridgeCheckKycReturn>;
   /** Get drains history for the current user */
   bridgeGetDrainsHistory?: Maybe<Array<BridgeDrain>>;
-  /** Get bridge gateway fee */
-  bridgeGetGatewayFee?: Maybe<BridgeGatewayFeeReturn>;
   /** Get liquidation address of a given user */
   bridgeGetUserLiquidationAddress?: Maybe<Scalars['String']>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
@@ -6173,7 +5766,6 @@ export type Query = {
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
   getColonyActionByMotionId?: Maybe<ModelColonyActionConnection>;
-  getColonyActionByMultiSigId?: Maybe<ModelColonyActionConnection>;
   getColonyActionMetadata?: Maybe<ColonyActionMetadata>;
   getColonyByAddress?: Maybe<ModelColonyConnection>;
   getColonyByName?: Maybe<ModelColonyConnection>;
@@ -6189,7 +5781,6 @@ export type Query = {
   getColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   getColonyMetadata?: Maybe<ColonyMetadata>;
   getColonyMotion?: Maybe<ColonyMotion>;
-  getColonyMultiSig?: Maybe<ColonyMultiSig>;
   getColonyRole?: Maybe<ColonyRole>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
@@ -6200,7 +5791,6 @@ export type Query = {
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
-  getDomainByNativeSkillId?: Maybe<ModelDomainConnection>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getExpenditure?: Maybe<Expenditure>;
   getExpenditureMetadata?: Maybe<ExpenditureMetadata>;
@@ -6221,13 +5811,11 @@ export type Query = {
   /** Get the timeout for the current period of a motion */
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getMotionVoterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
-  getNotificationsData?: Maybe<NotificationsData>;
   getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
-  getRoleByColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByTargetAddressAndColony?: Maybe<ModelColonyRoleConnection>;
   getSafeTransaction?: Maybe<SafeTransaction>;
@@ -6243,6 +5831,7 @@ export type Query = {
   getTransaction?: Maybe<Transaction>;
   getTransactionsByUser?: Maybe<ModelTransactionConnection>;
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
+  getTransactionsByUserAndStatus?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByBridgeCustomerId?: Maybe<ModelUserConnection>;
@@ -6271,7 +5860,6 @@ export type Query = {
   listColonyMemberInvites?: Maybe<ModelColonyMemberInviteConnection>;
   listColonyMetadata?: Maybe<ModelColonyMetadataConnection>;
   listColonyMotions?: Maybe<ModelColonyMotionConnection>;
-  listColonyMultiSigs?: Maybe<ModelColonyMultiSigConnection>;
   listColonyRoles?: Maybe<ModelColonyRoleConnection>;
   listColonyTokens?: Maybe<ModelColonyTokensConnection>;
   listContractEvents?: Maybe<ModelContractEventConnection>;
@@ -6286,7 +5874,6 @@ export type Query = {
   listIngestorStats?: Maybe<ModelIngestorStatsConnection>;
   listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
-  listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
@@ -6365,16 +5952,6 @@ export type QueryGetColonyActionByMotionIdArgs = {
   filter?: InputMaybe<ModelColonyActionFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   motionId: Scalars['ID'];
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetColonyActionByMultiSigIdArgs = {
-  filter?: InputMaybe<ModelColonyActionFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  multiSigId: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
@@ -6497,12 +6074,6 @@ export type QueryGetColonyMotionArgs = {
 
 
 /** Root query type */
-export type QueryGetColonyMultiSigArgs = {
-  id: Scalars['ID'];
-};
-
-
-/** Root query type */
 export type QueryGetColonyRoleArgs = {
   id: Scalars['ID'];
 };
@@ -6573,17 +6144,6 @@ export type QueryGetCurrentVersionByKeyArgs = {
 /** Root query type */
 export type QueryGetDomainArgs = {
   id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetDomainByNativeSkillIdArgs = {
-  filter?: InputMaybe<ModelDomainFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nativeId?: InputMaybe<ModelIntKeyConditionInput>;
-  nativeSkillId: Scalars['String'];
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -6737,12 +6297,6 @@ export type QueryGetMotionVoterRewardsArgs = {
 
 
 /** Root query type */
-export type QueryGetNotificationsDataArgs = {
-  id: Scalars['ID'];
-};
-
-
-/** Root query type */
 export type QueryGetPrivateBetaInviteCodeArgs = {
   id: Scalars['ID'];
 };
@@ -6777,17 +6331,6 @@ export type QueryGetProfileByUsernameArgs = {
 /** Root query type */
 export type QueryGetReputationMiningCycleMetadataArgs = {
   id: Scalars['ID'];
-};
-
-
-/** Root query type */
-export type QueryGetRoleByColonyArgs = {
-  colonyAddress: Scalars['ID'];
-  domainId?: InputMaybe<ModelIdKeyConditionInput>;
-  filter?: InputMaybe<ModelColonyRoleFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -6900,6 +6443,17 @@ export type QueryGetTransactionsByUserAndGroupArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetTransactionsByUserAndStatusArgs = {
+  filter?: InputMaybe<ModelTransactionFilterInput>;
+  from?: InputMaybe<ModelIdKeyConditionInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  status: TransactionStatus;
 };
 
 
@@ -7105,14 +6659,6 @@ export type QueryListColonyMotionsArgs = {
 
 
 /** Root query type */
-export type QueryListColonyMultiSigsArgs = {
-  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root query type */
 export type QueryListColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -7219,14 +6765,6 @@ export type QueryListLiquidationAddressesArgs = {
 /** Root query type */
 export type QueryListMotionMessagesArgs = {
   filter?: InputMaybe<ModelMotionMessageFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root query type */
-export type QueryListNotificationsDataArgs = {
-  filter?: InputMaybe<ModelNotificationsDataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -7481,18 +7019,15 @@ export enum SearchableColonyActionAggregateField {
   InitiatorAddress = 'initiatorAddress',
   IsMotion = 'isMotion',
   IsMotionFinalization = 'isMotionFinalization',
-  IsMultiSig = 'isMultiSig',
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
-  MultiSigId = 'multiSigId',
   NetworkFee = 'networkFee',
   NewColonyVersion = 'newColonyVersion',
   PaymentId = 'paymentId',
   PendingColonyMetadataId = 'pendingColonyMetadataId',
   PendingDomainMetadataId = 'pendingDomainMetadataId',
   RecipientAddress = 'recipientAddress',
-  RolesAreMultiSig = 'rolesAreMultiSig',
   RootHash = 'rootHash',
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
@@ -7534,11 +7069,9 @@ export type SearchableColonyActionFilterInput = {
   initiatorAddress?: InputMaybe<SearchableIdFilterInput>;
   isMotion?: InputMaybe<SearchableBooleanFilterInput>;
   isMotionFinalization?: InputMaybe<SearchableBooleanFilterInput>;
-  isMultiSig?: InputMaybe<SearchableBooleanFilterInput>;
   members?: InputMaybe<SearchableIdFilterInput>;
   motionDomainId?: InputMaybe<SearchableIntFilterInput>;
   motionId?: InputMaybe<SearchableIdFilterInput>;
-  multiSigId?: InputMaybe<SearchableIdFilterInput>;
   networkFee?: InputMaybe<SearchableStringFilterInput>;
   newColonyVersion?: InputMaybe<SearchableIntFilterInput>;
   not?: InputMaybe<SearchableColonyActionFilterInput>;
@@ -7547,7 +7080,6 @@ export type SearchableColonyActionFilterInput = {
   pendingColonyMetadataId?: InputMaybe<SearchableIdFilterInput>;
   pendingDomainMetadataId?: InputMaybe<SearchableIdFilterInput>;
   recipientAddress?: InputMaybe<SearchableIdFilterInput>;
-  rolesAreMultiSig?: InputMaybe<SearchableBooleanFilterInput>;
   rootHash?: InputMaybe<SearchableStringFilterInput>;
   showInActionsList?: InputMaybe<SearchableBooleanFilterInput>;
   toDomainId?: InputMaybe<SearchableIdFilterInput>;
@@ -7579,18 +7111,15 @@ export enum SearchableColonyActionSortableFields {
   InitiatorAddress = 'initiatorAddress',
   IsMotion = 'isMotion',
   IsMotionFinalization = 'isMotionFinalization',
-  IsMultiSig = 'isMultiSig',
   Members = 'members',
   MotionDomainId = 'motionDomainId',
   MotionId = 'motionId',
-  MultiSigId = 'multiSigId',
   NetworkFee = 'networkFee',
   NewColonyVersion = 'newColonyVersion',
   PaymentId = 'paymentId',
   PendingColonyMetadataId = 'pendingColonyMetadataId',
   PendingDomainMetadataId = 'pendingDomainMetadataId',
   RecipientAddress = 'recipientAddress',
-  RolesAreMultiSig = 'rolesAreMultiSig',
   RootHash = 'rootHash',
   ShowInActionsList = 'showInActionsList',
   ToDomainId = 'toDomainId',
@@ -7837,7 +7366,6 @@ export type Subscription = {
   onCreateColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   onCreateColonyMetadata?: Maybe<ColonyMetadata>;
   onCreateColonyMotion?: Maybe<ColonyMotion>;
-  onCreateColonyMultiSig?: Maybe<ColonyMultiSig>;
   onCreateColonyRole?: Maybe<ColonyRole>;
   onCreateColonyTokens?: Maybe<ColonyTokens>;
   onCreateContractEvent?: Maybe<ContractEvent>;
@@ -7852,7 +7380,6 @@ export type Subscription = {
   onCreateIngestorStats?: Maybe<IngestorStats>;
   onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
-  onCreateNotificationsData?: Maybe<NotificationsData>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -7878,7 +7405,6 @@ export type Subscription = {
   onDeleteColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   onDeleteColonyMetadata?: Maybe<ColonyMetadata>;
   onDeleteColonyMotion?: Maybe<ColonyMotion>;
-  onDeleteColonyMultiSig?: Maybe<ColonyMultiSig>;
   onDeleteColonyRole?: Maybe<ColonyRole>;
   onDeleteColonyTokens?: Maybe<ColonyTokens>;
   onDeleteContractEvent?: Maybe<ContractEvent>;
@@ -7893,7 +7419,6 @@ export type Subscription = {
   onDeleteIngestorStats?: Maybe<IngestorStats>;
   onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
-  onDeleteNotificationsData?: Maybe<NotificationsData>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -7919,7 +7444,6 @@ export type Subscription = {
   onUpdateColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   onUpdateColonyMetadata?: Maybe<ColonyMetadata>;
   onUpdateColonyMotion?: Maybe<ColonyMotion>;
-  onUpdateColonyMultiSig?: Maybe<ColonyMultiSig>;
   onUpdateColonyRole?: Maybe<ColonyRole>;
   onUpdateColonyTokens?: Maybe<ColonyTokens>;
   onUpdateContractEvent?: Maybe<ContractEvent>;
@@ -7934,7 +7458,6 @@ export type Subscription = {
   onUpdateIngestorStats?: Maybe<IngestorStats>;
   onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
-  onUpdateNotificationsData?: Maybe<NotificationsData>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8011,11 +7534,6 @@ export type SubscriptionOnCreateColonyMotionArgs = {
 };
 
 
-export type SubscriptionOnCreateColonyMultiSigArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyMultiSigFilterInput>;
-};
-
-
 export type SubscriptionOnCreateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
 };
@@ -8083,11 +7601,6 @@ export type SubscriptionOnCreateLiquidationAddressArgs = {
 
 export type SubscriptionOnCreateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
-};
-
-
-export type SubscriptionOnCreateNotificationsDataArgs = {
-  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -8216,11 +7729,6 @@ export type SubscriptionOnDeleteColonyMotionArgs = {
 };
 
 
-export type SubscriptionOnDeleteColonyMultiSigArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyMultiSigFilterInput>;
-};
-
-
 export type SubscriptionOnDeleteColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
 };
@@ -8288,11 +7796,6 @@ export type SubscriptionOnDeleteLiquidationAddressArgs = {
 
 export type SubscriptionOnDeleteMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
-};
-
-
-export type SubscriptionOnDeleteNotificationsDataArgs = {
-  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -8421,11 +7924,6 @@ export type SubscriptionOnUpdateColonyMotionArgs = {
 };
 
 
-export type SubscriptionOnUpdateColonyMultiSigArgs = {
-  filter?: InputMaybe<ModelSubscriptionColonyMultiSigFilterInput>;
-};
-
-
 export type SubscriptionOnUpdateColonyRoleArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyRoleFilterInput>;
 };
@@ -8493,11 +7991,6 @@ export type SubscriptionOnUpdateLiquidationAddressArgs = {
 
 export type SubscriptionOnUpdateMotionMessageArgs = {
   filter?: InputMaybe<ModelSubscriptionMotionMessageFilterInput>;
-};
-
-
-export type SubscriptionOnUpdateNotificationsDataArgs = {
-  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
 };
 
 
@@ -8796,11 +8289,9 @@ export type UpdateColonyActionInput = {
   initiatorAddress?: InputMaybe<Scalars['ID']>;
   isMotion?: InputMaybe<Scalars['Boolean']>;
   isMotionFinalization?: InputMaybe<Scalars['Boolean']>;
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   members?: InputMaybe<Array<Scalars['ID']>>;
   motionDomainId?: InputMaybe<Scalars['Int']>;
   motionId?: InputMaybe<Scalars['ID']>;
-  multiSigId?: InputMaybe<Scalars['ID']>;
   networkFee?: InputMaybe<Scalars['String']>;
   newColonyVersion?: InputMaybe<Scalars['Int']>;
   paymentId?: InputMaybe<Scalars['Int']>;
@@ -8809,7 +8300,6 @@ export type UpdateColonyActionInput = {
   pendingDomainMetadataId?: InputMaybe<Scalars['ID']>;
   recipientAddress?: InputMaybe<Scalars['ID']>;
   roles?: InputMaybe<ColonyActionRolesInput>;
-  rolesAreMultiSig?: InputMaybe<Scalars['Boolean']>;
   rootHash?: InputMaybe<Scalars['String']>;
   showInActionsList?: InputMaybe<Scalars['Boolean']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
@@ -8876,7 +8366,6 @@ export type UpdateColonyHistoricRoleInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
   role_2?: InputMaybe<Scalars['Boolean']>;
@@ -8952,31 +8441,11 @@ export type UpdateColonyMotionInput = {
   voterRecord?: InputMaybe<Array<VoterRecordInput>>;
 };
 
-export type UpdateColonyMultiSigInput = {
-  colonyAddress?: InputMaybe<Scalars['ID']>;
-  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
-  executedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  executedBy?: InputMaybe<Scalars['ID']>;
-  hasActionCompleted?: InputMaybe<Scalars['Boolean']>;
-  id: Scalars['ID'];
-  isDecision?: InputMaybe<Scalars['Boolean']>;
-  isExecuted?: InputMaybe<Scalars['Boolean']>;
-  isRejected?: InputMaybe<Scalars['Boolean']>;
-  multiSigDomainId?: InputMaybe<Scalars['ID']>;
-  nativeMultiSigDomainId?: InputMaybe<Scalars['String']>;
-  nativeMultiSigId?: InputMaybe<Scalars['ID']>;
-  rejectedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  rejectedBy?: InputMaybe<Scalars['ID']>;
-  requiredPermissions?: InputMaybe<Scalars['Int']>;
-  transactionHash?: InputMaybe<Scalars['ID']>;
-};
-
 export type UpdateColonyRoleInput = {
   colonyAddress?: InputMaybe<Scalars['ID']>;
   colonyRolesId?: InputMaybe<Scalars['ID']>;
   domainId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
-  isMultiSig?: InputMaybe<Scalars['Boolean']>;
   latestBlock?: InputMaybe<Scalars['Int']>;
   role_0?: InputMaybe<Scalars['Boolean']>;
   role_1?: InputMaybe<Scalars['Boolean']>;
@@ -9103,7 +8572,6 @@ export type UpdateExtensionByColonyAndHashInput = {
 
 export type UpdateExtensionInstallationsCountInput = {
   id: Scalars['ID'];
-  multiSigPermissions?: InputMaybe<Scalars['Int']>;
   oneTxPayment?: InputMaybe<Scalars['Int']>;
   reputationWeighted?: InputMaybe<Scalars['Int']>;
   stagedExpenditure?: InputMaybe<Scalars['Int']>;
@@ -9132,12 +8600,6 @@ export type UpdateMotionMessageInput = {
   motionId?: InputMaybe<Scalars['ID']>;
   name?: InputMaybe<Scalars['String']>;
   vote?: InputMaybe<Scalars['String']>;
-};
-
-export type UpdateNotificationsDataInput = {
-  id: Scalars['ID'];
-  magicbellUserId?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdatePrivateBetaInviteCodeInput = {
@@ -9292,8 +8754,6 @@ export type User = {
   /** Unique identifier for the user (wallet address) */
   id: Scalars['ID'];
   liquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
-  /** Notifications data for the user */
-  notificationsData?: Maybe<NotificationsData>;
   /** A user who has been invited by colony will be able to pass on the private beta invite */
   privateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   /** Profile information of the user */
@@ -9511,11 +8971,11 @@ export type MotionStakeValuesFragment = { __typename?: 'MotionStakeValues', yay:
 
 export type UserMotionStakesFragment = { __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } };
 
-export type VoterRewardsHistoryFragment = { __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } };
+export type VoterRewardsHistoryFragment = { __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } };
 
 export type ColonyMotionFragment = { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null };
 
-export type MotionMessageFragment = { __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null };
+export type MotionMessageFragment = { __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
 
 export type VoterRecordFragment = { __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null };
 
@@ -9523,15 +8983,11 @@ export type MotionStakesFragment = { __typename?: 'MotionStakes', raw: { __typen
 
 export type ColonyDecisionFragment = { __typename?: 'ColonyDecision', title: string, description: string, motionDomainId: number, walletAddress: string, createdAt: string, actionId: string, colonyAddress: string };
 
-export type MultiSigUserSignatureFragment = { __typename?: 'MultiSigUserSignature', id: string, role: number, userAddress: string, multiSigId: string, vote: MultiSigVote, createdAt: string, updatedAt: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } };
-
-export type ColonyMultiSigFragment = { __typename?: 'ColonyMultiSig', id: string, nativeMultiSigId: string, createdAt: string, multiSigDomainId: string, nativeMultiSigDomainId: string, requiredPermissions: number, transactionHash: string, isExecuted: boolean, hasActionCompleted: boolean, isRejected: boolean, isDecision: boolean, executedAt?: string | null, executedBy?: string | null, rejectedAt?: string | null, rejectedBy?: string | null, multiSigDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, signatures?: { __typename?: 'ModelMultiSigUserSignatureConnection', items: Array<{ __typename?: 'MultiSigUserSignature', id: string, role: number, userAddress: string, multiSigId: string, vote: MultiSigVote, createdAt: string, updatedAt: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, executedByUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, displayNameChanged?: string | null, avatar?: string | null, thumbnail?: string | null } | null } | null, rejectedByUser?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, displayNameChanged?: string | null, avatar?: string | null, thumbnail?: string | null } | null } | null };
-
 export type BridgeBankAccountFragment = { __typename?: 'BridgeBankAccount', id: string, currency: string, bankName: string, accountOwner: string, iban?: { __typename?: 'BridgeIbanBankAccount', bic: string, country: string, last4: string } | null, usAccount?: { __typename?: 'BridgeUsBankAccount', last4: string, routingNumber: string } | null };
 
 export type BridgeDrainFragment = { __typename?: 'BridgeDrain', id: string, amount: string, currency: string, state: string, createdAt: string, receipt: { __typename?: 'BridgeDrainReceipt', url: string } };
 
-export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null };
+export type ColonyFragment = { __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null };
 
 export type PublicColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', avatar?: string | null, displayName: string, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', link: string, name: ExternalLinks }> | null } | null };
 
@@ -9549,7 +9005,7 @@ export type FundsClaimFragment = { __typename?: 'ColonyFundsClaim', id: string, 
 
 export type ChainFundsClaimFragment = { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null };
 
-export type ColonyRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } };
+export type ColonyRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } };
 
 export type SafeFragment = { __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string };
 
@@ -9559,11 +9015,11 @@ export type JoinedColonyFragment = { __typename?: 'Colony', name: string, colony
 
 export type JoinedColonyWithExtensionsFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null };
 
-export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } };
+export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
 
-export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } };
+export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } };
 
-export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
+export type ColonyContributorFragment = { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null };
 
 export type DomainFragment = { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null };
 
@@ -9581,13 +9037,11 @@ export type ExpenditureBalanceFragment = { __typename?: 'ExpenditureBalance', to
 
 export type ExpenditureActionFragment = { __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null };
 
-export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null, multiSig?: { __typename?: 'MultiSigParams', colonyThreshold: number, domainThresholds?: Array<{ __typename?: 'MultiSigDomainConfig', domainId: string, domainThreshold: number } | null> | null } | null } | null };
+export type ExtensionFragment = { __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null };
 
 export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension', hash: string, address: string };
 
-export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null };
-
-export type ColonyUserRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
+export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null };
 
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
 
@@ -9607,13 +9061,11 @@ export type NativeTokenStatusFragment = { __typename?: 'NativeTokenStatus', mint
 
 export type TransactionFragment = { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } };
 
-export type UserFragment = { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null };
+export type UserFragment = { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null };
 
 export type UserDisplayFragment = { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', displayName?: string | null, displayNameChanged?: string | null, avatar?: string | null, thumbnail?: string | null } | null };
 
 export type ProfileFragment = { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null };
-
-export type NotificationsDataFragment = { __typename?: 'NotificationsData', magicbellUserId?: string | null };
 
 export type CreateColonyActionMetadataMutationVariables = Exact<{
   input: CreateColonyActionMetadataInput;
@@ -9798,22 +9250,6 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string } | null };
 
-<<<<<<< HEAD
-export type InitializeUserMutationVariables = Exact<{
-  input: InitializeUserInput;
-}>;
-
-
-export type InitializeUserMutation = { __typename?: 'Mutation', initializeUser: { __typename?: 'InitializeUserReturn', failedTransactions: Array<{ __typename?: 'FailedTransaction', id: string, status: TransactionStatus }> } };
-=======
-export type CreateNotificationsDataMutationVariables = Exact<{
-  input: CreateNotificationsDataInput;
-}>;
-
-
-export type CreateNotificationsDataMutation = { __typename?: 'Mutation', createNotificationsData?: { __typename?: 'NotificationsData', id: string } | null };
->>>>>>> f7100a3e2 (Create magicbell user on app load if needed)
-
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
@@ -9894,24 +9330,19 @@ export type GetUserLiquidationAddressQueryVariables = Exact<{
 
 export type GetUserLiquidationAddressQuery = { __typename?: 'Query', bridgeGetUserLiquidationAddress?: string | null };
 
-export type GetGatewayFeeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetGatewayFeeQuery = { __typename?: 'Query', bridgeGetGatewayFee?: { __typename?: 'BridgeGatewayFeeReturn', transactionFeePercentage?: number | null, success?: boolean | null } | null };
-
 export type GetFullColonyByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
 
-export type GetFullColonyByAddressQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
+export type GetFullColonyByAddressQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
 
 export type GetFullColonyByNameQueryVariables = Exact<{
   name: Scalars['String'];
 }>;
 
 
-export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
+export type GetFullColonyByNameQuery = { __typename?: 'Query', getColonyByName?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
 
 export type GetDisplayNameByColonyNameQueryVariables = Exact<{
   name: Scalars['String'];
@@ -9923,21 +9354,14 @@ export type GetDisplayNameByColonyNameQuery = { __typename?: 'Query', getColonyB
 export type GetMetacolonyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
-
-export type GetColonyRootRolesQueryVariables = Exact<{
-  colonyAddress: Scalars['ID'];
-}>;
-
-
-export type GetColonyRootRolesQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', targetAddress: string, role_1?: boolean | null, domain: { __typename?: 'Domain', nativeId: number }, targetUser?: { __typename?: 'User', id: string } | null } | null> } | null } | null };
+export type GetMetacolonyQuery = { __typename?: 'Query', getColonyByType?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, version: number, reputation?: string | null, expendituresGlobalClaimDelay?: string | null, private?: boolean | null, lastUpdatedContributorsWithReputation?: string | null, colonyAddress: string, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string }, status?: { __typename?: 'ColonyStatus', recovery?: boolean | null, nativeToken?: { __typename?: 'NativeTokenStatus', mintable?: boolean | null, unlockable?: boolean | null, unlocked?: boolean | null } | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, tokens?: { __typename?: 'ModelColonyTokensConnection', items: Array<{ __typename?: 'ColonyTokens', colonyTokensId: string, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, motionsWithUnclaimedStakes?: Array<{ __typename?: 'ColonyUnclaimedStake', motionId: string, unclaimedRewards: Array<{ __typename?: 'StakerRewards', address: string, rewards: { __typename?: 'MotionStakeValues', nay: string, yay: string } }> }> | null, domains?: { __typename?: 'ModelDomainConnection', items: Array<{ __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null> } | null, balances?: { __typename?: 'ColonyBalances', items?: Array<{ __typename?: 'ColonyBalance', id: string, balance: string, domain?: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null } | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> | null } | null, fundsClaims?: { __typename?: 'ModelColonyFundsClaimConnection', items: Array<{ __typename?: 'ColonyFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null, token: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null, chainFundsClaim?: { __typename?: 'ColonyChainFundsClaim', id: string, createdAtBlock: number, createdAt: string, amount: string, isClaimed?: boolean | null } | null, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, domain: { __typename?: 'Domain', id: string, nativeId: number } } | null> } | null, colonyMemberInvite?: { __typename?: 'ColonyMemberInvite', id: string, invitesRemaining: number } | null } | null> } | null };
 
 export type GetColonyExtensionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
 }>;
 
 
-export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null, multiSig?: { __typename?: 'MultiSigParams', colonyThreshold: number, domainThresholds?: Array<{ __typename?: 'MultiSigDomainConfig', domainId: string, domainThreshold: number } | null> | null } | null } | null } | null> } | null } | null };
+export type GetColonyExtensionsQuery = { __typename?: 'Query', getColony?: { __typename?: 'Colony', id: string, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null } | null> } | null } | null };
 
 export type GetColonyExtensionQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -9945,7 +9369,7 @@ export type GetColonyExtensionQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null, multiSig?: { __typename?: 'MultiSigParams', colonyThreshold: number, domainThresholds?: Array<{ __typename?: 'MultiSigDomainConfig', domainId: string, domainThreshold: number } | null> | null } | null } | null } | null> } | null };
+export type GetColonyExtensionQuery = { __typename?: 'Query', getExtensionByColonyAndHash?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', hash: string, installedBy: string, installedAt: number, isDeprecated: boolean, isDeleted: boolean, isInitialized: boolean, address: string, colonyAddress: string, currentVersion: number, params?: { __typename?: 'ExtensionParams', votingReputation?: { __typename?: 'VotingReputationParams', maxVoteFraction: string, totalStakeFraction: string, voterRewardFraction: string, userMinStakeFraction: string, stakePeriod: string, submitPeriod: string, revealPeriod: string, escalationPeriod: string } | null, stakedExpenditure?: { __typename?: 'StakedExpenditureParams', stakeFraction: string } | null } | null } | null> } | null };
 
 export type GetPrivateBetaCodeInviteValidityQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9993,7 +9417,7 @@ export type GetColonyContributorQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null };
+export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null };
 
 export type GetColonyContributorsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -10003,7 +9427,7 @@ export type GetColonyContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
+export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
 
 export type GetContributorsByAddressQueryVariables = Exact<{
   contributorAddress: Scalars['ID'];
@@ -10023,7 +9447,7 @@ export type SearchColonyContributorsQueryVariables = Exact<{
 }>;
 
 
-export type SearchColonyContributorsQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null, nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
+export type SearchColonyContributorsQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null, nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
 
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
@@ -10076,7 +9500,7 @@ export type GetUserByUserOrLiquidationAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null } | null> } | null };
+export type GetUserByUserOrLiquidationAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null, getUserByLiquidationAddress?: { __typename?: 'ModelLiquidationAddressConnection', items: Array<{ __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
 export type GetReputationMiningCycleMetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10129,14 +9553,6 @@ export type GetColonyHistoricRoleRolesQueryVariables = Exact<{
 
 
 export type GetColonyHistoricRoleRolesQuery = { __typename?: 'Query', getColonyHistoricRole?: { __typename?: 'ColonyHistoricRole', role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null } | null };
-
-export type GetMultiSigRolesForDomainQueryVariables = Exact<{
-  domainId: Scalars['ID'];
-  filter: ModelColonyRoleFilterInput;
-}>;
-
-
-export type GetMultiSigRolesForDomainQuery = { __typename?: 'Query', getRoleByDomainAndColony?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null };
 
 export type GetUserStakesQueryVariables = Exact<{
   userAddress: Scalars['ID'];
@@ -10199,12 +9615,20 @@ export type GetTransactionQueryVariables = Exact<{
 
 export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
 
+export type GetPendingTransactionsQueryVariables = Exact<{
+  userAddress: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
+
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;
 
 
-export type GetUserByAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null };
+export type GetUserByAddressQuery = { __typename?: 'Query', getUserByAddress?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null };
 
 export type GetUserReputationQueryVariables = Exact<{
   input: GetUserReputationInput;
@@ -10218,7 +9642,7 @@ export type GetUserByNameQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByNameQuery = { __typename?: 'Query', getProfileByUsername?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } } | null> } | null };
+export type GetUserByNameQuery = { __typename?: 'Query', getProfileByUsername?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null };
 
 export type GetUsersQueryVariables = Exact<{
   filter?: InputMaybe<ModelUserFilterInput>;
@@ -10226,7 +9650,7 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', listUsers?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId?: string | null } | null } | null> } | null };
+export type GetUsersQuery = { __typename?: 'Query', listUsers?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null> } | null };
 
 export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10366,7 +9790,6 @@ export const ContributorRolesFragmentDoc = gql`
     id
     metadata {
       name
-      color
     }
     nativeId
   }
@@ -10376,7 +9799,6 @@ export const ContributorRolesFragmentDoc = gql`
   role_3
   role_5
   role_6
-  isMultiSig
   id
 }
     `;
@@ -10389,7 +9811,6 @@ export const ContributorReputationFragmentDoc = gql`
     id
     metadata {
       name
-      color
     }
     nativeId
   }
@@ -10694,8 +10115,6 @@ export const ExpenditureFragmentDoc = gql`
     stages {
       ...ExpenditureStage
     }
-    expectedNumberOfPayouts
-    expectedNumberOfTokens
   }
   finalizedAt
   createdAt
@@ -10765,20 +10184,6 @@ export const LiquidationAddressFragmentDoc = gql`
     ...User
   }
   liquidationAddress
-}
-    ${UserFragmentDoc}`;
-export const ColonyUserRoleFragmentDoc = gql`
-    fragment ColonyUserRole on ColonyRole {
-  id
-  targetUser {
-    ...User
-  }
-  targetAddress
-  role_1
-  role_2
-  role_3
-  role_5
-  role_6
 }
     ${UserFragmentDoc}`;
 export const UserDisplayFragmentDoc = gql`
@@ -10908,7 +10313,6 @@ export const ColonyRoleFragmentDoc = gql`
   role_3
   role_5
   role_6
-  isMultiSig
 }
     `;
 export const ColonyFragmentDoc = gql`
@@ -11007,13 +10411,6 @@ export const ExtensionFragmentDoc = gql`
     stakedExpenditure {
       stakeFraction
     }
-    multiSig {
-      colonyThreshold
-      domainThresholds {
-        domainId
-        domainThreshold
-      }
-    }
   }
 }
     `;
@@ -11106,57 +10503,6 @@ export const SafeTransactionFragmentDoc = gql`
 }
     ${SafeFragmentDoc}
 ${SafeTransactionDataFragmentDoc}`;
-export const MultiSigUserSignatureFragmentDoc = gql`
-    fragment MultiSigUserSignature on MultiSigUserSignature {
-  id
-  role
-  userAddress
-  user {
-    ...User
-  }
-  multiSigId
-  vote
-  createdAt
-  updatedAt
-}
-    ${UserFragmentDoc}`;
-export const ColonyMultiSigFragmentDoc = gql`
-    fragment ColonyMultiSig on ColonyMultiSig {
-  id
-  nativeMultiSigId
-  multiSigDomain {
-    ...Domain
-  }
-  createdAt
-  multiSigDomainId
-  nativeMultiSigDomainId
-  requiredPermissions
-  transactionHash
-  isExecuted
-  hasActionCompleted
-  isRejected
-  hasActionCompleted
-  isDecision
-  executedAt
-  signatures {
-    items {
-      ...MultiSigUserSignature
-    }
-  }
-  executedAt
-  executedBy
-  executedByUser {
-    ...UserDisplay
-  }
-  rejectedAt
-  rejectedBy
-  rejectedByUser {
-    ...UserDisplay
-  }
-}
-    ${DomainFragmentDoc}
-${MultiSigUserSignatureFragmentDoc}
-${UserDisplayFragmentDoc}`;
 export const ApprovedTokenChangesFragmentDoc = gql`
     fragment ApprovedTokenChanges on ApprovedTokenChanges {
   added
@@ -11236,7 +10582,6 @@ export const ColonyActionFragmentDoc = gql`
     role_5
     role_6
   }
-  rolesAreMultiSig
   individualEvents
   isMotion
   payments {
@@ -11285,11 +10630,6 @@ export const ColonyActionFragmentDoc = gql`
   members
   rootHash
   expenditureId
-  isMultiSig
-  multiSigId
-  multiSigData {
-    ...ColonyMultiSig
-  }
   approvedTokenChanges {
     ...ApprovedTokenChanges
   }
@@ -11314,7 +10654,6 @@ ${DomainMetadataFragmentDoc}
 ${AnnotationFragmentDoc}
 ${ColonyDecisionFragmentDoc}
 ${SafeTransactionFragmentDoc}
-${ColonyMultiSigFragmentDoc}
 ${ApprovedTokenChangesFragmentDoc}`;
 export const UserStakeFragmentDoc = gql`
     fragment UserStake on UserStake {
@@ -12245,73 +11584,6 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-<<<<<<< HEAD
-export const InitializeUserDocument = gql`
-    mutation InitializeUser($input: InitializeUserInput!) {
-  initializeUser(input: $input) {
-    failedTransactions {
-      id
-      status
-    }
-  }
-}
-    `;
-export type InitializeUserMutationFn = Apollo.MutationFunction<InitializeUserMutation, InitializeUserMutationVariables>;
-
-/**
- * __useInitializeUserMutation__
- *
- * To run a mutation, you first call `useInitializeUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInitializeUserMutation` returns a tuple that includes:
-=======
-export const CreateNotificationsDataDocument = gql`
-    mutation CreateNotificationsData($input: CreateNotificationsDataInput!) {
-  createNotificationsData(input: $input) {
-    id
-  }
-}
-    `;
-export type CreateNotificationsDataMutationFn = Apollo.MutationFunction<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
-
-/**
- * __useCreateNotificationsDataMutation__
- *
- * To run a mutation, you first call `useCreateNotificationsDataMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNotificationsDataMutation` returns a tuple that includes:
->>>>>>> f7100a3e2 (Create magicbell user on app load if needed)
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
-<<<<<<< HEAD
- * const [initializeUserMutation, { data, loading, error }] = useInitializeUserMutation({
-=======
- * const [createNotificationsDataMutation, { data, loading, error }] = useCreateNotificationsDataMutation({
->>>>>>> f7100a3e2 (Create magicbell user on app load if needed)
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-<<<<<<< HEAD
-export function useInitializeUserMutation(baseOptions?: Apollo.MutationHookOptions<InitializeUserMutation, InitializeUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InitializeUserMutation, InitializeUserMutationVariables>(InitializeUserDocument, options);
-      }
-export type InitializeUserMutationHookResult = ReturnType<typeof useInitializeUserMutation>;
-export type InitializeUserMutationResult = Apollo.MutationResult<InitializeUserMutation>;
-export type InitializeUserMutationOptions = Apollo.BaseMutationOptions<InitializeUserMutation, InitializeUserMutationVariables>;
-=======
-export function useCreateNotificationsDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>(CreateNotificationsDataDocument, options);
-      }
-export type CreateNotificationsDataMutationHookResult = ReturnType<typeof useCreateNotificationsDataMutation>;
-export type CreateNotificationsDataMutationResult = Apollo.MutationResult<CreateNotificationsDataMutation>;
-export type CreateNotificationsDataMutationOptions = Apollo.BaseMutationOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
->>>>>>> f7100a3e2 (Create magicbell user on app load if needed)
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
@@ -12736,41 +12008,6 @@ export function useGetUserLiquidationAddressLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetUserLiquidationAddressQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressQuery>;
 export type GetUserLiquidationAddressLazyQueryHookResult = ReturnType<typeof useGetUserLiquidationAddressLazyQuery>;
 export type GetUserLiquidationAddressQueryResult = Apollo.QueryResult<GetUserLiquidationAddressQuery, GetUserLiquidationAddressQueryVariables>;
-export const GetGatewayFeeDocument = gql`
-    query GetGatewayFee {
-  bridgeGetGatewayFee {
-    transactionFeePercentage
-    success
-  }
-}
-    `;
-
-/**
- * __useGetGatewayFeeQuery__
- *
- * To run a query within a React component, call `useGetGatewayFeeQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGatewayFeeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetGatewayFeeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetGatewayFeeQuery(baseOptions?: Apollo.QueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
-      }
-export function useGetGatewayFeeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>(GetGatewayFeeDocument, options);
-        }
-export type GetGatewayFeeQueryHookResult = ReturnType<typeof useGetGatewayFeeQuery>;
-export type GetGatewayFeeLazyQueryHookResult = ReturnType<typeof useGetGatewayFeeLazyQuery>;
-export type GetGatewayFeeQueryResult = Apollo.QueryResult<GetGatewayFeeQuery, GetGatewayFeeQueryVariables>;
 export const GetFullColonyByAddressDocument = gql`
     query GetFullColonyByAddress($address: ID!) {
   getColonyByAddress(id: $address) {
@@ -12920,53 +12157,6 @@ export function useGetMetacolonyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetMetacolonyQueryHookResult = ReturnType<typeof useGetMetacolonyQuery>;
 export type GetMetacolonyLazyQueryHookResult = ReturnType<typeof useGetMetacolonyLazyQuery>;
 export type GetMetacolonyQueryResult = Apollo.QueryResult<GetMetacolonyQuery, GetMetacolonyQueryVariables>;
-export const GetColonyRootRolesDocument = gql`
-    query GetColonyRootRoles($colonyAddress: ID!) {
-  getColony(id: $colonyAddress) {
-    id
-    roles(filter: {role_1: {eq: true}}) {
-      items {
-        targetAddress
-        role_1
-        domain {
-          nativeId
-        }
-        targetUser {
-          id
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetColonyRootRolesQuery__
- *
- * To run a query within a React component, call `useGetColonyRootRolesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetColonyRootRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetColonyRootRolesQuery({
- *   variables: {
- *      colonyAddress: // value for 'colonyAddress'
- *   },
- * });
- */
-export function useGetColonyRootRolesQuery(baseOptions: Apollo.QueryHookOptions<GetColonyRootRolesQuery, GetColonyRootRolesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyRootRolesQuery, GetColonyRootRolesQueryVariables>(GetColonyRootRolesDocument, options);
-      }
-export function useGetColonyRootRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyRootRolesQuery, GetColonyRootRolesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyRootRolesQuery, GetColonyRootRolesQueryVariables>(GetColonyRootRolesDocument, options);
-        }
-export type GetColonyRootRolesQueryHookResult = ReturnType<typeof useGetColonyRootRolesQuery>;
-export type GetColonyRootRolesLazyQueryHookResult = ReturnType<typeof useGetColonyRootRolesLazyQuery>;
-export type GetColonyRootRolesQueryResult = Apollo.QueryResult<GetColonyRootRolesQuery, GetColonyRootRolesQueryVariables>;
 export const GetColonyExtensionsDocument = gql`
     query GetColonyExtensions($colonyAddress: ID!) {
   getColony(id: $colonyAddress) {
@@ -14025,44 +13215,6 @@ export function useGetColonyHistoricRoleRolesLazyQuery(baseOptions?: Apollo.Lazy
 export type GetColonyHistoricRoleRolesQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesQuery>;
 export type GetColonyHistoricRoleRolesLazyQueryHookResult = ReturnType<typeof useGetColonyHistoricRoleRolesLazyQuery>;
 export type GetColonyHistoricRoleRolesQueryResult = Apollo.QueryResult<GetColonyHistoricRoleRolesQuery, GetColonyHistoricRoleRolesQueryVariables>;
-export const GetMultiSigRolesForDomainDocument = gql`
-    query GetMultiSigRolesForDomain($domainId: ID!, $filter: ModelColonyRoleFilterInput!) {
-  getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
-    items {
-      ...ColonyUserRole
-    }
-  }
-}
-    ${ColonyUserRoleFragmentDoc}`;
-
-/**
- * __useGetMultiSigRolesForDomainQuery__
- *
- * To run a query within a React component, call `useGetMultiSigRolesForDomainQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMultiSigRolesForDomainQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetMultiSigRolesForDomainQuery({
- *   variables: {
- *      domainId: // value for 'domainId'
- *      filter: // value for 'filter'
- *   },
- * });
- */
-export function useGetMultiSigRolesForDomainQuery(baseOptions: Apollo.QueryHookOptions<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>(GetMultiSigRolesForDomainDocument, options);
-      }
-export function useGetMultiSigRolesForDomainLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>(GetMultiSigRolesForDomainDocument, options);
-        }
-export type GetMultiSigRolesForDomainQueryHookResult = ReturnType<typeof useGetMultiSigRolesForDomainQuery>;
-export type GetMultiSigRolesForDomainLazyQueryHookResult = ReturnType<typeof useGetMultiSigRolesForDomainLazyQuery>;
-export type GetMultiSigRolesForDomainQueryResult = Apollo.QueryResult<GetMultiSigRolesForDomainQuery, GetMultiSigRolesForDomainQueryVariables>;
 export const GetUserStakesDocument = gql`
     query GetUserStakes($userAddress: ID!) {
   getUserStakes(userAddress: $userAddress, limit: 10000, sortDirection: DESC) {
@@ -14372,6 +13524,49 @@ export function useGetTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQuery>;
 export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransactionLazyQuery>;
 export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
+export const GetPendingTransactionsDocument = gql`
+    query GetPendingTransactions($userAddress: ID!, $nextToken: String) {
+  getTransactionsByUserAndStatus(
+    from: {eq: $userAddress}
+    status: PENDING
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+
+/**
+ * __useGetPendingTransactionsQuery__
+ *
+ * To run a query within a React component, call `useGetPendingTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPendingTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPendingTransactionsQuery({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *      nextToken: // value for 'nextToken'
+ *   },
+ * });
+ */
+export function useGetPendingTransactionsQuery(baseOptions: Apollo.QueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
+      }
+export function useGetPendingTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
+        }
+export type GetPendingTransactionsQueryHookResult = ReturnType<typeof useGetPendingTransactionsQuery>;
+export type GetPendingTransactionsLazyQueryHookResult = ReturnType<typeof useGetPendingTransactionsLazyQuery>;
+export type GetPendingTransactionsQueryResult = Apollo.QueryResult<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>;
 export const GetUserByAddressDocument = gql`
     query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {
