@@ -138,7 +138,7 @@ export const mapColonyActionToExpectedFormat = ({
   expenditureData,
 }: {
   actionData: ColonyAction;
-  colony: Pick<Colony, 'nativeToken'>;
+  colony: Pick<Colony, 'nativeToken' | 'tokens'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
 }) => {

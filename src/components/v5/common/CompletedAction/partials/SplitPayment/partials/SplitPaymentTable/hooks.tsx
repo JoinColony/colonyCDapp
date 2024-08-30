@@ -9,9 +9,8 @@ import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import SplitPaymentPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/partials/SplitPaymentPayoutsTotal/SplitPaymentPayoutsTotal.tsx';
 import { calculatePercentageValue } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
-
-import AmountField from '../../../PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
-import RecipientField from '../../../PaymentBuilder/partials/PaymentBuilderTable/partials/RecipientField/RecipientField.tsx';
+import AmountField from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/AmountField.tsx';
+import RecipientField from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/RecipientField/RecipientField.tsx';
 
 import { type SplitPaymentTableModel } from './types.ts';
 
@@ -45,7 +44,10 @@ export const useGetSplitPaymentColumns = (
               <div className="h-4 w-full overflow-hidden rounded skeleton" />
             </div>
           ) : (
-            <RecipientField address={row.original.recipient} />
+            <RecipientField
+              address={row.original.recipient}
+              isLoading={!!isLoading}
+            />
           ),
         footer: () => (
           <span className="flex min-h-[1.875rem] items-center text-gray-400 text-4">
