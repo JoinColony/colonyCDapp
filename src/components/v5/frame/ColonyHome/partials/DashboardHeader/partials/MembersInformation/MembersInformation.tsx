@@ -42,7 +42,7 @@ const MembersInformation = () => {
   }));
 
   return (
-    <div className="flex items-center gap-3.5 pl-4 text-sm">
+    <div className="flex items-center gap-3.5 pl-2 text-sm">
       <Link
         className="flex items-center gap-3.5 md:hover:text-blue-400"
         to={{ pathname: COLONY_MEMBERS_ROUTE, search: search || '' }}
