@@ -2,9 +2,9 @@ import { apolloClient } from '~apollo';
 import {
   GetColonyContributorDocument,
   type GetColonyContributorQuery,
-  GetColonyContributorsDocument,
-  type GetColonyContributorsQuery,
   type Profile,
+  SearchColonyContributorsDocument,
+  type SearchColonyContributorsQuery,
 } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
 import { merge } from '~utils/lodash.ts';
@@ -44,19 +44,19 @@ const updateContributorQueries = (
 ) => {
   apolloClient.cache.updateQuery(
     {
-      query: GetColonyContributorsDocument,
+      query: SearchColonyContributorsDocument,
       variables: {
         colonyAddress,
       },
     },
     (
-      data: GetColonyContributorsQuery | null,
-    ): GetColonyContributorsQuery | null => {
-      if (!data?.getContributorsByColony) {
+      data: SearchColonyContributorsQuery | null,
+    ): SearchColonyContributorsQuery | null => {
+      if (!data?.searchColonyContributors) {
         return null;
       }
 
-      const modifiedContributors = data.getContributorsByColony.items.map(
+      const modifiedContributors = data.searchColonyContributors.items.map(
         (contributor) => {
           if (!contributor) {
             return contributor;
@@ -77,8 +77,8 @@ const updateContributorQueries = (
 
       return {
         ...data,
-        getContributorsByColony: {
-          ...data.getContributorsByColony,
+        searchColonyContributors: {
+          ...data.searchColonyContributors,
           items: modifiedContributors,
         },
       };
