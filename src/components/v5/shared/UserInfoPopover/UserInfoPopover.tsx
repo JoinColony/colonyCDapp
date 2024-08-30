@@ -11,6 +11,7 @@ import { useMobile } from '~hooks/index.ts';
 import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { getColonyContributorId } from '~utils/members.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
@@ -29,6 +30,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
   children,
   popperOptions,
   withVerifiedBadge = true,
+  withUserName,
 }) => {
   const isMobile = useMobile();
   const [isOpen, setIsOpen] = useState(false);
@@ -113,7 +115,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
       {typeof children === 'function'
         ? children(resolvedUser ?? undefined)
         : children}
-
+      {withUserName && <>{userName || splitWalletAddress(walletAddress)}</>}
       {withVerifiedBadge && isVerified && (
         <CircleWavyCheck
           size={14}
@@ -172,7 +174,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
       ) : (
         <>
           {isTooltipVisible && (
-            <div ref={registerContainerRef}>
+            <span ref={registerContainerRef}>
               <PopoverBase
                 setTooltipRef={setTooltipRef}
                 tooltipProps={getTooltipProps}
@@ -192,7 +194,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
               >
                 {content}
               </PopoverBase>
-            </div>
+            </span>
           )}
         </>
       )}

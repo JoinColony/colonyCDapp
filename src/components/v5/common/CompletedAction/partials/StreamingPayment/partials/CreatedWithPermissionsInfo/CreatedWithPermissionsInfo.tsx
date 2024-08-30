@@ -7,19 +7,15 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
-import { type ActionWithPermissionsInfoProps } from './types.ts';
+import { type CreatedWithPermissionsInfoProps } from './types.ts';
 
 const displayName =
-  'v5.common.CompletedAction.partials.ActionWithPermissionsInfo';
+  'v5.common.CompletedAction.partials.CreatedWithPermissionsInfo';
 
-const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
-  action,
+const CreatedWithPermissionsInfo: FC<CreatedWithPermissionsInfoProps> = ({
+  userAdddress,
+  createdAt,
 }) => {
-  if (!action) {
-    return null;
-  }
-
-  const { createdAt, initiatorAddress } = action ?? {};
   const formattedDate = formatDate(createdAt);
 
   return (
@@ -44,19 +40,18 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                   id: 'action.executed.permissions.overview',
                 })}
               </h4>
-              {initiatorAddress && (
+              {userAdddress && (
                 <>
-                  <div className="mt-2 flex items-center gap-2">
+                  <div className="mt-2 flex items-center justify-between gap-2">
                     <span className="text-sm text-gray-600">
                       {formatText({
                         id: 'action.executed.permissions.member',
                       })}
                     </span>
-                    <div className="ml-auto">
+                    <div>
                       <UserPopover
                         size={18}
-                        textClassName="text-sm"
-                        walletAddress={initiatorAddress}
+                        walletAddress={userAdddress || ''}
                       />
                     </div>
                   </div>
@@ -66,7 +61,7 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                         id: 'action.executed.permissions.permission',
                       })}
                     </span>
-                    <PermissionRow contributorAddress={initiatorAddress} />
+                    <PermissionRow contributorAddress={userAdddress} />
                   </div>
                 </>
               )}
@@ -88,5 +83,5 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   );
 };
 
-ActionWithPermissionsInfo.displayName = displayName;
-export default ActionWithPermissionsInfo;
+CreatedWithPermissionsInfo.displayName = displayName;
+export default CreatedWithPermissionsInfo;

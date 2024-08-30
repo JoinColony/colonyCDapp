@@ -1134,6 +1134,7 @@
     "actionSidebar.teamPurpose": "Team purpose",
     "actionSidebar.teamName": "Team name",
     "actionSidebar.teamColour": "Team colour",
+    "actionSidebar.limit": "Limit",
     "actionSidebar.amountPer": "Amount per",
     "actionSidebar.amountPer.placeholder": "Select period",
     "actionSidebar.amountPer.options.title": "Select amount per period",
@@ -1922,5 +1923,13 @@
     "multiSig.rejectAction": "Reject action",
     "multiSig.shareAction": "Share action",
     "streamingPayment.description.placeholder": "Streaming Payment to a single recipient by {initiator}",
-    "streamingPayment.description.days": "{days} {days, plural, =1 {day} other {days}}"
+    "streamingPayment.description.days": "{days} {days, plural, =1 {day} other {days}}",
+    "streamingPayment.status.active": "Active",
+    "streamingPayment.status.notStarted": "Not started",
+    "streamingPayment.status.ended": "Ended",
+    "streamingPayment.status.cancelled": "Cancelled",
+    "streamingPayment.status.limitReached": "Limit reached",
+    "action.createdAt.todayAt": "Today at {time}",
+    "action.createdAt.yesterdayAt": "Yesterday at {time}",
+    "action.createdAt.at": "{date} at {time}"
 }

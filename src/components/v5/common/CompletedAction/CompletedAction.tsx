@@ -7,6 +7,7 @@ import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
+import { type UseGetStreamingPaymentDataReturnType } from '../ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
@@ -24,6 +25,8 @@ import RemoveVerifiedMembers from './partials/RemoveVerifiedMembers/index.ts';
 import SetUserRoles from './partials/SetUserRoles/index.ts';
 import SimplePayment from './partials/SimplePayment/index.ts';
 import SplitPayment from './partials/SplitPayment/SplitPayment.tsx';
+import StreamingPaymentWidget from './partials/StreamingPayment/partials/StreamingPaymentWidget/StreamingPaymentWidget.tsx';
+import StreamingPayment from './partials/StreamingPayment/StreamingPayment.tsx';
 import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
@@ -31,11 +34,18 @@ import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
   action: ColonyAction;
+  streamingPayment: Omit<
+    UseGetStreamingPaymentDataReturnType,
+    'startPolling' | 'stopPolling'
+  >;
 }
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({ action }: CompletedActionProps) => {
+const CompletedAction = ({
+  action,
+  streamingPayment,
+}: CompletedActionProps) => {
   const { colony } = useColonyContext();
 
   const actionType = getExtendedActionType(action, colony.metadata);
@@ -114,6 +124,13 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <ManageTokens action={action} />;
       case ExtendedColonyActionType.SplitPayment:
         return <SplitPayment action={action} />;
+      case ColonyActionType.CreateStreamingPayment:
+        return (
+          <StreamingPayment
+            action={action}
+            streamingPayment={streamingPayment}
+          />
+        );
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -153,6 +170,13 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.CreateExpenditure:
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
+      case ColonyActionType.CreateStreamingPayment:
+        return (
+          <StreamingPaymentWidget
+            action={action}
+            streamingPayment={streamingPayment}
+          />
+        );
       default:
         return <PermissionSidebar transactionId={action.transactionHash} />;
     }
