@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
+import { formatText } from '~utils/intl.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 const displayName =
@@ -15,9 +17,9 @@ const MembersInformation = () => {
   const selectedDomain = useGetSelectedDomainFilter();
   const nativeDomainId = selectedDomain?.nativeId;
   const {
-    totalMemberCount,
     loading: membersLoading,
     filteredMembers,
+    followersCount,
   } = useMemberContext();
 
   const selectedMembers = nativeDomainId
@@ -50,26 +52,33 @@ const MembersInformation = () => {
           size={24}
           items={allMembers}
           showRemainingAvatars={false}
+          isLoading={membersLoading}
         />
-        <p>
-          <span className="font-semibold">
-            {membersLoading ? '-' : selectedMembers.length}
-          </span>{' '}
-          members
-        </p>
+        <LoadingSkeleton
+          isLoading={membersLoading}
+          className="h-4 w-[70px] rounded"
+        >
+          <p>
+            <span className="font-semibold">{selectedMembers.length}</span>{' '}
+            {formatText({ id: 'colonyHome.members' })}
+          </p>
+        </LoadingSkeleton>
       </Link>
-      <Link
-        className="md:hover:text-blue-400"
-        // @TODO: Update this to COLONY_FOLLOWERS_ROUTE once implemented
-        to={{ pathname: COLONY_MEMBERS_ROUTE, search: search || '' }}
+      <LoadingSkeleton
+        isLoading={membersLoading}
+        className="h-4 w-[70px] rounded"
       >
-        <p>
-          <span className="font-semibold">
-            {membersLoading ? '-' : totalMemberCount}
-          </span>{' '}
-          followers
-        </p>
-      </Link>
+        <Link
+          className="md:hover:text-blue-400"
+          // @TODO: Update this to COLONY_FOLLOWERS_ROUTE once implemented
+          to={{ pathname: COLONY_MEMBERS_ROUTE, search: search || '' }}
+        >
+          <p>
+            <span className="font-semibold">{followersCount}</span>{' '}
+            {formatText({ id: 'colonyHome.followers' })}
+          </p>
+        </Link>
+      </LoadingSkeleton>
     </div>
   );
 };
