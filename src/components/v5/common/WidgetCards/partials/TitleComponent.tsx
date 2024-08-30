@@ -7,7 +7,5 @@ interface TitleProps {
 }
 
 export const TitleComponent: FC<TitleProps> = ({ title }) => (
-  <span>
-    <h3 className={titleClassName}>{title}</h3>
-  </span>
+  <h3 className={titleClassName}>{title}</h3>
 );
