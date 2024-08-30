@@ -8,17 +8,16 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import AmountField from '~v5/common/ActionSidebar/partials/AmountField/AmountField.tsx';
+import AmountPerPeriodRow from '~v5/common/ActionSidebar/partials/AmountPerPeriodRow/AmountPerPeriodRow.tsx';
+import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
+import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
+import TimeRow from '~v5/common/ActionSidebar/partials/TimeRow/TimeRow.tsx';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
-
-import AmountField from '../../AmountField/AmountField.tsx';
-import AmountPerPeriodRow from '../../AmountPerPeriodRow/AmountPerPeriodRow.tsx';
-import AmountRow from '../../AmountRow/AmountRow.tsx';
-import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
-import DecisionMethodField from '../../DecisionMethodField/DecisionMethodField.tsx';
-import Description from '../../Description/Description.tsx';
-import TeamsSelect from '../../TeamsSelect/TeamsSelect.tsx';
-import TimeRow from '../../TimeRow/TimeRow.tsx';
-import UserSelect from '../../UserSelect/UserSelect.tsx';
 
 import { useStreamingPayment } from './hooks.ts';
 

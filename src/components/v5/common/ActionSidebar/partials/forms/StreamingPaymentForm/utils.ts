@@ -1,6 +1,7 @@
 import isDate from 'date-fns/isDate';
 import { BigNumber } from 'ethers';
 
+import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
 import { StreamingPaymentEndCondition } from '~gql';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -10,13 +11,8 @@ import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-
-import {
-  ONE_DAY_IN_SECONDS,
-  ONE_HOUR_IN_SECONDS,
-} from '../../AmountPerPeriodRow/consts.ts';
-import { AmountPerInterval } from '../../AmountPerPeriodRow/types.ts';
-import { START_IMMEDIATELY_VALUE } from '../../TimeRow/consts.ts';
+import { AmountPerInterval } from '~v5/common/ActionSidebar/partials/AmountPerPeriodRow/types.ts';
+import { START_IMMEDIATELY_VALUE } from '~v5/common/ActionSidebar/partials/TimeRow/consts.ts';
 
 import { type StreamingPaymentFormValues } from './hooks.ts';
 
@@ -38,6 +34,7 @@ export const getInterval = (period: StreamingPaymentFormValues['period']) => {
 export const getStreamingPaymentPayload = (
   colony: Colony,
   values: StreamingPaymentFormValues,
+  blockTime: number | null,
 ): CreateStreamingPaymentPayload | null => {
   const {
     amount,
@@ -80,12 +77,16 @@ export const getStreamingPaymentPayload = (
     recipientAddress: recipient ?? '',
     startTimestamp:
       starts === START_IMMEDIATELY_VALUE
-        ? '0'
-        : BigNumber.from(new Date(starts).getTime()).toString(),
+        ? BigNumber.from(
+            Math.floor(blockTime ?? new Date().getTime() / 1000),
+          ).toString()
+        : BigNumber.from(
+            Math.floor(new Date(starts).getTime() / 1000),
+          ).toString(),
     tokenAddress,
     tokenDecimals: decimals,
     endTimestamp: isDate(ends)
-      ? BigNumber.from(new Date(ends).getTime()).toString()
+      ? BigNumber.from(Math.floor(new Date(ends).getTime() / 1000)).toString()
       : undefined,
     limitAmount:
       ends === StreamingPaymentEndCondition.LimitReached ? limit : undefined,

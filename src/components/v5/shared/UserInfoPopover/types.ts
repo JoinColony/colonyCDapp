@@ -20,4 +20,5 @@ export interface UserInfoPopoverProps {
   popperOptions?: PopperOptions;
   withVerifiedBadge?: boolean;
   children?: ((user?: UserFragment) => React.ReactNode) | React.ReactNode;
+  withUserName?: boolean;
 }

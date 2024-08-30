@@ -7,12 +7,12 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
-import { type FinalizeWithPermissionsInfoProps } from './types.ts';
+import { type CreatedWithPermissionsInfoProps } from './types.ts';
 
 const displayName =
-  'v5.common.CompletedAction.partials.FinalizeWithPermissionsInfo';
+  'v5.common.CompletedAction.partials.CreatedWithPermissionsInfo';
 
-const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
+const CreatedWithPermissionsInfo: FC<CreatedWithPermissionsInfoProps> = ({
   userAdddress,
   createdAt,
 }) => {
@@ -42,16 +42,15 @@ const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
               </h4>
               {userAdddress && (
                 <>
-                  <div className="mt-2 flex items-center gap-2">
+                  <div className="mt-2 flex items-center justify-between gap-2">
                     <span className="text-sm text-gray-600">
                       {formatText({
                         id: 'action.executed.permissions.member',
                       })}
                     </span>
-                    <div className="ml-auto">
+                    <div>
                       <UserPopover
                         size={18}
-                        textClassName="text-sm"
                         walletAddress={userAdddress || ''}
                       />
                     </div>
@@ -84,5 +83,5 @@ const FinalizeWithPermissionsInfo: FC<FinalizeWithPermissionsInfoProps> = ({
   );
 };
 
-FinalizeWithPermissionsInfo.displayName = displayName;
-export default FinalizeWithPermissionsInfo;
+CreatedWithPermissionsInfo.displayName = displayName;
+export default CreatedWithPermissionsInfo;
