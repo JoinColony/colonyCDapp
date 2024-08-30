@@ -14,4 +14,5 @@ export interface UserAvatarsProps {
   showRemainingAvatars?: boolean;
   remainingAvatarsCount?: number;
   withThickerBorder?: boolean;
+  isLoading?: boolean;
 }
