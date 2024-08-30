@@ -1,6 +1,7 @@
 import React from 'react';
 
-import SidebarRouteItem from '../../../partials/SidebarRouteItem/index.ts';
+import SidebarRouteItem from '~v5/shared/Navigation/Sidebar/partials/SidebarRouteItem/index.ts';
+
 import { sidebarNavigationScheme } from '../consts.ts';
 
 export const SidebarRoutesSection = () => (
