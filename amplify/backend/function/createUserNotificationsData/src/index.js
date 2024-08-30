@@ -31,6 +31,9 @@ exports.handler = async (event) => {
 
   const { id: walletAddress } = event.arguments?.input || {};
 
+  // Try to create the Magicbell user via their API.
+  // If the user already exists for whatever reason, this will still
+  // work, and will not overwrite their data.
   const response = await fetch(MAGICBELL_USERS_URL, {
     method: 'POST',
     headers: {
@@ -54,6 +57,7 @@ exports.handler = async (event) => {
     );
   }
 
+  // Try to create the notifications data for the user in our db via graphql.
   const mutation = await graphqlRequest(
     createNotificationsData,
     {
