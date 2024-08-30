@@ -34,6 +34,7 @@ import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/par
 
 import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';
+import { useGetStreamingPaymentData } from './useGetStreamingPaymentData.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
   const {
@@ -50,6 +51,15 @@ const useGetActionData = (transactionId: string | undefined) => {
     action?.expenditureId,
   );
   const allTokens = useGetAllTokens();
+  const {
+    streamingPaymentData,
+    loadingStreamingPayment,
+    paymentStatus,
+    amounts,
+    refetchStreamingPayment,
+    updateAmountsAndStatus,
+  } = useGetStreamingPaymentData(action?.expenditureId);
+
   const defaultValues = useMemo(() => {
     if (!action) {
       return undefined;
@@ -400,6 +410,14 @@ const useGetActionData = (transactionId: string | undefined) => {
     motionState,
     expenditure,
     loadingExpenditure,
+    streamingPayment: {
+      streamingPaymentData,
+      loadingStreamingPayment,
+      paymentStatus,
+      amounts,
+      refetchStreamingPayment,
+      updateAmountsAndStatus,
+    },
     startPollingForAction,
     stopPollingForAction,
   };

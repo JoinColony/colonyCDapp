@@ -3,12 +3,11 @@ import React, { useState, type FC } from 'react';
 import { useController } from 'react-hook-form';
 
 import SpecialInputBase from '~common/Extensions/SpecialInput/SpecialInputBase.tsx';
+import { ONE_DAY_IN_SECONDS } from '~constants/time.ts';
 import { useMobile } from '~hooks';
+import { AmountPerInterval } from '~v5/common/ActionSidebar/partials/AmountPerPeriodRow/types.ts';
 import CardSelect from '~v5/common/Fields/CardSelect/CardSelect.tsx';
 import { FieldState } from '~v5/common/Fields/consts.ts';
-
-import { ONE_DAY_IN_SECONDS } from '../../consts.ts';
-import { AmountPerInterval } from '../../types.ts';
 
 import { type AmountPerPeriodRowFieldProps } from './types.ts';
 

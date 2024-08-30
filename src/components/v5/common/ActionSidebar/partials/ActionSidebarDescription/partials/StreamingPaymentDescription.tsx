@@ -6,14 +6,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { ColonyActionType } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { getAmountPerValue } from '~utils/streamingPayments.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
-
-import {
-  ONE_DAY_IN_SECONDS,
-  OPTIONS,
-} from '../../AmountPerPeriodRow/consts.ts';
-import { type StreamingPaymentFormValues } from '../../forms/StreamingPaymentForm/hooks.ts';
-import { getInterval } from '../../forms/StreamingPaymentForm/utils.ts';
+import { type StreamingPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/StreamingPaymentForm/hooks.ts';
+import { getInterval } from '~v5/common/ActionSidebar/partials/forms/StreamingPaymentForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 import RecipientUser from './RecipientUser.tsx';
@@ -62,14 +58,7 @@ export const StreamingPaymentDescription = () => {
         amount: <Numeral value={amount} />,
         period:
           period && interval
-            ? OPTIONS[0].options.find(({ value }) => value === period.interval)
-                ?.label ||
-              formatText(
-                { id: 'streamingPayment.description.days' },
-                {
-                  days: interval / ONE_DAY_IN_SECONDS,
-                },
-              )
+            ? getAmountPerValue(interval.toString()).toLowerCase()
             : formatText({
                 id: 'actionSidebar.amountPer.options.week',
               }).toLowerCase(),
