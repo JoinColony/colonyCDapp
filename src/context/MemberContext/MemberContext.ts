@@ -9,6 +9,8 @@ export const MemberContext = createContext<
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
       totalMembers: ColonyContributor[];
+      followersCount: number;
+      followers: ColonyContributor[];
       pagedMembers: ColonyContributor[];
       moreMembers: boolean;
       loadMoreMembers: () => void;

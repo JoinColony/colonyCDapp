@@ -18,7 +18,28 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   remainingAvatarsCount: remainingAvatarsCountProp,
   size = 20,
   withThickerBorder,
+  isLoading = false,
 }) => {
+  if (isLoading) {
+    return (
+      <div className="flex flex-shrink-0">
+        {Array.from({ length: maxAvatarsToShow }).map(() => (
+          <div
+            className={clsx(
+              'z-base -ml-3 overflow-hidden rounded-full border border-base-white',
+              {
+                'border-2': withThickerBorder,
+              },
+            )}
+            style={{ width: size, height: size }}
+          >
+            <div className="skeleton" style={{ width: size, height: size }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   const slicedAvatars = items.slice(
     0,
     calculateLastSliceIndex(maxAvatarsToShow, items),
