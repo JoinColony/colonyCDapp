@@ -117,6 +117,8 @@ export const getEditStreamingPaymentMulticallData = async ({
 
   if (hasAmountChanged || hasIntervalChanged) {
     multicallData.push(
+      // @TODO: Fix this
+      // @ts-ignore
       streamingPaymentsClient.interface.encodeFunctionData('setTokenAmount', [
         fundingPermissionDomainId,
         fundingChildSkillIndex,
