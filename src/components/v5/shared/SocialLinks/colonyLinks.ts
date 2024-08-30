@@ -72,10 +72,10 @@ export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
     LinkIcon: Scroll,
     label: formatText(MSG[ExternalLinks.Whitepaper]),
   },
-  [ExternalLinks.Youtube]: {
-    id: ExternalLinks.Youtube,
-    LinkIcon: YoutubeLogo,
-    label: formatText(MSG[ExternalLinks.Youtube]),
+  [ExternalLinks.Github]: {
+    id: ExternalLinks.Github,
+    LinkIcon: GithubLogo,
+    label: formatText(MSG[ExternalLinks.Github]),
   },
   [ExternalLinks.Discord]: {
     id: ExternalLinks.Discord,
@@ -92,10 +92,10 @@ export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
     LinkIcon: TelegramLogo,
     label: formatText(MSG[ExternalLinks.Telegram]),
   },
-  [ExternalLinks.Github]: {
-    id: ExternalLinks.Github,
-    LinkIcon: GithubLogo,
-    label: formatText(MSG[ExternalLinks.Github]),
+  [ExternalLinks.Youtube]: {
+    id: ExternalLinks.Youtube,
+    LinkIcon: YoutubeLogo,
+    label: formatText(MSG[ExternalLinks.Youtube]),
   },
   [ExternalLinks.Facebook]: {
     id: ExternalLinks.Facebook,
