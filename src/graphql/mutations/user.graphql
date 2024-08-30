@@ -22,8 +22,10 @@ mutation UpdateUser($input: UpdateUserInput!) {
   }
 }
 
-mutation CreateNotificationsData($input: CreateNotificationsDataInput!) {
-  createNotificationsData(input: $input) {
+mutation CreateUserNotificationsData(
+  $input: CreateUserNotificationsDataInput!
+) {
+  createUserNotificationsData(input: $input) {
     id
   }
 }

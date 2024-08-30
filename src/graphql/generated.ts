@@ -1717,6 +1717,12 @@ export type CreateUserInput = {
   userPrivateBetaInviteCodeId?: InputMaybe<Scalars['ID']>;
 };
 
+/** Input data for creating notifications data for a user */
+export type CreateUserNotificationsDataInput = {
+  /** Unique identifier for the user. This is the user's wallet address */
+  id: Scalars['ID'];
+};
+
 export type CreateUserStakeInput = {
   actionId: Scalars['ID'];
   amount: Scalars['String'];
@@ -4670,6 +4676,8 @@ export type Mutation = {
   /** Create a unique user within the Colony Network. Use this instead of the automatically generated `createUser` mutation */
   createUniqueUser?: Maybe<User>;
   createUser?: Maybe<User>;
+  /** Create notification data for a user */
+  createUserNotificationsData?: Maybe<NotificationsData>;
   createUserStake?: Maybe<UserStake>;
   createUserTokens?: Maybe<UserTokens>;
   createVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
@@ -5055,6 +5063,12 @@ export type MutationCreateUniqueUserArgs = {
 export type MutationCreateUserArgs = {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: CreateUserInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateUserNotificationsDataArgs = {
+  input?: InputMaybe<CreateUserNotificationsDataInput>;
 };
 
 
@@ -9461,12 +9475,12 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string } | null };
 
-export type CreateNotificationsDataMutationVariables = Exact<{
-  input: CreateNotificationsDataInput;
+export type CreateUserNotificationsDataMutationVariables = Exact<{
+  input: CreateUserNotificationsDataInput;
 }>;
 
 
-export type CreateNotificationsDataMutation = { __typename?: 'Mutation', createNotificationsData?: { __typename?: 'NotificationsData', id: string } | null };
+export type CreateUserNotificationsDataMutation = { __typename?: 'Mutation', createUserNotificationsData?: { __typename?: 'NotificationsData', id: string } | null };
 
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -11793,39 +11807,39 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const CreateNotificationsDataDocument = gql`
-    mutation CreateNotificationsData($input: CreateNotificationsDataInput!) {
-  createNotificationsData(input: $input) {
+export const CreateUserNotificationsDataDocument = gql`
+    mutation CreateUserNotificationsData($input: CreateUserNotificationsDataInput!) {
+  createUserNotificationsData(input: $input) {
     id
   }
 }
     `;
-export type CreateNotificationsDataMutationFn = Apollo.MutationFunction<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
+export type CreateUserNotificationsDataMutationFn = Apollo.MutationFunction<CreateUserNotificationsDataMutation, CreateUserNotificationsDataMutationVariables>;
 
 /**
- * __useCreateNotificationsDataMutation__
+ * __useCreateUserNotificationsDataMutation__
  *
- * To run a mutation, you first call `useCreateNotificationsDataMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNotificationsDataMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateUserNotificationsDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserNotificationsDataMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createNotificationsDataMutation, { data, loading, error }] = useCreateNotificationsDataMutation({
+ * const [createUserNotificationsDataMutation, { data, loading, error }] = useCreateUserNotificationsDataMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateNotificationsDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>) {
+export function useCreateUserNotificationsDataMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserNotificationsDataMutation, CreateUserNotificationsDataMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>(CreateNotificationsDataDocument, options);
+        return Apollo.useMutation<CreateUserNotificationsDataMutation, CreateUserNotificationsDataMutationVariables>(CreateUserNotificationsDataDocument, options);
       }
-export type CreateNotificationsDataMutationHookResult = ReturnType<typeof useCreateNotificationsDataMutation>;
-export type CreateNotificationsDataMutationResult = Apollo.MutationResult<CreateNotificationsDataMutation>;
-export type CreateNotificationsDataMutationOptions = Apollo.BaseMutationOptions<CreateNotificationsDataMutation, CreateNotificationsDataMutationVariables>;
+export type CreateUserNotificationsDataMutationHookResult = ReturnType<typeof useCreateUserNotificationsDataMutation>;
+export type CreateUserNotificationsDataMutationResult = Apollo.MutationResult<CreateUserNotificationsDataMutation>;
+export type CreateUserNotificationsDataMutationOptions = Apollo.BaseMutationOptions<CreateUserNotificationsDataMutation, CreateUserNotificationsDataMutationVariables>;
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
