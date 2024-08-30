@@ -1,7 +1,6 @@
 import React, { type PropsWithChildren, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useUserTransactionContext } from '~context/UserTransactionContext/UserTransactionContext.ts';
 import { type TransactionType } from '~redux/immutable/Transaction.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
@@ -13,7 +12,8 @@ export const TmpContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [annotation, setAnnotation] = useState('');
 
-  const { transactionAndMessageGroups } = useUserTransactionContext();
+  // const { transactionAndMessageGroups } = useUserTransactionContext();
+  const transactionAndMessageGroups = [];
 
   const navigate = useNavigate();
 
