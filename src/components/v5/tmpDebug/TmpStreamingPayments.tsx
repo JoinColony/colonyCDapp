@@ -15,7 +15,6 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
-import useStreamingPaymentAmountsLeft from '~hooks/useStreamingPaymentAmountsLeft.ts';
 import { ActionTypes } from '~redux';
 import { type ClaimStreamingPaymentPayload } from '~redux/sagas/expenditures/claimStreamingPayment.ts';
 import { type CreateStreamingPaymentPayload } from '~redux/sagas/expenditures/createStreamingPayment.ts';
@@ -31,7 +30,10 @@ import {
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { getStreamingPaymentDatabaseId } from '~utils/databaseId.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
-import { getStreamingPaymentLimit } from '~utils/streamingPayments.ts';
+import {
+  getStreamingPaymentLimit,
+  getStreamingPaymentAmountsLeft,
+} from '~utils/streamingPayments.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Select from '~v5/common/Fields/Select/Select.tsx';
@@ -143,7 +145,7 @@ const TmpStreamingPayments = () => {
   });
 
   const { amountAvailableToClaim, amountClaimedToDate } =
-    useStreamingPaymentAmountsLeft(
+    getStreamingPaymentAmountsLeft(
       streamingPayment,
       Math.floor(blockTime ?? Date.now() / 1000),
     );

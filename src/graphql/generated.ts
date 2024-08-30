@@ -11044,7 +11044,7 @@ export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: st
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
-export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null };
+export type StreamingPaymentFragment = { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null };
 
 export type StreamingPaymentChangesFragment = { __typename?: 'StreamingPaymentChanges', startTime: string, endTime: string, interval: string, amount: string };
 
@@ -11576,7 +11576,7 @@ export type GetStreamingPaymentQueryVariables = Exact<{
 }>;
 
 
-export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
+export type GetStreamingPaymentQuery = { __typename?: 'Query', getStreamingPayment?: { __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null };
 
 export type GetColonyExtensionsByColonyAddressQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -12979,6 +12979,9 @@ export const StreamingPaymentFragmentDoc = gql`
     ...Token
   }
   amount
+  isCancelled
+  isWaived
+  createdAt
   metadata {
     endCondition
     changelog {

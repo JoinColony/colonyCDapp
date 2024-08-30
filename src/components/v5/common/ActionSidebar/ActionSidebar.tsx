@@ -28,6 +28,7 @@ import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
+import FourOFourMessage from '../FourOFourMessage/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
 import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
@@ -36,6 +37,7 @@ import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.t
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
+import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
@@ -118,7 +120,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   const getSidebarContent = () => {
     if (action) {
-      return <CompletedAction action={action} />;
+      return (
+        <CompletedAction action={action} streamingPayment={streamingPayment} />
+      );
     }
 
     if (actionNotFound) {
@@ -246,22 +250,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   </button>
                   {getShareButton()}
                 </div>
-                {action &&
-                  !isMotion &&
-                  !isMultiSig &&
-                  !expenditure &&
-                  !loadingExpenditure && (
-                    <PillsBase
-                      className="bg-success-100 text-success-400"
-                      isCapitalized={false}
-                    >
-                      {formatText({ id: 'action.passed' })}
-                    </PillsBase>
-                  )}
-                {!!expenditure && (
-                  <ExpenditureActionStatusBadge
+                {action && !isLoading && (
+                  <ActionSidebarStatusPill
+                    action={action}
                     expenditure={expenditure}
-                    withAdditionalStatuses
+                    streamingPaymentStatus={streamingPayment.paymentStatus}
+                    motionState={motionState}
+                    isMotion={isMotion}
+                    isMultiSig={isMultiSig}
                   />
                 )}
                 {(!!(

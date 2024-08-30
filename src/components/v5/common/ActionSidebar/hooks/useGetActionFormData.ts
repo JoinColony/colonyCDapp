@@ -35,11 +35,20 @@ import { ModificationOption } from '../partials/forms/ManageReputationForm/const
 import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
+import { useGetStreamingPaymentData } from './useGetStreamingPaymentData.ts';
 
 const useGetActionFormData = (transactionId: string | undefined) => {
   const { action, expenditure } = useGetColonyAction(transactionId);
 
   const allTokens = useGetAllTokens();
+  const {
+    streamingPaymentData,
+    loadingStreamingPayment,
+    paymentStatus,
+    amounts,
+    refetchStreamingPayment,
+    updateAmountsAndStatus,
+  } = useGetStreamingPaymentData(action?.expenditureId);
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -396,6 +405,24 @@ const useGetActionFormData = (transactionId: string | undefined) => {
 
   return {
     defaultValues,
+    isInvalidTransactionHash,
+    loadingAction,
+    isMotion: !!action?.isMotion,
+    isMultiSig: !!action?.isMultiSig,
+    networkMotionState,
+    motionState,
+    expenditure,
+    loadingExpenditure,
+    streamingPayment: {
+      streamingPaymentData,
+      loadingStreamingPayment,
+      paymentStatus,
+      amounts,
+      refetchStreamingPayment,
+      updateAmountsAndStatus,
+    },
+    startPollingForAction,
+    stopPollingForAction,
   };
 };
 
