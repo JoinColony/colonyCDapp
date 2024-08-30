@@ -22,6 +22,7 @@ import FundsCards from './partials/FundsCards/index.ts';
 import LeaveColonyModal from './partials/LeaveColonyModal/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
 import TokenBalance from './partials/TokenBalance/index.ts';
+import TotalInOutBalance from './partials/TotalInOutBalance/TotalInOutBalance.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
 
@@ -46,10 +47,7 @@ const ColonyHome = () => {
       </div>
       <FundsCards />
       <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-3">
-        {/* @TODO: Replace this with the actual TotalInOutBalance component once #3044 is merged (or as part of a rebase, whichever comes first) */}
-        <div className="col-span-2">
-          TotalInOutBalance component placeholder
-        </div>
+        <TotalInOutBalance />
         <div className="block sm:hidden lg:block">
           <ReputationChart />
         </div>

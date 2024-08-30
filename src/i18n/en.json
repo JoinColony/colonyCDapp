@@ -1708,6 +1708,7 @@
     "dashboard.agreements.widget.noData": "There are no agreements to display.",
     "dashboard.agreements.widget.createNewAgreement": "Create a new agreement",
     "dashboard.agreements.widget.comingSoon": "Coming soon ",
+    "dashboard.totalInOut.widget.title": "Total in and out",
     "activityFeedTable.menu.view": "View action",
     "activityFeedTable.menu.share": "Share",
     "activityFeedTable.menu.viewOnNetwork": "View on {blockExplorerName}",
