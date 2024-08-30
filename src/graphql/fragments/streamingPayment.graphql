@@ -11,6 +11,9 @@ fragment StreamingPayment on StreamingPayment {
     ...Token
   }
   amount
+  isCancelled
+  isWaived
+  createdAt
   metadata {
     endCondition
   }
