@@ -16,6 +16,9 @@ const NotificationsContextProvider = ({
     useCreateUserNotificationsDataMutation();
 
   useEffect(() => {
+    // If the user has loaded, and they do not currently have notifications data with a magicbell user id
+    // then we assume they do not have their notifications data and Magicbell user created yet, so we call
+    // the lambda to make it here, and then update the user in the app context.
     if (user && !user?.notificationsData?.magicbellUserId) {
       createUserNotificationsData({
         variables: { input: { id: user.walletAddress } },
