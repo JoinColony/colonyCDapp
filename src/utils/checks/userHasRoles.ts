@@ -33,18 +33,20 @@ export const addressHasRoles = ({
     return false;
   });
 
+  const excludeInherited = requiredRolesDomain && actionRequiresMultipleRoles;
+
   const userDomainRoles = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: address || '',
     domainId: requiredRolesDomain,
-    excludeInherited: requiredRolesDomain ? actionRequiresMultipleRoles : false,
+    constraint: excludeInherited ? 'excludeInheritedRoles' : null,
   });
 
   const userMultiSigDomainRoles = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),
     userAddress: address || '',
     domainId: requiredRolesDomain,
-    excludeInherited: requiredRolesDomain ? actionRequiresMultipleRoles : false,
+    constraint: excludeInherited ? 'excludeInheritedRoles' : null,
     isMultiSig: true,
   });
 
