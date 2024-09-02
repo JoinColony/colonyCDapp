@@ -174,7 +174,7 @@ export const validationSchema = object()
             createError,
           }: TestContext,
         ) => {
-          if (member && team && formRole !== UserRole.Custom) {
+          if (member && team && formRole && formRole !== UserRole.Custom) {
             if (formRole === UserRoleModifier.Remove) {
               // SCOPE: Permissions field is set to "Remove permissions"
 
@@ -197,7 +197,7 @@ export const validationSchema = object()
                 }
               }
             } else {
-              // SCOPE: Permissions field is set to: owner | admin | payer | mod
+              // SCOPE: Permissions field IS NOT set to "Remove permissions"
 
               // If the team is set to a Parent domain
               if (team === Id.RootDomain) {
@@ -225,8 +225,8 @@ export const validationSchema = object()
                   // partially made up of the inherited permissions, we can conclude that the current
                   // form permissions are made up of inherited permissions + user-selected permissions
                   if (
-                    dbInheritedPermissions.length !==
-                    dbPermissionsForDomain.length
+                    dbInheritedPermissions?.length !==
+                    dbPermissionsForDomain?.length
                   ) {
                     // In which case, we use the generic same permission error message
                     return createError({

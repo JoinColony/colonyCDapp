@@ -4,16 +4,13 @@ import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type DeepPartial } from 'utility-types';
 
-import { getRole, UserRole } from '~constants/permissions.ts';
+import { UserRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { getUserRolesForDomain } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
-import { Authority } from '~types/authority.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
@@ -58,8 +55,6 @@ export const useManagePermissionsForm = (
     role: formRole,
   } = formValues;
 
-  const isModRoleSelected = formRole === UserRole.Mod;
-
   useEffect(() => {
     /**
      * This effect handles the population of permissions-related form values when the
@@ -76,76 +71,52 @@ export const useManagePermissionsForm = (
         setValue,
         team,
         authority,
+        roleOverride: true,
       });
     }
   }, [colony, defaultValues, setValue]);
 
   useEffect(() => {
-    if (isModRoleSelected) {
-      setValue('authority', Authority.Own);
-    }
-  }, [isModRoleSelected, setValue]);
-
-  useEffect(() => {
     const { unsubscribe } = watch(
       ({ member, team, authority, role }, { name }) => {
         if (isSubmitted) {
-          if (role === UserRoleModifier.Remove) {
-            trigger('role');
-          }
-
           if (role === UserRole.Custom) {
             trigger('permissions');
           } else {
             clearErrors('permissions');
           }
-
-          if (
-            !name ||
-            !['team', 'member', 'authority'].includes(name) ||
-            !notMaybe(team) ||
-            !notMaybe(member) ||
-            !notMaybe(authority)
-          ) {
-            return;
-          }
-
-          const isMultiSig = authority === Authority.ViaMultiSig;
-
-          const userPermissions = getUserRolesForDomain({
-            colonyRoles: extractColonyRoles(colony.roles),
-            userAddress: member,
-            domainId: Number(team),
-            excludeInherited: true,
-            isMultiSig,
-          });
-
-          const userRole = getRole(userPermissions);
-
-          setValue(
-            'role',
-            userRole.permissions.length ? userRole.role : undefined,
-          );
-
-          if (userRole.role !== UserRole.Custom) {
-            return;
-          }
-
-          configureFormRoles({
-            colony,
-            isSubmitted,
-            member,
-            role,
-            setValue,
-            team,
-            authority,
-          });
         }
+
+        if (role === UserRoleModifier.Remove) {
+          trigger('role');
+        } else {
+          clearErrors('role');
+        }
+
+        if (
+          !name ||
+          !['team', 'member', 'authority'].includes(name) ||
+          !notMaybe(team) ||
+          !notMaybe(member) ||
+          !notMaybe(authority)
+        ) {
+          return;
+        }
+
+        configureFormRoles({
+          colony,
+          isSubmitted,
+          member,
+          role,
+          setValue,
+          team,
+          authority,
+        });
       },
     );
 
     return () => unsubscribe();
-  }, [clearErrors, colony, setValue, isSubmitted, trigger, watch]);
+  }, [clearErrors, colony, isSubmitted, setValue, trigger, watch]);
 
   const isRemovingRootRoleFromRootDomain = useMemo(
     () =>

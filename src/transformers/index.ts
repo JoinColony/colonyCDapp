@@ -76,22 +76,14 @@ export const getUserRolesForDomain = ({
   colonyRoles,
   userAddress,
   domainId,
-  excludeInherited = false,
-  intersectingRoles = false,
   isMultiSig = false,
-  inheritedRoles = false,
-  dbInheritedPermissions = false,
-  onlyInheritedRoles = false,
+  constraint,
 }: {
   colonyRoles: ColonyRoleFragment[];
   userAddress: Address;
   domainId?: number;
-  excludeInherited?: boolean;
-  intersectingRoles?: boolean;
   isMultiSig?: boolean;
-  inheritedRoles?: boolean;
-  dbInheritedPermissions?: boolean;
-  onlyInheritedRoles?: boolean;
+  constraint?: 'excludeInheritedRoles' | 'onlyInheritedRoles' | null;
 }): ColonyRole[] => {
   if (!domainId) {
     return getAllUserRoles(colonyRoles, userAddress, isMultiSig);
@@ -108,15 +100,18 @@ export const getUserRolesForDomain = ({
   const userRolesInAnyDomain = getUserRolesInDomain(domainId);
   const userRolesInRootDomain = getUserRolesInDomain(Id.RootDomain);
 
-  if (onlyInheritedRoles) {
+  if (constraint === 'onlyInheritedRoles') {
     return convertRolesToArray(userRolesInRootDomain);
   }
 
-  if (excludeInherited && userRolesInAnyDomain) {
+  if (constraint === 'excludeInheritedRoles' && userRolesInAnyDomain) {
     return convertRolesToArray(userRolesInAnyDomain);
   }
 
-  if (!excludeInherited && (userRolesInAnyDomain || userRolesInRootDomain)) {
+  if (
+    constraint !== 'excludeInheritedRoles' &&
+    (userRolesInAnyDomain || userRolesInRootDomain)
+  ) {
     return Array.from(
       new Set([
         ...convertRolesToArray(userRolesInAnyDomain),
