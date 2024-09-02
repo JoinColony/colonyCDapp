@@ -1,7 +1,7 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
 import intersection from 'lodash/intersection';
 
-import { type ColonyFragment, type ColonyRoleFragment } from '~gql';
+import { type ColonyRoleFragment } from '~gql';
 import { type Address } from '~types/index.ts';
 import { notUndefined, True } from '~utils/arrays/index.ts';
 
@@ -134,33 +134,33 @@ export const getUserRolesForDomain = ({
  * @returns ColonyRole[] | null
  */
 export const getHighestTierRoleForUser = (
-  colony: ColonyFragment,
+  colonyRoles: ColonyRoleFragment[],
   userAddress: Address | undefined,
   isMultiSig = false,
 ): ColonyRole[] | null => {
   if (!userAddress) return [];
 
-  const coloniesWhereUserHasARole = colony.roles?.items.filter(
+  const domainsWhereUserHasARole = colonyRoles.filter(
     (domainRole) =>
-      isMultiSig === !!domainRole?.isMultiSig &&
       domainRole?.targetAddress === userAddress &&
+      isMultiSig === !!domainRole?.isMultiSig &&
       Object.values(domainRole).find(True),
   );
 
-  if (!coloniesWhereUserHasARole?.length) {
+  if (!domainsWhereUserHasARole?.length) {
     return null;
   }
 
-  const rootDomainRole = coloniesWhereUserHasARole?.find(
-    (colonyWhereUserHasARole) =>
-      colonyWhereUserHasARole?.domain.nativeId === Id.RootDomain,
+  const rootDomainRole = domainsWhereUserHasARole?.find(
+    (domainWhereUserHasARole) =>
+      domainWhereUserHasARole?.domain.nativeId === Id.RootDomain,
   );
 
   if (rootDomainRole) {
     return convertRolesToArray(rootDomainRole);
   }
 
-  const result = coloniesWhereUserHasARole.reduce(
+  const result = domainsWhereUserHasARole.reduce(
     (maxObj, currentObj) =>
       Object.values(currentObj ?? {}).filter(True).length >
       Object.values(maxObj ?? {}).filter(True).length

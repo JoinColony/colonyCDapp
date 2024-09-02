@@ -47,7 +47,7 @@ export const getMembersList = (
     });
 
     const highestTierRole = getHighestTierRoleForUser(
-      colony,
+      colonyRoles,
       contributorAddress,
     );
 
@@ -60,7 +60,7 @@ export const getMembersList = (
     )?.reputationPercentage;
 
     const domainMultiSigRoles = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
+      colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       intersectingRoles: true,
@@ -72,7 +72,7 @@ export const getMembersList = (
       : undefined;
 
     const domainMultiSigRolesWithoutInherited = getUserRolesForDomain({
-      colonyRoles: extractColonyRoles(colony.roles),
+      colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
       excludeInherited: true,
@@ -80,13 +80,13 @@ export const getMembersList = (
     });
 
     const highestTierMultiSigRole = getHighestTierRoleForUser(
-      colony,
+      colonyRoles,
       contributorAddress,
       true,
     );
 
     const highestTierMultiSigRoleMeta = highestTierMultiSigRole
-      ? getRole(highestTierMultiSigRole)
+      ? getRole(highestTierMultiSigRole, true)
       : undefined;
 
     return {
@@ -104,7 +104,7 @@ export const getMembersList = (
       multiSigRole: isAllTeamsSelected
         ? highestTierMultiSigRoleMeta
         : domainMultiSigRolesMeta,
-      isMultisigRoleInherited:
+      isMultiSigRoleInherited:
         isAllTeamsSelected || selectedTeamId === Id.RootDomain
           ? false
           : !domainMultiSigRolesWithoutInherited.length,
