@@ -34,24 +34,28 @@ exports.handler = async (event) => {
   // Try to create the Magicbell user via their API.
   // If the user already exists for whatever reason, this will still
   // work, and will not overwrite their data.
-  const response = await fetch(MAGICBELL_USERS_URL, {
-    method: 'POST',
-    headers: {
-      'X-MAGICBELL-API-KEY': magicbellApiKey,
-      'X-MAGICBELL-API-SECRET': magicbellApiSecret,
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      user: {
-        external_id: walletAddress,
+  try {
+    const response = await fetch(MAGICBELL_USERS_URL, {
+      method: 'POST',
+      headers: {
+        'X-MAGICBELL-API-KEY': magicbellApiKey,
+        'X-MAGICBELL-API-SECRET': magicbellApiSecret,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-    }),
-  });
+      body: JSON.stringify({
+        user: {
+          external_id: walletAddress,
+        },
+      }),
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  if (data.errors) {
+    if (data.errors) {
+      throw new Error();
+    }
+  } catch (error) {
     throw new Error(
       `Could not create Magicbell user with wallet address "${walletAddress}"`,
     );
