@@ -212,3 +212,17 @@ export const chunkArray = <T>({
 
   return result;
 };
+
+/**
+ * @desc returns true if a variable is specifically true
+ * @example
+ *
+ * const trueValue = true;
+ * const letterA = 'a';
+ * const number123 = 123;
+ *
+ * const array = [trueValue, letterA, number123];
+ *
+ * array.filter(True).length; // returns 1
+ */
+export const True = <T>(value: T) => value === true;

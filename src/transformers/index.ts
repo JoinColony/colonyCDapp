@@ -3,7 +3,7 @@ import intersection from 'lodash/intersection';
 
 import { type ColonyFragment, type ColonyRoleFragment } from '~gql';
 import { type Address } from '~types/index.ts';
-import { notUndefined } from '~utils/arrays/index.ts';
+import { notUndefined, True } from '~utils/arrays/index.ts';
 
 // export const getRolesForUserAndDomain = (
 //   roles: ColonyRoles,
@@ -115,4 +115,48 @@ export const getAllUserRoles = (
   );
 
   return Array.from(new Set([...convertRolesToArray(userRolesInAnyDomain)]));
+};
+
+/**
+ * If a user has a role in the root domain, it returns the user's roles set for that domain
+ * Otherwise, it checks the user's roles set in each subdomain and returns highest tier role set
+ * @param colony
+ * @param userAddress
+ * @returns ColonyRole[] | null
+ */
+export const getHighestTierRoleForUser = (
+  colony: ColonyFragment,
+  userAddress: Address | undefined,
+): ColonyRole[] | null => {
+  if (!userAddress) return [];
+
+  const coloniesWhereUserHasARole = colony.roles?.items.filter(
+    (domainRole) =>
+      domainRole?.targetAddress === userAddress &&
+      Object.values(domainRole).find(True),
+  );
+
+  if (!coloniesWhereUserHasARole?.length) {
+    return null;
+  }
+
+  const rootDomainRole = coloniesWhereUserHasARole?.find(
+    (colonyWhereUserHasARole) =>
+      colonyWhereUserHasARole?.domain.nativeId === Id.RootDomain,
+  );
+
+  if (rootDomainRole) {
+    return convertRolesToArray(rootDomainRole);
+  }
+
+  const result = coloniesWhereUserHasARole.reduce(
+    (maxObj, currentObj) =>
+      Object.values(currentObj ?? {}).filter(True).length >
+      Object.values(maxObj ?? {}).filter(True).length
+        ? currentObj
+        : maxObj,
+    {} as ColonyRoleFragment,
+  );
+
+  return convertRolesToArray(result);
 };
