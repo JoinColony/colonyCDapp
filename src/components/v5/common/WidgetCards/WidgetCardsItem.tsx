@@ -7,8 +7,7 @@ import { tw } from '~utils/css/index.ts';
 import { WidgetContent } from './partials/WidgetContent.tsx';
 
 const wrapperClassName = tw`
-  flex min-h-[7.4rem] min-w-[16.5rem] items-center justify-between
-  gap-2 rounded-lg border px-6 py-6
+  mr-2 flex min-h-[7.4rem] min-w-[calc(100%-0.2rem)] flex-col justify-center rounded-lg border px-6 py-6 sm:mx-2 sm:min-w-[calc(50%-0.6rem)] lg:min-w-[calc(25%-0.8rem)]
 `;
 const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
 
@@ -18,6 +17,7 @@ interface WidgetCardsItemProps {
   variant?: WidgetCardsItemVariant;
   icon?: Icon;
   title?: React.ReactNode;
+  subTitle?: React.ReactNode;
   onClick?: () => void;
   className?: string;
 }
@@ -32,6 +32,7 @@ export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
   variant = 'default',
   icon: Icon,
   title,
+  subTitle,
   onClick,
   className,
 }) => {
@@ -43,7 +44,7 @@ export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
   );
 
   const content = (
-    <WidgetContent Icon={Icon} title={title}>
+    <WidgetContent Icon={Icon} title={title} subTitle={subTitle}>
       {children}
     </WidgetContent>
   );

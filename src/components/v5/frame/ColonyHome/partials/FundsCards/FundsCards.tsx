@@ -8,6 +8,9 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
+import { WidgetSubTitle } from './partials/WidgetSubTitle.tsx';
+import { WidgetTotalDescription } from './partials/WidgetTotalDescription.tsx';
+
 export const FundsCards = () => {
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -25,8 +28,24 @@ export const FundsCards = () => {
 
   return (
     <WidgetCards.List>
+      <WidgetCards.Item
+        title={<span className="font-semibold">Total</span>}
+        subTitle={
+          <WidgetSubTitle amount={1000} currency="usd" currencySymbol="$" />
+        }
+      >
+        <WidgetTotalDescription />
+      </WidgetCards.Item>
       {teams.map((item) => {
-        return <WidgetCards.Item key={item?.id} title={item?.metadata?.name} />;
+        return (
+          <WidgetCards.Item
+            key={item?.id}
+            title={item?.metadata?.name}
+            subTitle={
+              <WidgetSubTitle amount={1000} currency="usd" currencySymbol="$" />
+            }
+          />
+        );
       })}
       {/* Teams always will have at least 1 team by default - it is general */}
       {teams.length < 2 && (
