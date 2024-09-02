@@ -12,11 +12,11 @@ import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import { convertPeriodToHours } from '~utils/extensions.ts';
 import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -267,25 +267,19 @@ const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           [FROM_FIELD_NAME]: expenditureMetadata?.fundFromDomainNativeId,
           payments: slots?.map((slot) => {
-            if (!slot) {
-              return undefined;
-            }
-            const currentToken = getSelectedToken(
-              colony,
-              slot.payouts?.[0].tokenAddress || '',
-            );
-
-            const currentAmount = getFormattedTokenAmount(
-              slot?.payouts?.[0].amount || '0',
-              currentToken?.decimals,
+            const paymentToken = allTokens.find(
+              ({ token: currentToken }) =>
+                currentToken.tokenAddress === slot.payouts?.[0].tokenAddress,
             );
 
             return {
               recipient: slot.recipientAddress,
-              amount: currentAmount.toString(),
+              amount: moveDecimal(
+                slot.payouts?.[0].amount,
+                -getTokenDecimalsWithFallback(paymentToken?.token.decimals),
+              ),
               tokenAddress: slot.payouts?.[0].tokenAddress,
-              delay:
-                slot.claimDelay && Math.floor(Number(slot.claimDelay) / 3600),
+              delay: convertPeriodToHours(slot.claimDelay || '0'),
             };
           }),
           ...repeatableFields,
