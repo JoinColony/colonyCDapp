@@ -5,11 +5,21 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
+import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 const displayName =
   'v5.common.ColonyDashboardHeader.partials.MembersInformation';
+
+type EntityWithDomainNativeId = {
+  domain: Pick<Domain, 'nativeId'>;
+};
+
+const filterByDomainNativeId = (
+  entity: EntityWithDomainNativeId | null,
+  nativeDomainId: number,
+) => entity?.domain.nativeId === nativeDomainId;
 
 const MembersInformation = () => {
   const { search } = useLocation();
@@ -25,11 +35,11 @@ const MembersInformation = () => {
   const selectedMembers = nativeDomainId
     ? filteredMembers.filter(
         ({ roles, reputation }) =>
-          roles?.items?.find(
-            (role) => role?.domain.nativeId === nativeDomainId,
+          roles?.items?.find((role) =>
+            filterByDomainNativeId(role, nativeDomainId),
           ) ||
-          reputation?.items?.find(
-            (rep) => rep?.domain.nativeId === nativeDomainId,
+          reputation?.items?.find((rep) =>
+            filterByDomainNativeId(rep, nativeDomainId),
           ),
       )
     : filteredMembers.filter(
