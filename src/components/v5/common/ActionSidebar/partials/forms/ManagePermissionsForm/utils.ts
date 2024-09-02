@@ -161,6 +161,7 @@ export const configureFormRoles = ({
   role,
   team,
   authority,
+  roleOverride,
 }: {
   colony: ColonyFragment;
   setValue: UseFormSetValue<ManagePermissionsFormValues>;
@@ -168,44 +169,52 @@ export const configureFormRoles = ({
   member: ManagePermissionsFormValues['member'];
   team: ManagePermissionsFormValues['team'];
   role: ManagePermissionsFormValues['role'];
-  shouldPersistRole?: boolean;
-  setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
   authority: ManagePermissionsFormValues['authority'];
+  roleOverride?: boolean;
 }) => {
   const colonyRoles = extractColonyRoles(colony.roles);
 
-  const dbPermissionsForDomain = getUserRolesForDomain({
-    colonyRoles,
-    userAddress: member,
-    domainId: team,
-    intersectingRoles: true,
-    isMultiSig: authority === Authority.ViaMultiSig,
-  });
+  const isMultiSig = authority === Authority.ViaMultiSig;
 
   const dbInheritedPermissions = getUserRolesForDomain({
     colonyRoles,
     userAddress: member,
     domainId: team,
-    onlyInheritedRoles: true,
+    constraint: 'onlyInheritedRoles',
+    isMultiSig,
   });
 
-  const dbRoleMetaForDomain = getRole(dbPermissionsForDomain);
+  const dbPermissionsForDomain = getUserRolesForDomain({
+    colonyRoles,
+    userAddress: member,
+    domainId: team,
+    constraint: 'excludeInheritedRoles',
+    isMultiSig,
+  });
+
+  const finalDbPermissionsForDomain = dbPermissionsForDomain?.length
+    ? dbPermissionsForDomain
+    : dbInheritedPermissions;
+
+  const dbRoleMetaForDomain = getRole(finalDbPermissionsForDomain, isMultiSig);
   const dbRoleForDomain = dbRoleMetaForDomain.permissions.length
     ? dbRoleMetaForDomain.role
     : undefined;
 
-  const dbInheritedRoleMeta = getRole(dbInheritedPermissions);
+  const dbInheritedRoleMeta = getRole(dbInheritedPermissions, isMultiSig);
   const dbInheritedRole = dbInheritedRoleMeta.permissions.length
     ? dbInheritedRoleMeta.role
     : undefined;
 
   setValue('_dbRoleForDomain', dbRoleForDomain);
   setValue('_dbInheritedRole', dbInheritedRole);
-  setValue('_dbPermissionsForDomain', dbPermissionsForDomain);
+  setValue('_dbPermissionsForDomain', finalDbPermissionsForDomain);
   setValue('_dbInheritedPermissions', dbInheritedPermissions);
 
   if (role !== UserRole.Custom && role !== UserRoleModifier.Remove) {
-    setValue('role', dbRoleForDomain, { shouldValidate: isSubmitted });
+    setValue('role', roleOverride ? role : dbRoleForDomain, {
+      shouldValidate: isSubmitted,
+    });
   }
 
   AVAILABLE_PERMISSIONS.forEach((colonyRole) => {
