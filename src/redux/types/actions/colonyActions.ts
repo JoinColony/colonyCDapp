@@ -9,7 +9,6 @@ import {
   type DomainColor,
   type Domain,
   type Colony,
-  type ColonyObjective,
   type Safe,
   type SafeTransactionData,
 } from '~types/graphql.ts';
@@ -99,7 +98,6 @@ export type ColonyActionsActionTypes =
         colonyAvatarImage?: string;
         colonyThumbnail?: string;
         annotationMessage?: string;
-        colonyObjective?: ColonyObjective;
       },
       MetaWithSetter<object>
     >

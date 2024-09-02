@@ -8,7 +8,6 @@ import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import {
   type Expenditure,
   type Colony,
-  type ColonyObjective,
   type Domain,
   type DomainColor,
   type Safe,
@@ -186,7 +185,6 @@ export type MotionActionTypes =
         colonyDescription?: string | null;
         colonyExternalLinks?: ExternalLink[] | null;
         annotationMessage?: string;
-        colonyObjective?: ColonyObjective;
       },
       MetaWithSetter<object>
     >

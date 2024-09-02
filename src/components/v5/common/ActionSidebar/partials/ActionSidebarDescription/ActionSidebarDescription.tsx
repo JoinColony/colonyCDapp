@@ -8,7 +8,6 @@ import CreateNewDomainDescription from './partials/CreateNewDomainDescription.ts
 import EditColonyDetailsDescription from './partials/EditColonyDetailsDescription.tsx';
 import EditDomainDescription from './partials/EditDomainDescription.tsx';
 import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription.tsx';
-import ManageColonyObjectiveDescription from './partials/ManageColonyObjectiveDescription.tsx';
 import ManagePermissionsDescription from './partials/ManagePermissionsDescription.tsx';
 import ManageReputationDescription from './partials/ManageReputationDescription.tsx';
 import ManageTokensDescription from './partials/ManageTokensDescription.tsx';
@@ -41,8 +40,6 @@ const ActionSidebarDescription = () => {
       return <EditDomainDescription />;
     case Action.EnterRecoveryMode:
       return <EnterRecoveryModeDescription />;
-    case Action.ManageColonyObjectives:
-      return <ManageColonyObjectiveDescription />;
     case Action.ManagePermissions:
       return <ManagePermissionsDescription />;
     case Action.ManageTokens:

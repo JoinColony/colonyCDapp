@@ -6,7 +6,7 @@ import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
-import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import {
   getSelectedToken,
@@ -141,22 +141,6 @@ const useGetActionData = (transactionId: string | undefined) => {
             tokenAddress: token?.tokenAddress,
           },
           recipient: recipientAddress,
-          ...repeatableFields,
-        };
-      case ExtendedColonyActionType.UpdateColonyObjective:
-        return {
-          [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
-          colonyName: colony?.metadata?.displayName,
-          colonyAvatar: colony.metadata?.avatar || colony.metadata?.thumbnail,
-          colonyObjectiveTitle: isMotion
-            ? pendingColonyMetadata?.objective?.title
-            : colony.metadata?.objective?.title,
-          colonyObjectiveDescription: isMotion
-            ? pendingColonyMetadata?.objective?.description
-            : colony.metadata?.objective?.description,
-          colonyObjectiveProgress: isMotion
-            ? pendingColonyMetadata?.objective?.progress
-            : colony.metadata?.objective?.progress,
           ...repeatableFields,
         };
       case ColonyActionType.ColonyEdit:

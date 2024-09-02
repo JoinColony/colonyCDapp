@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { MAX_OBJECTIVE_DESCRIPTION_LENGTH } from '~constants/index.ts';
+import { MAX_COLONY_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
@@ -12,7 +12,6 @@ import { tw } from '~utils/css/index.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
-import ObjectiveBox from '~v5/common/ObjectiveBox/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import CopyableAddress from '~v5/shared/CopyableAddress/index.ts';
@@ -25,19 +24,6 @@ const MSG = defineMessages({
     id: `${displayName}.desciptionPlaceholder`,
     defaultMessage:
       'Enter a short description about your Colony’s main purpose.',
-  },
-  objectiveTitle: {
-    id: `${displayName}.objectiveTitle`,
-    defaultMessage: 'Current Colony Objective',
-  },
-  objectiveDescription: {
-    id: `${displayName}.objectiveDescription`,
-    defaultMessage:
-      'Colony objectives area the main goal or mission of the Colony all member’s are contributing towards. The objective appears on the main Dashboard of the Colony and progress of the goal is visible. {br} {br} Each update requires a motion progress or the correct Colony wide permissions.',
-  },
-  objectiveBoxTitle: {
-    id: `${displayName}.objectiveBoxTitle`,
-    defaultMessage: 'Current Colony objective:',
   },
 });
 
@@ -58,7 +44,6 @@ const ColonyDetailsPage: FC = () => {
     displayName: colonyDisplayName,
     description,
     externalLinks,
-    objective,
   } = metadata || {};
   const isNativeTokenLocked = !status?.nativeToken?.unlocked;
 
@@ -98,10 +83,7 @@ const ColonyDetailsPage: FC = () => {
           })}
         >
           {description && description.length > 0
-            ? multiLineTextEllipsis(
-                description,
-                MAX_OBJECTIVE_DESCRIPTION_LENGTH,
-              )
+            ? multiLineTextEllipsis(description, MAX_COLONY_DESCRIPTION_LENGTH)
             : formatMessage(MSG.descriptionPlaceholder)}
         </p>
         {externalLinks && externalLinks.length ? (
@@ -122,55 +104,6 @@ const ColonyDetailsPage: FC = () => {
             });
           }}
         />
-      </div>
-      <div
-        className={clsx(
-          'mt-6 flex flex-col items-start gap-6 p-6 sm:mt-9 sm:flex-row sm:gap-12',
-          boxClass,
-        )}
-      >
-        <div className="flex-1">
-          <h3 className="mb-4 heading-4">
-            {formatMessage(MSG.objectiveTitle)}
-          </h3>
-          <p className="text-md text-gray-600 sm:mb-6">
-            {formatMessage(MSG.objectiveDescription, { br: <br /> })}
-          </p>
-          {!isMobile && (
-            <Button
-              mode="primarySolid"
-              size="small"
-              text={{ id: 'button.manageObjective' }}
-              textValues={{ existing: !!objective?.title }}
-              onClick={() => {
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
-                });
-              }}
-            />
-          )}
-        </div>
-        <div className="w-full sm:max-w-[20.375rem]">
-          <h5 className="mb-2 text-3">
-            {formatMessage(MSG.objectiveBoxTitle)}
-          </h5>
-          <ObjectiveBox objective={objective} />
-        </div>
-        {isMobile && (
-          // @TODO: Test functionality to create objective on mobile
-          <Button
-            mode="primarySolid"
-            size="small"
-            text={{ id: 'button.manageObjective' }}
-            textValues={{ existing: !!objective?.title }}
-            isFullSize
-            onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
-              });
-            }}
-          />
-        )}
       </div>
     </div>
   );

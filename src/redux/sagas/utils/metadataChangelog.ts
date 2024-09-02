@@ -47,7 +47,6 @@ export const getUpdatedColonyMetadataChangelog = ({
   newAvatarImage,
   hasDescriptionChanged = false,
   haveExternalLinksChanged = false,
-  hasObjectiveChanged = false,
   newSafes,
 }: {
   transactionHash: string;
@@ -57,7 +56,6 @@ export const getUpdatedColonyMetadataChangelog = ({
   haveTokensChanged?: boolean;
   hasDescriptionChanged?: boolean;
   haveExternalLinksChanged?: boolean;
-  hasObjectiveChanged?: boolean;
   newSafes?: Safe[];
 }): ColonyMetadataChangelogInput[] => {
   const existingChangelog = metadata.changelog ?? [];
@@ -76,7 +74,6 @@ export const getUpdatedColonyMetadataChangelog = ({
           : newAvatarImage !== metadata.avatar,
       hasDescriptionChanged,
       haveExternalLinksChanged,
-      hasObjectiveChanged,
       newSafes: newSafes ?? currentColonySafes,
       oldSafes: currentColonySafes,
     },

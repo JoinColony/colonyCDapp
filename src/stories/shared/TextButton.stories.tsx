@@ -25,10 +25,6 @@ const meta: Meta<typeof TextButton> = {
       },
     },
   },
-  args: {
-    text: 'View objective',
-    disabled: false,
-  },
 };
 
 export default meta;

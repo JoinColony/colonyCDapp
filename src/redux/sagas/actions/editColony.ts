@@ -39,7 +39,6 @@ function* editColonyAction({
     colonyExternalLinks,
     colonyThumbnail,
     annotationMessage,
-    colonyObjective,
     customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
@@ -165,7 +164,6 @@ function* editColonyAction({
             thumbnail: colonyThumbnail,
             description: colonyDescription,
             externalLinks: colonyExternalLinks,
-            objective: colonyObjective,
             changelog: getUpdatedColonyMetadataChangelog({
               transactionHash: txHash,
               metadata: colony.metadata,
@@ -177,10 +175,6 @@ function* editColonyAction({
                 metadata?.externalLinks,
                 colonyExternalLinks,
               ),
-              hasObjectiveChanged:
-                colonyObjective === undefined
-                  ? false
-                  : !isEqual(metadata?.objective, colonyObjective),
             }),
           },
         },
