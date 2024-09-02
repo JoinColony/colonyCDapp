@@ -5,5 +5,5 @@ interface WidgetTitleProps {
 }
 
 export const WidgetTitle: FC<WidgetTitleProps> = ({ title }) => (
-  <h3 className="text-4">{title}</h3>
+  <h3 className="text-md">{title}</h3>
 );
