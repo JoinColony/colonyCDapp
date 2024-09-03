@@ -47,13 +47,11 @@ const TextButton: FC<PropsWithChildren<TextButtonProps>> = ({
             'flex items-center font-medium transition-all duration-normal hover:text-blue-400 disabled:text-gray-400',
             {
               'text-sm text-gray-900': mode === 'default',
-            },
-            {
               'text-md': mode === 'medium',
-            },
-            {
               'bold text-xs underline hover:text-blue-400':
                 mode === 'underlined',
+              'text-xs font-medium leading-[1.125rem] text-blue-400':
+                mode === 'link',
               'pointer-events-none': disabled,
               'disabled:text-gray-400': !isErrorColor,
               'text-negative-400': isErrorColor,

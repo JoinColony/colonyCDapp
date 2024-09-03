@@ -8,4 +8,5 @@ export interface AvailableToClaimCounterProps {
   decimals: number;
   tokenSymbol: string;
   getAmounts: () => void;
+  ratePerSecond: string;
 }
