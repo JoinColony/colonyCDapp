@@ -21,7 +21,6 @@ import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -29,15 +28,13 @@ import { formatText } from '~utils/intl.ts';
 // import Filter from '~v5/common/Filter';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import { AddFundsModal } from '~v5/common/Modals/AddFundsModal/AddFundsModal.tsx';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import Button from '~v5/shared/Button/index.ts';
-import CopyWallet from '~v5/shared/CopyWallet/index.ts';
 import Link from '~v5/shared/Link/index.ts';
-
-import BalanceModal from '../BalanceModal/index.ts';
 
 import BalanceFilters from './Filters/BalanceFilters/BalanceFilters.tsx';
 import { useBalanceTableColumns, useBalancesData } from './hooks.tsx';
@@ -67,7 +64,7 @@ const MSG = defineMessages({
 const BalanceTable: FC = () => {
   const data = useBalancesData();
   const {
-    colony: { nativeToken, status, colonyAddress },
+    colony: { nativeToken, status },
   } = useColonyContext();
   const { nativeToken: nativeTokenStatus } = status || {};
   const isMobile = useMobile();
@@ -85,7 +82,6 @@ const BalanceTable: FC = () => {
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
   ] = useToggle();
-  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   const columns = useBalanceTableColumns(nativeToken, nativeTokenStatus);
   const getMenuProps: TableProps<BalanceTableFieldModel>['getMenuProps'] = ({
@@ -242,24 +238,11 @@ const BalanceTable: FC = () => {
         )}
         meatBallMenuStaticSize={isMobile ? '2.25rem' : undefined}
       />
-      <BalanceModal
+
+      <AddFundsModal
         isOpen={isAddFundsModalOpened}
         onClose={toggleAddFundsModalOff}
-      >
-        <>
-          <h5 className="mb-1.5 heading-5">
-            {formatText({ id: 'balancePage.modal.title' })}
-          </h5>
-          <p className="mb-6 text-md text-gray-600">
-            {formatText({ id: 'balancePage.modal.subtitle' })}
-          </p>
-          <CopyWallet
-            isCopied={isCopied}
-            handleClipboardCopy={() => handleClipboardCopy(colonyAddress || '')}
-            value={colonyAddress || ''}
-          />
-        </>
-      </BalanceModal>
+      />
     </>
   );
 };
