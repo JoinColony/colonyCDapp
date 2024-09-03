@@ -1,6 +1,8 @@
 import { createContext, useContext } from 'react';
 
-interface NotificationsContextValues {}
+export interface NotificationsContextValues {
+  mutedColonyIds: string[];
+}
 
 export const NotificationsContext = createContext<
   NotificationsContextValues | undefined
