@@ -66,9 +66,8 @@ exports.handler = async (event) => {
     createNotificationsData,
     {
       input: {
-        id: walletAddress,
         magicbellUserId: walletAddress,
-        userId: walletAddress,
+        userAddress: walletAddress,
       },
     },
     graphqlURL,
@@ -84,6 +83,6 @@ exports.handler = async (event) => {
   }
 
   return {
-    id: walletAddress,
+    userAddress: walletAddress,
   };
 };
