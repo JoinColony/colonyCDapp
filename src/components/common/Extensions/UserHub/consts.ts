@@ -3,6 +3,7 @@ import {
   Receipt,
   Invoice,
   CreditCard,
+  Bell,
 } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
@@ -16,13 +17,17 @@ export const menuMessages = defineMessages({
     id: 'UserSubmenu.balance',
     defaultMessage: 'Balance',
   },
-  stakes: {
-    id: 'UserSubmenu.stakes',
-    defaultMessage: 'Stakes',
+  notifications: {
+    id: 'UserSubmenu.notifications',
+    defaultMessage: 'Notifications',
   },
   transactions: {
     id: 'UserSubmenu.transactions',
     defaultMessage: 'Transactions',
+  },
+  stakes: {
+    id: 'UserSubmenu.stakes',
+    defaultMessage: 'Stakes',
   },
   cryptoToFiat: {
     id: 'UserSubmenu.cryptoToFiat',
@@ -38,16 +43,22 @@ export const tabList: UserHubTabList = [
     icon: Invoice,
   },
   {
-    id: UserHubTab.Stakes,
-    label: formatText(menuMessages.stakes),
-    value: UserHubTab.Stakes,
-    icon: CoinVertical,
+    id: UserHubTab.Notifications,
+    label: formatText(menuMessages.notifications),
+    value: UserHubTab.Notifications,
+    icon: Bell,
   },
   {
     id: UserHubTab.Transactions,
     label: formatText(menuMessages.transactions),
     value: UserHubTab.Transactions,
     icon: Receipt,
+  },
+  {
+    id: UserHubTab.Stakes,
+    label: formatText(menuMessages.stakes),
+    value: UserHubTab.Stakes,
+    icon: CoinVertical,
   },
   {
     id: UserHubTab.CryptoToFiat,
