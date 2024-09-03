@@ -104,29 +104,47 @@ const buildAPIEndpoint = (
 const getStartOfDayFor = (date) =>
   formatISO(new Date(startOfDay(new Date(date))));
 
-const getFormattedIncomingFunds = (incomingFunds, parentDomainAddress) =>
+const getFormattedIncomingFunds = (incomingFunds, parentDomainId) =>
   incomingFunds.map(incomingFund => ({
     amount: incomingFund.amount,
     finalizedDate: incomingFund.updatedAt,
     token: incomingFund.token,
-    toDomainId: parentDomainAddress,
+    toDomainId: parentDomainId,
   }));
 
-const getFormattedExpenditures = (expenditures, parentDomainAddress) => {
+const getTokenAddressesFromExpenditures = (expenditures) => {
+  const tokenAddresses = [];
+  expenditures.forEach(expenditure => {
+    expenditure?.slots.forEach(slot => {
+      slot.payouts.forEach(payout => {
+        if (!tokenAddresses.includes(payout.tokenAddress)) {
+          tokenAddresses.push(payout.tokenAddress);
+        }
+      })
+    })
+  });
+
+  return tokenAddresses;
+};
+
+const getFormattedExpenditures = (expenditures, parentDomainId, tokensDecimals) => {
   const formattedExpenditures = [];
   expenditures.forEach(expenditure => {
     expenditure?.slots.forEach(slot => {
       slot.payouts.forEach(payout => {
         if (payout.isClaimed) {
+          const formattedFinalizedAt = fromUnixTime(expenditure.finalizedAt);
+          // Noticed on DEV expenditure.finalizedAt timestamp is before expenditure.createdAt
+          const finalizedDate =
+            isAfter(new Date(expenditure.createdAt), new Date(formattedFinalizedAt)) ? expenditure.createdAt : formattedFinalizedAt;
           formattedExpenditures.push({
-            fromDomainId: parentDomainAddress,
+            fromDomainId: parentDomainId,
             amount: payout.amount,
             networkFee: payout.networkFee,
-            finalizedDate: fromUnixTime(expenditure.finalizedAt),
+            finalizedDate,
             token: {
               id: payout.tokenAddress,
-              // @TODO need to get token decimals
-              decimals: 18,
+              decimals: tokensDecimals[payout.tokenAddress],
             }
           })
         }
@@ -142,6 +160,7 @@ module.exports = {
   getActionWithFinalizedDate,
   getFormattedIncomingFunds,
   getFormattedExpenditures,
+  getTokenAddressesFromExpenditures,
   getMonthsFromNow,
   getDaysFromNow,
   getMonthFormat,
