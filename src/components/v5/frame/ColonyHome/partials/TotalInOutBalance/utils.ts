@@ -44,6 +44,7 @@ export const getFormattedFullAmount = (value, prefix) => {
   const convertedValue = convertToDecimal(value, 0);
   return numbro(convertedValue?.toString()).format({
     thousandSeparated: true,
+    mantissa: 2,
     prefix,
   });
 };

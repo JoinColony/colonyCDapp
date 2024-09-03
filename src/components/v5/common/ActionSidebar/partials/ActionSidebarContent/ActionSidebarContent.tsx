@@ -306,6 +306,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
                 include: [SearchActionsDocument],
               });
             }
+            /**
+             * We need to remove all getDomainBalance queries once a payment has been completed successfully
+             */
+            client.cache.evict({
+              fieldName: 'getDomainBalance',
+            });
 
             actionFormProps?.onSuccess?.();
           }}

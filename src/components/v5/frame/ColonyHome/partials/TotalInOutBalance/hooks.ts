@@ -11,6 +11,35 @@ import { getTeamHexColor, getTeamHexSecondaryColor } from '~utils/teams.ts';
 import { CHART_CONFIG_VALUES, MSG } from './consts.ts';
 import { sortByLabel } from './utils.ts';
 
+export const useLast30DaysData = () => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+  const selectedDomain = useGetSelectedDomainFilter();
+  const { currency } = useCurrencyContext();
+  const timeframePeriod = 30;
+  const timeframeType = TimeframeType.Daily;
+  const { data, loading } = useGetDomainBalanceQuery({
+    variables: {
+      input: {
+        colonyAddress,
+        domainId: selectedDomain?.id ?? '',
+        selectedCurrency: currency,
+        timeframePeriod,
+        timeframeType,
+      },
+    },
+  });
+
+  const domainBalanceData = data?.getDomainBalance;
+
+  return {
+    loading,
+    totalIn: domainBalanceData?.totalIn ?? '0',
+    totalOut: domainBalanceData?.totalOut ?? '0',
+  };
+};
+
 export const useData = () => {
   const {
     colony: { colonyAddress },
