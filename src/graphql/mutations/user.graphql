@@ -38,3 +38,15 @@ mutation CreateUserNotificationsData(
     userAddress
   }
 }
+
+mutation UpdateUserNotificationsMutedColonies(
+  $userAddress: ID!
+  $colonyIds: [ID!]
+) {
+  updateNotificationsData(
+    input: { userAddress: $userAddress, mutedColonyIds: $colonyIds }
+  ) {
+    userAddress
+    mutedColonyIds
+  }
+}
