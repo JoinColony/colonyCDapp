@@ -42,6 +42,16 @@ input CreateUniqueUserInput {
 }
 
 """
+Input data for creating notifications data for a user
+"""
+input CreateUserNotificationsDataInput {
+  """
+  Unique identifier for the user. This is the user's wallet address
+  """
+  id: ID!
+}
+
+"""
 Input data for a user's profile metadata
 """
 input ProfileMetadataInput {
@@ -956,6 +966,12 @@ type Mutation {
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
   """
+  Create notification data for a user
+  """
+  createUserNotificationsData(
+    input: CreateUserNotificationsDataInput!
+  ): NotificationsData @function(name: "createUserNotificationsData-${env}")
+  """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
   createColonyEtherealMetadata(
@@ -1855,6 +1871,24 @@ type User @model {
   """
   liquidationAddresses: [LiquidationAddress!]
     @hasMany(indexName: "byUserAddress", fields: ["id"])
+  """
+  Notifications data for the user
+  """
+  notificationsData: NotificationsData @hasOne(fields: "id")
+}
+
+"""
+Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences.
+"""
+type NotificationsData @model {
+  """
+  Unique identifier for the user
+  """
+  userAddress: ID! @primaryKey
+  """
+  Unique identifier for the user in Magicbell
+  """
+  magicbellUserId: ID
 }
 
 """
@@ -2531,7 +2565,8 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!]
+    @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
