@@ -1557,6 +1557,8 @@
     "profilePage.customRpc": "Gnosis Chain Custom RPC",
     "wallet.information": "Wallet information",
     "advancedSettings.title": "Advanced settings",
+    "advancedSettings.manageServices.title": "Manage services",
+    "advancedSettings.manageServices.description": "If you prefer maximum decentralization, you can disable and enable certain services Colony offers.",
     "teamsPage.menu.editTeam": "Edit team",
     "teamsPage.menu.viewTeamMembers": "View team members",
     "teamsPage.menu.viewTeamActivity": "View team activity",

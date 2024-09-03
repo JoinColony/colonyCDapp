@@ -1,3 +1,4 @@
+import { Info } from '@phosphor-icons/react';
 import React, {
   type FC,
   // @BETA: Disabled for now
@@ -13,6 +14,7 @@ import { useIntl } from 'react-intl';
 // import Modal from '~v5/shared/Modal';
 
 import FeesForm from '../FeesForm/index.ts';
+import { NotificationsService } from '../NotificationsService/NotificationsService.tsx';
 // @BETA: Disabled for now
 // import RpcForm from '../RpcForm/RpcForm';
 // import { modalInformations } from './consts';
@@ -31,8 +33,20 @@ const UserAdvancedSettings: FC = () => {
         {formatMessage({ id: 'advancedSettings.title' })}
       </h4>
       <FeesForm />
+      <div className="divider" />
+      <div className="flex flex-col gap-1">
+        <div className="flex flex-row items-center gap-1.5">
+          <p className="text-gray-900 heading-5">
+            {formatMessage({ id: 'advancedSettings.manageServices.title' })}
+          </p>
+          <Info size={18} className="text-gray-400" />
+        </div>
+        <p className="text-sm font-normal text-gray-600">
+          {formatMessage({ id: 'advancedSettings.manageServices.description' })}
+        </p>
+      </div>
+      <NotificationsService />
       {/* @BETA: Disabled for noew */}
-      {/* <span className="divider" /> */}
       {/* <RpcForm /> */}
       {/* <span className="divider" /> */}
       {/* <SettingsRow */}
