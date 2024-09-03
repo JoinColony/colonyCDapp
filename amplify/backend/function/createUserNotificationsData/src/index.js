@@ -68,6 +68,8 @@ exports.handler = async (event) => {
       input: {
         magicbellUserId: walletAddress,
         userAddress: walletAddress,
+        notificationsDisabled: false,
+        mutedColonyAddresses: [],
       },
     },
     graphqlURL,
