@@ -4,14 +4,13 @@ import React, { type FC, type PropsWithChildren } from 'react';
 
 import { iconWrapperClassName } from '../styles.ts';
 
-interface IconWrapperProps {
+interface WidgetIconWrapperProps {
   Icon: Icon;
 }
 
-export const IconWrapper: FC<PropsWithChildren<IconWrapperProps>> = ({
-  Icon,
-  children,
-}) => (
+export const WidgetIconWrapper: FC<
+  PropsWithChildren<WidgetIconWrapperProps>
+> = ({ Icon, children }) => (
   <span className={clsx(iconWrapperClassName)}>
     <Icon size={18} />
     {children}
