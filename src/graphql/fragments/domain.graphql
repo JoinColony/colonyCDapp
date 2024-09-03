@@ -28,10 +28,8 @@ fragment DomainMetadata on DomainMetadata {
 }
 
 fragment DomainBalanceReturn on DomainBalanceReturn {
-  last30Days {
-    totalIn
-    totalOut
-  }
+  totalIn
+  totalOut
   timeframe {
     key
     value {
