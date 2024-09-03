@@ -2,7 +2,9 @@ import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { iconWrapperClassName } from '../styles.ts';
+import { tw } from '~utils/css/index.ts';
+
+const iconWrapperClassName = tw`flex w-full items-center justify-center gap-1`;
 
 interface WidgetIconWrapperProps {
   Icon: Icon;
