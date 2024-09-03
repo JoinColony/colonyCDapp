@@ -12,7 +12,8 @@ export type UserHubTabList = {
 
 export enum UserHubTab {
   Balance = 0,
-  Stakes = 1,
+  Notifications = 1,
   Transactions = 2,
-  CryptoToFiat = 3,
+  Stakes = 3,
+  CryptoToFiat = 4,
 }
