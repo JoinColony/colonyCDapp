@@ -22,6 +22,7 @@ import {
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
 import { sortExternalLinks } from './helpers.ts';
+import { useMuteColonyItem } from './useMuteColonyItem.ts';
 
 export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const isMobile = useMobile();
@@ -46,6 +47,8 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const externalLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks)
     : [];
+
+  const toggleMuteColonyItem = useMuteColonyItem();
 
   const menuItems: DropdownMenuGroup[] = [
     {
@@ -112,21 +115,10 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
         },
       ],
     },
-    // @BETA: Notifcations not implemented yet
-    // {
-    //   key: 'headerDropdown.section3',
-    //   items: [
-    //     {
-    //       key: 'headerDropdown.section3.notifications',
-    //       label: formatText({
-    //         id: 'dashboard.burgerMenu.item.notifications',
-    //       }),
-    //       icon: BellRinging,
-    //       // @TODO: open Notification tab when will be ready
-    //       onClick: () => {},
-    //     },
-    //   ],
-    // },
+    {
+      key: 'headerDropdown.section3',
+      items: [toggleMuteColonyItem],
+    },
     {
       key: 'headerDropdown.section4',
       items: isWatching

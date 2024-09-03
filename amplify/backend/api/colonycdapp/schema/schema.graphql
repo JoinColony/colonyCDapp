@@ -2030,6 +2030,10 @@ type NotificationsData @model {
   Unique identifier for the user in Magicbell
   """
   magicbellUserId: ID
+  """
+  Array of user's muted colonies
+  """
+  mutedColonyIds: [ID!]
 }
 
 """
