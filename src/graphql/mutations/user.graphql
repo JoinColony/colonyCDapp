@@ -41,12 +41,12 @@ mutation CreateUserNotificationsData(
 
 mutation UpdateUserNotificationsMutedColonies(
   $userAddress: ID!
-  $colonyIds: [ID!]
+  $colonyAddresses: [ID!]
 ) {
   updateNotificationsData(
-    input: { userAddress: $userAddress, mutedColonyIds: $colonyIds }
+    input: { userAddress: $userAddress, mutedColonyAddresses: $colonyAddresses }
   ) {
     userAddress
-    mutedColonyIds
+    mutedColonyAddresses
   }
 }
