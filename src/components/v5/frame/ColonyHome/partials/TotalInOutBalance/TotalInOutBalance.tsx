@@ -6,6 +6,8 @@ import WidgetBox from '~v5/common/WidgetBox/WidgetBox.tsx';
 import { displayName } from './consts.ts';
 import { BarChart } from './partials/BarChart.tsx';
 import { BarChartLegend } from './partials/BarChartLegend.tsx';
+import { IncomeSection } from './partials/IncomeSection.tsx';
+import { PaymentsSection } from './partials/PaymentsSection.tsx';
 
 const TotalInOutBalance = () => {
   return (
@@ -23,8 +25,13 @@ const TotalInOutBalance = () => {
       titleClassName="text-2 mb-4"
       className="col-span-2 !px-5 !items-start"
       value={
-        <div className="flex flex-row justify-center sm:flex-col sm:justify-start">
-          <div className="sm:self-end">
+        <div className="flex flex-col justify-center gap-8 sm:flex-row">
+          <div className="flex flex-1 flex-col gap-4 sm:self-center">
+            <PaymentsSection />
+            <div className="w-full border-t border-gray-200" />
+            <IncomeSection />
+          </div>
+          <div className="self-center">
             <BarChart />
           </div>
         </div>

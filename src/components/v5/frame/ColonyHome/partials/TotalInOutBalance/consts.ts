@@ -11,6 +11,38 @@ export const MSG = defineMessages({
     id: `${displayName}.incomeLegendTitle`,
     defaultMessage: 'Income',
   },
+  paymentsSectionTitle: {
+    id: `${displayName}.paymentsSectionTitle`,
+    defaultMessage: 'Payments',
+  },
+  incomeSectionTitle: {
+    id: `${displayName}.incomeSectionTitle`,
+    defaultMessage: 'Income',
+  },
+  last30DaysPeriod: {
+    id: `${displayName}.last30DaysPeriod`,
+    defaultMessage: 'Last 30 days',
+  },
+  claimFundsCTA: {
+    id: `${displayName}.claimFundsCTA`,
+    defaultMessage: 'Claim',
+  },
+  claimFundsTooltip: {
+    id: `${displayName}.claimFundsTooltip`,
+    defaultMessage: 'Claim incoming funds for the colony',
+  },
+  fundsClaimedCTA: {
+    id: `${displayName}.fundsClaimedCTA`,
+    defaultMessage: 'Funds claimed',
+  },
+  addFundsCTA: {
+    id: `${displayName}.addFundsCTA`,
+    defaultMessage: 'Add',
+  },
+  payCTA: {
+    id: `${displayName}.payCTA`,
+    defaultMessage: 'Pay',
+  },
 });
 
 export const CHART_CONFIG_VALUES = {
