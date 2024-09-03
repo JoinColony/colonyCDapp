@@ -35,7 +35,7 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const { mutedColonyIds } = useNotificationsContext();
+  const { mutedColonyAddresses } = useNotificationsContext();
   const [updateMutedColonies] =
     useUpdateUserNotificationsMutedColoniesMutation();
 
@@ -43,7 +43,7 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
   // Maybe an optimistic response would be better here?
   const [isMuteToggling, setIsMuteToggling] = useState(false);
 
-  const isColonyMuted = mutedColonyIds.includes(colonyAddress);
+  const isColonyMuted = mutedColonyAddresses.includes(colonyAddress);
 
   const handleUnmuteColonyNotifications = useCallback(() => {
     if (!user) {
@@ -54,8 +54,8 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
     updateMutedColonies({
       variables: {
         userAddress: user.walletAddress,
-        colonyIds: mutedColonyIds.filter(
-          (mutedColonyId) => mutedColonyId !== colonyAddress,
+        colonyAddresses: mutedColonyAddresses.filter(
+          (mutedColonyAddress) => mutedColonyAddress !== colonyAddress,
         ),
       },
       onCompleted: async () => {
@@ -63,7 +63,13 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
         setIsMuteToggling(false);
       },
     });
-  }, [colonyAddress, mutedColonyIds, updateMutedColonies, updateUser, user]);
+  }, [
+    colonyAddress,
+    mutedColonyAddresses,
+    updateMutedColonies,
+    updateUser,
+    user,
+  ]);
 
   const handleMuteColonyNotifications = useCallback(() => {
     if (!user) {
@@ -74,14 +80,20 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
     updateMutedColonies({
       variables: {
         userAddress: user.walletAddress,
-        colonyIds: [...mutedColonyIds, colonyAddress],
+        colonyAddresses: [...mutedColonyAddresses, colonyAddress],
       },
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
       },
     });
-  }, [colonyAddress, mutedColonyIds, updateMutedColonies, updateUser, user]);
+  }, [
+    colonyAddress,
+    mutedColonyAddresses,
+    updateMutedColonies,
+    updateUser,
+    user,
+  ]);
 
   if (isColonyMuted) {
     if (isMuteToggling) {

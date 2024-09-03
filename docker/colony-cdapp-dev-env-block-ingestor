@@ -28,6 +28,10 @@ RUN git checkout $BLOCK_INGESTOR_HASH
 # need to add it after the repo has been cloned, otherwise cloning will fail
 ADD docker/files/block-ingestor/env.base /colonyCDappBackend/block-ingestor/.env
 
+# Temporarily mount the .env file from the root of this repo to pass the required magicbell env vars
+# to the block ingestor. You must ensure these two env vars exist in your env file for this to work properly.
+RUN --mount=type=bind,source=/.env,target=/tmpMount/.env grep -e MAGICBELL_API_KEY -e MAGICBELL_API_SECRET /tmpMount/.env >> /colonyCDappBackend/block-ingestor/.env
+
 # Install block ingestor dependencies
 RUN npm ci
 
