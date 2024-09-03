@@ -34,9 +34,9 @@ const NotificationsContextProvider = ({
 
   const value: NotificationsContextValues = useMemo(
     () => ({
-      mutedColonyIds: user?.notificationsData?.mutedColonyIds || [],
+      mutedColonyAddresses: user?.notificationsData?.mutedColonyAddresses || [],
     }),
-    [user?.notificationsData?.mutedColonyIds],
+    [user?.notificationsData?.mutedColonyAddresses],
   );
 
   if (!user) {
@@ -54,7 +54,7 @@ const NotificationsContextProvider = ({
   return (
     <MagicBellProvider
       apiKey={import.meta.env.MAGICBELL_API_KEY}
-      userExternalId={user.walletAddress}
+      userExternalId={user.notificationsData.magicbellUserId}
     >
       <NotificationsContext.Provider value={value}>
         {children}

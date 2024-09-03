@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 
 export interface NotificationsContextValues {
-  mutedColonyIds: string[];
+  mutedColonyAddresses: string[];
 }
 
 export const NotificationsContext = createContext<

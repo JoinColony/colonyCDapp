@@ -2029,11 +2029,15 @@ type NotificationsData @model {
   """
   Unique identifier for the user in Magicbell
   """
-  magicbellUserId: ID
+  magicbellUserId: ID!
   """
-  Array of user's muted colonies
+  Boolean to indicate if the user has disabled notifications app wide
   """
-  mutedColonyIds: [ID!]
+  notificationsDisabled: Boolean!
+  """
+  List of addresses of colonies that the user has muted
+  """
+  mutedColonyAddresses: [ID!]!
 }
 
 """

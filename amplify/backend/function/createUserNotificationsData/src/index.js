@@ -25,8 +25,8 @@ const setEnvVariables = async () => {
 exports.handler = async (event) => {
   try {
     await setEnvVariables();
-  } catch (e) {
-    throw new Error('Unable to set environment variables. Reason:', e);
+  } catch (err) {
+    throw new Error('Unable to set environment variables. Reason:', err);
   }
 
   const { id: walletAddress } = event.arguments?.input || {};
@@ -52,12 +52,12 @@ exports.handler = async (event) => {
 
     const data = await response.json();
 
-    if (data.errors) {
-      throw new Error();
+    if (data.errors?.[0]) {
+      throw new Error(data.errors[0].message);
     }
-  } catch (error) {
+  } catch (err) {
     throw new Error(
-      `Could not create Magicbell user with wallet address "${walletAddress}"`,
+      `Could not create Magicbell user with wallet address "${walletAddress}": ${err}`,
     );
   }
 
@@ -68,6 +68,8 @@ exports.handler = async (event) => {
       input: {
         magicbellUserId: walletAddress,
         userAddress: walletAddress,
+        notificationsDisabled: false,
+        mutedColonyAddresses: [],
       },
     },
     graphqlURL,
