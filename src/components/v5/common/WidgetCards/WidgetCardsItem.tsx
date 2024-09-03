@@ -2,7 +2,7 @@ import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { ContentComponent } from './partials/ContentComponent.tsx';
+import { WidgetContent } from './partials/WidgetContent.tsx';
 import { wrapperClassName, hoverClassName } from './styles.ts';
 
 type WidgetCardsItemVariant = 'default' | 'dashed';
@@ -36,9 +36,9 @@ export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
   );
 
   const content = (
-    <ContentComponent Icon={Icon} title={title}>
+    <WidgetContent Icon={Icon} title={title}>
       {children}
-    </ContentComponent>
+    </WidgetContent>
   );
 
   if (onClick) {
