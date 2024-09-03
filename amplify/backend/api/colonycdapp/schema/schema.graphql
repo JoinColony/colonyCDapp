@@ -9,24 +9,6 @@ input AMPLIFY {
 # but I never could get it to work
 
 """
-Input data for fetching domain balance in/out values for a specific timeframe
-"""
-input DomainBalanceArguments {
-  """
-  Address of the colony on the blockchain
-  """
-  colonyAddress: String!
-  """
-  Address of the domain on the blockchain
-  """
-  domainAddress: String!
-  chainId: String
-  selectedCurrency: SupportedCurrencies
-  timeframeType: TimeframeType
-  timeframePeriod: Int!
-}
-
-"""
 Input data for fetching a token's information from DB or chain
 """
 input TokenFromEverywhereArguments {
@@ -360,30 +342,6 @@ type BridgeXYZMutationReturn {
 }
 
 """
-Return type for domain balance in/out values
-"""
-type DomainBalanceInOut {
-  totalIn: String
-  totalOut: String
-}
-
-"""
-Return type for domain balance for a timeframe item
-"""
-type TimeframeDomainBalanceInOut {
-  key: String!
-  value: DomainBalanceInOut
-}
-
-"""
-Return type for domain balance 
-"""
-type DomainBalanceReturn {
- last30Days: DomainBalanceInOut
- timeframe: [TimeframeDomainBalanceInOut]
-}
-
-"""
 Return type for tokens gotten from DB or from chain
 """
 type TokenFromEverywhereReturn {
@@ -537,15 +495,6 @@ type VoterRewardsReturn {
   The actual reward amount
   """
   reward: String!
-}
-
-"""
-Variants of different timeframe periods we can request balance for
-"""
-enum TimeframeType {
-  DAILY
-  WEEKLY
-  MONTHLY
 }
 
 """
@@ -1092,7 +1041,7 @@ type Query {
   Fetch a domain total balance
   """
   getDomainBalance(
-    input: DomainBalanceArguments
+    input: DomainBalanceArguments!
   ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
 
 }
@@ -1166,32 +1115,6 @@ enum SupportedCurrencies {
 
 enum ExtendedSupportedCurrencies {
   USDC
-}
-
-"""
-Represents a market price exchange rate for a specific currency
-"""
-type MarketPrice {
-  currency: SupportedCurrencies!
-  rate: Float
-}
-
-"""
-Represents a table with token exchange rates
-"""
-type TokenExchangeRate @model {
-  """
-  Unique identifier for the token id
-  """
-  tokenId: String! @index(name: "byTokenId", queryField: "tokenExhangeRateByTokenId", sortKeyFields: ["date"], )
-  """
-  Exchange timestamp
-  """
-  date: AWSDateTime!
-  """
-  Exchange currency
-  """
-  marketPrice: [MarketPrice]!
 }
 
 """
@@ -1561,7 +1484,7 @@ type Colony @model {
   # Ideally we would merge data from these two into one field, but I couldn't do that
   # meaning we'll have to merge this data in-app (or not at all, works either way)
   # If you have a better idea, on how to merged them, I'll all ears..
-  fundsClaims: [ColonyFundsClaim] @hasMany
+  fundsClaims: [ColonyFundsClaim] @hasMany(indexName: "byColony", fields: ["id"])
   """
   Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
   This is not an array since only a single token type can be returned
@@ -2109,7 +2032,7 @@ type Domain @model {
   """
   Colony ID associated with the Domain
   """
-  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"])
+  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"], queryField: "getDomainsByColony")
   """
   Colony associated with the Domain
   """
@@ -2223,6 +2146,10 @@ type ColonyFundsClaim @model {
   Unique identifier for the Colony Funds Claim
   """
   id: ID! @index(sortKeyFields: ["createdAt"])
+  """
+  The identifier of the Colony the Colony Funds Claim belong to 
+  """
+  colonyFundsClaimsId: ID @index(name: "byColony", sortKeyFields: ["createdAt"], queryField: "getFundsClaimsByColony")
   """
   Token associated with the Colony Funds Claim
   """
