@@ -1,30 +1,46 @@
-import { PiggyBank } from '@phosphor-icons/react/dist/ssr/PiggyBank';
-import React, { type FC, type PropsWithChildren } from 'react';
+import { PiggyBank } from '@phosphor-icons/react';
+import React, { type FC } from 'react';
 
-import { ActionTypes } from '~redux/index.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { ActionTypes } from '~redux';
 import { ActionForm } from '~shared/Fields/index.ts';
-import Modal from '~v5/shared/Modal/index.ts';
+import { formatText } from '~utils/intl.ts';
+import CopyWallet from '~v5/shared/CopyWallet/CopyWallet.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
-import { type BalanceModalProps } from './types.ts';
+interface AddFundsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-const displayName = 'v5.pages.BalancePage.partials.BalanceModal';
+export const AddFundsModal: FC<AddFundsModalProps> = ({ isOpen, onClose }) => {
+  const { handleClipboardCopy, isCopied } = useCopyToClipboard();
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
 
-const BalanceModal: FC<PropsWithChildren<BalanceModalProps>> = ({
-  onClose,
-  children,
-  ...props
-}) => (
-  <Modal icon={PiggyBank} {...props} onClose={onClose}>
-    <ActionForm
-      actionType={ActionTypes.USER_DEPOSIT_TOKEN} // @TODO: add correct action
-      onSuccess={(_, { reset }) => {
-        reset();
-        onClose();
-      }}
-    >
-      {() => (
+  return (
+    <Modal icon={PiggyBank} onClose={onClose} isOpen={isOpen}>
+      <ActionForm
+        actionType={ActionTypes.USER_DEPOSIT_TOKEN}
+        onSuccess={(_, { reset }) => {
+          reset();
+          onClose();
+        }}
+      >
         <>
-          {children}
+          <h5 className="mb-1.5 heading-5">
+            {formatText({ id: 'balancePage.modal.title' })}
+          </h5>
+          <p className="mb-6 text-md text-gray-600">
+            {formatText({ id: 'balancePage.modal.subtitle' })}
+          </p>
+          <CopyWallet
+            isCopied={isCopied}
+            handleClipboardCopy={() => handleClipboardCopy(colonyAddress || '')}
+            value={colonyAddress || ''}
+          />
           {/* @TODO: uncomment this when API to create "add funds action" will be ready */}
           {/* <h4 className="text-1 mb-1.5">
               {formatText({ id: 'balanceModal.modal.addFundsToWallet' })}
@@ -73,11 +89,7 @@ const BalanceModal: FC<PropsWithChildren<BalanceModalProps>> = ({
               />
             </div> */}
         </>
-      )}
-    </ActionForm>
-  </Modal>
-);
-
-BalanceModal.displayName = displayName;
-
-export default BalanceModal;
+      </ActionForm>
+    </Modal>
+  );
+};
