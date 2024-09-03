@@ -1,4 +1,4 @@
-query GetDomainBalance($input: DomainBalanceArguments) {
+query GetDomainBalance($input: DomainBalanceArguments!) {
   getDomainBalance(input: $input) {
     ...DomainBalanceReturn
   }

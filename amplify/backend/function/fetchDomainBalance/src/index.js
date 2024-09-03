@@ -1,11 +1,12 @@
 require('cross-fetch/polyfill');
 
 const {
+    BigNumber,
     utils: { Logger },
 } = require('ethers');
-const { getPeriodFromNow, getDaysFromNow } = require('./utils');
+const { getPeriodFromNow } = require('./utils');
 const ExchangeRatesFactory = require('./config/exchangeRates');
-const { getInOutActions, getTokensDatesMap, filterActionsWithinTimeframe, updatePeriodBalance, update30DaysBalance } = require('./services/actions');
+const { getInOutActions, getTokensDatesMap, filterActionsWithinTimeframe, groupBalanceByPeriod } = require('./services/actions');
 const { getTotalFiatAmountFor } = require('./services/tokens');
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -16,20 +17,25 @@ Logger.setLogLevel(Logger.levels.ERROR);
  */
 exports.handler = async (event) => {
     try {
-        const { colonyAddress, domainAddress, chainId, selectedCurrency, timeframePeriod = 4, timeframeType } = event.arguments?.input || {};
+        const {
+            colonyAddress,
+            domainId,
+            chainId,
+            selectedCurrency,
+            timeframePeriod = 4,
+            timeframeType,
+        } = event.arguments?.input || {};
         const periodFromNow = getPeriodFromNow(timeframePeriod, timeframeType);
-        const last30Days = getDaysFromNow(30);
 
-        const inOutActions = await getInOutActions(colonyAddress, domainAddress);
+        const inOutActions = await getInOutActions(colonyAddress, domainId);
         const inOutActionsWithinTimeframe = filterActionsWithinTimeframe(inOutActions, periodFromNow);
-        const periodBalance = updatePeriodBalance(timeframeType, timeframePeriod, inOutActionsWithinTimeframe, domainAddress);
-
-        const last30DaysActions = filterActionsWithinTimeframe(inOutActions, last30Days);
-        const last30DaysBalance = update30DaysBalance(last30DaysActions, domainAddress);
+        const periodBalance = groupBalanceByPeriod(timeframeType, timeframePeriod, inOutActionsWithinTimeframe, domainId);
 
         const exchangeRates = await ExchangeRatesFactory.getExchangeRates(getTokensDatesMap(inOutActionsWithinTimeframe), selectedCurrency, chainId);
 
         const inOutPeriodBalance = {};
+        let timeframeTotalIn = BigNumber.from(0);
+        let timeframeTotalOut = BigNumber.from(0);
 
         for (let period in periodBalance) {
             const balance = periodBalance[period];
@@ -39,16 +45,14 @@ exports.handler = async (event) => {
                 totalIn,
                 totalOut,
             };
+
+            timeframeTotalIn = timeframeTotalIn.add(BigNumber.from(totalIn));
+            timeframeTotalOut = timeframeTotalOut.add(BigNumber.from(totalOut));
         }
 
-        const last30DaysBalanceTotalIn = await getTotalFiatAmountFor(last30DaysBalance.in, exchangeRates);
-        const last30DaysBalanceTotalOut = await getTotalFiatAmountFor(last30DaysBalance.out, exchangeRates);
-
         return {
-            last30Days: {
-                totalIn: last30DaysBalanceTotalIn,
-                totalOut: last30DaysBalanceTotalOut
-            },
+            totalIn: timeframeTotalIn.toString(),
+            totalOut: timeframeTotalOut.toString(),
             timeframe: Object.keys(inOutPeriodBalance).map((period) => ({
                 key: period,
                 value: inOutPeriodBalance[period]
