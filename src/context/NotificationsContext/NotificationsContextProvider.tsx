@@ -5,7 +5,10 @@ import { useCreateUserNotificationsDataMutation } from '~gql';
 
 import { useAppContext } from '../AppContext/AppContext.ts';
 
-import { NotificationsContext } from './NotificationsContext.ts';
+import {
+  NotificationsContext,
+  type NotificationsContextValues,
+} from './NotificationsContext.ts';
 
 const NotificationsContextProvider = ({
   children,
@@ -29,7 +32,12 @@ const NotificationsContextProvider = ({
     }
   }, [createUserNotificationsData, updateUser, user]);
 
-  const value = useMemo(() => ({}), []);
+  const value: NotificationsContextValues = useMemo(
+    () => ({
+      mutedColonyIds: user?.notificationsData?.mutedColonyIds || [],
+    }),
+    [user?.notificationsData?.mutedColonyIds],
+  );
 
   if (!user) {
     return <>{children}</>;
