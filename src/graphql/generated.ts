@@ -1588,9 +1588,8 @@ export type CreateMotionMessageInput = {
 };
 
 export type CreateNotificationsDataInput = {
-  id?: InputMaybe<Scalars['ID']>;
   magicbellUserId?: InputMaybe<Scalars['ID']>;
-  userId: Scalars['ID'];
+  userAddress: Scalars['ID'];
 };
 
 export type CreatePrivateBetaInviteCodeInput = {
@@ -1885,7 +1884,7 @@ export type DeleteMotionMessageInput = {
 };
 
 export type DeleteNotificationsDataInput = {
-  id: Scalars['ID'];
+  userAddress: Scalars['ID'];
 };
 
 export type DeletePrivateBetaInviteCodeInput = {
@@ -3456,7 +3455,6 @@ export type ModelNotificationsDataConditionInput = {
   magicbellUserId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelNotificationsDataConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
-  userId?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelNotificationsDataConnection = {
@@ -3470,7 +3468,7 @@ export type ModelNotificationsDataFilterInput = {
   magicbellUserId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelNotificationsDataFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
-  userId?: InputMaybe<ModelIdInput>;
+  userAddress?: InputMaybe<ModelIdInput>;
 };
 
 export type ModelPrivateBetaInviteCodeConditionInput = {
@@ -4098,7 +4096,7 @@ export type ModelSubscriptionNotificationsDataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
   magicbellUserId?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
-  userId?: InputMaybe<ModelSubscriptionIdInput>;
+  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
@@ -5068,7 +5066,7 @@ export type MutationCreateUserArgs = {
 
 /** Root mutation type */
 export type MutationCreateUserNotificationsDataArgs = {
-  input?: InputMaybe<CreateUserNotificationsDataInput>;
+  input: CreateUserNotificationsDataInput;
 };
 
 
@@ -5767,12 +5765,11 @@ export enum Network {
 export type NotificationsData = {
   __typename?: 'NotificationsData';
   createdAt: Scalars['AWSDateTime'];
-  id: Scalars['ID'];
   /** Unique identifier for the user in Magicbell */
   magicbellUserId?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user */
-  userId: Scalars['ID'];
+  userAddress: Scalars['ID'];
 };
 
 export type Payment = {
@@ -6458,7 +6455,7 @@ export type QueryGetMotionVoterRewardsArgs = {
 
 /** Root query type */
 export type QueryGetNotificationsDataArgs = {
-  id: Scalars['ID'];
+  userAddress: Scalars['ID'];
 };
 
 
@@ -6949,6 +6946,8 @@ export type QueryListNotificationsDataArgs = {
   filter?: InputMaybe<ModelNotificationsDataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  userAddress?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -8815,9 +8814,8 @@ export type UpdateMotionMessageInput = {
 };
 
 export type UpdateNotificationsDataInput = {
-  id: Scalars['ID'];
   magicbellUserId?: InputMaybe<Scalars['ID']>;
-  userId?: InputMaybe<Scalars['ID']>;
+  userAddress: Scalars['ID'];
 };
 
 export type UpdatePrivateBetaInviteCodeInput = {
@@ -9480,7 +9478,7 @@ export type CreateUserNotificationsDataMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserNotificationsDataMutation = { __typename?: 'Mutation', createUserNotificationsData?: { __typename?: 'NotificationsData', id: string } | null };
+export type CreateUserNotificationsDataMutation = { __typename?: 'Mutation', createUserNotificationsData?: { __typename?: 'NotificationsData', userAddress: string } | null };
 
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
@@ -11810,7 +11808,7 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMut
 export const CreateUserNotificationsDataDocument = gql`
     mutation CreateUserNotificationsData($input: CreateUserNotificationsDataInput!) {
   createUserNotificationsData(input: $input) {
-    id
+    userAddress
   }
 }
     `;

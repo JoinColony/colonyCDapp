@@ -26,6 +26,6 @@ mutation CreateUserNotificationsData(
   $input: CreateUserNotificationsDataInput!
 ) {
   createUserNotificationsData(input: $input) {
-    id
+    userAddress
   }
 }

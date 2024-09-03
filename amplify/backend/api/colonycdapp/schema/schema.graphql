@@ -969,7 +969,7 @@ type Mutation {
   Create notification data for a user
   """
   createUserNotificationsData(
-    input: CreateUserNotificationsDataInput
+    input: CreateUserNotificationsDataInput!
   ): NotificationsData @function(name: "createUserNotificationsData-${env}")
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
@@ -1884,7 +1884,7 @@ type NotificationsData @model {
   """
   Unique identifier for the user
   """
-  userId: ID!
+  userAddress: ID! @primaryKey
   """
   Unique identifier for the user in Magicbell
   """

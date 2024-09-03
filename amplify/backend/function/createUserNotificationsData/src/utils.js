@@ -1,10 +1,5 @@
 const fetch = require('cross-fetch');
 
-const TokenType = {
-  COLONY: 'COLONY',
-  ERC20: 'ERC20',
-};
-
 const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
