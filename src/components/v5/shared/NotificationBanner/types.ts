@@ -6,6 +6,7 @@ export type NotificationBannerProps = PropsWithChildren<{
   className?: string;
   status: BannerStatus;
   icon?: Icon;
+  iconSize?: number;
   description?: ReactNode;
   callToAction?: ReactNode;
   descriptionClassName?: string;

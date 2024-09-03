@@ -1,7 +1,7 @@
 export enum StreamingPaymentStatus {
   Active = 'Active',
   Cancelled = 'Cancelled',
-  NotStarted = 'Not started',
+  NotStarted = 'NotStarted',
   Ended = 'Ended',
-  LimitReached = 'Limit reached',
+  LimitReached = 'LimitReached',
 }

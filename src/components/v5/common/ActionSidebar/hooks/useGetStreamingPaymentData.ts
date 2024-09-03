@@ -8,8 +8,8 @@ import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import {
-  getStatus,
   getStreamingPaymentAmountsLeft,
+  getStreamingPaymentStatus,
 } from '~utils/streamingPayments.ts';
 
 export const useGetStreamingPaymentData = (
@@ -81,7 +81,7 @@ export const useGetStreamingPaymentData = (
       const { amountAvailableToClaim, amountClaimedToDate } =
         getStreamingPaymentAmountsLeft(payment, currentTimestamp);
 
-      const status = getStatus({
+      const status = getStreamingPaymentStatus({
         streamingPayment,
         currentTimestamp,
         isMotion,

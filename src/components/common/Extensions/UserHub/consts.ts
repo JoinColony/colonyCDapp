@@ -3,6 +3,7 @@ import {
   Receipt,
   Invoice,
   CreditCard,
+  Star,
 } from '@phosphor-icons/react';
 import { defineMessages } from 'react-intl';
 
@@ -15,6 +16,10 @@ export const menuMessages = defineMessages({
   balance: {
     id: 'UserSubmenu.balance',
     defaultMessage: 'Balance',
+  },
+  reputation: {
+    id: 'UserSubmenu.reputation',
+    defaultMessage: 'Reputation',
   },
   stakes: {
     id: 'UserSubmenu.stakes',
@@ -36,6 +41,12 @@ export const tabList: UserHubTabList = [
     label: formatText(menuMessages.balance),
     value: UserHubTab.Balance,
     icon: Invoice,
+  },
+  {
+    id: UserHubTab.Reputation,
+    label: formatText(menuMessages.reputation),
+    value: UserHubTab.Reputation,
+    icon: Star,
   },
   {
     id: UserHubTab.Stakes,

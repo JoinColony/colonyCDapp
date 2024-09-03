@@ -20,6 +20,7 @@ const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
   decimals,
   tokenSymbol,
   getAmounts,
+  ratePerSecond,
 }) => {
   useEffect(() => {
     const timer = setInterval(() => {
@@ -41,9 +42,16 @@ const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
     };
   }, [getAmounts, onTimeEnd, status]);
 
+  const formattedRate = new Decimal(ratePerSecond)
+    .div(10 ** decimals)
+    .toString();
+
+  const decimalPlaces = formattedRate.toString().split('.')[1]?.length || 0;
+  const fixedDecimalPlaces = decimalPlaces < 5 ? decimalPlaces : 5;
+
   const formattedNumber = new Decimal(amountAvailableToClaim)
     .div(10 ** decimals)
-    .toDecimalPlaces(5)
+    .toFixed(fixedDecimalPlaces)
     .toString();
 
   const digits = formattedNumber.split('').map((char, index) => ({

@@ -12,7 +12,12 @@ export type UserHubTabList = {
 
 export enum UserHubTab {
   Balance = 0,
-  Stakes = 1,
-  Transactions = 2,
+  Reputation = 1,
+  Stakes = 2,
   CryptoToFiat = 3,
+  Transactions = 4,
+}
+
+export interface UserHubProps {
+  defaultOpenedTab?: UserHubTab;
 }

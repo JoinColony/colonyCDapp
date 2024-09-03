@@ -7,6 +7,11 @@ import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import { formatText } from './intl.ts';
 
+interface GetStreamingPaymentAmountsLeftReturn {
+  amountClaimedToDate: string;
+  amountAvailableToClaim: string;
+}
+
 export const getStreamingPaymentLimit = ({
   streamingPayment,
 }: {
@@ -31,11 +36,6 @@ export const getStreamingPaymentLimit = ({
 
   return limitInWei.toString();
 };
-
-interface GetStreamingPaymentAmountsLeftReturn {
-  amountClaimedToDate: string;
-  amountAvailableToClaim: string;
-}
 
 export const getStreamingPaymentAmountsLeft = (
   streamingPayment: StreamingPayment | null | undefined,
@@ -91,7 +91,7 @@ export const getStreamingPaymentAmountsLeft = (
   };
 };
 
-export const checkIfStarted = ({
+export const checkIfStreamingPaymentStarted = ({
   isMotion,
   startTime,
   currentTimestamp,
@@ -110,7 +110,7 @@ export const checkIfStarted = ({
   return startTimeValue.lte(currentTimestamp);
 };
 
-export const checkIfEnded = ({
+export const checkIfStreamingPaymentEnded = ({
   endCondition,
   amountAvailableToClaim,
   limitAmount,
@@ -153,7 +153,7 @@ export const checkIfEnded = ({
   }
 };
 
-export const getStatus = ({
+export const getStreamingPaymentStatus = ({
   streamingPayment,
   currentTimestamp,
   isMotion,
@@ -171,12 +171,12 @@ export const getStatus = ({
   const { endTime, startTime, isCancelled, metadata } = streamingPayment;
   const { endCondition } = metadata || {};
   const limitAmount = getStreamingPaymentLimit({ streamingPayment });
-  const started = checkIfStarted({
+  const started = checkIfStreamingPaymentStarted({
     isMotion,
     startTime,
     currentTimestamp,
   });
-  const { ended, status } = checkIfEnded({
+  const { ended, status } = checkIfStreamingPaymentEnded({
     amountAvailableToClaim,
     endCondition,
     endTime,

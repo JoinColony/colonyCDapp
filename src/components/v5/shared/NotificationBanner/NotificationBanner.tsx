@@ -9,6 +9,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   className,
   status,
   icon: Icon,
+  iconSize = 16,
   children,
   description,
   callToAction,
@@ -30,7 +31,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
     >
       {Icon ? (
         <Icon
-          size={16}
+          size={iconSize}
           className={clsx('flex-shrink-0 translate-y-0.5', {
             // due to line height, the text has top padding, then this doesn't look centered, hence the 2px translate down the y axis
             'text-success-400': status === 'success',

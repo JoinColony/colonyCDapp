@@ -3,3 +3,24 @@ query GetStreamingPayment($streamingPaymentId: ID!) {
     ...StreamingPayment
   }
 }
+
+query GetStreamingPaymentsByColony(
+  $colonyId: ID!
+  $sortDirection: ModelSortDirection = ASC
+  $limit: Int = 100
+  $nextToken: String
+  $recipientAddress: String!
+) {
+  getStreamingPaymentsByColony(
+    colonyId: $colonyId
+    sortDirection: $sortDirection
+    limit: $limit
+    nextToken: $nextToken
+    filter: { recipientAddress: { eq: $recipientAddress } }
+  ) {
+    items {
+      ...StreamingPayment
+    }
+    nextToken
+  }
+}
