@@ -78,11 +78,15 @@ export const useRevealStep = ({
 
   const { vote, hasUserVoted, userVoteRevealed, setUserVoteRevealed } =
     useRevealWidgetUpdate(voterRecord || [], stopPollingAction);
-  const transform = mapPayload(() => ({
-    colonyAddress,
-    userAddress: user?.walletAddress ?? '',
-    motionId: BigNumber.from(motionId),
-  }));
+  const transform = useMemo(
+    () =>
+      mapPayload(() => ({
+        colonyAddress,
+        userAddress: user?.walletAddress ?? '',
+        motionId: BigNumber.from(motionId),
+      })),
+    [colonyAddress, user?.walletAddress, motionId],
+  );
 
   const handleSuccess: OnSuccess<Record<string, number>> = (_, { reset }) => {
     reset();
