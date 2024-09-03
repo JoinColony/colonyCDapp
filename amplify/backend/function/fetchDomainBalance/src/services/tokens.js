@@ -1,13 +1,15 @@
 const { BigNumber } = require('ethers');
 const { getStartOfDayFor } = require('../utils');
 
-const getConvertedTokenAmount = (amount, decimals, exchangeRate) => {
+const getConvertedTokenAmount = (amount, networkFee, decimals, exchangeRate) => {
     const tokenScaleFactor = BigNumber.from(10).pow(decimals);
     const exchangeRateDecimals = 9;
     const normalizedTokenExchangeRate = BigNumber.from(Math.round(exchangeRate * Math.pow(10, exchangeRateDecimals)));
+    const formattedNetworkFee = BigNumber.from(networkFee || 0)
 
     return BigNumber
         .from(amount)
+        .sub(formattedNetworkFee)
         .div(tokenScaleFactor)
         .mul(normalizedTokenExchangeRate)
         .div(BigNumber.from(10).pow(exchangeRateDecimals));
@@ -23,7 +25,7 @@ const getTotalFiatAmountFor = async (items, exchangeRates) => {
         const tokenExchangeRate = exchangeRates[tokenId][date];
 
         // @TODO need to check if operation is legit
-        const convertedTokenValue = getConvertedTokenAmount(amount, token.decimals, tokenExchangeRate);
+        const convertedTokenValue = getConvertedTokenAmount(amount, networkFee, token.decimals, tokenExchangeRate);
 
         totalAmount = totalAmount.add(convertedTokenValue)
     }

@@ -6,7 +6,8 @@ const {
   getColonyActions,
   getColonyDomains,
   getDomainExpenditures,
-  getColonyFundsClaims
+  getColonyFundsClaims,
+  getToken,
 } = require('./schemas.js');
 
 const EnvVarsSetupFactory = require('../../config/envVars.js');
@@ -49,131 +50,157 @@ const getAllPages = async (getData, params) => {
     const actionsData = await getData({ ...params, nextToken });
     nextToken = actionsData.nextToken;
     items.push(...actionsData.items);
-
   } while (nextToken);
 
   return items;
-}
+};
 
 const getDomains = async (colonyAddress) => {
-
   const result = await graphqlRequest(getColonyDomains, {
-    colonyAddress
+    colonyAddress,
   });
 
-  return result.data.listDomains?.items;
-}
+  return result.data.getDomainsByColony?.items;
+};
 
-const getIncomingFundsData = async ({
-  colonyAddress, limit, nextToken
-}) => {
+const getIncomingFundsData = async ({ colonyAddress, limit, nextToken }) => {
   const result = await graphqlRequest(getColonyFundsClaims, {
     colonyAddress,
     limit,
-    nextToken
+    nextToken,
   });
 
   if (!result) {
-    console.warn(
-      'Could not find any colony funds claims in db.',
-    );
+    console.warn('Could not find any colony funds claims in db.');
   }
 
-  return result.data.listColonyFundsClaims;
+  return result.data.getFundsClaimsByColony;
 };
 
 const getAllIncomingFunds = async (colonyAddress, domain) => {
-  if (!domain?.isRoot) {
-    return []
+  if (domain && !domain.isRoot) {
+    return [];
   }
-  return getAllPages(getIncomingFundsData, { colonyAddress })
+  return getAllPages(getIncomingFundsData, { colonyAddress });
 };
 
 const getExpendituresData = async ({
-  nativeDomainId, limit, nextToken
+  colonyAddress,
+  nativeDomainId,
+  limit,
+  nextToken,
 }) => {
   const result = await graphqlRequest(getDomainExpenditures, {
+    colonyAddress,
     nativeDomainId,
     limit,
-    nextToken
+    nextToken,
   });
 
   if (!result) {
-    console.warn(
-      'Could not find any domain expenditure in db.',
-    );
+    console.warn('Could not find any domain expenditure in db.');
   }
 
   return result.data.listExpenditures;
 };
 
-const getAllExpenditures = async (domain) => {
+const getAllExpenditures = async (colonyAddress, domain) => {
   if (!domain?.nativeId) {
-    return []
+    return [];
   }
-  return getAllPages(getExpendituresData, { nativeDomainId: domain?.nativeId })
+  return getAllPages(getExpendituresData, {
+    colonyAddress,
+    nativeDomainId: domain?.nativeId,
+  });
 };
 
 const acceptedColonyActionTypes = [
-  "PAYMENT", "PAYMENT_MOTION", 
-  "MOVE_FUNDS", "MOVE_FUNDS_MOTION"
+  'PAYMENT',
+  'PAYMENT_MOTION',
+  'MOVE_FUNDS',
+  'MOVE_FUNDS_MOTION',
 ];
 
 const getActionsData = async ({
-  colonyAddress, domainAddress, nextToken, limit = 2
+  colonyAddress,
+  domainId,
+  nextToken,
+  limit = 2,
 }) => {
   const result = await graphqlRequest(getColonyActions, {
     colonyAddress,
     filter: {
-      and: [{
-        or: [{ fromDomainId: { eq: domainAddress } }, { toDomainId: { eq: domainAddress } }]
-      }, {
-        or: acceptedColonyActionTypes.map(acceptedColonyActionType => ({ type: { eq: acceptedColonyActionType } }))
-      }, {
-        showInActionsList: { eq: true }
-      }
-      ]
+      and: [
+        {
+          or: [
+            { fromDomainId: { eq: domainId } },
+            { toDomainId: { eq: domainId } },
+          ],
+        },
+        {
+          or: acceptedColonyActionTypes.map((acceptedColonyActionType) => ({
+            type: { eq: acceptedColonyActionType },
+          })),
+        },
+        {
+          showInActionsList: { eq: true },
+        },
+      ],
     },
     limit,
-    nextToken
+    nextToken,
   });
 
   if (!result) {
-    console.warn(
-      'Could not find any colony actions in db.',
-    );
+    console.warn('Could not find any colony actions in db.');
   }
 
   return result.data.getActionsByColony;
-}
+};
 
-const getAllActions = async (colonyAddress, domainAddress) => {
-  return getAllPages(getActionsData, { colonyAddress, domainAddress })
-}
+const getAllActions = async (colonyAddress, domainId) => {
+  return getAllPages(getActionsData, { colonyAddress, domainId });
+};
+
+const getTokensDecimalsFor = async (tokenAddresses) => {
+  const tokenDecimals = {};
+
+  const tokenResponses = await Promise.all(
+    tokenAddresses.map((tokenAddress) =>
+      graphqlRequest(getToken, {
+        tokenAddress,
+      }),
+    ),
+  );
+
+  tokenResponses.forEach((tokenResponse) => {
+    const { id, decimals } = tokenResponse?.data?.getToken || {};
+    tokenDecimals[id] = decimals;
+  });
+
+  return tokenDecimals;
+};
 
 const saveExchangeRate = async ({ tokenId, date, marketPrice }) => {
-
   const result = await graphqlRequest(saveTokenExchangeRate, {
     input: {
       tokenId,
       date,
       marketPrice,
-    }
+    },
   });
 
   return result.data.createTokenExchangeRate;
-
-}
+};
 
 const getExchangeRate = async ({ tokenId, date }) => {
-
   const result = await graphqlRequest(getTokenExchangeRate, {
     tokenId,
     date,
   });
 
   return result.data?.tokenExhangeRateByTokenId?.items?.[0];
-}
+};
 
 module.exports = {
   getAllIncomingFunds,
@@ -182,4 +209,5 @@ module.exports = {
   getDomains,
   saveExchangeRate,
   getExchangeRate,
+  getTokensDecimalsFor,
 };
