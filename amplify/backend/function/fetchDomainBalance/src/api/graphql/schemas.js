@@ -15,19 +15,19 @@ const tokenFragment = /* GraphQL */ `
 `;
 
 module.exports = {
-  saveTokenExchangeRate: /* GraphQL */`
+  saveTokenExchangeRate: /* GraphQL */ `
     mutation SaveTokenExchangeRate($input: CreateTokenExchangeRateInput!) {
       createTokenExchangeRate(input: $input) {
         tokenId
         date
         marketPrice {
-            currency
-            rate
-          }
+          currency
+          rate
+        }
       }
     }
   `,
-  getTokenExchangeRate: /* GraphQL */`
+  getTokenExchangeRate: /* GraphQL */ `
     query GetTokenExchangeRateByTokenId(
       $tokenId: String!
       $date: String
@@ -50,15 +50,9 @@ module.exports = {
       }
     }
   `,
-  getColonyDomains: /* GraphQL */`
-    query GetColonyDomains(
-      $colonyAddress: ID!
-    ) {
-      listDomains(
-        filter: {
-          colonyId: { eq: $colonyAddress }
-        }
-      ) {
+  getColonyDomains: /* GraphQL */ `
+    query GetColonyDomains($colonyAddress: ID!) {
+      getDomainsByColony(colonyId: $colonyAddress) {
         items {
           nativeFundingPotId
           nativeId
@@ -70,20 +64,18 @@ module.exports = {
       }
     }
   `,
-  getColonyFundsClaims: /* GraphQL */`
+  getColonyFundsClaims: /* GraphQL */ `
     ${tokenFragment}
     query GetColonyFundsClaims(
       $colonyAddress: ID!
       $nextToken: String
       $limit: Int
     ) {
-      listColonyFundsClaims(
+      getFundsClaimsByColony(
         nextToken: $nextToken
         limit: $limit
-        filter: {
-          isClaimed: { eq: true },
-          colonyFundsClaimsId: { eq: $colonyAddress }
-        }
+        colonyFundsClaimsId: $colonyAddress
+        filter: { isClaimed: { eq: true } }
       ) {
         items {
           amount
@@ -97,8 +89,9 @@ module.exports = {
       }
     }
   `,
-  getDomainExpenditures: /* GraphQL */`
+  getDomainExpenditures: /* GraphQL */ `
     query GetDomainExpenditures(
+      $colonyAddress: ID!
       $nativeDomainId: Int!
       $nextToken: String
       $limit: Int
@@ -107,13 +100,15 @@ module.exports = {
         nextToken: $nextToken
         limit: $limit
         filter: {
-          nativeDomainId: { eq: $nativeDomainId },
+          colonyId: { eq: $colonyAddress }
+          nativeDomainId: { eq: $nativeDomainId }
           status: { eq: FINALIZED }
         }
       ) {
         items {
           id
           finalizedAt
+          createdAt
           slots {
             claimDelay
             id
@@ -128,7 +123,7 @@ module.exports = {
       }
     }
   `,
-  getColonyActions: /* GraphQL */`
+  getColonyActions: /* GraphQL */ `
     ${tokenFragment}
     query GetColonyActions(
       $colonyAddress: ID!
@@ -162,12 +157,18 @@ module.exports = {
             }
           }
           token {
-            # NOTE: Token doesn't have a lightweight Display-only Fragment, as the props
-            # on that fragment are just 2 less than the actual "full" version of the Fragment
             ...LightTokenFragment
           }
         }
         nextToken
+      }
+    }
+  `,
+  getToken: /* GraphQL */ `
+    query GetToken($tokenAddress: ID!) {
+      getToken(id: $tokenAddress) {
+        id
+        decimals
       }
     }
   `,
