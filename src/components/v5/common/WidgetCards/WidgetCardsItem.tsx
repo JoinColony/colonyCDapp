@@ -2,8 +2,15 @@ import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
+import { tw } from '~utils/css/index.ts';
+
 import { WidgetContent } from './partials/WidgetContent.tsx';
-import { wrapperClassName, hoverClassName } from './styles.ts';
+
+const wrapperClassName = tw`
+  flex min-h-[7.4rem] min-w-[16.5rem] items-center justify-between
+  gap-2 rounded-lg border px-6 py-6
+`;
+const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
 
 type WidgetCardsItemVariant = 'default' | 'dashed';
 
@@ -16,8 +23,8 @@ interface WidgetCardsItemProps {
 }
 
 const variantClassNames: Record<WidgetCardsItemVariant, string> = {
-  default: '',
-  dashed: 'border-dashed',
+  default: tw``,
+  dashed: tw`border-dashed`,
 };
 
 export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
