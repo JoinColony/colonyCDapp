@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { number, object } from 'yup';
 
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
@@ -118,14 +118,18 @@ export const useVotingStep = ({
 
   const currentUserVote = getLocalStorageVoteValue(transactionId);
 
-  const transform = mapPayload(
-    ({ vote }) =>
-      ({
-        colonyAddress,
-        userAddress: user?.walletAddress,
-        vote: Number(vote),
-        motionId: BigNumber.from(motionId),
-      }) as MotionVotePayload,
+  const transform = useMemo(
+    () =>
+      mapPayload(
+        ({ vote }) =>
+          ({
+            colonyAddress,
+            userAddress: user?.walletAddress,
+            vote: Number(vote),
+            motionId: BigNumber.from(motionId),
+          }) as MotionVotePayload,
+      ),
+    [colonyAddress, user?.walletAddress, motionId],
   );
 
   const handleSuccess: OnSuccess<VotingFormValues> = (vote, { reset }) => {
