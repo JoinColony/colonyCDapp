@@ -92,6 +92,7 @@ export enum TRANSACTION_METHODS {
   FundExpenditure = 'fundExpenditure',
   InitiateSafeTransaction = 'initiateSafeTransaction',
   InstallExtension = 'installExtension',
+  InstallAndEnableExtension = 'installAndEnableExtension',
   LockExpenditure = 'lockExpenditure',
   ManageTokens = 'manageTokens',
   MintTokens = 'mintTokens',
