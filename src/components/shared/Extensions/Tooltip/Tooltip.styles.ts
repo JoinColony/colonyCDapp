@@ -42,6 +42,7 @@ const bottomPlacementClasses = tw`
 const topAndBottomStartPlacementClasses = tw`
     group-data-[popper-placement='bottom-start']:!left-2
     group-data-[popper-placement='top-start']:!left-2
+    group-data-[popper-placement='top-start']:!top-auto
     group-data-[popper-placement='bottom-start']:!transform-none
     group-data-[popper-placement='top-start']:!transform-none
 `;
@@ -84,6 +85,7 @@ const tooltipClasses = {
     ${topAndBottomEndPlacementClasses}
     ${topAndBottomStartPlacementClasses}
     ${rightPlacementClasses}
+    ${topAndBottomEndPlacementClasses}
   `,
 };
 

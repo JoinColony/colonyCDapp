@@ -36,7 +36,7 @@ export type ButtonSize =
   | 'medium'
   | 'large';
 
-export type TextButtonMode = 'default' | 'medium' | 'underlined';
+export type TextButtonMode = 'default' | 'medium' | 'underlined' | 'link';
 
 export interface ButtonContentProps {
   icon?: Icon;

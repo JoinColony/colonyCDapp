@@ -10,8 +10,9 @@ import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
-import BalanceTab from './partials/BalanceTab/index.ts';
+import BalanceTab from './partials/BalanceTab/BalanceTab.tsx';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
+import ReputationTab from './partials/ReputationTab/ReputationTab.tsx';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
 import { UserHubTab } from './types.ts';
@@ -70,7 +71,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
       })}
     >
-      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[216px] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
+      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[13.5rem] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
             options={filteredTabList}
@@ -126,10 +127,11 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
           </>
         )}
       </div>
-      <div className="relative h-full w-full min-w-0 overflow-y-auto">
+      <div className="relative h-full w-full">
         {selectedTab === UserHubTab.Balance && (
           <BalanceTab onTabChange={handleTabChange} />
         )}
+        {selectedTab === UserHubTab.Reputation && <ReputationTab />}
         {selectedTab === UserHubTab.Stakes && <StakesTab />}
         {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />

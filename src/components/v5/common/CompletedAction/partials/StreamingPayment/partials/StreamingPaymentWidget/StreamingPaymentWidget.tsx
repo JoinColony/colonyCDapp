@@ -142,6 +142,10 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
   const { tokenAddress, createdAt } = streamingPaymentData;
   const selectedToken = getSelectedToken(colony, tokenAddress || '');
 
+  const ratePerSecond = BigNumber.from(streamingPaymentData.amount || '0')
+    .div(streamingPaymentData.interval || 1)
+    .toString();
+
   return (
     <div
       className={clsx('flex flex-col', {
@@ -238,6 +242,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
                           !!action.isMotion,
                         )
                       }
+                      ratePerSecond={ratePerSecond}
                     />
                   </LoadingSkeleton>
                 </div>
