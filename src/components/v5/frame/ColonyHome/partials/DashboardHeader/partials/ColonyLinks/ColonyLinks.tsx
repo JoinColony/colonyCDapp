@@ -54,6 +54,7 @@ const ColonyLinks = () => {
   const { colonyAddress, metadata } = colony || {};
   const { dropdownMenuProps } = useHeaderLinks();
   const { pathname } = useLocation();
+  const isMobile = useMobile();
   const {
     handleClipboardCopy: handleShareUrlCopy,
     isCopied: isShareUrlCopied,
@@ -69,7 +70,7 @@ const ColonyLinks = () => {
     : [];
 
   return (
-    <ul className="flex items-center gap-4">
+    <ul className="flex items-center gap-2.5">
       {topLinks.map(({ link, name }) => {
         const { label, LinkIcon } = COLONY_LINK_CONFIG[name];
 
@@ -85,7 +86,7 @@ const ColonyLinks = () => {
               })}
             >
               <ExternalLink href={link}>
-                <LinkIcon size={16} />
+                <LinkIcon size={isMobile ? 14 : 16} />
               </ExternalLink>
             </ColonyLinkWrapper>
           </li>

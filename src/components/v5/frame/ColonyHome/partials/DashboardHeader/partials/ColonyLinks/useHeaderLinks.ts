@@ -1,7 +1,7 @@
 import {
   CopySimple,
   Door,
-  Rocket,
+  // Rocket,
   ShareNetwork,
   Smiley,
 } from '@phosphor-icons/react';
@@ -12,7 +12,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext/ColonyDashboardContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
+// import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   type DropdownMenuProps,
@@ -51,14 +51,15 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     {
       key: 'headerDropdown.section1',
       items: [
-        {
-          key: 'headerDropdown.section1.about',
-          label: formatText({
-            id: 'dashboard.burgerMenu.item.aboutColony',
-          }),
-          icon: Rocket,
-          to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
-        },
+        // @TODO: Temporarily disabled
+        // {
+        //   key: 'headerDropdown.section1.about',
+        //   label: formatText({
+        //     id: 'dashboard.burgerMenu.item.aboutColony',
+        //   }),
+        //   icon: Rocket,
+        //   to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
+        // },
         {
           key: 'colonyData.section1.copyAddress',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),
