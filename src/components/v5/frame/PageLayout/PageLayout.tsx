@@ -50,7 +50,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           >
             {sidebar}
           </section>
-          <div className="flex w-full flex-col items-center">
+          <div className="flex w-full flex-col items-center overflow-hidden">
             <section
               className={clsx('w-full md:px-6 md:pt-7', {
                 'sm:px-6 sm:pt-7': enableMobileAndDesktopLayoutBreakpoints,
