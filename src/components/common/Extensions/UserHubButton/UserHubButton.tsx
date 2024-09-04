@@ -158,6 +158,9 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     user?.profile?.displayName ??
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
+  // @TODO: Get from context
+  const unreadCount = 1;
+
   return (
     <div className="flex-shrink-0">
       <Button
@@ -172,6 +175,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
           'min-w-[3rem] md:hover:!border-blue-400',
         )}
         onClick={handleButtonClick}
+        showNotificationDot={unreadCount > 0}
       >
         <div className="flex flex-shrink-0 items-center">
           {/* If there's a user, there's a wallet */}
