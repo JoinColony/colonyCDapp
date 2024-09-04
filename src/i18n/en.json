@@ -1695,6 +1695,7 @@
     "dashboard.team.widget.noData": "There are no teams in the Colony.",
     "dashboard.team.widget.createTeam": "Create a new team",
     "dashboard.team.cards.createTeam": "Create team",
+    "dashboard.team.cards.totalFunds": "Total",
     "dashboard.agreements.widget.title": "Agreements",
     "dashboard.agreements.widget.noData": "There are no agreements to display.",
     "dashboard.agreements.widget.createNewAgreement": "Create a new agreement",

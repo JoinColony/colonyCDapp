@@ -7,7 +7,9 @@ import { tw } from '~utils/css/index.ts';
 import { WidgetContent } from './partials/WidgetContent.tsx';
 
 const wrapperClassName = tw`
-  mr-2 flex min-h-[7.4rem] min-w-[calc(100%-0.2rem)] flex-col justify-center rounded-lg border px-6 py-6 sm:mx-2 sm:min-w-[calc(50%-0.6rem)] lg:min-w-[calc(25%-0.8rem)]
+  mr-2 flex min-h-[7rem] min-w-[calc(100%-0.2rem)]
+  flex-col justify-center rounded-lg border px-6 py-5
+  sm:mx-2 sm:min-w-[calc(50%-0.6rem)] lg:min-w-[calc(25%-0.8rem)]
 `;
 const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
 
