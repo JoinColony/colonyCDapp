@@ -9,6 +9,7 @@ import Select from '~v5/common/Fields/Select/index.ts';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
+import CountBadge from './partials/CountBadge.tsx';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import NotificationsTab from './partials/NotificationsTab/NotificationsTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
@@ -45,6 +46,8 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
 
   // @TODO: get from notifications context
   const notificationsServiceIsEnabled = true;
+  // @TODO: Get from context
+  const unreadCount = 1;
 
   const filteredTabList = tabList.filter((tabItem) => {
     const isFeatureFlagEnabled =
@@ -120,7 +123,10 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
                           'font-medium': selectedTab === id,
                         })}
                       >
-                        <span className="mr-2 flex shrink-0">
+                        <span className="relative mr-2 flex shrink-0">
+                          {id === UserHubTab.Notifications && (
+                            <CountBadge count={unreadCount} />
+                          )}
                           <Icon size={14} />
                         </span>
                         {formatText(label)}
