@@ -21,7 +21,6 @@ import DashboardHeader from './partials/DashboardHeader/index.ts';
 import FundsCards from './partials/FundsCards/index.ts';
 import LeaveColonyModal from './partials/LeaveColonyModal/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
-import TokenBalance from './partials/TokenBalance/index.ts';
 import TotalInOutBalance from './partials/TotalInOutBalance/TotalInOutBalance.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
@@ -38,9 +37,6 @@ const ColonyHome = () => {
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
         <TeamFilter />
-        <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">
-          <TokenBalance />
-        </div>
       </div>
       <FundsCards />
       <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-3">

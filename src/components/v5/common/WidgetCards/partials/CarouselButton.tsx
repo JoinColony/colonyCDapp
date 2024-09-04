@@ -1,27 +1,15 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { type ButtonHTMLAttributes, type FC } from 'react';
 
-interface CarouselButtonProps {
-  onClick: () => void;
-  disabled: boolean;
-  ariaLabel: string;
-  children: React.ReactNode;
-}
-
-export const CarouselButton: FC<CarouselButtonProps> = ({
+export const CarouselButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
   onClick,
   disabled,
-  ariaLabel,
   children,
 }) => (
   <button
     onClick={onClick}
     type="button"
-    className={clsx(
-      'transition-all duration-300 ease-in-out',
-      disabled ? 'opacity-0' : 'opacity-100',
-    )}
-    aria-label={ariaLabel}
+    className={clsx(disabled ? 'opacity-0' : 'opacity-100')}
     disabled={disabled}
   >
     {children}
