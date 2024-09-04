@@ -1,10 +1,18 @@
 import { CaretRight, CaretLeft } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { useEmblaCarouselSettings } from './hooks.ts';
 import { CarouselButton } from './partials/CarouselButton.tsx';
 
-export const WidgetCardsList: FC<PropsWithChildren> = ({ children }) => {
+interface WidgetCardsListProps {
+  className?: string;
+}
+
+export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
+  children,
+  className,
+}) => {
   const {
     emblaRef,
     prevBtnDisabled,
@@ -14,7 +22,7 @@ export const WidgetCardsList: FC<PropsWithChildren> = ({ children }) => {
   } = useEmblaCarouselSettings({ loop: false, align: 'start' });
 
   return (
-    <div className="relative flex pb-[1.75rem]">
+    <div className={clsx(className, 'relative flex')}>
       <CarouselButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
         <CaretLeft />
       </CarouselButton>
