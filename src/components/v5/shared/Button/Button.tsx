@@ -30,6 +30,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
       icon,
       iconSize = 18,
       isIconRight,
+      showNotificationDot = false,
       ...rest
     },
     ref,
@@ -51,7 +52,7 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
         ) : (
           <button
             className={clsx(
-              'flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-normal',
+              'relative flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-normal',
               `${isFullRounded ? 'rounded-full' : 'rounded-lg'}`,
               {
                 'min-h-10 px-4 py-2 text-md': size === 'default',
@@ -114,6 +115,9 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
             >
               {children}
             </ButtonContent>
+            {showNotificationDot && (
+              <div className="absolute right-[-1.26px] top-[2.28px] h-2.5 w-2.5 rounded-full border border-base-white bg-blue-400" />
+            )}
           </button>
         )}
       </>
