@@ -15,25 +15,17 @@ export const WidgetCardsList: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <div className="relative flex pb-[1.75rem]">
-      <CarouselButton
-        onClick={onPrevButtonClick}
-        disabled={prevBtnDisabled}
-        ariaLabel="Scroll left"
-      >
+      <CarouselButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
         <CaretLeft />
       </CarouselButton>
 
-      <div className="grow cursor-grab overflow-hidden">
+      <div className="mx-4 grow cursor-grab overflow-hidden">
         <div ref={emblaRef}>
           <div className="flex">{children}</div>
         </div>
       </div>
 
-      <CarouselButton
-        onClick={onNextButtonClick}
-        disabled={nextBtnDisabled}
-        ariaLabel="Scroll right"
-      >
+      <CarouselButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
         <CaretRight />
       </CarouselButton>
     </div>

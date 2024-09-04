@@ -2,25 +2,35 @@ import { Plus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { Action } from '~constants/actions.ts';
+import { currencySymbolMap } from '~constants/currency.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
-import { WidgetSubTitle } from './partials/WidgetSubTitle.tsx';
-import { WidgetTotalDescription } from './partials/WidgetTotalDescription.tsx';
+import { useTotalFunds } from './hooks.ts';
+import { FundsCardsSubTitle } from './partials/FundsCardsSubTitle.tsx';
+import { FundsCardsTotalDescription } from './partials/FundsCardsTotalDescription.tsx';
 
 export const FundsCards = () => {
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
+  const { currency } = useCurrencyContext();
+  const totalFunds = useTotalFunds();
 
   const onNewTeamClick = () => {
     toggleActionSidebarOn({
       [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
     });
   };
+
+  const selectedDomain = useGetSelectedDomainFilter();
+  const selectedTeamName = selectedDomain?.metadata?.name;
 
   const { colony } = useColonyContext();
 
@@ -29,21 +39,33 @@ export const FundsCards = () => {
   return (
     <WidgetCards.List>
       <WidgetCards.Item
-        title={<span className="font-semibold">Total</span>}
+        title={
+          <span className="font-semibold">
+            {formatText({ id: 'dashboard.team.cards.totalFunds' })}
+            {!!selectedTeamName && ` ${selectedTeamName}`}
+          </span>
+        }
         subTitle={
-          <WidgetSubTitle amount={1000} currency="usd" currencySymbol="$" />
+          <FundsCardsSubTitle
+            value={
+              <Numeral
+                value={totalFunds ?? '-'}
+                prefix={currencySymbolMap[currency]}
+              />
+            }
+            currency={currency}
+          />
         }
       >
-        <WidgetTotalDescription />
+        <FundsCardsTotalDescription direction="up" />
       </WidgetCards.Item>
       {teams.map((item) => {
         return (
           <WidgetCards.Item
             key={item?.id}
             title={item?.metadata?.name}
-            subTitle={
-              <WidgetSubTitle amount={1000} currency="usd" currencySymbol="$" />
-            }
+            // @TODO: update with a real teams data
+            subTitle={<FundsCardsSubTitle value="123" currency="usd" />}
           />
         );
       })}
