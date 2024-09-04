@@ -52,7 +52,7 @@ export const getSimplePaymentPayload = (
     title,
     amount,
     tokenAddress,
-    recipientAddress,
+    recipient,
     payments,
   } = values;
   const fromDomainId = Number(from);
@@ -65,16 +65,13 @@ export const getSimplePaymentPayload = (
     payments: [
       getPaymentPayload({
         colony,
-        recipientAddress,
+        recipientAddress: recipient,
         amount: amount.toString(),
         tokenAddress,
         networkInverseFee,
       }),
       ...payments.map(
-        ({
-          recipientAddress: paymentRecipientAddress,
-          amount: paymentAmount,
-        }) =>
+        ({ recipient: paymentRecipientAddress, amount: paymentAmount }) =>
           getPaymentPayload({
             colony,
             recipientAddress: paymentRecipientAddress,
