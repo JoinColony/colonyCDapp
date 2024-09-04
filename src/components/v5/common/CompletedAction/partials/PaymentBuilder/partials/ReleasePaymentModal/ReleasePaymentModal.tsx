@@ -1,13 +1,17 @@
+import { Id } from '@colony/colony-js';
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -48,13 +52,21 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
     success: ActionTypes.EXPENDITURE_FINALIZE_SUCCESS,
   });
 
+  const finalizeExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+    error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+  });
+
   const reclaimExpenditureStake = useAsyncFunction({
     submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
     error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
     success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
 
-  const handleFinalizeExpenditure = async () => {
+  const { votingReputationAddress } = useEnabledExtensions();
+
+  const handleFinalizeExpenditure = async ({ decisionMethod }) => {
     try {
       if (!expenditure) {
         return;
@@ -66,7 +78,21 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
         userAddress: user?.walletAddress ?? '',
       };
 
-      await finalizeExpenditure(finalizePayload);
+      const motionFinalizepayload: FinalizeExpenditureMotionPayload = {
+        colony,
+        expenditure,
+        votingReputationAddress: votingReputationAddress || '',
+        motionDomainId: Id.RootDomain,
+      };
+
+      if (
+        decisionMethod &&
+        decisionMethod.value === DecisionMethod.Reputation
+      ) {
+        await finalizeExpenditureViaMotion(motionFinalizepayload);
+      } else {
+        await finalizeExpenditure(finalizePayload);
+      }
 
       const claimablePayouts = getClaimableExpenditurePayouts(
         expenditure.slots,

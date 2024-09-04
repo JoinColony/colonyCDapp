@@ -9,6 +9,9 @@ export const releaseDecisionMethodDescriptions: Partial<
   [DecisionMethod.Permissions]: formatText({
     id: 'releaseModal.permissionsDescription',
   }),
+  [DecisionMethod.Reputation]: formatText({
+    id: 'fundingModal.reputationDescription',
+  }),
   [DecisionMethod.PaymentCreator]: formatText({
     id: 'releaseModal.paymentCreatorDescription',
   }),
