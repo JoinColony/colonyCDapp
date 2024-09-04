@@ -45,7 +45,6 @@ import {
   COLONY_HOME_ROUTE,
   COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
-  COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
   NOT_FOUND_ROUTE,
@@ -135,11 +134,9 @@ const Routes = () => {
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
             <Route element={<MembersPage />}>
-              {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
-                (path) => (
-                  <Route path={path} element={<AllMembersPage />} key={path} />
-                ),
-              )}
+              {[COLONY_MEMBERS_ROUTE].map((path) => (
+                <Route path={path} element={<AllMembersPage />} key={path} />
+              ))}
               <Route
                 path={COLONY_CONTRIBUTORS_ROUTE}
                 element={<ContributorsPage />}
