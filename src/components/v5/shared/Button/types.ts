@@ -66,6 +66,7 @@ export interface ButtonAppearanceCommonProps extends ButtonContentProps {
   isFullSize?: boolean;
   isFullRounded?: boolean;
   className?: string;
+  showNotificationDot?: boolean;
 }
 
 export type ButtonProps = Omit<CommonButtonProps, 'setTriggerRef'> &
