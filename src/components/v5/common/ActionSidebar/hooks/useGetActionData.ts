@@ -7,6 +7,7 @@ import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import {
   getSelectedToken,
@@ -15,10 +16,7 @@ import {
 import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
-import {
-  Authority,
-  AVAILABLE_ROLES,
-} from '../partials/forms/ManagePermissionsForm/consts.ts';
+import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';
@@ -282,6 +280,7 @@ const useGetActionData = (transactionId: string | undefined) => {
     isInvalidTransactionHash,
     loadingAction,
     isMotion: !!action?.isMotion,
+    isMultiSig: !!action?.isMultiSig,
     networkMotionState,
     motionState,
     expenditure,

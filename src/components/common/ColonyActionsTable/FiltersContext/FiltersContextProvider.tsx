@@ -25,9 +25,9 @@ import { FiltersValues } from './types.ts';
 const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
   const [motionStates, setMotionStates] = useState<MotionState[]>([]);
-  const [decisionMethod, setDecisionMethod] = useState<
-    ActivityDecisionMethod | undefined
-  >();
+  const [decisionMethods, setDecisionMethods] = useState<
+    ActivityDecisionMethod[]
+  >([]);
   const [actionTypesFilters, setActionTypesFilters] = useState<Action[]>([]);
   const [dateFilters, setDateFilters] = useState<DateOptions>({
     pastHour: false,
@@ -71,15 +71,17 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [motionStates],
   );
 
-  const handleDecisionMethodFilterChange = useCallback(
+  const handleDecisionMethodsFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
       const name = event.target.name as ActivityDecisionMethod;
 
       if (isChecked) {
-        setDecisionMethod(name);
+        setDecisionMethods((prevValues) => [...prevValues, name]);
       } else {
-        setDecisionMethod(undefined);
+        setDecisionMethods((prevValues) =>
+          prevValues.filter((checkedItem) => checkedItem !== name),
+        );
       }
     },
     [],
@@ -137,9 +139,9 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       ...(motionStates.length ? { motionStates } : {}),
       ...(actionTypes.length ? { actionTypes } : {}),
       ...(date || {}),
-      ...(decisionMethod
+      ...(decisionMethods.length
         ? {
-            decisionMethod,
+            decisionMethods,
           }
         : {}),
       ...(searchFilter ? { search: searchFilter } : {}),
@@ -148,7 +150,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     actionTypesFilters,
     dateFromCurrentBlockTime,
     dateFilters,
-    decisionMethod,
+    decisionMethods,
     motionStates,
     searchFilter,
   ]);
@@ -162,7 +164,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
         return setMotionStates([]);
       }
       case FiltersValues.DecisionMethod: {
-        return setDecisionMethod(undefined);
+        return setDecisionMethods([]);
       }
       case FiltersValues.Date:
       case FiltersValues.Custom: {
@@ -184,7 +186,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedFiltersCount =
     actionTypesFilters.length +
     motionStates.length +
-    Number(!!decisionMethod) +
+    decisionMethods.length +
     Object.values(dateFilters).filter(Boolean).length;
 
   const value = useMemo(
@@ -192,13 +194,13 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       searchFilter,
       setSearchFilter,
       motionStates,
-      decisionMethod,
+      decisionMethods,
       actionTypesFilters,
       dateFilters,
       activeFilters,
       selectedFiltersCount,
       handleActionTypesFilterChange,
-      handleDecisionMethodFilterChange,
+      handleDecisionMethodsFilterChange,
       handleMotionStatesFilterChange,
       handleDateFilterChange,
       handleCustomDateFilterChange,
@@ -207,13 +209,13 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [
       searchFilter,
       motionStates,
-      decisionMethod,
+      decisionMethods,
       actionTypesFilters,
       dateFilters,
       activeFilters,
       selectedFiltersCount,
       handleActionTypesFilterChange,
-      handleDecisionMethodFilterChange,
+      handleDecisionMethodsFilterChange,
       handleMotionStatesFilterChange,
       handleDateFilterChange,
       handleCustomDateFilterChange,

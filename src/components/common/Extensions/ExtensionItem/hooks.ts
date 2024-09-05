@@ -17,7 +17,7 @@ export const useExtensionItem = (extensionId: string) => {
   const isExtensionInstalled =
     extensionData && isInstalledExtensionData(extensionData);
 
-  const { status, badgeMessage } = useExtensionsBadge(extensionData);
+  const { status } = useExtensionsBadge(extensionData);
 
   const extensionUrl = `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
 
@@ -29,7 +29,6 @@ export const useExtensionItem = (extensionId: string) => {
     extensionUrl,
     isExtensionInstalled,
     status,
-    badgeMessage,
     handleNavigateToExtensionDetails,
   };
 };

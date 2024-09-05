@@ -22,36 +22,58 @@ const mergeDomains = (
       ...repInfo,
       nativeId: repInfo.domain.nativeId,
       permissions: [],
+      multiSigPermissions: [],
+      domainColor: repInfo.domain.metadata?.color,
       domainName:
         repInfo.domain.metadata?.name ?? `Domain ${repInfo.domain.nativeId}`,
     };
   }
 
   for (const permDomain of permissions) {
-    const roles = Object.keys(permDomain).reduce((acc, key) => {
-      if (!key.startsWith('role_') || !permDomain[key]) {
+    const { roles, multiSigRoles } = Object.keys(permDomain).reduce(
+      (acc, key) => {
+        if (!key.startsWith('role_') || !permDomain[key]) {
+          return acc;
+        }
+
+        const role = Number(key.split('_')[1]) as AvailablePermission;
+
+        if (permDomain[key]) {
+          if (permDomain.isMultiSig) {
+            acc.multiSigRoles.push(role);
+          } else {
+            acc.roles.push(role);
+          }
+        }
+
         return acc;
+      },
+      {
+        roles: [] as AvailablePermission[],
+        multiSigRoles: [] as AvailablePermission[],
+      },
+    );
+
+    const { domainId } = permDomain;
+    const domain = domains[domainId];
+
+    if (domain) {
+      if (roles.length > 0) {
+        domain.permissions = roles;
       }
-
-      const role = Number(key.split('_')[1]) as AvailablePermission;
-
-      if (permDomain[key]) {
-        acc.push(role);
+      if (multiSigRoles.length > 0) {
+        domain.multiSigPermissions = multiSigRoles;
       }
-
-      return acc;
-    }, [] as AvailablePermission[]);
-
-    if (domains[permDomain.domainId]) {
-      domains[permDomain.domainId].permissions = roles;
     } else {
-      domains[permDomain.domainId] = {
+      domains[domainId] = {
         nativeId: permDomain.domain.nativeId,
         domainId: permDomain.domainId,
+        domainColor: permDomain.domain?.metadata?.color,
         domainName:
           permDomain.domain?.metadata?.name ??
           `Domain ${permDomain.domain.nativeId}`,
         permissions: roles,
+        multiSigPermissions: multiSigRoles,
         reputationRaw: '0',
         reputationPercentage: 0,
       };

@@ -56,6 +56,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     isInvalidTransactionHash,
     loadingAction,
     isMotion,
+    isMultiSig,
     motionState,
     expenditure,
     loadingExpenditure,
@@ -287,7 +288,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   </button>
                   {getShareButton()}
                 </div>
-                {action && !isMotion && !expenditure && (
+                {action && !isMotion && !expenditure && !isMultiSig && (
                   <PillsBase
                     className="bg-success-100 text-success-400"
                     isCapitalized={false}
@@ -301,7 +302,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     withAdditionalStatuses
                   />
                 )}
-                <MotionOutcomeBadge motionState={motionState} />
+                {(!!isMotion || !!isMultiSig) && motionState && (
+                  <MotionOutcomeBadge motionState={motionState} />
+                )}
               </div>
             )}
             {isMobile && getShareButton()}

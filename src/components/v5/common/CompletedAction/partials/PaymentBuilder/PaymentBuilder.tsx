@@ -106,7 +106,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     address: user?.walletAddress || '',
     colony,
     requiredRoles: [ColonyRole.Arbitration],
-    requiredRolesDomains: [expenditure.nativeDomainId],
+    requiredRolesDomain: expenditure.nativeDomainId,
   });
   const showCancelOption =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
@@ -184,7 +184,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           />
         )}
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

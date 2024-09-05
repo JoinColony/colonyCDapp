@@ -3,8 +3,9 @@ import { type BigNumber } from 'ethers';
 import { type RefObject } from 'react';
 
 import { type NetworkInfo } from '~constants/index.ts';
-import { type ExternalLink } from '~gql';
+import { type ColonyRoleFragment, type ExternalLink } from '~gql';
 import { type ActionTypes } from '~redux/index.ts';
+import { type Authority } from '~types/authority.ts';
 import {
   type DomainColor,
   type Domain,
@@ -12,7 +13,11 @@ import {
   type Safe,
   type SafeTransactionData,
 } from '~types/graphql.ts';
-import { type Address, type WithKey } from '~types/index.ts';
+import {
+  type Address,
+  type WithKey,
+  type ManageVerifiedMembersOperation,
+} from '~types/index.ts';
 
 import {
   type ErrorActionType,
@@ -167,7 +172,10 @@ export type ColonyActionsActionTypes =
         domainId: number;
         userAddress: Address;
         roles: Record<ColonyRole, boolean>;
+        authority: Authority;
         annotationMessage?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
       },
       MetaWithSetter<object>
     >
@@ -307,6 +315,25 @@ export type ColonyActionsActionTypes =
   | ErrorActionType<ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS_ERROR, object>
   | UniqueActionType<
       ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS_SUCCESS,
+      object,
+      object
+    >
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS,
+      {
+        operation: ManageVerifiedMembersOperation;
+        colonyAddress: Address;
+        colonyName: string;
+        members: string[];
+        domainId: number;
+        annotationMessage?: string;
+        customActionTitle: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS_ERROR, object>
+  | UniqueActionType<
+      ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS_SUCCESS,
       object,
       object
     >

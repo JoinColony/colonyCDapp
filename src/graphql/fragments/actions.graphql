@@ -75,6 +75,7 @@ fragment ColonyAction on ColonyAction {
     role_5
     role_6
   }
+  rolesAreMultiSig
   individualEvents
   isMotion
   payments {
@@ -123,6 +124,11 @@ fragment ColonyAction on ColonyAction {
   members
   rootHash
   expenditureId
+  isMultiSig
+  multiSigId
+  multiSigData {
+    ...ColonyMultiSig
+  }
   approvedTokenChanges {
     ...ApprovedTokenChanges
   }
@@ -230,6 +236,7 @@ fragment ColonyMotion on ColonyMotion {
     type
   }
   createdAt
+  createdBy
 }
 
 fragment MotionMessage on MotionMessage {
@@ -267,4 +274,51 @@ fragment ColonyDecision on ColonyDecision {
   createdAt
   actionId
   colonyAddress
+}
+
+fragment MultiSigUserSignature on MultiSigUserSignature {
+  id
+  role
+  userAddress
+  user {
+    ...User
+  }
+  multiSigId
+  vote
+  createdAt
+  updatedAt
+}
+
+fragment ColonyMultiSig on ColonyMultiSig {
+  id
+  nativeMultiSigId
+  multiSigDomain {
+    ...Domain
+  }
+  createdAt
+  multiSigDomainId
+  nativeMultiSigDomainId
+  requiredPermissions
+  transactionHash
+  isExecuted
+  hasActionCompleted
+  isRejected
+  hasActionCompleted
+  isDecision
+  executedAt
+  signatures {
+    items {
+      ...MultiSigUserSignature
+    }
+  }
+  executedAt
+  executedBy
+  executedByUser {
+    ...UserDisplay
+  }
+  rejectedAt
+  rejectedBy
+  rejectedByUser {
+    ...UserDisplay
+  }
 }

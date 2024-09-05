@@ -3,8 +3,11 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
+import { type ManageReputationPermissionsPayload } from '~redux/sagas/actions/manageReputation.ts';
 import { type ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
+import { getMotionPayload } from '~utils/motions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ModificationOption } from './consts.ts';
@@ -20,15 +23,16 @@ export const getManageReputationPayload = (
     member,
     createdIn,
     modification,
+    decisionMethod,
   }: ManageReputationFormValues,
-): ManageReputationMotionPayload => {
+): ManageReputationPermissionsPayload | ManageReputationMotionPayload => {
   const isSmiteAction = modification === ModificationOption.RemoveReputation;
   const reputationChangeAmount = new Decimal(amount)
     .mul(new Decimal(10).pow(nativeTokenDecimals))
     // Smite amount needs to be negative, otherwise leave it as it is
     .mul(isSmiteAction ? -1 : 1);
 
-  return {
+  const basePayload = {
     colonyAddress: colony.colonyAddress,
     colonyName: colony.name,
     domainId: team,
@@ -37,7 +41,16 @@ export const getManageReputationPayload = (
     isSmitingReputation: isSmiteAction,
     annotationMessage: description,
     customActionTitle: '',
+  };
+
+  if (decisionMethod === DecisionMethod.Permissions) {
+    return basePayload;
+  }
+
+  return {
+    ...basePayload,
     motionDomainId: createdIn,
+    ...getMotionPayload(decisionMethod === DecisionMethod.MultiSig, colony),
   };
 };
 

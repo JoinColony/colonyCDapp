@@ -9,10 +9,11 @@ import {
   ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
+  type ColonyActionRoles,
 } from '~gql';
-import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
-import { AUTHORITY_OPTIONS, formatRolesTitle } from '~utils/colonyActions.ts';
+import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -23,6 +24,7 @@ import {
   TEAM_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
@@ -49,14 +51,16 @@ interface Props {
 }
 
 const transformActionRolesToColonyRoles = (
-  historicRoles: GetColonyHistoricRoleRolesQuery['getColonyHistoricRole'],
+  roles:
+    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
+    | ColonyActionRoles,
 ): ColonyRole[] => {
-  if (!historicRoles) return [];
+  if (!roles) return [];
 
-  const roleKeys = Object.keys(historicRoles);
+  const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => historicRoles[key])
+    .filter((key) => roles[key])
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -73,6 +77,7 @@ const transformActionRolesToColonyRoles = (
 };
 
 const SetUserRoles = ({ action }: Props) => {
+  const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
       { id: 'action.type' },
@@ -86,11 +91,15 @@ const SetUserRoles = ({ action }: Props) => {
     recipientAddress,
     transactionHash,
     fromDomain,
-    isMotion,
     annotation,
     blockNumber,
     colonyAddress,
+    rolesAreMultiSig,
   } = action;
+
+  const roleAuthority = rolesAreMultiSig
+    ? Authority.ViaMultiSig
+    : Authority.Own;
 
   const { data: historicRoles } = useGetColonyHistoricRoleRolesQuery({
     variables: {
@@ -99,17 +108,25 @@ const SetUserRoles = ({ action }: Props) => {
         colonyAddress,
         nativeId: fromDomain?.nativeId,
         recipientAddress,
+        isMultiSig: rolesAreMultiSig,
       }),
     },
     fetchPolicy: 'cache-and-network',
   });
 
+  // if it's the first time assigning roles, we use the action roles
   const userColonyRoles = transformActionRolesToColonyRoles(
-    historicRoles?.getColonyHistoricRole,
+    historicRoles?.getColonyHistoricRole || roles,
   );
 
-  const { name: roleName, role } = getRole(userColonyRoles);
   const rolesTitle = formatRolesTitle(roles);
+
+  const { name: roleName, role } = getRole(
+    userColonyRoles,
+    roleAuthority === Authority.ViaMultiSig,
+  );
+
+  const metadata = action.motionData?.motionDomain.metadata;
 
   return (
     <>
@@ -121,12 +138,10 @@ const SetUserRoles = ({ action }: Props) => {
             [TITLE_FIELD_NAME]: customTitle,
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
-            authority: AUTHORITY_OPTIONS[0].value,
+            authority: roleAuthority,
             role,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
@@ -136,6 +151,12 @@ const SetUserRoles = ({ action }: Props) => {
           { id: 'action.title' },
           {
             direction: rolesTitle,
+            multiSigAuthority:
+              roleAuthority === Authority.ViaMultiSig
+                ? `${formatText({
+                    id: 'decisionMethod.multiSig',
+                  })} `
+                : '',
             actionType: ColonyActionType.SetUserRoles,
             fromDomain: action.fromDomain?.metadata?.name,
             initiator: initiatorUser ? (
@@ -182,6 +203,18 @@ const SetUserRoles = ({ action }: Props) => {
           />
         )}
         <ActionData
+          rowLabel={formatText({ id: 'actionSidebar.authority' })}
+          rowContent={
+            rolesAreMultiSig
+              ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
+              : formatText({ id: 'actionSidebar.authority.own' })
+          }
+          tooltipContent={formatText({
+            id: 'actionSidebar.tooltip.authority',
+          })}
+          RowIcon={Signature}
+        />
+        <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
             userColonyRoles.length
@@ -195,20 +228,11 @@ const SetUserRoles = ({ action }: Props) => {
           })}
           RowIcon={ShieldStar}
         />
-        <ActionData
-          rowLabel={formatText({ id: 'actionSidebar.authority' })}
-          rowContent={AUTHORITY_OPTIONS[0].label}
-          tooltipContent={formatText({
-            id: 'actionSidebar.tooltip.authority',
-          })}
-          RowIcon={Signature}
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
         />
-        <DecisionMethodRow isMotion={action.isMotion || false} />
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />

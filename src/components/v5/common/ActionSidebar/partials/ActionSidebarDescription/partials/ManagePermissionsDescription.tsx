@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ColonyActionRoles, ColonyActionType } from '~gql';
+import { Authority } from '~types/authority.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.tsx';
@@ -20,7 +21,7 @@ export const ManagePermissionsDescription = () => {
     colony: { domains },
   } = useColonyContext();
   const formValues = useFormContext<ManagePermissionsFormValues>().getValues();
-  const { member, role, permissions, team } = formValues;
+  const { member, role, permissions, team, authority } = formValues;
 
   const selectedDomain = domains?.items.find(
     (domain) => domain?.nativeId === team,
@@ -79,6 +80,12 @@ export const ManagePermissionsDescription = () => {
           : formatText({
               id: 'actionSidebar.metadataDescription.team',
             }),
+        multiSigAuthority:
+          authority === Authority.ViaMultiSig
+            ? `${formatText({
+                id: 'decisionMethod.multiSig',
+              })} `
+            : '',
         initiator: <CurrentUser />,
       }}
     />

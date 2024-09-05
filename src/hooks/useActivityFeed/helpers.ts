@@ -3,10 +3,12 @@ import { isHexString } from 'ethers/lib/utils';
 import { ColonyActionType, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type AnyActionType } from '~types/actions.ts';
+import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
-import { MotionState, getMotionState } from '~utils/colonyMotions.ts';
+import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
+import { getMultiSigState } from '~utils/multiSig/index.ts';
 
 import {
   ActivityDecisionMethod,
@@ -19,15 +21,23 @@ const getActivityFeedMotionState = (
   action: ColonyAction,
   motionStatesMap: MotionStatesMap,
 ): MotionState | undefined => {
+  if (action.isMultiSig) {
+    return getMultiSigState(action.multiSigData);
+  }
+
   if (!action.motionData) {
     return MotionState.Passed;
   }
 
   const networkMotionState = motionStatesMap.get(action.motionData.motionId);
 
-  return networkMotionState
+  if (networkMotionState === null) {
+    return MotionState.Uninstalled;
+  }
+
+  return networkMotionState !== undefined
     ? getMotionState(networkMotionState, action.motionData)
-    : undefined;
+    : MotionState.Invalid;
 };
 
 export const filterActionByMotionState = (
@@ -148,7 +158,7 @@ export const getBaseSearchActionsFilterVariable = (
 
 export const getSearchActionsFilterVariable = (
   colonyAddress: string,
-  { dateFrom, dateTo, decisionMethod, teamId }: ActivityFeedFilters = {},
+  { dateFrom, dateTo, decisionMethods, teamId }: ActivityFeedFilters = {},
 ): SearchActionsFilterVariable => {
   const dateFilter =
     dateFrom && dateTo
@@ -174,22 +184,40 @@ export const getSearchActionsFilterVariable = (
             : {}),
         };
   const decisionMethodFilter =
-    decisionMethod !== undefined
+    decisionMethods && !!decisionMethods.length
       ? {
-          ...(decisionMethod === ActivityDecisionMethod.Reputation
-            ? {
-                isMotion: {
-                  eq: true,
-                },
-              }
-            : {}),
-          ...(decisionMethod === ActivityDecisionMethod.Permissions
-            ? {
-                isMotion: {
-                  ne: true,
-                },
-              }
-            : {}),
+          or: [
+            ...(decisionMethods.includes(ActivityDecisionMethod.Reputation)
+              ? [
+                  {
+                    isMotion: {
+                      eq: true,
+                    },
+                  },
+                ]
+              : []),
+            ...(decisionMethods.includes(ActivityDecisionMethod.MultiSig)
+              ? [
+                  {
+                    isMultiSig: {
+                      eq: true,
+                    },
+                  },
+                ]
+              : []),
+            ...(decisionMethods.includes(ActivityDecisionMethod.Permissions)
+              ? [
+                  {
+                    isMotion: {
+                      ne: true,
+                    },
+                    isMultiSig: {
+                      ne: true,
+                    },
+                  },
+                ]
+              : []),
+          ],
         }
       : undefined;
 
@@ -212,8 +240,37 @@ export const getActionsByPageNumber = (
 };
 
 export const makeWithMotionStateMapper =
-  (motionStatesMap: MotionStatesMap) =>
-  (action: ColonyAction): ActivityFeedColonyAction => ({
-    ...action,
-    motionState: getActivityFeedMotionState(action, motionStatesMap),
-  });
+  (
+    motionStatesMap: MotionStatesMap,
+    votingRepExtensionData: InstalledExtensionData | undefined,
+    multiSigExtensionData: InstalledExtensionData | undefined,
+  ) =>
+  (action: ColonyAction): ActivityFeedColonyAction => {
+    let motionState;
+    // If the action is multi sig, and the multi sig extension was uninstalled.
+    if (action.isMultiSig && !multiSigExtensionData) {
+      motionState = MotionState.Uninstalled;
+    }
+    // If the action is a motion, and the voting with reputation extension was uninstalled.
+    else if (action.isMotion && !votingRepExtensionData) {
+      motionState = MotionState.Uninstalled;
+    }
+
+    // If the action is a motion, but was created with an old uninstalled extension.
+    else if (
+      action.isMotion &&
+      action.motionData?.createdBy !== votingRepExtensionData?.address
+    ) {
+      motionState = MotionState.Uninstalled;
+    }
+
+    // Otherwise, get the state in a normal way.
+    else {
+      motionState = getActivityFeedMotionState(action, motionStatesMap);
+    }
+
+    return {
+      ...action,
+      motionState,
+    };
+  };

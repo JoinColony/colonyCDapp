@@ -8,7 +8,6 @@ import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -23,6 +22,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
@@ -50,6 +50,7 @@ import { type ManageReputationProps } from './types.ts';
 const displayName = 'v5.common.CompletedAction.partials.ManageReputation';
 
 const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
+  const decisionMethod = useDecisionMethod(action);
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const {
@@ -69,9 +70,11 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     networkMotionState === NetworkMotionState.Finalized ||
     networkMotionState === NetworkMotionState.Failed;
 
-  const isSmite =
-    action.type === ColonyActionType.EmitDomainReputationPenalty ||
-    action.type === ColonyActionType.EmitDomainReputationPenaltyMotion;
+  const isSmite = [
+    ColonyActionType.EmitDomainReputationPenalty,
+    ColonyActionType.EmitDomainReputationPenaltyMotion,
+    ColonyActionType.EmitDomainReputationPenaltyMultisig,
+  ].includes(action.type);
 
   const positiveAmountValue = BigNumber.from(amount || '0')
     .abs()
@@ -100,9 +103,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
               : ModificationOption.AwardReputation,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [AMOUNT_FIELD_NAME]: formattedAmount,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
@@ -174,7 +175,10 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
             actionType={action.type}
           />
         )}
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}

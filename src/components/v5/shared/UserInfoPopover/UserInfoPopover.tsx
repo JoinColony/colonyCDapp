@@ -160,7 +160,9 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
           isFullOnMobile={false}
           onClose={onCloseModal}
           isOpen={isOpen}
-          isTopSectionWithBackground={isTopSectionWithBackground}
+          withPadding={false}
+          withPaddingBottom
+          withBorder={isTopSectionWithBackground}
         >
           {content}
         </Modal>
@@ -171,7 +173,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
               <PopoverBase
                 setTooltipRef={setTooltipRef}
                 tooltipProps={getTooltipProps}
-                classNames="max-w-[20rem]"
+                classNames="w-full max-w-[20rem] sm:min-w-[350px] sm:max-w-[350px]"
                 withTooltipStyles={false}
                 cardProps={{
                   rounded: 's',

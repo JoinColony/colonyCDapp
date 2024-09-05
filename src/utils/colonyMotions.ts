@@ -26,7 +26,10 @@ export enum MotionState {
   Escalated = 'Escalated',
   Forced = 'Forced',
   Draft = 'Draft',
+  Rejected = 'Rejected',
+  Open = 'Open',
   Unknown = 'Unknown',
+  Uninstalled = 'Uninstalled',
 }
 
 export const getMotionDatabaseId = (
@@ -48,6 +51,9 @@ export const getMotionState = (
   }: Pick<ColonyMotion, 'motionStakes' | 'requiredStake' | 'revealedVotes'>,
 ) => {
   switch (motionState) {
+    case NetworkMotionState.Null: {
+      return MotionState.Uninstalled;
+    }
     case NetworkMotionState.Staking: {
       return BigNumber.from(yayStakes).gte(requiredStake) &&
         BigNumber.from(nayStakes).isZero()

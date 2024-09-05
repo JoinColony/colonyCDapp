@@ -10,6 +10,7 @@ import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action } from '~redux/types/actions/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { clearContributorsAndRolesCache } from '~utils/members.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import {
@@ -48,7 +49,7 @@ function* extensionEnable({
   yield removeOldExtensionClients(colonyAddress, extensionId);
 
   const needsInitialisation = !isInitialized && initializationParams;
-  const needsSettingRoles = missingColonyPermissions.length;
+  const needsSettingRoles = !!missingColonyPermissions.length;
 
   const { initialise, setUserRoles }: Record<string, ChannelDefinition> =
     yield createTransactionChannels(meta.id, ['initialise', 'setUserRoles']);
@@ -129,6 +130,8 @@ function* extensionEnable({
       payload: {},
       meta,
     });
+
+    yield clearContributorsAndRolesCache();
   } catch (error) {
     console.error(error);
     return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);

@@ -16,7 +16,10 @@ const motionStatesMessageDescriptors = {
       ${MotionState.Escalated} {Escalated}
       ${MotionState.Forced} {Forced}
       ${MotionState.Draft} {Draft}
+      ${MotionState.Open} {Open}
+      ${MotionState.Rejected} {Rejected}
       ${MotionState.Unknown} {Unknown}
+      ${MotionState.Uninstalled} {Uninstalled}
       other {Generic action we don't have information about}
     }`,
 };

@@ -7,6 +7,7 @@ import { type ContributorType } from '../TableFiltering/types.ts';
 export type ExtensionStatusBadgeMode =
   | 'coming-soon'
   | 'not-installed'
+  | 'installed'
   | 'enabled'
   | 'disabled'
   | 'deprecated'
@@ -17,6 +18,11 @@ export type ExtensionStatusBadgeMode =
   | 'claimed'
   | 'extension'
   | 'payments';
+
+export type AvailableExtensionStatusBadgeMode = Extract<
+  ExtensionStatusBadgeMode,
+  'installed' | 'enabled' | 'disabled' | 'deprecated' | 'not-installed'
+>;
 
 export type UserStatusMode =
   | ContributorType

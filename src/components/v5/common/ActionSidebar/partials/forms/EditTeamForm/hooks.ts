@@ -4,8 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ActionTypes } from '~redux/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
+import { type DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -13,7 +12,7 @@ import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormB
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { validationSchema, type EditTeamFormValues } from './consts.ts';
-import { getEditDomainPayload } from './utils.tsx';
+import { getEditDomainFormActionType, getEditDomainPayload } from './utils.tsx';
 
 export const useEditTeam = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
@@ -44,10 +43,7 @@ export const useEditTeam = (
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType:
-      decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_DOMAIN_EDIT
-        : ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
+    actionType: getEditDomainFormActionType(decisionMethod),
     defaultValues: useMemo<DeepPartial<EditTeamFormValues>>(
       () => ({
         createdIn: team || Id.RootDomain,

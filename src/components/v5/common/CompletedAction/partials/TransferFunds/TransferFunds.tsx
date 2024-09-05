@@ -3,7 +3,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
@@ -19,6 +18,7 @@ import {
   TOKEN_FIELD_NAME,
   TO_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -58,6 +58,7 @@ const MSG = defineMessages({
 });
 
 const TransferFunds = ({ action }: TransferFundsProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
     amount,
@@ -71,8 +72,6 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     annotation,
   } = action;
 
-  const { motionDomain } = motionData || {};
-
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
     token?.decimals,
@@ -81,6 +80,8 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
     amount || '',
     getTokenDecimalsWithFallback(token?.decimals),
   );
+
+  const motionDomain = motionData?.motionDomain ?? null;
 
   return (
     <>
@@ -95,9 +96,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             [TO_FIELD_NAME]: toDomain?.nativeId,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [CREATED_IN_FIELD_NAME]: isMotion
               ? motionDomain?.nativeId
               : fromDomain?.nativeId,
@@ -152,12 +151,13 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           token={action.token || undefined}
         />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {!!motionDomain?.metadata && (
+          <CreatedInRow motionDomainMetadata={motionDomain.metadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (

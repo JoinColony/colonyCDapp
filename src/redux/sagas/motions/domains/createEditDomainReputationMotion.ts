@@ -9,37 +9,29 @@ import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
-import {
-  CreateDomainMetadataDocument,
-  type CreateDomainMetadataMutation,
-  type CreateDomainMetadataMutationVariables,
-  DomainColor,
-} from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
-import { type AllActions, type Action } from '~redux/types/actions/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { getPendingMetadataDatabaseId } from '~utils/databaseId.ts';
-
 import {
   createTransaction,
   createTransactionChannels,
   getTxChannel,
   waitForTxResult,
-} from '../transactions/index.ts';
+} from '~redux/sagas/transactions/index.ts';
 import {
   putError,
   takeFrom,
   // uploadIfpsAnnotation,
   getColonyManager,
-  getUpdatedDomainMetadataChangelog,
   uploadAnnotation,
   initiateTransaction,
-  createActionMetadataInDB,
-} from '../utils/index.ts';
+} from '~redux/sagas/utils/index.ts';
+import { type AllActions, type Action } from '~redux/types/actions/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
+
+import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
 
 // import { ipfsUpload } from '../ipfs';
 
-function* createEditDomainMotion({
+function* createEditDomainReputationMotion({
   payload: {
     colonyAddress,
     colonyName,
@@ -49,14 +41,15 @@ function* createEditDomainMotion({
     annotationMessage,
     domain,
     isCreateDomain,
-    parentId = Id.RootDomain,
-    motionDomainId,
+    parentDomainId = Id.RootDomain,
+    domainCreatedInNativeId,
     customActionTitle,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
-}: Action<ActionTypes.MOTION_DOMAIN_CREATE_EDIT>) {
+}: Action<ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
+
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
 
@@ -75,7 +68,7 @@ function* createEditDomainMotion({
 
     /* additional editDomain check is for the TS to not ring alarm in getPermissionProofs */
     const domainId =
-      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentId;
+      !isCreateDomain && domain?.nativeId ? domain.nativeId : parentDomainId;
 
     const context = yield getColonyManager();
     const colonyClient = yield context.getClient(
@@ -100,13 +93,13 @@ function* createEditDomainMotion({
       getChildIndex,
       colonyClient.networkClient,
       colonyClient,
-      motionDomainId,
+      domainCreatedInNativeId,
       domainId,
     );
 
     const { skillId } = yield call(
       [colonyClient, colonyClient.getDomain],
-      motionDomainId,
+      domainCreatedInNativeId,
     );
 
     const { key, value, branchMask, siblings } = yield call(
@@ -149,7 +142,7 @@ function* createEditDomainMotion({
       methodName: 'createMotion',
       identifier: colonyAddress,
       params: [
-        motionDomainId,
+        domainCreatedInNativeId,
         motionChildSkillIndex,
         AddressZero,
         encodedAction,
@@ -194,49 +187,17 @@ function* createEditDomainMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    if (isCreateDomain) {
-      /**
-       * Save domain metadata in the database
-       */
-      yield apolloClient.mutate<
-        CreateDomainMetadataMutation,
-        CreateDomainMetadataMutationVariables
-      >({
-        mutation: CreateDomainMetadataDocument,
-        variables: {
-          input: {
-            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-            name: domainName,
-            color: domainColor || DomainColor.LightPink,
-            description: domainPurpose || '',
-          },
-        },
-      });
-    } else if (domain?.metadata) {
-      yield apolloClient.mutate<
-        CreateDomainMetadataMutation,
-        CreateDomainMetadataMutationVariables
-      >({
-        mutation: CreateDomainMetadataDocument,
-        variables: {
-          input: {
-            id: getPendingMetadataDatabaseId(colonyAddress, txHash),
-            name: domainName,
-            color: domainColor || domain.metadata.color,
-            description: domainPurpose || domain.metadata.description,
-            changelog: getUpdatedDomainMetadataChangelog({
-              transactionHash: txHash,
-              metadata: domain.metadata,
-              newName: domainName,
-              newColor: domainColor,
-              newDescription: domainPurpose,
-            }),
-          },
-        },
-      });
-    }
-
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield handleDomainMetadata({
+      apolloClient,
+      colonyAddress,
+      domainName,
+      isCreateDomain,
+      txHash,
+      domain,
+      domainColor,
+      domainPurpose,
+      customActionTitle,
+    });
 
     if (annotationMessage) {
       yield uploadAnnotation({
@@ -249,7 +210,7 @@ function* createEditDomainMotion({
     setTxHash?.(txHash);
 
     yield put<AllActions>({
-      type: ActionTypes.MOTION_DOMAIN_CREATE_EDIT_SUCCESS,
+      type: ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
 
@@ -260,7 +221,7 @@ function* createEditDomainMotion({
     }
   } catch (caughtError) {
     yield putError(
-      ActionTypes.MOTION_DOMAIN_CREATE_EDIT_ERROR,
+      ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_ERROR,
       caughtError,
       meta,
     );
@@ -269,9 +230,9 @@ function* createEditDomainMotion({
   }
 }
 
-export default function* createEditDomainMotionSaga() {
+export default function* createEditDomainReputationMotionSaga() {
   yield takeEvery(
-    ActionTypes.MOTION_DOMAIN_CREATE_EDIT,
-    createEditDomainMotion,
+    ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT,
+    createEditDomainReputationMotion,
   );
 }

@@ -1,7 +1,18 @@
 import React from 'react';
 
+import { Action } from '~constants/actions.ts';
+import { ManageVerifiedMembersOperation } from '~types';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  TITLE_FIELD_NAME,
+  ACTION_TYPE_FIELD_NAME,
+  MEMBERS_FIELD_NAME,
+  MANAGE_MEMBERS_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import {
@@ -9,6 +20,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import AddRemoveRow from '../rows/AddRemove.tsx';
 import {
   ActionTypeRow,
@@ -25,6 +37,7 @@ interface AddVerifiedMembersProps {
 }
 
 const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const numberOfMembers = action.members?.length || 0;
   const {
     customTitle = formatText(
@@ -36,11 +49,25 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
       },
     ),
   } = action?.metadata || {};
-  const { initiatorUser } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
+            [MEMBERS_FIELD_NAME]: [],
+            [MANAGE_MEMBERS_FIELD_NAME]: ManageVerifiedMembersOperation.Add,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(
           {
@@ -64,7 +91,10 @@ const AddVerifiedMembers = ({ action }: AddVerifiedMembersProps) => {
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
         <AddRemoveRow actionType={action.type} />
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

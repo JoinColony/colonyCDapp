@@ -33,6 +33,9 @@ const MemberCard: FC<MemberCardProps> = ({
           walletAddress={userAddress}
           user={user}
           withVerifiedBadge={false}
+          popperOptions={{
+            placement: 'bottom-start',
+          }}
           className="flex w-full max-w-full flex-grow flex-col items-center justify-between gap-2 text-gray-900"
         >
           <ContributorTypeWrapper contributorType={contributorType}>

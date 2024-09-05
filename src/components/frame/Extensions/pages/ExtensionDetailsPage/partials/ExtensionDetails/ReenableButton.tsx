@@ -1,9 +1,10 @@
+import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
+import { ButtonWithLoader } from '~frame/Extensions/pages/partials/ButtonWithLoader.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import { useReenable } from './hooks.tsx';
@@ -23,15 +24,16 @@ const ReenableButton = ({
 
   return (
     <>
-      <Button
+      <ButtonWithLoader
         type="button"
         onClick={() => setIsReEnableModalOpen(true)}
         isFullSize={isMobile}
-        loading={isLoading}
+        isLoading={isLoading}
       >
         {formatText({ id: 'button.enable' })}
-      </Button>
+      </ButtonWithLoader>
       <Modal
+        icon={Question}
         title={formatText({ id: 'extensionReEnable.modal.title' })}
         subTitle={formatText({
           id: 'extensionReEnable.modal.subTitle',

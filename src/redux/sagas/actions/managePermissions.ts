@@ -1,17 +1,15 @@
-import {
-  ClientType,
-  ColonyRole,
-  getPermissionProofs,
-  Id,
-} from '@colony/colony-js';
+import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { transactionPending } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
+import { Authority } from '~types/authority.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { clearContributorsAndRolesCache } from '~utils/members.ts';
 import { intArrayToBytes32 } from '~utils/web3/index.ts';
 
 import {
@@ -27,6 +25,7 @@ import {
   uploadAnnotation,
   getColonyManager,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
 } from '../utils/index.ts';
 
 function* managePermissionsAction({
@@ -35,9 +34,12 @@ function* managePermissionsAction({
     domainId,
     userAddress,
     roles,
+    authority,
     colonyName,
     annotationMessage,
     customActionTitle,
+    colonyRoles,
+    colonyDomains,
   },
   meta: { id: metaId, navigate, setTxHash },
   meta,
@@ -80,18 +82,31 @@ function* managePermissionsAction({
         if (roleId === ColonyRole.ArchitectureSubdomain) {
           return false;
         }
+        // @TODO: confirm this is definitely the case - removed for now
+        // Administration role cannot be set for multi sig
+        // if (
+        //   authority === Authority.ViaMultiSig &&
+        //   roleId === ColonyRole.Administration
+        // ) {
+        //   return false;
+        // }
         if (!roles[roleId]) {
           return false;
         }
         return true;
       });
 
+    const contextMap = {
+      [Authority.Own]: ClientType.ColonyClient,
+      [Authority.ViaMultiSig]: ClientType.MultisigPermissionsClient,
+    };
+
     yield createGroupTransaction({
       channel: setUserRoles,
       batchKey,
       meta,
       config: {
-        context: ClientType.ColonyClient,
+        context: contextMap[authority],
         methodName: 'setUserRoles',
         identifier: colonyAddress,
         params: [],
@@ -129,11 +144,23 @@ function* managePermissionsAction({
       colonyAddress,
     );
 
-    const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      domainId,
-      domainId === Id.RootDomain ? ColonyRole.Root : ColonyRole.Architecture,
+    const requiredRoles =
+      domainId === Id.RootDomain
+        ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
+        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+
+    const initiatorAddress = yield colonyClient.signer.getAddress();
+
+    const [permissionDomainId, childSkillIndex] = yield call(
+      getPermissionProofsLocal,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: domainId,
+        requiredColonyRoles: requiredRoles,
+        permissionAddress: initiatorAddress,
+      },
     );
 
     yield transactionSetParams(setUserRoles.id, [
@@ -174,6 +201,8 @@ function* managePermissionsAction({
         state: { isRedirect: true },
       });
     }
+
+    yield clearContributorsAndRolesCache();
   } catch (error) {
     yield putError(ActionTypes.ACTION_USER_ROLES_SET_ERROR, error, meta);
   } finally {

@@ -108,6 +108,7 @@ export interface ActionButtonProps extends ButtonProps {
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
   values?: any;
+  useTxLoader?: boolean;
 }
 
 export type ButtonLinkProps = Omit<

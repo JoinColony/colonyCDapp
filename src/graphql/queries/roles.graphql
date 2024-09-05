@@ -8,3 +8,14 @@ query GetColonyHistoricRoleRoles($id: ID!) {
     role_6
   }
 }
+
+query GetMultiSigRolesForDomain(
+  $domainId: ID!
+  $filter: ModelColonyRoleFilterInput!
+) {
+  getRoleByDomainAndColony(domainId: $domainId, filter: $filter, limit: 9999) {
+    items {
+      ...ColonyUserRole
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { type DeepPartial } from 'utility-types';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { ActionTypes } from '~redux';
+import { ManageVerifiedMembersOperation } from '~types';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,10 +15,10 @@ import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { ManageMembersType } from './consts.ts';
 import {
   type ManageVerifiedMembersFormValues,
   getValidationSchema,
+  getManageVerifiedMembersPayload,
 } from './utils.ts';
 
 const MSG = defineMessages({
@@ -34,28 +35,20 @@ const MSG = defineMessages({
 export const useManageVerifiedMembers = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
-  const {
-    colony: { colonyAddress, name },
-  } = useColonyContext();
+  const { colony } = useColonyContext();
   const { totalMembers, verifiedMembers } = useMemberContext();
 
   const decisionMethod: DecisionMethod | undefined = useWatch({
     name: DECISION_METHOD_FIELD_NAME,
   });
-  const manageMembers: ManageMembersType | undefined = useWatch({
+  const manageMembers: ManageVerifiedMembersOperation | undefined = useWatch({
     name: 'manageMembers',
   });
-  const actionType =
-    manageMembers === ManageMembersType.Add
-      ? ActionTypes.ACTION_ADD_VERIFIED_MEMBERS
-      : ActionTypes.ACTION_REMOVE_VERIFIED_MEMBERS;
-  const motionType =
-    manageMembers === ManageMembersType.Add
-      ? ActionTypes.MOTION_ADD_VERIFIED_MEMBERS
-      : ActionTypes.MOTION_REMOVE_VERIFIED_MEMBERS;
+  const actionType = ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS;
+  const motionType = ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS;
 
   const validationSchema = useMemo(() => {
-    if (manageMembers === ManageMembersType.Add) {
+    if (manageMembers === ManageVerifiedMembersOperation.Add) {
       const verifiedBlacklist = verifiedMembers.map(
         (member) => member.contributorAddress,
       );
@@ -81,18 +74,9 @@ export const useManageVerifiedMembers = (
     getFormOptions,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
-      mapPayload((values: ManageVerifiedMembersFormValues) => {
-        const members = values.members?.map((member) => member?.value);
-
-        return {
-          colonyAddress,
-          colonyName: name,
-          members,
-          customActionTitle: values.title,
-          annotationMessage: values.description,
-          domainId: values.createdIn || Id.RootDomain,
-        };
-      }),
+      mapPayload((values: ManageVerifiedMembersFormValues) =>
+        getManageVerifiedMembersPayload(colony, values),
+      ),
       [],
     ),
     defaultValues: useMemo<DeepPartial<ManageVerifiedMembersFormValues>>(

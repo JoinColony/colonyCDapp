@@ -6,6 +6,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -26,20 +27,31 @@ const DecisionMethodField = ({
 }: DecisionMethodFieldProps) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const userRoles = getAllUserRoles(colony, user?.walletAddress);
+  const userRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user?.walletAddress,
+  );
+  const userMultiSigRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user?.walletAddress,
+    true,
+  );
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+  const shouldShowMultiSig =
+    !reputationOnly && isMultiSigEnabled && userMultiSigRoles.length > 0;
 
   const getDecisionMethods = () => {
     const decisionMethods: DecisionMethodOption[] = [
       ...(shouldShowPermissions
         ? [
             {
-              label: formatText({ id: 'actionSidebar.method.permissions' }),
+              label: formatText({ id: 'decisionMethod.permissions' }),
               value: DecisionMethod.Permissions,
             },
           ]
@@ -47,8 +59,16 @@ const DecisionMethodField = ({
       ...(isVotingReputationEnabled
         ? [
             {
-              label: formatText({ id: 'actionSidebar.method.reputation' }),
+              label: formatText({ id: 'decisionMethod.reputation' }),
               value: DecisionMethod.Reputation,
+            },
+          ]
+        : []),
+      ...(shouldShowMultiSig
+        ? [
+            {
+              label: formatText({ id: 'decisionMethod.multiSig' }),
+              value: DecisionMethod.MultiSig,
             },
           ]
         : []),

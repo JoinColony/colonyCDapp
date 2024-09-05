@@ -23,7 +23,7 @@ const useFilterCreatedInField = (
   const decisionMethod = watch(DECISION_METHOD_FIELD_NAME);
 
   useEffect(() => {
-    if (onlyAllowRoot || decisionMethod !== DecisionMethod.Reputation) return;
+    if (onlyAllowRoot || decisionMethod === DecisionMethod.Permissions) return;
 
     if (!selectedTeam && !!createdIn && createdIn !== Id.RootDomain) {
       setValue(nameOfFieldToFilterOn, createdIn);
@@ -38,7 +38,7 @@ const useFilterCreatedInField = (
   ]);
 
   useEffect(() => {
-    if (onlyAllowRoot || decisionMethod !== DecisionMethod.Reputation) return;
+    if (onlyAllowRoot || decisionMethod === DecisionMethod.Permissions) return;
 
     if (selectedTeam) {
       setValue(CREATED_IN_FIELD_NAME, selectedTeam);

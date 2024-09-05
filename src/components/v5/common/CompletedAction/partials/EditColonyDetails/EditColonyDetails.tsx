@@ -2,8 +2,19 @@ import { PencilCircle, Image, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { Action } from '~constants/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  TITLE_FIELD_NAME,
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  COLONY_DESCRIPTION_FIELD_NAME,
+  COLONY_AVATAR_FIELD_NAME,
+  COLONY_NAME_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/ColonyAvatar.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -12,6 +23,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionTypeRow,
   CreatedInRow,
@@ -39,14 +51,32 @@ const MSG = defineMessages({
 });
 
 const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
   const actionColonyMetadata =
     action.pendingColonyMetadata || action.colony.metadata;
 
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+            [COLONY_DESCRIPTION_FIELD_NAME]: actionColonyMetadata?.description,
+            [COLONY_AVATAR_FIELD_NAME]: {
+              image: actionColonyMetadata?.avatar,
+            },
+            [COLONY_NAME_FIELD_NAME]: actionColonyMetadata?.displayName,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           user: initiatorUser ? (
@@ -94,7 +124,10 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           RowIcon={FileText}
         />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

@@ -21,7 +21,11 @@ const useHasActionPermissions = () => {
     [ACTION_TYPE_FIELD_NAME]: actionType,
     [DECISION_METHOD_FIELD_NAME]: decisionMethod,
   } = formValues;
-  if (!actionType || decisionMethod !== DecisionMethod.Permissions) {
+  if (
+    !actionType ||
+    !decisionMethod ||
+    decisionMethod === DecisionMethod.Reputation
+  ) {
     return undefined;
   }
 
@@ -32,7 +36,23 @@ const useHasActionPermissions = () => {
     formValues,
   });
 
-  return hasPermissions;
+  if (decisionMethod === DecisionMethod.Permissions) {
+    return hasPermissions;
+  }
+
+  const hasMultiSigPermissions = getHasActionPermissions({
+    colony,
+    userAddress: user?.walletAddress ?? '',
+    actionType,
+    formValues,
+    isMultiSig: true,
+  });
+
+  if (decisionMethod === DecisionMethod.MultiSig) {
+    return hasMultiSigPermissions;
+  }
+
+  return hasPermissions || hasMultiSigPermissions;
 };
 
 export default useHasActionPermissions;

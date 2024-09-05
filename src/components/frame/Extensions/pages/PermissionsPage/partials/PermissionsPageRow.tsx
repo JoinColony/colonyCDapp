@@ -93,7 +93,12 @@ const PermissionsPageRow: FC<PermissionPageRowProps> = ({
                       userAddress={item.data.member.walletAddress}
                       user={item.data.member.user ?? undefined}
                       meatBallMenuProps={item.data.meatBallMenuProps}
-                      showInheritedLabel={item.data.member.isRoleInherited}
+                      showInheritedLabel={
+                        isMultiSig
+                          ? item.data.member.isMultiSigRoleInherited
+                          : item.data.member.isRoleInherited
+                      }
+                      showMultiSigPermissions={isMultiSig}
                     />
                   );
                 })}

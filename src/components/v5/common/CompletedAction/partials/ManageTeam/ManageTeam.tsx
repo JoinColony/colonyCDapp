@@ -2,8 +2,22 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
+import { Action } from '~constants/actions.ts';
+import { type OptionalValue } from '~types';
+import {
+  ColonyActionType,
+  type DomainMetadata,
+  type ColonyAction,
+} from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TITLE_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -12,6 +26,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -39,12 +54,14 @@ const MSG = defineMessages({
   subtitle: {
     id: `${displayName}.subtitle`,
     defaultMessage:
-      '{isAddingNewTeam, select, true {New team {team} by {user}} other {Change {team} team details by {user}}}',
+      '{isAddingNewTeam, select, true {Create new team {team} by {user}} other {Change {team} team details by {user}}}',
   },
 });
 
 const ManageTeam = ({ action }: CreateNewTeamProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
+
   const {
     customTitle = formatText(
       isAddingNewTeam ? MSG.newTeamTitle : MSG.editTeamTitle,
@@ -52,14 +69,52 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   } = action?.metadata || {};
   const { initiatorUser } = action;
 
-  const actionDomainMetadata =
-    action.pendingDomainMetadata || action.fromDomain?.metadata;
+  let actionDomainMetadata: OptionalValue<DomainMetadata>;
+  let team: OptionalValue<string>;
+
+  if (
+    action.type === ColonyActionType.CreateDomain ||
+    action.type === ColonyActionType.EditDomain
+  ) {
+    actionDomainMetadata = action.fromDomain?.metadata;
+    team = actionDomainMetadata?.name;
+  } else {
+    actionDomainMetadata = action.pendingDomainMetadata;
+    team =
+      actionDomainMetadata?.changelog?.slice(-1)[0].oldName ??
+      actionDomainMetadata?.name;
+  }
+
+  const domain = action.motionData?.motionDomain ?? null;
+  const motionDomainMetadata = domain?.metadata;
+
+  const actionType = [
+    ColonyActionType.CreateDomain,
+    ColonyActionType.CreateDomainMotion,
+    ColonyActionType.CreateDomainMultisig,
+  ].includes(action.type)
+    ? Action.CreateNewTeam
+    : Action.EditExistingTeam;
+
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={action.transactionHash}
+          defaultValues={{
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: actionType,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            [CREATED_IN_FIELD_NAME]: domain?.nativeId,
+            [DESCRIPTION_FIELD_NAME]: action.annotation?.message,
+          }}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
-          team: action.fromDomain?.metadata?.name,
+          team,
           user: initiatorUser ? (
             <UserInfoPopover
               walletAddress={initiatorUser.walletAddress}
@@ -98,12 +153,13 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           })}
           RowIcon={PaintBucket}
         />
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {motionDomainMetadata && (
+          <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (

@@ -8,6 +8,7 @@ import { type GasPricesActionTypes } from './gasPrices.ts';
 import { type IpfsActionTypes } from './ipfs.ts';
 import { type MessageActionTypes } from './message.ts';
 import { type MotionActionTypes } from './motion.ts';
+import { type MultiSigActionTypes } from './multiSig.ts';
 import { type TransactionActionTypes } from './transaction.ts';
 import { type UserActionTypes } from './user.ts';
 import { type MetacolonyVestingTypes } from './vesting.ts';
@@ -103,6 +104,7 @@ export type AllActions =
   | MessageActionTypes
   | UserActionTypes
   | MotionActionTypes
+  | MultiSigActionTypes
   | MetacolonyVestingTypes
   | WalletActionTypes
   | DecisionActionTypes

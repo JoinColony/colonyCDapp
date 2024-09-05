@@ -2,7 +2,6 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
@@ -15,6 +14,7 @@ import {
   TITLE_FIELD_NAME,
   TOKEN_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
 import {
@@ -50,15 +50,9 @@ const MSG = defineMessages({
 });
 
 const MintTokens = ({ action }: MintTokensProps) => {
+  const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const {
-    amount,
-    initiatorUser,
-    token,
-    transactionHash,
-    isMotion,
-    annotation,
-  } = action;
+  const { amount, initiatorUser, token, transactionHash, annotation } = action;
 
   const formattedAmount = getFormattedTokenAmount(
     amount || '1',
@@ -68,6 +62,10 @@ const MintTokens = ({ action }: MintTokensProps) => {
     amount || '',
     getTokenDecimalsWithFallback(token?.decimals),
   );
+
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
 
   return (
     <>
@@ -80,9 +78,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
-            [DECISION_METHOD_FIELD_NAME]: isMotion
-              ? DecisionMethod.Reputation
-              : DecisionMethod.Permissions,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
         />
@@ -110,13 +106,12 @@ const MintTokens = ({ action }: MintTokensProps) => {
           token={action.token || undefined}
         />
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
-        )}
+        {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />

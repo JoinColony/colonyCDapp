@@ -62,13 +62,31 @@ export const CUSTOM_USER_ROLE: UserRoleMeta = {
   permissions: [],
 };
 
-export const getRole = (permissionsList: ColonyRole[]): UserRoleMeta =>
-  USER_ROLES.find(({ permissions }) =>
-    isEqual(permissions.sort(), permissionsList.sort()),
-  ) || {
-    ...CUSTOM_USER_ROLE,
-    permissions: permissionsList,
-  };
+export const getRole = (
+  permissionsList: ColonyRole[],
+  isMultiSig?: boolean,
+): UserRoleMeta => {
+  if (!isMultiSig) {
+    return (
+      USER_ROLES.find(({ permissions }) =>
+        isEqual(permissions.sort(), permissionsList.sort()),
+      ) || {
+        ...CUSTOM_USER_ROLE,
+        permissions: permissionsList,
+      }
+    );
+  }
+
+  // Multi-sig does not use the Mod role
+  return (
+    USER_ROLES.filter((role) => role.role !== UserRole.Mod).find(
+      ({ permissions }) => isEqual(permissions.sort(), permissionsList.sort()),
+    ) || {
+      ...CUSTOM_USER_ROLE,
+      permissions: permissionsList,
+    }
+  );
+};
 
 export const PERMISSIONS_TABLE_CONTENT: Record<
   Exclude<UserRole, 'custom'>,
@@ -131,4 +149,51 @@ export const PERMISSIONS_TABLE_CONTENT: Record<
     heading: 'Mod permissions',
     permissions: [formatText({ id: 'permissions.moderation' })],
   },
+};
+
+export const findFirstUserRoleWithColonyRoles = ({
+  colonyRoles,
+  isMultiSig,
+}: {
+  colonyRoles: ColonyRole[];
+  isMultiSig?: boolean;
+}) => {
+  if (!colonyRoles || colonyRoles.length === 0) {
+    return UserRole.Owner;
+  }
+  const matchingUserRole = USER_ROLES.find((userRole) =>
+    colonyRoles.every((role) => userRole.permissions.includes(role)),
+  );
+
+  if (!matchingUserRole) {
+    return UserRole.Owner;
+  }
+
+  // Multi-sig does not support the moderation role
+  if (matchingUserRole.name === UserRole.Mod && isMultiSig) {
+    return UserRole.Payer;
+  }
+
+  return matchingUserRole.name;
+};
+
+export const getInheritedPermissions = ({
+  parentPermissions,
+  currentPermissions,
+  isRootDomain,
+}: {
+  parentPermissions: ColonyRole[];
+  currentPermissions: ColonyRole[];
+  isRootDomain: boolean;
+}): ColonyRole[] => {
+  if (isRootDomain) {
+    return [];
+  }
+
+  return parentPermissions.filter(
+    (permission) =>
+      permission !== ColonyRole.Root &&
+      permission !== ColonyRole.Recovery &&
+      !currentPermissions.includes(permission),
+  );
 };

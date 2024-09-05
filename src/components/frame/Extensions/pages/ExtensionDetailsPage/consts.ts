@@ -1,25 +1,17 @@
 import { Extension } from '@colony/colony-js';
 
-import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
-
 import LazyConsensusPageSetup from '../LazyConsensusPage/LazyConsensusPageSetup.tsx';
-
-export const tabsItems: Partial<{
-  [k in Extension]: TabItem[];
-}> = {
-  [Extension.VotingReputation]: [
-    { id: 0, title: 'Overview' },
-    { id: 1, title: 'Extension settings' },
-  ],
-};
+import MultiSigPageSetup from '../MultiSigPage/MultiSigPageSetup.tsx';
 
 export const ExtensionsBadgeMap = {
   [Extension.VotingReputation]: 'governance',
+  [Extension.MultisigPermissions]: 'governance',
   [Extension.OneTxPayment]: 'payments',
 };
 
 export const SetupComponentMap = {
   [Extension.VotingReputation]: LazyConsensusPageSetup,
+  [Extension.MultisigPermissions]: MultiSigPageSetup,
 };
 
 enum GovernanceInitializationParams {

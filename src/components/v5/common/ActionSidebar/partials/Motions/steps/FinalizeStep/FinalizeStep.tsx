@@ -11,6 +11,8 @@ import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
+import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
+import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -21,7 +23,6 @@ import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
 import { useClaimConfig, useFinalizeStep } from './hooks.tsx';
 import { type FinalizeStepProps, FinalizeStepSections } from './types.ts';
-import { handleMotionFinalized } from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.FinalizeStep';
@@ -40,6 +41,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   refetchAction,
   motionState,
 }) => {
+  const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
   const hasFinalizedHandlerRun = useRef(false);
@@ -70,6 +72,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
     setIsPolling(true);
+    onFinalizeSuccessCallback(actionData);
   };
 
   /* Stop polling when mounted / dismounted */
@@ -89,7 +92,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     ) {
       refetchColony();
       setIsPolling(false);
-      handleMotionFinalized(actionData);
+      handleMotionCompleted(actionData);
       hasFinalizedHandlerRun.current = true;
     }
   }, [isMotionAgreement, isMotionFinalized, actionData, refetchColony]);

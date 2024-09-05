@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { type ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
 import { Action } from '~constants/actions.ts';
@@ -6,6 +6,7 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import {
@@ -19,7 +20,8 @@ import {
 const useHasNoDecisionMethods = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   const { watch } = useFormContext() || {};
 
@@ -50,21 +52,66 @@ const useHasNoDecisionMethods = () => {
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
   const userRootRoles = getUserRolesForDomain({
-    colony,
+    colonyRoles: extractColonyRoles(colony.roles),
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
   });
 
-  const userRoles = getAllUserRoles(colony, user.walletAddress);
+  const userRootMultiSigRoles = getUserRolesForDomain({
+    colonyRoles: extractColonyRoles(colony.roles),
+    userAddress: user.walletAddress,
+    domainId: Id.RootDomain,
+    isMultiSig: true,
+  });
+
+  const userRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user.walletAddress,
+  );
+
+  const userMultiSigRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user.walletAddress,
+    true,
+  );
 
   if (
-    !requiredPermissions.every((role) => {
-      // If the requiredRolesDomain is root, check the user has the required permissions in root
-      if (requiredRolesDomain === Id.RootDomain) {
-        return userRootRoles.includes(role);
-      }
-      // Otherwise, check the user has the required permissions in any domain
-      return userRoles.includes(role);
+    !requiredPermissions.some((roles) => {
+      // Check if every role in the current sub-array is satisfied
+      return roles.every((role) => {
+        let rolesToCheck: {
+          userRoles: ColonyRole[];
+          userMultiSigRoles: ColonyRole[];
+        };
+
+        if (!requiredRolesDomain) {
+          rolesToCheck = {
+            userRoles: [...userRootRoles, ...userRoles],
+            userMultiSigRoles: isMultiSigEnabled
+              ? [...userRootMultiSigRoles, ...userMultiSigRoles]
+              : [],
+          };
+        } else if (requiredRolesDomain === Id.RootDomain) {
+          rolesToCheck = {
+            userRoles: userRootRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userRootMultiSigRoles : [],
+          };
+        } else {
+          rolesToCheck = {
+            userRoles,
+            userMultiSigRoles: isMultiSigEnabled ? userMultiSigRoles : [],
+          };
+        }
+
+        // @TODO: If an action requires multiple permissions (Simple Payment) then all the roles need to be in the same domain
+        // This would require reworking `userRoles` and `userMultiSigRoles` to group roles by domain
+
+        // Check if the user has the role in any domain
+        return (
+          rolesToCheck.userRoles.includes(role) ||
+          (isMultiSigEnabled && rolesToCheck.userMultiSigRoles.includes(role))
+        );
+      });
     })
   ) {
     return true;

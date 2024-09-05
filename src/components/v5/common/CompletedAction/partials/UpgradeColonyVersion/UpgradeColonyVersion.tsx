@@ -11,6 +11,7 @@ import {
   ActionSubtitle,
   ActionTitle,
 } from '../Blocks/index.ts';
+import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
   ActionData,
   ActionTypeRow,
@@ -40,9 +41,19 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, newColonyVersion } = action;
 
+  const motionDomainMetadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
   return (
     <>
-      <ActionTitle>{customTitle}</ActionTitle>
+      <div className="flex items-center justify-between gap-2">
+        <ActionTitle>{customTitle}</ActionTitle>
+        <MeatballMenu
+          showRedoItem={false}
+          transactionHash={action.transactionHash}
+        />
+      </div>
       <ActionSubtitle>
         {formatText(MSG.subtitle, {
           newVersion: newColonyVersion,
@@ -81,12 +92,13 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
           </>
         )}
 
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow
+          isMotion={action.isMotion || false}
+          isMultisig={action.isMultiSig || false}
+        />
 
-        {action.motionData?.motionDomain.metadata && (
-          <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
-          />
+        {motionDomainMetadata && (
+          <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
         )}
       </ActionDataGrid>
       {action.annotation?.message && (

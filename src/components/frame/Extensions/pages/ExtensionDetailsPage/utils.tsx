@@ -1,15 +1,15 @@
-import { Id } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
 import { type FieldValues } from 'react-hook-form';
 import { type useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
+import { type TabItem } from '~shared/Extensions/Tabs/types.ts';
 import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
@@ -20,6 +20,11 @@ import {
 import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
+
+export enum ExtensionTabId {
+  OVERVIEW = 0,
+  SETTINGS = 1,
+}
 
 export const waitForColonyPermissions = ({
   refetchColony,
@@ -45,7 +50,7 @@ export const waitForColonyPermissions = ({
           address: (extensionData as InstalledExtensionData).address ?? '',
           colony: updatedColony,
           requiredRoles: extensionData.neededColonyPermissions,
-          requiredRolesDomains: [Id.RootDomain],
+          requiredRolesDomain: Id.RootDomain,
         });
 
         if (extensionHasPermissions) {
@@ -105,7 +110,9 @@ export const waitForDbAfterExtensionAction = ({
         }
 
         case ExtensionMethods.ENABLE: {
-          condition = !!extension?.isInitialized;
+          // Extension.MultisigPermissions doesn't need initialisation by default
+          condition =
+            !!extension?.isInitialized || !!extension?.params?.multiSig;
           break;
         }
 
@@ -136,27 +143,20 @@ export const getFormSuccessFn =
   <T extends FieldValues>({
     setWaitingForEnableConfirmation,
     extensionData,
-    refetchColony,
-    refetchExtensionData,
+    checkExtensionEnabled,
     navigate,
     colonyName,
   }: {
     setWaitingForEnableConfirmation: SetStateFn;
     extensionData: AnyExtensionData;
-    refetchColony: RefetchColonyFn;
-    refetchExtensionData: RefetchExtensionDataFn;
+    checkExtensionEnabled: () => Promise<void>;
     navigate: ReturnType<typeof useNavigate>;
     colonyName: string;
   }): OnSuccess<T> =>
   async (_, { reset }) => {
     setWaitingForEnableConfirmation(true);
     try {
-      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
-      await waitForColonyPermissions({ extensionData, refetchColony });
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.ENABLE,
-        refetchExtensionData,
-      });
+      await checkExtensionEnabled();
       toast.success(
         <Toast
           type="success"
@@ -172,8 +172,8 @@ export const getFormSuccessFn =
       toast.error(
         <Toast
           type="error"
-          title={{ id: 'extensionEnable.toast.title.success' }}
-          description={{ id: 'extensionEnable.toast.description.success' }}
+          title={{ id: 'extensionEnable.toast.title.error' }}
+          description={{ id: 'extensionEnable.toast.description.error' }}
         />,
       );
     } finally {
@@ -208,4 +208,25 @@ export const mapExtensionActionPayload = (
     },
     {},
   );
+};
+
+export const getExtensionTabs = (
+  extension: Extension,
+  isInstalled?: boolean,
+): TabItem[] => {
+  /* eslint-disable no-fallthrough */
+  switch (extension) {
+    case Extension.VotingReputation:
+    case Extension.MultisigPermissions: {
+      if (isInstalled) {
+        return [
+          { id: ExtensionTabId.OVERVIEW, title: 'Overview' },
+          { id: ExtensionTabId.SETTINGS, title: 'Extension settings' },
+        ];
+      }
+    }
+    default:
+      return [{ id: ExtensionTabId.OVERVIEW, title: 'Overview' }];
+  }
+  /* eslint-enable no-fallthrough */
 };

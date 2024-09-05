@@ -9,7 +9,11 @@ import {
 } from '~constants/permissions.ts';
 import { type ColonyFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
+import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { type Colony } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains } from '~utils/domains.ts';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
@@ -89,18 +93,47 @@ export const getPermissionsMap = (
 export const getManagePermissionsPayload = (
   colony: Colony,
   values: ManagePermissionsFormValues,
-) => ({
-  annotationMessage: values.description
-    ? sanitizeHTML(values.description)
-    : undefined,
-  domainId: Number(values.team),
-  userAddress: values.member,
-  colonyName: colony.name,
-  colonyAddress: colony.colonyAddress,
-  motionDomainId: Number(values.createdIn),
-  roles: getPermissionsMap(values.permissions, values.role, values.team),
-});
+) => {
+  const {
+    description: annotationMessage,
+    title,
+    decisionMethod,
+    team,
+    member,
+    createdIn,
+    permissions,
+    role,
+    authority,
+  } = values;
 
+  const commonPayload = {
+    annotationMessage: annotationMessage
+      ? sanitizeHTML(annotationMessage)
+      : undefined,
+    domainId: Number(team),
+    userAddress: member,
+    colonyName: colony.name,
+    colonyAddress: colony.colonyAddress,
+    roles: getPermissionsMap(permissions, role, team),
+    authority,
+    customActionTitle: title,
+    colonyRoles: extractColonyRoles(colony.roles),
+    colonyDomains: extractColonyDomains(colony.domains),
+  };
+
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
+    return {
+      ...commonPayload,
+      motionDomainId: Number(createdIn),
+      isMultiSig: decisionMethod === DecisionMethod.MultiSig,
+    };
+  }
+
+  return commonPayload;
+};
 export const extractColonyRoleFromPermissionKey = (permissionKey: string) => {
   const colonyRole = permissionKey.match(/role_(\d+)/)?.[1];
 
@@ -120,6 +153,7 @@ export const configureFormRoles = ({
   member,
   role,
   team,
+  authority,
 }: {
   colony: ColonyFragment;
   setValue: UseFormSetValue<ManagePermissionsFormValues>;
@@ -129,12 +163,14 @@ export const configureFormRoles = ({
   role: ManagePermissionsFormValues['role'];
   shouldPersistRole?: boolean;
   setShouldPersistRole?: React.Dispatch<React.SetStateAction<boolean>>;
+  authority: ManagePermissionsFormValues['authority'];
 }) => {
   const userRolesForDomain = getUserRolesForDomain({
-    colony,
+    colonyRoles: extractColonyRoles(colony.roles),
     userAddress: member,
     domainId: team,
     intersectingRoles: true,
+    isMultiSig: authority === Authority.ViaMultiSig,
   });
 
   const userRoleMeta = getRole(userRolesForDomain);

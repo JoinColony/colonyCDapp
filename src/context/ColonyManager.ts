@@ -9,6 +9,7 @@ import {
   type TokenLockingClient,
   type ExtensionClient,
   type AnyColonyClient,
+  type AnyMultisigPermissionsClient,
 } from '@colony/colony-js';
 import { type Signer, type providers } from 'ethers';
 
@@ -81,6 +82,17 @@ export default class ColonyManager {
     return client as Promise<ExtensionClient>;
   }
 
+  public async removeColonyExtensionClient(
+    identifier: Address,
+    extensionId: Extension,
+  ): Promise<void> {
+    if (!isAddress(identifier)) {
+      throw new Error('A colony address must be provided');
+    }
+    const key = `${identifier}-${extensionId}`;
+    this.extensionClients.delete(key);
+  }
+
   async setColonyClient(address: Address): Promise<AnyColonyClient> {
     const clientPromise = this.getColonyPromise(address);
     this.colonyClients.set(address, clientPromise);
@@ -115,6 +127,11 @@ export default class ColonyManager {
     type: ClientType.OneTxPaymentClient,
     identifier?: Address,
   ): Promise<AnyOneTxPaymentClient>;
+
+  async getClient(
+    type: ClientType.MultisigPermissionsClient,
+    identifier?: Address,
+  ): Promise<AnyMultisigPermissionsClient>;
 
   async getClient(
     type: ClientType,
@@ -168,6 +185,16 @@ export default class ColonyManager {
         return this.getColonyExtensionClient(
           identifier,
           Extension.VotingReputation,
+        );
+      }
+      case ClientType.MultisigPermissionsClient: {
+        if (!identifier)
+          throw new Error(
+            'Need colony identifier to get the MultisigPermissionsClient',
+          );
+        return this.getColonyExtensionClient(
+          identifier,
+          Extension.MultisigPermissions,
         );
       }
       case ClientType.StakedExpenditureClient: {

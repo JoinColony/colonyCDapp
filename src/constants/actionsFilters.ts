@@ -17,6 +17,8 @@ export const FILTER_MOTION_STATES = [
   MotionState.Finalizable,
   MotionState.Passed,
   MotionState.Failed,
+  MotionState.Open,
+  MotionState.Rejected,
 ];
 
 export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
@@ -27,40 +29,54 @@ export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
     ColonyActionType.PaymentMotion,
     ColonyActionType.MultiplePayment,
     ColonyActionType.MultiplePaymentMotion,
+    ColonyActionType.PaymentMultisig,
+    ColonyActionType.MultiplePaymentMultisig,
   ],
   [Action.CreateDecision]: [ColonyActionType.CreateDecisionMotion],
   [Action.TransferFunds]: [
     ColonyActionType.MoveFunds,
     ColonyActionType.MoveFundsMotion,
+    ColonyActionType.MoveFundsMultisig,
   ],
   [Action.MintTokens]: [
     ColonyActionType.MintTokens,
     ColonyActionType.MintTokensMotion,
+    ColonyActionType.MintTokensMultisig,
   ],
   [Action.UnlockToken]: [
     ColonyActionType.UnlockToken,
     ColonyActionType.UnlockTokenMotion,
+    ColonyActionType.UnlockTokenMultisig,
   ],
-  [Action.ManageTokens]: [ColonyActionType.ManageTokens],
+  [Action.ManageTokens]: [
+    ColonyActionType.ManageTokens,
+    ColonyActionType.ManageTokensMotion,
+    ColonyActionType.ManageTokensMultisig,
+  ],
   [Action.CreateNewTeam]: [
     ColonyActionType.CreateDomain,
     ColonyActionType.CreateDomainMotion,
+    ColonyActionType.CreateDomainMultisig,
   ],
   [Action.EditExistingTeam]: [
     ColonyActionType.EditDomain,
     ColonyActionType.EditDomainMotion,
+    ColonyActionType.EditDomainMultisig,
   ],
   [Action.ManagePermissions]: [
     ColonyActionType.SetUserRoles,
     ColonyActionType.SetUserRolesMotion,
+    ColonyActionType.SetUserRolesMultisig,
   ],
   [Action.EditColonyDetails]: [
     ColonyActionType.ColonyEdit,
     ColonyActionType.ColonyEditMotion,
+    ColonyActionType.ColonyEditMultisig,
   ],
   [Action.UpgradeColonyVersion]: [
     ColonyActionType.VersionUpgrade,
     ColonyActionType.VersionUpgradeMotion,
+    ColonyActionType.VersionUpgradeMultisig,
   ],
   /**
    * @deprecated
@@ -68,6 +84,8 @@ export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
    */
   [Action.ManageColonyObjectives]: [
     ExtendedColonyActionType.UpdateColonyObjective,
+    ExtendedColonyActionType.UpdateColonyObjectiveMotion,
+    ExtendedColonyActionType.UpdateColonyObjectiveMultisig,
   ],
   [Action.PaymentBuilder]: [ColonyActionType.CreateExpenditure],
 };
