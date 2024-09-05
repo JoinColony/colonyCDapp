@@ -14,10 +14,14 @@ interface UseHasEnoughMembersWithPermissionsResult {
 
 export const useHasEnoughMembersWithPermissions = ({
   selectedAction,
-  domainId,
+  permissionDomainId,
+  thresholdDomainId,
 }: {
   selectedAction: Action;
-  domainId: number;
+  // domainId to check users if they have permissions in
+  permissionDomainId: number;
+  // domainId to check the threshold
+  thresholdDomainId: number;
 }): UseHasEnoughMembersWithPermissionsResult => {
   const { watch } = useFormContext();
   const formValues = watch();
@@ -35,13 +39,13 @@ export const useHasEnoughMembersWithPermissions = ({
 
   const { thresholdPerRole, isLoading: isDomainThresholdLoading } =
     useDomainThreshold({
-      domainId,
+      domainId: thresholdDomainId,
       requiredRoles: multiSigRoles,
     });
 
   const { countPerRole, isLoading: areEligibleSigneesLoading } =
     useEligibleSignees({
-      domainIds: getDomainIdsForEligibleSignees(domainId),
+      domainIds: getDomainIdsForEligibleSignees(permissionDomainId),
       requiredRoles: multiSigRoles,
     });
 

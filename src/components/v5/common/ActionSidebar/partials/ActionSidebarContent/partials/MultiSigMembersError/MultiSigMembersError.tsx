@@ -36,7 +36,7 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
     TEAM_FIELD_NAME,
   ]);
 
-  const domainId = useMemo(() => {
+  const permissionDomainId = useMemo(() => {
     // for both of these actions you need roles in the parent domain
     if (
       selectedAction === Action.TransferFunds ||
@@ -48,9 +48,22 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
     return fromDomain ?? team ?? Id.RootDomain;
   }, [fromDomain, selectedAction, team]);
 
+  const thresholdDomainId = useMemo(() => {
+    // manage permissions gets "created" in the domain you are managing permissions in
+    // so the threshold used is for that specific domain
+    // but users still need permissions in the parent domain
+    // :')
+    if (selectedAction === Action.TransferFunds) {
+      return Id.RootDomain;
+    }
+
+    return fromDomain ?? team ?? Id.RootDomain;
+  }, [fromDomain, selectedAction, team]);
+
   const { isLoading, hasEnoughMembersWithPermissions } =
     useHasEnoughMembersWithPermissions({
-      domainId,
+      permissionDomainId,
+      thresholdDomainId,
       selectedAction,
     });
 
