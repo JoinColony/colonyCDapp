@@ -23,8 +23,10 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   if (isLoading) {
     return (
       <div className="flex flex-shrink-0">
-        {Array.from({ length: maxAvatarsToShow }).map(() => (
+        {Array.from({ length: maxAvatarsToShow }).map((_, index) => (
           <div
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
             className={clsx(
               'z-base -ml-2 overflow-hidden rounded-full border border-base-white',
               {
