@@ -26,7 +26,7 @@ export const FundsCards = () => {
   return (
     <WidgetCards.List>
       {teams.map((item) => {
-        return <WidgetCards.Item title={item?.metadata?.name} />;
+        return <WidgetCards.Item key={item?.id} title={item?.metadata?.name} />;
       })}
       {/* Teams always will have at least 1 team by default - it is general */}
       {teams.length < 2 && (
