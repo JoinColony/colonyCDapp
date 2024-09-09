@@ -13,3 +13,9 @@ export const useTablet = () => {
   const isTablet = useMediaQuery({ query });
   return isTablet;
 };
+
+export const useLargeTablet = () => {
+  const { query1280: query } = queries;
+  const isLargeTable = useMediaQuery({ query });
+  return isLargeTable;
+};
