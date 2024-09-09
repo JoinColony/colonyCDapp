@@ -8,7 +8,6 @@ import { CarouselButton } from './partials/CarouselButton.tsx';
 interface WidgetCardsListProps {
   className?: string;
 }
-
 export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
   children,
   className,
