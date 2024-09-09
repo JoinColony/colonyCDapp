@@ -4,7 +4,7 @@ import React from 'react';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useTablet } from '~hooks/index.ts';
+import { useLargeTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
@@ -23,7 +23,7 @@ export const FundsCards = () => {
     });
   };
 
-  const isTablet = useTablet();
+  const isLargeTablet = useLargeTablet();
 
   const { colony } = useColonyContext();
 
@@ -31,12 +31,12 @@ export const FundsCards = () => {
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
-      {isTablet && (
+      {isLargeTablet && (
         <FundsCardsTotalItem className="mr-0 min-w-[100%] sm:min-w-[55%]" />
       )}
 
-      <WidgetCards.List className="sm:w-[42%] md:w-[100%]">
-        {!isTablet && <FundsCardsTotalItem />}
+      <WidgetCards.List className="sm:w-[42%] lg:w-[100%]">
+        {!isLargeTablet && <FundsCardsTotalItem />}
         {teams.map((item) => {
           return (
             <WidgetCards.Item
