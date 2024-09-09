@@ -65,9 +65,14 @@ const ReputationChart = () => {
           />
         </div>
         <Legend>
-          {chartData.map((chartItem) => (
-            <LegendItem key={chartItem.id} chartItem={chartItem} />
-          ))}
+          {chartData.map((chartItem) => {
+            // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
+            if (chartItem.value === undefined || chartItem.value <= 0) {
+              return null;
+            }
+
+            return <LegendItem key={chartItem.id} chartItem={chartItem} />;
+          })}
         </Legend>
       </>
     );
