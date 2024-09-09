@@ -20,21 +20,31 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
     onNextButtonClick,
   } = useEmblaCarouselSettings({ loop: false, align: 'start' });
 
+  const isBothBtnsDisabled = prevBtnDisabled && nextBtnDisabled;
+
   return (
     <div className={clsx(className, 'relative flex')}>
-      <CarouselButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
-        <CaretLeft />
-      </CarouselButton>
+      {!isBothBtnsDisabled && (
+        <CarouselButton onClick={onPrevButtonClick} disabled={prevBtnDisabled}>
+          <CaretLeft />
+        </CarouselButton>
+      )}
 
-      <div className="mx-4 grow cursor-grab overflow-hidden">
+      <div
+        className={clsx('grow cursor-grab overflow-hidden', {
+          'mx-4': !isBothBtnsDisabled,
+        })}
+      >
         <div ref={emblaRef}>
           <div className="flex">{children}</div>
         </div>
       </div>
 
-      <CarouselButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
-        <CaretRight />
-      </CarouselButton>
+      {!isBothBtnsDisabled && (
+        <CarouselButton onClick={onNextButtonClick} disabled={nextBtnDisabled}>
+          <CaretRight />
+        </CarouselButton>
+      )}
     </div>
   );
 };
