@@ -25,7 +25,7 @@ const LegendItem: FC<LegendItemProps> = ({
         )}
       />
       <span className="text-xs font-normal text-gray-500">{label}</span>
-      {value && (
+      {value !== undefined && (
         <span className="text-xs font-semibold text-gray-900">
           <Numeral value={value.toFixed(2)} />%
         </span>
