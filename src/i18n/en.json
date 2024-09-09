@@ -991,8 +991,6 @@
     "empty.content.subtitle.stakes": "New stakes will appear here",
     "empty.content.title.transactions": "There are no transactions yet",
     "empty.content.subtitle.transactions": "New transactions will appear here",
-    "empty.content.title.notifications": "No notifications yet",
-    "empty.content.subtitle.notifications": "Your notifications will appear here.",
     "handle.unselect.transaction": "handle unselect transaction",
     "missing.colonies": "You don't have created colonies",
     "user.typing": "The user is actively typing....",
