@@ -36,7 +36,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
         })}
       >
         <div ref={emblaRef}>
-          <div className="flex">{children}</div>
+          <div className="flex gap-2">{children}</div>
         </div>
       </div>
 
