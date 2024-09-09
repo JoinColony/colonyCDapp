@@ -1,3 +1,4 @@
+import { useBell } from '@magicbell/react-headless';
 import clsx from 'clsx';
 import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
@@ -47,8 +48,8 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
 
   // @TODO: get from notifications context
   const notificationsServiceIsEnabled = true;
-  // @TODO: Get from context
-  const unreadCount = 1;
+
+  const { unreadCount } = useBell() || {};
 
   const filteredTabList = tabList.filter((tabItem) => {
     const isFeatureFlagEnabled =
