@@ -160,6 +160,7 @@
     "@nivo/core": "^0.87.0",
     "@nivo/pie": "^0.87.0",
     "@nivo/tooltip": "^0.87.0",
+    "@magicbell/react-headless": "^5.0.1",
     "@phosphor-icons/react": "^2.1.5",
     "@popperjs/core": "^2.3.3",
     "@tanstack/react-table": "^8.10.0",
