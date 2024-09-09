@@ -12,6 +12,14 @@ const MSG = defineMessages({
     id: `${displayName}.notifications`,
     defaultMessage: 'Notifications',
   },
+  emptyTitle: {
+    id: `${displayName}.emptyTitle`,
+    defaultMessage: 'No notifications yet',
+  },
+  emptyDescription: {
+    id: `${displayName}.emptyDescription`,
+    defaultMessage: 'Your notifications will appear here.',
+  },
 });
 
 const NotificationsTab = () => {
@@ -24,8 +32,8 @@ const NotificationsTab = () => {
         {isEmpty && (
           <>
             <EmptyContent
-              title={{ id: 'empty.content.title.notifications' }}
-              description={{ id: 'empty.content.subtitle.notifications' }}
+              title={formatText(MSG.emptyTitle)}
+              description={formatText(MSG.emptyDescription)}
               icon={Binoculars}
               className="sm:pt-[100px]"
             />
