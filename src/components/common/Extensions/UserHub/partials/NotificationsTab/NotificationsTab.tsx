@@ -25,12 +25,18 @@ const MSG = defineMessages({
     id: `${displayName}.new`,
     defaultMessage: 'new',
   },
+  markAllAsRead: {
+    id: `${displayName}.markAllAsRead`,
+    defaultMessage: 'Mark all as read',
+  },
 });
 
 const NotificationsTab = () => {
   const isEmpty = true;
 
-  const { unreadCount } = useBell() || {};
+  const { unreadCount, markAllAsRead } = useBell() || {};
+
+  const hasUnreadNotifications = !!unreadCount && unreadCount > 0;
 
   let cappedCount: string | number = unreadCount ?? 0;
   const maximum = 99;
@@ -41,12 +47,23 @@ const NotificationsTab = () => {
 
   return (
     <div className="h-full px-6 pb-6 pt-6 sm:pb-2">
-      <div className="flex items-center">
-        <p className="heading-5">{formatText(MSG.notifications)}</p>
-        {!!unreadCount && unreadCount > 0 && (
-          <p className="ml-2 h-fit rounded-sm bg-blue-100 px-[3px] py-[2.5px] text-[8px] font-bold text-blue-400">
-            {cappedCount} {formatText(MSG.new)}
-          </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <p className="heading-5">{formatText(MSG.notifications)}</p>
+          {hasUnreadNotifications && (
+            <p className="ml-2 h-fit rounded-sm bg-blue-100 px-[3px] py-[2.5px] text-[8px] font-bold text-blue-400">
+              {cappedCount} {formatText(MSG.new)}
+            </p>
+          )}
+        </div>
+        {hasUnreadNotifications && markAllAsRead && (
+          <button
+            onClick={() => markAllAsRead()}
+            className="text-xs font-medium text-blue-400"
+            type="button"
+          >
+            {formatText(MSG.markAllAsRead)}
+          </button>
         )}
       </div>
       <div className="flex h-full flex-col justify-center pt-4 sm:h-auto sm:justify-normal">
