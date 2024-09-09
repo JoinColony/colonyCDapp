@@ -153,6 +153,7 @@
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/unicode-confusables-noascii": "^0.1.2",
     "@hookform/resolvers": "^2.9.10",
+    "@magicbell/react-headless": "^5.0.1",
     "@phosphor-icons/react": "^2.1.5",
     "@popperjs/core": "^2.3.3",
     "@tanstack/react-table": "^8.10.0",
