@@ -16,7 +16,7 @@ export const FundsCardsTotalDescription: React.FC<
   return (
     <div className="flex w-full justify-between text-xs">
       <span className="text-gray-400">Native 1.56M CLNY</span>
-      <span className="flex items-center text-blue-400">
+      <span className="flex items-center font-medium text-blue-400">
         <Arrow />
         15% Week
       </span>
