@@ -15,6 +15,7 @@ import {
 import { formatText } from '~utils/intl.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
 import Link from '~v5/shared/Link/index.ts';
+import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import Agreements from './partials/Agreements/index.ts';
 import DashboardHeader from './partials/DashboardHeader/index.ts';
@@ -38,6 +39,7 @@ const ColonyHome = () => {
     <div className="flex flex-col gap-6 lg:gap-10">
       <div className="flex flex-col gap-9 sm:gap-10">
         <DashboardHeader />
+        <TeamFilter />
         <div className="flex w-full flex-col items-center gap-[1.125rem] sm:flex-row">
           <TotalActions />
           <TokenBalance />
