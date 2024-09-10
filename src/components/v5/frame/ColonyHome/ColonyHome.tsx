@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
-import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
+import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
 import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -54,17 +54,31 @@ const ColonyHome = () => {
           <ReputationChart />
         </div>
       </div>
-      <div className="w-full">
+      <div className="rounded-lg border border-gray-200 px-5">
+        <div className="flex justify-between py-6">
+          <h3 className="heading-5">
+            {formatText({ id: 'dashboard.recentActivity' })}
+          </h3>
+          <Link
+            className="text-sm font-medium text-gray-400 md:hover:text-gray-900"
+            to={setQueryParamOnUrl(
+              COLONY_ACTIVITY_ROUTE,
+              TEAM_SEARCH_PARAM,
+              selectedDomain?.nativeId.toString(),
+            )}
+          >
+            {formatText({ id: 'view.all' })}
+          </Link>
+        </div>
         <FiltersContextProvider>
-          <ColonyActionsTable
-              actionProps={{
-                selectedAction,
-                setSelectedAction,
-                defaultValues,
-              }}
+          <RecentActivityTable
+            actionProps={{
+              selectedAction,
+              setSelectedAction,
+              defaultValues,
+            }}
             className="w-full [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td>*:not(.expandable)]:!py-[.9375rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[.875rem] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[.9375rem]"
             pageSize={7}
-            withHeader={false}
             state={{
               columnVisibility: isMobile
                 ? {
@@ -80,18 +94,6 @@ const ColonyHome = () => {
                     createdAt: true,
                   },
             }}
-            additionalPaginationButtonsContent={
-              <Link
-                className="text-sm text-gray-700 underline"
-                to={setQueryParamOnUrl(
-                  COLONY_ACTIVITY_ROUTE,
-                  TEAM_SEARCH_PARAM,
-                  selectedDomain?.nativeId.toString(),
-                )}
-              >
-                {formatText({ id: 'view.all' })}
-              </Link>
-            }
           />
         </FiltersContextProvider>
       </div>

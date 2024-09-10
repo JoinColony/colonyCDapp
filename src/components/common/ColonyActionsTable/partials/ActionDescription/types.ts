@@ -6,4 +6,5 @@ export interface ActionDescriptionProps {
   refetchMotionStates: RefetchMotionStates;
   loading: boolean;
   hideDetails?: boolean;
+  showUserAvatar?: boolean;
 }
