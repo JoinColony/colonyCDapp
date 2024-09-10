@@ -5,7 +5,7 @@ import { Action } from '~constants/actions.ts';
 import SidebarActionItem from '~v5/shared/Navigation/Sidebar/partials/SidebarActionItem/index.ts';
 
 export const SidebarActionsSection = () => (
-  <section className="flex w-full flex-col">
+  <section className="flex w-full flex-col gap-0 md:gap-0.5">
     <SidebarActionItem
       translation={{ id: 'action.makePayment' }}
       Icon={Money}
