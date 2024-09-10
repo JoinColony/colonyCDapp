@@ -127,7 +127,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
                       >
                         <span className="relative mr-2 flex shrink-0">
                           {id === UserHubTab.Notifications && (
-                            <CountBadge count={unreadCount} />
+                            <CountBadge count={unreadCount} maximum={99} />
                           )}
                           <Icon size={14} />
                         </span>
