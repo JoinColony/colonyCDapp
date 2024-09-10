@@ -170,6 +170,8 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     user?.profile?.displayName ??
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
+  const showNotificationDot = !!unreadCount && unreadCount > 0;
+
   return (
     <div className="flex-shrink-0">
       <Button
@@ -184,7 +186,6 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
           '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
         )}
         onClick={handleButtonClick}
-        showNotificationDot={!!unreadCount && unreadCount > 0}
       >
         <div className="flex flex-shrink-0 items-center">
           {/* If there's a user, there's a wallet */}
@@ -214,6 +215,9 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
             </>
           ) : null}
         </div>
+        {showNotificationDot && (
+          <div className="absolute right-[-1.26px] top-[2.28px] h-2.5 w-2.5 rounded-full border border-base-white bg-blue-400" />
+        )}
       </Button>
       {visible && (
         <PopoverBase
