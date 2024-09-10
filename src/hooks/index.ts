@@ -16,6 +16,6 @@ export const useTablet = () => {
 
 export const useLargeTablet = () => {
   const { query1280: query } = queries;
-  const isLargeTable = useMediaQuery({ query });
-  return isLargeTable;
+  const isLargeTablet = useMediaQuery({ query });
+  return isLargeTablet;
 };
