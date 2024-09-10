@@ -1455,6 +1455,7 @@
     "balanceModal.modal.addFundsToWallet.label": "Enter amount",
     "breadcrumbs.teams": "Teams",
     "breadcrumbs.allTeams": "All teams",
+    "dashboard.recentActivity": "Recent activity",
     "dashboard.objective.widget.title": "Current colony objective",
     "dashboard.objective.widget.noData": "There are no current objectives in the Colony to display.",
     "dashboard.objective.widget.createObjective": "Create a new objective",
