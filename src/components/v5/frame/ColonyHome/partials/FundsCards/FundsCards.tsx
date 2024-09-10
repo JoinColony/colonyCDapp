@@ -40,6 +40,7 @@ export const FundsCards = () => {
         {teams.map((item) => {
           return (
             <WidgetCards.Item
+              key={item?.id}
               title={item?.metadata?.name}
               // @TODO: update with a real teams data
               subTitle={<FundsCardsSubTitle value="123" currency="usd" />}
