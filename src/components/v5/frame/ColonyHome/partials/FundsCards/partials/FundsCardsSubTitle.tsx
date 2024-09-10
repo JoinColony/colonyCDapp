@@ -9,9 +9,9 @@ export const FundsCardsSubTitle: FC<FundsCardsSubTitleProps> = ({
   currency,
 }) => {
   return (
-    <div className="flex items-center gap-2 heading-4">
-      <b>{value}</b>
+    <p className="flex items-center gap-2">
+      <span>{value}</span>
       <span className="text-1">{currency}</span>
-    </div>
+    </p>
   );
 };
