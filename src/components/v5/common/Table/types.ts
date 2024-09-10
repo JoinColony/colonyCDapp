@@ -44,4 +44,7 @@ export interface TableProps<T>
   };
   tableClassName?: string;
   tableBodyRowKeyProp?: Extract<keyof T, React.Key>;
+  showTableHead?: boolean;
+  showBorder?: boolean;
+  hasHorizontalPadding?: boolean;
 }

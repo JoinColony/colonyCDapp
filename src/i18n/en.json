@@ -1689,6 +1689,7 @@
     "balanceModal.modal.addFundsToWallet.label": "Enter amount",
     "breadcrumbs.teams": "Teams",
     "breadcrumbs.allTeams": "All teams",
+    "dashboard.recentActivity": "Recent activity",
     "dashboard.team.widget.title": "Reputation breakdown",
     "dashboard.team.widget.subtitle": "Influence by team",
     "dashboard.team.widget.noData": "There are no teams in the Colony.",

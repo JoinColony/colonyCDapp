@@ -47,6 +47,9 @@ const Table = <T,>({
   virtualizedProps,
   tableClassName,
   tableBodyRowKeyProp,
+  showTableHead = true,
+  showBorder = true,
+  hasHorizontalPadding = true,
   footerColSpan,
   ...rest
 }: TableProps<T>) => {
@@ -110,16 +113,11 @@ const Table = <T,>({
     <div className={className}>
       <table
         className={clsx(
-          `
-          h-px
-          w-full
-          table-fixed
-          border-separate
-          border-spacing-0
-          rounded-lg
-          border
-          border-gray-200
-        `,
+          'h-px w-full table-fixed',
+          {
+            'border-separate border-spacing-0 rounded-lg border border-gray-200':
+              showBorder,
+          },
           tableClassName,
         )}
         cellPadding="0"
@@ -230,64 +228,66 @@ const Table = <T,>({
           })
         ) : (
           <>
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className={clsx(
-                        header.column.columnDef.headCellClassName,
-                        'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
-                        {
-                          'cursor-pointer':
-                            header.column.getCanSort() &&
-                            !shouldShowEmptyContent,
-                        },
-                      )}
-                      onClick={
-                        shouldShowEmptyContent
-                          ? undefined
-                          : header.column.getToggleSortingHandler()
-                      }
-                      style={{
-                        width:
-                          header.column.columnDef.staticSize ||
-                          (header.getSize() !== 150
-                            ? `${header.column.getSize()}${sizeUnit}`
-                            : undefined),
-                      }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                      {header.column.getCanSort() ? (
-                        <ArrowDown
-                          size={12}
-                          className={clsx(
-                            'mb-0.5 ml-1 inline-block align-middle transition-[transform,opacity]',
-                            {
-                              'rotate-180':
-                                header.column.getIsSorted() === 'asc' &&
-                                !shouldShowEmptyContent,
-                              'rotate-0':
-                                header.column.getIsSorted() === 'desc' &&
-                                !shouldShowEmptyContent,
-                              hidden:
-                                header.column.getIsSorted() === false ||
-                                shouldShowEmptyContent,
-                            },
-                          )}
-                        />
-                      ) : null}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
+            {showTableHead && (
+              <thead>
+                {headerGroups.map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        className={clsx(
+                          header.column.columnDef.headCellClassName,
+                          'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
+                          {
+                            'cursor-pointer':
+                              header.column.getCanSort() &&
+                              !shouldShowEmptyContent,
+                          },
+                        )}
+                        onClick={
+                          shouldShowEmptyContent
+                            ? undefined
+                            : header.column.getToggleSortingHandler()
+                        }
+                        style={{
+                          width:
+                            header.column.columnDef.staticSize ||
+                            (header.getSize() !== 150
+                              ? `${header.column.getSize()}${sizeUnit}`
+                              : undefined),
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                        {header.column.getCanSort() ? (
+                          <ArrowDown
+                            size={12}
+                            className={clsx(
+                              'mb-0.5 ml-1 inline-block align-middle transition-[transform,opacity]',
+                              {
+                                'rotate-180':
+                                  header.column.getIsSorted() === 'asc' &&
+                                  !shouldShowEmptyContent,
+                                'rotate-0':
+                                  header.column.getIsSorted() === 'desc' &&
+                                  !shouldShowEmptyContent,
+                                hidden:
+                                  header.column.getIsSorted() === false ||
+                                  shouldShowEmptyContent,
+                              },
+                            )}
+                          />
+                        ) : null}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+            )}
             <tbody className="w-full">
               {shouldShowEmptyContent ? (
                 <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
@@ -325,7 +325,7 @@ const Table = <T,>({
                           'expanded-below': showExpandableContent,
                         })}
                       >
-                        {row.getVisibleCells().map((cell) => {
+                        {row.getVisibleCells().map((cell, index) => {
                           const renderCellWrapperCommonArgs = [
                             clsx(
                               'flex h-full flex-col items-start justify-center p-[1.1rem] text-md',
@@ -357,6 +357,21 @@ const Table = <T,>({
                                 hidden: hideCell,
                               })}
                               colSpan={colSpan}
+                              style={
+                                // If !showTableHead then apply the column sizing from the first headerGroup
+                                !showTableHead
+                                  ? {
+                                      width:
+                                        headerGroups[0].headers[index].column
+                                          .columnDef.staticSize ||
+                                        (headerGroups[0].headers[
+                                          index
+                                        ].getSize() !== 150
+                                          ? `${headerGroups[0].headers[index].column.getSize()}${sizeUnit}`
+                                          : undefined),
+                                    }
+                                  : undefined
+                              }
                             >
                               {renderCellWrapper(
                                 ...renderCellWrapperCommonArgs,
@@ -438,6 +453,7 @@ const Table = <T,>({
               },
             )}
             disabled={paginationDisabled}
+            hasHorizontalPadding={hasHorizontalPadding}
           >
             {additionalPaginationButtonsContent}
           </TablePagination>

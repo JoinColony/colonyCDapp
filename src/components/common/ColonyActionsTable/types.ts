@@ -5,4 +5,7 @@ export interface ColonyActionsTableProps
   extends Partial<TableProps<ActivityFeedColonyAction>> {
   pageSize?: number;
   withHeader?: boolean;
+  showUserAvatar?: boolean;
+  hasHorizontalPadding?: boolean;
+  isRecentActivityVariant?: boolean;
 }

@@ -6,7 +6,6 @@ import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
-import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
@@ -23,11 +22,13 @@ const MSG = defineMessages({
   },
 });
 
-const useColonyActionsTableColumns = (
-  loading: boolean,
-  loadingMotionStates: boolean,
-  refetchMotionStates: RefetchMotionStates,
-) => {
+const useColonyActionsTableColumns = ({
+  loading,
+  loadingMotionStates,
+  refetchMotionStates,
+  showUserAvatar = true,
+  hasHorizontalPadding = true,
+}) => {
   const isMobile = useMobile();
 
   return useMemo(() => {
@@ -45,6 +46,7 @@ const useColonyActionsTableColumns = (
             loading={loading}
             refetchMotionStates={refetchMotionStates}
             hideDetails={getIsExpanded()}
+            showUserAvatar={showUserAvatar}
           />
         ),
         colSpan: (isExpanded) => (isExpanded ? 2 : undefined),
@@ -100,7 +102,12 @@ const useColonyActionsTableColumns = (
         },
       }),
       helper.accessor('motionState', {
-        staticSize: isMobile ? '7.4375rem' : '6.25rem',
+        staticSize: (() => {
+          if (isMobile) {
+            return hasHorizontalPadding ? '7.4375rem' : '7rem';
+          }
+          return '6.25rem';
+        })(),
         header: formatText({
           id: 'activityFeedTable.table.header.status',
         }),
@@ -124,7 +131,7 @@ const useColonyActionsTableColumns = (
       }),
       helper.display({
         id: 'expander',
-        staticSize: '2.25rem',
+        staticSize: hasHorizontalPadding ? '2.25rem' : '1rem',
         header: () => null,
         enableSorting: false,
         cell: ({ row: { getIsExpanded, toggleExpanded } }) => {
@@ -142,7 +149,14 @@ const useColonyActionsTableColumns = (
         cellContentWrapperClassName: 'pl-0',
       }),
     ];
-  }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
+  }, [
+    isMobile,
+    loading,
+    loadingMotionStates,
+    refetchMotionStates,
+    hasHorizontalPadding,
+    showUserAvatar,
+  ]);
 };
 
 export default useColonyActionsTableColumns;
