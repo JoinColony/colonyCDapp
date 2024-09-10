@@ -16,7 +16,9 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import { AVAILABLE_ROLES } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import {
+  AVAILABLE_ROLES,
+} from '~v5/common/ActionSidebar/partials/forms/core/ManagePermissionsForm/consts.ts';
 
 import { getFormattedTokenAmount } from '../partials/utils.ts';
 

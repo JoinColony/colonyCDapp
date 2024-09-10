@@ -15,6 +15,7 @@ const useHasActionPermissions = () => {
   const { user } = useAppContext();
 
   const { watch } = useFormContext();
+  // FIXME: We should do this differently. I assume this watches all the values. Let's just pass the formContext into the getHasActionPermission function
   const formValues = watch();
 
   const {

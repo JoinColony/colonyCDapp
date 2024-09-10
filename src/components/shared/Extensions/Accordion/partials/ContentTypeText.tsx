@@ -5,16 +5,16 @@ import { type ContentTypeProps } from '../types.ts';
 
 const displayName = 'Extensions.Accordion.partials.AccordionDetails';
 
-const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => {
+const ContentTypeText: FC<ContentTypeProps> = ({ title, subtitle }) => {
   const { formatMessage } = useIntl();
 
   const titleText =
     typeof title === 'string' ? title : title && formatMessage(title);
 
-  const subTitleText =
-    typeof subTitle === 'string'
-      ? subTitle
-      : subTitle && formatMessage(subTitle);
+  const subtitleText =
+    typeof subtitle === 'string'
+      ? subtitle
+      : subtitle && formatMessage(subtitle);
 
   return (
     <div>
@@ -22,11 +22,11 @@ const ContentTypeText: FC<ContentTypeProps> = ({ title, subTitle }) => {
         // eslint-disable-next-line react/no-danger
         <p className="text-1" dangerouslySetInnerHTML={{ __html: titleText }} />
       )}
-      {subTitleText && (
+      {subtitleText && (
         <p
           className="mt-0.5 text-sm text-gray-600"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: subTitleText }}
+          dangerouslySetInnerHTML={{ __html: subtitleText }}
         />
       )}
     </div>

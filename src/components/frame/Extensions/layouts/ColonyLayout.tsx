@@ -54,10 +54,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { colony } = useColonyContext();
   const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
-  const { actionSidebarToggle, actionSidebarInitialValues } =
-    useActionSidebarContext();
-  const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
-    actionSidebarToggle;
+  const { show, initialValues, isShown } = useActionSidebarContext();
   const isTablet = useTablet();
 
   const [userHubTab, setUserHubTab] = useState<UserHubTab>();
@@ -92,11 +89,11 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (transactionId) {
-      toggleActionSidebarOn();
+      show();
     }
-  }, [toggleActionSidebarOn, transactionId]);
+  }, [show, transactionId]);
 
-  useDisableBodyScroll(isActionSidebarOpen);
+  useDisableBodyScroll(isShown);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -163,7 +160,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
               ...breadcrumbs,
             ],
           },
-          userNavigation: getUserNavigation(isActionSidebarOpen),
+          userNavigation: getUserNavigation(isShown),
         }}
         sidebar={
           <ColonySidebar
@@ -178,9 +175,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         {children}
       </PageLayout>
       <AnimatePresence>
-        {isActionSidebarOpen && (
+        {isShown && (
           <ActionSidebar
-            initialValues={actionSidebarInitialValues}
+            initialValues={initialValues}
             userNavigation={isTablet ? getUserNavigation() : null}
           />
         )}

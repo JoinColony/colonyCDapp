@@ -48,9 +48,7 @@ export const useTeams = () => {
 
   const { totalContributors: members, loading: membersLoading } =
     useMemberContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const { domainsActionCount } = useActivityData();
 
@@ -138,11 +136,12 @@ export const useTeams = () => {
                 key: '1',
                 icon: Pencil,
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
+                onClick: () => {
+                  show({
                     [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
                     team: nativeId,
-                  }),
+                  });
+                },
               },
               {
                 key: '2',

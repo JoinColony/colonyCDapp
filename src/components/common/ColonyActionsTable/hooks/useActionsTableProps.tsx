@@ -65,9 +65,7 @@ export const useActionsTableProps = (
     loadingMotionStates,
     refetchMotionStates,
   );
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const navigate = useNavigate();
   const {
     colony: { name: colonyName },
@@ -198,9 +196,7 @@ export const useActionsTableProps = (
               : { id: 'activityFeedTable.table.emptyButtonLabel' }
           }
           onClick={
-            searchFilter || selectedFiltersCount
-              ? undefined
-              : () => toggleActionSidebarOn()
+            searchFilter || selectedFiltersCount ? undefined : () => show()
           }
           withoutButtonIcon
         />

@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import React, { useCallback, type FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -40,9 +40,7 @@ const DraftCard: FC = () => {
     getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
   );
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const dispatch = useDispatch();
 
@@ -57,14 +55,14 @@ const DraftCard: FC = () => {
     draftAgreement || {};
 
   const openModal = useCallback(() => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+    show({
+      [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
       title,
       description,
       [DECISION_METHOD_FIELD_NAME]: DecisionMethod.Reputation,
       createdIn: motionDomainId,
     });
-  }, [description, motionDomainId, title, toggleActionSidebarOn]);
+  }, [description, motionDomainId, title, show]);
 
   const currentTeam = colony?.domains?.items.find(
     (domain) => domain?.nativeId === motionDomainId,
@@ -175,7 +173,7 @@ const DraftCard: FC = () => {
       </div>
       <Modal
         title={formatText({ id: 'deleteAgreementDraftModal.title' })}
-        subTitle={formatText({
+        subtitle={formatText({
           id: 'deleteAgreementDraftModal.subtitle',
         })}
         isOpen={isModalOpen}

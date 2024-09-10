@@ -125,6 +125,7 @@ export type ActionUserRoles = {
   setTo: boolean;
 };
 
+// FIXME: IGNORE (SORTOF?)
 export enum ExtendedColonyActionType {
   /**
    * @deprecated

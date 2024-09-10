@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { ManageVerifiedMembersOperation } from '~types';
 import { ColonyActionType } from '~types/graphql.ts';
-import { type ManageVerifiedMembersFormValues } from '~v5/common/ActionSidebar/partials/forms/ManageVerifiedMembersForm/utils.ts';
+import { type ManageVerifiedMembersFormValues } from '~v5/common/ActionSidebar/partials/forms/core/ManageVerifiedMembersForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

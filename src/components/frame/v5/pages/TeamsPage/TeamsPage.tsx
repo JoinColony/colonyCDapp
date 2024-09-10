@@ -18,9 +18,7 @@ import TeamsPageFilter from './partials/TeamsPageFilter/TeamsPageFilter.tsx';
 
 const TeamsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'teamsPage.title' }));
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const { filters, searchedTeams, defaultFilterValue, hasFilterChanged } =
     useTeams();
   const isMobile = useMobile();
@@ -61,7 +59,7 @@ const TeamsPage: FC = () => {
           <TeamsPageFilter {...filters} />
           <Button
             onClick={() =>
-              toggleActionSidebarOn({
+              show({
                 [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
               })
             }

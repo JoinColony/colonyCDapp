@@ -8,7 +8,7 @@
 
   outputs = {
     self,
-    nixpkgs_node
+    nixpkgs_node,
   }: {
     devShell.x86_64-linux = with nixpkgs_node.legacyPackages.x86_64-linux;
       mkShell {

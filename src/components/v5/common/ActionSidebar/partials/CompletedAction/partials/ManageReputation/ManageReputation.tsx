@@ -22,7 +22,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useGetActionData from '~v5/common/ActionSidebar/partials/CompletedAction/hooks/useGetActionData.ts';
 import { useDecisionMethod } from '~v5/common/ActionSidebar/partials/CompletedAction/hooks.ts';
-import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 

@@ -38,12 +38,10 @@ const Agreements = () => {
   const agreements = agreementsData?.getActionsByColony?.items.filter(notNull);
   const newestAgreement = agreements?.[0];
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const openCreateDecision = () => {
-    toggleActionSidebarOn({
+    show({
       [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
     });
   };

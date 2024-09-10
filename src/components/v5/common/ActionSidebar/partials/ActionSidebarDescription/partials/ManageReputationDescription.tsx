@@ -11,7 +11,7 @@ import { toFinite } from '~utils/lodash.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/consts.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import CurrentUser from './CurrentUser.tsx';

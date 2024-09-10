@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -33,9 +33,7 @@ const AgreementsPage: FC = () => {
   } = useColonyContext();
   const { user } = useAppContext();
   const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   useSetPageBreadcrumbs(teamsBreadcrumbs);
   useSetPageHeadingTitle(formatText({ id: 'agreementsPage.title' }));
@@ -68,8 +66,8 @@ const AgreementsPage: FC = () => {
             size="small"
             isFullSize={false}
             onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
               });
             }}
           >
@@ -119,8 +117,8 @@ const AgreementsPage: FC = () => {
                 className="border-dashed px-5 py-[5.75rem]"
                 buttonText={{ id: 'agreementsPage.empty.button' }}
                 onClick={() => {
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                  show({
+                    [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
                   });
                 }}
                 buttonIcon={FilePlus}

@@ -8,7 +8,7 @@ export interface PopoverBaseProps {
     style: React.CSSProperties;
   };
   setTooltipRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-  classNames?: string;
+  className?: string;
   cardProps?: CardProps;
   withTooltipStyles?: boolean;
   isTopSectionWithBackground?: boolean;

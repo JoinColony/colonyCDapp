@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { MAX_COLONY_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -47,9 +47,7 @@ const ColonyDetailsPage: FC = () => {
   } = metadata || {};
   const isNativeTokenLocked = !status?.nativeToken?.unlocked;
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const boxClass = tw`relative rounded-lg border border-gray-200 bg-gray-25`;
 
@@ -99,8 +97,8 @@ const ColonyDetailsPage: FC = () => {
           text={{ id: 'button.editColonyDetails' }}
           isFullSize={isMobile}
           onClick={() => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+            show({
+              [ACTION_TYPE_FIELD_NAME]: ActionCore.EditColonyDetails,
             });
           }}
         />

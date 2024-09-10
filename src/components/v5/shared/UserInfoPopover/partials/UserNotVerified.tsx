@@ -20,12 +20,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
   walletAddress,
   onClick,
 }) => {
-  const {
-    actionSidebarToggle: [
-      isActionSidebarOpen,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { isShown, show, hide } = useActionSidebarContext();
 
   return (
     <NotificationBanner
@@ -35,15 +30,15 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
         <button
           type="button"
           onClick={() => {
-            const timeout = isActionSidebarOpen ? 500 : 0;
+            const timeout = isShown ? 500 : 0;
 
-            if (isActionSidebarOpen) {
-              toggleActionSidebarOff();
+            if (isShown) {
+              hide();
             }
 
             setTimeout(() => {
               onClick?.();
-              toggleActionSidebarOn({
+              show({
                 [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
                 members: [{ value: walletAddress }],
                 manageMembers: ManageVerifiedMembersOperation.Add,

@@ -3,8 +3,9 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { ActionCore } from '~actions/core/index.ts';
+import { getActionPermissions } from '~actions/utils.ts';
 import { ADDRESS_ZERO } from '~constants';
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -81,7 +82,7 @@ function* manageTokensMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRoles: PERMISSIONS_NEEDED_FOR_ACTION.ManageTokens,
+          requiredColonyRoles: getActionPermissions(ActionCore.ManageTokens),
           // The address of the user creating the multi-sig motion
           permissionAddress: initiatorAddress,
           // The user must have multi-sig permissions

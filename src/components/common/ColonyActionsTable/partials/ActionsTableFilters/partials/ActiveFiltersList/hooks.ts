@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
+import { ActionCore } from '~actions/core/index.ts';
 import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { FiltersValues } from '~common/ColonyActionsTable/FiltersContext/types.ts';
 import { getCustomDateLabel } from '~common/ColonyActionsTable/utils.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { ACTION_TYPES_FILTERS } from '../filters/ActionTypeFilters/consts.ts';
 import { DATE_FILTERS } from '../filters/DateFilters/consts.ts';
 import { DECISION_METHOD_FILTERS } from '../filters/DecisionMethodFilters/consts.ts';
 import { STATUS_FILTERS } from '../filters/StatusFilters/consts.ts';
@@ -33,9 +33,12 @@ export const useActiveFilters = () => {
               category: formatText({
                 id: 'activityFeedTable.filters.actionType',
               }),
-              items: ACTION_TYPES_FILTERS.filter(({ name }) =>
-                actionTypesFilters.includes(name),
-              ).map(({ label }) => label),
+              // FIXME: I BROKE THIS. get all Action types another way
+              items: [
+                { name: ActionCore.SimplePayment, label: 'THIS IS BROKEN!!!' },
+              ]
+                .filter(({ name }) => actionTypesFilters.includes(name))
+                .map(({ label }) => label),
             },
           ]
         : []),

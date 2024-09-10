@@ -85,7 +85,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Required Stake"
-            subTitle="What percentage of the team's reputation, in token terms,
+            subtitle="What percentage of the team's reputation, in token terms,
                 should need to stake on each side of a motion?"
           />
         ),
@@ -109,7 +109,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
+            subtitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
         inputData: {
@@ -132,7 +132,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Minimum Stake"
-            subTitle="What is the minimum percentage of the total stake that each staker should have to provide?"
+            subtitle="What is the minimum percentage of the total stake that each staker should have to provide?"
           />
         ),
         inputData: {
@@ -156,7 +156,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="End Vote Threshold"
-            subTitle="At what threshold of reputation having voted should the voting period to end?"
+            subtitle="At what threshold of reputation having voted should the voting period to end?"
           />
         ),
         inputData: {
@@ -179,7 +179,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Staking Phase Duration"
-            subTitle="How long do you want to allow each side of a motion to get staked?"
+            subtitle="How long do you want to allow each side of a motion to get staked?"
           />
         ),
         inputData: {
@@ -202,7 +202,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Voting Phase Duration"
-            subTitle="How long do you want to give members to cast their votes?"
+            subtitle="How long do you want to give members to cast their votes?"
           />
         ),
         inputData: {
@@ -225,7 +225,7 @@ export const initialExtensionContent = [
         textItem: (
           <ContentTypeText
             title="Reveal Phase Duration"
-            subTitle="How long do you want to give members to reveal their votes?"
+            subtitle="How long do you want to give members to reveal their votes?"
           />
         ),
         inputData: {
@@ -251,7 +251,7 @@ export const initialExtensionContent = [
       //   textItem: (
       //     <ContentTypeText
       //       title="Escalation Phase Duration"
-      //       subTitle="How long do you wish to allow for members to escalate a dispute to a higher team?"
+      //       subtitle="How long do you wish to allow for members to escalate a dispute to a higher team?"
       //     />
       //   ),
       //   inputData: {

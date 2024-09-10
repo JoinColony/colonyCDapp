@@ -64,9 +64,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
     stopPollingForAction,
   } = useGetActionData(transactionId);
 
-  const {
-    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
-  } = useActionSidebarContext();
+  const { hide } = useActionSidebarContext();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -131,7 +129,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
                   <Link
                     to={COLONY_ACTIVITY_ROUTE}
                     className="mb-2 text-sm text-blue-400 underline"
-                    onClick={toggleActionSidebarOff}
+                    onClick={hide}
                   >
                     {formatText({
                       id: 'actionSidebar.fourOfour.activityPageLink',
@@ -140,7 +138,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
                 )}
                 <ButtonLink
                   to={`${location.pathname}${location.search}`}
-                  onClick={toggleActionSidebarOff}
+                  onClick={hide}
                   className="mb-2 text-sm text-blue-400 underline"
                 >
                   {formatText({
@@ -155,7 +153,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
                   mode="primarySolid"
                   to={COLONY_ACTIVITY_ROUTE}
                   className="flex-1"
-                  onClick={toggleActionSidebarOff}
+                  onClick={hide}
                 >
                   {formatText({
                     id: 'actionSidebar.fourOfour.activityPageLink',
@@ -181,6 +179,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
 
   const actionType = getExtendedActionType(action, colony.metadata);
 
+  // FIXME: Aaaaaaaaah
   const getActionContent = () => {
     switch (actionType) {
       case ColonyActionType.Payment:
@@ -259,6 +258,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
     }
   };
 
+  // FIXME: Aaaaaaaaah
   const getSidebarWidgetContent = () => {
     if (action.isMultiSig) {
       return <MultiSigSidebar transactionId={action.transactionHash} />;

@@ -1,12 +1,11 @@
 import clsx from 'clsx';
 import React, { useCallback, useId, useMemo, useState } from 'react';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
-import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import HoverWidthWrapper from '~v5/shared/HoverWidthWrapper/index.ts';
-import MenuContainer from '~v5/shared/MenuContainer/index.ts';
-import Portal from '~v5/shared/Portal/index.ts';
+import MenuContainer from '~v5/shared/MenuContainer/MenuContainer.tsx';
+import PopoverBase from '~v5/shared/PopoverBase/PopoverBase.tsx';
 
 import { FieldState } from '../consts.ts';
 
@@ -20,6 +19,7 @@ function CardSelect<TValue = string>({
   // eslint-disable-next-line no-warning-comments
   // TODO: add support for message when needed
   // message,
+  cardClassName,
   options,
   onChange: onChangeProp,
   value: valueProp,
@@ -29,7 +29,6 @@ function CardSelect<TValue = string>({
   state,
   placeholder,
   renderSelectedValue,
-  cardClassName,
   togglerClassName,
   footer,
   disabled,
@@ -41,11 +40,6 @@ function CardSelect<TValue = string>({
     </button>
   ),
 }: CardSelectProps<TValue>): JSX.Element {
-  const cardSelectToggle = useToggle();
-  const [
-    isSelectVisible,
-    { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
-  ] = cardSelectToggle;
   const [uncontrolledValue, setUncontrolledValue] = useState<TValue>();
   const uncontrolledOnChange = useCallback((newValue: TValue) => {
     setUncontrolledValue(newValue);
@@ -84,12 +78,13 @@ function CardSelect<TValue = string>({
       .find((option) => valueComparator(option.value, value));
   }, [groupedOptions, value, valueComparator]);
 
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isSelectVisible], {
-    top: 8,
-  });
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
 
   const selectPlaceholder =
     placeholder || formatText({ id: 'common.fields.cardSelect.placeholder' });
@@ -110,38 +105,34 @@ function CardSelect<TValue = string>({
       ) : (
         <>
           <button
-            ref={relativeElementRef}
+            ref={setTriggerRef}
             type="button"
             className={clsx(
               togglerClassName,
               'flex text-left text-md md:transition-colors md:hover:text-blue-400',
               {
-                'text-gray-400': !state && !isSelectVisible,
-                'text-gray-900': value && !isSelectVisible,
+                'text-gray-400': !state && !visible,
+                'text-gray-900': value && !visible,
                 'text-negative-400': state === FieldState.Error,
-                'text-blue-400': isSelectVisible,
+                'text-blue-400': visible,
               },
             )}
-            onClick={toggleSelect}
           >
             {renderSelectedValue
-              ? renderSelectedValue(
-                  selectedOption,
-                  selectPlaceholder,
-                  isSelectVisible,
-                )
+              ? renderSelectedValue(selectedOption, selectPlaceholder, visible)
               : selectedOption?.label || selectPlaceholder}
           </button>
-          {isSelectVisible && (
-            <Portal>
+          {visible && (
+            <PopoverBase
+              className={cardClassName}
+              setTooltipRef={setTooltipRef}
+              tooltipProps={getTooltipProps}
+              withTooltipStyles={false}
+            >
               <MenuContainer
-                ref={(ref) => {
-                  registerContainerRef(ref);
-                  portalElementRef.current = ref;
-                }}
                 className={clsx(
                   cardClassName,
-                  'absolute z-dropdown w-full max-w-[calc(100%-2.25rem)] overflow-auto px-2 py-4 sm:w-auto sm:max-w-none',
+                  'w-full max-w-[calc(100%-2.25rem)] overflow-auto px-2 py-4 sm:w-auto sm:max-w-none',
                 )}
                 hasShadow
                 rounded="s"
@@ -169,7 +160,7 @@ function CardSelect<TValue = string>({
                                       'aria-label': ariaLabel,
                                       onClick: () => {
                                         onChange(optionValue);
-                                        toggleSelectOff();
+                                        triggerRef?.click();
                                       },
                                     },
                                     label,
@@ -185,13 +176,13 @@ function CardSelect<TValue = string>({
                   {footer && (
                     <li className={OPTION_LIST_ITEM_CLASSES}>
                       {typeof footer === 'function'
-                        ? footer(cardSelectToggle)
+                        ? footer(() => triggerRef?.click())
                         : footer}
                     </li>
                   )}
                 </ul>
               </MenuContainer>
-            </Portal>
+            </PopoverBase>
           )}
         </>
       )}

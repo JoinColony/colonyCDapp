@@ -10,7 +10,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React, { useCallback, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -70,9 +70,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   onActiveTabChange,
 }) => {
   const { colony } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   // @ts-expect-error address will be undefined if the extension hasn't been installed / initialized yet
   const { neededColonyPermissions, address, isInitialized, isDeprecated } =
@@ -102,10 +100,10 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
 
   const handleUpgradeColony = useCallback(
     () =>
-      toggleActionSidebarOn({
-        [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
+      show({
+        [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
       }),
-    [toggleActionSidebarOn],
+    [show],
   );
 
   return (

@@ -22,12 +22,10 @@ const ColonyVersionWidget: FC<ColonyVersionWidgetProps> = ({
   const { formatMessage } = useIntl();
   const isMobile = useMobile();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const handleUpgradeColony = () => {
-    toggleActionSidebarOn({
+    show({
       [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
     });
   };

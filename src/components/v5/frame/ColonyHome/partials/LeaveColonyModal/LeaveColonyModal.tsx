@@ -33,7 +33,7 @@ const LeaveColonyModal = () => {
   return (
     <Modal
       title={formatText(MSG.leaveConfimModalTitle)}
-      subTitle={formatText(MSG.leaveConfirmModalSubtitle)}
+      subtitle={formatText(MSG.leaveConfirmModalSubtitle)}
       isOpen={isLeaveColonyModalOpen}
       onClose={() => closeLeaveColonyModal()}
       onConfirm={() => {

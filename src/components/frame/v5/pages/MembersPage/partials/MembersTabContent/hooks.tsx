@@ -26,9 +26,7 @@ export const useMembersTabContentItems = (
   // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
   const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   return useMemo(
     () =>
@@ -56,11 +54,12 @@ export const useMembersTabContentItems = (
                 key: '2',
                 icon: HandCoins,
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
+                onClick: () => {
+                  show({
                     [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
                     recipient: walletAddress,
-                  }),
+                  });
+                },
               },
               ...(walletAddress
                 ? [
@@ -132,7 +131,7 @@ export const useMembersTabContentItems = (
       // @BETA: Disabled for now
       // setIsMemberModalOpen,
       // setUser,
-      toggleActionSidebarOn,
+      show,
     ],
   );
 };

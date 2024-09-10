@@ -40,16 +40,14 @@ const ReputationChart = () => {
     ChartData | undefined | null
   >();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const updateHoveredSegment = (segmentData: ChartData | null | undefined) => {
     setHoveredSegment(segmentData);
   };
 
   const openCreateNewTeam = () => {
-    toggleActionSidebarOn({
+    show({
       [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
     });
   };
@@ -87,9 +85,7 @@ const ReputationChart = () => {
           title={<p className="text-center">{formatText(MSG.legendNoTeams)}</p>}
           actionTitle={formatText(MSG.legendNoTeamsAction)}
           className="px-[1.8rem] py-[2.3rem]"
-          onClick={() => {
-            toggleActionSidebarOn();
-          }}
+          onClick={() => show()}
         />
       );
     }

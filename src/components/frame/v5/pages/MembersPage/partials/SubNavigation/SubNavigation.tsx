@@ -17,9 +17,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
   // { onManageMembersClick }
   {
     const { handleClick, isCopyTriggered } = useMembersSubNavigation();
-    const {
-      actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-    } = useActionSidebarContext();
+    const { show } = useActionSidebarContext();
 
     return (
       <ul>
@@ -35,7 +33,7 @@ const SubNavigation: FC<SubNavigationProps> = () =>
           icon={LockKey}
           title="members.subnav.permissions"
           onClick={() =>
-            toggleActionSidebarOn({
+            show({
               [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             })
           }

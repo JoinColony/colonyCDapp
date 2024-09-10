@@ -9,6 +9,7 @@ import { MotionState } from '../colonyMotions.ts';
 import { extractColonyRoles } from '../colonyRoles.ts';
 import { extractColonyDomains } from '../domains.ts';
 
+// FIXME: DISCUSS WITH @BASSGETA
 export const getRolesNeededForMultiSigAction = ({
   actionType,
   createdIn,

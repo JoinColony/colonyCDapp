@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 
+// FIXME: This probably also needs to go?? No idea where this is going
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { ColonyActionType } from '~types/graphql.ts';
 

@@ -1,60 +1,53 @@
-import { FilePlus, WarningCircle } from '@phosphor-icons/react';
+import { FilePlus } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import React, { type FC} from 'react';
+import { defineMessages } from 'react-intl';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
-import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Modal from '~v5/shared/Modal/index.ts';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME, NON_RESETTABLE_FIELDS } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
-import { useActiveActionType } from './hooks/useActiveActionType.ts';
-import { translateAction } from './utils.ts';
+import { type CoreForm } from './partials/forms/index.ts';
+import { getFormName } from './partials/forms/utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
+const MSG = defineMessages({
+  chooseActionType: {
+    id: `${displayName}.chooseActionType`,
+    defaultMessage: 'Choose action type',
+  },
+});
+
 interface ActionTypeSelectProps {
   className?: string;
+  selectedAction?: CoreForm;
+  onSelect: (actionType: CoreForm) => void;
 }
 
-const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
+const ActionTypeSelect: FC<ActionTypeSelectProps> = ({
+  className,
+  selectedAction,
+  onSelect,
+}) => {
+  // FIXME: this needs to be from the available actions
   const actionsList = useActionsList();
-  const [nextActionType, setNextActionType] = useState<string | undefined>(
-    undefined,
-  );
-  const [
-    isSelectVisible,
-    { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
-  ] = useToggle();
-  const actionType = useActiveActionType();
-  const {
-    field: { onChange },
-  } = useController({ name: ACTION_TYPE_FIELD_NAME });
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isSelectVisible], {
-    top: 8,
-  });
-  const { formState, reset, watch } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
 
-  const defaultValues = NON_RESETTABLE_FIELDS.reduce(
-    (acc, fieldName) => ({
-      ...acc,
-      [fieldName]:
-        fieldName === ACTION_TYPE_FIELD_NAME
-          ? nextActionType
-          : watch(fieldName),
-    }),
-    {},
-  );
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
+
+  const actionName = selectedAction ? getFormName(selectedAction) : undefined;
 
   return (
     <div className={className}>
@@ -62,95 +55,43 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
         fieldName={ACTION_TYPE_FIELD_NAME}
         icon={FilePlus}
         title={formatText({ id: 'actionSidebar.actionType' })}
-        // Disabled to improve user experience
-        // tooltips={{
-        //   label: {
-        //     tooltipContent: formatText({
-        //       id: 'actionSidebar.tooltip.actionType',
-        //     }),
-        //   },
-        // }}
       >
-        {readonly ? (
+        {readonly && actionName ? (
           <span className="text-md text-gray-900">
-            {formatText({
-              id: translateAction(actionType),
-            })}
+            {formatText(actionName)}
           </span>
         ) : (
           <>
             <button
               type="button"
-              ref={relativeElementRef}
+              ref={setTriggerRef}
               className={clsx(
                 'flex text-left text-md transition-colors md:hover:text-blue-400',
                 {
-                  'text-gray-400': !actionType && !isSelectVisible,
-                  'text-gray-900': actionType && !isSelectVisible,
-                  'text-blue-400': isSelectVisible,
+                  'text-gray-400': !selectedAction && !visible,
+                  'text-gray-900': selectedAction && !visible,
+                  'text-blue-400': visible,
                 },
               )}
-              onClick={toggleSelect}
             >
-              {formatText({
-                id: actionType
-                  ? translateAction(actionType)
-                  : 'actionSidebar.chooseActionType',
-              })}
+              {formatText(actionName || MSG.chooseActionType)}
             </button>
-            {isSelectVisible && (
-              <SearchSelect
-                hideSearchOnMobile
-                ref={(ref) => {
-                  registerContainerRef(ref);
-                  portalElementRef.current = ref;
-                }}
+            {visible && (
+              <SearchSelectPopover
                 items={actionsList}
+                hideSearchOnMobile
                 onSelect={(action) => {
-                  toggleSelectOff();
-
-                  if (action === actionType) {
-                    return;
-                  }
-
-                  const hasMadeChanges = Object.keys(
-                    formState.dirtyFields,
-                  ).find(
-                    (fieldName) =>
-                      NON_RESETTABLE_FIELDS.indexOf(fieldName) === -1,
-                  );
-
-                  if (hasMadeChanges && actionType) {
-                    setNextActionType(action);
-
-                    return;
-                  }
-
-                  onChange(action);
+                  const formId = parseInt(action, 10) as CoreForm;
+                  onSelect(formId);
                 }}
+                setTooltipRef={setTooltipRef}
+                tooltipProps={getTooltipProps}
+                triggerRef={triggerRef}
               />
             )}
           </>
         )}
       </ActionFormRow>
-      <Modal
-        title={formatText({ id: 'actionSidebar.changeActionModal.title' })}
-        subTitle={formatText({
-          id: 'actionSidebar.cancelModal.subtitle',
-        })}
-        isOpen={!!nextActionType}
-        onClose={() => setNextActionType(undefined)}
-        onConfirm={() => {
-          reset(defaultValues);
-          setNextActionType(undefined);
-        }}
-        icon={WarningCircle}
-        buttonMode="primarySolid"
-        confirmMessage={formatText({ id: 'button.changeAction' })}
-        closeMessage={formatText({
-          id: 'button.continueAction',
-        })}
-      />
     </div>
   );
 };

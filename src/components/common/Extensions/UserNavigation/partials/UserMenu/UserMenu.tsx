@@ -62,7 +62,7 @@ const UserMenu: FC<UserMenuProps> = ({
       setTooltipRef={setTooltipRef}
       tooltipProps={tooltipProps}
       withTooltipStyles={!isTablet}
-      classNames={clsx(
+      className={clsx(
         'w-full overflow-hidden bg-base-white p-6 md:w-80 md:rounded-lg md:border md:border-gray-100 md:shadow-default',
         {
           '!top-full h-[calc(100dvh-var(--top-content-height))] !translate-y-0':

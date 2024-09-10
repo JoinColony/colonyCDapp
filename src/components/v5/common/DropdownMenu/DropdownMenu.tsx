@@ -63,7 +63,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
             hasShadow: true,
             className: 'py-4 px-0',
           }}
-          classNames="overflow-hidden w-full px-6 sm:px-0 sm:w-auto"
+          className="w-full overflow-hidden px-6 sm:w-auto sm:px-0"
         >
           <ul
             className={clsx('w-full px-6 sm:w-[14.625rem]', {

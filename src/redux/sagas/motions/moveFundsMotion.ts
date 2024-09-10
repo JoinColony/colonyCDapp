@@ -3,7 +3,8 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber, constants } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
+import { getActionPermissions } from '~actions/utils.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -96,7 +97,7 @@ function* moveFundsMotion({
         ? 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)'
         : 'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)';
 
-      const requiredRoles = PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
+      const requiredRoles = getActionPermissions(ActionCore.TransferFunds);
 
       const rootDomain = colonyDomains.find((domain) =>
         BigNumber.from(domain.nativeId).eq(Id.RootDomain),

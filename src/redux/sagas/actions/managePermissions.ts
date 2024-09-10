@@ -1,7 +1,8 @@
 import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
+import { getActionPermissions } from '~actions/utils.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -148,8 +149,8 @@ function* managePermissionsAction({
 
     const requiredRoles =
       domainId === Id.RootDomain
-        ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-        : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+        ? getActionPermissions(ActionCore.ManagePermissionsInRootDomain)
+        : getActionPermissions(ActionCore.ManagePermissionsInSubDomain);
 
     const initiatorAddress = yield colonyClient.signer.getAddress();
 

@@ -1,9 +1,4 @@
-import {
-  ArrowLineRight,
-  ArrowsOutSimple,
-  WarningCircle,
-  X,
-} from '@phosphor-icons/react';
+import { ArrowLineRight, ArrowsOutSimple, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { type Variants, motion } from 'framer-motion';
 import React, {
@@ -16,9 +11,9 @@ import React, {
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import useDetectClickOutside from '~hooks/useDetectClickOutside.ts';
 import { formatText } from '~utils/intl.ts';
 import { ActionSidebarWidth } from '~v5/common/ActionSidebar/types.ts';
-import Modal from '~v5/shared/Modal/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.ActionSidebarLayout';
 
@@ -45,13 +40,7 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
   userNavigation,
   width = ActionSidebarWidth.Default,
 }) => {
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggle: toggleActionSidebarOff, registerContainerRef, toggleOff },
-    ],
-    cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
-  } = useActionSidebarContext();
+  const { hide } = useActionSidebarContext();
 
   const [isSidebarMaximized, setIsSidebarMaximized] = useState<boolean>(false);
   const toggleSidebarMaximized = useCallback(() => {
@@ -59,6 +48,10 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
   }, [isSidebarMaximized]);
 
   const isMobile = useMobile();
+
+  const ref = useDetectClickOutside({
+    onTriggered: hide,
+  });
 
   return (
     <motion.div
@@ -100,7 +93,7 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
           'md:!max-w-full': isSidebarMaximized,
         },
       )}
-      ref={registerContainerRef}
+      ref={ref}
     >
       <div className="relative">
         <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
@@ -108,7 +101,7 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={toggleOff}
+              onClick={hide}
               aria-label={formatText({ id: 'ariaLabel.closeModal' })}
             >
               <X size={18} />
@@ -139,24 +132,6 @@ const ActionSidebarLayout: FC<PropsWithChildren<Props>> = ({
         </div>
       </div>
       {children}
-      <Modal
-        title={formatText({ id: 'actionSidebar.cancelModal.title' })}
-        subTitle={formatText({
-          id: 'actionSidebar.cancelModal.subtitle',
-        })}
-        isOpen={isCancelModalOpen}
-        onClose={toggleCancelModalOff}
-        onConfirm={() => {
-          toggleCancelModalOff();
-          toggleActionSidebarOff();
-        }}
-        icon={WarningCircle}
-        buttonMode="primarySolid"
-        confirmMessage={formatText({ id: 'button.cancelAction' })}
-        closeMessage={formatText({
-          id: 'button.continueAction',
-        })}
-      />
     </motion.div>
   );
 };

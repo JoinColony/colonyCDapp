@@ -41,9 +41,7 @@ const MembersPage: FC = () => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const isMobile = useMobile();
 
   const titleAction = (
@@ -76,7 +74,7 @@ const MembersPage: FC = () => {
             id: 'members.subnav.permissions',
           }),
           onClick: () => {
-            toggleActionSidebarOn({
+            show({
               [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             });
           },

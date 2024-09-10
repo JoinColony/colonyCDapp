@@ -130,7 +130,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             hasShadow: true,
             className: 'pt-6 pb-4 px-2.5',
           }}
-          classNames="w-full sm:max-w-[20.375rem]"
+          className="w-full sm:max-w-[20.375rem]"
         >
           <div className="mb-6 px-3.5">
             <SearchInputDesktop

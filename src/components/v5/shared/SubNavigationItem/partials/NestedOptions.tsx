@@ -92,7 +92,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                       onChange({ hasNestedOptions, id, isChecked, event })
                     }
                     isChecked={isChecked || isNestedOptionsChecked}
-                    classNames="w-full"
+                    className="w-full"
                   >
                     {Icon ? <Icon size={14} /> : null}
                   </Checkbox>
@@ -128,7 +128,7 @@ const NestedOptions: FC<NestedOptionsProps> = ({
                           hasShadow: true,
                           className: 'py-4 px-2',
                         }}
-                        classNames="w-full sm:max-w-[17.375rem]"
+                        className="w-full sm:max-w-[17.375rem]"
                       >
                         <NestedOptions
                           parentOption={`custom.${parentOption}`}

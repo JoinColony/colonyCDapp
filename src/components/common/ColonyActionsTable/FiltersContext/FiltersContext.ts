@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { type Action } from '~constants/actions.ts';
+import { type ActionCore } from '~actions/core/index.ts';
 import {
   type ActivityFeedFilters,
   type ActivityDecisionMethod,
@@ -18,7 +18,7 @@ export interface FiltersContextValue {
   setSearchFilter: (searchValue: string) => void;
   motionStates: MotionState[];
   decisionMethods: ActivityDecisionMethod[];
-  actionTypesFilters: Action[];
+  actionTypesFilters: ActionCore[];
   dateFilters: DateOptions;
   activeFilters: ActivityFeedFilters;
   selectedFiltersCount: number;

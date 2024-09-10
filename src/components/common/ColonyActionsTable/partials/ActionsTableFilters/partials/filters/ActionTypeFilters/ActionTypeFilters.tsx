@@ -1,10 +1,9 @@
 import React, { type FC } from 'react';
 
+import { ActionCore } from '~actions/core/index.ts';
 import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
-
-import { ACTION_TYPES_FILTERS } from './consts.ts';
 
 const ActionTypeFilters: FC = () => {
   const { actionTypesFilters, handleActionTypesFilterChange } =
@@ -16,22 +15,26 @@ const ActionTypeFilters: FC = () => {
         {formatText({ id: 'activityFeedTable.filters.actionType' })}
       </h5>
       <ul>
-        {ACTION_TYPES_FILTERS.map(({ label, name }) => {
-          const isChecked = actionTypesFilters.includes(name);
+        {/* FIXME: I broke this, get available actions in another way */}
+        {/* name probably needs to be id or something like that */}
+        {[{ name: ActionCore.SimplePayment, label: 'THIS IS BROKEN!!!' }].map(
+          ({ label, name }) => {
+            const isChecked = actionTypesFilters.includes(name);
 
-          return (
-            <li key={name}>
-              <Checkbox
-                classNames="subnav-button px-0 sm:px-3.5"
-                name={name}
-                onChange={handleActionTypesFilterChange}
-                isChecked={isChecked}
-              >
-                {label}
-              </Checkbox>
-            </li>
-          );
-        })}
+            return (
+              <li key={name}>
+                <Checkbox
+                  className="subnav-button px-0 sm:px-3.5"
+                  name={name}
+                  onChange={handleActionTypesFilterChange}
+                  isChecked={isChecked}
+                >
+                  {label}
+                </Checkbox>
+              </li>
+            );
+          },
+        )}
       </ul>
     </div>
   );

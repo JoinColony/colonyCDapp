@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -51,18 +51,16 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
     wallet?.address || '',
   ]);
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
 
   const handleUpgradeColony = useCallback(
     () =>
-      toggleActionSidebarOn({
-        [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
+      show({
+        [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
       }),
-    [toggleActionSidebarOn],
+    [show],
   );
 
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
@@ -98,22 +96,17 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
     colony: { metadata, status },
   } = useColonyContext();
 
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { hide, show } = useActionSidebarContext();
   const { pathname } = useLocation();
   const nestedColonyPathname = pathname.split('/').slice(2).join('/');
   const handleNewActionClick = () => {
     if (hasTransactionId) {
-      toggleActionSidebarOff();
+      hide();
       setTimeout(() => {
-        toggleActionSidebarOn();
+        show();
       }, 500);
     } else {
-      toggleActionSidebarOn();
+      show();
     }
   };
 
@@ -142,7 +135,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
         bottomActionProps: {
           text: formatText({ id: 'button.createNewAction' }),
           icon: Plus,
-          onClick: () => toggleActionSidebarOn(),
+          onClick: () => show(),
         },
       },
     },
@@ -172,8 +165,8 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '1',
             label: formatText({ id: 'actions.managePermissions' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.ManagePermissions,
               }),
           },
           // @BETA: Disabled for now
@@ -187,16 +180,16 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '3',
             label: formatText({ id: 'actions.editExistingTeam' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.EditTeam,
               }),
           },
           {
             key: '4',
             label: formatText({ id: 'actions.createNewTeam' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateTeam,
               }),
           },
         ],
@@ -219,8 +212,8 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '1',
             label: formatText({ id: 'actions.simplePayment' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.SimplePayment,
               }),
           },
           // {
@@ -270,16 +263,16 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.TransferFunds,
               }),
           },
           {
             key: '8',
             label: formatText({ id: 'actions.manageTokens' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManageTokens,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.ManageTokens,
               }),
           },
         ],
@@ -302,8 +295,8 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '1',
             label: formatText({ id: 'actions.createAgreement' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
               }),
           },
           // {
@@ -334,16 +327,16 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '1',
             label: formatText({ id: 'actions.editColonyDetails' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.EditColonyDetails,
               }),
           },
           {
             key: '2',
             label: formatText({ id: 'actions.upgradeColonyVersion' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.UpgradeColonyVersion,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
               }),
           },
           // @BETA: Disabled for now
@@ -359,8 +352,8 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             key: '4',
             label: formatText({ id: 'actions.unlockToken' }),
             onClick: () =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: ActionCore.UnlockToken,
               }),
           },
         ],
@@ -373,8 +366,8 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       key: '9',
       label: formatText({ id: 'actions.mintTokens' }),
       onClick: () =>
-        toggleActionSidebarOn({
-          [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+        show({
+          [ACTION_TYPE_FIELD_NAME]: ActionCore.MintTokens,
         }),
     });
   }

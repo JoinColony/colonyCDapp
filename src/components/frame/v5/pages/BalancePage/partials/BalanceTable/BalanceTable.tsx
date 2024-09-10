@@ -16,7 +16,7 @@ import { uniqueId } from 'lodash';
 import React, { type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { ActionCore } from '~actions/core/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -78,9 +78,7 @@ const BalanceTable: FC = () => {
   const [rowSelection, setRowSelection] = useState({});
   const tokensDataLength = data?.length;
   const { formatMessage } = useIntl();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
@@ -141,8 +139,8 @@ const BalanceTable: FC = () => {
               {
                 key: 'mint_tokens',
                 onClick: () => {
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+                  show({
+                    [ACTION_TYPE_FIELD_NAME]: ActionCore.MintTokens,
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
@@ -153,8 +151,8 @@ const BalanceTable: FC = () => {
         {
           key: 'transfer_funds',
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+            show({
+              [ACTION_TYPE_FIELD_NAME]: ActionCore.TransferFunds,
               tokenAddress: selectedTokenData?.tokenAddress,
             });
           },
@@ -164,8 +162,8 @@ const BalanceTable: FC = () => {
         {
           key: 'make_payment',
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+            show({
+              [ACTION_TYPE_FIELD_NAME]: ActionCore.SimplePayment,
               tokenAddress: selectedTokenData?.tokenAddress,
             });
           },
