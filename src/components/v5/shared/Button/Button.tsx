@@ -30,7 +30,6 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
       icon,
       iconSize = 18,
       isIconRight,
-      showNotificationDot = false,
       ...rest
     },
     ref,
@@ -115,9 +114,6 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
             >
               {children}
             </ButtonContent>
-            {showNotificationDot && (
-              <div className="absolute right-[-1.26px] top-[2.28px] h-2.5 w-2.5 rounded-full border border-base-white bg-blue-400" />
-            )}
           </button>
         )}
       </>
