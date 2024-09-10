@@ -44,6 +44,10 @@ export const useActionsTableProps = (
     className,
     pageSize = 10,
     additionalPaginationButtonsContent,
+    showTotalPagesNumber,
+    showUserAvatar,
+    hasHorizontalPadding,
+    isRecentActivityVariant,
     ...rest
   } = props;
 
@@ -62,11 +66,14 @@ export const useActionsTableProps = (
     refetchMotionStates,
     pageNumber,
   } = useActionsTableData(pageSize);
-  const columns = useColonyActionsTableColumns(
+
+  const columns = useColonyActionsTableColumns({
     loading,
     loadingMotionStates,
     refetchMotionStates,
-  );
+    showUserAvatar,
+    hasHorizontalPadding,
+  });
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
@@ -131,7 +138,7 @@ export const useActionsTableProps = (
     ],
   });
   const isMobile = useMobile();
-  const renderRowLink = useRenderRowLink(loading);
+  const renderRowLink = useRenderRowLink(loading, isRecentActivityVariant);
   const renderSubComponent = useRenderSubComponent({
     loadingMotionStates,
     loading,
@@ -142,8 +149,12 @@ export const useActionsTableProps = (
     {
       className: clsx(
         className,
-        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:h-[70px] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+        'sm:[&_td]:h-[70px] sm:[&_td]:pr-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
         {
+          'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem]':
+            hasHorizontalPadding,
+          'sm:[&_td:first-child]:pl-0 [&_td:first-child_div]:pl-0 sm:[&_td:last-child]:pr-0 [&_td:last-child_div]:pr-0 sm:[&_th:first-child]:pl-0 sm:[&_th:last-child]:pr-0 [&_th:last-child_div]:pr-0':
+            !hasHorizontalPadding,
           'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
         },
       ),
@@ -172,14 +183,14 @@ export const useActionsTableProps = (
         : additionalPaginationButtonsContent,
       onSortingChange: setSorting,
       getRowId: (row) => row.transactionHash,
-      meatBallMenuStaticSize: '3rem',
+      meatBallMenuStaticSize: isRecentActivityVariant ? '2rem' : '3rem',
       getMenuProps,
       columns,
       data,
       manualPagination: true,
       canNextPage: hasNextPage || loading,
       canPreviousPage: hasPrevPage,
-      showTotalPagesNumber: false,
+      showTotalPagesNumber,
       nextPage: goToNextPage,
       previousPage: goToPreviousPage,
       paginationDisabled: loading,
