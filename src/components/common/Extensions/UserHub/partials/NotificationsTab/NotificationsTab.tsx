@@ -32,13 +32,20 @@ const NotificationsTab = () => {
 
   const { unreadCount } = useBell() || {};
 
+  let cappedCount: string | number = unreadCount ?? 0;
+  const maximum = 99;
+
+  if (!!unreadCount && unreadCount > maximum) {
+    cappedCount = `${maximum}+`;
+  }
+
   return (
     <div className="h-full px-6 pb-6 pt-6 sm:pb-2">
       <div className="flex items-center">
         <p className="heading-5">{formatText(MSG.notifications)}</p>
         {!!unreadCount && unreadCount > 0 && (
           <p className="ml-2 h-fit rounded-sm bg-blue-100 px-[3px] py-[2.5px] text-[8px] font-bold text-blue-400">
-            {unreadCount} {formatText(MSG.new)}
+            {cappedCount} {formatText(MSG.new)}
           </p>
         )}
       </div>
