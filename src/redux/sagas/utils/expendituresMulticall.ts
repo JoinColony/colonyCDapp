@@ -143,7 +143,7 @@ export const getEditDraftExpenditureMulticallData = ({
   encodedMulticallData.push(
     colonyClient.interface.encodeFunctionData('setExpenditureRecipients', [
       expenditureId,
-      payoutsWithSlotIds.map((payout) => payout.slotId!),
+      payoutsWithSlotIds.map((payout) => payout.slotId),
       payoutsWithSlotIds.map((payout) => payout.recipientAddress),
     ]),
   );
@@ -151,7 +151,7 @@ export const getEditDraftExpenditureMulticallData = ({
   encodedMulticallData.push(
     colonyClient.interface.encodeFunctionData('setExpenditureClaimDelays', [
       expenditureId,
-      payoutsWithSlotIds.map((payout) => payout.slotId!),
+      payoutsWithSlotIds.map((payout) => payout.slotId),
       payoutsWithSlotIds.map((payout) =>
         isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
       ),
@@ -173,7 +173,7 @@ export const getEditDraftExpenditureMulticallData = ({
     encodedMulticallData.push(
       colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
         expenditureId,
-        tokenPayouts.map((payout) => payout.slotId!),
+        tokenPayouts.map((payout) => payout.slotId),
         tokenAddress,
         tokenAmounts,
       ]),
