@@ -3,12 +3,13 @@ import React from 'react';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { notMaybe } from '~utils/arrays/index.ts';
+import ArrowScroller from '~v5/common/ArrowScroller/ArrowScroller.tsx';
 
 import AllTeamsItem from './partials/AllTeamsItem.tsx';
 import CreateNewTeamItem from './partials/CreateNewTeamItem.tsx';
+import { LeftButton } from './partials/LeftButton.tsx';
+import { RightButton } from './partials/RightButton.tsx';
 import TeamItem from './partials/TeamItem.tsx';
-
-const MAX_TEAM_LIMIT = 10;
 
 const displayName = 'v5.shared.TeamFilter';
 
@@ -20,13 +21,17 @@ const TeamFilter = () => {
 
   const allDomains = domains?.items.filter(notMaybe) || [];
 
-  const domainsForMenu = allDomains.slice(0, MAX_TEAM_LIMIT);
-  // const domainsForDropdown = allDomains.slice(MAX_TEAM_LIMIT);
+  const leftButton = <LeftButton />;
+  const rightButton = <RightButton />;
 
   return (
-    <div className="flex w-fit max-w-full overflow-hidden rounded-lg border border-solid  border-gray-200">
+    <ArrowScroller
+      className="flex w-fit whitespace-nowrap rounded-lg border border-solid border-gray-200"
+      buttonLeftContent={leftButton}
+      buttonRightContent={rightButton}
+    >
       <AllTeamsItem selected={selectedDomain === undefined} />
-      {domainsForMenu.map((domain) => (
+      {allDomains.map((domain) => (
         <TeamItem
           key={`teamFilter.${domain.id}`}
           selected={selectedDomain?.nativeId === domain.nativeId}
@@ -34,7 +39,7 @@ const TeamFilter = () => {
         />
       ))}
       <CreateNewTeamItem />
-    </div>
+    </ArrowScroller>
   );
 };
 
