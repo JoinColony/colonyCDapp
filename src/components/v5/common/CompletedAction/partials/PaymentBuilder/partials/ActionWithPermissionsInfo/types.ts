@@ -1,4 +1,5 @@
+import { type ExpenditureAction } from '~types/graphql.ts';
+
 export interface ActionWithPermissionsInfoProps {
-  userAdddress: string | undefined | null;
-  createdAt?: string;
+  action?: ExpenditureAction | null;
 }

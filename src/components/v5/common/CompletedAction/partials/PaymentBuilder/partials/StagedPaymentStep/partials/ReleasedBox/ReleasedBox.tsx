@@ -3,10 +3,10 @@ import { defineMessages } from 'react-intl';
 
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { formatText } from '~utils/intl.ts';
+import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 
 import ActionWithPermissionsInfo from '../../../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import MotionBox from '../../../MotionBox/MotionBox.tsx';
-import { type ReleaseActionItem } from '../../StagedPaymentStep.tsx';
 import ReleasedBoxItem, {
   type ReleaseBoxItem,
 } from '../ReleasedBoxItem/ReleasedBoxItem.tsx';
@@ -16,7 +16,6 @@ const displayName =
 
 interface ReleasedBoxProps {
   items: ReleaseBoxItem[];
-  releaseActions: ReleaseActionItem[];
 }
 
 const MSG = defineMessages({
@@ -26,17 +25,10 @@ const MSG = defineMessages({
   },
 });
 
-const ReleasedBox: FC<ReleasedBoxProps> = ({ items, releaseActions }) => {
+const ReleasedBox: FC<ReleasedBoxProps> = ({ items }) => {
   const { selectedMilestoneMotion } = usePaymentBuilderContext();
-  const actionInformation =
-    selectedMilestoneMotion &&
-    releaseActions.find((action) =>
-      action.slotIds.includes(
-        Array.isArray(selectedMilestoneMotion.slotId)
-          ? selectedMilestoneMotion.slotId[0]
-          : selectedMilestoneMotion.slotId || 0,
-      ),
-    );
+
+  const { action } = useGetActionData(selectedMilestoneMotion?.transactionHash);
 
   return (
     <div className="mb-2">
@@ -60,10 +52,7 @@ const ReleasedBox: FC<ReleasedBoxProps> = ({ items, releaseActions }) => {
       {selectedMilestoneMotion && (
         <div className="mt-2">
           {!selectedMilestoneMotion.transactionHash ? (
-            <ActionWithPermissionsInfo
-              userAdddress={actionInformation?.userAddress}
-              createdAt={actionInformation?.createdAt}
-            />
+            <ActionWithPermissionsInfo action={action} />
           ) : (
             <MotionBox
               transactionId={selectedMilestoneMotion.transactionHash}

@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
-import { ExpenditureStatus } from '~gql';
-import { type Expenditure } from '~types/graphql.ts';
+import { type ExpenditureActionFragment, ExpenditureStatus } from '~gql';
+import { type ExpenditureAction, type Expenditure } from '~types/graphql.ts';
 
 import { ExpenditureStep } from './types.ts';
 
@@ -51,6 +51,138 @@ export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
   });
 };
 
+export const getFundingItemIndex = (
+  fundingActions: ExpenditureActionFragment[][] | undefined,
+) => {
+  if (!fundingActions || fundingActions.length === 0) {
+    return 0;
+  }
+
+  const lastFundingItem = fundingActions[fundingActions.length - 1];
+  const lastItem = lastFundingItem[lastFundingItem.length - 1];
+
+  if (
+    !lastItem.motionData ||
+    lastItem.motionData.motionStateHistory.hasPassed
+  ) {
+    return fundingActions.length;
+  }
+
+  return fundingActions.length - 1;
+};
+
+export const segregateFundingActions = (
+  expenditure: Expenditure | null | undefined,
+) => {
+  if (!expenditure) {
+    return undefined;
+  }
+
+  const result: ExpenditureAction[][] = [];
+
+  const { fundingActions } = expenditure;
+
+  if (!fundingActions?.items || fundingActions.items.length === 0) {
+    return result;
+  }
+
+  const seenActions = new Set();
+
+  const sortedFundingActions = [...fundingActions.items].sort((a, b) => {
+    if (a?.createdAt && b?.createdAt) {
+      return Date.parse(a.createdAt) - Date.parse(b.createdAt);
+    }
+    return 0;
+  });
+
+  sortedFundingActions.forEach((action, index) => {
+    if (!action) {
+      return;
+    }
+
+    const prevAction = sortedFundingActions[index - 1];
+
+    if (prevAction && prevAction.motionData) {
+      const { hasFailed, hasFailedNotFinalizable, hasPassed } =
+        prevAction.motionData.motionStateHistory;
+
+      if ((hasFailed || hasFailedNotFinalizable) && !hasPassed) {
+        result[result.length - 1].push(action);
+        return;
+      }
+    }
+
+    const { createdAt, transactionHash } = action;
+    if (!createdAt || !transactionHash) return;
+
+    const fundingActionTime = new Date(createdAt);
+    const actionKey = `${createdAt}-${transactionHash}`;
+
+    if (seenActions.has(actionKey)) {
+      return;
+    }
+
+    if (result.length === 0) {
+      result[0] = [action];
+      seenActions.add(actionKey);
+      return;
+    }
+
+    let actionPlaced = false;
+
+    for (let i = 0; i < result.length; i += 1) {
+      const currentFundingAction = result[i][0];
+      const currentFundingActionTime = new Date(
+        currentFundingAction?.createdAt || '',
+      );
+
+      const isLastFundingAction = i === result.length - 1;
+
+      if (isLastFundingAction) {
+        if (
+          fundingActionTime < currentFundingActionTime &&
+          !seenActions.has(actionKey)
+        ) {
+          result[0].push(action);
+          seenActions.add(actionKey);
+        } else if (
+          fundingActionTime >= currentFundingActionTime &&
+          !seenActions.has(actionKey)
+        ) {
+          result[i + 1] = [action];
+          seenActions.add(actionKey);
+          actionPlaced = true;
+        }
+        break;
+      }
+
+      const nextFundingAction = result[i + 1][0];
+      const nextFundingActionTime = new Date(
+        nextFundingAction?.createdAt || '',
+      );
+
+      if (
+        fundingActionTime >= currentFundingActionTime &&
+        fundingActionTime < nextFundingActionTime
+      ) {
+        if (!seenActions.has(actionKey)) {
+          result[i + 1].push(action);
+          seenActions.add(actionKey);
+          actionPlaced = true;
+        }
+        break;
+      }
+    }
+
+    if (!actionPlaced && !seenActions.has(actionKey)) {
+      result.push([action]);
+      seenActions.add(actionKey);
+    }
+  });
+
+  return result;
+};
+
 export const getExpenditureStep = (
   expenditure: Expenditure | null | undefined,
 ) => {
@@ -65,7 +197,10 @@ export const getExpenditureStep = (
         return ExpenditureStep.Release;
       }
 
-      return ExpenditureStep.Funding;
+      const groupedFundingActions = segregateFundingActions(expenditure);
+      const itemIndex = getFundingItemIndex(groupedFundingActions);
+
+      return `${ExpenditureStep.Funding}-${itemIndex}`;
     }
     case ExpenditureStatus.Finalized:
       return ExpenditureStep.Payment;
@@ -76,7 +211,7 @@ export const getExpenditureStep = (
   }
 };
 
-export const getCancelStepIndex = (
+export const getCurrentStepIndex = (
   expenditure: Expenditure | null | undefined,
 ) => {
   if (!expenditure) {
@@ -104,4 +239,115 @@ export const getCancelStepIndex = (
   }
 
   return undefined;
+};
+
+export const segregateEditActions = (
+  expenditure: Expenditure | null | undefined,
+) => {
+  if (!expenditure) {
+    return undefined;
+  }
+
+  const result: {
+    funding: ExpenditureAction[][];
+    finalizing: ExpenditureAction[];
+  } = {
+    funding: [],
+    finalizing: [],
+  };
+
+  const { editingActions } = expenditure;
+
+  if (!editingActions?.items || editingActions.items.length === 0) {
+    return result;
+  }
+
+  // Get grouped funding actions from segregateFundingActions
+  const groupedFundingActions = segregateFundingActions(expenditure);
+
+  const seenActions = new Set();
+
+  editingActions.items.forEach((action) => {
+    if (!action) {
+      return;
+    }
+
+    const { createdAt, transactionHash } = action;
+    if (!createdAt || !transactionHash) return;
+
+    const editingActionTime = new Date(createdAt);
+    const actionKey = `${createdAt}-${transactionHash}`;
+
+    if (seenActions.has(actionKey)) {
+      return;
+    }
+
+    if (!groupedFundingActions || groupedFundingActions.length === 0) {
+      // If no funding actions, directly place in the first funding array
+      result.funding[0] = result.funding[0] || [];
+      result.funding[0].push(action);
+      seenActions.add(actionKey);
+      return;
+    }
+
+    let actionPlaced = false;
+
+    // Loop over grouped funding actions (which are arrays of actions)
+    for (let i = 0; i < groupedFundingActions.length; i += 1) {
+      const currentFundingGroup = groupedFundingActions[i];
+      const currentFundingActionTime = new Date(
+        currentFundingGroup[0]?.createdAt || '',
+      ); // Compare using the first action in the group
+
+      const isLastFundingGroup = i === groupedFundingActions.length - 1;
+
+      if (isLastFundingGroup) {
+        // If it's the last funding group, append the action
+        if (
+          editingActionTime < currentFundingActionTime &&
+          !seenActions.has(actionKey)
+        ) {
+          result.funding[0].push(action);
+          seenActions.add(actionKey);
+        } else if (
+          editingActionTime >= currentFundingActionTime &&
+          !seenActions.has(actionKey)
+        ) {
+          // Place in a new group after the last one
+          result.funding[i + 1] = result.funding[i + 1] || [];
+          result.funding[i + 1].push(action);
+          seenActions.add(actionKey);
+          actionPlaced = true;
+        }
+        break;
+      }
+
+      const nextFundingGroup = groupedFundingActions[i + 1];
+      const nextFundingActionTime = new Date(
+        nextFundingGroup[0]?.createdAt || '',
+      );
+
+      if (
+        editingActionTime >= currentFundingActionTime &&
+        editingActionTime < nextFundingActionTime
+      ) {
+        // If the action time falls between two funding groups
+        if (!seenActions.has(actionKey)) {
+          result.funding[i + 1] = result.funding[i + 1] || [];
+          result.funding[i + 1].push(action);
+          seenActions.add(actionKey);
+          actionPlaced = true;
+        }
+        break;
+      }
+    }
+
+    // If not placed and not seen, it's a finalizing action
+    if (!actionPlaced && !seenActions.has(actionKey)) {
+      result.finalizing.push(action);
+      seenActions.add(actionKey);
+    }
+  });
+
+  return result;
 };

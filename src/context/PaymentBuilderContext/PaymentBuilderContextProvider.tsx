@@ -7,6 +7,7 @@ import React, {
 
 import { type ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
+import { type ExpenditureAction } from '~types/graphql.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 import { type ReleaseBoxItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/ReleasedBoxItem/ReleasedBoxItem.tsx';
@@ -41,6 +42,13 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     useState<ReleaseBoxItem | null>(null);
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
+  const [selectedEditingAction, setSelectedEditingAction] =
+    useState<ExpenditureAction | null>(null);
+  const [currentStep, setCurrentStep] = useState<
+    ExpenditureStep | string | null
+  >(null);
+  const [selectedFundingAction, setSelectedFundingAction] =
+    useState<ExpenditureAction | null>(null);
 
   const value = useMemo(
     () => ({
@@ -66,6 +74,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedMilestones,
       selectedMilestoneMotion,
       setSelectedMilestoneMotion,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
+      selectedFundingAction,
+      setSelectedFundingAction,
     }),
     [
       toggleOnFundingModal,
@@ -90,6 +104,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedMilestones,
       selectedMilestoneMotion,
       setSelectedMilestoneMotion,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
+      selectedFundingAction,
+      setSelectedFundingAction,
     ],
   );
 

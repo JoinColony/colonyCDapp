@@ -55,7 +55,7 @@ export interface ReleaseActionItem {
 }
 
 interface StagedPaymentStepProps {
-  expectedStepKey: ExpenditureStep | null;
+  expectedStepKey: ExpenditureStep | string | null;
   items: MilestoneItem[];
   expenditure: Expenditure;
   releaseActions: ReleaseActionItem[];
@@ -188,7 +188,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       <>
         {(releasedMilestones.length > 0 ||
           (releaseMilestoneMotions || []).length > 0) && (
-          <ReleasedBox items={releaseItems} releaseActions={releaseActions} />
+          <ReleasedBox items={releaseItems} />
         )}
         {!isStagedExtensionInstalled && (
           <StepDetailsBlock

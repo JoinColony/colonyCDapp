@@ -10,6 +10,7 @@ import { type FieldValues } from 'react-hook-form';
 
 import { useTablet } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
+import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { isChildOf } from '~utils/checks/isChildOf.ts';
 import { getElementWithSelector } from '~utils/elements.ts';
 
@@ -38,7 +39,12 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
+  const [isEditMode, setIsEditMode] = useState(false);
   const cancelModalToggle = useToggle();
+  const cancelEditModalToggle = useToggle();
+  const [editValues, setEditValues] = useState<
+    ExpenditurePayoutFieldValue[] | undefined
+  >();
   const isTablet = useTablet();
   const [
     isActionSidebarOpen,
@@ -112,6 +118,11 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
         },
       ],
       cancelModalToggle,
+      cancelEditModalToggle,
+      editValues,
+      setEditValues,
+      setIsEditMode,
+      isEditMode,
       actionSidebarInitialValues,
     }),
     [
@@ -123,6 +134,11 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggle,
       toggleOff,
       toggleOn,
+      setIsEditMode,
+      isEditMode,
+      cancelEditModalToggle,
+      editValues,
+      setEditValues,
     ],
   );
 

@@ -65,6 +65,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   } = useGetActionData(transactionId);
 
   const {
+    isEditMode,
     actionSidebarToggle: [
       isActionSidebarOpen,
       { toggle: toggleActionSidebarOff, registerContainerRef },
@@ -261,7 +262,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       ref={registerContainerRef}
     >
       <div className="relative">
-        <div className="flex w-full items-center justify-between border-b border-gray-200 px-6 py-4">
+        <div className="flex w-full items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -288,7 +289,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   </button>
                   {getShareButton()}
                 </div>
-                {action && !isMotion && !expenditure && (
+                {action && !isMotion && !expenditure && !isEditMode && (
                   <PillsBase
                     className="bg-success-100 text-success-400"
                     isCapitalized={false}
@@ -296,11 +297,30 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     {formatText({ id: 'action.passed' })}
                   </PillsBase>
                 )}
-                {!!expenditure && (
+                {!!expenditure && !isEditMode && (
                   <ExpenditureActionStatusBadge
                     expenditure={expenditure}
                     withAdditionalStatuses
                   />
+                )}
+                {!!expenditure && isEditMode && (
+                  <Tooltip
+                    tooltipContent={
+                      <span className="font-medium">
+                        {formatText({
+                          id: 'expenditure.edit.tooltip',
+                        })}
+                      </span>
+                    }
+                    placement="bottom-start"
+                  >
+                    <PillsBase
+                      className="bg-warning-100 text-warning-400"
+                      isCapitalized={false}
+                    >
+                      {formatText({ id: 'badge.edit' })}
+                    </PillsBase>
+                  </Tooltip>
                 )}
                 <MotionOutcomeBadge motionState={motionState} />
               </div>
