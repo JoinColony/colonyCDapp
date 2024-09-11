@@ -120,7 +120,7 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
       <AnimatePresence initial={false} presenceAffectsLayout>
         {isAccordionExpanded && (
           <motion.ul
-            className="flex w-full flex-col gap-0.5 overflow-hidden"
+            className="flex w-full flex-col overflow-hidden md:gap-0.5"
             variants={motionVariants}
             initial="collapsed"
             animate="expanded"
