@@ -4,7 +4,6 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -52,7 +51,7 @@ function* createExpenditure({
   );
   const { network } = colonyManager.networkClient;
 
-  const batchKey = TRANSACTION_METHODS.CreateExpenditure;
+  const batchKey = 'createExpenditure';
 
   const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
 

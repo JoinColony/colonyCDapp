@@ -10,7 +10,6 @@ import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
   type ChannelDefinition,
@@ -28,7 +27,9 @@ import {
   getPayoutsWithSlotIds,
   getEditDraftExpenditureMulticallData,
   createActionMetadataInDB,
+  adjustPayoutsAddresses,
 } from '../utils/index.ts';
+import { chunkedMulticall } from '../utils/multicall.ts';
 
 export type CreateStakedExpenditurePayload =
   Action<ActionTypes.STAKED_EXPENDITURE_CREATE>['payload'];
@@ -58,10 +59,11 @@ function* createStakedExpenditure({
     ClientType.ColonyClient,
     colonyAddress,
   );
+  const { network } = colonyManager.networkClient;
 
-  const batchKey = TRANSACTION_METHODS.CreateExpenditure;
+  const batchKey = 'createExpenditure';
 
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+  const adjustedPayouts = yield adjustPayoutsAddresses(payouts, network);
 
   const tokenLockingClient: TokenLockingClient = yield colonyManager.getClient(
     ClientType.TokenLockingClient,
@@ -73,7 +75,6 @@ function* createStakedExpenditure({
     deposit,
     approveStake,
     makeExpenditure,
-    setExpenditureValues,
     setExpenditureStaged,
     annotateMakeStagedExpenditure,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
@@ -83,11 +84,29 @@ function* createStakedExpenditure({
       'deposit',
       'approveStake',
       'makeExpenditure',
-      'setExpenditureValues',
       'setExpenditureStaged',
       'annotateMakeStagedExpenditure',
     ],
   );
+
+  const {
+    createMulticallChannels,
+    createMulticallTransactions,
+    processMulticallTransactions,
+    closeMulticallChannels,
+  } = chunkedMulticall({
+    colonyAddress,
+    items: getPayoutsWithSlotIds(adjustedPayouts),
+    // In testing, if this was called with more than 164 payouts
+    // the resulting transaction receipt was too big to update the transaction in the db
+    chunkSize: 164,
+    metaId: meta.id,
+    batchKey,
+    startIndex: 4,
+    channelId: 'setExpenditureValues',
+  });
+
+  yield createMulticallChannels();
 
   try {
     if (stakeAmount.gt(activeBalance)) {
@@ -149,17 +168,7 @@ function* createStakedExpenditure({
       },
     });
 
-    yield createGroupTransaction({
-      channel: setExpenditureValues,
-      batchKey,
-      meta,
-      config: {
-        context: ClientType.ColonyClient,
-        methodName: 'multicall',
-        identifier: colonyAddress,
-        ready: false,
-      },
-    });
+    yield* createMulticallTransactions();
 
     if (isStaged) {
       yield createGroupTransaction({
@@ -222,7 +231,7 @@ function* createStakedExpenditure({
     );
 
     yield takeFrom(makeExpenditure.channel, ActionTypes.TRANSACTION_CREATED);
-    yield;
+
     transactionSetParams(makeExpenditure.id, [
       Id.RootDomain,
       childSkillIndex,
@@ -249,22 +258,16 @@ function* createStakedExpenditure({
 
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 
-    yield takeFrom(
-      setExpenditureValues.channel,
-      ActionTypes.TRANSACTION_CREATED,
-    );
-
-    const multicallData = getEditDraftExpenditureMulticallData({
-      expenditureId,
-      payouts: payoutsWithSlotIds,
-      colonyClient,
-      networkInverseFee,
-      isStaged,
+    yield processMulticallTransactions({
+      encodeFunctionData: (payoutsChunk) =>
+        getEditDraftExpenditureMulticallData({
+          expenditureId,
+          payouts: payoutsChunk,
+          isStaged,
+          colonyClient,
+          networkInverseFee,
+        }),
     });
-
-    yield transactionSetParams(setExpenditureValues.id, [multicallData]);
-    yield initiateTransaction(setExpenditureValues.id);
-    yield waitForTxResult(setExpenditureValues.channel);
 
     if (customActionTitle) {
       yield createActionMetadataInDB(txHash, customActionTitle);
@@ -319,10 +322,11 @@ function* createStakedExpenditure({
       deposit,
       approveStake,
       makeExpenditure,
-      setExpenditureValues,
       setExpenditureStaged,
       annotateMakeStagedExpenditure,
     ].forEach(({ channel }) => channel.close());
+
+    closeMulticallChannels();
   }
   return null;
 }
