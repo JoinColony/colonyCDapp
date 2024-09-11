@@ -45,7 +45,7 @@ export function chunkedMulticall<T>({
 
   // Function to create and store channels
   function* createMulticallChannels() {
-    channels = yield createTransactionChannels(metaId, channelIds);
+    channels = yield createTransactionChannels(metaId, channelIds, startIndex);
   }
 
   // Function to create transactions using the stored channels
