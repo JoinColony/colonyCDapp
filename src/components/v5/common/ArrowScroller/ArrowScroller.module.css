@@ -1,0 +1,17 @@
+.scrollContainer {
+  scroll-snap-type: x mandatory;
+}
+
+/* The scrollbar itself */
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  display: none;
+}
+
+/* The actual scrollbar handle */
+.scrollContainer::-webkit-scrollbar-thumb {
+  display: none;
+}
