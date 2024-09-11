@@ -153,7 +153,6 @@ export function* claimExpenditurePayouts({
   try {
     yield* createMulticallTransactions();
     yield processMulticallTransactions({
-      colonyClient,
       encodeFunctionData: (payouts: ExpenditurePayoutWithSlotId[]) => {
         const multicallData = payouts.map((payout) =>
           colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [
