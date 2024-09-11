@@ -10,6 +10,7 @@ import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
+import NotificationsTab from './partials/NotificationsTab/NotificationsTab.tsx';
 import ReputationTab from './partials/ReputationTab/index.ts';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
@@ -42,12 +43,21 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
   const featureFlags = useContext(FeatureFlagsContext);
   const [selectedTab, setSelectedTab] = useState(initialOpenTab);
 
-  const filteredTabList = tabList.filter(
-    (tabItem) =>
+  // @TODO: get from notifications context
+  const notificationsServiceIsEnabled = true;
+
+  const filteredTabList = tabList.filter((tabItem) => {
+    const isFeatureFlagEnabled =
       !tabItem.featureFlag ||
       (!featureFlags[tabItem.featureFlag]?.isLoading &&
-        featureFlags[tabItem.featureFlag]?.isEnabled),
-  );
+        featureFlags[tabItem.featureFlag]?.isEnabled);
+
+    if (tabItem.id !== UserHubTab.Notifications) {
+      return isFeatureFlagEnabled;
+    }
+
+    return isFeatureFlagEnabled && notificationsServiceIsEnabled;
+  });
 
   const handleTabChange = (newTab: UserHubTab) => {
     setSelectedTab(newTab);
@@ -129,10 +139,11 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         {selectedTab === UserHubTab.Balance && (
           <ReputationTab onTabChange={handleTabChange} />
         )}
-        {selectedTab === UserHubTab.Stakes && <StakesTab />}
+        {selectedTab === UserHubTab.Notifications && <NotificationsTab />}
         {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
+        {selectedTab === UserHubTab.Stakes && <StakesTab />}
         {selectedTab === UserHubTab.CryptoToFiat && <CryptoToFiatTab />}
       </div>
       {/* @BETA: Disabled for now */}
