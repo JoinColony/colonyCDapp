@@ -4,13 +4,11 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-
 import {
   sidebarButtonClass,
   sidebarButtonIconClass,
   sidebarButtonTextClass,
-} from '../../sidebar.styles.ts';
+} from '~v5/shared/Navigation/Sidebar/sidebar.styles.ts';
 
 import { type ActionSectionItemProps } from './types.ts';
 
@@ -37,14 +35,15 @@ const ActionSectionItem: React.FC<ActionSectionItemProps> = ({
   };
 
   return (
-    <Button
+    <button
+      type="button"
       onClick={onClick}
       className={sidebarButtonClass}
-      ariaLabel={`Start the ${action.replace('-', ' ')} action`}
+      aria-label={`Start the ${action.replace('-', ' ')} action`}
     >
       <Icon className={sidebarButtonIconClass} />
       <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
-    </Button>
+    </button>
   );
 };
 
