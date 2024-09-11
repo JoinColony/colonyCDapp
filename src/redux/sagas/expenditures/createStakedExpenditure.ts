@@ -227,11 +227,16 @@ function* createStakedExpenditure({
       });
     }
 
+    const numberOfTokens = new Set(payouts.map((payout) => payout.tokenAddress))
+      .size;
+
     yield saveExpenditureMetadata({
       colonyAddress,
       expenditureId,
       fundFromDomainId,
       stages: isStaged ? stages : undefined,
+      numberOfPayouts: payouts.length,
+      numberOfTokens,
     });
 
     yield put<AllActions>({

@@ -21,6 +21,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
+import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -90,17 +91,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     colony,
   );
 
-  const tokensCount = slots.reduce((uniqueTokens: string[], item) => {
-    const token = item.payouts?.[0].tokenAddress;
-
-    if (token) {
-      if (!uniqueTokens.includes(token)) {
-        uniqueTokens.push(token);
-      }
-    }
-
-    return uniqueTokens;
-  }, []).length;
+  const { expectedNumberOfPayouts } = metadata || {};
 
   const hasPermissions = addressHasRoles({
     address: user?.walletAddress || '',
@@ -160,8 +151,8 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           { id: 'action.title' },
           {
             actionType: ColonyActionType.CreateExpenditure,
-            recipientsNumber: slots.length,
-            tokensNumber: tokensCount,
+            recipientsNumber: getRecipientsNumber(expenditure),
+            tokensNumber: getTokensNumber(expenditure),
             initiator: initiatorUser ? (
               <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}
@@ -202,7 +193,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         items={slots}
         status={status}
         finalizedTimestamp={finalizedAt}
-        isLoading={!slots.length || !!loadingExpenditure}
+        expectedNumberOfPayouts={expectedNumberOfPayouts}
       />
       <CancelModal
         isOpen={isCancelModalOpen}

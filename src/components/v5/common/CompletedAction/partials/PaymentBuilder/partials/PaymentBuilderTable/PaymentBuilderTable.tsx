@@ -4,7 +4,6 @@ import { BigNumber } from 'ethers';
 import React, { type FC, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
@@ -33,13 +32,13 @@ const useGetPaymentBuilderColumns = ({
   status,
   slots,
   finalizedTimestamp,
-  isLoading,
+  expectedNumberOfPayouts,
 }: {
   data: PaymentBuilderTableModel[];
   status: ExpenditureStatus;
   slots: ExpenditureSlotFragment[];
   finalizedTimestamp?: number | null;
-  isLoading?: boolean;
+  expectedNumberOfPayouts?: number | null;
 }) => {
   const isTablet = useTablet();
   const dataRef = useWrapWithRef(data);
@@ -52,9 +51,13 @@ const useGetPaymentBuilderColumns = ({
     [blockTime, finalizedTimestamp, slots],
   );
 
-  const { loading: isColonyContributorDataLoading } = useMemberContext();
+  const allPaymentsLoaded = data.filter((item) => item.isLoading).length === 0;
 
-  const isDataLoading = isLoading || isColonyContributorDataLoading;
+  let totalNumberOfPayments = data.length;
+
+  if (expectedNumberOfPayouts && expectedNumberOfPayouts > data.length) {
+    totalNumberOfPayments = expectedNumberOfPayouts;
+  }
 
   return useMemo(
     () => [
@@ -63,7 +66,7 @@ const useGetPaymentBuilderColumns = ({
         header: formatText({ id: 'table.row.recipient' }),
         cell: ({ row }) => (
           <RecipientField
-            isLoading={!!isLoading}
+            isLoading={row.original.isLoading ?? true}
             address={row.original.recipient}
           />
         ),
@@ -74,7 +77,7 @@ const useGetPaymentBuilderColumns = ({
                   ? formatText({ id: 'table.footer.total' })
                   : formatText(
                       { id: 'table.footer.totalPayments' },
-                      { payments: data.length },
+                      { payments: totalNumberOfPayments },
                     )}
               </span>
             )
@@ -86,7 +89,7 @@ const useGetPaymentBuilderColumns = ({
         footer: hasMoreThanOneToken
           ? () => (
               <>
-                {isLoading ? (
+                {!allPaymentsLoaded ? (
                   <div className="flex w-3/4 items-center">
                     <div className="h-4 w-full overflow-hidden rounded skeleton" />
                   </div>
@@ -102,7 +105,7 @@ const useGetPaymentBuilderColumns = ({
           : undefined,
         cell: ({ row }) => (
           <AmountField
-            isLoading={isDataLoading}
+            isLoading={row.original.isLoading ?? false}
             amount={row.original.amount}
             tokenAddress={row.original.tokenAddress}
           />
@@ -116,7 +119,11 @@ const useGetPaymentBuilderColumns = ({
         cell: ({ row }) => {
           const formattedHours = convertPeriodToHours(row.original.claimDelay);
 
-          return !isDataLoading ? (
+          return row.original.isLoading ? (
+            <div className="flex w-[4rem] items-center">
+              <div className="h-4 w-full overflow-hidden rounded skeleton" />
+            </div>
+          ) : (
             <span className="text-md text-gray-900">
               {formatText(
                 { id: 'table.column.claimDelayField' },
@@ -125,10 +132,6 @@ const useGetPaymentBuilderColumns = ({
                 },
               )}
             </span>
-          ) : (
-            <div className="flex w-[4rem] items-center">
-              <div className="h-4 w-full overflow-hidden rounded skeleton" />
-            </div>
           );
         },
       }),
@@ -166,8 +169,7 @@ const useGetPaymentBuilderColumns = ({
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
-      isDataLoading,
-      isLoading,
+      totalNumberOfPayments,
       isTablet,
       status,
     ],
@@ -178,38 +180,71 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
   items,
   status,
   finalizedTimestamp,
-  isLoading,
+  expectedNumberOfPayouts,
 }) => {
   const isTablet = useTablet();
   const {
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
 
-  const data = useMemo<PaymentBuilderTableModel[]>(
-    () =>
-      items.flatMap(
-        (item) =>
-          item.payouts?.map((payout) => ({
-            recipient: item.recipientAddress || '',
-            claimDelay: BigNumber.from(item.claimDelay || '0')
-              .add(expendituresGlobalClaimDelay ?? '0')
-              .toString(),
+  const data = useMemo<PaymentBuilderTableModel[]>(() => {
+    const populatedItems = items.flatMap((item) => {
+      if (!item.payouts) {
+        return {
+          recipient: item.recipientAddress || '',
+          claimDelay: BigNumber.from(item.claimDelay || '0')
+            .add(expendituresGlobalClaimDelay ?? '0')
+            .toString(),
 
-            amount: payout.amount || '0',
-            tokenAddress: payout.tokenAddress || '',
-            isClaimed: payout.isClaimed || false,
-            id: item.id,
-          })) || [],
-      ) || [],
-    [expendituresGlobalClaimDelay, items],
-  );
+          amount: '0',
+          tokenAddress: '',
+          isClaimed: false,
+          id: item.id,
+          isLoading: true,
+        };
+      }
+      return item.payouts.map((payout) => {
+        return {
+          recipient: item.recipientAddress || '',
+          claimDelay: BigNumber.from(item.claimDelay || '0')
+            .add(expendituresGlobalClaimDelay ?? '0')
+            .toString(),
+
+          amount: payout.amount || '0',
+          tokenAddress: payout.tokenAddress || '',
+          isClaimed: payout.isClaimed || false,
+          id: item.id,
+          isLoading: false,
+        };
+      });
+    });
+
+    const numberOfMissingItems = expectedNumberOfPayouts
+      ? expectedNumberOfPayouts - items.length
+      : 0;
+
+    const placeholderItems = Array.from(
+      { length: numberOfMissingItems },
+      (_, index) => ({
+        recipient: '',
+        claimDelay: '0',
+        amount: '0',
+        tokenAddress: '',
+        isClaimed: false,
+        id: items.length + index + 1, // Calculate the next available item.id
+        isLoading: true,
+      }),
+    );
+
+    return [...populatedItems, ...placeholderItems];
+  }, [expendituresGlobalClaimDelay, items, expectedNumberOfPayouts]);
 
   const columns = useGetPaymentBuilderColumns({
     data,
     status,
     slots: items,
     finalizedTimestamp,
-    isLoading: isLoading || !data.length,
+    expectedNumberOfPayouts,
   });
 
   return (
@@ -243,6 +278,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
                   tokenAddress: '0x000',
                   isClaimed: false,
                   id: 0,
+                  isLoading: true,
                 },
                 {
                   recipient: '0x000',
@@ -251,6 +287,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
                   tokenAddress: '0x000',
                   isClaimed: false,
                   id: 1,
+                  isLoading: true,
                 },
                 {
                   recipient: '0x000',
@@ -259,6 +296,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
                   tokenAddress: '0x000',
                   isClaimed: false,
                   id: 2,
+                  isLoading: true,
                 },
               ]
             : data

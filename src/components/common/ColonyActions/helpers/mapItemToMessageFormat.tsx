@@ -18,6 +18,7 @@ import {
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
+import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { formatText, intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
@@ -267,14 +268,9 @@ export const mapColonyActionToExpectedFormat = ({
         notMaybe(actionData.metadata?.customTitle),
       ),
     [ActionTitleMessageKeys.Members]: actionData.members?.length || 0,
-    [ActionTitleMessageKeys.RecipientsNumber]: new Set(
-      expenditureData?.slots.map((slot) => slot.recipientAddress),
-    ).size,
-    [ActionTitleMessageKeys.TokensNumber]: new Set(
-      expenditureData?.slots?.flatMap(
-        (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
-      ),
-    ).size,
+    [ActionTitleMessageKeys.RecipientsNumber]:
+      getRecipientsNumber(expenditureData),
+    [ActionTitleMessageKeys.TokensNumber]: getTokensNumber(expenditureData),
     [ActionTitleMessageKeys.MultiSigAuthority]: actionData.rolesAreMultiSig
       ? `${formatText({
           id: 'decisionMethod.multiSig',

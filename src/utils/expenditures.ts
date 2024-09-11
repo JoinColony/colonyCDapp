@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 
 import { type ExpenditurePayoutWithSlotId } from '~types/expenditures.ts';
-import { type ExpenditureSlot } from '~types/graphql.ts';
+import { type Expenditure, type ExpenditureSlot } from '~types/graphql.ts';
 
 /**
  * Returns expenditure payouts that are now claimable, i.e. their slot's claim delay has passed
@@ -37,4 +37,46 @@ export const getClaimableExpenditurePayouts = (
 
     return [...payouts, ...payoutsWithSlotIds];
   }, []);
+};
+
+export const getRecipientsNumber = (expenditureData?: Expenditure) => {
+  if (!expenditureData) {
+    return 0;
+  }
+
+  const { slots, metadata } = expenditureData;
+
+  if (!metadata?.expectedNumberOfPayouts) {
+    return slots.length;
+  }
+
+  if (metadata.expectedNumberOfPayouts < slots.length) {
+    return slots.length;
+  }
+
+  return metadata.expectedNumberOfPayouts;
+};
+
+export const getTokensNumber = (expenditureData?: Expenditure) => {
+  if (!expenditureData) {
+    return 0;
+  }
+
+  const { slots, metadata } = expenditureData;
+
+  const tokensSet = new Set(
+    slots.flatMap(
+      (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
+    ),
+  );
+
+  if (!metadata?.expectedNumberOfTokens) {
+    return tokensSet.size;
+  }
+
+  if (metadata.expectedNumberOfTokens < tokensSet.size) {
+    return tokensSet.size;
+  }
+
+  return metadata.expectedNumberOfTokens;
 };
