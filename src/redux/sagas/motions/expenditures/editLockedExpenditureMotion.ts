@@ -7,7 +7,7 @@ import {
 } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { ADDRESS_ZERO } from '~constants';
 import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -172,21 +172,7 @@ function* editLockedExpenditureMotion({
         type: ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_SUCCESS,
         meta,
       });
-
-      // @TODO: Remove during advanced payments UI wiring
-      // eslint-disable-next-line no-console
-      console.log(
-        `Edit Expenditure Motion URL: ${APP_URL}${window.location.pathname.slice(
-          1,
-        )}?tx=${txHash}`,
-      );
     }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${APP_URL}${window.location.pathname.slice(1)}?tx=${txHash}`,
-    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR>>({
