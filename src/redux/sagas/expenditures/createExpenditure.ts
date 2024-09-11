@@ -4,7 +4,6 @@ import { takeEvery, fork, call, put } from 'redux-saga/effects';
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { transactionSetParams } from '~state/transactionState.ts';
-import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -21,10 +20,9 @@ import {
   initiateTransaction,
   uploadAnnotation,
   getPayoutsWithSlotIds,
-  getPayoutAmount,
   createActionMetadataInDB,
   adjustPayoutsAddresses,
-  MAX_CLAIM_DELAY_VALUE,
+  getEditDraftExpenditureMulticallData,
 } from '../utils/index.ts';
 import { chunkedMulticall } from '../utils/multicall.ts';
 
@@ -159,59 +157,14 @@ function* createExpenditure({
     const expenditureId = yield call(colonyClient.getExpenditureCount);
 
     yield processMulticallTransactions({
-      colonyClient,
-      encodeFunctionData: (
-        payoutsWithSlotIds: ExpenditurePayoutFieldValue[],
-      ) => {
-        const multicallData: string[] = [];
-        multicallData.push(
-          colonyClient.interface.encodeFunctionData(
-            'setExpenditureRecipients',
-            [
-              expenditureId,
-              payoutsWithSlotIds.map((payout) => payout.slotId),
-              payoutsWithSlotIds.map((payout) => payout.recipientAddress),
-            ],
-          ),
-        );
-
-        multicallData.push(
-          colonyClient.interface.encodeFunctionData(
-            'setExpenditureClaimDelays',
-            [
-              expenditureId,
-              payoutsWithSlotIds.map((payout) => payout.slotId),
-              payoutsWithSlotIds.map((payout) =>
-                isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
-              ),
-            ],
-          ),
-        );
-
-        const tokenAddresses = new Set(
-          payoutsWithSlotIds.map((payout) => payout.tokenAddress),
-        );
-
-        tokenAddresses.forEach((tokenAddress) => {
-          const tokenPayouts = payoutsWithSlotIds.filter(
-            (payout) => payout.tokenAddress === tokenAddress,
-          );
-          const tokenAmounts = tokenPayouts.map((payout) =>
-            getPayoutAmount(payout, networkInverseFee),
-          );
-
-          multicallData.push(
-            colonyClient.interface.encodeFunctionData('setExpenditurePayouts', [
-              expenditureId,
-              tokenPayouts.map((payout) => payout.slotId),
-              tokenAddress,
-              tokenAmounts,
-            ]),
-          );
-        });
-
-        return multicallData;
-      },
+      encodeFunctionData: (payoutsChunk) =>
+        getEditDraftExpenditureMulticallData({
+          expenditureId,
+          payouts: payoutsChunk,
+          isStaged,
+          colonyClient,
+          networkInverseFee,
+        }),
     });
 
     if (customActionTitle) {
@@ -259,10 +212,6 @@ function* createExpenditure({
     });
 
     setTxHash?.(txHash);
-
-    // @TODO: Remove during advanced payments UI wiring
-    // eslint-disable-next-line no-console
-    console.log('Created expenditure ID:', expenditureId.toString());
   } catch (error) {
     return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
   }
