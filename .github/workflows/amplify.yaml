@@ -37,6 +37,12 @@ jobs:
           curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
           export PATH="$HOME/.amplify/bin:$PATH"
           amplify --version
+          
+          echo "Update amplify state to reflect changes in the resource folder"
+          chmod +x .github/workflows/scripts/amplify-state-update.sh
+          .github/workflows/scripts/amplify-state-update.sh
+
+          echo "Pulling existing resources from AWS, replacing with repo resources and pushing to AWS"
           chmod +x .github/workflows/scripts/amplify-deploy.sh
           .github/workflows/scripts/amplify-deploy.sh
         working-directory: ${{ github.workspace }}
@@ -74,6 +80,12 @@ jobs:
           curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
           export PATH="$HOME/.amplify/bin:$PATH"
           amplify --version
+          
+          echo "Update amplify state to reflect changes in the resource folder"
+          chmod +x .github/workflows/scripts/amplify-state-update.sh
+          .github/workflows/scripts/amplify-state-update.sh
+
+          echo "Pulling existing resources from AWS, replacing with repo resources and pushing to AWS"
           chmod +x .github/workflows/scripts/amplify-deploy.sh
           .github/workflows/scripts/amplify-deploy.sh
         working-directory: ${{ github.workspace }}
