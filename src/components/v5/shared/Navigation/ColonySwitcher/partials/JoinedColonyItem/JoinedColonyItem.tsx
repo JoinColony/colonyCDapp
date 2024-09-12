@@ -23,7 +23,7 @@ const JoinedColonyItem = ({
     <button
       type="button"
       className={clsx(
-        'group flex h-[50px] w-full flex-row items-center justify-start gap-3 rounded px-6 py-8 hover:bg-gray-50 md:px-2 md:py-0',
+        'group flex h-[50px] w-full flex-row items-center justify-start gap-2.5 rounded px-6 py-[2.625rem] md:px-2 md:py-0 md:hover:bg-gray-50',
         {
           'sm:px-2 sm:py-0': enableMobileAndDesktopLayoutBreakpoints,
         },
@@ -46,7 +46,7 @@ const JoinedColonyItem = ({
         <p className="truncate text-md font-semibold text-gray-900">
           {capitalizeFirstLetter(name)}
         </p>
-        <p className="truncate text-sm font-normal uppercase text-gray-700">
+        <p className="truncate text-sm font-normal uppercase text-gray-600">
           {tokenSymbol}
         </p>
       </div>
