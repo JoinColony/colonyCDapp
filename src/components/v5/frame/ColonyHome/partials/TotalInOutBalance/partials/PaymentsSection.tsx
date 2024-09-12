@@ -13,12 +13,13 @@ import {
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
-import { useLast30DaysData } from '../hooks.ts';
+import { useLast30DaysData, usePreviousLast30DaysData } from '../hooks.ts';
 
 import { TitledSection } from './TitledSection.tsx';
 
 export const PaymentsSection = () => {
   const { totalOut, loading: isLoading } = useLast30DaysData();
+  const { previousTotalOut } = usePreviousLast30DaysData();
   const selectedDomain = useGetSelectedDomainFilter();
   const { setShowTabletSidebar } = usePageLayoutContext();
 
@@ -40,6 +41,7 @@ export const PaymentsSection = () => {
       title={formatText(MSG.paymentsSectionTitle)}
       caption={formatText(MSG.last30DaysPeriod)}
       value={totalOut}
+      previousValue={previousTotalOut}
       isLoading={isLoading}
     >
       <LoadingSkeleton isLoading={isLoading} className="h-8 w-11 rounded-lg">
