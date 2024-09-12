@@ -18,12 +18,10 @@ module.exports = {
   getCachedTotalBalance: /* GraphQL */ `
     query GetCachedTotalBalance(
       $colonyAddress: String!
-      $domainId: String
       $filter: ModelCacheTotalBalanceFilterInput
     ) {
       cacheTotalBalanceByColonyAddress(
         colonyAddress: $colonyAddress
-        domainId: { eq: $domainId }
         filter: $filter
       ) {
         items {
