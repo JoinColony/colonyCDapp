@@ -171,6 +171,27 @@ const updatePreviousBalance = async ({
   return result.data.cacheTotalBalanceByColonyAddress;
 };
 
+const processInBatches = async (requests, batchSize) => {
+  const batches = [];
+
+  for (let i = 0; i < requests.length; i += batchSize) {
+    batches.push(requests.slice(i, i + batchSize));
+  }
+
+  const results = [];
+
+  for (const [index, batch] of batches.entries()) {
+    console.log(`Processing batch ${index + 1} out of ${batches.length}`);
+    /**
+     * We don't use Promise.all as we want to await all requests no matter their result in order to fill the cache
+     */
+    const batchResults = await Promise.allSettled(batch);
+    results.push(...batchResults);
+  }
+
+  return results;
+};
+
 module.exports = {
   getDomains,
   getAllColonies,
@@ -178,4 +199,5 @@ module.exports = {
   getPreviousBalance,
   savePreviousBalance,
   updatePreviousBalance,
+  processInBatches,
 };
