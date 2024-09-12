@@ -61,7 +61,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             <section className="w-full overflow-auto">
               <div
                 className={clsx(
-                  'mx-auto max-w-[1144px] px-6 pb-4 pt-6 md:pt-0',
+                  'mx-auto max-w-[calc(1144px+3rem)] px-6 pb-4 pt-6 md:pt-0',
                   {
                     '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                   },
