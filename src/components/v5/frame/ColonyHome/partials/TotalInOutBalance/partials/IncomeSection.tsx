@@ -7,13 +7,14 @@ import { AddFundsModal } from '~v5/common/Modals/AddFundsModal/AddFundsModal.tsx
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
-import { useLast30DaysData } from '../hooks.ts';
+import { useLast30DaysData, usePreviousLast30DaysData } from '../hooks.ts';
 
 import { ClaimFundsButton } from './ClaimFundsButton.tsx';
 import { TitledSection } from './TitledSection.tsx';
 
 export const IncomeSection = () => {
   const { totalIn, loading: isLoading } = useLast30DaysData();
+  const { previousTotalIn } = usePreviousLast30DaysData();
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
@@ -24,6 +25,7 @@ export const IncomeSection = () => {
       title={formatText(MSG.incomeSectionTitle)}
       caption={formatText(MSG.last30DaysPeriod)}
       value={totalIn}
+      previousValue={previousTotalIn}
       isLoading={isLoading}
     >
       <div className="flex flex-row gap-2">

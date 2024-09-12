@@ -1,3 +1,4 @@
+import { ArrowUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
@@ -6,10 +7,13 @@ import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 
+import { getValuesTrend } from '../utils.ts';
+
 interface TitledSectionProps extends PropsWithChildren {
   title: string;
   caption: string;
   value?: string;
+  previousValue?: string;
   isLoading?: boolean;
 }
 
@@ -17,10 +21,12 @@ export const TitledSection: FC<TitledSectionProps> = ({
   title,
   caption,
   value = '0',
+  previousValue = '0',
   isLoading,
   children,
 }) => {
   const { currency } = useCurrencyContext();
+  const trend = getValuesTrend(value, previousValue);
 
   return (
     <div className="flex flex-row flex-wrap items-end justify-between gap-2">
@@ -45,9 +51,26 @@ export const TitledSection: FC<TitledSectionProps> = ({
             <div className="mt-0.5 text-md font-medium">{currency}</div>
           </LoadingSkeleton>
         </div>
-        <LoadingSkeleton isLoading={isLoading} className="h-4 w-[70px] rounded">
-          <div className="mt-1 text-xs uppercase text-gray-400">{caption}</div>
-        </LoadingSkeleton>
+        <div className="mt-1 flex flex-row items-center gap-4">
+          <LoadingSkeleton
+            isLoading={isLoading}
+            className="h-4 w-[70px] rounded"
+          >
+            <div className="text-xs uppercase text-gray-400">{caption}</div>
+          </LoadingSkeleton>
+          <LoadingSkeleton
+            isLoading={isLoading}
+            className="h-4 w-[45px] rounded"
+          >
+            <div className="flex flex-row items-center gap-0.5 text-xs font-medium text-blue-400">
+              <ArrowUp
+                size={10}
+                transform={`rotate(${trend.isIncrease ? '0' : '180'})`}
+              />
+              {trend.value}
+            </div>
+          </LoadingSkeleton>
+        </div>
       </div>
       {children}
     </div>

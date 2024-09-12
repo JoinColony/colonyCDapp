@@ -119,7 +119,7 @@ type CacheTotalBalance @model {
   """
   Address of the colony on the blockchain
   """
-  colonyAddress: String! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["domainId"] )
+  colonyAddress: String! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["date"] )
   """
   Domain id within a colony
   """
