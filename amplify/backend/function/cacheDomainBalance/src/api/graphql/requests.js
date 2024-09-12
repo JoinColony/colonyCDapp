@@ -105,8 +105,10 @@ const getPreviousBalance = async ({
 }) => {
   const result = await graphqlRequest(getCachedTotalBalance, {
     colonyAddress,
-    domainId,
     filter: {
+      domainId: {
+        eq: domainId,
+      },
       timeframePeriod: {
         eq: timeframePeriod,
       },
