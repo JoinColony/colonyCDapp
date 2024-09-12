@@ -198,6 +198,38 @@ export type BridgeXyzMutationReturn = {
   tos_link?: Maybe<Scalars['String']>;
 };
 
+/** Return type for cache all domain balance */
+export type CacheAllDomainBalanceReturn = {
+  __typename?: 'CacheAllDomainBalanceReturn';
+  statusCode: Scalars['Int'];
+};
+
+/** Represents a table for caching the total balance */
+export type CacheTotalBalance = {
+  __typename?: 'CacheTotalBalance';
+  /** Address of the colony on the blockchain */
+  colonyAddress: Scalars['String'];
+  createdAt: Scalars['AWSDateTime'];
+  /** Request timestamp */
+  date: Scalars['AWSDateTime'];
+  /** Domain id within a colony */
+  domainId?: Maybe<Scalars['String']>;
+  /** Unique identifier */
+  id: Scalars['ID'];
+  /** The timeframe period for which we want to cache the in/out token balance */
+  timeframePeriod: Scalars['Int'];
+  /**
+   * The timeframe type (day/week/month) for which we want to cache the in/out token balance
+   * Defaults to TimeframeType.DAILY
+   */
+  timeframeType?: Maybe<TimeframeType>;
+  /** The total in balance in USDC */
+  totalIn?: Maybe<Scalars['String']>;
+  /** The total out balance in USDC */
+  totalOut?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['AWSDateTime'];
+};
+
 /**
  * Represents metadata related to a blockchain event
  * Applies to Colonies, Tokens and Events, but not all fields are revlant to all
@@ -1372,6 +1404,17 @@ export type CreateAnnotationInput = {
   message: Scalars['String'];
 };
 
+export type CreateCacheTotalBalanceInput = {
+  colonyAddress: Scalars['String'];
+  date: Scalars['AWSDateTime'];
+  domainId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  timeframePeriod: Scalars['Int'];
+  timeframeType?: InputMaybe<TimeframeType>;
+  totalIn?: InputMaybe<Scalars['String']>;
+  totalOut?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateColonyActionInput = {
   amount?: InputMaybe<Scalars['String']>;
   annotationId?: InputMaybe<Scalars['ID']>;
@@ -1926,6 +1969,10 @@ export type DeleteAnnotationInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteCacheTotalBalanceInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteColonyActionInput = {
   id: Scalars['ID'];
 };
@@ -2147,7 +2194,12 @@ export type DomainBalanceArguments = {
   /** The timeframe period for which we want to get the in/out token balance */
   timeframePeriod: Scalars['Int'];
   /**
-   * The timeframe type (day/week/month) for which we want to get the in/out token balance
+   * The timeframe period end date until which we want to compute the in/out token balance
+   * Default to Date.now()
+   */
+  timeframePeriodEndDate?: InputMaybe<Scalars['AWSDateTime']>;
+  /**
+   * The timeframe type (day/week/month/total) for which we want to get the in/out token balance
    * Defaults to TimeframeType.MONTHLY
    */
   timeframeType?: InputMaybe<TimeframeType>;
@@ -2731,6 +2783,39 @@ export type ModelBooleanInput = {
   attributeType?: InputMaybe<ModelAttributeTypes>;
   eq?: InputMaybe<Scalars['Boolean']>;
   ne?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type ModelCacheTotalBalanceConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceConditionInput>>>;
+  colonyAddress?: InputMaybe<ModelStringInput>;
+  date?: InputMaybe<ModelStringInput>;
+  domainId?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelCacheTotalBalanceConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceConditionInput>>>;
+  timeframePeriod?: InputMaybe<ModelIntInput>;
+  timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
+  totalIn?: InputMaybe<ModelStringInput>;
+  totalOut?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelCacheTotalBalanceConnection = {
+  __typename?: 'ModelCacheTotalBalanceConnection';
+  items: Array<Maybe<CacheTotalBalance>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelCacheTotalBalanceFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelStringInput>;
+  date?: InputMaybe<ModelStringInput>;
+  domainId?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelCacheTotalBalanceFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceFilterInput>>>;
+  timeframePeriod?: InputMaybe<ModelIntInput>;
+  timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
+  totalIn?: InputMaybe<ModelStringInput>;
+  totalOut?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelClientTypeInput = {
@@ -4040,6 +4125,19 @@ export type ModelSubscriptionBooleanInput = {
   ne?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ModelSubscriptionCacheTotalBalanceFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>>>;
+  colonyAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  date?: InputMaybe<ModelSubscriptionStringInput>;
+  domainId?: InputMaybe<ModelSubscriptionStringInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>>>;
+  timeframePeriod?: InputMaybe<ModelSubscriptionIntInput>;
+  timeframeType?: InputMaybe<ModelSubscriptionStringInput>;
+  totalIn?: InputMaybe<ModelSubscriptionStringInput>;
+  totalOut?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
 export type ModelSubscriptionColonyActionFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionColonyActionFilterInput>>>;
@@ -4626,6 +4724,11 @@ export type ModelSupportedCurrenciesInput = {
   ne?: InputMaybe<SupportedCurrencies>;
 };
 
+export type ModelTimeframeTypeInput = {
+  eq?: InputMaybe<TimeframeType>;
+  ne?: InputMaybe<TimeframeType>;
+};
+
 export type ModelTokenConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelTokenConditionInput>>>;
   avatar?: InputMaybe<ModelStringInput>;
@@ -5049,6 +5152,7 @@ export type Mutation = {
   /** Post to the Bridge XYZ API */
   bridgeXYZMutation?: Maybe<BridgeXyzMutationReturn>;
   createAnnotation?: Maybe<Annotation>;
+  createCacheTotalBalance?: Maybe<CacheTotalBalance>;
   createColony?: Maybe<Colony>;
   createColonyAction?: Maybe<ColonyAction>;
   createColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -5096,6 +5200,7 @@ export type Mutation = {
   createUserTokens?: Maybe<UserTokens>;
   createVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
   deleteAnnotation?: Maybe<Annotation>;
+  deleteCacheTotalBalance?: Maybe<CacheTotalBalance>;
   deleteColony?: Maybe<Colony>;
   deleteColonyAction?: Maybe<ColonyAction>;
   deleteColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -5141,6 +5246,7 @@ export type Mutation = {
   /** Initialize user (for now only cancels pending transactions) */
   initializeUser: InitializeUserReturn;
   updateAnnotation?: Maybe<Annotation>;
+  updateCacheTotalBalance?: Maybe<CacheTotalBalance>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
   updateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -5212,6 +5318,13 @@ export type MutationBridgeXyzMutationArgs = {
 export type MutationCreateAnnotationArgs = {
   condition?: InputMaybe<ModelAnnotationConditionInput>;
   input: CreateAnnotationInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateCacheTotalBalanceArgs = {
+  condition?: InputMaybe<ModelCacheTotalBalanceConditionInput>;
+  input: CreateCacheTotalBalanceInput;
 };
 
 
@@ -5529,6 +5642,13 @@ export type MutationDeleteAnnotationArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteCacheTotalBalanceArgs = {
+  condition?: InputMaybe<ModelCacheTotalBalanceConditionInput>;
+  input: DeleteCacheTotalBalanceInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteColonyArgs = {
   condition?: InputMaybe<ModelColonyConditionInput>;
   input: DeleteColonyInput;
@@ -5832,6 +5952,13 @@ export type MutationInitializeUserArgs = {
 export type MutationUpdateAnnotationArgs = {
   condition?: InputMaybe<ModelAnnotationConditionInput>;
   input: UpdateAnnotationInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateCacheTotalBalanceArgs = {
+  condition?: InputMaybe<ModelCacheTotalBalanceConditionInput>;
+  input: UpdateCacheTotalBalanceInput;
 };
 
 
@@ -6349,9 +6476,13 @@ export type Query = {
   bridgeGetGatewayFee?: Maybe<BridgeGatewayFeeReturn>;
   /** Get liquidation address of a given user */
   bridgeGetUserLiquidationAddress?: Maybe<Scalars['String']>;
+  /** Trigger the balance caching */
+  cacheAllDomainBalance?: Maybe<CacheAllDomainBalanceReturn>;
+  cacheTotalBalanceByColonyAddress?: Maybe<ModelCacheTotalBalanceConnection>;
   getActionByExpenditureId?: Maybe<ModelColonyActionConnection>;
   getActionsByColony?: Maybe<ModelColonyActionConnection>;
   getAnnotation?: Maybe<Annotation>;
+  getCacheTotalBalance?: Maybe<CacheTotalBalance>;
   getColoniesByNativeTokenId?: Maybe<ModelColonyConnection>;
   getColony?: Maybe<Colony>;
   getColonyAction?: Maybe<ColonyAction>;
@@ -6453,6 +6584,7 @@ export type Query = {
   getVoterRewards?: Maybe<VoterRewardsReturn>;
   getVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
   listAnnotations?: Maybe<ModelAnnotationConnection>;
+  listCacheTotalBalances?: Maybe<ModelCacheTotalBalanceConnection>;
   listColonies?: Maybe<ModelColonyConnection>;
   listColonyActionMetadata?: Maybe<ModelColonyActionMetadataConnection>;
   listColonyActions?: Maybe<ModelColonyActionConnection>;
@@ -6508,6 +6640,17 @@ export type QueryBridgeGetUserLiquidationAddressArgs = {
 
 
 /** Root query type */
+export type QueryCacheTotalBalanceByColonyAddressArgs = {
+  colonyAddress: Scalars['String'];
+  domainId?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelCacheTotalBalanceFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetActionByExpenditureIdArgs = {
   expenditureId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyActionFilterInput>;
@@ -6530,6 +6673,12 @@ export type QueryGetActionsByColonyArgs = {
 
 /** Root query type */
 export type QueryGetAnnotationArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetCacheTotalBalanceArgs = {
   id: Scalars['ID'];
 };
 
@@ -7288,6 +7437,14 @@ export type QueryGetVoterRewardsHistoryArgs = {
 /** Root query type */
 export type QueryListAnnotationsArgs = {
   filter?: InputMaybe<ModelAnnotationFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListCacheTotalBalancesArgs = {
+  filter?: InputMaybe<ModelCacheTotalBalanceFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -8121,6 +8278,7 @@ export type StreamingPaymentMetadata = {
 export type Subscription = {
   __typename?: 'Subscription';
   onCreateAnnotation?: Maybe<Annotation>;
+  onCreateCacheTotalBalance?: Maybe<CacheTotalBalance>;
   onCreateColony?: Maybe<Colony>;
   onCreateColonyAction?: Maybe<ColonyAction>;
   onCreateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -8164,6 +8322,7 @@ export type Subscription = {
   onCreateUserTokens?: Maybe<UserTokens>;
   onCreateVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
   onDeleteAnnotation?: Maybe<Annotation>;
+  onDeleteCacheTotalBalance?: Maybe<CacheTotalBalance>;
   onDeleteColony?: Maybe<Colony>;
   onDeleteColonyAction?: Maybe<ColonyAction>;
   onDeleteColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -8207,6 +8366,7 @@ export type Subscription = {
   onDeleteUserTokens?: Maybe<UserTokens>;
   onDeleteVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
   onUpdateAnnotation?: Maybe<Annotation>;
+  onUpdateCacheTotalBalance?: Maybe<CacheTotalBalance>;
   onUpdateColony?: Maybe<Colony>;
   onUpdateColonyAction?: Maybe<ColonyAction>;
   onUpdateColonyActionMetadata?: Maybe<ColonyActionMetadata>;
@@ -8254,6 +8414,11 @@ export type Subscription = {
 
 export type SubscriptionOnCreateAnnotationArgs = {
   filter?: InputMaybe<ModelSubscriptionAnnotationFilterInput>;
+};
+
+
+export type SubscriptionOnCreateCacheTotalBalanceArgs = {
+  filter?: InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>;
 };
 
 
@@ -8472,6 +8637,11 @@ export type SubscriptionOnDeleteAnnotationArgs = {
 };
 
 
+export type SubscriptionOnDeleteCacheTotalBalanceArgs = {
+  filter?: InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteColonyArgs = {
   filter?: InputMaybe<ModelSubscriptionColonyFilterInput>;
 };
@@ -8684,6 +8854,11 @@ export type SubscriptionOnDeleteVoterRewardsHistoryArgs = {
 
 export type SubscriptionOnUpdateAnnotationArgs = {
   filter?: InputMaybe<ModelSubscriptionAnnotationFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateCacheTotalBalanceArgs = {
+  filter?: InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>;
 };
 
 
@@ -8923,6 +9098,7 @@ export type TimeframeDomainBalanceInOut = {
 export enum TimeframeType {
   Daily = 'DAILY',
   Monthly = 'MONTHLY',
+  Total = 'TOTAL',
   Weekly = 'WEEKLY'
 }
 
@@ -9136,6 +9312,17 @@ export type UpdateAnnotationInput = {
   id: Scalars['ID'];
   ipfsHash?: InputMaybe<Scalars['String']>;
   message?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateCacheTotalBalanceInput = {
+  colonyAddress?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['AWSDateTime']>;
+  domainId?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  timeframePeriod?: InputMaybe<Scalars['Int']>;
+  timeframeType?: InputMaybe<TimeframeType>;
+  totalIn?: InputMaybe<Scalars['String']>;
+  totalOut?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateColonyActionInput = {

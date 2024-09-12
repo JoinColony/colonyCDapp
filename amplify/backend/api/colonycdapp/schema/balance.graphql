@@ -17,9 +17,9 @@ input DomainBalanceArguments {
   """
   The currency in which we want to exchange the in/out token balance
   """
-  selectedCurrency: SupportedCurrencies
+  selectedCurrency: ExtendedSupportedCurrencies 
   """
-  The timeframe type (day/week/month) for which we want to get the in/out token balance
+  The timeframe type (day/week/month/total) for which we want to get the in/out token balance
   Defaults to TimeframeType.MONTHLY
   """
   timeframeType: TimeframeType
@@ -27,6 +27,11 @@ input DomainBalanceArguments {
   The timeframe period for which we want to get the in/out token balance
   """
   timeframePeriod: Int!
+  """
+  The timeframe period end date until which we want to compute the in/out token balance
+  Default to Date.now()
+  """
+  timeframePeriodEndDate: AWSDateTime
 }
 
 """
@@ -61,12 +66,20 @@ type DomainBalanceReturn {
 }
 
 """
+Return type for cache all domain balance
+"""
+type CacheAllDomainBalanceReturn {
+  statusCode: Int!
+}
+
+"""
 Variants of different timeframe periods we can request balance for
 """
 enum TimeframeType {
   DAILY
   WEEKLY
   MONTHLY
+  TOTAL
 }
 
 """
@@ -93,4 +106,43 @@ type TokenExchangeRate @model {
   Exchange currency
   """
   marketPrice: [MarketPrice]!
+}
+
+"""
+Represents a table for caching the total balance
+"""
+type CacheTotalBalance @model {
+  """
+  Unique identifier
+  """
+  id: ID!
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: String! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["domainId"] )
+  """
+  Domain id within a colony
+  """
+  domainId: String
+  """
+  The timeframe type (day/week/month) for which we want to cache the in/out token balance
+  Defaults to TimeframeType.DAILY
+  """
+  timeframeType: TimeframeType
+  """
+  The timeframe period for which we want to cache the in/out token balance
+  """
+  timeframePeriod: Int!
+  """
+  Request timestamp
+  """
+  date: AWSDateTime!
+  """
+  The total in balance in USDC
+  """
+  totalIn: String
+  """
+  The total out balance in USDC
+  """
+  totalOut: String
 }
