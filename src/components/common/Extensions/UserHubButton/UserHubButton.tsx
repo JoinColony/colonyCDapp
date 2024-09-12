@@ -178,7 +178,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
           {
             '!border-blue-400': visible,
           },
-          'min-w-[3rem] md:hover:!border-blue-400',
+          '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
         )}
         onClick={handleButtonClick}
       >
@@ -198,7 +198,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
                   <p className="ml-1 truncate text-sm font-medium">
                     {userName}
                   </p>
-                  <div className="ml-2">
+                  <div className="md:ml-2">
                     <MemberReputation
                       colonyAddress={colonyAddress}
                       hideOnMobile
