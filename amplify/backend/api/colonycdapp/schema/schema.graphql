@@ -1044,6 +1044,11 @@ type Query {
     input: DomainBalanceArguments!
   ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
 
+  """
+  Trigger the balance caching
+  """
+  cacheAllDomainBalance: CacheAllDomainBalanceReturn @function(name: "cacheDomainBalance-${env}")
+
 }
 
 """
@@ -1114,6 +1119,20 @@ enum SupportedCurrencies {
 }
 
 enum ExtendedSupportedCurrencies {
+  USDC
+}
+
+enum ExtendedSupportedCurrencies {
+  USD # US Dollar
+  JPY # Japanese Yen
+  GBP # British Pound Sterling
+  EUR # Euro
+  CAD # Canadian Dollar
+  KRW # South Korean Won
+  INR # Indian Rupee
+  BRL # Brazilian Real
+  ETH # Ethereum
+  CLNY # Colony Network Token
   USDC
 }
 
