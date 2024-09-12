@@ -32,7 +32,7 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
     <button
       type="button"
       className={clsx(
-        ' bg-base-white px-4 py-2 text-3',
+        'w-full bg-base-white px-4 py-2 text-3',
         selected ? teamColor : null,
         {
           'border-r border-solid border-gray-200 font-medium text-gray-700':
