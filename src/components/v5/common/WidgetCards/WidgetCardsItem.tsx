@@ -7,9 +7,10 @@ import { tw } from '~utils/css/index.ts';
 import { WidgetContent } from './partials/WidgetContent.tsx';
 
 const wrapperClassName = tw`
-  flex min-h-[7rem] min-w-[calc(100%-0.2rem)]
+  flex min-h-[7rem] min-w-[calc(67.25%)]
   flex-col justify-center rounded-lg border px-6 py-5
-  lg:min-w-[calc(25%-0.4rem)]
+  sm:min-w-[26.5%]
+  lg:min-w-[21.85%]
 `;
 const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
 
