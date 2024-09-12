@@ -3,7 +3,7 @@ const {
   getPreviousBalance,
   savePreviousBalance,
   updatePreviousBalance,
-} = require('../api/graphql/requests');
+} = require('../api/graphql/operations');
 const { isSameDay, TimeframeType } = require('../utils');
 
 const CacheBalanceFactory = (() => {
