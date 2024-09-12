@@ -22,6 +22,27 @@ exports.handler = async (event) => {
   try {
     const colonies = await getAllColonies();
 
+    const processBalanceRequests = [];
+
+    colonies.forEach((colony) => {
+      processBalanceRequests.push(
+        CacheBalanceFactory.processBalanceForPeriod({
+          colonyAddress: colony.id,
+          timeframePeriod: 1,
+          timeframeType: TimeframeType.TOTAL,
+          endOfPeriodDate: startOfLastWeekDate,
+        }),
+      );
+      processBalanceRequests.push(
+        CacheBalanceFactory.processBalanceForPeriod({
+          colonyAddress: colony.id,
+          timeframePeriod: 30,
+          timeframeType: TimeframeType.DAILY,
+          endOfPeriodDate: startOfLast30DaysDate,
+        }),
+      );
+    });
+
     const coloniesDomains = await Promise.all(
       colonies.map((colony) => {
         return getDomains(colony.id);
@@ -29,7 +50,6 @@ exports.handler = async (event) => {
     );
 
     const domains = coloniesDomains.flat();
-    const processBalanceRequests = [];
 
     for (domain of domains) {
       if (domain) {

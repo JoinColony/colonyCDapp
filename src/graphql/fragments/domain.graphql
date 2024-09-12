@@ -38,3 +38,9 @@ fragment DomainBalanceReturn on DomainBalanceReturn {
     }
   }
 }
+
+fragment CacheTotalBalance on CacheTotalBalance {
+  totalIn
+  totalOut
+  date
+}

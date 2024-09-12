@@ -3,3 +3,21 @@ query GetDomainBalance($input: DomainBalanceArguments!) {
     ...DomainBalanceReturn
   }
 }
+
+query GetCachedDomainBalance(
+  $colonyAddress: String!
+  $filter: ModelCacheTotalBalanceFilterInput
+  $limit: Int = 100
+  $nextToken: String
+) {
+  cacheTotalBalanceByColonyAddress(
+    colonyAddress: $colonyAddress
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      ...CacheTotalBalance
+    }
+  }
+}
