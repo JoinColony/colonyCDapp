@@ -1,3 +1,9 @@
 {
-  "dev": {}
+  "dev": {
+    "categories": {
+      "function": {
+        "cacheDomainBalance": {}
+      }
+    }
+  }
 }
