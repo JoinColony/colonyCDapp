@@ -32,7 +32,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
       {!prevBtnDisabled && (
         <CarouselButton
           onClick={onPrevButtonClick}
-          className="left-0 bg-gradient-to-r"
+          className="left-0 bg-gradient-to-r pl-3 pr-6"
         >
           <CaretLeft />
         </CarouselButton>
@@ -47,7 +47,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
       {!nextBtnDisabled && (
         <CarouselButton
           onClick={onNextButtonClick}
-          className="right-0 bg-gradient-to-l"
+          className="right-0 bg-gradient-to-l pl-6 pr-3"
         >
           <CaretRight />
         </CarouselButton>
