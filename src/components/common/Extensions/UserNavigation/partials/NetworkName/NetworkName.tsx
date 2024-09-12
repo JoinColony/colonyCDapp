@@ -27,7 +27,7 @@ const NetworkName: FC<NetworkNameProps> = ({
     >
       <div
         className={clsx(
-          'flex min-h-[2.5rem] min-w-[2.625rem] items-center justify-center gap-1 rounded-full border border-gray-200 bg-base-white px-[0.875rem] py-[0.625rem]',
+          'flex min-h-[2.375rem] min-w-[2.875rem] items-center justify-center gap-1 rounded-full border border-gray-200 bg-base-white px-3 py-0 sm:min-w-[2.75rem]',
           {
             'border-warning-400': error,
             'cursor-pointer': error,
