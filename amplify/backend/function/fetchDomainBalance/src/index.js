@@ -24,13 +24,14 @@ exports.handler = async (event) => {
             selectedCurrency,
             timeframePeriod = 4,
             timeframeType,
+            timeframePeriodEndDate,
         } = event.arguments?.input || {};
-        const periodFromNow = getPeriodFromNow(timeframePeriod, timeframeType);
+        const periodFromNow = getPeriodFromNow(timeframePeriod, timeframeType, timeframePeriodEndDate);
+        console.log('fetchDomainBalance', periodFromNow, timeframeType, timeframePeriodEndDate)
 
         const inOutActions = await getInOutActions(colonyAddress, domainId);
-        const inOutActionsWithinTimeframe = filterActionsWithinTimeframe(inOutActions, periodFromNow);
-        const periodBalance = groupBalanceByPeriod(timeframeType, timeframePeriod, inOutActionsWithinTimeframe, domainId);
-
+        const inOutActionsWithinTimeframe = filterActionsWithinTimeframe(inOutActions, periodFromNow, timeframePeriodEndDate);
+        const periodBalance = groupBalanceByPeriod(timeframeType, timeframePeriod, timeframePeriodEndDate, inOutActionsWithinTimeframe, domainId);
         const exchangeRates = await ExchangeRatesFactory.getExchangeRates(getTokensDatesMap(inOutActionsWithinTimeframe), selectedCurrency, chainId);
 
         const inOutPeriodBalance = {};
