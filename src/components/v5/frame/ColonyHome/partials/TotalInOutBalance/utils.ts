@@ -1,4 +1,5 @@
 import { format, setMonth } from 'date-fns';
+import { BigNumber } from 'ethers';
 import numbro from 'numbro';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -47,4 +48,42 @@ export const getFormattedFullAmount = (value, prefix) => {
     mantissa: 2,
     prefix,
   });
+};
+
+export const convertFromTokenToCurrency = (
+  value?: string | null,
+  conversionRate?: number | null,
+) =>
+  BigNumber.from(value ?? 0)
+    .mul(BigNumber.from(conversionRate ?? 0))
+    .toString();
+
+/**
+ * To get the trend of the current value based on the previous value
+ * We use the rule of three
+ * previous ... 100%
+ * (current - previous) ... x
+ * @param current This is the current balance value
+ * @param previous This is the previous balance value
+ * @returns
+ */
+export const getValuesTrend = (current: string, previous: string) => {
+  const convertedCurrent = BigNumber.from(current);
+  const convertedPrevious = BigNumber.from(previous);
+
+  let trend = convertedCurrent.isZero()
+    ? BigNumber.from(0)
+    : BigNumber.from(100);
+
+  if (!convertedPrevious.isZero()) {
+    trend = convertedCurrent
+      .sub(convertedPrevious)
+      .mul(100)
+      .div(convertedPrevious);
+  }
+
+  return {
+    value: `${trend.toString()}%`,
+    isIncrease: trend.gte(0),
+  };
 };

@@ -3,13 +3,62 @@ import { useState, useEffect, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import { TimeframeType, useGetDomainBalanceQuery } from '~gql';
+import {
+  ExtendedSupportedCurrencies,
+  TimeframeType,
+  useGetCachedDomainBalanceQuery,
+  useGetDomainBalanceQuery,
+} from '~gql';
+import { useCurrencyConversionRate } from '~hooks/useCurrencyConversionRate.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { type CoinGeckoSupportedCurrencies } from '~utils/currency/types.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamHexColor, getTeamHexSecondaryColor } from '~utils/teams.ts';
 
 import { CHART_CONFIG_VALUES, MSG } from './consts.ts';
-import { sortByLabel } from './utils.ts';
+import { convertFromTokenToCurrency, sortByLabel } from './utils.ts';
+
+export const usePreviousLast30DaysData = () => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+  const selectedDomain = useGetSelectedDomainFilter();
+  const { currency } = useCurrencyContext();
+  const { data, loading } = useGetCachedDomainBalanceQuery({
+    variables: {
+      colonyAddress,
+      filter: {
+        domainId: { eq: selectedDomain?.id ?? '' },
+        timeframeType: { eq: TimeframeType.Daily },
+      },
+    },
+  });
+
+  const currencyConversionRate = useCurrencyConversionRate({
+    tokenSymbol: ExtendedSupportedCurrencies.Usdc,
+    conversionDenomination: currency as unknown as CoinGeckoSupportedCurrencies,
+  });
+
+  const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
+
+  return {
+    loading,
+    /**
+     * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
+     */
+    previousTotalIn: convertFromTokenToCurrency(
+      previousBalance?.totalIn,
+      currencyConversionRate?.conversionRate,
+    ),
+    /**
+     * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
+     */
+    previousTotalOut: convertFromTokenToCurrency(
+      previousBalance?.totalOut,
+      currencyConversionRate?.conversionRate,
+    ),
+  };
+};
 
 export const useLast30DaysData = () => {
   const {
@@ -24,7 +73,7 @@ export const useLast30DaysData = () => {
       input: {
         colonyAddress,
         domainId: selectedDomain?.id ?? '',
-        selectedCurrency: currency,
+        selectedCurrency: currency as unknown as ExtendedSupportedCurrencies,
         timeframePeriod,
         timeframeType,
       },
@@ -53,7 +102,7 @@ export const useData = () => {
       input: {
         colonyAddress,
         domainId: selectedDomain?.id ?? '',
-        selectedCurrency: currency,
+        selectedCurrency: currency as unknown as ExtendedSupportedCurrencies,
         timeframePeriod,
         timeframeType,
       },
