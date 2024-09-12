@@ -16,7 +16,7 @@ export const CarouselButton: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
     )}
     disabled={disabled}
   >
-    <span className="rounded-full border border-gray-200 bg-base-white p-1 opacity-0 transition-opacity group-hover:opacity-100">
+    <span className="rounded-full border border-gray-200 bg-base-white p-1 transition-opacity group-hover:opacity-100 sm:opacity-0">
       {children}
     </span>
   </button>
