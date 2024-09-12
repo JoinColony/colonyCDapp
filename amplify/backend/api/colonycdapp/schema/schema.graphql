@@ -1119,10 +1119,6 @@ enum SupportedCurrencies {
 }
 
 enum ExtendedSupportedCurrencies {
-  USDC
-}
-
-enum ExtendedSupportedCurrencies {
   USD # US Dollar
   JPY # Japanese Yen
   GBP # British Pound Sterling

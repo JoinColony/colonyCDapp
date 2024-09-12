@@ -43,7 +43,7 @@ const CacheBalanceFactory = (() => {
   return {
     processBalanceForPeriod: async ({
       colonyAddress,
-      domainId,
+      domainId = '',
       timeframePeriod,
       timeframeType = TimeframeType.DAILY,
       endOfPeriodDate,
