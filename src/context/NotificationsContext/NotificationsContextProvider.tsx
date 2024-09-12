@@ -1,3 +1,4 @@
+import { MagicBellProvider } from '@magicbell/react-headless';
 import React, { type ReactNode, useEffect, useMemo } from 'react';
 
 import { useCreateUserNotificationsDataMutation } from '~gql';
@@ -30,10 +31,27 @@ const NotificationsContextProvider = ({
 
   const value = useMemo(() => ({}), []);
 
+  if (!user) {
+    return <>{children}</>;
+  }
+
+  if (!user?.notificationsData?.magicbellUserId) {
+    return (
+      <NotificationsContext.Provider value={value}>
+        {children}
+      </NotificationsContext.Provider>
+    );
+  }
+
   return (
-    <NotificationsContext.Provider value={value}>
-      {children}
-    </NotificationsContext.Provider>
+    <MagicBellProvider
+      apiKey={import.meta.env.MAGICBELL_API_KEY}
+      userExternalId={user.walletAddress}
+    >
+      <NotificationsContext.Provider value={value}>
+        {children}
+      </NotificationsContext.Provider>
+    </MagicBellProvider>
   );
 };
 

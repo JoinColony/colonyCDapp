@@ -1,3 +1,4 @@
+import { useBell } from '@magicbell/react-headless';
 import clsx from 'clsx';
 import React, { type FC, useState, useEffect, useCallback } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
@@ -49,6 +50,8 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
+
+  const { unreadCount } = useBell() || {};
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -158,6 +161,8 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     user?.profile?.displayName ??
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
+  const showNotificationDot = !!unreadCount && unreadCount > 0;
+
   return (
     <div className="flex-shrink-0">
       <Button
@@ -201,6 +206,9 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
             </>
           ) : null}
         </div>
+        {showNotificationDot && (
+          <div className="absolute right-[-1.26px] top-[2.28px] h-2.5 w-2.5 rounded-full border border-base-white bg-blue-400" />
+        )}
       </Button>
       {visible && (
         <PopoverBase
