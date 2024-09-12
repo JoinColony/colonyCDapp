@@ -1,6 +1,10 @@
 require('cross-fetch/polyfill');
 
-const { getAllColonies, getDomains } = require('./api/graphql/requests');
+const {
+  getAllColonies,
+  getDomains,
+  processInBatches,
+} = require('./api/graphql/operations');
 const { getWeeksFromNow, getDaysFromNow, TimeframeType } = require('./utils');
 const CacheBalanceFactory = require('./config/cacheBalance');
 
@@ -76,9 +80,10 @@ exports.handler = async (event) => {
     }
 
     /**
-     * We don't use Promise.all as we want to await all requests no matter their result in order to fill the cache
+     * We'll process the balance requests in batches to not overflow the lambda's memory
      */
-    await Promise.allSettled(processBalanceRequests);
+    const batchSize = 20;
+    await processInBatches(processBalanceRequests, batchSize);
 
     return {
       statusCode: 200,
