@@ -10,6 +10,7 @@ const TimeframeType = {
   DAILY: "DAILY",
   WEEKLY: "WEEKLY",
   MONTHLY: "MONTHLY",
+  TOTAL: "TOTAL"
 }
 
 const getActionFinalizedDate = (action) => {
@@ -26,44 +27,51 @@ const getActionWithFinalizedDate = (action) => ({
   finalizedDate: getActionFinalizedDate(action)
 })
 
-const getPeriodFromNow = (timeframePeriod, timeframeType) => {
+const getPeriodFromNow = (timeframePeriod, timeframeType, timeframePeriodEndDate) => {
   switch (timeframeType) {
     case TimeframeType.DAILY: {
-      return getDaysFromNow(timeframePeriod)
+      return getDaysFromNow(timeframePeriod, timeframePeriodEndDate)
     }
     case TimeframeType.WEEKLY: {
-      return getWeeksFromNow(timeframePeriod)
+      return getWeeksFromNow(timeframePeriod, timeframePeriodEndDate)
     }
     case TimeframeType.MONTHLY: {
-      return getMonthsFromNow(timeframePeriod)
+      return getMonthsFromNow(timeframePeriod, timeframePeriodEndDate)
+    }
+    case TimeframeType.TOTAL: {
+      return null;
     }
     default: {
-      return getYearsFromNow(timeframePeriod)
+      return getYearsFromNow(timeframePeriod, timeframePeriodEndDate)
     }
   }
 }
 
-const getYearsFromNow = (numberOfYears) => {
-  const now = new Date();
+const getYearsFromNow = (numberOfYears, timeframePeriodEndDate) => {
+  const now = timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : new Date();
   return startOfDay(new Date(startOfYear(new Date(subYears(now, numberOfYears)))));
 }
 
-const getMonthsFromNow = (numberOfMonths) => {
-  const now = new Date();
+const getMonthsFromNow = (numberOfMonths, timeframePeriodEndDate) => {
+  const now = timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : new Date();
   return startOfDay(new Date(startOfMonth(new Date(subMonths(now, numberOfMonths)))));
 }
 
-const getWeeksFromNow = (numberOfWeeks) => {
-  const now = new Date();
+const getWeeksFromNow = (numberOfWeeks, timeframePeriodEndDate) => {
+  const now = timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : new Date();
   return startOfDay(new Date(startOfWeek(new Date(subWeeks(now, numberOfWeeks)))));
 }
 
-const getDaysFromNow = (numberOfDays) => {
-  const now = new Date();
+const getDaysFromNow = (numberOfDays, timeframePeriodEndDate) => {
+  const now = timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : new Date();
   return startOfDay(new Date(subDays(now, numberOfDays)))
 };
 
 const getPeriodFormat = (date, timeframeType) => {
+  if (!date || timeframeType === TimeframeType.TOTAL) {
+    return '0'
+  }
+
   let formattingPattern = ``;
 
   switch (timeframeType) {
