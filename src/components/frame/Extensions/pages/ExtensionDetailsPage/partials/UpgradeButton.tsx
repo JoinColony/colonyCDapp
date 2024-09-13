@@ -17,7 +17,7 @@ import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
-import { waitForDbAfterExtensionAction } from '../utils.ts';
+import { waitForDbAfterExtensionAction } from '../utils.tsx';
 
 interface UpgradeButtonProps {
   extensionData: AnyExtensionData;
