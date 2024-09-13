@@ -33,7 +33,7 @@ export const MSG = defineMessages({
   },
   fundsClaimedCTA: {
     id: `${displayName}.fundsClaimedCTA`,
-    defaultMessage: 'Funds claimed',
+    defaultMessage: 'Claimed',
   },
   addFundsCTA: {
     id: `${displayName}.addFundsCTA`,
