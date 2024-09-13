@@ -34,6 +34,8 @@ export const FundsCards = () => {
           return (
             <WidgetCards.Item
               key={item?.id}
+              // @TODO: update onClick when it will be ready
+              onClick={() => {}}
               title={item?.metadata?.name}
               // @TODO: update with a real teams data
               subTitle={<FundsCardsSubTitle value="123" currency="usd" />}
