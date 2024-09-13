@@ -9,6 +9,7 @@ import { formatText } from '~utils/intl.ts';
 
 import { useContributorsByDomain } from './hooks/useContributorsByDomain.tsx';
 import { Chart } from './partials/Chart.tsx';
+import TeamActionsMenu from './partials/TeamActionsMenu.tsx';
 import {
   getContributorReputationChartData,
   getTeamReputationChartData,
@@ -66,6 +67,7 @@ const ReputationChart = () => {
         <h5 className="text-gray-900 heading-5">
           {formatText(reputationTitle)}
         </h5>
+        <TeamActionsMenu />
       </div>
       <Chart data={chartData} />
     </div>
