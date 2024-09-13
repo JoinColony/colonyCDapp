@@ -5,5 +5,5 @@ interface SubTitleProps {
 }
 
 export const WidgetSubTitle: FC<SubTitleProps> = ({ title }) => (
-  <h4 className="py-1 heading-4">{title}</h4>
+  <h4 className="heading-4">{title}</h4>
 );
