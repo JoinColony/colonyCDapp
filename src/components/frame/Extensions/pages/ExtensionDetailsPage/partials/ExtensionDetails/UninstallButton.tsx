@@ -36,6 +36,27 @@ const MSG = {
         'I understand that there is a risk of lost funds and past actions will disappear from the interface.',
     },
   }),
+  [Extension.MultisigPermissions]: defineMessages({
+    uninstallTitle: {
+      id: `${displayName}.${Extension.MultisigPermissions}.uninstallTitle`,
+      defaultMessage: 'Extension removal warning',
+    },
+    uninstallDescription: {
+      id: `${displayName}.${Extension.MultisigPermissions}.uninstallDescription`,
+      defaultMessage:
+        'Uninstalling this extension will permanently delete all actions associated with this extension from this Colony. Ensure you understand the potential risks before continuing.',
+    },
+    uninstallWarning: {
+      id: `${displayName}.${Extension.MultisigPermissions}.uninstallWarning`,
+      defaultMessage:
+        '<ul><li>All actions will disappear from the application and can never be recovered.</li><li>Please ensure that all funds in processes associated with this extension are claimed by their owners before uninstalling. Not doing so will result in permanent loss of the unclaimed funds.</li></ul>',
+    },
+    uninstallConfirmation: {
+      id: `${displayName}.${Extension.MultisigPermissions}.uninstallConfirmation`,
+      defaultMessage:
+        'I understand that there is a risk of lost funds and past actions will disappear from the interface.',
+    },
+  }),
   [Extension.StagedExpenditure]: defineMessages({
     uninstallTitle: {
       id: `${displayName}.${Extension.StakedExpenditure}.uninstallTitle`,
