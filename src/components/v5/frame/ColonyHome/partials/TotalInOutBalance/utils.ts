@@ -53,10 +53,17 @@ export const getFormattedFullAmount = (value, prefix) => {
 export const convertFromTokenToCurrency = (
   value?: string | null,
   conversionRate?: number | null,
-) =>
-  BigNumber.from(value ?? 0)
-    .mul(BigNumber.from(conversionRate ?? 0))
+) => {
+  const precision = conversionRate ? 1000 : 1;
+  const formattedConversionRate = conversionRate
+    ? Math.floor(conversionRate * precision)
+    : 0;
+
+  return BigNumber.from(value ?? 0)
+    .mul(formattedConversionRate)
+    .div(precision)
     .toString();
+};
 
 /**
  * To get the trend of the current value based on the previous value
