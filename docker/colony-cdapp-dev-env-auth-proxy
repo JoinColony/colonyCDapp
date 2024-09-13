@@ -1,6 +1,6 @@
 FROM colony-cdapp-dev-env/base:latest
 
-ENV AUTH_PROXY_HASH=7bf0d169e5bc9a385c3ff48417271a7466558928
+ENV AUTH_PROXY_HASH=6d94b86c4612c0ba07d99b29993f48572ec4ff55
 
 # Add dependencies from the host
 # Note: these are listed individually so that if they change, they won't affect

@@ -43,4 +43,5 @@ fragment Profile on Profile {
 
 fragment NotificationsData on NotificationsData {
   magicbellUserId
+  mutedColonyIds
 }
