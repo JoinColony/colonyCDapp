@@ -35,15 +35,17 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
         </span>
       }
       subTitle={
-        <FundsCardsSubTitle
-          value={
-            <Numeral
-              value={totalFunds ?? '-'}
-              prefix={currencySymbolMap[currency]}
-            />
-          }
-          currency={currency}
-        />
+        <div className="py-1">
+          <FundsCardsSubTitle
+            value={
+              <Numeral
+                value={totalFunds ?? '-'}
+                prefix={currencySymbolMap[currency]}
+              />
+            }
+            currency={currency}
+          />
+        </div>
       }
     >
       <FundsCardsTotalDescription direction="up" />
