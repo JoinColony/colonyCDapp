@@ -9,7 +9,7 @@ import { WidgetContent } from './partials/WidgetContent.tsx';
 const wrapperClassName = tw`
   flex min-h-[7rem] min-w-[calc(67.25%)]
   select-none flex-col justify-center rounded-lg border
-  px-6 py-5
+  px-6 py-5 text-left
   sm:min-w-[26.5%]
   lg:min-w-[21.85%]
 `;
