@@ -38,7 +38,9 @@ export const FundsCards = () => {
               onClick={() => {}}
               title={item?.metadata?.name}
               // @TODO: update with a real teams data
-              subTitle={<FundsCardsSubTitle value="123" currency="usd" />}
+              subTitle={
+                <FundsCardsSubTitle value="$15,779.00" currency="usd" />
+              }
             />
           );
         })}
