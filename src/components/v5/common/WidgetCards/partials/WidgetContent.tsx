@@ -1,8 +1,8 @@
 import { type Icon } from '@phosphor-icons/react';
 import React, { type FC, type PropsWithChildren } from 'react';
 
-import { WidgetSubTitle } from './WidgetSubTitle.tsx';
 import { WidgetIconWrapper } from './WidgetIconWrapper.tsx';
+import { WidgetSubTitle } from './WidgetSubTitle.tsx';
 import { WidgetTitle } from './WidgetTitle.tsx';
 
 interface WidgetContentProps {
