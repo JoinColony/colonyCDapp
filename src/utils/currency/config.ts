@@ -19,7 +19,13 @@ export const currencyApiConfig = {
         from: 'ids',
         to: 'vs_currencies',
         api: 'x_cg_demo_api_key',
-        includeLastUpdatedAt: 'include_last_updated_at',
+      },
+    },
+    tokenHistoricalPriceByName: {
+      url: `${import.meta.env.COINGECKO_API_URL}/api/v3/coins`,
+      searchParams: {
+        api: 'x_cg_demo_api_key',
+        date: 'date',
       },
     },
   },

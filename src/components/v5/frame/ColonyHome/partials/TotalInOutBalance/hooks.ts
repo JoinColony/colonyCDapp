@@ -9,7 +9,7 @@ import {
   useGetCachedDomainBalanceQuery,
   useGetDomainBalanceQuery,
 } from '~gql';
-import { useCurrencyConversionRate } from '~hooks/useCurrencyConversionRate.ts';
+import { useCurrencyHistoricalConversionRate } from '~hooks/useCurrencyHistoricalConversionRate.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type CoinGeckoSupportedCurrencies } from '~utils/currency/types.ts';
 import { formatText } from '~utils/intl.ts';
@@ -34,12 +34,13 @@ export const usePreviousLast30DaysData = () => {
     },
   });
 
-  const currencyConversionRate = useCurrencyConversionRate({
+  const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
+
+  const conversionRate = useCurrencyHistoricalConversionRate({
     tokenSymbol: ExtendedSupportedCurrencies.Usdc,
+    date: previousBalance?.date ?? new Date(),
     conversionDenomination: currency as unknown as CoinGeckoSupportedCurrencies,
   });
-
-  const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
 
   return {
     loading,
@@ -48,14 +49,14 @@ export const usePreviousLast30DaysData = () => {
      */
     previousTotalIn: convertFromTokenToCurrency(
       previousBalance?.totalIn,
-      currencyConversionRate?.conversionRate,
+      conversionRate,
     ),
     /**
      * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
      */
     previousTotalOut: convertFromTokenToCurrency(
       previousBalance?.totalOut,
-      currencyConversionRate?.conversionRate,
+      conversionRate,
     ),
   };
 };
