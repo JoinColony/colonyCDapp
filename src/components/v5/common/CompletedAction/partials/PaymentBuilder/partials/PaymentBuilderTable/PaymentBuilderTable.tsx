@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useMemo } from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
@@ -88,19 +89,16 @@ const useGetPaymentBuilderColumns = ({
         header: formatText({ id: 'table.row.amount' }),
         footer: hasMoreThanOneToken
           ? () => (
-              <>
-                {!allPaymentsLoaded ? (
-                  <div className="flex w-3/4 items-center">
-                    <div className="h-4 w-full overflow-hidden rounded skeleton" />
-                  </div>
-                ) : (
-                  <PaymentBuilderPayoutsTotal
-                    data={dataRef.current}
-                    itemClassName="justify-end md:justify-start"
-                    buttonClassName="justify-end md:justify-start"
-                  />
-                )}
-              </>
+              <LoadingSkeleton
+                isLoading={!allPaymentsLoaded}
+                className="h-4 w-3/4 rounded"
+              >
+                <PaymentBuilderPayoutsTotal
+                  data={dataRef.current}
+                  itemClassName="justify-end md:justify-start"
+                  buttonClassName="justify-end md:justify-start"
+                />
+              </LoadingSkeleton>
             )
           : undefined,
         cell: ({ row }) => (
@@ -119,19 +117,20 @@ const useGetPaymentBuilderColumns = ({
         cell: ({ row }) => {
           const formattedHours = convertPeriodToHours(row.original.claimDelay);
 
-          return row.original.isLoading ? (
-            <div className="flex w-[4rem] items-center">
-              <div className="h-4 w-full overflow-hidden rounded skeleton" />
-            </div>
-          ) : (
-            <span className="text-md text-gray-900">
-              {formatText(
-                { id: 'table.column.claimDelayField' },
-                {
-                  hours: formattedHours,
-                },
-              )}
-            </span>
+          return (
+            <LoadingSkeleton
+              isLoading={row.original.isLoading}
+              className="h-4 w-[4rem] rounded"
+            >
+              <span className="text-md text-gray-900">
+                {formatText(
+                  { id: 'table.column.claimDelayField' },
+                  {
+                    hours: formattedHours,
+                  },
+                )}
+              </span>
+            </LoadingSkeleton>
           );
         },
       }),
