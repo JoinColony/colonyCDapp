@@ -11,7 +11,7 @@ export const FundsCardsSubTitle: FC<FundsCardsSubTitleProps> = ({
   return (
     <p className="flex items-center gap-2">
       <span>{value}</span>
-      <span className="text-1">{currency}</span>
+      <span className="uppercase text-1">{currency}</span>
     </p>
   );
 };
