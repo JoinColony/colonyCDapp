@@ -24,6 +24,19 @@ export interface TokenNamePriceSuccessResponse {
   };
 }
 
+export type TokenNameHistoricalPriceResponse =
+  | TokenNameHistoricalPriceSuccessResponse
+  // A contract address without a market cap will return an empty object {}
+  | Record<string, never>;
+
+export interface TokenNameHistoricalPriceSuccessResponse {
+  market_data: {
+    current_price: {
+      [currency: string]: number;
+    };
+  };
+}
+
 export type TokenNamePriceResponse =
   | TokenNamePriceSuccessResponse
   // A contract address without a market cap will return an empty object {}

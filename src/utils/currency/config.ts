@@ -22,6 +22,13 @@ export const currencyApiConfig = {
         includeLastUpdatedAt: 'include_last_updated_at',
       },
     },
+    tokenHistoricalPriceByName: {
+      url: `${import.meta.env.COINGECKO_API_URL}/api/v3/coins`,
+      searchParams: {
+        api: 'x_cg_demo_api_key',
+        date: 'date',
+      },
+    },
   },
   attribution: 'https://www.coingecko.com/',
 };
