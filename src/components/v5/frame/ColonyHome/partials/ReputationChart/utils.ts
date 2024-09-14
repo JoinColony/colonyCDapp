@@ -2,10 +2,11 @@ import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
 import { type MemberItem } from '~frame/v5/pages/MembersPage/types.ts';
-import { DomainColor, type Domain } from '~types/graphql.ts';
+import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamHexColor } from '~utils/teams.ts';
 
+import { CONTRIBUTORS_COLORS_LIST } from './consts.ts';
 import { type ReputationChartDataItem } from './types.ts';
 
 const WIDGET_TEAM_LIMIT = 4;
@@ -102,13 +103,6 @@ export const getTeamReputationChartData = (
 
   return topTeams;
 };
-
-const CONTRIBUTORS_COLORS_LIST = [
-  undefined,
-  DomainColor.PurpleGrey,
-  DomainColor.LightPink,
-  DomainColor.Green,
-];
 
 export const getContributorReputationChartData = (
   contributorsList: MemberItem[],
