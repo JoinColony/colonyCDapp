@@ -29,8 +29,8 @@ export const summaryLegendColor = {
 
 export const pieChartConfig: Partial<PieSvgProps<ReputationChartDataItem>> = {
   colors: ({ data }) => `var(${data.color})`,
-  innerRadius: 0.7,
+  innerRadius: 0.75,
   enableArcLabels: false,
   enableArcLinkLabels: false,
-  padAngle: 2,
+  padAngle: 1.5,
 };

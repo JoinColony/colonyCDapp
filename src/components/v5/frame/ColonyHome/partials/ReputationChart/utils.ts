@@ -1,7 +1,8 @@
 import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { type Domain } from '~types/graphql.ts';
+import { type MemberItem } from '~frame/v5/pages/MembersPage/types.ts';
+import { DomainColor, type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamHexColor } from '~utils/teams.ts';
 
@@ -100,4 +101,44 @@ export const getTeamReputationChartData = (
   }
 
   return topTeams;
+};
+
+const CONTRIBUTORS_COLORS_LIST = [
+  undefined,
+  DomainColor.PurpleGrey,
+  DomainColor.LightPink,
+  DomainColor.Green,
+];
+
+export const getContributorReputationChartData = (
+  contributorsList: MemberItem[],
+): ReputationChartDataItem[] => {
+  const topContributors = contributorsList
+    .slice(0, WIDGET_TEAM_LIMIT)
+    .map(({ walletAddress, user, reputation }, index) => {
+      return {
+        id: walletAddress,
+        label: user?.profile?.displayName || '',
+        value: Number(reputation),
+        color: getTeamHexColor(CONTRIBUTORS_COLORS_LIST[index]),
+      };
+    });
+
+  const reputationInOtherContributors = contributorsList
+    .slice(WIDGET_TEAM_LIMIT)
+    .reduce((reputation, team) => reputation + Number(team.reputation), 0);
+
+  if (reputationInOtherContributors > 0) {
+    return [
+      ...topContributors,
+      {
+        id: 'allOtherTeams',
+        label: formatText(MSG.otherLabel),
+        value: reputationInOtherContributors,
+        color: '--color-gray-400',
+      },
+    ];
+  }
+
+  return topContributors;
 };

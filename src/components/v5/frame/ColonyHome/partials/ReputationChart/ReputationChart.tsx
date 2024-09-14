@@ -1,18 +1,15 @@
-import { type PieTooltipProps, ResponsivePie } from '@nivo/pie';
-import React, { type FC } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import Numeral from '~shared/Numeral/Numeral.tsx';
+import { useMembersPage } from '~frame/v5/pages/MembersPage/hooks.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { pieChartConfig } from './consts.ts';
-import Legend from './partials/Legend.tsx';
-import LegendItem from './partials/LegendItem.tsx';
-import NoTeamsWithReputation from './partials/NoTeamsWithReputation.tsx';
-import { type ReputationChartDataItem } from './types.ts';
+import { Chart } from './partials/Chart.tsx';
 import {
+  getContributorReputationChartData,
   getTeamReputationChartData,
   isThereReputationInDomains,
 } from './utils.ts';
@@ -20,72 +17,58 @@ import {
 const displayName = 'v5.frame.ColonyHome.ReputationChart';
 
 const MSG = defineMessages({
-  reputationTitle: {
-    id: `${displayName}.influenceTitle`,
+  reputationTitleTeam: {
+    id: `${displayName}.influenceTitleTeam`,
     defaultMessage: 'Influence by team',
   },
+  reputationTitleContributors: {
+    id: `${displayName}.influenceTitleContributors`,
+    defaultMessage: 'Top contributors',
+  },
 });
-
-const TemporaryTooltip: FC<PieTooltipProps<ReputationChartDataItem>> = ({
-  datum: { label, value },
-}) => {
-  return (
-    <div className="bg-base-black p-2 text-base-white">
-      {label}
-      (<Numeral value={value.toFixed(1)} />
-      %)
-    </div>
-  );
-};
 
 const ReputationChart = () => {
   const {
     colony: { domains },
   } = useColonyContext();
 
+  const { contributorsList } = useMembersPage();
+
+  const selectedDomain = useGetSelectedDomainFilter();
+
   const allTeams = (domains?.items || [])
     .filter(notNull)
     .sort(
       (a, b) => Number(b.reputationPercentage) - Number(a.reputationPercentage),
     );
-  const chartData = getTeamReputationChartData(allTeams);
 
-  const getChartAndLegend = () => {
-    if (chartData.length === 0 || !isThereReputationInDomains(allTeams)) {
-      return <NoTeamsWithReputation />;
-    }
+  const allContributors = (contributorsList || [])
+    .filter((item: any) => {
+      return item !== null && !!item.reputation;
+    })
+    .sort((a, b) => Number(b.reputation) - Number(a.reputation));
 
-    return (
-      <>
-        <div className="mb-5 mt-3 flex h-[140px] w-full flex-shrink-0 items-center justify-center">
-          <ResponsivePie
-            {...pieChartConfig}
-            data={chartData}
-            tooltip={TemporaryTooltip}
-          />
-        </div>
-        <Legend>
-          {chartData.map((chartItem) => {
-            // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
-            if (chartItem.value === undefined || chartItem.value <= 0) {
-              return null;
-            }
+  const chartDataTeams = !isThereReputationInDomains(allTeams)
+    ? []
+    : getTeamReputationChartData(allTeams);
 
-            return <LegendItem key={chartItem.id} chartItem={chartItem} />;
-          })}
-        </Legend>
-      </>
-    );
-  };
+  const chartDataContributors =
+    getContributorReputationChartData(allContributors);
+
+  // if domain/team is selected we should show Top Contributors chart instead
+  const chartData = selectedDomain ? chartDataContributors : chartDataTeams;
+  const reputationTitle = selectedDomain
+    ? MSG.reputationTitleContributors
+    : MSG.reputationTitleTeam;
 
   return (
     <div className="flex w-full flex-col items-start rounded-lg border px-5 py-6">
       <div className="flex w-full justify-between">
         <h5 className="text-gray-900 heading-5">
-          {formatText(MSG.reputationTitle)}
+          {formatText(reputationTitle)}
         </h5>
       </div>
-      {getChartAndLegend()}
+      <Chart data={chartData} />;
     </div>
   );
 };
