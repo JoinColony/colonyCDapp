@@ -68,7 +68,7 @@ const ReputationChart = () => {
           {formatText(reputationTitle)}
         </h5>
       </div>
-      <Chart data={chartData} />;
+      <Chart data={chartData} />
     </div>
   );
 };
