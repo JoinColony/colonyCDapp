@@ -142,6 +142,8 @@ interface SaveExpenditureMetadataParams {
   colonyAddress: string;
   expenditureId: number;
   fundFromDomainId: number;
+  numberOfPayouts: number;
+  numberOfTokens: number;
   stages?: ExpenditureStageFieldValue[];
   stakeAmount?: string;
 }
@@ -151,6 +153,8 @@ export function* saveExpenditureMetadata({
   expenditureId,
   fundFromDomainId,
   stages,
+  numberOfPayouts,
+  numberOfTokens,
 }: SaveExpenditureMetadataParams) {
   yield apolloClient.mutate<
     CreateExpenditureMetadataMutation,
@@ -166,6 +170,8 @@ export function* saveExpenditureMetadata({
           slotId: index + 1,
           isReleased: false,
         })),
+        expectedNumberOfPayouts: numberOfPayouts,
+        expectedNumberOfTokens: numberOfTokens,
       },
     },
   });

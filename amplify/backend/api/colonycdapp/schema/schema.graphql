@@ -3751,6 +3751,8 @@ type ExpenditureMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   fundFromDomainNativeId: Int!
   stages: [ExpenditureStage!]
+  expectedNumberOfPayouts: Int
+  expectedNumberOfTokens: Int
 }
 
 type ExpenditureBalance {

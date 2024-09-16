@@ -13,6 +13,8 @@ fragment Expenditure on Expenditure {
     stages {
       ...ExpenditureStage
     }
+    expectedNumberOfPayouts
+    expectedNumberOfTokens
   }
   finalizedAt
   createdAt
