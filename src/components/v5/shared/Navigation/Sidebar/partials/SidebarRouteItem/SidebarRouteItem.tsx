@@ -10,12 +10,11 @@ import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutConte
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import buttonClasses from '~v5/shared/Button/Button.styles.ts';
-
 import {
   sidebarButtonClass,
   sidebarButtonIconClass,
   sidebarButtonTextClass,
-} from '../../sidebar.styles';
+} from '~v5/shared/Navigation/Sidebar/sidebar.styles';
 
 import { motionVariants } from './consts.ts';
 import { type SidebarRouteItemProps } from './types.ts';

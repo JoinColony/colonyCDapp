@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { useTablet } from '~hooks/index.ts';
@@ -28,7 +29,6 @@ import WalletConnectedTopMenu from '../WalletConnectedTopMenu/index.ts';
 
 import { currencyIcons, userMenuItems } from './consts.ts';
 import { UserMenuItemName, type UserMenuProps } from './types.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
 const displayName = 'common.Extensions.UserNavigation.partials.UserMenu';
 

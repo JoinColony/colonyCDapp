@@ -3,8 +3,7 @@ import React from 'react';
 
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks/index.ts';
-
-import Sidebar from '../../index.ts';
+import Sidebar from '~v5/shared/Navigation/Sidebar/index.ts';
 
 import {
   colonyPageSidebarDesktopClass,
