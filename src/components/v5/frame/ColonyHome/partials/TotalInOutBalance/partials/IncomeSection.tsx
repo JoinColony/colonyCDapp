@@ -13,7 +13,7 @@ import { ClaimFundsButton } from './ClaimFundsButton.tsx';
 import { TitledSection } from './TitledSection.tsx';
 
 export const IncomeSection = () => {
-  const { totalIn, refetch, loading: isLoading } = useLast30DaysData();
+  const { totalIn, loading: isLoading } = useLast30DaysData();
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
@@ -28,7 +28,7 @@ export const IncomeSection = () => {
     >
       <div className="flex flex-row gap-2">
         <LoadingSkeleton isLoading={isLoading} className="h-8 w-14 rounded-lg">
-          <ClaimFundsButton refetchData={refetch} />
+          <ClaimFundsButton />
         </LoadingSkeleton>
         <LoadingSkeleton isLoading={isLoading} className="h-8 w-12 rounded-lg">
           <Button
