@@ -42,7 +42,7 @@ export const PaymentsSection = () => {
       value={totalOut}
       isLoading={isLoading}
     >
-      <LoadingSkeleton isLoading={isLoading} className="h-8 w-11 rounded">
+      <LoadingSkeleton isLoading={isLoading} className="h-8 w-11 rounded-lg">
         <Button
           onClick={clickHandler}
           text={formatText(MSG.payCTA)}
