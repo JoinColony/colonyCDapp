@@ -62,7 +62,9 @@ export const JoinedColoniesList = ({
       )}
     </>
   ) : (
-    <EmptyJoinedColoniesSection />
+    <div className="p-6 md:p-0">
+      <EmptyJoinedColoniesSection />
+    </div>
   );
 };
 
