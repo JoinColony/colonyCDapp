@@ -19,6 +19,8 @@ const JoinedColonyItem = ({
   isActiveColony,
   enableMobileAndDesktopLayoutBreakpoints,
 }: JoinedColonyItemProps) => {
+  const colonyName = metadata?.displayName ?? name;
+
   return (
     <button
       type="button"
@@ -44,7 +46,7 @@ const JoinedColonyItem = ({
       </div>
       <div className="flex w-full flex-col overflow-hidden text-left">
         <p className="truncate text-md font-semibold text-gray-900">
-          {capitalizeFirstLetter(name)}
+          {capitalizeFirstLetter(colonyName)}
         </p>
         <p className="truncate text-sm font-normal uppercase text-gray-600">
           {tokenSymbol}
