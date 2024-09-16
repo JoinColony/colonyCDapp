@@ -39,7 +39,7 @@ export const JoinedColoniesList = ({
   ]);
 
   return hasJoinedColonies ? (
-    <>
+    <div className="flex flex-col gap-1.5 overflow-y-auto px-2 pt-2">
       {joinedColonies.map(
         ({ colonyAddress, metadata, name, nativeToken }, index) => {
           const isActiveColony = colonyContext?.colony.name === name;
@@ -59,7 +59,7 @@ export const JoinedColoniesList = ({
               />
               {index < joinedColonies.length - 1 && (
                 <hr
-                  className={clsx('mx-6 border-gray-200 md:mx-2', {
+                  className={clsx('mx-4 border-gray-200 md:mx-2', {
                     'sm:mx-2': enableMobileAndDesktopLayoutBreakpoints,
                   })}
                 />
@@ -68,9 +68,11 @@ export const JoinedColoniesList = ({
           );
         },
       )}
-    </>
+    </div>
   ) : (
-    <EmptyJoinedColoniesSection />
+    <div className="p-6 md:px-4 md:pb-0 md:pt-4">
+      <EmptyJoinedColoniesSection />
+    </div>
   );
 };
 
