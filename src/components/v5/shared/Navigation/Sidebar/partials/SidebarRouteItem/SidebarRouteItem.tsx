@@ -51,18 +51,20 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
   const handleClick = () => {
     onClick?.();
 
-    if (isTablet) {
-      toggleTabletSidebar();
-    }
-
     const pathPrefix = routeType === 'colony' ? `/${colony.name}` : '';
 
     const derivedPath = `${pathPrefix}/${path}`;
 
-    navigate(derivedPath);
-
     if (isAccordion) {
+      if (!isTablet) {
+        navigate(derivedPath);
+      }
+
       setIsAccordionExpanded(true);
+    } else {
+      toggleTabletSidebar();
+
+      navigate(derivedPath);
     }
   };
 
