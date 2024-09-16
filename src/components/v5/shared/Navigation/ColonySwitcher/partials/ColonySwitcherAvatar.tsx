@@ -37,7 +37,12 @@ export const ColonySwitcherAvatar = ({
           src={colonyAvatarSrc}
         />
       ) : (
-        <ColonyIcon size={36} className="text-gray-900 md:text-base-white" />
+        <ColonyIcon
+          size={36}
+          className={clsx('text-gray-900 md:text-base-white', {
+            '!text-base-white': enableMobileAndDesktopLayoutBreakpoints,
+          })}
+        />
       )}
     </div>
   );
