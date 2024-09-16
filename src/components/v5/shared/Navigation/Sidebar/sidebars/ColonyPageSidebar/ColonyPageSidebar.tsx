@@ -82,7 +82,7 @@ const ColonyPageSidebar = () => {
     <Sidebar
       className={colonyPageSidebarDesktopClass}
       showColonySwitcher={!isTablet}
-      headerClassName="mb-6"
+      headerClassName="mb-[27px]"
       footerClassName="!items-start !gap-2"
     >
       <ColonyPageSidebarContent />

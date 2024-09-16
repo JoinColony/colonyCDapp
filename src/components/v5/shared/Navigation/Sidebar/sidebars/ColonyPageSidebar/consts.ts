@@ -20,8 +20,7 @@ import {
   COLONY_PERMISSIONS_ROUTE,
   COLONY_TEAMS_ROUTE,
 } from '~routes';
-
-import { type SidebarRouteItemProps } from '../../partials/SidebarRouteItem/types.ts';
+import { type SidebarRouteItemProps } from '~v5/shared/Navigation/Sidebar/partials/SidebarRouteItem/types.ts';
 
 export const sidebarNavigationScheme: SidebarRouteItemProps[] = [
   {
@@ -34,7 +33,7 @@ export const sidebarNavigationScheme: SidebarRouteItemProps[] = [
   {
     id: 'activity',
     icon: ClockCountdown,
-    translation: { id: 'navigation.dashboard.activityFeed' },
+    translation: { id: 'teamsPage.links.activity' },
     path: COLONY_ACTIVITY_ROUTE,
     routeType: 'colony',
   },

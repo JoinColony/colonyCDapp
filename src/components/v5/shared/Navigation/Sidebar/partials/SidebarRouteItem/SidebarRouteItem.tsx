@@ -96,13 +96,13 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
           <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
         </div>
         {isAccordion && (
-          <div className="flex w-full justify-end pr-1.5 md:pr-0">
+          <div className="flex w-full justify-end pr-1.5 md:pr-[1px]">
             <div
               onClick={onToggleAccordion}
               onKeyDown={noop}
               tabIndex={0}
               role="button"
-              className="flex aspect-square h-[22px] items-center justify-center rounded-[4px] transition-colors hover:bg-base-white md:hover:bg-gray-900"
+              className="flex aspect-square items-center justify-center rounded p-1 transition-colors hover:bg-base-white md:hover:bg-gray-900"
             >
               <CaretDown
                 className={clsx(
