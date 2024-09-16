@@ -15,9 +15,9 @@ exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
   /**
-   * We want to get the start of day for the previous 30 days from the last 30 days
+   * We want to get the start of day for the previous 30 days
    */
-  const startOfLast30DaysDate = getDaysFromNow(30 + 30);
+  const startOfLast30DaysDate = getDaysFromNow(30);
   /**
    * We want to get the start of last week
    */
