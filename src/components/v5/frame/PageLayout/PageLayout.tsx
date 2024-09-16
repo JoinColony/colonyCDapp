@@ -65,7 +65,11 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             >
               <div
                 className={clsx(
+<<<<<<< HEAD
                   'mx-auto max-w-[1144px] px-6 pb-4 pt-6 md:pt-0',
+=======
+                  'mx-auto max-w-[74.5rem] px-6 pb-4 pt-6 md:pt-0',
+>>>>>>> c7b042785 (fix: refactor widget content components)
                   {
                     '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                   },
