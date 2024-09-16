@@ -11,6 +11,7 @@ const wrapperClassName = tw`
   select-none flex-col justify-center rounded-lg border
   px-6 py-5 text-left
   sm:min-w-[26.5%]
+  md:min-w-[30%]
   lg:min-w-[21.85%]
 `;
 const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
