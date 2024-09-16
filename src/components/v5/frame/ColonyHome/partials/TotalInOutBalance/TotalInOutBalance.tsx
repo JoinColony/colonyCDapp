@@ -23,9 +23,10 @@ const TotalInOutBalance = () => {
         </div>
       }
       titleClassName="text-2 mb-4"
-      className="col-span-2 !px-5 !items-start"
+      className="col-span-2 !items-start !px-5"
+      contentClassName="flex flex-col w-full h-full"
       value={
-        <div className="flex flex-col justify-center gap-8 sm:flex-row">
+        <div className="flex h-full flex-col justify-center gap-8 sm:flex-row">
           <div className="flex flex-1 flex-col gap-4 sm:self-center">
             <PaymentsSection />
             <div className="w-full border-t border-gray-200" />
