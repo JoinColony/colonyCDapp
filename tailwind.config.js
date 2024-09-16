@@ -152,6 +152,9 @@ module.exports = {
         userNav: '11',
         userNavModal: '1001',
       },
+      spacing: {
+        4.5: '1.125rem',
+      },
     },
   },
   plugins: [
