@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
@@ -12,7 +12,13 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
 
-export const ClaimFundsButton = () => {
+interface ClaimFundsButtonProps {
+  refetchData: () => void;
+}
+
+export const ClaimFundsButton: FC<ClaimFundsButtonProps> = ({
+  refetchData,
+}) => {
   const {
     colony,
     canInteractWithColony,
@@ -39,7 +45,10 @@ export const ClaimFundsButton = () => {
 
   useTimeout({
     shouldTriggerCallback: isClaimed,
-    callback: () => setIsVisible(false),
+    callback: () => {
+      setIsVisible(false);
+      refetchData();
+    },
   });
 
   const transform = mergePayload({

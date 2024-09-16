@@ -19,7 +19,7 @@ export const useLast30DaysData = () => {
   const { currency } = useCurrencyContext();
   const timeframePeriod = 30;
   const timeframeType = TimeframeType.Daily;
-  const { data, loading } = useGetDomainBalanceQuery({
+  const { data, refetch, loading } = useGetDomainBalanceQuery({
     variables: {
       input: {
         colonyAddress,
@@ -35,6 +35,7 @@ export const useLast30DaysData = () => {
 
   return {
     loading,
+    refetch,
     totalIn: domainBalanceData?.totalIn ?? '0',
     totalOut: domainBalanceData?.totalOut ?? '0',
   };
