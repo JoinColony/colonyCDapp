@@ -24,35 +24,33 @@ const JoinedColoniesPopover = ({
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={getTooltipProps}
-      classNames="z-top bg-white w-[252px] rounded-lg border-gray-200 border-[1px] mt-4 shadow-none max-h-[calc(100vh-32px)] p-2"
+      classNames="z-top bg-white w-[252px] rounded-lg border-gray-200 mt-4 shadow-none max-h-[calc(100vh-32px)] pb-4 pt-0 px-0"
     >
-      <div className="flex max-h-[calc(536px)] flex-col gap-4 overflow-hidden">
+      <div className="flex max-h-[calc(536px)] flex-col gap-6 overflow-hidden">
         {wallet ? (
-          <div className="flex flex-col gap-1.5 overflow-y-auto">
-            <JoinedColoniesList
-              enableMobileAndDesktopLayoutBreakpoints={
-                enableMobileAndDesktopLayoutBreakpoints
-              }
-            />
-          </div>
+          <JoinedColoniesList
+            enableMobileAndDesktopLayoutBreakpoints={
+              enableMobileAndDesktopLayoutBreakpoints
+            }
+          />
         ) : (
-          <div className="px-2 pt-2">
+          <div className="px-4 pt-4">
             <ConnectWalletSection />
           </div>
         )}
-        <div className="w-full flex-shrink-0 px-2 pb-2">
+        <div className="w-full flex-shrink-0 px-4">
           {wallet ? (
             <Button
-              mode="primaryOutlineFull"
+              mode="primaryOutline"
               text={{ id: 'button.createNewColony' }}
-              size="medium"
+              size="small"
               className="w-full border-gray-300"
             />
           ) : (
             <Button
-              mode="primaryOutlineFull"
+              mode="primaryOutline"
               text={{ id: 'button.connectWallet' }}
-              size="medium"
+              size="small"
               className="w-full border-gray-300"
               onClick={connectWallet}
             />
