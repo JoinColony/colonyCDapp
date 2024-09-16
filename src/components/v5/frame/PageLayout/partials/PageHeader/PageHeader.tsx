@@ -50,9 +50,6 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
           className={clsx(
             'flex flex-row items-center justify-between border-b p-6',
             'md:border-none md:p-0',
-            {
-              'md:pb-1': !title,
-            },
           )}
         >
           <div>
@@ -99,7 +96,6 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
       </section>
       <section
         className={clsx('flex w-full flex-col md:p-0', {
-          'md:pb-4': title,
           'px-6 pb-2 pt-6': breadcrumbs,
         })}
       >
