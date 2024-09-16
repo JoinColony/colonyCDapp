@@ -33,7 +33,7 @@ const CacheBalanceFactory = (() => {
     if (previousBalanceData?.id) {
       await updatePreviousBalance({
         ...inputData,
-        id: previousBalance.id,
+        id: previousBalanceData.id,
       });
     } else {
       await savePreviousBalance(inputData);
