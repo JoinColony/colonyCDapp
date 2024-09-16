@@ -1,5 +1,6 @@
-import React, { useState, useEffect, type FC } from 'react';
+import React, { useState, useEffect } from 'react';
 
+import { apolloClient } from '~apollo';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { useTimeout } from '~hooks/useTimeout.ts';
@@ -12,13 +13,7 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
 
-interface ClaimFundsButtonProps {
-  refetchData: () => void;
-}
-
-export const ClaimFundsButton: FC<ClaimFundsButtonProps> = ({
-  refetchData,
-}) => {
+export const ClaimFundsButton = () => {
   const {
     colony,
     canInteractWithColony,
@@ -35,6 +30,7 @@ export const ClaimFundsButton: FC<ClaimFundsButtonProps> = ({
 
   const [isClaimed, setIsClaimed] = useState(false);
   const [isVisible, setIsVisible] = useState(hasUnclaimedClaims);
+  const [shouldRefetchData, setShouldRefetchData] = useState(false);
 
   useEffect(() => {
     if (hasUnclaimedClaims) {
@@ -43,11 +39,22 @@ export const ClaimFundsButton: FC<ClaimFundsButtonProps> = ({
     }
   }, [hasUnclaimedClaims]);
 
+  // We need to use a timeout here as the claimed funds might not yet be present in the DB
+  useTimeout({
+    shouldTriggerCallback: shouldRefetchData,
+    callback: async () => {
+      setShouldRefetchData(false);
+      await apolloClient.refetchQueries({
+        include: ['GetDomainBalance'],
+      });
+    },
+  });
+
   useTimeout({
     shouldTriggerCallback: isClaimed,
     callback: () => {
       setIsVisible(false);
-      refetchData();
+      setShouldRefetchData(true);
     },
   });
 
@@ -69,9 +76,8 @@ export const ClaimFundsButton: FC<ClaimFundsButtonProps> = ({
   return isClaimed ? (
     <Button
       text={formatText(MSG.fundsClaimedCTA)}
-      mode="completed"
       size="small"
-      className="pointer-events-none h-fit border-gray-900 px-3 py-2 !text-base-white"
+      className="pointer-events-none h-fit border border-success-400 bg-success-400 px-3 py-2 !text-base-white"
     />
   ) : (
     <Tooltip tooltipContent={formatText(MSG.claimFundsTooltip)} placement="top">
