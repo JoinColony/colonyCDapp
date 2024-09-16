@@ -75,22 +75,31 @@ export const convertFromTokenToCurrency = (
  * @returns
  */
 export const getValuesTrend = (current: string, previous: string) => {
-  const convertedCurrent = BigNumber.from(current);
-  const convertedPrevious = BigNumber.from(previous);
+  const currentBN = BigNumber.from(current);
+  const previousBN = BigNumber.from(previous);
+  const upperLimit = BigNumber.from(99999);
 
-  let trend = convertedCurrent.isZero()
-    ? BigNumber.from(0)
-    : BigNumber.from(100);
+  let trend: BigNumber;
 
-  if (!convertedPrevious.isZero()) {
-    trend = convertedCurrent
-      .sub(convertedPrevious)
-      .mul(100)
-      .div(convertedPrevious);
+  if (currentBN.isZero()) {
+    trend = BigNumber.from(-100);
+  } else if (previousBN.isZero()) {
+    trend = BigNumber.from(100);
+  } else {
+    trend = currentBN.sub(previousBN).mul(100).div(previousBN);
   }
 
+  const isValueOverLimit = trend.abs().gt(upperLimit);
+  const valueToFormat = isValueOverLimit ? upperLimit : trend;
+
+  const formattedValue = numbro(valueToFormat.toString()).format({
+    mantissa: 3,
+    trimMantissa: true,
+    thousandSeparated: true,
+  });
+
   return {
-    value: `${trend.toString()}%`,
+    value: `${formattedValue}%${isValueOverLimit ? '+' : ''}`,
     isIncrease: trend.gte(0),
   };
 };
