@@ -23,6 +23,7 @@ export interface AppContextValue {
   canInteract: boolean;
   joinedColonies: JoinedColony[];
   joinedColoniesLoading: boolean;
+  refetchJoinedColonies: () => void;
 }
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined);

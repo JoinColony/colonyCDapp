@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -17,7 +17,7 @@ export const JoinedColoniesList = ({
 }: {
   enableMobileAndDesktopLayoutBreakpoints?: boolean;
 }) => {
-  const { joinedColonies } = useAppContext();
+  const { joinedColonies, refetchJoinedColonies } = useAppContext();
   const hasJoinedColonies = !!joinedColonies.length;
   const colonyContext = useColonyContext({ nullableContext: true });
 
@@ -29,6 +29,14 @@ export const JoinedColoniesList = ({
     setShowTabletColonyPicker(false);
     navigate(`/${colonyName}`);
   };
+
+  useEffect(() => {
+    refetchJoinedColonies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    colonyContext?.colony.metadata?.avatar,
+    colonyContext?.colony.metadata?.thumbnail,
+  ]);
 
   return hasJoinedColonies ? (
     <>

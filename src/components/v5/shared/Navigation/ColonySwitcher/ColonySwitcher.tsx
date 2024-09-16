@@ -31,6 +31,9 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
       offset: offset ?? [-20, 16],
     });
 
+  const colonyName =
+    colonyContext?.colony.metadata?.displayName ?? colonyContext?.colony.name;
+
   return (
     <>
       <Button
@@ -47,9 +50,9 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
               enableMobileAndDesktopLayoutBreakpoints
             }
           />
-          {colonyContext?.colony.name && (
+          {colonyName && (
             <p className="truncate text-md font-semibold text-base-white">
-              {capitalizeFirstLetter(colonyContext.colony.name)}
+              {capitalizeFirstLetter(colonyName)}
             </p>
           )}
         </section>
