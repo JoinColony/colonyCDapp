@@ -44,7 +44,7 @@ const JoinedColonyItem = ({
       </div>
       <div className="flex w-full flex-col overflow-hidden text-left">
         <p className="truncate text-md font-semibold text-gray-900">
-          {capitalizeFirstLetter(name)}
+          {capitalizeFirstLetter(metadata?.displayName ?? name)}
         </p>
         <p className="truncate text-sm font-normal uppercase text-gray-600">
           {tokenSymbol}

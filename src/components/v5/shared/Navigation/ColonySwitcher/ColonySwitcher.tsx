@@ -47,9 +47,12 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
               enableMobileAndDesktopLayoutBreakpoints
             }
           />
-          {colonyContext?.colony.name && (
+          {colonyContext?.colony && (
             <p className="truncate text-md font-semibold text-base-white">
-              {capitalizeFirstLetter(colonyContext.colony.name)}
+              {capitalizeFirstLetter(
+                colonyContext.colony.metadata?.displayName ??
+                  colonyContext.colony.name,
+              )}
             </p>
           )}
         </section>
