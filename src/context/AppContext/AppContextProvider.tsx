@@ -31,9 +31,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(true);
 
-  const { joinedColonies, loading: joinedColoniesLoading } = useJoinedColonies(
-    wallet?.address,
-  );
+  const {
+    joinedColonies,
+    loading: joinedColoniesLoading,
+    refetch: refetchJoinedColonies,
+  } = useJoinedColonies(wallet?.address);
 
   const updateUser = useCallback(
     async (address: string | undefined, shouldBackgroundUpdate = false) => {
@@ -185,6 +187,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       canInteract: !!wallet && !!user,
       joinedColonies,
       joinedColoniesLoading,
+      refetchJoinedColonies,
     }),
     [
       wallet,
@@ -197,6 +200,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       updateUser,
       joinedColonies,
       joinedColoniesLoading,
+      refetchJoinedColonies,
     ],
   );
 
