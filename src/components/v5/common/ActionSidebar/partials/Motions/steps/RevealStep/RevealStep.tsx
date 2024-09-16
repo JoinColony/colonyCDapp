@@ -117,7 +117,7 @@ const RevealStep: FC<RevealStepProps> = ({
               transform={transform}
               onSuccess={handleSuccess}
             >
-              {hasUserVoted ? (
+              {hasUserVoted && !!userVote ? (
                 <div className="mb-1.5">
                   <div className={clsx({ 'mb-6': !userVoteRevealed })}>
                     <div className="mb-2 flex items-center justify-between gap-2">

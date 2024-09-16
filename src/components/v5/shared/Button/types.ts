@@ -97,6 +97,11 @@ export interface CloseButtonProps extends CommonButtonProps {
   iconSize?: number;
 }
 
+export enum LoadingBehavior {
+  TxLoader = 'txLoader', // Tx loader
+  Disabled = 'disabled', // Disabled during load
+}
+
 export interface ActionButtonProps extends ButtonProps {
   actionType: ActionTypes;
   isLoading?: boolean;
@@ -108,7 +113,7 @@ export interface ActionButtonProps extends ButtonProps {
   text?: MessageDescriptor | string;
   transform?: ActionTransformFnType;
   values?: any;
-  useTxLoader?: boolean;
+  loadingBehavior?: LoadingBehavior;
 }
 
 export type ButtonLinkProps = Omit<

@@ -6,7 +6,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-import { type ButtonProps } from '~v5/shared/Button/types.ts';
+import { LoadingBehavior, type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.CancelButton';
@@ -45,7 +45,7 @@ const CancelButton: FC<CancelButtonProps> = ({
   return (
     <ActionButton
       isFullSize
-      useTxLoader
+      loadingBehavior={LoadingBehavior.TxLoader}
       isLoading={isLoading}
       actionType={ActionTypes.MULTISIG_CANCEL}
       values={getCancelPayload}

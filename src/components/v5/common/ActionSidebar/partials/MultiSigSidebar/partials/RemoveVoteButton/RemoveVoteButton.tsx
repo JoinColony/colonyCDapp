@@ -10,6 +10,7 @@ import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.RemoveVoteButton';
@@ -54,7 +55,7 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
 
   return (
     <ActionButton
-      useTxLoader
+      loadingBehavior={LoadingBehavior.TxLoader}
       isFullSize
       actionType={ActionTypes.MULTISIG_VOTE}
       isLoading={isLoading}
