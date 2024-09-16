@@ -2,8 +2,6 @@ import { type Icon } from '@phosphor-icons/react';
 import React, { type FC, type PropsWithChildren } from 'react';
 
 import { WidgetIconWrapper } from './WidgetIconWrapper.tsx';
-import { WidgetSubTitle } from './WidgetSubTitle.tsx';
-import { WidgetTitle } from './WidgetTitle.tsx';
 
 interface WidgetContentProps {
   Icon?: Icon;
@@ -16,20 +14,18 @@ export const WidgetContent: FC<PropsWithChildren<WidgetContentProps>> = ({
   title,
   subTitle,
   children,
-}) => (
-  <>
-    {Icon ? (
-      <WidgetIconWrapper Icon={Icon}>
-        {title && <WidgetTitle title={title} />}
-        {subTitle && <WidgetSubTitle title={subTitle} />}
-        {children}
-      </WidgetIconWrapper>
-    ) : (
-      <>
-        {title && <WidgetTitle title={title} />}
-        {subTitle && <WidgetSubTitle title={subTitle} />}
-        {children}
-      </>
-    )}
-  </>
-);
+}) => {
+  const content = (
+    <>
+      {title && <h3 className="text-md">{title}</h3>}
+      {subTitle && <h4 className="heading-4">{subTitle}</h4>}
+      {children}
+    </>
+  );
+
+  return Icon ? (
+    <WidgetIconWrapper Icon={Icon}>{content}</WidgetIconWrapper>
+  ) : (
+    content
+  );
+};
