@@ -39,6 +39,7 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
         className={clsx(sidebarButtonClass, className, '!py-[6px]', {
           '!justify-center': isLogoButton,
           '!justify-between': !isLogoButton,
+          '!bg-gray-800': visible,
         })}
       >
         <section className="flex flex-row items-center gap-3 overflow-hidden">
