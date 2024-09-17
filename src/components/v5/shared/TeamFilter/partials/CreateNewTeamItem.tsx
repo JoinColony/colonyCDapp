@@ -21,10 +21,10 @@ const CreateNewTeamItem = () => {
   return (
     <button
       type="button"
-      className="border-gray-200 bg-base-white px-4 py-2 font-medium text-gray-400 text-3 hover:bg-gray-50 hover:text-gray-900"
+      className="border-gray-200 bg-base-white px-4 py-2 text-sm font-medium text-gray-400 hover:bg-gray-50 hover:text-gray-900"
       onClick={handleClick}
     >
-      <Plus size={16} />
+      <Plus size={18} />
     </button>
   );
 };
