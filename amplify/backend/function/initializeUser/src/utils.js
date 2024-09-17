@@ -1,11 +1,6 @@
 const fetch = require('cross-fetch');
 
-const TokenType = {
-  COLONY: 'COLONY',
-  ERC20: 'ERC20',
-};
-
-const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
+exports.graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   const options = {
     method: 'POST',
     headers: {
@@ -26,27 +21,7 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     body = await response.json();
     return body;
   } catch (error) {
-    /*
-     * Something went wrong... obviously 🦆
-     */
     console.error(error);
     return null;
   }
-};
-
-const getTokenType = async (client) => {
-  // Colony tokens have the `locked()` method. We assume that when it exists on
-  // the contract we have a ColonyToken 🦆. This might not be true though, so can't rely
-  // on this 100% when trying to call contract methods
-  try {
-    await client.locked();
-    return TokenType.COLONY;
-  } catch {
-    return TokenType.ERC20;
-  }
-};
-
-module.exports = {
-  graphqlRequest,
-  getTokenType,
 };

@@ -60,8 +60,8 @@ exports.handler = async (event) => {
     }
     nextToken = result.data.getTransactionsByUser?.nextToken;
 
-    Array.prototype.push.apply(
-      promises,
+    // Push array of results onto the promises array
+    Array.prototype.push.apply(promises,
       result.data.getTransactionsByUser?.items.filter((i) => (!!i)).map((tx) => {
         return graphqlRequest(
           failTransaction,
@@ -74,6 +74,7 @@ exports.handler = async (event) => {
   } while (nextToken);
 
   const mutationResults = await Promise.allSettled(promises);
+
   const failedTransactions =  mutationResults.map((res) => res.data?.updateTransaction).filter((res) => !!res);
 
   return { failedTransactions };
