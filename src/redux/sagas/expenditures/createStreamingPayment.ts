@@ -30,6 +30,7 @@ import {
 import {
   TIMESTAMP_IN_FUTURE,
   adjustRecipientAddress,
+  createActionMetadataInDB,
   getColonyManager,
   getEndTimeByEndCondition,
   initiateTransaction,
@@ -84,7 +85,7 @@ function* createStreamingPaymentAction({
     );
     const { network } = colonyManager.networkClient;
 
-    const paymentAddress = yield adjustRecipientAddress(
+    const adjustedRecipientAddress = yield adjustRecipientAddress(
       {
         tokenAddress,
         recipientAddress,
@@ -215,6 +216,10 @@ function* createStreamingPaymentAction({
         receipt: { transactionHash: txHash },
       },
     } = yield waitForTxResult(createStreamingPayment.channel);
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     if (annotationMessage) {
       yield uploadAnnotation({
