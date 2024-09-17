@@ -2,28 +2,25 @@ import React, { type FC } from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetBoxList from '~v5/common/WidgetBoxList/index.ts';
+import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useActivityFeedWidgets } from './hooks.tsx';
 
 const displayName = 'v5.pages.ActivityPage';
 
 const ActivityPage: FC = () => {
-  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-
   useSetPageHeadingTitle(formatText({ id: 'activityPage.title' }));
-  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   const widgets = useActivityFeedWidgets();
 
   return (
     <div className="flex w-full flex-col gap-4 sm:gap-6">
+      <div className="mb-2">
+        <TeamFilter />
+      </div>
       <WidgetBoxList items={widgets} />
       <div>
         <FiltersContextProvider>

@@ -12,6 +12,7 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import TeamCardList from '~v5/common/TeamCardList/index.ts';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
+import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useTeams } from './hooks.tsx';
 import TeamsPageFilter from './partials/TeamsPageFilter/TeamsPageFilter.tsx';
@@ -35,6 +36,9 @@ const TeamsPage: FC = () => {
 
   return (
     <div className="flex w-full flex-col gap-6">
+      <div className="mb-2">
+        <TeamFilter />
+      </div>
       <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-gray-900 heading-4">
           {formatText({ id: 'teamsPage.allTeams' })}
