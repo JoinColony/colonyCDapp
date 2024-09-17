@@ -26,19 +26,12 @@ exports.handler = async (event) => {
     throw new Error('Unable to set environment variables. Reason:', e);
   }
 
-  const { userAddress } = event.arguments?.input || {};
-
   let checksummedWalletAddress;
   try {
+    const userAddress = utils.getAddress(event.request.headers['x-wallet-address']);
     checksummedWalletAddress = utils.getAddress(userAddress);
   } catch (error) {
-    throw new Error("User's wallet address is not valid (after checksum)");
-  }
-
-  const authAddress = utils.getAddress(event.request.headers['x-wallet-address']);
-
-  if (authAddress !== checksummedWalletAddress) {
-    throw new Error(`Given user is not logged in`);
+    throw new Error(`User's wallet address ${userAddress} is not valid (after checksum)`);
   }
 
   let nextToken;
