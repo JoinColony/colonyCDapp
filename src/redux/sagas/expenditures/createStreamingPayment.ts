@@ -27,6 +27,7 @@ import {
 } from '../transactions/index.ts';
 import {
   adjustRecipientAddress,
+  createActionMetadataInDB,
   getColonyManager,
   getEndTimeByEndCondition,
   initiateTransaction,
@@ -52,6 +53,7 @@ function* createStreamingPaymentAction({
     endCondition,
     limitAmount,
     annotationMessage,
+    customActionTitle,
   },
   meta,
   meta: { setTxHash },
