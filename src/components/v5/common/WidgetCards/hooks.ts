@@ -25,12 +25,12 @@ export const useEmblaCarouselSettings = (options) => {
     emblaApi.on('select', onSelect);
   }, [emblaApi, onSelect]);
 
-  const onPrevButtonClick = useCallback(() => {
+  const onPrevBtnClick = useCallback(() => {
     if (!emblaApi) return;
     emblaApi.scrollPrev();
   }, [emblaApi]);
 
-  const onNextButtonClick = useCallback(() => {
+  const onNextBtnClick = useCallback(() => {
     if (!emblaApi) return;
     emblaApi.scrollNext();
   }, [emblaApi]);
@@ -40,7 +40,7 @@ export const useEmblaCarouselSettings = (options) => {
     scrollTo,
     prevBtnDisabled,
     nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
+    onPrevBtnClick,
+    onNextBtnClick,
   };
 };
