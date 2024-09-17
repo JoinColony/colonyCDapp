@@ -340,6 +340,7 @@ export type Colony = {
   roles?: Maybe<ModelColonyRoleConnection>;
   /** Status information for the Colony */
   status?: Maybe<ColonyStatus>;
+  streamingPayments?: Maybe<ModelStreamingPaymentConnection>;
   tokens?: Maybe<ModelColonyTokensConnection>;
   /** Type of the Colony (Regular or Metacolony) */
   type?: Maybe<ColonyType>;
@@ -401,6 +402,16 @@ export type ColonyFundsClaimDataArgs = {
 /** Represents a Colony within the Colony Network */
 export type ColonyRolesArgs = {
   filter?: InputMaybe<ModelColonyRoleFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Represents a Colony within the Colony Network */
+export type ColonyStreamingPaymentsArgs = {
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -1913,6 +1924,7 @@ export type CreateSafeTransactionInput = {
 export type CreateStreamingPaymentInput = {
   amount: Scalars['String'];
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
+  colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
@@ -4206,6 +4218,7 @@ export type ModelSplitPaymentDistributionTypeInput = {
 export type ModelStreamingPaymentConditionInput = {
   amount?: InputMaybe<ModelStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelStringInput>;
   interval?: InputMaybe<ModelStringInput>;
@@ -4234,6 +4247,7 @@ export type ModelStreamingPaymentEndConditionInput = {
 export type ModelStreamingPaymentFilterInput = {
   amount?: InputMaybe<ModelStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
   endTime?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -4805,6 +4819,7 @@ export type ModelSubscriptionSafeTransactionFilterInput = {
 export type ModelSubscriptionStreamingPaymentFilterInput = {
   amount?: InputMaybe<ModelSubscriptionStringInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   endTime?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -6898,6 +6913,7 @@ export type Query = {
   getSafeTransactionStatus?: Maybe<Array<Scalars['String']>>;
   getStreamingPayment?: Maybe<StreamingPayment>;
   getStreamingPaymentMetadata?: Maybe<StreamingPaymentMetadata>;
+  getStreamingPaymentsByColony?: Maybe<ModelStreamingPaymentConnection>;
   getToken?: Maybe<Token>;
   getTokenByAddress?: Maybe<ModelTokenConnection>;
   getTokenExchangeRate?: Maybe<TokenExchangeRate>;
@@ -7636,6 +7652,17 @@ export type QueryGetStreamingPaymentArgs = {
 /** Root query type */
 export type QueryGetStreamingPaymentMetadataArgs = {
   id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetStreamingPaymentsByColonyArgs = {
+  colonyId: Scalars['ID'];
+  createdAt?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelStreamingPaymentFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -8650,6 +8677,10 @@ export type StreamingPayment = {
   actions?: Maybe<ModelColonyActionConnection>;
   amount: Scalars['String'];
   claims?: Maybe<Array<StreamingPaymentClaim>>;
+  /** The Colony to which the expenditure belongs */
+  colony: Colony;
+  /** Colony ID (address) to which the expenditure belongs */
+  colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   endTime: Scalars['String'];
   id: Scalars['ID'];
@@ -8661,6 +8692,7 @@ export type StreamingPayment = {
   metadata?: Maybe<StreamingPaymentMetadata>;
   motions?: Maybe<ModelColonyMotionConnection>;
   nativeDomainId: Scalars['Int'];
+  /** Native ID of the streaming payment within a colony */
   nativeId: Scalars['Int'];
   recipientAddress: Scalars['String'];
   startTime: Scalars['String'];
@@ -10305,6 +10337,7 @@ export type UpdateSafeTransactionInput = {
 export type UpdateStreamingPaymentInput = {
   amount?: InputMaybe<Scalars['String']>;
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
+  colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   endTime?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
