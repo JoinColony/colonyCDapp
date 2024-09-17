@@ -25,7 +25,9 @@ const DesktopTeamFilter = () => {
   const {
     colony: { domains },
   } = useColonyContext();
+
   const selectedDomain = useGetSelectedDomainFilter();
+  const isAllTeamsFilterActive = selectedDomain === undefined;
 
   // this is in memo due to being a dependency for the other memo
   const allDomains = useMemo(() => {
@@ -94,7 +96,7 @@ const DesktopTeamFilter = () => {
 
   return (
     <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap rounded-lg border border-solid border-gray-200">
-      <AllTeamsItem selected={selectedDomain === undefined} />
+      <AllTeamsItem selected={isAllTeamsFilterActive} />
       <div className="flex flex-wrap overflow-hidden" ref={containerRef}>
         {displayDomains.map((domain, index) => (
           <div

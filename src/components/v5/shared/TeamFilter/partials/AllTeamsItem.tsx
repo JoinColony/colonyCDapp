@@ -31,7 +31,7 @@ const AllTeamsItem: FC<AllTeamsItemProps> = ({ selected }) => {
     <button
       type="button"
       className={clsx(
-        'border-r border-solid border-gray-200 px-4 py-2 text-3',
+        'border-r border-solid border-gray-200 px-4 py-2 text-sm',
         {
           'bg-base-white font-medium text-gray-700': !selected,
           'bg-gray-50 font-semibold text-gray-900': selected,
