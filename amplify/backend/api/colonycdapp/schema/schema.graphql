@@ -1655,7 +1655,15 @@ type Colony @model {
   """
   reputation: String
 
+  """
+  Expenditures within the colony
+  """
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
+  """
+  Streaming payments within the colony
+  """
+  streamingPayments: [StreamingPayment]
+    @hasMany(indexName: "byColony", fields: ["id"])
   """
   Global claim delay for expenditures (in seconds)
   """
@@ -4079,7 +4087,23 @@ type ExpenditureStage {
 
 type StreamingPayment @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
+  """
+  Native ID of the streaming payment within a colony
+  """
   nativeId: Int!
+  """
+  Colony ID (address) to which the expenditure belongs
+  """
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getStreamingPaymentsByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The Colony to which the expenditure belongs
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   createdAt: AWSDateTime!
   recipientAddress: String!
   nativeDomainId: Int!
