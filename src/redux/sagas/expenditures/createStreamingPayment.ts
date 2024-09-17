@@ -217,7 +217,7 @@ function* createStreamingPaymentAction({
         startTimestamp,
         realEndTimestamp,
         interval,
-        paymentAddress,
+        adjustedRecipientAddress,
         tokenAddress,
         amountInWei,
       ],
