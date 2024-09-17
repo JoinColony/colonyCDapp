@@ -2,10 +2,8 @@ import React from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
-import { useSetPageBreadcrumbs } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import {
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
@@ -28,9 +26,6 @@ const displayName = 'v5.frame.ColonyHome';
 const ColonyHome = () => {
   const isMobile = useMobile();
   const selectedDomain = useGetSelectedDomainFilter();
-  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-
-  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
   return (
     <div className="flex flex-col gap-6 lg:gap-10">
