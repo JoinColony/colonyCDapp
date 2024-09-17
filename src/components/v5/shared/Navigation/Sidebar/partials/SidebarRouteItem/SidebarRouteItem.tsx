@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useMatch, useParams } from 'react-router-dom';
 
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import Link from '~v5/shared/Link/Link.tsx';
@@ -32,6 +33,7 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
   const derivedPath = isColonyRoute
     ? `/${colonyName}${path ? `/${path}` : ''}`
     : `${path}`;
+  const { isDarkMode } = usePageThemeContext();
 
   const matchingRoute = useMatch(derivedPath);
 
@@ -64,31 +66,54 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
     }
   };
 
+  const shouldHighlightItem = !!matchingRoute && !isAccordion;
+
   return (
     <>
-      <Link
-        to={derivedPath}
-        onClick={handleClick}
-        aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
-        className={clsx(sidebarButtonClass, {
-          '!bg-gray-100 md:!bg-gray-800': !!matchingRoute && !isAccordion,
-          '!pr-1': isAccordion,
-        })}
-      >
-        <div className="flex flex-row items-center gap-3">
-          {Icon ? (
-            <Icon className={sidebarButtonIconClass} />
-          ) : (
-            <div className="w-5" />
-          )}
-          <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
-        </div>
+      <div className="group relative flex flex-row items-center">
+        <Link
+          to={derivedPath}
+          onClick={handleClick}
+          aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
+          className={clsx(sidebarButtonClass, 'w-full', {
+            '!bg-gray-100 md:!bg-gray-800': shouldHighlightItem && !isDarkMode,
+            '!bg-gray-100': shouldHighlightItem && !isDarkMode,
+            '!bg-gray-50': shouldHighlightItem && isDarkMode,
+            'group-hover:!bg-gray-50 md:!bg-gray-100':
+              !shouldHighlightItem && isDarkMode,
+            '!pr-1': isAccordion,
+          })}
+        >
+          <div className="flex flex-row items-center gap-3">
+            {Icon ? (
+              <Icon
+                className={clsx(sidebarButtonIconClass, {
+                  '!text-gray-900': isDarkMode,
+                })}
+              />
+            ) : (
+              <div className="w-5" />
+            )}
+            <p
+              className={clsx(sidebarButtonTextClass, {
+                '!text-gray-900': isDarkMode,
+              })}
+            >
+              {formatText(translation)}
+            </p>
+          </div>
+        </Link>
         {isAccordion && (
-          <div className="pointer-events-none flex w-full justify-end pr-1.5 md:pointer-events-auto md:pr-[1px]">
+          <div className="pointer-events-none absolute right-2 md:pointer-events-auto">
             <button
               type="button"
               onClick={toggleAccordion}
-              className="flex aspect-square items-center justify-center rounded p-1 transition-colors hover:bg-base-white md:hover:bg-gray-900"
+              className={clsx(
+                'flex aspect-square items-center justify-center rounded p-1 transition-colors hover:bg-base-white md:hover:bg-gray-900',
+                {
+                  'hover:!bg-gray-100': isDarkMode,
+                },
+              )}
             >
               <CaretDown
                 className={clsx(
@@ -96,13 +121,14 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
                   'h-[14px] transition-transform duration-200',
                   {
                     '-rotate-180': isAccordionExpanded,
+                    '!text-gray-900': isDarkMode,
                   },
                 )}
               />
             </button>
           </div>
         )}
-      </Link>
+      </div>
       <AnimatePresence initial={false} presenceAffectsLayout>
         {isAccordionExpanded && (
           <motion.ul
