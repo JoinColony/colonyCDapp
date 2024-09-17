@@ -1,7 +1,9 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import {
@@ -22,6 +24,8 @@ const ActionSectionItem: React.FC<ActionSectionItemProps> = ({
 }) => {
   const { setShowTabletSidebar } = usePageLayoutContext();
 
+  const { isDarkMode } = usePageThemeContext();
+
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
@@ -38,11 +42,23 @@ const ActionSectionItem: React.FC<ActionSectionItemProps> = ({
     <button
       type="button"
       onClick={onClick}
-      className={sidebarButtonClass}
+      className={clsx(sidebarButtonClass, {
+        '!bg-base-white hover:!bg-gray-50 md:!bg-gray-100': isDarkMode,
+      })}
       aria-label={`Start the ${action.replace('-', ' ')} action`}
     >
-      <Icon className={sidebarButtonIconClass} />
-      <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
+      <Icon
+        className={clsx(sidebarButtonIconClass, {
+          '!text-gray-900': isDarkMode,
+        })}
+      />
+      <p
+        className={clsx(sidebarButtonTextClass, {
+          '!text-gray-900': isDarkMode,
+        })}
+      >
+        {formatText(translation)}
+      </p>
     </button>
   );
 };

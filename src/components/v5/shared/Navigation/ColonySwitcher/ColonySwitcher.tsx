@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { capitalizeFirstLetter } from '~utils/strings.ts';
 import Button from '~v5/shared/Button/index.ts';
@@ -33,6 +34,8 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
 }) => {
   const colonyContext = useColonyContext({ nullableContext: true });
 
+  const { isDarkMode } = usePageThemeContext();
+
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
       placement: 'right',
@@ -52,8 +55,13 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
         className={clsx(sidebarButtonClass, className, 'group !py-[4.5px]', {
           '!justify-center': isLogoButton,
           '!justify-between': !isLogoButton,
-          '!bg-gray-800': visible,
-          '!p-2 hover:!bg-gray-800': enableMobileAndDesktopLayoutBreakpoints,
+          '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
+          '!bg-gray-50': isDarkMode && visible,
+          '!bg-gray-800': !isDarkMode && visible,
+          '!p-2 hover:!bg-gray-800':
+            enableMobileAndDesktopLayoutBreakpoints && !isDarkMode,
+          '!p-2 hover:!bg-gray-50':
+            enableMobileAndDesktopLayoutBreakpoints && isDarkMode,
         })}
       >
         <section className="flex flex-row items-center gap-3 overflow-hidden">
@@ -63,7 +71,14 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
             }
           />
           {showColonySwitcherText && (
-            <p className="truncate text-md font-semibold text-base-white">
+            <p
+              className={clsx(
+                'truncate text-md font-semibold text-base-white',
+                {
+                  '!text-gray-900': isDarkMode,
+                },
+              )}
+            >
               {colonyName
                 ? capitalizeFirstLetter(colonyName)
                 : formatText(MSG.selectColony)}
@@ -77,7 +92,10 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
               className={clsx(
                 'w-auto flex-shrink-0 text-gray-400 transition-colors group-hover:text-base-white',
                 {
-                  '!text-base-white': visible,
+                  '!text-base-white': !isDarkMode && visible,
+                  '!text-gray-900': isDarkMode && visible,
+                  '!text-gray-400 group-hover:!text-gray-900':
+                    isDarkMode && !visible,
                 },
               )}
             />

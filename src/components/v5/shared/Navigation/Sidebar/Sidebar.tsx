@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+import { dark, light } from '~frame/Extensions/themes/consts.ts';
 import ColonyLogo from '~icons/ColonyLogo.tsx';
 import FeedbackButton from '~shared/FeedbackButton/index.ts';
 
@@ -25,12 +27,17 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     },
     ref,
   ) => {
+    const { isDarkMode } = usePageThemeContext();
+
     return (
       <nav
         ref={ref}
         className={clsx(
           'modal-blur top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
           'pb-4.5 z-sidebar hidden h-full w-fit flex-col items-start rounded-lg bg-gray-900 px-2 pt-[13.5px] md:flex',
+          {
+            '!bg-gray-100': isDarkMode,
+          },
           className,
         )}
       >
@@ -55,7 +62,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {showFeedbackButton && <FeedbackButton {...feedbackButtonProps} />}
           {showColonyLogo && (
             <div className="px-2">
-              <ColonyLogo />
+              <ColonyLogo color={isDarkMode ? dark.gray900 : light.baseWhite} />
             </div>
           )}
         </section>

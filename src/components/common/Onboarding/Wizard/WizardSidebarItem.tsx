@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+
 import { type WizardStep } from './types.ts';
 import WizardSidebarItemFlowLine from './WizardSidebarItemFlowLine.tsx';
 import WizardSidebarSubItem from './WizardSidebarSubItem.tsx';
@@ -20,6 +22,8 @@ const WizardSidebarItem = ({
   subItems,
   isLastItem,
 }: Props) => {
+  const { isDarkMode } = usePageThemeContext();
+
   const hasSubItems = subItems && subItems.length;
 
   /* @NOTE: This logic looks menacing, but we are just checking if
@@ -27,6 +31,10 @@ const WizardSidebarItem = ({
    * we hide the subitems section. */
   const hideSubItems =
     currentStep < stepId || currentStep >= stepId + (subItems?.length || 0);
+
+  const isCompleted =
+    (currentStep >= stepId && hasSubItems) ||
+    (!hasSubItems && currentStep === stepId);
 
   return (
     <div className="relative flex flex-col justify-start">
@@ -40,13 +48,17 @@ const WizardSidebarItem = ({
       <div className="relative flex items-center">
         <div
           className={clsx('h-2.5 w-2.5 rounded-full', {
-            'bg-base-white':
-              (currentStep >= stepId && hasSubItems) ||
-              (!hasSubItems && currentStep === stepId),
-            'border border-base-white': currentStep < stepId,
+            'bg-base-white': isCompleted && !isDarkMode,
+            'bg-gray-900': isCompleted && isDarkMode,
+            'border border-base-white': currentStep < stepId && !isDarkMode,
+            'border border-gray-900': currentStep < stepId && isDarkMode,
           })}
         />
-        <span className="ml-4 text-sm font-semibold text-base-white">
+        <span
+          className={clsx('ml-4 text-sm font-semibold text-base-white', {
+            '!text-gray-900': isDarkMode,
+          })}
+        >
           <FormattedMessage {...stepText} />
         </span>
       </div>
