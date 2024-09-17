@@ -25,6 +25,7 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
+import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useMembersPage } from './hooks.ts';
 import { MembersTabContentWrapper } from './partials/MembersTabContent/index.ts';
@@ -98,70 +99,73 @@ const MembersPage: FC = () => {
   ]);
 
   return (
-    <Tabs
-      activeTab={activeTab}
-      onTabClick={(_, id) =>
-        navigate(id === 0 ? COLONY_MEMBERS_ROUTE : COLONY_FOLLOWERS_ROUTE)
-      }
-      items={[
-        {
-          id: 0,
-          title: formatText({ id: 'membersPage.title' }),
-          notificationNumber: sortedContributorCount,
-          content: (
-            <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.title' })}
-              description={formatText({
-                id: 'membersPage.contributing.description',
-              })}
-              additionalActions={
-                <Filter
-                  excludeFilterType={FilterTypes.Team}
-                  searchInputLabel={formatMessage({
-                    id: 'filter.members.search.title',
-                  })}
-                  searchInputPlaceholder={formatMessage({
-                    id: 'filter.members.input.placeholder',
-                  })}
-                  customLabel={formatMessage({ id: 'allFilters' })}
-                />
-              }
-              titleAction={titleAction}
-            >
-              <Outlet />
-            </MembersTabContentWrapper>
-          ),
-        },
-        {
-          id: 1,
-          title: formatText({ id: 'membersPage.followers.title' }),
-          notificationNumber: sortedMemberCount,
-          content: (
-            <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.followers.title' })}
-              description={formatText({
-                id: 'membersPage.followers.description',
-              })}
-              additionalActions={
-                <Filter
-                  excludeFilterType={FilterTypes.Team}
-                  searchInputLabel={formatMessage({
-                    id: 'filter.members.search.title',
-                  })}
-                  searchInputPlaceholder={formatMessage({
-                    id: 'filter.members.input.placeholder',
-                  })}
-                  customLabel={formatMessage({ id: 'allFilters' })}
-                />
-              }
-              titleAction={titleAction}
-            >
-              <Outlet />
-            </MembersTabContentWrapper>
-          ),
-        },
-      ]}
-    />
+    <div className="flex flex-col gap-8">
+      <TeamFilter />
+      <Tabs
+        activeTab={activeTab}
+        onTabClick={(_, id) =>
+          navigate(id === 0 ? COLONY_MEMBERS_ROUTE : COLONY_FOLLOWERS_ROUTE)
+        }
+        items={[
+          {
+            id: 0,
+            title: formatText({ id: 'membersPage.title' }),
+            notificationNumber: sortedContributorCount,
+            content: (
+              <MembersTabContentWrapper
+                title={formatText({ id: 'membersPage.title' })}
+                description={formatText({
+                  id: 'membersPage.contributing.description',
+                })}
+                additionalActions={
+                  <Filter
+                    excludeFilterType={FilterTypes.Team}
+                    searchInputLabel={formatMessage({
+                      id: 'filter.members.search.title',
+                    })}
+                    searchInputPlaceholder={formatMessage({
+                      id: 'filter.members.input.placeholder',
+                    })}
+                    customLabel={formatMessage({ id: 'allFilters' })}
+                  />
+                }
+                titleAction={titleAction}
+              >
+                <Outlet />
+              </MembersTabContentWrapper>
+            ),
+          },
+          {
+            id: 1,
+            title: formatText({ id: 'membersPage.followers.title' }),
+            notificationNumber: sortedMemberCount,
+            content: (
+              <MembersTabContentWrapper
+                title={formatText({ id: 'membersPage.followers.title' })}
+                description={formatText({
+                  id: 'membersPage.followers.description',
+                })}
+                additionalActions={
+                  <Filter
+                    excludeFilterType={FilterTypes.Team}
+                    searchInputLabel={formatMessage({
+                      id: 'filter.members.search.title',
+                    })}
+                    searchInputPlaceholder={formatMessage({
+                      id: 'filter.members.input.placeholder',
+                    })}
+                    customLabel={formatMessage({ id: 'allFilters' })}
+                  />
+                }
+                titleAction={titleAction}
+              >
+                <Outlet />
+              </MembersTabContentWrapper>
+            ),
+          },
+        ]}
+      />
+    </div>
   );
 };
 
