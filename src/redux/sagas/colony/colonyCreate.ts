@@ -33,11 +33,11 @@ import {
   type GetFullColonyByNameQuery,
   type GetFullColonyByNameQueryVariables,
 } from '~gql';
-import { transactionPending } from '~redux/actionCreators/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import {
   transactionSetIdentifier,
   transactionSetParams,
+  transactionSetPending,
   updateTransaction,
 } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -422,7 +422,7 @@ function* deployExtensions(
   /*
    * Install OneTxPayment and StakedExpenditure extensions using multicall
    */
-  yield put(transactionPending(installExtensions.id));
+  yield transactionSetPending(installExtensions.id);
 
   const oneTxHash = getExtensionHash(Extension.OneTxPayment);
   const oneTxVersion = yield call(getExtensionVersion, Extension.OneTxPayment);
@@ -495,7 +495,7 @@ function* deployExtensions(
   /*
    * Set permissions for the newly deployed extensions
    */
-  yield put(transactionPending(setExtensionsRoles.id));
+  yield transactionSetPending(setExtensionsRoles.id);
 
   const setRolesMulticallData: string[] = [];
 
@@ -540,7 +540,7 @@ function* deployExtensions(
   /**
    * Enable Staked Expenditure
    */
-  // yield put(transactionPending(enableStakedExpenditure.id));
+  // yield transactionSetPending(enableStakedExpenditure.id);
 
   // yield put(
   //   transactionAddParams(enableStakedExpenditure.id, [DEFAULT_STAKE_FRACTION]),

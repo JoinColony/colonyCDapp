@@ -8,9 +8,11 @@ import {
   type UpdateColonyMetadataMutation,
   type UpdateColonyMetadataMutationVariables,
 } from '~gql';
-import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  transactionSetPending,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { isEqual } from '~utils/lodash.ts';
 
@@ -97,7 +99,7 @@ function* editColonyAction({
       );
     }
 
-    yield put(transactionPending(editColony.id));
+    yield transactionSetPending(editColony.id);
 
     // /*
     //  * Upload colony metadata to IPFS

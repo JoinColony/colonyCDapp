@@ -3,10 +3,12 @@ import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
-import { transactionPending } from '~redux/actionCreators/index.ts';
 import { ActionTypes, type Action, type AllActions } from '~redux/index.ts';
 import { type OneTxPaymentPayload } from '~redux/types/actions/colonyActions.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  transactionSetPending,
+} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -125,7 +127,7 @@ function* createPaymentAction({
       );
     }
 
-    yield put(transactionPending(paymentAction.id));
+    yield transactionSetPending(paymentAction.id);
 
     const oneTxPaymentClient = yield colonyManager.getClient(
       ClientType.OneTxPaymentClient,

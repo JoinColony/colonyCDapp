@@ -36,7 +36,7 @@ const handleBeforeUnload = (e) => {
   return e.returnValue;
 };
 
-const onTransactionPending = (id: string) => {
+export const onTransactionPending = (id: string) => {
   pendingTransactions.add(id);
   // the first pending transaction, set up listener. I.e, we only need one
   if (pendingTransactions.size === 1) {
@@ -62,16 +62,6 @@ function* updateTransactionInDb({
 
   try {
     switch (type) {
-      case ActionTypes.TRANSACTION_PENDING: {
-        onTransactionPending(id);
-        yield updateTransaction({
-          id,
-          status: TransactionStatus.Pending,
-        });
-
-        break;
-      }
-
       case ActionTypes.TRANSACTION_LOAD_RELATED: {
         const { loading } = payload as TransactionLoadRelatedPayload;
         yield updateTransaction({
@@ -216,7 +206,7 @@ function* updateTransactionInDb({
 export default function* setupTransactionsSaga() {
   yield takeEvery(
     [
-      // TRANSACTION_READY, TRANSACTION_ADD_IDENTIFIER, TRANSACTION_ADD_PARAMS are handled separately
+      // TRANSACTION_READY, TRANSACTION_PENDING, TRANSACTION_ADD_IDENTIFIER, TRANSACTION_ADD_PARAMS are handled separately
       ActionTypes.TRANSACTION_SEND,
       ActionTypes.TRANSACTION_SENT,
       ActionTypes.TRANSACTION_RECEIPT_RECEIVED,
@@ -225,7 +215,6 @@ export default function* setupTransactionsSaga() {
       ActionTypes.TRANSACTION_CANCEL,
       ActionTypes.TRANSACTION_LOAD_RELATED,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
-      ActionTypes.TRANSACTION_PENDING,
       ActionTypes.TRANSACTION_GAS_UPDATE,
     ],
     updateTransactionInDb,
