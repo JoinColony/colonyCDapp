@@ -16,7 +16,6 @@ import {
 } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { toNumber } from '~utils/numbers.ts';
 
@@ -82,7 +81,7 @@ function* createStreamingPaymentAction({
     );
     const { network } = colonyManager.networkClient;
 
-    const paymentAddress = yield adjustRecipientAddress(
+    const adjustedRecipientAddress = yield adjustRecipientAddress(
       {
         tokenAddress,
         recipientAddress,
@@ -138,7 +137,7 @@ function* createStreamingPaymentAction({
         startTimestamp,
         realEndTimestamp,
         interval,
-        recipientAddress,
+        adjustedRecipientAddress,
         tokenAddress,
         amountInWei,
       ],
@@ -176,6 +175,10 @@ function* createStreamingPaymentAction({
         receipt: { transactionHash: txHash },
       },
     } = yield waitForTxResult(createStreamingPayment.channel);
+
+    if (customActionTitle) {
+      yield createActionMetadataInDB(txHash, customActionTitle);
+    }
 
     if (annotationMessage) {
       yield uploadAnnotation({
