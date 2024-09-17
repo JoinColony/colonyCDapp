@@ -8,7 +8,7 @@ import { getFormAction } from '~utils/actions.ts';
 
 import Button from './Button.tsx';
 import IconButton from './IconButton.tsx';
-import { type ActionButtonProps } from './types.ts';
+import { LoadingBehavior, type ActionButtonProps } from './types.ts';
 
 const ActionButton: FC<ActionButtonProps> = ({
   actionType,
@@ -20,7 +20,7 @@ const ActionButton: FC<ActionButtonProps> = ({
   transform,
   values,
   isLoading = false,
-  useTxLoader,
+  loadingBehavior,
   ...props
 }) => {
   const isMobile = useMobile();
@@ -47,12 +47,13 @@ const ActionButton: FC<ActionButtonProps> = ({
       if (isMountedRef.current) setLoading(false);
       if (typeof onSuccess == 'function') onSuccess(result);
     } catch (err) {
-      setLoading(false);
       onError?.(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return useTxLoader && (isLoading || loading) ? (
+  if (loadingBehavior === LoadingBehavior.TxLoader && (isLoading || loading)) {
     <IconButton
       rounded="s"
       isFullSize={props.isFullSize || isMobile}
@@ -63,8 +64,14 @@ const ActionButton: FC<ActionButtonProps> = ({
         </span>
       }
       className="!px-4 !text-md"
-    />
-  ) : (
+    />;
+  }
+
+  if (loadingBehavior === LoadingBehavior.Disabled && (isLoading || loading)) {
+    return <Button onClick={handleClick} disabled {...props} />;
+  }
+
+  return (
     <Button onClick={handleClick} loading={loading || isLoading} {...props} />
   );
 };

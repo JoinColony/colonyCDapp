@@ -20,6 +20,7 @@ import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 
 import {
   ExtensionTabId,
@@ -94,7 +95,7 @@ const InstallButton = ({
 
   return (
     <ActionButton
-      useTxLoader
+      loadingBehavior={LoadingBehavior.TxLoader}
       actionType={ActionTypes.EXTENSION_INSTALL}
       isLoading={isPolling}
       values={{ colonyAddress, extensionData }}

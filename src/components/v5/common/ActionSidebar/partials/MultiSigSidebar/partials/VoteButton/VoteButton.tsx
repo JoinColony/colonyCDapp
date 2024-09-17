@@ -10,7 +10,7 @@ import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
-import { type ButtonProps } from '~v5/shared/Button/types.ts';
+import { LoadingBehavior, type ButtonProps } from '~v5/shared/Button/types.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.VoteButton';
@@ -69,7 +69,7 @@ const VoteButton: FC<VoteButtonProps> = ({
   return (
     <ActionButton
       isFullSize
-      useTxLoader
+      loadingBehavior={LoadingBehavior.TxLoader}
       actionType={ActionTypes.MULTISIG_VOTE}
       isLoading={isLoading}
       onError={() => {

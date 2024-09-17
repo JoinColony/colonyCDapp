@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { number, object } from 'yup';
 
 import MemberReputation from '~common/Extensions/UserNavigation/partials/MemberReputation/index.ts';
@@ -15,6 +15,7 @@ import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type VoterRecord } from '~types/graphql.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { type DescriptionListItem } from './partials/DescriptionList/types.ts';
@@ -29,7 +30,6 @@ const useVotingWidgetUpdate = (
   stopPollingAction: () => void,
 ) => {
   const { user } = useAppContext();
-
   const currentVotingRecord = voterRecord.find(
     ({ address }) => address === user?.walletAddress,
   );
@@ -37,9 +37,11 @@ const useVotingWidgetUpdate = (
   const [prevRecord, setPrevRecord] = useState(currentVotingRecord);
   const [hasUserVoted, setHasUserVoted] = useState(!!currentVotingRecord);
 
-  if (currentVotingRecord && !hasUserVoted) {
-    setHasUserVoted(true);
-  }
+  useEffect(() => {
+    if (currentVotingRecord && !hasUserVoted) {
+      setHasUserVoted(true);
+    }
+  }, [currentVotingRecord, hasUserVoted]);
 
   useEffect(() => {
     if (!user) {
@@ -50,10 +52,12 @@ const useVotingWidgetUpdate = (
   }, [user, currentVotingRecord]);
 
   // if user's vote count increased, db has been updated, stop polling
-  if (currentVotingRecord?.voteCount !== prevRecord?.voteCount) {
-    stopPollingAction();
-    setPrevRecord(currentVotingRecord);
-  }
+  useEffect(() => {
+    if (currentVotingRecord?.voteCount !== prevRecord?.voteCount) {
+      stopPollingAction();
+      setPrevRecord(currentVotingRecord);
+    }
+  }, [currentVotingRecord, prevRecord, stopPollingAction]);
 
   useEffect(() => stopPollingAction, [stopPollingAction]);
 
@@ -116,20 +120,37 @@ export const useVotingStep = ({
   });
   const { max: maxReward, min: minReward } = data?.getVoterRewards || {};
 
-  const currentUserVote = getLocalStorageVoteValue(transactionId);
-
-  const transform = mapPayload(
-    ({ vote }) =>
-      ({
-        colonyAddress,
-        userAddress: user?.walletAddress,
-        vote: Number(vote),
-        motionId: BigNumber.from(motionId),
-      }) as MotionVotePayload,
+  const [currentUserVote, setCurrentUserVote] = useState<MotionVote | null>(
+    getLocalStorageVoteValue(transactionId),
   );
 
-  const handleSuccess: OnSuccess<VotingFormValues> = (vote, { reset }) => {
-    setLocalStorageVoteValue(transactionId, vote.vote);
+  const transform = useMemo(
+    () =>
+      mapPayload(
+        ({ vote }) =>
+          ({
+            colonyAddress,
+            userAddress: user?.walletAddress,
+            vote: Number(vote),
+            motionId: BigNumber.from(motionId),
+          }) as MotionVotePayload,
+      ),
+    [colonyAddress, user?.walletAddress, motionId],
+  );
+
+  const getChangedVote = () => {
+    let changedVote = MotionVote.Yay;
+
+    if (currentUserVote === MotionVote.Yay) {
+      changedVote = MotionVote.Nay;
+    }
+
+    return changedVote;
+  };
+
+  const handleSuccess: OnSuccess<VotingFormValues> = ({ vote }, { reset }) => {
+    setLocalStorageVoteValue(transactionId, vote);
+    setCurrentUserVote(vote);
     setHasUserVoted(true);
     reset();
     startPollingAction();
@@ -137,9 +158,28 @@ export const useVotingStep = ({
 
   const validationSchema = object()
     .shape({
-      vote: number().required(),
+      vote: number().oneOf([MotionVote.Nay, MotionVote.Yay]).required(),
     })
     .defined();
+
+  const handleChangeVoteSuccess = () => {
+    const changedVote = getChangedVote();
+    setLocalStorageVoteValue(transactionId, changedVote);
+    setCurrentUserVote(changedVote);
+    setHasUserVoted(true);
+    startPollingAction();
+  };
+
+  const getChangeVotePayload = () => {
+    const changedVote = getChangedVote();
+
+    return {
+      colonyAddress,
+      userAddress: user?.walletAddress,
+      vote: Number(changedVote),
+      motionId: BigNumber.from(motionId),
+    };
+  };
 
   let items: DescriptionListItem[] = [
     {
@@ -196,5 +236,7 @@ export const useVotingStep = ({
     handleSuccess,
     items,
     validationSchema,
+    handleChangeVoteSuccess,
+    getChangeVotePayload,
   };
 };
