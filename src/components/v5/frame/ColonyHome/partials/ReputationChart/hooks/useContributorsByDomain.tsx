@@ -46,9 +46,10 @@ export const useContributorsByDomain = () => {
     [allContributors, selectedDomain],
   );
 
-  const contributorsList = contributorsWithReputationByDomain.sort(
-    (a, b) => Number(b.reputation) - Number(a.reputation),
-  );
+  const contributorsList = contributorsWithReputationByDomain
+    .filter((contributor) => !!contributor.reputation)
+    .sort((a, b) => Number(b.reputation) - Number(a.reputation));
+
   return {
     contributorsList,
     loading,
