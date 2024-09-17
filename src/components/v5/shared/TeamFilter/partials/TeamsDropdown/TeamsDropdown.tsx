@@ -56,7 +56,7 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
               type="button"
               key={`TeamsDropdown.${domain.nativeId}`}
               onClick={() => handleClick(domain)}
-              className="w-full text-sm font-medium text-gray-700 hover:font-semibold hover:text-gray-900"
+              className="w-full text-start text-sm font-medium text-gray-700 hover:font-semibold hover:text-gray-900"
             >
               {domain.metadata?.name}
             </button>

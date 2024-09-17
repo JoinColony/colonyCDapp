@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { useEffect, type FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { useMobile } from '~hooks/index.ts';
+import { useScrollIntoView } from '~hooks/useScrollIntoView.ts';
 import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
 import { type Domain } from '~types/graphql.ts';
 import { getTeamColor } from '~utils/teams.ts';
@@ -15,8 +17,20 @@ interface TeamItemProps {
 
 const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { ref: teamItemRef, scroll } = useScrollIntoView<HTMLButtonElement>();
+  const isMobile = useMobile();
 
   const teamColor = getTeamColor(domain.metadata?.color);
+
+  useEffect(() => {
+    if (selected && isMobile) {
+      scroll({
+        block: 'end',
+        inline: 'center',
+        behavior: 'smooth',
+      });
+    }
+  }, [selected, isMobile, scroll]);
 
   const handleClick = () => {
     if (selected) {
@@ -30,9 +44,10 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
 
   return (
     <button
+      ref={teamItemRef}
       type="button"
       className={clsx(
-        'w-full bg-base-white px-4 py-2 text-3',
+        'w-full bg-base-white px-4 py-2 text-sm',
         selected ? teamColor : null,
         {
           'border-r border-solid border-gray-200 font-medium text-gray-700':
