@@ -2,8 +2,10 @@ import { Plus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { Action } from '~constants/actions.ts';
+import { currencySymbolMap } from '~constants/currency.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
@@ -26,11 +28,14 @@ export const FundsCards = () => {
 
   const teams = colony.domains?.items || [];
 
+  // Teams always will have at least 1 team by default - it is general
+  const isAddNewTeamVisible = teams.length < 2;
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
       <WidgetCards.List className="w-full">
         <FundsCardsTotalItem />
         {teams.map((item) => {
+          const currency = 'USD'; // @TODO: use item currency instead
           return (
             <WidgetCards.Item
               key={item?.id}
@@ -39,13 +44,20 @@ export const FundsCards = () => {
               title={item?.metadata?.name}
               // @TODO: update with a real teams data
               subTitle={
-                <FundsCardsSubTitle value="$15,779.00" currency="usd" />
+                <FundsCardsSubTitle
+                  currency={currency}
+                  value={
+                    <Numeral
+                      value="15,779.00"
+                      prefix={currencySymbolMap[currency]}
+                    />
+                  }
+                />
               }
             />
           );
         })}
-        {/* Teams always will have at least 1 team by default - it is general */}
-        {teams.length < 2 && (
+        {isAddNewTeamVisible && (
           <WidgetCards.Item
             variant="dashed"
             icon={Plus}
