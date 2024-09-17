@@ -52,15 +52,19 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           </section>
           <div className="flex w-full flex-col items-center">
             <section
-              className={clsx('w-full md:px-8 md:pt-[33px]', {
+              className={clsx('w-full md:px-8 md:pt-[2.063rem]', {
                 'sm:px-6 sm:pt-7': enableMobileAndDesktopLayoutBreakpoints,
               })}
             >
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
-            <section className="w-full overflow-auto px-6 md:p-8">
+            <section
+              className={clsx('w-full overflow-auto px-6 md:p-8', {
+                'md:!pt-[1.125rem]': !headerProps?.pageHeadingProps?.title,
+              })}
+            >
               <div
-                className={clsx('mx-auto max-w-[1144px] pt-6 md:pt-0', {
+                className={clsx('mx-auto max-w-[71.5rem] pt-6 md:pt-0', {
                   '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                 })}
               >
