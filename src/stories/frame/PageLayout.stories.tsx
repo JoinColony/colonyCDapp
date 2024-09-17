@@ -175,16 +175,6 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
             label: 'Metacolony',
             href: '/',
           },
-          {
-            key: '2',
-            dropdownOptions: [
-              {
-                label: 'All teams',
-                href: '/all-teams',
-              },
-            ],
-            selectedValue: '/all-teams',
-          },
         ],
       },
       userNavigation: <p>user navigation</p>,

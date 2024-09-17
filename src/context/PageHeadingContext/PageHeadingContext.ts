@@ -30,17 +30,3 @@ export const useSetPageHeadingTitle = (title: string | undefined) => {
     };
   }, [setTitle, title]);
 };
-
-export const useSetPageBreadcrumbs = (
-  breadcrumbs: PageHeadingProps['breadcrumbs'],
-) => {
-  const { setBreadcrumbs } = usePageHeadingContext();
-
-  useEffect(() => {
-    setBreadcrumbs(breadcrumbs);
-
-    return () => {
-      setBreadcrumbs([]);
-    };
-  }, [breadcrumbs, setBreadcrumbs]);
-};
