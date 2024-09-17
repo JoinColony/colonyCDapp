@@ -20,8 +20,8 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
     emblaRef,
     prevBtnDisabled,
     nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
+    onPrevBtnClick,
+    onNextBtnClick,
   } = useEmblaCarouselSettings({
     loop: false,
     slidesToScroll: !isLargeTablet ? 2 : 1,
@@ -30,10 +30,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
   return (
     <div className={clsx(className, 'relative flex')}>
       {!prevBtnDisabled && (
-        <CarouselButton
-          onClick={onPrevButtonClick}
-          className="left-0 pl-3 pr-6"
-        >
+        <CarouselButton onClick={onPrevBtnClick} className="left-0 pl-3 pr-6">
           <CaretLeft />
         </CarouselButton>
       )}
@@ -45,10 +42,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
       </div>
 
       {!nextBtnDisabled && (
-        <CarouselButton
-          onClick={onNextButtonClick}
-          className="right-0 pl-6 pr-3"
-        >
+        <CarouselButton onClick={onNextBtnClick} className="right-0 pl-6 pr-3">
           <CaretRight />
         </CarouselButton>
       )}
