@@ -3,7 +3,6 @@ import React, { type FC } from 'react';
 
 import Link from '../Link/index.ts';
 
-import BreadcrumbsCardSelect from './BreadcrumbsCardSelect.tsx';
 import { type BreadcrumbsItem, type BreadcrumbsProps } from './types.ts';
 
 const displayName = 'v5.Breadcrumbs';
@@ -15,10 +14,6 @@ const getBreadcrumbItem = (item: BreadcrumbsItem) => {
         {item.label}
       </Link>
     );
-  }
-
-  if ('dropdownOptions' in item) {
-    return <BreadcrumbsCardSelect item={item} />;
   }
 
   return <h5>{item.label}</h5>;
