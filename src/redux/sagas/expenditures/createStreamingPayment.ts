@@ -56,6 +56,7 @@ function* createStreamingPaymentAction({
     endCondition,
     limitAmount,
     annotationMessage,
+    customActionTitle,
   },
   meta,
   meta: { setTxHash },
