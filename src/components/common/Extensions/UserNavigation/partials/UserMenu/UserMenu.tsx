@@ -35,6 +35,7 @@ const UserMenu: FC<UserMenuProps> = ({
   tooltipProps,
   setTooltipRef,
   isVerified,
+  setVisible,
 }) => {
   const isTablet = useTablet();
   const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
@@ -216,6 +217,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <UserSubmenu
               submenuId={activeSubmenu}
               closeSubmenu={closeSubmenu}
+              setVisible={setVisible}
             />
           </>
         )}
