@@ -1,12 +1,11 @@
 import React, { type FC, useEffect } from 'react';
+import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
 import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
-import {
-  usePageHeadingContext,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useTablet } from '~hooks';
 import {
   USER_CRYPTO_TO_FIAT_ROUTE,
@@ -20,6 +19,13 @@ import { formatText } from '~utils/intl.ts';
 import { TabId } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage';
+
+const MSG = defineMessages({
+  homeBreadcrumbLabel: {
+    id: `${displayName}.homeBreadcrumbLabel`,
+    defaultMessage: 'Colony',
+  },
+});
 
 const tabRoutes = [
   {
@@ -60,7 +66,8 @@ const UserProfilePage: FC = () => {
   const featureFlags = useFeatureFlagsContext();
   const isTablet = useTablet();
 
-  const { setBreadcrumbs } = usePageHeadingContext();
+  const { setRootBreadcrumbItem, setShouldShowBreadcrumbs, resetBreadcrumbs } =
+    useBreadcrumbsContext();
 
   const allowedTabRoutes = tabRoutes.filter((route) =>
     route.featureFlag
@@ -75,14 +82,17 @@ const UserProfilePage: FC = () => {
   )?.id;
 
   useEffect(() => {
-    setBreadcrumbs([
-      {
-        key: 'landing-page',
-        label: 'Colony App',
-        href: '/',
-      },
-    ]);
-  }, [setBreadcrumbs]);
+    setRootBreadcrumbItem({
+      link: '',
+      label: formatText(MSG.homeBreadcrumbLabel),
+    });
+    setShouldShowBreadcrumbs(true);
+
+    return () => {
+      resetBreadcrumbs();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
 
