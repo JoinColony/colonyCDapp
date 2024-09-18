@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { type Domain } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -13,6 +14,8 @@ import {
   getTeamReputationChartData,
   isThereReputationInDomains,
 } from './utils.ts';
+
+const hasNoSubDomains = (domain?: Domain) => !!domain && !domain?.isRoot;
 
 const displayName = 'v5.frame.ColonyHome.ReputationChart';
 
@@ -49,9 +52,11 @@ const ReputationChart = () => {
   const chartDataContributors =
     getContributorReputationChartData(contributorsList);
 
-  // if domain/team is selected we should show Top Contributors chart instead
-  const chartData = selectedDomain ? chartDataContributors : chartDataTeams;
-  const reputationTitle = selectedDomain
+  // if no subdomains we should show Top Contributors chart instead
+  // otherwise it will be a subdomain chart
+  const isNoSubDomains = hasNoSubDomains(selectedDomain);
+  const chartData = isNoSubDomains ? chartDataContributors : chartDataTeams;
+  const reputationTitle = isNoSubDomains
     ? MSG.reputationTitleContributors
     : MSG.reputationTitleTeam;
 
