@@ -1484,7 +1484,7 @@ type Colony @model {
   # Ideally we would merge data from these two into one field, but I couldn't do that
   # meaning we'll have to merge this data in-app (or not at all, works either way)
   # If you have a better idea, on how to merged them, I'll all ears..
-  fundsClaims: [ColonyFundsClaim] @hasMany(indexName: "byColony", fields: ["id"])
+  fundsClaimData: [ColonyFundsClaim] @hasMany(indexName: "byColony", fields: ["id"])
   """
   Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
   This is not an array since only a single token type can be returned
@@ -2147,7 +2147,7 @@ type ColonyFundsClaim @model {
   """
   id: ID! @index(sortKeyFields: ["createdAt"])
   """
-  The identifier of the Colony the Colony Funds Claim belong to 
+  The identifier of the Colony the Colony Funds Claim belong to
   """
   colonyFundsClaimsId: ID @index(name: "byColony", sortKeyFields: ["createdAt"], queryField: "getFundsClaimsByColony")
   """
