@@ -162,75 +162,88 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           key: FinalizeStepSections.Finalize,
           content: (
             <ActionForm {...action} onSuccess={handleSuccess}>
-              {items.length > 0 && (
+              {({ formState: { isSubmitting } }) => (
                 <>
-                  <div className="mb-2">
-                    <h4 className="mb-3 flex items-center justify-between text-1">
-                      {formatText({ id: 'motion.finalizeStep.title' })}
-                      {isClaimed && (
-                        <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
-                          {formatText({ id: 'motion.finalizeStep.claimed' })}
-                        </PillsBase>
-                      )}
-                    </h4>
-                  </div>
-                  <DescriptionList
-                    items={items}
-                    className={clsx({
-                      'mb-6':
-                        !isMotionFailedNotFinalizable &&
-                        (!isMotionFinalized || (!isClaimed && canClaimStakes)),
-                    })}
-                  />
-                </>
-              )}
-              {canInteract && (
-                <>
-                  {isPolling && (
-                    <IconButton
-                      className="w-full"
-                      rounded="s"
-                      text={{ id: 'button.pending' }}
-                      icon={
-                        <span className="ml-1.5 flex shrink-0">
-                          <SpinnerGap size={14} className="animate-spin" />
-                        </span>
-                      }
-                      title={{ id: 'button.pending' }}
-                      ariaLabel={{ id: 'button.pending' }}
-                    />
+                  {items.length > 0 && (
+                    <>
+                      <div className="mb-2">
+                        <h4 className="mb-3 flex items-center justify-between text-1">
+                          {formatText({ id: 'motion.finalizeStep.title' })}
+                          {isClaimed && (
+                            <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                              {formatText({
+                                id: 'motion.finalizeStep.claimed',
+                              })}
+                            </PillsBase>
+                          )}
+                        </h4>
+                      </div>
+                      <DescriptionList
+                        items={items}
+                        className={clsx({
+                          'mb-6':
+                            !isMotionFailedNotFinalizable &&
+                            (!isMotionFinalized ||
+                              (!isClaimed && canClaimStakes)),
+                        })}
+                      />
+                    </>
                   )}
-                  {!isPolling &&
-                    !isMotionFailedNotFinalizable &&
-                    !isMotionFinalized &&
-                    !isMotionAgreement && (
-                      <Button
-                        mode="primarySolid"
-                        disabled={!isFinalizable || wrongMotionState}
-                        isFullSize
-                        text={formatText({
-                          id: 'motion.finalizeStep.submit',
-                        })}
-                        type="submit"
-                      />
-                    )}
-                  {!isPolling &&
-                    !isMotionFailedNotFinalizable &&
-                    isMotionClaimable &&
-                    !isClaimed &&
-                    canClaimStakes && (
-                      <Button
-                        mode="primarySolid"
-                        disabled={!canClaimStakes || wrongMotionState}
-                        isFullSize
-                        text={formatText({
-                          id: isMotionAgreement
-                            ? 'motion.finalizeStep.returnStakes'
-                            : buttonTextId,
-                        })}
-                        type="submit"
-                      />
-                    )}
+                  {canInteract && (
+                    <>
+                      {(isPolling || isSubmitting) && (
+                        <IconButton
+                          className="w-full"
+                          rounded="s"
+                          text={{ id: 'button.pending' }}
+                          icon={
+                            <span className="ml-1.5 flex shrink-0">
+                              <SpinnerGap size={14} className="animate-spin" />
+                            </span>
+                          }
+                          title={{ id: 'button.pending' }}
+                          ariaLabel={{ id: 'button.pending' }}
+                        />
+                      )}
+                      {!isPolling &&
+                        !isSubmitting &&
+                        !isMotionFailedNotFinalizable &&
+                        !isMotionFinalized &&
+                        !isMotionAgreement && (
+                          <Button
+                            mode="primarySolid"
+                            disabled={!isFinalizable || wrongMotionState}
+                            isFullSize
+                            text={formatText({
+                              id: 'motion.finalizeStep.submit',
+                            })}
+                            type="submit"
+                          />
+                        )}
+                      {!isPolling &&
+                        !isSubmitting &&
+                        !isMotionFailedNotFinalizable &&
+                        isMotionClaimable &&
+                        !isClaimed &&
+                        canClaimStakes && (
+                          <Button
+                            mode="primarySolid"
+                            disabled={
+                              !canClaimStakes ||
+                              wrongMotionState ||
+                              isSubmitting
+                            }
+                            isFullSize
+                            text={formatText({
+                              id: isMotionAgreement
+                                ? 'motion.finalizeStep.returnStakes'
+                                : buttonTextId,
+                            })}
+                            type="submit"
+                          />
+                        )}
+                    </>
+                  )}
                 </>
               )}
             </ActionForm>
