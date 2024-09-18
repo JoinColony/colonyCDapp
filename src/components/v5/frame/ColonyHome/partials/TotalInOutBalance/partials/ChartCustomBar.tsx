@@ -3,12 +3,11 @@ import React, { type FC } from 'react';
 
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import { ChartCustomTooltip } from '~v5/frame/ColonyHome/partials/ChartCustomTooltip/ChartCustomTooltip.tsx';
 
 import { CHART_CONFIG_VALUES } from '../consts.ts';
 import { type BarItem } from '../types.ts';
 import { getFormattedFullAmount } from '../utils.ts';
-
-import { ChartCustomTooltip } from './ChartCustomTooltip.tsx';
 
 interface ChartCustomBarProps {
   bar: BarItem;

@@ -1,13 +1,13 @@
-import { type PieTooltipProps, ResponsivePie } from '@nivo/pie';
+import { ResponsivePie } from '@nivo/pie';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { pieChartConfig } from '../consts.ts';
 import { type ReputationChartDataItem } from '../types.ts';
 
+import { ChartTooltip } from './ChartTooltip.tsx';
 import Legend from './Legend.tsx';
 import LegendItem from './LegendItem.tsx';
 
@@ -31,17 +31,6 @@ interface ChartProps {
   data: ReputationChartDataItem[];
 }
 
-const TemporaryTooltip: FC<PieTooltipProps<ReputationChartDataItem>> = ({
-  datum: { label, value },
-}) => {
-  return (
-    <div className="bg-base-black p-2 text-base-white">
-      {label} (<Numeral value={value.toFixed(2)} />
-      %)
-    </div>
-  );
-};
-
 export const Chart: FC<ChartProps> = ({ data }) => {
   return (
     <>
@@ -50,7 +39,7 @@ export const Chart: FC<ChartProps> = ({ data }) => {
           {...pieChartConfig}
           data={data.length ? data : [EMPTY_CHART_ITEM]}
           isInteractive={!!data.length}
-          tooltip={TemporaryTooltip}
+          tooltip={ChartTooltip}
         />
       </div>
       <Legend>
