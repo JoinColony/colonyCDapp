@@ -66,7 +66,7 @@ exports.handler = async (event) => {
     );
   } while (nextToken);
 
-  const mutationResults = await Promise.allSettled(promises);
+  const mutationResults = await Promise.all(promises);
 
   const failedTransactions =  mutationResults.map((res) => res.data?.updateTransaction).filter((res) => !!res);
 
