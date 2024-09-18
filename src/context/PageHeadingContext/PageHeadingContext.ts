@@ -1,3 +1,4 @@
+// @TODO remove this entire thing and render titles on each page instead
 import { createContext, useContext, useEffect } from 'react';
 
 import { type PageHeadingProps } from '~v5/frame/PageLayout/partials/PageHeading/types.ts';
