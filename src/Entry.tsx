@@ -7,6 +7,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContextProvider.tsx';
+import BreadcrumbsContextProvider from '~context/BreadcrumbsContext/BreadcrumbsContextProvider.tsx';
 import { getContext, ContextModule } from '~context/index.ts';
 import RouteTracker from '~routes/RouteTracker.tsx';
 
@@ -55,8 +56,10 @@ const Entry = ({ store }: Props) => {
             <HelmetProvider>
               <AnalyticsContextProvider>
                 <Router>
-                  <RouteTracker />
-                  <Routes />
+                  <BreadcrumbsContextProvider>
+                    <RouteTracker />
+                    <Routes />
+                  </BreadcrumbsContextProvider>
                 </Router>
               </AnalyticsContextProvider>
             </HelmetProvider>

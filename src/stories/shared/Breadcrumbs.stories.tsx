@@ -5,15 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 const breadcrumbsMeta: Meta<typeof Breadcrumbs> = {
   title: 'Shared/Breadcrumbs',
   component: Breadcrumbs,
-  args: {
-    items: [
-      {
-        key: '1',
-        label: 'Metacolony',
-        href: '/',
-      },
-    ],
-  },
+  args: {},
 };
 
 export default breadcrumbsMeta;
