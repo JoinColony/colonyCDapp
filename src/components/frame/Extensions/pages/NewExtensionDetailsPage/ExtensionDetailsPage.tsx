@@ -8,7 +8,8 @@ import { NotFoundRoute } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 
-import ExtensionDetailsPageContent from './ExtensionDetailsPageContent.ts';
+import { ExtensionDetailsPageContextProvider } from './context/ExtensionDetailsPageContextProvider.tsx';
+import ExtensionDetailsPageContent from './partials/ExtensionDetailsPageContent.tsx';
 
 const displayName = 'frame.Extensions.pages.Extensions.ExtensionDetailsPage';
 
@@ -36,10 +37,12 @@ const ExtensionDetailsPage = () => {
   }
 
   return (
-    <ExtensionDetailsPageContent
-      extensionData={extensionData}
-      refetchExtensionData={refetchExtensionData}
-    />
+    <ExtensionDetailsPageContextProvider>
+      <ExtensionDetailsPageContent
+        extensionData={extensionData}
+        refetchExtensionData={refetchExtensionData}
+      />
+    </ExtensionDetailsPageContextProvider>
   );
 };
 
