@@ -4,6 +4,5 @@ export type BreadcrumbsItem = { key: string } & {
 };
 
 export interface BreadcrumbsProps {
-  items: BreadcrumbsItem[];
   className?: string;
 }
