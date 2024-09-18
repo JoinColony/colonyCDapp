@@ -1,4 +1,5 @@
 const createActionMessages = {
+  tourIntro: 'Learn how to create actions like payments, transfers, and more.',
   creatingActions:
     'The action panel lets you perform actions like payments, transfers, and more.',
   enterTitle:
