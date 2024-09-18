@@ -7,12 +7,9 @@ import { tw } from '~utils/css/index.ts';
 import { WidgetContent } from './partials/WidgetContent.tsx';
 
 const wrapperClassName = tw`
-  flex min-h-[7rem] min-w-[67.25%]
-  select-none flex-col justify-center rounded-lg border
-  px-6 py-5 text-left
-  sm:min-w-[26.5%]
-  md:min-w-[30%]
-  lg:min-w-[21.85%]
+  flex min-h-[7rem]
+  min-w-[15.625rem] select-none flex-col justify-center rounded-lg
+  border px-6 py-5 text-left
 `;
 const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
 
