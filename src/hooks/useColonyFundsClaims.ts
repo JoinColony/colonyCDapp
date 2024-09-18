@@ -11,9 +11,9 @@ import { notNull } from '~utils/arrays/index.ts';
  */
 const useColonyFundsClaims = (): ColonyClaims[] => {
   const {
-    colony: { fundsClaims, chainFundsClaim, tokens },
+    colony: { fundsClaimData, chainFundsClaim, tokens },
   } = useColonyContext();
-  const { items: claims = [] } = fundsClaims || {};
+  const { items: claims = [] } = fundsClaimData || {};
 
   /*
    * @NOTE We have to do some very heavy lifting (more or less) here due to us
