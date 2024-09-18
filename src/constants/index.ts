@@ -294,7 +294,7 @@ export const isDev = import.meta.env.NETWORK_ID === 'ganache';
 
 export const CDAPP_VERSION = version;
 
-export const EXTENSIONS_COUNT_THRESHOLD = 39;
+export const EXTENSIONS_INSTALLS_COUNT_THRESHOLD = 39;
 
 export const STAKING_THRESHOLD = 10;
 
