@@ -12,6 +12,7 @@ import MemberContextProvider from '~context/MemberContext/MemberContextProviderW
 import MemberModalProvider from '~context/MemberModalContext/MemberModalContextProvider.tsx';
 import PaymentBuilderContextProvider from '~context/PaymentBuilderContext/PaymentBuilderContextProvider.tsx';
 import TokensModalContextProvider from '~context/TokensModalContext/TokensModalContextProvider.tsx';
+import TourContextProvider from '~context/TourContext/TourContextProvider.tsx';
 import UserTokenBalanceProvider from '~context/UserTokenBalanceContext/UserTokenBalanceContextProvider.tsx';
 import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
@@ -107,11 +108,13 @@ const ColonyRoute = () => {
               <MemberModalProvider>
                 <ColonyCreateModalProvider>
                   <TokensModalContextProvider>
-                    <PaymentBuilderContextProvider>
-                      <ColonyLayout>
-                        <Outlet />
-                      </ColonyLayout>
-                    </PaymentBuilderContextProvider>
+                    <TourContextProvider>
+                      <PaymentBuilderContextProvider>
+                        <ColonyLayout>
+                          <Outlet />
+                        </ColonyLayout>
+                      </PaymentBuilderContextProvider>
+                    </TourContextProvider>
                   </TokensModalContextProvider>
                 </ColonyCreateModalProvider>
               </MemberModalProvider>

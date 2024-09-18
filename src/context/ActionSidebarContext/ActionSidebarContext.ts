@@ -7,7 +7,7 @@ import {
   type UseToggleReturnType,
 } from '~hooks/useToggle/types.ts';
 
-type ActionSidebarToggle = [
+export type ActionSidebarToggle = [
   boolean,
   {
     toggle: (actionSidebarInitialValues?: FieldValues) => void;

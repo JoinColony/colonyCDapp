@@ -1,5 +1,5 @@
 import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -42,28 +42,30 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const isWalletConnected = !!wallet?.address;
   const networkInfo = useGetCurrentNetwork();
 
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip(
-      {
-        delayShow: isMobile ? 0 : 200,
-        delayHide: 0,
-        placement: isMobile ? 'bottom' : 'bottom-end',
-        trigger: 'click',
-        interactive: true,
-        onVisibleChange: () => {},
-        closeOnOutsideClick: true,
-      },
-      {
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: isMobile ? [0, 0] : [0, 8],
-            },
+  const [visible, setVisible] = useState(false);
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
+    {
+      visible,
+      onVisibleChange: setVisible,
+      delayShow: isMobile ? 0 : 200,
+      delayHide: 0,
+      placement: isMobile ? 'bottom' : 'bottom-end',
+      trigger: 'click',
+      interactive: true,
+      closeOnOutsideClick: true,
+    },
+    {
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: isMobile ? [0, 0] : [0, 8],
           },
-        ],
-      },
-    );
+        },
+      ],
+    },
+  );
 
   useDisableBodyScroll(visible && isMobile);
 
@@ -114,6 +116,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         <UserMenu
           tooltipProps={getTooltipProps}
           setTooltipRef={setTooltipRef}
+          setVisible={setVisible}
         />
       )}
       {extra}

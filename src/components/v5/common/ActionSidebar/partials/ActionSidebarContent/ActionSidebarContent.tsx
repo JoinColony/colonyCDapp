@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
+import { ActionTourTargets } from '~common/Tours/enums.ts';
 import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -261,7 +262,10 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   const [showApolloNetworkError, setShowApolloNetworkError] = useState(false);
 
   return (
-    <div className="flex w-full flex-grow overflow-hidden">
+    <div
+      className="flex w-full flex-grow overflow-hidden"
+      data-tour={ActionTourTargets.ActionsPanel}
+    >
       <div className="w-full flex-grow pb-6 pt-8">
         <ActionForm
           {...actionFormProps}

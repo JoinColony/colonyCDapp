@@ -103,17 +103,17 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [getSidebarInitialValues, toggleActionSidebarOn, trackEvent],
   );
 
-  const toggleOff = useCallback(() => {
+  const toggleOff = useCallback((): void => {
     removeTxParamOnClose();
-    return toggleActionSidebarOff();
+    toggleActionSidebarOff();
   }, [toggleActionSidebarOff, removeTxParamOnClose]);
 
   const toggle = useCallback(
-    (initialValues) => {
+    (initialValues): void => {
       if (!isActionSidebarOpen) {
         setActionSidebarInitialValues(getSidebarInitialValues(initialValues));
       }
-      return toggleActionSidebar();
+      toggleActionSidebar();
     },
     [isActionSidebarOpen, getSidebarInitialValues, toggleActionSidebar],
   );

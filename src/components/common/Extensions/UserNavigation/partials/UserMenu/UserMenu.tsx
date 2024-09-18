@@ -36,6 +36,7 @@ const UserMenu: FC<UserMenuProps> = ({
   tooltipProps,
   setTooltipRef,
   isVerified,
+  setVisible,
 }) => {
   // QUESTION: Why change on tablet, and not on mobile like the UserHub?
   const isTablet = useTablet();
@@ -223,6 +224,7 @@ const UserMenu: FC<UserMenuProps> = ({
             <UserSubmenu
               submenuId={activeSubmenu}
               closeSubmenu={closeSubmenu}
+              setVisible={setVisible}
             />
           </>
         )}
