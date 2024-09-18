@@ -68,6 +68,7 @@ const Filter: FC<FilterProps> = ({
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
             isOpen={isOpened}
+            withPaddingBottom
           >
             <FilterOptions excludeFilterType={excludeFilterType} />
           </Modal>
