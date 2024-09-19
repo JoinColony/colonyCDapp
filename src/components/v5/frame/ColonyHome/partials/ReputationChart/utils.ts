@@ -5,7 +5,8 @@ import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamHexColor } from '~utils/teams.ts';
 
-import { type ReputationChartDataItem } from './types.ts';
+import { CONTRIBUTORS_COLORS_LIST } from './consts.ts';
+import { type ContributorItem, type ReputationChartDataItem } from './types.ts';
 
 const WIDGET_TEAM_LIMIT = 4;
 
@@ -100,4 +101,37 @@ export const getTeamReputationChartData = (
   }
 
   return topTeams;
+};
+
+export const getContributorReputationChartData = (
+  contributorsList: ContributorItem[],
+): ReputationChartDataItem[] => {
+  const topContributors = contributorsList
+    .slice(0, WIDGET_TEAM_LIMIT)
+    .map(({ walletAddress, user, reputation }, index) => {
+      return {
+        id: walletAddress,
+        label: user?.profile?.displayName || '',
+        value: Number(reputation),
+        color: getTeamHexColor(CONTRIBUTORS_COLORS_LIST[index]),
+      };
+    });
+
+  const reputationInOtherContributors = contributorsList
+    .slice(WIDGET_TEAM_LIMIT)
+    .reduce((reputation, team) => reputation + Number(team.reputation), 0);
+
+  if (reputationInOtherContributors > 0) {
+    return [
+      ...topContributors,
+      {
+        id: 'allOtherTeams',
+        label: formatText(MSG.otherLabel),
+        value: reputationInOtherContributors,
+        color: '--color-gray-400',
+      },
+    ];
+  }
+
+  return topContributors;
 };

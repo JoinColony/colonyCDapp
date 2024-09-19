@@ -1,5 +1,7 @@
 import { type PieSvgProps } from '@nivo/pie';
 
+import { DomainColor } from '~types/graphql.ts';
+
 import { type ReputationChartDataItem } from './types.ts';
 
 export const EMPTY_ITEM_ID = 'noTeamsId';
@@ -29,8 +31,15 @@ export const summaryLegendColor = {
 
 export const pieChartConfig: Partial<PieSvgProps<ReputationChartDataItem>> = {
   colors: ({ data }) => `var(${data.color})`,
-  innerRadius: 0.7,
+  innerRadius: 0.75,
   enableArcLabels: false,
   enableArcLinkLabels: false,
-  padAngle: 2,
+  padAngle: 1.5,
 };
+
+export const CONTRIBUTORS_COLORS_LIST = [
+  undefined,
+  DomainColor.PurpleGrey,
+  DomainColor.LightPink,
+  DomainColor.Green,
+];
