@@ -81,7 +81,9 @@ export const getValuesTrend = (current: string, previous: string) => {
 
   let trend: BigNumber;
 
-  if (currentBN.isZero()) {
+  if (currentBN.isZero() && previousBN.isZero()) {
+    trend = BigNumber.from(0);
+  } else if (currentBN.isZero()) {
     trend = BigNumber.from(-100);
   } else if (previousBN.isZero()) {
     trend = BigNumber.from(100);
