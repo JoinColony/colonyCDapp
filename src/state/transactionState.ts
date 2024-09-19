@@ -1,8 +1,4 @@
-import {
-  type MutationOptions,
-  type FetchPolicy,
-  type FetchResult,
-} from '@apollo/client';
+import { type MutationOptions, type FetchPolicy } from '@apollo/client';
 import { type ClientTypeTokens } from '@colony/colony-js';
 import { utils, BigNumber } from 'ethers';
 import { useMemo } from 'react';
@@ -25,10 +21,10 @@ import {
   type GetUserTransactionsQuery,
   type GetUserTransactionsQueryVariables,
   GetUserTransactionsDocument,
-  type GetPendingTransactionsQuery,
-  type GetPendingTransactionsQueryVariables,
-  GetPendingTransactionsDocument,
   type CreateTransactionInput,
+  InitializeUserDocument,
+  type InitializeUserMutation,
+  type InitializeUserMutationVariables,
 } from '~gql';
 import { type TransactionType } from '~redux/immutable/index.ts';
 import { onTransactionPending } from '~redux/sagas/transactions/transactionsToDb.ts';
@@ -39,7 +35,6 @@ import {
   type MethodParams,
   type ExtendedClientType,
 } from '~types/transactions.ts';
-import { notNull } from '~utils/arrays/index.ts';
 import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 
 import { DEFAULT_TX_HASH } from './consts.ts';
@@ -541,45 +536,28 @@ export const failPendingTransactions = async () => {
   const userAddress = utils.getAddress(wallet.address);
   const apollo = getContext(ContextModule.ApolloClient);
 
-  let nextToken: string | null | undefined;
-  const promises: Promise<FetchResult<UpdateTransactionMutation>>[] = [];
-
-  do {
-    // This is a serial operiation (https://eslint.org/docs/latest/rules/no-await-in-loop#when-not-to-use-it)
-    // eslint-disable-next-line no-await-in-loop
-    const { data } = await apollo.query<
-      GetPendingTransactionsQuery,
-      GetPendingTransactionsQueryVariables
-    >({
-      query: GetPendingTransactionsDocument,
+  return apollo.mutate<InitializeUserMutation, InitializeUserMutationVariables>(
+    {
+      mutation: InitializeUserDocument,
       variables: {
-        nextToken,
-        userAddress,
+        input: {
+          userAddress,
+        },
       },
-    });
-    nextToken = data?.getTransactionsByUserAndStatus?.nextToken;
-
-    Array.prototype.push.apply(
-      promises,
-      data.getTransactionsByUserAndStatus?.items.filter(notNull).map((tx) => {
-        return updateTransaction(
-          {
-            id: tx.id,
-            status: TransactionStatus.Failed,
-          },
-          // Optimisitc response, for quick UI updates
-          {
-            id: tx.id,
-            status: TransactionStatus.Failed,
-          },
-        );
-      }),
-    );
-  } while (nextToken);
-
-  if (!promises) {
-    return;
-  }
-
-  await Promise.allSettled(promises);
+      update: (cache, { data: result }) => {
+        if (result?.initializeUser) {
+          result.initializeUser.failedTransactions.forEach((failedTx) => {
+            cache.modify({
+              id: cache.identify(result.initializeUser),
+              fields: {
+                status() {
+                  return failedTx.status;
+                },
+              },
+            });
+          });
+        }
+      },
+    },
+  );
 };

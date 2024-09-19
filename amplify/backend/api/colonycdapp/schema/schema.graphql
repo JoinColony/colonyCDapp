@@ -1038,22 +1038,30 @@ type Mutation {
   updateContributorsWithReputation(
     input: UpdateContributorsWithReputationInput!
   ): Boolean @function(name: "updateContributorsWithReputation-${env}")
-
   """
   Validates the user invite code and adds the user as a colony contributor
   """
   validateUserInvite(input: ValidateUserInviteInput!): Boolean
     @function(name: "validateUserInvite-${env}")
   """
+  Initialize user (for now only cancels pending transactions)
+  """
+  initializeUser(input: InitializeUserInput!): InitializeUserReturn!
+    @function(name: "initializeUser-${env}")
+  """
   Post to the Bridge XYZ API
   """
   bridgeXYZMutation(input: BridgeXYZMutationInput!): BridgeXYZMutationReturn
     @function(name: "bridgeXYZMutation-${env}")
-
+  """
+  Create a Bridge XYZ Bank Account
+  """
   bridgeCreateBankAccount(
     input: BridgeCreateBankAccountInput!
   ): BridgeCreateBankAccountReturn @function(name: "bridgeXYZMutation-${env}")
-
+  """
+  Update a Bridge XYZ Bank Account
+  """
   bridgeUpdateBankAccount(
     input: BridgeUpdateBankAccountInput!
   ): BridgeUpdateBankAccountReturn @function(name: "bridgeXYZMutation-${env}")
@@ -1542,6 +1550,28 @@ input ValidateUserInviteInput {
   userAddress: ID!
 }
 
+input InitializeUserInput {
+  """
+  The user's wallet address
+  """
+  userAddress: ID!
+}
+
+type FailedTransaction {
+  """
+  Transaction id
+  """
+  id: ID!
+  """
+  The current status of the transaction
+  """
+  status: TransactionStatus!
+}
+
+type InitializeUserReturn {
+  failedTransactions: [FailedTransaction!]!
+}
+
 type ColonyMemberInvite @model {
   """
   Self-managed id which is used as the invite code
@@ -1831,11 +1861,6 @@ type Transaction @model {
   The current status of the transaction
   """
   status: TransactionStatus!
-    @index(
-      name: "byStatus"
-      queryField: "getTransactionsByUserAndStatus"
-      sortKeyFields: ["from"]
-    )
   """
   A title to show in the UI
   """

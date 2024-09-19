@@ -21,3 +21,12 @@ mutation UpdateUser($input: UpdateUserInput!) {
     id
   }
 }
+
+mutation InitializeUser($input: InitializeUserInput!) {
+  initializeUser(input: $input) {
+    failedTransactions {
+      id
+      status
+    }
+  }
+}

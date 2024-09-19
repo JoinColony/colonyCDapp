@@ -2448,6 +2448,14 @@ export enum ExternalLinks {
   Youtube = 'Youtube'
 }
 
+export type FailedTransaction = {
+  __typename?: 'FailedTransaction';
+  /** Transaction id */
+  id: Scalars['ID'];
+  /** The current status of the transaction */
+  status: TransactionStatus;
+};
+
 export enum FilteringMethod {
   /** Apply an intersection filter */
   Intersection = 'INTERSECTION',
@@ -2580,6 +2588,16 @@ export type IngestorStats = {
   updatedAt: Scalars['AWSDateTime'];
   /** JSON string to pass custom, dynamic values */
   value: Scalars['String'];
+};
+
+export type InitializeUserInput = {
+  /** The user's wallet address */
+  userAddress: Scalars['ID'];
+};
+
+export type InitializeUserReturn = {
+  __typename?: 'InitializeUserReturn';
+  failedTransactions: Array<FailedTransaction>;
 };
 
 export enum KycStatus {
@@ -4935,7 +4953,9 @@ export enum MultiSigVote {
 /** Root mutation type */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Create a Bridge XYZ Bank Account */
   bridgeCreateBankAccount?: Maybe<BridgeCreateBankAccountReturn>;
+  /** Update a Bridge XYZ Bank Account */
   bridgeUpdateBankAccount?: Maybe<BridgeUpdateBankAccountReturn>;
   /** Post to the Bridge XYZ API */
   bridgeXYZMutation?: Maybe<BridgeXyzMutationReturn>;
@@ -5027,6 +5047,8 @@ export type Mutation = {
   deleteUserStake?: Maybe<UserStake>;
   deleteUserTokens?: Maybe<UserTokens>;
   deleteVoterRewardsHistory?: Maybe<VoterRewardsHistory>;
+  /** Initialize user (for now only cancels pending transactions) */
+  initializeUser: InitializeUserReturn;
   updateAnnotation?: Maybe<Annotation>;
   updateColony?: Maybe<Colony>;
   updateColonyAction?: Maybe<ColonyAction>;
@@ -5695,6 +5717,12 @@ export type MutationDeleteVoterRewardsHistoryArgs = {
 
 
 /** Root mutation type */
+export type MutationInitializeUserArgs = {
+  input: InitializeUserInput;
+};
+
+
+/** Root mutation type */
 export type MutationUpdateAnnotationArgs = {
   condition?: InputMaybe<ModelAnnotationConditionInput>;
   input: UpdateAnnotationInput;
@@ -6290,7 +6318,6 @@ export type Query = {
   getTransaction?: Maybe<Transaction>;
   getTransactionsByUser?: Maybe<ModelTransactionConnection>;
   getTransactionsByUserAndGroup?: Maybe<ModelTransactionConnection>;
-  getTransactionsByUserAndStatus?: Maybe<ModelTransactionConnection>;
   getUser?: Maybe<User>;
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByBridgeCustomerId?: Maybe<ModelUserConnection>;
@@ -6996,17 +7023,6 @@ export type QueryGetTransactionsByUserAndGroupArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetTransactionsByUserAndStatusArgs = {
-  filter?: InputMaybe<ModelTransactionFilterInput>;
-  from?: InputMaybe<ModelIdKeyConditionInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  status: TransactionStatus;
 };
 
 
@@ -9930,6 +9946,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string } | null };
 
+export type InitializeUserMutationVariables = Exact<{
+  input: InitializeUserInput;
+}>;
+
+
+export type InitializeUserMutation = { __typename?: 'Mutation', initializeUser: { __typename?: 'InitializeUserReturn', failedTransactions: Array<{ __typename?: 'FailedTransaction', id: string, status: TransactionStatus }> } };
+
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
@@ -10314,14 +10337,6 @@ export type GetTransactionQueryVariables = Exact<{
 
 
 export type GetTransactionQuery = { __typename?: 'Query', getTransaction?: { __typename?: 'Transaction', id: string, context: ClientType, createdAt: string, from: string, colonyAddress: string, identifier?: string | null, params?: string | null, groupId: string, hash?: string | null, methodContext?: string | null, methodName: string, status: TransactionStatus, title?: string | null, titleValues?: string | null, options?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null, group: { __typename?: 'TransactionGroup', id: string, groupId: string, key: string, index: number, description?: string | null, descriptionValues?: string | null, title?: string | null, titleValues?: string | null } } | null };
-
-export type GetPendingTransactionsQueryVariables = Exact<{
-  userAddress: Scalars['ID'];
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetPendingTransactionsQuery = { __typename?: 'Query', getTransactionsByUserAndStatus?: { __typename?: 'ModelTransactionConnection', nextToken?: string | null, items: Array<{ __typename?: 'Transaction', id: string } | null> } | null };
 
 export type GetUserByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
@@ -12352,6 +12367,42 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const InitializeUserDocument = gql`
+    mutation InitializeUser($input: InitializeUserInput!) {
+  initializeUser(input: $input) {
+    failedTransactions {
+      id
+      status
+    }
+  }
+}
+    `;
+export type InitializeUserMutationFn = Apollo.MutationFunction<InitializeUserMutation, InitializeUserMutationVariables>;
+
+/**
+ * __useInitializeUserMutation__
+ *
+ * To run a mutation, you first call `useInitializeUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInitializeUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [initializeUserMutation, { data, loading, error }] = useInitializeUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInitializeUserMutation(baseOptions?: Apollo.MutationHookOptions<InitializeUserMutation, InitializeUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InitializeUserMutation, InitializeUserMutationVariables>(InitializeUserDocument, options);
+      }
+export type InitializeUserMutationHookResult = ReturnType<typeof useInitializeUserMutation>;
+export type InitializeUserMutationResult = Apollo.MutationResult<InitializeUserMutation>;
+export type InitializeUserMutationOptions = Apollo.BaseMutationOptions<InitializeUserMutation, InitializeUserMutationVariables>;
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
@@ -14412,49 +14463,6 @@ export function useGetTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetTransactionQueryHookResult = ReturnType<typeof useGetTransactionQuery>;
 export type GetTransactionLazyQueryHookResult = ReturnType<typeof useGetTransactionLazyQuery>;
 export type GetTransactionQueryResult = Apollo.QueryResult<GetTransactionQuery, GetTransactionQueryVariables>;
-export const GetPendingTransactionsDocument = gql`
-    query GetPendingTransactions($userAddress: ID!, $nextToken: String) {
-  getTransactionsByUserAndStatus(
-    from: {eq: $userAddress}
-    status: PENDING
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-
-/**
- * __useGetPendingTransactionsQuery__
- *
- * To run a query within a React component, call `useGetPendingTransactionsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPendingTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPendingTransactionsQuery({
- *   variables: {
- *      userAddress: // value for 'userAddress'
- *      nextToken: // value for 'nextToken'
- *   },
- * });
- */
-export function useGetPendingTransactionsQuery(baseOptions: Apollo.QueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
-      }
-export function useGetPendingTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>(GetPendingTransactionsDocument, options);
-        }
-export type GetPendingTransactionsQueryHookResult = ReturnType<typeof useGetPendingTransactionsQuery>;
-export type GetPendingTransactionsLazyQueryHookResult = ReturnType<typeof useGetPendingTransactionsLazyQuery>;
-export type GetPendingTransactionsQueryResult = Apollo.QueryResult<GetPendingTransactionsQuery, GetPendingTransactionsQueryVariables>;
 export const GetUserByAddressDocument = gql`
     query GetUserByAddress($address: ID!) {
   getUserByAddress(id: $address) {
