@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/NewExtensionDetailsPage/types.ts';
-import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.ts';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import { useMobile } from '~hooks/index.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
