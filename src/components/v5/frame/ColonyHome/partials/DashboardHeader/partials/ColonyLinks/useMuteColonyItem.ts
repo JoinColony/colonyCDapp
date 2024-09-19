@@ -80,7 +80,7 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
     updateMutedColonies({
       variables: {
         userAddress: user.walletAddress,
-        colonyIds: [...mutedColonyAddresses, colonyAddress],
+        colonyAddresses: [...mutedColonyAddresses, colonyAddress],
       },
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
