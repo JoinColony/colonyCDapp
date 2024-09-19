@@ -1,5 +1,4 @@
 import { format, setMonth } from 'date-fns';
-import { BigNumber } from 'ethers';
 import numbro from 'numbro';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -48,60 +47,4 @@ export const getFormattedFullAmount = (value, prefix) => {
     mantissa: 2,
     prefix,
   });
-};
-
-export const convertFromTokenToCurrency = (
-  value?: string | null,
-  conversionRate?: number | null,
-) => {
-  const precision = conversionRate ? 1000 : 1;
-  const formattedConversionRate = conversionRate
-    ? Math.floor(conversionRate * precision)
-    : 0;
-
-  return BigNumber.from(value ?? 0)
-    .mul(formattedConversionRate)
-    .div(precision)
-    .toString();
-};
-
-/**
- * To get the trend of the current value based on the previous value
- * We use the rule of three
- * previous ... 100%
- * (current - previous) ... x
- * @param current This is the current balance value
- * @param previous This is the previous balance value
- * @returns
- */
-export const getValuesTrend = (current: string, previous: string) => {
-  const currentBN = BigNumber.from(current);
-  const previousBN = BigNumber.from(previous);
-  const upperLimit = BigNumber.from(99999);
-
-  let trend: BigNumber;
-
-  if (currentBN.isZero() && previousBN.isZero()) {
-    trend = BigNumber.from(0);
-  } else if (currentBN.isZero()) {
-    trend = BigNumber.from(-100);
-  } else if (previousBN.isZero()) {
-    trend = BigNumber.from(100);
-  } else {
-    trend = currentBN.sub(previousBN).mul(100).div(previousBN);
-  }
-
-  const isValueOverLimit = trend.abs().gt(upperLimit);
-  const valueToFormat = isValueOverLimit ? upperLimit : trend;
-
-  const formattedValue = numbro(valueToFormat.toString()).format({
-    mantissa: 3,
-    trimMantissa: true,
-    thousandSeparated: true,
-  });
-
-  return {
-    value: `${formattedValue}%${isValueOverLimit ? '+' : ''}`,
-    isIncrease: trend.gte(0),
-  };
 };
