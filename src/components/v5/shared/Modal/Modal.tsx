@@ -95,6 +95,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
               'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
               {
                 'pr-6': withPadding,
+                'pb-6': withPadding && !withPaddingBottom,
               },
             )}
           >
