@@ -6488,9 +6488,9 @@ export type Query = {
   getCurrentVersion?: Maybe<CurrentVersion>;
   getCurrentVersionByKey?: Maybe<ModelCurrentVersionConnection>;
   getDomain?: Maybe<Domain>;
-  getDomainByNativeSkillId?: Maybe<ModelDomainConnection>;
   /** Fetch a domain total balance */
   getDomainBalance?: Maybe<DomainBalanceReturn>;
+  getDomainByNativeSkillId?: Maybe<ModelDomainConnection>;
   getDomainMetadata?: Maybe<DomainMetadata>;
   getDomainsByColony?: Maybe<ModelDomainConnection>;
   getExpenditure?: Maybe<Expenditure>;
@@ -6912,6 +6912,12 @@ export type QueryGetDomainArgs = {
 
 
 /** Root query type */
+export type QueryGetDomainBalanceArgs = {
+  input: DomainBalanceArguments;
+};
+
+
+/** Root query type */
 export type QueryGetDomainByNativeSkillIdArgs = {
   filter?: InputMaybe<ModelDomainFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6919,12 +6925,6 @@ export type QueryGetDomainByNativeSkillIdArgs = {
   nativeSkillId: Scalars['String'];
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-};
-
-
-/** Root query type */
-export type QueryGetDomainBalanceArgs = {
-  input: DomainBalanceArguments;
 };
 
 
