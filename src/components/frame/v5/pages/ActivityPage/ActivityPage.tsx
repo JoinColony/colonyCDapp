@@ -6,7 +6,7 @@ import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingC
 import { formatText } from '~utils/intl.ts';
 import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
 import WidgetBoxList from '~v5/common/WidgetBoxList/index.ts';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import { useActivityFeedWidgets } from './hooks.tsx';
 
@@ -23,26 +23,25 @@ const ActivityPage: FC = () => {
   const { defaultValues } = useGetActionData(selectedAction || undefined);
 
   return (
-    <div className="flex w-full flex-col gap-4 sm:gap-6">
-      <div className="mb-2">
-        <TeamFilter />
-      </div>
-      <WidgetBoxList items={widgets} />
-      <div>
-        <FiltersContextProvider>
-          <ColonyActionsTable
-            actionProps={{
+    <ContentWithTeamFilter>
+      <div className="flex w-full flex-col gap-4 sm:gap-6">
+        <WidgetBoxList items={widgets} />
+        <div>
+          <FiltersContextProvider>
+            <ColonyActionsTable
+              actionProps={{
               selectedAction,
               setSelectedAction,
               defaultValues,
             }}
             className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
-            showTotalPagesNumber={false}
-            hasHorizontalPadding
-          />
-        </FiltersContextProvider>
+              showTotalPagesNumber={false}
+              hasHorizontalPadding
+            />
+          </FiltersContextProvider>
+        </div>
       </div>
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 

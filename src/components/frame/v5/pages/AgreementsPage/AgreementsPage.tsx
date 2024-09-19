@@ -12,8 +12,8 @@ import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 import { useGetAgreements } from './hooks.ts';
@@ -48,10 +48,7 @@ const AgreementsPage: FC = () => {
   );
 
   return (
-    <div>
-      <div className="mb-8">
-        <TeamFilter />
-      </div>
+    <ContentWithTeamFilter>
       {draftAgreement && <DraftSection className="mb-6" />}
       <div className="mb-6 flex-col justify-between sm:flex sm:flex-row sm:items-center">
         <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
@@ -139,7 +136,7 @@ const AgreementsPage: FC = () => {
             )}
         </>
       )}
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 
