@@ -18,10 +18,9 @@ const MemberCardList: FC<MemberCardListProps> = ({
     (childrenLength === 0 && placeholderCardProps) ? (
     <ul
       className={clsx('grid', {
-        'grid-cols-1 gap-x-6 gap-y-6 sm:gap-y-4 md:grid-cols-2 lg:grid-cols-4':
+        'grid-cols-1 gap-x-6 gap-y-6 sm:gap-y-4 md:grid-cols-2 lg:grid-cols-3':
           !isSimple,
-        'grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4':
-          isSimple,
+        'grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3': isSimple,
       })}
     >
       {/* @todo: update the animation */}
