@@ -18,6 +18,7 @@ import { ActionForm } from '~shared/Fields/index.ts';
 
 // import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
 
+import ExtensionDetails from './ExtensionDetails/ExtensionDetails.tsx';
 import ExtensionsTopRow from './ExtensionDetailsHeader/ExtensionDetailsHeader.tsx';
 import ExtensionTabs from './ExtensionTabs/ExtensionTabs.tsx';
 
@@ -46,6 +47,9 @@ const ExtensionDetailsPageContent: FC<ExtensionDetailsPageContentProps> = ({
             extensionData={extensionData}
             // showSetupPage={!!SetupComponent && extensionData.isInitialized}
           />
+        </div>
+        <div className="hidden md:col-span-3 md:block">
+          <ExtensionDetails extensionData={extensionData} />
         </div>
       </div>
     </ActionForm>
