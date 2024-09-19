@@ -27,6 +27,7 @@ export interface Props extends HTMLAttributes<HTMLSpanElement> {
   prefix?: string;
   suffix?: string;
   className?: string;
+  format?: numbro.Format;
 
   /** If specified, the value will be shifted by the indicated decimals */
   decimals?: number;
@@ -38,11 +39,16 @@ const Numeral = ({
   prefix,
   suffix,
   className,
+  format,
   ...rest
 }: Props) => {
   const convertedValue = convertToDecimal(value, decimals || 0);
 
-  const formattedValue = getFormattedNumeralValue(convertedValue, value);
+  const formattedValue = getFormattedNumeralValue(
+    convertedValue,
+    value,
+    format,
+  );
 
   return (
     <span className={className} {...rest}>
