@@ -11,8 +11,8 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import TeamCardList from '~v5/common/TeamCardList/index.ts';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 import Button, { CloseButton } from '~v5/shared/Button/index.ts';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useTeams } from './hooks.tsx';
 import TeamsPageFilter from './partials/TeamsPageFilter/TeamsPageFilter.tsx';
@@ -35,58 +35,59 @@ const TeamsPage: FC = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <div className="mb-2">
-        <TeamFilter />
-      </div>
-      <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-gray-900 heading-4">
-          {formatText({ id: 'teamsPage.allTeams' })}
-        </h2>
-        <div className="flex items-center gap-2 sm:ml-auto sm:justify-end">
-          {hasFilterChanged &&
-            !isEqual(defaultFilterValue, filters.filterValue) &&
-            !isMobile && (
-              <div className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400">
-                <div className="container text-sm font-semibold capitalize">
-                  {currentFilters.label}:
+    <ContentWithTeamFilter>
+      <div className="flex w-full flex-col gap-6">
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-gray-900 heading-4">
+            {formatText({ id: 'teamsPage.allTeams' })}
+          </h2>
+          <div className="flex items-center gap-2 sm:ml-auto sm:justify-end">
+            {hasFilterChanged &&
+              !isEqual(defaultFilterValue, filters.filterValue) &&
+              !isMobile && (
+                <div className="inline-flex items-center gap-1 rounded-lg bg-blue-100 px-3 py-2 text-blue-400">
+                  <div className="container text-sm font-semibold capitalize">
+                    {currentFilters.label}:
+                  </div>
+                  <p className="min-w-fit text-sm">
+                    {currentFilters.direction}
+                  </p>
+                  <CloseButton
+                    iconSize={12}
+                    aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
+                    className="ml-1 shrink-0 !p-0 text-current"
+                    onClick={() => {
+                      filters.onChange(defaultFilterValue);
+                    }}
+                  />
                 </div>
-                <p className="min-w-fit text-sm">{currentFilters.direction}</p>
-                <CloseButton
-                  iconSize={12}
-                  aria-label={formatText({ id: 'ariaLabel.closeFilter' })}
-                  className="ml-1 shrink-0 !p-0 text-current"
-                  onClick={() => {
-                    filters.onChange(defaultFilterValue);
-                  }}
-                />
-              </div>
-            )}
-          <TeamsPageFilter {...filters} />
-          <Button
-            onClick={() =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
-              })
-            }
-            text={formatText({ id: 'teamsPage.createNewTeam' })}
-            mode="primarySolid"
-            size="small"
-          />
+              )}
+            <TeamsPageFilter {...filters} />
+            <Button
+              onClick={() =>
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+                })
+              }
+              text={formatText({ id: 'teamsPage.createNewTeam' })}
+              mode="primarySolid"
+              size="small"
+            />
+          </div>
         </div>
+        {searchedTeams.length > 0 ? (
+          <TeamCardList items={searchedTeams} />
+        ) : (
+          <EmptyContent
+            className="pb-9 pt-10"
+            title={formatText({ id: 'teamsPage.empty.title' })}
+            description={formatText({ id: 'teamsPage.empty.description' })}
+            icon={Binoculars}
+            withBorder
+          />
+        )}
       </div>
-      {searchedTeams.length > 0 ? (
-        <TeamCardList items={searchedTeams} />
-      ) : (
-        <EmptyContent
-          className="pb-9 pt-10"
-          title={formatText({ id: 'teamsPage.empty.title' })}
-          description={formatText({ id: 'teamsPage.empty.description' })}
-          icon={Binoculars}
-          withBorder
-        />
-      )}
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 
