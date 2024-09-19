@@ -9,8 +9,9 @@ import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
-// import ExtensionOverview from './ExtensionOverview.tsx';
-// import ExtensionSettings from './ExtensionSettings.tsx';
+import ExtensionSettings from '../ExtensionSettings/ExtensionSettings.tsx';
+
+import ExtensionOverview from './ExtensionOverview.tsx';
 
 interface ExtensionTabsProps {
   extensionData: AnyExtensionData;
@@ -55,7 +56,7 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            {/* <ExtensionOverview extensionData={extensionData} /> */}
+            <ExtensionOverview extensionData={extensionData} />
           </motion.div>
         )}
         {activeTab === ExtensionDetailsPageTabId.Settings &&
@@ -66,7 +67,7 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {/* <ExtensionSettings extensionData={extensionData} /> */}
+              <ExtensionSettings extensionData={extensionData} />
             </motion.div>
           )}
       </AnimatePresence>

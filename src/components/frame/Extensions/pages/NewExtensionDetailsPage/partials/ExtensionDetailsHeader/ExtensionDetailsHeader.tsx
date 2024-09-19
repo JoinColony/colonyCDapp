@@ -1,79 +1,94 @@
-// import { Extension, Id } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
-// import { useLocation } from 'react-router-dom';
 
-// import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type AnyExtensionData } from '~types/extensions.ts';
-// import { addressHasRoles } from '~utils/checks/index.ts';
-// import { isInstalledExtensionData } from '~utils/extensions.ts';
-// import { formatText } from '~utils/intl.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
+import useActiveInstalls from '~hooks/useActiveInstalls.ts';
+import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
+import { formatText } from '~utils/intl.ts';
+import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-// import { ExtensionsBadgeMap } from '../consts.ts';
-// import { useExtensionDetailsPageContext } from '../../context/ExtensionDetailsPageContext.ts';
-import ExtensionDetailsHeading from './ExtensionDetailsHeading.tsx';
-// import ActionButtons from '../ExtensionDetailsPage/partials/ActionButtons/ActionButtons.tsx';
-// import PermissionsNeededBanner from '../ExtensionDetailsPage/partials/PermissionsNeededBanner.tsx';
+import ActiveInstalls from './ActiveInstalls.tsx';
+import { extensionsBadgeModeMap, extensionsBadgeTextMap } from './consts.ts';
+import HeadingIcon from './HeadingIcon.tsx';
+import InstallButton from './InstallButton.tsx';
 
-interface ExtensionsTopRowProps {
-  extensionData: AnyExtensionData;
-}
+const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
 
-const displayName = 'pages.ExtensionDetailsPage.ExtensionTopRow';
+const ExtensionDetailsHeader: FC = () => {
+  const { user } = useAppContext();
+  const { colony } = useColonyContext();
+  const { extensionData } = useExtensionDetailsPageContext();
 
-const ExtensionDetailsHeader: FC<ExtensionsTopRowProps> = ({
-  extensionData,
-}) => {
-  // const { colony } = useColonyContext();
-  // const { pathname } = useLocation();
-  // const { setWaitingForActionConfirmation, waitingForActionConfirmation } =
-  //   useExtensionDetailsPageContext();
-  // const [isEnabling, setIsEnabling] = useState(false);
+  const activeInstalls = useActiveInstalls(extensionData.extensionId);
 
-  // const { neededColonyPermissions, isInitialized, isDeprecated } =
-  //   extensionData;
+  const userHasRoot =
+    !!user &&
+    addressHasRoles({
+      address: user.walletAddress,
+      colony,
+      requiredRoles: [ColonyRole.Root],
+      requiredRolesDomain: Id.RootDomain,
+    });
 
-  // const isVotingReputationExtension =
-  //   extensionData.extensionId === Extension.VotingReputation;
+  // /* To install, a user must have the root permission. */
+  const isInstallButtonVisible =
+    userHasRoot &&
+    !isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    !extensionData.isDeprecated;
 
-  // const isExtensionInstalled =
-  //   extensionData && isInstalledExtensionData(extensionData);
+  // /* To save changes, a user must have the root permission. */
+  // const isSaveChangesButtonVisible =
+  //   userHasRoot &&
+  //   isInstalledExtensionData(extensionData) &&
+  //   extensionData.enabledAutomaticallyAfterInstall &&
+  //   activeTab === ExtensionDetailsPageTabId.Settings;
 
-  // If the extension itself doesn't have the correct permissions, show the banner
-  // const showPermissionsBanner =
-  //   isExtensionInstalled &&
-  //   isInitialized &&
-  //   !isDeprecated &&
-  //   !addressHasRoles({
-  //     requiredRolesDomain: Id.RootDomain,
-  //     colony,
-  //     requiredRoles: neededColonyPermissions,
-  //     address: extensionData.address,
-  //   });
+  // const isUpgradeButtonVisible =
+  //   !!user &&
+  //   extensionData &&
+  //   isInstalledExtensionData(extensionData) &&
+  //   extensionData.currentVersion < extensionData.availableVersion;
+
+  const badgeMode = extensionsBadgeModeMap[extensionData.extensionId];
+  const badgeText = extensionsBadgeTextMap[extensionData.extensionId];
 
   return (
-    <>
-      {/* {!isSetupRoute && !isEnabling && showPermissionsBanner && (
-        <PermissionsNeededBanner extensionData={extensionData} />
-      )} */}
-      <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
-        <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
-          <ExtensionDetailsHeading extensionData={extensionData} />
-          {/* <ActionButtons
-            waitingForActionConfirmation={waitingForActionConfirmation}
-            setWaitingForActionConfirmation={setWaitingForActionConfirmation}
-            isSetupRoute={isSetupRoute}
-            setIsEnabling={setIsEnabling}
-            extensionData={extensionData}
-            extensionStatusMode={ExtensionsBadgeMap[extensionData.extensionId]}
-            extensionStatusText={formatText({
-              id: isVotingReputationExtension
-                ? 'status.governance'
-                : 'status.payments',
-            })}
-          /> */}
+    <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
+      <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
+        <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
+          <HeadingIcon name={extensionData.name} icon={extensionData.icon} />
+          <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0 sm:shrink-0 sm:grow">
+            {badgeMode && badgeText && (
+              <ExtensionStatusBadge
+                mode={extensionsBadgeModeMap[extensionData.extensionId]}
+                text={formatText({
+                  id: extensionsBadgeTextMap[extensionData.extensionId],
+                })}
+              />
+            )}
+            <ActiveInstalls activeInstalls={activeInstalls} />
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-2 sm:flex-row">
+          {isInstallButtonVisible && (
+            <InstallButton extensionData={extensionData} />
+          )}
+          {/* <EnableButton
+          extensionData={extensionData}
+          isSetupRoute={isSetupRoute}
+          userHasRoot={userHasRoot}
+        />
+        {isSaveChangesButtonVisible && <SaveChangesButton />}
+        {isUpgradeButtonVisible && (
+          <UpgradeButton extensionData={extensionData} />
+        )} */}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

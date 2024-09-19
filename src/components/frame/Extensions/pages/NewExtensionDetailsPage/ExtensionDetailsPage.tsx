@@ -15,7 +15,7 @@ const displayName = 'frame.Extensions.pages.Extensions.ExtensionDetailsPage';
 
 const MSG = defineMessages({
   title: {
-    id: `${displayName}.buttonYourDashboard`,
+    id: `${displayName}.title`,
     defaultMessage: 'Extensions',
   },
 });
@@ -24,9 +24,7 @@ const ExtensionDetailsPage = () => {
   useSetPageHeadingTitle(formatText(MSG.title));
 
   const { extensionId } = useParams();
-  const { extensionData, loading, refetchExtensionData } = useExtensionData(
-    extensionId ?? '',
-  );
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
 
   if (loading) {
     return <SpinnerLoader />;
@@ -37,11 +35,8 @@ const ExtensionDetailsPage = () => {
   }
 
   return (
-    <ExtensionDetailsPageContextProvider>
-      <ExtensionDetailsPageContent
-        extensionData={extensionData}
-        refetchExtensionData={refetchExtensionData}
-      />
+    <ExtensionDetailsPageContextProvider extensionData={extensionData}>
+      <ExtensionDetailsPageContent />
     </ExtensionDetailsPageContextProvider>
   );
 };
