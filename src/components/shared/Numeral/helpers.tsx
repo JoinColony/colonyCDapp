@@ -35,6 +35,7 @@ const bigNumberFormat: numbro.Format = {
 export const getFormattedNumeralValue = (
   convertedValue: Decimal | null,
   value: NumeralValue,
+  formatProp?: numbro.Format,
 ) => {
   if (!convertedValue) {
     return value.toString();
@@ -46,6 +47,8 @@ export const getFormattedNumeralValue = (
   ) {
     return <EngineeringNotation value={convertedValue} />;
   }
+
+  if (formatProp) return numbro(convertedValue.toString()).format(formatProp);
 
   let format: numbro.Format = {};
 
