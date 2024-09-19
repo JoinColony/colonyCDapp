@@ -1,13 +1,90 @@
 import Decimal from 'decimal.js';
+import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import { type SupportedCurrencies } from '~gql';
+import {
+  ExtendedSupportedCurrencies,
+  TimeframeType,
+  type SupportedCurrencies,
+  useGetCachedDomainBalanceQuery,
+  useGetDomainBalanceQuery,
+} from '~gql';
+import { useCurrencyHistoricalConversionRate } from '~hooks/useCurrencyHistoricalConversionRate.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type ColonyBalances } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { convertFromTokenToCurrency } from '~utils/currency/convertFromTokenToCurrency.ts';
 import { fetchCurrentPrice } from '~utils/currency/currency.ts';
+import { type CoinGeckoSupportedCurrencies } from '~utils/currency/index.ts';
+
+export const useTotalData = (domainId?: string) => {
+  const { colony } = useColonyContext();
+
+  const { currency } = useCurrencyContext();
+
+  const { data, loading } = useGetDomainBalanceQuery({
+    variables: {
+      input: {
+        colonyAddress: colony.colonyAddress,
+        domainId: domainId ?? '',
+        selectedCurrency: currency as unknown as ExtendedSupportedCurrencies,
+        timeframePeriod: 1,
+        timeframeType: TimeframeType.Total,
+      },
+    },
+  });
+
+  const domainBalanceData = data?.getDomainBalance;
+
+  const total = BigNumber.from(domainBalanceData?.totalIn ?? '0')
+    .sub(BigNumber.from(domainBalanceData?.totalOut ?? '0'))
+    .toString();
+
+  return {
+    total,
+    loading,
+  };
+};
+export const usePreviousTotalData = () => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+  const selectedDomain = useGetSelectedDomainFilter();
+  const { currency } = useCurrencyContext();
+  const { data, loading } = useGetCachedDomainBalanceQuery({
+    variables: {
+      colonyAddress,
+      filter: {
+        domainId: { eq: selectedDomain?.id ?? '' },
+        timeframeType: { eq: TimeframeType.Total },
+      },
+    },
+  });
+
+  const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
+
+  const conversionRate = useCurrencyHistoricalConversionRate({
+    tokenSymbol: ExtendedSupportedCurrencies.Usdc,
+    date: previousBalance?.date ?? new Date(),
+    conversionDenomination: currency as unknown as CoinGeckoSupportedCurrencies,
+  });
+
+  return {
+    loading,
+    /**
+     * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
+     */
+    // @TODO move this into an utils top-level
+    previousTotal: convertFromTokenToCurrency(
+      BigNumber.from(previousBalance?.totalIn ?? '0')
+        .sub(BigNumber.from(previousBalance?.totalOut ?? '0'))
+        .toString(),
+      conversionRate,
+    ),
+  };
+};
 
 const calculateTotalFunds = async (
   balances: ColonyBalances,
