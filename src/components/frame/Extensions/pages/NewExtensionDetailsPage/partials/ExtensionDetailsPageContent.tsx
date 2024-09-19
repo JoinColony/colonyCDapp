@@ -4,7 +4,6 @@ import React, { /* useMemo, */ type FC } from 'react';
 // import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 // import { SetupComponentMap } from '~frame/Extensions/pages/ExtensionDetailsPage/consts.ts';
 // import ExtensionDetails from '~frame/Extensions/pages/ExtensionDetailsPage/partials/ExtensionDetails/ExtensionDetails.tsx';
-// import ExtensionInfo from '~frame/Extensions/pages/ExtensionDetailsPage/partials/ExtensionInfo.tsx';
 import { type ExtensionDetailsPageContentProps } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import {
   getActionData,
@@ -18,7 +17,9 @@ import { ActionForm } from '~shared/Fields/index.ts';
 // import { mapPayload, mergePayload, pipe } from '~utils/actions.ts';
 
 // import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
+
 import ExtensionsTopRow from './ExtensionDetailsHeader/ExtensionDetailsHeader.tsx';
+import ExtensionTabs from './ExtensionTabs/ExtensionTabs.tsx';
 
 const ExtensionDetailsPageContent: FC<ExtensionDetailsPageContentProps> = ({
   extensionData,
@@ -38,6 +39,14 @@ const ExtensionDetailsPageContent: FC<ExtensionDetailsPageContentProps> = ({
     >
       <div className="mb-6 w-full">
         <ExtensionsTopRow extensionData={extensionData} />
+      </div>
+      <div className="grid w-full grid-cols-11 gap-4 pb-6 md:gap-8">
+        <div className="col-span-11 md:col-span-8 md:pr-4">
+          <ExtensionTabs
+            extensionData={extensionData}
+            // showSetupPage={!!SetupComponent && extensionData.isInitialized}
+          />
+        </div>
       </div>
     </ActionForm>
   );
