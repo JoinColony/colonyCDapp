@@ -36,8 +36,7 @@ const TemporaryTooltip: FC<PieTooltipProps<ReputationChartDataItem>> = ({
 }) => {
   return (
     <div className="bg-base-black p-2 text-base-white">
-      {label}
-      (<Numeral value={value.toFixed(2)} />
+      {label} (<Numeral value={value.toFixed(2)} />
       %)
     </div>
   );
