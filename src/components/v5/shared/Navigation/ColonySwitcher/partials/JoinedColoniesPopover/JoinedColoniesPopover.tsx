@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import { useCreateNewColony } from '~v5/shared/Navigation/hooks/useCreateNewColony/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
 import JoinedColoniesList from '../JoinedColoniesList.tsx';
@@ -19,6 +20,8 @@ const JoinedColoniesPopover = ({
   enableMobileAndDesktopLayoutBreakpoints,
 }: JoinedColoniesPopoverProps) => {
   const { wallet, connectWallet } = useAppContext();
+
+  const handleCreateNewColony = useCreateNewColony();
 
   return visible ? (
     <PopoverBase
@@ -43,10 +46,11 @@ const JoinedColoniesPopover = ({
         <div className="w-full flex-shrink-0 px-2 pb-2">
           {wallet ? (
             <Button
-              mode="primaryOutlineFull"
+              mode="primaryOutline"
               text={{ id: 'button.createNewColony' }}
               size="medium"
               className="w-full border-gray-300"
+              onClick={handleCreateNewColony}
             />
           ) : (
             <Button
