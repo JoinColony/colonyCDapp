@@ -12,12 +12,13 @@ import {
 } from '~gql';
 import { useCurrencyHistoricalConversionRate } from '~hooks/useCurrencyHistoricalConversionRate.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { convertFromTokenToCurrency } from '~utils/currency/convertFromTokenToCurrency.ts';
 import { type CoinGeckoSupportedCurrencies } from '~utils/currency/types.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamHexColor, getTeamHexSecondaryColor } from '~utils/teams.ts';
 
 import { CHART_CONFIG_VALUES, MSG } from './consts.ts';
-import { convertFromTokenToCurrency, sortByLabel } from './utils.ts';
+import { sortByLabel } from './utils.ts';
 
 export const usePreviousLast30DaysData = () => {
   const {

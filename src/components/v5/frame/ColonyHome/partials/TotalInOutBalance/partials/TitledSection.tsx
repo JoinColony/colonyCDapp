@@ -5,9 +5,8 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
+import { getValuesTrend } from '~utils/balance/getValuesTrend.ts';
 import { FundsTrend } from '~v5/frame/ColonyHome/partials/FundsTrend/FundsTrend.tsx';
-
-import { getValuesTrend } from '../utils.ts';
 
 interface TitledSectionProps extends PropsWithChildren {
   title: string;
