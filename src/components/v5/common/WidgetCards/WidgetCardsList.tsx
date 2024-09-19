@@ -24,7 +24,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
     onNextBtnClick,
   } = useEmblaCarouselSettings({
     loop: false,
-    slidesToScroll: !isLargeTablet ? 2 : 1,
+    slidesToScroll: isLargeTablet ? 1 : 2,
   });
 
   return (
