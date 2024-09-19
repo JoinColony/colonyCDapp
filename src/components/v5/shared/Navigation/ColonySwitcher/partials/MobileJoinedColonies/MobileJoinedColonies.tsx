@@ -10,6 +10,7 @@ import { useTablet } from '~hooks';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import LearnMore from '~shared/Extensions/LearnMore/LearnMore.tsx';
 import Button from '~v5/shared/Button/index.ts';
+import { useCreateColonyRedirect } from '~v5/shared/Navigation/hooks/useCreateNewColony/index.ts';
 
 import JoinedColoniesList from '../JoinedColoniesList.tsx';
 import { ConnectWalletSection } from '../TitleSections/ConnectWalletSection.tsx';
@@ -26,9 +27,17 @@ const MobileJoinedColonies = () => {
 
   const { wallet, connectWallet } = useAppContext();
 
-  const { showTabletColonyPicker } = usePageLayoutContext();
+  const { showTabletColonyPicker, toggleTabletColonyPicker } =
+    usePageLayoutContext();
 
   useDisableBodyScroll(isTablet && showTabletColonyPicker);
+
+  const handleCreateColonyRedirect = useCreateColonyRedirect();
+
+  const handleCreateColonyClick = () => {
+    toggleTabletColonyPicker();
+    handleCreateColonyRedirect();
+  };
 
   return (
     <AnimatePresence>
@@ -65,6 +74,7 @@ const MobileJoinedColonies = () => {
                 text={{ id: 'button.createNewColony' }}
                 className="w-full border-gray-300"
                 icon={Plus}
+                onClick={handleCreateColonyClick}
               />
             ) : (
               <Button
