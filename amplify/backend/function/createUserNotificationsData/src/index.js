@@ -52,7 +52,7 @@ exports.handler = async (event) => {
 
     const data = await response.json();
 
-    if (data.errors[0]) {
+    if (data.errors?.[0]) {
       throw new Error(data.errors[0].message);
     }
   } catch (err) {
