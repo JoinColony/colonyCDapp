@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import { useCreateColonyRedirect } from '~v5/shared/Navigation/hooks/useCreateNewColony/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
 import JoinedColoniesList from '../JoinedColoniesList.tsx';
@@ -19,6 +20,8 @@ const JoinedColoniesPopover = ({
   enableMobileAndDesktopLayoutBreakpoints,
 }: JoinedColoniesPopoverProps) => {
   const { wallet, connectWallet } = useAppContext();
+
+  const handleCreateColonyRedirect = useCreateColonyRedirect();
 
   return visible ? (
     <PopoverBase
@@ -45,6 +48,7 @@ const JoinedColoniesPopover = ({
               text={{ id: 'button.createNewColony' }}
               size="small"
               className="w-full border-gray-300"
+              onClick={handleCreateColonyRedirect}
             />
           ) : (
             <Button
