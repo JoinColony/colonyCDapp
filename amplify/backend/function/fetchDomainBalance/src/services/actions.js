@@ -30,17 +30,22 @@ const getInOutActions = async (colonyAddress, parentDomainId) => {
   const incomingFunds = await getAllIncomingFunds(colonyAddress, parentDomain);
 
   const expenditures = await getAllExpenditures(colonyAddress, parentDomain);
+  const filteredExpenditures = expenditures.filter(
+    (expenditure) => !!expenditure.fundingActions?.items?.length,
+  );
   const expendituresTokenAddresses =
-    getTokenAddressesFromExpenditures(expenditures);
+    getTokenAddressesFromExpenditures(filteredExpenditures);
   const tokensDecimals = await getTokensDecimalsFor(expendituresTokenAddresses);
 
   // Getting all remaining financial actions not included in incoming funds or expenditures
   let actions = await getAllActions(colonyAddress, parentDomainId);
 
+  console.log(filteredExpenditures.length);
+
   return [
-    ...getFormattedIncomingFunds(incomingFunds, parentDomainId),
+    // ...getFormattedIncomingFunds(incomingFunds, parentDomainId),
     ...actions.map((action) => getActionWithFinalizedDate(action)),
-    ...getFormattedExpenditures(expenditures, parentDomainId, tokensDecimals),
+    // ...getFormattedExpenditures(filteredExpenditures, parentDomainId, tokensDecimals),
   ];
 };
 

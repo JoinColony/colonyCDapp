@@ -119,6 +119,18 @@ module.exports = {
               tokenAddress
             }
           }
+          fundingActions: actions(filter: { type: { eq: MOVE_FUNDS } }) {
+            items {
+              fromDomain {
+                id
+              }
+              toDomain {
+                id
+              }
+              amount
+              id
+            }
+          }
         }
       }
     }
