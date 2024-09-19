@@ -5,7 +5,7 @@ import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetBoxList from '~v5/common/WidgetBoxList/index.ts';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import { useActivityFeedWidgets } from './hooks.tsx';
 
@@ -17,21 +17,20 @@ const ActivityPage: FC = () => {
   const widgets = useActivityFeedWidgets();
 
   return (
-    <div className="flex w-full flex-col gap-4 sm:gap-6">
-      <div className="mb-2">
-        <TeamFilter />
+    <ContentWithTeamFilter>
+      <div className="flex w-full flex-col gap-4 sm:gap-6">
+        <WidgetBoxList items={widgets} />
+        <div>
+          <FiltersContextProvider>
+            <ColonyActionsTable
+              className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
+              showTotalPagesNumber={false}
+              hasHorizontalPadding
+            />
+          </FiltersContextProvider>
+        </div>
       </div>
-      <WidgetBoxList items={widgets} />
-      <div>
-        <FiltersContextProvider>
-          <ColonyActionsTable
-            className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
-            showTotalPagesNumber={false}
-            hasHorizontalPadding
-          />
-        </FiltersContextProvider>
-      </div>
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 

@@ -24,8 +24,8 @@ import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Filter from '~v5/common/Filter/index.ts';
 import { FilterTypes } from '~v5/common/TableFiltering/types.ts';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import { useMembersPage } from './hooks.ts';
 import { MembersTabContentWrapper } from './partials/MembersTabContent/index.ts';
@@ -99,8 +99,7 @@ const MembersPage: FC = () => {
   ]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <TeamFilter />
+    <ContentWithTeamFilter>
       <Tabs
         activeTab={activeTab}
         onTabClick={(_, id) =>
@@ -165,7 +164,7 @@ const MembersPage: FC = () => {
           },
         ]}
       />
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 

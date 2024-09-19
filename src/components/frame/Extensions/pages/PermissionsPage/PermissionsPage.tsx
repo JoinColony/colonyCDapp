@@ -14,7 +14,7 @@ import {
 } from '~routes/index.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
-import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import { useGetMembersForPermissions } from './hooks.tsx';
 import { PermissionType } from './types.ts';
@@ -63,8 +63,7 @@ const PermissionsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'permissionsPage.title' }));
 
   return (
-    <div className="flex flex-col gap-8">
-      <TeamFilter />
+    <ContentWithTeamFilter>
       <Tabs
         activeTab={activeTab}
         className="pt-6"
@@ -96,7 +95,7 @@ const PermissionsPage: FC = () => {
             : []),
         ]}
       />
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 
