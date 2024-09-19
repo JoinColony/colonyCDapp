@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
@@ -6,6 +7,7 @@ import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts'
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import Numeral from '~shared/Numeral/index.ts';
 import { getValuesTrend } from '~utils/balance/getValuesTrend.ts';
+import { getCurrencyFormatByDecimal } from '~utils/getCurrencyFormatByDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
@@ -27,6 +29,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
 
   const selectedTeamName = selectedDomain?.metadata?.name;
   const trend = getValuesTrend(total, previousTotal);
+  const totalDecimal = new Decimal(total);
 
   return (
     <WidgetCards.Item
@@ -46,6 +49,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
             value={
               <Numeral
                 value={total ?? '-'}
+                format={getCurrencyFormatByDecimal(totalDecimal)}
                 prefix={currencySymbolMap[currency]}
               />
             }
