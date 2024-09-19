@@ -181,7 +181,8 @@ const getFormattedExpenditures = (
           formattedExpenditures.push({
             fromDomainId: parentDomainId,
             amount: payout.amount,
-            networkFee: payout.networkFee,
+            // we'll exclude the network fee from the expenditure as we want to show the full amount that the domain is paying out
+            networkFee: 0,
             finalizedDate,
             token: {
               id: payout.tokenAddress,
