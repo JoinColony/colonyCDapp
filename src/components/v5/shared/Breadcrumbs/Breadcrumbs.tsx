@@ -8,9 +8,12 @@ import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsCo
 import Link from '../Link/index.ts';
 
 import BreadcrumbItem from './partials/BreadcrumbItem.tsx';
-import { type BreadcrumbsProps } from './types.ts';
 
 const displayName = 'v5.Breadcrumbs';
+
+interface BreadcrumbsProps {
+  className?: string;
+}
 
 const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
   const { rootBreadcrumbItem, shouldShowBreadcrumbs } = useBreadcrumbsContext();
@@ -21,8 +24,8 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
   }
   const pathSections = location.pathname
     .split('/')
-    .filter((test) => test.length > 0);
-  const initialPath = `${pathSections[0]}/`;
+    .filter((section) => section.length > 0);
+  const initialPath = `/${pathSections[0]}`;
   const breadcrumbItems = pathSections.slice(1);
 
   const getBreadcrumbLink = (index: number) => {

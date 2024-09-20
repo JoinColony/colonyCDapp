@@ -19,7 +19,6 @@ import { UserHubTab } from '~common/Extensions/UserHub/types.ts';
 import UserHubButton from '~common/Extensions/UserHubButton/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
@@ -54,8 +53,7 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
-  const { colony } = useColonyContext();
-  const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
+  const { title: pageHeadingTitle } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
@@ -157,18 +155,6 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
         headerProps={{
           pageHeadingProps: {
             title: pageHeadingTitle,
-            breadcrumbs: [
-              ...(colony.name
-                ? [
-                    {
-                      key: '1',
-                      href: `/${colony.name}`,
-                      label: colony.metadata?.displayName || '',
-                    },
-                  ]
-                : []),
-              ...breadcrumbs,
-            ],
           },
           /** @TODO: Move this inside the Header component */
           userNavigation: getUserNavigation(isActionSidebarOpen),
