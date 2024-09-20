@@ -15,19 +15,17 @@ const MainLayout: FC<PropsWithChildren<MainLayoutProps>> = ({
   sidebar,
   header,
 }) => {
-  const { title: pageHeadingTitle, breadcrumbs = [] } = usePageHeadingContext();
+  const { title: pageHeadingTitle } = usePageHeadingContext();
 
   return (
     <PageLayout
       // @TODO: Move page heading props logic inside the header component itself
       headerProps={{
-        pageHeadingProps:
-          pageHeadingTitle || breadcrumbs.length
-            ? {
-                title: pageHeadingTitle,
-                breadcrumbs,
-              }
-            : undefined,
+        pageHeadingProps: pageHeadingTitle
+          ? {
+              title: pageHeadingTitle,
+            }
+          : undefined,
         userNavigation: <UserNavigationWrapper />,
       }}
       sidebar={sidebar ?? <BasicPageSidebar />}
