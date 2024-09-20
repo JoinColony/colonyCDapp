@@ -3,12 +3,13 @@ import React from 'react';
 import { formatText } from '~utils/intl.ts';
 import SettingsRow from '~v5/common/SettingsRow/index.ts';
 
-import ToggleButton from './partials/ToggleButton.tsx';
+import MetatransactionsToggle from './partials/MetatransactionsToggle.tsx';
 
-const displayName = 'v5.pages.UserAdvancedPage.partials.MetaTransactionsToggle';
+const displayName =
+  'v5.pages.UserAdvancedPage.partials.MetaTransactionsSection';
 
-const MetaTransactionsToggle = () => {
-  const toggleButton = <ToggleButton />;
+const MetaTransactionsSection = () => {
+  const toggleButton = <MetatransactionsToggle />;
 
   return (
     <SettingsRow.Container>
@@ -29,5 +30,5 @@ const MetaTransactionsToggle = () => {
   );
 };
 
-MetaTransactionsToggle.displayName = displayName;
-export default MetaTransactionsToggle;
+MetaTransactionsSection.displayName = displayName;
+export default MetaTransactionsSection;

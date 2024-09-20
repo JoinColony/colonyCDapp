@@ -8,9 +8,9 @@ import { canUseMetatransactions } from '~utils/checks/index.ts';
 import Switch from '~v5/common/Fields/Switch/index.ts';
 
 const displayName =
-  'v5.pages.UserAdvancedPage.partials.MetaTransactionsToggle.partials.ToggleButton';
+  'v5.pages.UserAdvancedPage.partials.MetaTransactionsSection.partials.MetatransactionsToggle';
 
-const ToggleButton = () => {
+const MetatransactionsToggle = () => {
   const { user, updateUser } = useAppContext();
   const [areMetaTxEnabled, setAreMetaTxEnabled] = useState<boolean>(() => {
     const userProfileMeta = user?.profile?.meta;
@@ -24,17 +24,20 @@ const ToggleButton = () => {
   const [editUser, { loading }] = useUpdateUserProfileMutation();
 
   const handleUpdateMetaTxStatus = async (enabled: boolean): Promise<void> => {
+    if (!user) {
+      return;
+    }
     await editUser({
       variables: {
         input: {
-          id: user?.walletAddress ?? '',
+          id: user.walletAddress ?? '',
           meta: {
             metatransactionsEnabled: enabled,
           },
         },
       },
     });
-    await updateUser(user?.walletAddress, true);
+    await updateUser(user.walletAddress, true);
     setAreMetaTxEnabled(enabled);
 
     toast.success(
@@ -61,5 +64,5 @@ const ToggleButton = () => {
   );
 };
 
-ToggleButton.displayName = displayName;
-export default ToggleButton;
+MetatransactionsToggle.displayName = displayName;
+export default MetatransactionsToggle;

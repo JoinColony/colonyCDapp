@@ -50,3 +50,15 @@ mutation UpdateUserNotificationsMutedColonies(
     mutedColonyAddresses
   }
 }
+
+mutation UpdateUserGlobalNotificationsMuted(
+  $userAddress: ID!
+  $disabled: Boolean!
+) {
+  updateNotificationsData(
+    input: { userAddress: $userAddress, notificationsDisabled: $disabled }
+  ) {
+    userAddress
+    notificationsDisabled
+  }
+}
