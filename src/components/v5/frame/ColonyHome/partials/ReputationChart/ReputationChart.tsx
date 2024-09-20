@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type Domain } from '~types/graphql.ts';
@@ -36,7 +37,11 @@ const ReputationChart = () => {
     colony: { domains },
   } = useColonyContext();
 
-  const { contributorsList } = useContributorsByDomain();
+  const { contributorsList, loading: isContributorsLoading } =
+    useContributorsByDomain();
+
+  // @TODO here we should also check if the colony data is loading
+  const isDataLoading = isContributorsLoading;
 
   const selectedDomain = useGetSelectedDomainFilter();
 
@@ -64,12 +69,17 @@ const ReputationChart = () => {
   return (
     <div className="flex w-full flex-col items-start rounded-lg border px-5 py-6">
       <div className="flex w-full justify-between">
-        <h5 className="text-gray-900 heading-5">
-          {formatText(reputationTitle)}
-        </h5>
+        <LoadingSkeleton
+          className="h-6 w-[120px] rounded"
+          isLoading={isDataLoading}
+        >
+          <h5 className="text-gray-900 heading-5">
+            {formatText(reputationTitle)}
+          </h5>
+        </LoadingSkeleton>
         <TeamActionsMenu />
       </div>
-      <Chart data={chartData} />
+      <Chart data={chartData} isLoading={isDataLoading} />
     </div>
   );
 };
