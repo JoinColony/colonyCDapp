@@ -9,7 +9,7 @@ const LegendLoadingItem = () => {
   return (
     <div className="flex flex-row items-center gap-1">
       <LoadingSkeleton className="h-2.5 w-2.5 rounded-full" isLoading />
-      <LoadingSkeleton className="h-4 w-[60px] rounded" isLoading />
+      <LoadingSkeleton className="h-4 w-12 rounded" isLoading />
       <LoadingSkeleton className="h-4 w-5 rounded" isLoading />
     </div>
   );
