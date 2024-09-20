@@ -121,6 +121,8 @@ export type ColonyActionsActionTypes =
         fromDomain: Domain;
         toDomain: Domain;
         amount: BigNumber;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
         annotationMessage?: string;
       },
       MetaWithSetter<object>

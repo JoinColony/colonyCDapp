@@ -1,4 +1,7 @@
-import { type StreamingPaymentEndCondition } from '~gql';
+import {
+  type ColonyRoleFragment,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import {
   type ExpenditurePayoutWithSlotId,
@@ -18,6 +21,8 @@ export type ExpenditureFundPayload = {
   colonyAddress: Address;
   fromDomainFundingPotId: number;
   expenditure: Expenditure;
+  colonyDomains: Domain[];
+  colonyRoles: ColonyRoleFragment[];
   annotationMessage?: string;
 };
 

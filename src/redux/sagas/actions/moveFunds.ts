@@ -29,6 +29,8 @@ function* createMoveFundsAction({
     toDomain,
     amount,
     tokenAddress,
+    colonyDomains,
+    colonyRoles,
     annotationMessage,
     customActionTitle,
   },
@@ -115,7 +117,13 @@ function* createMoveFundsAction({
     yield put(transactionPending(moveFunds.id));
 
     const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-      yield getMoveFundsPermissionProofs(colonyAddress, fromPot, toPot);
+      yield getMoveFundsPermissionProofs({
+        colonyAddress,
+        fromPotId: fromPot,
+        toPotId: toPot,
+        colonyDomains,
+        colonyRoles,
+      });
 
     yield transactionSetParams(moveFunds.id, [
       permissionDomainId,
