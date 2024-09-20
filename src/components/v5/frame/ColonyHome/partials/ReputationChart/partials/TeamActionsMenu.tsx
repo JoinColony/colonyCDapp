@@ -1,6 +1,6 @@
 import { DotsThreeVertical, Eye, LockKey, Pencil } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 import { Link } from 'react-router-dom';
@@ -34,7 +34,11 @@ const MSG = defineMessages({
 // eslint-disable-next-line max-len
 const dropdownItemClassName = tw`flex w-full items-center gap-2 rounded-s px-3 py-2 text-md text-gray-900 hover:font-medium md:hover:bg-gray-50`;
 
-const TeamActionsMenu = () => {
+interface TeamActionsMenuProps {
+  isDisabled?: boolean;
+}
+
+const TeamActionsMenu: FC<TeamActionsMenuProps> = ({ isDisabled }) => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
@@ -76,6 +80,7 @@ const TeamActionsMenu = () => {
         className={clsx('hover:text-blue-400', {
           'text-gray-400': !visible,
           'text-blue-400': visible,
+          'pointer-events-none text-gray-100': isDisabled,
         })}
       >
         <DotsThreeVertical size={18} />
