@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import InvitationBlock from '~common/InvitationBlock/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
 import { MainLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import ColonyIcon from '~icons/ColonyIcon.tsx';
@@ -100,16 +100,12 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const { user, connectWallet, wallet, walletConnecting, userLoading } =
     useAppContext();
-  const { setBreadcrumbs } = usePageHeadingContext();
+  const { setShouldShowBreadcrumbs } = useBreadcrumbsContext();
 
   useEffect(() => {
-    setBreadcrumbs([
-      {
-        key: 'landing-page',
-        label: 'Colony App',
-      },
-    ]);
-  }, [setBreadcrumbs]);
+    setShouldShowBreadcrumbs(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate />;
