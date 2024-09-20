@@ -10009,6 +10009,14 @@ export type UpdateUserNotificationsMutedColoniesMutationVariables = Exact<{
 
 export type UpdateUserNotificationsMutedColoniesMutation = { __typename?: 'Mutation', updateNotificationsData?: { __typename?: 'NotificationsData', userAddress: string, mutedColonyAddresses: Array<string> } | null };
 
+export type UpdateUserGlobalNotificationsMutedMutationVariables = Exact<{
+  userAddress: Scalars['ID'];
+  disabled: Scalars['Boolean'];
+}>;
+
+
+export type UpdateUserGlobalNotificationsMutedMutation = { __typename?: 'Mutation', updateNotificationsData?: { __typename?: 'NotificationsData', userAddress: string, notificationsDisabled: boolean } | null };
+
 export type GetColonyActionsQueryVariables = Exact<{
   colonyAddress: Scalars['ID'];
   nextToken?: InputMaybe<Scalars['String']>;
@@ -12546,6 +12554,43 @@ export function useUpdateUserNotificationsMutedColoniesMutation(baseOptions?: Ap
 export type UpdateUserNotificationsMutedColoniesMutationHookResult = ReturnType<typeof useUpdateUserNotificationsMutedColoniesMutation>;
 export type UpdateUserNotificationsMutedColoniesMutationResult = Apollo.MutationResult<UpdateUserNotificationsMutedColoniesMutation>;
 export type UpdateUserNotificationsMutedColoniesMutationOptions = Apollo.BaseMutationOptions<UpdateUserNotificationsMutedColoniesMutation, UpdateUserNotificationsMutedColoniesMutationVariables>;
+export const UpdateUserGlobalNotificationsMutedDocument = gql`
+    mutation UpdateUserGlobalNotificationsMuted($userAddress: ID!, $disabled: Boolean!) {
+  updateNotificationsData(
+    input: {userAddress: $userAddress, notificationsDisabled: $disabled}
+  ) {
+    userAddress
+    notificationsDisabled
+  }
+}
+    `;
+export type UpdateUserGlobalNotificationsMutedMutationFn = Apollo.MutationFunction<UpdateUserGlobalNotificationsMutedMutation, UpdateUserGlobalNotificationsMutedMutationVariables>;
+
+/**
+ * __useUpdateUserGlobalNotificationsMutedMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserGlobalNotificationsMutedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserGlobalNotificationsMutedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserGlobalNotificationsMutedMutation, { data, loading, error }] = useUpdateUserGlobalNotificationsMutedMutation({
+ *   variables: {
+ *      userAddress: // value for 'userAddress'
+ *      disabled: // value for 'disabled'
+ *   },
+ * });
+ */
+export function useUpdateUserGlobalNotificationsMutedMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserGlobalNotificationsMutedMutation, UpdateUserGlobalNotificationsMutedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserGlobalNotificationsMutedMutation, UpdateUserGlobalNotificationsMutedMutationVariables>(UpdateUserGlobalNotificationsMutedDocument, options);
+      }
+export type UpdateUserGlobalNotificationsMutedMutationHookResult = ReturnType<typeof useUpdateUserGlobalNotificationsMutedMutation>;
+export type UpdateUserGlobalNotificationsMutedMutationResult = Apollo.MutationResult<UpdateUserGlobalNotificationsMutedMutation>;
+export type UpdateUserGlobalNotificationsMutedMutationOptions = Apollo.BaseMutationOptions<UpdateUserGlobalNotificationsMutedMutation, UpdateUserGlobalNotificationsMutedMutationVariables>;
 export const GetColonyActionsDocument = gql`
     query GetColonyActions($colonyAddress: ID!, $nextToken: String, $limit: Int, $sortDirection: ModelSortDirection, $filter: ModelColonyActionFilterInput) {
   getActionsByColony(
