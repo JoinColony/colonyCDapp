@@ -7,8 +7,8 @@ import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsCo
 
 import Link from '../Link/index.ts';
 
+import BreadcrumbItem from './partials/BreadcrumbItem.tsx';
 import { type BreadcrumbsProps } from './types.ts';
-import { getBreadcrumbItemName } from './utils.ts';
 
 const displayName = 'v5.Breadcrumbs';
 
@@ -19,9 +19,11 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
   if (!shouldShowBreadcrumbs) {
     return null;
   }
-  const pathSections = location.pathname.split('/');
-  const initialPath = pathSections.slice(0, 2).join('/');
-  const breadcrumbItems = pathSections.slice(2);
+  const pathSections = location.pathname
+    .split('/')
+    .filter((test) => test.length > 0);
+  const initialPath = `${pathSections[0]}/`;
+  const breadcrumbItems = pathSections.slice(1);
 
   const getBreadcrumbLink = (index: number) => {
     return `${initialPath}/${breadcrumbItems.slice(0, index + 1).join('/')}`;
@@ -44,12 +46,12 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
           <CaretRight size={10} />
           <li>
             <Link
-              className={clsx('capitalize', {
+              className={clsx({
                 'font-semibold': index === breadcrumbItems.length - 1, // if it's the last one, it's active
               })}
               to={getBreadcrumbLink(index)}
             >
-              {getBreadcrumbItemName(item)}
+              <BreadcrumbItem parameter={item} />
             </Link>
           </li>
         </React.Fragment>
