@@ -1,5 +1,5 @@
-import { ClientType } from '@colony/colony-js';
-import { fork, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, ColonyRole, Id } from '@colony/colony-js';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
@@ -14,6 +14,7 @@ import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
   getColonyManager,
   getMoveFundsPermissionProofs,
+  getPermissionProofsLocal,
   initiateTransaction,
   putError,
   takeFrom,
@@ -28,6 +29,8 @@ function* fundExpenditure({
     colonyAddress,
     expenditure,
     fromDomainFundingPotId,
+    colonyDomains,
+    colonyRoles,
     annotationMessage,
   },
   meta,
@@ -57,21 +60,42 @@ function* fundExpenditure({
   );
 
   try {
-    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-      yield getMoveFundsPermissionProofs(
+    const userAddress = yield colonyClient.signer.getAddress();
+
+    // Move funds action can only be performed by a user with permissions in a parent domain
+    // Once nested teams is introduced this will need to find the closest parent domain id
+    // but for now, we can assume this is the root domain
+    const parentDomainId = Id.RootDomain;
+
+    const [userPermissionDomainId, userChildSkillIndex] = yield call(
+      getPermissionProofsLocal,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: parentDomainId,
+        requiredColonyRoles: ColonyRole.Funding,
+        permissionAddress: userAddress,
+      },
+    );
+
+    const [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+      yield getMoveFundsPermissionProofs({
         colonyAddress,
-        fromDomainFundingPotId,
-        expenditureFundingPotId,
-      );
+        fromPotId: fromDomainFundingPotId,
+        toPotId: expenditureFundingPotId,
+        colonyDomains,
+        colonyRoles,
+      });
 
     const multicallData = [...balancesByTokenAddresses.entries()].map(
       ([tokenAddress, amount]) =>
         colonyClient.interface.encodeFunctionData(
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           [
-            permissionDomainId,
-            fromChildSkillIndex,
-            permissionDomainId,
+            userPermissionDomainId,
+            userChildSkillIndex,
+            fromPermissionDomainId,
             fromChildSkillIndex,
             toChildSkillIndex,
             fromDomainFundingPotId,
