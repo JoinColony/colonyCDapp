@@ -36,7 +36,7 @@ const ColonyHome = () => {
       <FundsCards />
       <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
-        <div className="w-full">
+        <div className="w-full sm:hidden lg:block">
           <ReputationChart />
         </div>
       </div>

@@ -5,6 +5,7 @@ export interface ReputationChartDataItem {
   value: number;
   id: string;
   color: string;
+  shouldTruncateLegendLabel?: boolean;
 }
 
 export interface ContributorItem {
