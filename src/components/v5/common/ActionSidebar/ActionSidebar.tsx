@@ -288,14 +288,18 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   </button>
                   {getShareButton()}
                 </div>
-                {action && !isMotion && !expenditure && !isMultiSig && (
-                  <PillsBase
-                    className="bg-success-100 text-success-400"
-                    isCapitalized={false}
-                  >
-                    {formatText({ id: 'action.passed' })}
-                  </PillsBase>
-                )}
+                {action &&
+                  !isMotion &&
+                  !isMultiSig &&
+                  !expenditure &&
+                  !loadingExpenditure && (
+                    <PillsBase
+                      className="bg-success-100 text-success-400"
+                      isCapitalized={false}
+                    >
+                      {formatText({ id: 'action.passed' })}
+                    </PillsBase>
+                  )}
                 {!!expenditure && (
                   <ExpenditureActionStatusBadge
                     expenditure={expenditure}
