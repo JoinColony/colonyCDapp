@@ -35,14 +35,16 @@ const PaymentOverview: FC<PaymentOverviewProps> = ({
             <PaymentItem payouts={paid} />
           </td>
         </tr>
-        <tr>
-          <th className="py-1 text-left align-top font-normal text-gray-600">
-            {formatText({ id: 'expenditure.paymentOverview.payableNow' })}
-          </th>
-          <td className="text-right">
-            <PaymentItem payouts={payable} />
-          </td>
-        </tr>
+        {payable && (
+          <tr>
+            <th className="py-1 text-left align-top font-normal text-gray-600">
+              {formatText({ id: 'expenditure.paymentOverview.payableNow' })}
+            </th>
+            <td className="text-right">
+              <PaymentItem payouts={payable} />
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   </div>

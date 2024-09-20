@@ -19,7 +19,7 @@ const meta: Meta<typeof UserPermissionsBadge> = {
     icon: {
       name: 'Icon',
       control: {
-        type: 'objectk',
+        type: 'object',
       },
     },
     description: {

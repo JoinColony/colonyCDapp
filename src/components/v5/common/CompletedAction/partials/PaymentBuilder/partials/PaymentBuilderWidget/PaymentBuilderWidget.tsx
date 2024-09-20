@@ -1,11 +1,17 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
+import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { useGetColonyExpendituresQuery, ColonyActionType } from '~gql';
+import {
+  useGetColonyExpendituresQuery,
+  ColonyActionType,
+  ExpenditureType,
+} from '~gql';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -30,7 +36,12 @@ import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
 import RequestBox from '../RequestBox/RequestBox.tsx';
+import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
+import StagedPaymentStep, {
+  type ReleaseActionItem,
+} from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
+import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
@@ -44,6 +55,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
+  const { isStagedExtensionInstalled } = useEnabledExtensions();
 
   const {
     isFundingModalOpen,
@@ -63,12 +75,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     fundingActions,
     finalizingActions,
     cancellingActions,
+    releaseActions,
     finalizedAt,
     createdAt,
     isStaked,
     userStake,
     ownerAddress,
     motions,
+    slots,
+    metadata,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
   const { items: fundingActionsItems } = fundingActions || {};
@@ -131,6 +146,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const isFundingMotion =
     motions?.items?.length &&
     motions.items?.[0]?.action?.type === ColonyActionType.FundExpenditureMotion;
+  const isPaymentMotion =
+    motions?.items?.length &&
+    motions.items?.[0]?.action?.type ===
+      ColonyActionType.ReleaseStagedPaymentsMotion;
   const fundingMotions = useMemo(() => {
     return (
       motions?.items
@@ -148,15 +167,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     );
   }, [motions]);
 
-  const { selectedTransaction, setSelectedTransaction } =
-    usePaymentBuilderContext();
+  const {
+    selectedTransaction,
+    setSelectedTransaction,
+    selectedMilestoneMotion,
+  } = usePaymentBuilderContext();
 
   const {
     action: motionAction,
     motionState,
     refetchMotionState,
   } = useGetColonyAction(
-    selectedTransaction || fundingMotions?.[0]?.transactionHash,
+    selectedTransaction ||
+      fundingMotions?.[0]?.transactionHash ||
+      selectedMilestoneMotion?.transactionHash,
   );
 
   const selectedMotion = fundingMotions.find(
@@ -233,6 +257,80 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     setSelectedTransaction(fundingMotions?.[0]?.transactionHash);
   }, [fundingMotions, fundingMotions.length, setSelectedTransaction]);
 
+  const milestones: MilestoneItem[] = useMemo(
+    () =>
+      (metadata?.stages || []).map((item) => {
+        const payout = (slots || []).find((slot) => slot.id === item.slotId);
+        const amount = payout?.payouts?.[0].amount;
+        const tokenAddress = payout?.payouts?.[0].tokenAddress;
+        const isClaimed = payout?.payouts?.[0].isClaimed;
+
+        return {
+          milestone: item.name,
+          amount: amount || '0',
+          tokenAddress: tokenAddress || ADDRESS_ZERO,
+          slotId: item.slotId,
+          isClaimed: isClaimed || false,
+        };
+      }),
+    [slots, metadata],
+  );
+  const mappedReleaseActions: ReleaseActionItem[] = useMemo(() => {
+    const { items } = releaseActions || {};
+
+    if (!items) return [];
+
+    return items.map((releaseAction) => {
+      const { expenditureSlotIds } = releaseAction || {};
+
+      return {
+        userAddress: releaseAction?.initiatorAddress || '',
+        createdAt: releaseAction?.createdAt || '',
+        slotIds: expenditureSlotIds || [],
+      };
+    });
+  }, [releaseActions]);
+
+  const isStagedExpenditure = expenditure?.type === ExpenditureType.Staged;
+
+  const paymentStep = isStagedExpenditure
+    ? {
+        key: ExpenditureStep.Payment,
+        heading: {
+          label: formatText({ id: 'expenditure.paymentStage.label' }),
+          decor:
+            isPaymentMotion &&
+            !motionAction?.motionData?.motionStateHistory.hasPassed &&
+            !motionAction?.motionData?.motionStateHistory.hasFailed &&
+            !motionAction?.motionData?.motionStateHistory
+              .hasFailedNotFinalizable &&
+            motionStakes ? (
+              <MotionCountDownTimer
+                key={`${motionAction?.transactionHash}-${motionState}-${motionId}}`}
+                motionState={motionState}
+                motionId={motionId}
+                motionStakes={motionStakes}
+                refetchMotionState={refetchMotionState}
+              />
+            ) : null,
+        },
+        content: (
+          <StagedPaymentStep
+            items={milestones}
+            expenditure={expenditure}
+            expectedStepKey={expectedStepKey}
+            releaseActions={mappedReleaseActions}
+          />
+        ),
+      }
+    : {
+        key: ExpenditureStep.Payment,
+        heading: {
+          label: formatText({ id: 'expenditure.paymentStage.label' }),
+        },
+        content: <PaymentStepDetailsBlock expenditure={expenditure} />,
+      };
+
   const items: StepperItem<ExpenditureStep>[] = [
     {
       key: ExpenditureStep.Create,
@@ -254,42 +352,48 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       heading: { label: formatText({ id: 'expenditure.reviewStage.label' }) },
       content:
         expenditureStep === ExpenditureStep.Review ? (
-          <StepDetailsBlock
-            text={formatText({
-              id: 'expenditure.reviewStage.confirmDetails.info',
-            })}
-            content={
-              <ActionButton
-                disabled={
-                  !expenditure?.ownerAddress ||
-                  walletAddress !== expenditure?.ownerAddress
-                }
-                onSuccess={() => {
-                  setExpectedStepKey(ExpenditureStep.Funding);
-                }}
-                loadingContent={
-                  <IconButton
-                    className="max-h-[2.5rem] w-full !text-md"
-                    rounded="s"
-                    text={{ id: 'button.pending' }}
-                    icon={
-                      <span className="ml-1.5 flex shrink-0">
-                        <SpinnerGap className="animate-spin" size={14} />
-                      </span>
+          <>
+            {!isStagedExtensionInstalled && isStagedExpenditure ? (
+              <UninstalledExtensionBox />
+            ) : (
+              <StepDetailsBlock
+                text={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.info',
+                })}
+                content={
+                  <ActionButton
+                    disabled={
+                      !expenditure?.ownerAddress ||
+                      walletAddress !== expenditure?.ownerAddress
                     }
+                    onSuccess={() => {
+                      setExpectedStepKey(ExpenditureStep.Funding);
+                    }}
+                    loadingContent={
+                      <IconButton
+                        className="max-h-[2.5rem] w-full !text-md"
+                        rounded="s"
+                        text={{ id: 'button.pending' }}
+                        icon={
+                          <span className="ml-1.5 flex shrink-0">
+                            <SpinnerGap className="animate-spin" size={14} />
+                          </span>
+                        }
+                      />
+                    }
+                    text={formatText({
+                      id: 'expenditure.reviewStage.confirmDetails.button',
+                    })}
+                    values={lockExpenditurePayload}
+                    actionType={ActionTypes.EXPENDITURE_LOCK}
+                    mode="primarySolid"
+                    className="w-full"
+                    isLoading={expectedStepKey === ExpenditureStep.Funding}
                   />
                 }
-                text={formatText({
-                  id: 'expenditure.reviewStage.confirmDetails.button',
-                })}
-                values={lockExpenditurePayload}
-                actionType={ActionTypes.EXPENDITURE_LOCK}
-                mode="primarySolid"
-                className="w-full"
-                isLoading={expectedStepKey === ExpenditureStep.Funding}
               />
-            }
-          />
+            )}
+          </>
         ) : (
           <>
             {isStaked ? (
@@ -327,59 +431,72 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       content:
         expenditureStep === ExpenditureStep.Funding ? (
           <>
-            {isFundingMotion && !isFundingMotionFailed && !isFundingClaimed ? (
-              <div className="flex flex-col gap-2">
-                <RequestBox
-                  title={formatText({ id: 'expenditure.fundingRequest.title' })}
-                  motions={fundingMotions}
-                />
-                <MotionBox
-                  transactionId={
-                    selectedTransaction ||
-                    fundingMotions?.[0].transactionHash ||
-                    ''
-                  }
-                />
-              </div>
+            {!isStagedExtensionInstalled && isStagedExpenditure ? (
+              <UninstalledExtensionBox />
             ) : (
-              <StepDetailsBlock
-                text={formatText({
-                  id: 'expenditure.fundingStage.info',
-                })}
-                content={
-                  <>
-                    {fundingMotions && fundingMotions.length > 0 && (
-                      <RequestBox
-                        withoutPadding
-                        title={formatText({
-                          id: 'expenditure.fundingRequest.title',
-                        })}
-                        motions={fundingMotions}
-                      />
-                    )}
-                    {expectedStepKey === ExpenditureStep.Release ? (
-                      <IconButton
-                        className="w-full"
-                        rounded="s"
-                        text={{ id: 'button.pending' }}
-                        icon={
-                          <span className="ml-1.5 flex shrink-0">
-                            <SpinnerGap className="animate-spin" size={14} />
-                          </span>
-                        }
-                      />
-                    ) : (
-                      <Button
-                        className="w-full"
-                        onClick={showFundingModal}
-                        text={formatText({
-                          id: 'expenditure.fundingStage.button',
-                        })}
-                      />
-                    )}
-                  </>
-                }
-              />
+              <>
+                {isFundingMotion &&
+                !isFundingMotionFailed &&
+                !isFundingClaimed ? (
+                  <div className="flex flex-col gap-2">
+                    <RequestBox
+                      title={formatText({
+                        id: 'expenditure.fundingRequest.title',
+                      })}
+                      motions={fundingMotions}
+                    />
+                    <MotionBox
+                      transactionId={
+                        selectedTransaction ||
+                        fundingMotions?.[0].transactionHash ||
+                        ''
+                      }
+                    />
+                  </div>
+                ) : (
+                  <StepDetailsBlock
+                    text={formatText({
+                      id: 'expenditure.fundingStage.info',
+                    })}
+                    content={
+                      <>
+                        {fundingMotions && fundingMotions.length > 0 && (
+                          <RequestBox
+                            withoutPadding
+                            title={formatText({
+                              id: 'expenditure.fundingRequest.title',
+                            })}
+                            motions={fundingMotions}
+                          />
+                        )}
+                        {expectedStepKey === ExpenditureStep.Release ? (
+                          <IconButton
+                            className="w-full"
+                            rounded="s"
+                            text={{ id: 'button.pending' }}
+                            icon={
+                              <span className="ml-1.5 flex shrink-0">
+                                <SpinnerGap
+                                  className="animate-spin"
+                                  size={14}
+                                />
+                              </span>
+                            }
+                          />
+                        ) : (
+                          <Button
+                            className="w-full"
+                            onClick={showFundingModal}
+                            text={formatText({
+                              id: 'expenditure.fundingStage.button',
+                            })}
+                          />
+                        )}
+                      </>
+                    }
+                  />
+                )}
+              </>
             )}
           </>
         ) : (
@@ -410,36 +527,47 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     },
     {
       key: ExpenditureStep.Release,
-      heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
+      heading: {
+        label: formatText({ id: 'expenditure.releaseStage.label' }),
+      },
       content:
         expenditureStep === ExpenditureStep.Release ? (
-          <StepDetailsBlock
-            text={formatText({
-              id: 'expenditure.releaseStage.info',
-            })}
-            content={
-              expectedStepKey === ExpenditureStep.Payment ? (
-                <IconButton
-                  className="max-h-[2.5rem] w-full !text-md"
-                  rounded="s"
-                  text={{ id: 'button.pending' }}
-                  icon={
-                    <span className="ml-1.5 flex shrink-0">
-                      <SpinnerGap className="animate-spin" size={14} />
-                    </span>
-                  }
-                />
-              ) : (
-                <Button
-                  className="w-full"
-                  onClick={showReleasePaymentModal}
-                  text={formatText({
-                    id: 'expenditure.releaseStage.button',
-                  })}
-                />
-              )
-            }
-          />
+          <>
+            {!isStagedExtensionInstalled && isStagedExpenditure ? (
+              <UninstalledExtensionBox />
+            ) : (
+              <StepDetailsBlock
+                text={formatText({
+                  id:
+                    expenditure?.type === ExpenditureType.Staged
+                      ? 'expenditure.releaseStage.staged.info'
+                      : 'expenditure.releaseStage.info',
+                })}
+                content={
+                  expectedStepKey === ExpenditureStep.Payment ? (
+                    <IconButton
+                      className="max-h-[2.5rem] w-full !text-md"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showReleasePaymentModal}
+                      text={formatText({
+                        id: 'expenditure.releaseStage.button',
+                      })}
+                    />
+                  )
+                }
+              />
+            )}
+          </>
         ) : (
           <>
             {finalizedAt ? (
@@ -462,11 +590,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           </>
         ),
     },
-    {
-      key: ExpenditureStep.Payment,
-      heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: <PaymentStepDetailsBlock expenditure={expenditure} />,
-    },
+    paymentStep,
   ];
 
   const currentIndex = getCancelStepIndex(expenditure);

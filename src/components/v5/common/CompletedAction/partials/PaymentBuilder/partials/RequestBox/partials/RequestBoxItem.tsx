@@ -6,7 +6,6 @@ import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionB
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -58,7 +57,7 @@ const RequestBoxItem: FC<RequestBoxItemProps> = ({
         />
       </span>
       {loadingAction ? (
-        <SpinnerLoader />
+        <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
       ) : (
         <ActionBadge motionState={motionState} />
       )}
