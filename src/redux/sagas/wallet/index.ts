@@ -22,7 +22,7 @@ import {
   clearLastWallet,
 } from '~utils/autoLogin.ts';
 
-import RetryProvider from './RetryProvider.ts';
+import retryProviderFactory from './RetryProvider.ts';
 
 // import { createAddress } from '~utils/web3';
 // import { DEFAULT_NETWORK, NETWORK_DATA, TOKEN_DATA } from '~constants';
@@ -82,6 +82,7 @@ export const getWallet = async (lastWallet: LastWallet | null) => {
   const [account] = wallet.accounts;
   setLastWallet({ type: wallet.label, address: account.address });
 
+  const RetryProvider = retryProviderFactory(wallet.label);
   const provider = new RetryProvider();
 
   return {
