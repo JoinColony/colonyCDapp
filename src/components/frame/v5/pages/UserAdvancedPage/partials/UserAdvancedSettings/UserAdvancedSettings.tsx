@@ -8,7 +8,8 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
-import MetaTransactionsToggle from '../MetatransactionsToggle/MetaTransactionsToggle.tsx';
+import MetaTransactionsSection from '../MetatransactionsSection/MetaTransactionsSection.tsx';
+import NotificationsSection from '../NotificationsSection/NotificationsSection.tsx';
 // @BETA: Disabled for now
 // import RpcForm from '../RpcForm/RpcForm';
 // import { modalInformations } from './consts';
@@ -26,7 +27,8 @@ const UserAdvancedSettings: FC = () => {
       <h4 className="heading-4">
         {formatMessage({ id: 'advancedSettings.title' })}
       </h4>
-      <MetaTransactionsToggle />
+      <MetaTransactionsSection />
+      <NotificationsSection />
       {/* @BETA: Disabled for noew */}
       {/* <span className="divider" /> */}
       {/* <RpcForm /> */}
