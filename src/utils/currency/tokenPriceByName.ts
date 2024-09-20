@@ -22,7 +22,7 @@ const buildTokenNameCoinGeckoURL = (
   return buildAPIEndpoint(new URL(`${url}/`), {
     [searchParams.from]: tokenName,
     [searchParams.to]: denomination,
-    [searchParams.api]: process.env.COINGECKO_API_KEY ?? '',
+    [searchParams.api]: import.meta.env.COINGECKO_API_KEY ?? '',
   });
 };
 
