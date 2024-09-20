@@ -35,7 +35,6 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
 
   const isTablet = useTablet();
 
-  const breadcrumbs = pageHeadingProps?.breadcrumbs;
   const title = pageHeadingProps?.title;
 
   useHeightResizeObserver(
@@ -53,9 +52,9 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
           )}
         >
           <div>
-            {!isTablet && breadcrumbs && (
+            {!isTablet && (
               <section className="flex-shrink-0">
-                <PageHeading breadcrumbs={breadcrumbs} />
+                <PageHeading />
               </section>
             )}
             {isTablet && (
@@ -94,14 +93,10 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
           />
         </div>
       </section>
-      <section
-        className={clsx('modal-blur flex w-full flex-col md:p-0', {
-          'px-6 pb-2 pt-6': breadcrumbs,
-        })}
-      >
-        {isTablet && breadcrumbs && (
+      <section className="modal-blur flex w-full flex-col md:p-0">
+        {isTablet && (
           <section className="flex-shrink-0">
-            <PageHeading breadcrumbs={breadcrumbs} />
+            <PageHeading />
           </section>
         )}
         {title && (

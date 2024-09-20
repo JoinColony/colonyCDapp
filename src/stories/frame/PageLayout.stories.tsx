@@ -169,13 +169,6 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
     headerProps: {
       pageHeadingProps: {
         title: 'Members',
-        breadcrumbs: [
-          {
-            key: '1',
-            label: 'Metacolony',
-            href: '/',
-          },
-        ],
       },
       userNavigation: <p>user navigation</p>,
     },
