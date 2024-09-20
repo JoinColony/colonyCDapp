@@ -3,8 +3,7 @@ import React from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
 import { OPTIONS } from './consts.ts';
 import AmountPerPeriodRowField from './partials/AmountPerPeriodRowField/AmountPerPeriodRowField.tsx';

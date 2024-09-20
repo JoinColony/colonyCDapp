@@ -14,12 +14,14 @@ import {
   type ColonyExtension,
   type Token,
   type Expenditure,
+  type StreamingPayment,
 } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
+import { getAmountPerValue } from '~utils/streamingPayments.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ActionTitleMessageKeys } from './getActionTitleValues.ts';
@@ -128,16 +130,28 @@ const getInitiator = (actionData: ColonyAction) => {
   );
 };
 
+const getAmountNumeral = (
+  amount: string | null | undefined,
+  decimals?: number | null | undefined,
+) => (
+  <Numeral
+    value={amount ?? '0'}
+    decimals={getTokenDecimalsWithFallback(decimals)}
+  />
+);
+
 export const mapColonyActionToExpectedFormat = ({
   actionData,
   colony,
   keyFallbackValues = {},
   expenditureData,
+  streamingPaymentData,
 }: {
   actionData: ColonyAction;
   colony: Pick<Colony, 'nativeToken'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
+  streamingPaymentData?: StreamingPayment;
 }) => {
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
   const formattedRolesTitle = formatRolesTitle(actionData.roles);
@@ -157,12 +171,16 @@ export const mapColonyActionToExpectedFormat = ({
   return {
     ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
-      <Numeral
-        value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
-        decimals={getTokenDecimalsWithFallback(actionData.token?.decimals)}
-      />,
+      getAmountNumeral(
+        streamingPaymentData ? streamingPaymentData.amount : actionData.amount,
+        streamingPaymentData
+          ? streamingPaymentData.token?.decimals
+          : actionData.token?.decimals,
+      ),
       ActionTitleMessageKeys.Amount,
-      notMaybe(actionData?.amount),
+      notMaybe(
+        streamingPaymentData ? streamingPaymentData.amount : actionData?.amount,
+      ),
     ),
     [ActionTitleMessageKeys.Direction]: formattedRolesTitle,
     [ActionTitleMessageKeys.FromDomain]: getFormattedValueWithFallback(
@@ -192,9 +210,15 @@ export const mapColonyActionToExpectedFormat = ({
       notMaybe(actionData.toDomain?.metadata?.name),
     ),
     [ActionTitleMessageKeys.TokenSymbol]: getFormattedValueWithFallback(
-      actionData.token?.symbol,
+      streamingPaymentData
+        ? streamingPaymentData.token?.symbol
+        : actionData.token?.symbol,
       ActionTitleMessageKeys.TokenSymbol,
-      notMaybe(actionData.token?.symbol),
+      notMaybe(
+        streamingPaymentData
+          ? streamingPaymentData.token?.symbol
+          : actionData.token?.symbol,
+      ),
     ),
     [ActionTitleMessageKeys.ReputationChangeNumeral]:
       getFormattedValueWithFallback(
@@ -249,6 +273,8 @@ export const mapColonyActionToExpectedFormat = ({
       ),
     ).size,
     // @todo: update this to use the actual period value
-    [ActionTitleMessageKeys.Period]: 'Day',
+    [ActionTitleMessageKeys.Period]: streamingPaymentData
+      ? getAmountPerValue(streamingPaymentData.interval).toLowerCase()
+      : undefined,
   };
 };

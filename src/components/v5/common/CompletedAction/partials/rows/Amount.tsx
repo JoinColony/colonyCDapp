@@ -1,4 +1,4 @@
-import { Coins } from '@phosphor-icons/react';
+import { Coins, type Icon } from '@phosphor-icons/react';
 import React from 'react';
 
 import { type Token } from '~types/graphql.ts';
@@ -14,18 +14,30 @@ const displayName = 'v5.common.CompletedAction.partials.AmountRow';
 interface AmountRowProps {
   amount: string;
   token?: Token;
+  rowLabel?: string;
+  tooltipContent?: string;
+  RowIcon?: Icon;
 }
 
-const AmountRow = ({ amount, token }: AmountRowProps) => {
+const AmountRow = ({
+  amount,
+  token,
+  rowLabel,
+  tooltipContent,
+  RowIcon,
+}: AmountRowProps) => {
   const formattedAmount = getFormattedTokenAmount(amount, token?.decimals);
 
   return (
     <ActionData
-      rowLabel={formatText({ id: 'actionSidebar.amount' })}
-      tooltipContent={formatText({
-        id: 'actionSidebar.tooltip.simplePayment.amount',
-      })}
-      RowIcon={Coins}
+      rowLabel={rowLabel || formatText({ id: 'actionSidebar.amount' })}
+      tooltipContent={
+        tooltipContent ||
+        formatText({
+          id: 'actionSidebar.tooltip.simplePayment.amount',
+        })
+      }
+      RowIcon={RowIcon || Coins}
       rowContent={
         <div className="flex items-center gap-3">
           {formattedAmount}

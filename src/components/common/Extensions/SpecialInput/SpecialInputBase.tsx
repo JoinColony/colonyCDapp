@@ -38,7 +38,7 @@ const SpecialInputBase: FC<SpecialInputProps> = ({
         defaultValue={defaultValue}
         type="number"
         className={clsx(
-          'z-base -mr-px w-[3.75rem] shrink-0 rounded-l rounded-r-none border bg-base-white px-3.5 py-3 transition-colors duration-normal focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200',
+          'z-base -mr-px w-[3.75rem] shrink-0 flex-grow rounded-l rounded-r-none border bg-base-white px-3.5 py-3 transition-colors duration-normal focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200',
           {
             'border-gray-300': !isError,
             '!border-negative-400': isError,

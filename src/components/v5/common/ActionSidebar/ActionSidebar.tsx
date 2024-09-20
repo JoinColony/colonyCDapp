@@ -33,14 +33,12 @@ import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
 import FourOFourMessage from '../FourOFourMessage/index.ts';
-import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
-import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
-import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
+import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -59,6 +57,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     motionState,
     expenditure,
     loadingExpenditure,
+    streamingPayment,
     startPollingForAction,
     stopPollingForAction,
   } = useGetActionData(transactionId);
@@ -102,9 +101,17 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
 
-  const isLoading = loadingAction || loadingExpenditure;
+  const isLoading =
+    loadingAction ||
+    loadingExpenditure ||
+    streamingPayment.loadingStreamingPayment;
 
-  const actionNotFound = transactionId && !action;
+  const actionNotFound =
+    transactionId &&
+    !action &&
+    !loadingAction &&
+    !loadingExpenditure &&
+    !streamingPayment.loadingStreamingPayment;
 
   const getSidebarContent = () => {
     if (isLoading) {
@@ -119,7 +126,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     }
 
     if (action) {
-      return <CompletedAction action={action} />;
+      return (
+        <CompletedAction action={action} streamingPayment={streamingPayment} />
+      );
     }
 
     if (actionNotFound) {
@@ -287,21 +296,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                   </button>
                   {getShareButton()}
                 </div>
-                {action && !isMotion && !expenditure && (
-                  <PillsBase
-                    className="bg-success-100 text-success-400"
-                    isCapitalized={false}
-                  >
-                    {formatText({ id: 'action.passed' })}
-                  </PillsBase>
-                )}
-                {!!expenditure && (
-                  <ExpenditureActionStatusBadge
+                {!isLoading && (
+                  <ActionSidebarStatusPill
+                    action={action}
                     expenditure={expenditure}
-                    withAdditionalStatuses
+                    streamingPaymentStatus={streamingPayment.paymentStatus}
+                    motionState={motionState}
+                    isMotion={isMotion}
                   />
                 )}
-                <MotionOutcomeBadge motionState={motionState} />
               </div>
             )}
             {isMobile && getShareButton()}

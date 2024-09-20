@@ -5,8 +5,10 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 import { type InferType, number, object, string, date, lazy, mixed } from 'yup';
 
+import { ONE_DAY_IN_SECONDS } from '~constants/time.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { StreamingPaymentEndCondition } from '~gql';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
@@ -16,11 +18,9 @@ import { amountGreaterThanValidation } from '~utils/validation/amountGreaterThan
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
-
-import useActionFormBaseHook from '../../../hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '../../../types.ts';
-import { ONE_DAY_IN_SECONDS } from '../../AmountPerPeriodRow/consts.ts';
-import { AmountPerInterval } from '../../AmountPerPeriodRow/types.ts';
+import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { AmountPerInterval } from '~v5/common/ActionSidebar/partials/AmountPerPeriodRow/types.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { getStreamingPaymentPayload } from './utils.ts';
 
@@ -150,6 +150,7 @@ export const useStreamingPayment = (
   const limitTokenAddress = useWatch({ name: 'limitTokenAddress' });
   const endCondition = useWatch({ name: 'ends' });
   const { setValue, resetField, trigger } = useFormContext();
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
   useEffect(() => {
     if (
@@ -189,7 +190,7 @@ export const useStreamingPayment = (
     transform: useCallback(
       pipe(
         mapPayload((values: StreamingPaymentFormValues) => {
-          return getStreamingPaymentPayload(colony, values);
+          return getStreamingPaymentPayload(colony, values, blockTime);
         }),
       ),
       [colony, networkInverseFee],
