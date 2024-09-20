@@ -27,7 +27,7 @@ const buildTokenAddressCoinGeckoURL = (
   return buildAPIEndpoint(new URL(`${url}/${chain}`), {
     [searchParams.from]: contractAddress,
     [searchParams.to]: denomination,
-    [searchParams.api]: process.env.COINGECKO_API_KEY ?? '',
+    [searchParams.api]: import.meta.env.COINGECKO_API_KEY ?? '',
   });
 };
 
