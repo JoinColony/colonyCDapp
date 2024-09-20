@@ -96,6 +96,7 @@ export const getTeamReputationChartData = (
         label: formatText(MSG.otherLabel),
         value: reputationInOtherTeams,
         color: '--color-gray-400',
+        shouldTruncateLegendLabel: false,
       },
     ];
   }
