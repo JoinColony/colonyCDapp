@@ -12,7 +12,7 @@ import { useIntl } from 'react-intl';
 // import InformationList from '~v5/shared/InformationList';
 // import Modal from '~v5/shared/Modal';
 
-import FeesForm from '../FeesForm/index.ts';
+import MetaTransactionsToggle from '../MetatransactionsToggle/MetaTransactionsToggle.tsx';
 // @BETA: Disabled for now
 // import RpcForm from '../RpcForm/RpcForm';
 // import { modalInformations } from './consts';
@@ -30,7 +30,7 @@ const UserAdvancedSettings: FC = () => {
       <h4 className="heading-4">
         {formatMessage({ id: 'advancedSettings.title' })}
       </h4>
-      <FeesForm />
+      <MetaTransactionsToggle />
       {/* @BETA: Disabled for noew */}
       {/* <span className="divider" /> */}
       {/* <RpcForm /> */}
