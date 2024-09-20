@@ -13,7 +13,7 @@ type RetryProviderOptions = {
   delay?: number; // in milliseconds
 };
 
-const classFactory = (walletType: 'MetaMask' | string) => {
+const classFactory = (walletType: 'MetaMask' | string = '') => {
   const devWallet = walletType !== 'MetaMask';
 
   const Extender = devWallet

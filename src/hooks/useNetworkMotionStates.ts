@@ -5,6 +5,8 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 
 import useEnabledExtensions from './useEnabledExtensions.ts';
 
+import type { Provider } from '@ethersproject/providers';
+
 export type MotionStatesMap = Map<string, MotionState | null>;
 
 export type RefetchMotionStates = (motionIdsToRefetch?: string[]) => void;
@@ -23,7 +25,7 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
   );
 
   useEffect(() => {
-    const { ethersProvider, address } = wallet || {};
+    const { ethersProvider } = wallet || {};
     if (
       skip ||
       !nativeMotionIds.length ||
@@ -44,11 +46,11 @@ const useNetworkMotionStates = (nativeMotionIds: string[], skip?: boolean) => {
     }
 
     // Properly initialize the signer with the current wallet address
-    const signer = ethersProvider.getSigner(address);
-
     const votingRepClient = VotingReputationFactory.connect(
       votingReputationAddress,
-      signer,
+      // We need to cast this to a Provider since colonyJS methods expect a "standard" provider,
+      // while ours is a custom one (which extends the base, standard provider)
+      ethersProvider as unknown as Provider,
     );
 
     const fetchMotionStates = async () => {
