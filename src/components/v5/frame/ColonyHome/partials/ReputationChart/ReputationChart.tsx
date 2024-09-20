@@ -77,7 +77,7 @@ const ReputationChart = () => {
             {formatText(reputationTitle)}
           </h5>
         </LoadingSkeleton>
-        <TeamActionsMenu />
+        <TeamActionsMenu isDisabled={isDataLoading} />
       </div>
       <Chart data={chartData} isLoading={isDataLoading} />
     </div>
