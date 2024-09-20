@@ -1,9 +1,3 @@
-import React, {
-  type FC,
-  // @BETA: Disabled for now
-  // useState
-} from 'react';
-
 // @BETA: Disabled for now
 // import Checkbox from '~v5/common/Checkbox';
 // import Textarea from '~v5/common/Fields/Textarea';
@@ -11,7 +5,10 @@ import React, {
 // import InformationList from '~v5/shared/InformationList';
 // import Modal from '~v5/shared/Modal';
 
-import FeesForm from '../FeesForm/index.ts';
+import React, { type FC } from 'react';
+import { useIntl } from 'react-intl';
+
+import MetaTransactionsToggle from '../MetatransactionsToggle/MetaTransactionsToggle.tsx';
 // @BETA: Disabled for now
 // import RpcForm from '../RpcForm/RpcForm';
 // import { modalInformations } from './consts';
@@ -22,9 +19,14 @@ const UserAdvancedSettings: FC = () => {
   // @BETA: Disabled for now
   // const [isChecked, setIsChecked] = useState(false);
   // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { formatMessage } = useIntl();
+
   return (
     <div className="flex flex-col gap-6">
-      <FeesForm />
+      <h4 className="heading-4">
+        {formatMessage({ id: 'advancedSettings.title' })}
+      </h4>
+      <MetaTransactionsToggle />
       {/* @BETA: Disabled for noew */}
       {/* <span className="divider" /> */}
       {/* <RpcForm /> */}
