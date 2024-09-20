@@ -12,8 +12,11 @@ export const COLONY_OLD_HOME_ROUTE = '/old/:colonyName/*';
 export const COLONY_HOME_ROUTE = ':colonyName/';
 export const COLONY_ADMIN_ROUTE = `admin`;
 export const COLONY_REPUTATION_ROUTE = `reputation`;
+
 export const COLONY_PERMISSIONS_ROUTE = `permissions`;
-export const COLONY_MULTISIG_ROUTE = `permissions/multisig`;
+export const COLONY_PERMISSIONS_MULTISIG_SECTION = 'multisig';
+export const COLONY_MULTISIG_ROUTE = `${COLONY_PERMISSIONS_ROUTE}/${COLONY_PERMISSIONS_MULTISIG_SECTION}`;
+
 export const COLONY_EXTENSIONS_ROUTE = `extensions`;
 export const COLONY_INTEGRATIONS_ROUTE = `integrations`;
 export const COLONY_INCORPORATION_ROUTE = `incorporation`;
