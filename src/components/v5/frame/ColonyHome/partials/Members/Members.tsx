@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
+import { COLONY_FOLLOWERS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetBox from '~v5/common/WidgetBox/index.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
@@ -53,7 +53,7 @@ const Members = () => {
       value={
         <h4 className="heading-4">{membersLoading ? '-' : membersCount}</h4>
       }
-      href={COLONY_MEMBERS_ROUTE}
+      href={COLONY_FOLLOWERS_ROUTE}
       additionalContent={
         <UserAvatars
           maxAvatarsToShow={4}

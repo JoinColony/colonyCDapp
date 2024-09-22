@@ -21,11 +21,11 @@ import {
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_INCOMING_ROUTE,
-  COLONY_MEMBERS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
   USER_HOME_ROUTE,
   USER_PREFERENCES_ROUTE,
   USER_ADVANCED_ROUTE,
-  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_MEMBERS_ROUTE,
   COLONY_TEAMS_ROUTE,
   COLONY_VERIFIED_ROUTE,
   COLONY_REPUTATION_ROUTE,
@@ -123,9 +123,9 @@ const MSG = defineMessages({
     defaultMessage: `Members | Colony - {colonyName}`,
   },
 
-  colonyContributors: {
-    id: `${displayName}.useTitle.colonyContributors`,
-    defaultMessage: `Contributors | Colony - {colonyName}`,
+  colonyFollowers: {
+    id: `${displayName}.useTitle.colonyFollowers`,
+    defaultMessage: `Followers | Colony - {colonyName}`,
   },
 
   colonyVerified: {
@@ -201,8 +201,8 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
     MSG.colonyExtensionDetails,
   [ACTIONS_QUERY_STRING]: MSG.transactionDetails,
+  [`${COLONY_HOME_ROUTE}${COLONY_FOLLOWERS_ROUTE}`]: MSG.colonyFollowers,
   [`${COLONY_HOME_ROUTE}${COLONY_MEMBERS_ROUTE}`]: MSG.colonyMembers,
-  [`${COLONY_HOME_ROUTE}${COLONY_CONTRIBUTORS_ROUTE}`]: MSG.colonyContributors,
   [`${COLONY_HOME_ROUTE}${COLONY_BALANCES_ROUTE}`]: MSG.colonyBalances,
   [`${COLONY_HOME_ROUTE}${COLONY_VERIFIED_ROUTE}`]: MSG.colonyVerified,
   [`${COLONY_HOME_ROUTE}${COLONY_TEAMS_ROUTE}`]: MSG.colonyTeams,

@@ -23,10 +23,10 @@ import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   COLONY_BALANCES_ROUTE,
-  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_MEMBERS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_INCOMING_ROUTE,
-  COLONY_MEMBERS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
   // @BETA: Disabled for now
   // COLONY_INCORPORATION_ROUTE,
   // COLONY_INTEGRATIONS_ROUTE,
@@ -42,13 +42,13 @@ export const membersMenu: NavigationSidebarLinksListProps['items'] = [
   {
     key: '1',
     label: formatText({ id: 'navigation.members.members' }),
-    to: COLONY_MEMBERS_ROUTE,
+    to: COLONY_FOLLOWERS_ROUTE,
     icon: UsersThree,
   },
   {
     key: '2',
     label: formatText({ id: 'navigation.members.contributors' }) || '',
-    to: COLONY_CONTRIBUTORS_ROUTE,
+    to: COLONY_MEMBERS_ROUTE,
     icon: HandHeart,
   },
   // @BETA: Disabled for now

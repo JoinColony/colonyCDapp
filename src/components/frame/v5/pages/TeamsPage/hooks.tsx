@@ -22,7 +22,7 @@ import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_BALANCES_ROUTE,
-  COLONY_CONTRIBUTORS_ROUTE,
+  COLONY_MEMBERS_ROUTE,
   // @todo: uncomment when decisions page will be ready
   // COLONY_DECISIONS_ROUTE,
   TEAM_SEARCH_PARAM,
@@ -151,7 +151,7 @@ export const useTeams = () => {
                 renderItemWrapper: (props, children) => (
                   <Link
                     to={{
-                      pathname: `/${colonyName}/${COLONY_CONTRIBUTORS_ROUTE}`,
+                      pathname: `/${colonyName}/${COLONY_MEMBERS_ROUTE}`,
                       search: `?${TEAM_SEARCH_PARAM}=${nativeId}`,
                     }}
                     {...props}
