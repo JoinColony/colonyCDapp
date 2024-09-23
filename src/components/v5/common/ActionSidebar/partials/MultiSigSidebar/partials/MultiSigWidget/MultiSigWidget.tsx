@@ -14,7 +14,11 @@ import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 import ApprovalStep from './partials/ApprovalStep/ApprovalStep.tsx';
 import FinalizeStep from './partials/FinalizeStep/FinalizeStep.tsx';
 import { MultiSigState } from './types.ts';
-import { getIsMultiSigExecutable, getSignaturesPerRole } from './utils.ts';
+import {
+  getDomainIdForActionType,
+  getIsMultiSigExecutable,
+  getSignaturesPerRole,
+} from './utils.ts';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
@@ -52,7 +56,10 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
   }, [actionType, multiSigData.nativeMultiSigDomainId]);
 
   const { isLoading, thresholdPerRole } = useDomainThreshold({
-    domainId: Number(multiSigData.nativeMultiSigDomainId),
+    domainId: getDomainIdForActionType(
+      actionType,
+      multiSigData.nativeMultiSigDomainId,
+    ),
     requiredRoles,
   });
 
