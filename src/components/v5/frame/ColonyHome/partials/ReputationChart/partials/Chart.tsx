@@ -1,15 +1,17 @@
-import { type PieTooltipProps, ResponsivePie } from '@nivo/pie';
+import { ResponsivePie } from '@nivo/pie';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 
 import { pieChartConfig } from '../consts.ts';
 import { type ReputationChartDataItem } from '../types.ts';
 
+import { ChartLoadingLayer } from './ChartLoadingLayer.tsx';
+import { ChartTooltip } from './ChartTooltip.tsx';
 import Legend from './Legend.tsx';
 import LegendItem from './LegendItem.tsx';
+import LegendLoadingItem from './LegendLoadingItem.tsx';
 
 const displayName = 'v5.frame.ColonyHome.ReputationChart.partials.Chart';
 
@@ -29,51 +31,51 @@ const EMPTY_CHART_ITEM = {
 
 interface ChartProps {
   data: ReputationChartDataItem[];
+  isLoading?: boolean;
 }
 
-const TemporaryTooltip: FC<PieTooltipProps<ReputationChartDataItem>> = ({
-  datum: { label, value },
-}) => {
-  return (
-    <div className="bg-base-black p-2 text-base-white">
-      {label} (<Numeral value={value.toFixed(2)} />
-      %)
-    </div>
-  );
-};
-
-export const Chart: FC<ChartProps> = ({ data }) => {
+export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
   return (
     <>
-      <div className="mb-3 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
+      <div className="relative mb-3 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
+        {isLoading ? <ChartLoadingLayer /> : null}
         <ResponsivePie
           {...pieChartConfig}
           data={data.length ? data : [EMPTY_CHART_ITEM]}
           isInteractive={!!data.length}
-          tooltip={TemporaryTooltip}
+          tooltip={ChartTooltip}
         />
       </div>
       <Legend>
-        {!data.length && (
-          <LegendItem
-            key={EMPTY_CHART_ITEM.id}
-            chartItem={{
-              label: EMPTY_CHART_ITEM.label,
-              color: EMPTY_CHART_ITEM.color,
-              value: undefined,
-            }}
-          />
+        {isLoading ? (
+          Array.from({ length: 6 }, (_, index) => (
+            <LegendLoadingItem key={`LoadingLegendItem${index}`} />
+          ))
+        ) : (
+          <>
+            {!data.length && (
+              <LegendItem
+                key={EMPTY_CHART_ITEM.id}
+                chartItem={{
+                  label: EMPTY_CHART_ITEM.label,
+                  color: EMPTY_CHART_ITEM.color,
+                  value: undefined,
+                  shouldTruncateLegendLabel: false,
+                }}
+              />
+            )}
+
+            {!!data.length &&
+              data.map((chartItem) => {
+                // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
+                if (chartItem.value === undefined || chartItem.value <= 0) {
+                  return null;
+                }
+
+                return <LegendItem key={chartItem.id} chartItem={chartItem} />;
+              })}
+          </>
         )}
-
-        {!!data.length &&
-          data.map((chartItem) => {
-            // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
-            if (chartItem.value === undefined || chartItem.value <= 0) {
-              return null;
-            }
-
-            return <LegendItem key={chartItem.id} chartItem={chartItem} />;
-          })}
       </Legend>
     </>
   );
