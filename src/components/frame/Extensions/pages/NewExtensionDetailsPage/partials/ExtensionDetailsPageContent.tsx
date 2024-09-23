@@ -4,6 +4,7 @@ import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageC
 
 import ExtensionDetails from './ExtensionDetails/ExtensionDetails.tsx';
 import ExtensionDetailsHeader from './ExtensionDetailsHeader/ExtensionDetailsHeader.tsx';
+import ExtensionSettingsForm from './ExtensionSettings/ExtensionSettingsForm.tsx';
 import ExtensionTabs from './ExtensionTabs/ExtensionTabs.tsx';
 
 const ExtensionDetailsPageContent: FC = () => {
@@ -12,7 +13,7 @@ const ExtensionDetailsPageContent: FC = () => {
   const { extensionData } = useExtensionDetailsPageContext();
 
   return (
-    <>
+    <ExtensionSettingsForm>
       <div className="mb-6 w-full">
         <ExtensionDetailsHeader />
       </div>
@@ -27,7 +28,7 @@ const ExtensionDetailsPageContent: FC = () => {
           <ExtensionDetails extensionData={extensionData} />
         </div>
       </div>
-    </>
+    </ExtensionSettingsForm>
   );
 };
 
