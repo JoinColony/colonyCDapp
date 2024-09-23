@@ -1,5 +1,4 @@
 import Decimal from 'decimal.js';
-import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -38,12 +37,8 @@ export const useTotalData = (domainId?: string) => {
 
   const domainBalanceData = data?.getDomainBalance;
 
-  const total = BigNumber.from(domainBalanceData?.totalIn ?? '0')
-    .sub(BigNumber.from(domainBalanceData?.totalOut ?? '0'))
-    .toString();
-
   return {
-    total,
+    total: domainBalanceData?.total ?? '0',
     loading,
   };
 };
@@ -76,11 +71,8 @@ export const usePreviousTotalData = () => {
     /**
      * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
      */
-    // @TODO move this into an utils top-level
     previousTotal: convertFromTokenToCurrency(
-      BigNumber.from(previousBalance?.totalIn ?? '0')
-        .sub(BigNumber.from(previousBalance?.totalOut ?? '0'))
-        .toString(),
+      previousBalance?.totalUSDC,
       conversionRate,
     ),
   };
