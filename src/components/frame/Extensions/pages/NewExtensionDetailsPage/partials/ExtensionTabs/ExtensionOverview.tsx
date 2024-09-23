@@ -6,7 +6,7 @@ import SupportingDocuments from '~common/Extensions/SupportingDocuments/index.ts
 import { getTextChunks } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import { type AnyExtensionData } from '~types/extensions.ts';
 
-import ExtensionDetails from '../ExtensionDetails/ExtensionDetails.tsx';
+import ExtensionDetailsSidePanel from '../ExtensionDetailsSidePanel/ExtensionDetailsSidePanel.tsx';
 
 const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionOverview';
@@ -23,7 +23,10 @@ const ExtensionOverview: FC<ExtensionOverviewProps> = ({ extensionData }) => {
     <div className="flex flex-col gap-9 md:gap-6">
       <div className="flex flex-col gap-6">
         <ImageCarousel slideUrls={extensionData.imageURLs} />
-        <ExtensionDetails extensionData={extensionData} className="md:hidden" />
+        <ExtensionDetailsSidePanel
+          extensionData={extensionData}
+          className="md:hidden"
+        />
       </div>
       <div>
         <div className="whitespace-pre-line text-md text-gray-600">

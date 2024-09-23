@@ -7,13 +7,14 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
-import { type ExtensionDetailsProps } from './types.ts';
+import DeprecateButton from './DeprecateButton.tsx';
+import { type ExtensionDetailsSidePanelProps } from './types.ts';
 import UninstallButton from './UninstallButton.tsx';
 
 const displayName =
-  'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetails';
+  'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetailsSidePanel';
 
-const ExtensionDetails: FC<ExtensionDetailsProps> = ({
+const ExtensionDetailsSidePanel: FC<ExtensionDetailsSidePanelProps> = ({
   extensionData,
   className,
 }) => {
@@ -30,12 +31,12 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({
     });
 
   /* If enabled, can be deprecated */
-  // const canExtensionBeDeprecated =
-  //   hasRootPermission &&
-  //   isInstalledExtensionData(extensionData) &&
-  //   extensionData.uninstallable &&
-  //   extensionData.isEnabled &&
-  //   !extensionData.isDeprecated;
+  const canExtensionBeDeprecated =
+    hasRootPermission &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.uninstallable &&
+    extensionData.isEnabled &&
+    !extensionData.isDeprecated;
 
   /* If installed, and deprecated / unenabled, can be uninstalled. User needs root permission to uninstall. */
   const canExtensionBeUninstalled = !!(
@@ -49,9 +50,9 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({
     <div className={className}>
       <SpecificSidePanel extensionData={extensionData} />
       <div className="mt-6">
-        {/* {canExtensionBeDeprecated && (
+        {canExtensionBeDeprecated && (
           <DeprecateButton extensionData={extensionData} />
-        )} */}
+        )}
         {canExtensionBeUninstalled && (
           <UninstallButton extensionData={extensionData} />
         )}
@@ -60,6 +61,6 @@ const ExtensionDetails: FC<ExtensionDetailsProps> = ({
   );
 };
 
-ExtensionDetails.displayName = displayName;
+ExtensionDetailsSidePanel.displayName = displayName;
 
-export default ExtensionDetails;
+export default ExtensionDetailsSidePanel;

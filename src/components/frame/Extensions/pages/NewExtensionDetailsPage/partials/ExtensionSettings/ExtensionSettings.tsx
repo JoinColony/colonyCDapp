@@ -8,7 +8,7 @@ import React, { type FC } from 'react';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 // import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 
-import ExtensionDetails from '../ExtensionDetails/ExtensionDetails.tsx';
+import ExtensionDetailsSidePanel from '../ExtensionDetailsSidePanel/ExtensionDetailsSidePanel.tsx';
 
 import { extensionsSettingsComponents } from './consts.tsx';
 
@@ -85,7 +85,10 @@ const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
 
   return (
     <div className="flex flex-col gap-9 md:gap-6">
-      <ExtensionDetails extensionData={extensionData} className="md:hidden" />
+      <ExtensionDetailsSidePanel
+        extensionData={extensionData}
+        className="md:hidden"
+      />
       {/* {details} */}
       {extensionsSettingsComponents[extensionData.extensionId]}
 

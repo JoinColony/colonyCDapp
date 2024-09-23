@@ -2,8 +2,8 @@ import React, { type FC } from 'react';
 
 import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
 
-import ExtensionDetails from './ExtensionDetails/ExtensionDetails.tsx';
 import ExtensionDetailsHeader from './ExtensionDetailsHeader/ExtensionDetailsHeader.tsx';
+import ExtensionDetailsSidePanel from './ExtensionDetailsSidePanel/ExtensionDetailsSidePanel.tsx';
 import ExtensionSettingsForm from './ExtensionSettings/ExtensionSettingsForm.tsx';
 import ExtensionTabs from './ExtensionTabs/ExtensionTabs.tsx';
 
@@ -25,7 +25,7 @@ const ExtensionDetailsPageContent: FC = () => {
           />
         </div>
         <div className="hidden md:col-span-3 md:block">
-          <ExtensionDetails extensionData={extensionData} />
+          <ExtensionDetailsSidePanel extensionData={extensionData} />
         </div>
       </div>
     </ExtensionSettingsForm>
