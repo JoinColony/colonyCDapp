@@ -14,6 +14,7 @@ import ActiveInstalls from './ActiveInstalls.tsx';
 import { extensionsBadgeModeMap, extensionsBadgeTextMap } from './consts.ts';
 import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
+import SubmitButton from './SubmitButton.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
 
@@ -77,12 +78,16 @@ const ExtensionDetailsHeader: FC = () => {
           {isInstallButtonVisible && (
             <InstallButton extensionData={extensionData} />
           )}
+          <SubmitButton
+            extensionData={extensionData}
+            userHasRoot={userHasRoot}
+          />
+          {/* <SaveChangesButton /> */}
           {/* <EnableButton
           extensionData={extensionData}
           isSetupRoute={isSetupRoute}
           userHasRoot={userHasRoot}
         />
-        {isSaveChangesButtonVisible && <SaveChangesButton />}
         {isUpgradeButtonVisible && (
           <UpgradeButton extensionData={extensionData} />
         )} */}

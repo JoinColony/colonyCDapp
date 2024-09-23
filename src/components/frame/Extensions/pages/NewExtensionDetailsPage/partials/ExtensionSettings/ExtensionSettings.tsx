@@ -5,11 +5,6 @@ import React, { type FC } from 'react';
 // import { useAppContext } from '~context/AppContext/AppContext.ts';
 // import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 // import { paramsMap } from '~frame/Extensions/pages/ExtensionDetailsPage/consts.ts';
-import {
-  // getExtensionParams,
-  getExtensionSettingsActionType,
-} from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
-import { ActionForm } from '~shared/Fields/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 // import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 
@@ -92,9 +87,7 @@ const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
     <div className="flex flex-col gap-9 md:gap-6">
       <ExtensionDetails extensionData={extensionData} className="md:hidden" />
       {/* {details} */}
-      <ActionForm actionType={getExtensionSettingsActionType(extensionData)}>
-        {extensionsSettingsComponents[extensionData.extensionId]}
-      </ActionForm>
+      {extensionsSettingsComponents[extensionData.extensionId]}
 
       {/* {isStakedExpenditure ? (
         <StakedExpenditureSettings
