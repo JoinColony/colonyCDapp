@@ -60,10 +60,11 @@ export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
               <LegendItem
                 key={EMPTY_CHART_ITEM.id}
                 chartItem={{
+                  id: EMPTY_CHART_ITEM.id,
                   label: EMPTY_CHART_ITEM.label,
                   color: EMPTY_CHART_ITEM.color,
-                  value: undefined,
                   shouldTruncateLegendLabel: false,
+                  value: EMPTY_CHART_ITEM.value,
                 }}
               />
             )}
