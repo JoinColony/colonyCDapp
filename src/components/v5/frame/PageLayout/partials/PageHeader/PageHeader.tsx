@@ -95,7 +95,7 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
         </div>
       </section>
       <section
-        className={clsx('flex w-full flex-col md:p-0', {
+        className={clsx('modal-blur flex w-full flex-col md:p-0', {
           'px-6 pb-2 pt-6': breadcrumbs,
         })}
       >

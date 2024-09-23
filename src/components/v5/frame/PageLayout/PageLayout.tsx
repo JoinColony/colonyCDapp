@@ -59,7 +59,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section
-              className={clsx('w-full overflow-auto px-6 md:p-8', {
+              className={clsx('modal-blur w-full overflow-auto px-6 md:p-8', {
                 'md:!pt-[1.125rem]': !headerProps?.pageHeadingProps?.title,
               })}
             >

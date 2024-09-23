@@ -29,7 +29,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       <nav
         ref={ref}
         className={clsx(
-          'top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
+          'modal-blur top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
           'z-sidebar hidden h-full w-fit flex-col items-start rounded-lg bg-gray-900 px-2 pb-4.5 pt-[13.5px] md:flex',
           className,
         )}
