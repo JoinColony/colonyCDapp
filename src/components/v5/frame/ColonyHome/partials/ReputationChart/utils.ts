@@ -1,6 +1,7 @@
 import { Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
+import { TEAM_SEARCH_PARAM } from '~routes';
 import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { adjustPercentagesTo100 } from '~utils/numbers.ts';
@@ -47,7 +48,7 @@ export const getTeamReputationChartData = (
   ) {
     return [
       {
-        id: rootTeam.id,
+        id: rootTeam.nativeId.toString(),
         label: rootTeam.metadata?.name || '',
         value: 100,
         color: getTeamHexColor(rootTeam.metadata?.color),
@@ -72,13 +73,14 @@ export const getTeamReputationChartData = (
       .slice(0, WIDGET_TEAM_LIMIT)
       .map((domain) => {
         return {
-          id: domain.id,
+          id: domain.nativeId.toString(),
           label: domain.metadata?.name || '',
           value: getNormalisedReputationPercentage(
             domain.reputation,
             normalisedTotalReputation,
           ),
           color: getTeamHexColor(domain.metadata?.color),
+          searchParam: TEAM_SEARCH_PARAM,
         };
       });
 
@@ -100,7 +102,7 @@ export const getTeamReputationChartData = (
   }
 
   const adjustedValues = adjustPercentagesTo100(
-    topTeams.map((team) => team.value),
+    topTeams.map((team) => team.value || 0),
     // We are rounding to 2 decimals everywhere
     2,
   );
@@ -145,7 +147,7 @@ export const getContributorReputationChartData = (
   }
 
   const adjustedValues = adjustPercentagesTo100(
-    topContributors.map((contributor) => contributor.value),
+    topContributors.map((contributor) => contributor.value || 0),
     // We are rounding to 2 decimals everywhere
     2,
   );
