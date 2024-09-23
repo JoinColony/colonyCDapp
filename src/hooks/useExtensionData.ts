@@ -1,12 +1,9 @@
-import { type ApolloQueryResult } from '@apollo/client';
 import { getExtensionHash, type Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
-  type Exact,
-  type GetColonyExtensionQuery,
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
@@ -26,16 +23,10 @@ export enum ExtensionMethods {
   SAVE_CHANGES = 'saveChanges',
 }
 
-export type RefetchExtensionDataFn = (
-  variables?:
-    | Partial<
-        Exact<{
-          colonyAddress: string;
-          extensionHash: string;
-        }>
-      >
-    | undefined,
-) => Promise<ApolloQueryResult<GetColonyExtensionQuery>>;
+export type RefetchExtensionDataFn = ReturnType<
+  typeof useGetColonyExtensionQuery
+>['refetch'];
+
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
   loading: boolean;
