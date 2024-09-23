@@ -223,6 +223,8 @@ export type CacheTotalBalance = {
    * Defaults to TimeframeType.DAILY
    */
   timeframeType?: Maybe<TimeframeType>;
+  /** The total balance (totalIn - totalOut) in USDC */
+  total?: Maybe<Scalars['String']>;
   /** The total in balance in USDC */
   totalIn?: Maybe<Scalars['String']>;
   /** The total out balance in USDC */
@@ -1411,6 +1413,7 @@ export type CreateCacheTotalBalanceInput = {
   id?: InputMaybe<Scalars['ID']>;
   timeframePeriod: Scalars['Int'];
   timeframeType?: InputMaybe<TimeframeType>;
+  total?: InputMaybe<Scalars['String']>;
   totalIn?: InputMaybe<Scalars['String']>;
   totalOut?: InputMaybe<Scalars['String']>;
 };
@@ -2208,6 +2211,8 @@ export type DomainBalanceArguments = {
 /** Return type for domain balance in/out values */
 export type DomainBalanceInOut = {
   __typename?: 'DomainBalanceInOut';
+  /** The totalIn - totalOut value */
+  total?: Maybe<Scalars['String']>;
   totalIn?: Maybe<Scalars['String']>;
   totalOut?: Maybe<Scalars['String']>;
 };
@@ -2216,6 +2221,8 @@ export type DomainBalanceInOut = {
 export type DomainBalanceReturn = {
   __typename?: 'DomainBalanceReturn';
   timeframe?: Maybe<Array<Maybe<TimeframeDomainBalanceInOut>>>;
+  /** The totalIn - totalOut value */
+  total?: Maybe<Scalars['String']>;
   totalIn?: Maybe<Scalars['String']>;
   totalOut?: Maybe<Scalars['String']>;
 };
@@ -2804,6 +2811,7 @@ export type ModelCacheTotalBalanceConditionInput = {
   or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceConditionInput>>>;
   timeframePeriod?: InputMaybe<ModelIntInput>;
   timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
+  total?: InputMaybe<ModelStringInput>;
   totalIn?: InputMaybe<ModelStringInput>;
   totalOut?: InputMaybe<ModelStringInput>;
 };
@@ -2824,6 +2832,7 @@ export type ModelCacheTotalBalanceFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceFilterInput>>>;
   timeframePeriod?: InputMaybe<ModelIntInput>;
   timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
+  total?: InputMaybe<ModelStringInput>;
   totalIn?: InputMaybe<ModelStringInput>;
   totalOut?: InputMaybe<ModelStringInput>;
 };
@@ -4144,6 +4153,7 @@ export type ModelSubscriptionCacheTotalBalanceFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>>>;
   timeframePeriod?: InputMaybe<ModelSubscriptionIntInput>;
   timeframeType?: InputMaybe<ModelSubscriptionStringInput>;
+  total?: InputMaybe<ModelSubscriptionStringInput>;
   totalIn?: InputMaybe<ModelSubscriptionStringInput>;
   totalOut?: InputMaybe<ModelSubscriptionStringInput>;
 };
@@ -9331,6 +9341,7 @@ export type UpdateCacheTotalBalanceInput = {
   id: Scalars['ID'];
   timeframePeriod?: InputMaybe<Scalars['Int']>;
   timeframeType?: InputMaybe<TimeframeType>;
+  total?: InputMaybe<Scalars['String']>;
   totalIn?: InputMaybe<Scalars['String']>;
   totalOut?: InputMaybe<Scalars['String']>;
 };

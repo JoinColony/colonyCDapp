@@ -4,6 +4,7 @@ module.exports = {
       createCacheTotalBalance(input: $input) {
         totalIn
         totalOut
+        total
       }
     }
   `,
@@ -12,6 +13,7 @@ module.exports = {
       updateCacheTotalBalance(input: $input) {
         totalIn
         totalOut
+        total
       }
     }
   `,
@@ -32,6 +34,7 @@ module.exports = {
           timeframePeriod
           totalIn
           totalOut
+          total
           date
         }
       }
@@ -80,6 +83,7 @@ module.exports = {
       ) {
         totalIn
         totalOut
+        total
       }
     }
   `,
