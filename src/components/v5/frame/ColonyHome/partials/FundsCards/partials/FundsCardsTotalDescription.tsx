@@ -13,7 +13,6 @@ interface FundsCardsTotalDescriptionProps {
   isLoading?: boolean;
 }
 
-// @TODO create logic for this component, props etc
 export const FundsCardsTotalDescription: React.FC<
   FundsCardsTotalDescriptionProps
 > = ({ percent, isIncrease, isLoading }) => {
