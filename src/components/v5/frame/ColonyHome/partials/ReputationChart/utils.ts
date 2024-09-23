@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { adjustPercentagesTo100 } from '~utils/numbers.ts';
 import { getTeamHexColor } from '~utils/teams.ts';
 
 import { CONTRIBUTORS_COLORS_LIST } from './consts.ts';
@@ -107,16 +108,29 @@ export const getTeamReputationChartData = (
 export const getContributorReputationChartData = (
   contributorsList: ContributorItem[],
 ): ReputationChartDataItem[] => {
-  const topContributors = contributorsList
+  let topContributors = contributorsList
     .slice(0, WIDGET_TEAM_LIMIT)
     .map(({ walletAddress, user, reputation }, index) => {
       return {
         id: walletAddress,
         label: user?.profile?.displayName || '',
-        value: Number(reputation),
+        value: reputation || 0,
         color: getTeamHexColor(CONTRIBUTORS_COLORS_LIST[index]),
       };
-    });
+    })
+    .filter(({ value }) => value > 0);
+
+  if (topContributors.length <= WIDGET_TEAM_LIMIT) {
+    const adjustedValues = adjustPercentagesTo100(
+      topContributors.map((contributor) => contributor.value),
+      // getNormalisedDomainReputationPercentage rounds to two decimals
+      2,
+    );
+    topContributors = topContributors.map((contributor, idx) => ({
+      ...contributor,
+      value: adjustedValues[idx],
+    }));
+  }
 
   const reputationInOtherContributors = contributorsList
     .slice(WIDGET_TEAM_LIMIT)
@@ -126,7 +140,7 @@ export const getContributorReputationChartData = (
     return [
       ...topContributors,
       {
-        id: 'allOtherTeams',
+        id: 'allOtherUsers',
         label: formatText(MSG.otherLabel),
         value: reputationInOtherContributors,
         color: '--color-gray-400',
