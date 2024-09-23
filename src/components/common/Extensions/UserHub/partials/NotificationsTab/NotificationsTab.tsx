@@ -1,10 +1,14 @@
-import { useBell } from '@magicbell/react-headless';
 import { Binoculars } from '@phosphor-icons/react';
-import React from 'react';
+import clsx from 'clsx';
+import React, { useRef } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
+import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/InfiniteScrollLoader.tsx';
+
+import NotificationsList from './partials/NotificationsList.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.NotificationsTab';
 
@@ -32,9 +36,11 @@ const MSG = defineMessages({
 });
 
 const NotificationsTab = () => {
-  const isEmpty = true;
+  const { canFetchMore, fetchMore, markAllAsRead, notifications, unreadCount } =
+    useNotificationsContext();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const { unreadCount, markAllAsRead } = useBell() || {};
+  const isEmpty = notifications.length === 0;
 
   const hasUnreadNotifications = !!unreadCount && unreadCount > 0;
 
@@ -46,7 +52,12 @@ const NotificationsTab = () => {
   }
 
   return (
-    <div className="h-full px-6 pb-6 pt-6 sm:pb-2">
+    <div
+      className={clsx('h-full px-6 pb-6 pt-6 sm:pb-2', {
+        'overflow-auto': !isEmpty,
+      })}
+      ref={containerRef}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <p className="heading-5">{formatText(MSG.notifications)}</p>
@@ -66,8 +77,12 @@ const NotificationsTab = () => {
           </button>
         )}
       </div>
-      <div className="flex h-full flex-col justify-center pt-4 sm:h-auto sm:justify-normal">
-        {isEmpty && (
+      <div
+        className={clsx('flex flex-col justify-center pt-4 sm:justify-normal', {
+          'h-full sm:h-auto': isEmpty,
+        })}
+      >
+        {isEmpty ? (
           <>
             <EmptyContent
               title={formatText(MSG.emptyTitle)}
@@ -76,6 +91,15 @@ const NotificationsTab = () => {
               className="sm:pt-[100px]"
             />
             <div className="h-[25%] sm:h-0" />
+          </>
+        ) : (
+          <>
+            <NotificationsList />
+            <InfiniteScrollTrigger
+              canFetchMore={canFetchMore}
+              containerRef={containerRef}
+              fetchMore={fetchMore}
+            />
           </>
         )}
       </div>

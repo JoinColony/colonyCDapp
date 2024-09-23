@@ -1,4 +1,3 @@
-import { useBell } from '@magicbell/react-headless';
 import clsx from 'clsx';
 import React, { type FC, useState, useEffect, useCallback } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
@@ -11,6 +10,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
@@ -55,7 +55,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen] = actionSidebarToggle;
 
-  const { unreadCount } = useBell() || {};
+  const { unreadCount } = useNotificationsContext();
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
