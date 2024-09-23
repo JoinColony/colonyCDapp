@@ -38,6 +38,10 @@ input DomainBalanceArguments {
 Return type for domain balance in/out values
 """
 type DomainBalanceInOut {
+  """
+  The totalIn - totalOut value
+  """
+  total: String
   totalIn: String
   totalOut: String
 }
@@ -60,9 +64,13 @@ type TimeframeDomainBalanceInOut {
 Return type for domain balance 
 """
 type DomainBalanceReturn {
- totalIn: String
- totalOut: String
- timeframe: [TimeframeDomainBalanceInOut]
+  """
+  The totalIn - totalOut value
+  """
+  total: String
+  totalIn: String
+  totalOut: String
+  timeframe: [TimeframeDomainBalanceInOut]
 }
 
 """
@@ -145,4 +153,8 @@ type CacheTotalBalance @model {
   The total out balance in USDC
   """
   totalOut: String
+  """
+  The total balance (totalIn - totalOut) in USDC
+  """
+  total: String
 }
