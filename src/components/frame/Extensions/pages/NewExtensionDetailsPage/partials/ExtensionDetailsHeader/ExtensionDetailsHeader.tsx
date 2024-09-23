@@ -14,6 +14,7 @@ import ActiveInstalls from './ActiveInstalls.tsx';
 import { extensionsBadgeModeMap, extensionsBadgeTextMap } from './consts.ts';
 import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
+import ReenableButton from './ReenableButton.tsx';
 import SubmitButton from './SubmitButton.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
@@ -41,11 +42,16 @@ const ExtensionDetailsHeader: FC = () => {
     extensionData.uninstallable &&
     !extensionData.isDeprecated;
 
+  const isReenableButtonVisible =
+    userHasRoot &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.isDeprecated;
+
   // /* To save changes, a user must have the root permission. */
   // const isSaveChangesButtonVisible =
   //   userHasRoot &&
   //   isInstalledExtensionData(extensionData) &&
-  //   extensionData.enabledAutomaticallyAfterInstall &&
+  //   extensionData.autoEnableAfterInstall &&
   //   activeTab === ExtensionDetailsPageTabId.Settings;
 
   // const isUpgradeButtonVisible =
@@ -77,6 +83,9 @@ const ExtensionDetailsHeader: FC = () => {
         <div className="flex flex-col items-center gap-2 sm:flex-row">
           {isInstallButtonVisible && (
             <InstallButton extensionData={extensionData} />
+          )}
+          {isReenableButtonVisible && (
+            <ReenableButton extensionData={extensionData} />
           )}
           <SubmitButton
             extensionData={extensionData}
