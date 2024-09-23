@@ -64,18 +64,23 @@ exports.handler = async (event) => {
       const balance = periodBalance[period];
       const totalIn = await getTotalFiatAmountFor(balance.in, exchangeRates);
       const totalOut = await getTotalFiatAmountFor(balance.out, exchangeRates);
+      const totalInBN = BigNumber.from(totalIn);
+      const totalOutBN = BigNumber.from(totalOut);
+
       inOutPeriodBalance[period] = {
         totalIn,
         totalOut,
+        total: totalInBN.sub(totalOutBN).toString(),
       };
 
-      timeframeTotalIn = timeframeTotalIn.add(BigNumber.from(totalIn));
-      timeframeTotalOut = timeframeTotalOut.add(BigNumber.from(totalOut));
+      timeframeTotalIn = timeframeTotalIn.add(totalInBN);
+      timeframeTotalOut = timeframeTotalOut.add(totalOutBN);
     }
 
     return {
       totalIn: timeframeTotalIn.toString(),
       totalOut: timeframeTotalOut.toString(),
+      total: timeframeTotalIn.sub(timeframeTotalOut).toString(),
       timeframe: Object.keys(inOutPeriodBalance).map((period) => ({
         key: period,
         value: inOutPeriodBalance[period],
