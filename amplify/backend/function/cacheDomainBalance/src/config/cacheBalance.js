@@ -24,6 +24,7 @@ const CacheBalanceFactory = (() => {
       timeframeType,
       totalIn: computedBalance.totalIn,
       totalOut: computedBalance.totalOut,
+      total: computedBalance.total,
     };
 
     /**
