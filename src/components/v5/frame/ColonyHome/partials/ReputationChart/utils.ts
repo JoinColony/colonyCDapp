@@ -63,7 +63,7 @@ export const getTeamReputationChartData = (
     0,
   );
 
-  const topTeams = domainsWithoutRoot
+  let topTeams = domainsWithoutRoot
     // Filter out the domains without reputation in order to not display blank spaces in the chart
     .filter((domain) => !!domain.reputationPercentage)
     .slice(0, WIDGET_TEAM_LIMIT)
@@ -78,6 +78,18 @@ export const getTeamReputationChartData = (
         color: getTeamHexColor(domain.metadata?.color),
       };
     });
+
+  if (topTeams.length <= WIDGET_TEAM_LIMIT) {
+    const adjustedValues = adjustPercentagesTo100(
+      topTeams.map((team) => team.value),
+      // getNormalisedDomainReputationPercentage rounds to two decimals
+      2,
+    );
+    topTeams = topTeams.map((team, idx) => ({
+      ...team,
+      value: adjustedValues[idx],
+    }));
+  }
 
   const topTeamsTotalReputation = topTeams.reduce(
     (reputation, team) => reputation + team.value,
