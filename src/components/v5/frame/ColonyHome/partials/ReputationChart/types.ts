@@ -1,11 +1,12 @@
 import { type User } from '~types/graphql.ts';
 
 export interface ReputationChartDataItem {
-  label: string;
-  value: number;
-  id: string;
   color: string;
+  id: string;
+  label: string;
+  searchParam?: string;
   shouldTruncateLegendLabel?: boolean;
+  value: number;
 }
 
 export interface ContributorItem {
