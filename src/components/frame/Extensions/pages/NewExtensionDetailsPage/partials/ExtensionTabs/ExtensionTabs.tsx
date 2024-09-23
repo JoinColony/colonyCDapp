@@ -26,18 +26,26 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
     setActiveTab(id);
   };
 
+  // @TODO: Make it work with multi sig (that has no init params)
+  const shouldShowSettingsTab =
+    isInstalledExtensionData(extensionData) &&
+    extensionData.initializationParams?.length;
+
   const tabsItems = [
     {
       id: ExtensionDetailsPageTabId.Overview,
       title: formatText({ id: 'extensionDetailsPage.tabs.overview' }),
     },
-    // @TODO: Condition on which to show the page
-    {
-      id: ExtensionDetailsPageTabId.Settings,
-      title: formatText({
-        id: 'extensionDetailsPage.tabs.extensionSettings',
-      }),
-    },
+    ...(shouldShowSettingsTab
+      ? [
+          {
+            id: ExtensionDetailsPageTabId.Settings,
+            title: formatText({
+              id: 'extensionDetailsPage.tabs.extensionSettings',
+            }),
+          },
+        ]
+      : []),
   ];
 
   /* @TODO: handle case when more than one accordion in extension settings view will be visible */

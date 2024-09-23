@@ -20,7 +20,6 @@ import { ButtonWithLoader } from './ButtonWithLoader.tsx';
 
 // import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
 
-// import { ButtonWithLoader } from './ExtensionDetails/ButtonWithLoader.tsx';
 // import ReenableButton from './ExtensionDetails/ReenableButton.tsx';
 
 interface SubmitButtonProps {
@@ -63,14 +62,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     canExtensionBeInitialized(extensionData.extensionId) &&
     !extensionData.isDeprecated &&
     !extensionData.isInitialized &&
-    !extensionData.enabledAutomaticallyAfterInstall;
-
-  /* If deprecated, can be re-enabled */
-  // const canExtensionBeRenabled = !!(
-  //   userHasRoot &&
-  //   isInstalledExtensionData(extensionData) &&
-  //   extensionData.isDeprecated
-  // );
+    !extensionData.autoEnableAfterInstall;
 
   if (isEnableButtonVisible) {
     if (

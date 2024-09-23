@@ -53,7 +53,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   const isSaveChangesButtonVisible =
     userHasRoot &&
     isInstalledExtensionData(extensionData) &&
-    extensionData.enabledAutomaticallyAfterInstall &&
+    extensionData.autoEnableAfterInstall &&
     activeTab === ExtensionDetailsPageTabId.Settings;
 
   const isUpgradeButtonVisible =

@@ -550,7 +550,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         transformValue: convertFractionToWei,
       },
     ],
-    enabledAutomaticallyAfterInstall: true,
+    autoEnableAfterInstall: true,
   },
   {
     icon: ExtensionStagedPaymentsIcon,

@@ -39,7 +39,7 @@ export const getFormSuccessFn =
     const isSaveChanges =
       extensionData &&
       isInstalledExtensionData(extensionData) &&
-      extensionData.enabledAutomaticallyAfterInstall &&
+      extensionData.autoEnableAfterInstall &&
       (extensionData.isEnabled || extensionData.isDeprecated);
 
     try {

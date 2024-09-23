@@ -65,7 +65,7 @@ const EnableButton = ({
     canExtensionBeInitialized(extensionData.extensionId) &&
     !extensionData.isDeprecated &&
     !extensionData.isInitialized &&
-    !extensionData.enabledAutomaticallyAfterInstall;
+    !extensionData.autoEnableAfterInstall;
 
   /* If deprecated, can be re-enabled */
   const canExtensionBeRenabled = !!(
