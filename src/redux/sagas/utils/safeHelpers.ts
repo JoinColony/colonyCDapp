@@ -10,6 +10,7 @@ import {
   type NetworkInfo,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
+import { ContextModule, getContext } from '~context/index.ts';
 import {
   type Safe,
   type SafeTransactionData,
@@ -20,7 +21,7 @@ import { type ModuleAddress } from '~types/safes.ts';
 import { fetchTokenFromDatabase } from '~utils/queries.ts';
 import { getArrayFromString } from '~utils/safes/index.ts';
 
-import RetryProvider from '../wallet/RetryProvider.ts';
+import retryProviderFactory from '../wallet/RetryProvider.ts';
 
 import { erc721, ForeignAMB, HomeAMB, ZodiacBridgeModule } from './abis.ts'; // Temporary
 
@@ -70,7 +71,11 @@ export const getSafeAddresses = async (): Promise<SafeAddresses> => {
   return SAFE_ADDRESSES as SafeAddresses;
 };
 
-export const getHomeProvider = () => new RetryProvider();
+export const getHomeProvider = () => {
+  const wallet = getContext(ContextModule.Wallet);
+  const RetryProvider = retryProviderFactory(wallet.label);
+  return new RetryProvider();
+};
 
 export const getForeignProvider = (safeChainId: string) => {
   const network = SUPPORTED_SAFE_NETWORKS.find(

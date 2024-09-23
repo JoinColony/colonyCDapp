@@ -2,7 +2,7 @@ import { type Block } from '@ethersproject/providers';
 import { providers, utils } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
-import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants/index.ts';
+import { GANACHE_LOCAL_RPC_URL } from '~constants/index.ts';
 import {
   RetryProviderMethod,
   IColonyContractMethodSignature,
@@ -13,10 +13,14 @@ type RetryProviderOptions = {
   delay?: number; // in milliseconds
 };
 
-const classFactory = (
-  Extender = isDev ? providers.JsonRpcProvider : providers.Web3Provider,
-) =>
-  class RetryRpcProvider extends Extender {
+const classFactory = (walletType: 'MetaMask' | string = '') => {
+  const devWallet = walletType !== 'MetaMask';
+
+  const Extender = devWallet
+    ? providers.JsonRpcProvider
+    : providers.Web3Provider;
+
+  return class RetryRpcProvider extends Extender {
     attempts: number;
 
     delay: number;
@@ -24,7 +28,7 @@ const classFactory = (
     bypassedMethods: string[];
 
     constructor(options?: RetryProviderOptions) {
-      super(isDev ? GANACHE_LOCAL_RPC_URL : window.ethereum);
+      super(devWallet ? GANACHE_LOCAL_RPC_URL : window.ethereum);
       this.attempts = options?.attempts || 5;
       this.delay = options?.delay || 1000;
       this.bypassedMethods = [
@@ -79,5 +83,6 @@ const classFactory = (
       });
     }
   };
+};
 
-export default classFactory();
+export default classFactory;

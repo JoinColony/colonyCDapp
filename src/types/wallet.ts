@@ -2,12 +2,14 @@ import { type WalletState } from '@web3-onboard/core';
 import { type Account } from '@web3-onboard/core/dist/types';
 
 import { type CustomEIP1193Provider } from '~redux/sagas/wallet/ganacheModule.ts';
-import type RetryRpcProvider from '~redux/sagas/wallet/RetryProvider.ts';
+import retryRpcProviderFactory from '~redux/sagas/wallet/RetryProvider.ts';
 
 export type ColonyWallet = BasicWallet | FullWallet;
 
+const RetryProvider = retryRpcProviderFactory();
+
 export interface FullWallet extends WalletState, Account {
-  ethersProvider: InstanceType<typeof RetryRpcProvider>;
+  ethersProvider: InstanceType<typeof RetryProvider>;
   provider: CustomEIP1193Provider;
 }
 
