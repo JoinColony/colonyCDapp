@@ -1,14 +1,14 @@
 import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { noop } from 'lodash';
 import React, { useState } from 'react';
-import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { useLocation, useMatch } from 'react-router-dom';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
+import Link from '~v5/shared/Link/Link.tsx';
 import {
   sidebarButtonClass,
   sidebarButtonIconClass,
@@ -30,8 +30,6 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
 }) => {
   const { colony } = useColonyContext();
 
-  const navigate = useNavigate();
-
   const { pathname } = useLocation();
 
   const matchingRoute = useMatch(`${colony.name}/${path}`);
@@ -48,46 +46,43 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
 
   const isAccordion = !!subItems;
 
-  const handleClick = () => {
+  const toggleAccordion = () => {
+    setIsAccordionExpanded((state) => !state);
+  };
+
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     onClick?.();
 
-    const pathPrefix = routeType === 'colony' ? `/${colony.name}` : '';
-
-    const derivedPath = `${pathPrefix}/${path}`;
-
     if (isAccordion) {
-      if (!isTablet) {
-        navigate(derivedPath);
-      }
+      if (isTablet) {
+        event.preventDefault();
 
+        toggleAccordion();
+
+        return;
+      }
       setIsAccordionExpanded(true);
     } else {
       toggleTabletSidebar();
-
-      navigate(derivedPath);
     }
   };
 
-  const onToggleAccordion = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
+  const getPath = () => {
+    const pathPrefix = routeType === 'colony' ? `/${colony.name}` : '';
 
-    setIsAccordionExpanded((state) => !state);
+    return `${pathPrefix}/${path}`;
   };
 
   return (
     <>
-      <div
-        role="button"
+      <Link
+        to={getPath()}
         onClick={handleClick}
-        onKeyDown={noop}
-        tabIndex={0}
+        aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
         className={clsx(sidebarButtonClass, {
           '!bg-gray-100 md:!bg-gray-800': !!matchingRoute && !isAccordion,
           '!pr-1': isAccordion,
         })}
-        aria-label={`Go to the Colony ${path || 'Dashboard'} page`}
       >
         <div className="flex flex-row items-center gap-3">
           {Icon ? (
@@ -98,12 +93,10 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
           <p className={sidebarButtonTextClass}>{formatText(translation)}</p>
         </div>
         {isAccordion && (
-          <div className="flex w-full justify-end pr-1.5 md:pr-[1px]">
-            <div
-              onClick={onToggleAccordion}
-              onKeyDown={noop}
-              tabIndex={0}
-              role="button"
+          <div className="pointer-events-none flex w-full justify-end pr-1.5 md:pointer-events-auto md:pr-[1px]">
+            <button
+              type="button"
+              onClick={toggleAccordion}
               className="flex aspect-square items-center justify-center rounded p-1 transition-colors hover:bg-base-white md:hover:bg-gray-900"
             >
               <CaretDown
@@ -115,10 +108,10 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
                   },
                 )}
               />
-            </div>
+            </button>
           </div>
         )}
-      </div>
+      </Link>
       <AnimatePresence initial={false} presenceAffectsLayout>
         {isAccordionExpanded && (
           <motion.ul
