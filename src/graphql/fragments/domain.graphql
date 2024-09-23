@@ -28,11 +28,13 @@ fragment DomainMetadata on DomainMetadata {
 }
 
 fragment DomainBalanceReturn on DomainBalanceReturn {
+  total
   totalIn
   totalOut
   timeframe {
     key
     value {
+      total
       totalIn
       totalOut
     }
@@ -40,6 +42,7 @@ fragment DomainBalanceReturn on DomainBalanceReturn {
 }
 
 fragment CacheTotalBalance on CacheTotalBalance {
+  totalUSDC
   totalUSDCIn
   totalUSDCOut
   date
