@@ -55,7 +55,6 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       colonyAddress: colony.colonyAddress,
       extensionHash,
     },
-    fetchPolicy: 'network-only',
   });
   const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
 
@@ -64,7 +63,6 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       variables: {
         extensionHash,
       },
-      fetchPolicy: 'cache-and-network',
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
 
