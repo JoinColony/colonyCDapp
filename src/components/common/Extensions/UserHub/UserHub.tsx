@@ -1,9 +1,9 @@
-import { useBell } from '@magicbell/react-headless';
 import clsx from 'clsx';
 import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
 import CryptoToFiatContextProvider from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContextProvider.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -49,7 +49,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
   // @TODO: get from notifications context
   const notificationsServiceIsEnabled = true;
 
-  const { unreadCount } = useBell() || {};
+  const { unreadCount } = useNotificationsContext();
 
   const filteredTabList = tabList.filter((tabItem) => {
     const isFeatureFlagEnabled =
