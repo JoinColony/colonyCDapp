@@ -1,16 +1,19 @@
-import { Extension, getExtensionHash } from '@colony/colony-js';
+import { Extension, Id, getExtensionHash } from '@colony/colony-js';
 import React from 'react';
 
 import { supportedExtensionsConfig } from '~constants';
+import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
-import { ActionTypes } from '~redux';
 import {
+  type InstalledExtensionData,
   type AnyExtensionData,
   type ExtensionInitParam,
 } from '~types/extensions.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
 import {
   convertFractionToEth,
   isInstalledExtensionData,
@@ -136,6 +139,45 @@ export const waitForDbAfterExtensionAction = (
   });
 };
 
+export const waitForExtensionPermissions = ({
+  refetchColony,
+  extensionData,
+  interval = 1000,
+}: {
+  refetchColony: RefetchColonyFn;
+  extensionData: AnyExtensionData;
+  interval?: number;
+}) =>
+  new Promise<void>((res) => {
+    const initTime = new Date().valueOf();
+    const intervalId = setInterval(async () => {
+      const fifteenSeconds = 1000 * 15;
+      if (new Date().valueOf() - initTime > fifteenSeconds) {
+        // after 15 seconds, assume something went wrong
+        clearInterval(intervalId);
+        // Not rejecting here because it's not a critical error. If the extension was enabled but permissions not, a separate warning shows
+        res();
+      }
+
+      const { data: response } = (await refetchColony()) ?? {};
+      const updatedColony =
+        response?.getColonyByName?.items?.filter(notNull)[0];
+      if (updatedColony) {
+        const extensionHasPermissions = addressHasRoles({
+          address: (extensionData as InstalledExtensionData).address ?? '',
+          colony: updatedColony,
+          requiredRoles: extensionData.neededColonyPermissions,
+          requiredRolesDomain: Id.RootDomain,
+        });
+
+        if (extensionHasPermissions) {
+          clearInterval(intervalId);
+          res();
+        }
+      }
+    }, interval);
+  });
+
 export const getTextChunks = () => {
   const HeadingChunks = (chunks: React.ReactNode[]) => (
     <h4 className="mb-4 mt-6 font-semibold text-gray-900">{chunks}</h4>
@@ -176,7 +218,7 @@ const getInitializationDefaultValues = (
 
 export const getExtensionParams = (
   extensionData: AnyExtensionData | null,
-): Record<string, string | number | undefined> => {
+): object => {
   if (!extensionData) {
     return {};
   }
@@ -206,26 +248,4 @@ export const getExtensionParams = (
   }
 
   return defaultValues;
-};
-
-export const getExtensionSettingsActionType = (
-  extensionData: AnyExtensionData,
-) => {
-  const isExtensionInstalled = isInstalledExtensionData(extensionData);
-
-  switch (extensionData.extensionId) {
-    case Extension.StakedExpenditure: {
-      if (
-        isExtensionInstalled &&
-        (extensionData.isEnabled || extensionData.isDeprecated)
-      ) {
-        return ActionTypes.SET_STAKE_FRACTION;
-      }
-
-      return ActionTypes.EXTENSION_ENABLE;
-    }
-    default: {
-      return ActionTypes.EXTENSION_ENABLE;
-    }
-  }
 };
