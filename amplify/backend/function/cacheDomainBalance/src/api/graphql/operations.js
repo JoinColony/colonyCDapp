@@ -128,6 +128,7 @@ const savePreviousBalance = async ({
   timeframeType,
   totalIn,
   totalOut,
+  total,
   date,
 }) => {
   const result = await graphqlRequest(saveCacheTotalBalance, {
@@ -138,6 +139,7 @@ const savePreviousBalance = async ({
       timeframeType,
       totalIn,
       totalOut,
+      total,
       date,
     },
   });
@@ -153,6 +155,7 @@ const updatePreviousBalance = async ({
   timeframeType,
   totalIn,
   totalOut,
+  total,
   date,
 }) => {
   const result = await graphqlRequest(updateCacheTotalBalance, {
@@ -164,6 +167,7 @@ const updatePreviousBalance = async ({
       timeframeType,
       totalIn,
       totalOut,
+      total,
       date,
     },
   });
