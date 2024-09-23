@@ -197,6 +197,7 @@
     "wallet.metamask": "MetaMask",
     "text.learnMore": "Learn More",
     "learn.more": "Learn more",
+    "loader.noMoreResults": "No more results",
 
     "transaction.cancel.title": "Transaction cancelled",
     "transaction.cancel.description": "Transaction cancelled by user",

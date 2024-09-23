@@ -1,7 +1,14 @@
+import { type IRemoteNotification } from '@magicbell/react-headless';
 import { createContext, useContext } from 'react';
 
 export interface NotificationsContextValues {
+  canFetchMore: boolean;
+  fetchMore: () => Promise<void>;
+  markAllAsRead: () => void;
   mutedColonyAddresses: string[];
+  notifications: IRemoteNotification[];
+  totalPages: number;
+  unreadCount: number;
 }
 
 export const NotificationsContext = createContext<
