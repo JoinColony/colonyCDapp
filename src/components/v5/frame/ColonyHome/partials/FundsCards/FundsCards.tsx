@@ -24,7 +24,6 @@ export const FundsCards = () => {
 
   const subTeams = useSubDomains();
 
-  // Teams always will have at least 1 team by default - it is general
   const isAddNewTeamVisible = !subTeams || subTeams.length < 1;
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
