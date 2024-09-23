@@ -5,7 +5,11 @@ const {
   getDomains,
   processInBatches,
 } = require('./api/graphql/operations');
-const { getWeeksFromNow, getDaysFromNow, TimeframeType } = require('./utils');
+const {
+  subtractWeeksFromNow,
+  subtractDaysFromNow,
+  TimeframeType,
+} = require('./utils');
 const CacheBalanceFactory = require('./config/cacheBalance');
 
 /**
@@ -17,11 +21,11 @@ exports.handler = async (event) => {
   /**
    * We want to get the start of day for the previous 30 days
    */
-  const startOfLast30DaysDate = getDaysFromNow(30);
+  const startOfLast30DaysDate = subtractDaysFromNow(30);
   /**
    * We want to get the start of last week
    */
-  const startOfLastWeekDate = getWeeksFromNow(1);
+  const startOfLastWeekDate = subtractWeeksFromNow(1);
 
   try {
     const colonies = await getAllColonies();
