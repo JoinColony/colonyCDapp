@@ -3,6 +3,7 @@ import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ReputationChartContextProvider } from '~context/ReputationChartContext/ReputationChartContextProvider.tsx';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { type Domain } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -79,7 +80,9 @@ const ReputationChart = () => {
         </LoadingSkeleton>
         <TeamActionsMenu isDisabled={isDataLoading} />
       </div>
-      <Chart data={chartData} isLoading={isDataLoading} />
+      <ReputationChartContextProvider>
+        <Chart data={chartData} isLoading={isDataLoading} />
+      </ReputationChartContextProvider>
     </div>
   );
 };
