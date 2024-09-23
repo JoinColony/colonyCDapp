@@ -50,9 +50,14 @@ const getTokensDatesMap = (actions) => {
   actions.forEach((action) => {
     const tokenAddress = action.token?.id;
 
-    if (tokenAddress && !tokens[tokenAddress]) {
+    if (!tokenAddress) {
+      return;
+    }
+
+    if (!tokens[tokenAddress]) {
       tokens[tokenAddress] = [];
     }
+
     tokens[tokenAddress].push(action.finalizedDate);
   });
   return tokens;
@@ -90,11 +95,7 @@ const groupBalanceByPeriod = (
 
   // Initialise the balance for each period item within the timeframe
   for (let periodIndex = 0; periodIndex < timeframePeriod; periodIndex++) {
-    const periodStartDate = getPeriodFor(
-      periodIndex,
-      timeframeType,
-      timeframePeriodEndDate,
-    );
+    const periodStartDate = getPeriodFor(periodIndex, timeframeType, timeframePeriodEndDate);
     const formattedPeriod = getPeriodFormat(periodStartDate, timeframeType);
 
     if (!balance[formattedPeriod]) {
