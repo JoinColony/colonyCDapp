@@ -40,7 +40,7 @@ fragment DomainBalanceReturn on DomainBalanceReturn {
 }
 
 fragment CacheTotalBalance on CacheTotalBalance {
-  totalIn
-  totalOut
+  totalUSDCIn
+  totalUSDCOut
   date
 }

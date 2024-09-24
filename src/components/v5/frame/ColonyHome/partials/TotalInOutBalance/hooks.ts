@@ -1,3 +1,4 @@
+import { type WatchQueryFetchPolicy } from '@apollo/client/core';
 import { type ResponsiveBarSvgProps, type BarDatum } from '@nivo/bar';
 import { useState, useEffect, useMemo } from 'react';
 
@@ -23,16 +24,41 @@ export const usePreviousLast30DaysData = () => {
     colony: { colonyAddress },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
+  const selectedDomainId = selectedDomain?.id ?? '';
   const { currency } = useCurrencyContext();
-  const { data, loading } = useGetCachedDomainBalanceQuery({
-    variables: {
-      colonyAddress,
-      filter: {
-        domainId: { eq: selectedDomain?.id ?? '' },
-        timeframeType: { eq: TimeframeType.Daily },
+  const memoizedValues = useMemo(() => {
+    const abortController = new AbortController();
+    return {
+      abortController,
+      queryOptions: {
+        variables: {
+          colonyAddress,
+          filter: {
+            domainId: { eq: selectedDomainId },
+            timeframeType: { eq: TimeframeType.Daily },
+          },
+        },
+        context: {
+          fetchOptions: {
+            signal: abortController.signal,
+          },
+        },
+        fetchPolicy: 'cache-first' as WatchQueryFetchPolicy,
       },
-    },
-  });
+    };
+  }, [selectedDomainId, colonyAddress]);
+
+  const { data, loading } = useGetCachedDomainBalanceQuery(
+    memoizedValues.queryOptions,
+  );
+
+  useEffect(() => {
+    return () => {
+      if (loading) {
+        memoizedValues.abortController.abort();
+      }
+    };
+  }, [memoizedValues.abortController, loading]);
 
   const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
 
@@ -48,14 +74,14 @@ export const usePreviousLast30DaysData = () => {
      * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
      */
     previousTotalIn: convertFromTokenToCurrency(
-      previousBalance?.totalIn,
+      previousBalance?.totalUSDCIn,
       conversionRate,
     ),
     /**
      * The cached data is stored in USDC due to the running the lambda at a scheduled time and not on demand
      */
     previousTotalOut: convertFromTokenToCurrency(
-      previousBalance?.totalOut,
+      previousBalance?.totalUSDCOut,
       conversionRate,
     ),
   };
@@ -66,20 +92,44 @@ export const useLast30DaysData = () => {
     colony: { colonyAddress },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
+  const selectedDomainId = selectedDomain?.id ?? '';
   const { currency } = useCurrencyContext();
-  const timeframePeriod = 30;
-  const timeframeType = TimeframeType.Daily;
-  const { data, loading } = useGetDomainBalanceQuery({
-    variables: {
-      input: {
-        colonyAddress,
-        domainId: selectedDomain?.id ?? '',
-        selectedCurrency: currency as unknown as ExtendedSupportedCurrencies,
-        timeframePeriod,
-        timeframeType,
+  const memoizedValues = useMemo(() => {
+    const abortController = new AbortController();
+    return {
+      abortController,
+      queryOptions: {
+        variables: {
+          input: {
+            colonyAddress,
+            domainId: selectedDomainId,
+            selectedCurrency:
+              currency as unknown as ExtendedSupportedCurrencies,
+            timeframePeriod: 30,
+            timeframeType: TimeframeType.Daily,
+          },
+        },
+        context: {
+          fetchOptions: {
+            signal: abortController.signal,
+          },
+        },
+        fetchPolicy: 'cache-first' as WatchQueryFetchPolicy,
       },
-    },
-  });
+    };
+  }, [currency, selectedDomainId, colonyAddress]);
+
+  const { data, loading } = useGetDomainBalanceQuery(
+    memoizedValues.queryOptions,
+  );
+
+  useEffect(() => {
+    return () => {
+      if (loading) {
+        memoizedValues.abortController.abort();
+      }
+    };
+  }, [memoizedValues.abortController, loading]);
 
   const domainBalanceData = data?.getDomainBalance;
 
@@ -95,20 +145,44 @@ export const useData = () => {
     colony: { colonyAddress },
   } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
+  const selectedDomainId = selectedDomain?.id ?? '';
   const { currency } = useCurrencyContext();
-  const timeframePeriod = 4;
-  const timeframeType = TimeframeType.Monthly;
-  const { data, loading } = useGetDomainBalanceQuery({
-    variables: {
-      input: {
-        colonyAddress,
-        domainId: selectedDomain?.id ?? '',
-        selectedCurrency: currency as unknown as ExtendedSupportedCurrencies,
-        timeframePeriod,
-        timeframeType,
+  const memoizedValues = useMemo(() => {
+    const abortController = new AbortController();
+    return {
+      abortController,
+      queryOptions: {
+        variables: {
+          input: {
+            colonyAddress,
+            domainId: selectedDomainId,
+            selectedCurrency:
+              currency as unknown as ExtendedSupportedCurrencies,
+            timeframePeriod: 4,
+            timeframeType: TimeframeType.Monthly,
+          },
+        },
+        context: {
+          fetchOptions: {
+            signal: abortController.signal,
+          },
+        },
+        fetchPolicy: 'cache-first' as WatchQueryFetchPolicy,
       },
-    },
-  });
+    };
+  }, [currency, selectedDomainId, colonyAddress]);
+
+  const { data, loading } = useGetDomainBalanceQuery(
+    memoizedValues.queryOptions,
+  );
+
+  useEffect(() => {
+    return () => {
+      if (loading) {
+        memoizedValues.abortController.abort();
+      }
+    };
+  }, [memoizedValues.abortController, loading]);
 
   const domainBalanceData = data?.getDomainBalance;
 
