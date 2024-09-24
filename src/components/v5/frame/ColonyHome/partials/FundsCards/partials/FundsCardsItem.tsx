@@ -3,7 +3,7 @@ import React, { type FC } from 'react';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import Numeral from '~shared/Numeral/index.ts';
+import { NumeralCurrency } from '~shared/Numeral/index.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
 import { useTotalData } from '../hooks.ts';
@@ -35,7 +35,7 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
           currency={currency}
           isLoading={loading}
           value={
-            <Numeral
+            <NumeralCurrency
               value={total.toString()}
               prefix={currencySymbolMap[currency]}
             />
