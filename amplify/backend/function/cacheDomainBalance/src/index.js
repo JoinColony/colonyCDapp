@@ -10,7 +10,7 @@ const {
   subtractDaysFromNow,
   TimeframeType,
 } = require('./utils');
-const CacheBalanceFactory = require('./config/cacheBalance');
+const CacheBalanceService = require('./service/cacheBalance');
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
 
     colonies.forEach((colony) => {
       processBalanceRequests.push(
-        CacheBalanceFactory.processBalanceForPeriod({
+        CacheBalanceService.processBalanceForPeriod({
           colonyAddress: colony.id,
           timeframePeriod: 1,
           timeframeType: TimeframeType.TOTAL,
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
         }),
       );
       processBalanceRequests.push(
-        CacheBalanceFactory.processBalanceForPeriod({
+        CacheBalanceService.processBalanceForPeriod({
           colonyAddress: colony.id,
           timeframePeriod: 30,
           timeframeType: TimeframeType.DAILY,
@@ -63,7 +63,7 @@ exports.handler = async (event) => {
       if (domain) {
         const { id: domainId, colonyId: colonyAddress } = domain ?? {};
         processBalanceRequests.push(
-          CacheBalanceFactory.processBalanceForPeriod({
+          CacheBalanceService.processBalanceForPeriod({
             colonyAddress,
             domainId,
             timeframePeriod: 1,
@@ -72,7 +72,7 @@ exports.handler = async (event) => {
           }),
         );
         processBalanceRequests.push(
-          CacheBalanceFactory.processBalanceForPeriod({
+          CacheBalanceService.processBalanceForPeriod({
             colonyAddress,
             domainId,
             timeframePeriod: 30,
@@ -90,14 +90,14 @@ exports.handler = async (event) => {
     await processInBatches(processBalanceRequests, batchSize);
 
     return {
-      statusCode: 200,
+      success: true,
     };
   } catch (e) {
     console.log('there was an error', e);
     console.error(e);
 
     return {
-      statusCode: 400,
+      success: false,
     };
   }
 };

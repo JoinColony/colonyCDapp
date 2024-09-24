@@ -77,7 +77,7 @@ type DomainBalanceReturn {
 Return type for cache all domain balance
 """
 type CacheAllDomainBalanceReturn {
-  statusCode: Int!
+  success: Boolean!
 }
 
 """
@@ -127,7 +127,7 @@ type CacheTotalBalance @model {
   """
   Address of the colony on the blockchain
   """
-  colonyAddress: String! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["date"] )
+  colonyAddress: ID! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["date"] )
   """
   Domain id within a colony
   """
@@ -136,7 +136,7 @@ type CacheTotalBalance @model {
   The timeframe type (day/week/month) for which we want to cache the in/out token balance
   Defaults to TimeframeType.DAILY
   """
-  timeframeType: TimeframeType
+  timeframeType: TimeframeType!
   """
   The timeframe period for which we want to cache the in/out token balance
   """
@@ -148,13 +148,13 @@ type CacheTotalBalance @model {
   """
   The total in balance in USDC
   """
-  totalIn: String
+  totalUSDCIn: String
   """
   The total out balance in USDC
   """
-  totalOut: String
+  totalUSDCOut: String
   """
   The total balance (totalIn - totalOut) in USDC
   """
-  total: String
+  totalUSDC: String
 }
