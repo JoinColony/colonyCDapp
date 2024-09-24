@@ -98,6 +98,9 @@ const ColonyPageSidebar = () => {
       headerClassName="mb-[27px]"
       footerClassName="!items-start !gap-2"
       colonySwitcherProps={{ showColonySwitcherText: true }}
+      feedbackButtonProps={{
+        widgetPlacement: { horizontalPadding: 240 },
+      }}
     >
       <ColonyPageSidebarContent />
     </Sidebar>
