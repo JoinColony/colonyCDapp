@@ -524,3 +524,58 @@ export function* getMultiPermissionProofs({
   // It does not need to be an array because if we get here, all the proofs are the same
   return proofs[0];
 }
+
+interface GetSinglePermissionProofsFromSourceDomainParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRole: ColonyRole;
+  permissionAddress: string;
+  isMultiSig?: boolean;
+}
+
+// Returns the permission proofs from the domain where the user has been assigned the permissions
+// If the user has permissions directly in the requiredDomainId those will be returned first
+// However, if the user has inherited permissions in the requiredDomainId,
+// the permission proofs will be returned from the domain from which they are inherited
+export const getSinglePermissionProofsFromSourceDomain = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRole,
+  permissionAddress,
+  isMultiSig = false,
+}: GetSinglePermissionProofsFromSourceDomainParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
+  const [permissionDomainId, childSkillIndex] =
+    await getSinglePermissionProofsLocal({
+      networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId,
+      requiredColonyRole,
+      permissionAddress,
+      isMultiSig,
+    });
+
+  if (Number(permissionDomainId) === requiredDomainId) {
+    return [permissionDomainId, childSkillIndex, permissionAddress];
+  }
+
+  // Once nested teams is implemented, this should get from the next parent, then work it's way up the tree to root
+  const [rootPermissionDomainId, rootChildSkillIndex] =
+    await getSinglePermissionProofsLocal({
+      networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId: Id.RootDomain,
+      requiredColonyRole,
+      permissionAddress,
+      isMultiSig,
+    });
+
+  return [rootPermissionDomainId, rootChildSkillIndex, permissionAddress];
+};
