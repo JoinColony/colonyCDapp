@@ -27,6 +27,7 @@ const DesktopWizardSidebar = ({
         offset: [-20, 226],
         enableMobileAndDesktopLayoutBreakpoints,
       }}
+      feedbackButtonProps={{ widgetPlacement: { horizontalPadding: 304 } }}
     >
       <div className="px-3 pt-10">
         <Heading3

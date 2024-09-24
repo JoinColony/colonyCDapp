@@ -19,9 +19,10 @@ import Sidebar from '~v5/shared/Navigation/Sidebar/Sidebar.tsx';
 export const AccountPageSidebar = () => {
   return (
     <Sidebar
-      className="!w-[216px]"
+      className="!w-[216px] overflow-y-auto"
       headerClassName="mb-[27px]"
       colonySwitcherProps={{ showColonySwitcherText: true }}
+      feedbackButtonProps={{ widgetPlacement: { horizontalPadding: 240 } }}
     >
       <section className="flex flex-col gap-0.5">
         <SidebarRouteItem

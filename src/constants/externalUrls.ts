@@ -73,7 +73,7 @@ export const STAGED_PAYMENTS = `https://help.colony.io/en/articles/9626927-stage
 export const LEARN_MORE_PAYMENTS = `https://docs.colony.io/use/making-payments/payments`;
 export const LEARN_MORE_DECISIONS = `https://docs.colony.io/use/decisions`;
 export const LEARN_MORE_ADMIN = `https://docs.colony.io/use/admin`;
-export const LEARN_MORE_COLONY_HELP_GENERAL = `https://help.colony.io/en/`;
+export const LEARN_MORE_COLONY_HELP_GENERAL = `https://help.colony.io/`;
 /*
  * Safe Control
  */
