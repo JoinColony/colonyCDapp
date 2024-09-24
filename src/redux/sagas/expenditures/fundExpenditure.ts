@@ -1,4 +1,5 @@
-import { ClientType, ColonyRole, Id } from '@colony/colony-js';
+import { ClientType, ColonyRole, getPotDomain } from '@colony/colony-js';
+import { type BigNumberish } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { transactionPending } from '~redux/actionCreators/index.ts';
@@ -15,7 +16,7 @@ import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
   getColonyManager,
   getMoveFundsPermissionProofs,
-  getPermissionProofsLocal,
+  getSinglePermissionProofsFromSourceDomain,
   initiateTransaction,
   putError,
   takeFrom,
@@ -63,19 +64,19 @@ function* fundExpenditure({
   try {
     const userAddress = yield colonyClient.signer.getAddress();
 
-    // Move funds action can only be performed by a user with permissions in a parent domain
-    // Once nested teams is introduced this will need to find the closest parent domain id
-    // but for now, we can assume this is the root domain
-    const parentDomainId = Id.RootDomain;
+    const fromDomainId: BigNumberish = yield getPotDomain(
+      colonyClient,
+      fromDomainFundingPotId,
+    );
 
     const [userPermissionDomainId, userChildSkillIndex] = yield call(
-      getPermissionProofsLocal,
+      getSinglePermissionProofsFromSourceDomain,
       {
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: parentDomainId,
-        requiredColonyRoles: ColonyRole.Funding,
+        requiredDomainId: Number(fromDomainId),
+        requiredColonyRole: ColonyRole.Funding,
         permissionAddress: userAddress,
       },
     );
