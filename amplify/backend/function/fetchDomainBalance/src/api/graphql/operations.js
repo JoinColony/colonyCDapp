@@ -6,6 +6,7 @@ const {
   getColonyActions,
   getColonyDomains,
   getDomainExpenditures,
+  getAllDomainExpenditures,
   getColonyFundsClaims,
   getToken,
 } = require('./schemas.js');
@@ -78,6 +79,7 @@ const getIncomingFundsData = async ({ colonyAddress, limit, nextToken }) => {
 };
 
 const getAllIncomingFunds = async (colonyAddress, domain) => {
+  // Return [] if any domain other than root is selected
   if (domain && !domain.isRoot) {
     return [];
   }
@@ -90,6 +92,21 @@ const getExpendituresData = async ({
   limit,
   nextToken,
 }) => {
+  // If "All teams" filter is selected, fetch expenditures from all domains
+  if (nativeDomainId === undefined) {
+    const result = await graphqlRequest(getAllDomainExpenditures, {
+      colonyAddress,
+      limit,
+      nextToken,
+    });
+
+    if (!result) {
+      console.warn('Could not find any expenditures in db.');
+    }
+
+    return result.data.listExpenditures;
+  }
+
   const result = await graphqlRequest(getDomainExpenditures, {
     colonyAddress,
     nativeDomainId,
@@ -98,7 +115,7 @@ const getExpendituresData = async ({
   });
 
   if (!result) {
-    console.warn('Could not find any domain expenditure in db.');
+    console.warn('Could not find any domain expenditures in db.');
   }
 
   return result.data.listExpenditures;
@@ -110,7 +127,7 @@ const getAllExpenditures = async (colonyAddress, domain) => {
   }
   return getAllPages(getExpendituresData, {
     colonyAddress,
-    nativeDomainId: domain?.nativeId,
+    nativeDomainId: domain.nativeId,
   });
 };
 
@@ -127,26 +144,29 @@ const getActionsData = async ({
   nextToken,
   limit = 2,
 }) => {
+  const filter = {
+    and: [
+      {
+        or: acceptedColonyActionTypes.map((acceptedColonyActionType) => ({
+          type: { eq: acceptedColonyActionType },
+        })),
+      },
+    ],
+  };
+
+  // If "All teams" filter is selected, do not filter by domainId
+  if (domainId !== undefined) {
+    filter.and.push({
+      or: [
+        { fromDomainId: { eq: domainId } },
+        { toDomainId: { eq: domainId } },
+      ],
+    });
+  }
+
   const result = await graphqlRequest(getColonyActions, {
     colonyAddress,
-    filter: {
-      and: [
-        {
-          or: [
-            { fromDomainId: { eq: domainId } },
-            { toDomainId: { eq: domainId } },
-          ],
-        },
-        {
-          or: acceptedColonyActionTypes.map((acceptedColonyActionType) => ({
-            type: { eq: acceptedColonyActionType },
-          })),
-        },
-        {
-          showInActionsList: { eq: true },
-        },
-      ],
-    },
+    filter,
     limit,
     nextToken,
   });

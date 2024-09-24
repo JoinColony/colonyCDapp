@@ -137,12 +137,15 @@ const buildAPIEndpoint = (url, queryParams) => {
 const getStartOfDayFor = (date) =>
   formatISO(new Date(startOfDay(new Date(date))));
 
-const getFormattedIncomingFunds = (incomingFunds, parentDomainId) =>
+const getFormattedIncomingFunds = (incomingFunds, domainId) =>
   incomingFunds.map((incomingFund) => ({
     amount: incomingFund.amount,
     finalizedDate: incomingFund.updatedAt,
     token: incomingFund.token,
-    toDomainId: parentDomainId,
+    // @TODO: There will only ever be incomingFunds if "All teams" or the "Root domain" is selected
+    // So this value will only ever be undefined or 1
+    // Not sure if it is actually needed?
+    toDomainId: domainId,
   }));
 
 const getTokenAddressesFromExpenditures = (expenditures) => {
@@ -160,11 +163,7 @@ const getTokenAddressesFromExpenditures = (expenditures) => {
   return tokenAddresses;
 };
 
-const getFormattedExpenditures = (
-  expenditures,
-  parentDomainId,
-  tokensDecimals,
-) => {
+const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
   const formattedExpenditures = [];
   expenditures.forEach((expenditure) => {
     expenditure?.slots.forEach((slot) => {
@@ -179,10 +178,10 @@ const getFormattedExpenditures = (
             ? expenditure.createdAt
             : formattedFinalizedAt;
           formattedExpenditures.push({
-            fromDomainId: parentDomainId,
+            // @TODO: Handle when "All teams" filter is selected and this will be undefined
+            fromDomainId: domainId,
             amount: payout.amount,
-            // we'll exclude the network fee from the expenditure as we want to show the full amount that the domain is paying out
-            networkFee: 0,
+            networkFee: payout.networkFee,
             finalizedDate,
             token: {
               id: payout.tokenAddress,
