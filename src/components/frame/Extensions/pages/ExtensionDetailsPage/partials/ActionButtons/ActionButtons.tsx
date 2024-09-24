@@ -46,8 +46,7 @@ const ActionButtons: FC<ActionButtonProps> = ({
   const isInstallButtonVisible =
     userHasRoot &&
     !isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
+    extensionData.uninstallable;
 
   /* To save changes, a user must have the root permission. */
   const isSaveChangesButtonVisible =

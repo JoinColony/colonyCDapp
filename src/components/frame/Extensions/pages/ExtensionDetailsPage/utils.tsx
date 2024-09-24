@@ -100,9 +100,7 @@ export const waitForDbAfterExtensionAction = (
         );
       }
 
-      const { data: freshExtensionData } = await refetchExtensionData();
-      const extension =
-        freshExtensionData?.getExtensionByColonyAndHash?.items[0];
+      const extension = await refetchExtensionData();
 
       const extensionConfig = supportedExtensionsConfig.find(
         (e) => getExtensionHash(e.extensionId) === extension?.hash,

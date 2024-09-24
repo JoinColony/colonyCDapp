@@ -5,6 +5,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { COLONY_EXTENSION_SETUP_ROUTE, NotFoundRoute } from '~routes';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { mapPayload, mergePayload, pipe } from '~utils/actions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import { SetupComponentMap } from '../consts.ts';
 import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
@@ -84,7 +85,9 @@ const ExtensionDetailsPageContent: FC<ExtensionDetailsPageContentProps> = ({
                 <ExtensionInfo
                   extensionData={extensionData}
                   showSetupPage={
-                    !!SetupComponent && extensionData.isInitialized
+                    !!SetupComponent &&
+                    isInstalledExtensionData(extensionData) &&
+                    extensionData.isInitialized
                   }
                 />
               }

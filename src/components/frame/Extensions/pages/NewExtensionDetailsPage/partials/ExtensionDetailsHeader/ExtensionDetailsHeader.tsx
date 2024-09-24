@@ -39,8 +39,7 @@ const ExtensionDetailsHeader: FC = () => {
   const isInstallButtonVisible =
     userHasRoot &&
     !isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable &&
-    !extensionData.isDeprecated;
+    extensionData.uninstallable;
 
   const isReenableButtonVisible =
     userHasRoot &&

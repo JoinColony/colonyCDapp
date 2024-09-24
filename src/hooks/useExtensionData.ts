@@ -1,5 +1,5 @@
 import { getExtensionHash, type Extension } from '@colony/colony-js';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -7,7 +7,11 @@ import {
   useGetColonyExtensionQuery,
   useGetCurrentExtensionVersionQuery,
 } from '~gql';
-import { type AnyExtensionData } from '~types/extensions.ts';
+import {
+  type InstalledExtensionData,
+  type AnyExtensionData,
+} from '~types/extensions.ts';
+import { type ColonyExtension } from '~types/graphql.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
@@ -23,9 +27,8 @@ export enum ExtensionMethods {
   SAVE_CHANGES = 'saveChanges',
 }
 
-export type RefetchExtensionDataFn = ReturnType<
-  typeof useGetColonyExtensionQuery
->['refetch'];
+export type RefetchExtensionDataFn =
+  () => Promise<InstalledExtensionData | null>;
 
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
@@ -56,7 +59,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
       extensionHash,
     },
   });
-  const colonyExtension = data?.getExtensionByColonyAndHash?.items?.[0];
+  const rawExtensionData = data?.getExtensionByColonyAndHash?.items?.[0];
 
   const { data: versionData, loading: versionLoading } =
     useGetCurrentExtensionVersionQuery({
@@ -70,29 +73,52 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     (e) => e.extensionId === extensionId,
   );
 
-  const extensionData = useMemo<AnyExtensionData | null>(() => {
-    if (!version || !extensionConfig) {
-      return null;
+  const getMappedExtensionData = useCallback(
+    (colonyExtension?: ColonyExtension | null): AnyExtensionData | null => {
+      if (!version || !extensionConfig) {
+        return null;
+      }
+
+      if (colonyExtension) {
+        return mapToInstalledExtensionData({
+          colony,
+          extensionConfig,
+          colonyExtension,
+          version,
+        });
+      }
+
+      return mapToInstallableExtensionData(extensionConfig, version);
+    },
+    [colony, extensionConfig, version],
+  );
+
+  const extensionData = useMemo<AnyExtensionData | null>(
+    () => getMappedExtensionData(rawExtensionData),
+    [getMappedExtensionData, rawExtensionData],
+  );
+
+  const handleRefetch = useCallback(async () => {
+    const refetchResponse = await refetch();
+    const updatedColonyExtension =
+      refetchResponse.data.getExtensionByColonyAndHash?.items[0];
+
+    if (updatedColonyExtension) {
+      // Extension is guaranteed to be installed if returned by the query
+      return getMappedExtensionData(
+        updatedColonyExtension,
+      ) as InstalledExtensionData;
     }
 
-    if (colonyExtension) {
-      return mapToInstalledExtensionData({
-        colony,
-        extensionConfig,
-        colonyExtension,
-        version,
-      });
-    }
-
-    return mapToInstallableExtensionData(extensionConfig, version);
-  }, [colony, colonyExtension, extensionConfig, version]);
+    return null;
+  }, [getMappedExtensionData, refetch]);
 
   return {
     extensionData,
     loading: extensionLoading || versionLoading,
     startPolling,
     stopPolling,
-    refetchExtensionData: refetch,
+    refetchExtensionData: handleRefetch,
   };
 };
 

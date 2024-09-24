@@ -29,20 +29,16 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({ extensionData }) => {
 
   const isSetupRoute = pathname.split('/').pop() === 'setup';
 
-  const { neededColonyPermissions, isInitialized, isDeprecated } =
-    extensionData;
+  const { neededColonyPermissions } = extensionData;
 
   const isVotingReputationExtension =
     extensionData.extensionId === Extension.VotingReputation;
 
-  const isExtensionInstalled =
-    extensionData && isInstalledExtensionData(extensionData);
-
   // If the extension itself doesn't have the correct permissions, show the banner
   const showPermissionsBanner =
-    isExtensionInstalled &&
-    isInitialized &&
-    !isDeprecated &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.isInitialized &&
+    !extensionData.isDeprecated &&
     !addressHasRoles({
       requiredRolesDomain: Id.RootDomain,
       colony,
