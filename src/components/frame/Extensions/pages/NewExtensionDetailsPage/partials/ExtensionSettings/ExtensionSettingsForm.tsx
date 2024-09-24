@@ -37,7 +37,7 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
     mergePayload({ colonyAddress, extensionData }),
   );
 
-  const validationSchema = getValidationSchema({ initializationParams });
+  const validationSchema = getValidationSchema(extensionData);
 
   const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
     extensionData,
