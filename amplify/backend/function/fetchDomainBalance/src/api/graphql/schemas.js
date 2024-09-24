@@ -89,6 +89,42 @@ module.exports = {
       }
     }
   `,
+  getAllDomainExpenditures: /* GraphQL */ `
+    query GetDomainExpenditures(
+      $colonyAddress: ID!
+      $nextToken: String
+      $limit: Int
+    ) {
+      listExpenditures(
+        nextToken: $nextToken
+        limit: $limit
+        filter: { colonyId: { eq: $colonyAddress }, status: { eq: FINALIZED } }
+      ) {
+        items {
+          id
+          finalizedAt
+          createdAt
+          slots {
+            claimDelay
+            id
+            payouts {
+              amount
+              isClaimed
+              networkFee
+              tokenAddress
+            }
+          }
+          fundingActions: actions(
+            filter: { type: { eq: CREATE_EXPENDITURE } }
+          ) {
+            items {
+              id
+            }
+          }
+        }
+      }
+    }
+  `,
   getDomainExpenditures: /* GraphQL */ `
     query GetDomainExpenditures(
       $colonyAddress: ID!
@@ -119,15 +155,10 @@ module.exports = {
               tokenAddress
             }
           }
-          fundingActions: actions(filter: { type: { eq: MOVE_FUNDS } }) {
+          fundingActions: actions(
+            filter: { type: { eq: CREATE_EXPENDITURE } }
+          ) {
             items {
-              fromDomain {
-                id
-              }
-              toDomain {
-                id
-              }
-              amount
               id
             }
           }
