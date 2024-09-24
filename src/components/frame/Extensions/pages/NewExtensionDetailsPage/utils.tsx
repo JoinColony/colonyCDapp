@@ -57,40 +57,36 @@ export const waitForDbAfterExtensionAction = (
         );
       }
 
-      const { data: freshExtensionData } = await refetchExtensionData();
-      const extension =
-        freshExtensionData?.getExtensionByColonyAndHash?.items[0];
+      const extensionData = await refetchExtensionData();
 
       const extensionConfig = supportedExtensionsConfig.find(
-        (e) => getExtensionHash(e.extensionId) === extension?.hash,
+        (e) => getExtensionHash(e.extensionId) === extensionData?.hash,
       );
 
       let condition = false;
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
-          if (extension) {
-            // If it appears in the query, it means it's been installed
-            condition = !!extension;
-          }
+          // If it appears in the query, it means it's been installed
+          condition = !!extensionData;
           break;
         }
         case ExtensionMethods.DEPRECATE: {
-          condition = !!extension?.isDeprecated;
+          condition = !!extensionData?.isDeprecated;
           break;
         }
         case ExtensionMethods.REENABLE: {
-          condition = !extension?.isDeprecated;
+          condition = !extensionData?.isDeprecated;
           break;
         }
 
         case ExtensionMethods.ENABLE: {
-          condition = !!extension?.isInitialized;
+          condition = !!extensionData?.isInitialized;
           break;
         }
 
         case ExtensionMethods.UPGRADE: {
-          condition = extension?.currentVersion === args.latestVersion;
+          condition = extensionData?.currentVersion === args.latestVersion;
           break;
         }
 
@@ -107,9 +103,9 @@ export const waitForDbAfterExtensionAction = (
             }
 
             const extensionParamValue =
-              extension?.params?.[camelCase(extensionConfig?.extensionId)]?.[
-                key
-              ];
+              extensionData?.params?.[
+                camelCase(extensionConfig?.extensionId)
+              ]?.[key];
 
             return initializationParam.transformValue
               ? initializationParam.transformValue(value) ===
@@ -122,7 +118,7 @@ export const waitForDbAfterExtensionAction = (
 
         // Extension data is filtered by deleted, therefore if it's been deleted it won't appear in query results
         case ExtensionMethods.UNINSTALL: {
-          condition = !extension;
+          condition = !extensionData;
           break;
         }
 
