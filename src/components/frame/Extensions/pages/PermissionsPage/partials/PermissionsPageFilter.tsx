@@ -90,6 +90,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             isOpen={isModalOpen}
             onClose={toggleModalOff}
             isFullOnMobile={false}
+            withPaddingBottom
           >
             <h4 className="mb-6 capitalize text-gray-900 heading-5 sm:mb-0 sm:px-4">
               {formatText({ id: 'filterAndSort' })}
@@ -100,6 +101,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'permissionsPage.filter.search' })}

@@ -1,9 +1,7 @@
 import React, { type FC } from 'react';
-import { useIntl } from 'react-intl';
 
 import { type BridgeBankAccount } from '~types/graphql.ts';
-import { CloseButton } from '~v5/shared/Button/index.ts';
-import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import BankDetailsForm from '../BankDetailsForm/index.ts';
 import ContactDetailsForm from '../ContactDetailsForm/index.ts';
@@ -23,8 +21,6 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
   onClose,
   data,
 }) => {
-  const { formatMessage } = useIntl();
-
   const {
     isLoading,
     bankDetailsFields,
@@ -37,18 +33,13 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
   });
 
   return (
-    <ModalBase
+    <Modal
       isFullOnMobile={false}
       isOpen={isOpened}
-      onRequestClose={onClose}
+      onClose={onClose}
+      withPaddingBottom
     >
-      <CloseButton
-        aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
-        title={formatMessage({ id: 'button.cancel' })}
-        onClick={onClose}
-        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-      />
-      <div className="px-6 pb-6 pt-16">
+      <div className="pt-10">
         {!showContactDetailsForm ? (
           <BankDetailsForm
             onSubmit={handleSubmitFirstStep}
@@ -64,7 +55,7 @@ const BankDetailsModal: FC<BankDetailsModalProps> = ({
           />
         )}
       </div>
-    </ModalBase>
+    </Modal>
   );
 };
 

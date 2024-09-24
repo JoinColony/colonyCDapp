@@ -1,10 +1,9 @@
 import React, { useEffect, type FC, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 import { useCreateKycLinksMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
-import { CloseButton } from '~v5/shared/Button/index.ts';
-import ModalBase from '~v5/shared/Modal/ModalBase.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';
 import PersonalDetailsForm from '../PersonalDetailsForm/index.ts';
@@ -55,8 +54,6 @@ const VerificationModal: FC<VerificationModalProps> = ({
   onClose,
   onTermsAcceptance,
 }) => {
-  const { formatMessage } = useIntl();
-
   const [activeTab, setActiveTab] = useState<TabId>(TabId.PersonalDetails);
 
   const [kycLink, setKycLink] = useState(existingKycLink);
@@ -77,18 +74,13 @@ const VerificationModal: FC<VerificationModalProps> = ({
   }, [kycLink, onTermsAcceptance]);
 
   return (
-    <ModalBase
+    <Modal
       isFullOnMobile={false}
       isOpen={isOpened}
-      onRequestClose={onClose}
+      onClose={onClose}
+      withPaddingBottom
     >
-      <CloseButton
-        aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
-        title={formatMessage({ id: 'button.cancel' })}
-        onClick={onClose}
-        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-      />
-      <div className="px-6 pb-6 pt-16">
+      <div className="pt-10">
         <Stepper
           activeStepKey={activeTab}
           items={[
@@ -159,7 +151,7 @@ const VerificationModal: FC<VerificationModalProps> = ({
           ]}
         />
       </div>
-    </ModalBase>
+    </Modal>
   );
 };
 
