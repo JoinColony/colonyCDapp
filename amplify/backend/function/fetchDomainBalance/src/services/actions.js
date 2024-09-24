@@ -16,20 +16,16 @@ const {
   isBefore,
 } = require('../utils');
 
-const getInOutActions = async (colonyAddress, parentDomainId) => {
-  /**
-   * @TODO also get child domains for which we should do operations recursively
-   * however if financial actions have been executed between children of same domainAddress they shouldn't be taken into account
-   */
-  /**
-   * @TODO filter child domains for colonyAddress and parentDomainId
-   */
+const getInOutActions = async (colonyAddress, domainId) => {
+  // @TODO: If domainId is undefined, then "All teams" filter is selected
+  // Make sure expenditures and actions are collected appropriately
   const domains = await getDomains(colonyAddress);
-  const parentDomain = domains.find((d) => d.id === parentDomainId);
+  const domain = domains.find((d) => d.id === domainId);
 
-  const incomingFunds = await getAllIncomingFunds(colonyAddress, parentDomain);
+  const incomingFunds = await getAllIncomingFunds(colonyAddress, domain);
 
-  const expenditures = await getAllExpenditures(colonyAddress, parentDomain);
+  // Fetches all expenditures within the domain, excluding expenditures that are part of a simple payment
+  const expenditures = await getAllExpenditures(colonyAddress, domain);
   const filteredExpenditures = expenditures.filter(
     (expenditure) => !!expenditure.fundingActions?.items?.length,
   );
@@ -38,14 +34,12 @@ const getInOutActions = async (colonyAddress, parentDomainId) => {
   const tokensDecimals = await getTokensDecimalsFor(expendituresTokenAddresses);
 
   // Getting all remaining financial actions not included in incoming funds or expenditures
-  let actions = await getAllActions(colonyAddress, parentDomainId);
-
-  console.log(filteredExpenditures.length);
+  let actions = await getAllActions(colonyAddress, domainId);
 
   return [
-    // ...getFormattedIncomingFunds(incomingFunds, parentDomainId),
+    ...getFormattedIncomingFunds(incomingFunds, domainId),
     ...actions.map((action) => getActionWithFinalizedDate(action)),
-    // ...getFormattedExpenditures(filteredExpenditures, parentDomainId, tokensDecimals),
+    ...getFormattedExpenditures(filteredExpenditures, domainId, tokensDecimals),
   ];
 };
 
@@ -94,7 +88,7 @@ const groupBalanceByPeriod = (
   timeframePeriod,
   timeframePeriodEndDate,
   actions,
-  parentDomainId,
+  domainId,
 ) => {
   const balance = {};
 
@@ -111,9 +105,18 @@ const groupBalanceByPeriod = (
   // Add each action to its corresponding balance period in/out operation
   actions.forEach((action) => {
     const period = getPeriodFormat(action.finalizedDate, timeframeType);
-    if (action.fromDomainId === parentDomainId) {
+    // @TODO: Maybe we should filter by actionType here so we can handle payments and MOVE_FUNDS differently?
+
+    // Do not include outgoing transfers within the same domain
+    // @TODO: handle when "All teams" is selected and domainId is undefined
+    if (action.fromDomainId === domainId && action.toDomainId !== domainId) {
       balance[period].out.push(action);
-    } else if (action.toDomainId === parentDomainId) {
+      // Do not include incoming transfers within the same domain
+      // @TODO: handle when "All teams" is selected and domainId is undefined
+    } else if (
+      action.toDomainId === domainId &&
+      action.fromDomainId !== domainId
+    ) {
       balance[period].in.push(action);
     }
   });
