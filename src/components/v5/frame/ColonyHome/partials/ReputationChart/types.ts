@@ -6,7 +6,7 @@ export interface ReputationChartDataItem {
   label: string;
   searchParam?: string;
   shouldTruncateLegendLabel?: boolean;
-  value: number;
+  value?: number;
 }
 
 export interface ContributorItem {
