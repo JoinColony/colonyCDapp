@@ -43,12 +43,8 @@ const VotingReputationSettings: FC = () => {
    * If we arrive here but the extension is either not installed or already initialised,
    * go back to main extension details page
    */
-
   useEffect(() => {
-    if (
-      !isInstalledExtensionData(extensionData) ||
-      extensionData.isInitialized
-    ) {
+    if (!isInstalledExtensionData(extensionData)) {
       navigate(pathname.split('/').slice(0, -1).join('/'));
     }
   }, [extensionData, pathname, navigate]);
