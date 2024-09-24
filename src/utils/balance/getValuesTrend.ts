@@ -25,11 +25,12 @@ export const getValuesTrend = (current: string, previous: string) => {
   } else if (previousBN.isZero()) {
     trend = BigNumber.from(100);
   } else {
-    trend = currentBN.sub(previousBN).mul(100).div(previousBN);
+    trend = currentBN.sub(previousBN).mul(100).div(previousBN.abs());
   }
 
+  const isIncrease = trend.gte(0);
   const isValueOverLimit = trend.abs().gt(upperLimit);
-  const valueToFormat = isValueOverLimit ? upperLimit : trend;
+  const valueToFormat = isValueOverLimit ? upperLimit : trend.abs();
 
   const formattedValue = numbro(valueToFormat.toString()).format({
     mantissa: 3,
@@ -39,6 +40,6 @@ export const getValuesTrend = (current: string, previous: string) => {
 
   return {
     value: `${formattedValue}%${isValueOverLimit ? '+' : ''}`,
-    isIncrease: trend.gte(0),
+    isIncrease,
   };
 };
