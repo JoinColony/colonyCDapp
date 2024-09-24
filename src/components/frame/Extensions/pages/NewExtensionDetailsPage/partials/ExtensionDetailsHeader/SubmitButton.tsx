@@ -1,4 +1,4 @@
-import { ColonyRole, Extension, Id } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -18,10 +18,6 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import { ButtonWithLoader } from './ButtonWithLoader.tsx';
 
-// import { useExtensionDetailsPageContext } from '../context/ExtensionDetailsPageContext.ts';
-
-// import ReenableButton from './ExtensionDetails/ReenableButton.tsx';
-
 interface SubmitButtonProps {
   userHasRoot: boolean;
   extensionData: AnyExtensionData;
@@ -38,7 +34,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     useExtensionDetailsPageContext();
 
   const {
-    formState: { isValid, isSubmitting },
+    formState: { isValid, isSubmitting, isDirty },
   } = useFormContext();
 
   const userHasArchitecture =
@@ -64,11 +60,15 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     !extensionData.isInitialized &&
     !extensionData.autoEnableAfterInstall;
 
+  const isSaveChangesButtonVisible =
+    userHasRoot &&
+    isInstalledExtensionData(extensionData) &&
+    !!extensionData.configurableParams?.length &&
+    !extensionData.isDeprecated &&
+    isSettingsTab;
+
   if (isEnableButtonVisible) {
-    if (
-      !isSettingsTab &&
-      extensionData.extensionId === Extension.VotingReputation
-    ) {
+    if (!isSettingsTab) {
       return (
         <Button
           type="button"
@@ -87,16 +87,25 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
         type="submit"
         disabled={!isValid}
         isFullSize={isMobile}
-        isLoading={isSubmitting || waitingForActionConfirmation}
+        loading={isSubmitting || waitingForActionConfirmation}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>
     );
   }
 
-  // if (canExtensionBeRenabled) {
-  //   return <ReenableButton extensionData={extensionData} />;
-  // }
+  if (isSaveChangesButtonVisible && isDirty) {
+    return (
+      <ButtonWithLoader
+        type="submit"
+        disabled={!isValid}
+        isFullSize={isMobile}
+        loading={isSubmitting || waitingForActionConfirmation}
+      >
+        {formatText({ id: 'button.saveChanges' })}
+      </ButtonWithLoader>
+    );
+  }
 
   return null;
 };

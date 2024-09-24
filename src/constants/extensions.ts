@@ -19,7 +19,11 @@ import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
 import streamingHero from '~images/assets/extensions/streaming-hero.png';
 import streamingInterface from '~images/assets/extensions/streaming-interface.png';
-import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
+import {
+  type ExtensionConfig,
+  ExtensionParamType,
+  type ExtensionInitParam,
+} from '~types/extensions.ts';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
@@ -336,6 +340,26 @@ const MSG = defineMessages({
   ...multiSigMessages,
 });
 
+const stakedExpenditureParams: ExtensionInitParam[] = [
+  {
+    paramName: 'stakeFraction',
+    validation: number()
+      .transform((value) => toFinite(value))
+      .positive(() => MSG.greaterThan0Error)
+      .required(() => MSG.requiredError)
+      .max(50, () => MSG.lessThan50Error),
+    defaultValue: 1,
+    title: MSG.stakedExpenditureStakeFractionTitle,
+    description: MSG.stakedExpenditureStakeFractionDescription,
+    type: ExtensionParamType.Input,
+    complementaryLabel: 'percent',
+    formattingOptions: {
+      numeralPositiveOnly: true,
+    },
+    transformValue: convertFractionToWei,
+  },
+];
+
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
@@ -515,7 +539,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1603915271852,
   },
-  // @BETA: Disabled for now
   {
     icon: ExtensionAdvancedPaymentsIcon,
     imageURLs: [stakedHero, stakedInterface],
@@ -531,25 +554,8 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1692048380000,
-    initializationParams: [
-      {
-        paramName: 'stakeFraction',
-        validation: number()
-          .transform((value) => toFinite(value))
-          .positive(() => MSG.greaterThan0Error)
-          .required(() => MSG.requiredError)
-          .max(50, () => MSG.lessThan50Error),
-        defaultValue: 1,
-        title: MSG.stakedExpenditureStakeFractionTitle,
-        description: MSG.stakedExpenditureStakeFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
-        transformValue: convertFractionToWei,
-      },
-    ],
+    initializationParams: stakedExpenditureParams,
+    configurableParams: stakedExpenditureParams,
     autoEnableAfterInstall: true,
   },
   {
@@ -593,6 +599,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1713173071843,
+    configurableParams: [],
   },
   // {
   //   icon: 'extension-streaming-payments',

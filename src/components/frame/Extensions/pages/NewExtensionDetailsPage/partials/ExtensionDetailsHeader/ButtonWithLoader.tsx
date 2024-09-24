@@ -7,12 +7,11 @@ import { type ButtonProps } from '~v5/shared/Button/types.ts';
 
 export const ButtonWithLoader: FC<
   ButtonProps & {
-    isLoading: boolean;
     loaderClassName?: string;
     loaderIconSize?: number;
   }
 > = ({
-  isLoading,
+  loading,
   isFullSize,
   mode,
   disabled,
@@ -23,7 +22,7 @@ export const ButtonWithLoader: FC<
   loaderIconSize = 18,
   onClick,
 }) =>
-  isLoading ? (
+  loading ? (
     <IconButton
       rounded="s"
       isFullSize={isFullSize}
