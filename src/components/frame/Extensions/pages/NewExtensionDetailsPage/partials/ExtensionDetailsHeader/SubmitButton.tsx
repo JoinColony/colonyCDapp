@@ -63,7 +63,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
   const isSaveChangesButtonVisible =
     userHasRoot &&
     isInstalledExtensionData(extensionData) &&
-    !!extensionData.configurableParams?.length &&
+    !!extensionData.configurable &&
     !extensionData.isDeprecated &&
     isSettingsTab;
 

@@ -17,11 +17,7 @@ import stagedHero from '~images/assets/extensions/staged-hero.png';
 import stagedInterface from '~images/assets/extensions/staged-interface.png';
 import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
-import {
-  type ExtensionConfig,
-  ExtensionParamType,
-  type ExtensionInitParam,
-} from '~types/extensions.ts';
+import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
@@ -337,26 +333,6 @@ const MSG = defineMessages({
   ...multiSigMessages,
 });
 
-const stakedExpenditureParams: ExtensionInitParam[] = [
-  {
-    paramName: 'stakeFraction',
-    validation: number()
-      .transform((value) => toFinite(value))
-      .positive(() => MSG.greaterThan0Error)
-      .required(() => MSG.requiredError)
-      .max(50, () => MSG.lessThan50Error),
-    defaultValue: 1,
-    title: MSG.stakedExpenditureStakeFractionTitle,
-    description: MSG.stakedExpenditureStakeFractionDescription,
-    type: ExtensionParamType.Input,
-    complementaryLabel: 'percent',
-    formattingOptions: {
-      numeralPositiveOnly: true,
-    },
-    transformValue: convertFractionToWei,
-  },
-];
-
 export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     extensionId: Extension.OneTxPayment,
@@ -551,8 +527,26 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1692048380000,
-    initializationParams: stakedExpenditureParams,
-    configurableParams: stakedExpenditureParams,
+    initializationParams: [
+      {
+        paramName: 'stakeFraction',
+        validation: number()
+          .transform((value) => toFinite(value))
+          .positive(() => MSG.greaterThan0Error)
+          .required(() => MSG.requiredError)
+          .max(50, () => MSG.lessThan50Error),
+        defaultValue: 1,
+        title: MSG.stakedExpenditureStakeFractionTitle,
+        description: MSG.stakedExpenditureStakeFractionDescription,
+        type: ExtensionParamType.Input,
+        complementaryLabel: 'percent',
+        formattingOptions: {
+          numeralPositiveOnly: true,
+        },
+        transformValue: convertFractionToWei,
+      },
+    ],
+    configurable: true,
     autoEnableAfterInstall: true,
   },
   {
@@ -596,7 +590,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1713173071843,
-    configurableParams: [],
     autoEnableAfterInstall: true,
+    configurable: true,
   },
 ];
