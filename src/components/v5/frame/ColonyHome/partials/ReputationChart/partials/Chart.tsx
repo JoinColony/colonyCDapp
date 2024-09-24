@@ -64,7 +64,6 @@ export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
                   label: EMPTY_CHART_ITEM.label,
                   color: EMPTY_CHART_ITEM.color,
                   shouldTruncateLegendLabel: false,
-                  value: EMPTY_CHART_ITEM.value,
                 }}
               />
             )}
