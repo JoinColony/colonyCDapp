@@ -235,6 +235,11 @@ export const getExtensionParams = (
             : String(defaultValues.stakeFraction),
         };
       }
+      case Extension.MultisigPermissions: {
+        return {
+          globalThreshold: extensionData.params?.multiSig?.colonyThreshold,
+        };
+      }
       default: {
         return (
           extensionData.params?.[camelCase(extensionData.extensionId)] ?? {}

@@ -35,13 +35,13 @@ export interface ExtensionConfig {
   descriptionLong: MessageDescriptor;
   neededColonyPermissions: ColonyRole[];
   initializationParams?: ExtensionInitParam[];
-  // Array of params that are configurable post-initialization
-  configurableParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
   icon: Icon;
   imageURLs: string[];
   autoEnableAfterInstall?: boolean;
+  // Whether the extension params are configurable post-installation
+  configurable?: boolean;
 }
 
 export type InstalledExtensionData = ExtensionConfig &

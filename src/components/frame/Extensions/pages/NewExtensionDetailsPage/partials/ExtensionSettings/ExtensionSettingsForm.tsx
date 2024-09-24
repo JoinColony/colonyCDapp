@@ -23,8 +23,6 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
 
   const defaultValues = useMemo(
     () => ({
-      type: extensionData?.extensionId,
-      option: '',
       params: getExtensionParams(extensionData),
     }),
     [extensionData],

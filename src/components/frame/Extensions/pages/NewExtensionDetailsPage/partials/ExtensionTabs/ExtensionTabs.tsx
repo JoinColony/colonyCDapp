@@ -29,7 +29,7 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
   // @TODO: Make it work with multi sig (that has no init params)
   const shouldShowSettingsTab =
     isInstalledExtensionData(extensionData) &&
-    extensionData.initializationParams?.length;
+    (extensionData.initializationParams?.length || extensionData.configurable);
 
   const tabsItems = [
     {

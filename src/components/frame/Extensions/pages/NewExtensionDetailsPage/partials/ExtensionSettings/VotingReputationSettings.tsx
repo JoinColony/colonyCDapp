@@ -1,8 +1,9 @@
-import React, { type FC, useEffect, useState } from 'react';
+import Decimal from 'decimal.js';
+import React, { type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import RadioList from '~common/Extensions/Fields/RadioList/index.ts';
+import { paramsMap } from '~frame/Extensions/pages/ExtensionDetailsPage/consts.ts';
 import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
 import {
   governanceRadioList,
@@ -10,12 +11,67 @@ import {
 } from '~frame/Extensions/pages/LazyConsensusPage/consts.tsx';
 import { getSelectedFormData } from '~frame/Extensions/pages/LazyConsensusPage/hooks.tsx';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
+import { getExtensionParams } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import { useAccordion } from '~shared/Extensions/Accordion/hooks.ts';
 import Accordion from '~shared/Extensions/Accordion/index.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
-const VotingReputationSettings: FC = () => {
+interface VotingReputationParamsProps {
+  extensionData: AnyExtensionData;
+}
+
+const VotingReputationParams: FC<VotingReputationParamsProps> = ({
+  extensionData,
+}) => {
+  const params = getExtensionParams(extensionData);
+
+  return (
+    <div>
+      {Object.keys(params)
+        .filter((param) => paramsMap[extensionData.extensionId][param])
+        .map((param) => {
+          // @TODO: Refactor to use extensions config
+          const { title, complementaryLabel, description } =
+            paramsMap[extensionData.extensionId][param];
+          let value: string = params[param];
+
+          if (complementaryLabel === 'percent') {
+            value = new Decimal(value).div(new Decimal(10).pow(16)).toString();
+          } else {
+            const valueDecimal = new Decimal(value).div(3600);
+            value = valueDecimal.isInteger()
+              ? valueDecimal.toFixed(0)
+              : valueDecimal.toFixed(2);
+          }
+
+          return (
+            <div
+              key={title}
+              className="border-b border-gray-200 py-4 last:border-none"
+            >
+              <div className="flex items-center justify-between text-1">
+                <p>{title}</p>
+                <div>
+                  {value} {complementaryLabel === 'percent' ? '%' : 'Hours'}
+                </div>
+              </div>
+              <p className="text-sm">{description}</p>
+            </div>
+          );
+        })}
+    </div>
+  );
+};
+
+interface VotingReputationSettingsProps {
+  userHasRoot: boolean;
+}
+
+const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
+  userHasRoot,
+}) => {
   const { extensionData } = useExtensionDetailsPageContext();
   const { openIndex, onOpenIndexChange, isAccordionOpen } = useAccordion();
   const [isCustomChecked, setIsCustomChecked] = useState(false);
@@ -35,24 +91,17 @@ const VotingReputationSettings: FC = () => {
     setValue('option', selectedDefaultOption, { shouldValidate: true });
   };
 
-  const { pathname } = useLocation();
-
-  const navigate = useNavigate();
-
-  /*
-   * If we arrive here but the extension is either not installed or already initialised,
-   * go back to main extension details page
-   */
-  useEffect(() => {
-    if (!isInstalledExtensionData(extensionData)) {
-      navigate(pathname.split('/').slice(0, -1).join('/'));
-    }
-  }, [extensionData, pathname, navigate]);
-
   if (!extensionData) {
     return (
       <p>{formatText({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
     );
+  }
+
+  if (
+    !userHasRoot ||
+    (isInstalledExtensionData(extensionData) && extensionData.isInitialized)
+  ) {
+    return <VotingReputationParams extensionData={extensionData} />;
   }
 
   return (
