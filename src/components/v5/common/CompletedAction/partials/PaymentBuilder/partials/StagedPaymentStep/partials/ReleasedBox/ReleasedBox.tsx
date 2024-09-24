@@ -51,11 +51,11 @@ const ReleasedBox: FC<ReleasedBoxProps> = ({ items }) => {
       </div>
       {selectedMilestoneMotion && (
         <div className="mt-2">
-          {!selectedMilestoneMotion.transactionHash ? (
+          {!selectedMilestoneMotion.isMotion ? (
             <ActionWithPermissionsInfo action={action} />
           ) : (
             <MotionBox
-              transactionId={selectedMilestoneMotion.transactionHash}
+              transactionId={selectedMilestoneMotion.transactionHash || ''}
             />
           )}
         </div>

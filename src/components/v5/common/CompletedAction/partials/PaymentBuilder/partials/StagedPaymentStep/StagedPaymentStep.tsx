@@ -52,6 +52,7 @@ export interface ReleaseActionItem {
   userAddress: string;
   createdAt: string;
   slotIds: number[];
+  transactionHash: string;
 }
 
 interface StagedPaymentStepProps {
@@ -118,19 +119,23 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
       transactionHash: motion?.transactionHash,
       uniqueId: `${slotIds.join('-')}-${index + 1}`,
       createdAt: motion?.createdAt || '',
+      isMotion: true,
     };
   });
   const releasedMilestones = items
     .filter((item) => item.isClaimed)
     .map((item) => {
-      const createdAt = releaseActions.find((action) =>
+      const releaseAction = releaseActions.find((action) =>
         action.slotIds.includes(item.slotId),
-      )?.createdAt;
+      );
+      const { transactionHash, createdAt } = releaseAction || {};
 
       return {
         ...item,
         uniqueId: `${item.slotId}-0`,
         createdAt: createdAt || '',
+        transactionHash,
+        isMotion: false,
       };
     })
     .filter((item) => {

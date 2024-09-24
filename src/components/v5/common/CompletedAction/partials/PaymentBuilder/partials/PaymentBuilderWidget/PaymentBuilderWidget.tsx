@@ -373,6 +373,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         userAddress: releaseAction?.initiatorAddress || '',
         createdAt: releaseAction?.createdAt || '',
         slotIds: expenditureSlotIds || [],
+        transactionHash: releaseAction?.transactionHash || '',
       };
     });
   }, [releaseActions]);

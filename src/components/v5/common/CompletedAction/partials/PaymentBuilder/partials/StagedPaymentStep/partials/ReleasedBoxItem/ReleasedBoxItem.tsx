@@ -16,6 +16,7 @@ const displayName =
 
 export interface ReleaseBoxItem extends Omit<MilestoneItem, 'slotId'> {
   transactionHash?: string;
+  isMotion?: boolean;
   uniqueId: string;
   createdAt: string;
   slotId: number | number[];
@@ -40,9 +41,11 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
   const { setSelectedMilestoneMotion, selectedMilestoneMotion } =
     usePaymentBuilderContext();
   const { isStagedExtensionInstalled } = useEnabledExtensions();
-  const { motionState, loadingAction } = useGetColonyAction(
+  const { motionState, loadingAction, action } = useGetColonyAction(
     item?.transactionHash,
   );
+
+  const { motionData } = action || {};
 
   return (
     <button
@@ -69,7 +72,7 @@ const ReleasedBoxItem: FC<ReleasedBoxItemProps> = ({
           ? formatText(MSG.releaseAll)
           : item.milestone}
       </span>
-      {!item.transactionHash ? (
+      {!motionData ? (
         <PillsBase
           className="bg-success-100 text-success-400"
           isCapitalized={false}
