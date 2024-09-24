@@ -2,24 +2,24 @@ module.exports = {
   saveCacheTotalBalance: /* GraphQL */ `
     mutation SaveCacheTotalBalance($input: CreateCacheTotalBalanceInput!) {
       createCacheTotalBalance(input: $input) {
-        totalIn
-        totalOut
-        total
+        totalUSDCIn
+        totalUSDCOut
+        totalUSDC
       }
     }
   `,
   updateCacheTotalBalance: /* GraphQL */ `
     mutation UpdateCacheTotalBalance($input: UpdateCacheTotalBalanceInput!) {
       updateCacheTotalBalance(input: $input) {
-        totalIn
-        totalOut
-        total
+        totalUSDCIn
+        totalUSDCOut
+        totalUSDC
       }
     }
   `,
   getCachedTotalBalance: /* GraphQL */ `
     query GetCachedTotalBalance(
-      $colonyAddress: String!
+      $colonyAddress: ID!
       $filter: ModelCacheTotalBalanceFilterInput
     ) {
       cacheTotalBalanceByColonyAddress(
@@ -32,9 +32,9 @@ module.exports = {
           colonyAddress
           timeframeType
           timeframePeriod
-          totalIn
-          totalOut
-          total
+          totalUSDCIn
+          totalUSDCOut
+          totalUSDC
           date
         }
       }

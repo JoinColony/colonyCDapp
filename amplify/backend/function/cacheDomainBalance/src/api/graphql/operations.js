@@ -9,10 +9,10 @@ const {
   updateCacheTotalBalance,
 } = require('./schemas.js');
 
-const EnvVarsSetupFactory = require('../../config/envVars.js');
+const EnvVarsConfig = require('../../config/envVars.js');
 
 const graphqlRequest = async (queryOrMutation, variables) => {
-  const { apiKey, graphqlURL } = await EnvVarsSetupFactory.getEnvVars();
+  const { apiKey, graphqlURL } = await EnvVarsConfig.getEnvVars();
   const options = {
     method: 'POST',
     headers: {
@@ -103,19 +103,24 @@ const getPreviousBalance = async ({
   timeframePeriod,
   timeframeType,
 }) => {
+  const filter = {
+    timeframePeriod: {
+      eq: timeframePeriod,
+    },
+    timeframeType: {
+      eq: timeframeType,
+    },
+  };
+
+  if (domainId) {
+    filter.domainId = {
+      eq: domainId,
+    };
+  }
+
   const result = await graphqlRequest(getCachedTotalBalance, {
     colonyAddress,
-    filter: {
-      domainId: {
-        eq: domainId,
-      },
-      timeframePeriod: {
-        eq: timeframePeriod,
-      },
-      timeframeType: {
-        eq: timeframeType,
-      },
-    },
+    filter,
   });
 
   return result.data.cacheTotalBalanceByColonyAddress?.items?.[0];
@@ -126,9 +131,9 @@ const savePreviousBalance = async ({
   domainId,
   timeframePeriod,
   timeframeType,
-  totalIn,
-  totalOut,
-  total,
+  totalUSDCIn,
+  totalUSDCOut,
+  totalUSDC,
   date,
 }) => {
   const result = await graphqlRequest(saveCacheTotalBalance, {
@@ -137,9 +142,9 @@ const savePreviousBalance = async ({
       domainId,
       timeframePeriod,
       timeframeType,
-      totalIn,
-      totalOut,
-      total,
+      totalUSDCIn,
+      totalUSDCOut,
+      totalUSDC,
       date,
     },
   });
@@ -153,9 +158,9 @@ const updatePreviousBalance = async ({
   domainId,
   timeframePeriod,
   timeframeType,
-  totalIn,
-  totalOut,
-  total,
+  totalUSDCIn,
+  totalUSDCOut,
+  totalUSDC,
   date,
 }) => {
   const result = await graphqlRequest(updateCacheTotalBalance, {
@@ -165,9 +170,9 @@ const updatePreviousBalance = async ({
       domainId,
       timeframePeriod,
       timeframeType,
-      totalIn,
-      totalOut,
-      total,
+      totalUSDCIn,
+      totalUSDCOut,
+      totalUSDC,
       date,
     },
   });

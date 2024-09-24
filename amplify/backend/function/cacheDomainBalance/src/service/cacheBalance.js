@@ -6,7 +6,7 @@ const {
 } = require('../api/graphql/operations');
 const { isSameDay, TimeframeType } = require('../utils');
 
-const CacheBalanceFactory = (() => {
+const CacheBalanceService = (() => {
   const upsertBalance = async ({
     previousBalanceData,
     computedBalance,
@@ -22,9 +22,9 @@ const CacheBalanceFactory = (() => {
       domainId,
       timeframePeriod,
       timeframeType,
-      totalIn: computedBalance.totalIn,
-      totalOut: computedBalance.totalOut,
-      total: computedBalance.total,
+      totalUSDCIn: computedBalance.totalIn,
+      totalUSDCOut: computedBalance.totalOut,
+      totalUSDC: computedBalance.total,
     };
 
     /**
@@ -44,7 +44,7 @@ const CacheBalanceFactory = (() => {
   return {
     processBalanceForPeriod: async ({
       colonyAddress,
-      domainId = '',
+      domainId,
       timeframePeriod,
       timeframeType = TimeframeType.DAILY,
       endOfPeriodDate,
@@ -96,4 +96,4 @@ const CacheBalanceFactory = (() => {
   };
 })();
 
-module.exports = CacheBalanceFactory;
+module.exports = CacheBalanceService;
