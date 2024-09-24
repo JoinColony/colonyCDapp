@@ -5,7 +5,7 @@ query GetDomainBalance($input: DomainBalanceArguments!) {
 }
 
 query GetCachedDomainBalance(
-  $colonyAddress: String!
+  $colonyAddress: ID!
   $filter: ModelCacheTotalBalanceFilterInput
   $limit: Int = 100
   $nextToken: String

@@ -201,14 +201,14 @@ export type BridgeXyzMutationReturn = {
 /** Return type for cache all domain balance */
 export type CacheAllDomainBalanceReturn = {
   __typename?: 'CacheAllDomainBalanceReturn';
-  statusCode: Scalars['Int'];
+  success: Scalars['Boolean'];
 };
 
 /** Represents a table for caching the total balance */
 export type CacheTotalBalance = {
   __typename?: 'CacheTotalBalance';
   /** Address of the colony on the blockchain */
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   /** Request timestamp */
   date: Scalars['AWSDateTime'];
@@ -222,13 +222,13 @@ export type CacheTotalBalance = {
    * The timeframe type (day/week/month) for which we want to cache the in/out token balance
    * Defaults to TimeframeType.DAILY
    */
-  timeframeType?: Maybe<TimeframeType>;
+  timeframeType: TimeframeType;
   /** The total balance (totalIn - totalOut) in USDC */
-  total?: Maybe<Scalars['String']>;
+  totalUSDC?: Maybe<Scalars['String']>;
   /** The total in balance in USDC */
-  totalIn?: Maybe<Scalars['String']>;
+  totalUSDCIn?: Maybe<Scalars['String']>;
   /** The total out balance in USDC */
-  totalOut?: Maybe<Scalars['String']>;
+  totalUSDCOut?: Maybe<Scalars['String']>;
   updatedAt: Scalars['AWSDateTime'];
 };
 
@@ -1392,15 +1392,15 @@ export type CreateAnnotationInput = {
 };
 
 export type CreateCacheTotalBalanceInput = {
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   date: Scalars['AWSDateTime'];
   domainId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   timeframePeriod: Scalars['Int'];
-  timeframeType?: InputMaybe<TimeframeType>;
-  total?: InputMaybe<Scalars['String']>;
-  totalIn?: InputMaybe<Scalars['String']>;
-  totalOut?: InputMaybe<Scalars['String']>;
+  timeframeType: TimeframeType;
+  totalUSDC?: InputMaybe<Scalars['String']>;
+  totalUSDCIn?: InputMaybe<Scalars['String']>;
+  totalUSDCOut?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateColonyActionInput = {
@@ -2784,16 +2784,16 @@ export type ModelBooleanInput = {
 
 export type ModelCacheTotalBalanceConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceConditionInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   date?: InputMaybe<ModelStringInput>;
   domainId?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelCacheTotalBalanceConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceConditionInput>>>;
   timeframePeriod?: InputMaybe<ModelIntInput>;
   timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
-  total?: InputMaybe<ModelStringInput>;
-  totalIn?: InputMaybe<ModelStringInput>;
-  totalOut?: InputMaybe<ModelStringInput>;
+  totalUSDC?: InputMaybe<ModelStringInput>;
+  totalUSDCIn?: InputMaybe<ModelStringInput>;
+  totalUSDCOut?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelCacheTotalBalanceConnection = {
@@ -2804,7 +2804,7 @@ export type ModelCacheTotalBalanceConnection = {
 
 export type ModelCacheTotalBalanceFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
   date?: InputMaybe<ModelStringInput>;
   domainId?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -2812,9 +2812,9 @@ export type ModelCacheTotalBalanceFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelCacheTotalBalanceFilterInput>>>;
   timeframePeriod?: InputMaybe<ModelIntInput>;
   timeframeType?: InputMaybe<ModelTimeframeTypeInput>;
-  total?: InputMaybe<ModelStringInput>;
-  totalIn?: InputMaybe<ModelStringInput>;
-  totalOut?: InputMaybe<ModelStringInput>;
+  totalUSDC?: InputMaybe<ModelStringInput>;
+  totalUSDCIn?: InputMaybe<ModelStringInput>;
+  totalUSDCOut?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelClientTypeInput = {
@@ -4110,16 +4110,16 @@ export type ModelSubscriptionBooleanInput = {
 
 export type ModelSubscriptionCacheTotalBalanceFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>>>;
-  colonyAddress?: InputMaybe<ModelSubscriptionStringInput>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
   date?: InputMaybe<ModelSubscriptionStringInput>;
   domainId?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionCacheTotalBalanceFilterInput>>>;
   timeframePeriod?: InputMaybe<ModelSubscriptionIntInput>;
   timeframeType?: InputMaybe<ModelSubscriptionStringInput>;
-  total?: InputMaybe<ModelSubscriptionStringInput>;
-  totalIn?: InputMaybe<ModelSubscriptionStringInput>;
-  totalOut?: InputMaybe<ModelSubscriptionStringInput>;
+  totalUSDC?: InputMaybe<ModelSubscriptionStringInput>;
+  totalUSDCIn?: InputMaybe<ModelSubscriptionStringInput>;
+  totalUSDCOut?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
 export type ModelSubscriptionColonyActionFilterInput = {
@@ -6599,7 +6599,7 @@ export type QueryBridgeGetUserLiquidationAddressArgs = {
 
 /** Root query type */
 export type QueryCacheTotalBalanceByColonyAddressArgs = {
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   date?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelCacheTotalBalanceFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -9239,15 +9239,15 @@ export type UpdateAnnotationInput = {
 };
 
 export type UpdateCacheTotalBalanceInput = {
-  colonyAddress?: InputMaybe<Scalars['String']>;
+  colonyAddress?: InputMaybe<Scalars['ID']>;
   date?: InputMaybe<Scalars['AWSDateTime']>;
   domainId?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   timeframePeriod?: InputMaybe<Scalars['Int']>;
   timeframeType?: InputMaybe<TimeframeType>;
-  total?: InputMaybe<Scalars['String']>;
-  totalIn?: InputMaybe<Scalars['String']>;
-  totalOut?: InputMaybe<Scalars['String']>;
+  totalUSDC?: InputMaybe<Scalars['String']>;
+  totalUSDCIn?: InputMaybe<Scalars['String']>;
+  totalUSDCOut?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateColonyActionInput = {
@@ -10053,7 +10053,7 @@ export type DomainMetadataFragment = { __typename?: 'DomainMetadata', name: stri
 
 export type DomainBalanceReturnFragment = { __typename?: 'DomainBalanceReturn', totalIn?: string | null, totalOut?: string | null, timeframe?: Array<{ __typename?: 'TimeframeDomainBalanceInOut', key: string, value?: { __typename?: 'DomainBalanceInOut', totalIn?: string | null, totalOut?: string | null } | null } | null> | null };
 
-export type CacheTotalBalanceFragment = { __typename?: 'CacheTotalBalance', totalIn?: string | null, totalOut?: string | null, date: string };
+export type CacheTotalBalanceFragment = { __typename?: 'CacheTotalBalance', totalUSDCIn?: string | null, totalUSDCOut?: string | null, date: string };
 
 export type ExpenditureFragment = { __typename?: 'Expenditure', id: string, nativeId: number, ownerAddress: string, status: ExpenditureStatus, nativeFundingPotId: number, nativeDomainId: number, finalizedAt?: number | null, createdAt: string, type: ExpenditureType, isStaked: boolean, slots: Array<{ __typename?: 'ExpenditureSlot', id: number, recipientAddress?: string | null, claimDelay?: string | null, payoutModifier?: number | null, payouts?: Array<{ __typename?: 'ExpenditurePayout', tokenAddress: string, amount: string, isClaimed: boolean, networkFee?: string | null }> | null }>, metadata?: { __typename?: 'ExpenditureMetadata', fundFromDomainNativeId: number, distributionType?: SplitPaymentDistributionType | null, expectedNumberOfPayouts?: number | null, expectedNumberOfTokens?: number | null, stages?: Array<{ __typename?: 'ExpenditureStage', slotId: number, name: string }> | null } | null, userStake?: { __typename?: 'UserStake', amount: string, isClaimed: boolean } | null, balances?: Array<{ __typename?: 'ExpenditureBalance', tokenAddress: string, amount: string }> | null, creatingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', transactionHash: string, metadata?: { __typename?: 'ColonyActionMetadata', customTitle: string } | null } | null> } | null, lockingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null> } | null, fundingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null> } | null, finalizingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null> } | null, cancellingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null> } | null, editingActions?: { __typename?: 'ModelColonyActionConnection', items: Array<{ __typename?: 'ColonyAction', initiatorAddress: string, createdAt: string, transactionHash: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null, motionData?: { __typename?: 'ColonyMotion', remainingStakes: Array<string>, userMinStake: string, requiredStake: string, nativeMotionDomainId: string, isFinalized: boolean, skillRep: string, repSubmitted: string, hasObjection: boolean, isDecision: boolean, transactionHash: string, createdAt: string, createdBy: string, expenditureSlotIds?: Array<number> | null, databaseMotionId: string, motionId: string, motionStakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, usersStakes: Array<{ __typename?: 'UserMotionStakes', address: string, stakes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } } }>, motionDomain: { __typename?: 'Domain', id: string, nativeId: number, isRoot: boolean, nativeFundingPotId: number, nativeSkillId: string, reputation?: string | null, reputationPercentage?: string | null, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor, description?: string | null, id: string, changelog?: Array<{ __typename?: 'DomainMetadataChangelog', transactionHash: string, oldName: string, newName: string, oldColor: DomainColor, newColor: DomainColor, oldDescription?: string | null, newDescription?: string | null }> | null } | null }, stakerRewards: Array<{ __typename?: 'StakerRewards', address: string, isClaimed: boolean, rewards: { __typename?: 'MotionStakeValues', yay: string, nay: string } }>, voterRewards?: { __typename?: 'ModelVoterRewardsHistoryConnection', items: Array<{ __typename?: 'VoterRewardsHistory', userAddress: string, amount: string, user: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } } | null> } | null, voterRecord: Array<{ __typename?: 'VoterRecord', address: string, voteCount: string, vote?: number | null }>, revealedVotes: { __typename?: 'MotionStakes', raw: { __typename?: 'MotionStakeValues', yay: string, nay: string }, percentage: { __typename?: 'MotionStakeValues', yay: string, nay: string } }, motionStateHistory: { __typename?: 'MotionStateHistory', hasVoted: boolean, hasPassed: boolean, hasFailed: boolean, hasFailedNotFinalizable: boolean, inRevealPhase: boolean, yaySideFullyStakedAt?: string | null, naySideFullyStakedAt?: string | null, allVotesSubmittedAt?: string | null, allVotesRevealedAt?: string | null, endedAt?: string | null, finalizedAt?: string | null }, messages?: { __typename?: 'ModelMotionMessageConnection', items: Array<{ __typename?: 'MotionMessage', initiatorAddress: string, name: string, messageKey: string, vote?: string | null, amount?: string | null, createdAt: string, initiatorUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null } | null } | null> } | null, objectionAnnotation?: { __typename?: 'Annotation', createdAt: string, message: string } | null, action?: { __typename?: 'ColonyAction', type: ColonyActionType } | null } | null } | null> } | null };
 
@@ -10360,14 +10360,14 @@ export type GetDomainBalanceQueryVariables = Exact<{
 export type GetDomainBalanceQuery = { __typename?: 'Query', getDomainBalance?: { __typename?: 'DomainBalanceReturn', totalIn?: string | null, totalOut?: string | null, timeframe?: Array<{ __typename?: 'TimeframeDomainBalanceInOut', key: string, value?: { __typename?: 'DomainBalanceInOut', totalIn?: string | null, totalOut?: string | null } | null } | null> | null } | null };
 
 export type GetCachedDomainBalanceQueryVariables = Exact<{
-  colonyAddress: Scalars['String'];
+  colonyAddress: Scalars['ID'];
   filter?: InputMaybe<ModelCacheTotalBalanceFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type GetCachedDomainBalanceQuery = { __typename?: 'Query', cacheTotalBalanceByColonyAddress?: { __typename?: 'ModelCacheTotalBalanceConnection', items: Array<{ __typename?: 'CacheTotalBalance', totalIn?: string | null, totalOut?: string | null, date: string } | null> } | null };
+export type GetCachedDomainBalanceQuery = { __typename?: 'Query', cacheTotalBalanceByColonyAddress?: { __typename?: 'ModelCacheTotalBalanceConnection', items: Array<{ __typename?: 'CacheTotalBalance', totalUSDCIn?: string | null, totalUSDCOut?: string | null, date: string } | null> } | null };
 
 export type GetUserDrainsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10957,8 +10957,8 @@ export const DomainBalanceReturnFragmentDoc = gql`
     `;
 export const CacheTotalBalanceFragmentDoc = gql`
     fragment CacheTotalBalance on CacheTotalBalance {
-  totalIn
-  totalOut
+  totalUSDCIn
+  totalUSDCOut
   date
 }
     `;
@@ -13150,7 +13150,7 @@ export type GetDomainBalanceQueryHookResult = ReturnType<typeof useGetDomainBala
 export type GetDomainBalanceLazyQueryHookResult = ReturnType<typeof useGetDomainBalanceLazyQuery>;
 export type GetDomainBalanceQueryResult = Apollo.QueryResult<GetDomainBalanceQuery, GetDomainBalanceQueryVariables>;
 export const GetCachedDomainBalanceDocument = gql`
-    query GetCachedDomainBalance($colonyAddress: String!, $filter: ModelCacheTotalBalanceFilterInput, $limit: Int = 100, $nextToken: String) {
+    query GetCachedDomainBalance($colonyAddress: ID!, $filter: ModelCacheTotalBalanceFilterInput, $limit: Int = 100, $nextToken: String) {
   cacheTotalBalanceByColonyAddress(
     colonyAddress: $colonyAddress
     filter: $filter
