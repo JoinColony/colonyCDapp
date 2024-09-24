@@ -26,7 +26,6 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
     setActiveTab(id);
   };
 
-  // @TODO: Make it work with multi sig (that has no init params)
   const shouldShowSettingsTab =
     isInstalledExtensionData(extensionData) &&
     (extensionData.initializationParams?.length || extensionData.configurable);
