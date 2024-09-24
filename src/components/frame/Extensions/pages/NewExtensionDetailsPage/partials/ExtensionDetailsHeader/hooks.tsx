@@ -156,8 +156,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
 
       setIsLoading(false);
 
-      // @TODO: Make it work with multi sig
-      if (extensionData.initializationParams) {
+      if (extensionData.initializationParams || extensionData.configurable) {
         setActiveTab(ExtensionDetailsPageTabId.Settings);
       }
     } catch {
