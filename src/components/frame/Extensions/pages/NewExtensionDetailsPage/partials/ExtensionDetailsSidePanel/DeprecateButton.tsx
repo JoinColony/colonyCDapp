@@ -31,7 +31,7 @@ const DeprecateButton = ({
           mode="primaryOutlineFull"
           isFullSize
           size="small"
-          isLoading={isLoading}
+          loading={isLoading}
           loaderClassName="!px-4 !py-2 !text-sm"
           loaderIconSize={14}
           onClick={() => setIsDeprecateModalOpen(true)}

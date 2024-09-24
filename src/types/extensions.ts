@@ -35,6 +35,8 @@ export interface ExtensionConfig {
   descriptionLong: MessageDescriptor;
   neededColonyPermissions: ColonyRole[];
   initializationParams?: ExtensionInitParam[];
+  // Array of params that are configurable post-initialization
+  configurableParams?: ExtensionInitParam[];
   uninstallable: boolean;
   createdAt: number;
   icon: Icon;

@@ -100,7 +100,9 @@ const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
    * initialized VotingReputation (which params can't be modified after initialization)
    */
   const shouldShowReadonlyParams =
-    !userHasRoot || (isVotingReputation && extensionData.isInitialized);
+    !userHasRoot ||
+    (isVotingReputation && extensionData.isInitialized) ||
+    extensionData.isDeprecated;
 
   return (
     <div className="flex flex-col gap-9 md:gap-6">
