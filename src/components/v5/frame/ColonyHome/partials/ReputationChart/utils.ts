@@ -20,14 +20,14 @@ const MSG = defineMessages({
 
 export const isThereReputationInDomains = (colonyDomains: Domain[]) => {
   return colonyDomains.some(
-    (domain) => Number(domain.reputationPercentage) > 0,
+    (domain) => Number(domain.reputationPercentage || 0) > 0,
   );
 };
 
 export const getNormalisedDomainReputationPercentage = (
   domain: Domain,
   normalisedTotalReputation: number,
-) => (Number(domain.reputation) * 100) / normalisedTotalReputation;
+) => (Number(domain.reputation || 0) * 100) / normalisedTotalReputation;
 
 export const getTeamReputationChartData = (
   allTeams: Domain[],
@@ -43,7 +43,7 @@ export const getTeamReputationChartData = (
   if (
     rootTeam &&
     !isThereReputationInDomains(domainsWithoutRoot) &&
-    Number(rootTeam?.reputationPercentage) > 0
+    Number(rootTeam?.reputationPercentage || 0) > 0
   ) {
     return [
       {
@@ -59,11 +59,11 @@ export const getTeamReputationChartData = (
    * Exclude the General team reputation from the domain reputation percentage computation
    */
   const normalisedTotalReputation = domainsWithoutRoot.reduce(
-    (reputation, team) => reputation + Number(team.reputation),
+    (reputation, team) => reputation + Number(team.reputation || 0),
     0,
   );
 
-  let topTeams = domainsWithoutRoot
+  let topTeams: ReputationChartDataItem[] = domainsWithoutRoot
     // Filter out the domains without reputation in order to not display blank spaces in the chart
     .filter((domain) => !!domain.reputationPercentage)
     .slice(0, WIDGET_TEAM_LIMIT)
@@ -79,18 +79,6 @@ export const getTeamReputationChartData = (
       };
     });
 
-  if (topTeams.length <= WIDGET_TEAM_LIMIT) {
-    const adjustedValues = adjustPercentagesTo100(
-      topTeams.map((team) => team.value),
-      // getNormalisedDomainReputationPercentage rounds to two decimals
-      2,
-    );
-    topTeams = topTeams.map((team, idx) => ({
-      ...team,
-      value: adjustedValues[idx],
-    }));
-  }
-
   const topTeamsTotalReputation = topTeams.reduce(
     (reputation, team) => reputation + team.value,
     0,
@@ -102,17 +90,24 @@ export const getTeamReputationChartData = (
   const reputationInOtherTeams = 100 - topTeamsTotalReputation;
 
   if (reputationInOtherTeams > 0) {
-    return [
-      ...topTeams,
-      {
-        id: 'allOtherTeams',
-        label: formatText(MSG.otherLabel),
-        value: reputationInOtherTeams,
-        color: '--color-gray-400',
-        shouldTruncateLegendLabel: false,
-      },
-    ];
+    topTeams.push({
+      id: 'allOtherTeams',
+      label: formatText(MSG.otherLabel),
+      value: reputationInOtherTeams,
+      color: '--color-gray-400',
+      shouldTruncateLegendLabel: false,
+    });
   }
+
+  const adjustedValues = adjustPercentagesTo100(
+    topTeams.map((team) => team.value),
+    // We are rounding to 2 decimals everywhere
+    2,
+  );
+  topTeams = topTeams.map((team, idx) => ({
+    ...team,
+    value: adjustedValues[idx],
+  }));
 
   return topTeams;
 };
@@ -120,7 +115,9 @@ export const getTeamReputationChartData = (
 export const getContributorReputationChartData = (
   contributorsList: ContributorItem[],
 ): ReputationChartDataItem[] => {
-  let topContributors = contributorsList
+  let topContributors: ReputationChartDataItem[] = contributorsList
+    // Filter out the contributors without reputation
+    .filter(({ reputation }) => reputation && reputation > 0)
     .slice(0, WIDGET_TEAM_LIMIT)
     .map(({ walletAddress, user, reputation }, index) => {
       return {
@@ -129,36 +126,33 @@ export const getContributorReputationChartData = (
         value: reputation || 0,
         color: getTeamHexColor(CONTRIBUTORS_COLORS_LIST[index]),
       };
-    })
-    .filter(({ value }) => value > 0);
+    });
 
-  if (topContributors.length <= WIDGET_TEAM_LIMIT) {
-    const adjustedValues = adjustPercentagesTo100(
-      topContributors.map((contributor) => contributor.value),
-      // getNormalisedDomainReputationPercentage rounds to two decimals
-      2,
-    );
-    topContributors = topContributors.map((contributor, idx) => ({
-      ...contributor,
-      value: adjustedValues[idx],
-    }));
-  }
-
-  const reputationInOtherContributors = contributorsList
+  const reputationOtherContributors = contributorsList
     .slice(WIDGET_TEAM_LIMIT)
-    .reduce((reputation, team) => reputation + Number(team.reputation), 0);
+    .reduce(
+      (reputation, contributor) => reputation + (contributor.reputation || 0),
+      0,
+    );
 
-  if (reputationInOtherContributors > 0) {
-    return [
-      ...topContributors,
-      {
-        id: 'allOtherUsers',
-        label: formatText(MSG.otherLabel),
-        value: reputationInOtherContributors,
-        color: '--color-gray-400',
-      },
-    ];
+  if (reputationOtherContributors > 0) {
+    topContributors.push({
+      id: 'allOtherUsers',
+      label: formatText(MSG.otherLabel),
+      value: reputationOtherContributors,
+      color: '--color-gray-400',
+    });
   }
+
+  const adjustedValues = adjustPercentagesTo100(
+    topContributors.map((contributor) => contributor.value),
+    // We are rounding to 2 decimals everywhere
+    2,
+  );
+  topContributors = topContributors.map((contributor, idx) => ({
+    ...contributor,
+    value: adjustedValues[idx],
+  }));
 
   return topContributors;
 };
