@@ -17,8 +17,6 @@ import stagedHero from '~images/assets/extensions/staged-hero.png';
 import stagedInterface from '~images/assets/extensions/staged-interface.png';
 import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
-import streamingHero from '~images/assets/extensions/streaming-hero.png';
-import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 import {
   type ExtensionConfig,
   ExtensionParamType,
@@ -29,7 +27,6 @@ import {
   convertPeriodToSeconds,
 } from '~utils/extensions.ts';
 import { toFinite } from '~utils/lodash.ts';
-// @BETA: Disabled for now
 
 export enum ExtensionCategory {
   Payments = 'Payments',
@@ -570,18 +567,18 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1692048380000,
   },
-  {
-    icon: ExtensionAdvancedPaymentsIcon,
-    imageURLs: [streamingHero, streamingInterface],
-    category: ExtensionCategory.Expenditures,
-    extensionId: Extension.StreamingPayments,
-    name: MSG.streamingPaymentsName,
-    descriptionShort: MSG.streamingPaymentsDescriptionShort,
-    descriptionLong: MSG.streamingPaymentsDescriptionLong,
-    neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-    uninstallable: true,
-    createdAt: 1692048380000,
-  },
+  // {
+  //   icon: ExtensionAdvancedPaymentsIcon,
+  //   imageURLs: [streamingHero, streamingInterface],
+  //   category: ExtensionCategory.Expenditures,
+  //   extensionId: Extension.StreamingPayments,
+  //   name: MSG.streamingPaymentsName,
+  //   descriptionShort: MSG.streamingPaymentsDescriptionShort,
+  //   descriptionLong: MSG.streamingPaymentsDescriptionLong,
+  //   neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
+  //   uninstallable: true,
+  //   createdAt: 1692048380000,
+  // },
   {
     icon: ExtensionMultiSigIcon,
     imageURLs: [multiSigHero, multiSigInterface],
@@ -600,17 +597,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1713173071843,
     configurableParams: [],
+    autoEnableAfterInstall: true,
   },
-  // {
-  //   icon: 'extension-streaming-payments',
-  //   imageURLs: [streamingHero, streamingInterface],
-  //   category: ExtensionCategory.Expenditures,
-  //   extensionId: Extension.StreamingPayments,
-  //   name: MSG.streamingPaymentsName,
-  //   descriptionShort: MSG.streamingPaymentsDescriptionShort,
-  //   descriptionLong: MSG.streamingPaymentsDescriptionLong,
-  //   neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-  //   uninstallable: true,
-  //   createdAt: 1692048380000,
-  // },
 ];
