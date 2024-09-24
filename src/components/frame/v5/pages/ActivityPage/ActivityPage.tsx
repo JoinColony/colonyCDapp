@@ -30,11 +30,11 @@ const ActivityPage: FC = () => {
           <FiltersContextProvider>
             <ColonyActionsTable
               actionProps={{
-              selectedAction,
-              setSelectedAction,
-              defaultValues,
-            }}
-            className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
+                selectedAction,
+                setSelectedAction,
+                defaultValues,
+              }}
+              className="[&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
               showTotalPagesNumber={false}
               hasHorizontalPadding
             />

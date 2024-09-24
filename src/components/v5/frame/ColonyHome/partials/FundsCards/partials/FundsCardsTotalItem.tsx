@@ -5,9 +5,8 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import Numeral from '~shared/Numeral/index.ts';
+import { NumeralCurrency } from '~shared/Numeral/index.ts';
 import { getValuesTrend } from '~utils/balance/getValuesTrend.ts';
-import { getCurrencyFormatByDecimal } from '~utils/getCurrencyFormatByDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
@@ -29,7 +28,6 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
 
   const selectedTeamName = selectedDomain?.metadata?.name;
   const trend = getValuesTrend(total, previousTotal);
-  const totalDecimal = new Decimal(total);
 
   return (
     <WidgetCards.Item
@@ -47,9 +45,8 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
           <FundsCardsSubTitle
             isLoading={loading}
             value={
-              <Numeral
+              <NumeralCurrency
                 value={total ?? '-'}
-                format={getCurrencyFormatByDecimal(totalDecimal)}
                 prefix={currencySymbolMap[currency]}
               />
             }
