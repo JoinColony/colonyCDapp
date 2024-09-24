@@ -4,6 +4,7 @@ import React from 'react';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSubDomains } from '~hooks/useSubDomains.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
@@ -29,13 +30,15 @@ export const FundsCards = () => {
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
       <WidgetCards.List className="w-full">
         <FundsCardsTotalItem />
-        {subTeams?.map((item) => (
-          <FundsCardsItem
-            key={item?.id}
-            domainId={item?.id}
-            domainName={item?.metadata?.name}
-          />
-        ))}
+        {subTeams
+          ?.filter(notMaybe)
+          .map((item) => (
+            <FundsCardsItem
+              key={item?.id}
+              domainId={item?.id}
+              domainName={item?.metadata?.name}
+            />
+          ))}
 
         {isAddNewTeamVisible && (
           <WidgetCards.Item
