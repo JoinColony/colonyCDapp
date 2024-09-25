@@ -17,9 +17,9 @@ const {
 } = require('../utils');
 
 const getInOutActions = async (colonyAddress, domainId) => {
-  // @TODO: If domainId is undefined, then "All teams" filter is selected
-  // Make sure expenditures and actions are collected appropriately
   const domains = await getDomains(colonyAddress);
+
+  // If the "All teams" filter is selected, then domain will be undefined
   const domain = domains.find((d) => d.id === domainId);
 
   const incomingFunds = await getAllIncomingFunds(colonyAddress, domain);
@@ -104,21 +104,19 @@ const groupBalanceByPeriod = (
   // Add each action to its corresponding balance period in/out operation
   actions.forEach((action) => {
     const period = getPeriodFormat(action.finalizedDate, timeframeType);
+
     // If we are at colony level and the action has a type
     // The action is among the acceptedColonyActionTypes and must be an outgoing source of funds
-    // @TODO: Maybe we should change this condition at some point
     if (!domainId && action.type) {
       balance[period].out.push(action);
     }
     // Do not include outgoing transfers within the same domain
-    // @TODO: handle when "All teams" is selected and domainId is undefined
     else if (
       action.fromDomainId === domainId &&
       action.toDomainId !== domainId
     ) {
       balance[period].out.push(action);
       // Do not include incoming transfers within the same domain
-      // @TODO: handle when "All teams" is selected and domainId is undefined
     } else if (
       action.toDomainId === domainId &&
       action.fromDomainId !== domainId
