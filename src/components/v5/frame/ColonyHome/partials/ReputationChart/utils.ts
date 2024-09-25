@@ -24,10 +24,10 @@ export const isThereReputationInDomains = (colonyDomains: Domain[]) => {
   );
 };
 
-export const getNormalisedDomainReputationPercentage = (
-  domain: Domain,
+export const getNormalisedReputationPercentage = (
+  reputation: Domain['reputation'] | number,
   normalisedTotalReputation: number,
-) => (Number(domain.reputation || 0) * 100) / normalisedTotalReputation;
+) => (Number(reputation || 0) * 100) / normalisedTotalReputation;
 
 export const getTeamReputationChartData = (
   allTeams: Domain[],
@@ -63,37 +63,37 @@ export const getTeamReputationChartData = (
     0,
   );
 
-  let topTeams: ReputationChartDataItem[] = domainsWithoutRoot
+  const domainsWithoutRootWithReputationPercentage = domainsWithoutRoot
     // Filter out the domains without reputation in order to not display blank spaces in the chart
-    .filter((domain) => !!domain.reputationPercentage)
-    .slice(0, WIDGET_TEAM_LIMIT)
-    .map((domain) => {
-      return {
-        id: domain.id,
-        label: domain.metadata?.name || '',
-        value: getNormalisedDomainReputationPercentage(
-          domain,
-          normalisedTotalReputation,
-        ),
-        color: getTeamHexColor(domain.metadata?.color),
-      };
-    });
+    .filter((domain) => !!domain.reputationPercentage);
 
-  const topTeamsTotalReputation = topTeams.reduce(
-    (reputation, team) => reputation + team.value,
-    0,
-  );
+  let topTeams: ReputationChartDataItem[] =
+    domainsWithoutRootWithReputationPercentage
+      .slice(0, WIDGET_TEAM_LIMIT)
+      .map((domain) => {
+        return {
+          id: domain.id,
+          label: domain.metadata?.name || '',
+          value: getNormalisedReputationPercentage(
+            domain.reputation,
+            normalisedTotalReputation,
+          ),
+          color: getTeamHexColor(domain.metadata?.color),
+        };
+      });
 
-  /**
-   * To reach the 100% reputation percentage, we exclude the top teams reputation from 100%
-   */
-  const reputationInOtherTeams = 100 - topTeamsTotalReputation;
+  const reputationInOtherTeams = domainsWithoutRootWithReputationPercentage
+    .slice(WIDGET_TEAM_LIMIT)
+    .reduce((reputation, team) => reputation + Number(team.reputation || 0), 0);
 
   if (reputationInOtherTeams > 0) {
     topTeams.push({
       id: 'allOtherTeams',
       label: formatText(MSG.otherLabel),
-      value: reputationInOtherTeams,
+      value: getNormalisedReputationPercentage(
+        reputationInOtherTeams,
+        normalisedTotalReputation,
+      ),
       color: '--color-gray-400',
       shouldTruncateLegendLabel: false,
     });
