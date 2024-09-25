@@ -169,6 +169,26 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ssm:GetParameter",
+                "kms:Decrypt"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:ssm:${region}:${account}:parameter/*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                ]
+              }
             }
           ]
         }
