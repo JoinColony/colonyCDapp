@@ -65,3 +65,11 @@ export const CHART_CONFIG_VALUES = {
   X_AXIS_TOP_MARGIN: 14,
   X_AXIS_LABEL_RIGHT_MARGIN: 8,
 };
+
+export const cssVariables = {
+  gray100: 'var(--color-gray-100)',
+  gray200: 'var(--color-gray-200)',
+  gray400: 'var(--color-gray-400)',
+  baseBlack: 'var(--color-base-black)',
+  baseWhite: 'var(--color-base-white)',
+};

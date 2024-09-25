@@ -1,12 +1,8 @@
 import { ResponsiveBar } from '@nivo/bar';
 import React, { type FC } from 'react';
 
-import {
-  useBarChartConfig,
-  useChartYSteps,
-  useCssProperties,
-  useData,
-} from '../hooks.ts';
+import { cssVariables } from '../consts.ts';
+import { useBarChartConfig, useChartYSteps, useData } from '../hooks.ts';
 import { type BarChartDataItem } from '../types.ts';
 import {
   getFallbackData,
@@ -23,13 +19,12 @@ import { ChartCustomYAxisLayer } from './ChartCustomYAxisLayer.tsx';
 interface BarChartProps {}
 
 const EnhancedChartCustomXAxisLayer = (props) => {
-  const cssProperties = useCssProperties();
   const { loading: isLoading } = useData();
 
   return (
     <ChartCustomXAxisLayer
       {...props}
-      textColor={cssProperties.gray400}
+      textColor={cssVariables.gray400}
       formatLabel={getMonthShortName}
       isLoading={isLoading}
     />
@@ -37,7 +32,6 @@ const EnhancedChartCustomXAxisLayer = (props) => {
 };
 
 const EnhancedChartCustomYAxisLayer = (props) => {
-  const cssProperties = useCssProperties();
   const { loading: isLoading } = useData();
   const steps = useChartYSteps();
 
@@ -45,8 +39,8 @@ const EnhancedChartCustomYAxisLayer = (props) => {
     <ChartCustomYAxisLayer
       {...props}
       steps={steps}
-      textColor={cssProperties.gray400}
-      lineColor={cssProperties.gray200}
+      textColor={cssVariables.gray400}
+      lineColor={cssVariables.gray200}
       formatLabel={getFormattedShortAmount}
       isLoading={isLoading}
     />
@@ -54,13 +48,12 @@ const EnhancedChartCustomYAxisLayer = (props) => {
 };
 
 const EnhancedChartCustomBarGroupLayer = (props) => {
-  const cssProperties = useCssProperties();
   const { loading: isLoading } = useData();
 
   return (
     <ChartCustomBarGroupLayer
       {...props}
-      hoveredColor={cssProperties.gray100}
+      hoveredColor={cssVariables.gray100}
       isLoading={isLoading}
     />
   );
