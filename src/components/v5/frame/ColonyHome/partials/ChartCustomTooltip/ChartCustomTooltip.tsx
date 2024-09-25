@@ -1,34 +1,13 @@
 import { useTooltipState } from '@nivo/tooltip';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type PropsWithChildren, type FC, useEffect } from 'react';
+import React, { type PropsWithChildren, type FC } from 'react';
 
-interface ChartCustomTooltipProps extends PropsWithChildren {
-  onVisible?: (isVisible?: boolean) => void;
-}
+interface ChartCustomTooltipProps extends PropsWithChildren {}
 
 export const ChartCustomTooltip: FC<ChartCustomTooltipProps> = ({
   children,
-  onVisible,
 }) => {
   const { isVisible } = useTooltipState();
-
-  useEffect(() => {
-    return () => {
-      if (onVisible) {
-        onVisible(false);
-      }
-    };
-    // We are not including any deps here as we want to run react only to mounting/unmounting state
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (isVisible && onVisible) {
-      onVisible(true);
-    }
-    // We are not including onVisible here as we really only want to react to changes of isVisible
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
 
   return (
     <AnimatePresence>
