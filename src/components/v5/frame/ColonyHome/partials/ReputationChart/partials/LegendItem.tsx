@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import React, { type PropsWithChildren, type FC, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { type FC } from 'react';
 
 import { useReputationChartContext } from '~context/ReputationChartContext/ReputationChartContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
@@ -10,36 +9,14 @@ import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { summaryLegendColor } from '../consts.ts';
 import { type ReputationChartDataItem } from '../types.ts';
 
+import LegendItemWrapper from './LegendItemWrapper.tsx';
+
 const displayName = 'v5.frame.ColonyHome.ReputationChart.partials.LegendItem';
 interface LegendItemProps {
   chartItem: ReputationChartDataItem;
 }
 
 const LEGEND_LABEL_LENGTH = 12;
-
-const LegendItemOuter: FC<
-  PropsWithChildren<{ id?: string; searchParam?: string }>
-> = ({ children, id, searchParam }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const handleClick = useCallback(() => {
-    if (id && searchParam) {
-      searchParams.set(searchParam, id);
-      setSearchParams(searchParams);
-    }
-  }, [id, searchParam, searchParams, setSearchParams]);
-  if (searchParam) {
-    return (
-      <button
-        type="button"
-        className="flex flex-row items-center gap-1"
-        onClick={handleClick}
-      >
-        {children}
-      </button>
-    );
-  }
-  return <div className="flex flex-row items-center gap-1">{children}</div>;
-};
 
 const LegendItem: FC<LegendItemProps> = ({
   chartItem: {
@@ -59,7 +36,7 @@ const LegendItem: FC<LegendItemProps> = ({
 
   return (
     <Tooltip tooltipContent={isTruncated ? label : null}>
-      <LegendItemOuter id={id} searchParam={searchParam}>
+      <LegendItemWrapper id={id} searchParam={searchParam}>
         <div
           className={clsx(
             'h-[10px] w-[10px] rounded-full',
@@ -82,7 +59,7 @@ const LegendItem: FC<LegendItemProps> = ({
             <Numeral value={value.toFixed(2)} />%
           </span>
         )}
-      </LegendItemOuter>
+      </LegendItemWrapper>
     </Tooltip>
   );
 };
