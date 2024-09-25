@@ -22,10 +22,7 @@ const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
       className: 'bg-gray-50 !py-3',
       content: (
         <>
-          <LoadingSkeleton
-            isLoading={isLoading}
-            className="h-[16px] w-[100%] rounded"
-          >
+          <LoadingSkeleton isLoading={isLoading} className="h-4 w-full rounded">
             <StatusText {...restStatusTextSectionProps} />
           </LoadingSkeleton>
           {content || null}
