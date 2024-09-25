@@ -1,6 +1,8 @@
+import clsx from 'clsx';
 import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import { useCreateColonyRedirect } from '~v5/shared/Navigation/hooks/useCreateNewColony/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -22,12 +24,18 @@ const JoinedColoniesPopover = ({
   const { wallet, connectWallet } = useAppContext();
 
   const handleCreateColonyRedirect = useCreateColonyRedirect();
+  const { isDarkMode } = usePageThemeContext();
 
   return visible ? (
     <PopoverBase
       setTooltipRef={setTooltipRef}
       tooltipProps={getTooltipProps}
-      classNames="z-top bg-white w-[252px] rounded-lg border-gray-200 mt-4 shadow-none max-h-[calc(100vh-32px)] pb-4 pt-0 px-0"
+      classNames={clsx(
+        'bg-white z-top mt-4 max-h-[calc(100vh-32px)] w-[252px] rounded-lg border-gray-200 px-0 pb-4 pt-0 shadow-none',
+        {
+          '!bg-gray-100': isDarkMode,
+        },
+      )}
     >
       <div className="flex max-h-[calc(536px)] flex-col gap-6 overflow-hidden">
         {wallet ? (
