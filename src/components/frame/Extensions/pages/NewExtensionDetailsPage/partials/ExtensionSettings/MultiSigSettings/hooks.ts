@@ -40,11 +40,11 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
         domain !== null && !domain.isRoot,
     );
 
-    for (const domain of domainsExcludingRoot) {
+    domainsExcludingRoot.forEach((domain, index) => {
       const config = getInitialDomainConfig(domain, multiSigConfig);
 
-      setValue(`domainThresholds.${config.id}`, config);
-    }
+      setValue(`domainThresholds.${index}`, config);
+    });
   }, [domains, multiSigConfig, setValue]);
 
   const handleGlobalThresholdTypeChange = (
@@ -57,10 +57,10 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
   };
 
   const handleDomainThresholdTypeChange = (
-    id: string,
+    index: number,
     newType: MultiSigThresholdType,
   ) => {
-    setValue(`domainThresholds.${id}.type`, newType, {
+    setValue(`domainThresholds.${index}.type`, newType, {
       shouldDirty: true,
       shouldValidate: true,
     });
@@ -71,13 +71,11 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
     thresholdType,
     isFixedThresholdError: !!errors.globalThreshold,
     fixedThresholdErrorMessage: errors.globalThreshold?.message?.toString(),
-    domainThresholdConfigs: Object.values(domainThresholdConfigs ?? {}).map(
-      (config) => ({
-        ...config,
-        isError: !!errors[config.domainName],
-        errorMessage: errors[config.domainName]?.message?.toString(),
-      }),
-    ),
+    domainThresholdConfigs: domainThresholdConfigs.map((config, index) => ({
+      ...config,
+      errorMessage:
+        errors.domainThresholds?.[index]?.threshold?.message?.toString(),
+    })),
     handleGlobalThresholdTypeChange,
     handleDomainThresholdTypeChange,
   };

@@ -65,14 +65,6 @@ const MSG = defineMessages({
     id: `${displayName}.thresholdFixedFormApprovals`,
     defaultMessage: 'Approvals',
   },
-  thresholdFixedErrorMessage: {
-    id: `${displayName}.thresholdFixedErrorMessage`,
-    defaultMessage: 'A value must be entered before enabling',
-  },
-  thresholdFixedMaxErrorMessage: {
-    id: `${displayName}.thresholdFixedMaxErrorMessage`,
-    defaultMessage: 'Threshold must be less than or equal to 99999',
-  },
   thresholdInherit: {
     id: `${displayName}.thresholdInherit`,
     defaultMessage: 'Inherit from Colony wide',
@@ -185,21 +177,11 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
           >
             {thresholdType === MultiSigThresholdType.FIXED_THRESHOLD && (
               <InputGroup
-                {...register('globalThreshold', {
-                  required: formatText(MSG.thresholdFixedErrorMessage),
-                  min: {
-                    value: 1,
-                    message: formatText(MSG.thresholdFixedErrorMessage),
-                  },
-                  max: {
-                    value: 99999,
-                    message: formatText(MSG.thresholdFixedMaxErrorMessage),
-                  },
-                })}
+                {...register('globalThreshold')}
                 {...inputGroupSharedConfig}
                 isDisabled={isFormDisabled}
                 onKeyDown={handleOnKeyDown}
-                isError={isFixedThresholdError}
+                isError={!!isFixedThresholdError}
                 errorMessage={fixedThresholdErrorMessage}
                 appendMessage={formatText(MSG.thresholdFixedFormApprovals)}
               />
@@ -228,8 +210,8 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
             </div>
             <div className="flex flex-col gap-6">
               {domainThresholdConfigs.map(
-                ({ id, domainName, type, isError, errorMessage }) => (
-                  <div key={id}>
+                ({ domainName, type, errorMessage }, index) => (
+                  <div key={domainName}>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <p className="text-md font-medium">{domainName}</p>
                       <Select
@@ -239,7 +221,7 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
                         className="w-full sm:w-72"
                         onChange={(option) =>
                           handleDomainThresholdTypeChange(
-                            id,
+                            index,
                             option?.value as MultiSigThresholdType,
                           )
                         }
@@ -274,26 +256,10 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
                         </div>
 
                         <InputGroup
-                          {...register(`domainThresholds.${id}.threshold`, {
-                            required: formatText(
-                              MSG.thresholdFixedErrorMessage,
-                            ),
-                            min: {
-                              value: 1,
-                              message: formatText(
-                                MSG.thresholdFixedErrorMessage,
-                              ),
-                            },
-                            max: {
-                              value: 99999,
-                              message: formatText(
-                                MSG.thresholdFixedMaxErrorMessage,
-                              ),
-                            },
-                          })}
+                          {...register(`domainThresholds.${index}.threshold`)}
                           {...inputGroupSharedConfig}
                           onKeyDown={handleOnKeyDown}
-                          isError={isError}
+                          isError={!!errorMessage}
                           isDisabled={isFormDisabled}
                           errorMessage={errorMessage}
                           appendMessage={formatText(

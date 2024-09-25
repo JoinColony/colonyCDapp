@@ -7,7 +7,6 @@ export enum MultiSigThresholdType {
 }
 
 export interface DomainThresholdConfig {
-  id: string;
   type: MultiSigThresholdType;
   domainName: string;
   threshold: number;
@@ -22,5 +21,5 @@ export type MultiSigParams = NonNullable<
 export interface MultiSigSettingsFormValues {
   thresholdType: MultiSigThresholdType;
   globalThreshold: number;
-  domainThresholds: Record<string, DomainThresholdConfig>;
+  domainThresholds: DomainThresholdConfig[];
 }

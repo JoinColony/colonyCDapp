@@ -218,7 +218,7 @@ export const getExtensionSettingsDefaultValues = (
       return {
         thresholdType: getGlobalThresholdType(globalThreshold),
         globalThreshold,
-        domainThresholds: {},
+        domainThresholds: [],
       } satisfies MultiSigSettingsFormValues;
     }
     default: {

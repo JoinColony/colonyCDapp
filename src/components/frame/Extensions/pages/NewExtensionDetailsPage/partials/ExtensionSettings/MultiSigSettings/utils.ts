@@ -41,7 +41,6 @@ export const getInitialDomainConfig = (
   const domainName = domain.metadata?.name || '';
 
   return {
-    id: domain.id,
     type,
     domainName,
     threshold: existingThreshold || colonyThreshold || 0,
@@ -52,7 +51,7 @@ export const getInitialDomainConfig = (
 export const getDomainThresholds = (values: MultiSigSettingsFormValues) => {
   if (!values.domainThresholds) return [];
 
-  return Object.values(values.domainThresholds).map((config) => {
+  return values.domainThresholds.map((config) => {
     // Default to 0 if domain threshold type is MultiSigThresholdType.MAJORITY_APPROVAL
     let threshold = 0;
 
