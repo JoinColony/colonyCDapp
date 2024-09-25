@@ -11,7 +11,7 @@ const {
   getFormattedExpenditures,
   getTokenAddressesFromExpenditures,
   getPeriodFormat,
-  getPeriodFromNow,
+  getPeriodFor,
   isAfter,
   isBefore,
 } = require('../utils');
@@ -58,17 +58,18 @@ const getTokensDatesMap = (actions) => {
   return tokens;
 };
 
-const filterActionsWithinTimeframe = (actions, timeframe, timeframePeriodEndDate) =>
+const filterActionsWithinTimeframe = (
+  actions,
+  timeframe,
+  timeframePeriodEndDate,
+) =>
   actions.filter(
     (action) =>
-        (
-            !timeframe || 
-          isAfter(action.finalizedDate, timeframe)
-        ) &&
+      (!timeframe || isAfter(action.finalizedDate, timeframe)) &&
       isBefore(
-            action.finalizedDate, 
-            timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : Date.now()
-        ),
+        action.finalizedDate,
+        timeframePeriodEndDate ? new Date(timeframePeriodEndDate) : Date.now(),
+      ),
   );
 
 const getDefaultDomainBalance = () => ({
@@ -81,7 +82,7 @@ const getDefaultDomainBalance = () => ({
 const groupBalanceByPeriod = (
   timeframeType,
   timeframePeriod,
-  timeframePeriodEndDate, 
+  timeframePeriodEndDate,
   actions,
   parentDomainId,
 ) => {
@@ -89,7 +90,11 @@ const groupBalanceByPeriod = (
 
   // Initialise the balance for each period item within the timeframe
   for (let periodIndex = 0; periodIndex < timeframePeriod; periodIndex++) {
-    const periodStartDate = getPeriodFromNow(periodIndex, timeframeType, timeframePeriodEndDate);
+    const periodStartDate = getPeriodFor(
+      periodIndex,
+      timeframeType,
+      timeframePeriodEndDate,
+    );
     const formattedPeriod = getPeriodFormat(periodStartDate, timeframeType);
 
     if (!balance[formattedPeriod]) {
