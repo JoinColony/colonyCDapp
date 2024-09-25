@@ -6,7 +6,7 @@ const {
   getColonyActions,
   getColonyDomains,
   getDomainExpenditures,
-  getAllDomainExpenditures,
+  getColonyExpenditures,
   getColonyFundsClaims,
   getToken,
 } = require('./schemas.js');
@@ -96,7 +96,7 @@ const getExpendituresData = async ({
 }) => {
   // If "All teams" filter is selected, fetch expenditures from all domains
   if (nativeDomainId === undefined) {
-    const result = await graphqlRequest(getAllDomainExpenditures, {
+    const result = await graphqlRequest(getColonyExpenditures, {
       colonyAddress,
       limit,
       nextToken,

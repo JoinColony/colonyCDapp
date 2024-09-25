@@ -89,7 +89,7 @@ module.exports = {
       }
     }
   `,
-  getAllDomainExpenditures: /* GraphQL */ `
+  getColonyExpenditures: /* GraphQL */ `
     query GetDomainExpenditures(
       $colonyAddress: ID!
       $nextToken: String
@@ -114,7 +114,7 @@ module.exports = {
               tokenAddress
             }
           }
-          fundingActions: actions(
+          createExpenditureActions: actions(
             filter: { type: { eq: CREATE_EXPENDITURE } }
           ) {
             items {
@@ -155,7 +155,7 @@ module.exports = {
               tokenAddress
             }
           }
-          fundingActions: actions(
+          createExpenditureActions: actions(
             filter: { type: { eq: CREATE_EXPENDITURE } }
           ) {
             items {
