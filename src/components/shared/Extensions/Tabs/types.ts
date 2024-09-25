@@ -15,4 +15,5 @@ export interface TabsProps {
   onTabClick: (_: React.BaseSyntheticEvent, id: number) => void;
   className?: string;
   upperContainerClassName?: string;
+  showTabs?: boolean;
 }
