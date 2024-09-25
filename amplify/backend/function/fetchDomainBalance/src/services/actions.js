@@ -6,7 +6,7 @@ const {
   getTokensDecimalsFor,
 } = require('../api/graphql/operations');
 const {
-  getActionWithFinalizedDate,
+  getFormattedActions,
   getFormattedIncomingFunds,
   getFormattedExpenditures,
   getTokenAddressesFromExpenditures,
@@ -38,7 +38,7 @@ const getInOutActions = async (colonyAddress, domainId) => {
 
   return [
     ...getFormattedIncomingFunds(incomingFunds, domainId),
-    ...actions.map((action) => getActionWithFinalizedDate(action)),
+    ...getFormattedActions(actions, domainId),
     ...getFormattedExpenditures(filteredExpenditures, domainId, tokensDecimals),
   ];
 };
@@ -101,15 +101,21 @@ const groupBalanceByPeriod = (
       balance[formattedPeriod] = getDefaultDomainBalance();
     }
   }
-
   // Add each action to its corresponding balance period in/out operation
   actions.forEach((action) => {
     const period = getPeriodFormat(action.finalizedDate, timeframeType);
-    // @TODO: Maybe we should filter by actionType here so we can handle payments and MOVE_FUNDS differently?
-
+    // If we are at colony level and the action has a type
+    // The action is among the acceptedColonyActionTypes and must be an outgoing source of funds
+    // @TODO: Maybe we should change this condition at some point
+    if (!domainId && action.type) {
+      balance[period].out.push(action);
+    }
     // Do not include outgoing transfers within the same domain
     // @TODO: handle when "All teams" is selected and domainId is undefined
-    if (action.fromDomainId === domainId && action.toDomainId !== domainId) {
+    else if (
+      action.fromDomainId === domainId &&
+      action.toDomainId !== domainId
+    ) {
       balance[period].out.push(action);
       // Do not include incoming transfers within the same domain
       // @TODO: handle when "All teams" is selected and domainId is undefined
