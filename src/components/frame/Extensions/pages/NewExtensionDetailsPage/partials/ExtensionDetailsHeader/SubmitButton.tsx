@@ -98,7 +98,6 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     return (
       <ButtonWithLoader
         type="submit"
-        disabled={!isValid}
         isFullSize={isMobile}
         loading={isSubmitting || waitingForActionConfirmation}
       >
