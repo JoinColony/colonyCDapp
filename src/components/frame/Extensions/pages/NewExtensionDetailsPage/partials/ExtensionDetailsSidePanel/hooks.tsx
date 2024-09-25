@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/NewExtensionDetailsPage/types.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -10,18 +11,13 @@ import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 
-export const useUninstall = ({
-  extensionId,
-  setActiveTab,
-}: {
-  extensionId: Extension;
-  setActiveTab: (id: ExtensionDetailsPageTabId) => void;
-}) => {
+export const useUninstall = (extensionId: Extension) => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
   const [isLoading, setIsLoading] = useState(false);
   const { refetchExtensionData } = useExtensionData(extensionId);
+  const { setActiveTab } = useExtensionDetailsPageContext();
 
   const uninstallAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_UNINSTALL,
