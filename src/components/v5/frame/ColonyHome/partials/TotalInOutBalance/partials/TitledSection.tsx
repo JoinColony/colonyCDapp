@@ -1,4 +1,3 @@
-import { ArrowUp } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, type PropsWithChildren } from 'react';
 
@@ -6,6 +5,7 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
+import { FundsTrend } from '~v5/frame/ColonyHome/partials/FundsTrend/FundsTrend.tsx';
 
 import { getValuesTrend } from '../utils.ts';
 
@@ -62,13 +62,7 @@ export const TitledSection: FC<TitledSectionProps> = ({
             isLoading={isLoading}
             className="h-4 w-[45px] rounded"
           >
-            <div className="flex flex-row items-center gap-0.5 text-xs font-medium text-blue-400">
-              <ArrowUp
-                size={10}
-                transform={`rotate(${trend.isIncrease ? '0' : '180'})`}
-              />
-              {trend.value}
-            </div>
+            <FundsTrend isIncrease={trend.isIncrease} value={trend.value} />
           </LoadingSkeleton>
         </div>
       </div>
