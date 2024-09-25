@@ -1,3 +1,5 @@
+import { type ColonyExtension } from '~types/graphql.ts';
+
 export enum MultiSigThresholdType {
   MAJORITY_APPROVAL = 'majorityApproval',
   FIXED_THRESHOLD = 'fixedThreshold',
@@ -6,8 +8,19 @@ export enum MultiSigThresholdType {
 
 export interface DomainThresholdConfig {
   id: string;
-  nativeSkillId: string;
   type: MultiSigThresholdType;
-  name: string;
+  domainName: string;
+  threshold: number;
+  domainSkillId: string;
   isError?: boolean;
+}
+
+export type MultiSigParams = NonNullable<
+  NonNullable<ColonyExtension['params']>['multiSig']
+>;
+
+export interface MultiSigSettingsFormValues {
+  thresholdType: MultiSigThresholdType;
+  globalThreshold: number;
+  domainThresholds: Record<string, DomainThresholdConfig>;
 }

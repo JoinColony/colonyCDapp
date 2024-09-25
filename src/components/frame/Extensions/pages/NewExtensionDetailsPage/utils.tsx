@@ -10,14 +10,10 @@ import {
 import {
   type InstalledExtensionData,
   type AnyExtensionData,
-  type ExtensionInitParam,
 } from '~types/extensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
-import {
-  convertFractionToEth,
-  isInstalledExtensionData,
-} from '~utils/extensions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { camelCase } from '~utils/lodash.ts';
 
 export const waitForDbAfterExtensionAction = (
@@ -67,6 +63,10 @@ export const waitForDbAfterExtensionAction = (
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
+          if (extensionData?.extensionId === Extension.MultisigPermissions) {
+            // Wait until MultiSig params are present
+            condition = !!extensionData?.params?.multiSig;
+          }
           // If it appears in the query, it means it's been installed
           condition = !!extensionData;
           break;
@@ -199,54 +199,12 @@ export const getTextChunks = () => {
   };
 };
 
-const getInitializationDefaultValues = (
-  initializationParams: ExtensionInitParam[],
-) => {
-  return initializationParams.reduce<
-    Record<string, string | number | undefined>
-  >((initialValues, param) => {
-    return {
-      ...initialValues,
-      [param.paramName]: param.defaultValue,
-    };
-  }, {});
-};
-
 export const getExtensionParams = (
   extensionData: AnyExtensionData | null,
 ): object => {
-  if (!extensionData) {
+  if (!extensionData || !isInstalledExtensionData(extensionData)) {
     return {};
   }
 
-  const isExtensionEnabled =
-    isInstalledExtensionData(extensionData) && extensionData.isEnabled;
-  const { initializationParams = [] } = extensionData;
-  const defaultValues = getInitializationDefaultValues(initializationParams);
-
-  if (isExtensionEnabled) {
-    switch (extensionData.extensionId) {
-      case Extension.StakedExpenditure: {
-        return {
-          stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
-            ? convertFractionToEth(
-                extensionData.params.stakedExpenditure.stakeFraction,
-              )
-            : String(defaultValues.stakeFraction),
-        };
-      }
-      case Extension.MultisigPermissions: {
-        return {
-          globalThreshold: extensionData.params?.multiSig?.colonyThreshold,
-        };
-      }
-      default: {
-        return (
-          extensionData.params?.[camelCase(extensionData.extensionId)] ?? {}
-        );
-      }
-    }
-  }
-
-  return defaultValues;
+  return extensionData.params?.[camelCase(extensionData.extensionId)] ?? {};
 };

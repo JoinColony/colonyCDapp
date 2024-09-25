@@ -2,14 +2,17 @@ import React, { useMemo } from 'react';
 import { type FC, type PropsWithChildren } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { mapExtensionActionPayload } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
-import { getExtensionParams } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import useExtensionData from '~hooks/useExtensionData.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { mapPayload, mergePayload, pipe } from '~utils/actions.ts';
 
-import { getFormSuccessFn, getExtensionSettingsActionType } from './utils.tsx';
+import {
+  getFormSuccessFn,
+  getExtensionSettingsActionType,
+  mapExtensionActionPayload,
+  getExtensionSettingsDefaultValues,
+} from './utils.tsx';
 import { getValidationSchema } from './validation.ts';
 
 const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
@@ -22,17 +25,15 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const { refetchExtensionData } = useExtensionData(extensionData?.extensionId);
 
   const defaultValues = useMemo(
-    () => ({
-      params: getExtensionParams(extensionData),
-    }),
+    () => getExtensionSettingsDefaultValues(extensionData),
     [extensionData],
   );
 
   const { initializationParams = [] } = extensionData;
 
   const transform = pipe(
-    mapPayload(({ params }) =>
-      mapExtensionActionPayload(params, initializationParams),
+    mapPayload((values) =>
+      mapExtensionActionPayload(extensionData, values, initializationParams),
     ),
     mergePayload({ colonyAddress, extensionData }),
   );

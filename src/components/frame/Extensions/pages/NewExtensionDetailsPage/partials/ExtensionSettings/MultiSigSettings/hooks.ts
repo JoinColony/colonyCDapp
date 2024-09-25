@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -6,10 +6,10 @@ import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import {
+  type MultiSigSettingsFormValues,
   type MultiSigThresholdType,
-  type DomainThresholdConfig,
 } from './types.ts';
-import { getInitialDomainConfig, getThresholdType } from './utils.ts';
+import { getInitialDomainConfig } from './utils.ts';
 
 export const useThresholdData = (extensionData: AnyExtensionData) => {
   const multiSigConfig = isInstalledExtensionData(extensionData)
@@ -22,16 +22,13 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
 
   const {
     setValue,
-
+    register,
     formState: { errors },
-  } = useFormContext();
-  const [thresholdType, setThresholdType] = useState<MultiSigThresholdType>(
-    getThresholdType(multiSigConfig?.colonyThreshold),
-  );
+    watch,
+  } = useFormContext<MultiSigSettingsFormValues>();
 
-  const [domainThresholdConfigs, setDomainThresholdConfigs] = useState<
-    DomainThresholdConfig[]
-  >([]);
+  const thresholdType = watch('thresholdType');
+  const domainThresholdConfigs = watch('domainThresholds');
 
   useEffect(() => {
     if (!domains || !domains.items || !multiSigConfig) {
@@ -43,73 +40,44 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
         domain !== null && !domain.isRoot,
     );
 
-    const tempDomainThresholdConfigs = domainsExcludingRoot.map((domain) => {
-      const { threshold, ...rest } = getInitialDomainConfig(
-        domain,
-        multiSigConfig,
-      );
+    for (const domain of domainsExcludingRoot) {
+      const config = getInitialDomainConfig(domain, multiSigConfig);
 
-      setValue(rest.name, threshold);
-
-      return rest;
-    });
-
-    setDomainThresholdConfigs(tempDomainThresholdConfigs);
+      setValue(`domainThresholds.${config.id}`, config);
+    }
   }, [domains, multiSigConfig, setValue]);
-
-  // Will be needed for mapping payload
-  // getValues: async () => {
-  //   const isValid = await trigger(undefined, { shouldFocus: true });
-  //   if (!isValid)
-  //     throw new Error('Error in MultiSig extension domain threshold form');
-
-  //   const values = getValues();
-
-  //   return {
-  //     colonyAddress,
-  //     globalThreshold:
-  //       thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
-  //         ? 0
-  //         : values.globalThreshold,
-  //     domainThresholds: getDomainThresholds(
-  //       values,
-  //       domainThresholdConfigs,
-  //       thresholdType,
-  //     ),
-  //   };
-  // },
 
   const handleGlobalThresholdTypeChange = (
     newThresholdType: MultiSigThresholdType,
   ) => {
-    setThresholdType(newThresholdType);
+    setValue('thresholdType', newThresholdType, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   };
 
   const handleDomainThresholdTypeChange = (
     id: string,
     newType: MultiSigThresholdType,
   ) => {
-    setDomainThresholdConfigs((prevDomainSettings) =>
-      prevDomainSettings.map((domain) =>
-        domain.id === id ? { ...domain, type: newType } : domain,
-      ),
-    );
-  };
-
-  const handleThresholdValueChange = (id: string, value: number) => {
-    setValue(id, value, { shouldDirty: true, shouldValidate: true });
+    setValue(`domainThresholds.${id}.type`, newType, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   };
 
   return {
+    register,
     thresholdType,
     isFixedThresholdError: !!errors.globalThreshold,
     fixedThresholdErrorMessage: errors.globalThreshold?.message?.toString(),
-    domainThresholdConfigs: domainThresholdConfigs.map((config) => ({
-      ...config,
-      isError: !!errors[config.name],
-      errorMessage: errors[config.name]?.message?.toString(),
-    })),
-    handleThresholdValueChange,
+    domainThresholdConfigs: Object.values(domainThresholdConfigs ?? {}).map(
+      (config) => ({
+        ...config,
+        isError: !!errors[config.domainName],
+        errorMessage: errors[config.domainName]?.message?.toString(),
+      }),
+    ),
     handleGlobalThresholdTypeChange,
     handleDomainThresholdTypeChange,
   };

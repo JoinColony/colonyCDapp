@@ -28,15 +28,15 @@ export const getValidationSchema = (extensionData: AnyExtensionData) => {
   switch (extensionData.extensionId) {
     case Extension.VotingReputation: {
       return object({
-        type: string().oneOf(Object.values(Extension)).required(),
         option: string()
           .required(formatText({ id: 'validation.required' }))
           .oneOf(Object.values(GovernanceOptions)),
-        params: paramsSchema,
-      }).defined();
+      })
+        .concat(paramsSchema)
+        .defined();
     }
     default: {
-      return object({ params: paramsSchema }).defined();
+      return paramsSchema.defined();
     }
   }
 };

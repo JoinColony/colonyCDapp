@@ -1,54 +1,74 @@
-import { type DomainThresholdConfig, MultiSigThresholdType } from './types.ts';
+import { type Domain } from '~types/graphql.ts';
 
-export const getThresholdType = (value?: number) =>
-  value && value > 0
-    ? MultiSigThresholdType.FIXED_THRESHOLD
-    : MultiSigThresholdType.MAJORITY_APPROVAL;
+import {
+  type DomainThresholdConfig,
+  MultiSigThresholdType,
+  type MultiSigParams,
+  type MultiSigSettingsFormValues,
+} from './types.ts';
 
-export const getInitialDomainConfig = (domain, multiSigConfig) => {
-  const { colonyThreshold } = multiSigConfig;
+export const getGlobalThresholdType = (globalThreshold: number) => {
+  return globalThreshold === 0
+    ? MultiSigThresholdType.MAJORITY_APPROVAL
+    : MultiSigThresholdType.FIXED_THRESHOLD;
+};
 
-  const existingThreshold = multiSigConfig.domainThresholds?.find((item) => {
-    return Number(item?.domainId) === domain.nativeId;
-  })?.domainThreshold;
-  let type = MultiSigThresholdType.INHERIT_FROM_COLONY;
-
-  if (existingThreshold != null && existingThreshold !== colonyThreshold) {
-    type = getThresholdType(existingThreshold);
+export const getDomainThresholdType = (
+  globalThreshold: number,
+  domainThreshold: number | undefined,
+) => {
+  if (domainThreshold === undefined || globalThreshold === domainThreshold) {
+    return MultiSigThresholdType.INHERIT_FROM_COLONY;
   }
 
-  const name = domain.metadata?.name || '';
+  return domainThreshold === 0
+    ? MultiSigThresholdType.MAJORITY_APPROVAL
+    : MultiSigThresholdType.FIXED_THRESHOLD;
+};
+
+export const getInitialDomainConfig = (
+  domain: Domain,
+  params: MultiSigParams,
+): DomainThresholdConfig => {
+  const { colonyThreshold } = params;
+
+  const existingThreshold = params.domainThresholds?.find((item) => {
+    return Number(item?.domainId) === domain.nativeId;
+  })?.domainThreshold;
+
+  const type = getDomainThresholdType(colonyThreshold, existingThreshold);
+
+  const domainName = domain.metadata?.name || '';
 
   return {
     id: domain.id,
-    nativeSkillId: domain.nativeSkillId,
     type,
-    name,
+    domainName,
     threshold: existingThreshold || colonyThreshold || 0,
+    domainSkillId: domain.nativeSkillId,
   };
 };
 
-export const getDomainThresholds = (
-  values: Record<string, any>,
-  domainThresholdConfigs: DomainThresholdConfig[],
-  thresholdType: MultiSigThresholdType,
-) =>
-  domainThresholdConfigs.map((domain) => {
+export const getDomainThresholds = (values: MultiSigSettingsFormValues) => {
+  if (!values.domainThresholds) return [];
+
+  return Object.values(values.domainThresholds).map((config) => {
     // Default to 0 if domain threshold type is MultiSigThresholdType.MAJORITY_APPROVAL
     let threshold = 0;
 
     if (
-      domain.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
-      thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
+      config.type === MultiSigThresholdType.INHERIT_FROM_COLONY &&
+      values.thresholdType === MultiSigThresholdType.FIXED_THRESHOLD
     ) {
       threshold = Number(values.globalThreshold);
     }
 
-    if (domain.type === MultiSigThresholdType.FIXED_THRESHOLD) {
-      threshold = Number(values[domain.name]);
+    if (config.type === MultiSigThresholdType.FIXED_THRESHOLD) {
+      threshold = config.threshold;
     }
     return {
-      skillId: domain.nativeSkillId,
+      skillId: config.domainSkillId,
       threshold,
     };
   });
+};

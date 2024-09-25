@@ -91,7 +91,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.totalStakeFraction',
+          name: 'totalStakeFraction',
         },
         accordionItem: [
           {
@@ -111,7 +111,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.voterRewardFraction',
+          name: 'voterRewardFraction',
         },
         accordionItem: [
           {
@@ -131,7 +131,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.userMinStakeFraction',
+          name: 'userMinStakeFraction',
         },
         accordionItem: [
           {
@@ -152,7 +152,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.maxVoteFraction',
+          name: 'maxVoteFraction',
         },
         accordionItem: [
           {
@@ -172,7 +172,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.stakePeriod',
+          name: 'stakePeriod',
         },
         accordionItem: [
           {
@@ -192,7 +192,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.submitPeriod',
+          name: 'submitPeriod',
         },
         accordionItem: [
           {
@@ -212,7 +212,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.revealPeriod',
+          name: 'revealPeriod',
         },
         accordionItem: [
           {
@@ -235,7 +235,7 @@ export const initialExtensionContent = [
       //   ),
       //   inputData: {
       //     inputType: 'hours',
-      //     name: 'params.escalationPeriod',
+      //     name: 'escalationPeriod',
       //     min: 0.01,
       //     max: 8760,
       //     step: 0.001,
