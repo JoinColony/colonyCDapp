@@ -2,6 +2,7 @@ import { ResponsivePie } from '@nivo/pie';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useReputationChartContext } from '~context/ReputationChartContext/ReputationChartContext.ts';
 import { formatText } from '~utils/intl.ts';
 
 import { pieChartConfig } from '../consts.ts';
@@ -35,6 +36,7 @@ interface ChartProps {
 }
 
 export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
+  const { setActiveLegendItem } = useReputationChartContext();
   return (
     <>
       <div className="relative mb-3 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
@@ -43,6 +45,7 @@ export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
           {...pieChartConfig}
           data={data.length ? data : [EMPTY_CHART_ITEM]}
           isInteractive={!!data.length}
+          onActiveIdChange={setActiveLegendItem}
           tooltip={ChartTooltip}
         />
       </div>
