@@ -155,9 +155,8 @@ const getFormattedIncomingFunds = (incomingFunds, domainId) =>
     amount: incomingFund.amount,
     finalizedDate: incomingFund.updatedAt,
     token: incomingFund.token,
-    // @TODO: There will only ever be incomingFunds if "All teams" or the "Root domain" is selected
-    // So this value will only ever be undefined or 1
-    // Not sure if it is actually needed?
+    // This value will only ever be undefined if the "All teams" filter is selected
+    // or 1 if the "Root domain" filter is selected
     toDomainId: domainId,
   }));
 
@@ -214,7 +213,6 @@ const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
             ? expenditure.createdAt
             : formattedFinalizedAt;
           formattedExpenditures.push({
-            // @TODO: Handle when "All teams" filter is selected and this will be undefined
             fromDomainId: domainId,
             amount: payout.amount,
             networkFee: payout.networkFee,
