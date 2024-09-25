@@ -19,4 +19,5 @@ export interface SpecialInputProps {
       }>
     | undefined
   >;
+  disabled?: boolean;
 }

@@ -15,6 +15,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
   name,
   step,
   onInputChange,
+  disabled,
 }) => {
   const {
     formState: { errors },
@@ -32,6 +33,7 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
           placeholder="1"
           step={step}
           onChange={onInputChange}
+          disabled={disabled}
         />
         {error && <FormError>{formatText(error)}</FormError>}
       </div>
