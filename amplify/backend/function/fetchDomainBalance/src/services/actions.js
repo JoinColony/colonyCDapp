@@ -27,7 +27,7 @@ const getInOutActions = async (colonyAddress, domainId) => {
   // Fetches all expenditures within the domain, excluding expenditures that are part of a simple payment
   const expenditures = await getAllExpenditures(colonyAddress, domain);
   const filteredExpenditures = expenditures.filter(
-    (expenditure) => !!expenditure.fundingActions?.items?.length,
+    (expenditure) => !!expenditure.createExpenditureActions?.items?.length,
   );
   const expendituresTokenAddresses =
     getTokenAddressesFromExpenditures(filteredExpenditures);
