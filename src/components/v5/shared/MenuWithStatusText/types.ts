@@ -7,4 +7,5 @@ export interface MenuWithStatusTextProps extends MenuWithSectionsProps {
   statusTextSectionProps: PropsWithChildren<StatusTextProps> & {
     content?: React.ReactNode;
   };
+  isLoading?: boolean;
 }

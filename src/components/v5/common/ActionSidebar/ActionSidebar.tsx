@@ -24,7 +24,6 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -108,19 +107,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (isLoading) {
+    if (action || isLoading) {
       return (
-        <div className="flex h-full flex-col items-center justify-center gap-4">
-          <SpinnerLoader appearance={{ size: 'huge' }} />
-          <p className="text-gray-600">
-            {formatText({ id: 'actionSidebar.loading' })}
-          </p>
-        </div>
+        <CompletedAction action={action ?? undefined} isLoading={!!isLoading} />
       );
-    }
-
-    if (action) {
-      return <CompletedAction action={action} />;
     }
 
     if (actionNotFound) {
@@ -253,9 +243,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         `,
         {
           'md:max-w-full': isSidebarFullscreen,
-          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'md:max-w-[67.3125rem]':
-            !isSidebarFullscreen && !!transactionId && !actionNotFound,
+            (!isSidebarFullscreen && !isMotion) ||
+            (!isSidebarFullscreen && !!transactionId && !actionNotFound),
         },
       )}
       ref={registerContainerRef}

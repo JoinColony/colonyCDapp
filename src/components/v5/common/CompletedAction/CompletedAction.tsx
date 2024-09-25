@@ -1,11 +1,14 @@
 import clsx from 'clsx';
 import React from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
+import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
+import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
@@ -29,17 +32,22 @@ import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
-  action: ColonyAction;
+  action?: ColonyAction;
+  isLoading: boolean;
 }
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({ action }: CompletedActionProps) => {
+const CompletedAction = ({ action, isLoading }: CompletedActionProps) => {
   const { colony } = useColonyContext();
 
-  const actionType = getExtendedActionType(action, colony.metadata);
+  const actionType = action
+    ? getExtendedActionType(action, colony.metadata)
+    : undefined;
 
   const getActionContent = () => {
+    if (!action) return undefined;
+
     switch (actionType) {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion:
@@ -118,6 +126,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   const getSidebarWidgetContent = () => {
+    if (!action) return undefined;
+
     if (action.isMultiSig) {
       return <MultiSigSidebar transactionId={action.transactionHash} />;
     }
@@ -149,14 +159,86 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
     }
   };
 
+  const getActionContentLoaderSkeleton = () => (
+    <>
+      <div className="mb-2">
+        <LoadingSkeleton isLoading className="h-[30px] w-[200px] rounded" />
+      </div>
+      <div className="mb-7">
+        <LoadingSkeleton isLoading className="h-[20px] w-[250px] rounded" />
+      </div>
+      <div className="grid auto-rows-[minmax(1.875rem,auto)] grid-cols-[10rem_auto] items-center gap-y-3 text-md text-gray-900 sm:grid-cols-[12.5rem_auto]">
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+        <LoadingSkeleton isLoading className="h-[20px] w-[150px] rounded" />
+      </div>
+    </>
+  );
+
+  const getWidgetContentLoaderSkeleton = () => (
+    <MenuWithStatusText
+      isLoading
+      statusTextSectionProps={{ status: StatusTypes.Info }}
+      sections={[
+        {
+          key: '1',
+          content: (
+            <div>
+              <LoadingSkeleton isLoading className="h-[21px] w-[50%] rounded" />
+              <div>
+                <div className="mt-2 flex items-center gap-2">
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                  <LoadingSkeleton
+                    isLoading
+                    className="h-[23px] w-[100%] rounded"
+                  />
+                </div>
+              </div>
+            </div>
+          ),
+        },
+      ]}
+    />
+  );
+
   return (
     <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
-          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
+          'sm:w-[calc(100%-23.75rem)]': action?.isMotion,
         })}
       >
-        {getActionContent()}
+        {isLoading ? getActionContentLoaderSkeleton() : getActionContent()}
       </div>
 
       <div
@@ -176,7 +258,9 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
             sm:border-l-gray-200
           `}
       >
-        {getSidebarWidgetContent()}
+        {isLoading
+          ? getWidgetContentLoaderSkeleton()
+          : getSidebarWidgetContent()}
       </div>
     </div>
   );

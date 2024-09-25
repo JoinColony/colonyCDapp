@@ -1,5 +1,7 @@
 import React from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+
 import MenuWithSections from '../MenuWithSections/index.ts';
 import StatusText from '../StatusText/StatusText.tsx';
 
@@ -10,6 +12,7 @@ const displayName = 'v5.shared.MenuWithStatusText';
 const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
   statusTextSectionProps,
   sections,
+  isLoading,
 }) => {
   const { content, ...restStatusTextSectionProps } = statusTextSectionProps;
 
@@ -19,7 +22,12 @@ const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
       className: 'bg-gray-50 !py-3',
       content: (
         <>
-          <StatusText {...restStatusTextSectionProps} />
+          <LoadingSkeleton
+            isLoading={isLoading}
+            className="h-[16px] w-[100%] rounded"
+          >
+            <StatusText {...restStatusTextSectionProps} />
+          </LoadingSkeleton>
           {content || null}
         </>
       ),
