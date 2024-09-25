@@ -5,7 +5,7 @@ import { convertToDecimal } from '~utils/convertToDecimal.ts';
 
 import { getFormattedCurrencyValue } from './helpers.tsx';
 import numbroLanguage from './numbroLanguage.ts';
-import { NumeralComponent } from './NumeralComponent.tsx';
+import { NumeralBase } from './NumeralBase.tsx';
 import { type NumeralProps } from './types.ts';
 
 // needed for capitalized abbreviations
@@ -28,14 +28,14 @@ const NumeralCurrency = ({
   const formattedValue = getFormattedCurrencyValue(convertedValue, fixedValue);
 
   return (
-    <NumeralComponent
+    <NumeralBase
       prefix={prefix}
       suffix={suffix}
       className={className}
       {...rest}
     >
       {formattedValue}
-    </NumeralComponent>
+    </NumeralBase>
   );
 };
 
