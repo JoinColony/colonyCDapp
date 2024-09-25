@@ -21,6 +21,19 @@ const TimeframeType = {
   TOTAL: 'TOTAL',
 };
 
+const paymentActionTypes = ['PAYMENT', 'PAYMENT_MOTION', 'PAYMENT_MULTISIG'];
+
+const moveFundsActionTypes = [
+  'MOVE_FUNDS',
+  'MOVE_FUNDS_MOTION',
+  'MOVE_FUNDS_MULTISIG',
+];
+
+const acceptedColonyActionTypes = [
+  ...paymentActionTypes,
+  ...moveFundsActionTypes,
+];
+
 const getActionFinalizedDate = (action) => {
   if (action.isMotion) {
     const motionData = action.motionData;
@@ -163,6 +176,29 @@ const getTokenAddressesFromExpenditures = (expenditures) => {
   return tokenAddresses;
 };
 
+/**
+ * This helper is mostly needed for treating the case of colony-level actions and adding the finalizedDate
+ */
+const getFormattedActions = (actions, domainId) => {
+  return actions.map((action) => {
+    const actionWithFinalizedDate = getActionWithFinalizedDate(action);
+    let amount = action.amount;
+
+    /**
+     * If there is no domain selected (aka we are at colony level) and the action type is not among payments, we'll consider the amount to be '0'
+     * Though we might need to reconsider this when transferring funds between colonies
+     */
+    if (!domainId && !paymentActionTypes.includes(action.type)) {
+      amount = '0';
+    }
+
+    return {
+      ...actionWithFinalizedDate,
+      amount,
+    };
+  });
+};
+
 const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
   const formattedExpenditures = [];
   expenditures.forEach((expenditure) => {
@@ -196,10 +232,11 @@ const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
 };
 
 module.exports = {
+  acceptedColonyActionTypes,
   getPeriodFormat,
   getPeriodFor,
-  getActionWithFinalizedDate,
   getFormattedIncomingFunds,
+  getFormattedActions,
   getFormattedExpenditures,
   getTokenAddressesFromExpenditures,
   subtractMonthsFor,
