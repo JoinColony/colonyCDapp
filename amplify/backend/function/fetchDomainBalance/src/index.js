@@ -4,7 +4,7 @@ const {
   BigNumber,
   utils: { Logger },
 } = require('ethers');
-const { getPeriodFromNow } = require('./utils');
+const { getPeriodFor } = require('./utils');
 const ExchangeRatesFactory = require('./config/exchangeRates');
 const {
   getInOutActions,
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
       timeframeType,
       timeframePeriodEndDate,
     } = event.arguments?.input || {};
-    const periodFromNow = getPeriodFromNow(
+    const periodForTimeframe = getPeriodFor(
       timeframePeriod,
       timeframeType,
       timeframePeriodEndDate,
@@ -40,7 +40,7 @@ exports.handler = async (event) => {
     const inOutActions = await getInOutActions(colonyAddress, domainId);
     const inOutActionsWithinTimeframe = filterActionsWithinTimeframe(
       inOutActions,
-      periodFromNow,
+      periodForTimeframe,
       timeframePeriodEndDate,
     );
     const periodBalance = groupBalanceByPeriod(
