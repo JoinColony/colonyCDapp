@@ -1,6 +1,6 @@
 import { type WatchQueryFetchPolicy } from '@apollo/client/core';
 import { type ResponsiveBarSvgProps, type BarDatum } from '@nivo/bar';
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
@@ -222,65 +222,22 @@ export const useDomainColorVariables = () => {
   };
 };
 
-export const useCssProperties = () => {
-  const [cssProperties, setCssProperties] = useState<any>({});
-  const domainColorVariables = useDomainColorVariables();
-
-  useEffect(() => {
-    const updateChartStyle = () => {
-      const computedStyles = getComputedStyle(document.documentElement);
-      setCssProperties({
-        gray100: computedStyles.getPropertyValue('--color-gray-100'),
-        gray200: computedStyles.getPropertyValue('--color-gray-200'),
-        gray400: computedStyles.getPropertyValue('--color-gray-400'),
-        baseBlack: computedStyles.getPropertyValue('--color-base-black'),
-        baseWhite: computedStyles.getPropertyValue('--color-base-white'),
-        fontFamily: computedStyles.getPropertyValue(
-          '--onboard-font-family-normal',
-        ),
-        primary: computedStyles.getPropertyValue(
-          domainColorVariables.primaryColorVariableName,
-        ),
-        secondary: computedStyles.getPropertyValue(
-          domainColorVariables.secondaryColorVariableName,
-        ),
-      });
-    };
-    const observer = new MutationObserver(updateChartStyle);
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['style'],
-    });
-
-    updateChartStyle();
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [
-    domainColorVariables.primaryColorVariableName,
-    domainColorVariables.secondaryColorVariableName,
-  ]);
-
-  return cssProperties;
-};
-
 export const useBarChartLegend = () => {
-  const cssProperties = useCssProperties();
+  const { primaryColorVariableName, secondaryColorVariableName } =
+    useDomainColorVariables();
 
   return useMemo<any>(
     () => [
       {
-        color: cssProperties.secondary,
+        color: `var(${secondaryColorVariableName})`,
         label: formatText(MSG.paymentsLegendTitle),
       },
       {
-        color: cssProperties.primary,
+        color: `var(${primaryColorVariableName})`,
         label: formatText(MSG.incomeLegendTitle),
       },
     ],
-    [cssProperties.primary, cssProperties.secondary],
+    [primaryColorVariableName, secondaryColorVariableName],
   );
 };
 
@@ -322,7 +279,8 @@ export const useChartYSteps = () => {
 export const useBarChartConfig = <T extends BarDatum>(): Partial<
   ResponsiveBarSvgProps<T>
 > => {
-  const cssProperties = useCssProperties();
+  const { primaryColorVariableName, secondaryColorVariableName } =
+    useDomainColorVariables();
 
   const barChartConfig = useMemo(() => {
     return {
@@ -330,7 +288,7 @@ export const useBarChartConfig = <T extends BarDatum>(): Partial<
         background: 'transparent',
       },
       colors: ({ id }) =>
-        id === 'in' ? cssProperties.primary : cssProperties.secondary,
+        `var(${id === 'in' ? primaryColorVariableName : secondaryColorVariableName})`,
       keys: ['out', 'in'],
       indexBy: 'label',
       groupMode: 'grouped' as any,
@@ -351,7 +309,7 @@ export const useBarChartConfig = <T extends BarDatum>(): Partial<
       // needed to override the default bar component
       barComponent: () => null,
     };
-  }, [cssProperties.primary, cssProperties.secondary]);
+  }, [primaryColorVariableName, secondaryColorVariableName]);
 
   return barChartConfig;
 };
