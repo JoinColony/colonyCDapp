@@ -132,14 +132,8 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
         uniqueId: `${item.slotId}-0`,
         createdAt: createdAt || '',
       };
-    })
-    .filter((item) => {
-      const motion = releaseMilestoneMotions?.find((m) =>
-        m?.expenditureSlotIds?.includes(item.slotId),
-      );
-
-      return !motion?.motionStateHistory.hasPassed;
     });
+
   const releaseItems = [...motionMilestones, ...releasedMilestones].sort(
     (a, b) => {
       if (new Date(a.createdAt) > new Date(b.createdAt)) return -1;
