@@ -1,9 +1,11 @@
 import React, { type FC } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { getTextChunks } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName = 'pages.ExtensionDetailsPage.StakedExpenditureSettings';
@@ -20,8 +22,20 @@ const MSG = defineMessages({
   },
 });
 
-const StakedExpenditureSettings: FC = () => {
+interface StakedExpenditureSettingsProps {
+  userHasRoot: boolean;
+}
+
+const StakedExpenditureSettings: FC<StakedExpenditureSettingsProps> = ({
+  userHasRoot,
+}) => {
+  const { extensionData } = useExtensionDetailsPageContext();
+
   const { h4, p, b, ul, li } = getTextChunks();
+
+  const isFormDisabled =
+    !userHasRoot ||
+    (isInstalledExtensionData(extensionData) && extensionData.isDeprecated);
 
   return (
     <div>
@@ -44,7 +58,10 @@ const StakedExpenditureSettings: FC = () => {
           subTitle="What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?"
         />
         <div className="ml-6 shrink-0">
-          <SpecialPercentageInput name="stakeFraction" />
+          <SpecialPercentageInput
+            name="stakeFraction"
+            disabled={isFormDisabled}
+          />
         </div>
       </div>
     </div>
