@@ -48,7 +48,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
         </div>
       }
     >
-      <FundsCardsTotalDescription direction="up" />
+      <FundsCardsTotalDescription />
     </WidgetCards.Item>
   );
 };
