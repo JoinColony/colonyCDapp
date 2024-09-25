@@ -1,12 +1,12 @@
 import { CaretDown } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { InputGroup } from '~common/Extensions/Fields/InputGroup/InputGroup.tsx';
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
@@ -108,15 +108,14 @@ interface MultiSigSettingsProps {
 const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
   const { extensionData } = useExtensionDetailsPageContext();
   const {
+    register,
     thresholdType,
     isFixedThresholdError,
     fixedThresholdErrorMessage,
     domainThresholdConfigs,
-    handleThresholdValueChange,
     handleDomainThresholdTypeChange,
     handleGlobalThresholdTypeChange,
   } = useThresholdData(extensionData);
-  const { register } = useFormContext();
 
   const [isCustomSettingsVisible, { toggle: toggleCustomSettings }] =
     useToggle();
@@ -133,7 +132,9 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
     );
   }
 
-  const isFormDisabled = !userHasRoot;
+  const isFormDisabled =
+    !userHasRoot ||
+    (isInstalledExtensionData(extensionData) && extensionData.isDeprecated);
 
   return (
     <div className="w-full">
@@ -194,12 +195,6 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
                     value: 99999,
                     message: formatText(MSG.thresholdFixedMaxErrorMessage),
                   },
-                  onChange: (e) => {
-                    handleThresholdValueChange(
-                      'globalThreshold',
-                      Number(e.target.value),
-                    );
-                  },
                 })}
                 {...inputGroupSharedConfig}
                 isDisabled={isFormDisabled}
@@ -233,10 +228,10 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
             </div>
             <div className="flex flex-col gap-6">
               {domainThresholdConfigs.map(
-                ({ id, name, type, isError, errorMessage }) => (
+                ({ id, domainName, type, isError, errorMessage }) => (
                   <div key={id}>
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                      <p className="text-md font-medium">{name}</p>
+                      <p className="text-md font-medium">{domainName}</p>
                       <Select
                         isDisabled={isFormDisabled}
                         menuPosition="fixed"
@@ -279,7 +274,7 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
                         </div>
 
                         <InputGroup
-                          {...register(name, {
+                          {...register(`domainThresholds.${id}.threshold`, {
                             required: formatText(
                               MSG.thresholdFixedErrorMessage,
                             ),
@@ -294,12 +289,6 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
                               message: formatText(
                                 MSG.thresholdFixedMaxErrorMessage,
                               ),
-                            },
-                            onChange: (e) => {
-                              handleThresholdValueChange(
-                                name,
-                                Number(e.target.value),
-                              );
                             },
                           })}
                           {...inputGroupSharedConfig}

@@ -17,8 +17,23 @@ import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type SetStateFn } from '~types';
-import { type AnyExtensionData } from '~types/extensions.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
+import {
+  type ExtensionInitParam,
+  type AnyExtensionData,
+} from '~types/extensions.ts';
+import {
+  convertFractionToEth,
+  isInstalledExtensionData,
+} from '~utils/extensions.ts';
+
+import {
+  type MultiSigSettingsFormValues,
+  MultiSigThresholdType,
+} from './MultiSigSettings/types.ts';
+import {
+  getDomainThresholds,
+  getGlobalThresholdType,
+} from './MultiSigSettings/utils.ts';
 
 export const getFormSuccessFn =
   <T extends FieldValues>({
@@ -39,19 +54,20 @@ export const getFormSuccessFn =
     const isSaveChanges =
       extensionData &&
       isInstalledExtensionData(extensionData) &&
-      extensionData.autoEnableAfterInstall &&
-      (extensionData.isEnabled || extensionData.isDeprecated);
+      (extensionData.isInitialized || extensionData.configurable);
 
     try {
       /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
       await waitForExtensionPermissions({ extensionData, refetchColony });
-      if (isSaveChanges) {
-        await waitForDbAfterExtensionAction({
-          method: ExtensionMethods.SAVE_CHANGES,
-          refetchExtensionData,
-          params: fieldValues.params,
-        });
-      } else {
+      // @TODO: Decide if needed
+      // if (isSaveChanges) {
+      //   await waitForDbAfterExtensionAction({
+      //     method: ExtensionMethods.SAVE_CHANGES,
+      //     refetchExtensionData,
+      //     params: fieldValues.params,
+      //   });
+      // } else {
+      if (!isSaveChanges) {
         await waitForDbAfterExtensionAction({
           method: ExtensionMethods.ENABLE,
           refetchExtensionData,
@@ -61,6 +77,8 @@ export const getFormSuccessFn =
 
         setActiveTab(ExtensionDetailsPageTabId.Overview);
       }
+
+      // }
 
       toast.success(
         <Toast
@@ -104,6 +122,9 @@ export const getExtensionSettingsActionType = (
   const isExtensionInstalled = isInstalledExtensionData(extensionData);
 
   switch (extensionData.extensionId) {
+    case Extension.MultisigPermissions: {
+      return ActionTypes.MULTISIG_SET_THRESHOLDS;
+    }
     case Extension.StakedExpenditure: {
       if (
         isExtensionInstalled &&
@@ -116,6 +137,92 @@ export const getExtensionSettingsActionType = (
     }
     default: {
       return ActionTypes.EXTENSION_ENABLE;
+    }
+  }
+};
+
+export const mapExtensionActionPayload = (
+  extensionData: AnyExtensionData,
+  formValues: Record<string, any>,
+  initializationParams?: ExtensionInitParam[],
+) => {
+  if (extensionData.extensionId === Extension.MultisigPermissions) {
+    const { thresholdType } = formValues;
+    return {
+      globalThreshold:
+        thresholdType === MultiSigThresholdType.MAJORITY_APPROVAL
+          ? 0
+          : formValues.globalThreshold,
+      domainThresholds: getDomainThresholds(
+        formValues as MultiSigSettingsFormValues,
+      ),
+      thresholdType,
+    };
+  }
+
+  return initializationParams?.reduce(
+    (formattedPayload, { paramName, transformValue }) => {
+      const paramValue = transformValue
+        ? transformValue(formValues[paramName])
+        : formValues[paramName];
+      return {
+        ...formattedPayload,
+        [paramName]: paramValue,
+      };
+    },
+    {},
+  );
+};
+
+const getInitializationDefaultValues = (
+  initializationParams: ExtensionInitParam[],
+) => {
+  return initializationParams.reduce<
+    Record<string, string | number | undefined>
+  >((initialValues, param) => {
+    return {
+      ...initialValues,
+      [param.paramName]: param.defaultValue,
+    };
+  }, {});
+};
+
+export const getExtensionSettingsDefaultValues = (
+  extensionData: AnyExtensionData,
+): object => {
+  const { initializationParams = [] } = extensionData;
+  const defaultValues = getInitializationDefaultValues(initializationParams);
+
+  if (!isInstalledExtensionData(extensionData)) {
+    return defaultValues;
+  }
+
+  switch (extensionData.extensionId) {
+    case Extension.StakedExpenditure: {
+      return {
+        stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
+          ? convertFractionToEth(
+              extensionData.params.stakedExpenditure.stakeFraction,
+            )
+          : String(defaultValues.stakeFraction),
+      };
+    }
+    case Extension.MultisigPermissions: {
+      if (!extensionData.params?.multiSig) {
+        return {};
+      }
+
+      const { colonyThreshold: globalThreshold } =
+        extensionData.params.multiSig;
+
+      return {
+        thresholdType: getGlobalThresholdType(globalThreshold),
+        globalThreshold,
+        domainThresholds: {},
+      } satisfies MultiSigSettingsFormValues;
+    }
+    default: {
+      return {};
     }
   }
 };

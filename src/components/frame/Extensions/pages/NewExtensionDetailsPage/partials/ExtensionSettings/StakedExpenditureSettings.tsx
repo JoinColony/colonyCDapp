@@ -44,7 +44,7 @@ const StakedExpenditureSettings: FC = () => {
           subTitle="What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?"
         />
         <div className="ml-6 shrink-0">
-          <SpecialPercentageInput name="params.stakeFraction" />
+          <SpecialPercentageInput name="stakeFraction" />
         </div>
       </div>
     </div>
