@@ -13,6 +13,8 @@ const {
 
 const EnvVarsSetupFactory = require('../../config/envVars.js');
 
+const { acceptedColonyActionTypes } = require('../../utils.js');
+
 const graphqlRequest = async (queryOrMutation, variables) => {
   const { apiKey, graphqlURL } = await EnvVarsSetupFactory.getEnvVars();
   const options = {
@@ -122,21 +124,11 @@ const getExpendituresData = async ({
 };
 
 const getAllExpenditures = async (colonyAddress, domain) => {
-  if (!domain?.nativeId) {
-    return [];
-  }
   return getAllPages(getExpendituresData, {
     colonyAddress,
-    nativeDomainId: domain.nativeId,
+    nativeDomainId: domain?.nativeId,
   });
 };
-
-const acceptedColonyActionTypes = [
-  'PAYMENT',
-  'PAYMENT_MOTION',
-  'MOVE_FUNDS',
-  'MOVE_FUNDS_MOTION',
-];
 
 const getActionsData = async ({
   colonyAddress,
@@ -155,7 +147,7 @@ const getActionsData = async ({
   };
 
   // If "All teams" filter is selected, do not filter by domainId
-  if (domainId !== undefined) {
+  if (domainId) {
     filter.and.push({
       or: [
         { fromDomainId: { eq: domainId } },
