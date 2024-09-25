@@ -4,11 +4,14 @@ import React, { type FC } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
+import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/NewExtensionDetailsPage/types.ts';
 import useActiveInstalls from '~hooks/useActiveInstalls.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
+
+import PermissionsNeededBanner from '../PermissionsNeededBanner.tsx';
 
 import ActiveInstalls from './ActiveInstalls.tsx';
 import { extensionsBadgeModeMap, extensionsBadgeTextMap } from './consts.ts';
@@ -22,7 +25,7 @@ const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
 const ExtensionDetailsHeader: FC = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { extensionData } = useExtensionDetailsPageContext();
+  const { extensionData, activeTab } = useExtensionDetailsPageContext();
 
   const activeInstalls = useActiveInstalls(extensionData.extensionId);
 
@@ -46,13 +49,6 @@ const ExtensionDetailsHeader: FC = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.isDeprecated;
 
-  // /* To save changes, a user must have the root permission. */
-  // const isSaveChangesButtonVisible =
-  //   userHasRoot &&
-  //   isInstalledExtensionData(extensionData) &&
-  //   extensionData.autoEnableAfterInstall &&
-  //   activeTab === ExtensionDetailsPageTabId.Settings;
-
   // const isUpgradeButtonVisible =
   //   !!user &&
   //   extensionData &&
@@ -62,46 +58,52 @@ const ExtensionDetailsHeader: FC = () => {
   const badgeMode = extensionsBadgeModeMap[extensionData.extensionId];
   const badgeText = extensionsBadgeTextMap[extensionData.extensionId];
 
+  const isPermissionsBannerVisible =
+    userHasRoot &&
+    activeTab !== ExtensionDetailsPageTabId.Settings &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.isEnabled &&
+    extensionData.missingColonyPermissions.length > 0;
+
   return (
-    <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
-      <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
-        <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
-          <HeadingIcon name={extensionData.name} icon={extensionData.icon} />
-          <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0 sm:shrink-0 sm:grow">
-            {badgeMode && badgeText && (
-              <ExtensionStatusBadge
-                mode={extensionsBadgeModeMap[extensionData.extensionId]}
-                text={formatText({
-                  id: extensionsBadgeTextMap[extensionData.extensionId],
-                })}
-              />
-            )}
-            <ActiveInstalls activeInstalls={activeInstalls} />
+    <>
+      {isPermissionsBannerVisible && (
+        <PermissionsNeededBanner extensionData={extensionData} />
+      )}
+      <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
+        <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
+          <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
+            <HeadingIcon name={extensionData.name} icon={extensionData.icon} />
+            <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0 sm:shrink-0 sm:grow">
+              {badgeMode && badgeText && (
+                <ExtensionStatusBadge
+                  mode={extensionsBadgeModeMap[extensionData.extensionId]}
+                  text={formatText({
+                    id: extensionsBadgeTextMap[extensionData.extensionId],
+                  })}
+                />
+              )}
+              <ActiveInstalls activeInstalls={activeInstalls} />
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col items-center gap-2 sm:flex-row">
-          {isInstallButtonVisible && (
-            <InstallButton extensionData={extensionData} />
-          )}
-          {isReenableButtonVisible && (
-            <ReenableButton extensionData={extensionData} />
-          )}
-          <SubmitButton
-            extensionData={extensionData}
-            userHasRoot={userHasRoot}
-          />
-          {/* <SaveChangesButton /> */}
-          {/* <EnableButton
-          extensionData={extensionData}
-          isSetupRoute={isSetupRoute}
-          userHasRoot={userHasRoot}
-        />
-        {isUpgradeButtonVisible && (
+          <div className="flex flex-col items-center gap-2 sm:flex-row">
+            {isInstallButtonVisible && (
+              <InstallButton extensionData={extensionData} />
+            )}
+            {isReenableButtonVisible && (
+              <ReenableButton extensionData={extensionData} />
+            )}
+            <SubmitButton
+              extensionData={extensionData}
+              userHasRoot={userHasRoot}
+            />
+            {/* {isUpgradeButtonVisible && (
           <UpgradeButton extensionData={extensionData} />
         )} */}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

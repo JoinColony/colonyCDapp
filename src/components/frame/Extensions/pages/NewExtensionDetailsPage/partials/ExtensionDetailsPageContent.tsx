@@ -8,8 +8,6 @@ import ExtensionSettingsForm from './ExtensionSettings/ExtensionSettingsForm.tsx
 import ExtensionTabs from './ExtensionTabs/ExtensionTabs.tsx';
 
 const ExtensionDetailsPageContent: FC = () => {
-  // const { setActiveTab, setWaitingForActionConfirmation } =
-  //   useExtensionDetailsPageContext();
   const { extensionData } = useExtensionDetailsPageContext();
 
   return (
@@ -19,10 +17,7 @@ const ExtensionDetailsPageContent: FC = () => {
       </div>
       <div className="grid w-full grid-cols-11 gap-4 pb-6 md:gap-8">
         <div className="col-span-11 md:col-span-8 md:pr-4">
-          <ExtensionTabs
-            extensionData={extensionData}
-            // showSetupPage={!!SetupComponent && extensionData.isInitialized}
-          />
+          <ExtensionTabs extensionData={extensionData} />
         </div>
         <div className="hidden md:col-span-3 md:block">
           <ExtensionDetailsSidePanel extensionData={extensionData} />
