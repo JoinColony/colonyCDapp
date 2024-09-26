@@ -5,10 +5,9 @@ import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/ExtensionDetailsPage.tsx';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
-import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
-import ExtensionDetailsPage from '~frame/Extensions/pages/NewExtensionDetailsPage/ExtensionDetailsPage.tsx';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
 import IndividualPermissionsPage from '~frame/Extensions/pages/PermissionsPage/IndividualPermissionsPage.tsx';
 import MultisigPermissionsPage from '~frame/Extensions/pages/PermissionsPage/MultisigPermissionsPage.tsx';
@@ -55,7 +54,6 @@ import {
   COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
-  COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_VERIFIED_ROUTE,
@@ -105,10 +103,6 @@ const Routes = () => {
               element={<UserPreferencesPage />}
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
-            <Route
-              path={USER_PREFERENCES_ROUTE}
-              element={<UserPreferencesPage />}
-            />
             <Route
               path={USER_CRYPTO_TO_FIAT_ROUTE}
               element={<UserCryptoToFiatPage />}
@@ -183,12 +177,6 @@ const Routes = () => {
             />
           )}
 
-          {import.meta.env.DEV && (
-            <Route
-              path={COLONY_INCORPORATION_ROUTE}
-              element={<IncorporationPage />}
-            />
-          )}
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
