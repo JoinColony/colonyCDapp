@@ -23,10 +23,7 @@ const ExtensionOverview: FC<ExtensionOverviewProps> = ({ extensionData }) => {
     <div className="flex flex-col gap-9 md:gap-6">
       <div className="flex flex-col gap-6">
         <ImageCarousel slideUrls={extensionData.imageURLs} />
-        <ExtensionDetailsSidePanel
-          extensionData={extensionData}
-          className="md:hidden"
-        />
+        <ExtensionDetailsSidePanel className="md:hidden" />
       </div>
       <div>
         <div className="whitespace-pre-line text-md text-gray-600">

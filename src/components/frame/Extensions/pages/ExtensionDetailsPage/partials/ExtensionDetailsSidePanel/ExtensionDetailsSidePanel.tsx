@@ -1,10 +1,7 @@
-import { ColonyRole, Id } from '@colony/colony-js';
 import React, { type FC } from 'react';
 
 import SpecificSidePanel from '~common/Extensions/SpecificSidePanel/index.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { addressHasRoles } from '~utils/checks/index.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import DeprecateButton from './DeprecateButton.tsx';
@@ -15,24 +12,13 @@ const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionDetailsSidePanel';
 
 const ExtensionDetailsSidePanel: FC<ExtensionDetailsSidePanelProps> = ({
-  extensionData,
   className,
 }) => {
-  const { user } = useAppContext();
-  const { colony } = useColonyContext();
-
-  const hasRootPermission =
-    !!user &&
-    addressHasRoles({
-      address: user.walletAddress,
-      colony,
-      requiredRoles: [ColonyRole.Root],
-      requiredRolesDomain: Id.RootDomain,
-    });
+  const { extensionData, userHasRoot } = useExtensionDetailsPageContext();
 
   /* If enabled, can be deprecated */
   const canExtensionBeDeprecated =
-    hasRootPermission &&
+    userHasRoot &&
     isInstalledExtensionData(extensionData) &&
     extensionData.uninstallable &&
     extensionData.isEnabled &&
@@ -40,7 +26,7 @@ const ExtensionDetailsSidePanel: FC<ExtensionDetailsSidePanelProps> = ({
 
   /* If installed, and deprecated / unenabled, can be uninstalled. User needs root permission to uninstall. */
   const canExtensionBeUninstalled = !!(
-    hasRootPermission &&
+    userHasRoot &&
     isInstalledExtensionData(extensionData) &&
     (extensionData.isDeprecated || !extensionData.isEnabled) &&
     extensionData.uninstallable

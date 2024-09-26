@@ -20,21 +20,15 @@ import { formatText } from '~utils/intl.ts';
 import { paramsMap } from './consts.ts';
 
 interface VotingReputationParamsProps {
-  userHasRoot: boolean;
   extensionData: AnyExtensionData;
 }
 
 const VotingReputationParams: FC<VotingReputationParamsProps> = ({
   extensionData,
-  userHasRoot,
 }) => {
   const params = getExtensionParams(extensionData);
 
-  if (
-    !userHasRoot &&
-    isInstalledExtensionData(extensionData) &&
-    !extensionData.isInitialized
-  ) {
+  if (isInstalledExtensionData(extensionData) && !extensionData.isInitialized) {
     return null;
   }
 
@@ -113,12 +107,7 @@ const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
     !userHasRoot ||
     (isInstalledExtensionData(extensionData) && extensionData.isInitialized)
   ) {
-    return (
-      <VotingReputationParams
-        userHasRoot={userHasRoot}
-        extensionData={extensionData}
-      />
-    );
+    return <VotingReputationParams extensionData={extensionData} />;
   }
 
   return (

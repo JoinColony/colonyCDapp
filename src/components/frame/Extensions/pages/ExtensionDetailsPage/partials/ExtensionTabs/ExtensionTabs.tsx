@@ -5,7 +5,6 @@ import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import Tabs from '~shared/Extensions/Tabs/Tabs.tsx';
-import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -13,14 +12,11 @@ import ExtensionSettings from '../ExtensionSettings/ExtensionSettings.tsx';
 
 import ExtensionOverview from './ExtensionOverview.tsx';
 
-interface ExtensionTabsProps {
-  extensionData: AnyExtensionData;
-}
-
 const displayName = 'pages.ExtensionDetailsPage.ExtensionInfo';
 
-const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
-  const { activeTab, setActiveTab } = useExtensionDetailsPageContext();
+const ExtensionTabs: FC = () => {
+  const { activeTab, setActiveTab, extensionData, userHasRoot } =
+    useExtensionDetailsPageContext();
 
   const handleOnTabClick = (_, id) => {
     setActiveTab(id);
@@ -28,7 +24,9 @@ const ExtensionTabs: FC<ExtensionTabsProps> = ({ extensionData }) => {
 
   const shouldShowSettingsTab =
     isInstalledExtensionData(extensionData) &&
-    (extensionData.initializationParams?.length || extensionData.configurable);
+    (extensionData.initializationParams?.length ||
+      extensionData.configurable) &&
+    (userHasRoot || extensionData.isEnabled);
 
   const tabsItems = [
     {
