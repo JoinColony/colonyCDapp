@@ -60,6 +60,10 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
       return noop;
     }
 
+    const hideIntercom = () => {
+      window.Intercom('hide');
+    };
+
     window.Intercom('onUnreadCountChange', (unreadMessages: number) => {
       setShowBadge(unreadMessages > 0);
     });
@@ -80,13 +84,17 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
         !intercomFrame?.contains(event.target as Node) &&
         !feedbackButton?.contains(event.target as Node)
       ) {
-        window.Intercom('hide');
+        hideIntercom();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
 
+    window.addEventListener('beforeunload', hideIntercom);
+
     return () => {
+      window.removeEventListener('beforeunload', hideIntercom);
+
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [bootIntercom, isIntercomBooted]);
@@ -110,7 +118,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
       id={FEEDBACK_BUTTON_ID}
       onClick={handleClick}
       className={clsx(
-        'w-full !justify-start !gap-3 !border-none bg-gray-900 !p-2',
+        'relative w-full !justify-start !gap-3 !border-none bg-gray-900 !p-2',
         {
           '!w-fit !justify-center': isPopoverMode,
           '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
@@ -123,7 +131,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
     >
       <ChatsCircle
         className={clsx(
-          'aspect-auto h-5 w-auto flex-shrink-0 text-base-white',
+          'relative aspect-auto h-5 w-auto flex-shrink-0 text-base-white',
           {
             '!text-gray-900': isDarkMode,
           },
