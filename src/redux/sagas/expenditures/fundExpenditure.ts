@@ -1,5 +1,6 @@
-import { ClientType } from '@colony/colony-js';
-import { fork, put, takeEvery } from 'redux-saga/effects';
+import { ClientType, ColonyRole, getPotDomain } from '@colony/colony-js';
+import { type BigNumberish } from 'ethers';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { transactionPending } from '~redux/actionCreators/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
@@ -15,6 +16,7 @@ import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
   getColonyManager,
   getMoveFundsPermissionProofs,
+  getSinglePermissionProofsFromSourceDomain,
   initiateTransaction,
   putError,
   takeFrom,
@@ -29,6 +31,8 @@ function* fundExpenditure({
     colonyAddress,
     expenditure,
     fromDomainFundingPotId,
+    colonyDomains,
+    colonyRoles,
     annotationMessage,
   },
   meta,
@@ -58,21 +62,42 @@ function* fundExpenditure({
   );
 
   try {
-    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-      yield getMoveFundsPermissionProofs(
+    const userAddress = yield colonyClient.signer.getAddress();
+
+    const fromDomainId: BigNumberish = yield getPotDomain(
+      colonyClient,
+      fromDomainFundingPotId,
+    );
+
+    const [userPermissionDomainId, userChildSkillIndex] = yield call(
+      getSinglePermissionProofsFromSourceDomain,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: Number(fromDomainId),
+        requiredColonyRole: ColonyRole.Funding,
+        permissionAddress: userAddress,
+      },
+    );
+
+    const [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
+      yield getMoveFundsPermissionProofs({
         colonyAddress,
-        fromDomainFundingPotId,
-        expenditureFundingPotId,
-      );
+        fromPotId: fromDomainFundingPotId,
+        toPotId: expenditureFundingPotId,
+        colonyDomains,
+        colonyRoles,
+      });
 
     const multicallData = [...balancesByTokenAddresses.entries()].map(
       ([tokenAddress, amount]) =>
         colonyClient.interface.encodeFunctionData(
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           [
-            permissionDomainId,
-            fromChildSkillIndex,
-            permissionDomainId,
+            userPermissionDomainId,
+            userChildSkillIndex,
+            fromPermissionDomainId,
             fromChildSkillIndex,
             toChildSkillIndex,
             fromDomainFundingPotId,

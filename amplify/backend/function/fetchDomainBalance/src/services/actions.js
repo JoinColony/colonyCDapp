@@ -6,7 +6,7 @@ const {
   getTokensDecimalsFor,
 } = require('../api/graphql/operations');
 const {
-  getActionWithFinalizedDate,
+  getFormattedActions,
   getFormattedIncomingFunds,
   getFormattedExpenditures,
   getTokenAddressesFromExpenditures,
@@ -16,31 +16,30 @@ const {
   isBefore,
 } = require('../utils');
 
-const getInOutActions = async (colonyAddress, parentDomainId) => {
-  /**
-   * @TODO also get child domains for which we should do operations recursively
-   * however if financial actions have been executed between children of same domainAddress they shouldn't be taken into account
-   */
-  /**
-   * @TODO filter child domains for colonyAddress and parentDomainId
-   */
+const getInOutActions = async (colonyAddress, domainId) => {
   const domains = await getDomains(colonyAddress);
-  const parentDomain = domains.find((d) => d.id === parentDomainId);
 
-  const incomingFunds = await getAllIncomingFunds(colonyAddress, parentDomain);
+  // If the "All teams" filter is selected, then domain will be undefined
+  const domain = domains.find((d) => d.id === domainId);
 
-  const expenditures = await getAllExpenditures(colonyAddress, parentDomain);
+  const incomingFunds = await getAllIncomingFunds(colonyAddress, domain);
+
+  // Fetches all expenditures within the domain, excluding expenditures that are part of a simple payment
+  const expenditures = await getAllExpenditures(colonyAddress, domain);
+  const filteredExpenditures = expenditures.filter(
+    (expenditure) => !!expenditure.createExpenditureActions?.items?.length,
+  );
   const expendituresTokenAddresses =
-    getTokenAddressesFromExpenditures(expenditures);
+    getTokenAddressesFromExpenditures(filteredExpenditures);
   const tokensDecimals = await getTokensDecimalsFor(expendituresTokenAddresses);
 
   // Getting all remaining financial actions not included in incoming funds or expenditures
-  let actions = await getAllActions(colonyAddress, parentDomainId);
+  let actions = await getAllActions(colonyAddress, domainId);
 
   return [
-    ...getFormattedIncomingFunds(incomingFunds, parentDomainId),
-    ...actions.map((action) => getActionWithFinalizedDate(action)),
-    ...getFormattedExpenditures(expenditures, parentDomainId, tokensDecimals),
+    ...getFormattedIncomingFunds(incomingFunds, domainId),
+    ...getFormattedActions(actions, domainId),
+    ...getFormattedExpenditures(filteredExpenditures, domainId, tokensDecimals),
   ];
 };
 
@@ -89,7 +88,7 @@ const groupBalanceByPeriod = (
   timeframePeriod,
   timeframePeriodEndDate,
   actions,
-  parentDomainId,
+  domainId,
 ) => {
   const balance = {};
 
@@ -102,13 +101,26 @@ const groupBalanceByPeriod = (
       balance[formattedPeriod] = getDefaultDomainBalance();
     }
   }
-
   // Add each action to its corresponding balance period in/out operation
   actions.forEach((action) => {
     const period = getPeriodFormat(action.finalizedDate, timeframeType);
-    if (action.fromDomainId === parentDomainId) {
+
+    // If we are at colony level and the action has a type
+    // The action is among the acceptedColonyActionTypes and must be an outgoing source of funds
+    if (!domainId && action.type) {
       balance[period].out.push(action);
-    } else if (action.toDomainId === parentDomainId) {
+    }
+    // Do not include outgoing transfers within the same domain
+    else if (
+      action.fromDomainId === domainId &&
+      action.toDomainId !== domainId
+    ) {
+      balance[period].out.push(action);
+      // Do not include incoming transfers within the same domain
+    } else if (
+      action.toDomainId === domainId &&
+      action.fromDomainId !== domainId
+    ) {
       balance[period].in.push(action);
     }
   });

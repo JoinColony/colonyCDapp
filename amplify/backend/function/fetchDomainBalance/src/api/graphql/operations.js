@@ -6,11 +6,14 @@ const {
   getColonyActions,
   getColonyDomains,
   getDomainExpenditures,
+  getColonyExpenditures,
   getColonyFundsClaims,
   getToken,
 } = require('./schemas.js');
 
 const EnvVarsSetupFactory = require('../../config/envVars.js');
+
+const { acceptedColonyActionTypes } = require('../../utils.js');
 
 const graphqlRequest = async (queryOrMutation, variables) => {
   const { apiKey, graphqlURL } = await EnvVarsSetupFactory.getEnvVars();
@@ -48,8 +51,10 @@ const getAllPages = async (getData, params) => {
 
   do {
     const actionsData = await getData({ ...params, nextToken });
-    nextToken = actionsData.nextToken;
-    items.push(...actionsData.items);
+    nextToken = actionsData?.nextToken;
+    if (actionsData?.items) {
+      items.push(...actionsData.items);
+    }
   } while (nextToken);
 
   return items;
@@ -78,6 +83,7 @@ const getIncomingFundsData = async ({ colonyAddress, limit, nextToken }) => {
 };
 
 const getAllIncomingFunds = async (colonyAddress, domain) => {
+  // Return [] if any domain other than root is selected
   if (domain && !domain.isRoot) {
     return [];
   }
@@ -90,6 +96,21 @@ const getExpendituresData = async ({
   limit,
   nextToken,
 }) => {
+  // If "All teams" filter is selected, fetch expenditures from all domains
+  if (nativeDomainId === undefined) {
+    const result = await graphqlRequest(getColonyExpenditures, {
+      colonyAddress,
+      limit,
+      nextToken,
+    });
+
+    if (!result) {
+      console.warn('Could not find any expenditures in db.');
+    }
+
+    return result.data.listExpenditures;
+  }
+
   const result = await graphqlRequest(getDomainExpenditures, {
     colonyAddress,
     nativeDomainId,
@@ -98,28 +119,18 @@ const getExpendituresData = async ({
   });
 
   if (!result) {
-    console.warn('Could not find any domain expenditure in db.');
+    console.warn('Could not find any domain expenditures in db.');
   }
 
   return result.data.listExpenditures;
 };
 
 const getAllExpenditures = async (colonyAddress, domain) => {
-  if (!domain?.nativeId) {
-    return [];
-  }
   return getAllPages(getExpendituresData, {
     colonyAddress,
     nativeDomainId: domain?.nativeId,
   });
 };
-
-const acceptedColonyActionTypes = [
-  'PAYMENT',
-  'PAYMENT_MOTION',
-  'MOVE_FUNDS',
-  'MOVE_FUNDS_MOTION',
-];
 
 const getActionsData = async ({
   colonyAddress,
@@ -127,26 +138,29 @@ const getActionsData = async ({
   nextToken,
   limit = 2,
 }) => {
+  const filter = {
+    and: [
+      {
+        or: acceptedColonyActionTypes.map((acceptedColonyActionType) => ({
+          type: { eq: acceptedColonyActionType },
+        })),
+      },
+    ],
+  };
+
+  // If "All teams" filter is selected, do not filter by domainId
+  if (domainId) {
+    filter.and.push({
+      or: [
+        { fromDomainId: { eq: domainId } },
+        { toDomainId: { eq: domainId } },
+      ],
+    });
+  }
+
   const result = await graphqlRequest(getColonyActions, {
     colonyAddress,
-    filter: {
-      and: [
-        {
-          or: [
-            { fromDomainId: { eq: domainId } },
-            { toDomainId: { eq: domainId } },
-          ],
-        },
-        {
-          or: acceptedColonyActionTypes.map((acceptedColonyActionType) => ({
-            type: { eq: acceptedColonyActionType },
-          })),
-        },
-        {
-          showInActionsList: { eq: true },
-        },
-      ],
-    },
+    filter,
     limit,
     nextToken,
   });

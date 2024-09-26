@@ -8,6 +8,7 @@ import {
   type ColonyNetworkClient,
 } from '@colony/colony-js';
 import { BigNumber, constants, type BigNumberish } from 'ethers';
+import { call } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type ColonyRoleFragment } from '~gql';
@@ -382,46 +383,63 @@ export const getPermissionProofsLocal = async ({
   });
 };
 
-export function* getMoveFundsPermissionProofs(
-  colonyAddress: string,
-  fromtPotId: BigNumberish,
-  toPotId: BigNumberish,
-) {
+export function* getMoveFundsPermissionProofs({
+  colonyAddress,
+  fromPotId,
+  toPotId,
+  colonyDomains,
+  colonyRoles,
+}: {
+  colonyAddress: string;
+  fromPotId: BigNumberish;
+  toPotId: BigNumberish;
+  colonyDomains: Domain[];
+  colonyRoles: ColonyRoleFragment[];
+}) {
   const colonyManager: ColonyManager = yield getColonyManager();
-
-  const { signer } = colonyManager;
-  const walletAddress = yield signer.getAddress();
 
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
 
-  const fromDomainId = yield getPotDomain(colonyClient, fromtPotId);
-  const toDomainId = yield getPotDomain(colonyClient, toPotId);
-  const [fromPermissionDomainId, fromChildSkillIndex] =
-    yield getPermissionProofs(
-      colonyClient.networkClient,
-      colonyClient,
-      fromDomainId,
-      ColonyRole.Funding,
-      walletAddress,
-    );
-  // @TODO: once getPermissionProofs is more expensive we can just check the domain here
-  // with userHasRole and then immediately get the permission proofs
-  const [toPermissionDomainId, toChildSkillIndex] = yield getPermissionProofs(
-    colonyClient.networkClient,
+  const userAddress = yield colonyClient.signer.getAddress();
+
+  const fromDomainId: BigNumberish = yield getPotDomain(
     colonyClient,
-    toDomainId,
-    ColonyRole.Funding,
-    walletAddress,
+    fromPotId,
+  );
+  const toDomainId: BigNumberish = yield getPotDomain(colonyClient, toPotId);
+
+  const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
+    getPermissionProofsLocal,
+    {
+      networkClient: colonyClient.networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId: Number(fromDomainId),
+      requiredColonyRoles: ColonyRole.Funding,
+      permissionAddress: userAddress,
+    },
+  );
+
+  const [toPermissionDomainId, toChildSkillIndex] = yield call(
+    getPermissionProofsLocal,
+    {
+      networkClient: colonyClient.networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId: Number(toDomainId),
+      requiredColonyRoles: ColonyRole.Funding,
+      permissionAddress: userAddress,
+    },
   );
   // Here's a weird case. We have found permissions for these domains but they don't share
   // a parent domain with that permission. We can still find a common parent domain that
   // has the funding permission
   if (!fromPermissionDomainId.eq(toPermissionDomainId)) {
     const hasFundingInRoot = yield colonyClient.hasUserRole(
-      walletAddress,
+      userAddress,
       Id.RootDomain,
       ColonyRole.Funding,
     );
@@ -506,3 +524,58 @@ export function* getMultiPermissionProofs({
   // It does not need to be an array because if we get here, all the proofs are the same
   return proofs[0];
 }
+
+interface GetSinglePermissionProofsFromSourceDomainParams {
+  networkClient: ColonyNetworkClient;
+  colonyRoles: ColonyRoleFragment[];
+  colonyDomains: Domain[];
+  requiredDomainId: number;
+  requiredColonyRole: ColonyRole;
+  permissionAddress: string;
+  isMultiSig?: boolean;
+}
+
+// Returns the permission proofs from the domain where the user has been assigned the permissions
+// If the user has permissions directly in the requiredDomainId those will be returned first
+// However, if the user has inherited permissions in the requiredDomainId,
+// the permission proofs will be returned from the domain from which they are inherited
+export const getSinglePermissionProofsFromSourceDomain = async ({
+  networkClient,
+  colonyRoles,
+  colonyDomains,
+  requiredDomainId,
+  requiredColonyRole,
+  permissionAddress,
+  isMultiSig = false,
+}: GetSinglePermissionProofsFromSourceDomainParams): Promise<
+  [BigNumber, BigNumber, string]
+> => {
+  const [permissionDomainId, childSkillIndex] =
+    await getSinglePermissionProofsLocal({
+      networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId,
+      requiredColonyRole,
+      permissionAddress,
+      isMultiSig,
+    });
+
+  if (Number(permissionDomainId) === requiredDomainId) {
+    return [permissionDomainId, childSkillIndex, permissionAddress];
+  }
+
+  // Once nested teams is implemented, this should get from the next parent, then work it's way up the tree to root
+  const [rootPermissionDomainId, rootChildSkillIndex] =
+    await getSinglePermissionProofsLocal({
+      networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId: Id.RootDomain,
+      requiredColonyRole,
+      permissionAddress,
+      isMultiSig,
+    });
+
+  return [rootPermissionDomainId, rootChildSkillIndex, permissionAddress];
+};
