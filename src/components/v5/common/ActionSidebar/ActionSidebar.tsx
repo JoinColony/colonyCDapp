@@ -109,7 +109,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   const getSidebarContent = () => {
     if (isLoading) {
-      return <ActionSidebarLoadingSkeleton />;
+      return (
+        <ActionSidebarLoadingSkeleton isCreateActionSkeleton={!transactionId} />
+      );
     }
 
     if (action) {

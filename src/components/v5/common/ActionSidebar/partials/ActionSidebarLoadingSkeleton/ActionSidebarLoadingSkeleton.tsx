@@ -5,8 +5,34 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
-export interface ActionSidebarLoadingSkeletonProps {}
-export const ActionSidebarLoadingSkeleton = () => {
+export interface ActionSidebarLoadingSkeletonProps {
+  isCreateActionSkeleton?: boolean;
+}
+
+export const ActionSidebarLoadingSkeleton = ({
+  isCreateActionSkeleton = false,
+}: ActionSidebarLoadingSkeletonProps) => {
+  if (isCreateActionSkeleton) {
+    return (
+      <div className="px-6 pt-8">
+        <LoadingSkeleton
+          isLoading
+          className="h-[1.875rem] w-[12.5rem] rounded"
+        />
+        <div className="mt-7 flex items-center gap-2">
+          <LoadingSkeleton
+            isLoading
+            className="h-[1.875rem] w-[12.5rem] rounded"
+          />
+          <LoadingSkeleton
+            isLoading
+            className="h-[1.875rem] w-[12.5rem] rounded"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
       <div
