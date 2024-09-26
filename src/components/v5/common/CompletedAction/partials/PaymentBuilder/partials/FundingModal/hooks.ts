@@ -2,8 +2,8 @@ import { type Action } from '~constants/actions.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { useCheckIfUserHasPermissions } from '~v5/common/CompletedAction/partials/PaymentBuilder/hooks.ts';
 
-import { useCheckIfUserHasPermissions } from '../../hooks.ts';
 import { type DecisionMethodOption } from '../DecisionMethodSelect/types.ts';
 
 export const useFundingDecisionMethods = (
@@ -14,7 +14,7 @@ export const useFundingDecisionMethods = (
 
   return [
     {
-      label: formatText({ id: 'decisionMethodSelect.decision.permissions' }),
+      label: formatText({ id: 'decisionMethod.permissions' }),
       value: DecisionMethod.Permissions,
       isDisabled: !userHasPermissions,
     },
@@ -22,7 +22,7 @@ export const useFundingDecisionMethods = (
       ? [
           {
             label: formatText({
-              id: 'decisionMethodSelect.decision.reputation',
+              id: 'decisionMethod.reputation',
             }),
             value: DecisionMethod.Reputation,
           },
