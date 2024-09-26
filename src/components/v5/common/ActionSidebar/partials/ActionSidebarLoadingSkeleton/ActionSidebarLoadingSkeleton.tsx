@@ -8,7 +8,9 @@ export interface ActionSidebarLoadingSkeletonProps {
   isCreateActionSkeleton?: boolean;
 }
 
-export const ActionSidebarLoadingSkeleton = ({
+const displayName = `v5.common.ActionSidebar.partials.ActionSidebarLoadingSkeleton`;
+
+const ActionSidebarLoadingSkeleton = ({
   isCreateActionSkeleton = false,
 }: ActionSidebarLoadingSkeletonProps) => {
   if (isCreateActionSkeleton) {
@@ -108,3 +110,7 @@ export const ActionSidebarLoadingSkeleton = ({
     </div>
   );
 };
+
+ActionSidebarLoadingSkeleton.displayName = displayName;
+
+export default ActionSidebarLoadingSkeleton;
