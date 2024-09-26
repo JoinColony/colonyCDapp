@@ -1,6 +1,6 @@
 const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
-const { createExternalAccount, getLiquidationAddresses } = require('./utils');
+const { createExternalAccount, getLiquidationAddresses, getExternalAccounts } = require('./utils');
 
 const { getUser } = require('../graphql');
 
@@ -32,22 +32,7 @@ const updateExternalAccountHandler = async (
 
   const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
 
-  const deleteAccountRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${input.id}`,
-    {
-      headers: {
-        'Api-Key': apiKey,
-      },
-      method: 'DELETE',
-    },
-  );
-
-  // Exit if deleting account fails to avoid creating multiple accounts
-  if (deleteAccountRes.status !== 200) {
-    throw Error(
-      `Error deleting external account: ${await deleteAccountRes.text()}`,
-    );
-  }
+  const externalAccounts = await getExternalAccounts(apiUrl, apiKey, bridgeCustomerId);
 
   const newAccount = await createExternalAccount(
     apiUrl,
@@ -55,6 +40,26 @@ const updateExternalAccountHandler = async (
     bridgeCustomerId,
     account,
   );
+
+  const deletePromises = externalAccounts.map(async ({ id }) => {
+    const deleteAccountRes = await fetch(
+      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${input.id}`,
+      {
+        headers: {
+          'Api-Key': apiKey,
+        },
+        method: 'DELETE',
+      },
+    );
+
+    if (deleteAccountRes.status !== 200) {
+      console.log(
+        `Error deleting external account: ${await deleteAccountRes.text()}`,
+      );
+    }
+  });
+
+  await Promise.all(deletePromises);
 
   /**
    * Update liquidation addresses associated with the deleted account

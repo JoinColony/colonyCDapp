@@ -1,6 +1,6 @@
 const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
-const { getLiquidationAddresses } = require('./utils');
+const { getLiquidationAddresses, getExternalAccounts } = require('./utils');
 
 const { getUser } = require('../graphql');
 
@@ -25,19 +25,7 @@ const getUserLiquidationAddressHandler = async (
     return null;
   }
 
-  const externalAccountRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
-    },
-  );
-
-  const response = await externalAccountRes.json();
-
-  const externalAccounts = response.data;
+  const externalAccounts = await getExternalAccounts(apiUrl, apiKey, bridgeCustomerId);
   const firstAccount = externalAccounts?.[0];
 
   if (!firstAccount) {
