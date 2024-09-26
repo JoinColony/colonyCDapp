@@ -38,6 +38,7 @@ import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import { ActionSidebarLoadingSkeleton } from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
@@ -107,10 +108,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (action || isLoading) {
-      return (
-        <CompletedAction action={action ?? undefined} isLoading={!!isLoading} />
-      );
+    if (isLoading) {
+      return <ActionSidebarLoadingSkeleton />;
+    }
+
+    if (action) {
+      return <CompletedAction action={action} />;
     }
 
     if (actionNotFound) {
@@ -243,9 +246,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         `,
         {
           'md:max-w-full': isSidebarFullscreen,
+          'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'md:max-w-[67.3125rem]':
-            (!isSidebarFullscreen && !isMotion) ||
-            (!isSidebarFullscreen && !!transactionId && !actionNotFound),
+            (!isSidebarFullscreen && !!transactionId) ||
+            (!actionNotFound && !!transactionId),
         },
       )}
       ref={registerContainerRef}

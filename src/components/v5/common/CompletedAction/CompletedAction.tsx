@@ -11,7 +11,6 @@ import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/pa
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
 
-import { ActionContentLoaderSkeleton } from './partials/ActionContentLoaderSkeleton/ActionContentLoaderSkeleton.tsx';
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
@@ -28,25 +27,19 @@ import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
-import { WidgetContentLoaderSkeleton } from './partials/WidgetContentLoaderSkeleton/WidgetContentLoaderSkeleton.tsx';
 
 interface CompletedActionProps {
-  action?: ColonyAction;
-  isLoading: boolean;
+  action: ColonyAction;
 }
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({ action, isLoading }: CompletedActionProps) => {
+const CompletedAction = ({ action }: CompletedActionProps) => {
   const { colony } = useColonyContext();
 
-  const actionType = action
-    ? getExtendedActionType(action, colony.metadata)
-    : undefined;
+  const actionType = getExtendedActionType(action, colony.metadata);
 
   const getActionContent = () => {
-    if (!action) return undefined;
-
     switch (actionType) {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion:
@@ -125,8 +118,6 @@ const CompletedAction = ({ action, isLoading }: CompletedActionProps) => {
   };
 
   const getSidebarWidgetContent = () => {
-    if (!action) return undefined;
-
     if (action.isMultiSig) {
       return <MultiSigSidebar transactionId={action.transactionHash} />;
     }
@@ -162,10 +153,10 @@ const CompletedAction = ({ action, isLoading }: CompletedActionProps) => {
     <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
-          'sm:w-[calc(100%-23.75rem)]': action?.isMotion,
+          'sm:w-[calc(100%-23.75rem)]': action.isMotion,
         })}
       >
-        {isLoading ? <ActionContentLoaderSkeleton /> : getActionContent()}
+        {getActionContent()}
       </div>
 
       <div
@@ -185,11 +176,7 @@ const CompletedAction = ({ action, isLoading }: CompletedActionProps) => {
             sm:border-l-gray-200
           `}
       >
-        {isLoading ? (
-          <WidgetContentLoaderSkeleton />
-        ) : (
-          getSidebarWidgetContent()
-        )}
+        {getSidebarWidgetContent()}
       </div>
     </div>
   );
