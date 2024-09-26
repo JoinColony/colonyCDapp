@@ -59,12 +59,15 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section
-              className={clsx('modal-blur w-full overflow-auto px-6 md:p-8', {
-                'md:!pt-[1.125rem]': !headerProps?.pageHeadingProps?.title,
-              })}
+              className={clsx(
+                'modal-blur h-full w-full overflow-auto px-6 md:px-8 md:pt-8',
+                {
+                  'md:!pt-[1.125rem]': !headerProps?.pageHeadingProps?.title,
+                },
+              )}
             >
               <div
-                className={clsx('mx-auto max-w-[71.5rem] pt-6 md:pt-0', {
+                className={clsx('mx-auto max-w-[79.875rem] pt-6 md:pt-0', {
                   '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                 })}
               >

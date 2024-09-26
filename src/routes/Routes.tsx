@@ -3,7 +3,7 @@ import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
 import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/ExtensionDetailsPage.tsx';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
