@@ -17,7 +17,7 @@ import stagedHero from '~images/assets/extensions/staged-hero.png';
 import stagedInterface from '~images/assets/extensions/staged-interface.png';
 import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
-import { type ExtensionConfig, ExtensionParamType } from '~types/extensions.ts';
+import { type ExtensionConfig } from '~types/extensions.ts';
 import {
   convertFractionToWei,
   convertPeriodToSeconds,
@@ -376,11 +376,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 1,
         title: MSG.votingReputationTotalStakeFractionTitle,
         description: MSG.votingReputationTotalStakeFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertFractionToWei,
       },
       {
@@ -393,11 +388,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 20,
         title: MSG.votingReputationVoterRewardFractionTitle,
         description: MSG.votingReputationVoterRewardFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertFractionToWei,
       },
       {
@@ -410,11 +400,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 1,
         title: MSG.votingReputationUserMinStakeFractionTitle,
         description: MSG.votingReputationUserMinStakeFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertFractionToWei,
       },
       {
@@ -427,11 +412,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 70,
         title: MSG.votingReputationMaxVoteFractionTitle,
         description: MSG.votingReputationMaxVoteFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertFractionToWei,
       },
       {
@@ -444,11 +424,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationStakePeriodTitle,
         description: MSG.votingReputationStakePeriodDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'hours',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -461,11 +436,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationSubmitPeriodTitle,
         description: MSG.votingReputationSubmitPeriodDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'hours',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -478,11 +448,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 72, // 3 days in hours
         title: MSG.votingReputationRevealPeriodTitle,
         description: MSG.votingReputationRevealPeriodDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'hours',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -501,11 +466,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 0, // 3 days in hours
         title: MSG.votingReputationEscalationPeriodTitle,
         description: MSG.votingReputationEscalationPeriodDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'hours',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertPeriodToSeconds,
       },
     ],
@@ -538,11 +498,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         defaultValue: 1,
         title: MSG.stakedExpenditureStakeFractionTitle,
         description: MSG.stakedExpenditureStakeFractionDescription,
-        type: ExtensionParamType.Input,
-        complementaryLabel: 'percent',
-        formattingOptions: {
-          numeralPositiveOnly: true,
-        },
         transformValue: convertFractionToWei,
       },
     ],
