@@ -71,7 +71,8 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
 
 export const useInstall = (extensionData: AnyExtensionData) => {
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
-  const { setActiveTab } = useExtensionDetailsPageContext();
+  const { setActiveTab, setWaitingForActionConfirmation } =
+    useExtensionDetailsPageContext();
   const {
     colony: {
       colonyAddress,
@@ -155,6 +156,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
 
   const handleInstallSuccess = useCallback(async () => {
     setIsLoading(true);
+    setWaitingForActionConfirmation(true);
 
     try {
       await waitForDbAfterExtensionAction({
@@ -172,19 +174,19 @@ export const useInstall = (extensionData: AnyExtensionData) => {
         />,
       );
 
-      if (extensionData.autoEnableAfterInstall) {
-        await handleAutoEnable();
-      }
-
-      setIsLoading(false);
-
       if (extensionData.initializationParams || extensionData.configurable) {
         reset();
         setActiveTab(ExtensionDetailsPageTabId.Settings);
       }
+
+      if (extensionData.autoEnableAfterInstall) {
+        await handleAutoEnable();
+      }
     } catch {
-      setIsLoading(false);
       showErrorToast();
+    } finally {
+      setIsLoading(false);
+      setWaitingForActionConfirmation(false);
     }
   }, [
     extensionData.autoEnableAfterInstall,
@@ -194,6 +196,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
     refetchExtensionData,
     reset,
     setActiveTab,
+    setWaitingForActionConfirmation,
     showErrorToast,
   ]);
 

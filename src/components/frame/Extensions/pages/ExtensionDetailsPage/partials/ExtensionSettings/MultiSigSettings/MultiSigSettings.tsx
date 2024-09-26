@@ -92,12 +92,9 @@ const inputGroupSharedConfig = {
   type: 'number',
 };
 
-interface MultiSigSettingsProps {
-  userHasRoot: boolean;
-}
-
-const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
-  const { extensionData } = useExtensionDetailsPageContext();
+const MultiSigSettings: FC = () => {
+  const { extensionData, userHasRoot, waitingForActionConfirmation } =
+    useExtensionDetailsPageContext();
   const {
     register,
     thresholdType,
@@ -123,7 +120,7 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
     );
   }
 
-  const isFormDisabled = !userHasRoot;
+  const isFormDisabled = !userHasRoot || waitingForActionConfirmation;
 
   return (
     <div className="w-full">

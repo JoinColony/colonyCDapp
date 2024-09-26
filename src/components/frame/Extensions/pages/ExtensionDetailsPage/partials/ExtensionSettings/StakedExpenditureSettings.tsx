@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { getTextChunks } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
@@ -20,16 +21,12 @@ const MSG = defineMessages({
   },
 });
 
-interface StakedExpenditureSettingsProps {
-  userHasRoot: boolean;
-}
-
-const StakedExpenditureSettings: FC<StakedExpenditureSettingsProps> = ({
-  userHasRoot,
-}) => {
+const StakedExpenditureSettings: FC = () => {
+  const { userHasRoot, waitingForActionConfirmation } =
+    useExtensionDetailsPageContext();
   const { h4, p, b, ul, li } = getTextChunks();
 
-  const isFormDisabled = !userHasRoot;
+  const isFormDisabled = !userHasRoot || waitingForActionConfirmation;
 
   return (
     <div>
