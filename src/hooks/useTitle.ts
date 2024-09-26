@@ -18,7 +18,6 @@ import {
   COLONY_HOME_ROUTE,
   COLONY_EVENTS_ROUTE,
   ACTIONS_QUERY_STRING,
-  COLONY_EXTENSION_DETAILS_SETUP_ROUTE,
   COLONY_EXTENSION_DETAILS_ROUTE,
   COLONY_EXTENSIONS_ROUTE,
   COLONY_INCOMING_ROUTE,
@@ -121,18 +120,6 @@ const MSG = defineMessages({
       } Extension | Colony - {colonyName}`,
   },
 
-  colonyExtensionSetup: {
-    id: `${displayName}.useTitle.colonyExtensionSetup`,
-    defaultMessage: `{extensionId, select,
-      VotingReputation {Governance}
-      OneTxPayment {One Transaction Payment}
-      StakedExpenditure {Staked Expenditure}
-      StagedExpenditure {Staged Expenditure}
-      StreamingPayments {Streaming Payments}
-      other {{extensionId}}
-      } Extension Setup | Colony - {colonyName}`,
-  },
-
   colonyMembers: {
     id: `${displayName}.useTitle.colonyMembers`,
     defaultMessage: `Members | Colony - {colonyName}`,
@@ -215,8 +202,6 @@ const routeMessages: Record<string, MessageDescriptor> = {
   [`${COLONY_HOME_ROUTE}${COLONY_EXTENSIONS_ROUTE}`]: MSG.colonyExtensions,
   [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_ROUTE}`]:
     MSG.colonyExtensionDetails,
-  [`${COLONY_HOME_ROUTE}${COLONY_EXTENSION_DETAILS_SETUP_ROUTE}`]:
-    MSG.colonyExtensionSetup,
   [ACTIONS_QUERY_STRING]: MSG.transactionDetails,
   [`${COLONY_HOME_ROUTE}${COLONY_MEMBERS_ROUTE}`]: MSG.colonyMembers,
   [`${COLONY_HOME_ROUTE}${COLONY_CONTRIBUTORS_ROUTE}`]: MSG.colonyContributors,
