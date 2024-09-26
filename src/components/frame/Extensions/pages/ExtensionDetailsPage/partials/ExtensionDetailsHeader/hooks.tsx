@@ -17,6 +17,8 @@ import Toast from '~shared/Extensions/Toast/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { getDefaultStakeFraction } from '~utils/extensions.ts';
 
+import { getExtensionSettingsDefaultValues } from '../ExtensionSettings/utils.tsx';
+
 export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -175,8 +177,12 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       );
 
       if (extensionData.initializationParams || extensionData.configurable) {
-        reset();
-        setActiveTab(ExtensionDetailsPageTabId.Settings);
+        // Reset the form to the default values using most recent extension data
+        const updatedExtensionData = await refetchExtensionData();
+        if (updatedExtensionData) {
+          reset(getExtensionSettingsDefaultValues(updatedExtensionData));
+          setActiveTab(ExtensionDetailsPageTabId.Settings);
+        }
       }
 
       if (extensionData.autoEnableAfterInstall) {

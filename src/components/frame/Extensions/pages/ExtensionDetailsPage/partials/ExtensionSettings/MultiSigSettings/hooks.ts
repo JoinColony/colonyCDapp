@@ -32,7 +32,12 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
   const domainThresholdConfigs = watch('domainThresholds');
 
   useEffect(() => {
-    if (!domains || !domains.items || !multiSigConfig) {
+    if (
+      !domains ||
+      !domains.items ||
+      !multiSigConfig ||
+      domainThresholdConfigs.length
+    ) {
       return;
     }
 
@@ -45,7 +50,7 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
 
       setValue(`domainThresholds.${index}`, config);
     });
-  }, [domains, multiSigConfig, setValue]);
+  }, [domainThresholdConfigs.length, domains, multiSigConfig, setValue]);
 
   const handleGlobalThresholdTypeChange = (
     newThresholdType: MultiSigThresholdType,

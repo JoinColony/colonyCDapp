@@ -45,10 +45,8 @@ const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
       {isVotingReputation && (
         <VotingReputationSettings userHasRoot={userHasRoot} />
       )}
-      {isStakedExpenditure && (
-        <StakedExpenditureSettings userHasRoot={userHasRoot} />
-      )}
-      {isMultiSig && <MultiSigSettings userHasRoot={userHasRoot} />}
+      {isStakedExpenditure && <StakedExpenditureSettings />}
+      {isMultiSig && <MultiSigSettings />}
     </div>
   );
 };
