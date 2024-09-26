@@ -4,7 +4,7 @@ import React, { type FC, type PropsWithChildren } from 'react';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import Numeral from '~shared/Numeral/Numeral.tsx';
+import { NumeralCurrency } from '~shared/Numeral/NumeralCurrency.tsx';
 import { getValuesTrend } from '~utils/balance/getValuesTrend.ts';
 import { FundsTrend } from '~v5/frame/ColonyHome/partials/FundsTrend/FundsTrend.tsx';
 
@@ -43,7 +43,10 @@ export const TitledSection: FC<TitledSectionProps> = ({
             className="h-[27px] w-[100px] rounded"
           >
             <div className="text-xl font-semibold">
-              <Numeral prefix={currencySymbolMap[currency]} value={value} />
+              <NumeralCurrency
+                prefix={currencySymbolMap[currency]}
+                value={value}
+              />
             </div>
           </LoadingSkeleton>
           <LoadingSkeleton isLoading={isLoading} className="h-5 w-10 rounded">
