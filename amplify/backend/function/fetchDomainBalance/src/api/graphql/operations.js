@@ -51,8 +51,10 @@ const getAllPages = async (getData, params) => {
 
   do {
     const actionsData = await getData({ ...params, nextToken });
-    nextToken = actionsData.nextToken;
-    items.push(...actionsData.items);
+    nextToken = actionsData?.nextToken;
+    if (actionsData?.items) {
+      items.push(...actionsData.items);
+    }
   } while (nextToken);
 
   return items;

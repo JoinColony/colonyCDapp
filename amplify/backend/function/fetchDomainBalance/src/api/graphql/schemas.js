@@ -90,15 +90,16 @@ module.exports = {
     }
   `,
   getColonyExpenditures: /* GraphQL */ `
-    query GetDomainExpenditures(
+    query GetColonyExpenditures(
       $colonyAddress: ID!
       $nextToken: String
       $limit: Int
     ) {
-      listExpenditures(
+      getExpendituresByColony(
+        colonyId: $colonyAddress
         nextToken: $nextToken
         limit: $limit
-        filter: { colonyId: { eq: $colonyAddress }, status: { eq: FINALIZED } }
+        filter: { status: { eq: FINALIZED } }
       ) {
         items {
           id
