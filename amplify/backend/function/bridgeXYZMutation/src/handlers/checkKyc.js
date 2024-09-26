@@ -162,7 +162,7 @@ const checkKYCHandler = async (
         {
           headers: {
             'Content-Type': 'application/json',
-            'Idempotency-Key': firstAccount.id,
+            'Idempotency-Key': uuid(),
             'Api-Key': apiKey,
           },
           method: 'POST',
