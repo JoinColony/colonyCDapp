@@ -4,21 +4,20 @@
 // a random key generated when we run `npm run dev`. This key will then be stored in our .env file
 // and passed over to the .env file in the block ingestor inside docker.
 
-const { exec } = require('node:child_process');
+var fs = require('fs');
 
 const LOCAL_KEY = Math.floor(100000000 + Math.random() * 900000000);
 
-const fullCmd = `sed -i '' 's/MAGICBELL_DEV_KEY=.*/MAGICBELL_DEV_KEY=${LOCAL_KEY}/g' .env`;
+fs.readFile('.env', 'utf8', function (err, data) {
+  if (err) {
+    return console.log(err);
+  }
+  var result = data.replace(
+    /MAGICBELL_DEV_KEY=.*\n/g,
+    `MAGICBELL_DEV_KEY=${LOCAL_KEY}\n`,
+  );
 
-exec(fullCmd, (error, stdout, stderr) => {
-  if (error) {
-    console.error(error.message);
-    process.exit(1);
-  }
-  if (stdout) {
-    console.log(stdout);
-  }
-  if (stderr) {
-    console.error(stderr);
-  }
+  fs.writeFile('.env', result, 'utf8', function (err) {
+    if (err) return console.log(err);
+  });
 });
