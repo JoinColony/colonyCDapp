@@ -49,7 +49,7 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
         <div
           ref={setTooltipRef}
           {...getTooltipProps()}
-          className="flex flex-col gap-2 rounded-b-lg border-b border-l border-r border-gray-200 bg-base-white px-4 py-2"
+          className="z-base flex flex-col gap-2 rounded-b-lg border-b border-l border-r border-gray-200 bg-base-white px-4 py-2"
         >
           {domains.map((domain) => (
             <button
