@@ -4,7 +4,6 @@ import React, { type FC } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
-import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/NewExtensionDetailsPage/types.ts';
 import useActiveInstalls from '~hooks/useActiveInstalls.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
@@ -19,13 +18,14 @@ import HeadingIcon from './HeadingIcon.tsx';
 import InstallButton from './InstallButton.tsx';
 import ReenableButton from './ReenableButton.tsx';
 import SubmitButton from './SubmitButton.tsx';
+import UpgradeButton from './UpgradeButton.tsx';
 
 const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
 
 const ExtensionDetailsHeader: FC = () => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { extensionData, activeTab } = useExtensionDetailsPageContext();
+  const { extensionData } = useExtensionDetailsPageContext();
 
   const activeInstalls = useActiveInstalls(extensionData.extensionId);
 
@@ -49,18 +49,17 @@ const ExtensionDetailsHeader: FC = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.isDeprecated;
 
-  // const isUpgradeButtonVisible =
-  //   !!user &&
-  //   extensionData &&
-  //   isInstalledExtensionData(extensionData) &&
-  //   extensionData.currentVersion < extensionData.availableVersion;
+  const isUpgradeButtonVisible =
+    !!user &&
+    extensionData &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.currentVersion < extensionData.availableVersion;
 
   const badgeMode = extensionsBadgeModeMap[extensionData.extensionId];
   const badgeText = extensionsBadgeTextMap[extensionData.extensionId];
 
   const isPermissionsBannerVisible =
     userHasRoot &&
-    activeTab !== ExtensionDetailsPageTabId.Settings &&
     isInstalledExtensionData(extensionData) &&
     extensionData.isEnabled &&
     extensionData.missingColonyPermissions.length > 0;
@@ -93,13 +92,13 @@ const ExtensionDetailsHeader: FC = () => {
             {isReenableButtonVisible && (
               <ReenableButton extensionData={extensionData} />
             )}
+            {isUpgradeButtonVisible && (
+              <UpgradeButton extensionData={extensionData} />
+            )}
             <SubmitButton
               extensionData={extensionData}
               userHasRoot={userHasRoot}
             />
-            {/* {isUpgradeButtonVisible && (
-          <UpgradeButton extensionData={extensionData} />
-        )} */}
           </div>
         </div>
       </div>
