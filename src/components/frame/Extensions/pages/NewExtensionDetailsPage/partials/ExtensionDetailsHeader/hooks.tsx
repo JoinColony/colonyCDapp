@@ -1,11 +1,15 @@
 import { type Extension } from '@colony/colony-js';
 import React, { useCallback, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/NewExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/NewExtensionDetailsPage/types.ts';
-import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
+import {
+  waitForDbAfterExtensionAction,
+  waitForExtensionPermissions,
+} from '~frame/Extensions/pages/NewExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
@@ -73,7 +77,9 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       colonyAddress,
       nativeToken: { decimals },
     },
+    refetchColony,
   } = useColonyContext();
+  const { reset } = useFormContext();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -87,11 +93,21 @@ export const useInstall = (extensionData: AnyExtensionData) => {
     // Use refetched extension data to ensure it has uodated following the installation
     const updatedExtensionData = await refetchExtensionData();
 
+    if (!updatedExtensionData) {
+      return;
+    }
+
     try {
       await enableExtension({
         colonyAddress,
         extensionData: updatedExtensionData,
         stakeFraction: getDefaultStakeFraction(decimals),
+      });
+
+      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
+      await waitForExtensionPermissions({
+        extensionData: updatedExtensionData,
+        refetchColony,
       });
 
       await waitForDbAfterExtensionAction({
@@ -119,7 +135,13 @@ export const useInstall = (extensionData: AnyExtensionData) => {
         />,
       );
     }
-  }, [colonyAddress, decimals, enableExtension, refetchExtensionData]);
+  }, [
+    colonyAddress,
+    decimals,
+    enableExtension,
+    refetchColony,
+    refetchExtensionData,
+  ]);
 
   const showErrorToast = useCallback(() => {
     toast.error(
@@ -157,6 +179,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       setIsLoading(false);
 
       if (extensionData.initializationParams || extensionData.configurable) {
+        reset();
         setActiveTab(ExtensionDetailsPageTabId.Settings);
       }
     } catch {
@@ -164,9 +187,12 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       showErrorToast();
     }
   }, [
-    extensionData,
+    extensionData.autoEnableAfterInstall,
+    extensionData.configurable,
+    extensionData.initializationParams,
     handleAutoEnable,
     refetchExtensionData,
+    reset,
     setActiveTab,
     showErrorToast,
   ]);

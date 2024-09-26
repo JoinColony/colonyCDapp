@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import {
@@ -35,10 +36,9 @@ export const useThresholdData = (extensionData: AnyExtensionData) => {
       return;
     }
 
-    const domainsExcludingRoot = domains.items.filter(
-      (domain): domain is NonNullable<typeof domain> =>
-        domain !== null && !domain.isRoot,
-    );
+    const domainsExcludingRoot = domains.items
+      .filter(notNull)
+      .filter((domain) => !domain.isRoot);
 
     domainsExcludingRoot.forEach((domain, index) => {
       const config = getInitialDomainConfig(domain, multiSigConfig);
