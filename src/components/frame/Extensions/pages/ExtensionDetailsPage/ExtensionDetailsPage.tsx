@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -15,43 +15,30 @@ const displayName = 'frame.Extensions.pages.Extensions.ExtensionDetailsPage';
 
 const MSG = defineMessages({
   title: {
-    id: `${displayName}.buttonYourDashboard`,
+    id: `${displayName}.title`,
     defaultMessage: 'Extensions',
   },
 });
 
-const ExtensionDetailsPage: FC = () => {
+const ExtensionDetailsPage = () => {
   useSetPageHeadingTitle(formatText(MSG.title));
 
   const { extensionId } = useParams();
-  const { extensionData, loading, refetchExtensionData } = useExtensionData(
-    extensionId ?? '',
-  );
-
-  if (!extensionData && !loading) {
-    return <NotFoundRoute />;
-  }
+  const { extensionData, loading } = useExtensionData(extensionId ?? '');
 
   if (loading) {
     return <SpinnerLoader />;
   }
 
   if (!extensionData) {
-    return (
-      <p>{formatText({ id: 'extensionDetailsPage.unsupportedExtension' })}</p>
-    );
+    return <NotFoundRoute />;
   }
 
   return (
-    <ExtensionDetailsPageContextProvider>
-      <ExtensionDetailsPageContent
-        extensionData={extensionData}
-        refetchExtensionData={refetchExtensionData}
-      />
+    <ExtensionDetailsPageContextProvider extensionData={extensionData}>
+      <ExtensionDetailsPageContent />
     </ExtensionDetailsPageContextProvider>
   );
 };
-
-ExtensionDetailsPage.displayName = displayName;
 
 export default ExtensionDetailsPage;

@@ -5,31 +5,38 @@ import React, {
   useMemo,
 } from 'react';
 
+import { type AnyExtensionData } from '~types/extensions.ts';
+
 import { ExtensionDetailsPageTabId } from '../types.ts';
 
 import { ExtensionDetailsPageContext } from './ExtensionDetailsPageContext.ts';
 
-export const ExtensionDetailsPageContextProvider: FC<PropsWithChildren> = ({
-  children,
-}) => {
+interface ExtensionsDetailsPageContextProviderProps extends PropsWithChildren {
+  extensionData: AnyExtensionData;
+}
+
+export const ExtensionDetailsPageContextProvider: FC<
+  ExtensionsDetailsPageContextProviderProps
+> = ({ children, extensionData }) => {
   const [activeTab, setActiveTab] = useState(
     ExtensionDetailsPageTabId.Overview,
   );
   const [waitingForActionConfirmation, setWaitingForActionConfirmation] =
     useState(false);
 
-  const extensionDetailsContextValue = useMemo(
+  const contextValue = useMemo(
     () => ({
       activeTab,
       setActiveTab,
       waitingForActionConfirmation,
       setWaitingForActionConfirmation,
+      extensionData,
     }),
-    [activeTab, waitingForActionConfirmation],
+    [activeTab, extensionData, waitingForActionConfirmation],
   );
 
   return (
-    <ExtensionDetailsPageContext.Provider value={extensionDetailsContextValue}>
+    <ExtensionDetailsPageContext.Provider value={contextValue}>
       {children}
     </ExtensionDetailsPageContext.Provider>
   );

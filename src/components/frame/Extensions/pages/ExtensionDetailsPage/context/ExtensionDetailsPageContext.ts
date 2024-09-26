@@ -5,6 +5,7 @@ import {
   useContext,
 } from 'react';
 
+import { type AnyExtensionData } from '~types/extensions.ts';
 import noop from '~utils/noop.ts';
 
 import { ExtensionDetailsPageTabId } from '../types.ts';
@@ -14,6 +15,7 @@ interface ExtensionDetailsPageContextValues {
   setActiveTab: Dispatch<SetStateAction<ExtensionDetailsPageTabId>>;
   waitingForActionConfirmation: boolean;
   setWaitingForActionConfirmation: Dispatch<SetStateAction<boolean>>;
+  extensionData: AnyExtensionData;
 }
 
 export const ExtensionDetailsPageContext =
@@ -22,6 +24,7 @@ export const ExtensionDetailsPageContext =
     setActiveTab: noop,
     waitingForActionConfirmation: false,
     setWaitingForActionConfirmation: noop,
+    extensionData: {} as AnyExtensionData,
   });
 
 export const useExtensionDetailsPageContext = () => {
