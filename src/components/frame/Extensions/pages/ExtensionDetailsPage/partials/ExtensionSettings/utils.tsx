@@ -208,16 +208,15 @@ export const getExtensionSettingsDefaultValues = (
       };
     }
     case Extension.MultisigPermissions: {
-      if (!extensionData.params?.multiSig) {
-        return {};
-      }
-
       const { colonyThreshold: globalThreshold } =
-        extensionData.params.multiSig;
+        extensionData.params?.multiSig ?? {};
 
       return {
-        thresholdType: getGlobalThresholdType(globalThreshold),
-        globalThreshold,
+        thresholdType:
+          globalThreshold !== undefined
+            ? getGlobalThresholdType(globalThreshold)
+            : MultiSigThresholdType.MAJORITY_APPROVAL,
+        globalThreshold: globalThreshold ?? 0,
         domainThresholds: [],
       } satisfies MultiSigSettingsFormValues;
     }

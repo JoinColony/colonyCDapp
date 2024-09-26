@@ -56,7 +56,6 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
       colonyAddress: colony.colonyAddress,
       extensionData,
     });
-    // @TODO: Add wait
     refetchColony();
   };
 

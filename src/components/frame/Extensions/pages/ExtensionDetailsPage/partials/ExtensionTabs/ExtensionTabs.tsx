@@ -72,7 +72,11 @@ const ExtensionTabs: FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <ExtensionSettings extensionData={extensionData} />
+              <ExtensionSettings
+                /** Setting key to re-mount the component when extension address changes */
+                key={extensionData.address}
+                extensionData={extensionData}
+              />
             </motion.div>
           )}
       </AnimatePresence>
