@@ -13,7 +13,7 @@ const useUserByAddress = (
     variables: {
       address,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip: tryLiquidationAddress || !address,
   });
 
@@ -23,7 +23,7 @@ const useUserByAddress = (
         userOrLiquidationAddress: address,
         chainId: Number(getChainId()),
       },
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'cache-first',
       skip: !tryLiquidationAddress || !address,
     });
 
