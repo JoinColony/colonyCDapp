@@ -1,7 +1,7 @@
 import { ChatsCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
@@ -32,7 +32,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
     typeof window.Intercom !== 'undefined',
   );
 
-  const isWidgetOpen = useRef(false);
+  const [isWidgetOpen, setIsWidgetOpen] = useState(false);
 
   const bootIntercom = useCallback(() => {
     if (typeof window.Intercom !== 'undefined') {
@@ -65,11 +65,11 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
     });
 
     window.Intercom('onShow', () => {
-      isWidgetOpen.current = true;
+      setIsWidgetOpen(true);
     });
 
     window.Intercom('onHide', () => {
-      isWidgetOpen.current = false;
+      setIsWidgetOpen(false);
     });
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -99,22 +99,24 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
     }
 
     try {
-      window.Intercom(isWidgetOpen.current ? 'hide' : 'show');
+      window.Intercom(isWidgetOpen ? 'hide' : 'show');
     } catch (error) {
       window.open(LEARN_MORE_COLONY_HELP_GENERAL, '_blank');
     }
-  }, [bootIntercom, isIntercomBooted, onClick]);
+  }, [bootIntercom, isIntercomBooted, isWidgetOpen, onClick]);
 
   return (
     <Button
       id={FEEDBACK_BUTTON_ID}
       onClick={handleClick}
       className={clsx(
-        'w-full !justify-start !gap-3 !border-none bg-gray-900 !p-2 !text-base-white',
+        'w-full !justify-start !gap-3 !border-none bg-gray-900 !p-2',
         {
           '!w-fit !justify-center': isPopoverMode,
-          '!bg-gray-100 !text-gray-900 hover:!bg-gray-50': isDarkMode,
+          '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
+          '!bg-gray-50': isDarkMode && isWidgetOpen,
           'hover:!bg-gray-800': !isDarkMode,
+          '!bg-gray-800': !isDarkMode && isWidgetOpen,
         },
       )}
       iconSize={20}
