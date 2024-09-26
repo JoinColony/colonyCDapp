@@ -19,6 +19,7 @@ import {
 import { handleMotionCompleted } from '~v5/common/ActionSidebar/utils.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.FinalizeStep';
@@ -222,14 +223,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText(stepTitle),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        iconSize: 16,
-        iconClassName: 'text-gray-500',
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconSize={16}
+          iconClassName="text-gray-500"
+        >
+          {formatText(stepTitle)}
+        </StatusText>
+      }
       sections={[
         {
           key: 'signatories',

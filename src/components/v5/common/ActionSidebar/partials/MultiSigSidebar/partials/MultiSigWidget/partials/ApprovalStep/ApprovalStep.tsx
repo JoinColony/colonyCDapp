@@ -232,89 +232,92 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: doesActionRequireMultipleRoles
-          ? formatText(MSG.multipleRolesHeading)
-          : formatText(MSG.heading, {
-              threshold,
-            }),
-        content: (
-          <>
-            <div className="ml-[1.375rem] mt-1">
-              {hasRejectionVotes && !hasApprovalVotes ? null : (
-                <div className="flex items-center gap-2.5">
-                  {hasApprovalVotes && hasRejectionVotes && (
-                    <span className="text-4">{formatText(MSG.approvals)}</span>
-                  )}
-                  <ProgressBar
-                    progress={Math.min(numberOfApprovals, threshold)}
-                    max={threshold}
-                    progressLabel={formatText(MSG.additionalText, {
-                      threshold,
-                      progress: numberOfApprovals,
-                    })}
-                    className="ml-[0.125rem] w-full !text-xs"
-                    isTall
-                  />
-                </div>
-              )}
-              {hasRejectionVotes && (
-                <div
-                  className={clsx('flex items-center gap-2.5', {
-                    'mt-1': hasApprovalVotes,
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconSize={16}
+          iconClassName="text-gray-500"
+        >
+          {doesActionRequireMultipleRoles
+            ? formatText(MSG.multipleRolesHeading)
+            : formatText(MSG.heading, {
+                threshold,
+              })}
+        </StatusText>
+      }
+      content={
+        <>
+          <div className="ml-[1.375rem] mt-1">
+            {hasRejectionVotes && !hasApprovalVotes ? null : (
+              <div className="flex items-center gap-2.5">
+                {hasApprovalVotes && hasRejectionVotes && (
+                  <span className="text-4">{formatText(MSG.approvals)}</span>
+                )}
+                <ProgressBar
+                  progress={Math.min(numberOfApprovals, threshold)}
+                  max={threshold}
+                  progressLabel={formatText(MSG.additionalText, {
+                    threshold,
+                    progress: numberOfApprovals,
                   })}
-                >
-                  {hasApprovalVotes && hasRejectionVotes && (
-                    <span className="text-4">{formatText(MSG.rejections)}</span>
-                  )}
-                  <ProgressBar
-                    progress={Math.min(numberOfRejections, threshold)}
-                    max={threshold}
-                    progressLabel={formatText(MSG.additionalText, {
-                      current: numberOfRejections,
-                      threshold,
-                      progress: numberOfRejections,
-                    })}
-                    className="ml-[0.125rem] w-full !text-xs"
-                    isTall
-                  />
-                </div>
-              )}
+                  className="ml-[0.125rem] w-full !text-xs"
+                  isTall
+                />
+              </div>
+            )}
+            {hasRejectionVotes && (
+              <div
+                className={clsx('flex items-center gap-2.5', {
+                  'mt-1': hasApprovalVotes,
+                })}
+              >
+                {hasApprovalVotes && hasRejectionVotes && (
+                  <span className="text-4">{formatText(MSG.rejections)}</span>
+                )}
+                <ProgressBar
+                  progress={Math.min(numberOfRejections, threshold)}
+                  max={threshold}
+                  progressLabel={formatText(MSG.additionalText, {
+                    current: numberOfRejections,
+                    threshold,
+                    progress: numberOfRejections,
+                  })}
+                  className="ml-[0.125rem] w-full !text-xs"
+                  isTall
+                />
+              </div>
+            )}
+          </div>
+          {isOwner && !isMotionOlderThanWeek && !userSignature && (
+            <div className="mt-2">
+              <StatusText
+                status={StatusTypes.Info}
+                textClassName="text-4 text-gray-900"
+                iconAlignment="top"
+                iconSize={16}
+                iconClassName="text-gray-500"
+              >
+                {formatText(MSG.creatorRejection)}
+              </StatusText>
             </div>
-            {isOwner && !isMotionOlderThanWeek && !userSignature && (
-              <div className="mt-2">
-                <StatusText
-                  status={StatusTypes.Info}
-                  textClassName="text-4 text-gray-900"
-                  iconAlignment="top"
-                  iconSize={16}
-                  iconClassName="text-gray-500"
-                >
-                  {formatText(MSG.creatorRejection)}
-                </StatusText>
-              </div>
-            )}
-            {isMotionOlderThanWeek && !userSignature && (
-              <div className="mt-2">
-                <StatusText
-                  status={StatusTypes.Info}
-                  textClassName="text-4 text-gray-900"
-                  iconAlignment="top"
-                  iconSize={16}
-                  iconClassName="text-gray-500"
-                >
-                  {formatText(MSG.weekRejection)}
-                </StatusText>
-              </div>
-            )}
-          </>
-        ),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        iconSize: 16,
-        iconClassName: 'text-gray-500',
-      }}
+          )}
+          {isMotionOlderThanWeek && !userSignature && (
+            <div className="mt-2">
+              <StatusText
+                status={StatusTypes.Info}
+                textClassName="text-4 text-gray-900"
+                iconAlignment="top"
+                iconSize={16}
+                iconClassName="text-gray-500"
+              >
+                {formatText(MSG.weekRejection)}
+              </StatusText>
+            </div>
+          )}
+        </>
+      }
       sections={[
         {
           key: 'thresholdPassedBanner',

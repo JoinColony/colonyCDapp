@@ -65,49 +65,50 @@ const RevealStep: FC<RevealStepProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        iconAlignment: 'top',
-        textClassName: 'w-full',
-        children: (
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          iconAlignment="top"
+          textClassName="w-full"
+        >
           <p className="text-gray-900 text-4">
             {formatText({ id: 'motion.revealStep.statusText' })}
           </p>
-        ),
-        content: (
-          <>
-            <div className="ml-[1.375rem] mt-1">
-              <ProgressBar
-                className="mt-2"
-                progress={revealProgress}
-                progressLabel={
-                  <span className="!text-xs">
-                    {formatText(
-                      {
-                        id: 'motion.revealStep.votesRevealed',
-                      },
-                      {
-                        votes: revealProgress,
-                      },
-                    )}
-                  </span>
-                }
-                max={totalVoters}
-                isTall
-              />
-            </div>
-            {!revealPhaseEnded && canInteract && (
-              <StatusText
-                status={StatusTypes.Warning}
-                textClassName="text-4 text-gray-900"
-                iconAlignment="top"
-              >
-                {formatText({ id: 'motion.revealStep.warning' })}
-              </StatusText>
-            )}
-          </>
-        ),
-      }}
+        </StatusText>
+      }
+      content={
+        <>
+          <div className="ml-[1.375rem] mt-1">
+            <ProgressBar
+              className="mt-2"
+              progress={revealProgress}
+              progressLabel={
+                <span className="!text-xs">
+                  {formatText(
+                    {
+                      id: 'motion.revealStep.votesRevealed',
+                    },
+                    {
+                      votes: revealProgress,
+                    },
+                  )}
+                </span>
+              }
+              max={totalVoters}
+              isTall
+            />
+          </div>
+          {!revealPhaseEnded && canInteract && (
+            <StatusText
+              status={StatusTypes.Warning}
+              textClassName="text-4 text-gray-900"
+              iconAlignment="top"
+            >
+              {formatText({ id: 'motion.revealStep.warning' })}
+            </StatusText>
+          )}
+        </>
+      }
       sections={[
         {
           key: '1',

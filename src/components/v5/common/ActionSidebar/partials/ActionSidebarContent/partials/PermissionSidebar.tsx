@@ -8,6 +8,7 @@ import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
 
 import { type PermissionSidebarProps } from '../types.ts';
@@ -71,14 +72,17 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText({
-          id: 'action.executed.permissions.description',
-        }),
-        iconAlignment: 'top',
-        textClassName: 'text-4 text-gray-900',
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+        >
+          {formatText({
+            id: 'action.executed.permissions.description',
+          })}
+        </StatusText>
+      }
       sections={[
         {
           key: '1',

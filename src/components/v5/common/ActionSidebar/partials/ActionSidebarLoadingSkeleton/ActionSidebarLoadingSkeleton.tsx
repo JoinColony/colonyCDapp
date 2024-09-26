@@ -3,7 +3,6 @@ import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
-import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 
 export interface ActionSidebarLoadingSkeletonProps {
   isCreateActionSkeleton?: boolean;
@@ -74,8 +73,9 @@ export const ActionSidebarLoadingSkeleton = ({
             `}
       >
         <MenuWithStatusText
-          isLoading
-          statusTextSectionProps={{ status: StatusTypes.Info }}
+          statusText={
+            <LoadingSkeleton isLoading className="h-4 w-full rounded" />
+          }
           sections={[
             {
               key: '1',
