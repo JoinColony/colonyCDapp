@@ -31,8 +31,8 @@ export const PaymentsSection = () => {
     setShowTabletSidebar(false);
 
     toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-      [FROM_FIELD_NAME]: selectedDomain?.nativeId ?? 1,
+      [ACTION_TYPE_FIELD_NAME]: Action.PaymentGroup,
+      [FROM_FIELD_NAME]: selectedDomain?.nativeId ?? '',
     });
   };
 
