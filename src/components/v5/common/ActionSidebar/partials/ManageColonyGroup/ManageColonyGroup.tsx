@@ -26,6 +26,7 @@ const ManageColonyGroup = () => {
               title={title}
               description={description}
               action={action}
+              key={`group-action-item-${action}`}
             />
           );
         })}
@@ -39,6 +40,7 @@ const ManageColonyGroup = () => {
               title={title}
               description={description}
               action={action}
+              key={`group-action-item-${action}`}
             />
           );
         })}
@@ -52,6 +54,7 @@ const ManageColonyGroup = () => {
               title={title}
               description={description}
               action={action}
+              key={`group-action-item-${action}`}
             />
           );
         })}
