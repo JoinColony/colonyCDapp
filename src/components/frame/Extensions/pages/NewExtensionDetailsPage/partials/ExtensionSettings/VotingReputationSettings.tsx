@@ -97,7 +97,9 @@ const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
     }
     const defaultFormData = getSelectedFormData(selectedDefaultOption);
 
-    setValue('params', defaultFormData, { shouldValidate: true });
+    Object.keys(defaultFormData).forEach((key) => {
+      setValue(key, defaultFormData[key], { shouldValidate: true });
+    });
     setValue('option', selectedDefaultOption, { shouldValidate: true });
   };
 

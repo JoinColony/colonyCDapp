@@ -222,7 +222,7 @@ export const getExtensionSettingsDefaultValues = (
       } satisfies MultiSigSettingsFormValues;
     }
     default: {
-      return {};
+      return defaultValues;
     }
   }
 };
