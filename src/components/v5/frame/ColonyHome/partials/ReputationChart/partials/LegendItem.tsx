@@ -9,23 +9,24 @@ import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { summaryLegendColor } from '../consts.ts';
 import { type ReputationChartDataItem } from '../types.ts';
 
+import LegendItemWrapper from './LegendItemWrapper.tsx';
+
 const displayName = 'v5.frame.ColonyHome.ReputationChart.partials.LegendItem';
 interface LegendItemProps {
-  chartItem:
-    | ReputationChartDataItem
-    | {
-        id?: string;
-        color: string;
-        label: string;
-        value: undefined;
-        shouldTruncateLegendLabel?: boolean;
-      };
+  chartItem: ReputationChartDataItem;
 }
 
 const LEGEND_LABEL_LENGTH = 12;
 
 const LegendItem: FC<LegendItemProps> = ({
-  chartItem: { id, color, label, value, shouldTruncateLegendLabel = true },
+  chartItem: {
+    color,
+    id,
+    label,
+    searchParam,
+    shouldTruncateLegendLabel = true,
+    value,
+  },
 }) => {
   const isTruncated =
     shouldTruncateLegendLabel && label.length > LEGEND_LABEL_LENGTH;
@@ -35,7 +36,7 @@ const LegendItem: FC<LegendItemProps> = ({
 
   return (
     <Tooltip tooltipContent={isTruncated ? label : null}>
-      <div className="flex flex-row items-center gap-1">
+      <LegendItemWrapper id={id} searchParam={searchParam}>
         <div
           className={clsx(
             'h-[10px] w-[10px] rounded-full',
@@ -58,10 +59,11 @@ const LegendItem: FC<LegendItemProps> = ({
             <Numeral value={value.toFixed(2)} />%
           </span>
         )}
-      </div>
+      </LegendItemWrapper>
     </Tooltip>
   );
 };
 
 LegendItem.displayName = displayName;
+
 export default LegendItem;
