@@ -1,12 +1,9 @@
-import { ColonyRole, Extension, Id } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 import React, { useEffect, type FC } from 'react';
 
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
-import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 
 import ExtensionDetailsSidePanel from '../ExtensionDetailsSidePanel/ExtensionDetailsSidePanel.tsx';
@@ -23,9 +20,7 @@ const displayName =
   'frame.Extensions.pages.ExtensionDetailsPage.partials.ExtensionSettings';
 
 const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
-  const { user } = useAppContext();
-  const { colony } = useColonyContext();
-  const { setActiveTab } = useExtensionDetailsPageContext();
+  const { setActiveTab, userHasRoot } = useExtensionDetailsPageContext();
 
   /*
    * If we arrive here but the extension is not installed,
@@ -44,21 +39,9 @@ const ExtensionSettings: FC<ExtensionSettingsProps> = ({ extensionData }) => {
   const isMultiSig =
     extensionData.extensionId === Extension.MultisigPermissions;
 
-  const userHasRoot =
-    !!user &&
-    addressHasRoles({
-      address: user.walletAddress,
-      colony,
-      requiredRoles: [ColonyRole.Root],
-      requiredRolesDomain: Id.RootDomain,
-    });
-
   return (
     <div className="flex flex-col gap-9 md:gap-6">
-      <ExtensionDetailsSidePanel
-        extensionData={extensionData}
-        className="md:hidden"
-      />
+      <ExtensionDetailsSidePanel className="md:hidden" />
       {isVotingReputation && (
         <VotingReputationSettings userHasRoot={userHasRoot} />
       )}

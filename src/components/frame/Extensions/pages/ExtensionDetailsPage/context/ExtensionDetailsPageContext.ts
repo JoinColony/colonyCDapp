@@ -16,6 +16,7 @@ interface ExtensionDetailsPageContextValues {
   waitingForActionConfirmation: boolean;
   setWaitingForActionConfirmation: Dispatch<SetStateAction<boolean>>;
   extensionData: AnyExtensionData;
+  userHasRoot: boolean;
 }
 
 export const ExtensionDetailsPageContext =
@@ -25,6 +26,7 @@ export const ExtensionDetailsPageContext =
     waitingForActionConfirmation: false,
     setWaitingForActionConfirmation: noop,
     extensionData: {} as AnyExtensionData,
+    userHasRoot: false,
   });
 
 export const useExtensionDetailsPageContext = () => {
