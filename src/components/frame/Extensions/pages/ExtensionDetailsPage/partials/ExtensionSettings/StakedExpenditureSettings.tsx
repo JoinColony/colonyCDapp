@@ -1,11 +1,9 @@
 import React, { type FC } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { getTextChunks } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import ContentTypeText from '~shared/Extensions/Accordion/partials/ContentTypeText.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName = 'pages.ExtensionDetailsPage.StakedExpenditureSettings';
@@ -29,13 +27,9 @@ interface StakedExpenditureSettingsProps {
 const StakedExpenditureSettings: FC<StakedExpenditureSettingsProps> = ({
   userHasRoot,
 }) => {
-  const { extensionData } = useExtensionDetailsPageContext();
-
   const { h4, p, b, ul, li } = getTextChunks();
 
-  const isFormDisabled =
-    !userHasRoot ||
-    (isInstalledExtensionData(extensionData) && extensionData.isDeprecated);
+  const isFormDisabled = !userHasRoot;
 
   return (
     <div>

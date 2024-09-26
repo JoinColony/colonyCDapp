@@ -64,7 +64,6 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     userHasRoot &&
     isInstalledExtensionData(extensionData) &&
     !!extensionData.configurable &&
-    !extensionData.isDeprecated &&
     isSettingsTab;
 
   if (isEnableButtonVisible) {

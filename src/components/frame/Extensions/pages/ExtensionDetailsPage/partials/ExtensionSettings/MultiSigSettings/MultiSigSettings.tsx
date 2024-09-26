@@ -6,7 +6,6 @@ import { InputGroup } from '~common/Extensions/Fields/InputGroup/InputGroup.tsx'
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
@@ -124,9 +123,7 @@ const MultiSigSettings: FC<MultiSigSettingsProps> = ({ userHasRoot }) => {
     );
   }
 
-  const isFormDisabled =
-    !userHasRoot ||
-    (isInstalledExtensionData(extensionData) && extensionData.isDeprecated);
+  const isFormDisabled = !userHasRoot;
 
   return (
     <div className="w-full">
