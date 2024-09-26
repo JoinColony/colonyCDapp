@@ -64,7 +64,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               })}
             >
               <div
-                className={clsx('mx-auto max-w-[71.5rem] pt-6 md:pt-0', {
+                className={clsx('mx-auto max-w-[79.875rem] pt-6 md:pt-0', {
                   '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                 })}
               >
