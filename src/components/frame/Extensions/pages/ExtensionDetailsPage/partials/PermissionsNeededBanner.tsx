@@ -11,8 +11,6 @@ import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
-import { useCheckExtensionEnabled } from '../hooks.ts';
-
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
 
@@ -39,10 +37,7 @@ interface Props {
 const PermissionsNeededBanner = ({ extensionData }: Props) => {
   const { colony, refetchColony } = useColonyContext();
   const { user } = useAppContext();
-  const { checkExtensionEnabled } = useCheckExtensionEnabled(
-    extensionData.extensionId ?? '',
-  );
-  const [isPermissionEnabled, setIsPermissionEnabled] = useState(false);
+  const [hasSuccessfullyEnabled, setHasSuccessfullyEnabled] = useState(false);
   const userHasRoles = addressHasRoles({
     requiredRolesDomain: Id.RootDomain,
     colony,
@@ -61,21 +56,21 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
       colonyAddress: colony.colonyAddress,
       extensionData,
     });
-    await checkExtensionEnabled();
+    // @TODO: Add wait
     refetchColony();
   };
 
   const handleEnableClick = async () => {
     try {
       await enableAndCheckStatus();
-      setIsPermissionEnabled(true);
+      setHasSuccessfullyEnabled(true);
     } catch (err) {
       console.error(err);
     }
   };
 
   const getBanner = () => {
-    if (isPermissionEnabled) {
+    if (hasSuccessfullyEnabled) {
       return (
         <NotificationBanner icon={CheckCircle} status="success">
           <FormattedMessage {...MSG.updatedPermission} />

@@ -1,67 +1,20 @@
 import { Extension, Id, getExtensionHash } from '@colony/colony-js';
 import React from 'react';
-import { type FieldValues } from 'react-hook-form';
-import { type useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
-import { supportedExtensionsConfig } from '~constants/index.ts';
+import { supportedExtensionsConfig } from '~constants';
 import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
-import { ActionTypes } from '~redux';
-import { COLONY_EXTENSIONS_ROUTE } from '~routes/index.ts';
-import Toast from '~shared/Extensions/Toast/Toast.tsx';
-import { type OnSuccess } from '~shared/Fields/index.ts';
 import {
-  type AnyExtensionData,
-  type ExtensionInitParam,
   type InstalledExtensionData,
+  type AnyExtensionData,
 } from '~types/extensions.ts';
-import { type SetStateFn } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
-import {
-  convertFractionToEth,
-  isInstalledExtensionData,
-} from '~utils/extensions.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { camelCase } from '~utils/lodash.ts';
-
-export const waitForColonyPermissions = ({
-  refetchColony,
-  extensionData,
-  interval = 1000,
-}) =>
-  new Promise<void>((res) => {
-    const initTime = new Date().valueOf();
-    const intervalId = setInterval(async () => {
-      const fifteenSeconds = 1000 * 15;
-      if (new Date().valueOf() - initTime > fifteenSeconds) {
-        // after 15 seconds, assume something went wrong
-        clearInterval(intervalId);
-        // Not rejecting here because it's not a critical error. If the extension was enabled but permissions not, a separate warning shows
-        res();
-      }
-
-      const { data: response } = (await refetchColony()) ?? {};
-      const updatedColony =
-        response?.getColonyByName?.items?.filter(notNull)[0];
-      if (updatedColony) {
-        const extensionHasPermissions = addressHasRoles({
-          address: (extensionData as InstalledExtensionData).address ?? '',
-          colony: updatedColony,
-          requiredRoles: extensionData.neededColonyPermissions,
-          requiredRolesDomain: Id.RootDomain,
-        });
-
-        if (extensionHasPermissions) {
-          clearInterval(intervalId);
-          res();
-        }
-      }
-    }, interval);
-  });
 
 export const waitForDbAfterExtensionAction = (
   args: {
@@ -100,38 +53,40 @@ export const waitForDbAfterExtensionAction = (
         );
       }
 
-      const extension = await refetchExtensionData();
+      const extensionData = await refetchExtensionData();
 
       const extensionConfig = supportedExtensionsConfig.find(
-        (e) => getExtensionHash(e.extensionId) === extension?.hash,
+        (e) => getExtensionHash(e.extensionId) === extensionData?.hash,
       );
 
       let condition = false;
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
-          if (extension) {
-            // If it appears in the query, it means it's been installed
-            condition = !!extension;
+          if (extensionData?.extensionId === Extension.MultisigPermissions) {
+            // Wait until MultiSig params are present
+            condition = !!extensionData?.params?.multiSig;
           }
+          // If it appears in the query, it means it's been installed
+          condition = !!extensionData;
           break;
         }
         case ExtensionMethods.DEPRECATE: {
-          condition = !!extension?.isDeprecated;
+          condition = !!extensionData?.isDeprecated;
           break;
         }
         case ExtensionMethods.REENABLE: {
-          condition = !extension?.isDeprecated;
+          condition = !extensionData?.isDeprecated;
           break;
         }
 
         case ExtensionMethods.ENABLE: {
-          condition = !!extension?.isInitialized;
+          condition = !!extensionData?.isInitialized;
           break;
         }
 
         case ExtensionMethods.UPGRADE: {
-          condition = extension?.currentVersion === args.latestVersion;
+          condition = extensionData?.currentVersion === args.latestVersion;
           break;
         }
 
@@ -148,9 +103,9 @@ export const waitForDbAfterExtensionAction = (
             }
 
             const extensionParamValue =
-              extension?.params?.[camelCase(extensionConfig?.extensionId)]?.[
-                key
-              ];
+              extensionData?.params?.[
+                camelCase(extensionConfig?.extensionId)
+              ]?.[key];
 
             return initializationParam.transformValue
               ? initializationParam.transformValue(value) ===
@@ -163,7 +118,7 @@ export const waitForDbAfterExtensionAction = (
 
         // Extension data is filtered by deleted, therefore if it's been deleted it won't appear in query results
         case ExtensionMethods.UNINSTALL: {
-          condition = !extension;
+          condition = !extensionData;
           break;
         }
 
@@ -180,116 +135,44 @@ export const waitForDbAfterExtensionAction = (
   });
 };
 
-export const getFormSuccessFn =
-  <T extends FieldValues>({
-    setWaitingForActionConfirmation,
-    extensionData,
-    refetchColony,
-    refetchExtensionData,
-    navigate,
-    colonyName,
-  }: {
-    setWaitingForActionConfirmation: SetStateFn;
-    extensionData: AnyExtensionData;
-    refetchColony: RefetchColonyFn;
-    refetchExtensionData: RefetchExtensionDataFn;
-    navigate: ReturnType<typeof useNavigate>;
-    colonyName: string;
-  }): OnSuccess<T> =>
-  async (fieldValues, { reset }) => {
-    setWaitingForActionConfirmation(true);
-    const isSaveChanges =
-      extensionData &&
-      isInstalledExtensionData(extensionData) &&
-      extensionData.autoEnableAfterInstall &&
-      (extensionData.isEnabled || extensionData.isDeprecated);
-
-    try {
-      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
-      await waitForColonyPermissions({ extensionData, refetchColony });
-      if (isSaveChanges) {
-        await waitForDbAfterExtensionAction({
-          method: ExtensionMethods.SAVE_CHANGES,
-          refetchExtensionData,
-          params: fieldValues.params,
-        });
-      } else {
-        await waitForDbAfterExtensionAction({
-          method: ExtensionMethods.ENABLE,
-          refetchExtensionData,
-        });
-
-        reset();
-
-        navigate(
-          `/${colonyName}/${COLONY_EXTENSIONS_ROUTE}/${extensionData.extensionId}`,
-        );
+export const waitForExtensionPermissions = ({
+  refetchColony,
+  extensionData,
+  interval = 1000,
+}: {
+  refetchColony: RefetchColonyFn;
+  extensionData: AnyExtensionData;
+  interval?: number;
+}) =>
+  new Promise<void>((res) => {
+    const initTime = new Date().valueOf();
+    const intervalId = setInterval(async () => {
+      const fifteenSeconds = 1000 * 15;
+      if (new Date().valueOf() - initTime > fifteenSeconds) {
+        // after 15 seconds, assume something went wrong
+        clearInterval(intervalId);
+        // Not rejecting here because it's not a critical error. If the extension was enabled but permissions not, a separate warning shows
+        res();
       }
 
-      toast.success(
-        <Toast
-          type="success"
-          title={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.title.success'
-              : 'extensionEnable.toast.title.success',
-          }}
-          description={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.description.success'
-              : 'extensionEnable.toast.description.success',
-          }}
-        />,
-      );
-    } catch (error) {
-      toast.error(
-        <Toast
-          type="error"
-          title={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.title.error'
-              : 'extensionEnable.toast.title.error',
-          }}
-          description={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.description.error'
-              : 'extensionEnable.toast.description.error',
-          }}
-        />,
-      );
-    } finally {
-      setWaitingForActionConfirmation(false);
-    }
-  };
+      const { data: response } = (await refetchColony()) ?? {};
+      const updatedColony =
+        response?.getColonyByName?.items?.filter(notNull)[0];
+      if (updatedColony) {
+        const extensionHasPermissions = addressHasRoles({
+          address: (extensionData as InstalledExtensionData).address ?? '',
+          colony: updatedColony,
+          requiredRoles: extensionData.neededColonyPermissions,
+          requiredRolesDomain: Id.RootDomain,
+        });
 
-export const createExtensionSetupInitialValues = (
-  initializationParams: ExtensionInitParam[],
-) => {
-  return initializationParams.reduce((initialValues, param) => {
-    return {
-      ...initialValues,
-      [param.paramName]: param.defaultValue,
-    };
-  }, {});
-};
-
-export const mapExtensionActionPayload = (
-  payload: Record<string, any>,
-  initializationParams?: ExtensionInitParam[],
-) => {
-  return initializationParams?.reduce(
-    (formattedPayload, { paramName, transformValue }) => {
-      const paramValue = transformValue
-        ? transformValue(payload[paramName])
-        : payload[paramName];
-      return {
-        ...formattedPayload,
-        [paramName]: paramValue,
-      };
-    },
-    {},
-  );
-};
+        if (extensionHasPermissions) {
+          clearInterval(intervalId);
+          res();
+        }
+      }
+    }, interval);
+  });
 
 export const getTextChunks = () => {
   const HeadingChunks = (chunks: React.ReactNode[]) => (
@@ -316,51 +199,12 @@ export const getTextChunks = () => {
   };
 };
 
-export const getExtensionParams = (extensionData: AnyExtensionData | null) => {
-  if (!extensionData) {
+export const getExtensionParams = (
+  extensionData: AnyExtensionData | null,
+): object => {
+  if (!extensionData || !isInstalledExtensionData(extensionData)) {
     return {};
   }
 
-  const isExtensionInstalled = isInstalledExtensionData(extensionData);
-  const { initializationParams = [] } = extensionData;
-  const initialValues = createExtensionSetupInitialValues(initializationParams);
-
-  if (isExtensionInstalled) {
-    switch (extensionData.extensionId) {
-      case Extension.StakedExpenditure: {
-        return extensionData.params?.stakedExpenditure?.stakeFraction
-          ? {
-              stakeFraction: convertFractionToEth(
-                extensionData.params.stakedExpenditure.stakeFraction,
-              ),
-            }
-          : initialValues;
-      }
-      default: {
-        return extensionData.params?.[camelCase(extensionData.extensionId)];
-      }
-    }
-  }
-
-  return initialValues;
-};
-
-export const getActionData = (extensionData: AnyExtensionData) => {
-  const isExtensionInstalled = isInstalledExtensionData(extensionData);
-
-  switch (extensionData.extensionId) {
-    case Extension.StakedExpenditure: {
-      if (
-        isExtensionInstalled &&
-        (extensionData.isEnabled || extensionData.isDeprecated)
-      ) {
-        return ActionTypes.SET_STAKE_FRACTION;
-      }
-
-      return ActionTypes.EXTENSION_ENABLE;
-    }
-    default: {
-      return ActionTypes.EXTENSION_ENABLE;
-    }
-  }
+  return extensionData.params?.[camelCase(extensionData.extensionId)] ?? {};
 };
