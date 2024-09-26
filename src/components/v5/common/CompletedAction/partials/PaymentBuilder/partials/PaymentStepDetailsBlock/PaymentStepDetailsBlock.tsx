@@ -10,6 +10,7 @@ import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/r
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/index.ts';
@@ -171,7 +172,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 disabled={!claimablePayouts.length || !blockTime}
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
-                useTxLoader
+                loadingBehavior={LoadingBehavior.TxLoader}
                 onSuccess={async () => {
                   if (isStaked && !isStakeClaimed) {
                     await handleReclaimStake();

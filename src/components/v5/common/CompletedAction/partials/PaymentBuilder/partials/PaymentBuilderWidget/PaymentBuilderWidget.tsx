@@ -19,6 +19,7 @@ import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/part
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
@@ -212,7 +213,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 onSuccess={() => {
                   setExpectedStepKey(ExpenditureStep.Funding);
                 }}
-                useTxLoader
+                loadingBehavior={LoadingBehavior.TxLoader}
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
                 })}
