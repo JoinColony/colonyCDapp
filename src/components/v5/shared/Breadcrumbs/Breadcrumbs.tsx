@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
+import { useMobile } from '~hooks';
 
 import Link from '../Link/index.ts';
 
@@ -19,6 +20,8 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
   const { rootBreadcrumbItem, shouldShowBreadcrumbs } = useBreadcrumbsContext();
   const location = useLocation();
 
+  const isMobile = useMobile();
+
   if (!shouldShowBreadcrumbs) {
     return null;
   }
@@ -27,6 +30,11 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
     .filter((section) => section.length > 0);
   const initialPath = `/${pathSections[0]}`;
   const breadcrumbItems = pathSections.slice(1);
+
+  // Only up to second level breadcrumbs should show on mobile
+  const breadcrumbItemsToShow = isMobile
+    ? breadcrumbItems.slice(0, 1)
+    : breadcrumbItems;
 
   const getBreadcrumbLink = (index: number) => {
     return `${initialPath}/${breadcrumbItems.slice(0, index + 1).join('/')}`;
@@ -44,7 +52,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
           <Link to={rootBreadcrumbItem?.link}>{rootBreadcrumbItem?.label}</Link>
         </li>
       ) : null}
-      {breadcrumbItems.map((item, index) => (
+      {breadcrumbItemsToShow.map((item, index) => (
         <React.Fragment key={`breadcrumbItem.${item}`}>
           <CaretRight size={10} />
           <li>
