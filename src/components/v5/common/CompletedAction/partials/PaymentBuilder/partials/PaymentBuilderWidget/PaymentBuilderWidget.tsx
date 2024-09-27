@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
@@ -56,6 +57,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { user } = useAppContext();
   const { walletAddress } = user || {};
   const { isStagedExtensionInstalled } = useEnabledExtensions();
+
+  const client = useApolloClient();
 
   const {
     isFundingModalOpen,
@@ -118,6 +121,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       refetchColony();
       refetchExpenditures();
     }
+
+    if (expenditureStep === ExpenditureStep.Payment) {
+      // Payments with 0 claim delay will be paid immediately once at the payment step
+      // we need to remove all getDomainBalance queries to refetch the correct balances
+      client.cache.evict({
+        fieldName: 'getDomainBalance',
+      });
+    }
+
   }, [expenditureStep, refetchColony, refetchExpenditures]);
 
   useEffect(() => {
