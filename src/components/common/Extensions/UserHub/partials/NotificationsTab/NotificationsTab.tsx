@@ -93,13 +93,15 @@ const NotificationsTab = () => {
             <div className="h-[25%] sm:h-0" />
           </>
         ) : (
-          <NotificationsList />
+          <>
+            <NotificationsList />
+            <InfiniteScrollTrigger
+              canFetchMore={canFetchMore}
+              containerRef={containerRef}
+              fetchMore={fetchMore}
+            />
+          </>
         )}
-        <InfiniteScrollTrigger
-          canFetchMore={canFetchMore}
-          containerRef={containerRef}
-          fetchMore={fetchMore}
-        />
       </div>
     </div>
   );
