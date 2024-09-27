@@ -6,8 +6,11 @@ import React, { type FC, type PropsWithChildren, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { CSSCustomVariable } from '~constants/cssCustomVariables.ts';
+import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useTablet } from '~hooks';
 import { useHeightResizeObserver } from '~hooks/useHeightResizeObserver.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
+import Breadcrumbs from '~v5/shared/Breadcrumbs/Breadcrumbs.tsx';
 
 import PageHeader from './partials/PageHeader/PageHeader.tsx';
 import { type PageLayoutProps } from './types.ts';
@@ -22,6 +25,10 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   children,
   enableMobileAndDesktopLayoutBreakpoints,
 }) => {
+  const isTablet = useTablet();
+
+  const { title: pageTitle } = usePageHeadingContext();
+
   const topContentContainerRef = useRef<HTMLDivElement | null>(null);
 
   useHeightResizeObserver(
@@ -59,18 +66,31 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section
-              className={clsx('modal-blur w-full overflow-auto px-6 md:p-8', {
-                'md:!pt-[1.125rem]': !headerProps?.pageHeadingProps?.title,
-              })}
+              className={clsx(
+                'modal-blur w-full overflow-auto px-6 md:p-8 md:pt-2',
+                {
+                  'md:!pt-[1.125rem]': !pageTitle,
+                },
+              )}
             >
               <div
-                className={clsx(
-                  'mx-auto max-w-[74.5rem] px-6 pb-4 pt-6 md:pt-0',
-                  {
-                    '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
-                  },
-                )}
+                className={clsx('mx-auto max-w-[79.875rem] pb-4 pt-6 md:pt-0', {
+                  '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
+                })}
               >
+                <section
+                  className={clsx('flex w-full flex-col md:p-0 md:pb-4', {
+                    'pb-6': pageTitle,
+                    'pb-3.5': !pageTitle,
+                  })}
+                >
+                  {isTablet && <Breadcrumbs />}
+                  {pageTitle && (
+                    <h1 className="pt-2 text-gray-900 heading-3 md:pt-0">
+                      {pageTitle}
+                    </h1>
+                  )}
+                </section>
                 {children}
               </div>
             </section>

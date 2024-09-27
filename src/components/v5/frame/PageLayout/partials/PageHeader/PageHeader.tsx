@@ -9,18 +9,17 @@ import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutConte
 import { UserNavigationWrapper } from '~frame/Extensions/layouts/index.ts';
 import { useTablet } from '~hooks';
 import { useHeightResizeObserver } from '~hooks/useHeightResizeObserver.ts';
+import Breadcrumbs from '~v5/shared/Breadcrumbs/Breadcrumbs.tsx';
 import JoinButton from '~v5/shared/Button/JoinButton/JoinButton.tsx';
 import MobileColonySwitcherToggle from '~v5/shared/Navigation/ColonySwitcher/partials/MobileColonySwitcherToggle.tsx';
 import MobileColonyPageSidebarToggle from '~v5/shared/Navigation/Sidebar/partials/MobileColonyPageSidebarToggle/MobileColonyPageSidebarToggle.tsx';
 import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
-import PageHeading from '../PageHeading/index.ts';
-
 import { type PageHeaderProps } from './types.ts';
 
 const displayName = 'v5.frame.PageLayout.partials.PageHeader';
 
-const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
+const PageHeader: FC<PageHeaderProps> = () => {
   const {
     toggleTabletSidebar,
     showTabletSidebar,
@@ -35,8 +34,6 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
 
   const isTablet = useTablet();
 
-  const title = pageHeadingProps?.title;
-
   useHeightResizeObserver(
     navSectionRef,
     CSSCustomVariable.HeaderNavSectionContainer,
@@ -45,18 +42,9 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
   return (
     <header className="w-full">
       <section ref={navSectionRef}>
-        <div
-          className={clsx(
-            'flex flex-row items-center justify-between border-b p-6',
-            'md:border-none md:p-0',
-          )}
-        >
+        <div className="flex flex-row items-center justify-between border-b p-6 md:border-none md:px-0 md:pb-2 md:pt-0">
           <div>
-            {!isTablet && (
-              <section className="flex-shrink-0">
-                <PageHeading />
-              </section>
-            )}
+            {!isTablet && <Breadcrumbs />}
             {isTablet && (
               <div className="flex items-center gap-6">
                 <MobileColonySwitcherToggle />
@@ -92,16 +80,6 @@ const PageHeader: FC<PageHeaderProps> = ({ pageHeadingProps }) => {
             )}
           />
         </div>
-      </section>
-      <section className="modal-blur flex w-full flex-col md:p-0">
-        {isTablet && (
-          <section className="flex-shrink-0">
-            <PageHeading />
-          </section>
-        )}
-        {title && (
-          <h1 className="pt-2 text-gray-900 heading-3 md:pt-0">{title}</h1>
-        )}
       </section>
     </header>
   );
