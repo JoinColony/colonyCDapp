@@ -1,11 +1,12 @@
-import { type TourStep } from '~context/TourContext/TourContextProvider.tsx';
+import { type Step } from 'react-joyride';
+
 import { formatText } from '~utils/intl.ts';
 
 import { ActionTourTargets } from '../enums.ts';
 
 import messages from './messages.tsx';
 
-export const GetStartedTourSteps: TourStep[] = [
+export const GetStartedTourSteps: Step[] = [
   {
     target: `[data-tour="${ActionTourTargets.WelcomeButton}"]`,
     content: formatText({

@@ -2,16 +2,11 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { type TooltipRenderProps } from 'react-joyride';
 
-import { type TourStep } from '~context/TourContext/TourContextProvider.tsx';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/Modal.tsx';
 
-interface CustomTooltipProps extends Omit<TooltipRenderProps, 'step'> {
-  step: TourStep;
-}
-
-const TourTooltip: React.FC<CustomTooltipProps> = ({
+const TourTooltip: React.FC<TooltipRenderProps> = ({
   continuous,
   index,
   isLastStep,
@@ -46,17 +41,17 @@ const TourTooltip: React.FC<CustomTooltipProps> = ({
   return (
     <Modal
       isOpen
-      icon={step.icon}
+      icon={step.data.icon}
       onClose={onClose}
       {...tooltipProps}
       withPadding={false}
       withOverlay={false}
     >
-      {step.image && (
+      {step.data.image && (
         <div className="mb-4 text-center">
           <img
-            src={step.image}
-            alt={step.imageAlt || ''}
+            src={step.data.image}
+            alt={step.data.imageAlt || ''}
             className="inline-block"
           />
         </div>
