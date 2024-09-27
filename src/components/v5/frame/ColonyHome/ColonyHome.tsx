@@ -28,13 +28,13 @@ const ColonyHome = () => {
   const selectedDomain = useGetSelectedDomainFilter();
 
   return (
-    <div className="flex flex-col gap-6 lg:gap-10">
-      <div className="flex flex-col gap-9 sm:gap-10">
+    <div className="flex flex-col gap-6 md:gap-4.5">
+      <div className="flex flex-col gap-9 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />
       </div>
       <FundsCards />
-      <div className="flex h-fit w-full flex-col gap-6 lg:grid lg:grid-cols-3">
+      <div className="flex h-fit w-full flex-col gap-4.5 lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
         <div className="w-full sm:hidden lg:block">
           <ReputationChart />

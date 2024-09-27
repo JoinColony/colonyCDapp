@@ -167,9 +167,6 @@ const pageLayoutMeta: Meta<typeof PageLayout> = {
   args: {
     children: <div className="h-screen bg-blue-200">body</div>,
     headerProps: {
-      pageHeadingProps: {
-        title: 'Members',
-      },
       userNavigation: <p>user navigation</p>,
     },
     sidebar: <SideBar />,
