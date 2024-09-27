@@ -1,12 +1,11 @@
 import { createContext, useContext } from 'react';
-
-import { type TourStep } from '~context/TourContext/TourContextProvider.tsx';
+import { type Step } from 'react-joyride';
 
 export interface TourContextValue {
   run: boolean;
-  steps: TourStep[];
+  steps: Step[];
   stepIndex: number;
-  startTour: (tourSteps: TourStep[]) => void;
+  startTour: (tourSteps: Step[]) => void;
   stopTour: () => void;
   nextStep: () => void;
   prevStep: () => void;
