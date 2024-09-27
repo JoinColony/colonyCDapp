@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
+import { useNotificationsDataContext } from '~context/Notifications/NotificationsDataContext/NotificationsDataContext.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/InfiniteScrollLoader.tsx';
@@ -37,7 +37,7 @@ const MSG = defineMessages({
 
 const NotificationsTab = () => {
   const { canFetchMore, fetchMore, markAllAsRead, notifications, unreadCount } =
-    useNotificationsContext();
+    useNotificationsDataContext();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const isEmpty = notifications.length === 0;

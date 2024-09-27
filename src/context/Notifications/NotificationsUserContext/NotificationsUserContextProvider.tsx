@@ -1,17 +1,18 @@
-import { MagicBellProvider, useBell } from '@magicbell/react-headless';
+import { MagicBellProvider } from '@magicbell/react-headless';
 import React, { type ReactNode, useEffect, useMemo } from 'react';
 
 import { isDev } from '~constants';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useCreateUserNotificationsDataMutation } from '~gql';
 
-import { useAppContext } from '../AppContext/AppContext.ts';
+import NotificationsDataContextProvider from '../NotificationsDataContext/NotificationsDataContextProvider.tsx';
 
 import {
-  NotificationsContext,
-  type NotificationsContextValues,
-} from './NotificationsContext.ts';
+  NotificationsUserContext,
+  type NotificationsUserContextValues,
+} from './NotificationsUserContext.ts';
 
-const NotificationsContextProvider = ({
+const NotificationsUserContextProvider = ({
   children,
 }: {
   children: ReactNode;
@@ -20,21 +21,10 @@ const NotificationsContextProvider = ({
   const [createUserNotificationsData] =
     useCreateUserNotificationsDataMutation();
 
-  const {
-    currentPage,
-    fetchNextPage,
-    markAllAsRead,
-    notifications,
-    totalPages,
-    unreadCount,
-  } = useBell({ storeId: isDev ? 'dev-store' : 'store' }) || {
-    currentPage: 1,
-    fetchNextPage: () => Promise.resolve(),
-    markAllAsRead: () => null,
-    notifications: [],
-    totalPages: 1,
-    unreadCount: 0,
-  };
+  const areNotificationsEnabled = useMemo(
+    () => user?.notificationsData?.notificationsDisabled === false,
+    [user?.notificationsData?.notificationsDisabled],
+  );
 
   useEffect(() => {
     // If the user has loaded, and they do not currently have notifications data with a magicbell user id
@@ -49,25 +39,12 @@ const NotificationsContextProvider = ({
     }
   }, [createUserNotificationsData, updateUser, user]);
 
-  const value = useMemo((): NotificationsContextValues => {
+  const value = useMemo((): NotificationsUserContextValues => {
     return {
-      canFetchMore: currentPage < totalPages,
-      fetchMore: fetchNextPage,
-      markAllAsRead: markAllAsRead || (() => null),
-      notifications,
       mutedColonyAddresses: user?.notificationsData?.mutedColonyAddresses || [],
-      totalPages,
-      unreadCount,
+      areNotificationsEnabled,
     };
-  }, [
-    currentPage,
-    fetchNextPage,
-    markAllAsRead,
-    notifications,
-    totalPages,
-    unreadCount,
-    user?.notificationsData?.mutedColonyAddresses,
-  ]);
+  }, [user?.notificationsData?.mutedColonyAddresses, areNotificationsEnabled]);
 
   if (!user) {
     return <>{children}</>;
@@ -78,9 +55,9 @@ const NotificationsContextProvider = ({
     !import.meta.env.MAGICBELL_API_KEY
   ) {
     return (
-      <NotificationsContext.Provider value={value}>
+      <NotificationsUserContext.Provider value={value}>
         {children}
-      </NotificationsContext.Provider>
+      </NotificationsUserContext.Provider>
     );
   }
 
@@ -109,11 +86,13 @@ const NotificationsContextProvider = ({
             ]
       }
     >
-      <NotificationsContext.Provider value={value}>
-        {children}
-      </NotificationsContext.Provider>
+      <NotificationsUserContext.Provider value={value}>
+        <NotificationsDataContextProvider>
+          {children}
+        </NotificationsDataContextProvider>
+      </NotificationsUserContext.Provider>
     </MagicBellProvider>
   );
 };
 
-export default NotificationsContextProvider;
+export default NotificationsUserContextProvider;
