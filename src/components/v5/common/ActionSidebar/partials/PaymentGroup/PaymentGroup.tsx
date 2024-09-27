@@ -22,6 +22,7 @@ const PaymentGroup = () => {
               title={title}
               description={description}
               action={action}
+              key={`group-action-item-${action}`}
             />
           );
         })}
