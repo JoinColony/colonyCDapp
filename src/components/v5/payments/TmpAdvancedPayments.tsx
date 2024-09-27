@@ -28,8 +28,9 @@ import {
   type ExpenditureFundMotionPayload,
   type ExpenditureCancelMotionPayload,
 } from '~redux/types/actions/motion.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
+import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import InputBase from '~v5/common/Fields/InputBase/InputBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -215,6 +216,8 @@ const TmpAdvancedPayments = () => {
       colonyAddress: colony.colonyAddress,
       expenditure,
       fromDomainFundingPotId: 1,
+      colonyRoles: extractColonyRoles(colony.roles),
+      colonyDomains: extractColonyDomains(colony.domains),
     };
 
     await fundExpenditure(payload);
@@ -368,6 +371,8 @@ const TmpAdvancedPayments = () => {
       motionDomainId: Id.RootDomain,
       fromDomainFundingPotId: 1,
       fromDomainId: 1,
+      colonyRoles: extractColonyRoles(colony.roles),
+      colonyDomains: extractColonyDomains(colony.domains),
     };
 
     await fundExpenditureViaMotion(payload);

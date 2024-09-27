@@ -9,7 +9,8 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type FundExpenditurePayload } from '~redux/sagas/expenditures/fundExpenditure.ts';
 import { Form } from '~shared/Fields/index.ts';
-import { findDomainByNativeId } from '~utils/domains.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -174,14 +175,16 @@ const FundingModal: FC<FundingModalProps> = ({
 
   const handleFundExpenditure = async () => {
     try {
-      if (!expenditure) {
+      if (!expenditure || !selectedTeam) {
         return;
       }
 
       const payload: FundExpenditurePayload = {
         colonyAddress: colony.colonyAddress,
         expenditure,
-        fromDomainFundingPotId: 1,
+        fromDomainFundingPotId: selectedTeam.nativeFundingPotId,
+        colonyRoles: extractColonyRoles(colony.roles),
+        colonyDomains: extractColonyDomains(colony.domains),
       };
 
       await fundExpenditure(payload);
