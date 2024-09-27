@@ -46,6 +46,7 @@ export const TitledSection: FC<TitledSectionProps> = ({
               <NumeralCurrency
                 prefix={currencySymbolMap[currency]}
                 value={value}
+                decimals={18}
               />
             </div>
           </LoadingSkeleton>
