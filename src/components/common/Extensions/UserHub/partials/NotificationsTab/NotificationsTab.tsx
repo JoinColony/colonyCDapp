@@ -1,12 +1,12 @@
 import { Binoculars } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useRef } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
-import useInfiniteScroll from '~hooks/useInfiniteScroll.tsx';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
+import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/InfiniteScrollLoader.tsx';
 
 import NotificationsList from './partials/NotificationsList.tsx';
 
@@ -36,19 +36,9 @@ const MSG = defineMessages({
 });
 
 const NotificationsTab = () => {
-  const {
-    canFetchMore,
-    fetchMore,
-    markAllAsRead,
-    notifications,
-    totalPages,
-    unreadCount,
-  } = useNotificationsContext();
-  const { containerNode, InfiniteScrollTrigger } = useInfiniteScroll({
-    canFetchMore,
-    isSinglePage: totalPages === 1,
-    fetchMore,
-  });
+  const { canFetchMore, fetchMore, markAllAsRead, notifications, unreadCount } =
+    useNotificationsContext();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const isEmpty = notifications.length === 0;
 
@@ -66,7 +56,7 @@ const NotificationsTab = () => {
       className={clsx('h-full px-6 pb-6 pt-6 sm:pb-2', {
         'overflow-auto': !isEmpty,
       })}
-      ref={containerNode}
+      ref={containerRef}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
@@ -105,7 +95,11 @@ const NotificationsTab = () => {
         ) : (
           <NotificationsList />
         )}
-        {InfiniteScrollTrigger}
+        <InfiniteScrollTrigger
+          canFetchMore={canFetchMore}
+          containerRef={containerRef}
+          fetchMore={fetchMore}
+        />
       </div>
     </div>
   );
