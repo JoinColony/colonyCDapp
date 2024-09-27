@@ -1,10 +1,11 @@
+import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import Numeral from '~shared/Numeral/index.ts';
+import { NumeralCurrency } from '~shared/Numeral/index.ts';
 import { getValuesTrend } from '~utils/balance/getValuesTrend.ts';
 import { formatText } from '~utils/intl.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
@@ -44,7 +45,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
           <FundsCardsSubTitle
             isLoading={loading}
             value={
-              <Numeral
+              <NumeralCurrency
                 value={total ?? '-'}
                 prefix={currencySymbolMap[currency]}
               />
