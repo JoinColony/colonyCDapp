@@ -3,20 +3,21 @@ import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
-import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
+import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import CryptoToFiatContextProvider from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContextProvider.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
+import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/NotificationsEnabledWrapper.tsx';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
 import BalanceTab from './partials/BalanceTab/index.ts';
-import CountBadge from './partials/CountBadge.tsx';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import NotificationsTab from './partials/NotificationsTab/NotificationsTab.tsx';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
+import UnreadNotifications from './partials/UnreadNotifications.tsx';
 import { UserHubTab } from './types.ts';
 
 // @BETA: Disabled for now
@@ -46,10 +47,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
   const featureFlags = useContext(FeatureFlagsContext);
   const [selectedTab, setSelectedTab] = useState(initialOpenTab);
 
-  // @TODO: get from notifications context
-  const notificationsServiceIsEnabled = true;
-
-  const { unreadCount } = useNotificationsContext();
+  const { areNotificationsEnabled } = useNotificationsUserContext();
 
   const filteredTabList = tabList.filter((tabItem) => {
     const isFeatureFlagEnabled =
@@ -61,7 +59,7 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
       return isFeatureFlagEnabled;
     }
 
-    return isFeatureFlagEnabled && notificationsServiceIsEnabled;
+    return isFeatureFlagEnabled && areNotificationsEnabled;
   });
 
   const handleTabChange = (newTab: UserHubTab) => {
@@ -127,7 +125,9 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
                       >
                         <span className="relative mr-2 flex shrink-0">
                           {id === UserHubTab.Notifications && (
-                            <CountBadge count={unreadCount} maximum={99} />
+                            <NotificationsEnabledWrapper>
+                              <UnreadNotifications />
+                            </NotificationsEnabledWrapper>
                           )}
                           <Icon size={14} />
                         </span>
