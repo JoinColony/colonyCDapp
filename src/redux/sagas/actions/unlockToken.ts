@@ -20,8 +20,8 @@ import {
 
 function* tokenUnlockAction({
   meta,
-  meta: { id: metaId, navigate, setTxHash },
-  payload: { colonyAddress, annotationMessage, colonyName, customActionTitle },
+  meta: { id: metaId, setTxHash },
+  payload: { colonyAddress, annotationMessage, customActionTitle },
 }: Action<ActionTypes.ACTION_UNLOCK_TOKEN>) {
   let txChannel;
 
@@ -109,12 +109,6 @@ function* tokenUnlockAction({
       type: ActionTypes.ACTION_UNLOCK_TOKEN_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.ACTION_UNLOCK_TOKEN_ERROR, error, meta);
   } finally {
