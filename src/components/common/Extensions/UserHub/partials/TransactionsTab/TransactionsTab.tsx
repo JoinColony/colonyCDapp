@@ -1,10 +1,10 @@
 import { Binoculars } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import React, { useRef, type FC } from 'react';
 
-import useInfiniteScroll from '~hooks/useInfiniteScroll.tsx';
 import { useGroupedTransactions } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/index.ts';
 
 import TransactionList from './partials/TransactionList.tsx';
 import { type TransactionsProps } from './types.ts';
@@ -12,18 +12,13 @@ import { type TransactionsProps } from './types.ts';
 const displayName = 'common.Extensions.UserHub.partials.TransactionsTab';
 
 const TransactionsTab: FC<TransactionsProps> = () => {
-  const { transactions, canFetchMore, fetchMore, onePageOnly } =
-    useGroupedTransactions();
-  const { containerNode, InfiniteScrollTrigger } = useInfiniteScroll({
-    canFetchMore,
-    isSinglePage: onePageOnly,
-    fetchMore,
-  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { transactions, canFetchMore, fetchMore } = useGroupedTransactions();
   const isEmpty = !transactions.length;
 
   return (
     <div
-      ref={containerNode}
+      ref={containerRef}
       className="flex h-full w-full flex-col overflow-auto"
     >
       <p className="px-6 pt-6 heading-5">
@@ -40,7 +35,11 @@ const TransactionsTab: FC<TransactionsProps> = () => {
         ) : (
           <TransactionList transactions={transactions} />
         )}
-        {InfiniteScrollTrigger}
+        <InfiniteScrollTrigger
+          canFetchMore={canFetchMore}
+          containerRef={containerRef}
+          fetchMore={fetchMore}
+        />
       </div>
     </div>
   );
