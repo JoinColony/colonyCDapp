@@ -48,7 +48,7 @@ export const MSG = defineMessages({
 export const CHART_CONFIG_VALUES = {
   MARGIN_TOP: 8,
   MARGIN_BOTTOM: 24,
-  MARGIN_LEFT: 30,
+  MARGIN_LEFT: 34,
   MARGIN_RIGHT: -8,
   PADDING: 0.3,
   INNER_PADDING: 4,
