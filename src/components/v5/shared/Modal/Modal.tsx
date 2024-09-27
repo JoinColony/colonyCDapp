@@ -31,6 +31,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   withPadding = true,
   withBorder,
   withPaddingBottom,
+  withOverlay = true,
   shouldShowHeader,
   isOpen,
   ...props
@@ -61,6 +62,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       withBorder={withBorder}
       withPadding={withPadding}
       withPaddingBottom={withPaddingBottom}
+      withOverlay={withOverlay}
     >
       <div
         className={`${styles.modalContentWrapper} min-h-full overflow-y-auto overflow-x-hidden`}

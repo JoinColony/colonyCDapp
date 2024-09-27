@@ -14,6 +14,7 @@ const ModalBase: FC<ModalBaseProps> = ({
   withPadding,
   withPaddingBottom,
   withBorder,
+  withOverlay = true,
   isOpen,
   ...props
 }) => {
@@ -23,16 +24,20 @@ const ModalBase: FC<ModalBaseProps> = ({
     <ReactModal
       isOpen={isOpen}
       role={role}
-      overlayClassName={{
-        base: clsx(
-          `fixed inset-0 z-top flex flex-col items-center justify-start bg-base-sprite before:h-full before:max-h-[9.688rem] before:content-[''] after:h-full after:max-h-[9.688rem] after:content-['']`,
-          {
-            'py-4': !isFullOnMobile,
-          },
-        ),
-        afterOpen: '',
-        beforeClose: 'blur-none',
-      }}
+      overlayClassName={
+        withOverlay
+          ? {
+              base: clsx(
+                `fixed inset-0 z-top flex flex-col items-center justify-start bg-base-sprite before:h-full before:max-h-[9.688rem] before:content-[''] after:h-full after:max-h-[9.688rem] after:content-['']`,
+                {
+                  'py-4': !isFullOnMobile,
+                },
+              ),
+              afterOpen: '',
+              beforeClose: 'blur-none',
+            }
+          : undefined
+      }
       className={clsx(
         `relative flex max-h-full shrink-0 flex-col overflow-hidden
         bg-base-white shadow-default outline-0 md:h-auto md:w-[30.3125rem] md:rounded-xl md:border md:border-gray-200`,
