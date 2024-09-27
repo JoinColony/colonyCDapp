@@ -18,7 +18,7 @@ interface NotificationMessageProps {
 const MSG = defineMessages({
   mention: {
     id: `${displayName}.mention`,
-    defaultMessage: '{name} has mentioned you in: {action}',
+    defaultMessage: '{name} has mentioned you in: ',
   },
   someone: {
     id: `${displayName}.someone`,
@@ -88,8 +88,8 @@ const NotificationMessage: FC<NotificationMessageProps> = ({
       >
         {formatText(MSG.mention, {
           name: creator || formatText(MSG.someone),
-          action: action.metadata?.customTitle || actionMetadataDescription,
         })}
+        {action.metadata?.customTitle || actionMetadataDescription}
       </p>
     );
   }
