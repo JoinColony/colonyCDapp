@@ -66,7 +66,6 @@ const PermissionsPage: FC = () => {
     <ContentWithTeamFilter>
       <Tabs
         activeTab={activeTab}
-        className="pt-6"
         onTabClick={(_, id) =>
           navigate(
             id === PermissionType.Individual
