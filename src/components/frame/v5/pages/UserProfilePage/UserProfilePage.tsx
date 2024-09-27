@@ -83,7 +83,7 @@ const UserProfilePage: FC = () => {
 
   useEffect(() => {
     setRootBreadcrumbItem({
-      link: '',
+      link: '/',
       label: formatText(MSG.homeBreadcrumbLabel),
     });
     setShouldShowBreadcrumbs(true);
