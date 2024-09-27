@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { type Action } from '~constants/actions.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { TX_SEARCH_PARAM } from '~routes';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
-import { setQueryParamOnUrl } from '~utils/urls.ts';
 
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -26,6 +26,7 @@ const useActionFormProps = (
     mode: 'onChange',
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
   });
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
     async (formOptions, form) => {
@@ -57,16 +58,8 @@ const useActionFormProps = (
                 })),
                 withMeta({
                   setTxHash: (txHash: string) => {
-                    navigate(
-                      setQueryParamOnUrl(
-                        window.location.pathname,
-                        'tx',
-                        txHash,
-                      ),
-                      {
-                        replace: true,
-                      },
-                    );
+                    searchParams.set(TX_SEARCH_PARAM, txHash);
+                    setSearchParams(searchParams);
                   },
                 }),
               ),

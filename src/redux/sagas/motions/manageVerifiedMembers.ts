@@ -34,7 +34,6 @@ function* manageVerifiedMembersMotion({
   payload: {
     operation,
     colonyAddress,
-    colonyName,
     colonyRoles,
     colonyDomains,
     isMultiSig,
@@ -42,7 +41,7 @@ function* manageVerifiedMembersMotion({
     customActionTitle,
     annotationMessage,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS>) {
   const txChannel = yield call(getTxChannel, metaId);
@@ -216,12 +215,6 @@ function* manageVerifiedMembersMotion({
       payload: {},
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(
       ActionTypes.MOTION_MANAGE_VERIFIED_MEMBERS_ERROR,
