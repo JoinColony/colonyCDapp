@@ -1,23 +1,34 @@
+import { FilePlus } from '@phosphor-icons/react';
+import { type Step } from 'react-joyride';
+
 import { TourTriggerIdentifier } from '~constants/tourTriggers.ts';
-import { type TourStep } from '~context/TourContext/TourContextProvider.tsx';
+import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import { formatText } from '~utils/intl.ts';
 
 import { ActionTourTargets } from '../enums.ts';
 
 import messages from './messages.tsx';
 
-export const CreateActionTourSteps: TourStep[] = [
+export const CreateActionTourSteps: Step[] = [
   {
     target: ActionTourTargets.NoTarget,
     placement: 'center',
     disableBeacon: true,
     disableOverlay: false,
     spotlightClicks: false,
+    data: {
+      icon: FilePlus,
+      image: CreateAProfileBanner,
+      triggerIdentifier: TourTriggerIdentifier.openActionSidebar,
+    },
+    title: formatText({
+      id: 'createAction.creatingActions',
+      defaultMessage: messages.creatingActions,
+    }),
     content: formatText({
       id: 'createAction.creatingActions',
       defaultMessage: messages.creatingActions,
     }),
-    triggerIdentifier: TourTriggerIdentifier.openActionSidebar,
   },
   {
     target: `[data-tour="${ActionTourTargets.ActionsPanel}"]`,

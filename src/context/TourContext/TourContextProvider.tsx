@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import Joyride, { type CallBackProps, STATUS, type Step } from 'react-joyride';
 
-import { type TourTriggerIdentifier } from '~constants/tourTriggers.ts';
+import TourTooltip from '~common/Tours/TourTooltip.tsx';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
 import { TourContext, type TourContextValue } from './TourContext.ts';
@@ -10,23 +10,31 @@ interface TourContextProviderProps {
   children: React.ReactNode;
 }
 
-export interface TourStep extends Step {
-  triggerIdentifier?: TourTriggerIdentifier;
-  triggerPayload?: any;
-}
-
 const TourContextProvider: React.FC<TourContextProviderProps> = ({
   children,
 }) => {
   const [run, setRun] = useState(false);
-  const [steps, setSteps] = useState<TourStep[]>([]);
+  const [steps, setSteps] = useState<Step[]>([]);
   const [stepIndex, setStepIndex] = useState(0);
   const {
     actionSidebarToggle: [isSidebarOpen, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  const startTour = useCallback((tourSteps: TourStep[]) => {
-    setSteps(tourSteps);
+  const startTour = useCallback((tourSteps: Step[]) => {
+    const stepsWithData = tourSteps.map((step) => ({
+      ...step,
+      data: {
+        ...step.data,
+        triggerIdentifier: step.data.triggerIdentifier,
+        triggerPayload: step.data.triggerPayload,
+        icon: step.data.icon,
+        image: step.data.image,
+        imageAlt: step.data.imageAlt,
+        title: step.title,
+      },
+    }));
+
+    setSteps(stepsWithData);
     setStepIndex(0);
     setRun(true);
   }, []);
@@ -65,13 +73,13 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
       if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
         stopTour();
       } else if (type === 'step:before') {
-        const currentStep = step as TourStep;
+        const currentStep = step as Step;
 
-        if (currentStep.triggerIdentifier) {
-          switch (currentStep.triggerIdentifier) {
+        if (currentStep.data.triggerIdentifier) {
+          switch (currentStep.data.triggerIdentifier) {
             case 'OPEN_ACTION_SIDEBAR':
               if (!isSidebarOpen) {
-                toggleActionSidebarOn(currentStep.triggerPayload);
+                toggleActionSidebarOn(currentStep.data.triggerPayload);
               }
               break;
             // Handle other actions
@@ -106,6 +114,7 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
         scrollToFirstStep
         showProgress
         showSkipButton
+        tooltipComponent={TourTooltip}
         styles={{
           options: {
             zIndex: 10000,
