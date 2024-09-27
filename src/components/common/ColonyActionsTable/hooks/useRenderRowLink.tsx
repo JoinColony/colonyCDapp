@@ -32,11 +32,9 @@ const useRenderRowLink = (
           'items-end': isRecentActivityVariant,
           'items-start': !isRecentActivityVariant,
         })}
-        to={setQueryParamOnUrl(
-          window.location.search,
-          TX_SEARCH_PARAM,
-          row.original.transactionHash,
-        )}
+        to={setQueryParamOnUrl({
+          params: { [TX_SEARCH_PARAM]: row.original.transactionHash },
+        })}
       >
         {content}
       </Link>

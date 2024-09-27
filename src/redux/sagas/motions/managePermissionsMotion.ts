@@ -32,7 +32,6 @@ function* managePermissionsMotion({
     userAddress,
     roles,
     authority,
-    colonyName,
     annotationMessage,
     customActionTitle,
     motionDomainId: createdInDomainId,
@@ -41,7 +40,7 @@ function* managePermissionsMotion({
     // Is using the multi-sig decision method
     isMultiSig = false,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_USER_ROLES_SET>) {
   let txChannel;
@@ -326,12 +325,6 @@ function* managePermissionsMotion({
       type: ActionTypes.MOTION_USER_ROLES_SET_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.MOTION_USER_ROLES_SET_ERROR, caughtError, meta);
   } finally {
