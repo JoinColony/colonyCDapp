@@ -115,7 +115,6 @@ export const useLast30DaysData = () => {
             signal: abortController.signal,
           },
         },
-        fetchPolicy: 'cache-first' as WatchQueryFetchPolicy,
       },
     };
   }, [currency, selectedDomainId, colonyAddress]);
