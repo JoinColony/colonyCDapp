@@ -108,7 +108,7 @@ const getExpendituresData = async ({
       console.warn('Could not find any expenditures in db.');
     }
 
-    return result.data.listExpenditures;
+    return result.data.getExpendituresByColony;
   }
 
   const result = await graphqlRequest(getDomainExpenditures, {
