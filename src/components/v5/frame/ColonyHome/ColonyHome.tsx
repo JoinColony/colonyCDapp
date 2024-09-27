@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
@@ -26,6 +27,7 @@ const displayName = 'v5.frame.ColonyHome';
 const ColonyHome = () => {
   const isMobile = useMobile();
   const selectedDomain = useGetSelectedDomainFilter();
+  const { colonyName } = useParams();
 
   return (
     <div className="flex flex-col gap-6 md:gap-4.5">
@@ -47,11 +49,12 @@ const ColonyHome = () => {
           </h3>
           <Link
             className="text-sm font-medium text-gray-400 md:hover:text-gray-900"
-            to={setQueryParamOnUrl(
-              COLONY_ACTIVITY_ROUTE,
-              TEAM_SEARCH_PARAM,
-              selectedDomain?.nativeId.toString(),
-            )}
+            to={setQueryParamOnUrl({
+              path: `/${colonyName}/${COLONY_ACTIVITY_ROUTE}`,
+              params: {
+                [TEAM_SEARCH_PARAM]: selectedDomain?.nativeId.toString(),
+              },
+            })}
           >
             {formatText({ id: 'view.all' })}
           </Link>

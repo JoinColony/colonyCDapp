@@ -32,14 +32,14 @@ import {
 
 function* manageExistingSafesAction({
   payload: {
-    colony: { colonyAddress, name: colonyName },
+    colony: { colonyAddress },
     colony,
     safes,
     annotationMessage,
     isRemovingSafes,
     customActionTitle,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MANAGE_EXISTING_SAFES>) {
   let txChannel;
@@ -166,11 +166,7 @@ function* manageExistingSafesAction({
       meta,
     });
 
-    yield navigate?.(`/${colonyName}?=${txHash}`, {
-      state: {
-        isRedirect: true,
-      },
-    });
+    setTxHash?.(txHash);
   } catch (error) {
     yield putError(ActionTypes.ACTION_MANAGE_EXISTING_SAFES_ERROR, error, meta);
   } finally {

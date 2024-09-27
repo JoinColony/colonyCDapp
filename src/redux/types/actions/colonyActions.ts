@@ -49,7 +49,6 @@ export type ColonyActionsActionTypes =
       {
         customActionTitle: string;
         colonyAddress: Address;
-        colonyName: string;
         domainName: string;
         domainColor: DomainColor;
         domainPurpose: string;

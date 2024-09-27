@@ -37,13 +37,12 @@ function* managePermissionsAction({
     userAddress,
     roles,
     authority,
-    colonyName,
     annotationMessage,
     customActionTitle,
     colonyRoles,
     colonyDomains,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_USER_ROLES_SET>) {
   let txChannel;
@@ -197,12 +196,6 @@ function* managePermissionsAction({
       type: ActionTypes.ACTION_USER_ROLES_SET_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
 
     yield clearContributorsAndRolesCache();
   } catch (error) {

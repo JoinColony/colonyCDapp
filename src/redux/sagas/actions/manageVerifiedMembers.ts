@@ -29,12 +29,11 @@ function* manageVerifiedMembersAction({
   payload: {
     operation,
     colonyAddress,
-    colonyName,
     members,
     customActionTitle,
     annotationMessage,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS>) {
   const batchKey =
@@ -140,12 +139,6 @@ function* manageVerifiedMembersAction({
       colonyAddress,
       operation === ManageVerifiedMembersOperation.Add,
     );
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     return yield putError(
       ActionTypes.ACTION_MANAGE_VERIFIED_MEMBERS_ERROR,

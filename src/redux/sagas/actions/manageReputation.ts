@@ -29,7 +29,6 @@ export type ManageReputationPermissionsPayload =
 function* manageReputationAction({
   payload: {
     colonyAddress,
-    colonyName,
     domainId,
     userAddress,
     amount,
@@ -37,7 +36,7 @@ function* manageReputationAction({
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -161,12 +160,6 @@ function* manageReputationAction({
       type: ActionTypes.ACTION_MANAGE_REPUTATION_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.ACTION_MANAGE_REPUTATION_ERROR, error, meta);
   } finally {
