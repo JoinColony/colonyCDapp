@@ -1,26 +1,25 @@
 import { type IRemoteNotification } from '@magicbell/react-headless';
 import { createContext, useContext } from 'react';
 
-export interface NotificationsContextValues {
+export interface NotificationsDataContextValues {
   canFetchMore: boolean;
   fetchMore: () => Promise<void>;
   markAllAsRead: () => void;
-  mutedColonyAddresses: string[];
   notifications: IRemoteNotification[];
   totalPages: number;
   unreadCount: number;
 }
 
-export const NotificationsContext = createContext<
-  NotificationsContextValues | undefined
+export const NotificationsDataContext = createContext<
+  NotificationsDataContextValues | undefined
 >(undefined);
 
-export const useNotificationsContext = () => {
-  const ctx = useContext(NotificationsContext);
+export const useNotificationsDataContext = () => {
+  const ctx = useContext(NotificationsDataContext);
 
   if (!ctx) {
     throw new Error(
-      'This hook must be used within the "NotificationsContext" provider',
+      'This hook must be used within the "NotificationsDataContext" provider',
     );
   }
 
