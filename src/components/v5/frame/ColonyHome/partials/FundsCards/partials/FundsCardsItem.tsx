@@ -38,6 +38,7 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
             <NumeralCurrency
               value={total.toString()}
               prefix={currencySymbolMap[currency]}
+              decimals={18}
             />
           }
         />

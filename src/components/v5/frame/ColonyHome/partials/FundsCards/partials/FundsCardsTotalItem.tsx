@@ -1,4 +1,3 @@
-import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
@@ -48,6 +47,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
               <NumeralCurrency
                 value={total ?? '-'}
                 prefix={currencySymbolMap[currency]}
+                decimals={18}
               />
             }
             currency={currency}
