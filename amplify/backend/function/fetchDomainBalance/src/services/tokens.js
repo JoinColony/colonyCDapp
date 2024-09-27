@@ -28,7 +28,7 @@ const getConvertedTokenAmount = (
     .mul(normalizedTokenExchangeRate) // Adjust amount using the normalized exchange rate
     .mul(BigNumber.from(10).pow(18)) // Scale the result to 10^18 format for consistency
     .div(tokenScaleFactor) // Undo initial scaling of the amount and network fee
-    .div(tokenScaleFactor); // Adjust the final value by the normalized exchange rate scale;
+    .div(tokenScaleFactor); // Undo initial scaling of the exchange rate
 };
 
 const getTotalFiatAmountFor = async (items, exchangeRates) => {
