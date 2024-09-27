@@ -21,7 +21,6 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/ColonyCreatedModalContext.ts';
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
-import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
@@ -53,7 +52,6 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
-  const { title: pageHeadingTitle } = usePageHeadingContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
@@ -151,11 +149,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
             <CalamityBanner items={calamityBannerItems} />
           ) : undefined
         }
-        /** @TODO: Move this inside of the Header component */
         headerProps={{
-          pageHeadingProps: {
-            title: pageHeadingTitle,
-          },
           /** @TODO: Move this inside the Header component */
           userNavigation: getUserNavigation(isActionSidebarOpen),
         }}

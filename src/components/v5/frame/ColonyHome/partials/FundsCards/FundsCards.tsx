@@ -27,7 +27,7 @@ export const FundsCards = () => {
 
   const isAddNewTeamVisible = !subTeams || subTeams.length < 1;
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:gap-2">
+    <div className="flex flex-col gap-4 sm:flex-row sm:gap-2 md:pt-2">
       <WidgetCards.List className="w-full">
         <FundsCardsTotalItem />
         {subTeams
