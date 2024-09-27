@@ -33,7 +33,7 @@ export const getFallbackData = () => {
 };
 
 export const getFormattedShortAmount = (value) => {
-  const convertedValue = convertToDecimal(value, 0);
+  const convertedValue = convertToDecimal(value, 18);
   return numbro(convertedValue?.toString()).format({
     average: true,
     totalLength: 2,
@@ -41,7 +41,7 @@ export const getFormattedShortAmount = (value) => {
 };
 
 export const getFormattedFullAmount = (value, prefix) => {
-  const convertedValue = convertToDecimal(value, 0);
+  const convertedValue = convertToDecimal(value, 18);
   return numbro(convertedValue?.toString()).format({
     thousandSeparated: true,
     mantissa: 2,
