@@ -44,7 +44,7 @@ export const PaymentsSection = () => {
       previousValue={previousTotalOut}
       isLoading={isLoading}
     >
-      <LoadingSkeleton isLoading={isLoading} className="h-8 w-11 rounded-lg">
+      <LoadingSkeleton isLoading={isLoading} className="h-8.5 w-11 rounded-lg">
         <Button
           onClick={clickHandler}
           text={formatText(MSG.payCTA)}
