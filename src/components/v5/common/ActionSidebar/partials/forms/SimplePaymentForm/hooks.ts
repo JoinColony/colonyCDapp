@@ -21,7 +21,7 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
 
@@ -121,7 +121,7 @@ export type SimplePaymentFormValues = InferType<
 >;
 
 export const useSimplePayment = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { networkInverseFee } = useNetworkInverseFee();
   const { colony } = useColonyContext();

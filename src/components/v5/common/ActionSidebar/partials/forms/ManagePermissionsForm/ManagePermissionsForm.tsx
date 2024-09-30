@@ -22,7 +22,7 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
@@ -40,7 +40,9 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
-const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const ManagePermissionsForm: FC<CreateActionFormProps> = ({
+  getFormOptions,
+}) => {
   const { role, isModRoleSelected } = useManagePermissions(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [

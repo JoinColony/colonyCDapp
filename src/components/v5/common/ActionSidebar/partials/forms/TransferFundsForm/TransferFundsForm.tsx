@@ -11,13 +11,13 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useTransferFunds } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
 
-const TransferFundsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const TransferFundsForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useTransferFunds(getFormOptions);
 
   const { watch } = useFormContext();

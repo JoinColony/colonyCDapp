@@ -12,13 +12,13 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useSimplePayment } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.SimplePaymentForm';
 
-const SimplePaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const SimplePaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useSimplePayment(getFormOptions);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();

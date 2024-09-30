@@ -9,11 +9,11 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
 
-const BatchPaymentForm: FC<ActionFormBaseProps> = () => {
+const BatchPaymentForm: FC<CreateActionFormProps> = () => {
   const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
