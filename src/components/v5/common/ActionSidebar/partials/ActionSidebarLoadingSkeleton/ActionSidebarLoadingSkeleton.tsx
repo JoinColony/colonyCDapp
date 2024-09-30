@@ -4,21 +4,11 @@ import React from 'react';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 
-export interface ActionSidebarLoadingSkeletonProps {
-  isCreateActionSkeleton?: boolean;
-}
-
 const displayName = `v5.common.ActionSidebar.partials.ActionSidebarLoadingSkeleton`;
 
-const ActionSidebarLoadingSkeleton = ({
-  isCreateActionSkeleton = false,
-}: ActionSidebarLoadingSkeletonProps) => {
+const ActionSidebarLoadingSkeleton = () => {
   const renderSkeleton = () => (
-    <div
-      className={clsx(
-        'w-full overflow-y-auto px-6 pb-6 pt-8 sm:w-[calc(100%)]',
-      )}
-    >
+    <div className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8 sm:w-full')}>
       <div className="mb-2">
         <LoadingSkeleton
           isLoading
@@ -33,7 +23,7 @@ const ActionSidebarLoadingSkeleton = ({
       </div>
       <div>
         {new Array(7).fill(0).map((_, index) => (
-          <div className="mt-2 flex w-full max-w-[25rem]">
+          <div className="mt-2 flex w-full max-w-[25rem] gap-2">
             <div className="mt-2 flex w-1/2 items-center gap-2">
               <LoadingSkeleton
                 isLoading
@@ -93,10 +83,6 @@ const ActionSidebarLoadingSkeleton = ({
       </div>
     </div>
   );
-
-  if (isCreateActionSkeleton) {
-    return <div>{renderSkeleton()}</div>;
-  }
 
   return (
     <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">

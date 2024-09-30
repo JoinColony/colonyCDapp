@@ -103,15 +103,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
 
-  const isLoading = loadingAction || loadingExpenditure;
+  const isLoading =
+    transactionId !== undefined && (loadingAction || loadingExpenditure);
 
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
     if (isLoading) {
-      return (
-        <ActionSidebarLoadingSkeleton isCreateActionSkeleton={!transactionId} />
-      );
+      return <ActionSidebarLoadingSkeleton />;
     }
 
     if (action) {
@@ -250,7 +249,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           'md:max-w-full': isSidebarFullscreen,
           'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'md:max-w-[67.3125rem]':
-            !isSidebarFullscreen && !!transactionId && !actionNotFound,
+            (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
+            (!isSidebarFullscreen && !!transactionId && isLoading),
         },
       )}
       ref={registerContainerRef}
