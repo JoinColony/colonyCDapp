@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useEffect, type FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFiltersContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { useScrollIntoView } from '~hooks/useScrollIntoView.ts';
 import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
@@ -19,6 +20,7 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { ref: teamItemRef, scroll } = useScrollIntoView<HTMLButtonElement>();
   const isMobile = useMobile();
+  const { setFilteredTeam } = useColonyFiltersContext();
 
   const teamColor = getTeamColor(domain.metadata?.color);
 
@@ -35,9 +37,13 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
   const handleClick = () => {
     if (selected) {
       searchParams.delete(TEAM_SEARCH_PARAM);
+      setFilteredTeam(null);
       setSearchParams(searchParams);
     } else {
-      searchParams.set(TEAM_SEARCH_PARAM, domain.nativeId.toString());
+      const domainNativeId = domain.nativeId.toString();
+
+      searchParams.set(TEAM_SEARCH_PARAM, domainNativeId);
+      setFilteredTeam(domainNativeId);
       setSearchParams(searchParams);
     }
   };
