@@ -3,50 +3,24 @@ import { Link, useLocation } from 'react-router-dom';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
-import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
 const displayName =
   'v5.common.ColonyDashboardHeader.partials.MembersInformation';
 
-type EntityWithDomainNativeId = {
-  domain: Pick<Domain, 'nativeId'>;
-};
-
-const filterByDomainNativeId = (
-  entity: EntityWithDomainNativeId | null,
-  nativeDomainId: number,
-) => entity?.domain.nativeId === nativeDomainId;
-
 const MembersInformation = () => {
   const { search } = useLocation();
 
-  const selectedDomain = useGetSelectedDomainFilter();
-  const nativeDomainId = selectedDomain?.nativeId;
   const {
     loading: membersLoading,
-    filteredMembers,
+    totalContributors,
+    totalContributorCount,
     followersCount,
   } = useMemberContext();
 
-  const selectedMembers = nativeDomainId
-    ? filteredMembers.filter(
-        ({ roles, reputation }) =>
-          roles?.items?.find((role) =>
-            filterByDomainNativeId(role, nativeDomainId),
-          ) ||
-          reputation?.items?.find((rep) =>
-            filterByDomainNativeId(rep, nativeDomainId),
-          ),
-      )
-    : filteredMembers.filter(
-        ({ hasPermissions, hasReputation }) => hasPermissions || hasReputation,
-      );
-
-  const allMembers = selectedMembers.map((member) => ({
+  const allMembers = totalContributors.map((member) => ({
     walletAddress: member.contributorAddress,
     ...member.user,
   }));
@@ -69,7 +43,7 @@ const MembersInformation = () => {
           className="h-4 w-[70px] rounded"
         >
           <p>
-            <span className="font-semibold">{selectedMembers.length}</span>{' '}
+            <span className="font-semibold">{totalContributorCount}</span>{' '}
             {formatText({ id: 'colonyHome.members' })}
           </p>
         </LoadingSkeleton>
