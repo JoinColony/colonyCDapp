@@ -110,90 +110,6 @@ export const votingReputationMessages = {
     // @TODO: implement markdown parsing on ExtensionDetailsPage instead of inlining HTML
     defaultMessage: `<p>Provides a democratic, permissionless decision-making tool for your Colony. This extension enables any member to propose actions, which can only pass with total support and no total opposition.</p><p>To support a proposed action, members need to stake their tokens - essentially placing them at risk in favor of the decision. If the required stake, as defined by the Colony, is met and no one opposes by staking against it, the action can proceed safely through a mechanism known as "Lazy Consensus."</p><p>A security delay or "Staking Phase Duration," determined during the extension installation, provides a window of opportunity for DAO members to support or oppose the proposed action. This feature can be used for any Action type, from managing funds and teams to making payments.</p><h4>How the extension works</h4><ul><li>A member proposes an Action, for example, "Pay Alice 100 xDAI," using the Reputation Decision method.</li><li>A staking period commences, during which the DAOs native token can be used to back the Action.</li><li>If the Action garners adequate staking without opposition, it passes and can be finalized on the blockchain.</li><li>Opposition, however, triggers the voting process, where reputation is used to determine voting weight.</li><li>The voting outcome will decide which side wins and whether the action can proceed safely or not.</li><li>Depending on how they voted and the outcome, voters may be rewarded or docked a portion of their staked tokens.</li><li>Additionally an extra security window can be defined for actions being proposed in teams where the outcome can be opposed further and escalated to higher teams for additional input.</li></ul><h4>Useful for:</h4><ul><li>Facilitating decisions and actions within a DAO in a permissionless, decentralized manner, while maintaining efficiency and minimizing collective decision-making efforts.</li><li>Encouraging further decentralization in the DAO, which fosters more democratic and inclusive governance.</li></ul>`,
   },
-  votingReputationTotalStakeFractionTitle: {
-    id: `${votingReputationName}.param.totalStakeFraction.title`,
-    defaultMessage: 'Required Stake',
-  },
-  votingReputationTotalStakeFractionDescription: {
-    id: `${votingReputationName}.param.totalStakeFraction.description`,
-    defaultMessage: `What percentage of the team's reputation, in token terms, should need to stake on each side of a motion?\n\n<span>e.g. if a team has 100 reputation points between them, and the Required Stake is 5%, then 5 tokens would need to be staked to either support or object to a motion.</span>`,
-  },
-  votingReputationVoterRewardFractionTitle: {
-    id: `${votingReputationName}.param.voterRewardFraction.title`,
-    defaultMessage: 'Voter Reward',
-  },
-  votingReputationVoterRewardFractionDescription: {
-    id: `${votingReputationName}.param.voterRewardFraction.description`,
-    defaultMessage: `In a dispute, what percentage of the losing side's stake should be awarded to the voters?\n\n<span>e.g. If both the colony members who create a motion, and the colony members who raise an objection stake 50 tokens, and the Voter Reward is 20%, then the voters will share 20 tokens between them, proportional to their reputations (i.e. 20% of the combined stake of both side of the dispute). The remainder will be shared between the stakers proportional to the outcome of the vote.</span>`,
-  },
-  votingReputationUserMinStakeFractionTitle: {
-    id: `${votingReputationName}.param.userMinStakeFraction.title`,
-    defaultMessage: 'Minimum Stake',
-  },
-  votingReputationUserMinStakeFractionDescription: {
-    id: `${votingReputationName}.param.userMinStakeFraction.description`,
-    defaultMessage: `What is the minimum percentage of the total stake that each staker should have to provide?\n\n<span>e.g. 10% means anybody who wishes to stake must provide at least 10% of the Required Stake.</span>`,
-  },
-  votingReputationMaxVoteFractionTitle: {
-    id: `${votingReputationName}.param.votingReputationMaxVoteFractionTitle.title`,
-    defaultMessage: 'End Vote Threshold',
-  },
-  votingReputationMaxVoteFractionDescription: {
-    id: `${votingReputationName}.param.maxVoteFraction.description`,
-    defaultMessage: `At what threshold of reputation having voted should the voting period to end?\n\n<span>e.g. If the End Vote Threshold is 70%, then the voting period will end as soon as 70% of the reputation in a team has cast their vote. This helps votes get settled faster. If you want to ensure everyone gets to vote if they want to, set the value to 100%.</span>`,
-  },
-  votingReputationStakePeriodTitle: {
-    id: `${votingReputationName}.param.stakePeriod.title`,
-    defaultMessage: 'Staking Phase Duration',
-  },
-  votingReputationStakePeriodDescription: {
-    id: `${votingReputationName}.param.stakePeriod.description`,
-    defaultMessage: `How long do you want to allow each side of a motion to get staked?\n\n<span>e.g. If the staking phase is 72 hours, then once a motion is created members will have 72 hours to provide the full stake required to back the motion. If the motion does not receive the full stake in 72 hours, it will fail. Once the motion has been fully staked, the staking period will reset and members will have a further 72 hours in which to “Object” by staking against the motion if they wish to take the decision to a vote. If the full stake for the objection is not staked, then the motion will automatically pass.</span>`,
-  },
-  votingReputationSubmitPeriodTitle: {
-    id: `${votingReputationName}.param.submitPeriod.title`,
-    defaultMessage: 'Voting Phase Duration',
-  },
-  votingReputationSubmitPeriodDescription: {
-    id: `${votingReputationName}.param.submitPeriod.description`,
-    defaultMessage: `How long do you want to give members to cast their votes?\n\n<span>e.g. if the vote duration is 72 hours, then after both sides of the motion are fully staked, members with reputation in the team will have 72 hours in which to vote, unless the “End Vote Threshold” is reached, in which case the vote will end early.</span>`,
-  },
-  votingReputationRevealPeriodTitle: {
-    id: `${votingReputationName}.param.revealPeriod.title`,
-    defaultMessage: 'Reveal Phase Duration',
-  },
-  votingReputationRevealPeriodDescription: {
-    id: `${votingReputationName}.param.revealPeriod.description`,
-    defaultMessage: `How long do you want to give members to reveal their votes?\n\n<span>e.g. Votes in colony are secret while the vote is ongoing, and so must be revealed once votes have been cast. If the reveal phase is 72 hours long, then members will have 72 hours to reveal their votes, otherwise their votes will not be counted and they will not receive a share of the voter reward. If all votes are revealed before the end of the reveal phase, then the reveal phase will end.</span>`,
-  },
-  votingReputationEscalationPeriodTitle: {
-    id: `${votingReputationName}.param.escalationPeriod.title`,
-    defaultMessage: 'Escalation Phase Duration',
-  },
-  votingReputationEscalationPeriodDescription: {
-    id: `${votingReputationName}.param.escalationPeriod.description`,
-    defaultMessage: `How long do you wish to allow for members to escalate a dispute to a higher team?\n\n<span>e.g. If the escalation phase is 72 hours, once the outcome of a vote is known, if the loser feels the outcome was for any reason incorrect, then they will have 72 hours in which to escalate the dispute to a higher team in the colony by increasing the stake to meet the required stake of that higher team.</span>`,
-  },
-  votingReputationRequiredError: {
-    id: `${votingReputationName}.param.validation.requiredError`,
-    defaultMessage: 'Please enter a value.',
-  },
-  votingReputationLessThan50Error: {
-    id: `${votingReputationName}.param.validation.lessThan50Error`,
-    defaultMessage: 'Please enter a percentage less than or equal to 50%.',
-  },
-  votingReputationLessThan100Error: {
-    id: `${votingReputationName}.param.validation.lessThan100Error`,
-    defaultMessage: 'Please enter a percentage less than or equal to 100%.',
-  },
-  votingReputationLessThan1YearError: {
-    id: `${votingReputationName}.param.validation.lessThan50Error`,
-    defaultMessage: 'Please enter hours less than or equal to 1 year.',
-  },
-  votingReputationPositiveError: {
-    id: `${votingReputationName}.param.validation.positiveError`,
-    defaultMessage: 'Please enter a positive number',
-  },
   votingReputationPermissionArchitecture: {
     id: `${votingReputationName}.param.permission.architecture`,
     defaultMessage: 'Architecture',
@@ -270,42 +186,6 @@ const stagedExpenditureMessages = {
     id: `${stagedExpenditureName}.descriptionLong`,
     defaultMessage: `<p>The Staged Payments extension enhances the payment options for your team by introducing a flexible, milestone-based payment option. This feature allows payments to be segmented into distinct milestones, each of which can be released independently upon hitting or achieving those milestones.</p><p>This method not only ensures better management of project funds and accountability but also provides increased security and confidence for both contributors and payment creators.</p><p>Suitable for various scenarios such as project-based payments, periodic salary disbursements, budgeting, and target-based payments, making it a valuable addition to any team’s financial management toolkit.</p><h4>How the extension works</h4><ul><li>User creates a “Staged payment” action.</li><li>User can add the various stages of the payments as “Milestones” with a description and token amount for each milestone.</li><li>Getting approval and funding the payment is the same as other Advanced payment actions where you go through a Review and Funding step. The difference is in the Release step.</li><li>Each of the individual milestones in the payment can be released separately at any time, with the intention that they are released only when those milestones have been achieved.</li><li>If some of the milestone are not delivered, that payment can be canceled and those undelivered milestones will remain unpaid.</li></ul><h4>Useful for:</h4><ul><li>Making payments upon delivery of agreed project milestones.</li><li>Creating periodic payments, where pre-approved funds can be released as agreed.</li><li>Target based payments, where funds can be paid when a target has been achieved.</li></ul>`,
   },
-  votingReputationPermissionArchitecture: {
-    id: `${votingReputationName}.param.permission.architecture`,
-    defaultMessage: 'Architecture',
-  },
-  votingReputationPermissionArchitectureDescription: {
-    id: `${votingReputationName}.param.permission.architectureDescription`,
-    defaultMessage:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-  },
-  votingReputationPermissionArbitration: {
-    id: `${votingReputationName}.param.permission.arbitration`,
-    defaultMessage: 'Arbitration',
-  },
-  votingReputationPermissionArbitrationDescription: {
-    id: `${votingReputationName}.param.permission.arbitrationDescription`,
-    defaultMessage:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-  },
-  votingReputationPermissionRecovery: {
-    id: `${votingReputationName}.param.permission.recovery`,
-    defaultMessage: 'Recovery',
-  },
-  votingReputationPermissionRecoveryDescription: {
-    id: `${votingReputationName}.param.permission.recoveryDescription`,
-    defaultMessage:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-  },
-  votingReputationPermissionFunding: {
-    id: `${votingReputationName}.param.permission.funding`,
-    defaultMessage: 'Funding',
-  },
-  votingReputationPermissionFundingDescription: {
-    id: `${votingReputationName}.param.permission.fundingDescription`,
-    defaultMessage:
-      'This permission allows users to create new domains, and manage permissions within those domains.',
-  },
 };
 
 const streamingPaymentsMessage = {
@@ -374,8 +254,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(50, () => MSG.lessThan50Error),
         defaultValue: 1,
-        title: MSG.votingReputationTotalStakeFractionTitle,
-        description: MSG.votingReputationTotalStakeFractionDescription,
         transformValue: convertFractionToWei,
       },
       {
@@ -386,8 +264,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(50, () => MSG.lessThan50Error),
         defaultValue: 20,
-        title: MSG.votingReputationVoterRewardFractionTitle,
-        description: MSG.votingReputationVoterRewardFractionDescription,
         transformValue: convertFractionToWei,
       },
       {
@@ -398,8 +274,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(100, () => MSG.lessThan100Error),
         defaultValue: 1,
-        title: MSG.votingReputationUserMinStakeFractionTitle,
-        description: MSG.votingReputationUserMinStakeFractionDescription,
         transformValue: convertFractionToWei,
       },
       {
@@ -410,8 +284,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(100, () => MSG.lessThan100Error),
         defaultValue: 70,
-        title: MSG.votingReputationMaxVoteFractionTitle,
-        description: MSG.votingReputationMaxVoteFractionDescription,
         transformValue: convertFractionToWei,
       },
       {
@@ -422,8 +294,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
-        title: MSG.votingReputationStakePeriodTitle,
-        description: MSG.votingReputationStakePeriodDescription,
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -434,8 +304,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
-        title: MSG.votingReputationSubmitPeriodTitle,
-        description: MSG.votingReputationSubmitPeriodDescription,
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -446,8 +314,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(8760, () => MSG.lessThan1YearError),
         defaultValue: 72, // 3 days in hours
-        title: MSG.votingReputationRevealPeriodTitle,
-        description: MSG.votingReputationRevealPeriodDescription,
         transformValue: convertPeriodToSeconds,
       },
       {
@@ -464,8 +330,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
         //   .max(8760, () => MSG.lessThan1YearError),
         validation: number(),
         defaultValue: 0, // 3 days in hours
-        title: MSG.votingReputationEscalationPeriodTitle,
-        description: MSG.votingReputationEscalationPeriodDescription,
         transformValue: convertPeriodToSeconds,
       },
     ],
@@ -496,8 +360,6 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
           .required(() => MSG.requiredError)
           .max(50, () => MSG.lessThan50Error),
         defaultValue: 1,
-        title: MSG.stakedExpenditureStakeFractionTitle,
-        description: MSG.stakedExpenditureStakeFractionDescription,
         transformValue: convertFractionToWei,
       },
     ],

@@ -8,8 +8,6 @@ import { type ExtensionCategory } from '~constants/index.ts';
 import { type ColonyExtension } from '~types/graphql.ts';
 
 export interface ExtensionInitParam {
-  title: MessageDescriptor;
-  description?: MessageDescriptor;
   defaultValue?: string | number;
   paramName: string;
   validation: Schema<any>;
