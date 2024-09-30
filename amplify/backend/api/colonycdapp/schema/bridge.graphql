@@ -30,7 +30,7 @@ type BridgeDrain {
   currency: String!
   state: String!
   createdAt: String!
-  receipt: BridgeDrainReceipt!
+  receipt: BridgeDrainReceipt
 }
 
 type BridgeIbanBankAccount {

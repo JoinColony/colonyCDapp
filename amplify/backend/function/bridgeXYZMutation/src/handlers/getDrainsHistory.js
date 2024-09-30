@@ -68,9 +68,11 @@ const getDrainsHistoryHandler = async (
       currency: drain.currency,
       state: drain.state,
       createdAt: drain.created_at,
-      receipt: {
-        url: drain.receipt.url,
-      },
+      receipt: drain.receipt
+        ? {
+            url: drain.receipt.url,
+          }
+        : null,
     }));
 
     drains.push(...mappedDrains);
