@@ -1,7 +1,6 @@
-import { Extension, Id, getExtensionHash } from '@colony/colony-js';
+import { Extension, Id } from '@colony/colony-js';
 import React from 'react';
 
-import { supportedExtensionsConfig } from '~constants';
 import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
@@ -26,14 +25,7 @@ export const waitForDbAfterExtensionAction = (
         latestVersion: number;
       }
     | {
-        method: ExtensionMethods.SAVE_CHANGES;
-        params: Record<string, any>;
-      }
-    | {
-        method: Exclude<
-          ExtensionMethods,
-          ExtensionMethods.UPGRADE | ExtensionMethods.SAVE_CHANGES
-        >;
+        method: Exclude<ExtensionMethods, ExtensionMethods.UPGRADE>;
       }
   ),
 ) => {
@@ -54,10 +46,6 @@ export const waitForDbAfterExtensionAction = (
       }
 
       const extensionData = await refetchExtensionData();
-
-      const extensionConfig = supportedExtensionsConfig.find(
-        (e) => getExtensionHash(e.extensionId) === extensionData?.hash,
-      );
 
       let condition = false;
 
@@ -87,32 +75,6 @@ export const waitForDbAfterExtensionAction = (
 
         case ExtensionMethods.UPGRADE: {
           condition = extensionData?.currentVersion === args.latestVersion;
-          break;
-        }
-
-        case ExtensionMethods.SAVE_CHANGES: {
-          const initializationParams =
-            extensionConfig?.initializationParams || [];
-          condition = Object.entries(args.params).every(([key, value]) => {
-            const initializationParam = initializationParams.find(
-              (param) => param.paramName === key,
-            );
-
-            if (!initializationParam) {
-              return true;
-            }
-
-            const extensionParamValue =
-              extensionData?.params?.[
-                camelCase(extensionConfig?.extensionId)
-              ]?.[key];
-
-            return initializationParam.transformValue
-              ? initializationParam.transformValue(value) ===
-                  extensionParamValue
-              : value === extensionParamValue;
-          });
-
           break;
         }
 
