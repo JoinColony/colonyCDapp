@@ -45,7 +45,7 @@ const createExternalAccount = async (
 
 const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
   const liquidationAddressesRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses?limit=100`,
     {
       headers: {
         'Content-Type': 'application/json',
