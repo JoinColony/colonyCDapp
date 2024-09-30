@@ -91,6 +91,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             isOpen={isModalOpen}
             onClose={toggleModalOff}
             isFullOnMobile={false}
+            withPaddingBottom
           >
             <>
               <Header title={{ id: 'filters' }} />
@@ -101,6 +102,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'teamsPage.filter.search' })}

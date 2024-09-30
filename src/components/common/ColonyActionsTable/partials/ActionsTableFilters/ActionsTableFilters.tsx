@@ -82,6 +82,7 @@ const ActionsTableFilters: FC = () => {
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
             isOpen={isOpened}
+            withPaddingBottom
           >
             {filtersContent}
           </Modal>
@@ -89,6 +90,7 @@ const ActionsTableFilters: FC = () => {
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'activityFeedTable.filters.searchModalTitle' })}

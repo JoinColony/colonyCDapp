@@ -87,6 +87,7 @@ const AgreementsPageFilters: FC = () => {
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
             isOpen={isOpened}
+            withPaddingBottom
           >
             {FiltersContent}
           </Modal>
@@ -94,6 +95,7 @@ const AgreementsPageFilters: FC = () => {
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 uppercase text-gray-400 text-4">
               {formatText({ id: 'agreementsPage.filter.searchPlaceholder' })}

@@ -100,6 +100,7 @@ function Filter<TValue extends FilterValue>({
             isOpen={isModalOpen}
             onClose={toggleModalOff}
             isFullOnMobile={false}
+            withPaddingBottom
           >
             <>
               <Header title={{ id: 'filters' }} />
@@ -110,6 +111,7 @@ function Filter<TValue extends FilterValue>({
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 uppercase text-gray-400 text-4">
               {searchInputLabel}

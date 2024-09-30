@@ -68,6 +68,7 @@ const Filter: FC<FilterProps> = ({
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
             isOpen={isOpened}
+            withPaddingBottom
           >
             <FilterOptions excludeFilterType={excludeFilterType} />
           </Modal>
@@ -75,6 +76,7 @@ const Filter: FC<FilterProps> = ({
             isFullOnMobile={false}
             onClose={() => setIsSearchOpened(false)}
             isOpen={isSearchOpened}
+            withPaddingBottom
           >
             <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
             <div className="sm:mb-6 sm:px-3.5">
