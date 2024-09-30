@@ -27,6 +27,7 @@ const TeamCard: FC<TeamCardProps> = ({
   meatBallMenuProps,
   links,
   balance,
+  searchParams,
   className,
 }) => {
   const isMobile = useMobile();
@@ -78,11 +79,11 @@ const TeamCard: FC<TeamCardProps> = ({
             <Link
               to={{
                 pathname: `/${colonyName}/${COLONY_CONTRIBUTORS_ROUTE}`,
-                search: `${links?.[0]?.to.search}`,
+                search: `${searchParams?.team}`,
               }}
             >
               {!!members?.length && (
-                <div className="ml-auto flex-shrink-0">
+                <div className="group ml-auto flex-shrink-0">
                   <UserAvatars
                     maxAvatarsToShow={4}
                     className="[&_.placeholder]:bg-gray-200 [&_.placeholder]:text-gray-900"

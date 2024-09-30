@@ -16,5 +16,8 @@ export interface TeamCardProps {
   links?: (LinkProps & {
     key: string;
   })[];
+  searchParams?: {
+    team: string;
+  };
   className?: string;
 }

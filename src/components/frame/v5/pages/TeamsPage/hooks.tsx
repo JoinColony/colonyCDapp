@@ -247,6 +247,9 @@ export const useTeams = () => {
                 ]
               : []),
           ],
+          searchParams: {
+            team: `?${TEAM_SEARCH_PARAM}=${nativeId}`,
+          },
         },
       ];
     }, []) || [];
