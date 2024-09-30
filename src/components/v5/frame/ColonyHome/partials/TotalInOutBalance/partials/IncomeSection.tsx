@@ -29,10 +29,16 @@ export const IncomeSection = () => {
       isLoading={isLoading}
     >
       <div className="flex flex-row gap-2">
-        <LoadingSkeleton isLoading={isLoading} className="h-8 w-14 rounded-lg">
+        <LoadingSkeleton
+          isLoading={isLoading}
+          className="h-8.5 w-14 rounded-lg"
+        >
           <ClaimFundsButton />
         </LoadingSkeleton>
-        <LoadingSkeleton isLoading={isLoading} className="h-8 w-12 rounded-lg">
+        <LoadingSkeleton
+          isLoading={isLoading}
+          className="h-8.5 w-12 rounded-lg"
+        >
           <Button
             onClick={toggleAddFundsModalOn}
             text={formatText(MSG.addFundsCTA)}
