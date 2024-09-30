@@ -1,18 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
 import { useMobile } from '~hooks/index.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import {
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
   COLONY_ACTIVITY_ROUTE,
-  TEAM_SEARCH_PARAM,
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { setQueryParamOnUrl } from '~utils/urls.ts';
 import Link from '~v5/shared/Link/index.ts';
 import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
@@ -26,17 +22,15 @@ const displayName = 'v5.frame.ColonyHome';
 
 const ColonyHome = () => {
   const isMobile = useMobile();
-  const selectedDomain = useGetSelectedDomainFilter();
-  const { colonyName } = useParams();
 
   return (
-    <div className="flex flex-col gap-6 md:gap-4.5">
+    <div className="md:gap-4.5 flex flex-col gap-6">
       <div className="flex flex-col gap-9 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />
       </div>
       <FundsCards />
-      <div className="flex h-fit w-full flex-col gap-4.5 lg:grid lg:grid-cols-3">
+      <div className="gap-4.5 flex h-fit w-full flex-col lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
         <div className="w-full sm:hidden lg:block">
           <ReputationChart />
@@ -49,12 +43,7 @@ const ColonyHome = () => {
           </h3>
           <Link
             className="text-sm font-medium text-gray-400 md:hover:text-gray-900"
-            to={setQueryParamOnUrl({
-              path: `/${colonyName}/${COLONY_ACTIVITY_ROUTE}`,
-              params: {
-                [TEAM_SEARCH_PARAM]: selectedDomain?.nativeId.toString(),
-              },
-            })}
+            to={COLONY_ACTIVITY_ROUTE}
           >
             {formatText({ id: 'view.all' })}
           </Link>
