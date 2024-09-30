@@ -19,6 +19,11 @@ const MSG = defineMessages({
     id: `${displayName}.title`,
     defaultMessage: 'Extension parameters',
   },
+  requiredStakeDescription: {
+    id: `${displayName}.requiredStakeDescription`,
+    defaultMessage:
+      'What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?',
+  },
 });
 
 const StakedExpenditureSettings: FC = () => {
@@ -46,7 +51,7 @@ const StakedExpenditureSettings: FC = () => {
       <div className="flex justify-between text-gray-900">
         <ContentTypeText
           title="Required Stake"
-          subTitle="What percentage of the team’s reputation, in token terms, is required to create a Payment builder, Split or Staged payment action?"
+          subTitle={MSG.requiredStakeDescription}
         />
         <div className="ml-6 shrink-0">
           <SpecialPercentageInput

@@ -52,16 +52,19 @@ const VotingReputationParams: FC<VotingReputationParamsProps> = ({
 
           return (
             <div
-              key={title}
+              key={param}
               className="border-b border-gray-200 py-4 last:border-none"
             >
               <div className="flex items-center justify-between text-1">
-                <p>{title}</p>
+                <p>{formatText(title)}</p>
                 <div>
-                  {value} {complementaryLabel === 'percent' ? '%' : 'Hours'}
+                  {value}{' '}
+                  {complementaryLabel === 'percent'
+                    ? '%'
+                    : formatText({ id: 'hours' })}
                 </div>
               </div>
-              <p className="text-sm">{description}</p>
+              <p className="text-sm">{formatText(description)}</p>
             </div>
           );
         })}
