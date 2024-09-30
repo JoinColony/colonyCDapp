@@ -57,8 +57,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     isInstalledExtensionData(extensionData) &&
     canExtensionBeInitialized(extensionData.extensionId) &&
     !extensionData.isDeprecated &&
-    !extensionData.isInitialized &&
-    !extensionData.autoEnableAfterInstall;
+    !extensionData.isInitialized;
 
   const isSaveChangesButtonVisible =
     userHasRoot &&
