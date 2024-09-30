@@ -59,14 +59,6 @@ export const getFormSuccessFn =
     try {
       /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
       await waitForExtensionPermissions({ extensionData, refetchColony });
-      // @TODO: Decide if needed
-      // if (isSaveChanges) {
-      //   await waitForDbAfterExtensionAction({
-      //     method: ExtensionMethods.SAVE_CHANGES,
-      //     refetchExtensionData,
-      //     params: fieldValues.params,
-      //   });
-      // } else {
       if (!isSaveChanges) {
         await waitForDbAfterExtensionAction({
           method: ExtensionMethods.ENABLE,
@@ -77,8 +69,6 @@ export const getFormSuccessFn =
 
         setActiveTab(ExtensionDetailsPageTabId.Overview);
       }
-
-      // }
 
       toast.success(
         <Toast
