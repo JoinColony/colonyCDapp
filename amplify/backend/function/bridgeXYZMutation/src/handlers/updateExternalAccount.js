@@ -1,6 +1,6 @@
 const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
-const { createExternalAccount, getLiquidationAddresses, getExternalAccounts } = require('./utils');
+const { createExternalAccount, deleteExternalAccount, getLiquidationAddresses, getExternalAccounts } = require('./utils');
 
 const { getUser } = require('../graphql');
 
@@ -41,23 +41,8 @@ const updateExternalAccountHandler = async (
     account,
   );
 
-  const deletePromises = externalAccounts.map(async ({ id }) => {
-    const deleteAccountRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${input.id}`,
-      {
-        headers: {
-          'Api-Key': apiKey,
-        },
-        method: 'DELETE',
-      },
-    );
-
-    if (deleteAccountRes.status !== 200) {
-      console.log(
-        `Error deleting external account: ${await deleteAccountRes.text()}`,
-      );
-    }
-  });
+  const deletePromises = externalAccounts.map(async ({ id }) =>
+    deleteExternalAccount(apiUrl, apiKey, bridgeCustomerId, id));
 
   await Promise.all(deletePromises);
 

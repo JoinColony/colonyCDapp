@@ -83,10 +83,29 @@ const getExternalAccounts = async (apiUrl, apiKey, bridgeCustomerId) => {
   const externalAccountsJson = await externalAccountsRes.json();
 
   return externalAccountsJson.data;
-}
+};
+
+const deleteExternalAccount = async (apiUrl, apiKey, bridgeCustomerId, id) => {
+  const deleteAccountRes = await fetch(
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${id}`,
+    {
+      headers: {
+        'Api-Key': apiKey,
+      },
+      method: 'DELETE',
+    },
+  );
+
+  if (deleteAccountRes.status !== 200) {
+    console.log(
+      `Error deleting external account: ${await deleteAccountRes.text()}`,
+    );
+  }
+};
 
 module.exports = {
   createExternalAccount,
+  deleteExternalAccount,
   getExternalAccounts,
   getLiquidationAddresses,
 };
