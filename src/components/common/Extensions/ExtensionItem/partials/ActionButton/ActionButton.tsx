@@ -36,7 +36,6 @@ const ActionButton: FC<ActionButtonProps> = ({
               'text-gray-900': isDarkMode,
             },
           )}
-          onClick={handleClick}
         >
           {formatMessage({ id: 'button.manage' })}
         </Link>
