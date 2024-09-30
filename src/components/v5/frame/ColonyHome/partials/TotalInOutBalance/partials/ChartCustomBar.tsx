@@ -40,7 +40,7 @@ export const ChartCustomBar: FC<ChartCustomBarProps> = ({
   const mouseInteractionHandler = (event) => {
     showTooltipFromEvent(
       <ChartCustomTooltip>
-        {getFormattedFullAmount(data?.value, currencySymbolMap[currency])}
+        {getFormattedFullAmount(data?.value, currencySymbolMap[currency] ?? '')}
       </ChartCustomTooltip>,
       event,
     );
