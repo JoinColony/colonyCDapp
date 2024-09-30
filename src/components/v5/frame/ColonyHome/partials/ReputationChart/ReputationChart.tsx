@@ -11,6 +11,7 @@ import { formatText } from '~utils/intl.ts';
 
 import { useContributorsByDomain } from './hooks/useContributorsByDomain.tsx';
 import { Chart } from './partials/Chart.tsx';
+import ContributorActionsMenu from './partials/ContributorActionsMenu.tsx';
 import TeamActionsMenu from './partials/TeamActionsMenu.tsx';
 import {
   getContributorReputationChartData,
@@ -67,6 +68,8 @@ const ReputationChart = () => {
     ? MSG.reputationTitleContributors
     : MSG.reputationTitleTeam;
 
+  const ActionsMenu = isNoSubDomains ? ContributorActionsMenu : TeamActionsMenu;
+
   return (
     <div className="flex w-full flex-col items-start rounded-lg border px-5 py-6">
       <div className="flex w-full justify-between">
@@ -78,7 +81,7 @@ const ReputationChart = () => {
             {formatText(reputationTitle)}
           </h5>
         </LoadingSkeleton>
-        <TeamActionsMenu isDisabled={isDataLoading} />
+        <ActionsMenu isDisabled={isDataLoading} />
       </div>
       <ReputationChartContextProvider>
         <Chart data={chartData} isLoading={isDataLoading} />
