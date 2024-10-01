@@ -86,8 +86,4 @@
 //     label: formatText({ id: 'actions.manageColonyObjectives' }),
 //     name: Action.ManageColonyObjectives,
 //   },
-//   // {
-//   //   label:formatText({ id: 'actions.createNewIntegration' }),
-//   //   name: Action.CreateNewIntegration,
-//   // },
 // ];

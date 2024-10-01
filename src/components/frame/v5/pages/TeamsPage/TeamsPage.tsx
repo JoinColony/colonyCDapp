@@ -2,7 +2,7 @@ import { Binoculars } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { ModelSortDirection } from '~gql';
@@ -60,7 +60,7 @@ const TeamsPage: FC = () => {
           <Button
             onClick={() =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
               })
             }
             text={formatText({ id: 'teamsPage.createNewTeam' })}

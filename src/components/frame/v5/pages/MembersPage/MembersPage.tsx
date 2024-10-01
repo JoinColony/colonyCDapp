@@ -8,9 +8,9 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
+import { CoreAction } from '~actions/index.ts';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
-import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
@@ -75,7 +75,7 @@ const MembersPage: FC = () => {
           }),
           onClick: () => {
             show({
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
             });
           },
         },

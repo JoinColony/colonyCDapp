@@ -7,6 +7,7 @@ import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
@@ -14,7 +15,7 @@ import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useUnlockToken } from './hooks.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.UnlockTokenForm';
+const displayName = 'v5.common.ActionSidebar.UnlockTokenForm';
 
 const UnlockTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { colony } = useColonyContext();
@@ -27,7 +28,7 @@ const UnlockTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useUnlockToken(getFormOptions);
 
   return isNativeTokenUnlocked && !transactionId ? null : (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
         icon={CoinVertical}
         fieldName="token"
@@ -40,7 +41,7 @@ const UnlockTokenForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn readonly />
       <Description />
-    </>
+    </ActionFormLayout>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import ColonyVersionField from '~v5/common/ActionSidebar/partials/ColonyVersionField/index.ts';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
@@ -14,12 +15,12 @@ const UpgradeColonyForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useUpgradeColony(getFormOptions);
 
   return (
-    <>
+    <ActionFormLayout>
       <ColonyVersionField />
       <DecisionMethodField />
       <CreatedIn readonly />
       <Description />
-    </>
+    </ActionFormLayout>
   );
 };
 

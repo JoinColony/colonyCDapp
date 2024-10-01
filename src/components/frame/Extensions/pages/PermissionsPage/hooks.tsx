@@ -10,7 +10,6 @@ import {
 import clsx from 'clsx';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { ActionCore } from '~actions/core/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { UserRole, getRole } from '~constants/permissions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
@@ -36,6 +35,7 @@ import {
   type PermissionsPageFilters,
 } from './partials/types.ts';
 import { type ExtensionCardItem, type ItemsByRole } from './types.ts';
+import { CoreAction } from '~actions/index.ts';
 
 export const defaultPermissionsPageFilterValue:
   | PermissionsPageFilters
@@ -257,7 +257,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                   }),
                   onClick: () =>
                     show({
-                      [ACTION_TYPE_FIELD_NAME]: ActionCore.SimplePayment,
+                      [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
                       recipient: member.walletAddress,
                     }),
                 },
@@ -269,7 +269,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                   }),
                   onClick: () => {
                     show({
-                      [ACTION_TYPE_FIELD_NAME]: ActionCore.ManagePermissions,
+                      [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
                       member: member.walletAddress,
                     });
                   },

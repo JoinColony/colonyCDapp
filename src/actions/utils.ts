@@ -5,62 +5,60 @@ import { type MessageDescriptor } from 'react-intl';
 
 import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
-import { type ActionCore } from './core/index.ts';
+import { type CoreAction } from './core/types.ts';
 import defaultForm from './Default.ts';
 
 type ActionFormIdentifier = Required<Omit<MessageDescriptor, 'description'>>;
 
 export interface ActionDefinition {
   // FIXME: eventually we want to get rid of CreateActionFormProps (especially getFormOptions)
-  component: FC<CreateActionFormProps>;
+  component?: FC<CreateActionFormProps>;
   name: ActionFormIdentifier;
   permissionDomainId?: (formContext: UseFormReturn) => number;
   requiredPermissions?: ColonyRole[][];
+  type: CoreAction;
   // @TODO: add this later
   // validationSchema: ObjectSchema;
 }
 
-const ACTIONS_CORE = new Map<number, ActionDefinition>();
-let count = 1;
+const ACTIONS_CORE = new Map<CoreAction, ActionDefinition>();
 
-const getAction = (id?: ActionCore): ActionDefinition => {
-  if (!id) {
+const getAction = (type?: CoreAction): ActionDefinition => {
+  if (!type) {
     return defaultForm;
   }
-  const action = ACTIONS_CORE.get(id);
+  const action = ACTIONS_CORE.get(type);
   if (!action) {
-    throw new Error(`Form with id ${id} is not registered`);
+    throw new Error(`Form with id ${type} is not registered`);
   }
   return action;
 };
 
-export const registerAction = (form: ActionDefinition) => {
-  const id = count;
-  ACTIONS_CORE.set(id, form);
-  count += 1;
-  return id;
+export const registerAction = (action: ActionDefinition) => {
+  ACTIONS_CORE.set(action.type, action);
+  return action.type;
 };
 
-export const getFormComponent = (id?: ActionCore) => {
-  const { component } = getAction(id);
+export const getFormComponent = (type?: CoreAction) => {
+  const { component } = getAction(type);
   return component;
 };
 
-export const getFormOptions = (id: ActionCore) => {
-  const { name, permissionDomainId, requiredPermissions } = getAction(id);
+export const getFormOptions = (type: CoreAction) => {
+  const { name, permissionDomainId, requiredPermissions } = getAction(type);
   return {
-    id,
+    type,
     name,
     permissionDomainId,
     requiredPermissions,
   };
 };
-export const getFormName = (id: ActionCore) => {
-  const { name } = getAction(id);
+export const getFormName = (type: CoreAction) => {
+  const { name } = getAction(type);
   return name;
 };
 
-export const getActionPermissions = (id: ActionCore) => {
-  const action = getAction(id);
+export const getActionPermissions = (type: CoreAction) => {
+  const action = getAction(type);
   return action.requiredPermissions || [];
 };

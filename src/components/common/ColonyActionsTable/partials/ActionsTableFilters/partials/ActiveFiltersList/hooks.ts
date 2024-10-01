@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { FiltersValues } from '~common/ColonyActionsTable/FiltersContext/types.ts';
 import { getCustomDateLabel } from '~common/ColonyActionsTable/utils.ts';
@@ -34,9 +34,7 @@ export const useActiveFilters = () => {
                 id: 'activityFeedTable.filters.actionType',
               }),
               // FIXME: I BROKE THIS. get all Action types another way
-              items: [
-                { name: ActionCore.SimplePayment, label: 'THIS IS BROKEN!!!' },
-              ]
+              items: [{ name: CoreAction.Payment, label: 'THIS IS BROKEN!!!' }]
                 .filter(({ name }) => actionTypesFilters.includes(name))
                 .map(({ label }) => label),
             },

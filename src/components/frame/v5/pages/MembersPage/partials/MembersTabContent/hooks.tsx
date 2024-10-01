@@ -2,7 +2,7 @@ import { ArrowSquareOut, CopySimple, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 // @BETA: Disabled for now
@@ -56,7 +56,7 @@ export const useMembersTabContentItems = (
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
                 onClick: () => {
                   show({
-                    [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
                     recipient: walletAddress,
                   });
                 },

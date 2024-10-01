@@ -1,7 +1,7 @@
 import { Pencil, ShieldStar, X } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -117,7 +117,7 @@ const PermissionsPageContent: FC<
                 }),
                 onClick: () => {
                   show({
-                    [ACTION_TYPE_FIELD_NAME]: ActionCore.ManagePermissions,
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
                   });
                 },
               },
@@ -177,7 +177,7 @@ const PermissionsPageContent: FC<
             isFullSize={false}
             onClick={() => {
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.ManagePermissions,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
               });
             }}
           >

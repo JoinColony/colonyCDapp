@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -58,7 +58,7 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const handleUpgradeColony = useCallback(
     () =>
       show({
-        [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
+        [ACTION_TYPE_FIELD_NAME]: CoreAction.VersionUpgrade,
       }),
     [show],
   );
@@ -163,10 +163,11 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
         items: [
           {
             key: '1',
+            // FIXME: FIX ALL action.xxx formatTexts
             label: formatText({ id: 'actions.managePermissions' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.ManagePermissions,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
               }),
           },
           // @BETA: Disabled for now
@@ -181,7 +182,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editExistingTeam' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.EditTeam,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.EditDomain,
               }),
           },
           {
@@ -189,7 +190,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createNewTeam' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateTeam,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
               }),
           },
         ],
@@ -213,7 +214,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.simplePayment' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.SimplePayment,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
               }),
           },
           // {
@@ -264,7 +265,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.transferFunds' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.TransferFunds,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.MoveFunds,
               }),
           },
           {
@@ -272,7 +273,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.manageTokens' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.ManageTokens,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.ManageTokens,
               }),
           },
         ],
@@ -296,17 +297,9 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.createAgreement' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
               }),
           },
-          // {
-          //   key: '2',
-          //   label: formatText({ id: 'actions.simpleDiscussion' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.SimpleDiscussion,
-          //     }),
-          // },
         ],
       },
     },
@@ -328,7 +321,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.editColonyDetails' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.EditColonyDetails,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.ColonyEdit,
               }),
           },
           {
@@ -336,7 +329,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.upgradeColonyVersion' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.VersionUpgrade,
               }),
           },
           // @BETA: Disabled for now
@@ -353,7 +346,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             label: formatText({ id: 'actions.unlockToken' }),
             onClick: () =>
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.UnlockToken,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.UnlockToken,
               }),
           },
         ],
@@ -367,7 +360,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
       label: formatText({ id: 'actions.mintTokens' }),
       onClick: () =>
         show({
-          [ACTION_TYPE_FIELD_NAME]: ActionCore.MintTokens,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.MintTokens,
         }),
     });
   }

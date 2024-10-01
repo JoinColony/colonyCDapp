@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/core/index.ts';
 import { getActionPermissions } from '~actions/utils.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
@@ -117,9 +117,9 @@ function* managePermissionsMotion({
         // Creating a multi-sig motion
         const requiredCreatedInRoles =
           teamDomainId === Id.RootDomain
-            ? getActionPermissions(ActionCore.ManagePermissionsInRootDomain)
+            ? getActionPermissions(CoreAction.ManagePermissionsInRootDomain)
             : getActionPermissions(
-                ActionCore.ManagePermissionsInSubDomainViaMultiSig,
+                CoreAction.ManagePermissionsInSubDomainViaMultiSig,
               );
 
         const initiatorAddress = yield colonyClient.signer.getAddress();
@@ -197,8 +197,8 @@ function* managePermissionsMotion({
       // Creating a reputation motion
       const requiredTeamRoles =
         teamDomainId === Id.RootDomain
-          ? getActionPermissions(ActionCore.ManagePermissionsInRootDomain)
-          : getActionPermissions(ActionCore.ManagePermissionsInSubDomain);
+          ? getActionPermissions(CoreAction.ManagePermissionsInRootDomain)
+          : getActionPermissions(CoreAction.ManagePermissionsInSubDomain);
 
       const votingReputationClient = yield colonyManager.getClient(
         ClientType.VotingReputationClient,

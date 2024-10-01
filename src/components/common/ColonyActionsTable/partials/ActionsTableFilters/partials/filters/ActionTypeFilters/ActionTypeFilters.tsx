@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';
@@ -17,7 +17,7 @@ const ActionTypeFilters: FC = () => {
       <ul>
         {/* FIXME: I broke this, get available actions in another way */}
         {/* name probably needs to be id or something like that */}
-        {[{ name: ActionCore.SimplePayment, label: 'THIS IS BROKEN!!!' }].map(
+        {[{ name: CoreAction.Payment, label: 'THIS IS BROKEN!!!' }].map(
           ({ label, name }) => {
             const isChecked = actionTypesFilters.includes(name);
 

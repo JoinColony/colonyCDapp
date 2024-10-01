@@ -6,6 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
@@ -15,7 +16,7 @@ import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { usePaymentBuilder } from './hooks.ts';
 import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsField/index.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
+const displayName = 'v5.common.ActionSidebar.PaymentBuilderForm';
 
 const PaymentBuilderForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   usePaymentBuilder(getFormOptions);
@@ -24,7 +25,7 @@ const PaymentBuilderForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
         icon={UsersThree}
         fieldName="from"
@@ -49,7 +50,7 @@ const PaymentBuilderForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       <PaymentBuilderRecipientsField name="payments" />
-    </>
+    </ActionFormLayout>
   );
 };
 

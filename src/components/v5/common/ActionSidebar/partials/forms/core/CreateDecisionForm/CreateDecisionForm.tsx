@@ -10,9 +10,9 @@ import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { useCreateDecision } from './hooks.ts';
 import SaveDraftButton from './partials/SaveDraftButton/SaveDraftButton.tsx';
 
-const displayName = 'v5.common.ActionSidebar.forms.core.CreateDecision';
+const displayName = 'v5.common.ActionSidebar.CreateDecisionForm';
 
-const CreateDecision: FC<CreateActionFormProps> = ({ getFormOptions }) => {
+const CreateDecisionForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const isFieldDisabled = useIsFieldDisabled();
 
   useCreateDecision(getFormOptions);
@@ -26,6 +26,6 @@ const CreateDecision: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   );
 };
 
-CreateDecision.displayName = displayName;
+CreateDecisionForm.displayName = displayName;
 
-export default CreateDecision;
+export default CreateDecisionForm;

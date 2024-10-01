@@ -1,12 +1,12 @@
 import { ColonyRole } from '@colony/colony-js';
 
-import { type ActionDefinition } from '~actions/utils.ts';
-// See this for more info on permissions
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
-import SimplePayment from '~v5/common/ActionSidebar/partials/forms/core/SimplePayment/SimplePayment.tsx';
+import { registerAction } from '~actions/utils.ts';
+import SimplePaymentForm from '~v5/common/ActionSidebar/partials/forms/core/SimplePaymentForm/SimplePaymentForm.tsx';
 
-const formDefinition: ActionDefinition = {
-  component: SimplePayment,
+import { CoreAction } from './types.ts';
+
+registerAction({
+  component: SimplePaymentForm,
   name: {
     id: 'actions.core.simplePayment',
     defaultMessage: 'Simple payment',
@@ -17,8 +17,5 @@ const formDefinition: ActionDefinition = {
   ],
   // FIXME: DOES THIS WORK???????
   permissionDomainId: ({ watch }) => watch('from'),
-};
-
-// FIXME: Also add validation schema here
-
-export default formDefinition;
+  type: CoreAction.Payment,
+});

@@ -3,7 +3,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/core/index.ts';
 import { getActionPermissions } from '~actions/utils.ts';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
@@ -92,7 +92,7 @@ function* manageVerifiedMembersMotion({
           colonyDomains,
           requiredDomainId: Id.RootDomain,
           requiredColonyRoles: getActionPermissions(
-            ActionCore.ManageVerifiedMembers,
+            CoreAction.ManageVerifiedMembers,
           ),
           permissionAddress: userAddress,
           isMultiSig: true,

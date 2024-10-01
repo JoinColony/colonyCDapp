@@ -112,11 +112,6 @@ export const DECIDE_DROPDOWN_ITEMS = [
     title: MSG.createDecision,
     description: MSG.createDecisionDescription,
   },
-  {
-    action: Action.SimpleDiscussion,
-    title: MSG.simpleDiscussion,
-    description: MSG.simpleDiscussionDescription,
-  },
 ];
 
 export const PAY_DROPDOWN_ITEMS = [

@@ -548,6 +548,11 @@ export enum ColonyActionType {
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
+  /**
+   * Batch payments are more like a "container action" for others
+   * yet they need to have a type to create them in the frontend
+   */
+  BatchPayment = 'BATCH_PAYMENT',
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
@@ -610,10 +615,19 @@ export enum ColonyActionType {
   MakeArbitraryTransaction = 'MAKE_ARBITRARY_TRANSACTION',
   MakeArbitraryTransactionsMotion = 'MAKE_ARBITRARY_TRANSACTIONS_MOTION',
   MakeArbitraryTransactionsMultisig = 'MAKE_ARBITRARY_TRANSACTIONS_MULTISIG',
+  /**
+   * Manage colony objective dummy action
+   * FIXME: HMM, do we need this?
+   */
+  ManageColonyObjective = 'MANAGE_COLONY_OBJECTIVE',
+  /** Container action for award/smite reputation */
+  ManageReputation = 'MANAGE_REPUTATION',
   /** An action related to adding / removing approved colony tokens */
   ManageTokens = 'MANAGE_TOKENS',
   ManageTokensMotion = 'MANAGE_TOKENS_MOTION',
   ManageTokensMultisig = 'MANAGE_TOKENS_MULTISIG',
+  /** Container action for managing verified members */
+  ManageVerifiedMembers = 'MANAGE_VERIFIED_MEMBERS',
   /** An action related to minting tokens within a Colony */
   MintTokens = 'MINT_TOKENS',
   /** An action related to minting tokens within a Colony via a motion */
@@ -656,6 +670,15 @@ export enum ColonyActionType {
   SetUserRolesMotion = 'SET_USER_ROLES_MOTION',
   /** An action related to setting user roles within a Colony via multiSig */
   SetUserRolesMultisig = 'SET_USER_ROLES_MULTISIG',
+  /**
+   * Split payments dummy action
+   * FIXME: HMM, do we need this?
+   */
+  SplitPayment = 'SPLIT_PAYMENT',
+  /** Create a staged payment */
+  StagedPayment = 'STAGED_PAYMENT',
+  /** Create a streaming payment */
+  StreamingPayment = 'STREAMING_PAYMENT',
   /** An action related to unlocking a token within a Colony */
   UnlockToken = 'UNLOCK_TOKEN',
   /** An action related to unlocking a token within a Colony via a motion */

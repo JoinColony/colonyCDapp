@@ -6,6 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
@@ -15,7 +16,7 @@ import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useTransferFunds } from './hooks.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.TransferFundsForm';
+const displayName = 'v5.common.ActionSidebar.TransferFundsForm';
 
 const TransferFundsForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useTransferFunds(getFormOptions);
@@ -27,7 +28,7 @@ const TransferFundsForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const createdInFilterFn = useFilterCreatedInField('from', true);
 
   return (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
         icon={UsersThree}
         fieldName="from"
@@ -72,7 +73,7 @@ const TransferFundsForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn readonly filterOptionsFn={createdInFilterFn} />
       <Description />
-    </>
+    </ActionFormLayout>
   );
 };
 

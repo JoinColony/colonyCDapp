@@ -16,7 +16,7 @@ import { uniqueId } from 'lodash';
 import React, { type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -140,7 +140,7 @@ const BalanceTable: FC = () => {
                 key: 'mint_tokens',
                 onClick: () => {
                   show({
-                    [ACTION_TYPE_FIELD_NAME]: ActionCore.MintTokens,
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.MintTokens,
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
@@ -152,7 +152,7 @@ const BalanceTable: FC = () => {
           key: 'transfer_funds',
           onClick: () => {
             show({
-              [ACTION_TYPE_FIELD_NAME]: ActionCore.TransferFunds,
+              [ACTION_TYPE_FIELD_NAME]: CoreAction.MoveFunds,
               tokenAddress: selectedTokenData?.tokenAddress,
             });
           },
@@ -163,7 +163,7 @@ const BalanceTable: FC = () => {
           key: 'make_payment',
           onClick: () => {
             show({
-              [ACTION_TYPE_FIELD_NAME]: ActionCore.SimplePayment,
+              [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
               tokenAddress: selectedTokenData?.tokenAddress,
             });
           },

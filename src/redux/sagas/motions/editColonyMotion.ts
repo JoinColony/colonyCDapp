@@ -2,7 +2,7 @@ import { Id, getChildIndex, ClientType } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/core/index.ts';
 import { getActionPermissions } from '~actions/utils.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
@@ -125,7 +125,7 @@ function* editColonyMotion({
           colonyDomains,
           requiredDomainId: Id.RootDomain,
           requiredColonyRoles: getActionPermissions(
-            ActionCore.EditColonyDetails,
+            CoreAction.EditColonyDetails,
           ),
           permissionAddress: userAddress,
           isMultiSig: true,

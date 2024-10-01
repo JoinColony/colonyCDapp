@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -67,7 +67,7 @@ const AgreementsPage: FC = () => {
             isFullSize={false}
             onClick={() => {
               show({
-                [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
               });
             }}
           >
@@ -118,7 +118,7 @@ const AgreementsPage: FC = () => {
                 buttonText={{ id: 'agreementsPage.empty.button' }}
                 onClick={() => {
                   show({
-                    [ACTION_TYPE_FIELD_NAME]: ActionCore.CreateDecision,
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
                   });
                 }}
                 buttonIcon={FilePlus}

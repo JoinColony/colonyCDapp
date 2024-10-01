@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import BatchPaymentsTable from '~v5/common/ActionSidebar/partials/BatchPaymentsTable/index.ts';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
@@ -11,14 +12,13 @@ import DescriptionField from '~v5/common/ActionSidebar/partials/DescriptionField
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
-// FIXME: Later, remove 'partials from all of the ids'
-const displayName = 'v5.common.ActionSidebar.partials.BatchPaymentForm';
+const displayName = 'v5.common.ActionSidebar.BatchPaymentForm';
 
 const BatchPaymentForm: FC<CreateActionFormProps> = () => {
   const createdInFilterFn = useFilterCreatedInField('from');
 
   return (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
         icon={UsersThree}
         fieldName="from"
@@ -65,7 +65,7 @@ const BatchPaymentForm: FC<CreateActionFormProps> = () => {
         )}
       </ActionFormRow>
       <BatchPaymentsTable name="payments" />
-    </>
+    </ActionFormLayout>
   );
 };
 

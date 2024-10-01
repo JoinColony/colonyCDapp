@@ -11,7 +11,7 @@ import {
 } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
@@ -138,7 +138,7 @@ export const useTeams = () => {
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
                 onClick: () => {
                   show({
-                    [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.EditDomain,
                     team: nativeId,
                   });
                 },

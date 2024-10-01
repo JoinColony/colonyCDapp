@@ -1,4 +1,10 @@
-import { PaintBucket, Rocket, UserList } from '@phosphor-icons/react';
+import { Id } from '@colony/colony-js';
+import {
+  HouseLine,
+  PaintBucket,
+  Rocket,
+  UserList,
+} from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
 import {
@@ -9,39 +15,63 @@ import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsC
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
-import { useCreateNewTeam } from './hooks.ts';
+import { useEditTeam } from './hooks.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
+const displayName = 'v5.common.ActionSidebar.EditTeamForm';
 
-const CreateNewTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
+const EditTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
 
-  useCreateNewTeam(getFormOptions);
+  useEditTeam(getFormOptions);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const createdInFilterFn = useFilterCreatedInField('team');
 
   return (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
-        fieldName="teamName"
-        icon={UserList}
-        isMultiLine
-        title={formatText({ id: 'actionSidebar.teamName' })}
+        icon={HouseLine}
+        fieldName="team"
+        title={formatText({ id: 'actionSidebar.team' })}
         tooltips={{
           label: {
             tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.createNewTeam.team.name',
+              id: 'actionSidebar.tooltip.editTeam.selectTeam',
             }),
           },
         }}
+        isDisabled={hasNoDecisionMethods}
+      >
+        <TeamsSelect
+          name="team"
+          filterOptionsFn={(option) =>
+            option.value !== Id.RootDomain.toString()
+          }
+          disabled={hasNoDecisionMethods}
+        />
+      </ActionFormRow>
+      <ActionFormRow
+        fieldName="teamName"
+        icon={UserList}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.editTeam.team.name',
+            }),
+          },
+        }}
+        title={formatText({ id: 'actionSidebar.teamName' })}
         isDisabled={hasNoDecisionMethods}
       >
         <FormInputBase
@@ -96,12 +126,12 @@ const CreateNewTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
         <TeamColorField name="domainColor" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField />
-      <CreatedIn readonly />
+      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-    </>
+    </ActionFormLayout>
   );
 };
 
-CreateNewTeamForm.displayName = displayName;
+EditTeamForm.displayName = displayName;
 
-export default CreateNewTeamForm;
+export default EditTeamForm;

@@ -17,9 +17,9 @@ import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useSimplePayment } from './hooks.ts';
 
-const displayName = 'v5.common.ActionSidebar.forms.core.SimplePayment';
+const displayName = 'v5.common.ActionSidebar.SimplePaymentForm';
 
-const SimplePayment: FC<CreateActionFormProps> = ({ getFormOptions }) => {
+const SimplePaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   useSimplePayment(getFormOptions);
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
@@ -80,6 +80,6 @@ const SimplePayment: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   );
 };
 
-SimplePayment.displayName = displayName;
+SimplePaymentForm.displayName = displayName;
 
-export default SimplePayment;
+export default SimplePaymentForm;

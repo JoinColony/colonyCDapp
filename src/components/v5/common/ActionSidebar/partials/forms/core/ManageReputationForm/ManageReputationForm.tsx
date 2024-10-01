@@ -16,6 +16,7 @@ import {
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
@@ -28,6 +29,8 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { ModificationOption, modificationOptions } from './consts.ts';
 import { useManageReputation } from './hooks.ts';
 import ManageReputationTable from './partials/ManageReputationTable/index.ts';
+
+const displayName = 'v5.common.ActionSidebar.ManageReputationForm';
 
 const ManageReputationForm: FC<CreateActionFormProps> = ({
   getFormOptions,
@@ -75,7 +78,7 @@ const ManageReputationForm: FC<CreateActionFormProps> = ({
   }, [modification, setValue]);
 
   return (
-    <>
+    <ActionFormLayout>
       <div className="mb-6 w-full">
         <ActionFormRow
           icon={ArrowsOutLineVertical}
@@ -159,8 +162,10 @@ const ManageReputationForm: FC<CreateActionFormProps> = ({
         <Description />
       </div>
       <ManageReputationTable />
-    </>
+    </ActionFormLayout>
   );
 };
+
+ManageReputationForm.displayName = displayName;
 
 export default ManageReputationForm;

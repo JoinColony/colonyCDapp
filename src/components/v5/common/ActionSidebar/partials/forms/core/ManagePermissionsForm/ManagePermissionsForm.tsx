@@ -17,6 +17,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
@@ -36,7 +37,7 @@ import PermissionsTable from './partials/PermissionsTable/index.ts';
 import PermissionsOptions from './PermissionOptions.tsx';
 import { getRoleLabel } from './utils.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
+const displayName = 'v5.common.ActionSidebar.ManagePermissionsForm';
 
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
@@ -112,7 +113,7 @@ const ManagePermissionsForm: FC<CreateActionFormProps> = ({
   ];
 
   return (
-    <>
+    <ActionFormLayout>
       <PermissionsModal
         onClose={togglePermissionsModalOff}
         isOpen={isPermissionsModalOpen}
@@ -226,7 +227,7 @@ const ManagePermissionsForm: FC<CreateActionFormProps> = ({
           className="mt-7"
         />
       )}
-    </>
+    </ActionFormLayout>
   );
 };
 

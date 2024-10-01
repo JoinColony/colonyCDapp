@@ -11,6 +11,7 @@ import React, {
 import { useController, useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
+import { type CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import useConfirmModal from '~hooks/useConfirmModal.ts';
 import { formatText } from '~utils/intl.ts';
@@ -33,7 +34,6 @@ import { useGetFormActionErrors } from '../CreateActionSidebar/hooks.ts';
 import NoPermissionsError from '../CreateActionSidebar/partials/NoPermissionsError.tsx';
 import NoReputationError from '../CreateActionSidebar/partials/NoReputationError.tsx';
 import { SidebarBanner } from '../CreateActionSidebar/partials/SidebarBanner.tsx';
-import { type CoreForm } from '../forms/index.ts';
 
 const displayName = 'v5.ActionSidebar.ActionFormLayout';
 
@@ -121,7 +121,7 @@ const ActionFormLayout: FC<PropsWithChildren<Props>> = ({
     field: { onChange },
   } = useController({ name: ACTION_TYPE_FIELD_NAME });
 
-  const selectedAction: CoreForm | undefined = watch(ACTION_TYPE_FIELD_NAME);
+  const selectedAction: CoreAction | undefined = watch(ACTION_TYPE_FIELD_NAME);
 
   // FIXME: consolidate the errors here
   const { flatFormErrors } = useGetFormActionErrors();
@@ -148,8 +148,8 @@ const ActionFormLayout: FC<PropsWithChildren<Props>> = ({
   ]);
 
   const onActionSelect = useCallback(
-    async (formId: CoreForm) => {
-      if (formId === selectedAction) {
+    async (actionType: CoreAction) => {
+      if (actionType === selectedAction) {
         return;
       }
       const hasMadeChanges = Object.keys(dirtyFields).find(
@@ -162,7 +162,7 @@ const ActionFormLayout: FC<PropsWithChildren<Props>> = ({
           return;
         }
       }
-      onChange(formId);
+      onChange(actionType);
     },
     [dirtyFields, onChange, openChangeModal, selectedAction],
   );

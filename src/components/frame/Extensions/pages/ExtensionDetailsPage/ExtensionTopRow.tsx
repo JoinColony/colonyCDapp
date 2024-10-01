@@ -10,7 +10,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React, { useCallback, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { ActionCore } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -101,7 +101,7 @@ const ExtensionsTopRow: FC<ExtensionsTopRowProps> = ({
   const handleUpgradeColony = useCallback(
     () =>
       show({
-        [ACTION_TYPE_FIELD_NAME]: ActionCore.UpgradeColonyVersion,
+        [ACTION_TYPE_FIELD_NAME]: CoreAction.VersionUpgrade,
       }),
     [show],
   );

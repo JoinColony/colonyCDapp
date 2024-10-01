@@ -6,6 +6,7 @@ import { type ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import ActionFormLayout from '~v5/common/ActionSidebar/partials/ActionFormLayout/ActionFormLayout.tsx';
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
@@ -17,7 +18,7 @@ import { getManageMembersOptions } from './consts.ts';
 import { useManageVerifiedMembers } from './hooks.ts';
 
 const displayName =
-  'v5.common.ActionSidebar.partials.ManageVerifiedMembersForm';
+  'v5.common.ActionSidebar.ManageVerifiedMembersForm';
 
 const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
   getFormOptions,
@@ -32,7 +33,7 @@ const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   return (
-    <>
+    <ActionFormLayout>
       <ActionFormRow
         icon={PlusMinus}
         fieldName="manageMembers"
@@ -63,7 +64,7 @@ const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
       <CreatedIn readonly />
       <Description />
       {manageMembers !== undefined && <VerifiedMembersTable name="members" />}
-    </>
+    </ActionFormLayout>
   );
 };
 

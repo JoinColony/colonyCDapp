@@ -635,6 +635,8 @@ Variants of Colony Network blockchain events
 
 These can all happen in a Colony and will be interpreted by the dApp according to their types
 """
+# TODO: Look into changing the action format. Something like
+  #
 enum ColonyActionType {
   """
   A generic or unspecified Colony action
@@ -880,6 +882,37 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  Batch payments are more like a "container action" for others
+  yet they need to have a type to create them in the frontend
+  """
+  BATCH_PAYMENT
+  """
+  Container action for award/smite reputation
+  """
+  MANAGE_REPUTATION
+  """
+  Container action for managing verified members
+  """
+  MANAGE_VERIFIED_MEMBERS
+  """
+  Split payments dummy action
+  FIXME: HMM, do we need this?
+  """
+  SPLIT_PAYMENT
+  """
+  Create a staged payment
+  """
+  STAGED_PAYMENT
+  """
+  Create a streaming payment
+  """
+  STREAMING_PAYMENT
+  """
+  @deprecated
+  This is still being used by our filters context for some components to filter by Colony Objectives Action type
+  """
+  MANAGE_COLONY_OBJECTIVE
 }
 
 """

@@ -1,9 +1,11 @@
 import { FilePlus } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC} from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { type CoreAction } from '~actions/index.ts';
+import { getFormName } from '~actions/utils.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
@@ -12,8 +14,6 @@ import ActionFormRow from '../ActionFormRow/index.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
-import { type CoreForm } from './partials/forms/index.ts';
-import { getFormName } from './partials/forms/utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
@@ -26,8 +26,8 @@ const MSG = defineMessages({
 
 interface ActionTypeSelectProps {
   className?: string;
-  selectedAction?: CoreForm;
-  onSelect: (actionType: CoreForm) => void;
+  selectedAction?: CoreAction;
+  onSelect: (actionType: CoreAction) => void;
 }
 
 const ActionTypeSelect: FC<ActionTypeSelectProps> = ({
@@ -80,10 +80,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({
               <SearchSelectPopover
                 items={actionsList}
                 hideSearchOnMobile
-                onSelect={(action) => {
-                  const formId = parseInt(action, 10) as CoreForm;
-                  onSelect(formId);
-                }}
+                onSelect={onSelect}
                 setTooltipRef={setTooltipRef}
                 tooltipProps={getTooltipProps}
                 triggerRef={triggerRef}
