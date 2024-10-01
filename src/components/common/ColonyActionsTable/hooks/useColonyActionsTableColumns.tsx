@@ -27,7 +27,6 @@ const useColonyActionsTableColumns = ({
   loadingMotionStates,
   refetchMotionStates,
   showUserAvatar = true,
-  hasHorizontalPadding = true,
 }) => {
   const isMobile = useMobile();
 
@@ -102,12 +101,7 @@ const useColonyActionsTableColumns = ({
         },
       }),
       helper.accessor('motionState', {
-        staticSize: (() => {
-          if (isMobile) {
-            return hasHorizontalPadding ? '7.4375rem' : '7rem';
-          }
-          return '6.25rem';
-        })(),
+        staticSize: isMobile ? '7.4375rem' : '6.25rem',
         header: formatText({
           id: 'activityFeedTable.table.header.status',
         }),
@@ -131,7 +125,7 @@ const useColonyActionsTableColumns = ({
       }),
       helper.display({
         id: 'expander',
-        staticSize: hasHorizontalPadding ? '2.25rem' : '1rem',
+        staticSize: '2.25rem',
         header: () => null,
         enableSorting: false,
         cell: ({ row: { getIsExpanded, toggleExpanded } }) => {
@@ -154,7 +148,6 @@ const useColonyActionsTableColumns = ({
     loading,
     loadingMotionStates,
     refetchMotionStates,
-    hasHorizontalPadding,
     showUserAvatar,
   ]);
 };

@@ -50,7 +50,6 @@ const Table = <T,>({
   tableBodyRowKeyProp,
   showTableHead = true,
   showTableBorder = true,
-  hasHorizontalPadding = true,
   footerColSpan,
   ...rest
 }: TableProps<T>) => {
@@ -463,7 +462,6 @@ const Table = <T,>({
               },
             )}
             disabled={paginationDisabled}
-            hasHorizontalPadding={hasHorizontalPadding}
           >
             {additionalPaginationButtonsContent}
           </TablePagination>

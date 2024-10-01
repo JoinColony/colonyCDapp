@@ -28,8 +28,7 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
     {
       ...props,
       showUserAvatar: false,
-      hasHorizontalPadding: true,
-      showTotalPagesNumber: !loadingActionsCount,
+        showTotalPagesNumber: !loadingActionsCount,
       isRecentActivityVariant: true,
     },
     actionProps.setSelectedAction,
@@ -40,7 +39,6 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
       {...tableProps}
       showTableHead={false}
       showTableBorder={false}
-      hasHorizontalPadding
       renderSubComponent={renderSubComponent}
       pageCount={pageCount}
       withBorder={false}
