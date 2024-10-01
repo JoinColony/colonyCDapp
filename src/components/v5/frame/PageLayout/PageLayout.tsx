@@ -7,10 +7,8 @@ import { ToastContainer } from 'react-toastify';
 
 import { CSSCustomVariable } from '~constants/cssCustomVariables.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { useTablet } from '~hooks';
 import { useHeightResizeObserver } from '~hooks/useHeightResizeObserver.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
-import Breadcrumbs from '~v5/shared/Breadcrumbs/Breadcrumbs.tsx';
 
 import PageHeader from './partials/PageHeader/PageHeader.tsx';
 import { type PageLayoutProps } from './types.ts';
@@ -25,8 +23,6 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
   children,
   enableMobileAndDesktopLayoutBreakpoints,
 }) => {
-  const isTablet = useTablet();
-
   const { title: pageTitle } = usePageHeadingContext();
 
   const topContentContainerRef = useRef<HTMLDivElement | null>(null);
@@ -67,7 +63,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             </section>
             <section
               className={clsx(
-                'modal-blur h-full w-full overflow-auto px-6 md:p-8 md:pt-2',
+                'modal-blur h-full w-full overflow-auto px-6 md:p-8 md:pb-0 md:pt-2',
                 {
                   'md:!pt-[1.125rem]': !pageTitle,
                 },
@@ -75,7 +71,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             >
               <div
                 className={clsx(
-                  'mx-auto max-w-[79.875rem] pb-4 pt-6 md:pt-0',
+                  'mx-auto h-full max-w-[79.875rem] pt-6 md:pt-0',
                   {
                     '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                   },
