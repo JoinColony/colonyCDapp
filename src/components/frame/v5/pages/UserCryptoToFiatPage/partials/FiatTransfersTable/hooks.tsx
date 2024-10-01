@@ -135,7 +135,11 @@ export const useFiatTransfersTableColumns = (
           }
 
           if (!row.original.receipt) {
-            return formatText({ id: 'table.content.receiptNotAvailable' });
+            return (
+              <div className="text-gray-400">
+                {formatText({ id: 'table.content.receiptGenerating' })}
+              </div>
+            );
           }
 
           return (
