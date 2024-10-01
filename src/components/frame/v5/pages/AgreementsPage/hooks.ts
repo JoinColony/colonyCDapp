@@ -159,7 +159,9 @@ export const useGetAgreements = () => {
         return createdAtDate >= dateFrom && createdAtDate <= dateTo;
       }
       return true;
-    });
+    })
+    .filter((agreement) => agreement.showInActionsList);
+
   const searchedAgreements = filteredAgreements.filter((agreement) =>
     agreement?.decisionData?.title
       ?.toLowerCase()
