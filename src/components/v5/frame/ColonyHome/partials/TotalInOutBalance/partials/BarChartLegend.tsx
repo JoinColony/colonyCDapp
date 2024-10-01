@@ -1,12 +1,13 @@
 import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import { useTotalInOutBalanceChartContext } from '~context/TotalInOutBalanceChartContext/TotalInOutBalanceChartContext.ts';
 
-import { useBarChartLegend, useData } from '../hooks.ts';
+import { useBarChartLegend } from '../hooks.ts';
 
 export const BarChartLegend = () => {
   const legend = useBarChartLegend();
-  const { loading: isLoading } = useData();
+  const { loading: isLoading } = useTotalInOutBalanceChartContext();
 
   return (
     <div className="flex gap-3">
