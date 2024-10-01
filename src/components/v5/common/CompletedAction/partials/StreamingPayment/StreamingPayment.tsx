@@ -120,7 +120,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     address: user?.walletAddress || '',
     colony,
     requiredRoles: [ColonyRole.Arbitration],
-    requiredRolesDomains: [streamingPaymentData.nativeDomainId],
+    requiredRolesDomain: streamingPaymentData.nativeDomainId,
   });
 
   // @todo: update cancel-related logic in separate PR
@@ -279,7 +279,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
               RowIcon={HandPalm}
             />
           )}
-        <DecisionMethodRow isMotion={action.isMotion || false} />
+        <DecisionMethodRow action={action} />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
