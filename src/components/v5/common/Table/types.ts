@@ -37,6 +37,7 @@ export interface TableProps<T>
   renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
   getRowCanExpand?: (row: Row<T>) => boolean;
   withBorder?: boolean;
+  withNarrowBorder?: boolean;
   isDisabled?: boolean;
   virtualizedProps?: {
     virtualizedRowHeight?: number;
@@ -44,6 +45,6 @@ export interface TableProps<T>
   tableClassName?: string;
   tableBodyRowKeyProp?: Extract<keyof T, React.Key>;
   showTableHead?: boolean;
-  showBorder?: boolean;
+  showTableBorder?: boolean;
   hasHorizontalPadding?: boolean;
 }
