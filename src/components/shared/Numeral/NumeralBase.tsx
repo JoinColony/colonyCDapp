@@ -12,7 +12,7 @@ export const NumeralBase: FC<Props> = ({
 }) => {
   return (
     <span className={className} {...rest}>
-      {prefix && `${prefix} `}
+      {prefix}
       {children}
       {suffix}
     </span>

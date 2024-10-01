@@ -40,19 +40,17 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
         </LoadingSkeleton>
       }
       subTitle={
-        <div className="py-1">
-          <FundsCardsSubTitle
-            isLoading={loading}
-            value={
-              <NumeralCurrency
-                value={total ?? '-'}
-                prefix={currencySymbolMap[currency]}
-                decimals={18}
-              />
-            }
-            currency={currency}
-          />
-        </div>
+        <FundsCardsSubTitle
+          isLoading={loading}
+          value={
+            <NumeralCurrency
+              value={total ?? '-'}
+              prefix={currencySymbolMap[currency]}
+              decimals={18}
+            />
+          }
+          currency={currency}
+        />
       }
     >
       <FundsCardsTotalDescription

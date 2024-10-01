@@ -70,6 +70,10 @@ export const adjustConvertedValue = (
 ) => convertedValue.div(new Decimal(10).pow(decimals));
 
 const CURRENCY_FORMAT = {
+  ZERO: {
+    mantissa: 0,
+    thousandSeparated: true,
+  },
   SMALL: {
     mantissa: 2,
     thousandSeparated: true,
@@ -93,7 +97,9 @@ export const getFormattedCurrencyValue = (
 
   let format: numbro.Format = {};
 
-  if (convertedValue.lt(CURRENCY_THRESHOLD)) {
+  if (convertedValue.eq(0)) {
+    format = CURRENCY_FORMAT.ZERO;
+  } else if (convertedValue.lt(CURRENCY_THRESHOLD)) {
     format = CURRENCY_FORMAT.SMALL;
   } else {
     format = CURRENCY_FORMAT.BIG;

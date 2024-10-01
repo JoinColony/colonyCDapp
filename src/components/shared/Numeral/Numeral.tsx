@@ -28,7 +28,7 @@ const Numeral = ({
 
   return (
     <NumeralBase
-      prefix={prefix}
+      prefix={prefix && `${prefix} `}
       suffix={suffix}
       className={className}
       {...rest}
