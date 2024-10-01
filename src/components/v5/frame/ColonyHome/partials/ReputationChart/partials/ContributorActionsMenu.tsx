@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { COLONY_MEMBERS_ROUTE } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
+import { DropdownItem } from '~v5/shared/Dropdown/DropdownItem.tsx';
+import DropdownMenu from '~v5/shared/Dropdown/DropdownMenu.tsx';
 
 import useDropdown from '../hooks/useDropdown.ts';
-
-import { DropdownItem } from './DropdownItem.tsx';
-import DropdownMenu from './DropdownMenu.tsx';
 
 const displayName =
   'v5.frame.ColonyHome.ReputationChart.partials.ContributorActionsMenu';

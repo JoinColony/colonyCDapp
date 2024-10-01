@@ -9,11 +9,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { COLONY_TEAMS_ROUTE } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { DropdownItem } from '~v5/shared/Dropdown/DropdownItem.tsx';
+import DropdownMenu from '~v5/shared/Dropdown/DropdownMenu.tsx';
 
 import useDropdown from '../hooks/useDropdown.ts';
-
-import { DropdownItem } from './DropdownItem.tsx';
-import DropdownMenu from './DropdownMenu.tsx';
 
 const displayName =
   'v5.frame.ColonyHome.ReputationChart.partials.TeamActionsMenu';
