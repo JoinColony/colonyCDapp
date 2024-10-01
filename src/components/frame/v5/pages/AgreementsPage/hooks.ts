@@ -31,6 +31,9 @@ const useGetAllAgreements = () => {
       colonyAddress,
       filter: {
         type: { eq: ColonyActionType.CreateDecisionMotion },
+        showInActionsList: {
+          eq: true,
+        },
       },
       sortDirection: ModelSortDirection.Desc,
       limit: QUERY_PAGE_SIZE,
@@ -159,8 +162,7 @@ export const useGetAgreements = () => {
         return createdAtDate >= dateFrom && createdAtDate <= dateTo;
       }
       return true;
-    })
-    .filter((agreement) => agreement.showInActionsList);
+    });
 
   const searchedAgreements = filteredAgreements.filter((agreement) =>
     agreement?.decisionData?.title
