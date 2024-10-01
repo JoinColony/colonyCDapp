@@ -24,14 +24,11 @@ const TablePagination: FC<PropsWithChildren<TablePaginationProps>> = ({
     canGoToPreviousPage || (children && !isMobile);
   return (
     <div
-      className={clsx(
-        'grid grid-cols-[1fr_auto_1fr] items-center gap-2 pb-[1.4375rem] pt-2',
-        {
-          'px-[1.125rem]': hasHorizontalPadding,
-          'sm:grid-cols-[1fr_auto_auto]': canGoNextOrAdditionalContentOnMobile,
-          'sm:grid-cols-[1fr_auto]': !canGoNextOrAdditionalContentOnMobile,
-        },
-      )}
+      className={clsx('grid grid-cols-[1fr_auto_1fr] items-center gap-2 pt-2', {
+        'px-[1.125rem]': hasHorizontalPadding,
+        'sm:grid-cols-[1fr_auto_auto]': canGoNextOrAdditionalContentOnMobile,
+        'sm:grid-cols-[1fr_auto]': !canGoNextOrAdditionalContentOnMobile,
+      })}
     >
       {canGoPreviousOrAdditionalContentOnDesktop && (
         <div className="col-start-1 row-start-1 flex items-center justify-start gap-3 sm:col-start-2">
