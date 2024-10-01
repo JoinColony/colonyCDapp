@@ -36,7 +36,7 @@ export const FundsCardsTotalDescription: React.FC<
   );
 
   return (
-    <div className="flex w-full justify-between text-xs">
+    <div className="mt-1.5 flex w-full justify-between text-xs">
       <LoadingSkeleton isLoading={isLoading} className="h-4 w-[114px] rounded">
         <span className="uppercase text-gray-400">
           <Numeral
