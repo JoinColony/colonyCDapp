@@ -28,9 +28,7 @@ const ExtensionDetailsHeader: FC = () => {
 
   // /* To install, a user must have the root permission. */
   const isInstallButtonVisible =
-    userHasRoot &&
-    !isInstalledExtensionData(extensionData) &&
-    extensionData.uninstallable;
+    userHasRoot && !isInstalledExtensionData(extensionData);
 
   const isReenableButtonVisible =
     userHasRoot &&
