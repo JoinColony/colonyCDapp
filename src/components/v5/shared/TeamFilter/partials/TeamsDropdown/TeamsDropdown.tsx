@@ -39,7 +39,7 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
         type="button"
         ref={setTriggerRef}
         className={clsx(
-          'h-full border-r border-gray-200 bg-base-white px-4 py-2 text-gray-700 hover:bg-gray-50',
+          'h-full border-y border-r border-gray-200 bg-base-white px-4 py-2 text-gray-700 hover:bg-gray-50',
           { 'bg-gray-50': visible },
         )}
       >
