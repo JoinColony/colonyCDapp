@@ -267,6 +267,10 @@ module.exports = {
         '.no-scrollbar': {
           'scrollbar-width': 'none',
         },
+        '.bold-on-hover': {
+          '@apply after:invisible after:block after:h-0 after:overflow-hidden after:font-semibold after:content-[attr(aria-label)] hover:font-semibold':
+            {},
+        },
       });
       addComponents({
         '.inner': {
