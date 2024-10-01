@@ -36,7 +36,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
             userName={slicedAvatar.profile?.displayName ?? undefined}
             size={size}
             className={clsx(
-              'rounded-full border border-base-white bg-base-white',
+              'rounded-full border border-base-white bg-base-white transition-colors duration-normal group-hover:border-blue-400',
               {
                 'border-2': withThickerBorder,
               },
@@ -52,7 +52,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
                 userAddress={ADDRESS_ZERO}
                 size={size}
                 className={clsx(
-                  'rounded-full border border-base-white bg-base-white',
+                  'rounded-full border border-base-white bg-base-white transition-colors duration-normal group-hover:border-blue-400',
                   {
                     'border-2': withThickerBorder,
                   },

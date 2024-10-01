@@ -2,7 +2,9 @@ import { Cardholder } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import { COLONY_CONTRIBUTORS_ROUTE } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import Card from '~v5/shared/Card/index.ts';
@@ -25,9 +27,13 @@ const TeamCard: FC<TeamCardProps> = ({
   meatBallMenuProps,
   links,
   balance,
+  searchParams,
   className,
 }) => {
   const isMobile = useMobile();
+  const {
+    colony: { name: colonyName },
+  } = useColonyContext();
 
   return (
     <Card
@@ -70,9 +76,14 @@ const TeamCard: FC<TeamCardProps> = ({
               />
             </div>
           ) : (
-            <>
+            <Link
+              to={{
+                pathname: `/${colonyName}/${COLONY_CONTRIBUTORS_ROUTE}`,
+                search: `${searchParams?.team}`,
+              }}
+            >
               {!!members?.length && (
-                <div className="ml-auto flex-shrink-0">
+                <div className="group ml-auto flex-shrink-0">
                   <UserAvatars
                     maxAvatarsToShow={4}
                     className="[&_.placeholder]:bg-gray-200 [&_.placeholder]:text-gray-900"
@@ -81,7 +92,7 @@ const TeamCard: FC<TeamCardProps> = ({
                   />
                 </div>
               )}
-            </>
+            </Link>
           )}
         </div>
         {description ? (
