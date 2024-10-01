@@ -39,7 +39,7 @@ export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
   const { setActiveLegendItem } = useReputationChartContext();
   return (
     <>
-      <div className="relative mb-3 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
+      <div className="relative mb-3.5 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
         {isLoading ? <ChartLoadingLayer /> : null}
         <ResponsivePie
           {...pieChartConfig}

@@ -29,7 +29,7 @@ const MSG = defineMessages({
   },
   reputationTitleContributors: {
     id: `${displayName}.influenceTitleContributors`,
-    defaultMessage: 'Top contributors',
+    defaultMessage: 'Top members',
   },
 });
 
