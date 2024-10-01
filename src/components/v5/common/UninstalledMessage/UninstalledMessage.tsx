@@ -5,6 +5,7 @@ import { defineMessages, type MessageDescriptor } from 'react-intl';
 import { formatText } from '~utils/intl.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 import ExtensionStatusBadge from '../Pills/ExtensionStatusBadge/ExtensionStatusBadge.tsx';
 
@@ -84,13 +85,16 @@ const UninstalledMessage: FC<PropsWithChildren<UninstalledMessageProps>> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText(MSG.warning),
-        iconAlignment: 'top',
-        textClassName: 'text-xs font-medium text-gray-900',
-        iconSize: 16,
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          iconAlignment="top"
+          iconClassName="text-xs font-medium text-gray-900"
+          iconSize={16}
+        >
+          {formatText(MSG.warning)}
+        </StatusText>
+      }
       sections={[
         {
           key: '1',

@@ -18,6 +18,7 @@ import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 import DescriptionList from '../VotingStep/partials/DescriptionList/index.ts';
 
@@ -119,33 +120,36 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText({
-          id: isMotionFailedNotFinalizable
-            ? 'motion.finalizeStep.failed.statusText'
-            : 'motion.finalizeStep.statusText',
-        }),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        content: (
-          <div />
-          /*
-           * @TODO This needs to refactored
-           * When the claim single / claim for everyone multicall logic gets wired in
-           */
-          // <div className="flex items-center text-4 gap-2">
-          //   <span className="flex text-blue-400 mr-2">
-          //     <ArrowsClockwise size={14} />
-          //   </span>
-          //   {formatText(
-          //     { id: 'motion.finalizeStep.transactions.remaining' },
-          //     { transactions: remainingStakesNumber },
-          //   )}
-          // </div>
-        ),
-        iconSize: 16,
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconSize={16}
+        >
+          {formatText({
+            id: isMotionFailedNotFinalizable
+              ? 'motion.finalizeStep.failed.statusText'
+              : 'motion.finalizeStep.statusText',
+          })}
+        </StatusText>
+      }
+      content={
+        <div />
+        /*
+         * @TODO This needs to refactored
+         * When the claim single / claim for everyone multicall logic gets wired in
+         */
+        // <div className="flex items-center text-4 gap-2">
+        //   <span className="flex text-blue-400 mr-2">
+        //     <ArrowsClockwise size={14} />
+        //   </span>
+        //   {formatText(
+        //     { id: 'motion.finalizeStep.transactions.remaining' },
+        //     { transactions: remainingStakesNumber },
+        //   )}
+        // </div>
+      }
       sections={[
         ...(!hasEnoughFundsToFinalize
           ? [

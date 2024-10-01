@@ -11,6 +11,7 @@ import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { membersList } from './consts.ts';
@@ -22,9 +23,8 @@ const ExitRecoveryStep: FC = () => {
   return (
     <div className="flex flex-col gap-4">
       <MenuWithStatusText
-        statusTextSectionProps={{
-          status: StatusTypes.Info,
-          children: (
+        statusText={
+          <StatusText status={StatusTypes.Info} iconAlignment="top">
             <>
               <p className="text-4">
                 {formatText(
@@ -44,9 +44,8 @@ const ExitRecoveryStep: FC = () => {
                 className="mt-2"
               />
             </>
-          ),
-          iconAlignment: 'top',
-        }}
+          </StatusText>
+        }
         sections={[
           {
             key: '1',
@@ -105,14 +104,17 @@ const ExitRecoveryStep: FC = () => {
         ]}
       />
       <MenuWithStatusText
-        statusTextSectionProps={{
-          status: StatusTypes.Info,
-          children: formatText({
-            id: 'motion.exitRecovery.storageSlots.statusText',
-          }),
-          textClassName: 'text-4 text-gray-900',
-          iconAlignment: 'top',
-        }}
+        statusText={
+          <StatusText
+            status={StatusTypes.Info}
+            textClassName="text-4 text-gray-900"
+            iconAlignment="top"
+          >
+            {formatText({
+              id: 'motion.exitRecovery.storageSlots.statusText',
+            })}
+          </StatusText>
+        }
         sections={[
           {
             key: '1',

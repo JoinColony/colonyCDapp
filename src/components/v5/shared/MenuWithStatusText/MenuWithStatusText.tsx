@@ -1,25 +1,23 @@
 import React from 'react';
 
 import MenuWithSections from '../MenuWithSections/index.ts';
-import StatusText from '../StatusText/StatusText.tsx';
 
 import { type MenuWithStatusTextProps } from './types.ts';
 
 const displayName = 'v5.shared.MenuWithStatusText';
 
 const MenuWithStatusText: React.FC<MenuWithStatusTextProps> = ({
-  statusTextSectionProps,
+  content,
+  statusText,
   sections,
 }) => {
-  const { content, ...restStatusTextSectionProps } = statusTextSectionProps;
-
   const sectionsWithStatusText = [
     {
       key: 'statusTextSection',
       className: 'bg-gray-50 !py-3',
       content: (
         <>
-          <StatusText {...restStatusTextSectionProps} />
+          {statusText}
           {content || null}
         </>
       ),

@@ -93,14 +93,19 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
     />
   ) : (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText({ id: 'expenditure.paymentStage.info' }),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        iconClassName: 'text-gray-500',
-        iconSize: 16,
-        content: leftToClaim.length ? (
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconClassName="text-gray-500"
+          iconSize={16}
+        >
+          {formatText({ id: 'expenditure.paymentStage.info' })}
+        </StatusText>
+      }
+      content={
+        leftToClaim.length ? (
           <StatusText
             icon={ArrowsClockwise}
             iconAlignment="top"
@@ -123,8 +128,8 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
               },
             )}
           </StatusText>
-        ) : undefined,
-      }}
+        ) : undefined
+      }
       sections={[
         {
           key: 'overview',

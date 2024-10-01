@@ -12,6 +12,7 @@ import { useMotionContext } from '~v5/common/ActionSidebar/partials/Motions/part
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 import { useStakingStep } from './hooks.tsx';
 import NotEnoughTokensInfo from './partials/NotEnoughTokensInfo/index.ts';
@@ -77,28 +78,32 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   ) : (
     <div className={className}>
       <MenuWithStatusText
-        statusTextSectionProps={{
-          textClassName: 'text-4 text-gray-900',
-          children: formatText(
-            {
-              id: cardTitleMessageId,
-            },
-            {
-              time: formatRelative(
-                new Date(votingPhaseStartedMessage?.createdAt || new Date()),
-                new Date(),
-              ),
-            },
-          ),
-          iconAlignment: 'top',
-          iconSize: 16,
-          status:
-            (objectingStakesPercentageValue === 100 ||
-              supportingStakesPercentageValue === 100) &&
-            !isFullyStaked
-              ? StatusTypes.Warning
-              : StatusTypes.Info,
-        }}
+        statusText={
+          <StatusText
+            status={
+              (objectingStakesPercentageValue === 100 ||
+                supportingStakesPercentageValue === 100) &&
+              !isFullyStaked
+                ? StatusTypes.Warning
+                : StatusTypes.Info
+            }
+            iconSize={16}
+            iconAlignment="top"
+            textClassName="text-4 text-gray-900"
+          >
+            {formatText(
+              {
+                id: cardTitleMessageId,
+              },
+              {
+                time: formatRelative(
+                  new Date(votingPhaseStartedMessage?.createdAt || new Date()),
+                  new Date(),
+                ),
+              },
+            )}
+          </StatusText>
+        }
         sections={[
           ...(!enoughReputationToStakeMinimum && canInteract
             ? [

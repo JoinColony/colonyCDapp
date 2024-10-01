@@ -16,6 +16,7 @@ import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import ProgressBar from '~v5/shared/ProgressBar/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 
 import { useVotingStep } from './hooks.tsx';
 import DescriptionList from './partials/DescriptionList/index.ts';
@@ -74,41 +75,42 @@ const VotingStep: FC<VotingStepProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        textClassName: 'text-4 text-gray-900 w-full',
-        children: (
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900 w-full"
+          iconAlignment="top"
+        >
           <p className="text-4">
             {formatText(
               { id: 'motion.votingStep.statusText' },
               { thresholdPercent },
             )}
           </p>
-        ),
-        content: (
-          <div className="ml-[1.375rem] mt-1">
-            <ProgressBar
-              className="mt-2"
-              progress={currentReputationPercent}
-              threshold={thresholdPercent}
-              progressLabel={
-                <span className="!text-xs">
-                  {formatText(
-                    {
-                      id: 'motion.votingStep.additionalText',
-                    },
-                    {
-                      progress: currentReputationPercent,
-                    },
-                  )}
-                </span>
-              }
-              isTall
-            />
-          </div>
-        ),
-        iconAlignment: 'top',
-      }}
+        </StatusText>
+      }
+      content={
+        <div className="ml-[1.375rem] mt-1">
+          <ProgressBar
+            className="mt-2"
+            progress={currentReputationPercent}
+            threshold={thresholdPercent}
+            progressLabel={
+              <span className="!text-xs">
+                {formatText(
+                  {
+                    id: 'motion.votingStep.additionalText',
+                  },
+                  {
+                    progress: currentReputationPercent,
+                  },
+                )}
+              </span>
+            }
+            isTall
+          />
+        </div>
+      }
       sections={[
         {
           key: VotingStepSections.Vote,

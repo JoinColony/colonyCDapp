@@ -24,7 +24,6 @@ import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { removeQueryParamFromUrl } from '~utils/urls.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -39,6 +38,7 @@ import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
+import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
@@ -103,20 +103,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
   useDisableBodyScroll(isActionSidebarOpen);
 
-  const isLoading = loadingAction || loadingExpenditure;
+  const isLoading =
+    transactionId !== undefined && (loadingAction || loadingExpenditure);
 
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
     if (isLoading) {
-      return (
-        <div className="flex h-full flex-col items-center justify-center gap-4">
-          <SpinnerLoader appearance={{ size: 'huge' }} />
-          <p className="text-gray-600">
-            {formatText({ id: 'actionSidebar.loading' })}
-          </p>
-        </div>
-      );
+      return <ActionSidebarLoadingSkeleton />;
     }
 
     if (action) {
@@ -255,7 +249,8 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           'md:max-w-full': isSidebarFullscreen,
           'md:max-w-[43.375rem]': !isSidebarFullscreen && !isMotion,
           'md:max-w-[67.3125rem]':
-            !isSidebarFullscreen && !!transactionId && !actionNotFound,
+            (!isSidebarFullscreen && !!transactionId && !actionNotFound) ||
+            (!isSidebarFullscreen && !!transactionId && isLoading),
         },
       )}
       ref={registerContainerRef}
