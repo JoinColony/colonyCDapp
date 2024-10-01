@@ -50,7 +50,6 @@ const Table = <T,>({
   tableBodyRowKeyProp,
   showTableHead = true,
   showTableBorder = true,
-  hasHorizontalPadding = true,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -457,7 +456,6 @@ const Table = <T,>({
               },
             )}
             disabled={paginationDisabled}
-            hasHorizontalPadding={hasHorizontalPadding}
           >
             {additionalPaginationButtonsContent}
           </TablePagination>

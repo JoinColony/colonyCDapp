@@ -5,5 +5,4 @@ export interface TablePaginationProps {
   canGoToPreviousPage?: boolean;
   canGoToNextPage?: boolean;
   disabled?: boolean;
-  hasHorizontalPadding?: boolean;
 }
