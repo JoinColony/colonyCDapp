@@ -45,12 +45,12 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
       ref={teamItemRef}
       type="button"
       className={clsx(
-        'w-full bg-base-white px-4 py-2 text-sm',
+        'box-border inline-flex h-full w-full items-center justify-center border-y border-r border-solid bg-base-white px-4 py-2 text-sm',
         selected ? teamColor : null,
         {
-          'border-r border-solid border-gray-200 font-medium text-gray-700':
+          'border-gray-200 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900':
             !selected,
-          'border-0 font-semibold text-base-white': selected,
+          'border-transparent font-semibold text-base-white': selected,
         },
       )}
       onClick={handleClick}
