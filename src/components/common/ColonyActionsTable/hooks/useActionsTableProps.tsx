@@ -44,7 +44,6 @@ export const useActionsTableProps = (
     additionalPaginationButtonsContent,
     showTotalPagesNumber,
     showUserAvatar,
-    hasHorizontalPadding,
     isRecentActivityVariant,
     ...rest
   } = props;
@@ -70,7 +69,6 @@ export const useActionsTableProps = (
     loadingMotionStates,
     refetchMotionStates,
     showUserAvatar,
-    hasHorizontalPadding,
   });
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
@@ -141,14 +139,10 @@ export const useActionsTableProps = (
     {
       className: clsx(
         className,
-        'sm:[&_td]:pr-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
         {
           'sm:[&_td]:h-[66px]': isRecentActivityVariant,
           'sm:[&_td]:h-[70px]': !isRecentActivityVariant,
-          'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem]':
-            hasHorizontalPadding,
-          'sm:[&_td:first-child]:pl-0 [&_td:first-child_div]:pl-0 sm:[&_td:last-child]:pr-0 [&_td:last-child_div]:pr-0 sm:[&_th:first-child]:pl-0 sm:[&_th:last-child]:pr-0 [&_th:last-child_div]:pr-0':
-            !hasHorizontalPadding,
           'sm:[&_tr:hover]:bg-gray-25': data.length > 0 && !loading,
         },
       ),
