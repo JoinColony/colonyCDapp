@@ -1,8 +1,10 @@
 import { ResponsiveBar } from '@nivo/bar';
 import React, { type FC } from 'react';
 
+import { useTotalInOutBalanceChartContext } from '~context/TotalInOutBalanceChartContext/TotalInOutBalanceChartContext.ts';
+
 import { cssVariables } from '../consts.ts';
-import { useBarChartConfig, useChartYSteps, useData } from '../hooks.ts';
+import { useBarChartConfig } from '../hooks.ts';
 import { type BarChartDataItem } from '../types.ts';
 import {
   getFallbackData,
@@ -19,7 +21,7 @@ import { ChartCustomYAxisLayer } from './ChartCustomYAxisLayer.tsx';
 interface BarChartProps {}
 
 const EnhancedChartCustomXAxisLayer = (props) => {
-  const { loading: isLoading } = useData();
+  const { loading: isLoading } = useTotalInOutBalanceChartContext();
 
   return (
     <ChartCustomXAxisLayer
@@ -32,13 +34,12 @@ const EnhancedChartCustomXAxisLayer = (props) => {
 };
 
 const EnhancedChartCustomYAxisLayer = (props) => {
-  const { loading: isLoading } = useData();
-  const steps = useChartYSteps();
+  const { ySteps, loading: isLoading } = useTotalInOutBalanceChartContext();
 
   return (
     <ChartCustomYAxisLayer
       {...props}
-      steps={steps}
+      steps={ySteps}
       textColor={cssVariables.gray400}
       lineColor={cssVariables.gray200}
       formatLabel={getFormattedShortAmount}
@@ -48,7 +49,7 @@ const EnhancedChartCustomYAxisLayer = (props) => {
 };
 
 const EnhancedChartCustomBarGroupLayer = (props) => {
-  const { loading: isLoading } = useData();
+  const { loading: isLoading } = useTotalInOutBalanceChartContext();
 
   return (
     <ChartCustomBarGroupLayer
@@ -61,7 +62,8 @@ const EnhancedChartCustomBarGroupLayer = (props) => {
 
 export const BarChart: FC<BarChartProps> = () => {
   const barChartConfig = useBarChartConfig<BarChartDataItem>();
-  const { timeframe: barChartData, loading: isLoading } = useData();
+  const { timeframe: barChartData, loading: isLoading } =
+    useTotalInOutBalanceChartContext();
   const fallbackData = getFallbackData();
 
   return (
