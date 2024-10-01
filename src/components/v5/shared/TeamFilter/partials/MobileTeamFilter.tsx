@@ -26,7 +26,7 @@ const MobileTeamFilter = () => {
 
   return (
     <ArrowScroller
-      className="flex w-fit whitespace-nowrap rounded-lg border border-solid border-gray-200"
+      className="flex h-[34px] w-fit whitespace-nowrap rounded-lg no-scrollbar"
       buttonLeftContent={leftButton}
       buttonRightContent={rightButton}
     >

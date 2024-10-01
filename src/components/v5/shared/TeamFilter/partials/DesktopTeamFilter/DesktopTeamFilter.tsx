@@ -95,7 +95,7 @@ const DesktopTeamFilter = () => {
   }, [allDomains, overflowingItemIndex, selectedDomain]);
 
   return (
-    <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap rounded-lg border border-solid border-gray-200">
+    <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap">
       <AllTeamsItem selected={isAllTeamsFilterActive} />
       <div className="flex flex-wrap overflow-hidden" ref={containerRef}>
         {displayDomains.map((domain, index) => (
@@ -106,7 +106,7 @@ const DesktopTeamFilter = () => {
               }
             }}
             key={`teamFilter.${domain.id}`}
-            className={clsx('flex-1 flex-shrink-0', {
+            className={clsx('h-full flex-1 flex-shrink-0', {
               'pointer-events-none opacity-0':
                 overflowingItemIndex > -1 && index >= overflowingItemIndex,
             })}
