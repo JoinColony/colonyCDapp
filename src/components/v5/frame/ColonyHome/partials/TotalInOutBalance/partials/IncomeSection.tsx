@@ -1,20 +1,23 @@
 import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import { useTotalInOutBalanceContext } from '~context/TotalInOutBalanceContext/TotalInOutBalanceContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { AddFundsModal } from '~v5/common/Modals/AddFundsModal/AddFundsModal.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
-import { useLast30DaysData, usePreviousLast30DaysData } from '../hooks.ts';
 
 import { ClaimFundsButton } from './ClaimFundsButton.tsx';
 import { TitledSection } from './TitledSection.tsx';
 
 export const IncomeSection = () => {
-  const { totalIn, loading: isLoading } = useLast30DaysData();
-  const { previousTotalIn } = usePreviousLast30DaysData();
+  const {
+    loading: isLoading,
+    totalIn,
+    previousTotalIn,
+  } = useTotalInOutBalanceContext();
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },

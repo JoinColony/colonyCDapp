@@ -4,6 +4,7 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
+import { useTotalInOutBalanceContext } from '~context/TotalInOutBalanceContext/TotalInOutBalanceContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -13,13 +14,15 @@ import {
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { MSG } from '../consts.ts';
-import { useLast30DaysData, usePreviousLast30DaysData } from '../hooks.ts';
 
 import { TitledSection } from './TitledSection.tsx';
 
 export const PaymentsSection = () => {
-  const { totalOut, loading: isLoading } = useLast30DaysData();
-  const { previousTotalOut } = usePreviousLast30DaysData();
+  const {
+    loading: isLoading,
+    totalOut,
+    previousTotalOut,
+  } = useTotalInOutBalanceContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { setShowTabletSidebar } = usePageLayoutContext();
 
