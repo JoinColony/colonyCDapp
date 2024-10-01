@@ -2,7 +2,7 @@ const fetch = require('cross-fetch');
 const { utils } = require('ethers');
 const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../utils');
-const { getLiquidationAddresses } = require('./utils');
+const { getLiquidationAddresses, getExternalAccounts } = require('./utils');
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
  * So that we can always ensure it follows the latest schema
@@ -102,19 +102,8 @@ const checkKYCHandler = async (
       return { kycStatus };
     }
 
-    const externalAccountRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Api-Key': apiKey,
-        },
-      },
-    );
+    const externalAccounts = await getExternalAccounts(apiUrl, apiKey, bridgeCustomerId);
 
-    const response = await externalAccountRes.json();
-
-    const externalAccounts = response.data;
     const firstAccount = externalAccounts?.[0];
 
     if (!firstAccount) {

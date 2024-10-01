@@ -12,7 +12,7 @@ import {
   getCTAScheme,
   HEADING_MSG,
 } from './consts.ts';
-import BankDetailsDescriptionComponent from './partials/BankDetailsDescription/BankDetailsDescription.tsx';
+import BankDetailsDescription from './partials/BankDetailsDescription/BankDetailsDescription.tsx';
 import { BankDetailsStatus } from './types.ts';
 
 const BankDetails = () => {
@@ -42,7 +42,7 @@ const BankDetails = () => {
       />
       <RowItem.Body
         descriptionComponent={
-          <BankDetailsDescriptionComponent
+          <BankDetailsDescription
             bankAccount={bankAccountData}
             isDataLoading={isKycStatusDataLoading}
           />

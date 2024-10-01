@@ -64,7 +64,49 @@ const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
   return liquidationAddressesJson.data;
 };
 
+const getExternalAccounts = async (apiUrl, apiKey, bridgeCustomerId) => {
+  const externalAccountsRes = await fetch(
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-Key': apiKey,
+      },
+    },
+  );
+
+  if (externalAccountsRes.status !== 200) {
+    console.log(`Could not fetch external accounts for customer ${bridgeCustomerId}`);
+    return null;
+  }
+
+  const externalAccountsJson = await externalAccountsRes.json();
+
+  return externalAccountsJson.data;
+};
+
+const deleteExternalAccount = async (apiUrl, apiKey, bridgeCustomerId, id) => {
+  const deleteAccountRes = await fetch(
+    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${id}`,
+    {
+      headers: {
+        'Api-Key': apiKey,
+      },
+      method: 'DELETE',
+    },
+  );
+
+  if (deleteAccountRes.status !== 200) {
+    console.log(
+      `Error deleting external account: ${await deleteAccountRes.text()}`,
+    );
+  }
+};
+
 module.exports = {
   createExternalAccount,
+  deleteExternalAccount,
+  getExternalAccounts,
   getLiquidationAddresses,
 };
+
