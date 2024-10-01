@@ -6,4 +6,5 @@ import { type RefetchExpenditureType } from '../../types.ts';
 export interface CancelModalProps extends ModalProps {
   expenditure: Expenditure;
   refetchExpenditure: RefetchExpenditureType;
+  isActionStaked: boolean;
 }

@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 
 import { ExpenditureType } from '~gql';
+import { type ExpenditureAction } from '~types/graphql.ts';
 import noop from '~utils/noop.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
@@ -29,6 +30,8 @@ export const PaymentBuilderContext = createContext<{
   setSelectedMilestoneMotion: (transaction: ReleaseBoxItem | null) => void;
   selectedMilestones: MilestoneItem[];
   setSelectedMilestones: (transaction: MilestoneItem[]) => void;
+  selectedCancellingAction: ExpenditureAction | null;
+  setSelectedCancellingAction: (action: ExpenditureAction | null) => void;
 }>({
   toggleOnFundingModal: noop,
   toggleOffFundingModal: noop,
@@ -52,6 +55,8 @@ export const PaymentBuilderContext = createContext<{
   setSelectedMilestoneMotion: noop,
   selectedMilestones: [],
   setSelectedMilestones: noop,
+  selectedCancellingAction: null,
+  setSelectedCancellingAction: noop,
 });
 
 export const usePaymentBuilderContext = () => useContext(PaymentBuilderContext);

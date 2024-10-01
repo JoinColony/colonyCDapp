@@ -2,6 +2,7 @@ import { BigNumber } from 'ethers';
 
 import { ExpenditureStatus } from '~gql';
 import { type Expenditure } from '~types/graphql.ts';
+import { notMaybe } from '~utils/arrays/index.ts';
 
 import { ExpenditureStep } from './types.ts';
 
@@ -54,8 +55,21 @@ export const isExpenditureFullyFunded = (expenditure?: Expenditure | null) => {
 export const getExpenditureStep = (
   expenditure: Expenditure | null | undefined,
 ) => {
-  const { status } = expenditure || {};
+  const { status, userStake, cancellingActions, isStaked } = expenditure || {};
+  const { isForfeited } = userStake || {};
   const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
+
+  const allCancelledMotions = cancellingActions?.items
+    .map((cancellingAction) => cancellingAction?.motionData)
+    .filter(notMaybe);
+  const isAnyCancellingMotionInProgress = allCancelledMotions?.some(
+    (motion) =>
+      !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
+  );
+
+  if (isAnyCancellingMotionInProgress) {
+    return ExpenditureStep.Cancel;
+  }
 
   switch (status) {
     case ExpenditureStatus.Draft:
@@ -69,8 +83,12 @@ export const getExpenditureStep = (
     }
     case ExpenditureStatus.Finalized:
       return ExpenditureStep.Payment;
-    case ExpenditureStatus.Cancelled:
+    case ExpenditureStatus.Cancelled: {
+      if (!isForfeited && isStaked) {
+        return ExpenditureStep.Reclaim;
+      }
       return ExpenditureStep.Cancel;
+    }
     default:
       return ExpenditureStep.Create;
   }

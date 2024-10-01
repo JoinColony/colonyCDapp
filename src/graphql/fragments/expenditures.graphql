@@ -36,6 +36,8 @@ fragment Expenditure on Expenditure {
   userStake {
     amount
     isClaimed
+    isForfeited
+    userAddress
   }
   balances {
     ...ExpenditureBalance
@@ -70,7 +72,10 @@ fragment Expenditure on Expenditure {
   }
   cancellingActions: actions(
     filter: {
-      type: { eq: CANCEL_EXPENDITURE }
+      or: [
+        { type: { eq: CANCEL_EXPENDITURE } }
+        { type: { eq: CANCEL_EXPENDITURE_MOTION } }
+      ]
       isMotionFinalization: { ne: true }
     }
   ) {
@@ -134,5 +139,8 @@ fragment ExpenditureAction on ColonyAction {
   expenditureSlotIds
   initiatorUser {
     ...User
+  }
+  motionData {
+    ...ColonyMotion
   }
 }
