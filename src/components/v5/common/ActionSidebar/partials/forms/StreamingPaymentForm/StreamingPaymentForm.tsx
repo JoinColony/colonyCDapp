@@ -112,7 +112,6 @@ const StreamingPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           <AmountField
             name="limit"
             tokenAddressFieldName="limitTokenAddress"
-            maxWidth={270}
             domainId={selectedTeam}
             isDisabled={hasNoDecisionMethods}
             isTokenSelectionDisabled
