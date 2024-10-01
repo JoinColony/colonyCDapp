@@ -46,6 +46,9 @@ export enum ActionTitleMessageKeys {
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
+/**
+ * @TODO: Refactor to use comparison instead of includes which is just a partial match on the string
+ */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
     case actionType === ColonyActionType.Payment:
@@ -62,6 +65,14 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.TokenSymbol,
         ActionTitleMessageKeys.Initiator,
         ActionTitleMessageKeys.Period,
+      ];
+    case actionType.includes(ColonyActionType.Payment) &&
+      !actionType.includes(ExtendedColonyActionType.SplitPayment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
       ];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
