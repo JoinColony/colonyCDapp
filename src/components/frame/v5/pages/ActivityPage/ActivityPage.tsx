@@ -36,7 +36,6 @@ const ActivityPage: FC = () => {
               }}
               className="pb-4 [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
               showTotalPagesNumber={false}
-              hasHorizontalPadding
             />
           </FiltersContextProvider>
         </div>

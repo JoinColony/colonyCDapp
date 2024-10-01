@@ -8,7 +8,6 @@ export interface ColonyActionsTableProps
   pageSize?: number;
   withHeader?: boolean;
   showUserAvatar?: boolean;
-  hasHorizontalPadding?: boolean;
   isRecentActivityVariant?: boolean;
   actionProps: {
     selectedAction?: string;
