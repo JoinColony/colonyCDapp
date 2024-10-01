@@ -23,10 +23,9 @@ const NumeralCurrency = ({
   appearance,
   ...rest
 }: NumeralProps) => {
-  const fixedValue = value;
-  const convertedValue = convertToDecimal(fixedValue, decimals || 0);
+  const convertedValue = convertToDecimal(value, decimals || 0);
 
-  const formattedValue = getFormattedCurrencyValue(convertedValue, fixedValue);
+  const formattedValue = getFormattedCurrencyValue(convertedValue, value);
 
   return (
     <NumeralBase

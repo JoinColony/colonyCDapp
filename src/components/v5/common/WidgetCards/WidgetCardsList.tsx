@@ -37,7 +37,7 @@ export const WidgetCardsList: FC<PropsWithChildren<WidgetCardsListProps>> = ({
 
       <div className="grow cursor-grab overflow-hidden">
         <div ref={emblaRef}>
-          <div className="flex gap-4">{children}</div>
+          <div className="flex gap-4.5">{children}</div>
         </div>
       </div>
 
