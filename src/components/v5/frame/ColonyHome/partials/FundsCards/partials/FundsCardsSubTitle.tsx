@@ -13,7 +13,7 @@ export const FundsCardsSubTitle: FC<FundsCardsSubTitleProps> = ({
   isLoading,
 }) => {
   return (
-    <p className="flex items-center gap-2">
+    <p className="mb-1.5 flex items-center gap-2">
       <LoadingSkeleton
         className="h-[27px] w-[90px] rounded"
         isLoading={isLoading}
