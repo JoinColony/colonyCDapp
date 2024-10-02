@@ -7,6 +7,8 @@ import React, {
 } from 'react';
 
 import { type UserHubTab } from '~common/Extensions/UserHub/types.ts';
+import { useTablet } from '~hooks';
+import { useResize } from '~hooks/useResize.ts';
 
 import { PageLayoutContext } from './PageLayoutContext.ts';
 
@@ -14,6 +16,16 @@ const PageLayoutContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [showTabletSidebar, setShowTabletSidebar] = useState(false);
   const [showTabletColonyPicker, setShowTabletColonyPicker] = useState(false);
   const [userHubTab, setUserHubTab] = useState<UserHubTab | undefined>();
+  const isTablet = useTablet();
+
+  const resetSidebars = useCallback(() => {
+    if (!isTablet) {
+      setShowTabletSidebar(false);
+      setShowTabletColonyPicker(false);
+    }
+  }, [isTablet, setShowTabletSidebar, setShowTabletColonyPicker]);
+
+  useResize(resetSidebars);
 
   const toggleTabletSidebar = useCallback(() => {
     setShowTabletSidebar((state) => !state);
