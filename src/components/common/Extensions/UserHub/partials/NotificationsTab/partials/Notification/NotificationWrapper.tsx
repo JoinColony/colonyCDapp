@@ -3,73 +3,54 @@ import {
   useNotification,
 } from '@magicbell/react-headless';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React, { type ReactNode, type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants';
-import { useGetColonyActionQuery } from '~gql';
-import { TX_SEARCH_PARAM } from '~routes';
+import { type ColonyFragment } from '~gql';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
 import RelativeDate from '~v5/shared/RelativeDate/index.ts';
 
-import NotificationMessage from './NotificationMessage.tsx';
-
-const displayName = 'common.Extensions.UserHub.partials.Notification';
+const displayName = 'common.Extensions.UserHub.partials.NotificationWrapper';
 
 const MSG = defineMessages({
-  unknownAction: {
-    id: `${displayName}.unknownAction`,
-    defaultMessage: 'Unknown action',
-  },
   unknownColony: {
     id: `${displayName}.unknownColony`,
     defaultMessage: 'Unknown colony',
   },
 });
 
-interface NotificationProps {
+interface NotificationWrapperProps {
+  children: ReactNode;
+  colony: ColonyFragment | null | undefined;
+  loadingColony: boolean;
   notification: NotificationInterface;
+  onClick?: () => void;
 }
 
-const Notification: FC<NotificationProps> = ({ notification }) => {
-  const navigate = useNavigate();
+const NotificationWrapper: FC<NotificationWrapperProps> = ({
+  children,
+  colony,
+  loadingColony,
+  notification,
+  onClick,
+}) => {
   const { markAsRead } = useNotification(notification as IRemoteNotification);
-
-  const transactionHash = notification.customAttributes?.transactionHash;
-
-  const { data: actionData, loading: loadingAction } = useGetColonyActionQuery({
-    variables: {
-      transactionHash: transactionHash || '',
-    },
-    skip: !transactionHash,
-  });
-
-  const action = actionData?.getColonyAction;
-  const colony = action?.colony;
 
   const handleNotificationClicked = () => {
     if (!notification.readAt) {
       markAsRead();
     }
-
-    if (transactionHash) {
-      navigate(
-        `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
-        {
-          replace: true,
-        },
-      );
-    }
+    onClick?.();
   };
 
   return (
     <li className="w-full py-3.5 first-of-type:pt-0">
       <button
         className={clsx('relative  flex w-full gap-2 text-left', {
-          skeleton: loadingAction,
+          skeleton: loadingColony,
         })}
         onClick={handleNotificationClicked}
         type="button"
@@ -94,19 +75,13 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
               <RelativeDate value={(notification.sentAt || 0) * 1000} />
             </p>
           </div>
-          {action ? (
-            <NotificationMessage action={action} notification={notification} />
-          ) : (
-            <p className="text-xs font-normal text-gray-600">
-              {formatText(MSG.unknownAction)}
-            </p>
-          )}
+          {children}
         </div>
       </button>
     </li>
   );
 };
 
-Notification.displayName = displayName;
+NotificationWrapper.displayName = displayName;
 
-export default Notification;
+export default NotificationWrapper;
