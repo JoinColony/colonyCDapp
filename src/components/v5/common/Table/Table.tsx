@@ -50,6 +50,7 @@ const Table = <T,>({
   tableBodyRowKeyProp,
   showTableHead = true,
   showTableBorder = true,
+  alwaysShowPagination = false,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -436,7 +437,7 @@ const Table = <T,>({
           </tfoot>
         )}
       </table>
-      {hasPagination &&
+      {(hasPagination || alwaysShowPagination) &&
         showPageNumber &&
         (canGoToPreviousPage || canGoToNextPage) && (
           <TablePagination
@@ -452,7 +453,7 @@ const Table = <T,>({
               },
               {
                 actualPage: table.getState().pagination.pageIndex + 1,
-                pageNumber: table.getPageCount(),
+                pageNumber: pageCount === 0 ? 1 : pageCount,
               },
             )}
             disabled={paginationDisabled}
@@ -460,6 +461,28 @@ const Table = <T,>({
             {additionalPaginationButtonsContent}
           </TablePagination>
         )}
+      {alwaysShowPagination && !hasPagination && (
+        <TablePagination
+          onNextClick={() => {}}
+          onPrevClick={() => {}}
+          canGoToNextPage
+          canGoToPreviousPage={false}
+          pageNumberLabel={formatText(
+            {
+              id: showTotalPagesNumber
+                ? 'table.pageNumberWithTotal'
+                : 'table.pageNumber',
+            },
+            {
+              actualPage: 1,
+              pageNumber: 1,
+            },
+          )}
+          disabled
+        >
+          {additionalPaginationButtonsContent}
+        </TablePagination>
+      )}
     </div>
   );
 };
