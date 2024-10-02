@@ -30,7 +30,7 @@ export const FundsCards = () => {
   const isAddNewTeamVisible = useIsAddNewTeamVisible();
   return (
     <BalanceCurrencyContextProvider>
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-2 md:pt-2">
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-2 md:pt-1">
         <WidgetCards.List className="w-full">
           <FundsCardsTotalItem />
           {subTeams

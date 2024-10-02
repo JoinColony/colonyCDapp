@@ -53,7 +53,7 @@ export const PaymentsSection = () => {
           text={formatText(MSG.payCTA)}
           mode="primaryOutlineFull"
           size="small"
-          className="h-fit border-gray-900 px-3 py-2 text-gray-900"
+          className="h-fit border-gray-900 px-3 text-gray-900"
         />
       </LoadingSkeleton>
     </TitledSection>

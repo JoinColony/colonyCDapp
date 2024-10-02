@@ -37,7 +37,7 @@ export const TitledSection: FC<TitledSectionProps> = ({
         <LoadingSkeleton isLoading={isLoading} className="h-5 w-[60px] rounded">
           <div className="text-md font-normal">{title}</div>
         </LoadingSkeleton>
-        <div className="flex flex-row items-center gap-2">
+        <div className="mt-0.5 flex flex-row items-center gap-2">
           <LoadingSkeleton
             isLoading={isLoading}
             className="h-[27px] w-[100px] rounded"
@@ -54,7 +54,7 @@ export const TitledSection: FC<TitledSectionProps> = ({
             <div className="mt-0.5 text-md font-medium">{currency}</div>
           </LoadingSkeleton>
         </div>
-        <div className="mt-1 flex flex-row items-center gap-4">
+        <div className="mt-1.5 flex flex-row items-center gap-4">
           <LoadingSkeleton
             isLoading={isLoading}
             className="h-4 w-[70px] rounded"

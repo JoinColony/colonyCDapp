@@ -55,17 +55,19 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
         </LoadingSkeleton>
       }
       subTitle={
-        <FundsCardsSubTitle
-          isLoading={loading}
-          value={
-            <NumeralCurrency
-              value={total ?? '-'}
-              prefix={currencySymbolMap[currency]}
-              decimals={18}
-            />
-          }
-          currency={currency}
-        />
+        <div className="pb-1 pt-0.5">
+          <FundsCardsSubTitle
+            isLoading={loading}
+            value={
+              <NumeralCurrency
+                value={total ?? '-'}
+                prefix={currencySymbolMap[currency]}
+                decimals={18}
+              />
+            }
+            currency={currency}
+          />
+        </div>
       }
       onClick={onItemClick}
     >
