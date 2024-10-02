@@ -5,9 +5,11 @@ import {
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { ADDRESS_ZERO } from '~constants';
 import { useGetColonyActionQuery } from '~gql';
+import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
@@ -33,12 +35,16 @@ interface NotificationProps {
 }
 
 const Notification: FC<NotificationProps> = ({ notification }) => {
+  const navigate = useNavigate();
   const { markAsRead } = useNotification(notification as IRemoteNotification);
+
+  const transactionHash = notification.customAttributes?.transactionHash;
+
   const { data: actionData, loading: loadingAction } = useGetColonyActionQuery({
     variables: {
-      transactionHash: notification.customAttributes?.transactionHash || '',
+      transactionHash: transactionHash || '',
     },
-    skip: !notification.customAttributes?.transactionHash,
+    skip: !transactionHash,
   });
 
   const action = actionData?.getColonyAction;
@@ -47,6 +53,15 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
   const handleNotificationClicked = () => {
     if (!notification.readAt) {
       markAsRead();
+    }
+
+    if (transactionHash) {
+      navigate(
+        `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
+        {
+          replace: true,
+        },
+      );
     }
   };
 
