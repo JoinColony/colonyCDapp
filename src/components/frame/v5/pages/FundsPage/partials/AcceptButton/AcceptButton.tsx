@@ -42,7 +42,7 @@ const AcceptButton: FC<AcceptButtonProps> = ({
       onSuccess={handleClaimSuccess}
       disabled={disabled || !canInteractWithColony || isClaimed}
       mode="primarySolid"
-      size="medium"
+      size="small"
     >
       {children}
     </ActionButton>

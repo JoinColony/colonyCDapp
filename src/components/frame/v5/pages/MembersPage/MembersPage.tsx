@@ -112,9 +112,9 @@ const MembersPage: FC = () => {
             notificationNumber: sortedContributorCount,
             content: (
               <MembersTabContentWrapper
-                title={formatText({ id: 'membersPage.title' })}
+                title={formatText({ id: 'membersPage.members.title' })}
                 description={formatText({
-                  id: 'membersPage.contributing.description',
+                  id: 'membersPage.members.description',
                 })}
                 additionalActions={
                   <Filter

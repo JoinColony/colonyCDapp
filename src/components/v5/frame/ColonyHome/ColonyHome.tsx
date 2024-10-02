@@ -29,8 +29,8 @@ const ColonyHome = () => {
   const { defaultValues } = useGetActionData(selectedAction || undefined);
 
   return (
-    <div className="flex flex-col gap-6 sm:min-h-full md:gap-4.5">
-      <div className="flex flex-col gap-9 sm:gap-6">
+    <div className="md:gap-4.5 flex flex-col gap-6 sm:min-h-full">
+      <div className="flex flex-col gap-8 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />
       </div>

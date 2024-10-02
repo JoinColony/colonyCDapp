@@ -20,7 +20,7 @@ const MembersTabContentWrapper: FC<
   return (
     <>
       <div
-        className={clsx('mb-6 flex w-full flex-col', {
+        className={clsx('mb-6 flex w-full flex-col pt-6', {
           'gap-4 sm:gap-1': additionalActions,
           'gap-2': !additionalActions,
         })}
