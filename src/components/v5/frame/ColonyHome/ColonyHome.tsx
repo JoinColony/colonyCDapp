@@ -36,7 +36,7 @@ const ColonyHome = () => {
           <ReputationChart />
         </div>
       </div>
-      <div className="mb-4 flex-grow rounded-lg border border-gray-200 pb-[1.4375rem] sm:max-h-[37.625rem]">
+      <div className="mb-4 flex flex-grow flex-col rounded-lg border border-gray-200 pb-[1.4375rem] sm:max-h-[37.625rem]">
         <div className="flex justify-between px-5 pb-[11px] pt-6">
           <h3 className="heading-5">
             {formatText({ id: 'dashboard.recentActivity' })}
@@ -50,7 +50,7 @@ const ColonyHome = () => {
         </div>
         <FiltersContextProvider>
           <RecentActivityTable
-            className="w-full [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td>*:not(.expandable)]:!py-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[13px]"
+            className="flex w-full flex-grow flex-col justify-between [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td>*:not(.expandable)]:!py-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[13px]"
             pageSize={7}
             state={{
               columnVisibility: isMobile
