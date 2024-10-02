@@ -8,7 +8,6 @@ import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { Form } from '~shared/Fields/index.ts';
-import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -68,11 +67,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
 
       await finalizeExpenditure(finalizePayload);
 
-      const claimablePayouts = getClaimableExpenditurePayouts(
-        expenditure.slots,
-      );
-
-      if (expenditure.isStaked && !!claimablePayouts.length) {
+      if (expenditure.isStaked) {
         const payload: ReclaimExpenditureStakePayload = {
           colonyAddress: colony.colonyAddress,
           nativeExpenditureId: expenditure.nativeId,

@@ -11,6 +11,7 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -31,6 +32,7 @@ import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
+import { waitForDbAfterClaimingPayouts } from '../ReleasePaymentModal/utils.ts';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
@@ -63,8 +65,13 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const { expenditureId } = action;
 
-  const { expenditure, loadingExpenditure, startPolling, stopPolling } =
-    useGetExpenditureData(expenditureId);
+  const {
+    expenditure,
+    loadingExpenditure,
+    refetchExpenditure,
+    startPolling,
+    stopPolling,
+  } = useGetExpenditureData(expenditureId);
 
   const {
     fundingActions,
@@ -83,6 +90,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     useState<ExpenditureStep>(expenditureStep);
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
+  const [isWaitingForClaimedPayouts, setIsWaitingForClaimedPayouts] =
+    useState(false);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
@@ -346,7 +355,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     {
       key: ExpenditureStep.Payment,
       heading: { label: formatText({ id: 'expenditure.paymentStage.label' }) },
-      content: <PaymentStepDetailsBlock expenditure={expenditure} />,
+      content: (
+        <PaymentStepDetailsBlock
+          expenditure={expenditure}
+          isWaitingForClaimedPayouts={isWaitingForClaimedPayouts}
+        />
+      ),
     },
   ];
 
@@ -373,8 +387,21 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditure={expenditure}
             isOpen={isReleasePaymentModalOpen}
             onClose={hideReleasePaymentModal}
-            onSuccess={() => {
+            onSuccess={async () => {
               setExpectedStepKey(ExpenditureStep.Payment);
+
+              try {
+                const claimablePayouts = getClaimableExpenditurePayouts(
+                  expenditure.slots,
+                );
+                setIsWaitingForClaimedPayouts(true);
+                await waitForDbAfterClaimingPayouts(
+                  claimablePayouts,
+                  refetchExpenditure,
+                );
+              } finally {
+                setIsWaitingForClaimedPayouts(false);
+              }
             }}
             // @todo: update when split payment will be ready
             actionType={Action.PaymentBuilder}
