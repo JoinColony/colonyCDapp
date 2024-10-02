@@ -9748,6 +9748,8 @@ export type JoinedColonyFragment = { __typename?: 'Colony', name: string, colony
 
 export type JoinedColonyWithExtensionsFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, chainMetadata: { __typename?: 'ChainMetadata', chainId: string, network?: Network | null }, extensions?: { __typename?: 'ModelColonyExtensionConnection', items: Array<{ __typename?: 'ColonyExtension', version: number, hash: string, isDeleted: boolean, isDeprecated: boolean, isInitialized: boolean, address: string } | null> } | null };
 
+export type NotificationColonyFragment = { __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } };
+
 export type ContributorReputationFragment = { __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } };
 
 export type ContributorRolesFragment = { __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } };
@@ -10190,6 +10192,13 @@ export type OnUpdateColonySubscriptionVariables = Exact<{ [key: string]: never; 
 
 export type OnUpdateColonySubscription = { __typename?: 'Subscription', onUpdateColony?: { __typename?: 'Colony', lastUpdatedContributorsWithReputation?: string | null } | null };
 
+export type GetColonyForNotificationQueryVariables = Exact<{
+  address: Scalars['ID'];
+}>;
+
+
+export type GetColonyForNotificationQuery = { __typename?: 'Query', getColonyByAddress?: { __typename?: 'ModelColonyConnection', items: Array<{ __typename?: 'Colony', name: string, colonyAddress: string, metadata?: { __typename?: 'ColonyMetadata', displayName: string, avatar?: string | null, description?: string | null, thumbnail?: string | null, externalLinks?: Array<{ __typename?: 'ExternalLink', name: ExternalLinks, link: string }> | null, objective?: { __typename?: 'ColonyObjective', title: string, description: string, progress: number } | null, changelog?: Array<{ __typename?: 'ColonyMetadataChangelog', transactionHash: string, newDisplayName: string, oldDisplayName: string, hasAvatarChanged: boolean, hasDescriptionChanged?: boolean | null, haveExternalLinksChanged?: boolean | null, hasObjectiveChanged?: boolean | null, newSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null, oldSafes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null }> | null, safes?: Array<{ __typename?: 'Safe', name: string, address: string, chainId: string, moduleContractAddress: string }> | null } | null, nativeToken: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } } | null> } | null };
+
 export type GetColonyContributorQueryVariables = Exact<{
   id: Scalars['ID'];
   colonyAddress: Scalars['ID'];
@@ -10565,6 +10574,30 @@ export const JoinedColonyWithExtensionsFragmentDoc = gql`
   }
 }
     ${ColonyMetadataFragmentDoc}`;
+export const TokenFragmentDoc = gql`
+    fragment Token on Token {
+  decimals
+  tokenAddress: id
+  name
+  symbol
+  type
+  avatar
+  thumbnail
+}
+    `;
+export const NotificationColonyFragmentDoc = gql`
+    fragment NotificationColony on Colony {
+  colonyAddress: id
+  metadata {
+    ...ColonyMetadata
+  }
+  name
+  nativeToken {
+    ...Token
+  }
+}
+    ${ColonyMetadataFragmentDoc}
+${TokenFragmentDoc}`;
 export const ContributorRolesFragmentDoc = gql`
     fragment ContributorRoles on ColonyRole {
   domainId
@@ -10966,6 +10999,13 @@ export const ExpenditureFragmentDoc = gql`
       ...ExpenditureAction
     }
   }
+  creatingActions: actions(
+    filter: {type: {eq: CREATE_EXPENDITURE}, isMotionFinalization: {ne: true}}
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
 }
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
@@ -11026,17 +11066,6 @@ export const ExtensionDisplayFragmentFragmentDoc = gql`
     fragment ExtensionDisplayFragment on ColonyExtension {
   address: id
   hash
-}
-    `;
-export const TokenFragmentDoc = gql`
-    fragment Token on Token {
-  decimals
-  tokenAddress: id
-  name
-  symbol
-  type
-  avatar
-  thumbnail
 }
     `;
 export const NativeTokenStatusFragmentDoc = gql`
@@ -13557,6 +13586,43 @@ export function useOnUpdateColonySubscription(baseOptions?: Apollo.SubscriptionH
       }
 export type OnUpdateColonySubscriptionHookResult = ReturnType<typeof useOnUpdateColonySubscription>;
 export type OnUpdateColonySubscriptionResult = Apollo.SubscriptionResult<OnUpdateColonySubscription>;
+export const GetColonyForNotificationDocument = gql`
+    query GetColonyForNotification($address: ID!) {
+  getColonyByAddress(id: $address) {
+    items {
+      ...NotificationColony
+    }
+  }
+}
+    ${NotificationColonyFragmentDoc}`;
+
+/**
+ * __useGetColonyForNotificationQuery__
+ *
+ * To run a query within a React component, call `useGetColonyForNotificationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetColonyForNotificationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetColonyForNotificationQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetColonyForNotificationQuery(baseOptions: Apollo.QueryHookOptions<GetColonyForNotificationQuery, GetColonyForNotificationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetColonyForNotificationQuery, GetColonyForNotificationQueryVariables>(GetColonyForNotificationDocument, options);
+      }
+export function useGetColonyForNotificationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyForNotificationQuery, GetColonyForNotificationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetColonyForNotificationQuery, GetColonyForNotificationQueryVariables>(GetColonyForNotificationDocument, options);
+        }
+export type GetColonyForNotificationQueryHookResult = ReturnType<typeof useGetColonyForNotificationQuery>;
+export type GetColonyForNotificationLazyQueryHookResult = ReturnType<typeof useGetColonyForNotificationLazyQuery>;
+export type GetColonyForNotificationQueryResult = Apollo.QueryResult<GetColonyForNotificationQuery, GetColonyForNotificationQueryVariables>;
 export const GetColonyContributorDocument = gql`
     query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   getColonyContributor(id: $id) {

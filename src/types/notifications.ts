@@ -1,7 +1,12 @@
 import { type IRemoteNotification } from '@magicbell/react-headless';
 
 export enum NotificationType {
-  Action = 'Action',
+  ExpenditureReadyForReview = 'ExpenditureReadyForReview',
+  ExpenditureReadyForFunding = 'ExpenditureReadyForFunding',
+  ExpenditureReadyForRelease = 'ExpenditureReadyForRelease',
+  ExpenditureFinalized = 'ExpenditureFinalized',
+  ExpenditureCancelled = 'ExpenditureCancelled',
+  PermissionsAction = 'PermissionsAction',
   Mention = 'Mention',
 }
 
@@ -10,6 +15,7 @@ export interface NotificationAttributes {
   creator?: string;
   notificationType?: NotificationType;
   transactionHash?: string;
+  expenditureID?: string;
 }
 
 // Create our own notification type so that we have types for the custom attributes, instead of

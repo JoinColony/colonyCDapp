@@ -225,3 +225,15 @@ fragment JoinedColonyWithExtensions on Colony {
     }
   }
 }
+
+# Lightweight fragment used for fetching colonies to display notifications
+fragment NotificationColony on Colony {
+  colonyAddress: id
+  metadata {
+    ...ColonyMetadata
+  }
+  name
+  nativeToken {
+    ...Token
+  }
+}
