@@ -49,7 +49,8 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 
   const expenditure = expenditureData?.getExpenditure;
 
-  const transactionHash = expenditure?.creatingActions?.items[0]?.id;
+  const transactionHash =
+    expenditure?.creatingActions?.items[0]?.transactionHash;
 
   const { data: actionData, loading: loadingAction } = useGetColonyActionQuery({
     variables: {

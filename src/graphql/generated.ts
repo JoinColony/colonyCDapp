@@ -11492,13 +11492,6 @@ export const ExpenditureFragmentDoc = gql`
       ...ExpenditureAction
     }
   }
-  creatingActions: actions(
-    filter: {type: {eq: CREATE_EXPENDITURE}, isMotionFinalization: {ne: true}}
-  ) {
-    items {
-      ...ExpenditureAction
-    }
-  }
 }
     ${ExpenditureSlotFragmentDoc}
 ${ExpenditureStageFragmentDoc}
