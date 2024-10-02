@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, type ReactNode } from 'react';
+import React, { useEffect, useMemo, type ReactNode, useState } from 'react';
 
 import { ContextModule, setContext } from '~context';
 import { useUpdateContributorsWithReputationMutation } from '~gql';
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
+import { useTimeout } from '~hooks/useTimeout.ts';
 import { type Colony } from '~types/graphql.ts';
 
 import {
@@ -17,8 +18,19 @@ const MIN_SUPPORTED_COLONY_VERSION = 5;
 const displayName = 'ColonyContextProvider';
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
+  const [isReputationUpdating, setIsReputationUpdating] = useState(false);
+  const [shouldResetReputationUpdating, setShouldResetReputationUpdating] =
+    useState(false);
   const [updateContributorsWithReputation] =
     useUpdateContributorsWithReputationMutation();
+
+  useTimeout({
+    shouldTriggerCallback: shouldResetReputationUpdating,
+    callback: () => {
+      setIsReputationUpdating(false);
+      setShouldResetReputationUpdating(false);
+    },
+  });
 
   /*
    * Update colony-wide reputation whenever a user accesses a colony.
@@ -27,11 +39,23 @@ const useUpdateColonyReputation = (colonyAddress?: string) => {
    */
   useEffect(() => {
     if (colonyAddress) {
+      setIsReputationUpdating(true);
       updateContributorsWithReputation({
         variables: { colonyAddress },
+      }).then(() => {
+        setShouldResetReputationUpdating(true);
       });
     }
-  }, [colonyAddress, updateContributorsWithReputation]);
+  }, [
+    colonyAddress,
+    updateContributorsWithReputation,
+    setIsReputationUpdating,
+    setShouldResetReputationUpdating,
+  ]);
+
+  return {
+    isReputationUpdating,
+  };
 };
 
 const ColonyContextProvider = ({
@@ -47,7 +71,9 @@ const ColonyContextProvider = ({
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
 }) => {
-  useUpdateColonyReputation(colony?.colonyAddress);
+  const { isReputationUpdating } = useUpdateColonyReputation(
+    colony?.colonyAddress,
+  );
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
@@ -62,6 +88,7 @@ const ColonyContextProvider = ({
       refetchColony,
       startPollingColonyData,
       stopPollingColonyData,
+      isReputationUpdating,
       isSupportedColonyVersion,
       colonySubscription,
     }),
@@ -71,6 +98,7 @@ const ColonyContextProvider = ({
       refetchColony,
       startPollingColonyData,
       stopPollingColonyData,
+      isReputationUpdating,
       isSupportedColonyVersion,
       colonySubscription,
     ],
