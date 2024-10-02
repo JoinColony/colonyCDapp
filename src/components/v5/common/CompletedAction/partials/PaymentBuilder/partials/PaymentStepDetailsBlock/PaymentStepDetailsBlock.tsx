@@ -23,6 +23,7 @@ import { getSummedTokens } from './utils.ts';
 
 const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   expenditure,
+  isWaitingForClaimedPayouts,
 }) => {
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
@@ -180,6 +181,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
 
                   fetchCurrentBlockTime();
                 }}
+                isLoading={isWaitingForClaimedPayouts}
               />
             </div>
           ),

@@ -16,7 +16,6 @@ export const useGetExpenditureData = (
       },
       skip: !expenditureId,
       pollInterval,
-      fetchPolicy: 'cache-and-network',
     });
 
   const expenditure = data?.getExpenditure;
