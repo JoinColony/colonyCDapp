@@ -22,6 +22,7 @@ export interface ColonyContextValue {
   refetchColony: RefetchColonyFn;
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
+  isReputationUpdating: boolean;
   isSupportedColonyVersion: boolean;
   colonySubscription: {
     canWatch: boolean;
