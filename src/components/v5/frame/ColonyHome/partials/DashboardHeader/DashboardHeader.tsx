@@ -28,7 +28,7 @@ const DashboardHeader = () => {
           />
         )}
       </div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:gap-7">
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-7">
         <MembersInformation />
         <div className="flex-shrink-0">
           <ColonyLinks />

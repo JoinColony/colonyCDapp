@@ -6,8 +6,10 @@ const displayName = 'v5.frame.ContentWithTeamFilter';
 
 const ContentWithTeamFilter: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="flex flex-col gap-6">
-      <TeamFilter />
+    <div className="flex flex-col">
+      <div className="pb-6">
+        <TeamFilter />
+      </div>
       {children}
     </div>
   );

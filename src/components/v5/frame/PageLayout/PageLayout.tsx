@@ -7,8 +7,10 @@ import { ToastContainer } from 'react-toastify';
 
 import { CSSCustomVariable } from '~constants/cssCustomVariables.ts';
 import { usePageHeadingContext } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useTablet } from '~hooks';
 import { useHeightResizeObserver } from '~hooks/useHeightResizeObserver.ts';
 import CloseButton from '~shared/Extensions/Toast/partials/CloseButton.tsx';
+import Breadcrumbs from '~v5/shared/Breadcrumbs/Breadcrumbs.tsx';
 
 import PageHeader from './partials/PageHeader/PageHeader.tsx';
 import { type PageLayoutProps } from './types.ts';
@@ -25,6 +27,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
 }) => {
   const { title: pageTitle } = usePageHeadingContext();
 
+  const isTablet = useTablet();
   const topContentContainerRef = useRef<HTMLDivElement | null>(null);
 
   useHeightResizeObserver(
@@ -55,7 +58,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
           </section>
           <div className="flex w-full flex-col items-center overflow-hidden">
             <section
-              className={clsx('w-full md:px-8 md:pt-[2.063rem]', {
+              className={clsx('w-full md:px-8 md:pt-9', {
                 'sm:px-6 sm:pt-7': enableMobileAndDesktopLayoutBreakpoints,
               })}
             >
@@ -71,12 +74,27 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
             >
               <div
                 className={clsx(
-                  'mx-auto h-full max-w-[79.875rem] pt-6 md:pt-0',
+                  'mx-auto h-full max-w-[79.875rem] pb-4 pt-6 md:pt-0',
                   {
                     '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
                   },
                 )}
               >
+                {(pageTitle || isTablet) && (
+                  <section
+                    className={clsx('flex w-full flex-col md:p-0 md:pb-4', {
+                      'pb-6': pageTitle,
+                      'pb-3.5': !pageTitle,
+                    })}
+                  >
+                    {isTablet && <Breadcrumbs />}
+                    {pageTitle && (
+                      <h1 className="pt-2 text-gray-900 heading-3 md:pt-0">
+                        {pageTitle}
+                      </h1>
+                    )}
+                  </section>
+                )}
                 {children}
               </div>
             </section>
