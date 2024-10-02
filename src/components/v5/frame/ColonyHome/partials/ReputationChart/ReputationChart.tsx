@@ -36,13 +36,11 @@ const MSG = defineMessages({
 const ReputationChart = () => {
   const {
     colony: { domains },
+    isReputationUpdating,
   } = useColonyContext();
 
   const { contributorsList, loading: isContributorsLoading } =
     useContributorsByDomain();
-
-  // @TODO here we should also check if the colony data is loading
-  const isDataLoading = isContributorsLoading;
 
   const selectedDomain = useGetSelectedDomainFilter();
 
@@ -52,7 +50,11 @@ const ReputationChart = () => {
       (a, b) => Number(b.reputationPercentage) - Number(a.reputationPercentage),
     );
 
-  const chartDataTeams = !isThereReputationInDomains(allTeams)
+  const isNoReputationAvailable = !isThereReputationInDomains(allTeams);
+  const isDataLoading =
+    isContributorsLoading || (isReputationUpdating && isNoReputationAvailable);
+
+  const chartDataTeams = isNoReputationAvailable
     ? []
     : getTeamReputationChartData(allTeams);
 
