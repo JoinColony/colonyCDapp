@@ -9934,7 +9934,7 @@ export const ExpenditureFragmentDoc = gql`
     }
   }
   fundingActions: actions(
-    filter: {type: {eq: MOVE_FUNDS}, isMotionFinalization: {ne: true}}
+    filter: {or: [{type: {eq: MOVE_FUNDS}}, {type: {eq: MOVE_FUNDS_MOTION}}, {type: {eq: FUND_EXPENDITURE_MOTION}}], isMotionFinalization: {ne: true}}
   ) {
     items {
       ...ExpenditureAction

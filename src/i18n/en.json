@@ -452,6 +452,8 @@
     "ariaLabel.selectTeamColor": "Select team color",
     "ariaLabel.sortBalace": "Sort by balance",
     "ariaLabel.openTabNotfication": "Open tab notification",
+    "ariaLabel.next": "Next",
+    "ariaLabel.previous": "Previous",
     "userInfo.about.section": "about",
     "userInfo.teamBreakdown.section": "Team Breakdown",
     "userInfo.permissions.section": "Permissions",
