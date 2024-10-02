@@ -263,6 +263,10 @@ module.exports = {
         '.no-scrollbar': {
           'scrollbar-width': 'none',
         },
+        '::selection': {
+          'background-color':
+            'rgba(0, 116, 255, 0.6)' /* default selection color for chrome */,
+        },
       });
       addComponents({
         '.inner': {
