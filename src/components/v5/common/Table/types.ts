@@ -47,4 +47,5 @@ export interface TableProps<T>
   tableBodyRowKeyProp?: Extract<keyof T, React.Key>;
   showTableHead?: boolean;
   showTableBorder?: boolean;
+  alwaysShowPagination?: boolean;
 }

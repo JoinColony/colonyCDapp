@@ -43,6 +43,8 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
       pageCount={pageCount}
       withBorder={false}
       withNarrowBorder
+      alwaysShowPagination={totalActions > 0}
+      showTotalPagesNumber={pageCount > 1}
     />
   );
 };
