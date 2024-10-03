@@ -1,11 +1,17 @@
+import { throttle } from 'lodash';
 import { useEffect } from 'react';
 
-export const useResize = (callback: () => void) => {
+export const useResize = (callback: () => void, wait: number = 200) => {
   useEffect(() => {
-    callback();
+    const throttledCallback = throttle(callback, wait);
 
-    window.addEventListener('resize', callback);
+    throttledCallback();
 
-    return () => window.removeEventListener('resize', callback);
-  }, [callback]);
+    window.addEventListener('resize', throttledCallback);
+
+    return () => {
+      window.removeEventListener('resize', throttledCallback);
+      throttledCallback.cancel();
+    };
+  }, [callback, wait]);
 };
