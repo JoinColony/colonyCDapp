@@ -52,6 +52,18 @@ const AgreementsPage: FC = () => {
     getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
   );
 
+  const passedAgreements = searchedAgreements.filter(
+    (agreement) => agreement.showInActionsList,
+  );
+  const newestAgreement = searchedAgreements.sort((a, b) => {
+    const aDate = new Date(a?.decisionData?.createdAt || '');
+    const bDate = new Date(b?.decisionData?.createdAt || '');
+    return bDate.getTime() - aDate.getTime();
+  })[0];
+  const allAgreements = !newestAgreement?.showInActionsList
+    ? [newestAgreement, ...passedAgreements]
+    : [...passedAgreements];
+
   return (
     <div>
       {draftAgreement && <DraftSection className="mb-6" />}
@@ -90,9 +102,9 @@ const AgreementsPage: FC = () => {
         </ul>
       ) : (
         <>
-          {searchedAgreements && searchedAgreements?.length > 0 && (
+          {allAgreements && allAgreements?.length > 0 && (
             <ul className="grid auto-rows-fr grid-cols-1 gap-6 sm:auto-rows-auto sm:grid-cols-2">
-              {searchedAgreements.map(({ transactionHash }) => (
+              {allAgreements.map(({ transactionHash }) => (
                 <motion.li
                   initial={{ opacity: 0 }}
                   whileInView={{

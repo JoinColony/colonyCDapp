@@ -1,4 +1,4 @@
-import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
+import { FilePlus, ShareNetwork, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useEffect } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import RichTextDisplay from '~v5/shared/RichTextDisplay/index.ts';
@@ -38,7 +39,7 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     startPollingForAction,
     stopPollingForAction,
   } = useGetColonyAction(transactionId);
-  const { decisionData, motionData } = action || {};
+  const { decisionData, motionData, showInActionsList } = action || {};
   const {
     createdAt,
     description,
@@ -75,7 +76,18 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
       ) : (
         <>
           <div className="mb-4 flex items-center justify-between">
-            {motionState && <MotionStateBadge state={motionState} />}
+            <div className="flex items-center gap-1">
+              {motionState && <MotionStateBadge state={motionState} />}
+              {!showInActionsList && (
+                <PillsBase
+                  icon={WarningCircle}
+                  iconSize={12}
+                  className="bg-warning-100 text-warning-400"
+                >
+                  Below threshold
+                </PillsBase>
+              )}
+            </div>
             {isMotionActive && (
               <MotionCountDownTimer
                 prefix={formatText({ id: 'agreementsPage.endsIn' })}
