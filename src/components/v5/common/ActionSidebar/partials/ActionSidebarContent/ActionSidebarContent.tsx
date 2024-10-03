@@ -9,7 +9,11 @@ import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { GetDomainBalanceDocument, SearchActionsDocument } from '~gql';
+import {
+  GetDomainBalanceDocument,
+  GetTotalColonyActionsDocument,
+  SearchActionsDocument,
+} from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -304,6 +308,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             if (isQueryActive('SearchActions')) {
               client.refetchQueries({
                 include: [SearchActionsDocument],
+              });
+            }
+
+            if (isQueryActive('GetTotalColonyActions')) {
+              client.refetchQueries({
+                include: [GetTotalColonyActionsDocument],
               });
             }
             /**
