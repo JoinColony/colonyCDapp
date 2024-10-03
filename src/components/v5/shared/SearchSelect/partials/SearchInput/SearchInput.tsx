@@ -30,7 +30,7 @@ const SearchInput: FC<SearchInputProps> = ({
         onChange={(e) => {
           onChange?.(e.target.value);
         }}
-        className="peer w-full rounded-lg px-[2.125rem] text-3"
+        className="peer w-full rounded-lg px-8.5 text-3"
         placeholder={placeholder}
         value={value}
         ref={searchInputRef}
