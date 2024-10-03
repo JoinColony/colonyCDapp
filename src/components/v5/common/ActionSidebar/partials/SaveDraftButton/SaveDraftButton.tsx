@@ -15,7 +15,7 @@ import Button from '~v5/shared/Button/index.ts';
 const SaveDraftButton: FC = () => {
   const [isDraftSaved, setIsDraftSaved] = useState(false);
   const isMobile = useMobile();
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
   const { wallet } = useAppContext();
   const dispatch = useDispatch();
   const {
@@ -38,12 +38,13 @@ const SaveDraftButton: FC = () => {
       );
 
       setIsDraftSaved(true);
+      refetchColony();
 
       setTimeout(() => {
         setIsDraftSaved(false);
       }, 3000);
     },
-    [colony.colonyAddress, dispatch],
+    [colony.colonyAddress, dispatch, refetchColony],
   );
 
   if (!wallet?.address) {

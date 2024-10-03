@@ -1,14 +1,13 @@
 import { Binoculars, FilePlus } from '@phosphor-icons/react';
 import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
-import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { getDraftDecisionFromStore } from '~utils/decisions.ts';
+import { getDraftDecisionFromLocalStorage } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
@@ -21,6 +20,7 @@ import AgreementCard from './partials/AgreementCard/index.ts';
 import AgreementCardSkeleton from './partials/AgreementCardSkeleton.tsx';
 import AgreementsPageFilters from './partials/AgreementsPageFilters/AgreementsPageFilters.tsx';
 import DraftSection from './partials/DraftSection/DraftSection.tsx';
+import { sortAgreementsByDate } from './utils.ts';
 
 const displayName = 'v5.pages.AgreementsPage';
 
@@ -43,9 +43,27 @@ const AgreementsPage: FC = () => {
     !!activeFilters.motionStates ||
     !!activeFilters.search;
 
-  const draftAgreement = useSelector(
-    getDraftDecisionFromStore(user?.walletAddress || '', colonyAddress),
+  const draftAgreement = getDraftDecisionFromLocalStorage(
+    user?.walletAddress || '',
+    colonyAddress,
   );
+
+  const passedAgreements = searchedAgreements.filter(
+    (agreement) => agreement.showInActionsList,
+  );
+
+  const notPassedAgreements = searchedAgreements.filter(
+    (agreement) =>
+      agreement.initiatorUser?.walletAddress === user?.walletAddress &&
+      !agreement.showInActionsList,
+  );
+
+  const allAgreements =
+    notPassedAgreements.length > 0
+      ? [...notPassedAgreements, ...passedAgreements]
+      : [...passedAgreements];
+
+  const sortedAgreeements = sortAgreementsByDate(allAgreements);
 
   return (
     <ContentWithTeamFilter>
@@ -85,9 +103,9 @@ const AgreementsPage: FC = () => {
         </ul>
       ) : (
         <>
-          {searchedAgreements && searchedAgreements?.length > 0 && (
+          {allAgreements && allAgreements?.length > 0 && (
             <ul className="grid auto-rows-fr grid-cols-1 gap-6 sm:auto-rows-auto sm:grid-cols-2">
-              {searchedAgreements.map(({ transactionHash }) => (
+              {sortedAgreeements.map(({ transactionHash }) => (
                 <motion.li
                   initial={{ opacity: 0 }}
                   whileInView={{
@@ -105,7 +123,7 @@ const AgreementsPage: FC = () => {
               ))}
             </ul>
           )}
-          {searchedAgreements?.length === 0 &&
+          {allAgreements?.length === 0 &&
             !loading &&
             !loadingMotionStateFilter &&
             !isFilterActive && (
@@ -122,7 +140,7 @@ const AgreementsPage: FC = () => {
                 withBorder
               />
             )}
-          {searchedAgreements?.length === 0 &&
+          {allAgreements?.length === 0 &&
             !loading &&
             !loadingMotionStateFilter &&
             isFilterActive && (
