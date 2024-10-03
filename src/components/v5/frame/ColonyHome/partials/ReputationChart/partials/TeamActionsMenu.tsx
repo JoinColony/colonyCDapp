@@ -1,11 +1,12 @@
 import { Eye, LockKey, Pencil } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFiltersContext.ts';
 import { COLONY_TEAMS_ROUTE } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -45,6 +46,9 @@ const TeamActionsMenu: FC<TeamActionsMenuProps> = ({ isDisabled }) => {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
+  const { resetTeamFilter } = useColonyFiltersContext();
+  const navigate = useNavigate();
+
   const {
     setIsDropdownOpen,
     setTriggerRef,
@@ -52,6 +56,11 @@ const TeamActionsMenu: FC<TeamActionsMenuProps> = ({ isDisabled }) => {
     getTooltipProps,
     visible,
   } = useDropdown();
+
+  const handleViewAllTeamsClick = () => {
+    resetTeamFilter();
+    navigate(`/${colonyName}/${COLONY_TEAMS_ROUTE}`);
+  };
 
   const handleCreateTeamClick = () => {
     toggleActionSidebarOn({
@@ -76,9 +85,11 @@ const TeamActionsMenu: FC<TeamActionsMenuProps> = ({ isDisabled }) => {
       getTooltipProps={getTooltipProps}
     >
       <>
-        <Link to={`/${colonyName}/${COLONY_TEAMS_ROUTE}`} className="w-full">
-          <DropdownItem icon={Eye} label={formatText(MSG.viewAllTeams)} />
-        </Link>
+        <DropdownItem
+          icon={Eye}
+          label={formatText(MSG.viewAllTeams)}
+          onClick={handleViewAllTeamsClick}
+        />
         <DropdownItem
           icon={LockKey}
           label={formatText(MSG.createTeam)}
