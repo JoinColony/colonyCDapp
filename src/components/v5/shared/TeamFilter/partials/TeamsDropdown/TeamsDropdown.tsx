@@ -49,7 +49,7 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
         <div
           ref={setTooltipRef}
           {...getTooltipProps()}
-          className="z-base flex flex-col gap-2 rounded-b-lg border-b border-l border-r border-gray-200 bg-base-white px-4 py-2"
+          className="z-base flex flex-col gap-2 rounded-b-lg border-b border-l border-r border-gray-200 bg-base-white py-2"
         >
           {domains.map((domain) => (
             <button
@@ -57,7 +57,7 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
               key={`TeamsDropdown.${domain.nativeId}`}
               onClick={() => handleClick(domain)}
               aria-label={domain.metadata?.name} // Used to set the after content, which is used to pre-reserve the space required for the bold hover state
-              className="w-full text-start text-sm font-medium text-gray-700 bold-on-hover hover:text-gray-900"
+              className="mx-4 w-full text-start text-sm text-transparent bold-on-hover"
             >
               {domain.metadata?.name}
             </button>

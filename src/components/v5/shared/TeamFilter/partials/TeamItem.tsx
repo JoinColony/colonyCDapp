@@ -40,22 +40,25 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
     }
   };
 
+  const label = domain.metadata?.name ?? domain.id;
+
   return (
     <button
       ref={teamItemRef}
       type="button"
+      aria-label={label}
       className={clsx(
-        'box-border inline-flex h-full w-full items-center justify-center border-y border-r border-solid bg-base-white px-4 py-2 text-sm',
+        'box-border inline-flex h-full w-full items-center justify-center border-y border-r border-solid bg-base-white px-4 py-2 text-sm text-transparent bold-on-hover',
         selected ? teamColor : null,
         {
-          'border-gray-200 font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900':
-            !selected,
-          'border-transparent font-semibold text-base-white': selected,
+          'border-gray-200 font-medium hover:bg-gray-50': !selected,
+          'border-transparent after:font-semibold after:text-base-white hover:after:text-base-white':
+            selected,
         },
       )}
       onClick={handleClick}
     >
-      {domain.metadata?.name ?? domain.id}
+      {label}
     </button>
   );
 };
