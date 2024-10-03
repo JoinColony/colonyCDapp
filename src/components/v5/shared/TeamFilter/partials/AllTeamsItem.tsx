@@ -25,20 +25,22 @@ const AllTeamsItem: FC<AllTeamsItemProps> = ({ selected }) => {
     resetTeamFilter();
   };
 
+  const label = formatText(MSG.allTeams);
+
   return (
     <button
       type="button"
+      aria-label={label}
       className={clsx(
-        'inline-flex items-center rounded-l-lg border border-solid border-gray-200 px-4 py-2 text-sm',
+        'inline-flex items-center rounded-l-lg border border-solid border-gray-200 px-4 py-2 text-sm text-transparent bold-on-hover',
         {
-          'bg-base-white font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900':
-            !selected,
-          'bg-gray-50 font-semibold text-gray-900': selected,
+          'bg-base-white hover:bg-gray-50': !selected,
+          'bg-gray-50 after:font-semibold after:text-gray-900': selected,
         },
       )}
       onClick={handleClick}
     >
-      {formatText(MSG.allTeams)}
+      {label}
     </button>
   );
 };
