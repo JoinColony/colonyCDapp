@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useCallback,
 } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
@@ -13,31 +14,47 @@ import { ColonyFiltersContext } from './ColonyFiltersContext.ts';
 
 const ColonyFiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { colonyName } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [filteredTeam, setFilteredTeam] = useState<string | null>(null);
+  const [filteredTeam, setFilteredTeam] = useState<string | null>(
+    searchParams.get(TEAM_SEARCH_PARAM),
+  );
 
   const [currentColonyName, setCurrentColonyName] = useState(colonyName);
 
-  const [queryParams, setQueryParams] = useSearchParams();
+  const updateTeamFilter = useCallback(
+    (domainId: string) => {
+      setFilteredTeam(domainId);
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set(TEAM_SEARCH_PARAM, domainId);
+      setSearchParams(newSearchParams);
+      setFilteredTeam(domainId);
+    },
+    [searchParams, setSearchParams],
+  );
+
+  const resetTeamFilter = useCallback(() => {
+    setFilteredTeam(null);
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete(TEAM_SEARCH_PARAM);
+    setSearchParams(newSearchParams);
+  }, [searchParams, setSearchParams, setFilteredTeam]);
+
   const value = useMemo(
     () => ({
       filteredTeam,
-      setFilteredTeam,
+      updateTeamFilter,
+      resetTeamFilter,
     }),
-    [filteredTeam, setFilteredTeam],
+    [filteredTeam, updateTeamFilter, resetTeamFilter],
   );
 
   useEffect(() => {
     if (currentColonyName !== colonyName) {
       setFilteredTeam(null);
       setCurrentColonyName(colonyName);
-      return;
     }
-
-    if (queryParams.get(TEAM_SEARCH_PARAM)) {
-      setFilteredTeam(queryParams.get(TEAM_SEARCH_PARAM));
-    }
-  }, [colonyName, currentColonyName, queryParams, setQueryParams]);
+  }, [colonyName, currentColonyName]);
 
   return (
     <ColonyFiltersContext.Provider value={value}>
