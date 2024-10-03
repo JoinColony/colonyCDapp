@@ -49,37 +49,38 @@ export const Chart: FC<ChartProps> = ({ data, isLoading }) => {
           tooltip={ChartTooltip}
         />
       </div>
-      <Legend>
-        {isLoading ? (
-          Array.from({ length: 6 }, (_, index) => (
+
+      {isLoading ? (
+        <Legend className="grid grid-cols-3">
+          {Array.from({ length: 6 }, (_, index) => (
             <LegendLoadingItem key={`LoadingLegendItem${index}`} />
-          ))
-        ) : (
-          <>
-            {!data.length && (
-              <LegendItem
-                key={EMPTY_CHART_ITEM.id}
-                chartItem={{
-                  id: EMPTY_CHART_ITEM.id,
-                  label: EMPTY_CHART_ITEM.label,
-                  color: EMPTY_CHART_ITEM.color,
-                  shouldTruncateLegendLabel: false,
-                }}
-              />
-            )}
+          ))}
+        </Legend>
+      ) : (
+        <Legend>
+          {!data.length && (
+            <LegendItem
+              key={EMPTY_CHART_ITEM.id}
+              chartItem={{
+                id: EMPTY_CHART_ITEM.id,
+                label: EMPTY_CHART_ITEM.label,
+                color: EMPTY_CHART_ITEM.color,
+                shouldTruncateLegendLabel: false,
+              }}
+            />
+          )}
 
-            {!!data.length &&
-              data.map((chartItem) => {
-                // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
-                if (chartItem.value === undefined || chartItem.value <= 0) {
-                  return null;
-                }
+          {!!data.length &&
+            data.map((chartItem) => {
+              // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
+              if (chartItem.value === undefined || chartItem.value <= 0) {
+                return null;
+              }
 
-                return <LegendItem key={chartItem.id} chartItem={chartItem} />;
-              })}
-          </>
-        )}
-      </Legend>
+              return <LegendItem key={chartItem.id} chartItem={chartItem} />;
+            })}
+        </Legend>
+      )}
     </>
   );
 };
