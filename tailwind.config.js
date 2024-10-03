@@ -271,7 +271,7 @@ module.exports = {
           display: 'none',
         },
         '.bold-on-hover': {
-          '@apply after:invisible after:block after:h-0 after:overflow-hidden after:font-semibold after:content-[attr(aria-label)] hover:font-semibold':
+          '@apply relative after:w-full after:h-4.5 after:z-base after:block after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:overflow-hidden after:text-gray-700 hover:after:text-gray-900 after:font-medium hover:after:font-semibold after:content-[attr(aria-label)]':
             {},
         }
       });
