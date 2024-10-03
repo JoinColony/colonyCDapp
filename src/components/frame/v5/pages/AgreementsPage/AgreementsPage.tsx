@@ -60,7 +60,11 @@ const AgreementsPage: FC = () => {
     const bDate = new Date(b?.decisionData?.createdAt || '');
     return bDate.getTime() - aDate.getTime();
   })[0];
-  const allAgreements = !newestAgreement?.showInActionsList
+  const shouldShowNewestAgreement =
+    !newestAgreement?.showInActionsList &&
+    newestAgreement?.initiatorUser?.walletAddress === user?.walletAddress;
+
+  const allAgreements = shouldShowNewestAgreement
     ? [newestAgreement, ...passedAgreements]
     : [...passedAgreements];
 
