@@ -12,16 +12,18 @@ const displayName = 'v5.shared.TeamFilter';
 
 const TeamFilter = () => {
   const isMobile = useMobile();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const { filteredTeam } = useColonyFiltersContext();
+  const { filteredTeam, updateTeamFilter } = useColonyFiltersContext();
 
+  // We need to set the query param based on the already stored filteredTeam
+  // but only on the pages where we actually use this component
   useEffect(() => {
-    if (filteredTeam && searchParams.get(TEAM_SEARCH_PARAM) !== filteredTeam) {
-      searchParams.append(TEAM_SEARCH_PARAM, filteredTeam);
-      setSearchParams(searchParams);
+    if (filteredTeam && !searchParams.get(TEAM_SEARCH_PARAM)) {
+      updateTeamFilter(filteredTeam);
     }
-  }, [filteredTeam, searchParams, setSearchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isMobile) {
     return <MobileTeamFilter />;
