@@ -67,7 +67,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
           currency={currency}
         />
       }
-      onClick={selectedDomain ? onItemClick : undefined}
+      onClick={onItemClick}
     >
       <FundsCardsTotalDescription
         percent={trend.value}
