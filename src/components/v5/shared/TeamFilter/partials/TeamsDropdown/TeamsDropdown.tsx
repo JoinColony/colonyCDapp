@@ -56,7 +56,8 @@ const TeamsDropdown: FC<TeamsDropdownProps> = ({ domains }) => {
               type="button"
               key={`TeamsDropdown.${domain.nativeId}`}
               onClick={() => handleClick(domain)}
-              className="w-full text-start text-sm font-medium text-gray-700 hover:font-semibold hover:text-gray-900"
+              aria-label={domain.metadata?.name} // Used to set the after content, which is used to pre-reserve the space required for the bold hover state
+              className="w-full text-start text-sm font-medium text-gray-700 bold-on-hover hover:text-gray-900"
             >
               {domain.metadata?.name}
             </button>
