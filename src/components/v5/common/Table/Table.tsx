@@ -42,14 +42,15 @@ const Table = <T,>({
   renderSubComponent,
   getRowCanExpand,
   withBorder = true,
+  withNarrowBorder = false,
   isDisabled = false,
   verticalLayout,
   virtualizedProps,
   tableClassName,
   tableBodyRowKeyProp,
   showTableHead = true,
-  showBorder = true,
-  hasHorizontalPadding = true,
+  showTableBorder = true,
+  alwaysShowPagination = false,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -115,7 +116,7 @@ const Table = <T,>({
           'h-px w-full table-fixed',
           {
             'border-separate border-spacing-0 rounded-lg border border-gray-200':
-              showBorder,
+              showTableBorder,
           },
           tableClassName,
         )}
@@ -316,10 +317,14 @@ const Table = <T,>({
                         itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
                         isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
+                          '[&:not(:first-child)]:after:absolute [&:not(:first-child)]:after:left-4 [&:not(:first-child)]:after:top-0 [&:not(:first-child)]:after:w-[calc(100%-2rem)] [&:not(:first-child)]:after:border-b [&:not(:first-child)]:after:border-gray-100':
+                            withNarrowBorder,
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                            (!showExpandableContent && row.getCanExpand()) ||
+                            (!showExpandableContent &&
+                              row.getCanExpand() &&
+                              !withNarrowBorder) ||
                             withBorder,
                           'expanded-below': showExpandableContent,
                         })}
@@ -389,7 +394,12 @@ const Table = <T,>({
                         })}
                       </TableRow>
                       {showExpandableContent && (
-                        <tr className="[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100">
+                        <tr
+                          className={clsx({
+                            '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
+                              !withNarrowBorder,
+                          })}
+                        >
                           <td colSpan={row.getVisibleCells().length}>
                             {renderSubComponent({ row })}
                           </td>
@@ -427,7 +437,7 @@ const Table = <T,>({
           </tfoot>
         )}
       </table>
-      {hasPagination &&
+      {(hasPagination || alwaysShowPagination) &&
         showPageNumber &&
         (canGoToPreviousPage || canGoToNextPage) && (
           <TablePagination
@@ -443,15 +453,36 @@ const Table = <T,>({
               },
               {
                 actualPage: table.getState().pagination.pageIndex + 1,
-                pageNumber: table.getPageCount(),
+                pageNumber: pageCount === 0 ? 1 : pageCount,
               },
             )}
             disabled={paginationDisabled}
-            hasHorizontalPadding={hasHorizontalPadding}
           >
             {additionalPaginationButtonsContent}
           </TablePagination>
         )}
+      {alwaysShowPagination && !hasPagination && (
+        <TablePagination
+          onNextClick={() => {}}
+          onPrevClick={() => {}}
+          canGoToNextPage
+          canGoToPreviousPage={false}
+          pageNumberLabel={formatText(
+            {
+              id: showTotalPagesNumber
+                ? 'table.pageNumberWithTotal'
+                : 'table.pageNumber',
+            },
+            {
+              actualPage: 1,
+              pageNumber: 1,
+            },
+          )}
+          disabled
+        >
+          {additionalPaginationButtonsContent}
+        </TablePagination>
+      )}
     </div>
   );
 };
