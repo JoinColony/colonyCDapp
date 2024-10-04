@@ -3,7 +3,6 @@ import React, { type FC } from 'react';
 
 import Numeral from '~shared/Numeral/index.ts';
 import { type Token } from '~types/graphql.ts';
-import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
@@ -29,10 +28,6 @@ export const TokenItem: FC<TokenItemProps> = ({ token, tokenBalance }) => {
       </div>
       {tokenBalance && (
         <span className="ml-2 whitespace-nowrap text-sm text-gray-400">
-          {formatText({
-            id: 'actionSidebar.availableFunds',
-          })}
-          {': '}
           <Numeral
             value={tokenBalance}
             decimals={getTokenDecimalsWithFallback(token?.decimals)}
