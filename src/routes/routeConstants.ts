@@ -22,6 +22,7 @@ export const COLONY_ADVANCED_ROUTE = `advanced`;
 export const COLONY_EXTENSION_DETAILS_ROUTE = `${COLONY_EXTENSIONS_ROUTE}/:extensionId`;
 export const COLONY_INCOMING_ROUTE = `incoming`;
 export const COLONY_BALANCES_ROUTE = `balances`;
+export const COLONY_STREAMING_PAYMENTS_ROUTE = `streaming-payments`;
 export const COLONY_MEMBERS_ROUTE = `members`;
 export const COLONY_MEMBERS_WITH_DOMAIN_ROUTE = `members/:domainId`;
 export const COLONY_CONTRIBUTORS_ROUTE = `members/contributors`;

@@ -15,7 +15,7 @@ import {
   // SealCheck,
   // ChartPieSlice,
   // ListChecks,
-  // ChartLine,
+  ChartLine,
   // Intersect,
   // Briefcase,
   // BookOpenText,
@@ -37,6 +37,7 @@ import {
   COLONY_PERMISSIONS_ROUTE,
   // COLONY_REPUTATION_ROUTE,
   COLONY_TEAMS_ROUTE,
+  COLONY_STREAMING_PAYMENTS_ROUTE,
   // COLONY_VERIFIED_ROUTE,
 } from '~routes/routeConstants.ts';
 import { formatText } from '~utils/intl.ts';
@@ -112,12 +113,12 @@ export const financesMenu: NavigationSidebarLinksListProps['items'] = [
   //     text: 'Coming soon',
   //   },
   // },
-  // {
-  //   key: '5',
-  //   label: formatText({ id: 'navigation.finances.streamingPayments' }),
-  //   to: '/streaming-payments',
-  //   icon: ChartLine
-  // },
+  {
+    key: '5',
+    label: formatText({ id: 'navigation.finances.streamingPayments' }),
+    to: COLONY_STREAMING_PAYMENTS_ROUTE,
+    icon: ChartLine,
+  },
 ];
 
 // @todo: update routes when pages will be ready
