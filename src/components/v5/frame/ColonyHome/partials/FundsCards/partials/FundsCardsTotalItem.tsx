@@ -55,7 +55,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
         </LoadingSkeleton>
       }
       subTitle={
-        <div className="pb-1 pt-0.5">
+        <div className="pt-0.5">
           <FundsCardsSubTitle
             isLoading={loading}
             value={
