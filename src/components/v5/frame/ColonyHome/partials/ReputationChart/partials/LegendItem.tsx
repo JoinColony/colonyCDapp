@@ -16,7 +16,7 @@ interface LegendItemProps {
   chartItem: ReputationChartDataItem;
 }
 
-const LEGEND_LABEL_LENGTH = 12;
+const LEGEND_LABEL_LENGTH = 20;
 
 const LegendItem: FC<LegendItemProps> = ({
   chartItem: {
