@@ -1,15 +1,17 @@
 import { createContext, useContext } from 'react';
 
-import type React from 'react';
+import noop from '~utils/noop.ts';
 
 interface ColonyFiltersContextValue {
   filteredTeam: string | null;
-  setFilteredTeam: React.Dispatch<React.SetStateAction<string | null>>;
+  updateTeamFilter: (domainId: string) => void;
+  resetTeamFilter: () => void;
 }
 
 export const ColonyFiltersContext = createContext<ColonyFiltersContextValue>({
   filteredTeam: null,
-  setFilteredTeam: () => {},
+  updateTeamFilter: noop,
+  resetTeamFilter: noop,
 });
 
 export const useColonyFiltersContext = () => {

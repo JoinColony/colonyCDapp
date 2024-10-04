@@ -1,10 +1,8 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { useSearchParams } from 'react-router-dom';
 
 import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFiltersContext.ts';
-import { TEAM_SEARCH_PARAM } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 const displayName = 'v5.shared.TeamFilter.partials.AllTeamsItem';
@@ -21,13 +19,10 @@ interface AllTeamsItemProps {
 }
 
 const AllTeamsItem: FC<AllTeamsItemProps> = ({ selected }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { setFilteredTeam } = useColonyFiltersContext();
+  const { resetTeamFilter } = useColonyFiltersContext();
 
   const handleClick = () => {
-    searchParams.delete(TEAM_SEARCH_PARAM);
-    setFilteredTeam(null);
-    setSearchParams(searchParams);
+    resetTeamFilter();
   };
 
   return (
