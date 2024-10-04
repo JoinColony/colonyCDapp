@@ -79,7 +79,7 @@ const ArrowScroller: FC<ArrowScrollerProps> = ({
       {canScrollLeft && (
         <button
           type="button"
-          className="absolute left-0 top-0 h-full"
+          className="absolute left-0 top-0 z-10 h-full"
           onClick={scrollLeft}
         >
           {buttonLeftContent}
@@ -98,7 +98,7 @@ const ArrowScroller: FC<ArrowScrollerProps> = ({
       {canScrollRight && (
         <button
           type="button"
-          className="absolute right-0 top-0 h-full"
+          className="absolute right-0 top-0 z-10 h-full"
           onClick={scrollRight}
         >
           {buttonRightContent}
