@@ -1886,6 +1886,7 @@ export type CreateStreamingPaymentInput = {
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId: Scalars['ID'];
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  creatorAddress: Scalars['ID'];
   endTime: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   interval: Scalars['String'];
@@ -4175,6 +4176,7 @@ export type ModelStreamingPaymentConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentConditionInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  creatorAddress?: InputMaybe<ModelIdInput>;
   endTime?: InputMaybe<ModelStringInput>;
   interval?: InputMaybe<ModelStringInput>;
   isCancelled?: InputMaybe<ModelBooleanInput>;
@@ -4204,6 +4206,7 @@ export type ModelStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelStreamingPaymentFilterInput>>>;
   colonyId?: InputMaybe<ModelIdInput>;
   createdAt?: InputMaybe<ModelStringInput>;
+  creatorAddress?: InputMaybe<ModelIdInput>;
   endTime?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   interval?: InputMaybe<ModelStringInput>;
@@ -4774,6 +4777,7 @@ export type ModelSubscriptionStreamingPaymentFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionStreamingPaymentFilterInput>>>;
   colonyId?: InputMaybe<ModelSubscriptionIdInput>;
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
+  creatorAddress?: InputMaybe<ModelSubscriptionIdInput>;
   endTime?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   interval?: InputMaybe<ModelSubscriptionStringInput>;
@@ -6943,7 +6947,11 @@ export type Query = {
   listVoterRewardsHistories?: Maybe<ModelVoterRewardsHistoryConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
+<<<<<<< HEAD
   tokenExhangeRateByTokenId?: Maybe<ModelTokenExchangeRateConnection>;
+=======
+  searchStreamingPayments?: Maybe<SearchableStreamingPaymentConnection>;
+>>>>>>> d4f57e208 (Schema update: Add creatorAddress to StreamingPayment, make it @searchable)
 };
 
 
@@ -8163,6 +8171,7 @@ export type QuerySearchColonyContributorsArgs = {
 
 
 /** Root query type */
+<<<<<<< HEAD
 export type QueryTokenExhangeRateByTokenIdArgs = {
   date?: InputMaybe<ModelStringKeyConditionInput>;
   filter?: InputMaybe<ModelTokenExchangeRateFilterInput>;
@@ -8170,6 +8179,15 @@ export type QueryTokenExhangeRateByTokenIdArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   tokenId: Scalars['String'];
+=======
+export type QuerySearchStreamingPaymentsArgs = {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentAggregationInput>>>;
+  filter?: InputMaybe<SearchableStreamingPaymentFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentSortInput>>>;
+>>>>>>> d4f57e208 (Schema update: Add creatorAddress to StreamingPayment, make it @searchable)
 };
 
 export type ReputationMiningCycleMetadata = {
@@ -8522,6 +8540,82 @@ export enum SearchableSortDirection {
   Desc = 'desc'
 }
 
+export enum SearchableStreamingPaymentAggregateField {
+  Amount = 'amount',
+  ColonyId = 'colonyId',
+  CreatedAt = 'createdAt',
+  CreatorAddress = 'creatorAddress',
+  EndTime = 'endTime',
+  Id = 'id',
+  Interval = 'interval',
+  IsCancelled = 'isCancelled',
+  IsWaived = 'isWaived',
+  NativeDomainId = 'nativeDomainId',
+  NativeId = 'nativeId',
+  RecipientAddress = 'recipientAddress',
+  StartTime = 'startTime',
+  TokenAddress = 'tokenAddress',
+  UpdatedAt = 'updatedAt'
+}
+
+export type SearchableStreamingPaymentAggregationInput = {
+  field: SearchableStreamingPaymentAggregateField;
+  name: Scalars['String'];
+  type: SearchableAggregateType;
+};
+
+export type SearchableStreamingPaymentConnection = {
+  __typename?: 'SearchableStreamingPaymentConnection';
+  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
+  items: Array<Maybe<StreamingPayment>>;
+  nextToken?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type SearchableStreamingPaymentFilterInput = {
+  amount?: InputMaybe<SearchableStringFilterInput>;
+  and?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentFilterInput>>>;
+  colonyId?: InputMaybe<SearchableIdFilterInput>;
+  createdAt?: InputMaybe<SearchableStringFilterInput>;
+  creatorAddress?: InputMaybe<SearchableIdFilterInput>;
+  endTime?: InputMaybe<SearchableStringFilterInput>;
+  id?: InputMaybe<SearchableIdFilterInput>;
+  interval?: InputMaybe<SearchableStringFilterInput>;
+  isCancelled?: InputMaybe<SearchableBooleanFilterInput>;
+  isWaived?: InputMaybe<SearchableBooleanFilterInput>;
+  nativeDomainId?: InputMaybe<SearchableIntFilterInput>;
+  nativeId?: InputMaybe<SearchableIntFilterInput>;
+  not?: InputMaybe<SearchableStreamingPaymentFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentFilterInput>>>;
+  recipientAddress?: InputMaybe<SearchableStringFilterInput>;
+  startTime?: InputMaybe<SearchableStringFilterInput>;
+  tokenAddress?: InputMaybe<SearchableIdFilterInput>;
+  updatedAt?: InputMaybe<SearchableStringFilterInput>;
+};
+
+export type SearchableStreamingPaymentSortInput = {
+  direction?: InputMaybe<SearchableSortDirection>;
+  field?: InputMaybe<SearchableStreamingPaymentSortableFields>;
+};
+
+export enum SearchableStreamingPaymentSortableFields {
+  Amount = 'amount',
+  ColonyId = 'colonyId',
+  CreatedAt = 'createdAt',
+  CreatorAddress = 'creatorAddress',
+  EndTime = 'endTime',
+  Id = 'id',
+  Interval = 'interval',
+  IsCancelled = 'isCancelled',
+  IsWaived = 'isWaived',
+  NativeDomainId = 'nativeDomainId',
+  NativeId = 'nativeId',
+  RecipientAddress = 'recipientAddress',
+  StartTime = 'startTime',
+  TokenAddress = 'tokenAddress',
+  UpdatedAt = 'updatedAt'
+}
+
 export type SearchableStringFilterInput = {
   eq?: InputMaybe<Scalars['String']>;
   exists?: InputMaybe<Scalars['Boolean']>;
@@ -8621,6 +8715,8 @@ export type StreamingPayment = {
   /** Colony ID (address) to which the expenditure belongs */
   colonyId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
+  /** Address of the stream creator, can be a user or an extension */
+  creatorAddress: Scalars['ID'];
   endTime: Scalars['String'];
   id: Scalars['ID'];
   interval: Scalars['String'];
@@ -10271,6 +10367,7 @@ export type UpdateStreamingPaymentInput = {
   claims?: InputMaybe<Array<StreamingPaymentClaimInput>>;
   colonyId?: InputMaybe<Scalars['ID']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  creatorAddress?: InputMaybe<Scalars['ID']>;
   endTime?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   interval?: InputMaybe<Scalars['String']>;
