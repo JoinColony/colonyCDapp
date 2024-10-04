@@ -3883,7 +3883,7 @@ type ExpenditureStage {
   name: String!
 }
 
-type StreamingPayment @model {
+type StreamingPayment @model @searchable {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   """
   Native ID of the streaming payment within a colony
@@ -3931,6 +3931,10 @@ type StreamingPayment @model {
   """
   motions: [ColonyMotion]
     @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  Address of the stream creator, can be a user or an extension
+  """
+  creatorAddress: ID!
 }
 
 type StreamingPaymentMetadata @model {
