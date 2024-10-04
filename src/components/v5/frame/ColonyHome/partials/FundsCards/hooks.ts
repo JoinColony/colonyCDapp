@@ -10,6 +10,7 @@ import {
 } from '~gql';
 import { useCurrencyHistoricalConversionRate } from '~hooks/useCurrencyHistoricalConversionRate.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { useSubDomains } from '~hooks/useSubDomains.ts';
 import { convertFromTokenToCurrency } from '~utils/currency/convertFromTokenToCurrency.ts';
 import { type CoinGeckoSupportedCurrencies } from '~utils/currency/index.ts';
 
@@ -134,4 +135,17 @@ export const usePreviousTotalData = () => {
      */
     previousTotal: convertAmount(previousTotal),
   };
+};
+
+export const useIsAddNewTeamVisible = () => {
+  const subTeams = useSubDomains();
+
+  const selectedDomain = useGetSelectedDomainFilter();
+
+  // In case "All teams" selected we have "General" team created by default
+  // @TODO: probably with nested teams this functionality will change
+  if (!selectedDomain && (!subTeams || subTeams.length <= 1)) {
+    return true;
+  }
+  return selectedDomain?.isRoot && (!subTeams || subTeams.length < 1);
 };

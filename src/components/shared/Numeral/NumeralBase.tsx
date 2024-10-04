@@ -21,7 +21,7 @@ export const NumeralBase: FC<Props> = ({
       className={classNames(getMainClasses(appearance, styles), className)}
       {...rest}
     >
-      {prefix && `${prefix} `}
+      {prefix}
       {children}
       {suffix}
     </span>
