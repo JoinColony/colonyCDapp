@@ -1,6 +1,6 @@
 FROM colony-cdapp-dev-env/base:latest
 
-ENV NETWORK_HASH=1a70b25d0ae59a8dfd3ad77cb59a35f0f9622a03
+ENV NETWORK_HASH=7cc490ce0c893c4c35c92396e2b66affda004b22
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
