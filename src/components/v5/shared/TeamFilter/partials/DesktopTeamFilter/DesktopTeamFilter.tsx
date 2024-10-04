@@ -94,9 +94,21 @@ const DesktopTeamFilter = () => {
     });
   }, [allDomains, overflowingItemIndex, selectedDomain]);
 
+  const selectedDomainIndex = useMemo(
+    () =>
+      displayDomains.findIndex(
+        (domain) => selectedDomain?.nativeId === domain.nativeId,
+      ),
+    [selectedDomain, displayDomains],
+  );
+
   return (
     <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap">
-      <AllTeamsItem selected={isAllTeamsFilterActive} />
+      <AllTeamsItem
+        selected={isAllTeamsFilterActive}
+        // The item should have a delimiter only if it is not the first one before the selected team
+        hasDelimiter={selectedDomainIndex !== 0}
+      />
       <div className="flex flex-wrap overflow-hidden" ref={containerRef}>
         {displayDomains.map((domain, index) => (
           <div
@@ -113,6 +125,8 @@ const DesktopTeamFilter = () => {
           >
             <TeamItem
               selected={selectedDomain?.nativeId === domain.nativeId}
+              // The item should have a delimiter only if it is not the first one before the selected team
+              hasDelimiter={index !== selectedDomainIndex - 1}
               domain={domain}
             />
           </div>
