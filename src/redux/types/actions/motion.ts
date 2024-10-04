@@ -24,6 +24,8 @@ import {
   type ExpenditureFundPayload,
   type CancelStakedExpenditurePayload,
   type CancelExpenditurePayload,
+  type CancelStreamingPaymentPayload,
+  type EditStreamingPaymentPayload,
 } from './expenditures.ts';
 import {
   type ErrorActionType,
@@ -87,11 +89,28 @@ export type MotionDomainCreateEditPayload = {
   colonyDomains: Domain[];
   domainCreatedInNativeId: number;
 };
+
 interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
   colonyDomains: Domain[];
   colonyRoles: ColonyRoleFragment[];
   isMultiSig?: boolean;
 }
+
+export type StreamingPaymentsMotionCancelPayload = Omit<
+  CancelStreamingPaymentPayload,
+  'colonyAddress' | 'userAddress'
+> & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+};
+
+export type StreamingPaymentsMotionEditPayload = EditStreamingPaymentPayload & {
+  motionDomainId: number;
+  votingReputationAddress: Address;
+  colony: Colony;
+  annotationMessage?: string;
+};
 
 export type MotionActionTypes =
   | UniqueActionType<
@@ -474,5 +493,25 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL,
+      StreamingPaymentsMotionCancelPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_CANCEL_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_STREAMING_PAYMENT_EDIT,
+      StreamingPaymentsMotionEditPayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_STREAMING_PAYMENT_EDIT_SUCCESS,
       MetaWithSetter<object>
     >;

@@ -51,6 +51,7 @@ import {
   type MultiSigUserSignatureFragment,
   type ColonyMultiSigFragment,
   type ExpenditureActionFragment,
+  type StreamingPaymentFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -168,8 +169,11 @@ export type BridgeBankAccount = BridgeBankAccountFragment;
 export type BridgeDrain = BridgeDrainFragment;
 
 export type ApprovedTokenChanges = ApprovedTokenChangesFragment;
+
 export type ColonyRole = ColonyRoleFragment;
 
 export type MultiSigUserSignature = MultiSigUserSignatureFragment;
 
 export type ColonyMultiSig = ColonyMultiSigFragment;
+
+export type StreamingPayment = StreamingPaymentFragment;
