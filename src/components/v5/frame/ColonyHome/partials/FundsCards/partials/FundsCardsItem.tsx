@@ -4,12 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import {
-  COLONY_BALANCES_ROUTE,
-  TEAM_SEARCH_PARAM,
-} from '~routes/routeConstants.ts';
+import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFiltersContext.ts';
+import { COLONY_BALANCES_ROUTE } from '~routes/routeConstants.ts';
 import { NumeralCurrency } from '~shared/Numeral/index.ts';
-import { setQueryParamOnUrl } from '~utils/urls.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
 import { useTotalData } from '../hooks.ts';
@@ -29,18 +26,15 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
   const { total, loading } = useTotalData(domainId);
   const { currency } = useCurrencyContext();
 
+  const { updateTeamFilter } = useColonyFiltersContext();
   const navigate = useNavigate();
-
   const { colonyName } = useParams();
+
   const onTeamClick = () => {
-    navigate(
-      setQueryParamOnUrl({
-        path: `/${colonyName}/${COLONY_BALANCES_ROUTE}`,
-        params: {
-          [TEAM_SEARCH_PARAM]: nativeId?.toString(),
-        },
-      }),
-    );
+    if (nativeId) {
+      updateTeamFilter(nativeId.toString());
+    }
+    navigate(`/${colonyName}/${COLONY_BALANCES_ROUTE}`);
   };
 
   return (
