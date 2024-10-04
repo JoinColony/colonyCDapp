@@ -42,7 +42,7 @@ const PageHeader: FC<PageHeaderProps> = () => {
   return (
     <header className="w-full">
       <section ref={navSectionRef}>
-        <div className="flex flex-row items-center justify-between border-b p-6 md:border-none md:px-0 md:pb-2 md:pt-0">
+        <div className="flex flex-row items-start justify-between border-b p-6 md:border-none md:px-0 md:pb-2 md:pt-0">
           <div>
             {!isTablet && <Breadcrumbs />}
             {isTablet && (

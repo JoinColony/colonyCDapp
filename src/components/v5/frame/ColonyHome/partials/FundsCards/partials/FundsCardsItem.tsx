@@ -42,7 +42,7 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
       onClick={onTeamClick}
       title={
         <LoadingSkeleton isLoading={loading} className="mb-1 h-5 w-14 rounded">
-          {domainName}
+          <span className="mb-1 mt-0.5 flex">{domainName}</span>
         </LoadingSkeleton>
       }
       subTitle={
