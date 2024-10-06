@@ -3,8 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { ExtendedColonyActionType } from '~types/actions.ts';
-
-import { type StagedPaymentFormValues } from '../../forms/StagedPaymentForm/hooks.ts';
+import { type StagedPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 import RecipientUser from './RecipientUser.tsx';

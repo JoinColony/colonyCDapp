@@ -5,8 +5,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-
-import { type SplitPaymentFormValues } from '../../forms/SplitPaymentForm/hooks.ts';
+import { type SplitPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 

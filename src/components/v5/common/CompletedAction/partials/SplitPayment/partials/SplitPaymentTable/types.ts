@@ -1,7 +1,6 @@
 import { type ExpenditureStatus } from '~gql';
 import { type ExpenditureSlot } from '~types/graphql.ts';
-
-import { type AmountFieldProps } from '../../../PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/types.ts';
+import { type AmountFieldProps } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderTable/partials/AmountField/types.ts';
 
 export interface SplitPaymentTableProps {
   items: ExpenditureSlot[];

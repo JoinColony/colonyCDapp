@@ -8,13 +8,12 @@ import {
   RECIPIENT_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-
-import { type ActionFormBaseProps } from '../../../types.ts';
-import CreatedIn from '../../CreatedIn/CreatedIn.tsx';
-import DecisionMethodField from '../../DecisionMethodField/DecisionMethodField.tsx';
-import Description from '../../Description/Description.tsx';
-import TeamsSelect from '../../TeamsSelect/TeamsSelect.tsx';
-import UserSelect from '../../UserSelect/UserSelect.tsx';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
+import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
+import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
+import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
+import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { useStagePayment } from './hooks.ts';
 import StagedPaymentRecipientsField from './partials/StagedPaymentRecipientsField/StagedPaymentRecipientField.tsx';

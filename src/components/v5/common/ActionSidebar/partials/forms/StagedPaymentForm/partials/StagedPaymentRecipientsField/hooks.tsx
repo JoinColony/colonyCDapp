@@ -7,10 +7,9 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import { FROM_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/AmountField.tsx';
+import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
+import { type StagedPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/hooks.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-
-import PaymentBuilderPayoutsTotal from '../../../PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
-import { type StagedPaymentFormValues } from '../../hooks.ts';
 
 import {
   type StagedPaymentRecipientsTableModel,
