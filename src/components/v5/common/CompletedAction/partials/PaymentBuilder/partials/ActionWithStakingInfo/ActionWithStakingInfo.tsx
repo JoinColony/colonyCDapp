@@ -5,11 +5,11 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
-
-import { getFormattedTokenAmount } from '../../../utils.ts';
 
 import { type ActionWithStakingInfoProps } from './types.ts';
 
@@ -51,14 +51,17 @@ const ActionWithStakingInfo: FC<ActionWithStakingInfoProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText(MSG.info),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        iconSize: 16,
-        iconClassName: 'text-gray-500',
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconSize={16}
+          iconClassName="text-gray-500"
+        >
+          {formatText(MSG.info)}
+        </StatusText>
+      }
       sections={[
         {
           key: '1',
