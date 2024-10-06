@@ -82,7 +82,7 @@ export const getWallet = async (lastWallet: LastWallet | null) => {
   const [account] = wallet.accounts;
   setLastWallet({ type: wallet.label, address: account.address });
 
-  const RetryProvider = retryProviderFactory(wallet.label);
+  const RetryProvider = retryProviderFactory(wallet.label, account.address);
   const provider = new RetryProvider();
 
   return {
