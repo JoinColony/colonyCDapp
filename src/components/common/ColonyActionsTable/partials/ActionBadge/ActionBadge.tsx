@@ -19,10 +19,18 @@ const ActionBadge: FC<ActionBadgeProps> = ({
   const { expenditure, loadingExpenditure } =
     useGetExpenditureData(expenditureId);
 
-  const { streamingPaymentData, paymentStatus, loadingStreamingPayment } =
-    useGetStreamingPaymentData(expenditureId);
+  const {
+    streamingPaymentData,
+    paymentStatus,
+    loadingStreamingPayment,
+    expectedPaymentStatus,
+  } = useGetStreamingPaymentData(expenditureId);
 
-  const isLoading = loading || loadingExpenditure || loadingStreamingPayment;
+  const isLoading =
+    loading ||
+    loadingExpenditure ||
+    loadingStreamingPayment ||
+    (!!expectedPaymentStatus && expectedPaymentStatus !== paymentStatus);
 
   return (
     <LoadingSkeleton
