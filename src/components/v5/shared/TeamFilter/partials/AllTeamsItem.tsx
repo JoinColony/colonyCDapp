@@ -16,28 +16,36 @@ const MSG = defineMessages({
 
 interface AllTeamsItemProps {
   selected: boolean;
+  hasDelimiter?: boolean;
 }
 
-const AllTeamsItem: FC<AllTeamsItemProps> = ({ selected }) => {
+const AllTeamsItem: FC<AllTeamsItemProps> = ({
+  selected,
+  hasDelimiter = true,
+}) => {
   const { resetTeamFilter } = useColonyFiltersContext();
 
   const handleClick = () => {
     resetTeamFilter();
   };
 
+  const label = formatText(MSG.allTeams);
+
   return (
     <button
       type="button"
+      aria-label={label}
       className={clsx(
-        'border-r border-solid border-gray-200 px-4 py-2 text-sm',
+        'inline-flex items-center rounded-l-lg border-y border-l border-solid border-gray-200 px-4 py-2 text-sm text-transparent bold-on-hover',
         {
-          'bg-base-white font-medium text-gray-700': !selected,
-          'bg-gray-50 font-semibold text-gray-900': selected,
+          'bg-base-white hover:bg-gray-50': !selected,
+          'bg-gray-50 after:font-semibold after:text-gray-900': selected,
+          'border-r': hasDelimiter,
         },
       )}
       onClick={handleClick}
     >
-      {formatText(MSG.allTeams)}
+      {label}
     </button>
   );
 };

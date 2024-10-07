@@ -11,10 +11,15 @@ const displayName = 'v5.shared.TeamFilter.partials.TeamItem';
 
 interface TeamItemProps {
   selected: boolean;
+  hasDelimiter?: boolean;
   domain: Domain;
 }
 
-const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
+const TeamItem: FC<TeamItemProps> = ({
+  domain,
+  selected,
+  hasDelimiter = true,
+}) => {
   const { ref: teamItemRef, scroll } = useScrollIntoView<HTMLButtonElement>();
   const isMobile = useMobile();
   const { updateTeamFilter, resetTeamFilter } = useColonyFiltersContext();
@@ -40,22 +45,26 @@ const TeamItem: FC<TeamItemProps> = ({ domain, selected }) => {
     }
   };
 
+  const label = domain.metadata?.name ?? domain.id;
+
   return (
     <button
       ref={teamItemRef}
       type="button"
+      aria-label={label}
       className={clsx(
-        'w-full bg-base-white px-4 py-2 text-sm',
+        'box-border inline-flex h-full w-full items-center justify-center border-y border-solid bg-base-white px-4 py-2 text-sm text-transparent bold-on-hover',
         selected ? teamColor : null,
         {
-          'border-r border-solid border-gray-200 font-medium text-gray-700':
-            !selected,
-          'border-0 font-semibold text-base-white': selected,
+          'border-gray-200 font-medium hover:bg-gray-50': !selected,
+          'border-l border-transparent after:font-semibold after:text-base-white hover:after:text-base-white':
+            selected,
+          'border-r': hasDelimiter,
         },
       )}
       onClick={handleClick}
     >
-      {domain.metadata?.name ?? domain.id}
+      {label}
     </button>
   );
 };
