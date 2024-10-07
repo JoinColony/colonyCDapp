@@ -21,6 +21,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   ] = useToggle();
   const [selectedFundingAction, setSelectedFundingAction] =
     useState<ExpenditureAction | null>(null);
+  const [selectedReleaseAction, setSelectedReleaseAction] =
+    useState<ExpenditureAction | null>(null);
 
   const value = useMemo(
     () => ({
@@ -32,6 +34,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       isReleaseModalOpen,
       selectedFundingAction,
       setSelectedFundingAction,
+      selectedReleaseAction,
+      setSelectedReleaseAction,
     }),
     [
       toggleOnFundingModal,
@@ -41,6 +45,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffReleaseModal,
       isReleaseModalOpen,
       selectedFundingAction,
+      selectedReleaseAction,
+      setSelectedReleaseAction,
     ],
   );
 
