@@ -31,6 +31,9 @@ const useGetAllAgreements = () => {
       colonyAddress,
       filter: {
         type: { eq: ColonyActionType.CreateDecisionMotion },
+        showInActionsList: {
+          eq: true,
+        },
       },
       sortDirection: ModelSortDirection.Desc,
       limit: QUERY_PAGE_SIZE,
@@ -160,6 +163,7 @@ export const useGetAgreements = () => {
       }
       return true;
     });
+
   const searchedAgreements = filteredAgreements.filter((agreement) =>
     agreement?.decisionData?.title
       ?.toLowerCase()

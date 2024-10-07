@@ -30,6 +30,9 @@ const Agreements = () => {
       colonyAddress,
       filter: {
         type: { eq: ColonyActionType.CreateDecisionMotion },
+        showInActionsList: {
+          eq: true,
+        },
       },
       sortDirection: ModelSortDirection.Desc,
     },
