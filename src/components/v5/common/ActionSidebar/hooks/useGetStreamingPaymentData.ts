@@ -22,7 +22,7 @@ export const useGetStreamingPaymentData = (
       variables: {
         streamingPaymentId: streamingPaymentId || '',
       },
-      skip: Number.isNaN(streamingPaymentId),
+      skip: Number.isNaN(streamingPaymentId) || streamingPaymentId === null,
       fetchPolicy: 'cache-and-network',
       pollInterval,
     });
