@@ -1772,6 +1772,7 @@
     "decisionMethod.permissions": "Permissions",
     "decisionMethod.paymentCreator": "Payment creator",
     "decisionMethod.reputation": "Reputation",
+    "decisionMethod.paymentCreator": "Payment creator",
     "decisionMethod.staking": "Staking",
     "decisionMethodSelect.title": "Decision method",
     "decisionMethodSelect.placeholder": "Select method",

@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
@@ -5,11 +6,14 @@ import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { getAllUserRoles } from '~transformers';
+import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -50,6 +54,12 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   const releaseDecisionMethodDescriptions =
     getReleaseDecisionMethodDescriptions(userRole.name);
 
+  const finalizeExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+    error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+  });
+
   const finalizeExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_FINALIZE,
     error: ActionTypes.EXPENDITURE_FINALIZE_ERROR,
@@ -62,7 +72,9 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
     success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
 
-  const handleFinalizeExpenditure = async () => {
+  const { votingReputationAddress } = useEnabledExtensions();
+
+  const handleFinalizeExpenditure = async ({ decisionMethod }) => {
     try {
       if (!expenditure) {
         return;
@@ -74,7 +86,21 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
         userAddress: user?.walletAddress ?? '',
       };
 
-      await finalizeExpenditure(finalizePayload);
+      const motionFinalizepayload: FinalizeExpenditureMotionPayload = {
+        colony,
+        expenditure,
+        votingReputationAddress: votingReputationAddress || '',
+        motionDomainId: Id.RootDomain,
+      };
+
+      if (
+        decisionMethod &&
+        decisionMethod.value === DecisionMethod.Reputation
+      ) {
+        await finalizeExpenditureViaMotion(motionFinalizepayload);
+      } else {
+        await finalizeExpenditure(finalizePayload);
+      }
 
       if (expenditure.isStaked) {
         const payload: ReclaimExpenditureStakePayload = {

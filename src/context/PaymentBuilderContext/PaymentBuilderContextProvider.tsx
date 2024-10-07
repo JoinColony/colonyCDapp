@@ -96,6 +96,7 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       selectedMilestones,
       selectedFundingAction,
       selectedReleaseAction,
+      setSelectedReleaseAction,
     ],
   );
 
