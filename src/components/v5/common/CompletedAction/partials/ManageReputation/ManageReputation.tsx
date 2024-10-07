@@ -11,7 +11,10 @@ import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getNumeralTokenAmount,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -41,7 +44,6 @@ import {
   ModificationRow,
   TeamFromRow,
 } from '../rows/index.ts';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 import ManageReputationTableCompletedState from './partials/ManageReputationTableCompletedState/index.ts';
 import ManageReputationTableInMotion from './partials/ManageReputationTableInMotion/index.ts';
@@ -80,7 +82,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     .abs()
     .toString();
 
-  const formattedAmount = getFormattedTokenAmount(
+  const formattedAmount = getNumeralTokenAmount(
     positiveAmountValue,
     DEFAULT_TOKEN_DECIMALS,
   );

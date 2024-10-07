@@ -3,8 +3,7 @@ import React, { type FC } from 'react';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
+import { getNumeralTokenAmount, getSelectedToken } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type AmountFieldProps } from './types.ts';
@@ -16,7 +15,7 @@ const AmountField: FC<AmountFieldProps> = ({
 }) => {
   const { colony } = useColonyContext();
   const tokenData = getSelectedToken(colony, tokenAddress);
-  const formattedAmount = getFormattedTokenAmount(
+  const formattedAmount = getNumeralTokenAmount(
     amount,
     tokenData?.decimals || DEFAULT_TOKEN_DECIMALS,
   );
