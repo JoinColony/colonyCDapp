@@ -2,7 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { useActiveActionType } from '~v5/common/ActionSidebar/hooks/useActiveActionType.ts';
@@ -28,7 +28,7 @@ const NoPermissionsError = () => {
 
   if (
     actionType &&
-    actionType !== Action.CreateDecision &&
+    actionType !== CoreAction.CreateDecisionMotion &&
     (hasNoDecisionMethods || hasPermissions === false)
   ) {
     return (

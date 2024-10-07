@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
+import { type ActionData } from '~actions/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyActionsQuery } from '~gql';
-import { type ColonyAction, SortDirection } from '~types/graphql.ts';
+import { SortDirection } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 
 const ITEMS_PER_PAGE = 10;
@@ -13,7 +14,7 @@ interface UseTablePaginatedActionsReturn {
   loading: boolean;
   sortDirection: SortDirection;
   onSortDirectionChange: SortDirectionChangeHandler;
-  actions: ColonyAction[];
+  actions: ActionData[];
   hasMoreActions: boolean;
 }
 

@@ -2,7 +2,7 @@ import { Id } from '@colony/colony-js';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
 import {

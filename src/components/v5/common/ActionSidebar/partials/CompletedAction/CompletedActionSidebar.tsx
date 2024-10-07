@@ -185,55 +185,55 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion:
       case ColonyActionType.PaymentMultisig:
-        return <SimplePayment action={action} />;
+        return <SimplePayment actionData={action} />;
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
       case ColonyActionType.MintTokensMultisig:
-        return <MintTokens action={action} />;
+        return <MintTokens actionData={action} />;
       case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
       case ColonyActionType.MoveFundsMultisig:
-        return <TransferFunds action={action} />;
+        return <TransferFunds actionData={action} />;
       case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
       case ColonyActionType.EditDomain:
       case ColonyActionType.EditDomainMotion:
       case ColonyActionType.CreateDomainMultisig:
       case ColonyActionType.EditDomainMultisig:
-        return <ManageTeam action={action} />;
+        return <ManageTeam actionData={action} />;
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
       case ColonyActionType.UnlockTokenMultisig:
-        return <UnlockToken action={action} />;
+        return <UnlockToken actionData={action} />;
       case ColonyActionType.VersionUpgrade:
       case ColonyActionType.VersionUpgradeMotion:
       case ColonyActionType.VersionUpgradeMultisig:
-        return <UpgradeColonyVersion action={action} />;
+        return <UpgradeColonyVersion actionData={action} />;
       case ColonyActionType.CreateDecisionMotion:
-        return <CreateDecision action={action} />;
+        return <CreateDecision actionData={action} />;
       case ColonyActionType.SetUserRoles:
       case ColonyActionType.SetUserRolesMotion:
       case ColonyActionType.SetUserRolesMultisig:
-        return <SetUserRoles action={action} />;
+        return <SetUserRoles actionData={action} />;
       case ColonyActionType.AddVerifiedMembers:
       case ColonyActionType.AddVerifiedMembersMotion:
       case ColonyActionType.AddVerifiedMembersMultisig:
-        return <AddVerifiedMembers action={action} />;
+        return <AddVerifiedMembers actionData={action} />;
       case ColonyActionType.RemoveVerifiedMembers:
       case ColonyActionType.RemoveVerifiedMembersMotion:
       case ColonyActionType.RemoveVerifiedMembersMultisig:
-        return <RemoveVerifiedMembers action={action} />;
+        return <RemoveVerifiedMembers actionData={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:
       case ColonyActionType.EmitDomainReputationRewardMultisig:
       case ColonyActionType.EmitDomainReputationPenalty:
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
       case ColonyActionType.EmitDomainReputationPenaltyMultisig:
-        return <ManageReputation action={action} />;
+        return <ManageReputation actionData={action} />;
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.ColonyEditMultisig:
-        return <EditColonyDetails action={action} />;
+        return <EditColonyDetails actionData={action} />;
       /**
        * @deprecated
        * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
@@ -241,17 +241,17 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
       case ExtendedColonyActionType.UpdateColonyObjective:
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
       case ExtendedColonyActionType.UpdateColonyObjectiveMultisig:
-        return <UpgradeColonyObjective action={action} />;
+        return <UpgradeColonyObjective actionData={action} />;
       // @TODO: Connect this to the reputation actions
       /* case ColonyActionType.EmitDomainReputationReward:
          case ColonyActionType.EmitDomainReputationPenalty:
           return <ManageReputation action={action} />; */
       case ColonyActionType.CreateExpenditure:
-        return <PaymentBuilder action={action} />;
+        return <PaymentBuilder actionData={action} />;
       case ColonyActionType.ManageTokens:
       case ColonyActionType.ManageTokensMotion:
       case ColonyActionType.ManageTokensMultisig:
-        return <ManageTokens action={action} />;
+        return <ManageTokens actionData={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -285,7 +285,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
         return <Motions transactionId={action.transactionHash} />;
       case ColonyActionType.CreateExpenditure:
-        return <PaymentBuilderWidget action={action} />;
+        return <PaymentBuilderWidget actionData={action} />;
       default:
         return <PermissionSidebar transactionId={action.transactionHash} />;
     }
@@ -295,7 +295,7 @@ const CompletedActionSidebar = ({ transactionId, userNavigation }: Props) => {
     <ActionSidebarLayout
       badges={
         <Badges
-          action={action || undefined}
+          actionData={action || undefined}
           expenditure={expenditure || undefined}
           isMotion={isMotion}
           isMultiSig={isMultiSig}

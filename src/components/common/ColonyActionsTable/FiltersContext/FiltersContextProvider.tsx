@@ -6,14 +6,11 @@ import React, {
   useCallback,
 } from 'react';
 
-import { type CoreAction } from '~actions/core/index.ts';
+import { type CoreAction } from '~actions/index.ts';
 import { ACTION_TYPE_TO_API_ACTION_TYPES_MAP } from '~constants/actionsFilters.ts';
-import {
-  type ActivityFeedFilters,
-  type ActivityDecisionMethod,
-} from '~hooks/useActivityFeed/types.ts';
+import { type DecisionMethod } from '~gql';
+import { type ActivityFeedFilters } from '~hooks/useActivityFeed/types.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import { type AnyActionType } from '~types/actions.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
 
 import { type DateOptions } from '../partials/ActionsTableFilters/types.ts';
@@ -25,9 +22,7 @@ import { FiltersValues } from './types.ts';
 const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
   const [motionStates, setMotionStates] = useState<MotionState[]>([]);
-  const [decisionMethods, setDecisionMethods] = useState<
-    ActivityDecisionMethod[]
-  >([]);
+  const [decisionMethods, setDecisionMethods] = useState<DecisionMethod[]>([]);
   const [actionTypesFilters, setActionTypesFilters] = useState<CoreAction[]>(
     [],
   );
@@ -44,7 +39,6 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
-      // FIXME: this is probably a string or something, make sure this has the correct type
       const name = event.target.name as CoreAction;
 
       if (isChecked) {
@@ -77,7 +71,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleDecisionMethodsFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
-      const name = event.target.name as ActivityDecisionMethod;
+      const name = event.target.name as DecisionMethod;
 
       if (isChecked) {
         setDecisionMethods((prevValues) => [...prevValues, name]);
@@ -125,7 +119,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const date = dateFromCurrentBlockTime
       ? getDateFilter(dateFilters, dateFromCurrentBlockTime)
       : null;
-    const actionTypes = actionTypesFilters.reduce<AnyActionType[]>(
+    const actionTypes = actionTypesFilters.reduce<CoreAction[]>(
       (result, actionType) => {
         const apiActionTypes = ACTION_TYPE_TO_API_ACTION_TYPES_MAP[actionType];
 

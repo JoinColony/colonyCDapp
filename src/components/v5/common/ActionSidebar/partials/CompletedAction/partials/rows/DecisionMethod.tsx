@@ -3,7 +3,7 @@ import React from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.DecisionMethodRow';
 
@@ -27,7 +27,7 @@ const DecisionMethodRow = ({
   };
 
   return (
-    <ActionData
+    <ActionContent
       rowLabel={formatText({ id: 'actionSidebar.decisionMethod' })}
       tooltipContent={formatText({
         id: 'actionSidebar.tooltip.decisionMethod',

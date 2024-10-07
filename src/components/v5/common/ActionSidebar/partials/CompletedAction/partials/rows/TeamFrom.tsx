@@ -1,26 +1,27 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React from 'react';
 
-import { ColonyActionType, type DomainMetadata } from '~types/graphql.ts';
+import { CoreAction } from '~actions/index.ts';
+import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.TeamFromRow';
 
 interface TeamFromRowProps {
   teamMetadata: DomainMetadata;
-  actionType: ColonyActionType;
+  actionType: CoreAction;
 }
 
 const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   const getTooltipContent = () => {
     switch (actionType) {
-      case ColonyActionType.SetUserRoles:
-      case ColonyActionType.SetUserRolesMultisig:
-      case ColonyActionType.EmitDomainReputationPenalty:
-      case ColonyActionType.EmitDomainReputationReward:
+      case CoreAction.SetUserRoles:
+      case CoreAction.SetUserRolesMultisig:
+      case CoreAction.EmitDomainReputationPenalty:
+      case CoreAction.EmitDomainReputationReward:
         return formatText({
           id: 'actionSidebar.tooltip.managePermissions.team',
         });
@@ -32,12 +33,12 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   };
   const getRowTitle = () => {
     switch (actionType) {
-      case ColonyActionType.SetUserRoles:
-      case ColonyActionType.SetUserRolesMultisig:
-      case ColonyActionType.EmitDomainReputationPenalty:
-      case ColonyActionType.EmitDomainReputationReward:
+      case CoreAction.SetUserRoles:
+      case CoreAction.SetUserRolesMultisig:
+      case CoreAction.EmitDomainReputationPenalty:
+      case CoreAction.EmitDomainReputationReward:
         return formatText({ id: 'actionSidebar.team' });
-      case ColonyActionType.CreateExpenditure:
+      case CoreAction.CreateExpenditure:
         return formatText({ id: 'actionSidebar.fundFrom' });
       default:
         return formatText({ id: 'actionSidebar.from' });
@@ -45,7 +46,7 @@ const TeamFromRow = ({ teamMetadata, actionType }: TeamFromRowProps) => {
   };
 
   return (
-    <ActionData
+    <ActionContent
       rowLabel={getRowTitle()}
       tooltipContent={getTooltipContent()}
       RowIcon={UsersThree}

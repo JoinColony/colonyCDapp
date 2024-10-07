@@ -2,13 +2,12 @@ import { Id } from '@colony/colony-js';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
-import { ColonyActionType } from '~gql';
+import { DecisionMethod } from '~gql';
 import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import {
@@ -16,12 +15,11 @@ import {
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-import {
-  AVAILABLE_ROLES,
-} from '~v5/common/ActionSidebar/partials/forms/core/ManagePermissionsForm/consts.ts';
+import { AVAILABLE_ROLES } from '~v5/common/ActionSidebar/partials/forms/core/ManagePermissionsForm/consts.ts';
 
 import { getFormattedTokenAmount } from '../partials/utils.ts';
 
+// FIXME: Needs to go into actionDefinition as well
 const useGetActionData = (transactionId: string | undefined) => {
   const {
     action,
@@ -67,26 +65,27 @@ const useGetActionData = (transactionId: string | undefined) => {
       createdIn: isMotion ? motionData?.motionDomain.nativeId : Id.RootDomain,
       description: annotation?.message,
       title: action.metadata?.customTitle,
+      // FIXME: Can be removed once we have action.decisionMethod
       decisionMethod: action.isMotion
         ? DecisionMethod.Reputation
         : DecisionMethod.Permissions,
     };
 
     switch (extendedType) {
-      case ColonyActionType.MintTokens:
-      case ColonyActionType.MintTokensMotion:
+      case CoreAction.MintTokens:
+      case CoreAction.MintTokensMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.MintTokens,
           amount: {
             amount,
             tokenAddress: token?.tokenAddress,
           },
           ...repeatableFields,
         };
-      case ColonyActionType.Payment:
-      case ColonyActionType.PaymentMotion: {
+      case CoreAction.Payment:
+      case CoreAction.PaymentMotion: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
           amount: {
             amount: moveDecimal(
               amount,
@@ -99,12 +98,12 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
-      case ColonyActionType.MultiplePayment:
-      case ColonyActionType.MultiplePaymentMotion: {
+      case CoreAction.MultiplePayment:
+      case CoreAction.MultiplePaymentMotion: {
         const [firstPayment, ...additionalPayments] = payments || [];
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
           from: fromDomain?.nativeId,
           amount: {
             amount: moveDecimal(
@@ -129,10 +128,10 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
-      case ColonyActionType.MoveFunds:
-      case ColonyActionType.MoveFundsMotion:
+      case CoreAction.MoveFunds:
+      case CoreAction.MoveFundsMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.MoveFunds,
           from: fromDomain?.nativeId,
           to: toDomain?.nativeId,
           amount: {
@@ -142,10 +141,10 @@ const useGetActionData = (transactionId: string | undefined) => {
           recipient: recipientAddress,
           ...repeatableFields,
         };
-      case ColonyActionType.ColonyEdit:
-      case ColonyActionType.ColonyEditMotion: {
+      case CoreAction.ColonyEdit:
+      case CoreAction.ColonyEditMotion: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.ColonyEdit,
           colonyName: motionData
             ? pendingColonyMetadata?.displayName
             : metadata?.displayName,
@@ -167,10 +166,10 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
-      case ColonyActionType.CreateDomain:
-      case ColonyActionType.CreateDomainMotion:
+      case CoreAction.CreateDomain:
+      case CoreAction.CreateDomainMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
           teamName: action.isMotion
             ? pendingDomainMetadata?.name
             : fromDomain?.metadata?.name,
@@ -182,14 +181,14 @@ const useGetActionData = (transactionId: string | undefined) => {
             : fromDomain?.metadata?.description,
           ...repeatableFields,
         };
-      case ColonyActionType.EditDomain:
-      case ColonyActionType.EditDomainMotion: {
+      case CoreAction.EditDomain:
+      case CoreAction.EditDomainMotion: {
         const changelog = fromDomain?.metadata?.changelog?.find(
           ({ transactionHash }) => transactionHash === action.transactionHash,
         );
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.EditDomain,
           team: fromDomain?.nativeId,
           teamName: isMotion ? pendingDomainMetadata?.name : changelog?.newName,
           domainColor: isMotion
@@ -201,9 +200,9 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
-      case ColonyActionType.CreateDecisionMotion:
+      case CoreAction.CreateDecisionMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
           createdIn: decisionData?.motionDomainId,
           title: decisionData?.title,
           description: decisionData?.description,
@@ -211,15 +210,15 @@ const useGetActionData = (transactionId: string | undefined) => {
             ? DecisionMethod.Reputation
             : DecisionMethod.Permissions,
         };
-      case ColonyActionType.UnlockToken:
-      case ColonyActionType.UnlockTokenMotion:
+      case CoreAction.UnlockToken:
+      case CoreAction.UnlockTokenMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.UnlockToken,
           ...repeatableFields,
         };
-      case ColonyActionType.CreateExpenditure: {
+      case CoreAction.CreateExpenditure: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateExpenditure,
           from: expenditureMetadata?.fundFromDomainNativeId,
           payments: slots?.map((slot) => {
             if (!slot) {
@@ -246,13 +245,13 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       }
-      case ColonyActionType.SetUserRoles:
-      case ColonyActionType.SetUserRolesMotion: {
+      case CoreAction.SetUserRoles:
+      case CoreAction.SetUserRolesMotion: {
         const rolesList = convertRolesToArray(roles);
         const { role } = getRole(rolesList);
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+          [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
           member: recipientAddress,
           authority: Authority.Own,
           role,

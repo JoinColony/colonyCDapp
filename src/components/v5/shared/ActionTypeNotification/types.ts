@@ -1,7 +1,7 @@
-import { type Action } from '~constants/actions.ts';
+import { type CoreAction } from '~actions/index.ts';
 
 export interface ActionTypeNotificationProps {
-  selectedAction: Action;
+  selectedAction: CoreAction;
   className?: string;
   isFieldDisabled?: boolean;
 }

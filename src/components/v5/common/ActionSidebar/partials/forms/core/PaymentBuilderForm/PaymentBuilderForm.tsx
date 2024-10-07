@@ -1,7 +1,7 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';

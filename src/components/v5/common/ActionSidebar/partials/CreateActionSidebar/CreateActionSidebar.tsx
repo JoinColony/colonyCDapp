@@ -2,6 +2,8 @@ import { useApolloClient } from '@apollo/client';
 import React, { type ReactNode, type FC } from 'react';
 import { type UseFormReturn, useFormContext } from 'react-hook-form';
 
+import { type CoreActionOrGroup } from '~actions/index.ts';
+import { getFormComponent } from '~actions/utils.ts';
 import { SearchActionsDocument } from '~gql';
 import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
@@ -9,7 +11,6 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
 
 import ActionSidebarLayout from '../ActionSidebarLayout/ActionSidebarLayout.tsx';
-import { type CoreForm, getFormComponent } from '../forms/index.ts';
 
 const displayName = 'v5.common.ActionSidebar.CreateActionSidebar';
 
@@ -30,7 +31,7 @@ interface ActionFormInnerProps {
 // FIXME: Move ActionFormInner to a separate component
 const ActionFormInner: FC<ActionFormInnerProps> = ({ getFormOptions }) => {
   const form = useFormContext();
-  const selectedAction: CoreForm | undefined = form.watch(
+  const selectedAction: CoreActionOrGroup | undefined = form.watch(
     ACTION_TYPE_FIELD_NAME,
   );
   const FormComponent = getFormComponent(selectedAction);

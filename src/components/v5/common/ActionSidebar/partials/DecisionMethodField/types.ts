@@ -1,4 +1,4 @@
-import { type DecisionMethod } from '~types/actions.ts';
+import { type DecisionMethod } from '~gql';
 
 export interface DecisionMethodOption {
   label: string;

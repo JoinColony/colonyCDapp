@@ -1,17 +1,17 @@
-import { ActivityDecisionMethod } from '~hooks/useActivityFeed/types.ts';
+import { DecisionMethod } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
 export const DECISION_METHOD_FILTERS = [
   {
     label: formatText({ id: 'filter.permissions' }),
-    name: ActivityDecisionMethod.Permissions,
+    name: DecisionMethod.Permissions,
   },
   {
     label: formatText({ id: 'filter.reputation' }),
-    name: ActivityDecisionMethod.Reputation,
+    name: DecisionMethod.Reputation,
   },
   {
     label: formatText({ id: 'filter.multiSig' }),
-    name: ActivityDecisionMethod.MultiSig,
+    name: DecisionMethod.MultiSig,
   },
 ];

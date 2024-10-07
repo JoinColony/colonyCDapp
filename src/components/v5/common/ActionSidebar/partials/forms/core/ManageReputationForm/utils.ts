@@ -3,9 +3,9 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { type TestContext } from 'yup';
 
+import { DecisionMethod } from '~gql';
 import { type ManageReputationPermissionsPayload } from '~redux/sagas/actions/manageReputation.ts';
 import { type ManageReputationMotionPayload } from '~redux/sagas/motions/manageReputationMotion.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { getMotionPayload } from '~utils/motions.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';

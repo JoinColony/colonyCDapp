@@ -2,26 +2,20 @@ import { ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 import { type ReactNode } from 'react';
 
+import { CoreAction } from '~actions/index.ts';
 import { getRole } from '~constants/permissions.ts';
-import { type ColonyActionRoles, ColonyActionType } from '~gql';
+import { type ColonyActionRoles } from '~gql';
 import {
-  type AnyActionType,
   ExtendedColonyActionType,
   type ActionUserRoles,
 } from '~types/actions.ts';
-import {
-  type Token,
-  type Domain as ColonyDomain,
-  type ColonyMetadata,
-  type ColonyAction,
-} from '~types/graphql.ts';
+import { type Token, type Domain as ColonyDomain } from '~types/graphql.ts';
 import { type Address } from '~types/index.ts';
 import { type CustomPermissionTableModel } from '~types/permissions.ts';
-import { isEmpty, isEqual } from '~utils/lodash.ts';
+import { isEmpty } from '~utils/lodash.ts';
 
 import { type MotionVote } from './colonyMotions.ts';
 import { formatText } from './intl.ts';
-import { parseSafeTransactionType } from './safes/index.ts';
 
 export enum ActionPageDetails {
   Type = 'Type',
@@ -54,12 +48,12 @@ export const safeActionTypes = [
 ];
 
 const MOTION_SUFFIX = 'MOTION';
-const isMotion = (actionType: AnyActionType) =>
-  actionType.includes(MOTION_SUFFIX);
+const isMotion = (actionType: CoreAction) => actionType.includes(MOTION_SUFFIX);
 
-export const getDetailItemsKeys = (actionType: AnyActionType) => {
+// FIXME: This needs to go, too
+export const getDetailItemsKeys = (actionType: CoreAction) => {
   switch (true) {
-    case actionType.includes(ColonyActionType.Payment): {
+    case actionType.includes(CoreAction.Payment): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -68,7 +62,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Amount,
       ];
     }
-    case actionType.includes(ColonyActionType.MoveFunds): {
+    case actionType.includes(CoreAction.MoveFunds): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -77,7 +71,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Amount,
       ];
     }
-    case actionType.includes(ColonyActionType.UnlockToken): {
+    case actionType.includes(CoreAction.UnlockToken): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType)
@@ -85,14 +79,14 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
           : ActionPageDetails.Domain,
       ];
     }
-    case actionType.includes(ColonyActionType.MintTokens): {
+    case actionType.includes(CoreAction.MintTokens): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
         ActionPageDetails.Amount,
       ];
     }
-    case actionType.includes(ColonyActionType.CreateDomain): {
+    case actionType.includes(CoreAction.CreateDomain): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -100,8 +94,8 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Description,
       ];
     }
-    case actionType.includes(ColonyActionType.ColonyEdit):
-    case actionType.includes(ColonyActionType.EditDomain): {
+    case actionType.includes(CoreAction.ColonyEdit):
+    case actionType.includes(CoreAction.EditDomain): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -109,7 +103,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Description,
       ];
     }
-    case actionType.includes(ColonyActionType.SetUserRoles): {
+    case actionType.includes(CoreAction.SetUserRoles): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -118,7 +112,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.Permissions,
       ];
     }
-    case actionType.includes(ColonyActionType.EmitDomainReputationPenalty): {
+    case actionType.includes(CoreAction.EmitDomainReputationPenalty): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -127,7 +121,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.ReputationChange,
       ];
     }
-    case actionType.includes(ColonyActionType.EmitDomainReputationReward): {
+    case actionType.includes(CoreAction.EmitDomainReputationReward): {
       return [
         ActionPageDetails.Type,
         isMotion(actionType) ? ActionPageDetails.Motion : '',
@@ -155,10 +149,10 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
         ActionPageDetails.SafeTransaction,
       ];
     }
-    case actionType.includes(ColonyActionType.Generic): {
+    case actionType.includes(CoreAction.Generic): {
       return [ActionPageDetails.Type, ActionPageDetails.Generic];
     }
-    case actionType.includes(ColonyActionType.CreateDecisionMotion): {
+    case actionType.includes(CoreAction.CreateDecisionMotion): {
       return [
         ActionPageDetails.Type,
         ActionPageDetails.Motion,
@@ -171,7 +165,7 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
 };
 
 export interface EventValues {
-  actionType: ColonyActionType;
+  actionType: CoreAction;
   amount?: string | ReactNode;
   token?: Token;
   tokenSymbol?: string | ReactNode;
@@ -552,66 +546,68 @@ export const formatRolesTitle = (roles?: ColonyActionRoles | null) => {
   );
 };
 
-const getChangelogItem = (
-  {
-    isMultiSig: actionIsMultiSig,
-    isMotion: actionIsMotion,
-    transactionHash,
-    pendingColonyMetadata,
-  }: ColonyAction,
-  colonyMetadata: ColonyMetadata | null | undefined,
-) => {
-  const metadataObject =
-    actionIsMotion || actionIsMultiSig ? pendingColonyMetadata : colonyMetadata;
-
-  return metadataObject?.changelog?.find(
-    (item) => item.transactionHash === transactionHash,
-  );
-};
+// const getChangelogItem = (
+//   {
+//     isMultiSig: actionIsMultiSig,
+//     isMotion: actionIsMotion,
+//     transactionHash,
+//     pendingColonyMetadata,
+//   }: ActionData,
+//   colonyMetadata: ColonyMetadata | null | undefined,
+// ) => {
+//   const metadataObject =
+//     actionIsMotion || actionIsMultiSig ? pendingColonyMetadata : colonyMetadata;
+//
+//   return metadataObject?.changelog?.find(
+//     (item) => item.transactionHash === transactionHash,
+//   );
+// };
 /**
  * Function returning action type based on the action data, that can include extended action types,
  */
-export const getExtendedActionType = (
-  actionData: ColonyAction,
-  metadata: ColonyMetadata | null | undefined,
-): AnyActionType => {
-  const { type } = actionData;
-  const changelogItem = getChangelogItem(actionData, metadata);
+// FIXME: @RESOLUTION: We can remove this, except for the check whether an action is UpdateColonyObjective.
+// Move that somewhere sensible
+// export const getExtendedActionType = (
+//   actionData: ActionData,
+//   metadata: ColonyMetadata | null | undefined,
+// ): CoreAction => {
+//   const { type } = actionData;
+//   const changelogItem = getChangelogItem(actionData, metadata);
+//
+//   if (changelogItem?.hasObjectiveChanged) {
+//     /**
+//      * @deprecated
+//      * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
+//      */
+//     if (actionData.isMotion) {
+//       return ExtendedColonyActionType.UpdateColonyObjectiveMotion;
+//     }
+//     if (actionData.isMultiSig) {
+//       return ExtendedColonyActionType.UpdateColonyObjectiveMultisig;
+//     }
+//     return ExtendedColonyActionType.UpdateColonyObjective;
+//   }
+//
+//   if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
+//     if (
+//       (changelogItem?.newSafes?.length || 0) >
+//       (changelogItem?.oldSafes?.length || 0)
+//     ) {
+//       return ExtendedColonyActionType.AddSafe;
+//     }
+//     return ExtendedColonyActionType.RemoveSafe;
+//   }
+//
+//   const safeType = parseSafeTransactionType(actionData);
+//
+//   if (safeType) {
+//     return safeType;
+//   }
+//
+//   return type;
+// };
 
-  if (changelogItem?.hasObjectiveChanged) {
-    /**
-     * @deprecated
-     * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
-     */
-    if (actionData.isMotion) {
-      return ExtendedColonyActionType.UpdateColonyObjectiveMotion;
-    }
-    if (actionData.isMultiSig) {
-      return ExtendedColonyActionType.UpdateColonyObjectiveMultisig;
-    }
-    return ExtendedColonyActionType.UpdateColonyObjective;
-  }
-
-  if (!isEqual(changelogItem?.newSafes, changelogItem?.oldSafes)) {
-    if (
-      (changelogItem?.newSafes?.length || 0) >
-      (changelogItem?.oldSafes?.length || 0)
-    ) {
-      return ExtendedColonyActionType.AddSafe;
-    }
-    return ExtendedColonyActionType.RemoveSafe;
-  }
-
-  const safeType = parseSafeTransactionType(actionData);
-
-  if (safeType) {
-    return safeType;
-  }
-
-  return type;
-};
-
-export const formatActionType = (actionType: AnyActionType) =>
+export const formatActionType = (actionType: CoreAction) =>
   formatText({ id: 'action.type' }, { actionType });
 
 export const getColonyRoleSetTitleValues = (

@@ -1,14 +1,19 @@
 import { ColonyRole } from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
 
-import { registerAction } from '~actions/utils.ts';
+import { registerAction } from '~actions/index.ts';
 
-import { CoreAction } from './types.ts';
+import { CoreActionGroup } from './types.ts';
 
-registerAction({
+const MSG = defineMessages({
   name: {
-    id: 'actions.core.manageColonyObjective',
+    id: 'actions.core.ManageColonyObjective.name',
     defaultMessage: 'Manage objective',
   },
+});
+
+registerAction({
+  name: MSG.name,
   requiredPermissions: [[ColonyRole.Root]],
-  type: CoreAction.ManageColonyObjective,
+  type: CoreActionGroup.UpdateColonyObjective,
 });

@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 
-import { type ColonyAction, type Expenditure } from '~types/graphql.ts';
+import { type ActionData } from '~actions/index.ts';
+import { type Expenditure } from '~types/graphql.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import ExpenditureActionStatusBadge from '~v5/common/ActionSidebar/partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
@@ -8,7 +9,7 @@ import MotionOutcomeBadge from '~v5/common/ActionSidebar/partials/MotionOutcomeB
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
 interface Props {
-  action?: ColonyAction;
+  actionData?: ActionData;
   isMotion: boolean;
   isMultiSig: boolean;
   motionState?: MotionState;
@@ -19,7 +20,7 @@ interface Props {
 const displayName = 'v5.common.ActionSidebar.CompletedAction.Badges';
 
 const Badges: FC<Props> = ({
-  action,
+  actionData: action,
   isMotion,
   isMultiSig,
   motionState,

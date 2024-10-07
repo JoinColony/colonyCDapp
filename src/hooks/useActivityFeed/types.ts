@@ -1,25 +1,16 @@
-import { type SearchActionsQueryVariables } from '~gql';
+import { type ActionData, type CoreAction } from '~actions/index.ts';
+import { type DecisionMethod, type SearchActionsQueryVariables } from '~gql';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
-import { type AnyActionType } from '~types/actions.ts';
-import {
-  type ColonyAction,
-  type SearchableSortDirection,
-} from '~types/graphql.ts';
+import { type SearchableSortDirection } from '~types/graphql.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
-
-export enum ActivityDecisionMethod {
-  Permissions = 'Permissions',
-  Reputation = 'Reputation',
-  MultiSig = 'MultiSig',
-}
 
 export interface ActivityFeedFilters {
   teamId?: string;
-  actionTypes?: AnyActionType[];
+  actionTypes?: CoreAction[];
   motionStates?: MotionState[];
   dateFrom?: Date;
   dateTo?: Date;
-  decisionMethods?: ActivityDecisionMethod[];
+  decisionMethods?: DecisionMethod[];
   search?: string;
 }
 
@@ -31,7 +22,7 @@ export interface ActivityFeedOptions {
   pageSize?: number;
 }
 
-export interface ActivityFeedColonyAction extends ColonyAction {
+export interface ActivityFeedColonyAction extends ActionData {
   motionState?: MotionState;
 }
 

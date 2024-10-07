@@ -2,8 +2,9 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { ColonyActionType } from '~gql';
-import { type CreateNewTeamFormValues } from '~v5/common/ActionSidebar/partials/forms/core/CreateNewTeamForm/consts.ts';
+// FIXME: Make sure we're not using ColonyActionType anywhere
+import { CoreAction } from '~actions/index.ts';
+import { type CreateNewTeamFormValues } from '~v5/common/ActionSidebar/partials/forms/core/CreateTeamForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 
@@ -18,7 +19,7 @@ export const CreateNewDomainDescription = () => {
     <FormattedMessage
       id="action.title"
       values={{
-        actionType: ColonyActionType.CreateDomain,
+        actionType: CoreAction.CreateDomain,
         fromDomain: teamName,
         initiator: <CurrentUser />,
       }}

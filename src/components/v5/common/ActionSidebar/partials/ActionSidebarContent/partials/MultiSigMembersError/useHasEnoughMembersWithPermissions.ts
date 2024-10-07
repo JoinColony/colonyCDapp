@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type Action } from '~constants/actions.ts';
+import { type CoreActionOrGroup } from '~actions/index.ts';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import { getDomainIdsForEligibleSignees } from '~utils/multiSig/index.ts';
@@ -17,7 +17,7 @@ export const useHasEnoughMembersWithPermissions = ({
   permissionDomainId,
   thresholdDomainId,
 }: {
-  selectedAction: Action;
+  selectedAction: CoreActionOrGroup;
   // domainId to check users if they have permissions in
   permissionDomainId: number;
   // domainId to check the threshold

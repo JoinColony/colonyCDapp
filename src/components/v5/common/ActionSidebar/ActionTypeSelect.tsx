@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { type CoreAction } from '~actions/index.ts';
-import { getFormName } from '~actions/utils.ts';
+import { getActionName } from '~actions/utils.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
@@ -47,7 +47,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({
       closeOnOutsideClick: true,
     });
 
-  const actionName = selectedAction ? getFormName(selectedAction) : undefined;
+  const actionName = selectedAction ? getActionName(selectedAction) : undefined;
 
   return (
     <div className={className}>

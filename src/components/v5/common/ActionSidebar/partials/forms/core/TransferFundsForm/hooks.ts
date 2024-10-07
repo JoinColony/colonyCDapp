@@ -5,9 +5,9 @@ import { type DeepPartial } from 'utility-types';
 import { type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { DecisionMethod } from '~gql';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';

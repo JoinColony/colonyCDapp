@@ -7,9 +7,8 @@ import {
   USER_ROLES,
   getRole,
 } from '~constants/permissions.ts';
-import { type ColonyFragment } from '~gql';
+import { DecisionMethod, type ColonyFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
-import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';

@@ -1,5 +1,5 @@
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData } from '~actions/index';
 
 export interface ManageReputationProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }

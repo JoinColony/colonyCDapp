@@ -2,8 +2,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { CoreAction } from '~actions/index.ts';
 import { ManageVerifiedMembersOperation } from '~types';
-import { ColonyActionType } from '~types/graphql.ts';
 import { type ManageVerifiedMembersFormValues } from '~v5/common/ActionSidebar/partials/forms/core/ManageVerifiedMembersForm/utils.ts';
 
 import CurrentUser from './CurrentUser.tsx';
@@ -45,9 +45,10 @@ export const ManageVerifiedMembersDescription = () => {
       id="action.title"
       values={{
         actionType:
+          // FIXME: Do we need ManageVerifiedMembersOperation?
           manageMembers === ManageVerifiedMembersOperation.Add
-            ? ColonyActionType.AddVerifiedMembers
-            : ColonyActionType.RemoveVerifiedMembers,
+            ? CoreAction.AddVerifiedMembers
+            : CoreAction.RemoveVerifiedMembers,
         members: membersCount,
         initiator: <CurrentUser />,
       }}

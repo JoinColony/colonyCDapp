@@ -1,16 +1,34 @@
 import { ColonyRole } from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
 
-import { registerAction } from '~actions/utils.ts';
+import { ActionTitleKey, registerAction } from '~actions/index.ts';
 import ManagePermissionsForm from '~v5/common/ActionSidebar/partials/forms/core/ManagePermissionsForm/ManagePermissionsForm.tsx';
 
 import { CoreAction } from './types.ts';
 
-registerAction({
-  component: ManagePermissionsForm,
+const MSG = defineMessages({
   name: {
-    id: 'actions.core.managePermissions',
+    id: 'actions.core.SetUserRoles.name',
     defaultMessage: 'Manage permissions',
   },
+  title: {
+    id: 'actions.core.SetUserRoles.title',
+    defaultMessage:
+      '{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}',
+  },
+});
+
+registerAction({
+  component: ManagePermissionsForm,
+  name: MSG.name,
+  title: MSG.title,
+  titleKeys: [
+    ActionTitleKey.Direction,
+    ActionTitleKey.FromDomain,
+    ActionTitleKey.Recipient,
+    ActionTitleKey.Initiator,
+    ActionTitleKey.MultiSigAuthority,
+  ],
   // FIXME: This depends on what permissions we want to manage:
   // // If assigning permissions in the root domain, the root role is required
   // ManagePermissionsInRootDomain: [[ColonyRole.Root]],

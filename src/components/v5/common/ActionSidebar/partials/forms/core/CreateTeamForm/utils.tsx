@@ -1,5 +1,5 @@
+import { DecisionMethod } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';

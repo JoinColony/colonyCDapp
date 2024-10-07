@@ -1,6 +1,6 @@
 import { object, string } from 'yup';
 
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type SelectBaseOption } from '~v5/common/Fields/Select/types.ts';
 

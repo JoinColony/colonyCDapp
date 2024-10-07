@@ -4,11 +4,11 @@ import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { DecisionMethod } from '~gql';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useExtensionsData from '~hooks/useExtensionsData.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { canColonyBeUpgraded } from '~utils/checks/canColonyBeUpgraded.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -42,7 +42,7 @@ export const SidebarBanner: FC = () => {
   const requiredExtensionsWithoutPermission = installedExtensionsData.filter(
     (extension) => {
       const isOneTxPaymentExtensionAction =
-        selectedAction === Action.SimplePayment &&
+        selectedAction === CoreAction.Payment &&
         extension.extensionId === Extension.OneTxPayment;
       const isVotingReputationExtensionAction =
         decisionMethod === DecisionMethod.Reputation &&
@@ -61,7 +61,7 @@ export const SidebarBanner: FC = () => {
   const isFieldDisabled = useIsFieldDisabled();
 
   const showVersionUpToDateNotification =
-    selectedAction === Action.UpgradeColonyVersion && !canUpgrade;
+    selectedAction === CoreAction.VersionUpgrade && !canUpgrade;
 
   return (
     <>

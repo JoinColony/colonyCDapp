@@ -1,13 +1,19 @@
-import { registerAction } from '~actions/utils.ts';
+import { defineMessages } from 'react-intl';
+
+import { registerAction } from '~actions/index.ts';
 import SplitPaymentForm from '~v5/common/ActionSidebar/partials/forms/core/SplitPaymentForm/SplitPaymentForm.tsx';
 
-import { CoreAction } from './types.ts';
+import { CoreActionGroup } from './types.ts';
+
+const MSG = defineMessages({
+  name: {
+    id: 'actions.core.SplitPayment.name',
+    defaultMessage: 'Split payment',
+  },
+});
 
 registerAction({
   component: SplitPaymentForm,
-  name: {
-    id: 'actions.core.splitPayment',
-    defaultMessage: 'Split payment',
-  },
-  type: CoreAction.SplitPayment,
+  name: MSG.name,
+  type: CoreActionGroup.SplitPayment,
 });

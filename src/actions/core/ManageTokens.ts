@@ -1,16 +1,21 @@
 import { ColonyRole } from '@colony/colony-js';
+import { defineMessages } from 'react-intl';
 
-import { registerAction } from '~actions/utils.ts';
+import { registerAction } from '~actions/index.ts';
 import ManageTokensForm from '~v5/common/ActionSidebar/partials/forms/core/ManageTokensForm/ManageTokensForm.tsx';
 
 import { CoreAction } from './types.ts';
 
-registerAction({
-  component: ManageTokensForm,
+const MSG = defineMessages({
   name: {
-    id: 'actions.core.manageTokens',
+    id: 'actions.core.ManageTokens.name',
     defaultMessage: 'Manage tokens',
   },
+});
+
+registerAction({
+  component: ManageTokensForm,
+  name: MSG.name,
   requiredPermissions: [[ColonyRole.Root]],
   type: CoreAction.ManageTokens,
 });

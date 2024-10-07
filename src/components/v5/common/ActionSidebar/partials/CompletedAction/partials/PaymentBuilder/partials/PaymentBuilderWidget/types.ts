@@ -1,4 +1,4 @@
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData } from '~actions/index.ts';
 
 export enum ExpenditureStep {
   Create = 'CREATE',
@@ -10,5 +10,5 @@ export enum ExpenditureStep {
 }
 
 export interface PaymentBuilderWidgetProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }

@@ -1,42 +1,46 @@
 import { isHexString } from 'ethers/lib/utils';
 
-import { ColonyActionType, type ColonyFragment } from '~gql';
+import {
+  CoreAction,
+  type ActionData,
+  type CoreActionOrGroup,
+} from '~actions/index.ts';
+import { DecisionMethod, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
-import { type AnyActionType } from '~types/actions.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { getMotionState, MotionState } from '~utils/colonyMotions.ts';
 import { getMultiSigState } from '~utils/multiSig/index.ts';
 
 import {
-  ActivityDecisionMethod,
   type ActivityFeedFilters,
   type ActivityFeedColonyAction,
   type SearchActionsFilterVariable,
 } from './types.ts';
 
 const getActivityFeedMotionState = (
-  action: ColonyAction,
+  actionData: ActionData,
   motionStatesMap: MotionStatesMap,
 ): MotionState | undefined => {
-  if (action.isMultiSig) {
-    return getMultiSigState(action.multiSigData);
+  if (actionData.isMultiSig) {
+    return getMultiSigState(actionData.multiSigData);
   }
 
-  if (!action.motionData) {
+  if (!actionData.motionData) {
     return MotionState.Passed;
   }
 
-  const networkMotionState = motionStatesMap.get(action.motionData.motionId);
+  const networkMotionState = motionStatesMap.get(
+    actionData.motionData.motionId,
+  );
 
   if (networkMotionState === null) {
     return MotionState.Uninstalled;
   }
 
   return networkMotionState !== undefined
-    ? getMotionState(networkMotionState, action.motionData)
+    ? getMotionState(networkMotionState, actionData.motionData)
     : MotionState.Invalid;
 };
 
@@ -104,21 +108,21 @@ export const filterBySearch = (
 };
 
 const ACTION_TYPES_TO_HIDE = [
-  ColonyActionType.CancelExpenditure,
-  ColonyActionType.CancelExpenditureMotion,
-  ColonyActionType.LockExpenditure,
-  ColonyActionType.FinalizeExpenditure,
-  ColonyActionType.FinalizeExpenditureMotion,
-  ColonyActionType.FundExpenditureMotion,
-  ColonyActionType.SetExpenditureStateMotion,
-  ColonyActionType.EditExpenditure,
-  ColonyActionType.EditExpenditureMotion,
+  CoreAction.CancelExpenditure,
+  CoreAction.CancelExpenditureMotion,
+  CoreAction.LockExpenditure,
+  CoreAction.FinalizeExpenditure,
+  CoreAction.FinalizeExpenditureMotion,
+  CoreAction.FundExpenditureMotion,
+  CoreAction.SetExpenditureStateMotion,
+  CoreAction.EditExpenditure,
+  CoreAction.EditExpenditureMotion,
 ];
 
 export const filterByActionTypes = (
   action: ActivityFeedColonyAction,
   colony: ColonyFragment | undefined,
-  actionTypes?: AnyActionType[],
+  actionTypes?: CoreActionOrGroup[],
 ) => {
   if (ACTION_TYPES_TO_HIDE.includes(action.type)) {
     return false;
@@ -187,7 +191,7 @@ export const getSearchActionsFilterVariable = (
     decisionMethods && !!decisionMethods.length
       ? {
           or: [
-            ...(decisionMethods.includes(ActivityDecisionMethod.Reputation)
+            ...(decisionMethods.includes(DecisionMethod.Reputation)
               ? [
                   {
                     isMotion: {
@@ -196,7 +200,7 @@ export const getSearchActionsFilterVariable = (
                   },
                 ]
               : []),
-            ...(decisionMethods.includes(ActivityDecisionMethod.MultiSig)
+            ...(decisionMethods.includes(DecisionMethod.MultiSig)
               ? [
                   {
                     isMultiSig: {
@@ -205,7 +209,7 @@ export const getSearchActionsFilterVariable = (
                   },
                 ]
               : []),
-            ...(decisionMethods.includes(ActivityDecisionMethod.Permissions)
+            ...(decisionMethods.includes(DecisionMethod.Permissions)
               ? [
                   {
                     isMotion: {
@@ -230,7 +234,7 @@ export const getSearchActionsFilterVariable = (
 };
 
 export const getActionsByPageNumber = (
-  actions: ColonyAction[],
+  actions: ActionData[],
   pageNumber: number,
   itemsPerPage: number,
 ) => {
@@ -245,32 +249,32 @@ export const makeWithMotionStateMapper =
     votingRepExtensionData: InstalledExtensionData | undefined,
     multiSigExtensionData: InstalledExtensionData | undefined,
   ) =>
-  (action: ColonyAction): ActivityFeedColonyAction => {
+  (actionData: ActionData): ActivityFeedColonyAction => {
     let motionState;
     // If the action is multi sig, and the multi sig extension was uninstalled.
-    if (action.isMultiSig && !multiSigExtensionData) {
+    if (actionData.isMultiSig && !multiSigExtensionData) {
       motionState = MotionState.Uninstalled;
     }
     // If the action is a motion, and the voting with reputation extension was uninstalled.
-    else if (action.isMotion && !votingRepExtensionData) {
+    else if (actionData.isMotion && !votingRepExtensionData) {
       motionState = MotionState.Uninstalled;
     }
 
     // If the action is a motion, but was created with an old uninstalled extension.
     else if (
-      action.isMotion &&
-      action.motionData?.createdBy !== votingRepExtensionData?.address
+      actionData.isMotion &&
+      actionData.motionData?.createdBy !== votingRepExtensionData?.address
     ) {
       motionState = MotionState.Uninstalled;
     }
 
     // Otherwise, get the state in a normal way.
     else {
-      motionState = getActivityFeedMotionState(action, motionStatesMap);
+      motionState = getActivityFeedMotionState(actionData, motionStatesMap);
     }
 
     return {
-      ...action,
+      ...actionData,
       motionState,
     };
   };

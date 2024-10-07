@@ -2,17 +2,15 @@ import { ColonyRole } from '@colony/colony-js';
 import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { ADDRESS_ZERO } from '~constants';
-import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import {
-  ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
   type ColonyActionRoles,
 } from '~gql';
 import { Authority } from '~types/authority.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
@@ -35,7 +33,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -47,7 +45,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
 interface Props {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const transformActionRolesToColonyRoles = (
@@ -76,12 +74,12 @@ const transformActionRolesToColonyRoles = (
   return colonyRoles;
 };
 
-const SetUserRoles = ({ action }: Props) => {
+const SetUserRoles = ({ actionData: action }: Props) => {
   const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
       { id: 'action.type' },
-      { actionType: ColonyActionType.SetUserRoles },
+      { actionType: CoreAction.SetUserRoles },
     ),
   } = action.metadata || {};
   const {
@@ -136,7 +134,7 @@ const SetUserRoles = ({ action }: Props) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
             member: recipientAddress,
             authority: roleAuthority,
             role,
@@ -157,7 +155,7 @@ const SetUserRoles = ({ action }: Props) => {
                     id: 'decisionMethod.multiSig',
                   })} `
                 : '',
-            actionType: ColonyActionType.SetUserRoles,
+            actionType: CoreAction.SetUserRoles,
             fromDomain: action.fromDomain?.metadata?.name,
             initiator: initiatorUser ? (
               <UserInfoPopover
@@ -183,7 +181,7 @@ const SetUserRoles = ({ action }: Props) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.member' })}
           rowContent={
             <UserPopover
@@ -202,7 +200,7 @@ const SetUserRoles = ({ action }: Props) => {
             actionType={action.type}
           />
         )}
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
             rolesAreMultiSig
@@ -214,7 +212,7 @@ const SetUserRoles = ({ action }: Props) => {
           })}
           RowIcon={Signature}
         />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
             userColonyRoles.length

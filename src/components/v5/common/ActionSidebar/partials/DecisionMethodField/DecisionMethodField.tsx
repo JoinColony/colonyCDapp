@@ -3,9 +3,9 @@ import React from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { DecisionMethod } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';

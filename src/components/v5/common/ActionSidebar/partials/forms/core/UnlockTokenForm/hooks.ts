@@ -4,8 +4,8 @@ import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { DecisionMethod } from '~gql';
 import { ActionTypes } from '~redux/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe, withKey } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';

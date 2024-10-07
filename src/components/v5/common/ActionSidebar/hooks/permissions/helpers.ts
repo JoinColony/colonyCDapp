@@ -1,13 +1,13 @@
-import { type ColonyRole, Id } from '@colony/colony-js';
-
-import { Action, PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
-import { getAllUserRoles } from '~transformers/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
-import { type Colony } from '~types/graphql.ts';
-import { type Address } from '~types/index.ts';
-import { addressHasRoles } from '~utils/checks/index.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
-import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/consts.ts';
+// import { type ColonyRole, Id } from '@colony/colony-js';
+//
+// import { Action, PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+// import { getAllUserRoles } from '~transformers/index.ts';
+// import { DecisionMethod } from '~types/actions.ts';
+// import { type Colony } from '~types/graphql.ts';
+// import { type Address } from '~types/index.ts';
+// import { addressHasRoles } from '~utils/checks/index.ts';
+// import { extractColonyRoles } from '~utils/colonyRoles.ts';
+// import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/consts.ts';
 
 // FIXME: This needs to go into the individual action registrations
 // export const getPermissionsNeededForAction = (

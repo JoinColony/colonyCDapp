@@ -2,8 +2,7 @@ import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { CoreActionGroup, type ActionData } from '~actions/index.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -34,7 +33,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.UpgradeColonyObjective';
 
 interface Props {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -64,7 +63,7 @@ const MSG = defineMessages({
  * @deprecated
  * This is still needed to allow users to view existing Colony Objectives in the Completed Action component
  */
-const UpgradeColonyObjective = ({ action }: Props) => {
+const UpgradeColonyObjective = ({ actionData: action }: Props) => {
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
@@ -91,7 +90,7 @@ const UpgradeColonyObjective = ({ action }: Props) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageColonyObjectives,
+            [ACTION_TYPE_FIELD_NAME]: CoreActionGroup.UpdateColonyObjective,
             [COLONY_OBJECTIVE_TITLE_FIELD_NAME]: objectiveData?.title,
             [COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME]:
               objectiveData?.description,

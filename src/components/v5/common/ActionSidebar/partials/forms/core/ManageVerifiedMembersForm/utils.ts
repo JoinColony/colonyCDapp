@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { type Colony } from '~types/graphql.ts';
 import { ManageVerifiedMembersOperation } from '~types/index.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';

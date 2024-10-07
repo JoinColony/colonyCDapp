@@ -2,11 +2,11 @@ import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
+import { ActionData } from '~actions/index';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { useFinalizeSuccessCallback } from '~v5/common/ActionSidebar/partials/hooks.ts';
@@ -21,7 +21,7 @@ interface FinalizeButtonProps {
   isPending: boolean;
   setIsPending: (isPending: boolean) => void;
   isMotionOlderThanAWeek: boolean;
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -36,7 +36,7 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
   isPending,
   setIsPending,
   isMotionOlderThanAWeek,
-  action,
+  actionData: action,
 }) => {
   const { colony } = useColonyContext();
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();

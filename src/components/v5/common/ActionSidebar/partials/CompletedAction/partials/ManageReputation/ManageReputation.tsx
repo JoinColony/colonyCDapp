@@ -3,10 +3,9 @@ import { UserFocus } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
+import { CoreAction, CoreActionGroup } from '~actions/index.ts';
 import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
-import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
@@ -33,7 +32,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -49,8 +48,8 @@ import { type ManageReputationProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.ManageReputation';
 
-const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
-  const decisionMethod = useDecisionMethod(action);
+const ManageReputation: FC<ManageReputationProps> = ({ actionData }) => {
+  const decisionMethod = useDecisionMethod(actionData);
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const {
@@ -63,7 +62,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     amount,
     fromDomain,
     annotation,
-  } = action;
+  } = actionData;
   const { networkMotionState } = useGetActionData(transactionHash);
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
@@ -71,10 +70,10 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     networkMotionState === NetworkMotionState.Failed;
 
   const isSmite = [
-    ColonyActionType.EmitDomainReputationPenalty,
-    ColonyActionType.EmitDomainReputationPenaltyMotion,
-    ColonyActionType.EmitDomainReputationPenaltyMultisig,
-  ].includes(action.type);
+    CoreAction.EmitDomainReputationPenalty,
+    CoreAction.EmitDomainReputationPenaltyMotion,
+    CoreAction.EmitDomainReputationPenaltyMultisig,
+  ].includes(actionData.type);
 
   const positiveAmountValue = BigNumber.from(amount || '0')
     .abs()
@@ -96,7 +95,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: metadata?.customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageReputation,
+            [ACTION_TYPE_FIELD_NAME]: CoreActionGroup.ManageReputation,
             member: recipientAddress,
             modification: isSmite
               ? ModificationOption.RemoveReputation
@@ -114,7 +113,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
             id: 'action.title',
           },
           {
-            actionType: action.type,
+            actionType: actionData.type,
             initiator: initiatorUser ? (
               <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}
@@ -154,13 +153,13 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
         )}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow actionType={actionData.type} />
         <ModificationRow isSmite={isSmite} />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.member' })}
           rowContent={
             <UserPopover
-              walletAddress={action.recipientAddress || ADDRESS_ZERO}
+              walletAddress={actionData.recipientAddress || ADDRESS_ZERO}
               size={20}
             />
           }
@@ -169,24 +168,24 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
             id: 'actionSidebar.tooltip.simplePayment.recipient',
           })}
         />
-        {action.fromDomain?.metadata && (
+        {actionData.fromDomain?.metadata && (
           <TeamFromRow
-            teamMetadata={action.fromDomain.metadata}
-            actionType={action.type}
+            teamMetadata={actionData.fromDomain.metadata}
+            actionType={actionData.type}
           />
         )}
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={actionData.isMotion || false}
+          isMultisig={actionData.isMultiSig || false}
         />
-        {action.motionData?.motionDomain.metadata && (
+        {actionData.motionData?.motionDomain.metadata && (
           <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
+            motionDomainMetadata={actionData.motionData.motionDomain.metadata}
           />
         )}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {actionData.annotation?.message && (
+        <DescriptionRow description={actionData.annotation.message} />
       )}
       {positiveAmountValue && (
         <>
@@ -195,7 +194,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
               isSmite={isSmite}
               amount={positiveAmountValue}
               member={recipientUser?.walletAddress}
-              domainId={action.fromDomain?.nativeId || 0}
+              domainId={actionData.fromDomain?.nativeId || 0}
               className="mt-6"
             />
           ) : (
@@ -205,7 +204,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
               className="mt-6"
               recipientAddress={recipientAddress}
               domainId={fromDomain?.nativeId}
-              rootHash={action.rootHash}
+              rootHash={actionData.rootHash}
             />
           )}
         </>

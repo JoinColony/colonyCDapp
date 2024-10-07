@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
+import { type ActionData } from '~actions/index.ts';
 import { APP_URL, DEFAULT_NETWORK_INFO } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -19,7 +20,6 @@ import {
   TX_SEARCH_PARAM,
 } from '~routes';
 import TransactionLink from '~shared/TransactionLink/index.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
@@ -201,7 +201,7 @@ export const useActionsTableProps = (
           withoutButtonIcon
         />
       ),
-    } as TableProps<ColonyAction>,
+    } as TableProps<ActionData>,
     rest,
   );
 

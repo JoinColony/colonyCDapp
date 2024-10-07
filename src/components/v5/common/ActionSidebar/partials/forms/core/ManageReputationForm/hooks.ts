@@ -5,9 +5,9 @@ import { type InferType, number, object, string } from 'yup';
 
 import { MAX_ANNOTATION_LENGTH } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { DecisionMethod } from '~gql';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { ActionTypes } from '~redux';
-import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';

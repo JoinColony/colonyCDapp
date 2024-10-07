@@ -1,7 +1,7 @@
 import { Coins } from '@phosphor-icons/react';
 import React from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -31,7 +31,7 @@ const AmountRow = ({ domainId, title, tooltips }: AmountRowProps) => {
         maxWidth={270}
         domainId={domainId}
         isDisabled={hasNoDecisionMethods}
-        isTokenSelectionDisabled={activeActionType === Action.MintTokens}
+        isTokenSelectionDisabled={activeActionType === CoreAction.MintTokens}
       />
     </ActionFormRow>
   );

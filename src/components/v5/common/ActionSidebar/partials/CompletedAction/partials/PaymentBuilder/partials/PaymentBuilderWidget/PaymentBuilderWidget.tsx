@@ -24,7 +24,7 @@ import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
 
-const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
+const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ actionData: action }) => {
   const { colony, refetchColony } = useColonyContext();
   const { refetch: refetchExpenditures } = useGetColonyExpendituresQuery({
     variables: {

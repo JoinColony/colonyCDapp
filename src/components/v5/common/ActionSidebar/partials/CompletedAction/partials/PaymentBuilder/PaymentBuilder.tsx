@@ -5,6 +5,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
+import { CoreAction, type ActionData } from '~actions/index.ts';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -19,7 +20,6 @@ import {
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
@@ -43,7 +43,7 @@ import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
 
 interface PaymentBuilderProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const displayName = 'v5.common.CompletedAction.partials.PaymentBuilder';
@@ -55,7 +55,7 @@ const MSG = defineMessages({
   },
 });
 
-const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
+const PaymentBuilder = ({ actionData: action }: PaymentBuilderProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
@@ -150,7 +150,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         {formatText(
           { id: 'action.title' },
           {
-            actionType: ColonyActionType.CreateExpenditure,
+            actionType: CoreAction.CreateExpenditure,
             recipientsNumber: getRecipientsNumber(expenditure),
             tokensNumber: getTokensNumber(expenditure),
             initiator: initiatorUser ? (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
@@ -21,17 +21,17 @@ import TokensTable from './partials/TokensTable/TokensTable.tsx';
 const displayName = 'v5.common.CompletedAction.partials.ManageTokens';
 
 interface ManageTokensProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
-const ManageTokens = ({ action }: ManageTokensProps) => {
+const ManageTokens = ({ actionData: action }: ManageTokensProps) => {
   const {
     customTitle = formatText(
       {
         id: 'action.type',
       },
       {
-        actionType: ColonyActionType.ManageTokens,
+        actionType: CoreAction.ManageTokens,
       },
     ),
   } = action?.metadata || {};
@@ -51,7 +51,7 @@ const ManageTokens = ({ action }: ManageTokensProps) => {
             id: 'action.title',
           },
           {
-            actionType: ColonyActionType.ManageTokens,
+            actionType: CoreAction.ManageTokens,
             initiator: initiatorUser ? (
               <UserInfoPopover
                 walletAddress={initiatorUser.walletAddress}

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -48,7 +48,7 @@ const ReputationChart = () => {
 
   const openCreateNewTeam = () => {
     show({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+      [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
     });
   };
 

@@ -1,8 +1,8 @@
 import { type UseFormReturn } from 'react-hook-form';
 
+import { type ActionData } from '~actions/index.ts';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { type Address } from '~types';
-import { type ColonyAction } from '~types/graphql.ts';
 
 export interface CreateActionFormProps {
   getFormOptions: (
@@ -36,5 +36,5 @@ export type ClaimMintTokensActionParams = {
 };
 
 export type FinalizeSuccessCallback = {
-  onFinalizeSuccessCallback: (action: ColonyAction) => void;
+  onFinalizeSuccessCallback: (actionData: ActionData) => void;
 };

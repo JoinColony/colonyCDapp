@@ -10,7 +10,6 @@ import AnalyticsContextProvider from '~context/AnalyticsContext/AnalyticsContext
 import { getContext, ContextModule } from '~context/index.ts';
 import RouteTracker from '~routes/RouteTracker.tsx';
 
-import actionMessages from './i18n/en-actions.ts';
 import eventsMessages from './i18n/en-events.ts';
 import motionStatesMessages from './i18n/en-motion-states.ts';
 import systemMessages from './i18n/en-system-messages.ts';
@@ -44,7 +43,6 @@ const Entry = ({ store }: Props) => {
         defaultLocale="en"
         messages={{
           ...messages,
-          ...actionMessages,
           ...eventsMessages,
           ...systemMessages,
           ...motionStatesMessages,

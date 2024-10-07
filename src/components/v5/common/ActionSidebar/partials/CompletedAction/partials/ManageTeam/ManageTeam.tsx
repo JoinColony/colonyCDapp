@@ -2,13 +2,9 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { type OptionalValue } from '~types';
-import {
-  ColonyActionType,
-  type DomainMetadata,
-  type ColonyAction,
-} from '~types/graphql.ts';
+import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -28,7 +24,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -39,7 +35,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.ManageTeam';
 
 interface CreateNewTeamProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -58,9 +54,9 @@ const MSG = defineMessages({
   },
 });
 
-const ManageTeam = ({ action }: CreateNewTeamProps) => {
+const ManageTeam = ({ actionData: action }: CreateNewTeamProps) => {
   const decisionMethod = useDecisionMethod(action);
-  const isAddingNewTeam = action.type.includes(ColonyActionType.CreateDomain);
+  const isAddingNewTeam = action.type.includes(CoreAction.CreateDomain);
 
   const {
     customTitle = formatText(
@@ -73,8 +69,8 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   let team: OptionalValue<string>;
 
   if (
-    action.type === ColonyActionType.CreateDomain ||
-    action.type === ColonyActionType.EditDomain
+    action.type === CoreAction.CreateDomain ||
+    action.type === CoreAction.EditDomain
   ) {
     actionDomainMetadata = action.fromDomain?.metadata;
     team = actionDomainMetadata?.name;
@@ -88,13 +84,14 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
   const domain = action.motionData?.motionDomain ?? null;
   const motionDomainMetadata = domain?.metadata;
 
+  // FIXME: I think we can remove this (once we removed the xxxMotion and xxxMultisig types)
   const actionType = [
-    ColonyActionType.CreateDomain,
-    ColonyActionType.CreateDomainMotion,
-    ColonyActionType.CreateDomainMultisig,
+    CoreAction.CreateDomain,
+    CoreAction.CreateDomainMotion,
+    CoreAction.CreateDomainMultisig,
   ].includes(action.type)
-    ? Action.CreateNewTeam
-    : Action.EditExistingTeam;
+    ? CoreAction.CreateDomain
+    : CoreAction.EditDomain;
 
   return (
     <>
@@ -129,7 +126,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
       </ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.teamName' })}
           rowContent={actionDomainMetadata?.name}
           tooltipContent={formatText({
@@ -140,7 +137,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
         {actionDomainMetadata?.description && (
           <TeamPurpose description={actionDomainMetadata.description} />
         )}
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.teamColour' })}
           rowContent={
             <TeamColorBadge

@@ -2,9 +2,9 @@ import { isToday, isYesterday } from 'date-fns';
 import React, { useState, type FC, useEffect } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
+import { type ActionData } from '~actions/index.ts';
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -139,13 +139,13 @@ interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
   initiatorAddress: string;
   thresholdPerRole: Threshold;
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({
   multiSigData,
   initiatorAddress,
-  action,
+  actionData,
   thresholdPerRole,
 }) => {
   const { createdAt } = multiSigData;
@@ -216,9 +216,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       setIsFinalizePending(false);
     }
     if (isMultiSigExecuted) {
-      handleMotionCompleted(action);
+      handleMotionCompleted(actionData);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected, action]);
+  }, [isMultiSigExecuted, isMultiSigRejected, actionData]);
 
   return (
     <MenuWithStatusText
@@ -245,7 +245,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         isPending={isFinalizePending}
                         setIsPending={setIsFinalizePending}
                         multiSigId={multiSigData.nativeMultiSigId}
-                        action={action}
+                        actionData={actionData}
                       />
                     )}
                   </div>

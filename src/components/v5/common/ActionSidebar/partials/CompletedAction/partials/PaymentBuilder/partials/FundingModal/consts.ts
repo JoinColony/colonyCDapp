@@ -1,7 +1,7 @@
 import moveDecimal from 'move-decimal-point';
 import { array, object, string } from 'yup';
 
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { type Colony } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {

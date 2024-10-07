@@ -2,8 +2,9 @@ import { ArrowDownRight } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+// FIXME: ColonyAction and ColonyActionFragment are not the same
+// We should just work with one of them (ColonyAction in actions)
+import { CoreAction, type ActionData } from '~actions/index.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -29,7 +30,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   AmountRow,
   CreatedInRow,
@@ -42,7 +43,7 @@ import { getFormattedTokenAmount } from '../utils.ts';
 const displayName = 'v5.common.CompletedAction.partials.TransferFunds';
 
 interface TransferFundsProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -57,7 +58,7 @@ const MSG = defineMessages({
   },
 });
 
-const TransferFunds = ({ action }: TransferFundsProps) => {
+const TransferFunds = ({ actionData: action }: TransferFundsProps) => {
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
@@ -91,7 +92,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.MoveFunds,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [TO_FIELD_NAME]: toDomain?.nativeId,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
@@ -130,7 +131,7 @@ const TransferFunds = ({ action }: TransferFundsProps) => {
             actionType={action.type}
           />
         )}
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.to' })}
           rowContent={
             action.toDomain?.metadata?.name ? (

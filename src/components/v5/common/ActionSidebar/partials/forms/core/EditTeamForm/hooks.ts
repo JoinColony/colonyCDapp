@@ -4,7 +4,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'utility-types';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type DecisionMethod } from '~types/actions.ts';
+import { type DecisionMethod } from '~gql';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';

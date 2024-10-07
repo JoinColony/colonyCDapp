@@ -1,19 +1,16 @@
 import { BigNumber } from 'ethers';
 
+import { CoreAction, type ActionData } from '~actions/index.ts';
 import { apolloClient } from '~apollo';
-import { type Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
-import {
-  type ColonyAction,
-  type Expenditure,
-  ColonyActionType,
-} from '~types/graphql.ts';
+import { type Expenditure } from '~types/graphql.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
   clearContributorsAndRolesCache,
   updateContributorVerifiedStatus,
 } from '~utils/members.ts';
 
+// FIXME: what does this do??
 export const translateAction = (action?: Action) => {
   const actionName = action
     ?.split('-')
@@ -29,38 +26,39 @@ export const translateAction = (action?: Action) => {
   return `actions.${actionName}`;
 };
 
-export const handleMotionCompleted = (action: ColonyAction) => {
-  switch (action.type) {
-    case ColonyActionType.AddVerifiedMembersMotion:
-    case ColonyActionType.AddVerifiedMembersMultisig: {
-      if (action.members) {
+// FIXME: Split this up somehow!
+export const handleMotionCompleted = (actionData: ActionData) => {
+  switch (actionData.type) {
+    case CoreAction.AddVerifiedMembersMotion:
+    case CoreAction.AddVerifiedMembersMultisig: {
+      if (actionData.members) {
         updateContributorVerifiedStatus(
-          action.members,
-          action.colonyAddress,
+          actionData.members,
+          actionData.colonyAddress,
           true,
         );
       }
       break;
     }
-    case ColonyActionType.RemoveVerifiedMembersMotion:
-    case ColonyActionType.RemoveVerifiedMembersMultisig: {
-      if (action.members) {
+    case CoreAction.RemoveVerifiedMembersMotion:
+    case CoreAction.RemoveVerifiedMembersMultisig: {
+      if (actionData.members) {
         updateContributorVerifiedStatus(
-          action.members,
-          action.colonyAddress,
+          actionData.members,
+          actionData.colonyAddress,
           false,
         );
       }
       break;
     }
-    case ColonyActionType.CreateDecisionMotion: {
+    case CoreAction.CreateDecisionMotion: {
       if (isQueryActive('SearchActions')) {
         apolloClient.refetchQueries({ include: [SearchActionsDocument] });
       }
       break;
     }
-    case ColonyActionType.SetUserRolesMotion:
-    case ColonyActionType.SetUserRolesMultisig: {
+    case CoreAction.SetUserRolesMotion:
+    case CoreAction.SetUserRolesMultisig: {
       clearContributorsAndRolesCache();
       break;
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { ColonyActionType } from '~types/graphql.ts';
+import { CoreAction } from '~actions/index.ts';
 import { type PaymentBuilderFormValues } from '~v5/common/ActionSidebar/partials/forms/core/PaymentBuilderForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
@@ -53,7 +53,7 @@ export const PaymentBuilderDescription = () => {
     <FormattedMessage
       id="action.title"
       values={{
-        actionType: ColonyActionType.CreateExpenditure,
+        actionType: CoreAction.CreateExpenditure,
         recipientsNumber: payments.length,
         tokensNumber: paymentsTokensAndRecipients.tokens.length,
         initiator: <CurrentUser />,

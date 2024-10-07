@@ -1,8 +1,11 @@
 import React from 'react';
 
-import { Action } from '~constants/actions.ts';
+import {
+  type ActionData,
+  CoreAction,
+  CoreActionGroup,
+} from '~actions/index.ts';
 import { ManageVerifiedMembersOperation } from '~types';
-import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,
@@ -33,23 +36,23 @@ import SelectedMembers from '../SelectedMembers/SelectedMembers.tsx';
 const displayName = 'v5.common.CompletedAction.partials.RemoveVerifiedMembers';
 
 interface RemoveVerifiedMembersProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
-const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
-  const decisionMethod = useDecisionMethod(action);
-  const numberOfMembers = action.members?.length || 0;
+const RemoveVerifiedMembers = ({ actionData }: RemoveVerifiedMembersProps) => {
+  const decisionMethod = useDecisionMethod(actionData);
+  const numberOfMembers = actionData.members?.length || 0;
   const {
     customTitle = formatText(
       {
         id: 'action.type',
       },
       {
-        actionType: ColonyActionType.RemoveVerifiedMembers,
+        actionType: CoreAction.RemoveVerifiedMembers,
       },
     ),
-  } = action?.metadata || {};
-  const { initiatorUser, transactionHash, annotation } = action;
+  } = actionData?.metadata || {};
+  const { initiatorUser, transactionHash, annotation } = actionData;
 
   return (
     <>
@@ -60,7 +63,7 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
+            [ACTION_TYPE_FIELD_NAME]: CoreActionGroup.ManageVerifiedMembers,
             [MEMBERS_FIELD_NAME]: [],
             [MANAGE_MEMBERS_FIELD_NAME]: ManageVerifiedMembersOperation.Remove,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
@@ -74,7 +77,7 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
             id: 'action.title',
           },
           {
-            actionType: ColonyActionType.RemoveVerifiedMembers,
+            actionType: CoreAction.RemoveVerifiedMembers,
             members: numberOfMembers,
             initiator: initiatorUser ? (
               <UserInfoPopover
@@ -89,24 +92,24 @@ const RemoveVerifiedMembers = ({ action }: RemoveVerifiedMembersProps) => {
         )}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
-        <AddRemoveRow actionType={action.type} />
+        <ActionTypeRow actionType={actionData.type} />
+        <AddRemoveRow actionType={actionData.type} />
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={actionData.isMotion || false}
+          isMultisig={actionData.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
+        {actionData.motionData?.motionDomain.metadata && (
           <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
+            motionDomainMetadata={actionData.motionData.motionDomain.metadata}
           />
         )}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {actionData.annotation?.message && (
+        <DescriptionRow description={actionData.annotation.message} />
       )}
-      {action.members !== undefined && action.members !== null && (
-        <SelectedMembers memberAddresses={action.members} />
+      {actionData.members !== undefined && actionData.members !== null && (
+        <SelectedMembers memberAddresses={actionData.members} />
       )}
     </>
   );

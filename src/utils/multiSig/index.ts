@@ -1,15 +1,17 @@
 import { Id, type ColonyRole } from '@colony/colony-js';
 
+import { type ActionData } from '~actions/index.ts';
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ColonyActionType, type ColonyActionFragment } from '~gql';
-import { type Colony, type ColonyAction } from '~types/graphql.ts';
+import { type Colony } from '~types/graphql.ts';
 import { type MultiSigAction } from '~types/motions.ts';
 
 import { MotionState } from '../colonyMotions.ts';
 import { extractColonyRoles } from '../colonyRoles.ts';
 import { extractColonyDomains } from '../domains.ts';
 
-// FIXME: DISCUSS WITH @BASSGETA
+// FIXME: @RESOLUTION: Can be simplified once we have remove the xxxMultisig action types
+// and the SetUserRoles requiredPermissions is a function
 export const getRolesNeededForMultiSigAction = ({
   actionType,
   createdIn,
@@ -116,8 +118,10 @@ export const getMultiSigPayload = (
   isMultiSig: isMultiSigFlag,
 });
 
-export function isMultiSig(action: ColonyAction): action is MultiSigAction {
-  return !!action.multiSigData && !!action.multiSigId;
+export function isMultiSig(
+  actionData: ActionData,
+): actionData is MultiSigAction {
+  return !!actionData.multiSigData && !!actionData.multiSigId;
 }
 
 export const getDomainIdsForEligibleSignees = (domainId: number): number[] => {

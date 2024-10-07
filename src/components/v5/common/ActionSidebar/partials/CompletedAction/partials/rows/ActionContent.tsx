@@ -9,7 +9,7 @@ import {
   ICON_SIZE,
 } from '~v5/common/ActionSidebar/partials/CompletedAction/consts.ts';
 
-const displayName = 'v5.common.CompletedAction.partials.ActionData';
+const displayName = 'v5.common.CompletedAction.ActionContent';
 
 interface Props {
   rowLabel: Message;
@@ -18,7 +18,7 @@ interface Props {
   tooltipContent?: Message;
 }
 
-const ActionData = ({
+const ActionContent = ({
   rowLabel,
   tooltipContent,
   rowContent,
@@ -50,5 +50,5 @@ const ActionData = ({
   );
 };
 
-ActionData.displayName = displayName;
-export default ActionData;
+ActionContent.displayName = displayName;
+export default ActionContent;

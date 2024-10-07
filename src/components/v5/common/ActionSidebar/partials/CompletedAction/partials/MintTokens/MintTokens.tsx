@@ -1,8 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -35,7 +34,7 @@ import { getFormattedTokenAmount } from '../utils.ts';
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 
 interface MintTokensProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -49,7 +48,7 @@ const MSG = defineMessages({
   },
 });
 
-const MintTokens = ({ action }: MintTokensProps) => {
+const MintTokens = ({ actionData: action }: MintTokensProps) => {
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { amount, initiatorUser, token, transactionHash, annotation } = action;
@@ -75,7 +74,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.MintTokens,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,

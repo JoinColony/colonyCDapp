@@ -1,18 +1,17 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
+import {
+  getActionPermissions,
+  getActionPermissionDomainId,
+} from '~actions/utils.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { getAllUserRoles, getUserRolesForDomain } from '~transformers';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
-
-import {
-  getPermissionsDomainIdForAction,
-  getPermissionsNeededForAction,
-} from './helpers.ts';
 
 /**
  * Hook determining if the user has no decision methods available for the currently selected action type
@@ -23,33 +22,40 @@ const useHasNoDecisionMethods = () => {
   const { isVotingReputationEnabled, isMultiSigEnabled } =
     useEnabledExtensions();
 
-  const { watch } = useFormContext() || {};
+  const form = useFormContext();
 
-  if (!watch) {
+  if (!form) {
     return false;
   }
 
-  const actionType = watch(ACTION_TYPE_FIELD_NAME);
+  const actionType = form.watch(ACTION_TYPE_FIELD_NAME);
 
   if (!user) {
     return true;
   }
 
-  if (!isVotingReputationEnabled && actionType === Action.CreateDecision) {
+  if (
+    !isVotingReputationEnabled &&
+    actionType === CoreAction.CreateDecisionMotion
+  ) {
     return true;
   }
 
   // User can't use reputation to create Payment builder action
-  if (isVotingReputationEnabled && actionType !== Action.PaymentBuilder) {
+  if (
+    isVotingReputationEnabled &&
+    actionType !== CoreAction.CreateExpenditure
+  ) {
     return false;
   }
 
-  const requiredPermissions = getPermissionsNeededForAction(actionType, {});
-  if (!requiredPermissions) {
+  const requiredPermissions = getActionPermissions(actionType);
+
+  if (!requiredPermissions.length) {
     return false;
   }
 
-  const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
+  const requiredRolesDomain = getActionPermissionDomainId(actionType, form);
 
   const userRootRoles = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),

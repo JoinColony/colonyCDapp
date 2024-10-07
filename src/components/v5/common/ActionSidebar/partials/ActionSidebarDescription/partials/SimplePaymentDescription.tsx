@@ -8,7 +8,7 @@ import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
-import { type SimplePaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/core/SimplePayment/hooks.ts';
+import { type SimplePaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/core/SimplePaymentForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 import RecipientUser from './RecipientUser.tsx';

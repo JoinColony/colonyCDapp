@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import { boolean, number, object, string } from 'yup';
 
 import { UserRole } from '~constants/permissions.ts';
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { Authority } from '~types/authority.ts';
 import { formatText } from '~utils/intl.ts';
 import { getObjectKeys } from '~utils/objects/index.ts';

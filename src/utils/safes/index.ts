@@ -1,10 +1,11 @@
+import { type ActionData } from '~actions/index.ts';
 import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { type NFTData, type Safe, type ColonyAction } from '~types/graphql.ts';
+import { type NFTData, type Safe } from '~types/graphql.ts';
 import { type Address, type SelectedPickerItem } from '~types/index.ts';
 import { type FormSafeTransaction, type SafeBalance } from '~types/safes.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -69,7 +70,7 @@ export const getTxServiceBaseUrl = (selectedChain: string) => {
   return selectedNetwork.safeTxService;
 };
 
-export const getAddedSafe = (actionData: ColonyAction) => {
+export const getAddedSafe = (actionData: ActionData) => {
   const actionChangelog = actionData.colony.metadata?.changelog?.find(
     (changelog) => changelog.transactionHash === actionData.transactionHash,
   );
@@ -84,7 +85,7 @@ export const getAddedSafe = (actionData: ColonyAction) => {
   return null;
 };
 
-export const getAddedSafeChainName = (actionData: ColonyAction) => {
+export const getAddedSafeChainName = (actionData: ActionData) => {
   const addedSafe = getAddedSafe(actionData);
 
   if (addedSafe) {
@@ -94,7 +95,7 @@ export const getAddedSafeChainName = (actionData: ColonyAction) => {
   return null;
 };
 
-export const getRemovedSafes = (actionData: ColonyAction) => {
+export const getRemovedSafes = (actionData: ActionData) => {
   const actionChangelog = actionData.colony.metadata?.changelog?.find(
     (changelog) => changelog.transactionHash === actionData.transactionHash,
   );
@@ -166,7 +167,7 @@ export const defaultTransaction: FormSafeTransaction = {
   functionParamTypes: undefined,
 };
 
-export const parseSafeTransactionType = (actionData: ColonyAction) => {
+export const parseSafeTransactionType = (actionData: ActionData) => {
   const safeTransactionDetails =
     actionData.safeTransaction?.transactions?.items.filter(notNull) || [];
 

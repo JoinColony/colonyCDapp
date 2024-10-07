@@ -1,7 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData } from '~actions/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -21,7 +21,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.CreateDecision';
 
 interface CreateDecisionProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -35,9 +35,10 @@ const MSG = defineMessages({
   },
 });
 
-const CreateDecision = ({ action }: CreateDecisionProps) => {
-  const { title = formatText(MSG.defaultTitle) } = action?.decisionData || {};
-  const { initiatorUser } = action;
+const CreateDecision = ({ actionData }: CreateDecisionProps) => {
+  const { title = formatText(MSG.defaultTitle) } =
+    actionData?.decisionData || {};
+  const { initiatorUser } = actionData;
 
   return (
     <>
@@ -45,7 +46,7 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
         <ActionTitle>{title}</ActionTitle>
         <MeatballMenu
           showRedoItem={false}
-          transactionHash={action.transactionHash}
+          transactionHash={actionData.transactionHash}
         />
       </div>
       <ActionSubtitle>
@@ -62,21 +63,21 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow actionType={actionData.type} />
 
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={actionData.isMotion || false}
+          isMultisig={actionData.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
+        {actionData.motionData?.motionDomain.metadata && (
           <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
+            motionDomainMetadata={actionData.motionData.motionDomain.metadata}
           />
         )}
       </ActionDataGrid>
-      {action.decisionData?.description && (
-        <DescriptionRow description={action.decisionData.description} />
+      {actionData.decisionData?.description && (
+        <DescriptionRow description={actionData.decisionData.description} />
       )}
     </>
   );

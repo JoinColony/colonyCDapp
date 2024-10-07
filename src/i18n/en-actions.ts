@@ -1,62 +1,53 @@
 /* eslint-disable max-len */
 
 // FIXME: This probably also needs to go?? No idea where this is going
+import { CoreAction } from '~actions/index';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { ColonyActionType } from '~types/graphql.ts';
 
 const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
 
+// FIXME: @RESOLUTION:
+// Get rid of xxxMotion and xxxMultisig action types and use isMotion, isMultisig flags of action
+// IMPORTANT: WE NEED A MIGRATION to remove them from the database
 const actionsMessageDescriptors = {
   'action.title': `{actionType, select,
-      ${ColonyActionType.WrongColony} {Unknown Action}
-      ${ColonyActionType.Payment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.PaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MultiplePayment} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MultiplePaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MultiplePaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.CreateDecisionMotion} {New agreement by {initiator}}
-      ${ColonyActionType.MoveFunds} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
-      ${ColonyActionType.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
-      ${ColonyActionType.MoveFundsMultisig} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
-      ${ColonyActionType.UnlockToken} {Unlock native token {tokenSymbol} by {initiator}}
-      ${ColonyActionType.UnlockTokenMotion} {Unlock native token {tokenSymbol} by {initiator}}
-      ${ColonyActionType.UnlockTokenMultisig} {Unlock native token {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MintTokens} {Mint {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.MintTokensMultisig} {Mint {amount} {tokenSymbol} by {initiator}}
-      ${ColonyActionType.CreateDomain} {Create new team {fromDomain} by {initiator}}
-      ${ColonyActionType.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
-      ${ColonyActionType.CreateDomainMultisig} {Create new team {fromDomain} by {initiator}}
-      ${ColonyActionType.VersionUpgrade} {Upgrade Colony version to v{newVersion} by {initiator}}
-      ${ColonyActionType.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
-      ${ColonyActionType.VersionUpgradeMultisig} {Upgrade Colony version to v{newVersion} by {initiator}}
-      ${ColonyActionType.ColonyEdit} {Edit details of the Colony by {initiator}}
-      ${ColonyActionType.ColonyEditMotion} {Edit details of the Colony by {initiator}}
-      ${ColonyActionType.ColonyEditMultisig} {Edit details of the Colony by {initiator}}
-      ${ColonyActionType.EditDomain} {Change {fromDomain} team details by {initiator}}
-      ${ColonyActionType.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
-      ${ColonyActionType.EditDomainMultisig} {Change {fromDomain} team details by {initiator}}
-      ${ColonyActionType.Recovery} {Enter recovery mode by {initiator}}
-      ${ColonyActionType.EmitDomainReputationPenalty} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
-      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
-      ${ColonyActionType.EmitDomainReputationPenaltyMultisig} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
-      ${ColonyActionType.EmitDomainReputationReward} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
-      ${ColonyActionType.EmitDomainReputationRewardMotion} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
-      ${ColonyActionType.EmitDomainReputationRewardMultisig} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
-      ${ColonyActionType.SetUserRoles} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
-      ${ColonyActionType.SetUserRolesMotion} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
-      ${ColonyActionType.SetUserRolesMultisig} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
-      ${ColonyActionType.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.AddVerifiedMembersMotion} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.AddVerifiedMembersMultisig} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.RemoveVerifiedMembers} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.RemoveVerifiedMembersMotion} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.RemoveVerifiedMembersMultisig} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
-      ${ColonyActionType.CreateExpenditure} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
-      ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
-      ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
-      ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
+      ${CoreAction.WrongColony} {Unknown Action}
+      ${CoreAction.PaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.PaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.MultiplePaymentMotion} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.MultiplePaymentMultisig} {Pay {recipient} {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.MoveFundsMotion} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
+      ${CoreAction.MoveFundsMultisig} {Move {amount} {tokenSymbol} from {fromDomain} to {toDomain} by {initiator}}
+      ${CoreAction.UnlockTokenMotion} {Unlock native token {tokenSymbol} by {initiator}}
+      ${CoreAction.UnlockTokenMultisig} {Unlock native token {tokenSymbol} by {initiator}}
+      ${CoreAction.MintTokensMotion} {Mint {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.MintTokensMultisig} {Mint {amount} {tokenSymbol} by {initiator}}
+      ${CoreAction.CreateDomainMotion} {Create new team {fromDomain} by {initiator}}
+      ${CoreAction.CreateDomainMultisig} {Create new team {fromDomain} by {initiator}}
+      ${CoreAction.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
+      ${CoreAction.VersionUpgradeMultisig} {Upgrade Colony version to v{newVersion} by {initiator}}
+      ${CoreAction.EditColonyMotion} {Edit details of the Colony by {initiator}}
+      ${CoreAction.EditColonyMultisig} {Edit details of the Colony by {initiator}}
+      ${CoreAction.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
+      ${CoreAction.EditDomainMultisig} {Change {fromDomain} team details by {initiator}}
+      ${CoreAction.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
+      ${CoreAction.EmitDomainReputationPenaltyMultisig} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}
+      ${CoreAction.EmitDomainReputationRewardMotion} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
+      ${CoreAction.EmitDomainReputationRewardMultisig} {Add {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} to {recipient} by {initiator}}
+      ${CoreAction.SetUserRolesMotion} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
+      ${CoreAction.SetUserRolesMultisig} {{direction} {multiSigAuthority}permissions for {recipient} in {fromDomain} by {initiator}}
+      ${CoreAction.AddVerifiedMembersMotion} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${CoreAction.AddVerifiedMembersMultisig} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${CoreAction.RemoveVerifiedMembersMotion} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${CoreAction.RemoveVerifiedMembersMultisig} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
+
+      ${CoreAction.AddVerifiedMembers} {Add {members} verified {members, plural, one {member} other {members}} by {initiator}}
+      ${CoreAction.RemoveVerifiedMembers} {Remove {members} verified {members, plural, one {member} other {members}} by {initiator}}
+
+      ${CoreAction.CreateExpenditure} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
+      ${CoreAction.ManageTokens} {Manage tokens by {initiator}}
+      ${CoreAction.ManageTokensMotion} {Manage tokens by {initiator}}
+      ${CoreAction.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -75,50 +66,50 @@ const actionsMessageDescriptors = {
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
-      ${ColonyActionType.WrongColony} {Not part of the Colony}
-      ${ColonyActionType.Payment} {Simple payment}
-      ${ColonyActionType.PaymentMotion} {Simple payment}
-      ${ColonyActionType.PaymentMultisig} {Simple payment}
-      ${ColonyActionType.MoveFunds} {Move Funds}
-      ${ColonyActionType.MoveFundsMotion} {Move Funds}
-      ${ColonyActionType.MoveFundsMultisig} {Move Funds}
-      ${ColonyActionType.UnlockToken} {Unlock Token}
-      ${ColonyActionType.UnlockTokenMotion} {Unlock Token}
-      ${ColonyActionType.MintTokens} {Mint Tokens}
-      ${ColonyActionType.MintTokensMotion} {Mint Tokens}
-      ${ColonyActionType.CreateDomain} {Create new team}
-      ${ColonyActionType.CreateDomainMotion} {Create new team}
-      ${ColonyActionType.CreateDomainMultisig} {Create new team}
-      ${ColonyActionType.VersionUpgrade} {Version Upgrade}
-      ${ColonyActionType.VersionUpgradeMotion} {Version Upgrade}
-      ${ColonyActionType.VersionUpgradeMultisig} {Version Upgrade}
-      ${ColonyActionType.ColonyEdit} {Edit Colony details}
-      ${ColonyActionType.ColonyEditMotion} {Edit Colony details}
-      ${ColonyActionType.ColonyEditMultisig} {Edit Colony details}
-      ${ColonyActionType.EditDomain} {Edit Team}
-      ${ColonyActionType.EditDomainMotion} {Edit Team}
-      ${ColonyActionType.EditDomainMultisig} {Edit Team}
-      ${ColonyActionType.SetUserRoles} {Manage permissions}
-      ${ColonyActionType.SetUserRolesMotion} {Manage permissions}
-      ${ColonyActionType.SetUserRolesMultisig} {Manage permissions}
-      ${ColonyActionType.Recovery} {Recovery}
-      ${ColonyActionType.EmitDomainReputationPenalty} {Manage reputation}
-      ${ColonyActionType.EmitDomainReputationPenaltyMotion} {Manage reputation}
-      ${ColonyActionType.EmitDomainReputationPenaltyMultisig} {Manage reputation}
-      ${ColonyActionType.EmitDomainReputationReward} {Manage reputation}
-      ${ColonyActionType.EmitDomainReputationRewardMotion} {Manage reputation}
-      ${ColonyActionType.EmitDomainReputationRewardMultisig} {Manage reputation}
-      ${ColonyActionType.CreateDecisionMotion} {Decision}
-      ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
-      ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
-      ${ColonyActionType.AddVerifiedMembersMultisig} {Manage verified members}
-      ${ColonyActionType.RemoveVerifiedMembers} {Manage verified members}
-      ${ColonyActionType.RemoveVerifiedMembersMotion} {Manage verified members}
-      ${ColonyActionType.RemoveVerifiedMembersMultisig} {Manage verified members}
-      ${ColonyActionType.CreateExpenditure} {Advanced payment}
-      ${ColonyActionType.ManageTokens} {Manage tokens}
-      ${ColonyActionType.ManageTokensMotion} {Manage tokens}
-      ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+      ${CoreAction.WrongColony} {Not part of the Colony}
+      ${CoreAction.Payment} {Simple payment}
+      ${CoreAction.PaymentMotion} {Simple payment}
+      ${CoreAction.PaymentMultisig} {Simple payment}
+      ${CoreAction.MoveFunds} {Move Funds}
+      ${CoreAction.MoveFundsMotion} {Move Funds}
+      ${CoreAction.MoveFundsMultisig} {Move Funds}
+      ${CoreAction.UnlockToken} {Unlock Token}
+      ${CoreAction.UnlockTokenMotion} {Unlock Token}
+      ${CoreAction.MintTokens} {Mint Tokens}
+      ${CoreAction.MintTokensMotion} {Mint Tokens}
+      ${CoreAction.CreateDomain} {Create new team}
+      ${CoreAction.CreateDomainMotion} {Create new team}
+      ${CoreAction.CreateDomainMultisig} {Create new team}
+      ${CoreAction.VersionUpgrade} {Version Upgrade}
+      ${CoreAction.VersionUpgradeMotion} {Version Upgrade}
+      ${CoreAction.VersionUpgradeMultisig} {Version Upgrade}
+      ${CoreAction.ColonyEdit} {Edit Colony details}
+      ${CoreAction.ColonyEditMotion} {Edit Colony details}
+      ${CoreAction.ColonyEditMultisig} {Edit Colony details}
+      ${CoreAction.EditDomain} {Edit Team}
+      ${CoreAction.EditDomainMotion} {Edit Team}
+      ${CoreAction.EditDomainMultisig} {Edit Team}
+      ${CoreAction.SetUserRoles} {Manage permissions}
+      ${CoreAction.SetUserRolesMotion} {Manage permissions}
+      ${CoreAction.SetUserRolesMultisig} {Manage permissions}
+      ${CoreAction.Recovery} {Recovery}
+      ${CoreAction.EmitDomainReputationPenalty} {Manage reputation}
+      ${CoreAction.EmitDomainReputationPenaltyMotion} {Manage reputation}
+      ${CoreAction.EmitDomainReputationPenaltyMultisig} {Manage reputation}
+      ${CoreAction.EmitDomainReputationReward} {Manage reputation}
+      ${CoreAction.EmitDomainReputationRewardMotion} {Manage reputation}
+      ${CoreAction.EmitDomainReputationRewardMultisig} {Manage reputation}
+      ${CoreAction.CreateDecisionMotion} {Decision}
+      ${CoreAction.AddVerifiedMembers} {Manage verified members}
+      ${CoreAction.AddVerifiedMembersMotion} {Manage verified members}
+      ${CoreAction.AddVerifiedMembersMultisig} {Manage verified members}
+      ${CoreAction.RemoveVerifiedMembers} {Manage verified members}
+      ${CoreAction.RemoveVerifiedMembersMotion} {Manage verified members}
+      ${CoreAction.RemoveVerifiedMembersMultisig} {Manage verified members}
+      ${CoreAction.CreateExpenditure} {Advanced payment}
+      ${CoreAction.ManageTokens} {Manage tokens}
+      ${CoreAction.ManageTokensMotion} {Manage tokens}
+      ${CoreAction.ManageTokensMultisig} {Manage tokens}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
@@ -138,4 +129,4 @@ const actionsMessageDescriptors = {
     }`,
 };
 
-export default actionsMessageDescriptors;
+// export default actionsMessageDescriptors;

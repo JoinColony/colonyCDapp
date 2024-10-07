@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
+import { type ActionData } from '~actions/index';
 import { ETHEREUM_NETWORK } from '~constants/index.ts';
 import { useGetSafeTransactionStatusQuery } from '~gql';
-import { type ColonyAction } from '~types/graphql.ts';
 
 export enum TRANSACTION_STATUS {
   COMPLETED = 'Completed',
@@ -22,24 +22,24 @@ export const MSG = defineMessages({
   },
 });
 
-const getSafeTransactionMessageHash = (action: ColonyAction | undefined) => {
-  if (action?.safeTransaction) {
-    if (action?.motionData) {
+const getSafeTransactionMessageHash = (actionData: ActionData | undefined) => {
+  if (actionData?.safeTransaction) {
+    if (actionData?.motionData) {
       return (
-        action?.motionData.messages?.items
+        actionData?.motionData.messages?.items
           .find((message) => message?.name === 'MotionFinalized')
           ?.messageKey.substring(0, 66) || ''
       );
     }
-    return action?.transactionHash;
+    return actionData?.transactionHash;
   }
   return '';
 };
 
-const useSafeTransactionStatus = (action: ColonyAction | undefined) => {
+const useSafeTransactionStatus = (actionData: ActionData | undefined) => {
   const safeChainId =
-    action?.safeTransaction?.safe.chainId || ETHEREUM_NETWORK.chainId;
-  const transactionHash = getSafeTransactionMessageHash(action);
+    actionData?.safeTransaction?.safe.chainId || ETHEREUM_NETWORK.chainId;
+  const transactionHash = getSafeTransactionMessageHash(actionData);
   const { data } = useGetSafeTransactionStatusQuery({
     variables: {
       input: { transactionHash, chainId: safeChainId },

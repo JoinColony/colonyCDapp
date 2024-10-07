@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { ColonyActionType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.AddRemoveRow';
 
@@ -47,7 +47,7 @@ const AddRemoveRow = ({ actionType }: AddRemoveRowProps) => {
   };
 
   return (
-    <ActionData
+    <ActionContent
       rowLabel={formatText(MSG.addOrRemoveMembers)}
       RowIcon={PlusMinus}
       tooltipContent={formatText({

@@ -6,6 +6,6 @@ export { default as DescriptionRow } from './Description.tsx';
 export { default as TeamFromRow } from './TeamFrom.tsx';
 export { default as PermissionsTableRow } from './PermissionsTable.tsx';
 export { default as SocialLinksTable } from './SocialLinksTable.tsx';
-export { default as ActionData } from './ActionData.tsx';
+export { default as ActionContent } from './ActionContent.tsx';
 export { default as ModificationRow } from './Modification.tsx';
 export { default as TeamPurpose } from './TeamPurpose.tsx';

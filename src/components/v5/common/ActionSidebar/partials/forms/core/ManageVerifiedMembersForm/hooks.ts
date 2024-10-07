@@ -6,9 +6,9 @@ import { type DeepPartial } from 'utility-types';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import { DecisionMethod } from '~gql';
 import { ActionTypes } from '~redux';
 import { ManageVerifiedMembersOperation } from '~types';
-import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';

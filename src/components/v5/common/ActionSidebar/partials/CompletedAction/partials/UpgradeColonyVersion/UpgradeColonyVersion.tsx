@@ -2,7 +2,7 @@ import { Browser, Browsers } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData } from '~actions/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 
@@ -13,7 +13,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -23,7 +23,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.UpgradeColonyVersion';
 
 interface UpgradeColonyVersionProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -37,13 +37,14 @@ const MSG = defineMessages({
   },
 });
 
-const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
-  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, newColonyVersion } = action;
+const UpgradeColonyVersion = ({ actionData }: UpgradeColonyVersionProps) => {
+  const { customTitle = formatText(MSG.defaultTitle) } =
+    actionData?.metadata || {};
+  const { initiatorUser, newColonyVersion } = actionData;
 
   const motionDomainMetadata =
-    action.motionData?.motionDomain.metadata ??
-    action.multiSigData?.multiSigDomain.metadata;
+    actionData.motionData?.motionDomain.metadata ??
+    actionData.multiSigData?.multiSigDomain.metadata;
 
   return (
     <>
@@ -51,7 +52,7 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
           showRedoItem={false}
-          transactionHash={action.transactionHash}
+          transactionHash={actionData.transactionHash}
         />
       </div>
       <ActionSubtitle>
@@ -69,40 +70,40 @@ const UpgradeColonyVersion = ({ action }: UpgradeColonyVersionProps) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
+        <ActionTypeRow actionType={actionData.type} />
 
-        {action.newColonyVersion && (
+        {actionData.newColonyVersion && (
           <>
-            <ActionData
+            <ActionContent
               tooltipContent={formatText({
                 id: 'actionSidebar.tooltip.upgradeColonyVersion.currentVersion',
               })}
               rowLabel={formatText({ id: 'actionSidebar.currentVersion' })}
-              rowContent={action.newColonyVersion - 1}
+              rowContent={actionData.newColonyVersion - 1}
               RowIcon={Browser}
             />
-            <ActionData
+            <ActionContent
               tooltipContent={formatText({
                 id: 'actionSidebar.tooltip.upgradeColonyVersion.newVersion',
               })}
               rowLabel={formatText({ id: 'actionSidebar.newVersion' })}
-              rowContent={action.newColonyVersion}
+              rowContent={actionData.newColonyVersion}
               RowIcon={Browsers}
             />
           </>
         )}
 
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={actionData.isMotion || false}
+          isMultisig={actionData.isMultiSig || false}
         />
 
         {motionDomainMetadata && (
           <CreatedInRow motionDomainMetadata={motionDomainMetadata} />
         )}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {actionData.annotation?.message && (
+        <DescriptionRow description={actionData.annotation.message} />
       )}
     </>
   );

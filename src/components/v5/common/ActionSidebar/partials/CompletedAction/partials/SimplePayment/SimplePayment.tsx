@@ -2,11 +2,10 @@ import { UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { ADDRESS_ZERO } from '~constants';
-import { Action } from '~constants/actions.ts';
 import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -33,7 +32,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   AmountRow,
   CreatedInRow,
@@ -46,7 +45,7 @@ import { getFormattedTokenAmount } from '../utils.ts';
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
 
 interface SimplePaymentProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -60,7 +59,7 @@ const MSG = defineMessages({
   },
 });
 
-const SimplePayment = ({ action }: SimplePaymentProps) => {
+const SimplePayment = ({ actionData: action }: SimplePaymentProps) => {
   const decisionMethod = useDecisionMethod(action);
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const {
@@ -102,7 +101,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
             [FROM_FIELD_NAME]: fromDomain?.nativeId,
             [RECIPIENT_FIELD_NAME]: recipientAddress,
             [AMOUNT_FIELD_NAME]: convertedValue?.toString(),
@@ -149,7 +148,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
             actionType={action.type}
           />
         )}
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.recipient' })}
           rowContent={
             <UserPopover

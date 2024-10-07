@@ -1,19 +1,19 @@
 import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
-import { type AnyActionType } from '~types/actions.ts';
+import { type CoreAction } from '~actions/index.ts';
 import { formatActionType } from '~utils/colonyActions.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.ActionTypeRow';
 
 interface ActionTypeRowProps {
-  actionType: AnyActionType;
+  actionType: CoreAction;
 }
 
 const ActionTypeRow = ({ actionType }: ActionTypeRowProps) => (
-  <ActionData
+  <ActionContent
     rowLabel={{
       id: 'actionSidebar.actionType',
     }}

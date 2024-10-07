@@ -1,11 +1,17 @@
-import { registerAction } from '~actions/utils.ts';
+import { defineMessages } from 'react-intl';
 
-import { CoreAction } from './types.ts';
+import { registerAction } from '~actions/index.ts';
 
-registerAction({
+import { CoreActionGroup } from './types.ts';
+
+const MSG = defineMessages({
   name: {
-    id: 'actions.core.streamingPayment',
+    id: 'actions.core.StreamingPayment.name',
     defaultMessage: 'Streaming payment',
   },
-  type: CoreAction.StreamingPayment,
+});
+
+registerAction({
+  name: MSG.name,
+  type: CoreActionGroup.StreamingPayment,
 });

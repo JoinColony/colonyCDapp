@@ -2,9 +2,8 @@ import { CoinVertical } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction, type ActionData } from '~actions/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -24,7 +23,7 @@ import {
 } from '../Blocks/index.ts';
 import MeatballMenu from '../MeatballMenu/MeatballMenu.tsx';
 import {
-  ActionData,
+  ActionContent,
   ActionTypeRow,
   CreatedInRow,
   DecisionMethodRow,
@@ -34,7 +33,7 @@ import {
 const displayName = 'v5.common.CompletedAction.partials.UnlockToken';
 
 interface UnlockTokenProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -48,7 +47,7 @@ const MSG = defineMessages({
   },
 });
 
-const UnlockToken = ({ action }: UnlockTokenProps) => {
+const UnlockToken = ({ actionData: action }: UnlockTokenProps) => {
   const decisionMethod = useDecisionMethod(action);
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
@@ -78,7 +77,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.UnlockToken,
             [TOKEN_FIELD_NAME]: token?.tokenAddress,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [CREATED_IN_FIELD_NAME]: multiSigData?.multiSigDomain?.nativeId,
@@ -102,7 +101,7 @@ const UnlockToken = ({ action }: UnlockTokenProps) => {
       <ActionDataGrid>
         <ActionTypeRow actionType={actionType} />
 
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.token' })}
           rowContent={`${name} (${symbol})`}
           RowIcon={CoinVertical}

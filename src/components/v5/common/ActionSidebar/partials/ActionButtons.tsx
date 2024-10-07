@@ -3,7 +3,6 @@ import React, { type ReactNode, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';

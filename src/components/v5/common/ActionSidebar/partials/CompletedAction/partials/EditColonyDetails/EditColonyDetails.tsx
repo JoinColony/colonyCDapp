@@ -2,8 +2,7 @@ import { PencilCircle, Image, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type ActionData, CoreAction } from '~actions/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,
@@ -30,13 +29,13 @@ import {
   DecisionMethodRow,
   DescriptionRow,
   SocialLinksTable,
-  ActionData,
+  ActionContent,
 } from '../rows/index.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.EditColonyDetails';
 
 interface EditColonyDetailsProps {
-  action: ColonyAction;
+  actionData: ActionData;
 }
 
 const MSG = defineMessages({
@@ -50,12 +49,13 @@ const MSG = defineMessages({
   },
 });
 
-const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
-  const decisionMethod = useDecisionMethod(action);
-  const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, transactionHash, annotation } = action;
+const EditColonyDetails = ({ actionData }: EditColonyDetailsProps) => {
+  const decisionMethod = useDecisionMethod(actionData);
+  const { customTitle = formatText(MSG.defaultTitle) } =
+    actionData?.metadata || {};
+  const { initiatorUser, transactionHash, annotation } = actionData;
   const actionColonyMetadata =
-    action.pendingColonyMetadata || action.colony.metadata;
+    actionData.pendingColonyMetadata || actionData.colony.metadata;
 
   return (
     <>
@@ -66,7 +66,7 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           transactionHash={transactionHash}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+            [ACTION_TYPE_FIELD_NAME]: CoreAction.ColonyEdit,
             [COLONY_DESCRIPTION_FIELD_NAME]: actionColonyMetadata?.description,
             [COLONY_AVATAR_FIELD_NAME]: {
               image: actionColonyMetadata?.avatar,
@@ -91,8 +91,8 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
         })}
       </ActionSubtitle>
       <ActionDataGrid>
-        <ActionTypeRow actionType={action.type} />
-        <ActionData
+        <ActionTypeRow actionType={actionData.type} />
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.colonyName' })}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.editColony.colonyName',
@@ -100,7 +100,7 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           rowContent={actionColonyMetadata?.displayName}
           RowIcon={PencilCircle}
         />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.colonyLogo' })}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.editColony.colonyLogo',
@@ -108,14 +108,14 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           rowContent={
             <ColonyAvatar
               colonyImageSrc={actionColonyMetadata?.avatar ?? undefined}
-              colonyAddress={action.colonyAddress}
+              colonyAddress={actionData.colonyAddress}
               colonyName={actionColonyMetadata?.displayName}
               size={20}
             />
           }
           RowIcon={Image}
         />
-        <ActionData
+        <ActionContent
           rowLabel={formatText({ id: 'actionSidebar.colonyDescription' })}
           tooltipContent={formatText({
             id: 'actionSidebar.tooltip.editColony.colonyDescription',
@@ -125,19 +125,19 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
         />
 
         <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
+          isMotion={actionData.isMotion || false}
+          isMultisig={actionData.isMultiSig || false}
         />
 
-        {action.motionData?.motionDomain.metadata && (
+        {actionData.motionData?.motionDomain.metadata && (
           <CreatedInRow
-            motionDomainMetadata={action.motionData.motionDomain.metadata}
+            motionDomainMetadata={actionData.motionData.motionDomain.metadata}
           />
         )}
         {/* @TODO implement social links table display */}
       </ActionDataGrid>
-      {action.annotation?.message && (
-        <DescriptionRow description={action.annotation.message} />
+      {actionData.annotation?.message && (
+        <DescriptionRow description={actionData.annotation.message} />
       )}
       {actionColonyMetadata?.externalLinks && (
         <SocialLinksTable socialLinks={actionColonyMetadata.externalLinks} />

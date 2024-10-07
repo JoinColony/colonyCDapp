@@ -1,4 +1,4 @@
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { type Colony } from '~types/graphql.ts';
 import { getMotionPayload } from '~utils/motions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';

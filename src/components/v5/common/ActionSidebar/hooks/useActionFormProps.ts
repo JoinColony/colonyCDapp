@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { type Action } from '~constants/actions.ts';
+import { type CoreAction } from '~actions/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
@@ -17,7 +17,7 @@ const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
   isReadonly?: boolean,
 ) => {
-  const prevActionTypeRef = useRef<Action | undefined>();
+  const prevActionTypeRef = useRef<CoreAction | undefined>();
   const navigate = useNavigate();
   const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
