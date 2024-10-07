@@ -1,11 +1,17 @@
+import { defineMessages } from 'react-intl';
+
 import { registerAction } from '~actions/utils.ts';
 
-import { CoreAction } from './types.ts';
+import { CoreActionGroup } from './types.ts';
 
-registerAction({
+const MSG = defineMessages({
   name: {
-    id: 'actions.core.stagedPayment',
+    id: 'actions.core.StagedPayment.name',
     defaultMessage: 'Staged payment',
   },
-  type: CoreAction.StagedPayment,
+});
+
+registerAction({
+  name: MSG.name,
+  type: CoreActionGroup.StagedPayment,
 });

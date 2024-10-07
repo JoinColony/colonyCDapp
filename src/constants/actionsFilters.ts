@@ -21,7 +21,8 @@ export const FILTER_MOTION_STATES = [
   MotionState.Rejected,
 ];
 
-// FIXME: Discuss with @BASSGETA
+// FIXME: @RESOLUTION THIS CAN BE REMOVED ONCE the xxxMotion and xxxMultisig
+// are removed
 export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
   Record<Action, AnyActionType[]>
 > = {

@@ -1,13 +1,19 @@
+import { defineMessages } from 'react-intl';
+
 import { registerAction } from '~actions/utils.ts';
 import BatchPaymentForm from '~v5/common/ActionSidebar/partials/forms/core/BatchPaymentForm/BatchPaymentForm.tsx';
 
-import { CoreAction } from './types.ts';
+import { CoreActionGroup } from './types.ts';
+
+const MSG = defineMessages({
+  name: {
+    id: 'actions.core.BatchPayment.name',
+    defaultMessage: 'Batch payment',
+  },
+});
 
 registerAction({
   component: BatchPaymentForm,
-  name: {
-    id: 'actions.core.batchPayment',
-    defaultMessage: 'Batch payment',
-  },
-  type: CoreAction.BatchPayment,
+  name: MSG.name,
+  type: CoreActionGroup.BatchPayment,
 });

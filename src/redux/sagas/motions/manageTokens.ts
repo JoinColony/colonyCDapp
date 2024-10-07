@@ -3,7 +3,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { CoreAction } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { getActionPermissions } from '~actions/utils.ts';
 import { ADDRESS_ZERO } from '~constants';
 import { type ColonyManager } from '~context/index.ts';

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -42,7 +42,7 @@ const Agreements = () => {
 
   const openCreateDecision = () => {
     show({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+      [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
     });
   };
 

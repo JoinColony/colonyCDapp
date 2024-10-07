@@ -3,30 +3,30 @@ import { defineMessages } from 'react-intl';
 
 import { ActionTitleKey } from '~actions/types.ts';
 import { registerAction } from '~actions/utils.ts';
-import MintTokenForm from '~v5/common/ActionSidebar/partials/forms/core/MintTokenForm/MintTokenForm.tsx';
+import UpgradeColonyForm from '~v5/common/ActionSidebar/partials/forms/core/UpgradeColonyForm/UpgradeColonyForm.tsx';
 
 import { CoreAction } from './types.ts';
 
 const MSG = defineMessages({
   name: {
-    id: 'actions.core.MintTokens.name',
-    defaultMessage: 'Mint tokens',
+    id: 'actions.core.VersionUpgrade.name',
+    defaultMessage: 'Upgrade Colony version',
   },
   title: {
-    id: 'actions.core.MintTokens.title',
-    defaultMessage: 'Mint {amount} {tokenSymbol} by {initiator}',
+    id: 'actions.core.VersionUpgrade.title',
+    defaultMessage: 'Upgrade Colony version to v{newVersion} by {initiator}',
   },
 });
 
 registerAction({
-  component: MintTokenForm,
+  component: UpgradeColonyForm,
   name: MSG.name,
   requiredPermissions: [[ColonyRole.Root]],
   title: MSG.title,
   titleKeys: [
-    ActionTitleKey.Amount,
-    ActionTitleKey.TokenSymbol,
+    ActionTitleKey.NewVersion,
+    ActionTitleKey.Version,
     ActionTitleKey.Initiator,
   ],
-  type: CoreAction.MintTokens,
+  type: CoreAction.VersionUpgrade,
 });

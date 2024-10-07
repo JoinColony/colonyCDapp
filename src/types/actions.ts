@@ -2,6 +2,8 @@ import { type ColonyRole } from '@colony/colony-js';
 
 import { type ColonyActionType } from './graphql.ts';
 
+// FIXME: THIS HAS ALL TO BE MOVED
+
 export enum ColonyAndExtensionsEvents {
   Generic = 'Generic',
   /*
@@ -125,13 +127,15 @@ export type ActionUserRoles = {
   setTo: boolean;
 };
 
-// FIXME: IGNORE (SORTOF?)
+// FIXME: @RESOLUTION: Remove all of this
 export enum ExtendedColonyActionType {
   /**
    * @deprecated
    * This is still needed to allow users to view existing Colony Objective actions
    */
   UpdateColonyObjective = 'UPDATE_COLONY_OBJECTIVE',
+  UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
+  UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
   RemoveSafe = 'REMOVE_SAFE',
   AddSafe = 'ADD_SAFE',
   SafeTransferFunds = 'SAFE_TRANSFER_FUNDS',
@@ -144,8 +148,6 @@ export enum ExtendedColonyActionType {
   SafeTransferNftMotion = 'SAFE_TRANSFER_NFT_MOTION',
   SafeContractInteractionMotion = 'SAFE_CONTRACT_INTERACTION_MOTION',
   SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
-  UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
-  UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
 }
 
 /**
@@ -169,10 +171,4 @@ export enum SystemMessages {
   MotionRevealResultObjectionWon = 'MotionRevealResultObjectionWon',
   MotionRevealResultMotionWon = 'MotionRevealResultMotionWon',
   MotionCanBeEscalated = 'MotionCanBeEscalated',
-}
-
-export enum DecisionMethod {
-  Permissions = 'Permissions',
-  Reputation = 'Reputation',
-  MultiSig = 'MultiSig',
 }

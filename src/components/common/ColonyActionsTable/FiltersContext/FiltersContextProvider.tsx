@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { type CoreAction } from '~actions/core/index.ts';
+import { type CoreAction } from '~actions/index.ts';
 import { ACTION_TYPE_TO_API_ACTION_TYPES_MAP } from '~constants/actionsFilters.ts';
 import {
   type ActivityFeedFilters,
@@ -44,7 +44,6 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
-      // FIXME: this is probably a string or something, make sure this has the correct type
       const name = event.target.name as CoreAction;
 
       if (isChecked) {

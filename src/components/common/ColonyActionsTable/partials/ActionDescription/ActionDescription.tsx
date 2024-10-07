@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
+import { getActionTitleValues } from '~actions/utils.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';

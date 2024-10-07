@@ -571,6 +571,8 @@ const getChangelogItem = (
 /**
  * Function returning action type based on the action data, that can include extended action types,
  */
+// FIXME: @RESOLUTION: We can remove this, except for the check whether an action is UpdateColonyObjective.
+// Move that somewhere sensible
 export const getExtendedActionType = (
   actionData: ColonyAction,
   metadata: ColonyMetadata | null | undefined,

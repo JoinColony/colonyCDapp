@@ -5,7 +5,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   FROM_FIELD_NAME,
@@ -39,8 +39,8 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
   const permissionDomainId = useMemo(() => {
     // for both of these actions you need roles in the parent domain
     if (
-      selectedAction === Action.TransferFunds ||
-      selectedAction === Action.ManagePermissions
+      selectedAction === CoreAction.MoveFunds ||
+      selectedAction === CoreAction.SetUserRoles
     ) {
       return Id.RootDomain;
     }
@@ -50,8 +50,8 @@ export const MultiSigMembersError: FC<MultiSigMembersErrorProps> = ({
 
   const thresholdDomainId = useMemo(() => {
     if (
-      selectedAction === Action.TransferFunds ||
-      selectedAction === Action.ManagePermissions
+      selectedAction === CoreAction.MoveFunds ||
+      selectedAction === CoreAction.SetUserRoles
     ) {
       return Id.RootDomain;
     }

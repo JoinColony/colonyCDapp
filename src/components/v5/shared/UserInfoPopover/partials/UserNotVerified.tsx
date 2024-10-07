@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreActionGroup } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
@@ -39,7 +39,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
             setTimeout(() => {
               onClick?.();
               show({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
+                [ACTION_TYPE_FIELD_NAME]: CoreActionGroup.ManageVerifiedMembers,
                 members: [{ value: walletAddress }],
                 manageMembers: ManageVerifiedMembersOperation.Add,
               });

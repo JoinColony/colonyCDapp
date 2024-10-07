@@ -2,7 +2,7 @@
 // import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 // @BETA: DISABLED
 // import { formatText } from '~utils/intl';
 // import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge';
@@ -108,7 +108,7 @@ export const MSG = defineMessages({
 
 export const DECIDE_DROPDOWN_ITEMS = [
   {
-    action: Action.CreateDecision,
+    action: CoreAction.CreateDecisionMotion,
     title: MSG.createDecision,
     description: MSG.createDecisionDescription,
   },
@@ -118,7 +118,7 @@ export const PAY_DROPDOWN_ITEMS = [
   {
     title: MSG.singlePayments,
     description: MSG.singlePaymentsDescription,
-    action: Action.SimplePayment,
+    action: CoreAction.Payment,
   },
   // @BETA: DISABLED
   // {
@@ -141,7 +141,7 @@ export const PAY_DROPDOWN_ITEMS = [
 
 export const MANAGE_DROPDOWN_ITEMS = [
   {
-    action: Action.EditExistingTeam,
+    action: CoreAction.EditDomain,
     title: MSG.manageTeams,
     description: MSG.manageTeamsDescription,
   },
@@ -152,12 +152,12 @@ export const MANAGE_DROPDOWN_ITEMS = [
   //   description: MSG.manageReputationDescription,
   // },
   {
-    action: Action.ManagePermissions,
+    action: CoreAction.SetUserRoles,
     title: MSG.managePermissions,
     description: MSG.managePermissionsDescription,
   },
   {
-    action: Action.EditColonyDetails,
+    action: CoreAction.ColonyEdit,
     title: MSG.organizationDetails,
     description: MSG.organizationDetailsDescription,
   },

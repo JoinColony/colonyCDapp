@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { CoreAction, CoreActionGroup } from '~actions/index.ts';
+import { getActionName } from '~actions/utils.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
-
-import { CoreForm, getFormName } from '../partials/forms/index.ts';
 
 const MSG = defineMessages({
   titlePayments: {
@@ -29,7 +29,6 @@ const MSG = defineMessages({
   },
 });
 
-// FIXME: No idea where this is used, but this also needs to read the registered components, somewhat automatically
 const useActionsList = () => {
   const { colony } = useColonyContext();
   return useMemo((): SearchSelectOptionProps[] => {
@@ -40,17 +39,17 @@ const useActionsList = () => {
         isAccordion: true,
         options: [
           {
-            label: getFormName(CoreForm.SimplePayment),
-            value: CoreForm.SimplePayment,
+            label: getActionName(CoreAction.Payment),
+            value: CoreAction.Payment,
           },
           {
-            label: getFormName(CoreForm.EditTeam),
-            value: CoreForm.EditTeam,
+            label: getActionName(CoreAction.EditDomain),
+            value: CoreAction.EditDomain,
           },
-          // {
-          //   label: { id: 'actions.paymentBuilder' },
-          //   value: Action.PaymentBuilder,
-          // },
+          {
+            label: getActionName(CoreAction.CreateExpenditure),
+            value: CoreAction.CreateExpenditure,
+          },
           // @BETA: Disabled for now (all of the following in this key)
           // {
           //   label: { id: 'actions.batchPayment' },
@@ -75,11 +74,10 @@ const useActionsList = () => {
         isAccordion: true,
         title: MSG.titleDecisions,
         options: [
-          // {
-          //   label: { id: 'actions.createDecision' },
-          //   value: Action.CreateDecision,
-          //   isDisabled: false,
-          // },
+          {
+            label: getActionName(CoreAction.CreateDecisionMotion),
+            value: CoreAction.CreateDecisionMotion,
+          },
         ],
       },
       {
@@ -87,24 +85,24 @@ const useActionsList = () => {
         isAccordion: true,
         title: MSG.titleFunds,
         options: [
-          // {
-          //   label: { id: 'actions.transferFunds' },
-          //   value: Action.TransferFunds,
-          // },
-          // {
-          //   label: { id: 'actions.mintTokens' },
-          //   value: Action.MintTokens,
-          //   isDisabled: !colony?.status?.nativeToken?.mintable,
-          // },
-          // {
-          //   label: { id: 'actions.unlockToken' },
-          //   value: Action.UnlockToken,
-          //   isDisabled: !colony?.status?.nativeToken?.unlockable,
-          // },
-          // {
-          //   label: { id: 'actions.manageTokens' },
-          //   value: Action.ManageTokens,
-          // },
+          {
+            label: getActionName(CoreAction.MoveFunds),
+            value: CoreAction.MoveFunds,
+          },
+          {
+            label: getActionName(CoreAction.MintTokens),
+            value: CoreAction.MintTokens,
+            isDisabled: !colony?.status?.nativeToken?.mintable,
+          },
+          {
+            label: getActionName(CoreAction.UnlockToken),
+            value: CoreAction.UnlockToken,
+            isDisabled: !colony?.status?.nativeToken?.unlockable,
+          },
+          {
+            label: getActionName(CoreAction.ManageTokens),
+            value: CoreAction.ManageTokens,
+          },
         ],
       },
       {
@@ -112,14 +110,14 @@ const useActionsList = () => {
         isAccordion: true,
         title: MSG.titleTeams,
         options: [
-          // {
-          //   label: { id: 'actions.createNewTeam' },
-          //   value: Action.CreateNewTeam,
-          // },
-          // {
-          //   label: { id: 'actions.editExistingTeam' },
-          //   value: Action.EditExistingTeam,
-          // },
+          {
+            label: getActionName(CoreAction.CreateDomain),
+            value: CoreAction.CreateDomain,
+          },
+          {
+            label: getActionName(CoreAction.EditDomain),
+            value: CoreAction.EditDomain,
+          },
         ],
       },
       {
@@ -127,26 +125,26 @@ const useActionsList = () => {
         isAccordion: true,
         title: MSG.titleAdmin,
         options: [
-          // {
-          //   label: { id: 'actions.manageReputation' },
-          //   value: Action.ManageReputation,
-          // },
-          // {
-          //   label: { id: 'actions.managePermissions' },
-          //   value: Action.ManagePermissions,
-          // },
-          // {
-          //   label: { id: 'actions.editColonyDetails' },
-          //   value: Action.EditColonyDetails,
-          // },
-          // {
-          //   label: { id: 'actions.upgradeColonyVersion' },
-          //   value: Action.UpgradeColonyVersion,
-          // },
-          // {
-          //   label: { id: 'actions.manageVerifiedMembers' },
-          //   value: Action.ManageVerifiedMembers,
-          // },
+          {
+            label: getActionName(CoreActionGroup.ManageReputation),
+            value: CoreActionGroup.ManageReputation,
+          },
+          {
+            label: getActionName(CoreAction.SetUserRoles),
+            value: CoreAction.SetUserRoles,
+          },
+          {
+            label: getActionName(CoreAction.ColonyEdit),
+            value: CoreAction.ColonyEdit,
+          },
+          {
+            label: getActionName(CoreAction.VersionUpgrade),
+            value: CoreAction.VersionUpgrade,
+          },
+          {
+            label: getActionName(CoreActionGroup.ManageVerifiedMembers),
+            value: CoreActionGroup.ManageVerifiedMembers,
+          },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.enterRecoveryMode' },

@@ -1,1 +1,1 @@
-export { CoreAction } from './core/types.ts';
+export { CoreAction, CoreActionGroup } from './core/types.ts';

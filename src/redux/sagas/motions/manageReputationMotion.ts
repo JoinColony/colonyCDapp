@@ -8,7 +8,7 @@ import {
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { CoreAction } from '~actions/core/index.ts';
+import { CoreAction } from '~actions/index.ts';
 import { getActionPermissions } from '~actions/utils.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -87,8 +87,8 @@ function* manageReputationMotion({
     // eslint-disable-next-line no-inner-declarations
     function* getCreateMotionParams() {
       const requiredRoles = isSmitingReputation
-        ? getActionPermissions(CoreAction.ManageReputationSmite)
-        : getActionPermissions(CoreAction.ManageReputationAward);
+        ? getActionPermissions(CoreAction.EmitDomainReputationPenalty)
+        : getActionPermissions(CoreAction.EmitDomainReputationReward);
 
       const context = yield getColonyManager();
       const colonyClient = yield context.getClient(
