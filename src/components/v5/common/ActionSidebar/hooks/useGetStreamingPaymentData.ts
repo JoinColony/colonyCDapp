@@ -28,9 +28,26 @@ export const useGetStreamingPaymentData = (
     });
 
   const streamingPayment = data?.getStreamingPayment;
+
   const [isPolling, setIsPolling] = useState(
     streamingPaymentId && !streamingPayment,
   );
+
+  const [paymentStatus, setPaymentStatus] = useState<StreamingPaymentStatus>(
+    StreamingPaymentStatus.NotStarted,
+  );
+  const [expectedPaymentStatus, setExpectedPaymentStatus] =
+    useState<StreamingPaymentStatus | null>(null);
+
+  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+    useCurrentBlockTime();
+
+  useEffect(() => {
+    if (expectedPaymentStatus === paymentStatus) {
+      setExpectedPaymentStatus(null);
+    }
+  }, [expectedPaymentStatus, paymentStatus, setExpectedPaymentStatus]);
+
   const [amounts, setAmounts] = useState<{
     amountAvailableToClaim: string;
     amountClaimedToDate: string;
@@ -38,11 +55,6 @@ export const useGetStreamingPaymentData = (
     amountAvailableToClaim: '0',
     amountClaimedToDate: '0',
   });
-  const [paymentStatus, setPaymentStatus] = useState<StreamingPaymentStatus>(
-    StreamingPaymentStatus.NotStarted,
-  );
-  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
-    useCurrentBlockTime();
 
   useEffect(() => {
     const shouldPoll = streamingPaymentId && !streamingPayment;
@@ -82,41 +94,48 @@ export const useGetStreamingPaymentData = (
         getStreamingPaymentAmountsLeft(payment, currentTimestamp);
 
       const status = getStreamingPaymentStatus({
-        streamingPayment,
+        streamingPayment: payment,
         currentTimestamp,
         isMotion,
-        amountAvailableToClaim: amounts.amountAvailableToClaim,
+        amountAvailableToClaim,
       });
 
       setPaymentStatus(status);
       setAmounts({ amountAvailableToClaim, amountClaimedToDate });
     },
-    [amounts.amountAvailableToClaim, streamingPayment],
+    [],
   );
 
-  useEffect(() => {
-    if (!loading) {
-      fetchCurrentBlockTime();
-    }
-  }, [fetchCurrentBlockTime, loading]);
+  const isLoading =
+    loading ||
+    !!isPolling ||
+    (expectedPaymentStatus !== null && expectedPaymentStatus !== paymentStatus);
 
   useEffect(() => {
-    if (streamingPayment) {
+    if (!isLoading) {
+      fetchCurrentBlockTime();
+    }
+  }, [fetchCurrentBlockTime, isLoading]);
+
+  useEffect(() => {
+    if (streamingPayment && !isLoading) {
       const currentTimestamp = Math.floor(blockTime ?? Date.now() / 1000);
 
       updateAmountsAndStatus(streamingPayment, currentTimestamp);
     }
-  }, [blockTime, streamingPayment, updateAmountsAndStatus]);
+  }, [blockTime, isLoading, streamingPayment, updateAmountsAndStatus]);
 
   return {
     streamingPaymentData: streamingPayment,
-    loadingStreamingPayment: loading || !!isPolling,
+    loadingStreamingPayment: isLoading,
     refetchStreamingPayment: refetch,
     startPolling,
     stopPolling,
     updateAmountsAndStatus,
     paymentStatus,
     amounts,
+    setExpectedPaymentStatus,
+    expectedPaymentStatus,
   };
 };
 

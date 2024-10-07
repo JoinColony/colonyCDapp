@@ -85,11 +85,14 @@ const CancelModal: FC<CancelModalProps> = ({
         })}
       </h5>
       <p className="mb-6 text-md text-gray-600">
-        {formatText({
-          id: isExpenditureLocked
-            ? 'cancelModal.locked.description'
-            : 'cancelModal.description',
-        })}
+        {formatText(
+          {
+            id: isExpenditureLocked
+              ? 'cancelModal.locked.description'
+              : 'cancelModal.description',
+          },
+          { role: 'Payer' },
+        )}
       </p>
       {isExpenditureLocked ? (
         <Form
