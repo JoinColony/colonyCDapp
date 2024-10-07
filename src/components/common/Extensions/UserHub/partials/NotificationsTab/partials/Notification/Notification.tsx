@@ -8,6 +8,7 @@ import {
 
 import ActionNotification from './Action/ActionNotification.tsx';
 import ExpenditureNotification from './Expenditure/ExpenditureNotification.tsx';
+import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.Notification';
 
@@ -62,6 +63,16 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
   ) {
     return (
       <ExpenditureNotification
+        colony={colony}
+        loadingColony={loadingColony}
+        notification={notification}
+      />
+    );
+  }
+
+  if (notificationType === NotificationType.FundsClaimed) {
+    return (
+      <FundsClaimedNotification
         colony={colony}
         loadingColony={loadingColony}
         notification={notification}

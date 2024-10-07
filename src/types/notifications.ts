@@ -7,6 +7,7 @@ export enum NotificationType {
   ExpenditureFinalized = 'ExpenditureFinalized',
   ExpenditureCancelled = 'ExpenditureCancelled',
   PermissionsAction = 'PermissionsAction',
+  FundsClaimed = 'FundsClaimed',
   Mention = 'Mention',
 }
 
@@ -16,6 +17,8 @@ export interface NotificationAttributes {
   notificationType?: NotificationType;
   transactionHash?: string;
   expenditureID?: string;
+  tokenAmount?: string;
+  tokenAddress?: string;
 }
 
 // Create our own notification type so that we have types for the custom attributes, instead of

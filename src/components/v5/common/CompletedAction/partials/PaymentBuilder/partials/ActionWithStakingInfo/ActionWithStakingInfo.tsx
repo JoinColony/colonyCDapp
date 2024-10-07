@@ -4,8 +4,7 @@ import { defineMessages } from 'react-intl';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
+import { getNumeralTokenAmount, getSelectedToken } from '~utils/tokens.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/StatusText.tsx';
@@ -44,7 +43,7 @@ const ActionWithStakingInfo: FC<ActionWithStakingInfoProps> = ({
   const { tokenAddress } = nativeToken;
 
   const tokenData = getSelectedToken(colony, tokenAddress);
-  const formattedAmount = getFormattedTokenAmount(
+  const formattedAmount = getNumeralTokenAmount(
     stakeAmount,
     tokenData?.decimals || DEFAULT_TOKEN_DECIMALS,
   );

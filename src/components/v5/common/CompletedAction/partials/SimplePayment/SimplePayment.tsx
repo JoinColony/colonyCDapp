@@ -10,7 +10,10 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getNumeralTokenAmount,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -41,7 +44,6 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows/index.ts';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.SimplePayment';
 
@@ -79,10 +81,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
 
   const amountLessFee = useAmountLessFee(amount, networkFee);
 
-  const formattedAmount = getFormattedTokenAmount(
-    amountLessFee,
-    token?.decimals,
-  );
+  const formattedAmount = getNumeralTokenAmount(amountLessFee, token?.decimals);
   const convertedValue = convertToDecimal(
     amountLessFee,
     getTokenDecimalsWithFallback(token?.decimals),

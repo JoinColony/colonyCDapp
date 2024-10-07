@@ -3,9 +3,8 @@ import React from 'react';
 
 import { type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
+import { getNumeralTokenAmount } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
-
-import { getFormattedTokenAmount } from '../utils.ts';
 
 import ActionData from './ActionData.tsx';
 
@@ -17,7 +16,7 @@ interface AmountRowProps {
 }
 
 const AmountRow = ({ amount, token }: AmountRowProps) => {
-  const formattedAmount = getFormattedTokenAmount(amount, token?.decimals);
+  const formattedAmount = getNumeralTokenAmount(amount, token?.decimals);
 
   return (
     <ActionData
