@@ -36,7 +36,6 @@ export type ManageReputationMotionPayload =
 function* manageReputationMotion({
   payload: {
     colonyAddress,
-    colonyName,
     domainId,
     userAddress,
     amount,
@@ -48,7 +47,7 @@ function* manageReputationMotion({
     colonyDomains,
     colonyRoles,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_REPUTATION>) {
   let txChannel;
@@ -295,12 +294,6 @@ function* manageReputationMotion({
       type: ActionTypes.MOTION_MANAGE_REPUTATION_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.MOTION_MANAGE_REPUTATION_ERROR, error, meta);
   } finally {

@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
+import ColonyFiltersContextProvider from '~context/GlobalFiltersContext/ColonyFiltersContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
 import PageLayoutContextProvider from '~context/PageLayoutContext/PageLayoutContextProvider.tsx';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
@@ -29,11 +30,13 @@ const RootRoute = () => (
   <PageThemeContextProvider>
     <PageLayoutContextProvider>
       <AppContextProvider>
-        <FeatureFlagsContextProvider>
-          <CurrencyContextProvider>
-            <RootRouteInner />
-          </CurrencyContextProvider>
-        </FeatureFlagsContextProvider>
+        <ColonyFiltersContextProvider>
+          <FeatureFlagsContextProvider>
+            <CurrencyContextProvider>
+              <RootRouteInner />
+            </CurrencyContextProvider>
+          </FeatureFlagsContextProvider>
+        </ColonyFiltersContextProvider>
       </AppContextProvider>
     </PageLayoutContextProvider>
   </PageThemeContextProvider>

@@ -21,14 +21,8 @@ import {
 } from '../utils/index.ts';
 
 function* createVersionUpgradeAction({
-  payload: {
-    colonyAddress,
-    colonyName,
-    version,
-    annotationMessage,
-    customActionTitle,
-  },
-  meta: { id: metaId, navigate, setTxHash },
+  payload: { colonyAddress, version, annotationMessage, customActionTitle },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_VERSION_UPGRADE>) {
   let txChannel;
@@ -107,18 +101,13 @@ function* createVersionUpgradeAction({
     }
 
     setTxHash?.(txHash);
+
     yield colonyManager.setColonyClient(colonyAddress);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_VERSION_UPGRADE_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.ACTION_VERSION_UPGRADE_ERROR, caughtError, meta);
   } finally {

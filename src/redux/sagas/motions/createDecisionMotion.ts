@@ -26,11 +26,10 @@ import { getColonyManager, initiateTransaction } from '../utils/index.ts';
 
 function* createDecisionMotion({
   payload: {
-    colonyName,
     colonyAddress,
     draftDecision: { motionDomainId, title, description, walletAddress },
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_CREATE_DECISION>) {
   const txChannel = yield call(getTxChannel, metaId);
@@ -171,12 +170,6 @@ function* createDecisionMotion({
       type: ActionTypes.MOTION_CREATE_DECISION_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
 
     yield put({
       type: ActionTypes.DECISION_DRAFT_REMOVED,

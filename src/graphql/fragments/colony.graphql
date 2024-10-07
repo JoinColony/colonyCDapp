@@ -28,7 +28,7 @@ fragment Colony on Colony {
   balances {
     ...ColonyBalances
   }
-  fundsClaims {
+  fundsClaimData {
     items {
       ...FundsClaim
     }

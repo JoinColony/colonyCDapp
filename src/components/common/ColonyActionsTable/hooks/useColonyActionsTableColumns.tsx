@@ -6,7 +6,6 @@ import { defineMessages } from 'react-intl';
 
 import { useMobile } from '~hooks';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
-import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
@@ -23,11 +22,12 @@ const MSG = defineMessages({
   },
 });
 
-const useColonyActionsTableColumns = (
-  loading: boolean,
-  loadingMotionStates: boolean,
-  refetchMotionStates: RefetchMotionStates,
-) => {
+const useColonyActionsTableColumns = ({
+  loading,
+  loadingMotionStates,
+  refetchMotionStates,
+  showUserAvatar = true,
+}) => {
   const isMobile = useMobile();
 
   return useMemo(() => {
@@ -45,6 +45,7 @@ const useColonyActionsTableColumns = (
             loading={loading}
             refetchMotionStates={refetchMotionStates}
             hideDetails={getIsExpanded()}
+            showUserAvatar={showUserAvatar}
           />
         ),
         colSpan: (isExpanded) => (isExpanded ? 2 : undefined),
@@ -142,7 +143,13 @@ const useColonyActionsTableColumns = (
         cellContentWrapperClassName: 'pl-0',
       }),
     ];
-  }, [isMobile, loading, loadingMotionStates, refetchMotionStates]);
+  }, [
+    isMobile,
+    loading,
+    loadingMotionStates,
+    refetchMotionStates,
+    showUserAvatar,
+  ]);
 };
 
 export default useColonyActionsTableColumns;

@@ -34,7 +34,6 @@ import {
 function* createPaymentMotion({
   payload: {
     colonyAddress,
-    colonyName,
     domainId,
     payments,
     annotationMessage,
@@ -44,7 +43,7 @@ function* createPaymentMotion({
     colonyDomains,
     isMultiSig = false,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -347,16 +346,11 @@ function* createPaymentMotion({
     }
 
     setTxHash?.(txHash);
+
     yield put<AllActions>({
       type: ActionTypes.MOTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
-
-    if (navigate && colonyName) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(
       ActionTypes.MOTION_EXPENDITURE_PAYMENT_ERROR,

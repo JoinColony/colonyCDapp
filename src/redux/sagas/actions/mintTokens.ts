@@ -21,13 +21,12 @@ import {
 function* createMintTokensAction({
   payload: {
     colonyAddress,
-    colonyName,
     nativeTokenAddress,
     amount,
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MINT_TOKENS>) {
   let txChannel;
@@ -128,13 +127,6 @@ function* createMintTokensAction({
       type: ActionTypes.ACTION_MINT_TOKENS_SUCCESS,
       meta,
     });
-
-    // Redirect to actions page
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.ACTION_MINT_TOKENS_ERROR, caughtError, meta);
   } finally {

@@ -31,6 +31,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "cacheDomainBalance": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "colonycdappSSMAccess"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "colonycdappSSMAccess": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -95,6 +109,11 @@
           "resourceName": "colonycdappSSMAccess"
         }
       ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fetchDomainBalance": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },

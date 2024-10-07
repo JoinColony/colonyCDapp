@@ -30,7 +30,6 @@ import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
 function* createEditDomainMultiSigMotion({
   payload: {
     colonyAddress,
-    colonyName,
     domainName,
     domainColor,
     domainPurpose,
@@ -42,7 +41,7 @@ function* createEditDomainMultiSigMotion({
     colonyDomains,
     colonyRoles,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT>) {
   let txChannel;
@@ -194,12 +193,6 @@ function* createEditDomainMultiSigMotion({
       type: ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(
       ActionTypes.MOTION_MULTISIG_DOMAIN_CREATE_EDIT_ERROR,

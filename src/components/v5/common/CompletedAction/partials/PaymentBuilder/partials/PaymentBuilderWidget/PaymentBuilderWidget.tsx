@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import React, { useState, type FC, useEffect } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -33,6 +34,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
+
+  const client = useApolloClient();
 
   const [
     isFundingModalOpen,
@@ -83,6 +86,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       refetchColony();
       refetchExpenditures();
     }
+
+    if (expenditureStep === ExpenditureStep.Payment) {
+      // Payments with 0 claim delay will be paid immediately once at the payment step
+      // we need to remove all getDomainBalance queries to refetch the correct balances
+      client.cache.evict({
+        fieldName: 'getDomainBalance',
+      });
+    }
+
     setActiveStepKey(expenditureStep);
   }, [expenditureStep, refetchColony, refetchExpenditures]);
 

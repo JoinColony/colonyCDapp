@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import { ArrowsClockwise } from '@phosphor-icons/react';
 import React, { type FC, useMemo } from 'react';
 
@@ -25,6 +26,9 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
+
+  const client = useApolloClient();
+
   const { slots = [], finalizedAt, nativeId } = expenditure || {};
 
   const claimablePayouts = useMemo(
@@ -142,6 +146,12 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                 onSuccess={() => {
                   refetchExpenditure();
                   fetchCurrentBlockTime();
+
+                  // When a payment has been claimed successfully
+                  // we need to remove all getDomainBalance queries to refetch the correct balances
+                  client.cache.evict({
+                    fieldName: 'getDomainBalance',
+                  });
                 }}
               />
             </div>

@@ -154,6 +154,15 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [memberSearchData],
   );
 
+  const followers = useMemo(
+    () =>
+      memberSearchData?.searchColonyContributors?.items.filter(
+        (item): item is NonNullable<typeof item> =>
+          item !== null && !!item.isWatching,
+      ) || [],
+    [memberSearchData],
+  );
+
   const {
     contributors: filteredContributors,
     pagedContributors,
@@ -215,6 +224,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       verifiedMembers,
       totalMemberCount: memberSearchData?.searchColonyContributors?.total || 0,
       totalMembers: allMembers,
+      followersCount: followers.length,
+      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -233,6 +244,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       verifiedMembers,
       memberSearchData,
       allMembers,
+      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,

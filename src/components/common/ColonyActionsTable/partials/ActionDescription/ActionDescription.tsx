@@ -20,6 +20,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
   loading,
   refetchMotionStates,
   hideDetails,
+  showUserAvatar = true,
 }) => {
   const isMobile = useMobile();
   const {
@@ -78,18 +79,22 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   return (
     <div className="flex w-full items-center gap-2 sm:gap-4">
-      {loading ? (
-        <div className="aspect-square h-[26px] w-auto rounded-full skeleton before:rounded-full" />
-      ) : (
-        <UserAvatar
-          size={26}
-          userAddress={walletAddress}
-          userName={user?.profile?.displayName ?? undefined}
-          userAvatarSrc={
-            user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
-          }
-          className="flex-shrink-0 flex-grow-0"
-        />
+      {showUserAvatar && (
+        <>
+          {loading ? (
+            <div className="aspect-square h-[26px] w-auto rounded-full skeleton before:rounded-full" />
+          ) : (
+            <UserAvatar
+              size={26}
+              userAddress={walletAddress}
+              userName={user?.profile?.displayName ?? undefined}
+              userAvatarSrc={
+                user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
+              }
+              className="flex-shrink-0 flex-grow-0"
+            />
+          )}
+        </>
       )}
       <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
         <div>

@@ -1,5 +1,4 @@
 import { LockKey } from '@phosphor-icons/react';
-import clsx from 'clsx';
 import React from 'react';
 
 import { useMobile } from '~hooks';
@@ -15,55 +14,40 @@ import Modal from '~v5/shared/Modal/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
 
 interface NativeTokenPillProps {
-  variant?: 'primary' | 'secondary';
   token: Token;
   isLocked?: boolean;
 }
 
 const displayName = 'v5.shared.NativeTokenPill';
 
-const NativeTokenPill = ({
-  variant = 'primary',
-  token,
-  isLocked = false,
-}: NativeTokenPillProps) => {
+const NativeTokenPill = ({ token, isLocked = false }: NativeTokenPillProps) => {
   const isMobile = useMobile();
 
   const [
-    isTokenModalOpened,
-    { toggleOff: toggleTokenModalOff, toggleOn: toggleTokenModalOn },
+    isTokenModalVisible,
+    {
+      toggle: toggleTokenModal,
+      toggleOff: toggleTokenModalOff,
+      registerContainerRef,
+    },
   ] = useToggle();
-  const [isTokenVisible, { toggle: toggleToken, registerContainerRef }] =
-    useToggle();
 
   const { portalElementRef, relativeElementRef } = useRelativePortalElement<
     HTMLButtonElement,
     HTMLDivElement
-  >([isTokenVisible], {
+  >([isTokenModalVisible], {
     top: 8,
   });
-  const isTokenInfoShown = isTokenModalOpened || isTokenVisible;
 
   return (
     <>
       <button
         type="button"
         ref={relativeElementRef}
-        className={clsx(
-          'group flex h-[1.875rem] cursor-pointer flex-row items-center rounded-lg px-1.5 text-gray-900',
-          {
-            'bg-base-bg': variant === 'primary',
-            'border border-gray-200 bg-base-white': variant === 'secondary',
-          },
-        )}
-        onClick={isMobile ? toggleTokenModalOn : toggleToken}
+        className="flex h-[1.75rem] cursor-pointer flex-row items-center rounded-[32px] bg-blue-100 px-2.5 text-gray-900"
+        onClick={toggleTokenModal}
       >
-        <span
-          className={clsx('text-sm font-medium', {
-            'text-gray-900 group-hover:text-blue-400': !isTokenInfoShown,
-            'text-blue-400': isTokenInfoShown,
-          })}
-        >
+        <span className="text-sm font-medium text-blue-400">
           {multiLineTextEllipsis(token.symbol, 5)}
         </span>
         {isLocked && (
@@ -72,7 +56,7 @@ const NativeTokenPill = ({
               <span>{formatText({ id: 'tooltip.lockedToken' })}</span>
             }
           >
-            <LockKey size={11} className="ml-0.5" />
+            <LockKey size={11} className="ml-0.5 text-blue-400" />
           </Tooltip>
         )}
       </button>
@@ -80,13 +64,13 @@ const NativeTokenPill = ({
         <Modal
           isFullOnMobile={false}
           onClose={toggleTokenModalOff}
-          isOpen={isTokenModalOpened}
+          isOpen={isTokenModalVisible}
           withPadding={false}
         >
           <TokenInfo className="w-full" token={token} isTokenNative />
         </Modal>
       ) : (
-        isTokenVisible && (
+        isTokenModalVisible && (
           <Portal>
             <MenuContainer
               className="absolute z-sidebar min-w-80 !p-0"

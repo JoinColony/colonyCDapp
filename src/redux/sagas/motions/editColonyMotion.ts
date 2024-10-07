@@ -34,7 +34,7 @@ import {
 
 function* editColonyMotion({
   payload: {
-    colony: { colonyAddress, name: colonyName, metadata },
+    colony: { colonyAddress, metadata },
     colony,
     colonyDisplayName,
     colonyAvatarImage,
@@ -47,7 +47,7 @@ function* editColonyMotion({
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_EDIT_COLONY>) {
   let txChannel;
@@ -293,12 +293,6 @@ function* editColonyMotion({
       type: ActionTypes.MOTION_EDIT_COLONY_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.MOTION_EDIT_COLONY_ERROR, caughtError, meta);
   } finally {

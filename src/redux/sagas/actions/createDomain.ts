@@ -43,7 +43,6 @@ import {
 function* createDomainAction({
   payload: {
     colonyAddress,
-    colonyName,
     domainName,
     domainColor,
     domainPurpose,
@@ -51,7 +50,7 @@ function* createDomainAction({
     parentId = Id.RootDomain,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_CREATE>) {
   let txChannel;
@@ -179,12 +178,6 @@ function* createDomainAction({
       type: ActionTypes.ACTION_DOMAIN_CREATE_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.ACTION_DOMAIN_CREATE_ERROR, error, meta);
   } finally {

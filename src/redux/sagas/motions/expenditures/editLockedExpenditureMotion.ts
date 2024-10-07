@@ -181,12 +181,6 @@ function* editLockedExpenditureMotion({
         )}?tx=${txHash}`,
       );
     }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${APP_URL}${window.location.pathname.slice(1)}?tx=${txHash}`,
-    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_EDIT_LOCKED_EXPENDITURE_ERROR>>({

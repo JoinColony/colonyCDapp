@@ -37,10 +37,14 @@ export interface TableProps<T>
   renderSubComponent?: (props: { row: Row<T> }) => React.ReactElement;
   getRowCanExpand?: (row: Row<T>) => boolean;
   withBorder?: boolean;
+  withNarrowBorder?: boolean;
   isDisabled?: boolean;
   virtualizedProps?: {
     virtualizedRowHeight?: number;
   };
   tableClassName?: string;
   tableBodyRowKeyProp?: Extract<keyof T, React.Key>;
+  showTableHead?: boolean;
+  showTableBorder?: boolean;
+  alwaysShowPagination?: boolean;
 }
