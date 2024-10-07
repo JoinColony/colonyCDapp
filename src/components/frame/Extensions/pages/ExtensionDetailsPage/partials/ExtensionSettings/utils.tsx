@@ -3,12 +3,8 @@ import React from 'react';
 import { type FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
-import {
-  waitForExtensionPermissions,
-  waitForDbAfterExtensionAction,
-} from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
@@ -39,14 +35,12 @@ export const getFormSuccessFn =
   <T extends FieldValues>({
     setWaitingForActionConfirmation,
     extensionData,
-    refetchColony,
     refetchExtensionData,
     setActiveTab,
   }: {
     setWaitingForActionConfirmation: SetStateFn;
     setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
     extensionData: AnyExtensionData;
-    refetchColony: RefetchColonyFn;
     refetchExtensionData: RefetchExtensionDataFn;
   }): OnSuccess<T> =>
   async (fieldValues, { reset }) => {
@@ -57,8 +51,6 @@ export const getFormSuccessFn =
       (extensionData.isInitialized || extensionData.configurable);
 
     try {
-      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
-      await waitForExtensionPermissions({ extensionData, refetchColony });
       if (!isSaveChanges) {
         await waitForDbAfterExtensionAction({
           method: ExtensionMethods.ENABLE,

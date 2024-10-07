@@ -1,9 +1,11 @@
+import { Extension } from '@colony/colony-js';
 import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
+import { getDefaultStakeFraction } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 
@@ -17,7 +19,7 @@ const displayName = 'pages.ExtensionDetailsPage.InstallButton';
 
 const InstallButton = ({ extensionData }: InstallButtonProps) => {
   const {
-    colony: { colonyAddress },
+    colony: { colonyAddress, nativeToken },
     isSupportedColonyVersion,
   } = useColonyContext();
 
@@ -26,11 +28,28 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
   const { isLoading, handleInstallSuccess, handleInstallError } =
     useInstall(extensionData);
 
+  const getDefaultExtensionParams = (extensionId: Extension) => {
+    switch (extensionId) {
+      case Extension.StakedExpenditure: {
+        return {
+          stakeFraction: getDefaultStakeFraction(nativeToken.decimals),
+        };
+      }
+      default: {
+        return {};
+      }
+    }
+  };
+
   return (
     <ActionButton
-      actionType={ActionTypes.EXTENSION_INSTALL}
+      actionType={ActionTypes.EXTENSION_INSTALL_AND_ENABLE}
       isLoading={isLoading}
-      values={{ colonyAddress, extensionData }}
+      values={{
+        colonyAddress,
+        extensionData,
+        defaultParams: getDefaultExtensionParams(extensionData.extensionId),
+      }}
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
