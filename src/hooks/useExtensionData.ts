@@ -11,11 +11,8 @@ import {
   type InstalledExtensionData,
   type AnyExtensionData,
 } from '~types/extensions.ts';
-import { type ColonyExtension } from '~types/graphql.ts';
-import {
-  mapToInstallableExtensionData,
-  mapToInstalledExtensionData,
-} from '~utils/extensions.ts';
+import { type Colony } from '~types/graphql.ts';
+import { getMappedExtensionData } from '~utils/extensions.ts';
 
 export enum ExtensionMethods {
   INSTALL = 'installExtension',
@@ -26,8 +23,9 @@ export enum ExtensionMethods {
   ENABLE = 'enableExtension',
 }
 
-export type RefetchExtensionDataFn =
-  () => Promise<InstalledExtensionData | null>;
+export type RefetchExtensionDataFn = (
+  shouldRefetchPermissions?: boolean,
+) => Promise<InstalledExtensionData | null>;
 
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
@@ -42,7 +40,7 @@ interface UseExtensionDataReturn {
  * and mapping it into Installed or InstallableExtensionData object
  */
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
 
   const extensionHash = getExtensionHash(extensionId as Extension);
 
@@ -72,45 +70,44 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     (e) => e.extensionId === extensionId,
   );
 
-  const getMappedExtensionData = useCallback(
-    (colonyExtension?: ColonyExtension | null): AnyExtensionData | null => {
-      if (!version || !extensionConfig) {
-        return null;
-      }
-
-      if (colonyExtension) {
-        return mapToInstalledExtensionData({
-          colony,
-          extensionConfig,
-          colonyExtension,
-          version,
-        });
-      }
-
-      return mapToInstallableExtensionData(extensionConfig, version);
-    },
-    [colony, extensionConfig, version],
-  );
-
   const extensionData = useMemo<AnyExtensionData | null>(
-    () => getMappedExtensionData(rawExtensionData),
-    [getMappedExtensionData, rawExtensionData],
+    () =>
+      getMappedExtensionData({
+        colony,
+        colonyExtension: rawExtensionData,
+        version,
+        extensionConfig,
+      }),
+    [colony, rawExtensionData, version, extensionConfig],
   );
 
-  const handleRefetch = useCallback(async () => {
-    const refetchResponse = await refetch();
-    const updatedColonyExtension =
-      refetchResponse.data.getExtensionByColonyAndHash?.items[0];
+  const handleRefetch = useCallback(
+    async (shouldRefetchPermissions?: boolean) => {
+      const refetchResponse = await refetch();
+      const updatedColonyExtension =
+        refetchResponse.data.getExtensionByColonyAndHash?.items[0];
 
-    if (updatedColonyExtension) {
-      // Extension is guaranteed to be installed if returned by the query
-      return getMappedExtensionData(
-        updatedColonyExtension,
-      ) as InstalledExtensionData;
-    }
+      if (updatedColonyExtension) {
+        let updatedColony: Colony | null = null;
+        if (shouldRefetchPermissions) {
+          const colonyRefetchResponse = await refetchColony();
+          updatedColony =
+            colonyRefetchResponse?.data.getColonyByName?.items?.[0] ?? null;
+        }
 
-    return null;
-  }, [getMappedExtensionData, refetch]);
+        // Extension is guaranteed to be installed if returned by the query
+        return getMappedExtensionData({
+          colony: updatedColony ?? colony,
+          colonyExtension: updatedColonyExtension,
+          version,
+          extensionConfig,
+        }) as InstalledExtensionData;
+      }
+
+      return null;
+    },
+    [colony, extensionConfig, refetch, refetchColony, version],
+  );
 
   return {
     extensionData,

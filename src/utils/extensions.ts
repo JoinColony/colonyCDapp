@@ -71,6 +71,33 @@ export const mapToInstalledExtensionData = ({
   };
 };
 
+export const getMappedExtensionData = ({
+  colony,
+  colonyExtension,
+  version,
+  extensionConfig,
+}: {
+  colony: Colony;
+  colonyExtension?: ColonyExtension | null;
+  version?: number;
+  extensionConfig?: ExtensionConfig;
+}): AnyExtensionData | null => {
+  if (!version || !extensionConfig) {
+    return null;
+  }
+
+  if (colonyExtension) {
+    return mapToInstalledExtensionData({
+      colony,
+      extensionConfig,
+      colonyExtension,
+      version,
+    });
+  }
+
+  return mapToInstallableExtensionData(extensionConfig, version);
+};
+
 export const canExtensionBeInitialized = (extension: Extension) => {
   switch (extension) {
     case Extension.OneTxPayment: {

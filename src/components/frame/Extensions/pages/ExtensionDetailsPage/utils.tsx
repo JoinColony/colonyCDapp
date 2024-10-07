@@ -45,16 +45,30 @@ export const waitForDbAfterExtensionAction = (
         );
       }
 
-      const extensionData = await refetchExtensionData();
+      const shouldRefetchPermissions =
+        args.method === ExtensionMethods.INSTALL ||
+        args.method === ExtensionMethods.ENABLE;
+      const extensionData = await refetchExtensionData(
+        shouldRefetchPermissions,
+      );
 
       let condition = false;
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
+          if (extensionData?.autoEnableAfterInstall) {
+            condition =
+              !!extensionData.isEnabled &&
+              extensionData.missingColonyPermissions.length === 0;
+            break;
+          }
+
           if (extensionData?.extensionId === Extension.MultisigPermissions) {
             // Wait until MultiSig params are present
-            condition = !!extensionData?.params?.multiSig;
+            condition = !!extensionData.params?.multiSig;
+            break;
           }
+
           // If it appears in the query, it means it's been installed
           condition = !!extensionData;
           break;
@@ -97,6 +111,7 @@ export const waitForDbAfterExtensionAction = (
   });
 };
 
+// @TODO: Remove
 export const waitForExtensionPermissions = ({
   refetchColony,
   extensionData,
