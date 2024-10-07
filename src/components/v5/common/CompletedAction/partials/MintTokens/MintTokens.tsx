@@ -5,7 +5,10 @@ import { Action } from '~constants/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getNumeralTokenAmount,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
   AMOUNT_FIELD_NAME,
@@ -30,7 +33,6 @@ import {
   DecisionMethodRow,
   DescriptionRow,
 } from '../rows/index.ts';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.MintTokens';
 
@@ -54,10 +56,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { amount, initiatorUser, token, transactionHash, annotation } = action;
 
-  const formattedAmount = getFormattedTokenAmount(
-    amount || '1',
-    token?.decimals,
-  );
+  const formattedAmount = getNumeralTokenAmount(amount || '1', token?.decimals);
   const convertedValue = convertToDecimal(
     amount || '',
     getTokenDecimalsWithFallback(token?.decimals),
