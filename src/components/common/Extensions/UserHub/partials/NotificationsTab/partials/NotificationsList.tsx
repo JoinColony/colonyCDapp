@@ -3,7 +3,7 @@ import React from 'react';
 import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 
-import Notification from './Notification.tsx';
+import Notification from './Notification/Notification.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.NotificationsList';
 

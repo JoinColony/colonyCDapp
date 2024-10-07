@@ -121,3 +121,11 @@ subscription OnUpdateColony {
     lastUpdatedContributorsWithReputation
   }
 }
+
+query GetColonyForNotification($address: ID!) {
+  getColonyByAddress(id: $address) {
+    items {
+      ...NotificationColony
+    }
+  }
+}
