@@ -7,10 +7,7 @@ import { useGetStreamingPaymentsByColonyQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import {
-  getStreamingPaymentAmountsLeft,
-  getStreamingPaymentStatus,
-} from '~utils/streamingPayments.ts';
+import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
 import { calculateTotalsFromStreams } from './utils.ts';
@@ -88,7 +85,7 @@ export const useStreamingPaymentsTotalFunds = ({
   const [totalLastMonthStreaming, setTotalLastMonthStreaming] = useState(0);
 
   const getTotalFunds = useCallback(
-    async (items: StreamingPaymentItems) => {
+    async (items: StreamingPaymentItems, currentTimestamp: number) => {
       const {
         totalAvailable,
         totalClaimed,
@@ -97,7 +94,7 @@ export const useStreamingPaymentsTotalFunds = ({
         lastMonthStreaming,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
-        currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+        currentTimestamp,
         currency,
         colony,
       });
@@ -111,21 +108,16 @@ export const useStreamingPaymentsTotalFunds = ({
       });
       setRatePerSecond(ratePerSecondValue);
     },
-    [blockTime, colony, currency],
+    [colony, currency],
   );
 
   const getTotalActiveStreamingPayments = useCallback(
     (items: StreamingPaymentItems) => {
       const activeStreams = items.filter((item) => {
-        const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
-          item,
-          Math.floor(blockTime ?? Date.now() / 1000),
-        );
         return (
           getStreamingPaymentStatus({
             streamingPayment: item,
             currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
-            amountAvailableToClaim,
           }) === StreamingPaymentStatus.Active
         );
       });
@@ -170,11 +162,20 @@ export const useStreamingPaymentsTotalFunds = ({
     isFilteredByWalletAddress,
     nativeDomainId,
   ]);
-
   useEffect(() => {
-    getTotalFunds(streamingPayments);
-    getTotalActiveStreamingPayments(streamingPayments);
-  }, [getTotalFunds, streamingPayments, getTotalActiveStreamingPayments]);
+    if (streamingPayments.length) {
+      getTotalFunds(
+        streamingPayments,
+        Math.floor(blockTime ?? Date.now() / 1000),
+      );
+      getTotalActiveStreamingPayments(streamingPayments);
+    }
+  }, [
+    blockTime,
+    getTotalFunds,
+    streamingPayments,
+    getTotalActiveStreamingPayments,
+  ]);
 
   return {
     totalStreamed: totalFunds.totalClaimed + totalFunds.totalAvailable,

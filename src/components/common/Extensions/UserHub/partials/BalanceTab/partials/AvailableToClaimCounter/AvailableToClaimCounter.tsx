@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { type FC, useEffect } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
@@ -12,18 +12,25 @@ const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
   getTotalFunds,
   isAtLeastOnePaymentActive,
   ratePerSecond,
+  currentTimestamp: currentTimeProp,
 }) => {
   const { currency } = useCurrencyContext();
+  const [currentTime, setCurrentTime] = useState<number>(-1);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      getTotalFunds();
+      getTotalFunds(currentTime);
+      setCurrentTime((oldTime) => oldTime + 1);
     }, 1000);
 
     return () => {
       clearInterval(timer);
     };
-  }, [getTotalFunds]);
+  }, [currentTime, getTotalFunds]);
+
+  useEffect(() => {
+    setCurrentTime(currentTimeProp);
+  }, [currentTimeProp]);
 
   const decimalPlaces = ratePerSecond.toString().split('.')[1]?.length || 0;
   const fixedDecimalPlaces = decimalPlaces < 5 ? decimalPlaces : 5;
