@@ -24,11 +24,11 @@ export const PaymentBuilderContext = createContext<{
   toggleOffReleaseModal: () => void;
   isReleaseModalOpen: boolean;
   selectedFundingAction: ExpenditureAction | null;
-  selectedReleaseAction: ExpenditureAction | null;
   setSelectedFundingAction: (action: ExpenditureAction | null) => void;
-  setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
   selectedMilestones: MilestoneItem[];
   setSelectedMilestones: (transaction: MilestoneItem[]) => void;
+  selectedReleaseAction: ExpenditureAction | null;
+  setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
 }>({
   toggleOnFundingModal: noop,
   toggleOffFundingModal: noop,
