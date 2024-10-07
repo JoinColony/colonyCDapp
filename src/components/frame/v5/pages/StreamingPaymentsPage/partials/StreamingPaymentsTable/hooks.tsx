@@ -24,12 +24,14 @@ export const useStreamingTableColumns = () => {
         id: 'user',
         staticSize: '100%',
         enableSorting: false,
+        header: () => null,
         cell: ({ row }) => <UserField address={row.original.user} />,
       }),
       helper.display({
         id: 'amount',
         staticSize: '7.5rem',
         enableSorting: false,
+        header: () => null,
         cell: ({ row }) => (
           <UserStreams
             amount={row.original.userStreams.amount}

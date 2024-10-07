@@ -99,7 +99,7 @@ const StreamingPaymentsTable = () => {
       </div>
       <Table<StreamingTableFieldModel>
         className={clsx(
-          '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-b [&_td]:border-gray-100 [&_td]:pr-4 [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0',
+          '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-gray-100 [&_td]:pr-4 [&_th]:border-none [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0 [&_tr:not(:last-child)_td]:border-b',
           {},
         )}
         data={loading ? [] : streamingPayments}
