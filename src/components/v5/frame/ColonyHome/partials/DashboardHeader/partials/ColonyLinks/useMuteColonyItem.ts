@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
+import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import { useUpdateUserNotificationsMutedColoniesMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
@@ -35,7 +35,7 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const { mutedColonyAddresses } = useNotificationsContext();
+  const { mutedColonyAddresses } = useNotificationsUserContext();
   const [updateMutedColonies] =
     useUpdateUserNotificationsMutedColoniesMutation();
 

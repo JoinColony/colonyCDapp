@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
-import NotificationsContextProvider from '~context/NotificationsContext/NotificationsContextProvider.tsx';
+import NotificationsUserContextProvider from '~context/Notifications/NotificationsUserContext/NotificationsUserContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import PageThemeContextProvider from '~context/PageThemeContext/PageThemeContextProvider.tsx';
@@ -30,9 +30,9 @@ const RootRoute = () => (
     <AppContextProvider>
       <FeatureFlagsContextProvider>
         <CurrencyContextProvider>
-          <NotificationsContextProvider>
+          <NotificationsUserContextProvider>
             <RootRouteInner />
-          </NotificationsContextProvider>
+          </NotificationsUserContextProvider>
         </CurrencyContextProvider>
       </FeatureFlagsContextProvider>
     </AppContextProvider>

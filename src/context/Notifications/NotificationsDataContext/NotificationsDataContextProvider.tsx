@@ -1,24 +1,20 @@
 import { MagicBellProvider, useBell } from '@magicbell/react-headless';
-import React, { type ReactNode, useEffect, useMemo } from 'react';
+import React, { type ReactNode, useMemo } from 'react';
 
 import { isDev } from '~constants';
-import { useCreateUserNotificationsDataMutation } from '~gql';
-
-import { useAppContext } from '../AppContext/AppContext.ts';
+import { useAppContext } from '~context/AppContext/AppContext.ts';
 
 import {
-  NotificationsContext,
-  type NotificationsContextValues,
-} from './NotificationsContext.ts';
+  NotificationsDataContext,
+  type NotificationsDataContextValues,
+} from './NotificationsDataContext.ts';
 
-const NotificationsContextProvider = ({
+const NotificationsDataContextProvider = ({
   children,
 }: {
   children: ReactNode;
 }) => {
-  const { updateUser, user } = useAppContext();
-  const [createUserNotificationsData] =
-    useCreateUserNotificationsDataMutation();
+  const { user } = useAppContext();
 
   const {
     currentPage,
@@ -36,26 +32,12 @@ const NotificationsContextProvider = ({
     unreadCount: 0,
   };
 
-  useEffect(() => {
-    // If the user has loaded, and they do not currently have notifications data with a magicbell user id
-    // then we assume they do not have their notifications data and Magicbell user created yet, so we call
-    // the lambda to make it here, and then update the user in the app context.
-    if (user && !user?.notificationsData?.magicbellUserId) {
-      createUserNotificationsData({
-        variables: { input: { id: user.walletAddress } },
-      }).then(() => {
-        updateUser(user.walletAddress, true);
-      });
-    }
-  }, [createUserNotificationsData, updateUser, user]);
-
-  const value = useMemo((): NotificationsContextValues => {
+  const value = useMemo((): NotificationsDataContextValues => {
     return {
       canFetchMore: currentPage < totalPages,
       fetchMore: fetchNextPage,
       markAllAsRead: markAllAsRead || (() => null),
       notifications,
-      mutedColonyAddresses: user?.notificationsData?.mutedColonyAddresses || [],
       totalPages,
       unreadCount,
     };
@@ -66,24 +48,20 @@ const NotificationsContextProvider = ({
     notifications,
     totalPages,
     unreadCount,
-    user?.notificationsData?.mutedColonyAddresses,
   ]);
-
-  if (!user) {
-    return <>{children}</>;
-  }
 
   if (
     !user?.notificationsData?.magicbellUserId ||
     !import.meta.env.MAGICBELL_API_KEY
   ) {
     return (
-      <NotificationsContext.Provider value={value}>
+      <NotificationsDataContext.Provider value={value}>
         {children}
-      </NotificationsContext.Provider>
+      </NotificationsDataContext.Provider>
     );
   }
 
+  // @NOTE it tripped me up, but it's not an actual provider and this thing works without wrapping it in another provider
   return (
     <MagicBellProvider
       apiKey={import.meta.env.MAGICBELL_API_KEY}
@@ -109,11 +87,11 @@ const NotificationsContextProvider = ({
             ]
       }
     >
-      <NotificationsContext.Provider value={value}>
+      <NotificationsDataContext.Provider value={value}>
         {children}
-      </NotificationsContext.Provider>
+      </NotificationsDataContext.Provider>
     </MagicBellProvider>
   );
 };
 
-export default NotificationsContextProvider;
+export default NotificationsDataContextProvider;

@@ -9,7 +9,6 @@ import { ADDRESS_ZERO } from '~constants';
 import { useAnalyticsContext } from '~context/AnalyticsContext/AnalyticsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useNotificationsContext } from '~context/NotificationsContext/NotificationsContext.ts';
 import { useTokensModalContext } from '~context/TokensModalContext/TokensModalContext.ts';
 import { TransactionStatus } from '~gql';
 import { useMobile } from '~hooks/index.ts';
@@ -21,6 +20,7 @@ import {
   useGroupedTransactions,
 } from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/NotificationsEnabledWrapper.tsx';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -29,6 +29,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { UserHubTab } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
+import NotificationDot from './partials/NotificationDot.tsx';
 
 interface Props {
   openTab?: UserHubTab;
@@ -50,8 +51,6 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
-
-  const { unreadCount } = useNotificationsContext();
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;
@@ -161,8 +160,6 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
     user?.profile?.displayName ??
     splitWalletAddress(walletAddress ?? ADDRESS_ZERO);
 
-  const showNotificationDot = !!unreadCount && unreadCount > 0;
-
   return (
     <div className="flex-shrink-0">
       <Button
@@ -206,9 +203,9 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
             </>
           ) : null}
         </div>
-        {showNotificationDot && (
-          <div className="absolute right-[-1.26px] top-[2.28px] h-2.5 w-2.5 rounded-full border border-base-white bg-blue-400" />
-        )}
+        <NotificationsEnabledWrapper>
+          <NotificationDot />
+        </NotificationsEnabledWrapper>
       </Button>
       {visible && (
         <PopoverBase
