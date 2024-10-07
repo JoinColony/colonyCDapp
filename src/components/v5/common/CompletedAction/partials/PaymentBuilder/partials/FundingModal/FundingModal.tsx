@@ -62,7 +62,8 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   } = useFormContext();
   const method = watch('decisionMethod');
 
-  const userPermissions = getAllUserRoles(colony, user?.walletAddress);
+  const colonyRoles = extractColonyRoles(colony.roles);
+  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
   const userRole = getRole(userPermissions);
   const fundingDecisionMethodDescriptions =
     getFundingDecisionMethodDescriptions(userRole.name);
