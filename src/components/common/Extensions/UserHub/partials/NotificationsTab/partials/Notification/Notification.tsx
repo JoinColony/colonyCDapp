@@ -36,11 +36,16 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
     return null;
   }
 
-  // If the notification type is permissions action, or a mention (always tied to an action):
+  // If the notification type is permissions action, a multisig action, or a mention (always tied to an action):
   if (
-    [NotificationType.PermissionsAction, NotificationType.Mention].includes(
-      notificationType,
-    )
+    [
+      NotificationType.PermissionsAction,
+      NotificationType.Mention,
+      NotificationType.MultiSigActionCreated,
+      NotificationType.MultiSigActionFinalized,
+      NotificationType.MultiSigActionApproved,
+      NotificationType.MultiSigActionRejected,
+    ].includes(notificationType)
   ) {
     return (
       <ActionNotification

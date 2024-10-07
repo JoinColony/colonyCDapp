@@ -5,21 +5,20 @@ import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import {
   type ColonyActionFragment,
   type NotificationColonyFragment,
-  type ExpenditureFragment,
 } from '~gql';
+import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import { NotificationType, type Notification } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
 
 const displayName =
-  'common.Extensions.UserHub.partials.ExpenditureNotificationMessage';
+  'common.Extensions.UserHub.partials.MultisigNotificationMessage';
 
-interface ExpenditureNotificationMessageProps {
+interface MultisigNotificationMessageProps {
   action: ColonyActionFragment | null | undefined;
   colony: NotificationColonyFragment | null | undefined;
   creator: string;
-  expenditure: ExpenditureFragment | null | undefined;
   loading: boolean;
   notification: Notification;
 }
@@ -27,62 +26,62 @@ interface ExpenditureNotificationMessageProps {
 const MSG = defineMessages({
   finalized: {
     id: `${displayName}.finalized`,
-    defaultMessage: 'Payment made:',
+    defaultMessage: 'Finalized:',
   },
-  cancelled: {
-    id: `${displayName}.cancelled`,
-    defaultMessage: 'Payment cancelled:',
+  approved: {
+    id: `${displayName}.approved`,
+    defaultMessage: 'Approved:',
   },
-  funding: {
-    id: `${displayName}.funding`,
-    defaultMessage: 'Payment ready for funding:',
-  },
-  release: {
-    id: `${displayName}.release`,
-    defaultMessage: 'Payment funded:',
+  rejected: {
+    id: `${displayName}.rejected`,
+    defaultMessage: 'Rejected:',
   },
   unknownAction: {
     id: `${displayName}.unknownAction`,
-    defaultMessage: 'A payment was updated',
+    defaultMessage: 'A multisig action was updated',
   },
   unknownChange: {
     id: `${displayName}.unknownChange`,
-    defaultMessage: 'Payment updated: ',
+    defaultMessage: 'Multisig action updated: ',
   },
 });
 
-const ExpenditureNotificationMessage: FC<
-  ExpenditureNotificationMessageProps
-> = ({ action, colony, creator, expenditure, loading, notification }) => {
+const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
+  action,
+  colony,
+  creator,
+  loading,
+  notification,
+}) => {
   const { notificationType } = notification.customAttributes || {};
 
+  const amountLessFee = useAmountLessFee(action?.amount, action?.networkFee);
+
   const actionMetadataDescription = useMemo(() => {
-    if (!expenditure || !action || !colony) {
+    if (!action || !colony) {
       return formatText(MSG.unknownAction);
     }
 
     return formatText(
       { id: 'action.title' },
       getActionTitleValues({
-        actionData: action,
+        actionData: { ...action, amount: amountLessFee },
         colony: {
           nativeToken: {
             ...colony.nativeToken,
           },
           metadata: colony.metadata,
         },
-        expenditureData: expenditure,
       }),
     );
-  }, [action, colony, expenditure]);
+  }, [action, amountLessFee, colony]);
 
   const Message = useMemo(() => {
-    if (!expenditure || !creator || !action || !notificationType) {
+    if (!creator || !action || !notificationType) {
       return formatText(MSG.unknownAction);
     }
 
-    // If this is an "Expenditure ready for review" action, we simply display it in the same way as an "action created" notification.
-    if (notificationType === NotificationType.ExpenditureReadyForReview) {
+    if (notificationType === NotificationType.MultiSigActionCreated) {
       return (
         <>
           {action.metadata?.customTitle}: {actionMetadataDescription}
@@ -91,10 +90,9 @@ const ExpenditureNotificationMessage: FC<
     }
 
     const firstPart = {
-      [NotificationType.ExpenditureReadyForFunding]: formatText(MSG.funding),
-      [NotificationType.ExpenditureReadyForRelease]: formatText(MSG.release),
-      [NotificationType.ExpenditureCancelled]: formatText(MSG.cancelled),
-      [NotificationType.ExpenditureFinalized]: formatText(MSG.finalized),
+      [NotificationType.MultiSigActionFinalized]: formatText(MSG.finalized),
+      [NotificationType.MultiSigActionApproved]: formatText(MSG.approved),
+      [NotificationType.MultiSigActionRejected]: formatText(MSG.rejected),
       default: formatText(MSG.unknownChange),
     }[notificationType];
 
@@ -103,17 +101,11 @@ const ExpenditureNotificationMessage: FC<
         {firstPart} {action.metadata?.customTitle || actionMetadataDescription}
       </>
     );
-  }, [
-    action,
-    actionMetadataDescription,
-    creator,
-    expenditure,
-    notificationType,
-  ]);
+  }, [action, actionMetadataDescription, creator, notificationType]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };
 
-ExpenditureNotificationMessage.displayName = displayName;
+MultisigNotificationMessage.displayName = displayName;
 
-export default ExpenditureNotificationMessage;
+export default MultisigNotificationMessage;
