@@ -120,7 +120,11 @@ const ACTION_TYPES_TO_HIDE = [
   ColonyActionType.EditExpenditure,
   ColonyActionType.EditExpenditureMotion,
   ColonyActionType.ReleaseStagedPaymentsMotion,
-  ColonyActionType.ReleaseStagedPayments,
+  ColonyActionType.CancelAndWaiveStreamingPayment,
+  ColonyActionType.CancelStreamingPayment,
+  ColonyActionType.CancelStreamingPaymentMotion,
+  ColonyActionType.EditStreamingPayment,
+  ColonyActionType.EditStreamingPaymentMotion,
 ];
 
 export const filterByActionTypes = (
