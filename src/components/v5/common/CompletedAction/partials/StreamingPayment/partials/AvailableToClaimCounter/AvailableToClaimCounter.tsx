@@ -2,7 +2,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, type FC } from 'react';
+import React, { useEffect, type FC, useState } from 'react';
 
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
@@ -15,16 +15,26 @@ const displayName =
 const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
   hasEnoughFunds,
   status,
-  onTimeEnd,
   amountAvailableToClaim,
   decimals,
   tokenSymbol,
   getAmounts,
   ratePerSecond,
+  currentTime: currentTimeProp,
 }) => {
+  const [currentTime, setCurrentTime] = useState<number>(-1);
+
   useEffect(() => {
     const timer = setInterval(() => {
-      getAmounts();
+      if (
+        [
+          StreamingPaymentStatus.Active,
+          StreamingPaymentStatus.NotStarted,
+        ].includes(status)
+      ) {
+        getAmounts(currentTime);
+        setCurrentTime((oldTime) => oldTime + 1);
+      }
     }, 1000);
 
     if (
@@ -33,14 +43,17 @@ const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
         StreamingPaymentStatus.NotStarted,
       ].includes(status)
     ) {
-      onTimeEnd();
       clearInterval(timer);
     }
 
     return () => {
       clearInterval(timer);
     };
-  }, [getAmounts, onTimeEnd, status]);
+  }, [currentTime, getAmounts, status]);
+
+  useEffect(() => {
+    setCurrentTime(currentTimeProp);
+  }, [currentTimeProp]);
 
   const formattedRate = new Decimal(ratePerSecond)
     .div(10 ** decimals)
@@ -103,7 +116,10 @@ const AvailableToClaimCounter: FC<AvailableToClaimCounterProps> = ({
       value={amountAvailableToClaim}
       decimals={decimals}
       suffix={` ${tokenSymbol}`}
-      className="text-sm text-gray-900"
+      className={clsx('text-sm', {
+        'text-gray-900': hasEnoughFunds,
+        'font-medium text-negative-400': !hasEnoughFunds,
+      })}
     />
   );
 };

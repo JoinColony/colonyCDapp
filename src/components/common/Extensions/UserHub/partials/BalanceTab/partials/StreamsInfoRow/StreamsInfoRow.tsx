@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import UserHubInfoSection from '~common/Extensions/UserHub/partials/UserHubInfoSection/UserHubInfoSection.tsx';
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 // @todo: uncomment and update when claim all streams functionality will be implemented
@@ -56,6 +57,7 @@ const StreamsInfoRow: FC = () => {
     getTotalFunds,
     streamingPayments,
   } = useStreamingPaymentsTotalFunds();
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
 
   return (
     <UserHubInfoSection
@@ -99,9 +101,12 @@ const StreamsInfoRow: FC = () => {
               {streamingPayments.length ? (
                 <AvailableToClaimCounter
                   amountAvailableToClaim={totalFunds.totalAvailable}
-                  getTotalFunds={() => getTotalFunds(streamingPayments)}
+                  getTotalFunds={(currentTimestamp) =>
+                    getTotalFunds(streamingPayments, currentTimestamp)
+                  }
                   isAtLeastOnePaymentActive={isAnyPaymentActive}
                   ratePerSecond={ratePerSecond}
+                  currentTimestamp={Math.floor(blockTime ?? Date.now() / 1000)}
                 />
               ) : (
                 <span>

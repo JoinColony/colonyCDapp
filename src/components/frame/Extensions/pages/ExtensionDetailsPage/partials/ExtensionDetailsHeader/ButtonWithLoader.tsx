@@ -21,6 +21,7 @@ export const ButtonWithLoader: FC<
   loaderClassName = '!px-4 !text-md',
   loaderIconSize = 18,
   onClick,
+  className,
 }) =>
   loading ? (
     <IconButton
@@ -42,6 +43,7 @@ export const ButtonWithLoader: FC<
       disabled={disabled}
       isFullSize={isFullSize}
       onClick={onClick}
+      className={className}
     >
       {children}
     </Button>

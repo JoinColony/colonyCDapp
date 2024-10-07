@@ -132,6 +132,13 @@ export const checkIfStreamingPaymentEnded = ({
     };
   }
 
+  if (isCancelled) {
+    return {
+      ended: true,
+      status: StreamingPaymentStatus.Cancelled,
+    };
+  }
+
   switch (endCondition) {
     case StreamingPaymentEndCondition.LimitReached:
       return {
@@ -157,12 +164,10 @@ export const getStreamingPaymentStatus = ({
   streamingPayment,
   currentTimestamp,
   isMotion,
-  amountAvailableToClaim,
 }: {
   streamingPayment: StreamingPayment | null | undefined;
   currentTimestamp: number;
   isMotion?: boolean;
-  amountAvailableToClaim: string;
 }) => {
   if (!streamingPayment) {
     return StreamingPaymentStatus.NotStarted;
@@ -176,6 +181,12 @@ export const getStreamingPaymentStatus = ({
     startTime,
     currentTimestamp,
   });
+
+  const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+    streamingPayment,
+    currentTimestamp,
+  );
+
   const { ended, status } = checkIfStreamingPaymentEnded({
     amountAvailableToClaim,
     endCondition,
@@ -185,7 +196,7 @@ export const getStreamingPaymentStatus = ({
     currentTimestamp,
   });
 
-  if (!started) {
+  if (!started && !isCancelled) {
     return StreamingPaymentStatus.NotStarted;
   }
 
