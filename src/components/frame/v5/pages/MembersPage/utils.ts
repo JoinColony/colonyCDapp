@@ -32,7 +32,7 @@ export const getMembersList = (
       colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
-      intersectingRoles: true,
+      constraint: 'excludeInheritedRoles',
     });
 
     const domainRolesMeta = domainRoles.length
@@ -43,7 +43,7 @@ export const getMembersList = (
       colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
-      excludeInherited: true,
+      constraint: 'excludeInheritedRoles',
     });
 
     const highestTierRole = getHighestTierRoleForUser(
@@ -63,7 +63,7 @@ export const getMembersList = (
       colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
-      intersectingRoles: true,
+      constraint: 'excludeInheritedRoles',
       isMultiSig: true,
     });
 
@@ -75,7 +75,7 @@ export const getMembersList = (
       colonyRoles,
       userAddress: contributorAddress,
       domainId: selectedTeamId || Id.RootDomain,
-      excludeInherited: true,
+      constraint: 'excludeInheritedRoles',
       isMultiSig: true,
     });
 

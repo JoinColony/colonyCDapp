@@ -1,11 +1,14 @@
 import { type ColonyRole } from '@colony/colony-js';
 
-import { type UserRole } from '~constants/permissions.ts';
+import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 
 export interface PermissionsTableProps {
   name: string;
-  role?: UserRole;
   className?: string;
+  formRole: ManagePermissionsFormValues['role'];
+  dbRoleForDomain: ManagePermissionsFormValues['_dbRoleForDomain'];
+  dbPermissionsForDomain: ManagePermissionsFormValues['_dbPermissionsForDomain'];
+  dbInheritedPermissions: ManagePermissionsFormValues['_dbInheritedPermissions'];
 }
 
 export interface PermissionsTableModel {

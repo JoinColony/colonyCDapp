@@ -31,14 +31,14 @@ export const useRelevantUserRoles = ({
     colonyRoles,
     userAddress: user.walletAddress,
     domainId,
-    excludeInherited: true,
+    constraint: 'excludeInheritedRoles',
     isMultiSig: true,
   });
   const userRolesInRoot = getUserRolesForDomain({
     colonyRoles,
     userAddress: user.walletAddress,
     domainId: Id.RootDomain,
-    excludeInherited: true,
+    constraint: 'excludeInheritedRoles',
     isMultiSig: true,
   });
 

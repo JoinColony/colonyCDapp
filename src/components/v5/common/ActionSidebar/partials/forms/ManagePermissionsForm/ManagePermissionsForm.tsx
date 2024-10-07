@@ -7,7 +7,6 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import React, { type FC, useCallback } from 'react';
-import { useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -27,11 +26,12 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { type CardSelectProps } from '~v5/common/Fields/CardSelect/types.ts';
 
 import {
+  UserRoleModifier,
   type ManagePermissionsFormValues,
-  RemoveRoleOptionValue,
 } from './consts.ts';
-import { useManagePermissions } from './hooks.ts';
+import { useManagePermissionsForm } from './hooks.ts';
 import PermissionsModal from './partials/PermissionsModal/index.ts';
+import PermissionsRemovalModal from './partials/PermissionsRemovalModal/PermissionsRemovalModal.tsx';
 import PermissionsTable from './partials/PermissionsTable/index.ts';
 import PermissionsOptions from './PermissionOptions.tsx';
 import { getRoleLabel } from './utils.ts';
@@ -41,7 +41,22 @@ const displayName = 'v5.common.ActionSidebar.partials.ManagePermissionsForm';
 const FormRow = ActionFormRow<ManagePermissionsFormValues>;
 
 const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { role, isModRoleSelected } = useManagePermissions(getFormOptions);
+  const {
+    errors,
+    isSubmitting,
+    formValues: {
+      team,
+      authority,
+      role,
+      member,
+      permissions,
+      _dbRoleForDomain: dbRoleForDomain,
+      _dbInheritedPermissions: dbInheritedPermissions,
+      _dbPermissionsForDomain: dbPermissionsForDomain,
+    },
+    showPermissionsRemovalWarning,
+    setShowPermissionsRemovalWarning,
+  } = useManagePermissionsForm(getFormOptions);
   const { isMultiSigEnabled } = useEnabledExtensions();
   const [
     isPermissionsModalOpen,
@@ -50,9 +65,8 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       toggleOn: togglePermissionsModalOn,
     },
   ] = useToggle();
-  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
-  const authority: string | undefined = useWatch({ name: 'authority' });
 
+  const isModRoleSelected = role === UserRole.Mod;
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
 
@@ -93,7 +107,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       }),
     }),
   );
-
   const AUTHORITY_OPTIONS = [
     {
       label: formatText({ id: 'actionSidebar.authority.own' }),
@@ -108,6 +121,12 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         ]
       : []),
   ];
+
+  const isRemovePermissionsErrorPresent =
+    role === UserRoleModifier.Remove && errors.role;
+
+  const showPermissionsTable =
+    member && team && role && !isRemovePermissionsErrorPresent;
 
   return (
     <>
@@ -217,13 +236,25 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <DecisionMethodField />
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
-      {role !== RemoveRoleOptionValue.remove && (
+      {showPermissionsTable && (
         <PermissionsTable
           name="permissions"
-          role={role as UserRole}
           className="mt-7"
+          dbRoleForDomain={dbRoleForDomain}
+          dbPermissionsForDomain={dbPermissionsForDomain}
+          formRole={role}
+          dbInheritedPermissions={dbInheritedPermissions}
         />
       )}
+      <PermissionsRemovalModal
+        formRole={role}
+        formPermissions={permissions}
+        isFormSubmitting={isSubmitting}
+        dbRoleForDomain={dbRoleForDomain}
+        isOpen={showPermissionsRemovalWarning}
+        dbInheritedPermissions={dbInheritedPermissions}
+        onClose={() => setShowPermissionsRemovalWarning(false)}
+      />
     </>
   );
 };

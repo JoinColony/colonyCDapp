@@ -48,6 +48,7 @@ export interface FormProps<FormData extends FieldValues> {
   resetOnSubmit?: boolean;
   className?: string;
   innerRef?: Ref<UseFormReturn<FormData>>;
+  id?: string;
 }
 
 const Form = <FormData extends FieldValues>({
@@ -62,6 +63,7 @@ const Form = <FormData extends FieldValues>({
   validationSchema,
   className,
   innerRef,
+  id,
 }: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
   // Resolver updated to have the access to all of the form values inside a field validator context
@@ -131,7 +133,7 @@ const Form = <FormData extends FieldValues>({
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
         {/* noValidate attribute added to hide native browser validation */}
-        <form className={className} onSubmit={submitHandler} noValidate>
+        <form id={id} className={className} onSubmit={submitHandler} noValidate>
           {typeof children === 'function' ? children(formHelpers) : children}
         </form>
       </FormProvider>

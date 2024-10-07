@@ -82,14 +82,14 @@ const getSinglePermissionProofsLocal = async ({
     colonyRoles,
     userAddress: permissionAddress,
     domainId: requiredDomainId,
-    excludeInherited: true,
+    constraint: 'excludeInheritedRoles',
     isMultiSig,
   });
   const userRolesInRoot = getUserRolesForDomain({
     colonyRoles,
     userAddress: permissionAddress,
     domainId: Id.RootDomain,
-    excludeInherited: true,
+    constraint: 'excludeInheritedRoles',
     isMultiSig,
   });
 

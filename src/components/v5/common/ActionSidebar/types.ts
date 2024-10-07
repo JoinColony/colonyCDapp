@@ -6,6 +6,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
+  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormBaseProps {
@@ -26,6 +27,8 @@ export type UseActionFormBaseHook = (
     | 'validationSchema'
     | 'mode'
     | 'reValidateMode'
+    | 'id'
+    | 'primaryButton'
   >,
 ) => void;
 

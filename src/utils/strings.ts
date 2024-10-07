@@ -197,3 +197,13 @@ export const stripAndremoveHeadingsFromHTML = (content: string) => {
 
   return string;
 };
+
+export const getCommaSeparatedStringList = (strings: string[]) => {
+  if (strings.length === 0) return '';
+  if (strings.length === 1) return strings[0];
+  if (strings.length === 2) return `${strings[0]} and ${strings[1]}`;
+
+  const lastItem = strings.pop();
+
+  return `${strings.join(', ')}, and ${lastItem}`;
+};

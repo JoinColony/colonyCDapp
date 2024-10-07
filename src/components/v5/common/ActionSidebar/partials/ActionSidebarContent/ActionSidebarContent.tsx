@@ -52,6 +52,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
+  actionFormProps: { primaryButton },
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -179,7 +180,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               status="error"
               icon={WarningCircle}
               description={
-                <ul className="list-inside list-disc text-negative-400">
+                <ul className="list-outside list-disc text-negative-400">
                   {flatFormErrors.map(({ key, message }) => (
                     <li key={key}>{message}</li>
                   ))}
@@ -193,7 +194,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          <ActionButtons isActionDisabled={isSubmitDisabled} />
+          <ActionButtons
+            isActionDisabled={isSubmitDisabled}
+            primaryButton={primaryButton}
+          />
         </div>
       )}
       {draftAgreement && (
@@ -266,6 +270,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             getFormOptions={getFormOptions}
             isMotion={isMotion}
             transactionId={transactionId}
+            actionFormProps={actionFormProps}
           />
         </ActionForm>
       </div>
