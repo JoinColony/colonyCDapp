@@ -49,6 +49,36 @@ query GetTotalColonyActions($filter: SearchableColonyActionFilterInput) {
   }
 }
 
+query GetStreamingPayments(
+  $nextToken: String
+  $limit: Int
+  $filter: SearchableStreamingPaymentFilterInput
+  $sort: [SearchableStreamingPaymentSortInput]
+) {
+  searchStreamingPayments(
+    limit: $limit
+    nextToken: $nextToken
+    sort: $sort
+    filter: $filter
+    from: 0
+  ) {
+    items {
+      actions(
+        filter: {
+          type: { eq: CREATE_STREAMING_PAYMENT }
+          isMotionFinalization: { ne: true }
+        }
+      ) {
+        items {
+          ...ColonyAction
+        }
+      }
+      ...StreamingPayment
+    }
+    nextToken
+  }
+}
+
 query GetTotalColonyDomainActions($colonyId: ID!) {
   searchColonyActions(
     filter: { colonyId: { eq: $colonyId } }
