@@ -97,7 +97,7 @@ const StreamingPaymentsTable = () => {
         <h2 className="font-semibold">{formatText(MSG.title)}</h2>
       </div>
       <Table<StreamingTableFieldModel>
-        className="[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-gray-100 [&_td]:pr-4 [&_th]:border-none [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0 [&_tr:not(:last-child)_td]:border-b"
+        className="[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-gray-100 [&_td]:pr-4 [&_th]:border-none [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0 [&_tr.expanded-below_td]:border-gray-200 [&_tr:not(:last-child)_td]:border-b"
         data={loading ? [] : streamingPayments}
         columns={columns}
         renderCellWrapper={(_, content) => content}
