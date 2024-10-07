@@ -7,7 +7,6 @@ import { ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
-import { type UseGetStreamingPaymentDataReturnType } from '../ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
@@ -35,18 +34,11 @@ import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
 
 interface CompletedActionProps {
   action: ColonyAction;
-  streamingPayment: Omit<
-    UseGetStreamingPaymentDataReturnType,
-    'startPolling' | 'stopPolling'
-  >;
 }
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({
-  action,
-  streamingPayment,
-}: CompletedActionProps) => {
+const CompletedAction = ({ action }: CompletedActionProps) => {
   const { colony } = useColonyContext();
 
   const actionType = getExtendedActionType(action, colony.metadata);
@@ -131,12 +123,7 @@ const CompletedAction = ({
       case ExtendedColonyActionType.SplitPayment:
         return <SplitPayment action={action} />;
       case ColonyActionType.CreateStreamingPayment:
-        return (
-          <StreamingPayment
-            action={action}
-            streamingPayment={streamingPayment}
-          />
-        );
+        return <StreamingPayment action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -179,12 +166,7 @@ const CompletedAction = ({
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
       case ColonyActionType.CreateStreamingPayment:
-        return (
-          <StreamingPaymentWidget
-            action={action}
-            streamingPayment={streamingPayment}
-          />
-        );
+        return <StreamingPaymentWidget action={action} />;
       default:
         return <PermissionSidebar action={action} />;
     }

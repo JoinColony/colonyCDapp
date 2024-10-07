@@ -1,7 +1,10 @@
-import React, { type FC } from 'react';
+import React, { useMemo, type FC, useEffect } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { useExpenditureActionStatus } from '~hooks/useExpenditureActionStatus.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import { useGetStreamingPaymentData } from '~v5/common/ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import ExpenditureActionStatusBadge from '~v5/common/ActionSidebar/partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
@@ -19,10 +22,30 @@ const ActionBadge: FC<ActionBadgeProps> = ({
   const { expenditure, loadingExpenditure } =
     useGetExpenditureData(expenditureId);
 
-  const { streamingPaymentData, paymentStatus, loadingStreamingPayment } =
+  const expenditureStatus = useExpenditureActionStatus(expenditure);
+  const { streamingPaymentData, loadingStreamingPayment } =
     useGetStreamingPaymentData(expenditureId);
 
-  const isLoading = loading || loadingExpenditure || loadingStreamingPayment;
+  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
+    useCurrentBlockTime();
+
+  const currentTime = useMemo(
+    () => Math.floor(blockTime ?? Date.now() / 1000),
+    [blockTime],
+  );
+
+  const streamingPaymentStatus = getStreamingPaymentStatus({
+    streamingPayment: streamingPaymentData,
+    currentTimestamp: currentTime,
+    isMotion: !!motionState,
+  });
+
+  useEffect(() => {
+    fetchCurrentBlockTime();
+  }, [fetchCurrentBlockTime]);
+
+  const isLoading =
+    loading || !!loadingExpenditure || !!loadingStreamingPayment;
 
   return (
     <LoadingSkeleton
@@ -30,12 +53,12 @@ const ActionBadge: FC<ActionBadgeProps> = ({
       className="h-[1.625rem] w-full rounded"
     >
       {streamingPaymentData ? (
-        <StreamingPaymentStatusPill status={paymentStatus} />
+        <StreamingPaymentStatusPill status={streamingPaymentStatus} />
       ) : (
         <>
           {expenditure ? (
             <ExpenditureActionStatusBadge
-              expenditure={expenditure}
+              status={expenditureStatus}
               className={className}
             />
           ) : (
