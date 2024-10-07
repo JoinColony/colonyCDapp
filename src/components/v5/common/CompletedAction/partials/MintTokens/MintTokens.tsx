@@ -106,10 +106,7 @@ const MintTokens = ({ action }: MintTokensProps) => {
           token={action.token || undefined}
         />
 
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {metadata && <CreatedInRow motionDomainMetadata={metadata} />}
       </ActionDataGrid>

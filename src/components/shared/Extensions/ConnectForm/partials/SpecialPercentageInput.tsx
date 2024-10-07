@@ -1,8 +1,7 @@
-import React, { type FC, type SyntheticEvent } from 'react';
+import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import SpecialInput from '~common/Extensions/SpecialInput/index.ts';
-import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
 import { type Message } from '~types/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
@@ -13,21 +12,16 @@ import { type SpecialInputProps } from '../types.ts';
 const displayName = 'Extensions.ConnectForm.partials.SpecialPercentageInput';
 
 const SpecialPercentageInput: FC<SpecialInputProps> = ({
-  name = '',
+  name,
   step,
   onInputChange,
+  disabled,
 }) => {
   const {
     formState: { errors },
-    setValue,
   } = useFormContext();
 
   const error = get(errors, name)?.message as Message | undefined;
-
-  const handleInputChange = (e: SyntheticEvent<HTMLInputElement>) => {
-    onInputChange?.(e);
-    setValue('option', GovernanceOptions.CUSTOM);
-  };
 
   return (
     <div className="text-right">
@@ -38,7 +32,8 @@ const SpecialPercentageInput: FC<SpecialInputProps> = ({
           type="percent"
           placeholder="1"
           step={step}
-          onChange={handleInputChange}
+          onChange={onInputChange}
+          disabled={disabled}
         />
         {error && <FormError>{formatText(error)}</FormError>}
       </div>

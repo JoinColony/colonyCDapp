@@ -8,7 +8,6 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -42,7 +41,6 @@ const useGetPaymentBuilderColumns = ({
   expectedNumberOfPayouts?: number | null;
 }) => {
   const isTablet = useTablet();
-  const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = data.length > 1;
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
@@ -94,7 +92,7 @@ const useGetPaymentBuilderColumns = ({
                 className="h-4 w-3/4 rounded"
               >
                 <PaymentBuilderPayoutsTotal
-                  data={dataRef.current}
+                  data={data}
                   itemClassName="justify-end md:justify-start"
                   buttonClassName="justify-end md:justify-start"
                 />
@@ -112,8 +110,7 @@ const useGetPaymentBuilderColumns = ({
       paymentBuilderColumnHelper.accessor('claimDelay', {
         enableSorting: false,
         header: formatText({ id: 'table.column.claimDelay' }),
-        staticSize:
-          status === ExpenditureStatus.Finalized ? '6.875rem' : undefined,
+        staticSize: status === ExpenditureStatus.Finalized ? '7rem' : undefined,
         cell: ({ row }) => {
           const formattedHours = convertPeriodToHours(row.original.claimDelay);
 
@@ -165,6 +162,7 @@ const useGetPaymentBuilderColumns = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       claimablePayouts,
+      data,
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
@@ -262,7 +260,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
-            '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.125rem]': isTablet,
+            '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
             '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
               !isTablet,
           },

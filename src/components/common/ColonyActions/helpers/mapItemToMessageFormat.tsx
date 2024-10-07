@@ -22,7 +22,10 @@ import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { formatText, intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
+import {
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
 
 import { ActionTitleMessageKeys } from './getActionTitleValues.ts';
 
@@ -137,7 +140,7 @@ export const mapColonyActionToExpectedFormat = ({
   expenditureData,
 }: {
   actionData: ColonyAction;
-  colony: Pick<Colony, 'nativeToken'>;
+  colony: Pick<Colony, 'nativeToken' | 'tokens'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
 }) => {
@@ -220,9 +223,21 @@ export const mapColonyActionToExpectedFormat = ({
       notMaybe(actionData.toDomain?.metadata?.name),
     ),
     [ActionTitleMessageKeys.TokenSymbol]: getFormattedValueWithFallback(
-      actionData.token?.symbol,
+      expenditureData
+        ? getSelectedToken(
+            colony,
+            expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
+          )?.symbol
+        : actionData.token?.symbol,
       ActionTitleMessageKeys.TokenSymbol,
-      notMaybe(actionData.token?.symbol),
+      notMaybe(
+        expenditureData
+          ? getSelectedToken(
+              colony,
+              expenditureData?.slots?.[0]?.payouts?.[0]?.tokenAddress || '',
+            )?.symbol
+          : actionData.token?.symbol,
+      ),
     ),
     [ActionTitleMessageKeys.ReputationChangeNumeral]:
       getFormattedValueWithFallback(
@@ -276,5 +291,32 @@ export const mapColonyActionToExpectedFormat = ({
           id: 'decisionMethod.multiSig',
         })} `
       : '',
+    [ActionTitleMessageKeys.SplitAmount]: getFormattedValueWithFallback(
+      <Numeral
+        value={
+          expenditureData?.slots
+            .flatMap((slot) => slot.payouts || [])
+            .reduce(
+              (acc, curr) =>
+                new Decimal(acc)
+                  .add(new Decimal(curr?.amount || '0'))
+                  .toString(),
+              '0',
+            ) || '0'
+        }
+        decimals={getTokenDecimalsWithFallback(
+          getSelectedToken(
+            colony,
+            !!expenditureData?.slots?.length &&
+              !!expenditureData?.slots[0].payouts?.length
+              ? expenditureData.slots[0].payouts[0].tokenAddress
+              : '',
+          )?.decimals,
+          colony?.nativeToken.decimals,
+        )}
+      />,
+      ActionTitleMessageKeys.SplitAmount,
+      !!expenditureData?.slots,
+    ),
   };
 };

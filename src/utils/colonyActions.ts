@@ -608,6 +608,10 @@ export const getExtendedActionType = (
     return safeType;
   }
 
+  if (actionData.expenditure?.metadata?.distributionType) {
+    return ExtendedColonyActionType.SplitPayment;
+  }
+
   return type;
 };
 

@@ -841,6 +841,14 @@ enum ColonyActionType {
   """
   EDIT_EXPENDITURE_MOTION
   """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENTS
+  """
+  An action related to a motion to release a staged payment
+  """
+  RELEASE_STAGED_PAYMENTS_MOTION
+  """
   An action related to the creation of safe transactions via Safe Control
   """
   MAKE_ARBITRARY_TRANSACTION
@@ -934,6 +942,12 @@ enum StreamingPaymentEndCondition {
   FIXED_TIME
 }
 
+enum SplitPaymentDistributionType {
+  EQUAL
+  UNEQUAL
+  REPUTATION
+}
+
 """
 The types of contributor a user can be in a colony
 """
@@ -943,6 +957,14 @@ enum ContributorType {
   ACTIVE
   NEW
   GENERAL
+}
+
+"""
+Type of stake a user can make
+"""
+enum UserStakeType {
+  MOTION
+  STAKED_EXPENDITURE
 }
 
 """
@@ -1928,10 +1950,6 @@ type User @model {
   """
   profile: Profile @hasOne(fields: ["profileId"])
   """
-  List of stakes the User made
-  """
-  stakes: [ColonyStake!]! @hasMany(indexName: "byUserAddress", fields: ["id"])
-  """
   List of domains with the user's permissions in each domain
   """
   roles: [ColonyRole] @hasMany(indexName: "byTargetAddress", fields: ["id"])
@@ -1990,35 +2008,6 @@ type LiquidationAddress @model {
       name: "byLiquidationAddress"
       queryField: "getUserByLiquidationAddress"
     )
-}
-
-"""
-Keeps track of the current amount a user has staked in a colony
-When a user stakes, totalAmount increases. When a user reclaims their stake, totalAmount decreases.
-"""
-type ColonyStake @model {
-  """
-  Unique identifier for the stake
-  Format: `<userId>_<colonyId>`
-  """
-  id: ID! #
-  """
-  Unique identifier for the user
-  """
-  userId: ID!
-    @index(
-      name: "byUserAddress"
-      queryField: "getColonyStakeByUserAddress"
-      sortKeyFields: ["colonyId"]
-    )
-  """
-  Unique identifier for the Colony
-  """
-  colonyId: ID!
-  """
-  Total staked amount
-  """
-  totalAmount: String!
 }
 
 """
@@ -2646,10 +2635,7 @@ type ColonyMultiSig @model {
   Colony address the multiSig belongs to
   """
   colonyAddress: ID!
-    @index(
-      name: "byColonyAddress"
-      queryField: "getMultiSigByColonyAddress"
-    )
+    @index(name: "byColonyAddress", queryField: "getMultiSigByColonyAddress")
   """
   The on chain id of the multiSig
   """
@@ -2669,7 +2655,8 @@ type ColonyMultiSig @model {
   """
   Signatures info
   """
-  signatures: [MultiSigUserSignature] @hasMany(indexName: "byMultiSigId", fields: ["id"])
+  signatures: [MultiSigUserSignature]
+    @hasMany(indexName: "byMultiSigId", fields: ["id"])
   """
   Required role for signing
   """
@@ -2753,7 +2740,8 @@ type ColonyMotion @model {
   """
   List of other rewards users will be receiving for a motion, such as voting
   """
-  voterRewards: [VoterRewardsHistory!] @hasMany(indexName: "byMotionId", fields: ["id"])
+  voterRewards: [VoterRewardsHistory!]
+    @hasMany(indexName: "byMotionId", fields: ["id"])
   """
   Staked sides of a motion
   """
@@ -2846,9 +2834,9 @@ type ColonyMotion @model {
     @index(name: "byExpenditureId", queryField: "getMotionByExpenditureId")
 
   """
-  Id of the expenditure stage payment to be released if the motion pass, if any
+  Ids of the staged payment slots to be released if the motion pass, if any
   """
-  expenditureSlotId: Int
+  expenditureSlotIds: [Int!]
 
   action: ColonyAction @belongsTo(fields: ["transactionHash"])
 
@@ -3371,6 +3359,10 @@ type ColonyAction @model @searchable {
   Approved tokens impacted by the action (used for manage tokens)
   """
   approvedTokenChanges: ApprovedTokenChanges
+  """
+  Ids of the staged payment slots released by the action, if any
+  """
+  expenditureSlotIds: [Int!]
 }
 
 """
@@ -3778,6 +3770,11 @@ type ExpenditureMetadata @model {
   stages: [ExpenditureStage!]
   expectedNumberOfPayouts: Int
   expectedNumberOfTokens: Int
+  """
+  Specifies the distribution type selected when creating a split payment
+  Will be null for other payment types
+  """
+  distributionType: SplitPaymentDistributionType
 }
 
 type ExpenditureBalance {
@@ -3788,7 +3785,6 @@ type ExpenditureBalance {
 type ExpenditureStage {
   slotId: Int!
   name: String!
-  isReleased: Boolean!
 }
 
 type StreamingPayment @model {
@@ -3960,6 +3956,8 @@ type UserStake @model {
     )
   user: User! @hasOne(fields: ["userAddress"])
   colonyAddress: ID!
+  # TODO: Make this field non-nullable once migration is done
+  type: UserStakeType
   amount: String!
   isClaimed: Boolean!
   actionId: ID!

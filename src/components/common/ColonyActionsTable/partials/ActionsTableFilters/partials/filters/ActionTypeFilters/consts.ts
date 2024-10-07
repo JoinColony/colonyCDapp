@@ -10,19 +10,19 @@ export const ACTION_TYPES_FILTERS = [
     label: formatText({ id: 'actions.paymentBuilder' }),
     name: Action.PaymentBuilder,
   },
+  {
+    label: formatText({ id: 'actions.stagedPayment' }),
+    name: Action.StagedPayment,
+  },
   // @BETA: Disabled for now
   // {
   //   label:formatText({ id: 'actions.batchPayment' }),
   //   name: Action.BatchPayment,
   // },
-  // {
-  //   label:formatText({ id: 'actions.splitPayment' }),
-  //   name: Action.SplitPayment,
-  // },
-  // {
-  //   label:formatText({ id: 'actions.stagedPayment' }),
-  //   name: Action.StagedPayment,
-  // },
+  {
+    label: formatText({ id: 'actions.splitPayment' }),
+    name: Action.SplitPayment,
+  },
   // {
   //   label:formatText({ id: 'actions.streamingPayment' }),
   //   name: Action.StreamingPayment,

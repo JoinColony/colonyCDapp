@@ -28,7 +28,6 @@ const AmountRow = ({ domainId, title, tooltips }: AmountRowProps) => {
     >
       <AmountField
         name="amount"
-        maxWidth={270}
         domainId={domainId}
         isDisabled={hasNoDecisionMethods}
         isTokenSelectionDisabled={activeActionType === Action.MintTokens}

@@ -139,10 +139,7 @@ const UpgradeColonyObjective = ({ action }: Props) => {
         <div>
           <span>{objectiveData?.progress}%</span>
         </div>
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}

@@ -145,6 +145,8 @@ export enum ExtendedColonyActionType {
   SafeMultipleTransactionsMotion = 'SAFE_MULTIPLE_TRANSACTIONS_MOTION',
   UpdateColonyObjectiveMotion = 'UPDATE_COLONY_OBJECTIVE_MOTION',
   UpdateColonyObjectiveMultisig = 'UPDATE_COLONY_OBJECTIVE_MULTISIG',
+  SplitPayment = 'SPLIT_PAYMENT',
+  StagedPayment = 'STAGED_PAYMENT',
 }
 
 /**
@@ -174,4 +176,6 @@ export enum DecisionMethod {
   Permissions = 'Permissions',
   Reputation = 'Reputation',
   MultiSig = 'MultiSig',
+  Staking = 'Staking',
+  PaymentCreator = 'PaymentCreator',
 }

@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
+import { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 import { number, object, type ObjectSchema, string } from 'yup';
 
@@ -110,14 +111,25 @@ export const useStakingForm = () => {
     })
     .defined();
 
-  const transform = getStakingTransformFn({
-    userAddress: user?.walletAddress ?? '',
-    colonyAddress: colony?.colonyAddress ?? '',
-    motionId,
-    nativeTokenDecimals: tokenDecimals,
-    tokenAddress,
-    activeAmount: tokenBalanceData?.activeBalance ?? '0',
-  });
+  const transform = useMemo(
+    () =>
+      getStakingTransformFn({
+        userAddress: user?.walletAddress ?? '',
+        colonyAddress: colony?.colonyAddress ?? '',
+        motionId,
+        nativeTokenDecimals: tokenDecimals,
+        tokenAddress,
+        activeAmount: tokenBalanceData?.activeBalance ?? '0',
+      }),
+    [
+      user?.walletAddress,
+      colony?.colonyAddress,
+      motionId,
+      tokenDecimals,
+      tokenAddress,
+      tokenBalanceData?.activeBalance,
+    ],
+  );
 
   const handleSuccess = getHandleStakeSuccessFn(
     setIsRefetching,

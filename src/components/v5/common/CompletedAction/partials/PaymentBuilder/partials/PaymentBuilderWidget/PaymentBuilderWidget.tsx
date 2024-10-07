@@ -1,28 +1,46 @@
-import React, { useState, type FC, useEffect } from 'react';
+import { SpinnerGap } from '@phosphor-icons/react';
+import React, { useState, type FC, useEffect, useMemo } from 'react';
 
+import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { useGetColonyExpendituresQuery } from '~gql';
-import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { notMaybe, notNull } from '~utils/arrays/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
+import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
+import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
+import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
-import FinalizeWithPermissionsInfo from '../FinalizeWithPermissionsInfo/FinalizeWithPermissionsInfo.tsx';
+import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
+import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
+import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
+import FundingRequests from '../FundingRequests/FundingRequests.tsx';
+import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
 import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
+import { waitForDbAfterClaimingPayouts } from '../ReleasePaymentModal/utils.ts';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
+import {
+  getCancelStepIndex,
+  getExpenditureStep,
+  isExpenditureFullyFunded,
+} from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
@@ -34,14 +52,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { user } = useAppContext();
   const { walletAddress } = user || {};
 
-  const [
+  const {
     isFundingModalOpen,
-    { toggleOn: showFundingModal, toggleOff: hideFundingModal },
-  ] = useToggle();
-  const [
-    isReleasePaymentModalOpen,
-    { toggleOn: showReleasePaymentModal, toggleOff: hideReleasePaymentModal },
-  ] = useToggle();
+    toggleOffFundingModal: hideFundingModal,
+    toggleOnFundingModal: showFundingModal,
+    isReleaseModalOpen: isReleasePaymentModalOpen,
+    toggleOffReleaseModal: hideReleasePaymentModal,
+    toggleOnReleaseModal: showReleasePaymentModal,
+    selectedFundingAction,
+    setSelectedFundingAction,
+  } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
 
@@ -58,9 +78,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     finalizingActions,
     cancellingActions,
     finalizedAt,
-    createdAt,
+    isStaked,
+    userStake,
+    ownerAddress,
   } = expenditure || {};
-  const { items: fundingActionsItems } = fundingActions || {};
+  const { amount: stakeAmount = '' } = userStake || {};
 
   const expenditureStep = getExpenditureStep(expenditure);
 
@@ -68,6 +90,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     useState<ExpenditureStep>(expenditureStep);
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
+  const [isWaitingForClaimedPayouts, setIsWaitingForClaimedPayouts] =
+    useState(false);
 
   useEffect(() => {
     startPolling(getSafePollingInterval());
@@ -92,36 +116,92 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     }
   }, [expectedStepKey, expenditureStep]);
 
-  const lockExpenditurePayload: LockExpenditurePayload | null = expenditure
-    ? {
-        colonyAddress: colony.colonyAddress,
-        nativeExpenditureId: expenditure.nativeId,
-      }
-    : null;
+  const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
+    () =>
+      expenditure
+        ? {
+            colonyAddress: colony.colonyAddress,
+            nativeExpenditureId: expenditure.nativeId,
+          }
+        : null,
+    [colony.colonyAddress, expenditure],
+  );
 
   const cancelItem: StepperItem<ExpenditureStep> = {
     key: ExpenditureStep.Cancel,
     heading: {
       label: formatText({ id: 'expenditure.cancelStage.label' }),
     },
-    content: (
-      <FinalizeWithPermissionsInfo
-        userAdddress={cancellingActions?.items[0]?.initiatorAddress}
-      />
-    ),
+    content: <ActionWithPermissionsInfo action={cancellingActions?.items[0]} />,
     isHidden: expenditureStep !== ExpenditureStep.Cancel,
   };
+
   const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
+  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
+
+  const sortedFundingActions = useMemo(
+    () =>
+      fundingActions?.items.filter(notNull).sort((a, b) => {
+        if (a?.createdAt && b?.createdAt) {
+          return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+        return 0;
+      }) ?? [],
+    [fundingActions?.items],
+  );
+
+  const { motionData: selectedFundingMotion } = selectedFundingAction ?? {};
+  const {
+    motionState: fundingMotionState,
+    refetchMotionState: refetchFundingMotionState,
+  } = useGetColonyAction(selectedFundingAction?.transactionHash);
+
+  const shouldShowFundingMotionTimer =
+    fundingMotionState &&
+    [
+      MotionState.Staking,
+      MotionState.Supported,
+      MotionState.Voting,
+      MotionState.Reveal,
+    ].includes(fundingMotionState);
+
+  const allFundingMotions = sortedFundingActions
+    .map((fundingAction) => fundingAction.motionData)
+    .filter(notMaybe);
+  const isAnyFundingMotionInProgress = allFundingMotions.some(
+    (motion) =>
+      !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
+  );
+  const shouldShowFundingButton =
+    !isAnyFundingMotionInProgress && !isExpenditureFunded;
+  useEffect(() => {
+    if (!selectedFundingAction && sortedFundingActions.length > 0) {
+      setSelectedFundingAction(sortedFundingActions[0]);
+    }
+
+    if (
+      selectedFundingAction &&
+      !sortedFundingActions.some(
+        (fundingAction) =>
+          fundingAction.transactionHash ===
+          selectedFundingAction.transactionHash,
+      )
+    ) {
+      setSelectedFundingAction(null);
+    }
+  }, [selectedFundingAction, setSelectedFundingAction, sortedFundingActions]);
 
   const items: StepperItem<ExpenditureStep>[] = [
     {
       key: ExpenditureStep.Create,
       heading: { label: formatText({ id: 'expenditure.createStage.label' }) },
-      content: (
-        <FinalizeWithPermissionsInfo
+      content: isStaked ? (
+        <ActionWithStakingInfo
           userAdddress={expenditure?.ownerAddress}
-          createdAt={createdAt}
+          stakeAmount={stakeAmount ?? ''}
         />
+      ) : (
+        <ActionWithPermissionsInfo action={action} />
       ),
     },
     {
@@ -142,6 +222,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 onSuccess={() => {
                   setExpectedStepKey(ExpenditureStep.Funding);
                 }}
+                loadingBehavior={LoadingBehavior.TxLoader}
                 text={formatText({
                   id: 'expenditure.reviewStage.confirmDetails.button',
                 })}
@@ -154,43 +235,81 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             }
           />
         ) : (
-          <FinalizeWithPermissionsInfo
-            userAdddress={expenditure?.ownerAddress}
-            createdAt={expenditure?.lockingActions?.items[0]?.createdAt}
-          />
-        ),
-    },
-    {
-      key: ExpenditureStep.Funding,
-      heading: { label: formatText({ id: 'expenditure.fundingStage.label' }) },
-      content:
-        expenditureStep === ExpenditureStep.Funding ? (
-          <StepDetailsBlock
-            text={formatText({
-              id: 'expenditure.fundingStage.info',
-            })}
-            content={
-              <Button
-                className="w-full"
-                onClick={showFundingModal}
-                text={formatText({
-                  id: 'expenditure.fundingStage.button',
-                })}
-                loading={expectedStepKey === ExpenditureStep.Release}
-              />
-            }
-          />
-        ) : (
-          // @todo: please update this element when other decisions methods for funding will be implemented
           <>
-            {fundingActionsItems?.[0] && (
-              <FinalizeWithPermissionsInfo
-                userAdddress={fundingActionsItems[0].initiatorAddress}
-                createdAt={fundingActionsItems[0].createdAt}
+            {isStaked ? (
+              <ActionWithStakingInfo
+                userAdddress={expenditure?.ownerAddress}
+                stakeAmount={stakeAmount ?? ''}
+              />
+            ) : (
+              <ActionWithPermissionsInfo
+                action={expenditure?.lockingActions?.items[0]}
               />
             )}
           </>
         ),
+    },
+    {
+      key: ExpenditureStep.Funding,
+      heading: {
+        label: formatText({ id: 'expenditure.fundingStage.label' }),
+        decor:
+          selectedFundingMotion && shouldShowFundingMotionTimer ? (
+            <MotionCountDownTimer
+              motionState={fundingMotionState}
+              motionId={selectedFundingMotion.motionId}
+              motionStakes={selectedFundingMotion.motionStakes}
+              refetchMotionState={refetchFundingMotionState}
+            />
+          ) : null,
+      },
+      content: (
+        <div className="flex flex-col gap-2">
+          {sortedFundingActions.length > 0 && (
+            <FundingRequests actions={sortedFundingActions} />
+          )}
+
+          {selectedFundingMotion && (
+            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+          )}
+
+          {selectedFundingAction && !selectedFundingMotion && (
+            <ActionWithPermissionsInfo action={selectedFundingAction} />
+          )}
+
+          {shouldShowFundingButton && (
+            <StepDetailsBlock
+              text={formatText({
+                id: 'expenditure.fundingStage.info',
+              })}
+              content={
+                <>
+                  {expectedStepKey === ExpenditureStep.Release ? (
+                    <IconButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                    />
+                  )}
+                </>
+              }
+            />
+          )}
+        </div>
+      ),
     },
     {
       key: ExpenditureStep.Release,
@@ -215,10 +334,18 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ) : (
           <>
             {finalizedAt ? (
-              <FinalizeWithPermissionsInfo
-                userAdddress={finalizingActions?.items[0]?.initiatorAddress}
-                createdAt={finalizingActions?.items[0]?.createdAt}
-              />
+              <>
+                {finalizingActions?.items[0]?.initiatorAddress ===
+                ownerAddress ? (
+                  <FinalizeByPaymentCreatorInfo
+                    userAdddress={expenditure?.ownerAddress}
+                  />
+                ) : (
+                  <ActionWithPermissionsInfo
+                    action={finalizingActions?.items[0]}
+                  />
+                )}
+              </>
             ) : (
               <div />
             )}
@@ -231,9 +358,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       content: (
         <PaymentStepDetailsBlock
           expenditure={expenditure}
-          refetchExpenditure={() =>
-            refetchExpenditure({ expenditureId: expenditureId ?? undefined })
-          }
+          isWaitingForClaimedPayouts={isWaitingForClaimedPayouts}
         />
       ),
     },
@@ -262,9 +387,24 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditure={expenditure}
             isOpen={isReleasePaymentModalOpen}
             onClose={hideReleasePaymentModal}
-            onSuccess={() => {
+            onSuccess={async () => {
               setExpectedStepKey(ExpenditureStep.Payment);
+
+              try {
+                const claimablePayouts = getClaimableExpenditurePayouts(
+                  expenditure.slots,
+                );
+                setIsWaitingForClaimedPayouts(true);
+                await waitForDbAfterClaimingPayouts(
+                  claimablePayouts,
+                  refetchExpenditure,
+                );
+              } finally {
+                setIsWaitingForClaimedPayouts(false);
+              }
             }}
+            // @todo: update when split payment will be ready
+            actionType={Action.PaymentBuilder}
           />
           <FundingModal
             isOpen={isFundingModalOpen}
@@ -273,6 +413,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             onSuccess={() => {
               setExpectedStepKey(ExpenditureStep.Release);
             }}
+            // @todo: update when split payment will be ready
+            actionType={Action.PaymentBuilder}
           />
         </>
       )}

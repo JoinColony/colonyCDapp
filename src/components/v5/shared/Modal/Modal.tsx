@@ -31,14 +31,14 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
   withPadding = true,
   withBorder,
   withPaddingBottom,
-  shouldShowHeader = false,
+  shouldShowHeader,
   isOpen,
   ...props
 }) => {
   const { formatMessage } = useIntl();
 
   useAddClassToElement({
-    shouldAddClass: isOpen && shouldShowHeader,
+    shouldAddClass: isOpen && !!shouldShowHeader,
     className: 'show-header-in-modal',
     element: document.body,
   });

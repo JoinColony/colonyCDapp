@@ -7,6 +7,7 @@ import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
   type GetUserByAddressQuery,
+  type SplitPaymentDistributionType,
   type CreateExpenditureMetadataMutation,
   type CreateExpenditureMetadataMutationVariables,
   type GetUserByAddressQueryVariables,
@@ -22,35 +23,10 @@ import {
   type ExpenditureStageFieldValue,
 } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
-import { type MethodParams } from '~types/transactions.ts';
 import { getExpenditureDatabaseId } from '~utils/databaseId.ts';
 import { calculateFee, getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { chunkedMulticall } from './multicall.ts';
-
-const MAX_CLAIM_DELAY_VALUE = BigNumber.from(2).pow(128).sub(1);
-
-/**
- * Util returning a map between token addresses and arrays of payouts field values
- */
-const groupExpenditurePayoutsByTokenAddresses = (
-  payouts: ExpenditurePayoutFieldValue[],
-): Map<string, ExpenditurePayoutFieldValue[]> => {
-  const payoutsByTokenAddresses = new Map<
-    string,
-    ExpenditurePayoutFieldValue[]
-  >();
-  payouts.forEach((payout) => {
-    const currentTokenPayouts =
-      payoutsByTokenAddresses.get(payout.tokenAddress) ?? [];
-    payoutsByTokenAddresses.set(payout.tokenAddress, [
-      ...currentTokenPayouts,
-      payout,
-    ]);
-  });
-
-  return payoutsByTokenAddresses;
-};
 
 export const getPayoutAmount = (
   payout: ExpenditurePayoutFieldValue,
@@ -63,56 +39,6 @@ export const getPayoutAmount = (
   );
 
   return totalToPay;
-};
-
-export const getSetExpenditureValuesFunctionParams = ({
-  nativeExpenditureId,
-  payouts,
-  networkInverseFee,
-  isStaged,
-}: {
-  nativeExpenditureId: number;
-  payouts: ExpenditurePayoutFieldValue[];
-  networkInverseFee: string;
-  isStaged?: boolean;
-}): MethodParams => {
-  // Group payouts by token addresses
-  const payoutsByTokenAddresses =
-    groupExpenditurePayoutsByTokenAddresses(payouts);
-
-  return [
-    nativeExpenditureId,
-    // slot ids for recipients
-    payouts.map((payout) => payout.slotId ?? 0),
-    // recipient addresses
-    payouts.map((payout) => payout.recipientAddress),
-    // slot ids for skill ids
-    [],
-    // skill ids
-    [],
-    // slot ids for claim delays
-    payouts.map((payout) => payout.slotId ?? 0),
-    // claim delays
-    payouts.map((payout) =>
-      isStaged ? MAX_CLAIM_DELAY_VALUE : payout.claimDelay,
-    ),
-    // slot ids for payout modifiers
-    [],
-    // payout modifiers
-    [],
-    // token addresses
-    [...payoutsByTokenAddresses.keys()],
-    // 2-dimensional array mapping token addresses to slot ids
-    [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-      payoutsByTokenAddress.map((payout) => payout.slotId ?? 0),
-    ),
-    // 2-dimensional array mapping token addresses to amounts
-    [...payoutsByTokenAddresses.values()].map((payoutsByTokenAddress) =>
-      payoutsByTokenAddress.map((payout) =>
-        getPayoutAmount(payout, networkInverseFee),
-      ),
-    ),
-  ];
 };
 
 export const getExpenditureBalancesByTokenAddress = (
@@ -145,7 +71,7 @@ interface SaveExpenditureMetadataParams {
   numberOfPayouts: number;
   numberOfTokens: number;
   stages?: ExpenditureStageFieldValue[];
-  stakeAmount?: string;
+  distributionType?: SplitPaymentDistributionType;
 }
 
 export function* saveExpenditureMetadata({
@@ -155,6 +81,7 @@ export function* saveExpenditureMetadata({
   stages,
   numberOfPayouts,
   numberOfTokens,
+  distributionType,
 }: SaveExpenditureMetadataParams) {
   yield apolloClient.mutate<
     CreateExpenditureMetadataMutation,
@@ -168,10 +95,10 @@ export function* saveExpenditureMetadata({
         stages: stages?.map((stage, index) => ({
           name: stage.name,
           slotId: index + 1,
-          isReleased: false,
         })),
         expectedNumberOfPayouts: numberOfPayouts,
         expectedNumberOfTokens: numberOfTokens,
+        distributionType,
       },
     },
   });
@@ -226,7 +153,6 @@ export function* claimExpenditurePayouts({
   try {
     yield* createMulticallTransactions();
     yield processMulticallTransactions({
-      colonyClient,
       encodeFunctionData: (payouts: ExpenditurePayoutWithSlotId[]) => {
         const multicallData = payouts.map((payout) =>
           colonyClient.interface.encodeFunctionData('claimExpenditurePayout', [

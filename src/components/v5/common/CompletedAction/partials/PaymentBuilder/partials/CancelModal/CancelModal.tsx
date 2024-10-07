@@ -70,7 +70,13 @@ const CancelModal: FC<CancelModalProps> = ({
     expenditure.lockingActions.items.length > 0;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} icon={Prohibit} {...rest}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      icon={Prohibit}
+      shouldShowHeader
+      {...rest}
+    >
       <h5 className="mb-2 heading-5">
         {formatText({
           id: isExpenditureLocked

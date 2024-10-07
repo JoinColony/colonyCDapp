@@ -56,6 +56,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
+      ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -71,6 +72,8 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
+      ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment to {recipient} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,
@@ -118,6 +121,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeRawTransaction} {Raw transaction}
@@ -133,6 +137,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjective} {Manage objective}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective}
+      ${ExtendedColonyActionType.SplitPayment} {Split payment}
       other {Generic}
     }`,
 };

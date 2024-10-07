@@ -223,14 +223,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
                 [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
               }),
           },
-          // {
-          //   key: '2',
-          //   label: formatText({ id: 'actions.paymentBuilder' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
-          //     }),
-          // },
+          {
+            key: '2',
+            label: formatText({ id: 'actions.paymentBuilder' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
+              }),
+          },
           // {
           //   key: '3',
           //   label: formatText({ id: 'actions.streamingPayment' }),
@@ -240,14 +240,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //     }),
           //   disabled: true,
           // },
-          // {
-          //   key: '4',
-          //   label: formatText({ id: 'actions.splitPayment' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
-          //     }),
-          // },
+          {
+            key: '4',
+            label: formatText({ id: 'actions.splitPayment' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
+              }),
+          },
           // {
           //   key: '5',
           //   label: formatText({ id: 'actions.batchPayment' }),
@@ -257,15 +257,14 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
           //     }),
           //   disabled: true,
           // },
-          // {
-          //   key: '6',
-          //   label: formatText({ id: 'actions.stagedPayment' }),
-          //   onClick: () =>
-          //     toggleActionSidebarOn({
-          //       [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
-          //     }),
-          //   disabled: true,
-          // },
+          {
+            key: '6',
+            label: formatText({ id: 'actions.stagedPayment' }),
+            onClick: () =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
+              }),
+          },
           {
             key: '7',
             label: formatText({ id: 'actions.transferFunds' }),

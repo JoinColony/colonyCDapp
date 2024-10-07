@@ -407,21 +407,22 @@ export type MotionActionTypes =
       MetaWithSetter<object>
     >
   | UniqueActionType<
-      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE,
+      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES,
       {
         colonyAddress: Address;
         colonyName: string;
         expenditure: Expenditure;
-        slotId: number;
+        slotIds: number[];
         tokenAddresses: Address[];
         stagedExpenditureAddress: Address;
+        votingReputationAddress: Address;
         motionDomainId: number;
       },
       MetaWithSetter<object>
     >
-  | ErrorActionType<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_ERROR, object>
+  | ErrorActionType<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR, object>
   | ActionTypeWithMeta<
-      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGE_SUCCESS,
+      ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
       MetaWithSetter<object>
     >
   | UniqueActionType<

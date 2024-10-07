@@ -153,10 +153,7 @@ const ManageTeam = ({ action }: CreateNewTeamProps) => {
           })}
           RowIcon={PaintBucket}
         />
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {motionDomainMetadata && (
           <CreatedInRow motionDomainMetadata={motionDomainMetadata} />

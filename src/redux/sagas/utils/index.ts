@@ -12,7 +12,7 @@ export * from './ipfs.ts';
 export * from './annotations.ts';
 export * from './proofs.ts';
 export * from './expenditures.ts';
-export * from './setExpenditureStateHelpers.ts';
+export * from './expendituresMulticall.ts';
 
 export { updateDomainReputation } from './updateDomainReputation.ts';
 export { createActionMetadataInDB } from './createActionMetadata.ts';

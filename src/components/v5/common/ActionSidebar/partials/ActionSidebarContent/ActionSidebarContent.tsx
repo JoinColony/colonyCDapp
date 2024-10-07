@@ -24,15 +24,17 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
 import useSidebarActionForm from '~v5/common/ActionSidebar/hooks/useSidebarActionForm.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
-import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
+import CreateStakedExpenditureModal from '../CreateStakedExpenditureModal/CreateStakedExpenditureModal.tsx';
 import Motions from '../Motions/index.ts';
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
@@ -76,13 +78,16 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const {
     formState: {
       errors: { this: customError },
+      isValid,
     },
     getValues,
     reset,
+    trigger,
   } = useFormContext();
 
   const formValues = getValues();
 
+  const actionType = formValues[ACTION_TYPE_FIELD_NAME];
   const decisionMethod = formValues[DECISION_METHOD_FIELD_NAME];
 
   // if we switch decision method to something not multisig, we "stop" loading and assume we can create the action
@@ -101,24 +106,44 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     !canCreateAction ||
     hasNoDecisionMethods;
 
-  const [isModalVisible, { toggleOn: showModal, toggleOff: hideModal }] =
-    useToggle();
+  const [
+    isRemoveDraftModalVisible,
+    { toggleOn: showRemoveDraftModal, toggleOff: hideRemoveDraftModal },
+  ] = useToggle();
+
+  const [
+    isCreateStakedExpenditureModalVisible,
+    {
+      toggleOn: showCreateStakedExpenditureModal,
+      toggleOff: hideCreateStakedExpenditureModal,
+    },
+  ] = useToggle();
 
   const draftAgreement = useSelector(
     getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
   );
 
+  const shouldShowCreateStakedExpenditureModal =
+    actionsWithStakingDecisionMethod.includes(actionType) &&
+    decisionMethod === DecisionMethod.Staking;
+
   useEffect(() => {
     if (
-      formValues[ACTION_TYPE_FIELD_NAME] === Action.CreateDecision &&
+      actionType === Action.CreateDecision &&
       draftAgreement &&
       !formValues[TITLE_FIELD_NAME] &&
       !formValues[DESCRIPTION_FIELD_NAME] &&
-      !isModalVisible
+      !isRemoveDraftModalVisible
     ) {
-      showModal();
+      showRemoveDraftModal();
     }
-  }, [draftAgreement, formValues, isModalVisible, showModal]);
+  }, [
+    actionType,
+    draftAgreement,
+    formValues,
+    isRemoveDraftModalVisible,
+    showRemoveDraftModal,
+  ]);
 
   return (
     <>
@@ -193,19 +218,32 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
       </div>
       {!isMotion && !readonly && (
         <div className="mt-auto">
-          <ActionButtons isActionDisabled={isSubmitDisabled} />
+          <ActionButtons
+            isActionDisabled={isSubmitDisabled}
+            onSubmitClick={
+              shouldShowCreateStakedExpenditureModal
+                ? async () => {
+                    await trigger();
+
+                    if (isValid) {
+                      showCreateStakedExpenditureModal();
+                    }
+                  }
+                : undefined
+            }
+          />
         </div>
       )}
       {draftAgreement && (
         <RemoveDraftModal
-          isOpen={isModalVisible}
+          isOpen={isRemoveDraftModalVisible}
           onCloseClick={() => {
             reset({
               [ACTION_TYPE_FIELD_NAME]: '',
             });
-            hideModal();
+            hideRemoveDraftModal();
           }}
-          onCreateNewClick={hideModal}
+          onCreateNewClick={hideRemoveDraftModal}
           onViewDraftClick={() => {
             reset({
               [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
@@ -215,8 +253,16 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               [DESCRIPTION_FIELD_NAME]: draftAgreement.description,
               walletAddress: user?.walletAddress,
             });
-            hideModal();
+            hideRemoveDraftModal();
           }}
+        />
+      )}
+      {shouldShowCreateStakedExpenditureModal && (
+        <CreateStakedExpenditureModal
+          actionType={actionType}
+          isOpen={isCreateStakedExpenditureModalVisible}
+          onClose={hideCreateStakedExpenditureModal}
+          formValues={formValues}
         />
       )}
     </>

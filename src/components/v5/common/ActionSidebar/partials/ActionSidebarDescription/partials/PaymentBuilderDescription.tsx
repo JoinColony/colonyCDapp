@@ -14,7 +14,10 @@ export const PaymentBuilderDescription = () => {
   const formValues = useFormContext<PaymentBuilderFormValues>().getValues();
   const { payments } = formValues;
 
-  if (!payments?.length) {
+  const isPaymentEmpty =
+    (payments?.length === 1 && !payments?.[0].recipient) || !payments?.length;
+
+  if (isPaymentEmpty) {
     return (
       <FormattedMessage
         id="expenditure.description.placeholder"

@@ -5,9 +5,8 @@ import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
 import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
 import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
-import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/index.ts';
+import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/ExtensionDetailsPage.tsx';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
-import IncorporationPage from '~frame/Extensions/pages/IncorporationPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
 import PermissionsPage from '~frame/Extensions/pages/PermissionsPage/index.ts';
 import IndividualPermissionsPage from '~frame/Extensions/pages/PermissionsPage/IndividualPermissionsPage.tsx';
@@ -43,7 +42,6 @@ import RootRoute from './RootRoute.tsx';
 import {
   COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
-  COLONY_OLD_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
@@ -56,7 +54,6 @@ import {
   COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
-  COLONY_INCORPORATION_ROUTE,
   COLONY_ADVANCED_ROUTE,
   COLONY_CONTRIBUTORS_ROUTE,
   COLONY_VERIFIED_ROUTE,
@@ -106,10 +103,6 @@ const Routes = () => {
               element={<UserPreferencesPage />}
             />
             <Route path={USER_ADVANCED_ROUTE} element={<UserAdvancedPage />} />
-            <Route
-              path={USER_PREFERENCES_ROUTE}
-              element={<UserPreferencesPage />}
-            />
             <Route
               path={USER_CRYPTO_TO_FIAT_ROUTE}
               element={<UserCryptoToFiatPage />}
@@ -184,56 +177,10 @@ const Routes = () => {
             />
           )}
 
-          {import.meta.env.DEV && (
-            <Route
-              path={COLONY_INCORPORATION_ROUTE}
-              element={<IncorporationPage />}
-            />
-          )}
           <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
           <Route
             path={COLONY_EXTENSION_DETAILS_ROUTE}
             element={<ExtensionDetailsPage />}
-          />
-          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
-        </Route>
-
-        {/* OLD Colony routes -- remove when going live */}
-        <Route path={COLONY_OLD_HOME_ROUTE} element={<ColonyRoute />}>
-          {/* <Route
-            path={COLONY_EVENTS_ROUTE}
-            element={
-              <ColonyHomeLayout
-                filteredDomainId={domainIdFilter}
-                onDomainChange={setDomainIdFilter}
-              >
-                {/* <ColonyEvents colony={colony} ethDomainId={filteredDomainId} /> }
-                <div>Events (Transactions Log)</div>
-              </ColonyHomeLayout>
-            }
-          /> */}
-          <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
-
-          {/* Colony settings routes */}
-
-          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
-          <Route path={COLONY_REPUTATION_ROUTE} element={<ReputationPage />} />
-          <Route
-            path={COLONY_PERMISSIONS_ROUTE}
-            element={<PermissionsPage />}
-          />
-          <Route path={COLONY_EXTENSIONS_ROUTE} element={<ExtensionsPage />} />
-          <Route
-            path={COLONY_EXTENSION_DETAILS_ROUTE}
-            element={<ExtensionDetailsPage />}
-          />
-          <Route
-            path={COLONY_INTEGRATIONS_ROUTE}
-            element={<IntegrationsPage />}
-          />
-          <Route
-            path={COLONY_INCORPORATION_ROUTE}
-            element={<IncorporationPage />}
           />
           <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>

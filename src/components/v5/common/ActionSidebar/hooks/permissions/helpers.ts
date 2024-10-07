@@ -100,6 +100,9 @@ export const getPermissionsNeededForAction = (
     case Action.PaymentBuilder: {
       return PERMISSIONS_NEEDED_FOR_ACTION.PaymentBuilder;
     }
+    case Action.SplitPayment:
+      return PERMISSIONS_NEEDED_FOR_ACTION.SplitPayment;
+
     default:
       return undefined;
   }

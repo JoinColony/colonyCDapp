@@ -124,10 +124,7 @@ const EditColonyDetails = ({ action }: EditColonyDetailsProps) => {
           RowIcon={FileText}
         />
 
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow

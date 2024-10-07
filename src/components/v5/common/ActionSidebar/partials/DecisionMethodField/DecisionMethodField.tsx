@@ -1,5 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
 import React from 'react';
+import { useWatch } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -9,6 +10,8 @@ import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
@@ -39,10 +42,17 @@ const DecisionMethodField = ({
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  const { isVotingReputationEnabled, isMultiSigEnabled } =
-    useEnabledExtensions();
+  const {
+    isVotingReputationEnabled,
+    isMultiSigEnabled,
+    isStakedExpenditureEnabled,
+  } = useEnabledExtensions();
+  const actionType = useWatch({ name: ACTION_TYPE_FIELD_NAME });
 
   const shouldShowPermissions = !reputationOnly && userRoles.length > 0;
+  const shouldShowStaking =
+    isStakedExpenditureEnabled &&
+    actionsWithStakingDecisionMethod.includes(actionType);
   const shouldShowMultiSig =
     !reputationOnly && isMultiSigEnabled && userMultiSigRoles.length > 0;
 
@@ -69,6 +79,14 @@ const DecisionMethodField = ({
             {
               label: formatText({ id: 'decisionMethod.multiSig' }),
               value: DecisionMethod.MultiSig,
+            },
+          ]
+        : []),
+      ...(shouldShowStaking
+        ? [
+            {
+              label: formatText({ id: 'decisionMethod.staking' }),
+              value: DecisionMethod.Staking,
             },
           ]
         : []),

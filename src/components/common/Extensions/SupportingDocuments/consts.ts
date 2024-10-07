@@ -8,6 +8,8 @@ import {
   STREAMING_PAYMENTS,
   MULTI_SIG_EXTENSION,
   PERMISSIONS,
+  STAKING_ADVANCED_PAYMENTS,
+  STAGED_PAYMENTS,
 } from '~constants/index.ts';
 
 const supportingDocumentsMessages = defineMessages({
@@ -34,6 +36,14 @@ const supportingDocumentsMessages = defineMessages({
   multiSigExtensionLink: {
     id: 'SupportingDocuments.MultiSig.extensionLink',
     defaultMessage: 'Multi-Sig Extension',
+  },
+  stakingPaymentsLink: {
+    id: 'SupportingDocuments.StakingPayments.paymentsLink',
+    defaultMessage: 'Staking Advanced Payments',
+  },
+  stagedPaymentsLink: {
+    id: 'SupportingDocuments.StagedPayments.paymentsLink',
+    defaultMessage: 'Staged Payments',
   },
 });
 
@@ -68,6 +78,18 @@ export const links = {
     {
       url: MULTI_SIG_EXTENSION,
       message: supportingDocumentsMessages.multiSigExtensionLink,
+    },
+  ],
+  [Extension.StakedExpenditure]: [
+    {
+      url: STAKING_ADVANCED_PAYMENTS,
+      message: supportingDocumentsMessages.stakingPaymentsLink,
+    },
+  ],
+  [Extension.StagedExpenditure]: [
+    {
+      url: STAGED_PAYMENTS,
+      message: supportingDocumentsMessages.stagedPaymentsLink,
     },
   ],
 };

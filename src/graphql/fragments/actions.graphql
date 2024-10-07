@@ -132,6 +132,12 @@ fragment ColonyAction on ColonyAction {
   approvedTokenChanges {
     ...ApprovedTokenChanges
   }
+  expenditure {
+    isStaked
+    metadata {
+      distributionType
+    }
+  }
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
@@ -237,6 +243,7 @@ fragment ColonyMotion on ColonyMotion {
   }
   createdAt
   createdBy
+  expenditureSlotIds
 }
 
 fragment MotionMessage on MotionMessage {

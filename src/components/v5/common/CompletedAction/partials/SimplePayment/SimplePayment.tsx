@@ -164,10 +164,7 @@ const SimplePayment = ({ action }: SimplePaymentProps) => {
         />
         <AmountRow amount={amountLessFee} token={action.token || undefined} />
 
-        <DecisionMethodRow
-          isMotion={action.isMotion || false}
-          isMultisig={action.isMultiSig || false}
-        />
+        <DecisionMethodRow action={action} />
 
         {!!motionDomain?.metadata && (
           <CreatedInRow motionDomainMetadata={motionDomain.metadata} />

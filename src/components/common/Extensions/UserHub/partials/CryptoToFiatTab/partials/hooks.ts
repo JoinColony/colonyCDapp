@@ -128,7 +128,7 @@ export const useTransferFees = () => {
   const gatewayPercentage = bridgeGatewayFeeLoading
     ? 0
     : bridgeGatewayFeeData?.bridgeGetGatewayFee?.transactionFeePercentage ?? 0;
-  const gatewayAmount = withdrawAmountValue * gatewayPercentage ?? 0;
+  const gatewayAmount = withdrawAmountValue * gatewayPercentage;
 
   const receiveAmountInBaseCurrency =
     withdrawAmountValue - gatewayAmount - feeAmount;

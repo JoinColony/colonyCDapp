@@ -65,10 +65,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const isMotionFinalized = actionData.motionData.isFinalized;
   const isMotionFailedNotFinalizable =
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
+  const isMotionFailed = actionData.motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
     actionData.type === ColonyActionType.CreateDecisionMotion;
   const isMotionClaimable =
-    isMotionFinalized || isMotionFailedNotFinalizable || isMotionAgreement;
+    (isMotionFinalized || isMotionFailedNotFinalizable || isMotionAgreement) &&
+    !isMotionFailed &&
+    !isMotionFailedNotFinalizable;
 
   const handleSuccess = () => {
     startPollingAction(getSafePollingInterval());
@@ -110,6 +113,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       onSuccess: handleClaimSuccess,
     };
   }
+
+  // @TODO: Figure this out
+  // let title = 'motion.finalizeStep.title';
+
+  // if (isMotionClaimable) {
+  //   title = 'motion.finalizeStep.claimable.statusText';
+  // } else if (isMotionFailedNotFinalizable) {
+  //   title = 'motion.finalizeStep.failedNotAchieving.statusText';
+  // } else if (isMotionFailed) {
+  //   title = 'motion.finalizeStep.failed.statusText';
+  // }
 
   /*
    * @NOTE This is just needed until we properly save motion data in the db

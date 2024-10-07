@@ -29,6 +29,8 @@ iframe {
 
 .rts___tab___selected {
   @apply border-blue-400 text-blue-400 shadow-none;
+
+  background-color: none;
 }
 
 .rts___nav___btn:hover {

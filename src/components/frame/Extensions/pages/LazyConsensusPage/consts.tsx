@@ -91,10 +91,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.totalStakeFraction',
-          min: 1,
-          max: 50,
-          step: 'any',
+          name: 'totalStakeFraction',
         },
         accordionItem: [
           {
@@ -114,10 +111,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.voterRewardFraction',
-          min: 1,
-          max: 50,
-          step: 1,
+          name: 'voterRewardFraction',
         },
         accordionItem: [
           {
@@ -137,10 +131,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.userMinStakeFraction',
-          min: 1,
-          max: 100,
-          step: 1,
+          name: 'userMinStakeFraction',
         },
         accordionItem: [
           {
@@ -161,10 +152,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'percent',
-          name: 'params.maxVoteFraction',
-          min: 1,
-          max: 100,
-          step: 1,
+          name: 'maxVoteFraction',
         },
         accordionItem: [
           {
@@ -184,10 +172,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.stakePeriod',
-          min: 0.01,
-          max: 8760,
-          step: 0.001,
+          name: 'stakePeriod',
         },
         accordionItem: [
           {
@@ -207,10 +192,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.submitPeriod',
-          min: 0.01,
-          max: 8760,
-          step: 0.001,
+          name: 'submitPeriod',
         },
         accordionItem: [
           {
@@ -230,10 +212,7 @@ export const initialExtensionContent = [
         ),
         inputData: {
           inputType: 'hours',
-          name: 'params.revealPeriod',
-          min: 0.01,
-          max: 8760,
-          step: 0.001,
+          name: 'revealPeriod',
         },
         accordionItem: [
           {
@@ -256,7 +235,7 @@ export const initialExtensionContent = [
       //   ),
       //   inputData: {
       //     inputType: 'hours',
-      //     name: 'params.escalationPeriod',
+      //     name: 'escalationPeriod',
       //     min: 0.01,
       //     max: 8760,
       //     step: 0.001,

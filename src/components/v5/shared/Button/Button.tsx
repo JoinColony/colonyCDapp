@@ -45,7 +45,9 @@ const Button = forwardRef<HTMLButtonElement, PropsWithChildren<ButtonProps>>(
     return (
       <>
         {loading ? (
-          <SpinnerLoader appearance={{ size: 'medium' }} />
+          <div className={clsx(className, 'flex items-center justify-center')}>
+            <SpinnerLoader appearance={{ size: 'medium' }} />
+          </div>
         ) : (
           <button
             className={clsx(

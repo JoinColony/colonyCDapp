@@ -1,4 +1,4 @@
-import { type AnyColonyClient, ClientType } from '@colony/colony-js';
+import { ClientType } from '@colony/colony-js';
 import { fork } from 'redux-saga/effects';
 
 import { ActionTypes } from '~redux/index.ts';
@@ -45,7 +45,7 @@ export function chunkedMulticall<T>({
 
   // Function to create and store channels
   function* createMulticallChannels() {
-    channels = yield createTransactionChannels(metaId, channelIds);
+    channels = yield createTransactionChannels(metaId, channelIds, startIndex);
   }
 
   // Function to create transactions using the stored channels
@@ -72,14 +72,12 @@ export function chunkedMulticall<T>({
   // Intended to be called inside a try catch
   function* processMulticallTransactions({
     encodeFunctionData,
-    colonyClient,
   }: {
-    encodeFunctionData: (chunk: T[], colonyClient: AnyColonyClient) => string[];
-    colonyClient: AnyColonyClient;
+    encodeFunctionData: (chunk: T[]) => string[];
   }) {
     for (let index = 0; index < chunks.length; index += 1) {
       const channel = channels[channelIds[index]];
-      const multicallData = encodeFunctionData(chunks[index], colonyClient);
+      const multicallData = encodeFunctionData(chunks[index]);
 
       yield takeFrom(channel.channel, ActionTypes.TRANSACTION_CREATED);
 
