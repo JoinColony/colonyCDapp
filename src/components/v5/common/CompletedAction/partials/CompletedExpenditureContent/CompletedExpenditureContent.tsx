@@ -88,9 +88,10 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   const tokensCount = getTokensNumber(expenditure);
   const stagedPaymentTokenSymbol =
     tokensCount === 1 &&
-    allTokens.find(
-      ({ token }) => token.tokenAddress === stages[0]?.tokenAddress,
-    )?.token.symbol;
+    stages &&
+    stages.length > 0 &&
+    allTokens.find(({ token }) => token.tokenAddress === stages[0].tokenAddress)
+      ?.token.symbol;
 
   return (
     <>

@@ -3,21 +3,22 @@ import React, { type FC } from 'react';
 import { FormattedDate } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
-import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
-import { type FundingRequestItemProps } from './types.ts';
+import { type RequestsBoxItemProps } from './types.ts';
 
-const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
+const RequestsBoxItem: FC<RequestsBoxItemProps> = ({
+  action,
+  onClick,
+  selectedAction,
+  title,
+}) => {
   const { motionState, loadingAction } = useGetColonyAction(
     action.transactionHash,
   );
-  const { selectedFundingAction, setSelectedFundingAction } =
-    usePaymentBuilderContext();
 
-  const isSelected =
-    selectedFundingAction?.transactionHash === action.transactionHash;
+  const isSelected = selectedAction?.transactionHash === action.transactionHash;
 
   const isMotion = !!action.motionData || !!action.multiSigData;
 
@@ -32,7 +33,7 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
         },
       )}
       onClick={() => {
-        setSelectedFundingAction(action);
+        onClick(action);
       }}
     >
       <span
@@ -40,12 +41,14 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
           underline: isSelected,
         })}
       >
-        <FormattedDate
-          value={new Date(action.createdAt)}
-          day="numeric"
-          month="short"
-          year="numeric"
-        />
+        {title || (
+          <FormattedDate
+            value={new Date(action.createdAt)}
+            day="numeric"
+            month="short"
+            year="numeric"
+          />
+        )}
       </span>
       {loadingAction ? (
         <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
@@ -58,4 +61,4 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
   );
 };
 
-export default FundingRequestItem;
+export default RequestsBoxItem;

@@ -170,12 +170,17 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
               <PaymentOverview total={totals} paid={paid} payable={payable} />
               <ActionButton
                 actionType={ActionTypes.EXPENDITURE_CLAIM}
-                className="mt-4 w-full"
+                className="mt-4"
                 mode="primarySolid"
-                disabled={!claimablePayouts.length || !blockTime}
+                disabled={
+                  !claimablePayouts.length ||
+                  !blockTime ||
+                  isWaitingForClaimedPayouts
+                }
                 values={claimPayload}
                 text={formatText({ id: 'expenditure.paymentStage.button' })}
                 loadingBehavior={LoadingBehavior.TxLoader}
+                isFullSize
                 onSuccess={async () => {
                   if (isStaked && !isStakeClaimed) {
                     await handleReclaimStake();
@@ -187,7 +192,6 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                   // we need to remove all getDomainBalance queries to refetch the correct balances
                   removeCacheEntry(CacheQueryKeys.GetDomainBalance);
                 }}
-                isLoading={isWaitingForClaimedPayouts}
               />
             </div>
           ),
