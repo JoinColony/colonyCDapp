@@ -1,8 +1,8 @@
-import React, { useMemo, type FC } from 'react';
+import React, { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  type ColonyFragment,
+  type NotificationColonyFragment,
   useGetColonyActionQuery,
   useGetExpenditureQuery,
   useGetUserByAddressQuery,
@@ -18,7 +18,7 @@ const displayName =
   'common.Extensions.UserHub.partials.ExpenditureNotification';
 
 interface NotificationProps {
-  colony: ColonyFragment | null | undefined;
+  colony: NotificationColonyFragment | null | undefined;
   loadingColony: boolean;
   notification: NotificationInterface;
 }
@@ -44,17 +44,12 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       skip: !expenditureID,
     });
 
-  const creatorName = useMemo(() => {
-    return userData?.getUserByAddress?.items[0]?.profile?.displayName || '';
-  }, [userData]);
+  const creatorName =
+    userData?.getUserByAddress?.items[0]?.profile?.displayName || '';
 
-  const expenditure = useMemo(() => {
-    return expenditureData?.getExpenditure;
-  }, [expenditureData]);
+  const expenditure = expenditureData?.getExpenditure;
 
-  const transactionHash = useMemo(() => {
-    return expenditure?.creatingActions?.items[0]?.id;
-  }, [expenditure]);
+  const transactionHash = expenditure?.creatingActions?.items[0]?.id;
 
   const { data: actionData, loading: loadingAction } = useGetColonyActionQuery({
     variables: {
@@ -63,9 +58,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
     skip: !transactionHash,
   });
 
-  const action = useMemo(() => {
-    return actionData?.getColonyAction;
-  }, [actionData]);
+  const action = actionData?.getColonyAction;
 
   const handleNotificationClicked = () => {
     if (transactionHash) {

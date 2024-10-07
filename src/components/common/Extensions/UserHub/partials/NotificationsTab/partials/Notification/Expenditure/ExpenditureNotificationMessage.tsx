@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import {
   type ColonyActionFragment,
-  type ColonyFragment,
+  type NotificationColonyFragment,
   type ExpenditureFragment,
 } from '~gql';
 import { NotificationType, type Notification } from '~types/notifications.ts';
@@ -17,7 +17,7 @@ const displayName =
 
 interface ExpenditureNotificationMessageProps {
   action: ColonyActionFragment | null | undefined;
-  colony: ColonyFragment | null | undefined;
+  colony: NotificationColonyFragment | null | undefined;
   creator: string;
   expenditure: ExpenditureFragment | null | undefined;
   loading: boolean;

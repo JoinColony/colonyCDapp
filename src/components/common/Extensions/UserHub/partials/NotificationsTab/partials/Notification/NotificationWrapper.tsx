@@ -7,7 +7,7 @@ import React, { type ReactNode, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { ADDRESS_ZERO } from '~constants';
-import { type ColonyFragment } from '~gql';
+import { type NotificationColonyFragment } from '~gql';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
@@ -24,7 +24,7 @@ const MSG = defineMessages({
 
 interface NotificationWrapperProps {
   children: ReactNode;
-  colony: ColonyFragment | null | undefined;
+  colony: NotificationColonyFragment | null | undefined;
   loadingColony: boolean;
   notification: NotificationInterface;
   onClick?: () => void;

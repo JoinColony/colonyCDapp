@@ -2,7 +2,10 @@ import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
-import { type ColonyActionFragment, type ColonyFragment } from '~gql';
+import {
+  type ColonyActionFragment,
+  type NotificationColonyFragment,
+} from '~gql';
 import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import { NotificationType, type Notification } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,7 +17,7 @@ const displayName =
 
 interface ActionNotificationMessageProps {
   action: ColonyActionFragment | null | undefined;
-  colony: ColonyFragment | null | undefined;
+  colony: NotificationColonyFragment | null | undefined;
   creator: string;
   loading: boolean;
   notification: Notification;

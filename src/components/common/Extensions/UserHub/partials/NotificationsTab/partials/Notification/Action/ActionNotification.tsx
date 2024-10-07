@@ -1,8 +1,8 @@
-import React, { useMemo, type FC } from 'react';
+import React, { type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  type ColonyFragment,
+  type NotificationColonyFragment,
   useGetColonyActionQuery,
   useGetUserByAddressQuery,
 } from '~gql';
@@ -16,7 +16,7 @@ import ActionNotificationMessage from './ActionNotificationMessage.tsx';
 const displayName = 'common.Extensions.UserHub.partials.ActionNotification';
 
 interface NotificationProps {
-  colony: ColonyFragment | null | undefined;
+  colony: NotificationColonyFragment | null | undefined;
   loadingColony: boolean;
   notification: NotificationInterface;
 }
@@ -41,13 +41,10 @@ const ActionNotification: FC<NotificationProps> = ({
     skip: !transactionHash,
   });
 
-  const creatorName = useMemo(() => {
-    return userData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
-  }, [userData]);
+  const creatorName =
+    userData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
 
-  const action = useMemo(() => {
-    return actionData?.getColonyAction;
-  }, [actionData]);
+  const action = actionData?.getColonyAction;
 
   const handleNotificationClicked = () => {
     if (transactionHash) {

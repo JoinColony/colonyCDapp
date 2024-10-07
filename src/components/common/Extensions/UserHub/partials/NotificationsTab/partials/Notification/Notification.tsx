@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { useGetFullColonyByAddressQuery } from '~gql';
+import { useGetColonyForNotificationQuery } from '~gql';
 import {
   NotificationType,
   type Notification as NotificationInterface,
@@ -16,26 +16,29 @@ interface NotificationProps {
 }
 
 const Notification: FC<NotificationProps> = ({ notification }) => {
+  const { colonyAddress, notificationType } =
+    notification.customAttributes || {};
+
   const { data: colonyData, loading: loadingColony } =
-    useGetFullColonyByAddressQuery({
+    useGetColonyForNotificationQuery({
       variables: {
-        address: notification.customAttributes?.colonyAddress || '',
+        address: colonyAddress || '',
       },
-      skip: !notification.customAttributes?.colonyAddress,
+      skip: !colonyAddress || !notificationType,
     });
 
   const colony = colonyData?.getColonyByAddress?.items[0];
 
   // If there is no notification type, something is wrong with this notification
   // and we won't know what to display, so skip it.
-  if (!notification.customAttributes?.notificationType) {
+  if (!notificationType) {
     return null;
   }
 
   // If the notification type is permissions action, or a mention (always tied to an action):
   if (
     [NotificationType.PermissionsAction, NotificationType.Mention].includes(
-      notification.customAttributes.notificationType,
+      notificationType,
     )
   ) {
     return (
@@ -55,7 +58,7 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
       NotificationType.ExpenditureReadyForRelease,
       NotificationType.ExpenditureFinalized,
       NotificationType.ExpenditureCancelled,
-    ].includes(notification.customAttributes.notificationType)
+    ].includes(notificationType)
   ) {
     return (
       <ExpenditureNotification
