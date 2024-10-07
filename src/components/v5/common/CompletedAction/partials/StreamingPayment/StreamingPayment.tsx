@@ -164,7 +164,6 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
     amount || '1',
     selectedToken?.decimals,
   );
-
   const { endCondition } = streamingPaymentMetadata || {};
   const selectedTeam = findDomainByNativeId(nativeDomainId, colony);
   const motionDomain = motionData?.motionDomain ?? null;

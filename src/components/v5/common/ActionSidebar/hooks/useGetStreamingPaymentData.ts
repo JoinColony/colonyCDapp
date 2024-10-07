@@ -1,16 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { FAILED_LOADING_DURATION as POLLING_TIMEOUT } from '~frame/LoadingTemplate/index.ts';
 import { useGetStreamingPaymentQuery } from '~gql';
-import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import { type StreamingPayment } from '~types/graphql.ts';
-import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import noop from '~utils/noop.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
-import {
-  getStreamingPaymentAmountsLeft,
-  getStreamingPaymentStatus,
-} from '~utils/streamingPayments.ts';
 
 export const useGetStreamingPaymentData = (
   streamingPaymentId: string | null | undefined,
@@ -22,27 +15,16 @@ export const useGetStreamingPaymentData = (
       variables: {
         streamingPaymentId: streamingPaymentId || '',
       },
-      skip: Number.isNaN(streamingPaymentId),
+      skip: !streamingPaymentId,
       fetchPolicy: 'cache-and-network',
       pollInterval,
     });
 
   const streamingPayment = data?.getStreamingPayment;
+
   const [isPolling, setIsPolling] = useState(
     streamingPaymentId && !streamingPayment,
   );
-  const [amounts, setAmounts] = useState<{
-    amountAvailableToClaim: string;
-    amountClaimedToDate: string;
-  }>({
-    amountAvailableToClaim: '0',
-    amountClaimedToDate: '0',
-  });
-  const [paymentStatus, setPaymentStatus] = useState<StreamingPaymentStatus>(
-    StreamingPaymentStatus.NotStarted,
-  );
-  const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
-    useCurrentBlockTime();
 
   useEffect(() => {
     const shouldPoll = streamingPaymentId && !streamingPayment;
@@ -72,51 +54,14 @@ export const useGetStreamingPaymentData = (
     pollInterval,
   ]);
 
-  const updateAmountsAndStatus = useCallback(
-    (
-      payment: StreamingPayment,
-      currentTimestamp: number,
-      isMotion?: boolean,
-    ) => {
-      const { amountAvailableToClaim, amountClaimedToDate } =
-        getStreamingPaymentAmountsLeft(payment, currentTimestamp);
-
-      const status = getStreamingPaymentStatus({
-        streamingPayment,
-        currentTimestamp,
-        isMotion,
-        amountAvailableToClaim: amounts.amountAvailableToClaim,
-      });
-
-      setPaymentStatus(status);
-      setAmounts({ amountAvailableToClaim, amountClaimedToDate });
-    },
-    [amounts.amountAvailableToClaim, streamingPayment],
-  );
-
-  useEffect(() => {
-    if (!loading) {
-      fetchCurrentBlockTime();
-    }
-  }, [fetchCurrentBlockTime, loading]);
-
-  useEffect(() => {
-    if (streamingPayment) {
-      const currentTimestamp = Math.floor(blockTime ?? Date.now() / 1000);
-
-      updateAmountsAndStatus(streamingPayment, currentTimestamp);
-    }
-  }, [blockTime, streamingPayment, updateAmountsAndStatus]);
+  const isLoading = loading || !!isPolling;
 
   return {
     streamingPaymentData: streamingPayment,
-    loadingStreamingPayment: loading || !!isPolling,
+    loadingStreamingPayment: isLoading,
     refetchStreamingPayment: refetch,
     startPolling,
     stopPolling,
-    updateAmountsAndStatus,
-    paymentStatus,
-    amounts,
   };
 };
 

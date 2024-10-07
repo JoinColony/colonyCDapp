@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 
 import { ExpenditureStatus } from '~gql';
+import { ExpenditureActionStatus } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
-import { isExpenditureFullyFunded } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/utils.ts';
-
-import { ExpenditureActionStatus } from './types.ts';
+import { isExpenditureFullyFunded } from '~utils/expenditures.ts';
 
 export const useExpenditureActionStatus = (
   expenditure: Expenditure | null | undefined,

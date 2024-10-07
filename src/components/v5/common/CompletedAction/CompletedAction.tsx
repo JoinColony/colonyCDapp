@@ -6,7 +6,6 @@ import { ColonyActionType } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
-import { type UseGetStreamingPaymentDataReturnType } from '../ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
 import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
@@ -120,12 +119,7 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ExtendedColonyActionType.SplitPayment:
         return <SplitPayment action={action} />;
       case ColonyActionType.CreateStreamingPayment:
-        return (
-          <StreamingPayment
-            action={action}
-            streamingPayment={streamingPayment}
-          />
-        );
+        return <StreamingPayment action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
@@ -176,12 +170,7 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
       case ColonyActionType.CreateStreamingPayment:
-        return (
-          <StreamingPaymentWidget
-            action={action}
-            streamingPayment={streamingPayment}
-          />
-        );
+        return <StreamingPaymentWidget action={action} />;
       default:
         return <PermissionSidebar action={action} />;
     }
