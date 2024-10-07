@@ -11,6 +11,7 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
+import { isExpenditureFullyFunded } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -34,11 +35,7 @@ import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx'
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
-import {
-  getCancelStepIndex,
-  getExpenditureStep,
-  isExpenditureFullyFunded,
-} from './utils.ts';
+import { getCancelStepIndex, getExpenditureStep } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();

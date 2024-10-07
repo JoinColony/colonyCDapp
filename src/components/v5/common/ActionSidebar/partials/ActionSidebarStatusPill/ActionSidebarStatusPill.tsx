@@ -1,6 +1,11 @@
 import React, { type FC } from 'react';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
+import { useActionStatusContext } from '~context/ActionStatusContext/ActionStatusContext.ts';
 import { ColonyActionType } from '~gql';
+import { type ExpenditureActionStatus } from '~types/expenditures.ts';
+import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
+import { type MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
@@ -8,47 +13,56 @@ import ExpenditureActionStatusBadge from '../ExpenditureActionStatusBadge/Expend
 import MotionOutcomeBadge from '../MotionOutcomeBadge/MotionOutcomeBadge.tsx';
 import StreamingPaymentStatusPill from '../StreamingPaymentStatusPill/StreamingPaymentStatusPill.tsx';
 
-import { type ActionSidebarStatusPillProps } from './types.ts';
+const ActionSidebarStatusPill: FC = () => {
+  const { actionType, actionStatus, isLoading } = useActionStatusContext();
 
-const ActionSidebarStatusPill: FC<ActionSidebarStatusPillProps> = ({
-  action,
-  isMotion,
-  motionState,
-  expenditure,
-  streamingPaymentStatus,
-  isMultiSig,
-}) => {
-  if (expenditure && action?.type === ColonyActionType.CreateExpenditure) {
-    return (
-      <ExpenditureActionStatusBadge
-        expenditure={expenditure}
-        withAdditionalStatuses
-      />
-    );
+  if (!actionType || !actionStatus) {
+    return null;
   }
 
-  if (
-    streamingPaymentStatus &&
-    action?.type === ColonyActionType.CreateStreamingPayment
-  ) {
-    return <StreamingPaymentStatusPill status={streamingPaymentStatus} />;
-  }
+  const getStatuPill = () => {
+    switch (actionType) {
+      case ColonyActionType.CreateExpenditure: {
+        return (
+          <ExpenditureActionStatusBadge
+            status={actionStatus as ExpenditureActionStatus}
+          />
+        );
+      }
+      case ColonyActionType.CreateStreamingPayment: {
+        return (
+          <StreamingPaymentStatusPill
+            status={actionStatus as StreamingPaymentStatus}
+          />
+        );
+      }
+      default: {
+        if (actionType.endsWith('Motion') || actionType.endsWith('Multisig')) {
+          return (
+            <MotionOutcomeBadge motionState={actionStatus as MotionState} />
+          );
+        }
 
-  if (isMotion || isMultiSig) {
-    if (!motionState) {
-      return null;
+        return (
+          <PillsBase
+            className="bg-success-100 text-success-400"
+            isCapitalized={false}
+          >
+            {formatText({ id: 'action.passed' })}
+          </PillsBase>
+        );
+      }
     }
-    return <MotionOutcomeBadge motionState={motionState} />;
-  }
+  };
 
-  return action ? (
-    <PillsBase
-      className="bg-success-100 text-success-400"
-      isCapitalized={false}
+  return (
+    <LoadingSkeleton
+      isLoading={isLoading}
+      className="h-[1.625rem] w-full rounded"
     >
-      {formatText({ id: 'action.passed' })}
-    </PillsBase>
-  ) : null;
+      {getStatuPill()}
+    </LoadingSkeleton>
+  );
 };
 
 export default ActionSidebarStatusPill;

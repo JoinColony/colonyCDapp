@@ -11,22 +11,25 @@ import {
 import clsx from 'clsx';
 import format from 'date-fns/format';
 import { BigNumber } from 'ethers';
-import React, { type FC } from 'react';
+import React, { useState, type FC, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { useActionStatusContext } from '~context/ActionStatusContext/ActionStatusContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
 import { useMobile } from '~hooks';
+import useToggle from '~hooks/useToggle/index.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -35,6 +38,7 @@ import {
   getStreamingPaymentLimit,
 } from '~utils/streamingPayments.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
+import { useGetStreamingPaymentData } from '~v5/common/ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import { END_OPTIONS } from '~v5/common/ActionSidebar/partials/TimeRow/consts.ts';
 import { DEFAULT_DATE_TIME_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -56,6 +60,7 @@ import DescriptionRow from '../rows/Description.tsx';
 import TeamFromRow from '../rows/TeamFrom.tsx';
 import { getFormattedTokenAmount } from '../utils.ts';
 
+import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import { type StreamingPaymentProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.StreamingPayment';
@@ -67,15 +72,33 @@ const MSG = defineMessages({
   },
 });
 
-const StreamingPayment: FC<StreamingPaymentProps> = ({
-  action,
-  streamingPayment,
-}) => {
+const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const isMobile = useMobile();
+  const { actionStatus, setIsLoading } = useActionStatusContext();
+  const [expectedActionStatus, setExpectedActionStatus] =
+    useState<StreamingPaymentStatus | null>(null);
 
-  const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
+  const [
+    isCancelModalOpen,
+    { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
+  ] = useToggle();
+
+  const { loadingStreamingPayment, streamingPaymentData } =
+    useGetStreamingPaymentData(action?.expenditureId);
+
+  useEffect(() => {
+    if (expectedActionStatus && expectedActionStatus !== actionStatus) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (expectedActionStatus && expectedActionStatus === actionStatus) {
+      setIsLoading(false);
+      setExpectedActionStatus(null);
+    }
+  }, [actionStatus, expectedActionStatus, setIsLoading]);
 
   if (loadingStreamingPayment) {
     return (
@@ -123,10 +146,13 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     requiredRolesDomain: streamingPaymentData.nativeDomainId,
   });
 
-  // @todo: update cancel-related logic in separate PR
   const showCancelOption =
-    streamingPaymentData.isCancelled &&
-    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+    actionStatus &&
+    [StreamingPaymentStatus.Active, StreamingPaymentStatus.NotStarted].includes(
+      actionStatus as StreamingPaymentStatus,
+    ) &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions) &&
+    expectedActionStatus !== StreamingPaymentStatus.Cancelled;
 
   const meatballOptions: MeatBallMenuItem[] = [
     ...(showCancelOption
@@ -135,7 +161,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
             key: '1',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
-            onClick: () => {},
+            onClick: toggleCancelModalOn,
           },
         ]
       : []),
@@ -290,6 +316,14 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
+      <CancelModal
+        isOpen={isCancelModalOpen}
+        streamingPayment={streamingPaymentData}
+        onClose={toggleCancelModalOff}
+        onSuccess={() =>
+          setExpectedActionStatus(StreamingPaymentStatus.Cancelled)
+        }
+      />
     </>
   );
 };

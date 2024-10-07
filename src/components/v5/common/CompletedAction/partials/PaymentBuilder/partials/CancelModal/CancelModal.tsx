@@ -2,6 +2,7 @@ import { Prohibit } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { toast } from 'react-toastify';
 
+import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -9,18 +10,17 @@ import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { getHighestTierRoleForUser } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import Button, { ActionButton } from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
-import {
-  cancelDecisionMethodDescriptions,
-  cancelDecisionMethodItems,
-  validationSchema,
-} from './consts.ts';
+import { cancelDecisionMethodItems, validationSchema } from './consts.ts';
 import { type CancelModalProps } from './types.ts';
+import { getCancelDecisionMethodDescriptions } from './utils.ts';
 
 const CancelModal: FC<CancelModalProps> = ({
   isOpen,
@@ -69,6 +69,8 @@ const CancelModal: FC<CancelModalProps> = ({
     expenditure.lockingActions?.items &&
     expenditure.lockingActions.items.length > 0;
 
+  const colonyRoles = extractColonyRoles(colony.roles);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -85,11 +87,14 @@ const CancelModal: FC<CancelModalProps> = ({
         })}
       </h5>
       <p className="mb-6 text-md text-gray-600">
-        {formatText({
-          id: isExpenditureLocked
-            ? 'cancelModal.locked.description'
-            : 'cancelModal.description',
-        })}
+        {formatText(
+          {
+            id: isExpenditureLocked
+              ? 'cancelModal.locked.description'
+              : 'cancelModal.description',
+          },
+          { role: 'Payer' },
+        )}
       </p>
       {isExpenditureLocked ? (
         <Form
@@ -100,6 +105,19 @@ const CancelModal: FC<CancelModalProps> = ({
         >
           {({ watch }) => {
             const method = watch('decisionMethod');
+            const highestTierRole = getHighestTierRoleForUser(
+              colonyRoles,
+              user?.walletAddress || '',
+            );
+
+            const highestTierRoleMeta = highestTierRole
+              ? getRole(highestTierRole)
+              : undefined;
+
+            const cancelDecisionMethodDescriptions =
+              getCancelDecisionMethodDescriptions(
+                highestTierRoleMeta?.name || formatText({ id: 'role.mod' }),
+              );
 
             return (
               <>

@@ -1,6 +1,7 @@
 export interface AvailableToClaimCounterProps {
   amountAvailableToClaim: number;
-  getTotalFunds: () => Promise<void>;
+  getTotalFunds: (currentTimestamp: number) => Promise<void>;
   isAtLeastOnePaymentActive?: boolean;
   ratePerSecond: number;
+  currentTimestamp: number;
 }
