@@ -1,8 +1,8 @@
 import { Action } from '~constants/actions.ts';
 
-// @TODO: Add staged
 export const actionsWithoutReputationDecisionMethod = [
   Action.PaymentBuilder,
+  Action.StagedPayment,
   Action.SplitPayment,
 ];
 
