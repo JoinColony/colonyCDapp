@@ -307,6 +307,9 @@ export const segregateEditActions = (
           editingActionTime < currentFundingActionTime &&
           !seenActions.has(actionKey)
         ) {
+          if (!result.funding[0]) {
+            result.funding[0] = [];
+          }
           result.funding[0].push(action);
           seenActions.add(actionKey);
         } else if (

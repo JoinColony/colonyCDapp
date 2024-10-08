@@ -151,13 +151,19 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     requiredRoles: [ColonyRole.Arbitration],
     requiredRolesDomains: [expenditure.nativeDomainId],
   });
-  const showCancelOrEditOption =
+  const showCancel =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
     expenditure?.status !== ExpenditureStatus.Finalized &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
+  const showEditOption =
+    expenditure?.status !== ExpenditureStatus.Cancelled &&
+    expenditure?.status !== ExpenditureStatus.Draft &&
+    expenditure?.status !== ExpenditureStatus.Finalized &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
-    ...(showCancelOrEditOption
+    ...(showEditOption
       ? [
           {
             key: '1',
@@ -167,7 +173,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           },
         ]
       : []),
-    ...(showCancelOrEditOption
+    ...(showCancel
       ? [
           {
             key: '2',

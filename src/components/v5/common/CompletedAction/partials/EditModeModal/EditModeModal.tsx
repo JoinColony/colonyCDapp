@@ -145,7 +145,7 @@ const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
       </div>
       <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
         <Button mode="primaryOutline" isFullSize onClick={onClose}>
-          {formatText({ id: 'button.cancel' })}
+          {formatText(MSG.cancelMessage)}
         </Button>
         <div className="flex w-full justify-center">
           {isSubmitting ? (
@@ -161,7 +161,7 @@ const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
             />
           ) : (
             <Button mode="primarySolid" isFullSize type="submit">
-              {formatText({ id: 'fundingModal.accept' })}
+              {formatText(MSG.confirmMessage)}
             </Button>
           )}
         </div>
@@ -235,8 +235,6 @@ const EditModeModal: FC<EditModeModalProps> = ({
       onClose={onClose}
       shouldShowHeader
       icon={LockKey}
-      confirmMessage={formatText(MSG.confirmMessage)}
-      closeMessage={formatText(MSG.cancelMessage)}
       {...rest}
     >
       <Form
