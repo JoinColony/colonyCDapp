@@ -74,14 +74,20 @@ export const useSubmitButtonDisabled = () => {
 };
 
 export const useIsFieldDisabled = () => {
-  const { extensionData } = useExtensionData(Extension.VotingReputation);
+  const { extensionData, loading } = useExtensionData(
+    Extension.VotingReputation,
+  );
   const selectedAction = useActiveActionType();
   const isExtensionEnabled =
     extensionData &&
     isInstalledExtensionData(extensionData) &&
     extensionData.isEnabled;
 
-  if (selectedAction === Action.CreateDecision && !isExtensionEnabled) {
+  if (
+    selectedAction === Action.CreateDecision &&
+    !isExtensionEnabled &&
+    !loading
+  ) {
     return true;
   }
 
