@@ -1018,6 +1018,8 @@ enum NotificationType {
 
   # Actions made with permissions
   PERMISSIONS_ACTION
+  # versions
+  NEW_COLONY_VERSION
 }
 
 """

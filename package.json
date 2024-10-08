@@ -26,7 +26,7 @@
     "frontend": "ulimit -n 2048 && vite",
     "frontend:safe": "SAFE_ENABLED=true ulimit -n 2048 && vite",
     "build": "vite build",
-    "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \"cd colonyNetwork && npx hardhat console --network localhost\"",
+    "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \". /root/.nvm/nvm.sh && cd colonyNetwork && npx hardhat console --network localhost\"",
     "hardhat:cmd": "./scripts/hardhat-cmd.js",
     "truffle": "echo 'Please use `npm run hardhat` instead of `npm run truffle`'",
     "amplify": "amplify",

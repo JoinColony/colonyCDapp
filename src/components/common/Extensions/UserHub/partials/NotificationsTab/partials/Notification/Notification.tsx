@@ -10,6 +10,7 @@ import ActionNotification from './Action/ActionNotification.tsx';
 import ExpenditureNotification from './Expenditure/ExpenditureNotification.tsx';
 import ExtensionNotification from './Extension/ExtensionNotification.tsx';
 import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
+import NewColonyVersionNotification from './NewColonyVersion/NewColonyVersion.tsx';
 import NotificationMessage from './NotificationMessage.tsx';
 import NotificationWrapper from './NotificationWrapper.tsx';
 
@@ -129,6 +130,16 @@ const Notification: FC<NotificationProps> = ({
         loadingColony={loadingColony}
         notification={notification}
         closeUserHub={closeUserHub}
+      />
+    );
+  }
+
+  if (notificationType === NotificationType.NewColonyVersion) {
+    return (
+      <NewColonyVersionNotification
+        colony={notificationColony}
+        loadingColony={loadingColony}
+        notification={notification}
       />
     );
   }
