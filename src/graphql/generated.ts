@@ -6173,6 +6173,7 @@ export enum NotificationType {
   MultisigActionCreated = 'MULTISIG_ACTION_CREATED',
   MultisigActionFinalized = 'MULTISIG_ACTION_FINALIZED',
   MultisigActionRejected = 'MULTISIG_ACTION_REJECTED',
+  NewColonyVersion = 'NEW_COLONY_VERSION',
   PermissionsAction = 'PERMISSIONS_ACTION'
 }
 
