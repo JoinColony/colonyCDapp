@@ -4,13 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   type NotificationColonyFragment,
+  NotificationType,
   useGetTokenFromEverywhereQuery,
 } from '~gql';
 import { COLONY_BALANCES_ROUTE } from '~routes';
-import {
-  NotificationType,
-  type Notification as NotificationInterface,
-} from '~types/notifications.ts';
+import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import { getNumeralTokenAmount } from '~utils/tokens.ts';
 
@@ -33,7 +31,7 @@ const MSG = defineMessages({
     defaultMessage: 'Incoming funds: {amount} {symbol} has been claimed.',
   },
   unknownClaim: {
-    id: `${displayName}.unknownAction`,
+    id: `${displayName}.unknownClaim`,
     defaultMessage: 'Unknown claim',
   },
 });
