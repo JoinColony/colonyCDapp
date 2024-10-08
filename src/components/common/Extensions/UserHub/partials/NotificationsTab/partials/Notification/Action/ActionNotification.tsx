@@ -1,20 +1,21 @@
-import React, { type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { getActionTitleValues } from '~common/ColonyActions/index.ts';
 import {
   type NotificationColonyFragment,
+  NotificationType,
   useGetColonyActionQuery,
   useGetUserByAddressQuery,
 } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
-import {
-  NotificationType,
-  type Notification as NotificationInterface,
-} from '~types/notifications.ts';
+import { type Notification as NotificationInterface } from '~types/notifications.ts';
+import { formatText } from '~utils/intl.ts';
 
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
 import ActionNotificationMessage from './ActionNotificationMessage.tsx';
+import MotionNotificationMessage from './MotionNotificationMessage.tsx';
 import MultisigNotificationMessage from './MultisigNotificationMessage.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.ActionNotification';
@@ -48,9 +49,6 @@ const ActionNotification: FC<NotificationProps> = ({
     skip: !transactionHash,
   });
 
-  const creatorName =
-    userData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
-
   const action = actionData?.getColonyAction;
 
   const handleNotificationClicked = () => {
@@ -67,6 +65,28 @@ const ActionNotification: FC<NotificationProps> = ({
     });
   };
 
+  const actionMetadataDescription = useMemo(() => {
+    if (!action || !colony) {
+      return null;
+    }
+
+    return formatText(
+      { id: 'action.title' },
+      getActionTitleValues({
+        actionData: action,
+        colony: {
+          nativeToken: {
+            ...colony.nativeToken,
+          },
+          metadata: colony.metadata,
+        },
+      }),
+    );
+  }, [action, colony]);
+
+  const actionTitle =
+    action?.metadata?.customTitle || action?.decisionData?.title || '';
+
   return (
     <NotificationWrapper
       colony={colony}
@@ -79,26 +99,43 @@ const ActionNotification: FC<NotificationProps> = ({
           notificationType,
         ) && (
           <ActionNotificationMessage
-            action={action}
-            colony={colony}
-            creator={creatorName}
+            actionMetadataDescription={actionMetadataDescription}
+            actionTitle={actionTitle}
+            creator={
+              userData?.getUserByAddress?.items[0]?.profile?.displayName ?? ''
+            }
             loading={loadingColony || loadingAction || loadingUser}
-            notification={notification}
+            notificationType={notificationType}
           />
         )}
       {notificationType &&
         [
-          NotificationType.MultiSigActionCreated,
-          NotificationType.MultiSigActionFinalized,
-          NotificationType.MultiSigActionApproved,
-          NotificationType.MultiSigActionRejected,
+          NotificationType.MultisigActionCreated,
+          NotificationType.MultisigActionFinalized,
+          NotificationType.MultisigActionApproved,
+          NotificationType.MultisigActionRejected,
         ].includes(notificationType) && (
           <MultisigNotificationMessage
-            action={action}
-            colony={colony}
-            creator={creatorName}
+            actionMetadataDescription={actionMetadataDescription}
+            actionTitle={actionTitle}
             loading={loadingColony || loadingAction || loadingUser}
-            notification={notification}
+            notificationType={notificationType}
+          />
+        )}
+      {notificationType &&
+        [
+          NotificationType.MotionCreated,
+          NotificationType.MotionOpposed,
+          NotificationType.MotionSupported,
+          NotificationType.MotionVoting,
+          NotificationType.MotionReveal,
+          NotificationType.MotionFinalized,
+        ].includes(notificationType) && (
+          <MotionNotificationMessage
+            actionMetadataDescription={actionMetadataDescription}
+            actionTitle={actionTitle}
+            loading={loadingColony || loadingAction || loadingUser}
+            notificationType={notificationType}
           />
         )}
     </NotificationWrapper>
