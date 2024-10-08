@@ -381,7 +381,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     ],
     uninstallable: true,
     createdAt: 1692048380000,
-    // @TODO: Set auto-enable to install
+    autoEnableAfterInstall: true,
   },
   // {
   //   icon: ExtensionAdvancedPaymentsIcon,
