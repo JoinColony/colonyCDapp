@@ -7,6 +7,7 @@ import { type Colony } from '~types/graphql.ts';
 
 import { getPaymentBuilderPayload } from '../forms/PaymentBuilderForm/utils.ts';
 import { getSplitPaymentPayload } from '../forms/SplitPaymentForm/utils.ts';
+import { getStagedPaymentPayload } from '../forms/StagedPaymentForm/utils.ts';
 
 export const getActionPayload = ({
   actionType,
@@ -22,6 +23,8 @@ export const getActionPayload = ({
   switch (actionType) {
     case Action.PaymentBuilder:
       return getPaymentBuilderPayload(colony, formValues, networkInverseFee);
+    case Action.StagedPayment:
+      return getStagedPaymentPayload(colony, formValues, networkInverseFee);
     case Action.SplitPayment:
       return getSplitPaymentPayload(colony, formValues, networkInverseFee);
     default:

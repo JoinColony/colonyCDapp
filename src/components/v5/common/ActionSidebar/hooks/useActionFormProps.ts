@@ -12,7 +12,7 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   ACTION_TYPE_FIELD_NAME,
 } from '../consts.ts';
-import { type ActionFormBaseProps } from '../types.ts';
+import { type ActionFormOptions, type ActionFormBaseProps } from '../types.ts';
 
 const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
@@ -20,11 +20,11 @@ const useActionFormProps = (
 ) => {
   const prevActionTypeRef = useRef<Action | undefined>();
   const navigate = useNavigate();
-  const [actionFormProps, setActionFormProps] = useState<ActionFormProps<any>>({
+  const [actionFormProps, setActionFormProps] = useState<ActionFormOptions>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     defaultValues,
-    children: undefined,
     mode: 'onChange',
+    onSuccess: () => {},
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
   });
   const { colony } = useColonyContext();
@@ -87,7 +87,6 @@ const useActionFormProps = (
           ...formOptions.options,
         },
         defaultValues: formOptionsWithDefaults,
-        children: undefined,
       });
 
       if (prevActionTypeRef.current === actionType) {

@@ -35,7 +35,7 @@ export interface ActionFormProps<V extends Record<string, any>>
   error?: ActionTypeString;
 
   /** Function to call after successful action was dispatched */
-  onSuccess?: OnSuccess<V>;
+  onSuccess?: OnSuccess<V> | (() => void);
 
   /** Function to call after error action was dispatched */
   onError?: CustomSubmitErrorHandler<V>;

@@ -1,7 +1,8 @@
 import { BigNumber } from 'ethers';
 
 import { ExpenditureStatus } from '~gql';
-import { type Expenditure } from '~types/graphql.ts';
+import { type ExpenditureAction, type Expenditure } from '~types/graphql.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 
 import { ExpenditureStep } from './types.ts';
 
@@ -104,4 +105,26 @@ export const getCancelStepIndex = (
   }
 
   return undefined;
+};
+
+export const sortActionsByCreatedDate = (
+  a?: ExpenditureAction,
+  b?: ExpenditureAction,
+) => {
+  if (a?.createdAt && b?.createdAt) {
+    return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+  }
+  return 0;
+};
+
+export const getShouldShowMotionTimer = (motionState?: MotionState) => {
+  return (
+    motionState &&
+    [
+      MotionState.Staking,
+      MotionState.Supported,
+      MotionState.Voting,
+      MotionState.Reveal,
+    ].includes(motionState)
+  );
 };

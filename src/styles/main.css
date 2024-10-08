@@ -28,9 +28,7 @@ iframe {
 }
 
 .rts___tab___selected {
-  @apply border-blue-400 text-blue-400 shadow-none;
-
-  background-color: none;
+  @apply border-blue-400 bg-transparent text-blue-400 shadow-none;
 }
 
 .rts___nav___btn:hover {

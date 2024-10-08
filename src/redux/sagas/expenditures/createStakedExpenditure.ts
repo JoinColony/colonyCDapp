@@ -308,14 +308,18 @@ function* createStakedExpenditure({
     });
 
     yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_CREATE_SUCCESS,
+      type: ActionTypes.STAKED_EXPENDITURE_CREATE_SUCCESS,
       payload: {},
       meta,
     });
 
     setTxHash?.(txHash);
   } catch (error) {
-    return yield putError(ActionTypes.EXPENDITURE_CREATE_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR,
+      error,
+      meta,
+    );
   } finally {
     [
       approve,

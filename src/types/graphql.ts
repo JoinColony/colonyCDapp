@@ -51,6 +51,7 @@ import {
   type MultiSigUserSignatureFragment,
   type ColonyMultiSigFragment,
   type ExpenditureActionFragment,
+  type ExpenditureStageFragment,
 } from '~gql';
 
 export type AnnotationType = AnnotationFragment;
@@ -138,6 +139,8 @@ export type ExpenditureSlot = ExpenditureSlotFragment;
 export type ExpenditurePayout = ExpenditurePayoutFragment;
 
 export type ExpenditureAction = ExpenditureActionFragment;
+
+export type ExpenditureStage = ExpenditureStageFragment;
 
 export type Safe = SafeFragment;
 

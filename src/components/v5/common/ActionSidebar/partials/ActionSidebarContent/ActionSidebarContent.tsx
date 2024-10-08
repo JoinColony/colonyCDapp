@@ -147,7 +147,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   return (
     <>
-      <div className="flex-grow overflow-y-auto px-6">
+      <div className="flex-grow overflow-y-auto overflow-x-hidden px-6">
         <FormTextareaBase
           name={TITLE_FIELD_NAME}
           placeholder={formatText({ id: 'placeholder.title' })}
@@ -306,6 +306,8 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
                 include: [SearchActionsDocument],
               });
             }
+
+            actionFormProps?.onSuccess?.();
           }}
         >
           <ActionSidebarFormContent

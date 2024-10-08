@@ -1,19 +1,23 @@
-import { Prohibit } from '@phosphor-icons/react';
+import { Prohibit, SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux';
 import { type CancelExpenditurePayload } from '~redux/types/actions/expenditures.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button, { ActionButton } from '~v5/shared/Button/index.ts';
+import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
+import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
 
 import {
   cancelDecisionMethodDescriptions,
@@ -32,6 +36,7 @@ const CancelModal: FC<CancelModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAppContext();
   const { colony } = useColonyContext();
+  const { setExpectedStepKey } = usePaymentBuilderContext();
 
   const payload: CancelExpenditurePayload = {
     colonyAddress: colony.colonyAddress,
@@ -58,6 +63,7 @@ const CancelModal: FC<CancelModalProps> = ({
       });
 
       setIsSubmitting(false);
+      setExpectedStepKey(ExpenditureStep.Cancel);
       onClose();
     } catch (err) {
       setIsSubmitting(false);
@@ -129,14 +135,22 @@ const CancelModal: FC<CancelModalProps> = ({
                     {formatText({ id: 'button.cancel' })}
                   </Button>
                   <div className="flex w-full justify-center md:w-[calc(50%-.375rem)]">
-                    <Button
-                      mode="primarySolid"
-                      isFullSize
-                      type="submit"
-                      loading={isSubmitting}
-                    >
-                      {formatText({ id: 'cancelModal.submit' })}
-                    </Button>
+                    {isSubmitting ? (
+                      <IconButton
+                        className="w-full !text-md"
+                        rounded="s"
+                        text={{ id: 'button.pending' }}
+                        icon={
+                          <span className="ml-1.5 flex shrink-0">
+                            <SpinnerGap className="animate-spin" size={18} />
+                          </span>
+                        }
+                      />
+                    ) : (
+                      <Button mode="primarySolid" isFullSize type="submit">
+                        {formatText({ id: 'cancelModal.locked.submit' })}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </>
@@ -160,8 +174,10 @@ const CancelModal: FC<CancelModalProps> = ({
               mode="primarySolid"
               isFullSize
               values={payload}
+              loadingBehavior={LoadingBehavior.TxLoader}
               onSuccess={() => {
                 onClose();
+                setExpectedStepKey(ExpenditureStep.Cancel);
                 toast.success(
                   <Toast
                     type="success"
