@@ -6,8 +6,9 @@ import {
   type ColonyActionFragment,
   type NotificationColonyFragment,
   type ExpenditureFragment,
+  NotificationType,
 } from '~gql';
-import { NotificationType, type Notification } from '~types/notifications.ts';
+import { type Notification } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
