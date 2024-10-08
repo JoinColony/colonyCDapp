@@ -1,13 +1,7 @@
-import React, { useMemo, type FC } from 'react';
+import React, { type ReactNode, useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
-import {
-  type ColonyActionFragment,
-  type NotificationColonyFragment,
-} from '~gql';
-import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
-import { NotificationType, type Notification } from '~types/notifications.ts';
+import { NotificationType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
@@ -16,11 +10,11 @@ const displayName =
   'common.Extensions.UserHub.partials.ActionNotificationMessage';
 
 interface ActionNotificationMessageProps {
-  action: ColonyActionFragment | null | undefined;
-  colony: NotificationColonyFragment | null | undefined;
+  actionMetadataDescription: ReactNode;
+  actionTitle: string;
   creator: string;
   loading: boolean;
-  notification: Notification;
+  notificationType: NotificationType;
 }
 
 const MSG = defineMessages({
@@ -39,75 +33,41 @@ const MSG = defineMessages({
 });
 
 const ActionNotificationMessage: FC<ActionNotificationMessageProps> = ({
-  action,
-  colony,
+  actionMetadataDescription,
+  actionTitle,
   creator,
   loading,
-  notification,
+  notificationType,
 }) => {
-  const amountLessFee = useAmountLessFee(action?.amount, action?.networkFee);
-
-  const actionMetadataDescription = useMemo(() => {
-    if (!action || !colony) {
-      return formatText(MSG.unknownAction);
-    }
-
-    return formatText(
-      { id: 'action.title' },
-      getActionTitleValues({
-        actionData: { ...action, amount: amountLessFee },
-        colony: {
-          nativeToken: {
-            ...colony.nativeToken,
-          },
-          metadata: colony.metadata,
-        },
-      }),
-    );
-  }, [action, amountLessFee, colony]);
-
   const Message = useMemo(() => {
-    if (
-      !creator ||
-      !action ||
-      !notification.customAttributes?.notificationType
-    ) {
-      return formatText(MSG.unknownAction);
-    }
-
-    if (
-      notification.customAttributes?.notificationType ===
-      NotificationType.PermissionsAction
-    ) {
+    if (notificationType === NotificationType.PermissionsAction) {
       return (
         <>
-          {action.metadata?.customTitle && `${action.metadata?.customTitle}: `}
-          {actionMetadataDescription}
+          {actionTitle ? `${actionTitle}: ` : ''}
+          {actionMetadataDescription || formatText(MSG.unknownAction)}
         </>
       );
     }
 
-    if (
-      notification.customAttributes?.notificationType ===
-      NotificationType.Mention
-    ) {
+    if (notificationType === NotificationType.Mention) {
+      const firstPart = formatText(MSG.mention, {
+        name: creator || formatText(MSG.someone),
+      });
+
+      const secondPart =
+        actionTitle ||
+        actionMetadataDescription ||
+        formatText(MSG.unknownAction);
+
       return (
         <>
-          {formatText(MSG.mention, {
-            name: creator || formatText(MSG.someone),
-          })}
-          {action.metadata?.customTitle || actionMetadataDescription}
+          {firstPart} {secondPart}
         </>
       );
     }
 
-    return null;
-  }, [
-    action,
-    actionMetadataDescription,
-    creator,
-    notification.customAttributes?.notificationType,
-  ]);
+    return formatText(MSG.unknownAction);
+  }, [actionMetadataDescription, actionTitle, creator, notificationType]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };

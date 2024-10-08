@@ -7,9 +7,9 @@ import { formatText } from '~utils/intl.ts';
 import NotificationMessage from '../NotificationMessage.tsx';
 
 const displayName =
-  'common.Extensions.UserHub.partials.MultisigNotificationMessage';
+  'common.Extensions.UserHub.partials.MotionNotificationMessage';
 
-interface MultisigNotificationMessageProps {
+interface MotionNotificationMessageProps {
   actionMetadataDescription: ReactNode;
   actionTitle: string;
   loading: boolean;
@@ -17,36 +17,44 @@ interface MultisigNotificationMessageProps {
 }
 
 const MSG = defineMessages({
+  opposed: {
+    id: `${displayName}.opposed`,
+    defaultMessage: 'Opposed, will fail: ',
+  },
+  supported: {
+    id: `${displayName}.supported`,
+    defaultMessage: 'Supported, will pass: ',
+  },
+  voting: {
+    id: `${displayName}.opposed`,
+    defaultMessage: 'Voting started: ',
+  },
+  reveal: {
+    id: `${displayName}.reveal`,
+    defaultMessage: 'Reveal votes: ',
+  },
   finalized: {
     id: `${displayName}.finalized`,
-    defaultMessage: 'Finalized:',
-  },
-  approved: {
-    id: `${displayName}.approved`,
-    defaultMessage: 'Approved:',
-  },
-  rejected: {
-    id: `${displayName}.rejected`,
-    defaultMessage: 'Rejected:',
+    defaultMessage: 'Finalized: ',
   },
   unknownAction: {
     id: `${displayName}.unknownAction`,
-    defaultMessage: 'Unknown multisig action',
+    defaultMessage: 'Unknown motion',
   },
   unknownChange: {
     id: `${displayName}.unknownChange`,
-    defaultMessage: 'Multisig action updated: ',
+    defaultMessage: 'Motion updated: ',
   },
 });
 
-const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
+const MotionNotificationMessage: FC<MotionNotificationMessageProps> = ({
   actionMetadataDescription,
   actionTitle,
   loading,
   notificationType,
 }) => {
   const Message = useMemo(() => {
-    if (notificationType === NotificationType.MultisigActionCreated) {
+    if (notificationType === NotificationType.MotionCreated) {
       return (
         <>
           {actionTitle ? `${actionTitle}: ` : formatText(MSG.unknownChange)}
@@ -56,9 +64,11 @@ const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
     }
 
     const firstPart = {
-      [NotificationType.MultisigActionFinalized]: formatText(MSG.finalized),
-      [NotificationType.MultisigActionApproved]: formatText(MSG.approved),
-      [NotificationType.MultisigActionRejected]: formatText(MSG.rejected),
+      [NotificationType.MotionOpposed]: formatText(MSG.opposed),
+      [NotificationType.MotionSupported]: formatText(MSG.supported),
+      [NotificationType.MotionVoting]: formatText(MSG.voting),
+      [NotificationType.MotionReveal]: formatText(MSG.reveal),
+      [NotificationType.MotionFinalized]: formatText(MSG.finalized),
       default: formatText(MSG.unknownChange),
     }[notificationType];
 
@@ -75,6 +85,6 @@ const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };
 
-MultisigNotificationMessage.displayName = displayName;
+MotionNotificationMessage.displayName = displayName;
 
-export default MultisigNotificationMessage;
+export default MotionNotificationMessage;
