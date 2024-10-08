@@ -325,6 +325,8 @@
     "transaction.group.paymentAction.description": "Expenditure Payment",
     "transaction.group.tokenUnlockAction.title": "Unlock Token",
     "transaction.group.tokenUnlockAction.description": "Unlocking native Token",
+    "transaction.group.releaseExpenditure.title": "Release Expenditure",
+    "transaction.group.releaseExpenditure.description": "Releasing expenditure",
 
     "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
     "transaction.ColonyClient.addDomain(uint256,uint256,uint256).title": "Create Team",
@@ -1856,6 +1858,7 @@
     "expenditure.fundingStage.button": "Fund",
     "expenditure.releaseStage.label": "Release",
     "expenditure.releaseStage.info": "To allow recipients to claim their funds, you need to release them first. This will start the countdown on any claim delays as well.",
+    "expenditure.releaseStage.staged.info": "In order to start making milestone payments, you need to first release the funds.",
     "expenditure.releaseStage.button": "Release",
     "expenditure.paymentStage.label": "Payment",
     "expenditure.paymentStage.info": "You are now able to pay funds to recipients who have passed their claim delay.",

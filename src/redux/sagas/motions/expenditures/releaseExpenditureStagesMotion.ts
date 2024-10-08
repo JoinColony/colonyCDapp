@@ -161,12 +161,6 @@ function* releaseExpenditureStagesMotion({
       // eslint-disable-next-line no-console
       console.log(`Motion URL: ${APP_URL}${colonyName}?tx=${txHash}`);
     }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${APP_URL}${window.location.pathname}?tx=${txHash}`,
-    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR>>({

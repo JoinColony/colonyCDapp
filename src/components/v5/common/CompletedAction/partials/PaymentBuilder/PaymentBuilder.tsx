@@ -1,18 +1,19 @@
 import { ColonyRole } from '@colony/colony-js';
 import { Copy, Prohibit } from '@phosphor-icons/react';
 import moveDecimal from 'move-decimal-point';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureStatus, ExpenditureType } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -58,6 +59,15 @@ const MSG = defineMessages({
     id: `${displayName}.defaultTitle`,
     defaultMessage: 'Advanced payment',
   },
+  uninstalledExtension: {
+    id: `${displayName}.uninstalledExtension`,
+    defaultMessage:
+      'The extension used to create this action has been uninstalled. We recommend canceling this action.',
+  },
+  cancelPayment: {
+    id: `${displayName}.cancelPayment`,
+    defaultMessage: 'Cancel payment',
+  },
 });
 
 const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
@@ -65,10 +75,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, transactionHash, fromDomain, annotation } = action;
-  const [
-    isCancelModalOpen,
-    { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
-  ] = useToggle();
   const allTokens = useGetAllTokens();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
@@ -77,8 +83,34 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { user: recipient } = useUserByAddress(
     expenditure?.slots?.[0]?.recipientAddress || '',
   );
+  const {
+    expectedExpenditureType,
+    setExpectedExpenditureType,
+    isCancelModalOpen,
+    toggleOnCancelModal,
+    toggleOffCancelModal,
+  } = usePaymentBuilderContext();
+  const {
+    actionSidebarToggle: [isActionSidebarOpen],
+  } = useActionSidebarContext();
 
-  if (loadingExpenditure) {
+  useEffect(() => {
+    if (!isActionSidebarOpen) {
+      setExpectedExpenditureType(undefined);
+      return;
+    }
+
+    if (expenditure?.type && expectedExpenditureType === undefined) {
+      setExpectedExpenditureType(expenditure.type);
+    }
+  }, [
+    expectedExpenditureType,
+    expenditure?.type,
+    setExpectedExpenditureType,
+    isActionSidebarOpen,
+  ]);
+
+  if (loadingExpenditure || expectedExpenditureType !== expenditure?.type) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4">
         <SpinnerLoader appearance={{ size: 'huge' }} />
@@ -120,7 +152,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
             key: '1',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
-            onClick: toggleCancelModalOn,
+            onClick: toggleOnCancelModal,
           },
         ]
       : []),
@@ -185,10 +217,17 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           }}
         />
         <StagedPaymentTable
+          finalizedAt={finalizedAt || 0}
           stages={expenditure.metadata?.stages || []}
           slots={slots}
           isLoading={!expenditure.metadata?.stages?.length}
-          isReleaseStep={expenditureStep === ExpenditureStep.Release}
+          isPaymentStep={expenditureStep === ExpenditureStep.Payment}
+        />
+        <CancelModal
+          isOpen={isCancelModalOpen}
+          expenditure={expenditure}
+          onClose={toggleOffCancelModal}
+          refetchExpenditure={refetchExpenditure}
         />
       </>
     );
@@ -241,7 +280,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       <CancelModal
         isOpen={isCancelModalOpen}
         expenditure={expenditure}
-        onClose={toggleCancelModalOff}
+        onClose={toggleOffCancelModal}
         refetchExpenditure={refetchExpenditure}
       />
     </>

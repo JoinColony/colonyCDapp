@@ -5,5 +5,6 @@ export interface StagedPaymentTableProps {
   stages: ExpenditureStage[];
   slots: ExpenditureSlot[];
   isLoading?: boolean;
-  isReleaseStep?: boolean;
+  isPaymentStep?: boolean;
+  finalizedAt: number;
 }
