@@ -262,7 +262,6 @@ export const segregateEditActions = (
     return result;
   }
 
-  // Get grouped funding actions from segregateFundingActions
   const groupedFundingActions = segregateFundingActions(expenditure);
 
   const seenActions = new Set();
@@ -283,7 +282,6 @@ export const segregateEditActions = (
     }
 
     if (!groupedFundingActions || groupedFundingActions.length === 0) {
-      // If no funding actions, directly place in the first funding array
       result.funding[0] = result.funding[0] || [];
       result.funding[0].push(action);
       seenActions.add(actionKey);
@@ -292,17 +290,15 @@ export const segregateEditActions = (
 
     let actionPlaced = false;
 
-    // Loop over grouped funding actions (which are arrays of actions)
     for (let i = 0; i < groupedFundingActions.length; i += 1) {
       const currentFundingGroup = groupedFundingActions[i];
       const currentFundingActionTime = new Date(
         currentFundingGroup[0]?.createdAt || '',
-      ); // Compare using the first action in the group
+      );
 
       const isLastFundingGroup = i === groupedFundingActions.length - 1;
 
       if (isLastFundingGroup) {
-        // If it's the last funding group, append the action
         if (
           editingActionTime < currentFundingActionTime &&
           !seenActions.has(actionKey)
@@ -316,7 +312,6 @@ export const segregateEditActions = (
           editingActionTime >= currentFundingActionTime &&
           !seenActions.has(actionKey)
         ) {
-          // Place in a new group after the last one
           result.funding[i + 1] = result.funding[i + 1] || [];
           result.funding[i + 1].push(action);
           seenActions.add(actionKey);
@@ -334,7 +329,6 @@ export const segregateEditActions = (
         editingActionTime >= currentFundingActionTime &&
         editingActionTime < nextFundingActionTime
       ) {
-        // If the action time falls between two funding groups
         if (!seenActions.has(actionKey)) {
           result.funding[i + 1] = result.funding[i + 1] || [];
           result.funding[i + 1].push(action);
@@ -345,7 +339,6 @@ export const segregateEditActions = (
       }
     }
 
-    // If not placed and not seen, it's a finalizing action
     if (!actionPlaced && !seenActions.has(actionKey)) {
       result.finalizing.push(action);
       seenActions.add(actionKey);
