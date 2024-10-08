@@ -3,6 +3,7 @@ import { providers, utils } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
 import { GANACHE_LOCAL_RPC_URL } from '~constants/index.ts';
+import { type Address } from '~types/index.ts';
 import {
   RetryProviderMethod,
   IColonyContractMethodSignature,
@@ -13,7 +14,10 @@ type RetryProviderOptions = {
   delay?: number; // in milliseconds
 };
 
-const classFactory = (walletType: 'MetaMask' | string = '') => {
+const classFactory = (
+  walletType: 'MetaMask' | string = '',
+  walletAddress?: Address,
+) => {
   const devWallet = walletType !== 'MetaMask';
 
   const Extender = devWallet
@@ -54,7 +58,10 @@ const classFactory = (walletType: 'MetaMask' | string = '') => {
       return super.getBlock(blockHashOrBlockTag);
     }
 
-    getSigner(addressOrIndex?: string | number): providers.JsonRpcSigner {
+    getSigner(
+      // If custom address not provided, return the signer of the wallet
+      addressOrIndex: string | number | undefined = walletAddress,
+    ): providers.JsonRpcSigner {
       return super.getSigner(addressOrIndex);
     }
 
