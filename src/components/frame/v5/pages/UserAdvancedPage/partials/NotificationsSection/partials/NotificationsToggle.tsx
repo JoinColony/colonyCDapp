@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useUpdateUserGlobalNotificationsMutedMutation } from '~gql';
+import { useUpdateUserNotificationDataMutation } from '~gql';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Switch from '~v5/common/Fields/Switch/index.ts';
@@ -29,7 +29,7 @@ const NotificationsToggle = () => {
   );
 
   const [updateNotificationsMuted, { loading }] =
-    useUpdateUserGlobalNotificationsMutedMutation();
+    useUpdateUserNotificationDataMutation();
 
   const handleUpdateNotificationsMuted = async (
     disabled: boolean,
@@ -39,8 +39,10 @@ const NotificationsToggle = () => {
     }
     await updateNotificationsMuted({
       variables: {
-        disabled,
-        userAddress: user.walletAddress,
+        input: {
+          userAddress: user.walletAddress,
+          notificationsDisabled: disabled,
+        },
       },
     });
     await updateUser(user.walletAddress, true);

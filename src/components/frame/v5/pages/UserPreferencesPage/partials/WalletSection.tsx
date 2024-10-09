@@ -14,7 +14,7 @@ const WalletSection = () => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   return (
-    <SettingsRow.Container className="border-b-0">
+    <SettingsRow.Container>
       <SettingsRow.Title>
         {formatText({
           id: 'wallet.information',
