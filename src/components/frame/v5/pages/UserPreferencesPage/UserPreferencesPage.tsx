@@ -9,6 +9,7 @@ import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import EmailSection from './partials/EmailSection/EmailSection.tsx';
+import NotificationSettingsSection from './partials/NotificationSettingsSection/NotificationSettingsSection.tsx';
 import WalletSection from './partials/WalletSection.tsx';
 
 const displayName = 'v5.pages.UserPreferencesPage';
@@ -34,9 +35,10 @@ const UserPreferencesPage: FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col">
       <EmailSection />
       <WalletSection />
+      <NotificationSettingsSection />
     </div>
   );
 };
