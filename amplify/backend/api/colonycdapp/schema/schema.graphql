@@ -2081,6 +2081,18 @@ type NotificationsData @model {
   List of addresses of colonies that the user has muted
   """
   mutedColonyAddresses: [ID!]!
+  """
+  Boolean to indicate if the user has disabled payment notifications
+  """
+  paymentNotificationsDisabled: Boolean!
+  """
+  Boolean to indicate if the user has disabled mention notifications
+  """
+  mentionNotificationsDisabled: Boolean!
+  """
+  Boolean to indicate if the user has disabled admin notifications
+  """
+  adminNotificationsDisabled: Boolean!
 }
 
 """
