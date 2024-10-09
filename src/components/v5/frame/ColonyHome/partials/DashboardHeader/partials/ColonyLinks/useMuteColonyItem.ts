@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
-import { useUpdateUserNotificationsMutedColoniesMutation } from '~gql';
+import { useUpdateUserNotificationDataMutation } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
 
@@ -36,8 +36,7 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { mutedColonyAddresses } = useNotificationsUserContext();
-  const [updateMutedColonies] =
-    useUpdateUserNotificationsMutedColoniesMutation();
+  const [updateMutedColonies] = useUpdateUserNotificationDataMutation();
 
   // we don't use loading here, because we want to stop loading after the data is refetched
   // Maybe an optimistic response would be better here?
@@ -53,10 +52,12 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
 
     updateMutedColonies({
       variables: {
-        userAddress: user.walletAddress,
-        colonyAddresses: mutedColonyAddresses.filter(
-          (mutedColonyAddress) => mutedColonyAddress !== colonyAddress,
-        ),
+        input: {
+          userAddress: user.walletAddress,
+          mutedColonyAddresses: mutedColonyAddresses.filter(
+            (mutedColonyAddress) => mutedColonyAddress !== colonyAddress,
+          ),
+        },
       },
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
@@ -79,8 +80,10 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
 
     updateMutedColonies({
       variables: {
-        userAddress: user.walletAddress,
-        colonyAddresses: [...mutedColonyAddresses, colonyAddress],
+        input: {
+          userAddress: user.walletAddress,
+          mutedColonyAddresses: [...mutedColonyAddresses, colonyAddress],
+        },
       },
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);

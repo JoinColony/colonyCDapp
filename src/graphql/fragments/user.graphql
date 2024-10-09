@@ -45,4 +45,7 @@ fragment NotificationsData on NotificationsData {
   magicbellUserId
   notificationsDisabled
   mutedColonyAddresses
+  paymentNotificationsDisabled
+  mentionNotificationsDisabled
+  adminNotificationsDisabled
 }
