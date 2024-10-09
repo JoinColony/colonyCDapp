@@ -39,26 +39,8 @@ mutation CreateUserNotificationsData(
   }
 }
 
-mutation UpdateUserNotificationsMutedColonies(
-  $userAddress: ID!
-  $colonyAddresses: [ID!]
-) {
-  updateNotificationsData(
-    input: { userAddress: $userAddress, mutedColonyAddresses: $colonyAddresses }
-  ) {
+mutation UpdateUserNotificationData($input: UpdateNotificationsDataInput!) {
+  updateNotificationsData(input: $input) {
     userAddress
-    mutedColonyAddresses
-  }
-}
-
-mutation UpdateUserGlobalNotificationsMuted(
-  $userAddress: ID!
-  $disabled: Boolean!
-) {
-  updateNotificationsData(
-    input: { userAddress: $userAddress, notificationsDisabled: $disabled }
-  ) {
-    userAddress
-    notificationsDisabled
   }
 }
