@@ -10,7 +10,6 @@ import {
 import clsx from 'clsx';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { UserRole, getRole } from '~constants/permissions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
@@ -36,6 +35,7 @@ import {
   type PermissionsPageFilters,
 } from './partials/types.ts';
 import { type ExtensionCardItem, type ItemsByRole } from './types.ts';
+import { CoreAction } from '~actions/index.ts';
 
 export const defaultPermissionsPageFilterValue:
   | PermissionsPageFilters
@@ -149,9 +149,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const membersList = useMemo(
     () =>
@@ -258,8 +256,8 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                     id: 'membersPage.memberNav.makePayment',
                   }),
                   onClick: () =>
-                    toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+                    show({
+                      [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
                       recipient: member.walletAddress,
                     }),
                 },
@@ -270,8 +268,8 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
                     id: 'permissionsPage.managePermissions',
                   }),
                   onClick: () => {
-                    toggleActionSidebarOn({
-                      [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+                    show({
+                      [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
                       member: member.walletAddress,
                     });
                   },
@@ -341,13 +339,7 @@ export const useGetMembersForPermissions = (isMultiSig = false) => {
         }),
         {},
       ),
-    [
-      handleClipboardCopy,
-      isCopied,
-      isMobile,
-      membersList,
-      toggleActionSidebarOn,
-    ],
+    [handleClipboardCopy, isCopied, isMobile, membersList, show],
   );
 
   const { filters, filterValue, searchValue } =

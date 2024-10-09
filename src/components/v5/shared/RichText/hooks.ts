@@ -7,9 +7,17 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
 import { useController } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
 import { stripAndremoveHeadingsFromHTML } from '~utils/strings.ts';
+
+const MSG = defineMessages({
+  placeholderDescription: {
+    id: 'richText.placeholder.description',
+    defaultMessage: 'Enter a description',
+  },
+});
 
 export const useRichText = ({
   name,
@@ -62,10 +70,8 @@ export const useRichText = ({
         Underline,
         Placeholder.configure({
           placeholder: () => {
-            setNotFormattedContent(
-              formatText({ id: 'placeholder.enterDescription' }),
-            );
-            return formatText({ id: 'placeholder.enterDescription' });
+            setNotFormattedContent(formatText(MSG.placeholderDescription));
+            return formatText(MSG.placeholderDescription);
           },
           showOnlyWhenEditable: false,
           emptyEditorClass: `text-gray-500 before:content-[attr(data-placeholder)] before:float-left before:h-0 before:pointer-events-none`,
@@ -136,7 +142,7 @@ export const useRichText = ({
       const strippedContent = stripAndremoveHeadingsFromHTML(editor.getHTML());
 
       setNotFormattedContent(
-        strippedContent || formatText({ id: 'placeholder.enterDescription' }),
+        strippedContent || formatText(MSG.placeholderDescription),
       );
     }
   }, [editor, isDecriptionFieldExpanded, field.value]);
@@ -171,7 +177,7 @@ export const useRichText = ({
     const strippedContent = stripAndremoveHeadingsFromHTML(editor.getHTML());
 
     setNotFormattedContent(
-      strippedContent || formatText({ id: 'placeholder.enterDescription' }),
+      strippedContent || formatText(MSG.placeholderDescription),
     );
   }, [editor, field.value]);
 

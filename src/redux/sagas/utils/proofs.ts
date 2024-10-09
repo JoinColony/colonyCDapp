@@ -10,6 +10,12 @@ import {
 import { BigNumber, constants, type BigNumberish } from 'ethers';
 import { call } from 'redux-saga/effects';
 
+import {
+  type RequiredColonyRoleGroup,
+  type RoleGroup,
+  type RoleGroupSet,
+  type SingleRole,
+} from '~actions/types.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { type ColonyRoleFragment } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
@@ -49,12 +55,6 @@ export async function getChildIndexLocal({
 
   return BigNumber.from(idx);
 }
-
-type SingleRole = ColonyRole;
-type RoleGroup = ColonyRole[];
-type RoleGroupSet = ColonyRole[][];
-
-type RequiredColonyRoleGroup = SingleRole | RoleGroup | RoleGroupSet;
 
 interface GetSinglePermissionProofsLocalParams {
   networkClient: ColonyNetworkClient;

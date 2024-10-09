@@ -9,6 +9,8 @@ import { MotionState } from '../colonyMotions.ts';
 import { extractColonyRoles } from '../colonyRoles.ts';
 import { extractColonyDomains } from '../domains.ts';
 
+// FIXME: @RESOLUTION: Can be simplified once we have remove the xxxMultisig action types
+// and the SetUserRoles requiredPermissions is a function
 export const getRolesNeededForMultiSigAction = ({
   actionType,
   createdIn,

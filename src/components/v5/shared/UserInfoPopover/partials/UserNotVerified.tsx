@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreActionGroup } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
@@ -20,12 +20,7 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
   walletAddress,
   onClick,
 }) => {
-  const {
-    actionSidebarToggle: [
-      isActionSidebarOpen,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { isShown, show, hide } = useActionSidebarContext();
 
   return (
     <NotificationBanner
@@ -35,16 +30,16 @@ const UserNotVerified: FC<UserNotVerifiedProps> = ({
         <button
           type="button"
           onClick={() => {
-            const timeout = isActionSidebarOpen ? 500 : 0;
+            const timeout = isShown ? 500 : 0;
 
-            if (isActionSidebarOpen) {
-              toggleActionSidebarOff();
+            if (isShown) {
+              hide();
             }
 
             setTimeout(() => {
               onClick?.();
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManageVerifiedMembers,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: CoreActionGroup.ManageVerifiedMembers,
                 members: [{ value: walletAddress }],
                 manageMembers: ManageVerifiedMembersOperation.Add,
               });

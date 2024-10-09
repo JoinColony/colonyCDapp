@@ -8,9 +8,9 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
+import { CoreAction } from '~actions/index.ts';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
-import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
@@ -41,9 +41,7 @@ const MembersPage: FC = () => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const isMobile = useMobile();
 
   const titleAction = (
@@ -76,8 +74,8 @@ const MembersPage: FC = () => {
             id: 'members.subnav.permissions',
           }),
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+            show({
+              [ACTION_TYPE_FIELD_NAME]: CoreAction.SetUserRoles,
             });
           },
         },

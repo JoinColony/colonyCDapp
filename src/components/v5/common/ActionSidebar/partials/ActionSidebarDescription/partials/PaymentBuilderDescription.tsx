@@ -3,13 +3,14 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 import { ColonyActionType } from '~types/graphql.ts';
-import { type PaymentBuilderFormValues } from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/hooks.ts';
+import { type PaymentBuilderFormValues } from '~v5/common/ActionSidebar/partials/forms/core/PaymentBuilderForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';
 
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription.partials.PaymentBuilderDescription';
 
+// FIXME: Probably later, but what are these ...Description components and shouldn't they be close to the actual forms????
 export const PaymentBuilderDescription = () => {
   const formValues = useFormContext<PaymentBuilderFormValues>().getValues();
   const { payments } = formValues;

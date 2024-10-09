@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { type Action } from '~constants/actions.ts';
+import { type CoreAction } from '~actions/index.ts';
 import { ACTION_TYPE_TO_API_ACTION_TYPES_MAP } from '~constants/actionsFilters.ts';
 import {
   type ActivityFeedFilters,
@@ -28,7 +28,9 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [decisionMethods, setDecisionMethods] = useState<
     ActivityDecisionMethod[]
   >([]);
-  const [actionTypesFilters, setActionTypesFilters] = useState<Action[]>([]);
+  const [actionTypesFilters, setActionTypesFilters] = useState<CoreAction[]>(
+    [],
+  );
   const [dateFilters, setDateFilters] = useState<DateOptions>({
     pastHour: false,
     pastDay: false,
@@ -42,7 +44,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const handleActionTypesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const isChecked = event.target.checked;
-      const name = event.target.name as Action;
+      const name = event.target.name as CoreAction;
 
       if (isChecked) {
         setActionTypesFilters([...actionTypesFilters, name]);

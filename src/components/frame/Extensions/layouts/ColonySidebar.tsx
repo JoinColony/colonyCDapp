@@ -29,9 +29,7 @@ const ColonySidebar = ({ txButton, userHub, transactionId }: Props) => {
   const { mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff: toggleOffMenu }] = mobileMenuToggle;
   const mainMenuItems = useMainMenuItems(!!transactionId);
-  const {
-    actionSidebarToggle: [, { toggle: toggleActionSideBar }],
-  } = useActionSidebarContext();
+  const { toggle } = useActionSidebarContext();
   const {
     colony: { name, metadata, chainMetadata, colonyAddress },
     colony,
@@ -52,7 +50,7 @@ const ColonySidebar = ({ txButton, userHub, transactionId }: Props) => {
             className="w-full"
             onClick={() => {
               toggleOffMenu();
-              toggleActionSideBar();
+              toggle();
             }}
           >
             {formatText({ id: 'button.createNewAction' })}

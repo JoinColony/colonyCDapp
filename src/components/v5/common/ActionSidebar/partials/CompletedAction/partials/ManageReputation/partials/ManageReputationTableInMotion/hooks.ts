@@ -7,7 +7,7 @@ import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-import { calculateNewValue } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/partials/ManageReputationTable/utils.ts';
+import { calculateNewValue } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/partials/ManageReputationTable/utils.ts';
 
 export const useManageReputationTableData = ({
   amount,

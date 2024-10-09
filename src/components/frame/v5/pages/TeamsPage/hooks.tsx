@@ -11,7 +11,7 @@ import {
 } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
@@ -48,9 +48,7 @@ export const useTeams = () => {
 
   const { totalContributors: members, loading: membersLoading } =
     useMemberContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const { domainsActionCount } = useActivityData();
 
@@ -138,11 +136,12 @@ export const useTeams = () => {
                 key: '1',
                 icon: Pencil,
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
+                onClick: () => {
+                  show({
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.EditDomain,
                     team: nativeId,
-                  }),
+                  });
+                },
               },
               {
                 key: '2',

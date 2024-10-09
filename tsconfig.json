@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "~actions/*": ["src/actions/*"],
       "~apollo": ["src/apollo"],
       "~apollo/*": ["src/apollo/*"],
       "~auth": ["src/auth"],

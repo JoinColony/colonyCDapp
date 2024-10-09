@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import getActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
+import { getActionTitleValues } from '~actions/utils.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';

@@ -18,12 +18,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
   showRedoItem = true,
 }) => {
   const isMobile = useMobile();
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { show, hide } = useActionSidebarContext();
 
   const items = useMemo(() => {
     const menuItems: MeatBallMenuItem[] = [];
@@ -34,10 +29,10 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
         label: formatText({ id: 'completedAction.redoAction' }),
         icon: Repeat,
         onClick: () => {
-          toggleActionSidebarOff();
+          hide();
 
           setTimeout(() => {
-            toggleActionSidebarOn({ ...defaultValues });
+            show({ ...defaultValues });
           }, 500);
         },
       });
@@ -59,13 +54,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
     });
 
     return menuItems;
-  }, [
-    transactionHash,
-    defaultValues,
-    showRedoItem,
-    toggleActionSidebarOn,
-    toggleActionSidebarOff,
-  ]);
+  }, [transactionHash, defaultValues, showRedoItem, show, hide]);
 
   return (
     <MeatBallMenu

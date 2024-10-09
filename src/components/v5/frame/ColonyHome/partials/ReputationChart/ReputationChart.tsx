@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -40,17 +40,15 @@ const ReputationChart = () => {
     ChartData | undefined | null
   >();
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const updateHoveredSegment = (segmentData: ChartData | null | undefined) => {
     setHoveredSegment(segmentData);
   };
 
   const openCreateNewTeam = () => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+    show({
+      [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
     });
   };
 
@@ -87,9 +85,7 @@ const ReputationChart = () => {
           title={<p className="text-center">{formatText(MSG.legendNoTeams)}</p>}
           actionTitle={formatText(MSG.legendNoTeamsAction)}
           className="px-[1.8rem] py-[2.3rem]"
-          onClick={() => {
-            toggleActionSidebarOn();
-          }}
+          onClick={() => show()}
         />
       );
     }

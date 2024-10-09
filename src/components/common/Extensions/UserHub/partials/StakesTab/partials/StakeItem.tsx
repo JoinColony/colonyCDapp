@@ -2,7 +2,7 @@ import React, { useMemo, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import { getActionTitleValues } from '~actions/utils.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';

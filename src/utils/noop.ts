@@ -1,3 +1,5 @@
-/* eslint-disable import/no-anonymous-default-export */
+const noop = () => undefined;
 
-export default () => {};
+export default noop;
+
+export const asyncNoop = () => Promise.resolve(undefined);

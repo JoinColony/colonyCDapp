@@ -28,7 +28,7 @@ const DateFilters: FC = () => {
           return (
             <li key={name}>
               <Checkbox
-                classNames="subnav-button px-0 sm:px-3.5"
+                className="subnav-button px-0 sm:px-3.5"
                 name={name}
                 isChecked={isChecked}
                 onChange={handleDateFilterChange}

@@ -4,10 +4,6 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { type Address } from '~types';
 import { type ColonyAction } from '~types/graphql.ts';
 
-export interface ActionButtonsProps {
-  isActionDisabled?: boolean;
-}
-
 export interface CreateActionFormProps {
   getFormOptions: (
     formOptions: Omit<ActionFormProps<any>, 'children'> | undefined,
