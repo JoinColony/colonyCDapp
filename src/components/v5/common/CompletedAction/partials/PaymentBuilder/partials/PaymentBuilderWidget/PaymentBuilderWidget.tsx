@@ -246,6 +246,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             releaseActions={sortedReleaseActions}
             expenditure={expenditure}
             expectedStepKey={expectedStepKey}
+            previousReleaseActionsCount={previousReleaseActionsCount}
           />
         ),
       }
