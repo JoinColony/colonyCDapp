@@ -1717,9 +1717,12 @@ export type CreateMultiSigUserSignatureInput = {
 };
 
 export type CreateNotificationsDataInput = {
+  adminNotificationsDisabled: Scalars['Boolean'];
   magicbellUserId: Scalars['ID'];
+  mentionNotificationsDisabled: Scalars['Boolean'];
   mutedColonyAddresses: Array<Scalars['ID']>;
   notificationsDisabled: Scalars['Boolean'];
+  paymentNotificationsDisabled: Scalars['Boolean'];
   userAddress: Scalars['ID'];
 };
 
@@ -3698,12 +3701,15 @@ export type ModelMultiSigVoteInput = {
 };
 
 export type ModelNotificationsDataConditionInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
   magicbellUserId?: InputMaybe<ModelIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   mutedColonyAddresses?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelNotificationsDataConditionInput>;
   notificationsDisabled?: InputMaybe<ModelBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelNotificationsDataConnection = {
@@ -3713,12 +3719,15 @@ export type ModelNotificationsDataConnection = {
 };
 
 export type ModelNotificationsDataFilterInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
   magicbellUserId?: InputMaybe<ModelIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   mutedColonyAddresses?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelNotificationsDataFilterInput>;
   notificationsDisabled?: InputMaybe<ModelBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   userAddress?: InputMaybe<ModelIdInput>;
 };
 
@@ -4383,11 +4392,14 @@ export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
 };
 
 export type ModelSubscriptionNotificationsDataFilterInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
   magicbellUserId?: InputMaybe<ModelSubscriptionIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   mutedColonyAddresses?: InputMaybe<ModelSubscriptionIdInput>;
   notificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
 };
 
@@ -6167,13 +6179,19 @@ export enum NotificationType {
 /** Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences. */
 export type NotificationsData = {
   __typename?: 'NotificationsData';
+  /** Boolean to indicate if the user has disabled admin notifications */
+  adminNotificationsDisabled: Scalars['Boolean'];
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user in Magicbell */
   magicbellUserId: Scalars['ID'];
+  /** Boolean to indicate if the user has disabled mention notifications */
+  mentionNotificationsDisabled: Scalars['Boolean'];
   /** List of addresses of colonies that the user has muted */
   mutedColonyAddresses: Array<Scalars['ID']>;
   /** Boolean to indicate if the user has disabled notifications app wide */
   notificationsDisabled: Scalars['Boolean'];
+  /** Boolean to indicate if the user has disabled payment notifications */
+  paymentNotificationsDisabled: Scalars['Boolean'];
   updatedAt: Scalars['AWSDateTime'];
   /** Unique identifier for the user */
   userAddress: Scalars['ID'];
@@ -9351,9 +9369,12 @@ export type UpdateMultiSigUserSignatureInput = {
 };
 
 export type UpdateNotificationsDataInput = {
+  adminNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   magicbellUserId?: InputMaybe<Scalars['ID']>;
+  mentionNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   mutedColonyAddresses?: InputMaybe<Array<Scalars['ID']>>;
   notificationsDisabled?: InputMaybe<Scalars['Boolean']>;
+  paymentNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   userAddress: Scalars['ID'];
 };
 
