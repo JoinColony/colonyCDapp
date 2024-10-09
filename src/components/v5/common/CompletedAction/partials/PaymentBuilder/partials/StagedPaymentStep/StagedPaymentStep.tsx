@@ -1,6 +1,6 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
-import React, { type FC, useState } from 'react';
+import React, { type FC, useState, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
@@ -52,12 +52,14 @@ interface StagedPaymentStepProps {
   expectedStepKey: ExpenditureStep | null;
   expenditure: Expenditure;
   releaseActions: ExpenditureAction[];
+  previousReleaseActionsCount: number;
 }
 
 const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
   expectedStepKey,
   expenditure,
   releaseActions,
+  previousReleaseActionsCount,
 }) => {
   const {
     toggleOnMilestoneModal: showModal,
@@ -68,7 +70,8 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     selectedReleaseAction,
   } = usePaymentBuilderContext();
   const { isStagedExtensionInstalled } = useEnabledExtensions();
-  const [isMotionPending, setIsMotionPending] = useState(false);
+  const [isWaitingForStagesRelease, setIsWaitingForStagesRelease] =
+    useState(false);
 
   const selectedReleaseMotion = selectedReleaseAction?.motionData;
 
@@ -119,28 +122,11 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
   const paid = getSummedTokens(items, true);
   const allPaid = items.every(({ isClaimed }) => isClaimed);
 
-  // const milestonesRef = React.useRef(releaseItems);
-
-  // useEffect(() => {
-  //   if (!isStagedExtensionInstalled) {
-  //     setSelectedExpenditureAction(null);
-  //     return;
-  //   }
-
-  //   if (milestonesRef.current.length !== releaseItems.length) {
-  //     if (!releaseItems) {
-  //       return;
-  //     }
-  //     // if (releaseMilestoneMotions?.[releaseMilestoneMotions.length - 1]) {
-  //     //   setSelectedExpenditureAction(
-  //     //     releaseMilestoneMotions.[releaseMilestoneMotions.length - 1],
-  //     //   );
-  //     // }
-
-  //     setIsMotionPending(false);
-  //     milestonesRef.current = releaseItems;
-  //   }
-  // }, [releaseItems, isStagedExtensionInstalled, setSelectedExpenditureAction]);
+  useEffect(() => {
+    if (releaseActions.length !== previousReleaseActionsCount) {
+      setIsWaitingForStagesRelease(false);
+    }
+  }, [releaseActions, previousReleaseActionsCount]);
 
   const releaseMotions = releaseActions
     .map((releaseAction) => releaseAction.motionData)
@@ -189,7 +175,8 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
             text={formatText(MSG.releaseNextMilestone)}
             className="mt-4"
             content={
-              expectedStepKey === ExpenditureStep.Payment || isMotionPending ? (
+              expectedStepKey === ExpenditureStep.Payment ||
+              isWaitingForStagesRelease ? (
                 <IconButton
                   className="max-h-[2.5rem] w-full !text-md"
                   rounded="s"
@@ -226,7 +213,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
         isOpen={isMilestoneModalOpen}
         hasAllMilestonesReleased={hasAllMilestonesReleased}
         onClose={hideModal}
-        setIsMotionPending={setIsMotionPending}
+        setIsWaitingForStagesRelease={setIsWaitingForStagesRelease}
       />
     </>
   );

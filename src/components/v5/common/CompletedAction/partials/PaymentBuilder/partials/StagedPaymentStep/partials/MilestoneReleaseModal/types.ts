@@ -1,3 +1,5 @@
+import { type Dispatch, type SetStateAction } from 'react';
+
 import { type Expenditure } from '~types/graphql.ts';
 import { type ModalProps } from '~v5/shared/Modal/types.ts';
 
@@ -13,7 +15,7 @@ export interface MilestoneReleaseModalProps extends ModalProps {
   hasAllMilestonesReleased: boolean;
   expenditure: Expenditure;
   slotsWithActiveMotions: number[];
-  setIsMotionPending: (isMotionPending: boolean) => void;
+  setIsWaitingForStagesRelease: Dispatch<SetStateAction<boolean>>;
 }
 
 export type MilestoneModalContentProps = Pick<
