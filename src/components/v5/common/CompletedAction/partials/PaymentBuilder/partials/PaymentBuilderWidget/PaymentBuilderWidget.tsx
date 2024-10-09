@@ -99,6 +99,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const [isWaitingForClaimedPayouts, setIsWaitingForClaimedPayouts] =
     useState(false);
 
+  const [previousFundingActionsCount, setPreviousFundingActionsCount] =
+    useState(0);
+  const [previousReleaseActionsCount, setPreviousReleaseActionsCount] =
+    useState(0);
+
   useEffect(() => {
     startPolling(getSafePollingInterval());
 
@@ -182,24 +187,41 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const selectedReleaseMotion = selectedReleaseAction?.motionData;
 
   useEffect(() => {
-    if (sortedFundingActions.length > 0) {
+    if (
+      sortedFundingActions.length !== previousFundingActionsCount ||
+      !selectedFundingAction
+    ) {
       setSelectedFundingAction(sortedFundingActions[0] ?? null);
+      setPreviousFundingActionsCount(sortedFundingActions.length);
     }
-
-    return () => {
-      setSelectedFundingAction(null);
-    };
-  }, [sortedFundingActions, setSelectedFundingAction]);
+  }, [
+    sortedFundingActions,
+    setSelectedFundingAction,
+    previousFundingActionsCount,
+    selectedFundingAction,
+  ]);
 
   useEffect(() => {
-    if (sortedReleaseActions.length > 0) {
+    if (
+      sortedReleaseActions.length !== previousReleaseActionsCount ||
+      !selectedReleaseAction
+    ) {
       setSelectedReleaseAction(sortedReleaseActions[0] ?? null);
+      setPreviousReleaseActionsCount(sortedReleaseActions.length);
     }
+  }, [
+    sortedReleaseActions,
+    setSelectedReleaseAction,
+    previousReleaseActionsCount,
+    selectedReleaseAction,
+  ]);
 
+  useEffect(() => {
     return () => {
+      setSelectedFundingAction(null);
       setSelectedReleaseAction(null);
     };
-  }, [sortedReleaseActions, setSelectedReleaseAction]);
+  }, [setSelectedFundingAction, setSelectedReleaseAction]);
 
   const paymentStep = isStagedExpenditure
     ? {
