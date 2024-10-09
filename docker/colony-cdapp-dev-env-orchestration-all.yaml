@@ -24,6 +24,10 @@ services:
     extends:
       file: colony-cdapp-dev-env-orchestration.yaml
       service: auth-proxy
+  network-files:
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: network-files
   # Commented out due to issues with building the image
   # safe-contracts:
   #   container_name: 'safe'
