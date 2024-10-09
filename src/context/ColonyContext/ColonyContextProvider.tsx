@@ -4,7 +4,6 @@ import { ContextModule, setContext } from '~context';
 import { useUpdateContributorsWithReputationMutation } from '~gql';
 import { useCanInteractWithColony } from '~hooks/useCanInteractWithColony.ts';
 import useColonySubscription from '~hooks/useColonySubscription.ts';
-import { useTimeout } from '~hooks/useTimeout.ts';
 import { type Colony } from '~types/graphql.ts';
 
 import {
@@ -19,18 +18,9 @@ const displayName = 'ColonyContextProvider';
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
   const [isReputationUpdating, setIsReputationUpdating] = useState(false);
-  const [shouldResetReputationUpdating, setShouldResetReputationUpdating] =
-    useState(false);
+  useState(false);
   const [updateContributorsWithReputation] =
     useUpdateContributorsWithReputationMutation();
-
-  useTimeout({
-    shouldTriggerCallback: shouldResetReputationUpdating,
-    callback: () => {
-      setIsReputationUpdating(false);
-      setShouldResetReputationUpdating(false);
-    },
-  });
 
   /*
    * Update colony-wide reputation whenever a user accesses a colony.
@@ -43,14 +33,13 @@ const useUpdateColonyReputation = (colonyAddress?: string) => {
       updateContributorsWithReputation({
         variables: { colonyAddress },
       }).then(() => {
-        setShouldResetReputationUpdating(true);
+        setIsReputationUpdating(false);
       });
     }
   }, [
     colonyAddress,
     updateContributorsWithReputation,
     setIsReputationUpdating,
-    setShouldResetReputationUpdating,
   ]);
 
   return {
