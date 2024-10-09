@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, type ReactNode } from 'react';
+import React, { useEffect, useMemo, type ReactNode, useState } from 'react';
 
 import { ContextModule, setContext } from '~context';
 import { useUpdateContributorsWithReputationMutation } from '~gql';
@@ -17,6 +17,8 @@ const MIN_SUPPORTED_COLONY_VERSION = 5;
 const displayName = 'ColonyContextProvider';
 
 const useUpdateColonyReputation = (colonyAddress?: string) => {
+  const [isReputationUpdating, setIsReputationUpdating] = useState(false);
+  useState(false);
   const [updateContributorsWithReputation] =
     useUpdateContributorsWithReputationMutation();
 
@@ -27,11 +29,22 @@ const useUpdateColonyReputation = (colonyAddress?: string) => {
    */
   useEffect(() => {
     if (colonyAddress) {
+      setIsReputationUpdating(true);
       updateContributorsWithReputation({
         variables: { colonyAddress },
+      }).then(() => {
+        setIsReputationUpdating(false);
       });
     }
-  }, [colonyAddress, updateContributorsWithReputation]);
+  }, [
+    colonyAddress,
+    updateContributorsWithReputation,
+    setIsReputationUpdating,
+  ]);
+
+  return {
+    isReputationUpdating,
+  };
 };
 
 const ColonyContextProvider = ({
@@ -47,7 +60,9 @@ const ColonyContextProvider = ({
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
 }) => {
-  useUpdateColonyReputation(colony?.colonyAddress);
+  const { isReputationUpdating } = useUpdateColonyReputation(
+    colony?.colonyAddress,
+  );
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
@@ -62,6 +77,7 @@ const ColonyContextProvider = ({
       refetchColony,
       startPollingColonyData,
       stopPollingColonyData,
+      isReputationUpdating,
       isSupportedColonyVersion,
       colonySubscription,
     }),
@@ -71,6 +87,7 @@ const ColonyContextProvider = ({
       refetchColony,
       startPollingColonyData,
       stopPollingColonyData,
+      isReputationUpdating,
       isSupportedColonyVersion,
       colonySubscription,
     ],
