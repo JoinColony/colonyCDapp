@@ -7,6 +7,7 @@ import { type RowProps } from './types.ts';
 
 const displayName = 'v5.pages.UserProfilePage.partials.Row';
 
+// @TODO remove this and refactor UserAccountForm like UserPreferencesPage was
 const Row: FC<RowProps> = ({ groups, className }) => (
   <ul>
     {groups?.map((item) => (
