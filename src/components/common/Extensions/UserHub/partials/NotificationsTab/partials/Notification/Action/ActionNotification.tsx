@@ -7,11 +7,15 @@ import {
   useGetUserByAddressQuery,
 } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
-import { type Notification as NotificationInterface } from '~types/notifications.ts';
+import {
+  NotificationType,
+  type Notification as NotificationInterface,
+} from '~types/notifications.ts';
 
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
 import ActionNotificationMessage from './ActionNotificationMessage.tsx';
+import MultisigNotificationMessage from './MultisigNotificationMessage.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.ActionNotification';
 
@@ -28,7 +32,8 @@ const ActionNotification: FC<NotificationProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const { creator, transactionHash } = notification.customAttributes || {};
+  const { creator, notificationType, transactionHash } =
+    notification.customAttributes || {};
 
   const { data: userData, loading: loadingUser } = useGetUserByAddressQuery({
     variables: { address: creator || '' },
@@ -64,13 +69,33 @@ const ActionNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
-      <ActionNotificationMessage
-        action={action}
-        colony={colony}
-        creator={creatorName}
-        loading={loadingColony || loadingAction || loadingUser}
-        notification={notification}
-      />
+      {notificationType &&
+        [NotificationType.PermissionsAction, NotificationType.Mention].includes(
+          notificationType,
+        ) && (
+          <ActionNotificationMessage
+            action={action}
+            colony={colony}
+            creator={creatorName}
+            loading={loadingColony || loadingAction || loadingUser}
+            notification={notification}
+          />
+        )}
+      {notificationType &&
+        [
+          NotificationType.MultiSigActionCreated,
+          NotificationType.MultiSigActionFinalized,
+          NotificationType.MultiSigActionApproved,
+          NotificationType.MultiSigActionRejected,
+        ].includes(notificationType) && (
+          <MultisigNotificationMessage
+            action={action}
+            colony={colony}
+            creator={creatorName}
+            loading={loadingColony || loadingAction || loadingUser}
+            notification={notification}
+          />
+        )}
     </NotificationWrapper>
   );
 };
