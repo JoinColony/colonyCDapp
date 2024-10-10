@@ -2,9 +2,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import NotificationTypeToggle from '~v5/common/NotificationTypeToggle/NotificationTypeToggle.tsx';
 import SettingsRow from '~v5/common/SettingsRow/index.ts';
-
-import NotificationsToggle from './partials/NotificationsToggle.tsx';
 
 const displayName = 'v5.pages.UserAdvancedPage.partials.NotificationsSection';
 
@@ -31,11 +30,25 @@ const MSG = defineMessages({
     defaultMessage:
       'Enables in-app and external notifications for activity in colonies you’ve joined.',
   },
+  toastNotificationsEnabled: {
+    id: `${displayName}.toastNotificationsEnabled`,
+    defaultMessage: 'You will now receive notifications.',
+  },
+  toastNotificationsDisabled: {
+    id: `${displayName}.toastNotificationsEnabled`,
+    defaultMessage: 'You will no longer receive notifications.',
+  },
 });
 
 // @TODO if we get more items in this "section" split the sections up and rename this
 const NotificationsSection = () => {
-  const toggleButton = <NotificationsToggle />;
+  const toggleButton = (
+    <NotificationTypeToggle
+      notificationType="notificationsDisabled"
+      toastTextEnabled={formatText(MSG.toastNotificationsEnabled)}
+      toastTextDisabled={formatText(MSG.toastNotificationsDisabled)}
+    />
+  );
 
   return (
     <SettingsRow.Container>

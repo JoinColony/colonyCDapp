@@ -2,9 +2,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import NotificationTypeToggle from '~v5/common/NotificationTypeToggle/NotificationTypeToggle.tsx';
 import SettingsRow from '~v5/common/SettingsRow/index.ts';
-
-import PaymentNotificationsToggle from './PaymentNotificationsToggle.tsx';
 
 const displayName =
   'v5.pages.UserPreferencesPage.partials.PaymentNotifications';
@@ -19,10 +18,26 @@ const MSG = defineMessages({
     defaultMessage:
       'Receive a notification when any payment related actions are performed across joined colonies',
   },
+  toastPaymentNotificationsEnabled: {
+    id: `${displayName}.toastPaymentNotificationsEnabled`,
+    defaultMessage:
+      'You will now receive notifications for payment related actions.',
+  },
+  toastPaymentNotificationsDisabled: {
+    id: `${displayName}.toastPaymentNotificationsDisabled`,
+    defaultMessage:
+      'You will no longer receive notifications for payment related actions.',
+  },
 });
 
 const PaymentNotifications = () => {
-  const toggleButton = <PaymentNotificationsToggle />;
+  const toggleButton = (
+    <NotificationTypeToggle
+      notificationType="paymentNotificationsDisabled"
+      toastTextEnabled={formatText(MSG.toastPaymentNotificationsEnabled)}
+      toastTextDisabled={formatText(MSG.toastPaymentNotificationsDisabled)}
+    />
+  );
 
   return (
     <SettingsRow.Content rightContent={toggleButton}>
