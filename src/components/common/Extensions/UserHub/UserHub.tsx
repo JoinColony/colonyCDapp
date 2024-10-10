@@ -27,6 +27,7 @@ import { UserHubTab } from './types.ts';
 
 interface Props {
   initialOpenTab?: UserHubTab;
+  closeUserHub: () => void;
 }
 
 const displayName = 'common.Extensions.UserHub.partials.UserHub';
@@ -42,7 +43,10 @@ const MSG = defineMessages({
   },
 });
 
-const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
+const UserHub: FC<Props> = ({
+  initialOpenTab = UserHubTab.Balance,
+  closeUserHub,
+}) => {
   const isMobile = useMobile();
   const featureFlags = useContext(FeatureFlagsContext);
   const [selectedTab, setSelectedTab] = useState(initialOpenTab);
@@ -147,7 +151,9 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         {selectedTab === UserHubTab.Balance && (
           <BalanceTab onTabChange={handleTabChange} />
         )}
-        {selectedTab === UserHubTab.Notifications && <NotificationsTab />}
+        {selectedTab === UserHubTab.Notifications && (
+          <NotificationsTab closeUserHub={closeUserHub} />
+        )}
         {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}

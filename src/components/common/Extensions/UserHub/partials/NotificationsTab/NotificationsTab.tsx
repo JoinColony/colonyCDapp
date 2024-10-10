@@ -35,7 +35,7 @@ const MSG = defineMessages({
   },
 });
 
-const NotificationsTab = () => {
+const NotificationsTab = ({ closeUserHub }: { closeUserHub: () => void }) => {
   const { canFetchMore, fetchMore, markAllAsRead, notifications, unreadCount } =
     useNotificationsDataContext();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,7 +94,7 @@ const NotificationsTab = () => {
           </>
         ) : (
           <>
-            <NotificationsList />
+            <NotificationsList closeUserHub={closeUserHub} />
             <InfiniteScrollTrigger
               canFetchMore={canFetchMore}
               containerRef={containerRef}

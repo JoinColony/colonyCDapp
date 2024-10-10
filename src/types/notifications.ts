@@ -8,6 +8,11 @@ export enum NotificationType {
   ExpenditureCancelled = 'ExpenditureCancelled',
   PermissionsAction = 'PermissionsAction',
   Mention = 'Mention',
+  ExtensionInstalled = 'ExtensionInstalled',
+  ExtensionUpgraded = 'ExtensionUpgraded',
+  ExtensionEnabled = 'ExtensionEnabled',
+  ExtensionDeprecated = 'ExtensionDeprecated',
+  ExtensionUninstalled = 'ExtensionUninstalled',
 }
 
 export interface NotificationAttributes {
@@ -16,6 +21,7 @@ export interface NotificationAttributes {
   notificationType?: NotificationType;
   transactionHash?: string;
   expenditureID?: string;
+  extensionHash?: string;
 }
 
 // Create our own notification type so that we have types for the custom attributes, instead of
