@@ -7,7 +7,7 @@ import Notification from './Notification/Notification.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.NotificationsList';
 
-const NotificationsList = () => {
+const NotificationsList = ({ closeUserHub }: { closeUserHub: () => void }) => {
   const { notifications } = useNotificationsDataContext();
 
   return (
@@ -16,6 +16,7 @@ const NotificationsList = () => {
         <Notification
           notification={notification as NotificationInterface}
           key={notification.id}
+          closeUserHub={closeUserHub}
         />
       ))}
     </ul>
