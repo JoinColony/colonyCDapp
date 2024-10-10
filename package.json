@@ -37,7 +37,10 @@
     "prepare": "if [ -z \"$SKIP_HOOKS\" ]; then import-meta-env-prepare -x .env.example -p .env.local .env.local.secrets && import-meta-env-typescript -x .env.example -o src/typedefs; fi",
     "postinstall": "if [ -z \"$SKIP_HOOKS\" ]; then ./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh; fi",
     "watch-amplify": "node scripts/watchAmplifyFiles",
-    "forward-time": "node scripts/forward-time"
+    "forward-time": "node scripts/forward-time",
+    "playwright:install": "npx playwright install --with-deps",   
+    "playwright:run": "playwright test",
+    "playwright:watch": "playwright test --ui"
   },
   "repository": {
     "type": "git",
@@ -61,6 +64,7 @@
     "@jackfranklin/test-data-bot": "^1.4.0",
     "@jest/globals": "^29.0.2",
     "@limegrass/eslint-plugin-import-alias": "^1.4.1",
+    "@playwright/test": "^1.48.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
