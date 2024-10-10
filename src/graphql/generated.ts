@@ -6136,6 +6136,28 @@ export enum Network {
   Mainnet = 'MAINNET'
 }
 
+/** Type of notifications that can be sent */
+export enum NotificationType {
+  ExpenditureCancelled = 'EXPENDITURE_CANCELLED',
+  ExpenditureFinalized = 'EXPENDITURE_FINALIZED',
+  ExpenditureReadyForFunding = 'EXPENDITURE_READY_FOR_FUNDING',
+  ExpenditureReadyForRelease = 'EXPENDITURE_READY_FOR_RELEASE',
+  ExpenditureReadyForReview = 'EXPENDITURE_READY_FOR_REVIEW',
+  FundsClaimed = 'FUNDS_CLAIMED',
+  Mention = 'MENTION',
+  MotionCreated = 'MOTION_CREATED',
+  MotionFinalized = 'MOTION_FINALIZED',
+  MotionOpposed = 'MOTION_OPPOSED',
+  MotionReveal = 'MOTION_REVEAL',
+  MotionSupported = 'MOTION_SUPPORTED',
+  MotionVoting = 'MOTION_VOTING',
+  MultisigActionApproved = 'MULTISIG_ACTION_APPROVED',
+  MultisigActionCreated = 'MULTISIG_ACTION_CREATED',
+  MultisigActionFinalized = 'MULTISIG_ACTION_FINALIZED',
+  MultisigActionRejected = 'MULTISIG_ACTION_REJECTED',
+  PermissionsAction = 'PERMISSIONS_ACTION'
+}
+
 /** Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences. */
 export type NotificationsData = {
   __typename?: 'NotificationsData';

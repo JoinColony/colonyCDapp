@@ -1,28 +1,6 @@
 import { type IRemoteNotification } from '@magicbell/react-headless';
 
-export enum NotificationType {
-  // Expenditures
-  ExpenditureReadyForReview = 'ExpenditureReadyForReview',
-  ExpenditureReadyForFunding = 'ExpenditureReadyForFunding',
-  ExpenditureReadyForRelease = 'ExpenditureReadyForRelease',
-  ExpenditureFinalized = 'ExpenditureFinalized',
-  ExpenditureCancelled = 'ExpenditureCancelled',
-
-  // Funds
-  FundsClaimed = 'FundsClaimed',
-
-  // Mentions
-  Mention = 'Mention',
-
-  // Multisig
-  MultiSigActionCreated = 'MultiSigActionCreated',
-  MultiSigActionFinalized = 'MultiSigActionFinalized',
-  MultiSigActionApproved = 'MultiSigActionApproved',
-  MultiSigActionRejected = 'MultiSigActionRejected',
-
-  // Actions made with permissions
-  PermissionsAction = 'PermissionsAction',
-}
+import { type NotificationType } from '~gql';
 
 export interface NotificationAttributes {
   colonyAddress?: string;
