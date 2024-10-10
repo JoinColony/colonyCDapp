@@ -10,10 +10,10 @@ import { DecisionMethod } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import {
+  getNumeralTokenAmount,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
@@ -229,7 +229,7 @@ const useGetActionData = (transactionId: string | undefined) => {
               slot.payouts?.[0].tokenAddress || '',
             );
 
-            const currentAmount = getFormattedTokenAmount(
+            const currentAmount = getNumeralTokenAmount(
               slot?.payouts?.[0].amount || '0',
               currentToken?.decimals,
             );

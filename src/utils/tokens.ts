@@ -8,6 +8,7 @@ import {
   ADDRESS_ZERO,
   SUPPORTED_SAFE_NETWORKS,
 } from '~constants/index.ts';
+import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
 import {
   type Colony,
   type ColonyBalances,
@@ -16,6 +17,7 @@ import {
 import { type Address } from '~types/index.ts';
 
 import { notNull } from './arrays/index.ts';
+import { convertToDecimal } from './convertToDecimal.ts';
 
 export const getBalanceForTokenAndDomain = (
   balances: ColonyBalances | null | undefined,
@@ -67,6 +69,20 @@ export const getFormattedTokenValue = (
   return new Decimal(value.toString())
     .div(new Decimal(10).pow(tokenDecimals))
     .toString();
+};
+
+export const getNumeralTokenAmount = (
+  amount: string,
+  tokenDecimals?: number,
+): string | JSX.Element => {
+  const convertedValue = convertToDecimal(
+    amount,
+    getTokenDecimalsWithFallback(tokenDecimals),
+  );
+
+  const formattedValue = getFormattedNumeralValue(convertedValue, amount);
+
+  return formattedValue;
 };
 
 // NOTE: The equation to calculate totalToPay is as following (in Wei)
