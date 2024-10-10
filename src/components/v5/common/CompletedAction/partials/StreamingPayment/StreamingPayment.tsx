@@ -21,12 +21,14 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
 import { useMobile } from '~hooks';
+import useToggle from '~hooks/useToggle/index.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -56,6 +58,7 @@ import DescriptionRow from '../rows/Description.tsx';
 import TeamFromRow from '../rows/TeamFrom.tsx';
 import { getFormattedTokenAmount } from '../utils.ts';
 
+import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import { type StreamingPaymentProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.StreamingPayment';
@@ -75,7 +78,18 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   const { user } = useAppContext();
   const isMobile = useMobile();
 
-  const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
+  const [
+    isCancelModalOpen,
+    { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
+  ] = useToggle();
+
+  const {
+    loadingStreamingPayment,
+    streamingPaymentData,
+    paymentStatus,
+    expectedPaymentStatus,
+    setExpectedPaymentStatus,
+  } = streamingPayment;
 
   if (loadingStreamingPayment) {
     return (
@@ -123,10 +137,12 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     requiredRolesDomain: streamingPaymentData.nativeDomainId,
   });
 
-  // @todo: update cancel-related logic in separate PR
   const showCancelOption =
-    streamingPaymentData.isCancelled &&
-    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+    [StreamingPaymentStatus.Active, StreamingPaymentStatus.NotStarted].includes(
+      paymentStatus,
+    ) &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions) &&
+    expectedPaymentStatus !== StreamingPaymentStatus.Cancelled;
 
   const meatballOptions: MeatBallMenuItem[] = [
     ...(showCancelOption
@@ -135,7 +151,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
             key: '1',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
-            onClick: () => {},
+            onClick: toggleCancelModalOn,
           },
         ]
       : []),
@@ -290,6 +306,14 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
+      <CancelModal
+        isOpen={isCancelModalOpen}
+        streamingPayment={streamingPaymentData}
+        onClose={toggleCancelModalOff}
+        onSuccess={() =>
+          setExpectedPaymentStatus(StreamingPaymentStatus.Cancelled)
+        }
+      />
     </>
   );
 };

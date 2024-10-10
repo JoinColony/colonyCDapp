@@ -42,6 +42,8 @@ const useGetActionData = (transactionId: string | undefined) => {
     amounts,
     refetchStreamingPayment,
     updateAmountsAndStatus,
+    expectedPaymentStatus,
+    setExpectedPaymentStatus,
   } = useGetStreamingPaymentData(action?.expenditureId);
 
   const defaultValues = useMemo(() => {
@@ -301,6 +303,8 @@ const useGetActionData = (transactionId: string | undefined) => {
       amounts,
       refetchStreamingPayment,
       updateAmountsAndStatus,
+      expectedPaymentStatus,
+      setExpectedPaymentStatus,
     },
     startPollingForAction,
     stopPollingForAction,

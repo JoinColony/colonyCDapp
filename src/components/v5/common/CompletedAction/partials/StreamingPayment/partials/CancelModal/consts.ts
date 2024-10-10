@@ -11,17 +11,6 @@ export const cancelDecisionMethodItems: SelectBaseOption[] = [
   },
 ];
 
-export const cancelDecisionMethodDescriptions = {
-  [DecisionMethod.Permissions]: formatText(
-    {
-      id: 'cancelModal.permissionsDescription',
-    },
-    {
-      role: 'Payer',
-    },
-  ),
-};
-
 export const validationSchema = object()
   .shape({
     decisionMethod: object().shape({
