@@ -7,6 +7,7 @@ import ExtensionLazyConsensusIcon from '~icons/ExtensionLazyConsensusIcon.tsx';
 import ExtensionMultiSigIcon from '~icons/ExtensionMultiSigIcon.tsx';
 import ExtensionOneTransactionPaymentIcon from '~icons/ExtensionOneTransactionPaymentIcon.tsx';
 import ExtensionStagedPaymentsIcon from '~icons/ExtensionStagedPaymentsIcon.tsx';
+import ExtensionStreamingPaymentsIcon from '~icons/ExtensionStreamingPaymentsIcon.tsx';
 import multiSigHero from '~images/assets/extensions/multi-sig-hero.png';
 import multiSigInterface from '~images/assets/extensions/multi-sig-interface.png';
 import oneTransactionHero from '~images/assets/extensions/one-transaction-hero.png';
@@ -17,6 +18,8 @@ import stagedHero from '~images/assets/extensions/staged-hero.png';
 import stagedInterface from '~images/assets/extensions/staged-interface.png';
 import stakedHero from '~images/assets/extensions/staked-hero.png';
 import stakedInterface from '~images/assets/extensions/staked-interface.png';
+import streamingHero from '~images/assets/extensions/streaming-hero.png';
+import streamingInterface from '~images/assets/extensions/streaming-interface.png';
 import { type ExtensionConfig } from '~types/extensions.ts';
 import {
   convertFractionToWei,
@@ -378,18 +381,23 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
     uninstallable: true,
     createdAt: 1692048380000,
   },
-  // {
-  //   icon: ExtensionAdvancedPaymentsIcon,
-  //   imageURLs: [streamingHero, streamingInterface],
-  //   category: ExtensionCategory.Expenditures,
-  //   extensionId: Extension.StreamingPayments,
-  //   name: MSG.streamingPaymentsName,
-  //   descriptionShort: MSG.streamingPaymentsDescriptionShort,
-  //   descriptionLong: MSG.streamingPaymentsDescriptionLong,
-  //   neededColonyPermissions: [ColonyRole.Administration, ColonyRole.Funding],
-  //   uninstallable: true,
-  //   createdAt: 1692048380000,
-  // },
+  {
+    icon: ExtensionStreamingPaymentsIcon,
+    imageURLs: [streamingHero, streamingInterface],
+    category: ExtensionCategory.Expenditures,
+    extensionId: Extension.StreamingPayments,
+    name: MSG.streamingPaymentsName,
+    descriptionShort: MSG.streamingPaymentsDescriptionShort,
+    descriptionLong: MSG.streamingPaymentsDescriptionLong,
+    neededColonyPermissions: [
+      ColonyRole.Administration,
+      ColonyRole.Funding,
+      ColonyRole.Arbitration,
+    ],
+    uninstallable: true,
+    createdAt: 1692048380000,
+    autoEnableAfterInstall: true,
+  },
   {
     icon: ExtensionMultiSigIcon,
     imageURLs: [multiSigHero, multiSigInterface],

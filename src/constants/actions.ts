@@ -28,6 +28,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   EnterRecoveryMode: [[ColonyRole.Root]],
   PaymentBuilder: [[ColonyRole.Administration]],
   SplitPayment: [[ColonyRole.Administration]],
+  StreamingPayment: [[ColonyRole.Administration]],
 };
 
 export enum Action {

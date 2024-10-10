@@ -24,11 +24,6 @@ const useActionsList = () => {
             label: { id: 'actions.paymentBuilder' },
             value: Action.PaymentBuilder,
           },
-          // @BETA: Disabled for now
-          // {
-          //   label: { id: 'actions.batchPayment' },
-          //   value: Action.BatchPayment,
-          // },
           {
             label: { id: 'actions.splitPayment' },
             value: Action.SplitPayment,
@@ -37,10 +32,10 @@ const useActionsList = () => {
             label: { id: 'actions.stagedPayment' },
             value: Action.StagedPayment,
           },
-          // {
-          //   label: { id: 'actions.streamingPayment' },
-          //   value: Action.StreamingPayment,
-          // },
+          {
+            label: { id: 'actions.streamingPayment' },
+            value: Action.StreamingPayment,
+          },
         ],
       },
       {

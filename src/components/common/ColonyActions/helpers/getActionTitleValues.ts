@@ -7,6 +7,7 @@ import {
   ColonyActionType,
   type Colony,
   type Expenditure,
+  type StreamingPayment,
 } from '~types/graphql.ts';
 import {
   getExtendedActionType,
@@ -38,11 +39,23 @@ export enum ActionTitleMessageKeys {
   RecipientsNumber = 'recipientsNumber',
   TokensNumber = 'tokensNumber',
   SplitAmount = 'splitAmount',
+  Period = 'period',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
+/**
+ * @TODO: Refactor to use comparison instead of includes which is just a partial match on the string
+ */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
+    case actionType.includes(ColonyActionType.CreateStreamingPayment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.Period,
+      ];
     case actionType.includes(ColonyActionType.Payment) &&
       !actionType.includes(ExtendedColonyActionType.SplitPayment):
       return [
@@ -164,11 +177,13 @@ const getActionTitleValues = ({
   colony,
   keyFallbackValues,
   expenditureData,
+  streamingPaymentData,
 }: {
   actionData: ColonyAction;
   colony: Pick<Colony, 'metadata' | 'nativeToken'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
+  streamingPaymentData?: StreamingPayment;
 }) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
@@ -177,6 +192,7 @@ const getActionTitleValues = ({
     colony,
     keyFallbackValues,
     expenditureData,
+    streamingPaymentData,
   });
 
   const actionType = getExtendedActionType(

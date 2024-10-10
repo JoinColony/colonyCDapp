@@ -130,6 +130,7 @@ module.exports = {
         content: '0px 1px 2px rgba(16, 24, 40, 0.05)',
         overlay: 'blur(2px)',
         'light-blue': '0px 0px 3px 3px rgba(239, 248, 255, 1)',
+        'select': '0px 1px 2px 0px rgba(16, 24, 40, 0.05);'
       },
       transitionDuration: {
         slow: '450ms',

@@ -102,6 +102,8 @@ export const getPermissionsNeededForAction = (
     }
     case Action.SplitPayment:
       return PERMISSIONS_NEEDED_FOR_ACTION.SplitPayment;
+    case Action.StreamingPayment:
+      return PERMISSIONS_NEEDED_FOR_ACTION.StreamingPayment;
 
     default:
       return undefined;
