@@ -22,6 +22,13 @@ export enum NotificationType {
 
   // Actions made with permissions
   PermissionsAction = 'PermissionsAction',
+
+  // Extensions
+  ExtensionInstalled = 'ExtensionInstalled',
+  ExtensionUpgraded = 'ExtensionUpgraded',
+  ExtensionEnabled = 'ExtensionEnabled',
+  ExtensionDeprecated = 'ExtensionDeprecated',
+  ExtensionUninstalled = 'ExtensionUninstalled',
 }
 
 export interface NotificationAttributes {
@@ -32,6 +39,7 @@ export interface NotificationAttributes {
   expenditureID?: string;
   tokenAmount?: string;
   tokenAddress?: string;
+  extensionHash?: string;
 }
 
 // Create our own notification type so that we have types for the custom attributes, instead of

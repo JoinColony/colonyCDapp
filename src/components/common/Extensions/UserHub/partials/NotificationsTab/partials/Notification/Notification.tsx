@@ -9,14 +9,19 @@ import {
 import ActionNotification from './Action/ActionNotification.tsx';
 import ExpenditureNotification from './Expenditure/ExpenditureNotification.tsx';
 import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
+import ExtensionNotification from './Extension/ExtensionNotification.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.Notification';
 
 interface NotificationProps {
   notification: NotificationInterface;
+  closeUserHub: () => void;
 }
 
-const Notification: FC<NotificationProps> = ({ notification }) => {
+const Notification: FC<NotificationProps> = ({
+  notification,
+  closeUserHub,
+}) => {
   const { colonyAddress, notificationType } =
     notification.customAttributes || {};
 
@@ -81,6 +86,26 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
         colony={colony}
         loadingColony={loadingColony}
         notification={notification}
+      />
+    );
+  }
+
+  // If the notification type is an extension update:
+  if (
+    [
+      NotificationType.ExtensionInstalled,
+      NotificationType.ExtensionUpgraded,
+      NotificationType.ExtensionEnabled,
+      NotificationType.ExtensionDeprecated,
+      NotificationType.ExtensionUninstalled,
+    ].includes(notificationType)
+  ) {
+    return (
+      <ExtensionNotification
+        colony={colony}
+        loadingColony={loadingColony}
+        notification={notification}
+        closeUserHub={closeUserHub}
       />
     );
   }
