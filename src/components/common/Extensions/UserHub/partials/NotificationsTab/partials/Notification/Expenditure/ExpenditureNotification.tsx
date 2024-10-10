@@ -19,12 +19,14 @@ const displayName =
 
 interface NotificationProps {
   colony: NotificationColonyFragment | null | undefined;
+  isCurrentColony: boolean;
   loadingColony: boolean;
   notification: NotificationInterface;
 }
 
 const ExpenditureNotification: FC<NotificationProps> = ({
   colony,
+  isCurrentColony,
   loadingColony,
   notification,
 }) => {
@@ -62,14 +64,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   const action = actionData?.getColonyAction;
 
   const handleNotificationClicked = () => {
-    if (transactionHash) {
-      navigate(
-        `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
-        {
-          replace: true,
-        },
-      );
+    if (!transactionHash) {
+      return;
     }
+
+    const path = isCurrentColony
+      ? window.location.pathname
+      : `/${colony?.name}`;
+
+    navigate(`${path}?${TX_SEARCH_PARAM}=${transactionHash}`, {
+      replace: true,
+    });
   };
 
   return (
