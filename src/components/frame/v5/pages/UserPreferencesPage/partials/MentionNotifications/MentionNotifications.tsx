@@ -2,9 +2,8 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 
 import { formatText } from '~utils/intl.ts';
+import NotificationTypeToggle from '~v5/common/NotificationTypeToggle/NotificationTypeToggle.tsx';
 import SettingsRow from '~v5/common/SettingsRow/index.ts';
-
-import MentionNotificationsToggle from './MentionNotificationsToggle.tsx';
 
 const displayName =
   'v5.pages.UserPreferencesPage.partials.MentionNotifications';
@@ -19,10 +18,26 @@ const MSG = defineMessages({
     defaultMessage:
       'Receive a notification when your username is mentioned across colonies',
   },
+  toastMentionNotificationsEnabled: {
+    id: `${displayName}.toastMentionNotificationsEnabled`,
+    defaultMessage:
+      'You will now receive notifications when your username is mentioned.',
+  },
+  toastMentionNotificationsDisabled: {
+    id: `${displayName}.toastMentionNotificationsDisabled`,
+    defaultMessage:
+      'You will no longer receive notifications when your username is mentioned.',
+  },
 });
 
 const MentionNotifications = () => {
-  const toggleButton = <MentionNotificationsToggle />;
+  const toggleButton = (
+    <NotificationTypeToggle
+      notificationType="mentionNotificationsDisabled"
+      toastTextEnabled={formatText(MSG.toastMentionNotificationsEnabled)}
+      toastTextDisabled={formatText(MSG.toastMentionNotificationsDisabled)}
+    />
+  );
 
   return (
     <SettingsRow.Content rightContent={toggleButton}>
