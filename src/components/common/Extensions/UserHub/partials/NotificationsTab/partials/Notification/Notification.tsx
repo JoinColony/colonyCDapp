@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyForNotificationQuery } from '~gql';
 import {
   NotificationType,
@@ -17,6 +18,8 @@ interface NotificationProps {
 }
 
 const Notification: FC<NotificationProps> = ({ notification }) => {
+  const { colony: currentColony } = useColonyContext();
+
   const { colonyAddress, notificationType } =
     notification.customAttributes || {};
 
@@ -28,7 +31,9 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
       skip: !colonyAddress || !notificationType,
     });
 
-  const colony = colonyData?.getColonyByAddress?.items[0];
+  const notificationColony = colonyData?.getColonyByAddress?.items[0];
+
+  const isCurrentColony = currentColony.name === notificationColony?.name;
 
   // If there is no notification type, something is wrong with this notification
   // and we won't know what to display, so skip it.
@@ -49,7 +54,8 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
   ) {
     return (
       <ActionNotification
-        colony={colony}
+        colony={notificationColony}
+        isCurrentColony={isCurrentColony}
         loadingColony={loadingColony}
         notification={notification}
       />
@@ -68,7 +74,8 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
   ) {
     return (
       <ExpenditureNotification
-        colony={colony}
+        colony={notificationColony}
+        isCurrentColony={isCurrentColony}
         loadingColony={loadingColony}
         notification={notification}
       />
@@ -78,7 +85,7 @@ const Notification: FC<NotificationProps> = ({ notification }) => {
   if (notificationType === NotificationType.FundsClaimed) {
     return (
       <FundsClaimedNotification
-        colony={colony}
+        colony={notificationColony}
         loadingColony={loadingColony}
         notification={notification}
       />
