@@ -24,28 +24,41 @@ services:
     extends:
       file: colony-cdapp-dev-env-orchestration.yaml
       service: auth-proxy
-  safe-contracts:
-    container_name: 'safe'
-    image: colony-cdapp-dev-env/safe:latest
-    deploy:
-      replicas: ${SAFE_REPLICAS:-1}
-    volumes:
-      - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
+  network-files:
+    extends:
+      file: colony-cdapp-dev-env-orchestration.yaml
+      service: network-files
+  # Commented out due to issues with building the image
+  # safe-contracts:
+  #   container_name: 'safe'
+  #   image: colony-cdapp-dev-env/safe:latest
+  #   deploy:
+  #     replicas: ${SAFE_REPLICAS:-1}
+  #   volumes:
+  #     - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
+  #   ports:
+  #     - '8546:8546'
+  #   healthcheck:
+  #     test:
+  #       [
+  #         'CMD',
+  #         'curl',
+  #         '-X',
+  #         'POST',
+  #         '--data',
+  #         '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}',
+  #         'http://localhost:8546',
+  #       ]
+  #     interval: 5s
+  #     retries: 1000
+  #   depends_on:
+  #     network-contracts:
+  #       condition: service_healthy
+  mocking:
+    container_name: 'mocking'
+    image: colony-cdapp-dev-env/mocking:latest
     ports:
-      - '8546:8546'
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'curl',
-          '-X',
-          'POST',
-          '--data',
-          '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}',
-          'http://localhost:8546',
-        ]
-      interval: 5s
-      retries: 1000
+      - '3007:3000'
     depends_on:
       network-contracts:
         condition: service_healthy
