@@ -23,7 +23,8 @@ const ActionSidebarLoadingSkeleton = () => {
       </div>
       <div>
         {new Array(7).fill(0).map((_, index) => (
-          <div className="mt-2 flex w-full max-w-[25rem] gap-2">
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={index} className="mt-2 flex w-full max-w-[25rem] gap-2">
             <div className="mt-2 flex w-1/2 items-center gap-2">
               <LoadingSkeleton
                 isLoading
@@ -107,8 +108,10 @@ const ActionSidebarLoadingSkeleton = () => {
       >
         <div className="flex">
           <div className="mr-[-.3450rem] mt-2">
-            {new Array(72).fill(0).map(() => (
+            {new Array(72).fill(0).map((_, index) => (
               <LoadingSkeleton
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
                 isLoading
                 className="mb-[.0625rem] h-[.1875rem] w-[.0625rem] rounded"
               />
@@ -150,7 +153,11 @@ const ActionSidebarLoadingSkeleton = () => {
                       <div className="flex gap-4">
                         <div className="w-full">
                           {new Array(4).fill(0).map((_, index) => (
-                            <div className="mt-2 items-center gap-2">
+                            <div
+                              // eslint-disable-next-line react/no-array-index-key
+                              key={index}
+                              className="mt-2 items-center gap-2"
+                            >
                               <LoadingSkeleton
                                 isLoading
                                 className={clsx('h-5 rounded', {
@@ -192,7 +199,8 @@ const ActionSidebarLoadingSkeleton = () => {
               />
             </div>
             {new Array(3).fill(0).map((_, index) => (
-              <div className="mt-4 flex items-center gap-4">
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={index} className="mt-4 flex items-center gap-4">
                 <LoadingSkeleton
                   isLoading
                   className={clsx('h-[.625rem] w-[.625rem] rounded-3xl')}

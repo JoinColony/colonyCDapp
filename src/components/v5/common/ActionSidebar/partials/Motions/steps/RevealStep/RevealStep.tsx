@@ -8,6 +8,7 @@ import useToggle from '~hooks/useToggle/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
+import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import MotionVoteBadge from '~v5/common/Pills/MotionVoteBadge/index.ts';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
@@ -118,7 +119,8 @@ const RevealStep: FC<RevealStepProps> = ({
               transform={transform}
               onSuccess={handleSuccess}
             >
-              {hasUserVoted && !!userVote ? (
+              {hasUserVoted &&
+              (userVote === MotionVote.Nay || userVote === MotionVote.Yay) ? (
                 <div className="mb-1.5">
                   <div className={clsx({ 'mb-6': !userVoteRevealed })}>
                     <div className="mb-2 flex items-center justify-between gap-2">
