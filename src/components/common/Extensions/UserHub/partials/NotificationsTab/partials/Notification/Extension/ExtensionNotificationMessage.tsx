@@ -46,6 +46,10 @@ const MSG = defineMessages({
     id: `${displayName}.uninstalled`,
     defaultMessage: 'extension uninstalled by {name}',
   },
+  settingsChanged: {
+    id: `${displayName}.settingsChanged`,
+    defaultMessage: 'extension settings changed by {name}',
+  },
 });
 
 const ExtensionNotificationMessage: FC<ExtensionNotificationMessageProps> = ({
@@ -83,6 +87,8 @@ const ExtensionNotificationMessage: FC<ExtensionNotificationMessageProps> = ({
         return renderNotificationMessage(MSG.deprecated);
       case NotificationType.ExtensionUninstalled:
         return renderNotificationMessage(MSG.uninstalled);
+      case NotificationType.ExtensionSettingsChanged:
+        return renderNotificationMessage(MSG.settingsChanged);
       default:
         return null;
     }

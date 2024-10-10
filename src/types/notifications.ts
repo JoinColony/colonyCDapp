@@ -29,6 +29,7 @@ export enum NotificationType {
   ExtensionEnabled = 'ExtensionEnabled',
   ExtensionDeprecated = 'ExtensionDeprecated',
   ExtensionUninstalled = 'ExtensionUninstalled',
+  ExtensionSettingsChanged = 'ExtensionSettingsChanged',
 }
 
 export interface NotificationAttributes {
