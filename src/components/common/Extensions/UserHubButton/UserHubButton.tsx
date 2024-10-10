@@ -230,7 +230,10 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
             },
           )}
         >
-          <UserHub initialOpenTab={initialOpenTab} />
+          <UserHub
+            initialOpenTab={initialOpenTab}
+            closeUserHub={closeUserHub}
+          />
         </PopoverBase>
       )}
     </div>
