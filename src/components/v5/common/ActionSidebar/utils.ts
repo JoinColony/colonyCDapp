@@ -1,6 +1,7 @@
 import { apolloClient } from '~apollo';
 import { type Action } from '~constants/actions.ts';
 import { SearchActionsDocument } from '~gql';
+import { type DecisionMethod } from '~types/actions.ts';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
@@ -63,3 +64,8 @@ export const handleMotionCompleted = (action: ColonyAction) => {
     }
   }
 };
+
+export const createUnsupportedDecisionMethodFilter =
+  (unsupportedDecisionMethods: DecisionMethod[] = []) =>
+  ({ value }: { value: DecisionMethod }) =>
+    !unsupportedDecisionMethods.includes(value);

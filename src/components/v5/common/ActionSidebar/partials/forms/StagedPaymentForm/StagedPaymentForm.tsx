@@ -1,6 +1,7 @@
 import { UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
@@ -14,6 +15,7 @@ import Description from '~v5/common/ActionSidebar/partials/Description/Descripti
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 
 import { useStagePayment } from './hooks.ts';
 import StagedPaymentRecipientsField from './partials/StagedPaymentRecipientsField/StagedPaymentRecipientField.tsx';
@@ -23,6 +25,10 @@ const displayName = 'v5.common.ActionSidebar.partials.StagedPaymentForm';
 const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   useStagePayment(getFormOptions);
+  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
+    DecisionMethod.MultiSig,
+    DecisionMethod.Reputation,
+  ]);
 
   return (
     <>
@@ -55,7 +61,7 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <UserSelect name={RECIPIENT_FIELD_NAME} />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
       <CreatedIn />
       <Description />
       <StagedPaymentRecipientsField name="stages" />
