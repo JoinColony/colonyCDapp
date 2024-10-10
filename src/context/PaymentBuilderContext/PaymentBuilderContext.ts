@@ -12,6 +12,8 @@ export const PaymentBuilderContext = createContext<{
   isReleaseModalOpen: boolean;
   selectedFundingAction: ExpenditureAction | null;
   setSelectedFundingAction: (action: ExpenditureAction | null) => void;
+  selectedReleaseAction: ExpenditureAction | null;
+  setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
 }>({
   toggleOnFundingModal: noop,
   toggleOffFundingModal: noop,
@@ -21,6 +23,8 @@ export const PaymentBuilderContext = createContext<{
   isReleaseModalOpen: false,
   selectedFundingAction: null,
   setSelectedFundingAction: noop,
+  selectedReleaseAction: null,
+  setSelectedReleaseAction: noop,
 });
 
 export const usePaymentBuilderContext = () => useContext(PaymentBuilderContext);
