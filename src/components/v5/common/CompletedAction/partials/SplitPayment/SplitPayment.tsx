@@ -1,13 +1,16 @@
 import { ColonyRole } from '@colony/colony-js';
-import { ChartPieSlice, Copy, Prohibit } from '@phosphor-icons/react';
+import { ChartPieSlice, Copy, Prohibit, Repeat } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ExpenditureStatus } from '~gql';
@@ -20,14 +23,27 @@ import {
 } from '~routes';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { ExtendedColonyActionType } from '~types/actions.ts';
+import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
+import {
+  getSelectedToken,
+  getTokenDecimalsWithFallback,
+} from '~utils/tokens.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  TEAM_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import { distributionMethodOptions } from '~v5/common/ActionSidebar/partials/consts.tsx';
+import { calculatePercentageValue } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -47,6 +63,7 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows/index.ts';
+import { getFormattedTokenAmount } from '../utils.ts';
 
 import SplitPaymentTable from './partials/SplitPaymentTable/SplitPaymentTable.tsx';
 
@@ -71,12 +88,18 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
   const { user } = useAppContext();
   const { colony } = useColonyContext();
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
-  const { initiatorUser, transactionHash } = action;
+  const { initiatorUser, transactionHash, annotation } = action;
   const isMobile = useMobile();
   const [
     isCancelModalOpen,
     { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
   ] = useToggle();
+  const {
+    actionSidebarToggle: [
+      ,
+      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
+    ],
+  } = useActionSidebarContext();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
@@ -96,7 +119,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     return null;
   }
 
-  const { slots = [], metadata, status } = expenditure;
+  const { slots = [], metadata, status, isStaked } = expenditure;
   const { fundFromDomainNativeId, distributionType } = metadata || {};
 
   const selectedTeam = findDomainByNativeId(fundFromDomainNativeId, colony);
@@ -112,34 +135,6 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     expenditure?.status !== ExpenditureStatus.Finalized &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
-  const expenditureMeatballOptions: MeatBallMenuItem[] = [
-    ...(showCancelOption
-      ? [
-          {
-            key: '1',
-            label: formatText({ id: 'expenditure.cancelPayment' }),
-            icon: Prohibit,
-            onClick: toggleCancelModalOn,
-          },
-        ]
-      : []),
-    {
-      key: '2',
-      label: formatText({ id: 'expenditure.copyLink' }),
-      renderItemWrapper: (itemWrapperProps, children) => (
-        <MeatballMenuCopyItem
-          textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
-            colonyName: colony.name,
-          })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
-          {...itemWrapperProps}
-        >
-          {children}
-        </MeatballMenuCopyItem>
-      ),
-      icon: Copy,
-    },
-  ];
-
   const splitToken =
     !!slots.length &&
     !!slots[0].payouts?.length &&
@@ -154,6 +149,80 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
         .add(BigNumber.from(curr?.amount || '0'))
         .toString();
     }, '0');
+  const formattedAmount = moveDecimal(
+    amount,
+    -getTokenDecimalsWithFallback(splitToken?.decimals),
+  );
+
+  const expenditureMeatballOptions: MeatBallMenuItem[] = [
+    {
+      key: '1',
+      label: formatText({ id: 'completedAction.redoAction' }),
+      icon: Repeat,
+      onClick: () => {
+        toggleActionSidebarOff();
+
+        setTimeout(() => {
+          toggleActionSidebarOn({
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
+            distributionMethod: distributionType,
+            [TEAM_FIELD_NAME]: fundFromDomainNativeId,
+            [AMOUNT_FIELD_NAME]: getFormattedTokenAmount(
+              amount,
+              splitToken?.decimals,
+            ),
+            payments: slots.map((slot) => {
+              const currentAmount = moveDecimal(
+                slot.payouts?.[0].amount,
+                -getTokenDecimalsWithFallback(splitToken?.decimals),
+              );
+
+              return {
+                recipient: slot.recipientAddress,
+                amount: currentAmount,
+                tokenAddress: slot.payouts?.[0].tokenAddress,
+                percent: calculatePercentageValue(
+                  currentAmount,
+                  formattedAmount,
+                ),
+              };
+            }),
+            [TOKEN_FIELD_NAME]: splitToken?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: isStaked
+              ? DecisionMethod.Staking
+              : DecisionMethod.Permissions,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          });
+        }, 500);
+      },
+    },
+    ...(showCancelOption
+      ? [
+          {
+            key: '2',
+            label: formatText({ id: 'expenditure.cancelPayment' }),
+            icon: Prohibit,
+            onClick: toggleCancelModalOn,
+          },
+        ]
+      : []),
+    {
+      key: '3',
+      label: formatText({ id: 'expenditure.copyLink' }),
+      renderItemWrapper: (itemWrapperProps, children) => (
+        <MeatballMenuCopyItem
+          textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
+            colonyName: colony.name,
+          })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionHash}`}
+          {...itemWrapperProps}
+        >
+          {children}
+        </MeatballMenuCopyItem>
+      ),
+      icon: Copy,
+    },
+  ];
 
   return (
     <>
@@ -229,7 +298,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
       <SplitPaymentTable
         items={slots}
         status={status}
-        isLoading={!slots.length}
+        isLoading={!slots.length || !!loadingExpenditure}
       />
 
       <CancelModal

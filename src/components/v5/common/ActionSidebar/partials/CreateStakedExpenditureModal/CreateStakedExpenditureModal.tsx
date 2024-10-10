@@ -4,7 +4,10 @@ import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { bool, object, string } from 'yup';
 
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import { ExpenditureType } from '~gql';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
@@ -68,6 +71,7 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
   actionType,
 }) => {
   const { colony } = useColonyContext();
+  const { setExpectedExpenditureType } = usePaymentBuilderContext();
   const { nativeToken } = colony;
   const { tokenAddress } = nativeToken;
 
@@ -142,7 +146,12 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
             },
           }),
         )}
-        onSuccess={onClose}
+        onSuccess={() => {
+          if (actionType === Action.StagedPayment) {
+            setExpectedExpenditureType(ExpenditureType.Staged);
+          }
+          onClose();
+        }}
       >
         {({ formState: { errors, isSubmitting } }) => (
           <div className="flex h-full w-full flex-grow flex-col">

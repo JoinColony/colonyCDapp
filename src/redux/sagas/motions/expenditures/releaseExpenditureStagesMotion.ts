@@ -7,7 +7,7 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { ADDRESS_ZERO } from '~constants';
 import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -27,7 +27,6 @@ export type ReleaseExpenditureStagesMotionPayload =
 function* releaseExpenditureStagesMotion({
   payload: {
     colonyAddress,
-    colonyName,
     stagedExpenditureAddress,
     votingReputationAddress,
     expenditure,
@@ -156,17 +155,7 @@ function* releaseExpenditureStagesMotion({
         type: ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_SUCCESS,
         meta,
       });
-
-      // @TODO: Remove during advanced payments UI wiring
-      // eslint-disable-next-line no-console
-      console.log(`Motion URL: ${APP_URL}${colonyName}?tx=${txHash}`);
     }
-
-    window.history.replaceState(
-      {},
-      '',
-      `${APP_URL}${window.location.pathname}?tx=${txHash}`,
-    );
   } catch (e) {
     console.error(e);
     yield put<Action<ActionTypes.MOTION_RELEASE_EXPENDITURE_STAGES_ERROR>>({

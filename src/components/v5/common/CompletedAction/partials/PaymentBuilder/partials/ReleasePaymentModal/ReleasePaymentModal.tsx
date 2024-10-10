@@ -1,6 +1,7 @@
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -8,6 +9,8 @@ import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { getAllUserRoles } from '~transformers';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -16,7 +19,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
-  releaseDecisionMethodDescriptions,
+  getReleaseDecisionMethodDescriptions,
   validationSchema,
 } from './consts.ts';
 import { useGetReleaseDecisionMethodItems } from './hooks.ts';
@@ -40,6 +43,12 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   const noDecisionMethodAvailable = releaseDecisionMethodItems.every(
     ({ isDisabled }) => isDisabled,
   );
+
+  const colonyRoles = extractColonyRoles(colony.roles);
+  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
+  const userRole = getRole(userPermissions);
+  const releaseDecisionMethodDescriptions =
+    getReleaseDecisionMethodDescriptions(userRole.name);
 
   const finalizeExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_FINALIZE,

@@ -6,16 +6,12 @@ import { toast } from 'react-toastify';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
-import {
-  waitForDbAfterExtensionAction,
-  waitForExtensionPermissions,
-} from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
-import { getDefaultStakeFraction } from '~utils/extensions.ts';
 
 import { getExtensionSettingsDefaultValues } from '../ExtensionSettings/utils.tsx';
 
@@ -75,76 +71,9 @@ export const useInstall = (extensionData: AnyExtensionData) => {
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const { setActiveTab, setWaitingForActionConfirmation } =
     useExtensionDetailsPageContext();
-  const {
-    colony: {
-      colonyAddress,
-      nativeToken: { decimals },
-    },
-    refetchColony,
-  } = useColonyContext();
   const { reset } = useFormContext();
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const enableExtension = useAsyncFunction({
-    submit: ActionTypes.EXTENSION_ENABLE,
-    error: ActionTypes.EXTENSION_ENABLE_ERROR,
-    success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
-  });
-
-  const handleAutoEnable = useCallback(async () => {
-    // Use refetched extension data to ensure it has uodated following the installation
-    const updatedExtensionData = await refetchExtensionData();
-
-    if (!updatedExtensionData) {
-      return;
-    }
-
-    try {
-      await enableExtension({
-        colonyAddress,
-        extensionData: updatedExtensionData,
-        stakeFraction: getDefaultStakeFraction(decimals),
-      });
-
-      /* Wait for permissions first, so that the permissions warning doesn't flash in the ui */
-      await waitForExtensionPermissions({
-        extensionData: updatedExtensionData,
-        refetchColony,
-      });
-
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.ENABLE,
-        refetchExtensionData,
-      });
-
-      toast.success(
-        <Toast
-          type="success"
-          title={{ id: 'extensionEnable.toast.title.success' }}
-          description={{
-            id: 'extensionEnable.toast.description.success',
-          }}
-        />,
-      );
-    } catch {
-      toast.error(
-        <Toast
-          type="error"
-          title={{ id: 'extensionEnable.toast.title.error' }}
-          description={{
-            id: 'extensionEnable.toast.description.error',
-          }}
-        />,
-      );
-    }
-  }, [
-    colonyAddress,
-    decimals,
-    enableExtension,
-    refetchColony,
-    refetchExtensionData,
-  ]);
 
   const showErrorToast = useCallback(() => {
     toast.error(
@@ -184,10 +113,6 @@ export const useInstall = (extensionData: AnyExtensionData) => {
           setActiveTab(ExtensionDetailsPageTabId.Settings);
         }
       }
-
-      if (extensionData.autoEnableAfterInstall) {
-        await handleAutoEnable();
-      }
     } catch {
       showErrorToast();
     } finally {
@@ -195,10 +120,8 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       setWaitingForActionConfirmation(false);
     }
   }, [
-    extensionData.autoEnableAfterInstall,
     extensionData.configurable,
     extensionData.initializationParams,
-    handleAutoEnable,
     refetchExtensionData,
     reset,
     setActiveTab,

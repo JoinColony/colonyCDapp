@@ -5,6 +5,8 @@ import { type InferType, array, number, object, string } from 'yup';
 
 import { MAX_MILESTONE_LENGTH } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
+import { ExpenditureType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions.ts';
@@ -159,6 +161,7 @@ export const useStagePayment = (
   const { nativeToken } = colony;
   const { networkInverseFee = '0' } = useNetworkInverseFee();
   const validationSchema = useValidationSchema(networkInverseFee);
+  const { setExpectedExpenditureType } = usePaymentBuilderContext();
 
   useActionFormBaseHook({
     validationSchema,
@@ -178,6 +181,7 @@ export const useStagePayment = (
       getFormOptions(
         {
           ...formOptions,
+          onSuccess: () => setExpectedExpenditureType(ExpenditureType.Staged),
           actionType: ActionTypes.EXPENDITURE_CREATE,
         },
         form,
