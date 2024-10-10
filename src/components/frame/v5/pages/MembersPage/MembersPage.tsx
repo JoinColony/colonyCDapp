@@ -15,8 +15,8 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import {
-  COLONY_CONTRIBUTORS_ROUTE,
   COLONY_MEMBERS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
 } from '~routes/routeConstants.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -34,8 +34,8 @@ const displayName = 'v5.pages.MembersPage';
 const MembersPage: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const resolvedMembersPath = useResolvedPath(COLONY_MEMBERS_ROUTE);
-  const resolvedContributorsPath = useResolvedPath(COLONY_CONTRIBUTORS_ROUTE);
+  const resolvedMembersPath = useResolvedPath(COLONY_FOLLOWERS_ROUTE);
+  const resolvedContributorsPath = useResolvedPath(COLONY_MEMBERS_ROUTE);
   const [activeTab, setActiveTab] = useState(0);
   const { sortedContributorCount, sortedMemberCount } = useMembersPage();
   const {
@@ -101,16 +101,16 @@ const MembersPage: FC = () => {
     <Tabs
       activeTab={activeTab}
       onTabClick={(_, id) =>
-        navigate(id === 0 ? COLONY_CONTRIBUTORS_ROUTE : COLONY_MEMBERS_ROUTE)
+        navigate(id === 0 ? COLONY_MEMBERS_ROUTE : COLONY_FOLLOWERS_ROUTE)
       }
       items={[
         {
           id: 0,
-          title: formatText({ id: 'membersPage.contributing' }),
+          title: formatText({ id: 'membersPage.title' }),
           notificationNumber: sortedContributorCount,
           content: (
             <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.contributing.title' })}
+              title={formatText({ id: 'membersPage.title' })}
               description={formatText({
                 id: 'membersPage.contributing.description',
               })}
@@ -134,13 +134,13 @@ const MembersPage: FC = () => {
         },
         {
           id: 1,
-          title: formatText({ id: 'membersPage.allMembers' }),
+          title: formatText({ id: 'membersPage.followers.title' }),
           notificationNumber: sortedMemberCount,
           content: (
             <MembersTabContentWrapper
-              title={formatText({ id: 'membersPage.allMembers.title' })}
+              title={formatText({ id: 'membersPage.followers.title' })}
               description={formatText({
-                id: 'membersPage.allMembers.description',
+                id: 'membersPage.followers.description',
               })}
               additionalActions={
                 <Filter

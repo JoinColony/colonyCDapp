@@ -5,6 +5,7 @@ import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
+import PageLayoutContextProvider from '~context/PageLayoutContext/PageLayoutContextProvider.tsx';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import PageThemeContextProvider from '~context/PageThemeContext/PageThemeContextProvider.tsx';
 import { Theme } from '~frame/Extensions/themes/enum.ts';
@@ -26,13 +27,15 @@ const RootRouteInner = () => {
 
 const RootRoute = () => (
   <PageThemeContextProvider>
-    <AppContextProvider>
-      <FeatureFlagsContextProvider>
-        <CurrencyContextProvider>
-          <RootRouteInner />
-        </CurrencyContextProvider>
-      </FeatureFlagsContextProvider>
-    </AppContextProvider>
+    <PageLayoutContextProvider>
+      <AppContextProvider>
+        <FeatureFlagsContextProvider>
+          <CurrencyContextProvider>
+            <RootRouteInner />
+          </CurrencyContextProvider>
+        </FeatureFlagsContextProvider>
+      </AppContextProvider>
+    </PageLayoutContextProvider>
   </PageThemeContextProvider>
 );
 

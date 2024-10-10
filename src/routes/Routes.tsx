@@ -3,8 +3,6 @@ import { Route, Routes as RoutesSwitch } from 'react-router-dom';
 
 import ColonyFunding from '~common/ColonyFunding/index.ts';
 import { Flow } from '~common/Onboarding/index.ts';
-import AdvancedPage from '~frame/Extensions/pages/AdvancedPage/index.ts';
-import ColonyDetailsPage from '~frame/Extensions/pages/ColonyDetailsPage/index.ts';
 import ExtensionDetailsPage from '~frame/Extensions/pages/ExtensionDetailsPage/ExtensionDetailsPage.tsx';
 import ExtensionsPage from '~frame/Extensions/pages/ExtensionsPage/index.ts';
 import IntegrationsPage from '~frame/Extensions/pages/IntegrationsPage/index.ts';
@@ -43,6 +41,7 @@ import {
   COLONY_BALANCES_ROUTE,
   COLONY_HOME_ROUTE,
   COLONY_MEMBERS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
   COLONY_MEMBERS_WITH_DOMAIN_ROUTE,
   CREATE_COLONY_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
@@ -51,11 +50,8 @@ import {
   COLONY_EXTENSION_DETAILS_ROUTE,
   USER_INVITE_ROUTE,
   COLONY_REPUTATION_ROUTE,
-  COLONY_DETAILS_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
   COLONY_INTEGRATIONS_ROUTE,
-  COLONY_ADVANCED_ROUTE,
-  COLONY_CONTRIBUTORS_ROUTE,
   COLONY_VERIFIED_ROUTE,
   COLONY_TEAMS_ROUTE,
   USER_PREFERENCES_ROUTE,
@@ -72,6 +68,7 @@ import {
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
 } from './routeConstants.ts';
+import UserRoute from './UserRoute.tsx';
 
 // import { ClaimTokensPage, UnwrapTokensPage } from '~dashboard/Vesting';
 
@@ -91,9 +88,11 @@ const Routes = () => {
         <Route element={<MainRoute />}>
           <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
+        </Route>
 
-          {/* User routes */}
-          <Route path={USER_HOME_ROUTE} element={<UserProfilePage />}>
+        {/* User routes */}
+        <Route path={USER_HOME_ROUTE} element={<UserRoute />}>
+          <Route element={<UserProfilePage />}>
             <Route
               path={USER_EDIT_PROFILE_ROUTE}
               element={<UserAccountPage />}
@@ -128,13 +127,13 @@ const Routes = () => {
           <Route path={COLONY_INCOMING_ROUTE} element={<ColonyFunding />} />
           <Route element={<ColonyMembersRoute />}>
             <Route element={<MembersPage />}>
-              {[COLONY_MEMBERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
+              {[COLONY_FOLLOWERS_ROUTE, COLONY_MEMBERS_WITH_DOMAIN_ROUTE].map(
                 (path) => (
                   <Route path={path} element={<AllMembersPage />} key={path} />
                 ),
               )}
               <Route
-                path={COLONY_CONTRIBUTORS_ROUTE}
+                path={COLONY_MEMBERS_ROUTE}
                 element={<ContributorsPage />}
               />
             </Route>
@@ -165,8 +164,6 @@ const Routes = () => {
           </Route>
 
           {/* Colony settings routes */}
-          <Route path={COLONY_DETAILS_ROUTE} element={<ColonyDetailsPage />} />
-
           <Route path={COLONY_AGREEMENTS_ROUTE} element={<AgreementsPage />} />
 
           {/* Enable the following routes in dev mode */}
@@ -182,7 +179,6 @@ const Routes = () => {
             path={COLONY_EXTENSION_DETAILS_ROUTE}
             element={<ExtensionDetailsPage />}
           />
-          <Route path={COLONY_ADVANCED_ROUTE} element={<AdvancedPage />} />
         </Route>
 
         {/*

@@ -18,7 +18,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
 import useTransformer from '~hooks/useTransformer.ts';
 import {
-  COLONY_MEMBERS_ROUTE,
+  COLONY_FOLLOWERS_ROUTE,
   COLONY_MULTISIG_ROUTE,
 } from '~routes/routeConstants.ts';
 import { getAllUserRoles } from '~transformers/index.ts';
@@ -159,7 +159,7 @@ export const useMainMenuItems = (hasTransactionId: boolean) => {
             to: COLONY_MULTISIG_ROUTE,
             icon: Buildings,
           },
-        ]) || nestedColonyPathname === COLONY_MEMBERS_ROUTE,
+        ]) || nestedColonyPathname === COLONY_FOLLOWERS_ROUTE,
       secondLevelMenuProps: {
         title: formatText({ id: 'navigation.members.title' }),
         content: membersMenu,

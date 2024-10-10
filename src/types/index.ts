@@ -3,6 +3,8 @@ import { type MessageDescriptor } from 'react-intl';
 
 import { type Maybe } from '~gql';
 
+import type colonyMessages from '../i18n/en.json';
+
 // export * from './keyboard';
 // export * from './actions';
 // export * from './extensions';
@@ -71,7 +73,14 @@ export type UniversalMessageValues =
   | ComplexMessageValues
   | AnyMessageValues;
 
-export type Message = MessageDescriptor | string;
+export type TypedMessageDescriptor<M = typeof colonyMessages> = Omit<
+  MessageDescriptor,
+  'id'
+> & {
+  id: keyof M;
+};
+
+export type Message = string | MessageDescriptor | TypedMessageDescriptor;
 
 /*
  Pick all the values from an object and make them `any` (handy for immutable default props)
