@@ -98,6 +98,7 @@ const Notification: FC<NotificationProps> = ({
       NotificationType.ExtensionEnabled,
       NotificationType.ExtensionDeprecated,
       NotificationType.ExtensionUninstalled,
+      NotificationType.ExtensionSettingsChanged,
     ].includes(notificationType)
   ) {
     return (
