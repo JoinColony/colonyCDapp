@@ -55,7 +55,7 @@ const StreamsInfoRow: FC = () => {
     currency,
     getTotalFunds,
     streamingPayments,
-  } = useStreamingPaymentsTotalFunds();
+  } = useStreamingPaymentsTotalFunds({});
 
   return (
     <UserHubInfoSection
