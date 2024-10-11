@@ -3,51 +3,74 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import { useGetStreamingPaymentsByColonyQuery } from '~gql';
+import { useGetStreamingPaymentsByColonyLazyQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import {
+  getStreamingPaymentAmountsLeft,
+  getStreamingPaymentStatus,
+} from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
-import { calculateTotalsFromStreams } from './utils.ts';
+import {
+  calculateAverageStreamingPayment,
+  calculateTotalsFromStreams,
+} from './utils.ts';
 
-export const useStreamingPaymentsTotalFunds = () => {
+interface useStreamingPaymentsTotalFundsProps {
+  getDataByRecipentAddress?: boolean;
+  nativeDomainId?: number;
+}
+
+export const useStreamingPaymentsTotalFunds = ({
+  getDataByRecipentAddress = true,
+  nativeDomainId = undefined,
+}: useStreamingPaymentsTotalFundsProps) => {
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
   const { colony } = useColonyContext();
 
-  const { data, loading, fetchMore } = useGetStreamingPaymentsByColonyQuery({
-    variables: {
-      recipientAddress: walletAddress ?? '',
-      colonyId: colony.colonyAddress,
-    },
-    onCompleted: (receivedData) => {
-      if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
-        fetchMore({
-          variables: {
-            nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
+  const [getStreamingPaymentsByColony, { data, loading, fetchMore }] =
+    useGetStreamingPaymentsByColonyLazyQuery({
+      variables: {
+        ...(getDataByRecipentAddress &&
+          walletAddress && {
+            recipientAddress: walletAddress,
+          }),
+        ...(nativeDomainId && {
+          domainId: nativeDomainId,
+        }),
+        colonyId: colony.colonyAddress,
+      },
+      onCompleted: (receivedData) => {
+        if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
+          fetchMore({
+            variables: {
+              nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+              if (!fetchMoreResult) return prev;
 
-            return {
-              ...prev,
-              getStreamingPaymentsByColony: {
-                ...prev.getStreamingPaymentsByColony,
-                items: [
-                  ...(prev?.getStreamingPaymentsByColony?.items || []),
-                  ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
-                    []),
-                ],
-                nextToken:
-                  fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
-              },
-            };
-          },
-        });
-      }
-    },
-  });
+              return {
+                ...prev,
+                getStreamingPaymentsByColony: {
+                  ...prev.getStreamingPaymentsByColony,
+                  items: [
+                    ...(prev?.getStreamingPaymentsByColony?.items || []),
+                    ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
+                      []),
+                  ],
+                  nextToken:
+                    fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
+                },
+              };
+            },
+          });
+        }
+      },
+    });
 
   const streamingPayments = useMemo(
     () => data?.getStreamingPaymentsByColony?.items?.filter(notNull) || [],
@@ -65,6 +88,8 @@ export const useStreamingPaymentsTotalFunds = () => {
   });
   const [isAnyPaymentActive, setIsAnyPaymentActive] = useState(false);
   const [ratePerSecond, setRatePerSecond] = useState<number>(0);
+  const [activeStreamingPayments, setActiveStreamingPayments] = useState(0);
+  const [averagePerMonth, setAveragePerMonth] = useState(0);
 
   const getTotalFunds = useCallback(
     async (items: StreamingPaymentItems) => {
@@ -73,6 +98,7 @@ export const useStreamingPaymentsTotalFunds = () => {
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond: ratePerSecondValue,
+        itemsCountedToAverage,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
         currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
@@ -80,12 +106,47 @@ export const useStreamingPaymentsTotalFunds = () => {
         colony,
       });
 
+      const averageStreamingPerMonth = calculateAverageStreamingPayment(
+        new Date(blockTime ?? Date.now() / 1000),
+        itemsCountedToAverage,
+      );
+
+      setAveragePerMonth(averageStreamingPerMonth);
+
       setIsAnyPaymentActive(isAtLeastOnePaymentActive);
-      setTotalFunds({ totalAvailable, totalClaimed });
+      setTotalFunds({
+        totalAvailable,
+        totalClaimed,
+      });
       setRatePerSecond(ratePerSecondValue);
     },
     [blockTime, colony, currency],
   );
+
+  const getTotalActiveStreamingPayments = useCallback(
+    (items: StreamingPaymentItems) => {
+      const activeStreams = items.filter((item) => {
+        const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+          item,
+          Math.floor(blockTime ?? Date.now() / 1000),
+        );
+        return (
+          getStreamingPaymentStatus({
+            streamingPayment: item,
+            currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+            amountAvailableToClaim,
+          }) === StreamingPaymentStatus.Active
+        );
+      });
+
+      setActiveStreamingPayments(activeStreams.length);
+    },
+    [blockTime],
+  );
+
+  useEffect(() => {
+    getStreamingPaymentsByColony();
+  }, [getDataByRecipentAddress, nativeDomainId, getStreamingPaymentsByColony]);
 
   useEffect(() => {
     fetchMore({
@@ -112,10 +173,9 @@ export const useStreamingPaymentsTotalFunds = () => {
   }, [colony.colonyAddress, fetchMore, walletAddress]);
 
   useEffect(() => {
-    if (streamingPayments.length) {
-      getTotalFunds(streamingPayments);
-    }
-  }, [getTotalFunds, streamingPayments]);
+    getTotalFunds(streamingPayments);
+    getTotalActiveStreamingPayments(streamingPayments);
+  }, [getTotalFunds, streamingPayments, getTotalActiveStreamingPayments]);
 
   return {
     totalFunds,
@@ -125,5 +185,7 @@ export const useStreamingPaymentsTotalFunds = () => {
     currency,
     getTotalFunds,
     streamingPayments,
+    activeStreamingPayments,
+    averagePerMonth,
   };
 };

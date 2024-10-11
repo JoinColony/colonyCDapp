@@ -1,3 +1,4 @@
+import { differenceInYears, differenceInMonths, isAfter } from 'date-fns';
 import Decimal from 'decimal.js';
 
 import { type ColonyFragment, type SupportedCurrencies } from '~gql';
@@ -42,6 +43,43 @@ export const calculateToCurrency = async ({
   );
 
   return new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0);
+};
+
+const isDateEarlierThanOneYear = (currentDate: Date, dateToCheck: Date) => {
+  const today = currentDate;
+
+  return (
+    isAfter(today, dateToCheck) && differenceInYears(today, dateToCheck) === 0
+  );
+};
+
+export const calculateAverageStreamingPayment = (
+  currentDate: Date,
+  items: {
+    startDate: Date;
+    claimedFunds: any;
+  }[],
+) => {
+  const dateToday = new Date(+currentDate * 1000);
+
+  const oldestItemDate = items.length
+    ? items.reduce((oldest, item) => {
+        return item.startDate < oldest.startDate ? item : oldest;
+      }).startDate
+    : 0;
+
+  const monthsDifference =
+    oldestItemDate !== 0 ? differenceInMonths(dateToday, oldestItemDate) : 0;
+
+  const totalClaimedFunds = items.length
+    ? items.reduce((sum, item) => {
+        return sum + Number(item.claimedFunds);
+      }, 0)
+    : 0;
+
+  return monthsDifference !== 0
+    ? totalClaimedFunds / monthsDifference
+    : totalClaimedFunds;
 };
 
 export const calculateTotalsFromStreams = async ({
@@ -95,11 +133,17 @@ export const calculateTotalsFromStreams = async ({
         colony,
       });
 
+      const isItemsCountedToAverage = isDateEarlierThanOneYear(
+        new Date(currentTimestamp * 1000),
+        new Date(+item.startTime * 1000),
+      );
+
       const {
         totalAvailable,
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond,
+        itemsCountedToAverage,
       } = await result;
 
       return {
@@ -111,6 +155,17 @@ export const calculateTotalsFromStreams = async ({
         isAtLeastOnePaymentActive:
           paymentStatus === StreamingPaymentStatus.Active ||
           isAtLeastOnePaymentActive,
+        itemsCountedToAverage: isItemsCountedToAverage
+          ? [
+              ...itemsCountedToAverage,
+              {
+                startDate: new Date(+item.startTime * 1000),
+                claimedFunds: amountClaimedToDateToCurrency
+                  ? amountClaimedToDateToCurrency.toNumber()
+                  : 0,
+              },
+            ]
+          : itemsCountedToAverage,
       };
     },
     Promise.resolve({
@@ -118,6 +173,7 @@ export const calculateTotalsFromStreams = async ({
       totalClaimed: new Decimal(0),
       ratePerSecond: new Decimal(0),
       isAtLeastOnePaymentActive: false,
+      itemsCountedToAverage: [],
     }),
   );
 
@@ -126,6 +182,7 @@ export const calculateTotalsFromStreams = async ({
     totalAvailable,
     isAtLeastOnePaymentActive,
     ratePerSecond,
+    itemsCountedToAverage,
   } = await totals;
 
   return {
@@ -133,5 +190,6 @@ export const calculateTotalsFromStreams = async ({
     totalAvailable: totalAvailable.toNumber(),
     ratePerSecond: ratePerSecond.toNumber(),
     isAtLeastOnePaymentActive,
+    itemsCountedToAverage,
   };
 };
