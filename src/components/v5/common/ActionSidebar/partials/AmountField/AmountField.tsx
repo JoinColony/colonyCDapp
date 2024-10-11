@@ -189,7 +189,7 @@ const AmountField: FC<AmountFieldProps> = ({
         disabled={isDisabled}
         name={name}
         className={clsx(
-          'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none text-md outline-none outline-0',
+          'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none bg-base-white text-md outline-none outline-0',
           {
             'text-gray-900 placeholder:text-gray-400': !isError && !isDisabled,
             'text-gray-400 placeholder:text-gray-300':
