@@ -2,6 +2,7 @@ import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
 import React from 'react';
 
+import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
 import { ColonyActionType, type SimpleTarget } from '~gql';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
@@ -19,6 +20,7 @@ import {
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
+import { getAmountLessFee } from '~utils/getAmountLessFee.ts';
 import { formatText, intl } from '~utils/intl.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
@@ -138,11 +140,13 @@ export const mapColonyActionToExpectedFormat = ({
   colony,
   keyFallbackValues = {},
   expenditureData,
+  networkInverseFee,
 }: {
   actionData: ColonyAction;
   colony: Pick<Colony, 'nativeToken' | 'tokens'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
+  networkInverseFee?: string;
 }) => {
   //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
   const formattedRolesTitle = formatRolesTitle(actionData.roles);
@@ -157,6 +161,24 @@ export const mapColonyActionToExpectedFormat = ({
     }
 
     return keyFallbackValues[fallbackKey];
+  };
+
+  const getAmount = (
+    actionType: ColonyActionType,
+    amount?: string | null,
+    networkFee?: string | null,
+  ) => {
+    if (!amount) {
+      return 0;
+    }
+
+    const actionTypeUsesNetworkFee = ACTIONS_WITH_NETWORK_FEE.has(actionType);
+
+    if (!actionTypeUsesNetworkFee) {
+      return amount;
+    }
+
+    return getAmountLessFee(amount, networkFee, networkInverseFee);
   };
 
   let fromDomainKeyMetadata: OptionalValue<DomainMetadata>;
@@ -191,7 +213,11 @@ export const mapColonyActionToExpectedFormat = ({
     ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
       <Numeral
-        value={actionData.amount ?? 0} // @TODO: getAmount(item.actionType, item.amount)
+        value={getAmount(
+          actionData.type,
+          actionData.amount,
+          actionData.networkFee,
+        )}
         decimals={getTokenDecimalsWithFallback(actionData.token?.decimals)}
       />,
       ActionTitleMessageKeys.Amount,

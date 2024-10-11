@@ -164,11 +164,13 @@ const getActionTitleValues = ({
   colony,
   keyFallbackValues,
   expenditureData,
+  networkInverseFee,
 }: {
   actionData: ColonyAction;
   colony: Pick<Colony, 'metadata' | 'nativeToken'>;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
+  networkInverseFee?: string;
 }) => {
   const { isMotion, pendingColonyMetadata } = actionData;
 
@@ -177,6 +179,7 @@ const getActionTitleValues = ({
     colony,
     keyFallbackValues,
     expenditureData,
+    networkInverseFee,
   });
 
   const actionType = getExtendedActionType(

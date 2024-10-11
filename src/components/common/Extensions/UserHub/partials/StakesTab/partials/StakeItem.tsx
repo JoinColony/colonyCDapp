@@ -3,6 +3,7 @@ import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
@@ -18,6 +19,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
   const { formatMessage } = useIntl();
   const navigate = useNavigate();
   const { expenditure } = useGetExpenditureData(stake.action?.expenditureId);
+  const { networkInverseFee } = useNetworkInverseFee();
 
   const stakeItemTitle =
     stake.action?.metadata?.customTitle ||
@@ -99,6 +101,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
                       actionData: stake.action,
                       colony: partialStakeColony,
                       expenditureData: expenditure ?? undefined,
+                      networkInverseFee,
                     }),
                   )
                 : '-'}
