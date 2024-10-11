@@ -12105,7 +12105,8 @@ export type GetStreamingPaymentsByColonyQueryVariables = Exact<{
   sortDirection?: InputMaybe<ModelSortDirection>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
-  recipientAddress: Scalars['String'];
+  recipientAddress?: InputMaybe<Scalars['String']>;
+  domainId?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -16829,13 +16830,13 @@ export type GetUserStakesQueryResult = Apollo.QueryResult<GetUserStakesQuery, Ge
 <<<<<<< HEAD
 <<<<<<< HEAD
 export const GetStreamingPaymentsByColonyDocument = gql`
-    query GetStreamingPaymentsByColony($colonyId: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $recipientAddress: String!) {
+    query GetStreamingPaymentsByColony($colonyId: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $recipientAddress: String, $domainId: Int) {
   getStreamingPaymentsByColony(
     colonyId: $colonyId
     sortDirection: $sortDirection
     limit: $limit
     nextToken: $nextToken
-    filter: {recipientAddress: {eq: $recipientAddress}}
+    filter: {nativeDomainId: {eq: $domainId}, recipientAddress: {eq: $recipientAddress}}
   ) {
     items {
       ...StreamingPayment
@@ -16876,6 +16877,7 @@ export const GetStreamingPaymentDocument = gql`
  *      limit: // value for 'limit'
  *      nextToken: // value for 'nextToken'
  *      recipientAddress: // value for 'recipientAddress'
+ *      domainId: // value for 'domainId'
  *   },
  * });
  */
