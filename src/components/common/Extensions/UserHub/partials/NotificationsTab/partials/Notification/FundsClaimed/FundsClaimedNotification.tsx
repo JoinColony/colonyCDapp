@@ -24,6 +24,7 @@ interface FundsClaimedNotificationProps {
   colony: NotificationColonyFragment | null | undefined;
   loadingColony: boolean;
   notification: NotificationInterface;
+  closeUserHub: () => void;
 }
 
 const MSG = defineMessages({
@@ -41,6 +42,7 @@ const FundsClaimedNotification: FC<FundsClaimedNotificationProps> = ({
   colony,
   loadingColony,
   notification,
+  closeUserHub,
 }) => {
   const navigate = useNavigate();
   const { tokenAmount, tokenAddress } = notification.customAttributes || {};
@@ -54,6 +56,7 @@ const FundsClaimedNotification: FC<FundsClaimedNotificationProps> = ({
   const handleNotificationClicked = () => {
     if (colony) {
       navigate(`/${colony.name}/${COLONY_BALANCES_ROUTE}`);
+      closeUserHub();
     }
   };
 
