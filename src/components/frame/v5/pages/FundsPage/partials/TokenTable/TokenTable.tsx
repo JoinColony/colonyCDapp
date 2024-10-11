@@ -1,5 +1,8 @@
 import { CaretDown, WarningCircle } from '@phosphor-icons/react';
-import { getSortedRowModel } from '@tanstack/react-table';
+import {
+  getPaginationRowModel,
+  getSortedRowModel,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
@@ -134,6 +137,7 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
         <Table
           data={currentClaims}
           getSortedRowModel={getSortedRowModel()}
+          getPaginationRowModel={getPaginationRowModel()}
           columns={columns}
           className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:!rounded-none [&_th]:border-y"
           tableClassName="rounded-none border-none"
@@ -148,6 +152,9 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
                 desc: true,
               },
             ],
+            pagination: {
+              pageSize: 10,
+            },
           }}
           // This ensures that all sort actions made by the user are multisort.
           // In other words, it's always sorting by all columns.
