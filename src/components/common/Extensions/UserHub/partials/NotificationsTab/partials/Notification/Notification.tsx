@@ -9,8 +9,8 @@ import {
 
 import ActionNotification from './Action/ActionNotification.tsx';
 import ExpenditureNotification from './Expenditure/ExpenditureNotification.tsx';
-import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
 import ExtensionNotification from './Extension/ExtensionNotification.tsx';
+import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.Notification';
 
@@ -93,6 +93,7 @@ const Notification: FC<NotificationProps> = ({
         colony={notificationColony}
         loadingColony={loadingColony}
         notification={notification}
+        closeUserHub={closeUserHub}
       />
     );
   }
