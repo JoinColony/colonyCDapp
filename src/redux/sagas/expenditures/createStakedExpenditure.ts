@@ -109,7 +109,9 @@ function* createStakedExpenditure({
   yield createMulticallChannels();
 
   try {
-    if (stakeAmount.gt(activeBalance)) {
+    const needsActivatingTokens = stakeAmount.gt(activeBalance);
+
+    if (needsActivatingTokens) {
       const missingActiveTokens = stakeAmount.sub(activeBalance);
 
       yield createGroupTransaction({
@@ -198,13 +200,15 @@ function* createStakedExpenditure({
       });
     }
 
-    yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
-    yield initiateTransaction(approve.id);
-    yield waitForTxResult(approve.channel);
+    if (needsActivatingTokens) {
+      yield takeFrom(approve.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction(approve.id);
+      yield waitForTxResult(approve.channel);
 
-    yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
-    yield initiateTransaction(deposit.id);
-    yield waitForTxResult(deposit.channel);
+      yield takeFrom(deposit.channel, ActionTypes.TRANSACTION_CREATED);
+      yield initiateTransaction(deposit.id);
+      yield waitForTxResult(deposit.channel);
+    }
 
     yield takeFrom(approveStake.channel, ActionTypes.TRANSACTION_CREATED);
     yield initiateTransaction(approveStake.id);
