@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
+import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -12,7 +13,9 @@ import { ActionTypes } from '~redux';
 import { type ReleaseExpenditureStagesPayload } from '~redux/sagas/expenditures/releaseExpenditureStages.ts';
 import { type ReleaseExpenditureStagesMotionPayload } from '~redux/sagas/motions/expenditures/releaseExpenditureStagesMotion.ts';
 import { Form } from '~shared/Fields/index.ts';
+import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import DecisionMethodSelect from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/DecisionMethodSelect/DecisionMethodSelect.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -22,8 +25,8 @@ import Modal from '~v5/shared/Modal/Modal.tsx';
 import MilestoneItem from '../MilestoneItem/MilestoneItem.tsx';
 
 import {
+  getMilestoneReleaseDecisionMethodDescriptions,
   getValidationSchema,
-  milestoneReleaseDecisionMethodDescriptions,
 } from './consts.ts';
 import { useMilestoneReleaseDecisionMethods } from './hooks.ts';
 import {
@@ -70,11 +73,20 @@ const MilestoneModalContent: FC<MilestoneModalContentProps> = ({
   slotsWithActiveMotions,
   expenditure,
 }) => {
+  const { colony } = useColonyContext();
+  const { user } = useAppContext();
+
   const {
     watch,
     formState: { isSubmitting },
   } = useFormContext();
   const method = watch('decisionMethod');
+
+  const colonyRoles = extractColonyRoles(colony.roles);
+  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
+  const userRole = getRole(userPermissions);
+  const milestoneReleaseDecisionMethodDescriptions =
+    getMilestoneReleaseDecisionMethodDescriptions(userRole.name);
 
   const milestoneReleaseDecisionMethods = useMilestoneReleaseDecisionMethods(
     Action.StagedPayment,
