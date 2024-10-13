@@ -150,7 +150,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
         <StepDetailsBlock
           text={formatText(MSG.extensionUninstalled)}
           content={
-            <div className="-ml-[1.125rem] -mr-[1.125rem] -mt-[1.125rem] bg-negative-100 p-[1.125rem] text-sm text-negative-400">
+            <div className="-m-[1.125rem] bg-negative-100 p-[1.125rem] text-sm text-negative-400">
               {formatText(MSG.extensionDescription)}
             </div>
           }
