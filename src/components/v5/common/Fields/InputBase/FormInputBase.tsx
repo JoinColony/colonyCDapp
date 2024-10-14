@@ -17,6 +17,7 @@ const FormInputBase: FC<FormInputBaseProps> = ({
   onBlur: onBlurProp,
   readOnly,
   onChange: onChangeProp,
+  shouldAllowOnlyNumbers,
   ...rest
 }) => {
   const {
@@ -47,7 +48,14 @@ const FormInputBase: FC<FormInputBaseProps> = ({
         if (type === 'number') {
           onChange(Number.isNaN(valueAsNumber) ? 0 : valueAsNumber);
         } else {
-          onChange(inputValue);
+          onChange(
+            shouldAllowOnlyNumbers
+              ? inputValue
+                  .replace(/[^0-9.]/g, '')
+                  .replace(/(\..*?)\..*/g, '$1')
+                  .replace(/^0[^.]/, '0')
+              : inputValue,
+          );
         }
       }}
       state={invalid ? FieldState.Error : undefined}

@@ -13,11 +13,11 @@ import type Decimal from 'decimal.js';
 
 import styles from './Numeral.module.css';
 
+const displayName = 'Numeral';
+
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);
 numbro.setLanguage('en-GB');
-
-const displayName = 'Numeral';
 
 export type NumeralValue = string | number | BigNumber | Decimal;
 
