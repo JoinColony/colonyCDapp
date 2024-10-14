@@ -219,9 +219,6 @@ const UserSelect: FC<UserSelectProps> = ({
                 field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
               }}
-              onSearch={(query) => {
-                field.onChange(utils.isHexString(query) ? query : undefined);
-              }}
               ref={(ref) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
