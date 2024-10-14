@@ -2008,6 +2008,10 @@ type NotificationsData @model {
   """
   magicbellUserId: ID!
   """
+  Generated key for the user in Magicbell, used for secure fetching of notifications
+  """
+  magicbellUserKey: String @function(name: "getUserNotificationsHMAC-${env}")
+  """
   Boolean to indicate if the user has disabled notifications app wide
   """
   notificationsDisabled: Boolean!

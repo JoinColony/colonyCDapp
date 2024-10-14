@@ -66,6 +66,7 @@ const NotificationsDataContextProvider = ({
     <MagicBellProvider
       apiKey={import.meta.env.MAGICBELL_API_KEY}
       userExternalId={user.notificationsData.magicbellUserId}
+      userKey={user.notificationsData.magicbellUserKey || ''}
       stores={
         isDev
           ? [
