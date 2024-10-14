@@ -66,7 +66,7 @@ const CheckboxSearchItem: FC<CheckboxSearchItemProps> = ({
             >
               <label
                 className={clsx(
-                  'flex w-full items-center rounded px-2 py-1.5 text-left text-md transition-colors',
+                  'flex w-full items-center rounded px-2 py-1.5 text-left text-md transition-colors hover:bg-gray-50 hover:font-medium',
                   {
                     'justify-between': !hasAvatar,
                     'justify-start': hasAvatar,
