@@ -22,7 +22,9 @@ function Stepper<TKey extends React.Key>({
   items,
 }: StepperProps<TKey>): JSX.Element | null {
   const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
-  const [hiddenItem, setHiddenItem] = useState<TKey | undefined>(undefined);
+  const [hiddenItem, setHiddenItem] = useState<TKey | string | undefined>(
+    undefined,
+  );
   const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
   const openedItem = items[openItemIndex];
@@ -73,7 +75,7 @@ function Stepper<TKey extends React.Key>({
     handleResize();
   }, [activeItemIndex]);
 
-  const handleChange = (name: TKey, inView: boolean) => {
+  const handleChange = (name: TKey | string, inView: boolean) => {
     if (!inView) {
       setHiddenItem(name);
     } else {

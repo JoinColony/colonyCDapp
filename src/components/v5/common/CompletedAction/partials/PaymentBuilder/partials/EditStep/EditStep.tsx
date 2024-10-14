@@ -36,10 +36,7 @@ const EditStep: FC<EditStepProps> = ({ actions }) => {
         <MotionBox transactionId={selectedEditingMotion.transactionHash} />
       )}
       {selectedEditingAction && !selectedEditingMotion && (
-        <ActionWithPermissionsInfo
-          userAdddress={selectedEditingAction.initiatorAddress}
-          createdAt={selectedEditingAction.createdAt}
-        />
+        <ActionWithPermissionsInfo action={selectedEditingAction} />
       )}
     </div>
   );

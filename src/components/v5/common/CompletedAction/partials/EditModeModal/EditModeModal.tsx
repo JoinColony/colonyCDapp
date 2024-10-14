@@ -18,6 +18,7 @@ import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { type Expenditure } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -82,7 +83,10 @@ const EditModeModalContent: FC<EditModeModalContentProps> = ({ onClose }) => {
   } = useFormContext();
   const method = watch('decisionMethod');
 
-  const userPermissions = getAllUserRoles(colony, user?.walletAddress);
+  const userPermissions = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    user?.walletAddress,
+  );
   const userRole = getRole(userPermissions);
   const editDecisionMethodDescriptions = getEditDecisionMethodDescriptions(
     userRole.name,

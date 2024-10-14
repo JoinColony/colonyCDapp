@@ -11,7 +11,6 @@ import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { Form } from '~shared/Fields/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
-import { DecisionMethod } from '~types/actions.ts';
 import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -91,7 +90,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
     return null;
   }
 
-  const { slots = [], metadata, isStaked } = expenditure;
+  const { slots = [], metadata } = expenditure;
 
   const selectedTeam = findDomainByNativeId(
     metadata?.fundFromDomainNativeId,
@@ -168,10 +167,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
             actionType={action.type}
           />
         )}
-        <DecisionMethodRow
-          decisionMethod={isStaked ? DecisionMethod.Staking : undefined}
-          isMotion={action.isMotion || false}
-        />
+        <DecisionMethodRow action={action} />
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
