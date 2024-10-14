@@ -5,7 +5,6 @@ import {
   type NotificationColonyFragment,
   useGetColonyActionQuery,
   useGetExpenditureQuery,
-  useGetUserByAddressQuery,
 } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
@@ -32,12 +31,8 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const { creator, expenditureID } = notification.customAttributes || {};
+  const { expenditureID } = notification.customAttributes || {};
 
-  const { data: userData, loading: loadingUser } = useGetUserByAddressQuery({
-    variables: { address: creator || '' },
-    skip: !creator,
-  });
   const { data: expenditureData, loading: loadingExpenditure } =
     useGetExpenditureQuery({
       variables: {
@@ -45,9 +40,6 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       },
       skip: !expenditureID,
     });
-
-  const creatorName =
-    userData?.getUserByAddress?.items[0]?.profile?.displayName || '';
 
   const expenditure = expenditureData?.getExpenditure;
 
@@ -87,11 +79,8 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       <ExpenditureNotificationMessage
         action={action}
         colony={colony}
-        creator={creatorName}
         expenditure={expenditure}
-        loading={
-          loadingColony || loadingAction || loadingUser || loadingExpenditure
-        }
+        loading={loadingColony || loadingAction || loadingExpenditure}
         notification={notification}
       />
     </NotificationWrapper>
