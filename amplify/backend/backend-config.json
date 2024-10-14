@@ -192,6 +192,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getUserNotificationsHMAC": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getUserReputation": {
       "build": true,
       "dependsOn": [

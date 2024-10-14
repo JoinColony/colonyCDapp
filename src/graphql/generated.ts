@@ -6680,6 +6680,8 @@ export type Query = {
   getUserByAddress?: Maybe<ModelUserConnection>;
   getUserByBridgeCustomerId?: Maybe<ModelUserConnection>;
   getUserByLiquidationAddress?: Maybe<ModelLiquidationAddressConnection>;
+  /** Generate key for the user in Magicbell, used for secure fetching of notifications */
+  getUserNotificationsHMAC?: Maybe<Scalars['String']>;
   /** Retrieve a user's reputation within a specific domain in a Colony */
   getUserReputation?: Maybe<Scalars['String']>;
   getUserReputationInColony?: Maybe<ModelContributorReputationConnection>;
@@ -10941,6 +10943,11 @@ export type GetUsersQueryVariables = Exact<{
 
 
 export type GetUsersQuery = { __typename?: 'Query', listUsers?: { __typename?: 'ModelUserConnection', items: Array<{ __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null> } | null };
+
+export type GetUserNotificationsHmacQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserNotificationsHmacQuery = { __typename?: 'Query', getUserNotificationsHMAC?: string | null };
 
 export type GetCurrentExtensionsVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -15447,6 +15454,38 @@ export function useGetUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetUsersQueryHookResult = ReturnType<typeof useGetUsersQuery>;
 export type GetUsersLazyQueryHookResult = ReturnType<typeof useGetUsersLazyQuery>;
 export type GetUsersQueryResult = Apollo.QueryResult<GetUsersQuery, GetUsersQueryVariables>;
+export const GetUserNotificationsHmacDocument = gql`
+    query GetUserNotificationsHMAC {
+  getUserNotificationsHMAC
+}
+    `;
+
+/**
+ * __useGetUserNotificationsHmacQuery__
+ *
+ * To run a query within a React component, call `useGetUserNotificationsHmacQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserNotificationsHmacQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserNotificationsHmacQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserNotificationsHmacQuery(baseOptions?: Apollo.QueryHookOptions<GetUserNotificationsHmacQuery, GetUserNotificationsHmacQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserNotificationsHmacQuery, GetUserNotificationsHmacQueryVariables>(GetUserNotificationsHmacDocument, options);
+      }
+export function useGetUserNotificationsHmacLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserNotificationsHmacQuery, GetUserNotificationsHmacQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserNotificationsHmacQuery, GetUserNotificationsHmacQueryVariables>(GetUserNotificationsHmacDocument, options);
+        }
+export type GetUserNotificationsHmacQueryHookResult = ReturnType<typeof useGetUserNotificationsHmacQuery>;
+export type GetUserNotificationsHmacLazyQueryHookResult = ReturnType<typeof useGetUserNotificationsHmacLazyQuery>;
+export type GetUserNotificationsHmacQueryResult = Apollo.QueryResult<GetUserNotificationsHmacQuery, GetUserNotificationsHmacQueryVariables>;
 export const GetCurrentExtensionsVersionsDocument = gql`
     query GetCurrentExtensionsVersions {
   listCurrentVersions {
