@@ -18,7 +18,6 @@ import { getValidationSchema } from './validation.ts';
 const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const {
     colony: { colonyAddress },
-    refetchColony,
   } = useColonyContext();
   const { extensionData, setActiveTab, setWaitingForActionConfirmation } =
     useExtensionDetailsPageContext();
@@ -42,7 +41,6 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
 
   const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
     extensionData,
-    refetchColony,
     refetchExtensionData,
     setWaitingForActionConfirmation,
     setActiveTab,

@@ -24,7 +24,8 @@ const useHasActionPermissions = () => {
   if (
     !actionType ||
     !decisionMethod ||
-    decisionMethod === DecisionMethod.Reputation
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.Staking
   ) {
     return undefined;
   }

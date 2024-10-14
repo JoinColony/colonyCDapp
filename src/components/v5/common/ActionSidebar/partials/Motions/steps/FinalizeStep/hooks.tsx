@@ -12,7 +12,6 @@ import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
@@ -66,13 +65,17 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const isFinalizable =
     hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
-  const transform = mapPayload(
-    (): MotionFinalizePayload => ({
-      colonyAddress,
-      userAddress: user?.walletAddress || '',
-      motionId,
-      canMotionFail: isMotionOlderThanWeek,
-    }),
+  const transform = useMemo(
+    () =>
+      mapPayload(
+        (): MotionFinalizePayload => ({
+          colonyAddress,
+          userAddress: user?.walletAddress || '',
+          motionId,
+          canMotionFail: isMotionOlderThanWeek,
+        }),
+      ),
+    [colonyAddress, isMotionOlderThanWeek, motionId, user?.walletAddress],
   );
 
   return {
@@ -102,12 +105,10 @@ export const useClaimConfig = (
   const {
     colony: { colonyAddress, nativeToken, motionsWithUnclaimedStakes },
   } = useColonyContext();
-  const extension = useExtensionData(Extension.VotingReputation);
+  const { extensionData } = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const [isClaimed, setIsClaimed] = useState(false);
-
-  const extensionData = extension?.extensionData as InstalledExtensionData;
 
   const userAddress = user?.walletAddress;
   const nativeTokenDecimals = nativeToken.decimals;
@@ -202,15 +203,20 @@ export const useClaimConfig = (
     pollLockedTokenBalance();
   };
 
-  const claimPayload = mapPayload(
-    (): ClaimMotionRewardsPayload => ({
-      userAddress: userAddress || '',
-      colonyAddress: colonyAddress || '',
-      transactionHash: transactionHash || '',
-      extensionAddress: isInstalledExtensionData(extensionData)
-        ? extensionData.address
-        : ADDRESS_ZERO,
-    }),
+  const claimPayload = useMemo(
+    () =>
+      mapPayload(
+        (): ClaimMotionRewardsPayload => ({
+          userAddress: userAddress || '',
+          colonyAddress: colonyAddress || '',
+          transactionHash: transactionHash || '',
+          extensionAddress:
+            extensionData && isInstalledExtensionData(extensionData)
+              ? extensionData.address
+              : ADDRESS_ZERO,
+        }),
+      ),
+    [userAddress, colonyAddress, transactionHash, extensionData],
   );
 
   const getDescriptionItems = (): DescriptionListItem[] => {

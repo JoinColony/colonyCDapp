@@ -1,22 +1,33 @@
 import { Id } from '@colony/colony-js';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
-import { ColonyActionType } from '~gql';
+import { ColonyActionType, ExpenditureType } from '~gql';
+import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import { convertPeriodToHours } from '~utils/extensions.ts';
 import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  FROM_FIELD_NAME,
+  RECIPIENT_FIELD_NAME,
+  TEAM_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+} from '../consts.ts';
 import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
+import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';
@@ -34,6 +45,7 @@ const useGetActionData = (transactionId: string | undefined) => {
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action?.expenditureId,
   );
+  const allTokens = useGetAllTokens();
 
   const defaultValues = useMemo(() => {
     if (!action) {
@@ -62,13 +74,23 @@ const useGetActionData = (transactionId: string | undefined) => {
     const extendedType = getExtendedActionType(action, colony.metadata);
     const { metadata } = colony;
 
+    let decisionMethod: DecisionMethod | undefined;
+
+    if (action.isMotion) {
+      decisionMethod = DecisionMethod.Reputation;
+    } else if (action.isMultiSig) {
+      decisionMethod = DecisionMethod.MultiSig;
+    } else if (expenditure?.isStaked) {
+      decisionMethod = DecisionMethod.Staking;
+    } else {
+      decisionMethod = DecisionMethod.Permissions;
+    }
+
     const repeatableFields = {
       createdIn: isMotion ? motionData?.motionDomain.nativeId : Id.RootDomain,
       description: annotation?.message,
       title: action.metadata?.customTitle,
-      decisionMethod: action.isMotion
-        ? DecisionMethod.Reputation
-        : DecisionMethod.Permissions,
+      decisionMethod,
     };
 
     switch (extendedType) {
@@ -76,23 +98,22 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MintTokensMotion:
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
-          amount: {
-            amount,
-            tokenAddress: token?.tokenAddress,
-          },
+          amount: convertToDecimal(
+            amount || '',
+            getTokenDecimalsWithFallback(token?.decimals),
+          )?.toString(),
+          tokenAddress: token?.tokenAddress,
           ...repeatableFields,
         };
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion: {
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-          amount: {
-            amount: moveDecimal(
-              amount,
-              -getTokenDecimalsWithFallback(token?.decimals),
-            ),
-            tokenAddress: token?.tokenAddress,
-          },
+          amount: moveDecimal(
+            amount,
+            -getTokenDecimalsWithFallback(token?.decimals),
+          ),
+          tokenAddress: token?.tokenAddress,
           from: fromDomain?.nativeId,
           recipient: recipientAddress,
           ...repeatableFields,
@@ -105,23 +126,19 @@ const useGetActionData = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
           from: fromDomain?.nativeId,
-          amount: {
-            amount: moveDecimal(
-              firstPayment.amount,
-              -getTokenDecimalsWithFallback(token?.decimals),
-            ),
-            tokenAddress: firstPayment.tokenAddress,
-          },
+          amount: moveDecimal(
+            firstPayment.amount,
+            -getTokenDecimalsWithFallback(token?.decimals),
+          ),
+          tokenAddress: firstPayment.tokenAddress,
           recipient: firstPayment.recipientAddress,
           payments: additionalPayments.map((additionalPayment) => {
             return {
-              amount: {
-                amount: moveDecimal(
-                  additionalPayment.amount,
-                  -getTokenDecimalsWithFallback(token?.decimals),
-                ),
-                tokenAddress: additionalPayment.tokenAddress,
-              },
+              amount: moveDecimal(
+                additionalPayment.amount,
+                -getTokenDecimalsWithFallback(token?.decimals),
+              ),
+              tokenAddress: additionalPayment.tokenAddress,
               recipient: additionalPayment.recipientAddress,
             };
           }),
@@ -134,10 +151,11 @@ const useGetActionData = (transactionId: string | undefined) => {
           [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
           from: fromDomain?.nativeId,
           to: toDomain?.nativeId,
-          amount: {
-            amount,
-            tokenAddress: token?.tokenAddress,
-          },
+          amount: convertToDecimal(
+            amount || '',
+            getTokenDecimalsWithFallback(token?.decimals),
+          )?.toString(),
+          tokenAddress: token?.tokenAddress,
           recipient: recipientAddress,
           ...repeatableFields,
         };
@@ -217,31 +235,94 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       case ColonyActionType.CreateExpenditure: {
+        if (expenditure && expenditure.type === ExpenditureType.Staged) {
+          return {
+            [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
+            [FROM_FIELD_NAME]: fromDomain?.nativeId,
+            [RECIPIENT_FIELD_NAME]: expenditure?.slots?.[0]?.recipientAddress,
+            stages: (expenditure.metadata?.stages || []).map((stage) => {
+              const currentSlot = slots?.find(
+                (slot) => slot.id === stage.slotId,
+              );
+              const stagedToken = allTokens.find(
+                ({ token: currentToken }) =>
+                  currentToken.tokenAddress ===
+                  currentSlot?.payouts?.[0].tokenAddress,
+              );
+
+              return {
+                milestone: stage.name,
+                amount: moveDecimal(
+                  currentSlot?.payouts?.[0].amount,
+                  -getTokenDecimalsWithFallback(stagedToken?.token.decimals),
+                ),
+                tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
+              };
+            }),
+            ...repeatableFields,
+          };
+        }
+
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
-          from: expenditureMetadata?.fundFromDomainNativeId,
+          [FROM_FIELD_NAME]: expenditureMetadata?.fundFromDomainNativeId,
           payments: slots?.map((slot) => {
-            if (!slot) {
-              return undefined;
-            }
-            const currentToken = getSelectedToken(
-              colony,
-              slot.payouts?.[0].tokenAddress || '',
-            );
-
-            const currentAmount = getFormattedTokenAmount(
-              slot?.payouts?.[0].amount || '0',
-              currentToken?.decimals,
+            const paymentToken = allTokens.find(
+              ({ token: currentToken }) =>
+                currentToken.tokenAddress === slot.payouts?.[0].tokenAddress,
             );
 
             return {
               recipient: slot.recipientAddress,
-              amount: currentAmount.toString(),
+              amount: moveDecimal(
+                slot.payouts?.[0].amount,
+                -getTokenDecimalsWithFallback(paymentToken?.token.decimals),
+              ),
               tokenAddress: slot.payouts?.[0].tokenAddress,
-              delay:
-                slot.claimDelay && Math.floor(Number(slot.claimDelay) / 3600),
+              delay: convertPeriodToHours(slot.claimDelay || '0'),
             };
           }),
+          ...repeatableFields,
+        };
+      }
+      case ExtendedColonyActionType.SplitPayment: {
+        const splitToken =
+          !!slots?.length &&
+          !!slots[0].payouts?.length &&
+          slots[0].payouts[0].tokenAddress
+            ? getSelectedToken(colony, slots[0].payouts[0].tokenAddress)
+            : undefined;
+        const splitAmount = slots
+          ?.flatMap((slot) => slot.payouts || [])
+          .reduce((acc, curr) => {
+            return BigNumber.from(acc)
+              .add(BigNumber.from(curr?.amount || '0'))
+              .toString();
+          }, '0');
+        const formattedAmount = moveDecimal(
+          splitAmount,
+          -getTokenDecimalsWithFallback(splitToken?.decimals),
+        );
+
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
+          distributionMethod: expenditure?.metadata?.distributionType,
+          [TEAM_FIELD_NAME]: expenditure?.metadata?.fundFromDomainNativeId,
+          [AMOUNT_FIELD_NAME]: formattedAmount,
+          payments: slots?.map((slot) => {
+            const currentAmount = moveDecimal(
+              slot.payouts?.[0].amount,
+              -getTokenDecimalsWithFallback(splitToken?.decimals),
+            );
+
+            return {
+              recipient: slot.recipientAddress,
+              amount: currentAmount,
+              tokenAddress: slot.payouts?.[0].tokenAddress,
+              percent: calculatePercentageValue(currentAmount, formattedAmount),
+            };
+          }),
+          [TOKEN_FIELD_NAME]: splitToken?.tokenAddress,
           ...repeatableFields,
         };
       }
@@ -272,7 +353,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       default:
         return undefined;
     }
-  }, [action, expenditure]);
+  }, [action, expenditure, allTokens]);
 
   return {
     action,

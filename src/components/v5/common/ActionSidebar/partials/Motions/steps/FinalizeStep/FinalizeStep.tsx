@@ -101,30 +101,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     }
   }, [isMotionAgreement, isMotionFinalized, actionData, refetchColony]);
 
-  let action = {
-    actionType: ActionTypes.MOTION_FINALIZE,
-    transform: finalizePayload,
-    onSuccess: handleSuccess,
-  };
-  if (isMotionClaimable) {
-    action = {
-      actionType: ActionTypes.MOTION_CLAIM,
-      transform: claimPayload,
-      onSuccess: handleClaimSuccess,
-    };
-  }
-
-  // @TODO: Figure this out
-  // let title = 'motion.finalizeStep.title';
-
-  // if (isMotionClaimable) {
-  //   title = 'motion.finalizeStep.claimable.statusText';
-  // } else if (isMotionFailedNotFinalizable) {
-  //   title = 'motion.finalizeStep.failedNotAchieving.statusText';
-  // } else if (isMotionFailed) {
-  //   title = 'motion.finalizeStep.failed.statusText';
-  // }
-
   /*
    * @NOTE This is just needed until we properly save motion data in the db
    * For now, we just fetch it live from chain, so when we uninstall the extension
@@ -179,7 +155,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
         {
           key: FinalizeStepSections.Finalize,
           content: (
-            <ActionForm {...action} onSuccess={handleSuccess}>
+            <ActionForm
+              actionType={
+                isMotionClaimable
+                  ? ActionTypes.MOTION_CLAIM
+                  : ActionTypes.MOTION_FINALIZE
+              }
+              transform={isMotionClaimable ? claimPayload : finalizePayload}
+              onSuccess={isMotionClaimable ? handleClaimSuccess : handleSuccess}
+            >
               {({ formState: { isSubmitting } }) => (
                 <>
                   {items.length > 0 && (

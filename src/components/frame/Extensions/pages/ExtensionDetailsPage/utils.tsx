@@ -1,17 +1,11 @@
-import { Extension, Id } from '@colony/colony-js';
+import { Extension } from '@colony/colony-js';
 import React from 'react';
 
-import { type RefetchColonyFn } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
-import {
-  type InstalledExtensionData,
-  type AnyExtensionData,
-} from '~types/extensions.ts';
-import { notNull } from '~utils/arrays/index.ts';
-import { addressHasRoles } from '~utils/checks/index.ts';
+import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { camelCase } from '~utils/lodash.ts';
 
@@ -45,16 +39,30 @@ export const waitForDbAfterExtensionAction = (
         );
       }
 
-      const extensionData = await refetchExtensionData();
+      const shouldRefetchPermissions =
+        args.method === ExtensionMethods.INSTALL ||
+        args.method === ExtensionMethods.ENABLE;
+      const extensionData = await refetchExtensionData(
+        shouldRefetchPermissions,
+      );
 
       let condition = false;
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
+          if (extensionData?.autoEnableAfterInstall) {
+            condition =
+              !!extensionData.isEnabled &&
+              extensionData.missingColonyPermissions.length === 0;
+            break;
+          }
+
           if (extensionData?.extensionId === Extension.MultisigPermissions) {
             // Wait until MultiSig params are present
-            condition = !!extensionData?.params?.multiSig;
+            condition = !!extensionData.params?.multiSig;
+            break;
           }
+
           // If it appears in the query, it means it's been installed
           condition = !!extensionData;
           break;
@@ -96,45 +104,6 @@ export const waitForDbAfterExtensionAction = (
     }, interval);
   });
 };
-
-export const waitForExtensionPermissions = ({
-  refetchColony,
-  extensionData,
-  interval = 1000,
-}: {
-  refetchColony: RefetchColonyFn;
-  extensionData: AnyExtensionData;
-  interval?: number;
-}) =>
-  new Promise<void>((res) => {
-    const initTime = new Date().valueOf();
-    const intervalId = setInterval(async () => {
-      const fifteenSeconds = 1000 * 15;
-      if (new Date().valueOf() - initTime > fifteenSeconds) {
-        // after 15 seconds, assume something went wrong
-        clearInterval(intervalId);
-        // Not rejecting here because it's not a critical error. If the extension was enabled but permissions not, a separate warning shows
-        res();
-      }
-
-      const { data: response } = (await refetchColony()) ?? {};
-      const updatedColony =
-        response?.getColonyByName?.items?.filter(notNull)[0];
-      if (updatedColony) {
-        const extensionHasPermissions = addressHasRoles({
-          address: (extensionData as InstalledExtensionData).address ?? '',
-          colony: updatedColony,
-          requiredRoles: extensionData.neededColonyPermissions,
-          requiredRolesDomain: Id.RootDomain,
-        });
-
-        if (extensionHasPermissions) {
-          clearInterval(intervalId);
-          res();
-        }
-      }
-    }, interval);
-  });
 
 export const getTextChunks = () => {
   const HeadingChunks = (chunks: React.ReactNode[]) => (

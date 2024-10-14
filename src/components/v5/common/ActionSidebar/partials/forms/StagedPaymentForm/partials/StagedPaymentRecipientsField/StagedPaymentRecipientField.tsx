@@ -70,13 +70,13 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
       </h5>
       {!!data.length && !hasNoDecisionMethods && (
         <Table<StagedPaymentRecipientsTableModel>
-          className={clsx(
+          tableClassName={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
             {
               '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
               '[&_table]:table-auto lg:[&_table]:table-fixed [&_td:first-child]:pl-4 [&_td]:pr-5 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-5':
                 !isTablet,
-              '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+              '!border-negative-400 md:[&_tfoot>tr>td]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
                 !!fieldState.error,
             },
           )}

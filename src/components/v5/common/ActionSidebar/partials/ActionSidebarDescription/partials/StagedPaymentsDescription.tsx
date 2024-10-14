@@ -13,12 +13,9 @@ const displayName =
 
 export const StagedPaymentsDescription = () => {
   const formValues = useFormContext<StagedPaymentFormValues>().getValues();
-  const { stages, recipient } = formValues;
+  const { recipient } = formValues;
 
-  const isPaymentEmpty =
-    (stages?.length === 1 && !stages?.[0].milestone) || !stages?.length;
-
-  if (isPaymentEmpty || !recipient) {
+  if (!recipient) {
     return (
       <FormattedMessage
         id="staged.description.placeholder"

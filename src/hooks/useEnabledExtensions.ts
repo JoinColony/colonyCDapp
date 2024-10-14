@@ -12,18 +12,17 @@ export interface EnabledExtensionData {
   votingReputationVersion: number | undefined;
   votingReputationAddress: Address | undefined;
   votingReputationExtensionData: InstalledExtensionData | undefined;
-  shortPollExtensions: () => void;
   isStakedExpenditureEnabled: boolean;
   isStagedExpenditureEnabled: boolean;
   stagedExpenditureAddress: Address | undefined;
   isStreamingPaymentsEnabled: boolean;
   isMultiSigEnabled: boolean;
   multiSigExtensionData: InstalledExtensionData | undefined;
+  isStagedExtensionInstalled: boolean;
 }
 
 const useEnabledExtensions = (): EnabledExtensionData => {
-  const { installedExtensionsData, loading, shortPollExtensions } =
-    useExtensionsData();
+  const { installedExtensionsData, loading } = useExtensionsData();
 
   const oneTxPaymentExtension = installedExtensionsData.find(
     (extension) => extension.extensionId === Extension.OneTxPayment,
@@ -57,7 +56,7 @@ const useEnabledExtensions = (): EnabledExtensionData => {
     isStreamingPaymentsEnabled: !!streamingPaymentsExtension?.isEnabled,
     isMultiSigEnabled: !!multiSigExtension?.isEnabled,
     multiSigExtensionData: multiSigExtension,
-    shortPollExtensions,
+    isStagedExtensionInstalled: !!stagedExpenditureExtension,
   };
 };
 

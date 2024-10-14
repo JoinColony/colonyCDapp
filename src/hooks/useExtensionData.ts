@@ -11,11 +11,9 @@ import {
   type InstalledExtensionData,
   type AnyExtensionData,
 } from '~types/extensions.ts';
-import { type ColonyExtension } from '~types/graphql.ts';
-import {
-  mapToInstallableExtensionData,
-  mapToInstalledExtensionData,
-} from '~utils/extensions.ts';
+import { type ColonyRole } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { getMappedExtensionData } from '~utils/extensions.ts';
 
 export enum ExtensionMethods {
   INSTALL = 'installExtension',
@@ -26,8 +24,9 @@ export enum ExtensionMethods {
   ENABLE = 'enableExtension',
 }
 
-export type RefetchExtensionDataFn =
-  () => Promise<InstalledExtensionData | null>;
+export type RefetchExtensionDataFn = (
+  shouldRefetchPermissions?: boolean,
+) => Promise<InstalledExtensionData | null>;
 
 interface UseExtensionDataReturn {
   extensionData: AnyExtensionData | null;
@@ -42,7 +41,12 @@ interface UseExtensionDataReturn {
  * and mapping it into Installed or InstallableExtensionData object
  */
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
-  const { colony } = useColonyContext();
+  const { colony, refetchColony } = useColonyContext();
+
+  const colonyRoles = useMemo(
+    () => extractColonyRoles(colony.roles),
+    [colony.roles],
+  );
 
   const extensionHash = getExtensionHash(extensionId as Extension);
 
@@ -68,49 +72,50 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
 
-  const extensionConfig = supportedExtensionsConfig.find(
-    (e) => e.extensionId === extensionId,
-  );
-
-  const getMappedExtensionData = useCallback(
-    (colonyExtension?: ColonyExtension | null): AnyExtensionData | null => {
-      if (!version || !extensionConfig) {
-        return null;
-      }
-
-      if (colonyExtension) {
-        return mapToInstalledExtensionData({
-          colony,
-          extensionConfig,
-          colonyExtension,
-          version,
-        });
-      }
-
-      return mapToInstallableExtensionData(extensionConfig, version);
-    },
-    [colony, extensionConfig, version],
+  const extensionConfig = useMemo(
+    () => supportedExtensionsConfig.find((e) => e.extensionId === extensionId),
+    [extensionId],
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(
-    () => getMappedExtensionData(rawExtensionData),
-    [getMappedExtensionData, rawExtensionData],
+    () =>
+      getMappedExtensionData({
+        colonyRoles,
+        colonyExtension: rawExtensionData,
+        version,
+        extensionConfig,
+      }),
+    [colonyRoles, rawExtensionData, version, extensionConfig],
   );
 
-  const handleRefetch = useCallback(async () => {
-    const refetchResponse = await refetch();
-    const updatedColonyExtension =
-      refetchResponse.data.getExtensionByColonyAndHash?.items[0];
+  const handleRefetch = useCallback(
+    async (shouldRefetchPermissions?: boolean) => {
+      const refetchResponse = await refetch();
+      const updatedColonyExtension =
+        refetchResponse.data.getExtensionByColonyAndHash?.items[0];
 
-    if (updatedColonyExtension) {
-      // Extension is guaranteed to be installed if returned by the query
-      return getMappedExtensionData(
-        updatedColonyExtension,
-      ) as InstalledExtensionData;
-    }
+      if (updatedColonyExtension) {
+        let updatedColonyRoles: ColonyRole[] | null = null;
+        if (shouldRefetchPermissions) {
+          const colonyRefetchResponse = await refetchColony();
+          const updatedColony =
+            colonyRefetchResponse?.data.getColonyByName?.items?.[0];
+          updatedColonyRoles = extractColonyRoles(updatedColony?.roles);
+        }
 
-    return null;
-  }, [getMappedExtensionData, refetch]);
+        // Extension is guaranteed to be installed if returned by the query
+        return getMappedExtensionData({
+          colonyRoles: updatedColonyRoles ?? colonyRoles,
+          colonyExtension: updatedColonyExtension,
+          version,
+          extensionConfig,
+        }) as InstalledExtensionData;
+      }
+
+      return null;
+    },
+    [colonyRoles, extensionConfig, refetch, refetchColony, version],
+  );
 
   return {
     extensionData,

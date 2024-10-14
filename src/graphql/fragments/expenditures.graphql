@@ -80,6 +80,19 @@ fragment Expenditure on Expenditure {
       ...ExpenditureAction
     }
   }
+  releaseActions: actions(
+    filter: {
+      or: [
+        { type: { eq: RELEASE_STAGED_PAYMENTS } }
+        { type: { eq: RELEASE_STAGED_PAYMENTS_MOTION } }
+      ]
+      isMotionFinalization: { ne: true }
+    }
+  ) {
+    items {
+      ...ExpenditureAction
+    }
+  }
   editingActions: actions(
     filter: {
       type: { eq: EDIT_EXPENDITURE }
@@ -121,8 +134,10 @@ fragment ExpenditureBalance on ExpenditureBalance {
 
 fragment ExpenditureAction on ColonyAction {
   transactionHash: id
+  type
   initiatorAddress
   createdAt
+  expenditureSlotIds
   initiatorUser {
     ...User
   }

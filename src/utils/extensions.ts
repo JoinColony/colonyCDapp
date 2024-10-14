@@ -9,8 +9,7 @@ import {
   type InstalledExtensionData,
   type InstallableExtensionData,
 } from '~types/extensions.ts';
-import { type Colony, type ColonyExtension } from '~types/graphql.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { type ColonyRole, type ColonyExtension } from '~types/graphql.ts';
 
 import { userHasRole } from './checks/index.ts';
 
@@ -35,12 +34,12 @@ export const mapToInstallableExtensionData = (
 };
 
 export const mapToInstalledExtensionData = ({
-  colony,
+  colonyRoles,
   extensionConfig,
   colonyExtension,
   version,
 }: {
-  colony: Colony;
+  colonyRoles: ColonyRole[];
   extensionConfig: ExtensionConfig;
   colonyExtension: ColonyExtension;
   version: number;
@@ -51,7 +50,7 @@ export const mapToInstalledExtensionData = ({
   const isEnabled = isInitialized && !colonyExtension.isDeprecated;
 
   const extensionRoles = getUserRolesForDomain({
-    colonyRoles: extractColonyRoles(colony.roles),
+    colonyRoles,
     userAddress: colonyExtension.address,
     domainId: Id.RootDomain,
   });
@@ -69,6 +68,33 @@ export const mapToInstalledExtensionData = ({
     isEnabled,
     missingColonyPermissions: missingPermissions,
   };
+};
+
+export const getMappedExtensionData = ({
+  colonyRoles,
+  colonyExtension,
+  version,
+  extensionConfig,
+}: {
+  colonyRoles: ColonyRole[];
+  colonyExtension?: ColonyExtension | null;
+  version?: number;
+  extensionConfig?: ExtensionConfig;
+}): AnyExtensionData | null => {
+  if (!version || !extensionConfig) {
+    return null;
+  }
+
+  if (colonyExtension) {
+    return mapToInstalledExtensionData({
+      colonyRoles,
+      extensionConfig,
+      colonyExtension,
+      version,
+    });
+  }
+
+  return mapToInstallableExtensionData(extensionConfig, version);
 };
 
 export const canExtensionBeInitialized = (extension: Extension) => {

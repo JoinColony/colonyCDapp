@@ -1,5 +1,5 @@
 import { getExtensionHash } from '@colony/colony-js';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { supportedExtensionsConfig } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -12,6 +12,7 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
@@ -21,7 +22,6 @@ interface UseExtensionsDataReturn {
   installedExtensionsData: InstalledExtensionData[];
   availableExtensionsData: InstallableExtensionData[];
   loading: boolean;
-  shortPollExtensions: () => void;
 }
 
 /**
@@ -33,11 +33,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
     colony,
     colony: { colonyAddress },
   } = useColonyContext();
-  const {
-    data,
-    loading: extensionsLoading,
-    refetch: refetchExtensions,
-  } = useGetColonyExtensionsQuery({
+  const { data, loading: extensionsLoading } = useGetColonyExtensionsQuery({
     variables: {
       colonyAddress,
     },
@@ -73,7 +69,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
         }
 
         return mapToInstalledExtensionData({
-          colony,
+          colonyRoles: extractColonyRoles(colony.roles),
           extensionConfig,
           colonyExtension: extension,
           version,
@@ -112,18 +108,10 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
     );
   }, [colonyExtensions, extensionVersions]);
 
-  // Custom polling prevents start / stop poll clashing with one another in the event
-  // Extensions are deprecated / reenabled in quick succession
-  const shortPollExtensions = useCallback(() => {
-    const interval = setInterval(refetchExtensions, 2_000);
-    setTimeout(() => clearInterval(interval), 10_000);
-  }, [refetchExtensions]);
-
   return {
     installedExtensionsData,
     availableExtensionsData,
     loading: extensionsLoading || versionsLoading,
-    shortPollExtensions,
   };
 };
 
