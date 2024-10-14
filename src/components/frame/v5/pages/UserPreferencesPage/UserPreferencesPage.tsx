@@ -9,7 +9,7 @@ import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 
 import EmailSection from './partials/EmailSection/EmailSection.tsx';
-import NotificationSettingsSection from './partials/NotificationSettingsSection/NotificationSettingsSection.tsx';
+import NotificationSettingsSection from './partials/NotificationSettingsSection.tsx';
 import WalletSection from './partials/WalletSection.tsx';
 
 const displayName = 'v5.pages.UserPreferencesPage';
