@@ -11,7 +11,8 @@ import {
   type InstalledExtensionData,
   type AnyExtensionData,
 } from '~types/extensions.ts';
-import { type Colony } from '~types/graphql.ts';
+import { type ColonyRole } from '~types/graphql.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { getMappedExtensionData } from '~utils/extensions.ts';
 
 export enum ExtensionMethods {
@@ -42,6 +43,11 @@ interface UseExtensionDataReturn {
 const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
   const { colony, refetchColony } = useColonyContext();
 
+  const colonyRoles = useMemo(
+    () => extractColonyRoles(colony.roles),
+    [colony.roles],
+  );
+
   const extensionHash = getExtensionHash(extensionId as Extension);
 
   const {
@@ -66,19 +72,20 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
     });
   const { version } = versionData?.getCurrentVersionByKey?.items?.[0] || {};
 
-  const extensionConfig = supportedExtensionsConfig.find(
-    (e) => e.extensionId === extensionId,
+  const extensionConfig = useMemo(
+    () => supportedExtensionsConfig.find((e) => e.extensionId === extensionId),
+    [extensionId],
   );
 
   const extensionData = useMemo<AnyExtensionData | null>(
     () =>
       getMappedExtensionData({
-        colony,
+        colonyRoles,
         colonyExtension: rawExtensionData,
         version,
         extensionConfig,
       }),
-    [colony, rawExtensionData, version, extensionConfig],
+    [colonyRoles, rawExtensionData, version, extensionConfig],
   );
 
   const handleRefetch = useCallback(
@@ -88,16 +95,17 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
         refetchResponse.data.getExtensionByColonyAndHash?.items[0];
 
       if (updatedColonyExtension) {
-        let updatedColony: Colony | null = null;
+        let updatedColonyRoles: ColonyRole[] | null = null;
         if (shouldRefetchPermissions) {
           const colonyRefetchResponse = await refetchColony();
-          updatedColony =
-            colonyRefetchResponse?.data.getColonyByName?.items?.[0] ?? null;
+          const updatedColony =
+            colonyRefetchResponse?.data.getColonyByName?.items?.[0];
+          updatedColonyRoles = extractColonyRoles(updatedColony?.roles);
         }
 
         // Extension is guaranteed to be installed if returned by the query
         return getMappedExtensionData({
-          colony: updatedColony ?? colony,
+          colonyRoles: updatedColonyRoles ?? colonyRoles,
           colonyExtension: updatedColonyExtension,
           version,
           extensionConfig,
@@ -106,7 +114,7 @@ const useExtensionData = (extensionId: string): UseExtensionDataReturn => {
 
       return null;
     },
-    [colony, extensionConfig, refetch, refetchColony, version],
+    [colonyRoles, extensionConfig, refetch, refetchColony, version],
   );
 
   return {

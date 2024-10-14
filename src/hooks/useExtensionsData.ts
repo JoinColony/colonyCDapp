@@ -12,6 +12,7 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import {
   mapToInstallableExtensionData,
   mapToInstalledExtensionData,
@@ -68,7 +69,7 @@ const useExtensionsData = (): UseExtensionsDataReturn => {
         }
 
         return mapToInstalledExtensionData({
-          colony,
+          colonyRoles: extractColonyRoles(colony.roles),
           extensionConfig,
           colonyExtension: extension,
           version,
