@@ -41,6 +41,7 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       checkboxesList,
       additionalButtons,
       className,
+      placeholder,
     },
     ref,
   ) => {
@@ -112,9 +113,12 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               state={state}
               message={message}
               value={searchValue}
-              placeholder={formatText({
-                id: 'placeholder.search',
-              })}
+              placeholder={
+                placeholder ??
+                formatText({
+                  id: 'placeholder.search',
+                })
+              }
             />
           )}
         </div>
