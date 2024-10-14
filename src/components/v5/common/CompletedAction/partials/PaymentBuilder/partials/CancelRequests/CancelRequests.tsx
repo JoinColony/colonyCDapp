@@ -18,7 +18,7 @@ const CancelRequests: FC<CancelRequestsProps> = ({ actions }) => (
     </h5>
     <ul className="max-h-[6.25rem] overflow-y-auto overflow-x-hidden">
       {actions.map((action) => (
-        <li className="mb-2 w-full last:mb-0" key={action.id}>
+        <li className="mb-2 w-full last:mb-0" key={action.transactionHash}>
           <CancelRequestItem action={action} />
         </li>
       ))}

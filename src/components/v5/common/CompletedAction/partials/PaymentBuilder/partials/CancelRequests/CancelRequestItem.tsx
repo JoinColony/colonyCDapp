@@ -10,11 +10,14 @@ import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyActio
 import { type CancelRequestItemProps } from './types.ts';
 
 const CancelRequestItem: FC<CancelRequestItemProps> = ({ action }) => {
-  const { motionState, loadingAction } = useGetColonyAction(action.id);
+  const { motionState, loadingAction } = useGetColonyAction(
+    action.transactionHash,
+  );
   const { selectedCancellingAction, setSelectedCancellingAction } =
     usePaymentBuilderContext();
 
-  const isSelected = selectedCancellingAction?.id === action.id;
+  const isSelected =
+    selectedCancellingAction?.transactionHash === action.transactionHash;
 
   const isMotion = !!action.motionData;
 
