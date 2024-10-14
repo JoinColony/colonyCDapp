@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { WarningCircle } from '@phosphor-icons/react';
 import { differenceInMonths, differenceInSeconds } from 'date-fns';
 import React, { useState, type FC, useEffect } from 'react';
@@ -62,7 +61,6 @@ const ClaimDelayTooltip: FC<ClaimDelayTooltipProps> = ({
     return () => {
       clearInterval(timer);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   const splitTime = splitTimeLeft(timeLeft);
