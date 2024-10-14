@@ -3,6 +3,7 @@ import React, { type ReactNode, useMemo } from 'react';
 
 import { isDev } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useGetUserNotificationsHmacQuery } from '~gql';
 
 import {
   NotificationsDataContext,
@@ -15,6 +16,7 @@ const NotificationsDataContextProvider = ({
   children: ReactNode;
 }) => {
   const { user } = useAppContext();
+  const { data, loading } = useGetUserNotificationsHmacQuery();
 
   const {
     currentPage,
@@ -52,7 +54,8 @@ const NotificationsDataContextProvider = ({
 
   if (
     !user?.notificationsData?.magicbellUserId ||
-    !import.meta.env.MAGICBELL_API_KEY
+    !import.meta.env.MAGICBELL_API_KEY ||
+    loading
   ) {
     return (
       <NotificationsDataContext.Provider value={value}>
@@ -66,6 +69,7 @@ const NotificationsDataContextProvider = ({
     <MagicBellProvider
       apiKey={import.meta.env.MAGICBELL_API_KEY}
       userExternalId={user.notificationsData.magicbellUserId}
+      userKey={data?.getUserNotificationsHMAC || ''}
       stores={
         isDev
           ? [

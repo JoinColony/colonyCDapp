@@ -1093,6 +1093,12 @@ type Query {
   """
   bridgeGetGatewayFee: BridgeGatewayFeeReturn
     @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Generate key for the user in Magicbell, used for secure fetching of notifications
+  """
+  getUserNotificationsHMAC: String
+    @function(name: "getUserNotificationsHMAC-${env}")
 }
 
 """
@@ -1104,12 +1110,14 @@ type Mutation {
   """
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
+
   """
   Create notification data for a user
   """
   createUserNotificationsData(
     input: CreateUserNotificationsDataInput!
   ): NotificationsData @function(name: "createUserNotificationsData-${env}")
+
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
