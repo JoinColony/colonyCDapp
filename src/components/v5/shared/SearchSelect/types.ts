@@ -28,6 +28,7 @@ export interface SearchSelectOption {
   value: string | number;
   isDisabled?: boolean;
   isComingSoon?: boolean;
+  isNew?: boolean;
   avatar?: string;
   thumbnail?: string;
   showAvatar?: boolean;

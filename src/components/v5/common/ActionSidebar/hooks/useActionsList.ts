@@ -23,6 +23,7 @@ const useActionsList = () => {
           {
             label: { id: 'actions.paymentBuilder' },
             value: Action.PaymentBuilder,
+            isNew: true,
           },
           // @BETA: Disabled for now
           // {
