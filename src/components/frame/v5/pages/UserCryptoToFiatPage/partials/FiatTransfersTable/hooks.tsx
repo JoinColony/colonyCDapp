@@ -133,6 +133,15 @@ export const useFiatTransfersTableColumns = (
           if (loading) {
             return <div className="h-4 w-12 skeleton" />;
           }
+
+          if (!row.original.receipt) {
+            return (
+              <div className="text-gray-400">
+                {formatText({ id: 'table.content.receiptGenerating' })}
+              </div>
+            );
+          }
+
           return (
             <ExternalLink
               href={row.original.receipt.url}

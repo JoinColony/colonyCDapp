@@ -1,11 +1,7 @@
 const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
-/*
- * @TODO This needs to be imported properly into the project (maybe?)
- * So that we can always ensure it follows the latest schema
- * (currently it's just saved statically)
- */
 const { getUser } = require('../graphql');
+const { getLiquidationAddresses } = require('./utils');
 
 const getDrainsHistoryHandler = async (
   event,
@@ -25,26 +21,17 @@ const getDrainsHistoryHandler = async (
 
   const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
-  const res = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
-      method: 'GET',
-    },
+  const liquidationAddresses = await getLiquidationAddresses(
+    apiUrl,
+    apiKey,
+    bridgeCustomerId,
   );
 
-  const liquidationAddressResult = await res.json();
-
-  if (!liquidationAddressResult.count) {
+  if (!liquidationAddresses.length) {
     return [];
   }
 
-  const liquidationAddressIds = liquidationAddressResult.data.map(
-    (item) => item.id,
-  );
+  const liquidationAddressIds = liquidationAddresses.map((item) => item.id);
 
   const drains = [];
 
@@ -68,9 +55,11 @@ const getDrainsHistoryHandler = async (
       currency: drain.currency,
       state: drain.state,
       createdAt: drain.created_at,
-      receipt: {
-        url: drain.receipt.url,
-      },
+      receipt: drain.receipt
+        ? {
+            url: drain.receipt.url,
+          }
+        : null,
     }));
 
     drains.push(...mappedDrains);
