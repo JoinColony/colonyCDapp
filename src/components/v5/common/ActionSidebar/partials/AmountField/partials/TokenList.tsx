@@ -40,7 +40,11 @@ export const TokenList: FC<TokenListProps> = ({
                         md:hover:bg-gray-50 md:hover:font-medium`}
                 onClick={() => onSelect(colonyToken.tokenAddress)}
               >
-                <TokenItem token={colonyToken} tokenBalance={tokenBalance} />
+                <TokenItem
+                  token={colonyToken}
+                  tokenBalance={tokenBalance}
+                  className="gap-2"
+                />
               </button>
             </HoverWidthWrapper>
           </li>
