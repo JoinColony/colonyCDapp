@@ -12,6 +12,7 @@ const FormError: FC<PropsWithChildren<FormErrorProps>> = ({
   allowLayoutShift = true,
 }) => (
   <div
+    data-testid="form-error"
     className={clsx(
       `flex w-[8.75rem]`,
       allowLayoutShift ? 'pt-1' : 'absolute pt-1',

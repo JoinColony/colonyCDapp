@@ -46,6 +46,13 @@ module.exports = {
         jest: true,
       },
     },
+    {
+      files: ['playwright/**/*.ts'],
+      extends: 'plugin:playwright/recommended',
+      rules: {
+        'no-await-in-loop': 'off',
+      },
+    },
   ],
   rules: {
     // Using the typescript-eslint version for these
