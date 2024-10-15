@@ -214,13 +214,13 @@ const UserSelect: FC<UserSelectProps> = ({
           {selectedUserContent}
           {isUserSelectVisible && (
             <SearchSelect
+              placeholder={formatText({
+                id: 'placeholder.searchUser',
+              })}
               items={[options || usersOptions]}
               onSelect={(value) => {
                 field.onChange(utils.isHexString(value) ? value : undefined);
                 toggleUserSelectOff();
-              }}
-              onSearch={(query) => {
-                field.onChange(utils.isHexString(query) ? query : undefined);
               }}
               ref={(ref) => {
                 registerContainerRef(ref);
