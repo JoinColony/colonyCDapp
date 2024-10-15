@@ -148,7 +148,7 @@ const CancelModal: FC<CancelModalProps> = ({
                       />
                     ) : (
                       <Button mode="primarySolid" isFullSize type="submit">
-                        {formatText({ id: 'cancelModal.locked.submit' })}
+                        {formatText({ id: 'cancelModal.submit' })}
                       </Button>
                     )}
                   </div>
