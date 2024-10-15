@@ -29,13 +29,13 @@ const ColonyHome = () => {
   const { defaultValues } = useGetActionData(selectedAction || undefined);
 
   return (
-    <div className="md:gap-4.5 flex flex-col gap-6 sm:min-h-full">
+    <div className="flex flex-col gap-6 sm:min-h-full md:gap-4.5">
       <div className="flex flex-col gap-8 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />
       </div>
       <FundsCards />
-      <div className="gap-4.5 flex h-fit w-full flex-col lg:grid lg:grid-cols-3">
+      <div className="flex h-fit w-full flex-col gap-4.5 lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
         <div className="w-full sm:hidden lg:flex">
           <ReputationChart />
