@@ -27,6 +27,7 @@ export const GROUP_LIST = [
     }),
     Icon: HandCoins,
     action: Action.PaymentBuilder,
+    isNew: true,
   },
   // @TODO: uncomment when streaming payment,split payment and staged payment will be ready
   // {
@@ -36,12 +37,14 @@ export const GROUP_LIST = [
   //   }),
   //   Icon: Waves,
   //   action: Action.StreamingPayment,
+  //   isNew: true,
   // },
   // {
   //   title: formatText({ id: 'actions.splitPayment' }),
   //   description: formatText({ id: 'actions.description.splitPayment' }),
   //   Icon: ArrowsOutLineHorizontal,
   //   action: Action.SplitPayment,
+  //   isNew: true,
   // },
   // {
   //   title: formatText({ id: 'actions.stagedPayment' }),
