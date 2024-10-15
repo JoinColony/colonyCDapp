@@ -1,9 +1,15 @@
+import { useApolloClient } from '@apollo/client';
 import { useContext, useState, useEffect } from 'react';
 
+import { SearchActionsDocument } from '~gql';
 import { type MotionStakes } from '~types/graphql.ts';
 import { type SetStateFn } from '~types/index.ts';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 
-import { compareMotionStakes } from './helpers.ts';
+import {
+  compareMotionStakes,
+  hasMotionJustPassedThreshold,
+} from './helpers.ts';
 import { MotionContext } from './MotionContext.ts';
 
 export const useMotionContext = () => {
@@ -23,15 +29,35 @@ export const useStakingWidgetUpdate = (
   const [isRefetching, setIsRefetching] = useState(false);
   const [prevStakes, setPrevMotionStakes] = useState(motionStakes);
 
+  const client = useApolloClient();
+
   useEffect(() => {
     const haveChanged = compareMotionStakes(prevStakes, motionStakes);
 
-    if (haveChanged) {
-      setIsRefetching(false);
-      setPrevMotionStakes(motionStakes);
-      stopPollingAction();
+    if (!haveChanged) {
+      return;
     }
-  }, [motionStakes, prevStakes, setIsRefetching, stopPollingAction]);
+
+    const motionJustPassedThreshold = hasMotionJustPassedThreshold(
+      prevStakes,
+      motionStakes,
+    );
+
+    setIsRefetching(false);
+    setPrevMotionStakes(motionStakes);
+    stopPollingAction();
+
+    if (!motionJustPassedThreshold) {
+      return;
+    }
+
+    // Only need to refetch SearchActions if the motion has just passed the threshold and become public
+    if (isQueryActive('SearchActions')) {
+      client.refetchQueries({
+        include: [SearchActionsDocument],
+      });
+    }
+  }, [motionStakes, prevStakes, setIsRefetching, stopPollingAction, client]);
 
   return [isRefetching, setIsRefetching];
 };

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import moveDecimal from 'move-decimal-point';
 import React, { type FC } from 'react';
 
+import { STAKING_THRESHOLD } from '~constants';
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -34,8 +35,6 @@ const StakingForm: FC<StakingFormProps> = ({
 }) => {
   const { motionAction } = useMotionContext();
   const { isDarkMode } = usePageThemeContext();
-
-  const thresholdPercentValue = 10;
 
   const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
@@ -94,8 +93,8 @@ const StakingForm: FC<StakingFormProps> = ({
               tokenSymbol={tokenSymbol}
               chartProps={{
                 threshold:
-                  supportingStakesPercentageValue < thresholdPercentValue
-                    ? thresholdPercentValue
+                  supportingStakesPercentageValue < STAKING_THRESHOLD
+                    ? STAKING_THRESHOLD
                     : undefined,
                 percentageVotesAgainst: objectingStakesPercentageValue,
                 percentageVotesFor: supportingStakesPercentageValue,
