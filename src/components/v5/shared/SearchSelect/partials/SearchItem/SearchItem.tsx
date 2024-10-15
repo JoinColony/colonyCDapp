@@ -38,6 +38,7 @@ const SearchItem: FC<SearchItemProps> = ({
           value,
           isDisabled,
           isComingSoon,
+          isNew,
           avatar,
           showAvatar,
           color,
@@ -123,7 +124,15 @@ const SearchItem: FC<SearchItemProps> = ({
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
                       <ExtensionsStatusBadge
                         mode="coming-soon"
-                        text="Coming soon"
+                        text={formatText({ id: 'status.comingSoon' })}
+                      />
+                    </div>
+                  )}
+                  {isNew && (
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 transform">
+                      <ExtensionsStatusBadge
+                        mode="new"
+                        text={formatText({ id: 'status.new' })}
                       />
                     </div>
                   )}

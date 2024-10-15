@@ -23,6 +23,7 @@ const useActionsList = () => {
           {
             label: { id: 'actions.paymentBuilder' },
             value: Action.PaymentBuilder,
+            isNew: true,
           },
           // @BETA: Disabled for now
           // {
@@ -32,10 +33,12 @@ const useActionsList = () => {
           {
             label: { id: 'actions.splitPayment' },
             value: Action.SplitPayment,
+            isNew: true,
           },
           {
             label: { id: 'actions.stagedPayment' },
             value: Action.StagedPayment,
+            isNew: true,
           },
           // {
           //   label: { id: 'actions.streamingPayment' },
