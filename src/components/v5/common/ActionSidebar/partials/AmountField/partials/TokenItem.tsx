@@ -15,7 +15,7 @@ interface TokenItemProps {
 export const TokenItem: FC<TokenItemProps> = ({ token, tokenBalance }) => {
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <TokenAvatar
           size={18}
           tokenName={token.name}
