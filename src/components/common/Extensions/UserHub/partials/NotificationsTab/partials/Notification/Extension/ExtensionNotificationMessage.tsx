@@ -1,7 +1,8 @@
 import React, { useMemo, type FC } from 'react';
 import { type MessageDescriptor, defineMessages } from 'react-intl';
 
-import { NotificationType, type Notification } from '~types/notifications.ts';
+import { NotificationType } from '~gql';
+import { type Notification } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 

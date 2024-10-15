@@ -6,8 +6,9 @@ import {
   type ColonyActionFragment,
   type NotificationColonyFragment,
   type ExpenditureFragment,
+  NotificationType,
 } from '~gql';
-import { NotificationType, type Notification } from '~types/notifications.ts';
+import { type Notification } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
@@ -18,7 +19,6 @@ const displayName =
 interface ExpenditureNotificationMessageProps {
   action: ColonyActionFragment | null | undefined;
   colony: NotificationColonyFragment | null | undefined;
-  creator: string;
   expenditure: ExpenditureFragment | null | undefined;
   loading: boolean;
   notification: Notification;
@@ -53,7 +53,7 @@ const MSG = defineMessages({
 
 const ExpenditureNotificationMessage: FC<
   ExpenditureNotificationMessageProps
-> = ({ action, colony, creator, expenditure, loading, notification }) => {
+> = ({ action, colony, expenditure, loading, notification }) => {
   const { notificationType } = notification.customAttributes || {};
 
   const actionMetadataDescription = useMemo(() => {
@@ -77,7 +77,7 @@ const ExpenditureNotificationMessage: FC<
   }, [action, colony, expenditure]);
 
   const Message = useMemo(() => {
-    if (!expenditure || !creator || !action || !notificationType) {
+    if (!expenditure || !action || !notificationType) {
       return formatText(MSG.unknownAction);
     }
 
@@ -103,13 +103,7 @@ const ExpenditureNotificationMessage: FC<
         {firstPart} {action.metadata?.customTitle || actionMetadataDescription}
       </>
     );
-  }, [
-    action,
-    actionMetadataDescription,
-    creator,
-    expenditure,
-    notificationType,
-  ]);
+  }, [action, actionMetadataDescription, expenditure, notificationType]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };

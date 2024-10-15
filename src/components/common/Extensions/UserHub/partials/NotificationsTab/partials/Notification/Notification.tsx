@@ -1,18 +1,26 @@
 import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetColonyForNotificationQuery } from '~gql';
-import {
-  NotificationType,
-  type Notification as NotificationInterface,
-} from '~types/notifications.ts';
+import { useGetColonyForNotificationQuery, NotificationType } from '~gql';
+import { type Notification as NotificationInterface } from '~types/notifications.ts';
+import { formatText } from '~utils/intl.ts';
 
 import ActionNotification from './Action/ActionNotification.tsx';
 import ExpenditureNotification from './Expenditure/ExpenditureNotification.tsx';
 import ExtensionNotification from './Extension/ExtensionNotification.tsx';
 import FundsClaimedNotification from './FundsClaimed/FundsClaimedNotification.tsx';
+import NotificationMessage from './NotificationMessage.tsx';
+import NotificationWrapper from './NotificationWrapper.tsx';
 
 const displayName = 'common.Extensions.UserHub.partials.Notification';
+
+const MSG = defineMessages({
+  unknown: {
+    id: `${displayName}.unknown`,
+    defaultMessage: 'Unknown notification',
+  },
+});
 
 interface NotificationProps {
   notification: NotificationInterface;
@@ -46,15 +54,21 @@ const Notification: FC<NotificationProps> = ({
     return null;
   }
 
-  // If the notification type is permissions action, a multisig action, or a mention (always tied to an action):
+  // If the notification type is permissions action, a multisig action, a motion, or a mention (always tied to an action):
   if (
     [
       NotificationType.PermissionsAction,
       NotificationType.Mention,
-      NotificationType.MultiSigActionCreated,
-      NotificationType.MultiSigActionFinalized,
-      NotificationType.MultiSigActionApproved,
-      NotificationType.MultiSigActionRejected,
+      NotificationType.MotionCreated,
+      NotificationType.MotionOpposed,
+      NotificationType.MotionSupported,
+      NotificationType.MotionVoting,
+      NotificationType.MotionReveal,
+      NotificationType.MotionFinalized,
+      NotificationType.MultisigActionCreated,
+      NotificationType.MultisigActionFinalized,
+      NotificationType.MultisigActionApproved,
+      NotificationType.MultisigActionRejected,
     ].includes(notificationType)
   ) {
     return (
@@ -119,7 +133,15 @@ const Notification: FC<NotificationProps> = ({
     );
   }
 
-  return null;
+  return (
+    <NotificationWrapper
+      colony={notificationColony}
+      loadingColony={loadingColony}
+      notification={notification}
+    >
+      <NotificationMessage>{formatText(MSG.unknown)}</NotificationMessage>
+    </NotificationWrapper>
+  );
 };
 
 Notification.displayName = displayName;
