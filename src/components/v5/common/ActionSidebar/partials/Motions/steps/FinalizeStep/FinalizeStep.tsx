@@ -9,6 +9,7 @@ import { ColonyActionType } from '~gql';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -60,6 +61,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
+    userStake,
+    userVote,
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const isMotionFinalized = actionData.motionData.isFinalized;
@@ -107,6 +110,12 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     actionData,
     refetchColony,
   ]);
+  // console.log('action data: ', actionData);
+
+  const actionType = getExtendedActionType(
+    actionData,
+    actionData.colony.metadata,
+  );
 
   /*
    * @NOTE This is just needed until we properly save motion data in the db
@@ -136,7 +145,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           iconAlignment="top"
           iconSize={16}
         >
-          {formatText({ id: statusId })}
+          {actionType === ColonyActionType.CreateDecisionMotion
+            ? formatText({ id: statusId })
+            : formatText({
+                id:
+                  isMotionFailedNotFinalizable || (!userStake && userVote)
+                    ? 'motion.finalizeStep.failed.statusText'
+                    : 'motion.finalizeStep.complete.statusText',
+              })}
         </StatusText>
       }
       content={
