@@ -253,7 +253,7 @@ const useGetActionData = (transactionId: string | undefined) => {
               return {
                 milestone: stage.name,
                 amount: moveDecimal(
-                  currentSlot?.payouts?.[0].amount,
+                  currentSlot?.payouts?.[0].amount ?? '0',
                   -getTokenDecimalsWithFallback(stagedToken?.token.decimals),
                 ),
                 tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
@@ -275,7 +275,7 @@ const useGetActionData = (transactionId: string | undefined) => {
             return {
               recipient: slot.recipientAddress,
               amount: moveDecimal(
-                slot.payouts?.[0].amount,
+                slot.payouts?.[0].amount ?? '0',
                 -getTokenDecimalsWithFallback(paymentToken?.token.decimals),
               ),
               tokenAddress: slot.payouts?.[0].tokenAddress,
@@ -311,7 +311,7 @@ const useGetActionData = (transactionId: string | undefined) => {
           [AMOUNT_FIELD_NAME]: formattedAmount,
           payments: slots?.map((slot) => {
             const currentAmount = moveDecimal(
-              slot.payouts?.[0].amount,
+              slot.payouts?.[0].amount ?? '0',
               -getTokenDecimalsWithFallback(splitToken?.decimals),
             );
 
