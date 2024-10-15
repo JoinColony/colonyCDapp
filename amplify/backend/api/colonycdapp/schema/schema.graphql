@@ -1046,6 +1046,12 @@ type Query {
   """
   bridgeGetGatewayFee: BridgeGatewayFeeReturn
     @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Generate key for the user in Magicbell, used for secure fetching of notifications
+  """
+  getUserNotificationsHMAC: String
+    @function(name: "getUserNotificationsHMAC-${env}")
 }
 
 """
@@ -1057,12 +1063,14 @@ type Mutation {
   """
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
+
   """
   Create notification data for a user
   """
   createUserNotificationsData(
     input: CreateUserNotificationsDataInput!
   ): NotificationsData @function(name: "createUserNotificationsData-${env}")
+
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
@@ -2007,10 +2015,6 @@ type NotificationsData @model {
   Unique identifier for the user in Magicbell
   """
   magicbellUserId: ID!
-  """
-  Generated key for the user in Magicbell, used for secure fetching of notifications
-  """
-  magicbellUserKey: String @function(name: "getUserNotificationsHMAC-${env}")
   """
   Boolean to indicate if the user has disabled notifications app wide
   """

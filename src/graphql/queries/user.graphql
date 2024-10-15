@@ -27,3 +27,7 @@ query GetUsers($filter: ModelUserFilterInput, $limit: Int) {
     }
   }
 }
+
+query GetUserNotificationsHMAC {
+  getUserNotificationsHMAC
+}

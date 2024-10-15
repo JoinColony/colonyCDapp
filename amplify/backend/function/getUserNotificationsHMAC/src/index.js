@@ -19,8 +19,10 @@ exports.handler = async (event) => {
     throw new Error('Unable to set environment variables. Reason:', err);
   }
 
+  const checksummedWalletAddress = event.request.headers['x-wallet-address'];
+
   const userExternalIDHMAC = Base64.stringify(
-    hmacSHA256(event.source.userAddress, magicbellApiSecret),
+    hmacSHA256(checksummedWalletAddress, magicbellApiSecret),
   );
 
   return userExternalIDHMAC;
