@@ -234,10 +234,10 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
       ) {
         await releaseExpenditureStageMotion(motionPayload);
       } else {
+        setIsWaitingForStagesRelease(true);
         await releaseExpenditureStage(payload);
       }
 
-      setIsWaitingForStagesRelease(true);
       onClose();
     } catch (err) {
       console.error(err);
