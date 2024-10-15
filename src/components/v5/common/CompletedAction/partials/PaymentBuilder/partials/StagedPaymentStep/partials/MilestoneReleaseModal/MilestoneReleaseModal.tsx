@@ -228,13 +228,14 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         userAddress: user?.walletAddress || '',
       };
 
+      setIsWaitingForStagesRelease(true);
+
       if (
         decisionMethod &&
         decisionMethod.value === DecisionMethod.Reputation
       ) {
         await releaseExpenditureStageMotion(motionPayload);
       } else {
-        setIsWaitingForStagesRelease(true);
         await releaseExpenditureStage(payload);
       }
 
