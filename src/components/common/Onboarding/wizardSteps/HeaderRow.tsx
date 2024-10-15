@@ -33,8 +33,12 @@ const HeaderRow: FC<HeaderRowProps> = ({
 
   return (
     <div className="border-gray300 mb-8 border-b pb-4">
-      <h3 className="pb-2 heading-3">{headingText}</h3>
-      <p className="text-sm text-gray-600">{subHeadingText}</p>
+      <h3 className="pb-2 heading-3" data-testid="onboarding-heading">
+        {headingText}
+      </h3>
+      <p className="text-sm text-gray-600" data-testid="onboarding-subheading">
+        {subHeadingText}
+      </p>
     </div>
   );
 };

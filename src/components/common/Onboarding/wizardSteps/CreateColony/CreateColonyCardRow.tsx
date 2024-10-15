@@ -43,12 +43,14 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
       title: 'navigation.admin.colonyDetails',
       text: colonyDisplayName,
       subText: `${APP_URL.origin}/${colonyName}`,
+      testId: 'colony-details-card',
       step: 0,
     },
     {
       title: MSG.nativeToken,
       text: existingToken ? existingToken.name : tokenName,
       subText: existingToken ? existingToken.symbol : tokenSymbol,
+      testId: 'colony-token-card',
       step: 2,
       icon:
         tokenAvatar || existingToken ? (
@@ -74,7 +76,11 @@ const CardRow = ({ updatedWizardValues, setStep }: CardRowProps) => {
   return (
     <div className="flex flex-col gap-6">
       {cards.map((card) => (
-        <div className="flex flex-col gap-3.5" key={`option ${card.title}`}>
+        <div
+          className="flex flex-col gap-3.5"
+          key={`option ${card.title}`}
+          data-testid={card.testId}
+        >
           <h5 className="lowercase text-2 first-letter:uppercase">
             {formatText(
               typeof card.title === 'string' ? { id: card.title } : card.title,
