@@ -99,7 +99,7 @@ function* manageVerifiedMembersAction({
     );
     if (annotationMessage) {
       yield takeFrom(
-        manageVerifiedMembers.channel,
+        annotateManageVerifiedMembers.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
     }
