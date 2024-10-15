@@ -228,6 +228,8 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         userAddress: user?.walletAddress || '',
       };
 
+      setIsWaitingForStagesRelease(true);
+
       if (
         decisionMethod &&
         decisionMethod.value === DecisionMethod.Reputation
@@ -237,7 +239,6 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         await releaseExpenditureStage(payload);
       }
 
-      setIsWaitingForStagesRelease(true);
       onClose();
     } catch (err) {
       console.error(err);

@@ -13,7 +13,6 @@ import {
   waitForTxResult,
 } from '../transactions/index.ts';
 import {
-  claimExpenditurePayouts,
   getColonyManager,
   initiateTransaction,
   putError,
@@ -166,24 +165,6 @@ function* releaseExpenditureStages({
         txHash,
       });
     }
-    const slotsToClaim = expenditure.slots.filter((slot) =>
-      slotIds.includes(slot.id),
-    );
-    const payoutsWithSlotIds = slotsToClaim.flatMap(
-      (slot) =>
-        slot.payouts?.map((payout) => ({
-          ...payout,
-          slotId: slot.id,
-        })) ?? [],
-    );
-
-    yield claimExpenditurePayouts({
-      colonyAddress,
-      claimablePayouts: payoutsWithSlotIds,
-      metaId: meta.id,
-      nativeExpenditureId: expenditure.nativeId,
-      colonyClient,
-    });
 
     yield put<AllActions>({
       type: ActionTypes.RELEASE_EXPENDITURE_STAGES_SUCCESS,
