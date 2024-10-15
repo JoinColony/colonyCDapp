@@ -114,6 +114,7 @@ const ACTION_TYPES_TO_HIDE = [
   ColonyActionType.EditExpenditure,
   ColonyActionType.EditExpenditureMotion,
   ColonyActionType.ReleaseStagedPaymentsMotion,
+  ColonyActionType.ReleaseStagedPayments,
 ];
 
 export const filterByActionTypes = (
