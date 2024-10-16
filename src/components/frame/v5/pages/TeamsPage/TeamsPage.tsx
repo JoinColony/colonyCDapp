@@ -2,7 +2,7 @@ import { Binoculars } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { ModelSortDirection } from '~gql';
@@ -18,9 +18,7 @@ import TeamsPageFilter from './partials/TeamsPageFilter/TeamsPageFilter.tsx';
 
 const TeamsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'teamsPage.title' }));
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
   const { filters, searchedTeams, defaultFilterValue, hasFilterChanged } =
     useTeams();
   const isMobile = useMobile();
@@ -61,8 +59,8 @@ const TeamsPage: FC = () => {
           <TeamsPageFilter {...filters} />
           <Button
             onClick={() =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
               })
             }
             text={formatText({ id: 'teamsPage.createNewTeam' })}

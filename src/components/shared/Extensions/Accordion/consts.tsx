@@ -19,7 +19,7 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Required Stake"
-            subTitle="What percentage of the team's reputation,
+            subtitle="What percentage of the team's reputation,
             in token terms, should need to stake on each side of a motion?"
           />
         ),
@@ -36,7 +36,7 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
+            subtitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
         inputItem: <SpecialPercentageInput />,
@@ -69,7 +69,7 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Voter Reward"
-            subTitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
+            subtitle="In a dispute, what percentage of the losing side's stake should be awarded to the voters?"
           />
         ),
         inputItem: <SpecialPercentageInput />,
@@ -79,7 +79,7 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="Minimum Stake"
-            subTitle="Minimum percentage of the total stake that each staker should have to provide"
+            subtitle="Minimum percentage of the total stake that each staker should have to provide"
           />
         ),
         accordionItem: [
@@ -95,7 +95,7 @@ export const accordionMocksContent = [
         textItem: (
           <ContentTypeText
             title="End Vote Threshold"
-            subTitle="At what threshold of reputation having voted should the voting period to end?"
+            subtitle="At what threshold of reputation having voted should the voting period to end?"
           />
         ),
         accordionItem: [

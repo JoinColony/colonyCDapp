@@ -18,6 +18,7 @@ import {
   type FinalizeSuccessCallback,
 } from '../types.ts';
 
+// FIXME: Another one. Wow these are crazy
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
   [Action.SimplePayment]: 'button.createPayment',
@@ -36,7 +37,6 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.ManagePermissions]: 'button.changePermissions',
   [Action.UpgradeColonyVersion]: 'button.upgradeVersion',
   [Action.EnterRecoveryMode]: 'button.enterRecovery',
-  [Action.CreateNewIntegration]: 'button.createIntegration',
   [Action.CreateDecision]: 'button.createDecision',
   [Action.ManageVerifiedMembers]: 'button.updateVerified',
 };

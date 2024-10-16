@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -31,9 +31,7 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
   const {
     colony: { nativeToken, domains, reputation },
   } = useColonyContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const colonyReputation = reputation ?? '0';
   const teams = domains?.items
@@ -130,8 +128,8 @@ const TeamReputationSummary: FC<TeamReputationSummaryProps> = ({
           <TextButton
             mode="underlined"
             onClick={() =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              show({
+                [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDomain,
               })
             }
           >

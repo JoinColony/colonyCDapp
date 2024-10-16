@@ -1,10 +1,8 @@
 import { createContext, useContext } from 'react';
 
-import { type Action } from '~constants/actions.ts';
-import {
-  type ActivityFeedFilters,
-  type ActivityDecisionMethod,
-} from '~hooks/useActivityFeed/types.ts';
+import { type CoreAction } from '~actions';
+import { type DecisionMethod } from '~gql';
+import { type ActivityFeedFilters } from '~hooks/useActivityFeed/types.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
 
 import { type DateOptions } from '../partials/ActionsTableFilters/types.ts';
@@ -17,8 +15,8 @@ export interface FiltersContextValue {
   searchFilter: string;
   setSearchFilter: (searchValue: string) => void;
   motionStates: MotionState[];
-  decisionMethods: ActivityDecisionMethod[];
-  actionTypesFilters: Action[];
+  decisionMethods: DecisionMethod[];
+  actionTypesFilters: CoreAction[];
   dateFilters: DateOptions;
   activeFilters: ActivityFeedFilters;
   selectedFiltersCount: number;

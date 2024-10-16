@@ -6,8 +6,6 @@ import {
   type FundsClaimFragment,
   type ChainFundsClaimFragment,
   type DomainFragment,
-  type ColonyActionFragment,
-  ColonyActionType,
   ModelSortDirection,
   DomainColor,
   type DomainMetadataFragment,
@@ -82,11 +80,7 @@ export type Transaction = TransactionFragment;
 
 export type ColonyExtension = ExtensionFragment;
 
-export type ColonyAction = ColonyActionFragment;
-
 export type UserTokenBalanceData = UserTokenBalanceDataFragment;
-
-export { ColonyActionType };
 
 export { ModelSortDirection as SortDirection, SearchableSortDirection };
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.Modification';
 
@@ -13,7 +13,7 @@ interface ModificationProps {
 
 const Modification = ({ isSmite }: ModificationProps) => {
   return (
-    <ActionData
+    <ActionContent
       rowLabel={formatText({ id: 'actionSidebar.modification' })}
       tooltipContent={formatText({
         id: 'actionSidebar.tooltip.manageReputation.modification',

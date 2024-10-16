@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -38,13 +38,11 @@ const Agreements = () => {
   const agreements = agreementsData?.getActionsByColony?.items.filter(notNull);
   const newestAgreement = agreements?.[0];
 
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   const openCreateDecision = () => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+    show({
+      [ACTION_TYPE_FIELD_NAME]: CoreAction.CreateDecisionMotion,
     });
   };
 

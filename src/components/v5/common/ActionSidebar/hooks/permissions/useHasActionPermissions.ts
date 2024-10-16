@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import {
   ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
@@ -14,13 +14,11 @@ const useHasActionPermissions = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const { watch } = useFormContext();
-  const formValues = watch();
+  const form = useFormContext();
 
-  const {
-    [ACTION_TYPE_FIELD_NAME]: actionType,
-    [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-  } = formValues;
+  const actionType = form.watch(ACTION_TYPE_FIELD_NAME);
+  const decisionMethod = form.watch(DECISION_METHOD_FIELD_NAME);
+
   if (
     !actionType ||
     !decisionMethod ||
@@ -33,7 +31,7 @@ const useHasActionPermissions = () => {
     colony,
     userAddress: user?.walletAddress ?? '',
     actionType,
-    formValues,
+    form,
   });
 
   if (decisionMethod === DecisionMethod.Permissions) {
@@ -44,7 +42,7 @@ const useHasActionPermissions = () => {
     colony,
     userAddress: user?.walletAddress ?? '',
     actionType,
-    formValues,
+    form,
     isMultiSig: true,
   });
 

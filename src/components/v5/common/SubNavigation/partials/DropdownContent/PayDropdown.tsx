@@ -18,9 +18,7 @@ const displayName =
 
 const PayDropdown: FC<PropsWithChildren> = () => {
   const { formatMessage } = useIntl();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   return (
     <div className="bg-base-white">
@@ -34,7 +32,7 @@ const PayDropdown: FC<PropsWithChildren> = () => {
             {...rest}
             key={action}
             onClick={() => {
-              toggleActionSidebarOn({
+              show({
                 [ACTION_TYPE_FIELD_NAME]: action,
               });
             }}

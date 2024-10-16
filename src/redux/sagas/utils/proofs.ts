@@ -17,6 +17,12 @@ import { type Domain } from '~types/graphql.ts';
 
 import getColonyManager from './getColonyManager.ts';
 
+type SingleRole = ColonyRole;
+type RoleGroup = ColonyRole[];
+type RoleGroupSet = ColonyRole[][];
+
+type RequiredColonyRoleGroup = SingleRole | RoleGroup | RoleGroupSet;
+
 interface GetChildIndexLocalParams {
   networkClient: ColonyNetworkClient;
   parentDomainNativeId: BigNumberish;
@@ -49,12 +55,6 @@ export async function getChildIndexLocal({
 
   return BigNumber.from(idx);
 }
-
-type SingleRole = ColonyRole;
-type RoleGroup = ColonyRole[];
-type RoleGroupSet = ColonyRole[][];
-
-type RequiredColonyRoleGroup = SingleRole | RoleGroup | RoleGroupSet;
 
 interface GetSinglePermissionProofsLocalParams {
   networkClient: ColonyNetworkClient;

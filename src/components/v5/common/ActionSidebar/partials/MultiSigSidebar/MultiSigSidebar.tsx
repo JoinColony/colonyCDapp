@@ -1,6 +1,5 @@
 import { Extension } from '@colony/colony-js';
-import { type FC } from 'react';
-import React from 'react';
+import React, { type FC } from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
 import useGetColonyAction from '~hooks/useGetColonyAction.ts';
@@ -41,7 +40,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
 
   return (
     <div>
-      <MultiSigWidget action={action} />
+      <MultiSigWidget actionData={action} />
     </div>
   );
 };

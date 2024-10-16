@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers';
 import { hexlify, hexZeroPad } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+import { CoreAction, getRequiredPermissions } from '~actions';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { Authority } from '~types/authority.ts';
@@ -116,8 +116,11 @@ function* managePermissionsMotion({
         // Creating a multi-sig motion
         const requiredCreatedInRoles =
           teamDomainId === Id.RootDomain
-            ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-            : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomainViaMultiSig;
+            ? // FIXME: I feel like this should come from the form???
+              getRequiredPermissions(CoreAction.ManagePermissionsInRootDomain)
+            : getRequiredPermissions(
+                CoreAction.ManagePermissionsInSubDomainViaMultiSig,
+              );
 
         const initiatorAddress = yield colonyClient.signer.getAddress();
 
@@ -194,8 +197,9 @@ function* managePermissionsMotion({
       // Creating a reputation motion
       const requiredTeamRoles =
         teamDomainId === Id.RootDomain
-          ? PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInRootDomain
-          : PERMISSIONS_NEEDED_FOR_ACTION.ManagePermissionsInSubDomain;
+          ? // FIXME: I feel like this should come from the form???
+            getActionPermissions(CoreAction.ManagePermissionsInRootDomain)
+          : getActionPermissions(CoreAction.ManagePermissionsInSubDomain);
 
       const votingReputationClient = yield colonyManager.getClient(
         ClientType.VotingReputationClient,

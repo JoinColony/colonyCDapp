@@ -1,5 +1,3 @@
-import { type UseToggleReturnType } from '~hooks/useToggle/types.ts';
-
 import { type BaseFieldProps } from '../types.ts';
 
 import type React from 'react';
@@ -33,7 +31,7 @@ export interface CardSelectProps<TValue> extends BaseFieldProps {
   ) => React.ReactNode;
   cardClassName?: string;
   togglerClassName?: string;
-  footer?: React.ReactNode | ((toggle: UseToggleReturnType) => React.ReactNode);
+  footer?: React.ReactNode | ((close: () => void) => React.ReactNode);
   itemClassName?: string;
   renderOptionWrapper?: (
     props: {

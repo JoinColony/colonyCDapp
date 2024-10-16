@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { type Action } from '~constants/actions.ts';
+import { getRequiredPermissions, type CoreActionOrGroup } from '~actions';
 import { useDomainThreshold } from '~hooks/multiSig/useDomainThreshold.ts';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import { getDomainIdsForEligibleSignees } from '~utils/multiSig/index.ts';
-import { getPermissionsNeededForAction } from '~v5/common/ActionSidebar/hooks/permissions/helpers.ts';
 
 interface UseHasEnoughMembersWithPermissionsResult {
   hasEnoughMembersWithPermissions: boolean;
@@ -17,18 +16,17 @@ export const useHasEnoughMembersWithPermissions = ({
   permissionDomainId,
   thresholdDomainId,
 }: {
-  selectedAction: Action;
+  selectedAction: CoreActionOrGroup;
   // domainId to check users if they have permissions in
   permissionDomainId: number;
   // domainId to check the threshold
   thresholdDomainId: number;
 }): UseHasEnoughMembersWithPermissionsResult => {
-  const { watch } = useFormContext();
-  const formValues = watch();
+  const form = useFormContext();
 
   const requiredRoles = useMemo(
-    () => getPermissionsNeededForAction(selectedAction, formValues) || [],
-    [selectedAction, formValues],
+    () => getRequiredPermissions(selectedAction, form),
+    [selectedAction, form],
   );
 
   /*

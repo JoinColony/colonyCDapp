@@ -7,7 +7,7 @@ import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { getFormattedTokenAmount } from '../utils.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.AmountRow';
 
@@ -20,7 +20,7 @@ const AmountRow = ({ amount, token }: AmountRowProps) => {
   const formattedAmount = getFormattedTokenAmount(amount, token?.decimals);
 
   return (
-    <ActionData
+    <ActionContent
       rowLabel={formatText({ id: 'actionSidebar.amount' })}
       tooltipContent={formatText({
         id: 'actionSidebar.tooltip.simplePayment.amount',

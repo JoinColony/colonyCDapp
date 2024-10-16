@@ -24,7 +24,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget';
 
 interface MultiSigWidgetProps {
-  action: MultiSigAction;
+  actionData: MultiSigAction;
 }
 
 const MSG = defineMessages({
@@ -42,7 +42,7 @@ const MSG = defineMessages({
   },
 });
 
-const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
+const MultiSigWidget: FC<MultiSigWidgetProps> = ({ actionData: action }) => {
   const { type: actionType, multiSigData } = action;
 
   // this is only because managing permissions in a subdomain requires signees in the parent domain
@@ -102,7 +102,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
             thresholdPerRole={thresholdPerRole}
             multiSigData={multiSigData}
             initiatorAddress={action.initiatorAddress}
-            action={action}
+            actionData={action}
           />
         ),
         heading: {

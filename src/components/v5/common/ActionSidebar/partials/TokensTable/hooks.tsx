@@ -5,7 +5,7 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
-import { type TokensTableModel } from '../forms/ManageTokensForm/partials/TokensTable/types.ts';
+import { type TokensTableModel } from '../forms/core/ManageTokensForm/partials/TokensTable/types.ts';
 import TokenSelect from '../TokenSelect/index.ts';
 import TokenSymbol from '../TokenSelect/partials/TokenSymbol/index.ts';
 

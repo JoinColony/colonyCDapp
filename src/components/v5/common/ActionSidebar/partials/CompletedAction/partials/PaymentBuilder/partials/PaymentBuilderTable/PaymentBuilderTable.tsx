@@ -12,7 +12,7 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
+import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/core/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import AmountField from './partials/AmountField/AmountField.tsx';

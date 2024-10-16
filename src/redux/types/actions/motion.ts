@@ -33,6 +33,7 @@ import {
   type UniqueActionTypeWithoutPayload,
 } from './index.ts';
 
+// FIXME: @RESOLUTION: Kerry will refactor it
 export enum RootMotionMethodNames {
   MintTokens = 'mintTokens',
   MoveFunds = 'moveFunds',

@@ -1913,6 +1913,20 @@ export type CurrentVersion = {
   version: Scalars['Int'];
 };
 
+/** All supported DecisionMethods within Colony (including all official extensions) */
+export enum DecisionMethod {
+  /** Multi-Signature decision */
+  MultiSig = 'MULTI_SIG',
+  /** FIXME: ADD THIS */
+  PaymentCreator = 'PAYMENT_CREATOR',
+  /** "Forced" decision using appropriate permissions */
+  Permissions = 'PERMISSIONS',
+  /** Reputation based voting (using Motions) */
+  Reputation = 'REPUTATION',
+  /** FIXME: ADD THIS */
+  Staking = 'STAKING'
+}
+
 export type DeleteAnnotationInput = {
   id: Scalars['ID'];
 };

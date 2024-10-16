@@ -2,7 +2,7 @@ import { ArrowSquareOut, CopySimple, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { Action } from '~constants/actions.ts';
+import { CoreAction } from '~actions';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 // @BETA: Disabled for now
@@ -26,9 +26,7 @@ export const useMembersTabContentItems = (
   // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
   const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { show } = useActionSidebarContext();
 
   return useMemo(
     () =>
@@ -56,11 +54,12 @@ export const useMembersTabContentItems = (
                 key: '2',
                 icon: HandCoins,
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+                onClick: () => {
+                  show({
+                    [ACTION_TYPE_FIELD_NAME]: CoreAction.Payment,
                     recipient: walletAddress,
-                  }),
+                  });
+                },
               },
               ...(walletAddress
                 ? [
@@ -132,7 +131,7 @@ export const useMembersTabContentItems = (
       // @BETA: Disabled for now
       // setIsMemberModalOpen,
       // setUser,
-      toggleActionSidebarOn,
+      show,
     ],
   );
 };

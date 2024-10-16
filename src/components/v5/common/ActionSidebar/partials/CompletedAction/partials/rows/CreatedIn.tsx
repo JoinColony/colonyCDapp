@@ -5,7 +5,7 @@ import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
 
-import ActionData from './ActionData.tsx';
+import ActionContent from './ActionContent.tsx';
 
 const displayName = 'v5.common.CompletedAction.partials.CreatedInRow';
 
@@ -15,7 +15,7 @@ interface CreatedInRowProps {
 
 const CreatedInRow = ({ motionDomainMetadata }: CreatedInRowProps) => {
   return (
-    <ActionData
+    <ActionContent
       rowLabel={formatText({ id: 'actionSidebar.createdIn' })}
       tooltipContent={formatText({
         id: 'actionSidebar.tooltip.createdIn',

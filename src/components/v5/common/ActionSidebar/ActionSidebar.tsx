@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { TX_SEARCH_PARAM } from '~routes';
 
 import CompletedActionSidebar from './partials/CompletedAction/CompletedActionSidebar.tsx';
-import CreateActionSidebar from './partials/CreateAction/CreateActionSidebar.tsx';
+import CreateActionSidebar from './partials/CreateActionSidebar/CreateActionSidebar.tsx';
 
 const displayName = 'v5.common.ActionSidebar';
 

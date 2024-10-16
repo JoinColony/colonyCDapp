@@ -22,6 +22,7 @@ import UpgradeColonyDescription from './partials/UpgradeColonyDescription.tsx';
 const displayName =
   'v5.common.ActionsSidebar.partials.ActionSidebarDescription';
 
+// FIXME: THIS NEEDS TO GO INTO THE action definitions
 const ActionSidebarDescription = () => {
   const selectedAction = useActiveActionType();
 
