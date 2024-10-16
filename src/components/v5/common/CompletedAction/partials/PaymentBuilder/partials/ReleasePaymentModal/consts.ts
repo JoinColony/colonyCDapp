@@ -15,7 +15,7 @@ export const getReleaseDecisionMethodDescriptions = (
     },
   ),
   [DecisionMethod.Reputation]: formatText({
-    id: 'fundingModal.reputationDescription',
+    id: 'releaseModal.reputationDescription',
   }),
   [DecisionMethod.PaymentCreator]: formatText({
     id: 'releaseModal.paymentCreatorDescription',
