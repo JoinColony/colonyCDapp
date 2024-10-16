@@ -54,18 +54,17 @@ const getRoleInfo = ({
     currentPermissions: currentTeamPermissions,
     isRootDomain,
   });
-
-  // inheritedPermissions contains only a difference between parrent and current permissions
-  // in case current role is higher inheritedPermissions.length would be 0
-  if (inheritedPermissions.length > 0) {
-    return { role: getRole(parentPermissions), isInherited: true };
+  if (!inheritedPermissions.length && !currentTeamPermissions.length) {
+    return { role: undefined, isInherited: false };
   }
 
-  if (currentTeamPermissions.length > 0) {
-    return { role: getRole(currentTeamPermissions), isInherited: false };
-  }
-
-  return { role: undefined, isInherited: false };
+  const mergedPermissions = [
+    ...new Set([...parentPermissions, ...currentTeamPermissions]),
+  ];
+  return {
+    role: getRole(mergedPermissions),
+    isInherited: inheritedPermissions.length > 0,
+  };
 };
 
 export const getHighestTierRoleMeta = ({
