@@ -92,7 +92,7 @@ export const ClaimFundsButton = () => {
     <Button
       text={formatText(MSG.fundsClaimedCTA)}
       size="small"
-      className="pointer-events-none h-fit border border-success-400 bg-success-400 px-3 py-2 !text-base-white"
+      className="pointer-events-none h-8.5 border border-success-400 bg-success-400 px-3 py-2 !text-base-white"
     />
   ) : (
     <LoadingSkeleton isLoading={isClaiming} className="h-8.5 w-14 rounded-lg">
