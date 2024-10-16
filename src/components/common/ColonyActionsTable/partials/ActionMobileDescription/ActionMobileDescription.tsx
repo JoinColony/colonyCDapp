@@ -90,7 +90,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
         )}
         <p
           className={clsx(textClassName, 'text-gray-600', {
-            skeleton: isLoading,
+            'overflow-hidden rounded skeleton': isLoading,
           })}
         >
           {actionMetadataDescription}

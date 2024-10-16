@@ -69,7 +69,7 @@ const useColonyActionsTableColumns = ({
           return team || loading ? (
             <TeamBadge
               className={clsx({
-                skeleton: loading,
+                'overflow-hidden rounded border-none skeleton': loading,
               })}
               textClassName="line-clamp-1 break-all"
               name={team?.name || ''.padEnd(6, '-')}
@@ -91,7 +91,7 @@ const useColonyActionsTableColumns = ({
               className={clsx(
                 'whitespace-nowrap text-md font-normal text-gray-600',
                 {
-                  skeleton: loading,
+                  'overflow-hidden rounded skeleton': loading,
                 },
               )}
             >

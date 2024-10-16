@@ -100,7 +100,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
             className={clsx(
               'line-clamp-2 text-md font-medium text-gray-900 md:line-clamp-1',
               {
-                skeleton: isLoading,
+                'overflow-hidden rounded skeleton sm:w-64': isLoading,
               },
             )}
           >
@@ -114,7 +114,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
               className={clsx(
                 'mt-0.5 line-clamp-2 text-sm font-normal text-gray-600 md:line-clamp-1',
                 {
-                  skeleton: isLoading,
+                  'overflow-hidden rounded skeleton sm:w-48': isLoading,
                   hidden: hideDetails,
                 },
               )}
