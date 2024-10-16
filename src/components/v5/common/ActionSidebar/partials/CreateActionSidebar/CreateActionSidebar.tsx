@@ -2,8 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import React, { type ReactNode, type FC } from 'react';
 import { type UseFormReturn, useFormContext } from 'react-hook-form';
 
-import { type CoreActionOrGroup } from '~actions/index.ts';
-import { getFormComponent } from '~actions/utils.ts';
+import { type CoreActionOrGroup, getFormComponent } from '~actions';
 import { SearchActionsDocument } from '~gql';
 import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';

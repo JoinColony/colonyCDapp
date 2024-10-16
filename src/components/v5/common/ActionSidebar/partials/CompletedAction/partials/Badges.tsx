@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { type Expenditure } from '~types/graphql.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';

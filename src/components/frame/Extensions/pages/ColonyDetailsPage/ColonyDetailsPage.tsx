@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { CoreAction } from '~actions/index';
+import { CoreAction } from '~actions';
 import { MAX_COLONY_DESCRIPTION_LENGTH } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { registerAction } from '~actions/utils.ts';
+import { registerAction } from '~actions';
 import BatchPaymentForm from '~v5/common/ActionSidebar/partials/forms/core/BatchPaymentForm/BatchPaymentForm.tsx';
 
 import { CoreActionGroup } from './types.ts';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { type ActionData, CoreAction } from '~actions/index.ts';
+import { type ActionData, CoreAction } from '~actions';
 import { formatText } from '~utils/intl.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 

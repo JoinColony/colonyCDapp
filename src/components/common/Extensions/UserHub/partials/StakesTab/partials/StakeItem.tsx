@@ -2,7 +2,7 @@ import React, { useMemo, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getActionTitleValues } from '~actions/utils.ts';
+import { getTitleValues } from '~actions';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
 import { setQueryParamOnUrl } from '~utils/urls.ts';
@@ -92,7 +92,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
               {stake.action && partialStakeColony
                 ? formatMessage(
                     { id: 'action.title' },
-                    getActionTitleValues({
+                    getTitleValues({
                       actionData: stake.action,
                       colony: partialStakeColony,
                     }),

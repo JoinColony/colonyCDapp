@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 // FIXME: This probably also needs to go?? No idea where this is going
-import { CoreAction } from '~actions/index';
+import { CoreAction } from '~actions';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 
 const safeActionTitle = '{Safe transaction: {safeTransactionTitle}}';
@@ -26,8 +26,8 @@ const actionsMessageDescriptors = {
       ${CoreAction.CreateDomainMultisig} {Create new team {fromDomain} by {initiator}}
       ${CoreAction.VersionUpgradeMotion} {Upgrade Colony version to v{newVersion} by {initiator}}
       ${CoreAction.VersionUpgradeMultisig} {Upgrade Colony version to v{newVersion} by {initiator}}
-      ${CoreAction.EditColonyMotion} {Edit details of the Colony by {initiator}}
-      ${CoreAction.EditColonyMultisig} {Edit details of the Colony by {initiator}}
+      ${CoreAction.ColonyEditMotion} {Edit details of the Colony by {initiator}}
+      ${CoreAction.ColonyEditMultisig} {Edit details of the Colony by {initiator}}
       ${CoreAction.EditDomainMotion} {Change {fromDomain} team details by {initiator}}
       ${CoreAction.EditDomainMultisig} {Change {fromDomain} team details by {initiator}}
       ${CoreAction.EmitDomainReputationPenaltyMotion} {Remove {reputationChangeNumeral} reputation {reputationChange, plural, one {point} other {points}} from {recipient} by {initiator}}

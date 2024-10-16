@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
 
-import { type CoreActionOrGroup } from '~actions/index.ts';
+import { type CoreActionOrGroup } from '~actions';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers';
 
-import { CoreAction, type ActionData } from '~actions/index.ts';
+import { CoreAction, type ActionData } from '~actions';
 import { apolloClient } from '~apollo';
 import { SearchActionsDocument } from '~gql';
 import { type Expenditure } from '~types/graphql.ts';

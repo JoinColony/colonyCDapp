@@ -2,7 +2,7 @@ import { isToday, isYesterday } from 'date-fns';
 import React, { useState, type FC, useEffect } from 'react';
 import { FormattedDate, defineMessages } from 'react-intl';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { type Threshold } from '~types/multiSig.ts';

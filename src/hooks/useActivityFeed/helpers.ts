@@ -4,7 +4,7 @@ import {
   CoreAction,
   type ActionData,
   type CoreActionOrGroup,
-} from '~actions/index.ts';
+} from '~actions';
 import { DecisionMethod, type ColonyFragment } from '~gql';
 import { type MotionStatesMap } from '~hooks/useNetworkMotionStates.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';

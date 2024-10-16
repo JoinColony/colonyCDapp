@@ -4,7 +4,7 @@ import {
   type ActionData,
   CoreAction,
   CoreActionGroup,
-} from '~actions/index.ts';
+} from '~actions';
 import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';
 import {

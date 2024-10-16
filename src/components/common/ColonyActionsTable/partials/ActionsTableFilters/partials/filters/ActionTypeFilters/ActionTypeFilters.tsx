@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useFiltersContext } from '~common/ColonyActionsTable/FiltersContext/FiltersContext.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/index.ts';

@@ -2,7 +2,7 @@ import { CoinVertical } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { CoreAction, type ActionData } from '~actions/index.ts';
+import { CoreAction, type ActionData } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';
 import {

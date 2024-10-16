@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { getActionTitleValues } from '~actions/utils.ts';
+import { getTitleValues } from '~actions';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
@@ -64,7 +64,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
 
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
-    getActionTitleValues({
+    getTitleValues({
       actionData: {
         ...action,
         recipientAddress: recipientUser?.walletAddress ?? recipientAddress,

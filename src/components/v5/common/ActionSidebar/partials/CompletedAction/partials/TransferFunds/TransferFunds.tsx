@@ -4,7 +4,7 @@ import { defineMessages } from 'react-intl';
 
 // FIXME: ColonyAction and ColonyActionFragment are not the same
 // We should just work with one of them (ColonyAction in actions)
-import { CoreAction, type ActionData } from '~actions/index.ts';
+import { CoreAction, type ActionData } from '~actions';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';

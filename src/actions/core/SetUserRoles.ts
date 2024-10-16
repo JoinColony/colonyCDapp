@@ -1,7 +1,13 @@
-import { ColonyRole } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
+import { DecisionMethod } from '~gql';
+import {
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  TEAM_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import ManagePermissionsForm from '~v5/common/ActionSidebar/partials/forms/core/ManagePermissionsForm/ManagePermissionsForm.tsx';
 
 import { CoreAction } from './types.ts';
@@ -24,18 +30,43 @@ registerAction({
   title: MSG.title,
   titleKeys: [
     ActionTitleKey.Direction,
-    ActionTitleKey.FromDomain,
-    ActionTitleKey.Recipient,
-    ActionTitleKey.Initiator,
     ActionTitleKey.MultiSigAuthority,
+    ActionTitleKey.Recipient,
+    ActionTitleKey.FromDomain,
+    ActionTitleKey.Initiator,
   ],
-  // FIXME: This depends on what permissions we want to manage:
-  // // If assigning permissions in the root domain, the root role is required
-  // ManagePermissionsInRootDomain: [[ColonyRole.Root]],
-  // // If assigning permissions in any other domain, root or architecture is required
-  // ManagePermissionsInSubDomain: [[ColonyRole.Root], [ColonyRole.Architecture]],
-  // // Except when using multi-sig, then the architecture role is required
-  // ManagePermissionsInSubDomainViaMultiSig: [[ColonyRole.Architecture]],
-  requiredPermissions: [[ColonyRole.Root]],
-  type: CoreAction.Recovery,
+  permissionDomainId: () => {
+    return Id.RootDomain;
+  },
+  requiredPermissions({ watch }) {
+    const decisionMethod = watch(DECISION_METHOD_FIELD_NAME);
+    const createdIn = watch(CREATED_IN_FIELD_NAME);
+    const team = watch(TEAM_FIELD_NAME);
+
+    let createdInDomain: number | undefined;
+    if (decisionMethod === DecisionMethod.Reputation) {
+      createdInDomain = team ? createdIn : undefined;
+    } else {
+      createdInDomain = team;
+    }
+
+    // If createdInDomain is undefined, return subdomain permissions
+    if (createdInDomain === undefined) {
+      return [[ColonyRole.Root], [ColonyRole.Architecture]];
+    }
+
+    // If assigning permissions in the root domain, the root role is required
+    if (createdInDomain === Id.RootDomain) {
+      return [[ColonyRole.Root]];
+    }
+
+    // When using multi-sig and not in root domain, the architecture role is required
+    if (decisionMethod === DecisionMethod.MultiSig) {
+      return [[ColonyRole.Architecture]];
+    }
+
+    // If assigning permissions in any other domain, root or architecture is required
+    return [[ColonyRole.Root], [ColonyRole.Architecture]];
+  },
+  type: CoreAction.SetUserRoles,
 });

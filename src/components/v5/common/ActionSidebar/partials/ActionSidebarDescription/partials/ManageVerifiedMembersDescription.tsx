@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { ManageVerifiedMembersOperation } from '~types';
 import { type ManageVerifiedMembersFormValues } from '~v5/common/ActionSidebar/partials/forms/core/ManageVerifiedMembersForm/utils.ts';
 

@@ -1,4 +1,4 @@
-import { type ActionData } from '~actions/index';
+import { type ActionData } from '~actions';
 
 export interface ManageReputationProps {
   actionData: ActionData;

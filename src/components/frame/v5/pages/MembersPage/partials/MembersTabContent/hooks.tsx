@@ -2,7 +2,7 @@ import { ArrowSquareOut, CopySimple, HandCoins } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 // @BETA: Disabled for now

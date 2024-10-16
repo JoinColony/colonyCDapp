@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 // FIXME: Make sure we're not using ColonyActionType anywhere
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { type CreateNewTeamFormValues } from '~v5/common/ActionSidebar/partials/forms/core/CreateTeamForm/consts.ts';
 
 import CurrentUser from './CurrentUser.tsx';

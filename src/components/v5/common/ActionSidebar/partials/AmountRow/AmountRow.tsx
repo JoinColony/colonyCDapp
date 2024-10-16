@@ -1,7 +1,7 @@
 import { Coins } from '@phosphor-icons/react';
 import React from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';

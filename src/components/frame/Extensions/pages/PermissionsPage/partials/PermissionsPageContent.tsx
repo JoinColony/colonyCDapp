@@ -1,7 +1,7 @@
 import { Pencil, ShieldStar, X } from '@phosphor-icons/react';
 import React, { type PropsWithChildren, type FC } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';

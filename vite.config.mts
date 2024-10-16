@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
   ],
   resolve: {
     alias: {
-      '~actions': path.resolve(__dirname, 'src/actions'),
+      '~actions': path.resolve(__dirname, 'src/actions/index.ts'),
       '~apollo': path.resolve(__dirname, 'src/apollo'),
       '~auth': path.resolve(__dirname, 'src/auth'),
       '~common': path.resolve(__dirname, 'src/components/common'),

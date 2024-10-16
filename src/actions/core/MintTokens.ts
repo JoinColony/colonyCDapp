@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
 import MintTokenForm from '~v5/common/ActionSidebar/partials/forms/core/MintTokenForm/MintTokenForm.tsx';
 
 import { CoreAction } from './types.ts';

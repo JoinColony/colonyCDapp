@@ -1,6 +1,6 @@
 import { type UseFormReturn } from 'react-hook-form';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { type Address } from '~types';
 

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { getActionTitleValues } from '~actions/utils.ts';
+import { getTitleValues } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
@@ -53,7 +53,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
 
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
-    getActionTitleValues({
+    getTitleValues({
       actionData: action,
       colony,
       expenditureData: expenditure ?? undefined,

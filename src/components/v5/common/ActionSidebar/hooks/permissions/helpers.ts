@@ -1,13 +1,15 @@
-// import { type ColonyRole, Id } from '@colony/colony-js';
-//
-// import { Action, PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
-// import { getAllUserRoles } from '~transformers/index.ts';
-// import { DecisionMethod } from '~types/actions.ts';
-// import { type Colony } from '~types/graphql.ts';
-// import { type Address } from '~types/index.ts';
-// import { addressHasRoles } from '~utils/checks/index.ts';
-// import { extractColonyRoles } from '~utils/colonyRoles.ts';
-// import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/consts.ts';
+import { type UseFormReturn } from 'react-hook-form';
+
+import {
+  type CoreActionOrGroup,
+  getPermissionDomainId,
+  getRequiredPermissions,
+} from '~actions';
+import { getAllUserRoles } from '~transformers/index.ts';
+import { type Colony } from '~types/graphql.ts';
+import { type Address } from '~types/index.ts';
+import { addressHasRoles } from '~utils/checks/index.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 // FIXME: This needs to go into the individual action registrations
 // export const getPermissionsNeededForAction = (
@@ -29,6 +31,8 @@
 //       return PERMISSIONS_NEEDED_FOR_ACTION.CreateNewTeam;
 //     case Action.EditExistingTeam:
 //       return PERMISSIONS_NEEDED_FOR_ACTION.EditExistingTeam;
+//
+//    // TODO: NEXT!!!!!!!!! ADJUST THESE VALUES IN THE ACTIONDEFINITION
 //     case Action.ManageReputation:
 //       if (formValues.modification === ModificationOption.AwardReputation) {
 //         return PERMISSIONS_NEEDED_FOR_ACTION.ManageReputationAward;
@@ -106,88 +110,43 @@
 //   }
 // };
 
-// FIXME: This needs to go into the actions
-// Function returning the domain ID in which the user needs to have required permissions to create the action
-// export const getPermissionsDomainIdForAction = (
-//   actionType: Action,
-//   formValues: Record<string, any>,
-// ) => {
-//   const { decisionMethod, createdIn, team, from } = formValues;
-//   const isMotion =
-//     decisionMethod && decisionMethod !== DecisionMethod.Permissions;
-//
-//   switch (actionType) {
-//     case Action.SimplePayment:
-//     case Action.PaymentBuilder:
-//       if (!isMotion) {
-//         return from;
-//       }
-//       if (from !== undefined) {
-//         return createdIn;
-//       }
-//       return undefined;
-//     case Action.ManageReputation:
-//     case Action.EditExistingTeam:
-//       if (!isMotion) {
-//         return team;
-//       }
-//       if (team !== undefined) {
-//         return createdIn;
-//       }
-//       return undefined;
-//     // @TODO this should return the parent domain when nested domains are a thing
-//     case Action.ManagePermissions:
-//       if (!team) {
-//         return undefined;
-//       }
-//       return Id.RootDomain;
-//     default:
-//       if (!isMotion) {
-//         return Id.RootDomain;
-//       }
-//       return createdIn;
-//   }
-// };
+export const getHasActionPermissions = ({
+  colony,
+  userAddress,
+  actionType,
+  form,
+  isMultiSig = false,
+}: {
+  colony: Colony;
+  userAddress: Address;
+  actionType: CoreActionOrGroup;
+  form: UseFormReturn;
+  isMultiSig?: boolean;
+}) => {
+  const allUserRoles = getAllUserRoles(
+    extractColonyRoles(colony.roles),
+    userAddress,
+    isMultiSig,
+  );
+  if (allUserRoles.length === 0) {
+    return false;
+  }
 
-// export const getHasActionPermissions = ({
-//   colony,
-//   userAddress,
-//   actionType,
-//   formValues,
-//   isMultiSig = false,
-// }: {
-//   colony: Colony;
-//   userAddress: Address;
-//   actionType: Action;
-//   formValues: Record<string, any>;
-//   isMultiSig?: boolean;
-// }) => {
-//   const allUserRoles = getAllUserRoles(
-//     extractColonyRoles(colony.roles),
-//     userAddress,
-//     isMultiSig,
-//   );
-//   if (allUserRoles.length === 0) {
-//     return false;
-//   }
-//
-//   const requiredRoles = getPermissionsNeededForAction(actionType, formValues);
-//   const relevantDomainId = getPermissionsDomainIdForAction(
-//     actionType,
-//     formValues,
-//   );
-//
-//   if (!requiredRoles) {
-//     return undefined;
-//   }
-//
-//   const hasPermissions = addressHasRoles({
-//     requiredRoles,
-//     requiredRolesDomain: relevantDomainId,
-//     colony,
-//     address: userAddress,
-//     isMultiSig,
-//   });
-//
-//   return hasPermissions;
-// };
+  const requiredRoles = getRequiredPermissions(actionType);
+
+  if (!requiredRoles) {
+    return undefined;
+  }
+
+  const relevantDomainId = getPermissionDomainId(actionType, form);
+
+  const hasPermissions = addressHasRoles({
+    requiredRoles,
+    requiredRolesDomain: relevantDomainId,
+    colony,
+    address: userAddress,
+    isMultiSig,
+  });
+
+  return hasPermissions;
+};

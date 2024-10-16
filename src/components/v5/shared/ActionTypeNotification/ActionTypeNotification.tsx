@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { formatText } from '~utils/intl.ts';

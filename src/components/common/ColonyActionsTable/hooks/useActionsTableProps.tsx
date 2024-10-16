@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { APP_URL, DEFAULT_NETWORK_INFO } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

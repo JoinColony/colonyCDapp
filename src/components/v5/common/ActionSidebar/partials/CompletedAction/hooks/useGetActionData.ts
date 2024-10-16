@@ -2,7 +2,7 @@ import { Id } from '@colony/colony-js';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { getRole, UserRole } from '~constants/permissions.ts';
 import { DecisionMethod } from '~gql';
 import useGetColonyAction from '~hooks/useGetColonyAction.ts';

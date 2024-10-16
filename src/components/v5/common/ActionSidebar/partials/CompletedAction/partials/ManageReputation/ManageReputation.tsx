@@ -3,7 +3,7 @@ import { UserFocus } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
-import { CoreAction, CoreActionGroup } from '~actions/index.ts';
+import { CoreAction, CoreActionGroup } from '~actions';
 import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';

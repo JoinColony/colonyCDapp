@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 import { ActionTypes } from '~redux/index.ts';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';

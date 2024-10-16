@@ -5,7 +5,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
-import { CoreAction, type ActionData } from '~actions/index.ts';
+import { CoreAction, type ActionData } from '~actions';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';

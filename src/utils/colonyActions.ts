@@ -2,7 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { type BigNumber } from 'ethers';
 import { type ReactNode } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { getRole } from '~constants/permissions.ts';
 import { type ColonyActionRoles } from '~gql';
 import {

@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 import { ACTION_TYPE_TO_API_ACTION_TYPES_MAP } from '~constants/actionsFilters.ts';
 import { type DecisionMethod } from '~gql';
 import { type ActivityFeedFilters } from '~hooks/useActivityFeed/types.ts';

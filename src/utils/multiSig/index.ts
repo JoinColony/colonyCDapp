@@ -1,6 +1,6 @@
 import { Id, type ColonyRole } from '@colony/colony-js';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { ColonyActionType, type ColonyActionFragment } from '~gql';
 import { type Colony } from '~types/graphql.ts';

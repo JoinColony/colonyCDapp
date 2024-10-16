@@ -2,7 +2,7 @@ import { Binoculars } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { ModelSortDirection } from '~gql';

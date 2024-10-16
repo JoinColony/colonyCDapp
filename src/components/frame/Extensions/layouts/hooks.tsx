@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

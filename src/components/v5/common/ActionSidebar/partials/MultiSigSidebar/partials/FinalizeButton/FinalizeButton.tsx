@@ -2,8 +2,8 @@ import { SpinnerGap } from '@phosphor-icons/react';
 import React from 'react';
 import { type FC } from 'react';
 import { defineMessages } from 'react-intl';
-import { ActionData } from '~actions/index';
 
+import { type ActionData } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { ActionForm } from '~shared/Fields/index.ts';

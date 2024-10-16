@@ -1,7 +1,13 @@
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
+import { DecisionMethod } from '~gql';
+import {
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  TEAM_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import ManageReputationForm from '~v5/common/ActionSidebar/partials/forms/core/ManageReputationForm/ManageReputationForm.tsx';
 
 import { CoreAction, CoreActionGroup } from './types.ts';
@@ -34,6 +40,13 @@ const MSG = defineMessages({
 registerAction({
   component: ManageReputationForm,
   name: MSG.groupName,
+  permissionDomainId: ({ watch }) => {
+    const decisionMethod = watch(DECISION_METHOD_FIELD_NAME);
+    if (decisionMethod !== DecisionMethod.Reputation) {
+      return watch(TEAM_FIELD_NAME);
+    }
+    return watch(CREATED_IN_FIELD_NAME);
+  },
   actions: {
     EmitDomainReputationReward: {
       name: MSG.awardName,

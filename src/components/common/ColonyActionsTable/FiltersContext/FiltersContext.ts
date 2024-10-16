@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 import { type DecisionMethod } from '~gql';
 import { type ActivityFeedFilters } from '~hooks/useActivityFeed/types.ts';
 import { type MotionState } from '~utils/colonyMotions.ts';

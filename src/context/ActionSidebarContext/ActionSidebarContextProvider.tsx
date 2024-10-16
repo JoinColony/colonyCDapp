@@ -11,6 +11,7 @@ import { type FieldValues } from 'react-hook-form';
 // import { useNavigate } from 'react-router-dom';
 
 import { useTablet } from '~hooks';
+import useAsyncToggle from '~hooks/useAsyncToggle.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 // import { TX_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import { isChildOf } from '~utils/checks/isChildOf.ts';
@@ -30,7 +31,6 @@ import {
   ActionSidebarContext,
   type ActionSidebarContextValue,
 } from './ActionSidebarContext.ts';
-import useAsyncToggle from '~hooks/useAsyncToggle.ts';
 // import { isElementInsideModalOrPortal } from './utils.ts';
 
 const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
@@ -39,7 +39,6 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
   action: AnalyticsEventAction.TRIGGER,
   label: AnalyticsEventLabel.OPEN_ACTION_PANEL,
 };
-
 
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   // const [formDirty, setFormDirty] = useState(false);
@@ -98,7 +97,15 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       show,
       toggle,
     }),
-    [hide, initialValues, isOn, registerOnBeforeCloseCallback, unregisterOnBeforeCloseCallback, show, toggle],
+    [
+      hide,
+      initialValues,
+      isOn,
+      registerOnBeforeCloseCallback,
+      unregisterOnBeforeCloseCallback,
+      show,
+      toggle,
+    ],
   );
 
   return (

@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { CoreActionGroup } from '~actions/index.ts';
+import { CoreActionGroup } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ManageVerifiedMembersOperation } from '~types';
 import { formatText } from '~utils/intl.ts';

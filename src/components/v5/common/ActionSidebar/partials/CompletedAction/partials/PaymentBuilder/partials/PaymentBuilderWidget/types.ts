@@ -1,4 +1,4 @@
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 
 export enum ExpenditureStep {
   Create = 'CREATE',

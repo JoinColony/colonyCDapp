@@ -2,7 +2,7 @@ import { PaintBucket, UserList } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ActionData, CoreAction } from '~actions/index.ts';
+import { type ActionData, CoreAction } from '~actions';
 import { type OptionalValue } from '~types';
 import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';

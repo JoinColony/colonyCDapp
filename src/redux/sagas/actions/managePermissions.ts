@@ -1,8 +1,7 @@
 import { ClientType, ColonyRole, Id } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { CoreAction } from '~actions/index.ts';
-import { getActionPermissions } from '~actions/utils.ts';
+import { CoreAction, getRequiredPermissions } from '~actions';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -149,9 +148,11 @@ function* managePermissionsAction({
 
     const requiredRoles =
       // FIXME: See SetUserRoles.ts
+      // I AM PRETTY SURE THIS SHOULD COME FROM THE FORM (PROBABLY DONE IN ALL OTHER SAGAS, TOO)
+      // WE DO NOT HAVE ACCESS TO THE FORM HERE SO WHAT DO WE DO
       domainId === Id.RootDomain
-        ? getActionPermissions(CoreAction.ManagePermissionsInRootDomain)
-        : getActionPermissions(CoreAction.ManagePermissionsInSubDomain);
+        ? getRequiredPermissions(CoreAction.ManagePermissionsInRootDomain)
+        : getRequiredPermissions(CoreAction.ManagePermissionsInSubDomain);
 
     const initiatorAddress = yield colonyClient.signer.getAddress();
 

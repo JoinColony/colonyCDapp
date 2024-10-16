@@ -1,11 +1,11 @@
 import { type ColonyRole, Id } from '@colony/colony-js';
 import { useFormContext } from 'react-hook-form';
 
-import { CoreAction } from '~actions/index.ts';
 import {
-  getActionPermissions,
-  getActionPermissionDomainId,
-} from '~actions/utils.ts';
+  CoreAction,
+  getRequiredPermissions,
+  getPermissionDomainId,
+} from '~actions';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -49,13 +49,13 @@ const useHasNoDecisionMethods = () => {
     return false;
   }
 
-  const requiredPermissions = getActionPermissions(actionType);
+  const requiredPermissions = getRequiredPermissions(actionType);
 
   if (!requiredPermissions.length) {
     return false;
   }
 
-  const requiredRolesDomain = getActionPermissionDomainId(actionType, form);
+  const requiredRolesDomain = getPermissionDomainId(actionType, form);
 
   const userRootRoles = getUserRolesForDomain({
     colonyRoles: extractColonyRoles(colony.roles),

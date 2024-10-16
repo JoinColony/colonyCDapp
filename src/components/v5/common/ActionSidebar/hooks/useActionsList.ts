@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { CoreAction, CoreActionGroup } from '~actions/index.ts';
-import { getActionName } from '~actions/utils.ts';
+import { CoreAction, CoreActionGroup, getName } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
@@ -39,15 +38,15 @@ const useActionsList = () => {
         isAccordion: true,
         options: [
           {
-            label: getActionName(CoreAction.Payment),
+            label: getName(CoreAction.Payment),
             value: CoreAction.Payment,
           },
           {
-            label: getActionName(CoreAction.EditDomain),
+            label: getName(CoreAction.EditDomain),
             value: CoreAction.EditDomain,
           },
           {
-            label: getActionName(CoreAction.CreateExpenditure),
+            label: getName(CoreAction.CreateExpenditure),
             value: CoreAction.CreateExpenditure,
           },
           // @BETA: Disabled for now (all of the following in this key)
@@ -75,7 +74,7 @@ const useActionsList = () => {
         title: MSG.titleDecisions,
         options: [
           {
-            label: getActionName(CoreAction.CreateDecisionMotion),
+            label: getName(CoreAction.CreateDecisionMotion),
             value: CoreAction.CreateDecisionMotion,
           },
         ],
@@ -86,21 +85,21 @@ const useActionsList = () => {
         title: MSG.titleFunds,
         options: [
           {
-            label: getActionName(CoreAction.MoveFunds),
+            label: getName(CoreAction.MoveFunds),
             value: CoreAction.MoveFunds,
           },
           {
-            label: getActionName(CoreAction.MintTokens),
+            label: getName(CoreAction.MintTokens),
             value: CoreAction.MintTokens,
             isDisabled: !colony?.status?.nativeToken?.mintable,
           },
           {
-            label: getActionName(CoreAction.UnlockToken),
+            label: getName(CoreAction.UnlockToken),
             value: CoreAction.UnlockToken,
             isDisabled: !colony?.status?.nativeToken?.unlockable,
           },
           {
-            label: getActionName(CoreAction.ManageTokens),
+            label: getName(CoreAction.ManageTokens),
             value: CoreAction.ManageTokens,
           },
         ],
@@ -111,11 +110,11 @@ const useActionsList = () => {
         title: MSG.titleTeams,
         options: [
           {
-            label: getActionName(CoreAction.CreateDomain),
+            label: getName(CoreAction.CreateDomain),
             value: CoreAction.CreateDomain,
           },
           {
-            label: getActionName(CoreAction.EditDomain),
+            label: getName(CoreAction.EditDomain),
             value: CoreAction.EditDomain,
           },
         ],
@@ -126,23 +125,23 @@ const useActionsList = () => {
         title: MSG.titleAdmin,
         options: [
           {
-            label: getActionName(CoreActionGroup.ManageReputation),
+            label: getName(CoreActionGroup.ManageReputation),
             value: CoreActionGroup.ManageReputation,
           },
           {
-            label: getActionName(CoreAction.SetUserRoles),
+            label: getName(CoreAction.SetUserRoles),
             value: CoreAction.SetUserRoles,
           },
           {
-            label: getActionName(CoreAction.ColonyEdit),
+            label: getName(CoreAction.ColonyEdit),
             value: CoreAction.ColonyEdit,
           },
           {
-            label: getActionName(CoreAction.VersionUpgrade),
+            label: getName(CoreAction.VersionUpgrade),
             value: CoreAction.VersionUpgrade,
           },
           {
-            label: getActionName(CoreActionGroup.ManageVerifiedMembers),
+            label: getName(CoreActionGroup.ManageVerifiedMembers),
             value: CoreActionGroup.ManageVerifiedMembers,
           },
           // @BETA: Disabled for now

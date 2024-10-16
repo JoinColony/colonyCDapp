@@ -2,7 +2,7 @@ import { PencilCircle, Image, FileText } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ActionData, CoreAction } from '~actions/index.ts';
+import { type ActionData, CoreAction } from '~actions';
 import { formatText } from '~utils/intl.ts';
 import {
   TITLE_FIELD_NAME,

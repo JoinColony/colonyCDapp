@@ -2,7 +2,7 @@ import { UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { type ActionData, CoreAction } from '~actions/index.ts';
+import { type ActionData, CoreAction } from '~actions';
 import { ADDRESS_ZERO } from '~constants';
 import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';

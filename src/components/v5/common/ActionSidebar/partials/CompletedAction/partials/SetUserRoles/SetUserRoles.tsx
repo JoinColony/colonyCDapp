@@ -2,7 +2,7 @@ import { ColonyRole } from '@colony/colony-js';
 import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
-import { type ActionData, CoreAction } from '~actions/index.ts';
+import { type ActionData, CoreAction } from '~actions';
 import { ADDRESS_ZERO } from '~constants';
 import { getRole } from '~constants/permissions.ts';
 import {

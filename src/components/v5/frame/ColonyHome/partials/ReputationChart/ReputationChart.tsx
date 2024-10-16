@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { notNull } from '~utils/arrays/index.ts';

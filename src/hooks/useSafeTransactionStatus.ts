@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { type ActionData } from '~actions/index';
+import { type ActionData } from '~actions';
 import { ETHEREUM_NETWORK } from '~constants/index.ts';
 import { useGetSafeTransactionStatusQuery } from '~gql';
 

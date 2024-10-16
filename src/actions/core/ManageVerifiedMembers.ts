@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
 import ManageVerifiedMembersForm from '~v5/common/ActionSidebar/partials/forms/core/ManageVerifiedMembersForm/ManageVerifiedMembersForm.tsx';
 
 import { CoreAction, CoreActionGroup } from './types.ts';

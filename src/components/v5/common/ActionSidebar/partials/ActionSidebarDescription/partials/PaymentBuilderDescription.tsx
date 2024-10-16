@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { type PaymentBuilderFormValues } from '~v5/common/ActionSidebar/partials/forms/core/PaymentBuilderForm/hooks.ts';
 
 import CurrentUser from './CurrentUser.tsx';

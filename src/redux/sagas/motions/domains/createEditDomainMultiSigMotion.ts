@@ -2,8 +2,7 @@ import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { CoreAction } from '~actions/core/index.ts';
-import { getActionPermissions } from '~actions/utils.ts';
+import { CoreAction, getRequiredPermissions } from '~actions';
 import { ContextModule, getContext } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -96,9 +95,10 @@ function* createEditDomainMultiSigMotion({
       colonyAddress,
     );
 
+    // FIXME: THIS SHOULD COME FROM THE FORM (JUST LIKE IN THE OTHER SAGAS)
     const requiredRoles = isCreateDomain
-      ? getActionPermissions(CoreAction.CreateTeam)
-      : getActionPermissions(CoreAction.EditTeam);
+      ? getRequiredPermissions(CoreAction.CreateDomain)
+      : getRequiredPermissions(CoreAction.EditDomain);
 
     const userAddress = yield colonyClient.signer.getAddress();
 

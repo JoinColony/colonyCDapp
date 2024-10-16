@@ -5,7 +5,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import {
   ACTION_TYPE_FIELD_NAME,
   FROM_FIELD_NAME,

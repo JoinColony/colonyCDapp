@@ -1,4 +1,4 @@
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 
 import { type ColonyMotion, type ColonyMultiSig } from './graphql.ts';
 

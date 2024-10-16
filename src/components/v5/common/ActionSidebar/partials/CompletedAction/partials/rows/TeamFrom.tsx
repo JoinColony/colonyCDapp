@@ -1,7 +1,7 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { type DomainMetadata } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';

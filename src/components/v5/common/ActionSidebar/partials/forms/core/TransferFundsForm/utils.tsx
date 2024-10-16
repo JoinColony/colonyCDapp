@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 
-import { DecisionMethod } from '~types/actions.ts';
+import { DecisionMethod } from '~gql';
 import { type Colony } from '~types/graphql.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains, findDomainByNativeId } from '~utils/domains.ts';

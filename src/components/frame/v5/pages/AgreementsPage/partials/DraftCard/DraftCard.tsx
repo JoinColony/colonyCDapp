@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import React, { useCallback, type FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

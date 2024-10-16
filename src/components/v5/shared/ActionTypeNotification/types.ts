@@ -1,4 +1,4 @@
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 
 export interface ActionTypeNotificationProps {
   selectedAction: CoreAction;

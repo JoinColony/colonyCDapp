@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
 import CreateDecisionForm from '~v5/common/ActionSidebar/partials/forms/core/CreateDecisionForm/CreateDecisionForm.tsx';
 
 import { CoreAction } from './types.ts';

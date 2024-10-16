@@ -2,7 +2,7 @@ import { Article, FileText, Percent } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { CoreActionGroup, type ActionData } from '~actions/index.ts';
+import { CoreActionGroup, type ActionData } from '~actions';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { formatText } from '~utils/intl.ts';
 import {

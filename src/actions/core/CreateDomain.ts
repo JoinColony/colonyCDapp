@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
 import { CREATED_IN_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import CreateTeamForm from '~v5/common/ActionSidebar/partials/forms/core/CreateTeamForm/CreateTeamForm.tsx';
 

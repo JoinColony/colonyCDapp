@@ -1,7 +1,6 @@
-import { Id, type ColonyRole } from '@colony/colony-js';
-import { type FC, type ReactNode } from 'react';
+import { Id } from '@colony/colony-js';
+import { type ReactNode } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
-import { type MessageDescriptor } from 'react-intl';
 
 import { generateMessageValues } from '~common/ColonyActions/helpers/getEventTitleValues.ts';
 import { mapColonyActionToExpectedFormat } from '~common/ColonyActions/index.ts';
@@ -17,34 +16,14 @@ import {
   DECISION_METHOD_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import Default from '~v5/common/ActionSidebar/partials/forms/Default.tsx';
-import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { CoreActionGroup, type CoreAction } from './core/types.ts';
 import {
+  type ActionDefinition,
   type ActionData,
   type ActionTitleKey,
   type CoreActionOrGroup,
-} from './index.ts';
-
-type ActionMessageDescriptor = Required<Omit<MessageDescriptor, 'description'>>;
-
-interface MinimalActionDefinition {
-  // FIXME: eventually we want to get rid of CreateActionFormProps (especially getFormOptions)
-  component?: FC<CreateActionFormProps>;
-  name: ActionMessageDescriptor;
-  permissionDomainId?: (form: UseFormReturn) => number;
-  requiredPermissions?: ColonyRole[][];
-  title?: ActionMessageDescriptor;
-  titleKeys?: ActionTitleKey[];
-  type: CoreAction;
-  // @TODO: add this later
-  // validationSchema: ObjectSchema;
-}
-
-export type ActionDefinition = Omit<MinimalActionDefinition, 'type'> & {
-  actions?: Record<string, MinimalActionDefinition>;
-  type: CoreActionOrGroup;
-};
+} from './types.ts';
 
 const ACTIONS_CORE = new Map<CoreAction | CoreActionGroup, ActionDefinition>();
 
@@ -93,17 +72,30 @@ export const getFormOptions = (type: CoreActionOrGroup) => {
     requiredPermissions,
   };
 };
-export const getActionName = (type: CoreActionOrGroup) => {
+export const getName = (type: CoreActionOrGroup) => {
   const { name } = getAction(type);
   return name;
 };
 
-export const getActionPermissions = (type: CoreActionOrGroup) => {
+export const getRequiredPermissions = (
+  type: CoreActionOrGroup,
+  form?: UseFormReturn,
+) => {
   const action = getAction(type);
+
+  if (typeof action.requiredPermissions === 'function') {
+    if (!form) {
+      throw new Error(
+        `form argument is required to get permissions for action type ${type}`,
+      );
+    }
+    return action.requiredPermissions(form);
+  }
+
   return action.requiredPermissions || [];
 };
 
-export const getActionPermissionDomainId = (
+export const getPermissionDomainId = (
   type: CoreActionOrGroup,
   form: UseFormReturn,
 ) => {
@@ -112,21 +104,15 @@ export const getActionPermissionDomainId = (
     return action.permissionDomainId(form);
   }
   const decisionMethod = form.getValues(DECISION_METHOD_FIELD_NAME);
-  if (!decisionMethod) {
-    return Id.RootDomain;
-  }
 
-  const isMotion =
-    decisionMethod && decisionMethod === DecisionMethod.Reputation;
-
-  if (!isMotion) {
+  if (!decisionMethod || decisionMethod !== DecisionMethod.Reputation) {
     return Id.RootDomain;
   }
 
   return form.watch(CREATED_IN_FIELD_NAME);
 };
 
-export const getActionTitleKeys = (type: CoreActionOrGroup) => {
+export const getTitleKeys = (type: CoreActionOrGroup) => {
   const { titleKeys } = getAction(type);
   return titleKeys || [];
 };
@@ -149,7 +135,7 @@ const getChangelogItem = (
 };
 
 /* Returns the correct message values according to the action type. */
-export const getActionTitleValues = ({
+export const getTitleValues = ({
   actionData,
   colony,
   keyFallbackValues,
@@ -182,7 +168,7 @@ export const getActionTitleValues = ({
   const actionType = changelogItem?.hasObjectiveChanged
     ? CoreActionGroup.UpdateColonyObjective
     : actionData.type;
-  const keys = getActionTitleKeys(actionType);
+  const keys = getTitleKeys(actionType);
 
   return generateMessageValues(updatedItem, keys, {
     actionType,

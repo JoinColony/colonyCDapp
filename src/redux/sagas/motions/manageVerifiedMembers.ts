@@ -3,8 +3,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { CoreActionGroup } from '~actions/index.ts';
-import { getActionPermissions } from '~actions/utils.ts';
+import { CoreActionGroup, getRequiredPermissions } from '~actions';
 import { ActionTypes } from '~redux';
 import type { Action, AllActions } from '~redux';
 import { ManageVerifiedMembersOperation } from '~types/index.ts';
@@ -91,7 +90,8 @@ function* manageVerifiedMembersMotion({
           colonyRoles,
           colonyDomains,
           requiredDomainId: Id.RootDomain,
-          requiredColonyRoles: getActionPermissions(
+          requiredColonyRoles: getRequiredPermissions(
+            // FIXME: I feel like this might not be correct. Ask BASSGETA
             CoreActionGroup.ManageVerifiedMembers,
           ),
           permissionAddress: userAddress,

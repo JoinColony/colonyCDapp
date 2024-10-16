@@ -11,7 +11,7 @@ import {
 } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';

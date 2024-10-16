@@ -16,7 +16,7 @@ import { uniqueId } from 'lodash';
 import React, { type FC, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

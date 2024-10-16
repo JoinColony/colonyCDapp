@@ -10,7 +10,7 @@ import { WarningCircle } from '@phosphor-icons/react';
 import React, { useCallback, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';

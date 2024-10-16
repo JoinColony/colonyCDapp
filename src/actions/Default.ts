@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import Default from '~v5/common/ActionSidebar/partials/forms/Default.tsx';
 
 import { CoreAction } from './core/types.ts';
-import { type ActionDefinition } from './utils.ts';
+import { type ActionDefinition } from './types.ts';
 
 const MSG = defineMessages({
   name: {

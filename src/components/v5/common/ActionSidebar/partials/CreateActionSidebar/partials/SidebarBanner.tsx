@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { DecisionMethod } from '~gql';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';

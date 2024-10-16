@@ -1,4 +1,4 @@
-import { type ActionData, type CoreAction } from '~actions/index.ts';
+import { type ActionData, type CoreAction } from '~actions';
 import { type DecisionMethod, type SearchActionsQueryVariables } from '~gql';
 import { type RefetchMotionStates } from '~hooks/useNetworkMotionStates.ts';
 import { type SearchableSortDirection } from '~types/graphql.ts';

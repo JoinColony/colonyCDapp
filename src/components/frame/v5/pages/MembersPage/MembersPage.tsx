@@ -8,7 +8,7 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';

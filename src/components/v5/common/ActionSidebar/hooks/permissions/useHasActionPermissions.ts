@@ -14,14 +14,11 @@ const useHasActionPermissions = () => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
 
-  const { watch } = useFormContext();
-  // FIXME: We should do this differently. I assume this watches all the values. Let's just pass the formContext into the getHasActionPermission function
-  const formValues = watch();
+  const form = useFormContext();
 
-  const {
-    [ACTION_TYPE_FIELD_NAME]: actionType,
-    [DECISION_METHOD_FIELD_NAME]: decisionMethod,
-  } = formValues;
+  const actionType = form.watch(ACTION_TYPE_FIELD_NAME);
+  const decisionMethod = form.watch(DECISION_METHOD_FIELD_NAME);
+
   if (
     !actionType ||
     !decisionMethod ||
@@ -34,7 +31,7 @@ const useHasActionPermissions = () => {
     colony,
     userAddress: user?.walletAddress ?? '',
     actionType,
-    formValues,
+    form,
   });
 
   if (decisionMethod === DecisionMethod.Permissions) {
@@ -45,7 +42,7 @@ const useHasActionPermissions = () => {
     colony,
     userAddress: user?.walletAddress ?? '',
     actionType,
-    formValues,
+    form,
     isMultiSig: true,
   });
 

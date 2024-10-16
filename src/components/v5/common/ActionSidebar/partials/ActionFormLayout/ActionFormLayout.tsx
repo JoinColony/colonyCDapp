@@ -11,7 +11,7 @@ import React, {
 import { useController, useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import useConfirmModal from '~hooks/useConfirmModal.ts';
 import { formatText } from '~utils/intl.ts';

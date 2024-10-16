@@ -1,6 +1,6 @@
 import React, { type FC } from 'react';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { formatText } from '~utils/intl.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';

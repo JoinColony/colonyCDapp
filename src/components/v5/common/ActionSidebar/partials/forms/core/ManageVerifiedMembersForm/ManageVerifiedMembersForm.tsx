@@ -17,8 +17,7 @@ import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 import { getManageMembersOptions } from './consts.ts';
 import { useManageVerifiedMembers } from './hooks.ts';
 
-const displayName =
-  'v5.common.ActionSidebar.ManageVerifiedMembersForm';
+const displayName = 'v5.common.ActionSidebar.ManageVerifiedMembersForm';
 
 const ManageVerifiedMembersForm: FC<CreateActionFormProps> = ({
   getFormOptions,

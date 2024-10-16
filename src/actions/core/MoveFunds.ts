@@ -1,7 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 import { defineMessages } from 'react-intl';
 
-import { ActionTitleKey, registerAction } from '~actions/index.ts';
+import { ActionTitleKey, registerAction } from '~actions';
 import TransferFundsForm from '~v5/common/ActionSidebar/partials/forms/core/TransferFundsForm/TransferFundsForm.tsx';
 
 import { CoreAction } from './types.ts';

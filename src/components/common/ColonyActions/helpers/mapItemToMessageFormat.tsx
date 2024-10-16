@@ -2,7 +2,7 @@ import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
 import React from 'react';
 
-import { ActionTitleKey, type ActionData, CoreAction } from '~actions/index.ts';
+import { ActionTitleKey, type ActionData, CoreAction } from '~actions';
 import { type SimpleTarget } from '~gql';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';

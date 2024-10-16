@@ -1,7 +1,7 @@
 import { FilePlus } from '@phosphor-icons/react';
 import React from 'react';
 
-import { type CoreAction } from '~actions/index.ts';
+import { type CoreAction } from '~actions';
 import { formatActionType } from '~utils/colonyActions.ts';
 
 import ActionContent from './ActionContent.tsx';

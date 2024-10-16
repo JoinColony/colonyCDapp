@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import { registerAction } from '~actions/index.ts';
+import { registerAction } from '~actions';
 
 import { CoreActionGroup } from './types.ts';
 

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 
-import { CoreAction } from '~actions/index.ts';
+import { CoreAction } from '~actions';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';

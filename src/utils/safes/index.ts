@@ -1,4 +1,4 @@
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import {
   ADDRESS_ZERO,
   SAFE_NAMES_MAP,

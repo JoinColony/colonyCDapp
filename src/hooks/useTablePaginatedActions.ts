@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { type ActionData } from '~actions/index.ts';
+import { type ActionData } from '~actions';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyActionsQuery } from '~gql';
 import { SortDirection } from '~types/graphql.ts';
