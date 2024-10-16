@@ -6436,6 +6436,7 @@ export enum NotificationType {
   MultisigActionFinalized = 'MULTISIG_ACTION_FINALIZED',
   MultisigActionRejected = 'MULTISIG_ACTION_REJECTED',
   NewColonyVersion = 'NEW_COLONY_VERSION',
+  NewExtensionVersion = 'NEW_EXTENSION_VERSION',
   PermissionsAction = 'PERMISSIONS_ACTION'
 }
 
