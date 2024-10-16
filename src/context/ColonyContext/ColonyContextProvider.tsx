@@ -16,7 +16,13 @@ const MIN_SUPPORTED_COLONY_VERSION = 5;
 
 const displayName = 'ColonyContextProvider';
 
-const useUpdateColonyReputation = (colonyAddress?: string) => {
+const useUpdateColonyReputation = ({
+  colonyAddress,
+  refetchColony,
+}: {
+  colonyAddress?: string;
+  refetchColony: RefetchColonyFn;
+}) => {
   const [isReputationUpdating, setIsReputationUpdating] = useState(false);
   useState(false);
   const [updateContributorsWithReputation] =
@@ -28,16 +34,26 @@ const useUpdateColonyReputation = (colonyAddress?: string) => {
    * so as to conserve resources. Since it runs inside a lambda, it is not a blocking operation.
    */
   useEffect(() => {
-    if (colonyAddress) {
-      setIsReputationUpdating(true);
-      updateContributorsWithReputation({
-        variables: { colonyAddress },
-      }).then(() => {
-        setIsReputationUpdating(false);
-      });
-    }
+    const updateReputation = async () => {
+      if (colonyAddress) {
+        setIsReputationUpdating(true);
+        try {
+          await updateContributorsWithReputation({
+            variables: { colonyAddress },
+          });
+
+          await refetchColony();
+        } catch (error) {
+          console.error('Error updating contributors with reputation:', error);
+        } finally {
+          setIsReputationUpdating(false);
+        }
+      }
+    };
+    updateReputation();
   }, [
     colonyAddress,
+    refetchColony,
     updateContributorsWithReputation,
     setIsReputationUpdating,
   ]);
@@ -60,9 +76,10 @@ const ColonyContextProvider = ({
   startPollingColonyData: (pollInterval: number) => void;
   stopPollingColonyData: () => void;
 }) => {
-  const { isReputationUpdating } = useUpdateColonyReputation(
-    colony?.colonyAddress,
-  );
+  const { isReputationUpdating } = useUpdateColonyReputation({
+    colonyAddress: colony?.colonyAddress,
+    refetchColony,
+  });
 
   const canInteractWithColony = useCanInteractWithColony(colony);
   const isSupportedColonyVersion =
