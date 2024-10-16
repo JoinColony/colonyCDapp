@@ -29,6 +29,12 @@ import {
   getColonyManager,
 } from '../utils/index.ts';
 
+export enum ExtensionInstallAndEnableErrorStep {
+  InstallExtension = 'installExtension',
+  Initialise = 'initialise',
+  SetUserRoles = 'setUserRoles',
+}
+
 // Saga will attempt to
 // 1. Install extension
 // Then, if enabledAutomaticallyAfterInstall is true
@@ -109,8 +115,14 @@ export function* extensionInstallAndEnable({
       yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield initiateTransaction(installExtension.id);
-    yield waitForTxResult(installExtension.channel);
+    try {
+      yield initiateTransaction(installExtension.id);
+      yield waitForTxResult(installExtension.channel);
+    } catch (error) {
+      // Declare an error step for the error handler
+      error.step = ExtensionInstallAndEnableErrorStep.InstallExtension;
+      throw error;
+    }
 
     // If not enabledAutomaticallyAfterInstall return success here
     if (!autoEnableAfterInstall) {
@@ -158,8 +170,14 @@ export function* extensionInstallAndEnable({
       const initParams = modifyParams(initializationParams, defaultParams);
       yield transactionSetParams(initialise.id, initParams);
 
-      yield initiateTransaction(initialise.id);
-      yield waitForTxResult(initialise.channel);
+      try {
+        yield initiateTransaction(initialise.id);
+        yield waitForTxResult(initialise.channel);
+      } catch (error) {
+        // Declare an error step for the error handler
+        error.step = ExtensionInstallAndEnableErrorStep.Initialise;
+        throw error;
+      }
     }
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -181,8 +199,14 @@ export function* extensionInstallAndEnable({
       bytes32Roles,
     ]);
 
-    yield initiateTransaction(setUserRoles.id);
-    yield waitForTxResult(setUserRoles.channel);
+    try {
+      yield initiateTransaction(setUserRoles.id);
+      yield waitForTxResult(setUserRoles.channel);
+    } catch (error) {
+      // Declare an error step for the error handler
+      error.step = ExtensionInstallAndEnableErrorStep.SetUserRoles;
+      throw error;
+    }
 
     yield put({
       type: ActionTypes.EXTENSION_INSTALL_AND_ENABLE_SUCCESS,
