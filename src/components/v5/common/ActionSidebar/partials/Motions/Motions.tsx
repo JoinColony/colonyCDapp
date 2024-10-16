@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
@@ -52,6 +53,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const { loading: loadingExtensions, votingReputationExtensionData } =
     useEnabledExtensions();
 
+  const {
+    actionSidebarMotions: { setMotionsLoading },
+  } = useActionSidebarContext();
+
   const isVotingReputationExtensionUninstalled =
     !loadingExtensions && !votingReputationExtensionData;
 
@@ -78,6 +83,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     startPollingForAction,
     stopPollingForAction,
   ]);
+
+  useEffect(() => {
+    setMotionsLoading(loadingAction || loadingExtensions);
+  }, [loadingAction, loadingExtensions, setMotionsLoading]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};

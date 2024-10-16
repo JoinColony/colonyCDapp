@@ -41,6 +41,7 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
+  const [motionsLoading, setMotionsLoading] = useState(false);
   const cancelModalToggle = useToggle();
   const isTablet = useTablet();
   const [
@@ -109,6 +110,10 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [isActionSidebarOpen, toggleActionSidebar],
   );
 
+  const setMotionsLoadingState = useCallback((isLoading) => {
+    setMotionsLoading(isLoading);
+  }, []);
+
   const value = useMemo<ActionSidebarContextValue>(
     () => ({
       actionSidebarToggle: [
@@ -124,6 +129,10 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       ],
       cancelModalToggle,
       actionSidebarInitialValues,
+      actionSidebarMotions: {
+        motionsLoading,
+        setMotionsLoading: setMotionsLoadingState,
+      },
     }),
     [
       actionSidebarInitialValues,
@@ -134,6 +143,8 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggle,
       toggleOff,
       toggleOn,
+      motionsLoading,
+      setMotionsLoadingState,
     ],
   );
 
