@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
+import { COLONY_FOLLOWERS_ROUTE, COLONY_MEMBERS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import UserAvatars from '~v5/shared/UserAvatars/index.ts';
 
@@ -54,8 +54,7 @@ const MembersInformation = () => {
       >
         <Link
           className="md:hover:text-blue-400"
-          // @TODO: Update this to COLONY_FOLLOWERS_ROUTE once implemented
-          to={{ pathname: COLONY_MEMBERS_ROUTE, search: search || '' }}
+          to={{ pathname: COLONY_FOLLOWERS_ROUTE, search: search || '' }}
         >
           <p>
             <span className="font-semibold">{followersCount}</span>{' '}
