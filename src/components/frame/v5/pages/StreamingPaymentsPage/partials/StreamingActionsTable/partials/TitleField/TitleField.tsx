@@ -5,6 +5,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useMobile } from '~hooks';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
+import { getAmountPerValue } from '~utils/streamingPayments.ts';
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
@@ -80,7 +81,7 @@ const TitleField: FC<TitleFieldProps> = ({
             getTokenDecimalsWithFallback(decimals, DEFAULT_TOKEN_DECIMALS),
           ),
           tokenSymbol,
-          period: period || 0,
+          period: getAmountPerValue(period).toLowerCase(),
           recipient: isRecipientLoading
             ? ''
             : recipientUser?.profile?.displayName,
