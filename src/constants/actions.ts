@@ -1,5 +1,7 @@
 import { ColonyRole } from '@colony/colony-js';
 
+import { ColonyActionType } from '~gql';
+
 // Expected to return ColonyRole[][]
 export const PERMISSIONS_NEEDED_FOR_ACTION = {
   // Simple Payment requires all of funding, arbitration and administration roles
@@ -60,3 +62,12 @@ export enum Action {
   SimpleDiscussion = 'simple-discussion',
   ManageVerifiedMembers = 'manage-verified-members',
 }
+
+export const ACTIONS_WITH_NETWORK_FEE = new Set([
+  ColonyActionType.Payment,
+  ColonyActionType.PaymentMotion,
+  ColonyActionType.PaymentMultisig,
+  ColonyActionType.MultiplePayment,
+  ColonyActionType.MultiplePaymentMotion,
+  ColonyActionType.MultiplePaymentMultisig,
+]);

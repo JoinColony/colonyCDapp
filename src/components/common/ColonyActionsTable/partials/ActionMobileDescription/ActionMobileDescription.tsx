@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 
 import getActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
@@ -43,6 +44,8 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
     motionState || null,
   );
 
+  const { networkInverseFee } = useNetworkInverseFee();
+
   const refetchMotionState = () => {
     if (!motionData) {
       return;
@@ -57,6 +60,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
       actionData: action,
       colony,
       expenditureData: expenditure ?? undefined,
+      networkInverseFee,
     }),
   );
   const team = fromDomain?.metadata || motionData?.motionDomain.metadata;

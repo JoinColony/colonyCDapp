@@ -5,7 +5,7 @@ import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
-import { useAmountLessFee } from '~hooks/useAmountLessFee.ts';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useShouldDisplayMotionCountdownTime from '~hooks/useShouldDisplayMotionCountdownTime.ts';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import { formatText } from '~utils/intl.ts';
@@ -32,8 +32,6 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState,
     expenditureId,
     recipientAddress,
-    amount,
-    networkFee,
   } = action;
 
   const { user: recipientUser, loading: loadingUser } = useUserByAddress(
@@ -60,7 +58,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     motionState || null,
   );
 
-  const amountLessFee = useAmountLessFee(amount, networkFee);
+  const { networkInverseFee } = useNetworkInverseFee();
 
   const actionMetadataDescription = formatText(
     { id: 'action.title' },
@@ -69,10 +67,10 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
         ...action,
         recipientAddress: recipientUser?.walletAddress ?? recipientAddress,
         recipientUser: recipientUser ?? action.recipientUser,
-        amount: amountLessFee,
       },
       colony,
       expenditureData: expenditure ?? undefined,
+      networkInverseFee,
     }),
   );
 
