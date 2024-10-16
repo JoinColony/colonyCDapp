@@ -152,6 +152,12 @@ const updateColonyContributor = /* GraphQL */ `
   }
 `;
 
+const updateContributorsWithReputation = /* GraphQL */ `
+  mutation UpdateContributorsWithReputation($colonyAddress: String) {
+    updateContributorsWithReputation(input: { colonyAddress: $colonyAddress })
+  }
+`;
+
 const createTransaction = /* GraphQL */ `
   mutation CreateTransaction($input: CreateTransactionInput!) {
     createTransaction(input: $input) {
@@ -167,7 +173,6 @@ const updateToken = /* GraphQL */ `
     }
   }
 `;
-
 
 /*
  * Queries
@@ -429,14 +434,20 @@ const addTokenToDB = async (tokenAddress, avatar) => {
   });
 };
 
+const updateInitialReputation = async (colonyAddress) => {
+  console.log(`Setting initial reputation for colony ${colonyAddress}`);
+  await graphqlRequestPreconfigured(updateContributorsWithReputation, {
+    input: {
+      colonyAddress,
+    },
+  });
+  await delay(3000);
+};
+
 // Creating extra tokens, not added to any colony, but which are validated
 // Note that this method won't actually return anything
 const createValidatedToken = async (
-  {
-    tokenName = 'Generic Token',
-    tokenSymbol = 'GTKN',
-    tokenDecimals = 18,
-  },
+  { tokenName = 'Generic Token', tokenSymbol = 'GTKN', tokenDecimals = 18 },
   signerOrWallet,
 ) => {
   const colonyNetwork = await ColonyNetworkFactory.connect(
@@ -447,11 +458,7 @@ const createValidatedToken = async (
   // Dry run
   const newlyCreatedTokenAddress = await colonyNetwork.callStatic[
     'deployTokenViaNetwork'
-  ](
-    tokenName,
-    tokenSymbol,
-    tokenDecimals,
-  );
+  ](tokenName, tokenSymbol, tokenDecimals);
 
   // Create the actual token
   await colonyNetwork.deployTokenViaNetwork(
@@ -476,7 +483,9 @@ const createValidatedToken = async (
     API_KEY,
   );
 
-  console.log(`Created validated token "${tokenName}", "${tokenSymbol}", at address "${newlyCreatedTokenAddress}"`);
+  console.log(
+    `Created validated token "${tokenName}", "${tokenSymbol}", at address "${newlyCreatedTokenAddress}"`,
+  );
 };
 
 const mintTokens = async (
@@ -1674,16 +1683,17 @@ const createUserAndColonyData = async () => {
   );
 
   // Create some verified tokens (Acting as stablecoins for local dev)
-  const validatedTokensOwner = availableUsers.walletUsers[
-    utils.getAddress(Object.keys(ganacheAddresses)[0])
-  ];
+  const validatedTokensOwner =
+    availableUsers.walletUsers[
+      utils.getAddress(Object.keys(ganacheAddresses)[0])
+    ];
   await createValidatedToken(
     {
       tokenName: 'USDC for Local Development',
       tokenSymbol: 'USDC-L',
       tokenDecimals: 6,
     },
-    validatedTokensOwner
+    validatedTokensOwner,
   );
   await createValidatedToken(
     {
@@ -1691,7 +1701,7 @@ const createUserAndColonyData = async () => {
       tokenSymbol: 'USDT-L',
       tokenDecimals: 6,
     },
-    validatedTokensOwner
+    validatedTokensOwner,
   );
   await createValidatedToken(
     {
@@ -1699,7 +1709,14 @@ const createUserAndColonyData = async () => {
       tokenSymbol: 'DAI-L',
       tokenDecimals: 18,
     },
-    validatedTokensOwner
+    validatedTokensOwner,
+  );
+
+  // mine initial reputation
+  await Promise.all(
+    colonies.map(async ({ colonyAddress }) => {
+      await updateInitialReputation(colonyAddress);
+    }),
   );
 
   if (reputationMining) {
