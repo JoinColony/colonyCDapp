@@ -1,13 +1,14 @@
 import { Id } from '@colony/colony-js';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { type FC, useState, useEffect } from 'react';
+import React, { type FC, useState, useEffect, useMemo } from 'react';
 import { defineMessages } from 'react-intl';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ButtonWithLoader } from '~frame/Extensions/pages/ExtensionDetailsPage/partials/ExtensionDetailsHeader/ButtonWithLoader.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -18,7 +19,6 @@ import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import StreamingPaymentStatusPill from '~v5/common/ActionSidebar/partials/StreamingPaymentStatusPill/StreamingPaymentStatusPill.tsx';
-import Button from '~v5/shared/Button/Button.tsx';
 import MenuWithSections from '~v5/shared/MenuWithSections/MenuWithSections.tsx';
 
 import AvailableToClaimCounter from '../AvailableToClaimCounter/AvailableToClaimCounter.tsx';
@@ -68,6 +68,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
     amounts,
     paymentStatus,
     updateAmountsAndStatus,
+    expectedPaymentStatus,
   } = streamingPayment;
   const { colony } = useColonyContext();
   const { streamingPaymentsAddress } = useEnabledExtensions();
@@ -77,17 +78,13 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
   const [isLoading, setIsLoading] = useState(false);
+  const isStatusLoading =
+    expectedPaymentStatus !== null && expectedPaymentStatus !== paymentStatus;
 
-  useEffect(() => {
-    if (streamingPaymentData && !loadingStreamingPayment) {
-      updateAmountsAndStatus(
-        streamingPaymentData,
-        Math.floor(blockTime ?? Date.now() / 1000),
-        !!action.isMotion,
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingStreamingPayment, streamingPaymentData]);
+  const currentTime = useMemo(
+    () => Math.floor(blockTime ?? Date.now() / 1000),
+    [blockTime],
+  );
 
   const checkIfHasEnoughFunds = useHasEnoughTokensToClaim(
     streamingPaymentData?.nativeDomainId || Id.RootDomain,
@@ -126,14 +123,20 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
 
       await claim(claimPayload);
 
-      refetchStreamingPayment();
-      fetchCurrentBlockTime();
+      await fetchCurrentBlockTime();
+      await refetchStreamingPayment();
     } catch (error) {
       console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!loadingStreamingPayment) {
+      fetchCurrentBlockTime();
+    }
+  }, [fetchCurrentBlockTime, loadingStreamingPayment]);
 
   if (!streamingPaymentData) {
     return null;
@@ -189,7 +192,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
                 <div className="flex items-center justify-between gap-4">
                   <h4 className="text-1">{formatText(MSG.streamingStatus)}</h4>
                   <LoadingSkeleton
-                    isLoading={isLoading}
+                    isLoading={loadingStreamingPayment || isStatusLoading}
                     className="h-[1.625rem] w-14 rounded"
                   >
                     <StreamingPaymentStatusPill status={paymentStatus} />
@@ -200,7 +203,9 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
                     {formatText(MSG.paidToDate)}
                   </span>
                   <LoadingSkeleton
-                    isLoading={isLoading}
+                    isLoading={
+                      loadingStreamingPayment || isStatusLoading || isLoading
+                    }
                     className="h-[1.125rem] w-14 rounded"
                   >
                     <Numeral
@@ -221,13 +226,15 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
                     {formatText(MSG.availableToClaim)}
                   </span>
                   <LoadingSkeleton
-                    isLoading={isLoading}
+                    isLoading={
+                      loadingStreamingPayment || isStatusLoading || isLoading
+                    }
                     className="h-[1.125rem] w-14 rounded"
                   >
                     <AvailableToClaimCounter
                       hasEnoughFunds={hasEnoughFunds}
                       status={paymentStatus}
-                      onTimeEnd={fetchCurrentBlockTime}
+                      // onTimeEnd={fetchCurrentBlockTime}
                       amountAvailableToClaim={amounts.amountAvailableToClaim}
                       decimals={
                         selectedToken?.decimals || colony.nativeToken.decimals
@@ -235,28 +242,32 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
                       tokenSymbol={
                         selectedToken?.symbol || colony.nativeToken.symbol
                       }
-                      getAmounts={() =>
+                      getAmounts={(currentTimeValue) =>
                         updateAmountsAndStatus(
                           streamingPaymentData,
-                          Math.floor(blockTime ?? Date.now() / 1000),
+                          currentTimeValue,
                           !!action.isMotion,
                         )
                       }
                       ratePerSecond={ratePerSecond}
+                      currentTime={currentTime}
                     />
                   </LoadingSkeleton>
                 </div>
                 <div className="mt-6 flex min-h-10 w-full justify-center">
-                  <Button
-                    className="w-full"
+                  <ButtonWithLoader
                     onClick={handleClaim}
-                    disabled={BigNumber.from(
-                      amounts.amountAvailableToClaim,
-                    ).isZero()}
+                    isFullSize
+                    disabled={
+                      BigNumber.from(amounts.amountAvailableToClaim).isZero() ||
+                      !hasEnoughFunds ||
+                      loadingStreamingPayment ||
+                      isStatusLoading
+                    }
                     loading={isLoading}
                   >
                     {formatText(MSG.payFunds)}
-                  </Button>
+                  </ButtonWithLoader>
                 </div>
               </>
             ),

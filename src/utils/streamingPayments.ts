@@ -132,6 +132,13 @@ export const checkIfStreamingPaymentEnded = ({
     };
   }
 
+  if (isCancelled) {
+    return {
+      ended: true,
+      status: StreamingPaymentStatus.Cancelled,
+    };
+  }
+
   switch (endCondition) {
     case StreamingPaymentEndCondition.LimitReached:
       return {
@@ -185,7 +192,7 @@ export const getStreamingPaymentStatus = ({
     currentTimestamp,
   });
 
-  if (!started) {
+  if (!started && !isCancelled) {
     return StreamingPaymentStatus.NotStarted;
   }
 
