@@ -19,7 +19,15 @@ export const waitForDbAfterExtensionAction = (
         latestVersion: number;
       }
     | {
-        method: Exclude<ExtensionMethods, ExtensionMethods.UPGRADE>;
+        method: ExtensionMethods.INSTALL;
+        initialiseTransactionFailed?: boolean;
+        setUserRolesTransactionFailed?: boolean;
+      }
+    | {
+        method: Exclude<
+          ExtensionMethods,
+          ExtensionMethods.UPGRADE | ExtensionMethods.INSTALL
+        >;
       }
   ),
 ) => {
@@ -50,6 +58,22 @@ export const waitForDbAfterExtensionAction = (
 
       switch (args.method) {
         case ExtensionMethods.INSTALL: {
+          if (
+            extensionData?.autoEnableAfterInstall &&
+            !!args.initialiseTransactionFailed
+          ) {
+            condition = !!extensionData;
+            break;
+          }
+
+          if (
+            extensionData?.autoEnableAfterInstall &&
+            !!args.setUserRolesTransactionFailed
+          ) {
+            condition = !!extensionData.isEnabled;
+            break;
+          }
+
           if (extensionData?.autoEnableAfterInstall) {
             condition =
               !!extensionData.isEnabled &&
@@ -77,7 +101,11 @@ export const waitForDbAfterExtensionAction = (
         }
 
         case ExtensionMethods.ENABLE: {
-          condition = !!extensionData?.isInitialized;
+          // condition = !!extensionData?.isInitialized;
+
+          condition =
+            !!extensionData?.isEnabled &&
+            extensionData?.missingColonyPermissions.length === 0;
           break;
         }
 
