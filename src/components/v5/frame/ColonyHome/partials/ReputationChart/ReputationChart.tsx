@@ -32,6 +32,14 @@ const MSG = defineMessages({
     id: `${displayName}.influenceTitleContributors`,
     defaultMessage: 'Top members',
   },
+  noColonyReputationLabel: {
+    id: `${displayName}.noColonyReputationLabel`,
+    defaultMessage: 'There is no reputation in the colony yet',
+  },
+  noTeamReputationLabel: {
+    id: `${displayName}.noTeamReputationLabel`,
+    defaultMessage: 'There is no reputation in the team yet',
+  },
 });
 
 const ReputationChart = () => {
@@ -68,6 +76,15 @@ const ReputationChart = () => {
     ? MSG.reputationTitleContributors
     : MSG.reputationTitleTeam;
 
+  const emptyChartItem = {
+    id: 'noReputation',
+    label: formatText(
+      isNoSubDomains ? MSG.noTeamReputationLabel : MSG.noColonyReputationLabel,
+    ),
+    value: 100,
+    color: '--color-gray-200',
+  };
+
   const ActionsMenu = isNoSubDomains ? ContributorActionsMenu : TeamActionsMenu;
 
   return (
@@ -84,7 +101,11 @@ const ReputationChart = () => {
         <ActionsMenu isDisabled={isDataLoading} />
       </div>
       <ReputationChartContextProvider>
-        <Chart data={chartData} isLoading={isDataLoading} />
+        <Chart
+          data={chartData}
+          emptyChartItem={emptyChartItem}
+          isLoading={isDataLoading}
+        />
       </ReputationChartContextProvider>
     </div>
   );
