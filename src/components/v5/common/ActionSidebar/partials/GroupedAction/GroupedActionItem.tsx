@@ -74,14 +74,16 @@ export const GroupedActionItem: FC<GroupedActionItemProps> = ({
       type="button"
       className="relative my-[1px] flex h-full w-full flex-col items-start rounded-lg border border-gray-200 p-5 text-left transition-colors hover:bg-gray-25"
     >
-      <div className={clsx('mb-2 rounded-lg p-[7px]', bgColorClass)}>
-        <Icon size={22} className={iconColorClass} />
+      <div className="mb-2 flex w-full items-center justify-between">
+        <div className={clsx('rounded-lg p-[7px]', bgColorClass)}>
+          <Icon size={22} className={iconColorClass} />
+        </div>
+        {isNew && (
+          <PillsBase className="bg-success-100 text-success-400">
+            {formatText({ id: 'badge.new' })}
+          </PillsBase>
+        )}
       </div>
-      {isNew && (
-        <PillsBase className="absolute right-5 top-6 bg-success-100 text-success-400">
-          {formatText({ id: 'badge.new' })}
-        </PillsBase>
-      )}
       <h3 className="text-md font-medium text-gray-900">{title}</h3>
       <p className="mt-1 text-sm text-gray-600">{description}</p>
     </button>
