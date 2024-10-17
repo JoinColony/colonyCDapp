@@ -257,6 +257,12 @@ module.exports = {
             animation: 'shine 1.125s ease infinite',
           },
         },
+        '.skeleton-dark': {
+          '.skeleton&::before': {
+            'background-image':
+              'linear-gradient(90deg,rgba(146, 149, 152, 0),rgba(146, 149, 152, 0.5),rgba(146, 149, 152, 0))',
+          },
+        },
         '.break-word': {
           'word-break': 'break-word',
         },
