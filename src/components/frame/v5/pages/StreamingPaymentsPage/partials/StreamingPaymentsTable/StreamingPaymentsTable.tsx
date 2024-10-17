@@ -1,53 +1,75 @@
+import { Binoculars } from '@phosphor-icons/react';
+import { getPaginationRowModel } from '@tanstack/react-table';
 import { BigNumber } from 'ethers';
-import React from 'react';
-import { defineMessages } from 'react-intl';
+import React, { useMemo } from 'react';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useSearchStreamingPaymentsQuery } from '~gql';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import { formatText } from '~utils/intl.ts';
-import { convertToMonthlyAmount } from '~utils/streamingPayments.ts';
+import {
+  convertToMonthlyAmount,
+  getStreamingPaymentAmountsLeft,
+  getStreamingPaymentStatus,
+} from '~utils/streamingPayments.ts';
+import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import Table from '~v5/common/Table/Table.tsx';
 
-import { useRenderSubComponent, useStreamingTableColumns } from './hooks.tsx';
+import { useStreamingFiltersContext } from './FiltersContext/StreamingFiltersContext.ts';
+import {
+  useRenderSubComponent,
+  useStreamingPaymentTable,
+  useStreamingTableColumns,
+} from './hooks.tsx';
 import { type StreamingTableFieldModel } from './types.ts';
+import { searchStreamingPayments } from './utils.ts';
 
 const displayName =
   'pages.StreamingPaymentsPage.partials.StreamingPaymentsTable';
 
-const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: 'Streaming Payments',
-  },
-});
-
 const StreamingPaymentsTable = () => {
   const {
-    colony: { nativeToken, colonyAddress },
+    colony: { nativeToken },
   } = useColonyContext();
-  const { data, loading } = useSearchStreamingPaymentsQuery({
-    variables: {
-      colonyId: colonyAddress,
-    },
-  });
+  const { items, loading } = useStreamingPaymentTable();
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
+  const { searchFilter, selectedFiltersCount } = useStreamingFiltersContext();
+  const { totalMembers: members } = useMemberContext();
 
-  const groupedStreamingPayments: StreamingTableFieldModel[] = (
-    data?.searchStreamingPayments?.items || []
-  )
+  const groupedStreamingPayments: StreamingTableFieldModel[] = items
     .filter(notNull)
-    .map((item) => ({
-      title: item.actions?.items[0]?.metadata?.customTitle || '',
-      token: item.token || nativeToken,
-      nativeDomainId: item.nativeDomainId,
-      paymentId: item.id,
-      amount: item.amount,
-      creatorAddress: item.creatorAddress,
-      recipientAddress: item.recipientAddress,
-      interval: item.interval,
-      transactionId: item.actions?.items[0]?.transactionHash || '',
-    }))
+    .map((item) => {
+      const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+        item,
+        Math.floor(blockTime ?? Date.now() / 1000),
+      );
+      const paymentStatus = getStreamingPaymentStatus({
+        streamingPayment: item,
+        currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+        amountAvailableToClaim,
+      });
+
+      return {
+        title: item.actions?.items[0]?.metadata?.customTitle || '',
+        token: item.token || nativeToken,
+        nativeDomainId: item.nativeDomainId,
+        paymentId: item.id,
+        amount: item.amount,
+        creatorAddress: item.creatorAddress,
+        recipientAddress: item.recipientAddress,
+        interval: item.interval,
+        transactionId: item.actions?.items[0]?.transactionHash || '',
+        id: item.id,
+        nativeId: item.nativeId,
+        startTime: item.startTime,
+        endTime: item.endTime,
+        tokenAddress: item.tokenAddress,
+        createdAt: item.createdAt,
+        status: paymentStatus,
+      };
+    })
     .reduce<StreamingTableFieldModel[]>((result, item) => {
       const { recipientAddress } = item;
 
@@ -81,43 +103,70 @@ const StreamingPaymentsTable = () => {
         userStreamIndex = existingUser.userStreams.length - 1;
       }
 
-      const monthlyAmount = convertToMonthlyAmount(
-        BigNumber.from(item.amount),
-        Number(item.interval),
-      );
+      const isPaymentActive = item.status === StreamingPaymentStatus.Active;
 
-      const currentStream = existingUser.userStreams[userStreamIndex];
-      const totalAmount = BigNumber.from(currentStream.amount)
-        .add(monthlyAmount)
-        .toString();
+      if (isPaymentActive) {
+        const monthlyAmount = convertToMonthlyAmount(
+          BigNumber.from(item.amount),
+          Number(item.interval),
+        );
 
-      existingUser.userStreams[userStreamIndex] = {
-        ...currentStream,
-        amount: totalAmount,
-      };
+        const currentStream = existingUser.userStreams[userStreamIndex];
+        const totalAmount = BigNumber.from(currentStream.amount)
+          .add(monthlyAmount)
+          .toString();
+
+        existingUser.userStreams[userStreamIndex] = {
+          ...currentStream,
+          amount: totalAmount,
+        };
+      }
 
       existingUser.actions = [...existingUser.actions, item];
 
       return result;
     }, []);
 
+  const searchedStreamingPayments = useMemo(
+    () =>
+      searchStreamingPayments(groupedStreamingPayments, members, searchFilter),
+    [groupedStreamingPayments, searchFilter, members],
+  );
+
   const columns = useStreamingTableColumns(loading);
   const renderSubComponent = useRenderSubComponent();
 
   return (
-    <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-semibold">{formatText(MSG.title)}</h2>
-      </div>
-      <Table<StreamingTableFieldModel>
-        className="[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-gray-100 [&_td]:pr-4 [&_th]:border-none [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0 [&_tr.expanded-below_td]:border-gray-200 [&_tr:not(:last-child)_td]:border-b"
-        data={loading ? Array(4).fill({}) : groupedStreamingPayments}
-        columns={columns}
-        renderCellWrapper={(_, content) => content}
-        withBorder={false}
-        renderSubComponent={renderSubComponent}
-      />
-    </div>
+    <Table<StreamingTableFieldModel>
+      className="[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:border-gray-100 [&_td]:pr-4 [&_th]:border-none [&_tr.expanded-below+tr_td]:pl-0 [&_tr.expanded-below+tr_td]:pr-0 [&_tr.expanded-below_td]:border-gray-200 [&_tr:not(:last-child)_td]:border-b"
+      data={loading ? Array(4).fill({}) : searchedStreamingPayments}
+      columns={columns}
+      renderCellWrapper={(_, content) => content}
+      withBorder={false}
+      renderSubComponent={renderSubComponent}
+      paginationDisabled={loading}
+      showTotalPagesNumber={false}
+      getPaginationRowModel={getPaginationRowModel()}
+      initialState={{
+        pagination: {
+          pageSize: 10,
+        },
+      }}
+      emptyContent={
+        <EmptyContent
+          icon={Binoculars}
+          title={{ id: 'streamingPayment.table.emptyContent.title' }}
+          description={{
+            id:
+              searchFilter || selectedFiltersCount
+                ? 'streamingPayment.table.emptyContent.search.description'
+                : 'streamingPayment.table.emptyContent.description',
+          }}
+          withoutButtonIcon
+          className="px-6 pb-9 pt-10"
+        />
+      }
+    />
   );
 };
 
