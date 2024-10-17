@@ -43,6 +43,13 @@ const getActionFinalizedDate = (action) => {
       : null;
   }
 
+  if (action.isMultiSig) {
+    const multiSigData = action.multiSigData;
+    return multiSigData.isExecuted && multiSigData.executedAt
+      ? multiSigData.executedAt
+      : null;
+  }
+
   return action.updatedAt;
 };
 
@@ -179,23 +186,41 @@ const getTokenAddressesFromExpenditures = (expenditures) => {
  * This helper is mostly needed for treating the case of colony-level actions and adding the finalizedDate
  */
 const getFormattedActions = (actions, domainId) => {
-  return actions.map((action) => {
-    const actionWithFinalizedDate = getActionWithFinalizedDate(action);
-    let amount = action.amount;
+  // Separating the actions created as extension support
+  let extensionSupportActions = actions.filter(
+    (action) => !!action.initiatorExtension?.id,
+  );
 
-    /**
-     * If there is no domain selected (aka we are at colony level) and the action type is not among payments, we'll consider the amount to be '0'
-     * Though we might need to reconsider this when transferring funds between colonies
-     */
-    if (!domainId && !paymentActionTypes.includes(action.type)) {
-      amount = '0';
-    }
+  return actions
+    .filter((action) => !action.initiatorExtension?.id)
+    .map((action) => {
+      const actionWithFinalizedDate = getActionWithFinalizedDate(action);
+      let amount = action.amount;
+      let networkFee = action.networkFee;
 
-    return {
-      ...actionWithFinalizedDate,
-      amount,
-    };
-  });
+      /**
+       * If there is no domain selected (aka we are at colony level) and the action type is not among payments, we'll consider the amount to be '0'
+       * Though we might need to reconsider this when transferring funds between colonies
+       */
+      if (!domainId && !paymentActionTypes.includes(action.type)) {
+        amount = '0';
+      }
+
+      const attachedAction = extensionSupportActions.find(
+        (extensionSupportAction) =>
+          extensionSupportAction.rootHash === action.rootHash,
+      );
+
+      if (attachedAction) {
+        networkFee = attachedAction.networkFee;
+      }
+
+      return {
+        ...actionWithFinalizedDate,
+        amount,
+        networkFee,
+      };
+    });
 };
 
 const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {

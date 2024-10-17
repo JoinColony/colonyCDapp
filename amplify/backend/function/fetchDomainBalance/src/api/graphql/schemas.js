@@ -200,6 +200,15 @@ module.exports = {
               hasPassed
             }
           }
+          isMultiSig
+          multiSigData {
+            executedAt
+            isExecuted
+          }
+          initiatorExtension {
+            id
+          }
+          rootHash
           token {
             ...LightTokenFragment
           }
