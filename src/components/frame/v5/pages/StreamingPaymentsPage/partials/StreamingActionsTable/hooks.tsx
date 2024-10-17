@@ -6,10 +6,10 @@ import React, { useMemo } from 'react';
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import StreamingPaymentStatusPill from '~v5/common/ActionSidebar/partials/StreamingPaymentStatusPill/StreamingPaymentStatusPill.tsx';
 
 import { type StreamingActionTableFieldModel } from '../StreamingPaymentsTable/types.ts';
 
-import StatusPill from './partials/StatusPill/StatusPill.tsx';
 import TeamField from './partials/TeamField/TeamField.tsx';
 import TitleField from './partials/TitleField/TitleField.tsx';
 
@@ -20,7 +20,6 @@ export const useStreamingActionsTableColumns = () => {
     return [
       helper.display({
         id: 'title',
-        staticSize: '100%',
         enableSorting: false,
         cell: ({ row }) => (
           <TitleField
@@ -37,9 +36,9 @@ export const useStreamingActionsTableColumns = () => {
         colSpan: (isExpanded) => (isExpanded ? 3 : undefined),
         header: formatText({ id: 'streamingPayment.table.description' }),
       }),
-      helper.display({
+      helper.accessor('amount', {
         id: 'streamed',
-        staticSize: '6.25rem',
+        staticSize: '7rem',
         enableSorting: true,
         cell: ({ row }) => (
           <Numeral
@@ -51,7 +50,7 @@ export const useStreamingActionsTableColumns = () => {
         colSpan: (isExpanded) => (isExpanded ? 0 : undefined),
         header: formatText({ id: 'streamingPayment.table.streamed' }),
       }),
-      helper.display({
+      helper.accessor('token.symbol', {
         id: 'token',
         staticSize: '5rem',
         enableSorting: true,
@@ -63,10 +62,10 @@ export const useStreamingActionsTableColumns = () => {
         colSpan: (isExpanded) => (isExpanded ? 0 : undefined),
         header: formatText({ id: 'streamingPayment.table.token' }),
       }),
-      helper.display({
+      helper.accessor('nativeDomainId', {
         id: 'team',
         staticSize: '8.125rem',
-        enableSorting: false,
+        enableSorting: true,
         cell: ({ row }) => <TeamField domainId={row.original.nativeDomainId} />,
         header: formatText({ id: 'streamingPayment.table.team' }),
       }),
@@ -74,7 +73,9 @@ export const useStreamingActionsTableColumns = () => {
         id: 'status',
         staticSize: '7.5rem',
         enableSorting: false,
-        cell: ({ row }) => <StatusPill paymentId={row.original.paymentId} />,
+        cell: ({ row }) => (
+          <StreamingPaymentStatusPill status={row.original.status} />
+        ),
         header: formatText({ id: 'streamingPayment.table.status' }),
       }),
       helper.display({

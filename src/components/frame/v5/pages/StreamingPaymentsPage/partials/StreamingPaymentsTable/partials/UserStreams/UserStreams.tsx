@@ -69,7 +69,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
       tooltipContent={
         <span>
           {items.map(({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
-            <span>
+            <span key={tokenSymbol}>
               <Numeral value={amount} decimals={tokenDecimals} /> {tokenSymbol}{' '}
               {' /month'} (
               <Numeral
@@ -87,7 +87,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
         </span>
       }
     >
-      <div className="flex items-center gap-[0.125rem] text-1">
+      <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
         {currency} <Numeral value={totalFunds} /> {' /month'}
       </div>
     </Tooltip>
