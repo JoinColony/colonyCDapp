@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { Navigate, Outlet, useParams } from 'react-router-dom';
 
 import ActionSidebarContextProvider from '~context/ActionSidebarContext/ActionSidebarContextProvider.tsx';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
 import ColonyContextProvider from '~context/ColonyContext/ColonyContextProvider.tsx';
 import ColonyCreateModalProvider from '~context/ColonyCreateModalContext/ColonyCreateModalContextProvider.tsx';
 import ColonyDecisionProvider from '~context/ColonyDecisionContext/ColonyDecisionContextProvider.tsx';
@@ -16,6 +17,7 @@ import { ColonyLayout } from '~frame/Extensions/layouts/index.ts';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { useGetFullColonyByNameQuery } from '~gql';
 import useIsContributor from '~hooks/useIsContributor.ts';
+import { formatText } from '~utils/intl.ts';
 
 import NotFoundRoute from './NotFoundRoute.tsx';
 
@@ -26,10 +28,16 @@ const MSG = defineMessages({
     id: `${displayName}.loadingText`,
     defaultMessage: 'Loading Colony',
   },
+  dashboardBreadcrumbLabel: {
+    id: `${displayName}.dashboardBreadcrumbLabel`,
+    defaultMessage: 'Dashboard',
+  },
 });
 
 const ColonyRoute = () => {
   const { colonyName = '' } = useParams();
+  const { setRootBreadcrumbItem, setShouldShowBreadcrumbs, resetBreadcrumbs } =
+    useBreadcrumbsContext();
   const {
     data,
     loading: isColonyLoading,
@@ -53,6 +61,18 @@ const ColonyRoute = () => {
     colonyAddress: colony?.colonyAddress,
     walletAddress: user?.walletAddress,
   });
+
+  useEffect(() => {
+    setRootBreadcrumbItem({
+      link: `/${colonyName}`,
+      label: formatText(MSG.dashboardBreadcrumbLabel),
+    });
+    setShouldShowBreadcrumbs(true);
+    return () => {
+      resetBreadcrumbs();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colonyName]);
 
   if (
     walletConnecting ||

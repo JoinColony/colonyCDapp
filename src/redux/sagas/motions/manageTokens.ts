@@ -32,7 +32,6 @@ import { validateTokenAddresses } from '../utils/validateTokens.ts';
 function* manageTokensMotion({
   payload: {
     colonyAddress,
-    colonyName,
     tokenAddresses,
     customActionTitle,
     annotationMessage,
@@ -40,7 +39,7 @@ function* manageTokensMotion({
     colonyDomains,
     isMultiSig = false,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MANAGE_TOKENS>) {
   let txChannel;
@@ -203,16 +202,11 @@ function* manageTokensMotion({
     }
 
     setTxHash?.(txHash);
+
     yield put<AllActions>({
       type: ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.MOTION_MANAGE_TOKENS_ERROR, caughtError, meta);
   } finally {

@@ -7,15 +7,12 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/PageHeadingContext.ts';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
@@ -32,12 +29,10 @@ const AgreementsPage: FC = () => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { user } = useAppContext();
-  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
-  useSetPageBreadcrumbs(teamsBreadcrumbs);
   useSetPageHeadingTitle(formatText({ id: 'agreementsPage.title' }));
   const { searchedAgreements, loading, loadingMotionStateFilter } =
     useGetAgreements();
@@ -53,7 +48,7 @@ const AgreementsPage: FC = () => {
   );
 
   return (
-    <div>
+    <ContentWithTeamFilter>
       {draftAgreement && <DraftSection className="mb-6" />}
       <div className="mb-6 flex-col justify-between sm:flex sm:flex-row sm:items-center">
         <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
@@ -141,7 +136,7 @@ const AgreementsPage: FC = () => {
             )}
         </>
       )}
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 

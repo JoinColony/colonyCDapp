@@ -26,3 +26,24 @@ fragment DomainMetadata on DomainMetadata {
     newDescription
   }
 }
+
+fragment DomainBalanceReturn on DomainBalanceReturn {
+  total
+  totalIn
+  totalOut
+  timeframe {
+    key
+    value {
+      total
+      totalIn
+      totalOut
+    }
+  }
+}
+
+fragment CacheTotalBalance on CacheTotalBalance {
+  totalUSDC
+  totalUSDCIn
+  totalUSDCOut
+  date
+}

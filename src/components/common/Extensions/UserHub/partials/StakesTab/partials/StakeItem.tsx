@@ -59,11 +59,12 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
         type="button"
         onClick={() =>
           navigate(
-            setQueryParamOnUrl(
-              navigatePath,
-              TX_SEARCH_PARAM,
-              stake.action?.transactionHash ?? '',
-            ),
+            setQueryParamOnUrl({
+              path: navigatePath,
+              params: {
+                [TX_SEARCH_PARAM]: stake.action?.transactionHash,
+              },
+            }),
             {
               replace: true,
             },

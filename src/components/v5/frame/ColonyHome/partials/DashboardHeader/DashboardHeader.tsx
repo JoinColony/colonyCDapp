@@ -1,29 +1,23 @@
 import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { formatText } from '~utils/intl.ts';
-import { multiLineTextEllipsis } from '~utils/strings.ts';
 import NativeTokenPill from '~v5/common/NativeTokenPill/index.ts';
 
 import ColonyLinks from './partials/ColonyLinks/index.ts';
+import MembersInformation from './partials/MembersInformation/MembersInformation.tsx';
 
 const displayName = 'v5.frame.ColonyHome.DashboardHeader';
-
-const MAX_DESCRIPTION_LENGTH = 250;
 
 const DashboardHeader = () => {
   const { colony } = useColonyContext();
   const { metadata, nativeToken, status } = colony;
 
   const colonyName = metadata?.displayName || '';
-  const description = metadata?.description
-    ? multiLineTextEllipsis(metadata.description, MAX_DESCRIPTION_LENGTH)
-    : formatText({ id: 'colony.description' });
   const isNativeTokenUnlocked = !!status?.nativeToken?.unlocked;
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-end gap-3">
+    <div className="flex flex-col justify-between gap-4 sm:gap-[18px] lg:flex-row lg:items-center">
+      <div className="flex items-center gap-4">
         <h1 className="truncate capitalize text-gray-900 heading-2">
           {colonyName}
         </h1>
@@ -34,11 +28,9 @@ const DashboardHeader = () => {
           />
         )}
       </div>
-      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:gap-4">
-        <p className="line-clamp-5 max-w-[52.75rem] text-md text-gray-700 sm:line-clamp-3 md:line-clamp-2">
-          {description}
-        </p>
-        <div className="flex-shrink-0 sm:mt-1">
+      <div className="flex flex-col gap-4 sm:flex-row sm:gap-7">
+        <MembersInformation />
+        <div className="flex-shrink-0">
           <ColonyLinks />
         </div>
       </div>

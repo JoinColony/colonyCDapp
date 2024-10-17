@@ -1036,6 +1036,19 @@ type Query {
   """
   bridgeGetGatewayFee: BridgeGatewayFeeReturn
     @function(name: "bridgeXYZMutation-${env}")
+
+  """
+  Fetch a domain total balance
+  """
+  getDomainBalance(
+    input: DomainBalanceArguments!
+  ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
+
+  """
+  Trigger the balance caching
+  """
+  cacheAllDomainBalance: CacheAllDomainBalanceReturn @function(name: "cacheDomainBalance-${env}")
+
 }
 
 """
@@ -1106,6 +1119,16 @@ enum SupportedCurrencies {
 }
 
 enum ExtendedSupportedCurrencies {
+  USD # US Dollar
+  JPY # Japanese Yen
+  GBP # British Pound Sterling
+  EUR # Euro
+  CAD # Canadian Dollar
+  KRW # South Korean Won
+  INR # Indian Rupee
+  BRL # Brazilian Real
+  ETH # Ethereum
+  CLNY # Colony Network Token
   USDC
 }
 
@@ -1476,7 +1499,7 @@ type Colony @model {
   # Ideally we would merge data from these two into one field, but I couldn't do that
   # meaning we'll have to merge this data in-app (or not at all, works either way)
   # If you have a better idea, on how to merged them, I'll all ears..
-  fundsClaims: [ColonyFundsClaim] @hasMany
+  fundsClaimData: [ColonyFundsClaim] @hasMany(indexName: "byColony", fields: ["id"])
   """
   Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
   This is not an array since only a single token type can be returned
@@ -2024,7 +2047,7 @@ type Domain @model {
   """
   Colony ID associated with the Domain
   """
-  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"])
+  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"], queryField: "getDomainsByColony")
   """
   Colony associated with the Domain
   """
@@ -2138,6 +2161,10 @@ type ColonyFundsClaim @model {
   Unique identifier for the Colony Funds Claim
   """
   id: ID! @index(sortKeyFields: ["createdAt"])
+  """
+  The identifier of the Colony the Colony Funds Claim belong to
+  """
+  colonyFundsClaimsId: ID @index(name: "byColony", sortKeyFields: ["createdAt"], queryField: "getFundsClaimsByColony")
   """
   Token associated with the Colony Funds Claim
   """

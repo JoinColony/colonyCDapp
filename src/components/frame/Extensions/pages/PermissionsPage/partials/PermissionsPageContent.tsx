@@ -76,7 +76,7 @@ const PermissionsPageContent: FC<
 
   return (
     <div>
-      <div className="flex-col justify-between sm:flex sm:flex-row sm:items-center">
+      <div className="flex-col justify-between pt-6 sm:flex sm:flex-row sm:items-center">
         <div className="mb-2.5 flex items-center gap-2 sm:mb-0">
           <h4 className="heading-4">
             {formatText({ id: 'permissionsPage.permissionTypes' })}
@@ -174,7 +174,7 @@ const PermissionsPageContent: FC<
           />
           <Button
             mode="primarySolid"
-            size="medium"
+            size="small"
             isFullSize={false}
             onClick={() => {
               toggleActionSidebarOn({

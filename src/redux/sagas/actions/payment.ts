@@ -31,13 +31,12 @@ import {
 function* createPaymentAction({
   payload: {
     colonyAddress,
-    colonyName,
     domainId,
     payments,
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_EXPENDITURE_PAYMENT>) {
   let txChannel;
@@ -187,14 +186,6 @@ function* createPaymentAction({
       type: ActionTypes.ACTION_EXPENDITURE_PAYMENT_SUCCESS,
       meta,
     });
-
-    // @TODO: In new UI, confirm that the navigate function isn't being passed into the saga
-    // and if not, remove these conditional (and do so for all actions/motions sagas)
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.ACTION_EXPENDITURE_PAYMENT_ERROR, error, meta);
   } finally {

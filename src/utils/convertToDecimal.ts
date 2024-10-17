@@ -2,7 +2,7 @@ import {
   adjustConvertedValue,
   convertToDecimalOrNull,
 } from '~shared/Numeral/index.ts';
-import { type NumeralValue } from '~shared/Numeral/Numeral.tsx';
+import { type NumeralValue } from '~shared/Numeral/types.ts';
 
 import type Decimal from 'decimal.js';
 

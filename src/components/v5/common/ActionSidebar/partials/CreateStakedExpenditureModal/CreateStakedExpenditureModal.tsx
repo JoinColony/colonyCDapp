@@ -8,6 +8,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { ActionTypes } from '~redux';
+import { TX_SEARCH_PARAM } from '~routes/routeConstants.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
@@ -134,7 +135,9 @@ const CreateStakedExpenditureModal: FC<CreateStakedExpenditureModalProps> = ({
           withMeta({
             setTxHash: (txHash: string) => {
               navigate(
-                setQueryParamOnUrl(window.location.pathname, 'tx', txHash),
+                setQueryParamOnUrl({
+                  params: { [TX_SEARCH_PARAM]: txHash },
+                }),
                 {
                   replace: true,
                 },

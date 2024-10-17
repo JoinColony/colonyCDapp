@@ -23,14 +23,14 @@ const ActionBadge: FC<ActionBadgeProps> = ({
     <ExpenditureActionStatusBadge
       expenditure={expenditure}
       className={clsx(className, {
-        skeleton: isLoading,
+        'overflow-hidden skeleton': isLoading,
       })}
     />
   ) : (
     <MotionStateBadge
       state={motionState || MotionState.Unknown}
       className={clsx(className, {
-        skeleton: isLoading,
+        'overflow-hidden skeleton': isLoading,
       })}
     />
   );

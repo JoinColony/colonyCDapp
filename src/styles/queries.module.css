@@ -3,3 +3,6 @@
 
 /* 64rem */
 @value query1024: (max-width: 64rem);
+
+/* 80rem - 1px */
+@value query1280: (max-width: 79.9375rem);

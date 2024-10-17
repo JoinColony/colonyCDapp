@@ -18,7 +18,30 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   remainingAvatarsCount: remainingAvatarsCountProp,
   size = 20,
   withThickerBorder,
+  isLoading = false,
 }) => {
+  if (isLoading) {
+    return (
+      <div className="flex flex-shrink-0">
+        {Array.from({ length: maxAvatarsToShow }).map((_, index) => (
+          <div
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            className={clsx(
+              'z-base -ml-2 overflow-hidden rounded-full border border-base-white',
+              {
+                'border-2': withThickerBorder,
+              },
+            )}
+            style={{ width: size, height: size }}
+          >
+            <div className="skeleton" style={{ width: size, height: size }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   const slicedAvatars = items.slice(
     0,
     calculateLastSliceIndex(maxAvatarsToShow, items),
@@ -29,7 +52,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
   return (
     <ul className={clsx(className, 'flex flex-shrink-0')}>
       {slicedAvatars?.map((slicedAvatar: User) => (
-        <li key={slicedAvatar.walletAddress} className="-ml-3">
+        <li key={slicedAvatar.walletAddress} className="-ml-2">
           <UserAvatar
             userAddress={slicedAvatar.walletAddress}
             userAvatarSrc={slicedAvatar.profile?.avatar ?? undefined}
@@ -46,7 +69,7 @@ const UserAvatars: FC<UserAvatarsProps> = ({
       ))}
       {!!(remainingAvatarsCountProp || remainingAvatarsCount) &&
         showRemainingAvatars && (
-          <li className="-ml-3 flex items-center justify-center">
+          <li className="-ml-2 flex items-center justify-center">
             <div className="relative">
               <UserAvatar
                 userAddress={ADDRESS_ZERO}

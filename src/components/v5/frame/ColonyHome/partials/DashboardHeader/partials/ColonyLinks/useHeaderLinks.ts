@@ -1,4 +1,10 @@
-import { CopySimple, Door, ShareNetwork, Smiley } from '@phosphor-icons/react';
+import {
+  CopySimple,
+  Door,
+  // Rocket,
+  ShareNetwork,
+  Smiley,
+} from '@phosphor-icons/react';
 import { useLocation } from 'react-router-dom';
 
 import { APP_URL } from '~constants/index.ts';
@@ -6,6 +12,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext/ColonyDashboardContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+// import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   type DropdownMenuProps,
@@ -44,6 +51,15 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
     {
       key: 'headerDropdown.section1',
       items: [
+        // @TODO: Temporarily disabled
+        // {
+        //   key: 'headerDropdown.section1.about',
+        //   label: formatText({
+        //     id: 'dashboard.burgerMenu.item.aboutColony',
+        //   }),
+        //   icon: Rocket,
+        //   to: `/${colony?.name}/${COLONY_DETAILS_ROUTE}`,
+        // },
         {
           key: 'colonyData.section1.copyAddress',
           label: formatText({ id: 'dashboard.burgerMenu.item.colonyAddress' }),

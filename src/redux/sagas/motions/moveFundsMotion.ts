@@ -28,7 +28,6 @@ import {
 function* moveFundsMotion({
   payload: {
     colonyAddress,
-    colonyName,
     colonyVersion,
     fromDomain,
     toDomain,
@@ -41,7 +40,7 @@ function* moveFundsMotion({
     colonyRoles,
     createdInDomain,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_MOVE_FUNDS>) {
   let txChannel;
@@ -323,12 +322,6 @@ function* moveFundsMotion({
       type: ActionTypes.MOTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.MOTION_MOVE_FUNDS_ERROR, caughtError, meta);
   } finally {

@@ -74,7 +74,7 @@ const SearchInput: FC<SearchInputProps> = ({
       <input
         ref={ref}
         className={clsx(
-          'z-base min-h-[2.125rem] w-full rounded-lg border border-gray-300 bg-base-white px-[2.125rem] py-1.5 placeholder:text-gray-400 focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200',
+          'z-base min-h-8.5 w-full rounded-lg border border-gray-300 bg-base-white px-8.5 py-1.5 placeholder:text-gray-400 focus:outline-none group-focus-within:border-blue-200 group-hover:border-blue-200',
           isMobile && value && '!pr-[5.375rem]',
         )}
         type="text"

@@ -35,12 +35,11 @@ function* initiateSafeTransactionAction({
     transactions,
     customActionTitle: title,
     colonyAddress,
-    colonyName,
     network,
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION>) {
   let txChannel;
@@ -169,11 +168,7 @@ function* initiateSafeTransactionAction({
       meta,
     });
 
-    yield navigate?.(`/${colonyName}?tx=${txHash}`, {
-      state: {
-        isRedirect: true,
-      },
-    });
+    setTxHash?.(txHash);
   } catch (error) {
     yield putError(
       ActionTypes.ACTION_INITIATE_SAFE_TRANSACTION_ERROR,

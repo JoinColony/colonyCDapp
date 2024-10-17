@@ -34,7 +34,6 @@ import { handleDomainMetadata } from './utils/handleDomainMetadata.ts';
 function* createEditDomainReputationMotion({
   payload: {
     colonyAddress,
-    colonyName,
     domainName,
     domainColor,
     domainPurpose,
@@ -45,7 +44,7 @@ function* createEditDomainReputationMotion({
     domainCreatedInNativeId,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT>) {
   let txChannel;
@@ -213,12 +212,6 @@ function* createEditDomainReputationMotion({
       type: ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(
       ActionTypes.MOTION_REPUTATION_DOMAIN_CREATE_EDIT_ERROR,

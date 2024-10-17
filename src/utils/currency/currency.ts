@@ -44,7 +44,7 @@ const fetchPriceFromCoinGecko = async ({
   });
 };
 
-const getCLNYPriceInUSD = async () => {
+export const getCLNYPriceInUSD = async () => {
   // Returns 1 CLNY in terms of USD, 1 CLNY : x USD
   return fetchTokenPriceByAddress({
     contractAddress: Tokens.Mainnet.CLNY,

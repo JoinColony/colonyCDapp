@@ -24,7 +24,7 @@ const TablePagination: FC<PropsWithChildren<TablePaginationProps>> = ({
   return (
     <div
       className={clsx(
-        'grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-[1.125rem] pb-[1.4375rem] pt-2',
+        'grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-[1.125rem] pt-2',
         {
           'sm:grid-cols-[1fr_auto_auto]': canGoNextOrAdditionalContentOnMobile,
           'sm:grid-cols-[1fr_auto]': !canGoNextOrAdditionalContentOnMobile,

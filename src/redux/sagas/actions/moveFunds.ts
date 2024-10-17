@@ -26,7 +26,6 @@ import {
 function* createMoveFundsAction({
   payload: {
     colonyAddress,
-    colonyName,
     fromDomain,
     toDomain,
     amount,
@@ -36,7 +35,7 @@ function* createMoveFundsAction({
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MOVE_FUNDS>) {
   let txChannel;
@@ -161,12 +160,6 @@ function* createMoveFundsAction({
       type: ActionTypes.ACTION_MOVE_FUNDS_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.ACTION_MOVE_FUNDS_ERROR, caughtError, meta);
   } finally {
