@@ -241,7 +241,7 @@ function* createPaymentMotion({
           networkClient: colonyClient.networkClient,
           colonyRoles,
           colonyDomains,
-          requiredDomainId: safeMotionId,
+          requiredDomainId: domainId,
           requiredColonyRoles: requiredRoles,
           permissionAddress: votingReputationClient.address,
           isMultiSig: false,
