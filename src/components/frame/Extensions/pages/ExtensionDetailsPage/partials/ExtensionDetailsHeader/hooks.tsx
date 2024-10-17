@@ -10,6 +10,7 @@ import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/Extension
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
+import { ExtensionInstallAndEnableErrorStep } from '~redux/sagas/extensions/extensionInstallAndEnable.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 
@@ -75,7 +76,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const showErrorToast = useCallback(() => {
+  const showInstallErrorToast = useCallback(() => {
     toast.error(
       <Toast
         type="error"
@@ -85,53 +86,109 @@ export const useInstall = (extensionData: AnyExtensionData) => {
     );
   }, []);
 
-  const handleInstallSuccess = useCallback(async () => {
-    setIsLoading(true);
-    setWaitingForActionConfirmation(true);
+  const showInitialiseErrorToast = useCallback(() => {
+    toast.error(
+      <Toast
+        type="error"
+        title={{ id: 'extensionEnable.toast.title.error' }}
+        description={{ id: 'extensionEnable.toast.description.error' }}
+      />,
+    );
+  }, []);
 
-    try {
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.INSTALL,
-        refetchExtensionData,
-      });
+  const showSetUserRolesErrorToast = useCallback(() => {
+    toast.error(
+      <Toast
+        type="error"
+        title={{ id: 'extensionSetUserRoles.toast.title.error' }}
+        description={{ id: 'extensionSetUserRoles.toast.description.error' }}
+      />,
+    );
+  }, []);
 
-      toast.success(
-        <Toast
-          type="success"
-          title={{ id: 'extensionInstall.toast.title.success' }}
-          description={{
-            id: 'extensionInstall.toast.description.success',
-          }}
-        />,
-      );
+  const handleInstallSuccess = useCallback(
+    async ({
+      initialiseTransactionFailed,
+      setUserRolesTransactionFailed,
+    }: {
+      initialiseTransactionFailed?: boolean;
+      setUserRolesTransactionFailed?: boolean;
+    }) => {
+      setIsLoading(true);
+      setWaitingForActionConfirmation(true);
 
-      if (extensionData.initializationParams || extensionData.configurable) {
-        // Reset the form to the default values using most recent extension data
-        const updatedExtensionData = await refetchExtensionData();
-        if (updatedExtensionData) {
-          reset(getExtensionSettingsDefaultValues(updatedExtensionData));
-          setActiveTab(ExtensionDetailsPageTabId.Settings);
+      try {
+        await waitForDbAfterExtensionAction({
+          method: ExtensionMethods.INSTALL,
+          refetchExtensionData,
+          initialiseTransactionFailed,
+          setUserRolesTransactionFailed,
+        });
+
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'extensionInstall.toast.title.success' }}
+            description={{
+              id: 'extensionInstall.toast.description.success',
+            }}
+          />,
+        );
+
+        if (initialiseTransactionFailed) {
+          showInitialiseErrorToast();
         }
-      }
-    } catch {
-      showErrorToast();
-    } finally {
-      setIsLoading(false);
-      setWaitingForActionConfirmation(false);
-    }
-  }, [
-    extensionData.configurable,
-    extensionData.initializationParams,
-    refetchExtensionData,
-    reset,
-    setActiveTab,
-    setWaitingForActionConfirmation,
-    showErrorToast,
-  ]);
 
-  const handleInstallError = useCallback(() => {
-    showErrorToast();
-  }, [showErrorToast]);
+        if (setUserRolesTransactionFailed) {
+          showSetUserRolesErrorToast();
+        }
+
+        if (extensionData.initializationParams || extensionData.configurable) {
+          // Reset the form to the default values using most recent extension data
+          const updatedExtensionData = await refetchExtensionData();
+          if (updatedExtensionData) {
+            reset(getExtensionSettingsDefaultValues(updatedExtensionData));
+            setActiveTab(ExtensionDetailsPageTabId.Settings);
+          }
+        }
+      } catch {
+        showInstallErrorToast();
+      } finally {
+        setIsLoading(false);
+        setWaitingForActionConfirmation(false);
+      }
+    },
+    [
+      extensionData.configurable,
+      extensionData.initializationParams,
+      refetchExtensionData,
+      reset,
+      setActiveTab,
+      setWaitingForActionConfirmation,
+      showInstallErrorToast,
+      showInitialiseErrorToast,
+      showSetUserRolesErrorToast,
+    ],
+  );
+
+  const handleInstallError = useCallback(
+    (error: any) => {
+      const { step } = error;
+
+      if (step === ExtensionInstallAndEnableErrorStep.Initialise) {
+        handleInstallSuccess({ initialiseTransactionFailed: true });
+        return;
+      }
+
+      if (step === ExtensionInstallAndEnableErrorStep.SetUserRoles) {
+        handleInstallSuccess({ setUserRolesTransactionFailed: true });
+        return;
+      }
+
+      showInstallErrorToast();
+    },
+    [showInstallErrorToast, handleInstallSuccess],
+  );
 
   return {
     handleInstallSuccess,
