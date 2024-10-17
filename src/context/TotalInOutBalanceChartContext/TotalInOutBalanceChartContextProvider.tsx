@@ -1,4 +1,3 @@
-import { type WatchQueryFetchPolicy } from '@apollo/client';
 import React, {
   useMemo,
   type FC,
@@ -53,7 +52,7 @@ const TotalInOutBalanceChartContextProvider: FC<PropsWithChildren> = ({
             signal: abortController.signal,
           },
         },
-        fetchPolicy: 'cache-first' as WatchQueryFetchPolicy,
+        notifyOnNetworkStatusChange: true,
       },
     };
   }, [currency, selectedDomainId, colonyAddress]);
