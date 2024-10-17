@@ -9,7 +9,7 @@ const Legend: FC<LegendProps> = ({ children, className }) => {
     <div
       className={clsx(
         className,
-        'flex w-full flex-row flex-wrap items-end justify-start gap-x-4 gap-y-2',
+        'mt-auto flex w-full flex-row flex-wrap items-end justify-start gap-x-4 gap-y-2',
       )}
     >
       {children}
