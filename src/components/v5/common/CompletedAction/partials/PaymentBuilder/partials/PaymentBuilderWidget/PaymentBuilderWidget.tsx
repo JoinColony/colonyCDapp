@@ -26,7 +26,6 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
-import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
@@ -37,6 +36,7 @@ import StagedPaymentStep from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
+import { useGetReleaseStep } from './hooks.tsx';
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import {
   getCancelStepIndex,
@@ -63,7 +63,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     toggleOnFundingModal: showFundingModal,
     isReleaseModalOpen: isReleasePaymentModalOpen,
     toggleOffReleaseModal: hideReleasePaymentModal,
-    toggleOnReleaseModal: showReleasePaymentModal,
     selectedFundingAction,
     selectedReleaseAction,
     setSelectedFundingAction,
@@ -82,13 +81,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const {
     fundingActions,
-    finalizingActions,
     cancellingActions,
     releaseActions,
-    finalizedAt,
     isStaked,
     userStake,
-    ownerAddress,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
 
@@ -125,6 +121,12 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       setExpectedStepKey(null);
     }
   }, [expectedStepKey, expenditureStep]);
+
+  const releaseStep = useGetReleaseStep({
+    expectedStepKey,
+    expenditure,
+    expenditureStep,
+  });
 
   const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
     () =>
@@ -399,56 +401,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         </>
       ),
     },
-    {
-      key: ExpenditureStep.Release,
-      heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
-      content: (
-        <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
-            <UninstalledExtensionBox />
-          ) : (
-            <>
-              {expenditureStep === ExpenditureStep.Release ? (
-                <StepDetailsBlock
-                  text={formatText({
-                    id: 'expenditure.releaseStage.info',
-                  })}
-                  content={
-                    <Button
-                      className="w-full"
-                      onClick={showReleasePaymentModal}
-                      text={formatText({
-                        id: 'expenditure.releaseStage.button',
-                      })}
-                      loading={expectedStepKey === ExpenditureStep.Payment}
-                    />
-                  }
-                />
-              ) : (
-                <>
-                  {finalizedAt ? (
-                    <>
-                      {finalizingActions?.items[0]?.initiatorAddress ===
-                      ownerAddress ? (
-                        <FinalizeByPaymentCreatorInfo
-                          userAdddress={expenditure?.ownerAddress}
-                        />
-                      ) : (
-                        <ActionWithPermissionsInfo
-                          action={finalizingActions?.items[0]}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <div />
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </>
-      ),
-    },
+    releaseStep,
     paymentStep,
   ];
 

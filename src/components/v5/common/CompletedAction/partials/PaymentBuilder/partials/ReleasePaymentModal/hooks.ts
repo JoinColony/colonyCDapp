@@ -1,5 +1,6 @@
 import { type Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { type Expenditure } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
@@ -13,6 +14,7 @@ export const useGetReleaseDecisionMethodItems = (
 ): DecisionMethodOption[] => {
   const { user } = useAppContext();
   const isPermissionsEnabled = useCheckIfUserHasPermissions(actionType);
+  const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const userIsCreator = user?.walletAddress === expenditure.ownerAddress;
 
@@ -27,6 +29,16 @@ export const useGetReleaseDecisionMethodItems = (
             label: formatText({ id: 'decisionMethod.permissions' }),
             value: DecisionMethod.Permissions,
             isDisabled: !isPermissionsEnabled,
+          },
+        ]
+      : []),
+    ...(isVotingReputationEnabled
+      ? [
+          {
+            label: formatText({
+              id: 'decisionMethod.reputation',
+            }),
+            value: DecisionMethod.Reputation,
           },
         ]
       : []),
