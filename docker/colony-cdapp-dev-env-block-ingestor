@@ -4,6 +4,7 @@ FROM colony-cdapp-dev-env/base:latest
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ENV BLOCK_INGESTOR_HASH=5913f9a5997a9d2ba138cf98bd3a279dc7ee1327
 =======
 ENV BLOCK_INGESTOR_HASH=c1e68101d343992a65a528c890b01cc68c2df628
@@ -17,6 +18,9 @@ ENV BLOCK_INGESTOR_HASH=5ab4511e9b4c24d94237b57bf6067779a895bd8d
 =======
 ENV BLOCK_INGESTOR_HASH=441a6350e439d86fa28e149a6b9543eb8ffa685e
 >>>>>>> 3bf8e547c (Update ingestor image hash)
+=======
+ENV BLOCK_INGESTOR_HASH=685203983ae8007d1283c24213dee7bec3296353
+>>>>>>> 7ab640a8d (Chore: update ingestor image hash after rebase)
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
