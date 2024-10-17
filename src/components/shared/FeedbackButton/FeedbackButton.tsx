@@ -113,44 +113,81 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
     }
   }, [bootIntercom, isIntercomBooted, isWidgetOpen, onClick]);
 
-  return (
-    <Button
-      id={FEEDBACK_BUTTON_ID}
-      onClick={handleClick}
-      className={clsx(
-        'relative w-full !justify-start !gap-3 !border-none bg-gray-900 !p-2',
-        {
-          '!w-fit !justify-center': isPopoverMode,
-          '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
-          '!bg-gray-50': isDarkMode && isWidgetOpen,
-          'hover:!bg-gray-800': !isDarkMode,
-          '!bg-gray-800': !isDarkMode && isWidgetOpen,
-        },
-      )}
-      iconSize={20}
-    >
+  const renderChatsCircle = useCallback(
+    () => (
       <ChatsCircle
-        className={clsx(
-          'relative aspect-auto h-5 w-auto flex-shrink-0 text-base-white',
-          {
-            '!text-gray-900': isDarkMode,
-          },
-        )}
+        size={20}
+        className={clsx('text-base-white', {
+          '!text-gray-900': isDarkMode,
+        })}
       />
-      {!isPopoverMode && (
-        <p
-          className={clsx('text-md font-medium text-base-white', {
-            '!text-gray-900': isDarkMode,
+    ),
+    [isDarkMode],
+  );
+
+  const renderFeedbackButton = useCallback(
+    () => (
+      <div
+        className={clsx('w-full', {
+          relative: !isPopoverMode,
+        })}
+      >
+        <Button
+          isFullSize
+          id={FEEDBACK_BUTTON_ID}
+          onClick={handleClick}
+          className={clsx('!justify-start !gap-3 !border-none bg-gray-900', {
+            '!p-2': !isPopoverMode,
+            'pointer-events-none absolute -left-1 -top-0.5 !w-fit !justify-center !px-3 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100':
+              isPopoverMode,
+            '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
+            '!bg-gray-50': isDarkMode && isWidgetOpen,
+            'hover:!bg-gray-800': !isDarkMode,
+            '!bg-gray-800': !isDarkMode && isWidgetOpen,
           })}
         >
-          {formatText(MSG.label)}
-        </p>
-      )}
-      {showBadge && (
-        <div className="absolute right-2 aspect-square h-2 animate-pulse rounded-full bg-blue-400" />
-      )}
-    </Button>
+          {renderChatsCircle()}
+          <p
+            className={clsx('text-md font-medium text-base-white', {
+              '!text-gray-900': isDarkMode,
+            })}
+          >
+            {formatText(MSG.label)}
+          </p>
+          {showBadge && (
+            <div className="absolute right-2 aspect-square h-2 animate-pulse rounded-full bg-blue-400" />
+          )}
+        </Button>
+      </div>
+    ),
+    [
+      handleClick,
+      isDarkMode,
+      isPopoverMode,
+      isWidgetOpen,
+      renderChatsCircle,
+      showBadge,
+    ],
   );
+
+  if (isPopoverMode) {
+    return (
+      <div className="flex h-[2.5rem] w-full items-center justify-center">
+        <div
+          tabIndex={0}
+          role="button"
+          onKeyDown={noop}
+          onClick={handleClick}
+          className="group relative w-fit cursor-pointer p-2"
+        >
+          {renderChatsCircle()}
+          {renderFeedbackButton()}
+        </div>
+      </div>
+    );
+  }
+
+  return renderFeedbackButton();
 };
 
 export default FeedbackButton;
