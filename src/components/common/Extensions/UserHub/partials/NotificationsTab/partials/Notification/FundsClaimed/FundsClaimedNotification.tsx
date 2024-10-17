@@ -7,7 +7,7 @@ import {
   NotificationType,
   useGetTokenFromEverywhereQuery,
 } from '~gql';
-import { COLONY_BALANCES_ROUTE } from '~routes';
+import { COLONY_INCOMING_ROUTE } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 import { getNumeralTokenAmount } from '~utils/tokens.ts';
@@ -53,7 +53,7 @@ const FundsClaimedNotification: FC<FundsClaimedNotificationProps> = ({
 
   const handleNotificationClicked = () => {
     if (colony) {
-      navigate(`/${colony.name}/${COLONY_BALANCES_ROUTE}`);
+      navigate(`/${colony.name}/${COLONY_INCOMING_ROUTE}`);
       closeUserHub();
     }
   };
