@@ -56,6 +56,7 @@ const TotalInOutBalanceContextProvider: FC<PropsWithChildren> = ({
             signal: abortController.signal,
           },
         },
+        notifyOnNetworkStatusChange: true,
       },
     };
   }, [currency, selectedDomainId, colonyAddress]);

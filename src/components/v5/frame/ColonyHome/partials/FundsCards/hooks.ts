@@ -45,6 +45,7 @@ export const useTotalData = (domainId?: string) => {
             signal: abortController.signal,
           },
         },
+        notifyOnNetworkStatusChange: true,
       },
     };
   }, [currency, domainId, colonyAddress]);
