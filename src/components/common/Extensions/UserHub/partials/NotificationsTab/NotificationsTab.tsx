@@ -53,12 +53,12 @@ const NotificationsTab = ({ closeUserHub }: { closeUserHub: () => void }) => {
 
   return (
     <div
-      className={clsx('h-full px-6 pb-6 pt-6 sm:pb-2', {
+      className={clsx('h-full pb-6 pt-6 sm:pb-2', {
         'overflow-auto': !isEmpty,
       })}
       ref={containerRef}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-6">
         <div className="flex items-center">
           <p className="heading-5">{formatText(MSG.notifications)}</p>
           {hasUnreadNotifications && (
