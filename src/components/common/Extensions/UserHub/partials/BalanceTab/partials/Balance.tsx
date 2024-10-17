@@ -87,7 +87,6 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
             value={tokenBalanceData?.balance ?? 0}
             decimals={tokenDecimals}
             suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-            appearance={{ size: 'small' }}
           />
         </div>
         {/* @TODO: actived icons? */}
@@ -129,7 +128,6 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-              appearance={{ size: 'small' }}
             />
           </div>
           {isMobile && (
@@ -180,7 +178,6 @@ const Balance: FC<BalanceProps> = ({ nativeToken, wallet, onTabChange }) => {
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-              appearance={{ size: 'small' }}
             />
           </div>
           {isMobile && (

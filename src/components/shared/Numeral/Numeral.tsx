@@ -1,17 +1,13 @@
-import classNames from 'classnames';
 import { type BigNumber } from 'ethers';
 import numbro from 'numbro';
 import React, { type HTMLAttributes } from 'react';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
-import { getMainClasses } from '~utils/css/index.ts';
 
 import { getFormattedNumeralValue } from './helpers.tsx';
 import numbroLanguage from './numbroLanguage.ts';
 
 import type Decimal from 'decimal.js';
-
-import styles from './Numeral.module.css';
 
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);
@@ -31,7 +27,6 @@ export interface Props extends HTMLAttributes<HTMLSpanElement> {
   prefix?: string;
   suffix?: string;
   className?: string;
-  appearance?: Appearance;
 
   /** If specified, the value will be shifted by the indicated decimals */
   decimals?: number;
@@ -43,7 +38,6 @@ const Numeral = ({
   prefix,
   suffix,
   className,
-  appearance,
   ...rest
 }: Props) => {
   const convertedValue = convertToDecimal(value, decimals || 0);
@@ -51,10 +45,7 @@ const Numeral = ({
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
 
   return (
-    <span
-      className={classNames(getMainClasses(appearance, styles), className)}
-      {...rest}
-    >
+    <span className={className} {...rest}>
       {prefix && `${prefix} `}
       {formattedValue}
       {suffix}

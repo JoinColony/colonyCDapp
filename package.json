@@ -39,7 +39,7 @@
     "postinstall": "if [ -z \"$SKIP_HOOKS\" ]; then ./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh; fi",
     "watch-amplify": "node scripts/watchAmplifyFiles",
     "forward-time": "node scripts/forward-time",
-    "playwright:install": "npx playwright install --with-deps",   
+    "playwright:install": "npx playwright install --with-deps",
     "playwright:run": "playwright test",
     "playwright:watch": "playwright test --ui"
   },
@@ -184,7 +184,6 @@
     "bn.js": "^5.1.1",
     "camelcase": "^6.0.0",
     "chokidar": "^3.6.0",
-    "classnames": "^2.2.6",
     "cleave-zen": "^0.0.17",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.0.8",

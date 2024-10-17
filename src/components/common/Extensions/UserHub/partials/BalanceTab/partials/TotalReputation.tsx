@@ -1,4 +1,5 @@
 import { Star } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import Decimal from 'decimal.js';
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
@@ -67,10 +68,9 @@ const TotalReputation: FC<TotalReputationProps> = ({
             {percentageReputation &&
               percentageReputation !== ZeroValue.NearZero && (
                 <Numeral
-                  className={balanceTabClasses.reputationValue}
+                  className={clsx(balanceTabClasses.reputationValue, 'text-sm')}
                   value={percentageReputation || 0}
                   suffix=" %"
-                  appearance={{ size: 'small' }}
                 />
               )}
           </div>
@@ -80,9 +80,9 @@ const TotalReputation: FC<TotalReputationProps> = ({
             {formatMessage({ id: 'reputation.points' })}
           </span>
           <Numeral
+            className="text-sm"
             value={formattedReputationPoints}
             suffix=" pts"
-            appearance={{ size: 'small' }}
           />
         </div>
       </div>
