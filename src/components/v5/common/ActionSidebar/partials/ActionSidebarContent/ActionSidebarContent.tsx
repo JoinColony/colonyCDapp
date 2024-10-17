@@ -5,6 +5,7 @@ import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
+import { ActionTourTargets } from '~common/Tours/enums.ts';
 import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -288,6 +289,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           !!transactionId,
         'overflow-hidden': !transactionId,
       })}
+      data-tour={ActionTourTargets.ActionsPanel}
     >
       <div
         className={clsx('flex-grow pb-6 pt-8', {
