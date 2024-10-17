@@ -107,35 +107,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const isLoading =
     transactionId !== undefined && (loadingAction || loadingExpenditure);
 
+  const isContentLoading = isLoading || motionsLoading;
+
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (isLoading && !action) {
-      return <ActionSidebarLoadingSkeleton />;
-    }
-
     if (action) {
-      return (
-        <div className="relative left-0 top-0 flex flex-grow">
-          <div
-            className={clsx('flex flex-grow', {
-              hidden: isLoading || motionsLoading,
-            })}
-          >
-            <CompletedAction action={action} />
-          </div>
-          <div
-            className={clsx(
-              'absolute left-0 top-0 flex h-full w-full flex-grow',
-              {
-                hidden: !motionsLoading && !isLoading,
-              },
-            )}
-          >
-            <ActionSidebarLoadingSkeleton />
-          </div>
-        </div>
-      );
+      return <CompletedAction action={action} />;
     }
 
     if (actionNotFound) {
@@ -332,7 +310,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      {getSidebarContent()}
+      {isContentLoading && <ActionSidebarLoadingSkeleton />}
+      <div
+        className={clsx('flex flex-grow', {
+          hidden: isContentLoading,
+        })}
+      >
+        {getSidebarContent()}
+      </div>
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({
