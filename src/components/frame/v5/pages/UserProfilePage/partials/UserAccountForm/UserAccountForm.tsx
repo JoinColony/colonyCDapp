@@ -19,7 +19,6 @@ const UserAccountForm: FC = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <h4 className="heading-4">{formatText({ id: 'profile.page' })}</h4>
       <Row groups={columnsList} />
       <div className="flex justify-end">
         <Button type="submit" isFullSize={isMobile} mode="primarySolid">
