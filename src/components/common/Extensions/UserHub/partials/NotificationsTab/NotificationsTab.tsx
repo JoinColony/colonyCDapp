@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl';
 import { useNotificationsDataContext } from '~context/Notifications/NotificationsDataContext/NotificationsDataContext.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
-import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/InfiniteScrollLoader.tsx';
+import InfiniteScrollTrigger from '~v5/common/InfiniteScrollTrigger/InfiniteScrollTrigger.tsx';
 
 import NotificationsList from './partials/NotificationsList.tsx';
 
