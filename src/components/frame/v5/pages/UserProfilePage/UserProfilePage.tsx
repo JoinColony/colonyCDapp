@@ -103,7 +103,7 @@ const UserProfilePage: FC = () => {
   return (
     <Tabs
       activeTab={activeTab}
-      className="pt-6 md:pt-4"
+      className="pt-6 md:pt-2"
       onTabClick={(_, id) =>
         navigate(tabRoutes.find((route) => route.id === id)?.route ?? '')
       }
