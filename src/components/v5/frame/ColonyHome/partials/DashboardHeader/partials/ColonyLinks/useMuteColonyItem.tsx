@@ -1,36 +1,39 @@
 import { BellRinging, BellSimpleSlash } from '@phosphor-icons/react';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import { useUpdateUserNotificationDataMutation } from '~gql';
+import Toast from '~shared/Extensions/Toast/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
 
-const MSG = defineMessages({
-  mute: {
-    id: 'headerDropdown.muteNotifications',
-    defaultMessage: 'Mute notifications',
-  },
-  unmute: {
-    id: 'headerDropdown.unmuteNotifications',
-    defaultMessage: 'Unmute notifications',
-  },
-  muting: {
-    id: 'headerDropdown.mutingNotifications',
-    defaultMessage: 'Muting...',
-  },
-  unmuting: {
-    id: 'headerDropdown.unmutingNotifications',
-    defaultMessage: 'Unmuting...',
-  },
-});
-
 const ITEM_KEY = 'headerDropdown.section3.toggleMute';
 
-export const useMuteColonyItem = (): DropdownMenuItem => {
+const useMuteColonyItem = (): DropdownMenuItem => {
+  const MSG = defineMessages({
+    mute: {
+      id: 'headerDropdown.muteNotifications',
+      defaultMessage: 'Mute notifications',
+    },
+    unmute: {
+      id: 'headerDropdown.unmuteNotifications',
+      defaultMessage: 'Unmute notifications',
+    },
+    toastNotificationsUnmuted: {
+      id: `headerDropdown.toastNotificationsUnmuted`,
+      defaultMessage: 'You will now receive notifications from this colony.',
+    },
+    toastNotificationsMuted: {
+      id: `headerDropdown.toastNotificationsMuted`,
+      defaultMessage:
+        'You will no longer receive notifications from this colony.',
+    },
+  });
+
   const { user, updateUser } = useAppContext();
   const {
     colony: { colonyAddress },
@@ -62,9 +65,18 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
+
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'advancedSettings.toast.changesSaved' }}
+            description={formatText(MSG.toastNotificationsUnmuted)}
+          />,
+        );
       },
     });
   }, [
+    MSG.toastNotificationsUnmuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,
@@ -88,9 +100,18 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
+
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'advancedSettings.toast.changesSaved' }}
+            description={formatText(MSG.toastNotificationsMuted)}
+          />,
+        );
       },
     });
   }, [
+    MSG.toastNotificationsMuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,
@@ -99,30 +120,12 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
   ]);
 
   if (isColonyMuted) {
-    if (isMuteToggling) {
-      return {
-        key: ITEM_KEY,
-        label: formatText(MSG.unmuting),
-        icon: BellSimpleSlash,
-        disabled: true,
-      };
-    }
-
     return {
       key: ITEM_KEY,
       label: formatText(MSG.unmute),
       icon: BellRinging,
       onClick: handleUnmuteColonyNotifications,
-    };
-  }
-
-  // if unmuted and mutation is in place, we are muting it
-  if (isMuteToggling) {
-    return {
-      key: ITEM_KEY,
-      label: formatText(MSG.muting),
-      icon: BellRinging,
-      disabled: true,
+      disabled: isMuteToggling,
     };
   }
 
@@ -131,5 +134,8 @@ export const useMuteColonyItem = (): DropdownMenuItem => {
     label: formatText(MSG.mute),
     icon: BellSimpleSlash,
     onClick: handleMuteColonyNotifications,
+    disabled: isMuteToggling,
   };
 };
+
+export default useMuteColonyItem;

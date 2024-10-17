@@ -13,10 +13,12 @@ import { type DropdownMenuItemProps } from './types.ts';
 
 const DropdownMenuItem: FC<DropdownMenuItemProps> = (props) => {
   const [isOpen, { toggle, registerContainerRef }] = useToggle();
-  const { icon: Icon } = props;
+  const { disabled, icon: Icon } = props;
 
-  const itemClassName =
-    'py-2 px-3.5 rounded-s rounded-e !text-md md:hover:font-medium md:hover:bg-gray-50 md:hover:text-gray-900 flex items-center !duration-0 gap-3 w-full';
+  const itemClassName = clsx(
+    'flex w-full items-center gap-3 rounded-e rounded-s px-3.5 py-2 !text-md !duration-0 md:hover:bg-gray-50 md:hover:font-medium md:hover:text-gray-900',
+    { 'text-gray-300': disabled },
+  );
   const content = (
     <>
       {Icon && <Icon size={16} className="flex-shrink-0" />}
