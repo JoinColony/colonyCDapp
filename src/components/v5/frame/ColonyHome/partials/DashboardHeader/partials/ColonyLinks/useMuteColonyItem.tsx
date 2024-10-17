@@ -1,6 +1,6 @@
 import { BellRinging, BellSimpleSlash } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, type MessageDescriptor } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -47,6 +47,16 @@ const useMuteColonyItem = (): DropdownMenuItem => {
 
   const isColonyMuted = mutedColonyAddresses.includes(colonyAddress);
 
+  const showSuccessToast = (message: MessageDescriptor) => {
+    toast.success(
+      <Toast
+        type="success"
+        title={{ id: 'advancedSettings.toast.changesSaved' }}
+        description={formatText(message)}
+      />,
+    );
+  };
+
   const handleUnmuteColonyNotifications = useCallback(() => {
     if (!user) {
       return;
@@ -65,18 +75,10 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
-
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'advancedSettings.toast.changesSaved' }}
-            description={formatText(MSG.toastNotificationsUnmuted)}
-          />,
-        );
+        showSuccessToast(MSG.toastNotificationsUnmuted);
       },
     });
   }, [
-    MSG.toastNotificationsUnmuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,
@@ -100,18 +102,10 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
-
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'advancedSettings.toast.changesSaved' }}
-            description={formatText(MSG.toastNotificationsMuted)}
-          />,
-        );
+        showSuccessToast(MSG.toastNotificationsMuted);
       },
     });
   }, [
-    MSG.toastNotificationsMuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,

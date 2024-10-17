@@ -1,13 +1,16 @@
-import React, { type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { getActionTitleValues } from '~common/ColonyActions/index.ts';
 import {
   type NotificationColonyFragment,
+  NotificationType,
   useGetColonyActionQuery,
   useGetExpenditureQuery,
 } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
+import { formatText } from '~utils/intl.ts';
 
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
@@ -31,7 +34,8 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const { expenditureID } = notification.customAttributes || {};
+  const { expenditureID, notificationType } =
+    notification.customAttributes || {};
 
   const { data: expenditureData, loading: loadingExpenditure } =
     useGetExpenditureQuery({
@@ -69,6 +73,28 @@ const ExpenditureNotification: FC<NotificationProps> = ({
     });
   };
 
+  const actionTitle = action?.metadata?.customTitle || '';
+
+  const actionMetadataDescription = useMemo(() => {
+    if (!action || !colony) {
+      return null;
+    }
+
+    return formatText(
+      { id: 'action.title' },
+      getActionTitleValues({
+        actionData: action,
+        colony: {
+          nativeToken: {
+            ...colony.nativeToken,
+          },
+          metadata: colony.metadata,
+        },
+        expenditureData: expenditure ?? undefined,
+      }),
+    );
+  }, [action, expenditure, colony]);
+
   return (
     <NotificationWrapper
       colony={colony}
@@ -76,13 +102,21 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
-      <ExpenditureNotificationMessage
-        action={action}
-        colony={colony}
-        expenditure={expenditure}
-        loading={loadingColony || loadingAction || loadingExpenditure}
-        notification={notification}
-      />
+      {notificationType &&
+        [
+          NotificationType.ExpenditureReadyForReview,
+          NotificationType.ExpenditureReadyForFunding,
+          NotificationType.ExpenditureReadyForRelease,
+          NotificationType.ExpenditureCancelled,
+          NotificationType.ExpenditureFinalized,
+        ].includes(notificationType) && (
+          <ExpenditureNotificationMessage
+            actionTitle={actionTitle}
+            actionMetadataDescription={actionMetadataDescription}
+            loading={loadingColony || loadingAction || loadingExpenditure}
+            notificationType={notificationType}
+          />
+        )}
     </NotificationWrapper>
   );
 };

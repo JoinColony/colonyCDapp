@@ -6414,6 +6414,7 @@ export enum Network {
 export enum NotificationType {
   ExpenditureCancelled = 'EXPENDITURE_CANCELLED',
   ExpenditureFinalized = 'EXPENDITURE_FINALIZED',
+  ExpenditurePayoutClaimed = 'EXPENDITURE_PAYOUT_CLAIMED',
   ExpenditureReadyForFunding = 'EXPENDITURE_READY_FOR_FUNDING',
   ExpenditureReadyForRelease = 'EXPENDITURE_READY_FOR_RELEASE',
   ExpenditureReadyForReview = 'EXPENDITURE_READY_FOR_REVIEW',
