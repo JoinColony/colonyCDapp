@@ -83,7 +83,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const previousTransactionId = usePrevious(transactionId);
 
   useLocationChange(() => {
-    if ((!!previousTransactionId && !transactionId) || isActionSidebarOpen) {
+    if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
       toggleActionSidebarOff();
     }
   });
