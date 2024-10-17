@@ -26,6 +26,9 @@ const JoinedColoniesPopover = ({
   const handleCreateColonyRedirect = useCreateColonyRedirect();
   const { isDarkMode } = usePageThemeContext();
 
+  const ctaCopy = wallet ? 'button.createNewColony' : 'button.connectWallet';
+  const handleCTAClick = wallet ? handleCreateColonyRedirect : connectWallet;
+
   return visible ? (
     <PopoverBase
       setTooltipRef={setTooltipRef}
@@ -50,23 +53,13 @@ const JoinedColoniesPopover = ({
           </div>
         )}
         <div className="w-full flex-shrink-0 px-4">
-          {wallet ? (
-            <Button
-              mode="primaryOutline"
-              text={{ id: 'button.createNewColony' }}
-              size="small"
-              className="w-full border-gray-300"
-              onClick={handleCreateColonyRedirect}
-            />
-          ) : (
-            <Button
-              mode="primaryOutline"
-              text={{ id: 'button.connectWallet' }}
-              size="small"
-              className="w-full border-gray-300"
-              onClick={connectWallet}
-            />
-          )}
+          <Button
+            mode="quinary"
+            text={{ id: ctaCopy }}
+            size="small"
+            className="w-full !border-gray-300 hover:!border-gray-900"
+            onClick={handleCTAClick}
+          />
         </div>
       </div>
     </PopoverBase>
