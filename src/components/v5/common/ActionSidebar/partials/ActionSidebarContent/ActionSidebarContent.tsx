@@ -9,17 +9,14 @@ import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import {
-  GetDomainBalanceDocument,
-  GetTotalColonyActionsDocument,
-  SearchActionsDocument,
-} from '~gql';
+import { GetTotalColonyActionsDocument, SearchActionsDocument } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
+import { removeCacheEntry } from '~utils/queries.ts';
 import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -317,16 +314,10 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               });
             }
             /**
-             * We need to remove all getDomainBalance queries once a payment has been completed successfully
+             * We need to remove all getDomainBalance queries once a payment has been successfully completed
+             * By default it will refetch all active queries
              */
-            client.cache.evict({
-              fieldName: 'getDomainBalance',
-            });
-            if (isQueryActive('GetDomainBalanceQuery')) {
-              client.refetchQueries({
-                include: [GetDomainBalanceDocument],
-              });
-            }
+            removeCacheEntry('getDomainBalance');
           }}
         >
           <ActionSidebarFormContent
