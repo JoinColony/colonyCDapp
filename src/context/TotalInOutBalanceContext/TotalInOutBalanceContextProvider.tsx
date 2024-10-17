@@ -4,6 +4,7 @@ import React, {
   type FC,
   type PropsWithChildren,
   useEffect,
+  useCallback,
 } from 'react';
 
 import { useBalanceCurrencyContext } from '~context/BalanceCurrencyContext/BalanceCurrencyContext.ts';
@@ -90,21 +91,49 @@ const TotalInOutBalanceContextProvider: FC<PropsWithChildren> = ({
   const { data: previousData, loading: previousLoading } =
     useGetCachedDomainBalanceQuery(memoizedPreviousQueryVariables.queryOptions);
 
-  useEffect(() => {
-    return () => {
-      if (loading) {
-        memoizedQueryVariables.abortController.abort();
-      }
-    };
+  const cancelQuery = useCallback(() => {
+    if (loading) {
+      memoizedQueryVariables.abortController.abort();
+    }
   }, [memoizedQueryVariables.abortController, loading]);
 
   useEffect(() => {
     return () => {
-      if (previousLoading) {
-        memoizedPreviousQueryVariables.abortController.abort();
-      }
+      cancelQuery();
     };
+    // We want this use effect to get triggered when a new instance of the abort controller is present
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memoizedQueryVariables.abortController]);
+
+  useEffect(() => {
+    return () => {
+      cancelQuery();
+    };
+    // We want this use effect to get triggered only on mounting/unmounting of the context
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const cancelPreviousQuery = useCallback(() => {
+    if (previousLoading) {
+      memoizedPreviousQueryVariables.abortController.abort();
+    }
   }, [memoizedPreviousQueryVariables.abortController, previousLoading]);
+
+  useEffect(() => {
+    return () => {
+      cancelPreviousQuery();
+    };
+    // We want this use effect to get triggered when a new instance of the abort controller is present
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memoizedPreviousQueryVariables.abortController]);
+
+  useEffect(() => {
+    return () => {
+      cancelPreviousQuery();
+    };
+    // We want this use effect to get triggered only on mounting/unmounting of the context
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const domainBalanceData = data?.getDomainBalance;
 
