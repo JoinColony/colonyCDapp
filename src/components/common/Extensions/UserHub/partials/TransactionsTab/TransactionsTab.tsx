@@ -4,7 +4,7 @@ import React, { useRef, type FC } from 'react';
 import { useGroupedTransactions } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import InfiniteScrollTrigger from '~v5/common/InfiniteScrollLoader/index.ts';
+import InfiniteScrollTrigger from '~v5/common/InfiniteScrollTrigger/index.ts';
 
 import TransactionList from './partials/TransactionList.tsx';
 import { type TransactionsProps } from './types.ts';

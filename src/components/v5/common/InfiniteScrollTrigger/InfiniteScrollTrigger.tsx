@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
   useCallback,
+  useEffect,
 } from 'react';
 
 import useOnScrolledIntoView from '~hooks/useOnScrollIedntoView.ts';
@@ -17,7 +18,7 @@ interface Props {
   fetchMore: () => Promise<void>;
 }
 
-const displayName = 'v5.common.InfiniteScrollLoader';
+const displayName = 'v5.common.InfiniteScrollTrigger';
 
 const InfiniteScrollTrigger: FC<Props> = ({
   canFetchMore,
@@ -27,6 +28,7 @@ const InfiniteScrollTrigger: FC<Props> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const [isFetching, setIsFetching] = useState(false);
+  const [hasFetchedAtLeastOnce, setHasFetchedAtLeastOnce] = useState(false);
 
   const onScrolledIntoView = useCallback(() => {
     if (!isFetching && canFetchMore) {
@@ -44,6 +46,12 @@ const InfiniteScrollTrigger: FC<Props> = ({
     onScrolledIntoView,
   });
 
+  useEffect(() => {
+    if (isFetching) {
+      setHasFetchedAtLeastOnce(true);
+    }
+  }, [isFetching]);
+
   return (
     <div
       ref={ref}
@@ -57,12 +65,14 @@ const InfiniteScrollTrigger: FC<Props> = ({
           </span>
         </>
       ) : (
-        <div className="text-gray-400">
-          <Smiley className="mr-1 inline-block" />
-          <span className="text-xs">
-            {formatText({ id: 'loader.noMoreResults' })}
-          </span>
-        </div>
+        hasFetchedAtLeastOnce && (
+          <div className="text-gray-400">
+            <Smiley className="mr-1 inline-block" />
+            <span className="text-xs">
+              {formatText({ id: 'loader.noMoreResults' })}
+            </span>
+          </div>
+        )
       )}
     </div>
   );
