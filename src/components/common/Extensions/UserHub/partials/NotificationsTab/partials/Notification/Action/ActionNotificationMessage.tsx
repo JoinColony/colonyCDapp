@@ -18,6 +18,10 @@ interface ActionNotificationMessageProps {
 }
 
 const MSG = defineMessages({
+  actionCreated: {
+    id: `${displayName}.actionCreated`,
+    defaultMessage: 'Permissions used:',
+  },
   mention: {
     id: `${displayName}.mention`,
     defaultMessage: '{name} has mentioned you in: ',
@@ -40,33 +44,21 @@ const ActionNotificationMessage: FC<ActionNotificationMessageProps> = ({
   notificationType,
 }) => {
   const Message = useMemo(() => {
-    if (notificationType === NotificationType.PermissionsAction) {
-      return (
-        <>
-          {actionTitle ? `${actionTitle}: ` : ''}
-          {actionMetadataDescription || formatText(MSG.unknownAction)}
-        </>
-      );
-    }
-
-    if (notificationType === NotificationType.Mention) {
-      const firstPart = formatText(MSG.mention, {
+    const firstPart = {
+      [NotificationType.PermissionsAction]: formatText(MSG.actionCreated),
+      [NotificationType.Mention]: formatText(MSG.mention, {
         name: creator || formatText(MSG.someone),
-      });
+      }),
+    }[notificationType];
 
-      const secondPart =
-        actionTitle ||
-        actionMetadataDescription ||
-        formatText(MSG.unknownAction);
+    const secondPart =
+      actionTitle || actionMetadataDescription || formatText(MSG.unknownAction);
 
-      return (
-        <>
-          {firstPart} {secondPart}
-        </>
-      );
-    }
-
-    return formatText(MSG.unknownAction);
+    return (
+      <>
+        {firstPart} {secondPart}
+      </>
+    );
   }, [actionMetadataDescription, actionTitle, creator, notificationType]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
