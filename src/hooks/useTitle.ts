@@ -34,6 +34,7 @@ import {
   COLONY_INCORPORATION_ROUTE,
   COLONY_BALANCES_ROUTE,
   COLONY_MULTISIG_ROUTE,
+  USER_CRYPTO_TO_FIAT_ROUTE,
 } from '~routes/routeConstants.ts';
 import { type SimpleMessageValues } from '~types/index.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -56,19 +57,24 @@ const MSG = defineMessages({
     defaultMessage: `Create a Profile | Colony`,
   },
 
-  editProfile: {
-    id: `${displayName}.useTitle.editProfile`,
-    defaultMessage: `Account Profile | Colony`,
+  profile: {
+    id: `${displayName}.useTitle.profile`,
+    defaultMessage: `Profile | Colony`,
   },
 
-  editPreferences: {
-    id: `${displayName}.useTitle.editPreferences`,
-    defaultMessage: `Account Preferences | Colony`,
+  preferences: {
+    id: `${displayName}.useTitle.preferences`,
+    defaultMessage: `Preferences | Colony`,
   },
 
   advancedSettings: {
     id: `${displayName}.useTitle.advancedSettings`,
-    defaultMessage: `Advanced Settings | Colony`,
+    defaultMessage: `Advanced settings | Colony`,
+  },
+
+  cryptoToFiat: {
+    id: `${displayName}.useTitle.cryptoToFiat`,
+    defaultMessage: `Crypto to fiat | Colony`,
   },
 
   notFound: {
@@ -189,9 +195,10 @@ interface MessageWithValues {
 }
 
 const routeMessages: Record<string, MessageDescriptor> = {
-  [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.editProfile,
-  [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.editPreferences,
+  [`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`]: MSG.profile,
+  [`${USER_HOME_ROUTE}/${USER_PREFERENCES_ROUTE}`]: MSG.preferences,
   [`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`]: MSG.advancedSettings,
+  [`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`]: MSG.cryptoToFiat,
 
   '/': MSG.landing,
   [COLONY_HOME_ROUTE]: MSG.colonyHome,
