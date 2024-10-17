@@ -22,7 +22,7 @@ export const TokenList: FC<TokenListProps> = ({
   onSelect,
 }) => {
   return (
-    <ul>
+    <ul className="h-full overflow-y-auto">
       {colonyTokens.map((colonyToken) => {
         const tokenBalance = getBalanceForTokenAndDomain(
           colonyBalances,
