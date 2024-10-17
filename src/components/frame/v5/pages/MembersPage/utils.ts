@@ -1,14 +1,84 @@
 import { Id } from '@colony/colony-js';
 
-import { getRole } from '~constants/permissions.ts';
+import {
+  getInheritedPermissions,
+  getRole,
+  type UserRoleMeta,
+} from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
 import {
   getHighestTierRoleForUser,
   getUserRolesForDomain,
-} from '~transformers';
+} from '~transformers/index.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
+
+interface RoleInfo {
+  role: UserRoleMeta | undefined;
+  isInherited: boolean;
+}
+
+interface GetRoleInfoParams {
+  colonyRoles: ReturnType<typeof extractColonyRoles>;
+  contributorAddress: string;
+  selectedTeamId: number | undefined;
+  isRootDomain: boolean;
+  isMultiSig: boolean;
+}
+
+const getRoleInfo = ({
+  colonyRoles,
+  contributorAddress,
+  selectedTeamId,
+  isRootDomain,
+  isMultiSig,
+}: GetRoleInfoParams): RoleInfo => {
+  const currentTeamPermissions = getUserRolesForDomain({
+    colonyRoles,
+    userAddress: contributorAddress,
+    domainId: selectedTeamId || Id.RootDomain,
+    excludeInherited: true,
+    isMultiSig,
+  });
+
+  const parentPermissions = getUserRolesForDomain({
+    colonyRoles,
+    userAddress: contributorAddress,
+    domainId: Id.RootDomain,
+    isMultiSig,
+  });
+
+  const inheritedPermissions = getInheritedPermissions({
+    parentPermissions,
+    currentPermissions: currentTeamPermissions,
+    isRootDomain,
+  });
+  if (!inheritedPermissions.length && !currentTeamPermissions.length) {
+    return { role: undefined, isInherited: false };
+  }
+
+  const mergedPermissions = [
+    ...new Set([...parentPermissions, ...currentTeamPermissions]),
+  ];
+  return {
+    role: getRole(mergedPermissions),
+    isInherited: inheritedPermissions.length > 0,
+  };
+};
+
+export const getHighestTierRoleMeta = ({
+  colonyRoles,
+  contributorAddress,
+  isMultiSig = false,
+}) => {
+  const highestTierRole = getHighestTierRoleForUser(
+    colonyRoles,
+    contributorAddress,
+    isMultiSig,
+  );
+  return highestTierRole ? getRole(highestTierRole) : undefined;
+};
 
 export const getMembersList = (
   members: ColonyContributorFragment[],
@@ -16,6 +86,7 @@ export const getMembersList = (
   colony: ColonyFragment,
 ): MemberItem[] => {
   const isAllTeamsSelected = selectedTeamId === undefined;
+  const isRootDomain = selectedTeamId === Id.RootDomain;
   const colonyRoles = extractColonyRoles(colony.roles);
 
   return members.map((contributor) => {
@@ -28,66 +99,41 @@ export const getMembersList = (
       type,
     } = contributor;
 
-    const domainRoles = getUserRolesForDomain({
-      colonyRoles,
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-      intersectingRoles: true,
-    });
-
-    const domainRolesMeta = domainRoles.length
-      ? getRole(domainRoles)
-      : undefined;
-
-    const domainRolesWithoutInherited = getUserRolesForDomain({
-      colonyRoles,
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-      excludeInherited: true,
-    });
-
-    const highestTierRole = getHighestTierRoleForUser(
-      colonyRoles,
-      contributorAddress,
+    const { role: domainRolesMeta, isInherited: isRoleInherited } = getRoleInfo(
+      {
+        colonyRoles,
+        contributorAddress,
+        selectedTeamId,
+        isRootDomain,
+        isMultiSig: false,
+      },
     );
 
-    const highestTierRoleMeta = highestTierRole
-      ? getRole(highestTierRole)
-      : undefined;
+    const highestTierRoleMeta = getHighestTierRoleMeta({
+      colonyRoles,
+      contributorAddress,
+    });
+
+    const {
+      role: domainMultiSigRolesMeta,
+      isInherited: isMultiSigRoleInherited,
+    } = getRoleInfo({
+      colonyRoles,
+      contributorAddress,
+      selectedTeamId,
+      isRootDomain,
+      isMultiSig: true,
+    });
+
+    const highestTierMultiSigRoleMeta = getHighestTierRoleMeta({
+      colonyRoles,
+      contributorAddress,
+      isMultiSig: true,
+    });
 
     const teamReputationPercentage = reputation?.items?.find(
       (item) => item?.domain?.nativeId === selectedTeamId,
     )?.reputationPercentage;
-
-    const domainMultiSigRoles = getUserRolesForDomain({
-      colonyRoles,
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-      intersectingRoles: true,
-      isMultiSig: true,
-    });
-
-    const domainMultiSigRolesMeta = domainMultiSigRoles.length
-      ? getRole(domainMultiSigRoles)
-      : undefined;
-
-    const domainMultiSigRolesWithoutInherited = getUserRolesForDomain({
-      colonyRoles,
-      userAddress: contributorAddress,
-      domainId: selectedTeamId || Id.RootDomain,
-      excludeInherited: true,
-      isMultiSig: true,
-    });
-
-    const highestTierMultiSigRole = getHighestTierRoleForUser(
-      colonyRoles,
-      contributorAddress,
-      true,
-    );
-
-    const highestTierMultiSigRoleMeta = highestTierMultiSigRole
-      ? getRole(highestTierMultiSigRole, true)
-      : undefined;
 
     return {
       user,
@@ -97,17 +143,11 @@ export const getMembersList = (
         ? colonyReputationPercentage
         : teamReputationPercentage,
       role: isAllTeamsSelected ? highestTierRoleMeta : domainRolesMeta,
-      isRoleInherited:
-        isAllTeamsSelected || selectedTeamId === Id.RootDomain
-          ? false
-          : !domainRolesWithoutInherited.length,
+      isRoleInherited,
       multiSigRole: isAllTeamsSelected
         ? highestTierMultiSigRoleMeta
         : domainMultiSigRolesMeta,
-      isMultiSigRoleInherited:
-        isAllTeamsSelected || selectedTeamId === Id.RootDomain
-          ? false
-          : !domainMultiSigRolesWithoutInherited.length,
+      isMultiSigRoleInherited,
       contributorType: type ?? undefined,
     };
   });
