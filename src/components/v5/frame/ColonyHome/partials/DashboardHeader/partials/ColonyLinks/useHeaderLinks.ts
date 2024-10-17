@@ -23,7 +23,7 @@ import {
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
 import { sortExternalLinks } from './helpers.ts';
-import { useMuteColonyItem } from './useMuteColonyItem.ts';
+import useMuteColonyItem from './useMuteColonyItem.tsx';
 
 export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const { areNotificationsEnabled } = useNotificationsUserContext();
