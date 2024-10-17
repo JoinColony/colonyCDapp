@@ -33,7 +33,13 @@ type Props = Pick<
 
 const StepCreateToken = ({
   nextStep,
-  wizardValues: { tokenChoice, tokenName, tokenSymbol, tokenAddress },
+  wizardValues: {
+    tokenChoice,
+    tokenName,
+    tokenSymbol,
+    tokenAddress,
+    tokenAvatar,
+  },
   previousStep,
 }: Props) => (
   <Form<Step3>
@@ -58,6 +64,7 @@ const StepCreateToken = ({
             <TokenInputs
               wizardTokenName={tokenName || ''}
               wizardTokenSymbol={tokenSymbol || ''}
+              wizardTokenAvatar={tokenAvatar || ''}
             />
           ) : (
             <TokenSelectorInput wizardTokenAddress={tokenAddress} />

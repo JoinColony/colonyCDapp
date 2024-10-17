@@ -1,5 +1,5 @@
 import { Image } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -19,6 +19,7 @@ const displayName = 'common.CreateColonyWizard.StepCreateTokenInputs';
 interface StepCreateTokenInputsProps {
   wizardTokenName: string;
   wizardTokenSymbol: string;
+  wizardTokenAvatar: string;
 }
 
 const MSG = defineMessages({
@@ -44,6 +45,7 @@ const MSG = defineMessages({
 const StepCreateTokenInputs = ({
   wizardTokenName,
   wizardTokenSymbol,
+  wizardTokenAvatar,
 }: StepCreateTokenInputsProps) => {
   const {
     register,
@@ -57,8 +59,6 @@ const StepCreateTokenInputs = ({
     getInputError(errors, 'tokenName', submitCount);
   const { error: tokenSymbolError, showError: showTokenSymbolError } =
     getInputError(errors, 'tokenSymbol', submitCount);
-
-  const tokenAvatarUrl = watch('tokenAvatar');
 
   const updateFn: UseAvatarUploaderProps['updateFn'] = async (
     avatar,
@@ -76,6 +76,14 @@ const StepCreateTokenInputs = ({
 
     setProgress(100);
   };
+
+  useEffect(() => {
+    if (!watch('tokenAvatar') && wizardTokenAvatar) {
+      setValue('tokenAvatar', wizardTokenAvatar);
+    }
+  }, [wizardTokenAvatar, setValue, watch]);
+
+  const tokenAvatarUrl = watch('tokenAvatar');
 
   return (
     <>
