@@ -12,6 +12,7 @@ export interface NotificationAttributes {
   tokenAddress?: string;
   extensionHash?: string;
   newColonyVersion?: string;
+  newExtensionVersion?: string;
 }
 
 // Create our own notification type so that we have types for the custom attributes, instead of
