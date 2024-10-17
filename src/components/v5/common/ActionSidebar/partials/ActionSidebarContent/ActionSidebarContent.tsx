@@ -16,6 +16,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
+import { removeCacheEntry } from '~utils/queries.ts';
 import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -316,9 +317,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
              * We need to remove all getDomainBalance queries once a payment has been successfully completed
              * By default it will refetch all active queries
              */
-            client.cache.evict({
-              fieldName: 'getDomainBalance',
-            });
+            removeCacheEntry('getDomainBalance');
 
             actionFormProps?.onSuccess?.();
           }}
