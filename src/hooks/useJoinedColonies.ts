@@ -8,8 +8,12 @@ const sortByDate = <T extends { createdAt: string }>(a: T, b: T) =>
 
 const useJoinedColonies = (
   userAddress?: string,
-): { joinedColonies: JoinedColony[]; loading: boolean } => {
-  const { data, loading } = useGetContributorsByAddressQuery({
+): {
+  joinedColonies: JoinedColony[];
+  loading: boolean;
+  refetch: () => void;
+} => {
+  const { data, loading, refetch } = useGetContributorsByAddressQuery({
     variables: {
       contributorAddress: userAddress ?? ADDRESS_ZERO,
       isWatching: true,
@@ -23,7 +27,7 @@ const useJoinedColonies = (
       .sort(sortByDate)
       .map((contributor) => contributor.colony) ?? [];
 
-  return { joinedColonies, loading };
+  return { joinedColonies, loading, refetch };
 };
 
 export default useJoinedColonies;

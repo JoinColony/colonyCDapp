@@ -37,6 +37,7 @@ import PillsBase from '../Pills/PillsBase.tsx';
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
+import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
@@ -47,7 +48,6 @@ const displayName = 'v5.common.ActionSidebar';
 
 const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   children,
-  initialValues,
   transactionId,
   className,
 }) => {
@@ -70,7 +70,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       { toggle: toggleActionSidebarOff, registerContainerRef },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
+    actionSidebarInitialValues,
   } = useActionSidebarContext();
+
+  const GroupedActionComponent = useGetGroupedActionComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
 
@@ -181,12 +184,16 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       );
     }
 
+    if (GroupedActionComponent) {
+      return <GroupedActionComponent />;
+    }
+
     return (
       <ActionSidebarContent
         key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
-        defaultValues={initialValues}
+        defaultValues={actionSidebarInitialValues}
         isMotion={!!isMotion}
       />
     );
@@ -224,13 +231,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         className,
         `
           fixed
-          bottom-4
           right-0
-          top-0
+          top-[calc(var(--top-content-height))]
           isolate
           z-sidebar
           flex
-          h-full
+          h-[calc(100vh-var(--top-content-height))]
           w-full
           flex-col
           border
@@ -240,9 +246,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           shadow-default
           transition-[max-width]
           md:bottom-0
-          md:top-4
-          md:h-[calc(100vh-2rem)]
-          md:w-[calc(100vw-8.125rem)]
+          md:top-[calc(var(--top-content-height)+16px)]
+          md:h-[calc(100vh-var(--top-content-height)-2rem)]
+          md:w-[calc(100vw-248px)]
           md:rounded-l-lg
         `,
         {
