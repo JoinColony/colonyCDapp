@@ -10,6 +10,6 @@ export const BasicPageSidebar = () => (
       widgetPlacement: { horizontalPadding: 104 },
     }}
     className="!items-center"
-    footerClassName="!items-center"
+    footerClassName="!items-center gap-[1.063rem]"
   />
 );
