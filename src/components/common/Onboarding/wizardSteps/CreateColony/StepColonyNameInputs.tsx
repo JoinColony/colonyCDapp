@@ -64,6 +64,7 @@ const StepColonyNameInputs = ({
         defaultValue={wizardDisplayName}
         labelMessage={{ id: 'colonyName' }}
         shouldFocus
+        shouldNumberOfCharsBeVisible
       />
       <div className="flex flex-col gap-2 pt-6">
         <label className="flex flex-col text-1" htmlFor="id-colonyName">
