@@ -14,6 +14,7 @@ import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
+import { removeCacheEntry } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
@@ -78,6 +79,16 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     startPollingForAction,
     stopPollingForAction,
   ]);
+
+  useEffect(() => {
+    if (motionData?.isFinalized) {
+      /**
+       * We need to remove all getDomainBalance queries once a payment or funding has been successfully completed
+       * By default it will refetch all active queries
+       */
+      removeCacheEntry('getDomainBalance');
+    }
+  }, [motionData?.isFinalized]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};
