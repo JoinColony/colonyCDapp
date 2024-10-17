@@ -54,3 +54,9 @@ export const getSafePollingInterval = (): number => {
   }
   return (blockTime - 1) * 1000; // one second less than the actual block time
 };
+
+export const removeCacheEntry = (cacheEntryName: string) => {
+  apolloClient.cache.evict({
+    fieldName: cacheEntryName,
+  });
+};
