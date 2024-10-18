@@ -23,6 +23,10 @@ const MSG = defineMessages({
   },
   finalized: {
     id: `${displayName}.finalized`,
+    defaultMessage: 'Payment released:',
+  },
+  payoutClaimed: {
+    id: `${displayName}.payoutClaimed`,
     defaultMessage: 'Payment made:',
   },
   cancelled: {
@@ -53,6 +57,9 @@ const ExpenditureNotificationMessage: FC<
       [NotificationType.ExpenditureReadyForRelease]: formatText(MSG.release),
       [NotificationType.ExpenditureCancelled]: formatText(MSG.cancelled),
       [NotificationType.ExpenditureFinalized]: formatText(MSG.finalized),
+      [NotificationType.ExpenditurePayoutClaimed]: formatText(
+        MSG.payoutClaimed,
+      ),
     }[notificationType];
 
     const secondPart =
