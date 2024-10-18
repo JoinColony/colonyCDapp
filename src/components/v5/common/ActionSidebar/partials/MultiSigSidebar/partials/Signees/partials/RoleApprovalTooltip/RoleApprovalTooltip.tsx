@@ -21,17 +21,17 @@ const MSG = defineMessages({
   rolesTooltipApproved: {
     id: `${displayName}.rolesTooltipApproved`,
     defaultMessage:
-      'Approved using {numberOfRolesSigned} core {numberOfRolesSigned, plural, one {permission} other {permissions}}:',
+      'Approved using {numberOfRolesSigned} core multi-sig {numberOfRolesSigned, plural, one {permission} other {permissions}}:',
   },
   rolesTooltipRejected: {
     id: `${displayName}.rolesTooltipRejected`,
     defaultMessage:
-      'Rejected using {numberOfRolesSigned} core {numberOfRolesSigned, plural, one {permission} other {permissions}}:',
+      'Rejected using {numberOfRolesSigned} core multi-sig {numberOfRolesSigned, plural, one {permission} other {permissions}}:',
   },
   rolesTooltipPending: {
     id: `${displayName}.rolesTooltipPending`,
     defaultMessage:
-      'Can approve using {numberOfRolesPending} core {numberOfRolesPending, plural, one {permission} other {permissions}}:',
+      'Can approve using {numberOfRolesPending} core multi-sig {numberOfRolesPending, plural, one {permission} other {permissions}}:',
   },
 });
 
