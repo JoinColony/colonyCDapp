@@ -36,6 +36,7 @@ const ErrorContent: FC<ErrorContentProps> = ({
           <button
             type="button"
             className="flex pt-[1px] text-negative-400 hover:text-blue-400"
+            data-testid="file-remove"
             onClick={handleFileRemove}
           >
             <Trash size={18} />
