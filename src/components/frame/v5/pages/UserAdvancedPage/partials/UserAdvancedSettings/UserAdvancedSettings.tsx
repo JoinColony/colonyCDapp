@@ -3,7 +3,6 @@ import React, {
   // @BETA: Disabled for now
   // useState
 } from 'react';
-import { useIntl } from 'react-intl';
 
 // @BETA: Disabled for now
 // import Checkbox from '~v5/common/Checkbox';
@@ -23,13 +22,8 @@ const UserAdvancedSettings: FC = () => {
   // @BETA: Disabled for now
   // const [isChecked, setIsChecked] = useState(false);
   // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { formatMessage } = useIntl();
-
   return (
     <div className="flex flex-col gap-6">
-      <h4 className="heading-4">
-        {formatMessage({ id: 'advancedSettings.title' })}
-      </h4>
       <FeesForm />
       {/* @BETA: Disabled for noew */}
       {/* <span className="divider" /> */}

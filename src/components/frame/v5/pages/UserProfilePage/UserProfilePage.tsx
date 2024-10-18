@@ -5,7 +5,6 @@ import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
 import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
-import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { useTablet } from '~hooks';
 import {
   USER_CRYPTO_TO_FIAT_ROUTE,
@@ -94,8 +93,6 @@ const UserProfilePage: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
-
   if (activeTab === undefined) {
     return <Navigate to="/account/profile" />;
   }
@@ -103,7 +100,7 @@ const UserProfilePage: FC = () => {
   return (
     <Tabs
       activeTab={activeTab}
-      className="pt-6 md:pt-4"
+      className="pt-6 md:pt-2"
       onTabClick={(_, id) =>
         navigate(tabRoutes.find((route) => route.id === id)?.route ?? '')
       }
