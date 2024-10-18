@@ -85,26 +85,28 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [isActionSidebarOpen]);
 
   const toggleOn = useCallback(
-    (initialValues) => {
-      setActionSidebarInitialValues(initialValues);
-      // Track the event when the action panel is opened
-      trackEvent(OPEN_ACTION_PANEL_EVENT);
-      return toggleActionSidebarOn();
+    (initialValues): void => {
+      if (!isActionSidebarOpen) {
+        setActionSidebarInitialValues(initialValues);
+        // Track the event when the action panel is opened
+        trackEvent(OPEN_ACTION_PANEL_EVENT);
+        toggleActionSidebarOn();
+      }
     },
-    [toggleActionSidebarOn, trackEvent],
+    [isActionSidebarOpen, toggleActionSidebarOn, trackEvent],
   );
 
-  const toggleOff = useCallback(() => {
+  const toggleOff = useCallback((): void => {
     removeTxParamOnClose();
-    return toggleActionSidebarOff();
+    toggleActionSidebarOff();
   }, [toggleActionSidebarOff, removeTxParamOnClose]);
 
   const toggle = useCallback(
-    (initialValues) => {
+    (initialValues): void => {
       if (!isActionSidebarOpen) {
         setActionSidebarInitialValues(initialValues);
       }
-      return toggleActionSidebar();
+      toggleActionSidebar();
     },
     [isActionSidebarOpen, toggleActionSidebar],
   );
