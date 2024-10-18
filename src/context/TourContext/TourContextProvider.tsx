@@ -21,18 +21,21 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
   } = useActionSidebarContext();
 
   const startTour = useCallback((tourSteps: Step[]) => {
-    const stepsWithData = tourSteps.map((step) => ({
-      ...step,
-      data: {
-        ...step.data,
-        triggerIdentifier: step.data.triggerIdentifier,
-        triggerPayload: step.data.triggerPayload,
-        icon: step.data.icon,
-        image: step.data.image,
-        imageAlt: step.data.imageAlt,
-        title: step.title,
-      },
-    }));
+    const stepsWithData = tourSteps.map((step) => {
+      const data = step.data || {};
+      return {
+        ...step,
+        data: {
+          ...data,
+          triggerIdentifier: data.triggerIdentifier,
+          triggerPayload: data.triggerPayload,
+          icon: data.icon,
+          image: data.image,
+          imageAlt: data.imageAlt,
+          title: step.title,
+        },
+      };
+    });
 
     setSteps(stepsWithData);
     setStepIndex(0);
@@ -75,7 +78,7 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
       } else if (type === 'step:before') {
         const currentStep = step as Step;
 
-        if (currentStep.data.triggerIdentifier) {
+        if (currentStep.data?.triggerIdentifier) {
           switch (currentStep.data.triggerIdentifier) {
             case 'OPEN_ACTION_SIDEBAR':
               if (!isSidebarOpen) {
