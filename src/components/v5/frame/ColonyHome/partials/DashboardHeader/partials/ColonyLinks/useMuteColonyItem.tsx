@@ -13,31 +13,27 @@ import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
 
 const ITEM_KEY = 'headerDropdown.section3.toggleMute';
 
-// Disabling this eslint rule since it seems that it is a false positive. There is only one export from this file,
-// but for some reason if we keep MSG outside of the hook it thinks that there is two exports. It does not break the fast refresh.
-
-// eslint-disable-next-line react-refresh/only-export-components
-const MSG = defineMessages({
-  mute: {
-    id: 'headerDropdown.muteNotifications',
-    defaultMessage: 'Mute notifications',
-  },
-  unmute: {
-    id: 'headerDropdown.unmuteNotifications',
-    defaultMessage: 'Unmute notifications',
-  },
-  toastNotificationsUnmuted: {
-    id: `headerDropdown.toastNotificationsUnmuted`,
-    defaultMessage: 'You will now receive notifications from this colony.',
-  },
-  toastNotificationsMuted: {
-    id: `headerDropdown.toastNotificationsMuted`,
-    defaultMessage:
-      'You will no longer receive notifications from this colony.',
-  },
-});
-
 const useMuteColonyItem = (): DropdownMenuItem => {
+  const MSG = defineMessages({
+    mute: {
+      id: 'headerDropdown.muteNotifications',
+      defaultMessage: 'Mute notifications',
+    },
+    unmute: {
+      id: 'headerDropdown.unmuteNotifications',
+      defaultMessage: 'Unmute notifications',
+    },
+    toastNotificationsUnmuted: {
+      id: `headerDropdown.toastNotificationsUnmuted`,
+      defaultMessage: 'You will now receive notifications from this colony.',
+    },
+    toastNotificationsMuted: {
+      id: `headerDropdown.toastNotificationsMuted`,
+      defaultMessage:
+        'You will no longer receive notifications from this colony.',
+    },
+  });
+
   const { user, updateUser } = useAppContext();
   const {
     colony: { colonyAddress },
