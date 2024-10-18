@@ -67,7 +67,7 @@ export const useStreamingPaymentsTotalFunds = () => {
   const [ratePerSecond, setRatePerSecond] = useState<number>(0);
 
   const getTotalFunds = useCallback(
-    async (items: StreamingPaymentItems) => {
+    async (items: StreamingPaymentItems, currentTimestamp: number) => {
       const {
         totalAvailable,
         totalClaimed,
@@ -75,7 +75,7 @@ export const useStreamingPaymentsTotalFunds = () => {
         ratePerSecond: ratePerSecondValue,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
-        currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+        currentTimestamp,
         currency,
         colony,
       });
@@ -84,7 +84,7 @@ export const useStreamingPaymentsTotalFunds = () => {
       setTotalFunds({ totalAvailable, totalClaimed });
       setRatePerSecond(ratePerSecondValue);
     },
-    [blockTime, colony, currency],
+    [colony, currency],
   );
 
   useEffect(() => {
@@ -113,9 +113,12 @@ export const useStreamingPaymentsTotalFunds = () => {
 
   useEffect(() => {
     if (streamingPayments.length) {
-      getTotalFunds(streamingPayments);
+      getTotalFunds(
+        streamingPayments,
+        Math.floor(blockTime ?? Date.now() / 1000),
+      );
     }
-  }, [getTotalFunds, streamingPayments]);
+  }, [blockTime, getTotalFunds, streamingPayments]);
 
   return {
     totalFunds,
