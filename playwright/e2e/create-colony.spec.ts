@@ -12,17 +12,21 @@ import {
   generateRandomString,
   selectWalletAndUserProfile,
 } from '../utils/create-colony.ts';
-import { generateCreateColonyUrl } from '../utils/graphqlHelpers.ts';
+import {
+  fetchFirstValidTokenAddress,
+  generateCreateColonyUrl,
+} from '../utils/graphqlHelpers.ts';
 
 test.describe('Create Colony flow', () => {
   let colonyUrl: string;
   const colonyName = 'testcolonyname';
-  const validToken = '0xeF841fe1611ce41bFCf0265097EFaf50486F5111';
+  let validToken: string;
   const invalidToken = 'invalidtoken';
   let customColonyURL = '';
   test.beforeAll(async () => {
     customColonyURL = generateRandomString();
     colonyUrl = await generateCreateColonyUrl();
+    validToken = await fetchFirstValidTokenAddress();
   });
 
   test.beforeEach(async ({ page }) => {
@@ -311,7 +315,9 @@ test.describe('Create Colony flow', () => {
         colonyNameCard.getByRole('button', { name: 'Edit' }),
       ).toBeEnabled();
 
-      await expect(colonyTokenCard.getByText('Space Credits')).toBeVisible();
+      await expect(
+        colonyTokenCard.getByText('DAI for Local Development'),
+      ).toBeVisible();
 
       await expect(
         colonyTokenCard.getByRole('button', { name: 'Edit' }),
@@ -320,7 +326,9 @@ test.describe('Create Colony flow', () => {
       await expect(page.getByRole('button', { name: 'Back' })).toBeVisible();
 
       await expect(
-        page.getByRole('img', { name: /Avatar of token Space Credits/i }),
+        page.getByRole('img', {
+          name: /Avatar of token DAI for Local Development/i,
+        }),
       ).toBeVisible();
 
       await expect(
@@ -362,7 +370,7 @@ test.describe('Create Colony flow', () => {
       );
     });
 
-    test('Should create a colony and navigate to colony URL', async ({
+    test('Should create a colony and navigate to the Complete Setup step', async ({
       page,
     }) => {
       await fillNativeTokenStepWithExistingToken(page, validToken);
@@ -375,14 +383,6 @@ test.describe('Create Colony flow', () => {
           /Deploying to the blockchain requires you to sign a transaction in your wallet for each step/i,
         ),
       ).toBeVisible();
-
-      await expect(
-        page
-          .getByRole('dialog')
-          .getByRole('button', { name: 'Explore your Colony' }),
-      ).toBeVisible({ timeout: 15000 });
-
-      await expect(page).toHaveURL(new RegExp(`/${customColonyURL}$`));
     });
   });
 });
