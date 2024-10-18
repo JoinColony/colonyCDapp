@@ -64,7 +64,7 @@ export const PERMISSIONS = `https://docs.colony.io/learn/advanced-concepts/permi
 export const MULTI_SIG_EXTENSION = `https://blog.colony.io/new-feature-fully-control-a-multi-sig-safe-with-a-dao/`;
 export const MULTI_SIG_HELP_URL =
   'https://help.colony.io/en/articles/9619272-multi-sig-permissions#h_3d3820ca17';
-export const STAKING_ADVANCED_PAYMENTS = `https://docs.colony.io/use/making-payments/staking-payments`;
+export const STAKING_ADVANCED_PAYMENTS = `https://help.colony.io/en/articles/9626933-staking-advanced-payments`;
 export const STAGED_PAYMENTS = `https://help.colony.io/en/articles/9626927-staged-payments`;
 
 /*
