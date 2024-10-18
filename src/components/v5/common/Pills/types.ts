@@ -34,15 +34,13 @@ export type UserStatusMode =
   | 'team'
   | 'verified';
 
-export type IconSize = 'extraTiny' | 'tiny';
-
 export type PillSize = 'medium' | 'small';
 
 export interface PillsProps {
   mode?: ExtensionStatusBadgeMode | UserStatusMode;
   text?: React.ReactNode;
   icon?: Icon;
-  iconSize?: IconSize;
+  iconSize?: number;
   iconClassName?: string;
   pillSize?: PillSize;
   className?: string;
