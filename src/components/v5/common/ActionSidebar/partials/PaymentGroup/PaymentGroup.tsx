@@ -14,7 +14,7 @@ const PaymentGroup = () => {
       description={formatText({ id: 'actions.description.payments' })}
     >
       <GroupedAction.List>
-        {GROUP_LIST.map(({ Icon, title, description, action }) => {
+        {GROUP_LIST.map(({ Icon, title, description, action, isNew }) => {
           return (
             <GroupedAction.Item
               color="blue"
@@ -23,6 +23,7 @@ const PaymentGroup = () => {
               description={description}
               action={action}
               key={`group-action-item-${action}`}
+              isNew={isNew}
             />
           );
         })}
