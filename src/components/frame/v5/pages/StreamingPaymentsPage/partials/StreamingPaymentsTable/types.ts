@@ -1,3 +1,4 @@
+import { type StreamingPaymentEndCondition } from '~gql';
 import { type StreamingPayment } from '~types/graphql.ts';
 import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
@@ -14,4 +15,5 @@ export interface StreamingActionTableFieldModel extends StreamingPayment {
   paymentId: string;
   transactionId: string;
   status: StreamingPaymentStatus;
+  endCondition?: StreamingPaymentEndCondition;
 }

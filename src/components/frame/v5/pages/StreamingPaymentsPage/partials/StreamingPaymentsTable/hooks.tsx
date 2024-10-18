@@ -1,10 +1,22 @@
 import { CaretDown } from '@phosphor-icons/react';
 import { type Row, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
+import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { useSearchStreamingPaymentsQuery } from '~gql';
+import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
+import { notNull } from '~utils/arrays/index.ts';
+import {
+  convertToMonthlyAmount,
+  getStreamingPaymentAmountsLeft,
+  getStreamingPaymentStatus,
+} from '~utils/streamingPayments.ts';
 
 import StreamingActionsTable from '../StreamingActionsTable/StreamingActionsTable.tsx';
 
@@ -14,6 +26,11 @@ import { type StreamingPaymentFilters } from './partials/StreamingPaymentFilters
 import UserField from './partials/UserField/UserField.tsx';
 import UserStreams from './partials/UserStreams/UserStreams.tsx';
 import { type StreamingTableFieldModel } from './types.ts';
+import {
+  filterByActionStatus,
+  filterByEndCondition,
+  searchStreamingPayments,
+} from './utils.ts';
 
 export const useRenderSubComponent = () => {
   return ({ row }: { row: Row<StreamingTableFieldModel> }) => (
@@ -97,18 +114,21 @@ const getSearchStreamingPaymentsFilterVariable = (
               }
             : {}),
         };
+
   const activeTokens = tokenTypes
     ? Object.entries(tokenTypes)
-        .filter(([, value]) => value)
-        .map(([key]) => key)
+        .filter(([, value]) => value === true)
+        .map(([tokenAddress]) => ({
+          tokenAddress: { eq: tokenAddress },
+        }))
     : [];
 
   return {
-    colonyId: { eq: colonyAddress },
-    // @TODO: Add support for multiple tokens
-    tokenAddress:
-      tokenTypes && tokenTypes?.length ? { eq: activeTokens[0] } : undefined,
-    ...dateFilter,
+    and: [
+      { colonyId: { eq: colonyAddress } },
+      ...activeTokens,
+      dateFilter,
+    ].filter((obj) => Object.keys(obj).length > 0),
   };
 };
 
@@ -116,7 +136,8 @@ export const useStreamingPaymentTable = () => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const { activeFilters } = useStreamingFiltersContext();
+  const { activeFilters, searchFilter } = useStreamingFiltersContext();
+
   const { data, loading } = useSearchStreamingPaymentsQuery({
     variables: {
       filter: getSearchStreamingPaymentsFilterVariable(
@@ -127,8 +148,132 @@ export const useStreamingPaymentTable = () => {
     fetchPolicy: 'network-only',
   });
 
+  const { currentBlockTime: blockTime } = useCurrentBlockTime();
+  const { totalMembers: members } = useMemberContext();
+  const allTokens = useGetAllTokens();
+
+  const groupedStreamingPayments: StreamingTableFieldModel[] = (
+    data?.searchStreamingPayments?.items || []
+  )
+    .filter(notNull)
+    .map((item) => {
+      const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+        item,
+        Math.floor(blockTime ?? Date.now() / 1000),
+      );
+      const paymentStatus = getStreamingPaymentStatus({
+        streamingPayment: item,
+        currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+        amountAvailableToClaim,
+      });
+      const selectedToken = allTokens.find(
+        (token) => token.token.tokenAddress === item.tokenAddress,
+      );
+
+      return {
+        title: item.actions?.items[0]?.metadata?.customTitle || '',
+        token: item.token || selectedToken?.token,
+        nativeDomainId: item.nativeDomainId,
+        paymentId: item.id,
+        amount: item.amount,
+        creatorAddress: item.creatorAddress,
+        recipientAddress: item.recipientAddress,
+        interval: item.interval,
+        transactionId: item.actions?.items[0]?.transactionHash || '',
+        id: item.id,
+        nativeId: item.nativeId,
+        startTime: item.startTime,
+        endTime: item.endTime,
+        tokenAddress: item.tokenAddress,
+        createdAt: item.createdAt,
+        status: paymentStatus,
+        endCondition: item.metadata?.endCondition,
+      };
+    })
+    .reduce<StreamingTableFieldModel[]>((result, item) => {
+      const { recipientAddress } = item;
+
+      let existingEntryIndex = result.findIndex((entry) => {
+        return entry.user === recipientAddress;
+      });
+
+      if (existingEntryIndex < 0) {
+        result.push({
+          user: recipientAddress,
+          userStreams: [],
+          actions: [],
+        });
+        existingEntryIndex = result.length - 1;
+      }
+
+      const existingUser = result[existingEntryIndex];
+      const tokenAddress = item.token?.tokenAddress || '';
+
+      let userStreamIndex = existingUser.userStreams.findIndex(
+        (stream) => stream.tokenAddress === tokenAddress,
+      );
+
+      const isPaymentActive = item.status === StreamingPaymentStatus.Active;
+
+      if (isPaymentActive) {
+        if (userStreamIndex < 0) {
+          existingUser.userStreams.push({
+            tokenAddress,
+            amount: '0',
+            tokenDecimals: item.token?.decimals || DEFAULT_TOKEN_DECIMALS,
+            tokenSymbol: item.token?.symbol || '',
+          });
+          userStreamIndex = existingUser.userStreams.length - 1;
+        }
+
+        const monthlyAmount = convertToMonthlyAmount(
+          BigNumber.from(item.amount),
+          Number(item.interval),
+        );
+
+        const currentStream = existingUser.userStreams[userStreamIndex];
+        const totalAmount = BigNumber.from(currentStream.amount)
+          .add(monthlyAmount)
+          .toString();
+
+        existingUser.userStreams[userStreamIndex] = {
+          ...currentStream,
+          amount: totalAmount,
+        };
+      }
+
+      existingUser.actions = [...existingUser.actions, item];
+
+      return result;
+    }, [])
+    .sort((a, b) => {
+      const aHasActive = a.actions.some(
+        (action) => action.status === StreamingPaymentStatus.Active,
+      );
+      const bHasActive = b.actions.some(
+        (action) => action.status === StreamingPaymentStatus.Active,
+      );
+
+      if (aHasActive === bHasActive) {
+        return 0;
+      }
+      return aHasActive ? -1 : 1;
+    });
+
+  const searchedStreamingPayments = useMemo(
+    () =>
+      searchStreamingPayments(groupedStreamingPayments, members, searchFilter),
+    [groupedStreamingPayments, searchFilter, members],
+  );
+
+  const filteredActions = searchedStreamingPayments.filter(
+    (action) =>
+      filterByActionStatus(action, activeFilters.statuses) &&
+      filterByEndCondition(action, activeFilters.endConditions),
+  );
+
   return {
-    items: data?.searchStreamingPayments?.items || [],
+    items: filteredActions,
     loading,
   };
 };

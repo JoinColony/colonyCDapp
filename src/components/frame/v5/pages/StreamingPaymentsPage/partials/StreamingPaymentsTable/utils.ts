@@ -1,4 +1,6 @@
+import { type StreamingPaymentEndCondition } from '~gql';
 import { type ColonyContributor } from '~types/graphql.ts';
+import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import { type StreamingTableFieldModel } from './types.ts';
 
@@ -33,5 +35,35 @@ export const searchStreamingPayments = (
         stream.title.toLowerCase().includes(searchValue.toLowerCase()),
       )
     );
+  });
+};
+
+export const filterByActionStatus = (
+  action: StreamingTableFieldModel,
+  statuses?: StreamingPaymentStatus[],
+) => {
+  if (!statuses) {
+    return true;
+  }
+
+  return action.actions.some((stream) => statuses.includes(stream.status));
+};
+
+export const filterByEndCondition = (
+  action: StreamingTableFieldModel,
+  endConditions?: StreamingPaymentEndCondition[],
+) => {
+  if (!endConditions) {
+    return true;
+  }
+
+  return action.actions.some((stream) => {
+    const { endCondition } = stream || {};
+
+    if (!endCondition) {
+      return false;
+    }
+
+    return endConditions.includes(endCondition);
   });
 };
