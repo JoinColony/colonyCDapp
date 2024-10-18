@@ -276,9 +276,7 @@ const Table = <T,>({
                               'rotate-0':
                                 header.column.getIsSorted() === 'desc' &&
                                 !shouldShowEmptyContent,
-                              hidden:
-                                header.column.getIsSorted() === false ||
-                                shouldShowEmptyContent,
+                              hidden: shouldShowEmptyContent,
                             },
                           )}
                         />

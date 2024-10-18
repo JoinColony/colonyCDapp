@@ -10504,7 +10504,7 @@ export type SearchStreamingPaymentsQueryVariables = Exact<{
   nextToken?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
   sort?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentSortInput>> | InputMaybe<SearchableStreamingPaymentSortInput>>;
-  colonyId: Scalars['ID'];
+  filter?: InputMaybe<SearchableStreamingPaymentFilterInput>;
 }>;
 
 
@@ -14555,12 +14555,12 @@ export type GetUserStakesQueryHookResult = ReturnType<typeof useGetUserStakesQue
 export type GetUserStakesLazyQueryHookResult = ReturnType<typeof useGetUserStakesLazyQuery>;
 export type GetUserStakesQueryResult = Apollo.QueryResult<GetUserStakesQuery, GetUserStakesQueryVariables>;
 export const SearchStreamingPaymentsDocument = gql`
-    query SearchStreamingPayments($nextToken: String, $limit: Int, $sort: [SearchableStreamingPaymentSortInput], $colonyId: ID!) {
+    query SearchStreamingPayments($nextToken: String, $limit: Int, $sort: [SearchableStreamingPaymentSortInput], $filter: SearchableStreamingPaymentFilterInput) {
   searchStreamingPayments(
     limit: $limit
     nextToken: $nextToken
     sort: $sort
-    filter: {colonyId: {eq: $colonyId}}
+    filter: $filter
     from: 0
   ) {
     items {
@@ -14594,11 +14594,11 @@ ${StreamingPaymentFragmentDoc}`;
  *      nextToken: // value for 'nextToken'
  *      limit: // value for 'limit'
  *      sort: // value for 'sort'
- *      colonyId: // value for 'colonyId'
+ *      filter: // value for 'filter'
  *   },
  * });
  */
-export function useSearchStreamingPaymentsQuery(baseOptions: Apollo.QueryHookOptions<SearchStreamingPaymentsQuery, SearchStreamingPaymentsQueryVariables>) {
+export function useSearchStreamingPaymentsQuery(baseOptions?: Apollo.QueryHookOptions<SearchStreamingPaymentsQuery, SearchStreamingPaymentsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<SearchStreamingPaymentsQuery, SearchStreamingPaymentsQueryVariables>(SearchStreamingPaymentsDocument, options);
       }

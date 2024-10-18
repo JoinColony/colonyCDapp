@@ -1,5 +1,9 @@
 import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
-import { type SortingState, type Row } from '@tanstack/react-table';
+import {
+  type SortingState,
+  type Row,
+  getSortedRowModel,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
@@ -98,7 +102,9 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
         },
       )}
       enableSortingRemoval={false}
+      enableSorting
       state={{
+        sorting,
         columnVisibility: isMobile
           ? {
               title: true,
@@ -111,10 +117,11 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
           : {
               expander: false,
             },
-        sorting,
       }}
+      getRowId={(row) => row.transactionId}
       getMenuProps={getMenuProps}
       onSortingChange={setSorting}
+      getSortedRowModel={getSortedRowModel()}
       renderSubComponent={renderSubComponent}
       tableClassName="border-none"
     />

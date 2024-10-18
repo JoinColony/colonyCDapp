@@ -62,35 +62,47 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
     (acc, { amount }) => acc.plus(amount || 0),
     new Decimal(0),
   );
+  const shouldShowTooltip = calculatedAmountPerToken.length > 0;
+  const content = (
+    <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
+      {currency} <Numeral value={totalFunds} /> {' /month'}
+    </div>
+  );
 
   return totalFunds ? (
-    <Tooltip
-      placement="bottom"
-      tooltipContent={
-        <span>
-          {items.map(({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
+    <>
+      {shouldShowTooltip ? (
+        <Tooltip
+          placement="bottom"
+          tooltipContent={
             <span>
-              <Numeral value={amount} decimals={tokenDecimals} /> {tokenSymbol}{' '}
-              {' /month'} (
-              <Numeral
-                value={
-                  calculatedAmountPerToken.find(
-                    (item) => item.tokenAddress === tokenAddress,
-                  )?.amount || '0'
-                }
-              />{' '}
-              {currency}
-              )
-              <br />
+              {items.map(
+                ({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
+                  <span key={tokenSymbol}>
+                    <Numeral value={amount} decimals={tokenDecimals} />{' '}
+                    {tokenSymbol} {' /month'} (
+                    <Numeral
+                      value={
+                        calculatedAmountPerToken.find(
+                          (item) => item.tokenAddress === tokenAddress,
+                        )?.amount || '0'
+                      }
+                    />{' '}
+                    {currency}
+                    )
+                    <br />
+                  </span>
+                ),
+              )}
             </span>
-          ))}
-        </span>
-      }
-    >
-      <div className="flex items-center gap-[0.125rem] text-1">
-        {currency} <Numeral value={totalFunds} /> {' /month'}
-      </div>
-    </Tooltip>
+          }
+        >
+          {content}
+        </Tooltip>
+      ) : (
+        <div>{content}</div>
+      )}
+    </>
   ) : (
     <div className="h-5 w-10 skeleton" />
   );
