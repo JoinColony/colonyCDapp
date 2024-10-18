@@ -39,9 +39,9 @@
     "postinstall": "if [ -z \"$SKIP_HOOKS\" ]; then ./scripts/lambda-functions-dependencies.sh && scripts/generate-amplify-local-config.sh; fi",
     "watch-amplify": "node scripts/watchAmplifyFiles",
     "forward-time": "node scripts/forward-time",
-    "playwright:install": "npx playwright install --with-deps",
-    "playwright:run": "playwright test",
-    "playwright:watch": "playwright test --ui",
+    "e2e:install": "npx playwright install --with-deps",
+    "e2e": "playwright test",
+    "e2e:watch": "playwright test --ui",
     "generate-notifications-dev-key": "node scripts/generate-local-notifications-key"
   },
   "repository": {
