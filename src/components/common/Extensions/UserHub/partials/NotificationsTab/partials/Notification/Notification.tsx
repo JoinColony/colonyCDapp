@@ -122,6 +122,7 @@ const Notification: FC<NotificationProps> = ({
       NotificationType.ExtensionDeprecated,
       NotificationType.ExtensionUninstalled,
       NotificationType.ExtensionSettingsChanged,
+      NotificationType.NewExtensionVersion,
     ].includes(notificationType)
   ) {
     return (

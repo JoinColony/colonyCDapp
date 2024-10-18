@@ -51,6 +51,11 @@ const MSG = defineMessages({
     id: `${displayName}.settingsChanged`,
     defaultMessage: 'extension settings changed by {name}',
   },
+  newExtensionVersion: {
+    id: `${displayName}.newExtensionVersion`,
+    defaultMessage:
+      'Extension {extension} has a new version ({version}) available.',
+  },
 });
 
 const ExtensionNotificationMessage: FC<ExtensionNotificationMessageProps> = ({
@@ -90,10 +95,17 @@ const ExtensionNotificationMessage: FC<ExtensionNotificationMessageProps> = ({
         return renderNotificationMessage(MSG.uninstalled);
       case NotificationType.ExtensionSettingsChanged:
         return renderNotificationMessage(MSG.settingsChanged);
+      case NotificationType.NewExtensionVersion:
+        return formatText(MSG.newExtensionVersion, {
+          version:
+            notification.customAttributes.newExtensionVersion ||
+            formatText(MSG.unknownExtensionName),
+          extension: formatText(extensionNameDescriptor),
+        });
       default:
         return null;
     }
-  }, [creator, notification.customAttributes, extensionNameDescriptor]);
+  }, [notification.customAttributes, extensionNameDescriptor, creator]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };
