@@ -1,6 +1,6 @@
 import { BellRinging, BellSimpleSlash } from '@phosphor-icons/react';
 import React, { useCallback, useState } from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, type MessageDescriptor } from 'react-intl';
 import { toast } from 'react-toastify';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
@@ -13,27 +13,31 @@ import { type DropdownMenuItem } from '~v5/common/DropdownMenu/types.ts';
 
 const ITEM_KEY = 'headerDropdown.section3.toggleMute';
 
-const useMuteColonyItem = (): DropdownMenuItem => {
-  const MSG = defineMessages({
-    mute: {
-      id: 'headerDropdown.muteNotifications',
-      defaultMessage: 'Mute notifications',
-    },
-    unmute: {
-      id: 'headerDropdown.unmuteNotifications',
-      defaultMessage: 'Unmute notifications',
-    },
-    toastNotificationsUnmuted: {
-      id: `headerDropdown.toastNotificationsUnmuted`,
-      defaultMessage: 'You will now receive notifications from this colony.',
-    },
-    toastNotificationsMuted: {
-      id: `headerDropdown.toastNotificationsMuted`,
-      defaultMessage:
-        'You will no longer receive notifications from this colony.',
-    },
-  });
+// Disabling this eslint rule since it seems that it is a false positive. There is only one export from this file,
+// but for some reason if we keep MSG outside of the hook it thinks that there is two exports. It does not break the fast refresh.
 
+// eslint-disable-next-line react-refresh/only-export-components
+const MSG = defineMessages({
+  mute: {
+    id: 'headerDropdown.muteNotifications',
+    defaultMessage: 'Mute notifications',
+  },
+  unmute: {
+    id: 'headerDropdown.unmuteNotifications',
+    defaultMessage: 'Unmute notifications',
+  },
+  toastNotificationsUnmuted: {
+    id: `headerDropdown.toastNotificationsUnmuted`,
+    defaultMessage: 'You will now receive notifications from this colony.',
+  },
+  toastNotificationsMuted: {
+    id: `headerDropdown.toastNotificationsMuted`,
+    defaultMessage:
+      'You will no longer receive notifications from this colony.',
+  },
+});
+
+const useMuteColonyItem = (): DropdownMenuItem => {
   const { user, updateUser } = useAppContext();
   const {
     colony: { colonyAddress },
@@ -46,6 +50,16 @@ const useMuteColonyItem = (): DropdownMenuItem => {
   const [isMuteToggling, setIsMuteToggling] = useState(false);
 
   const isColonyMuted = mutedColonyAddresses.includes(colonyAddress);
+
+  const showSuccessToast = (message: MessageDescriptor) => {
+    toast.success(
+      <Toast
+        type="success"
+        title={{ id: 'advancedSettings.toast.changesSaved' }}
+        description={formatText(message)}
+      />,
+    );
+  };
 
   const handleUnmuteColonyNotifications = useCallback(() => {
     if (!user) {
@@ -65,14 +79,7 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
-
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'advancedSettings.toast.changesSaved' }}
-            description={formatText(MSG.toastNotificationsUnmuted)}
-          />,
-        );
+        showSuccessToast(MSG.toastNotificationsUnmuted);
       },
     });
   }, [
@@ -100,14 +107,7 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       onCompleted: async () => {
         await updateUser(user.walletAddress, true);
         setIsMuteToggling(false);
-
-        toast.success(
-          <Toast
-            type="success"
-            title={{ id: 'advancedSettings.toast.changesSaved' }}
-            description={formatText(MSG.toastNotificationsMuted)}
-          />,
-        );
+        showSuccessToast(MSG.toastNotificationsMuted);
       },
     });
   }, [
