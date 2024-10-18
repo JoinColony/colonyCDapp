@@ -9,7 +9,6 @@ export interface ModalBaseProps extends ReactModalProps {
   withPadding?: boolean;
   withPaddingBottom?: boolean;
   withBorder?: boolean;
-  withOverlay?: boolean;
 }
 
 export interface ModalProps extends ModalBaseProps {
