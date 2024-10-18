@@ -156,18 +156,23 @@ export const getHighestTierRoleForUser = (
       domainWhereUserHasARole?.domain.nativeId === Id.RootDomain,
   );
 
-  if (rootDomainRole) {
-    return convertRolesToArray(rootDomainRole);
-  }
+  const rootRoles = convertRolesToArray(rootDomainRole);
 
-  const result = domainsWhereUserHasARole.reduce(
-    (maxObj, currentObj) =>
-      Object.values(currentObj ?? {}).filter(True).length >
-      Object.values(maxObj ?? {}).filter(True).length
-        ? currentObj
-        : maxObj,
-    {} as ColonyRoleFragment,
-  );
+  const result = domainsWhereUserHasARole
+    .filter(
+      (domainWhereUserHasARole) =>
+        domainWhereUserHasARole?.domain.nativeId !== Id.RootDomain,
+    )
+    .reduce(
+      (maxObj, currentObj) =>
+        Object.values(currentObj ?? {}).filter(True).length >
+        Object.values(maxObj ?? {}).filter(True).length
+          ? currentObj
+          : maxObj,
+      {} as ColonyRoleFragment,
+    );
 
-  return convertRolesToArray(result);
+  const maxResult = convertRolesToArray(result);
+
+  return [...new Set([...rootRoles, ...maxResult])];
 };
