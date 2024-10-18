@@ -4,7 +4,7 @@ import React, { type FC } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import { COLONY_CONTRIBUTORS_ROUTE } from '~routes';
+import { COLONY_MEMBERS_ROUTE } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import Card from '~v5/shared/Card/index.ts';
@@ -78,7 +78,7 @@ const TeamCard: FC<TeamCardProps> = ({
           ) : (
             <Link
               to={{
-                pathname: `/${colonyName}/${COLONY_CONTRIBUTORS_ROUTE}`,
+                pathname: `/${colonyName}/${COLONY_MEMBERS_ROUTE}`,
                 search: `${searchParams?.team}`,
               }}
             >

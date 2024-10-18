@@ -7,6 +7,7 @@ import {
   usePageHeadingContext,
   useSetPageHeadingTitle,
 } from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useTablet } from '~hooks';
 import {
   USER_CRYPTO_TO_FIAT_ROUTE,
   USER_ADVANCED_ROUTE,
@@ -57,6 +58,7 @@ const UserProfilePage: FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const featureFlags = useFeatureFlagsContext();
+  const isTablet = useTablet();
 
   const { setBreadcrumbs } = usePageHeadingContext();
 
@@ -91,11 +93,12 @@ const UserProfilePage: FC = () => {
   return (
     <Tabs
       activeTab={activeTab}
-      className="pt-6"
+      className="pt-6 md:pt-4"
       onTabClick={(_, id) =>
         navigate(tabRoutes.find((route) => route.id === id)?.route ?? '')
       }
       items={allowedTabRoutes}
+      showTabs={isTablet}
     />
   );
 };
