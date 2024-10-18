@@ -17,6 +17,10 @@ interface MotionNotificationMessageProps {
 }
 
 const MSG = defineMessages({
+  created: {
+    id: `${displayName}.created`,
+    defaultMessage: 'Reputation decision:',
+  },
   opposed: {
     id: `${displayName}.opposed`,
     defaultMessage: 'Opposed, will fail: ',
@@ -41,10 +45,6 @@ const MSG = defineMessages({
     id: `${displayName}.unknownAction`,
     defaultMessage: 'Unknown motion',
   },
-  unknownChange: {
-    id: `${displayName}.unknownChange`,
-    defaultMessage: 'Motion updated: ',
-  },
 });
 
 const MotionNotificationMessage: FC<MotionNotificationMessageProps> = ({
@@ -54,22 +54,13 @@ const MotionNotificationMessage: FC<MotionNotificationMessageProps> = ({
   notificationType,
 }) => {
   const Message = useMemo(() => {
-    if (notificationType === NotificationType.MotionCreated) {
-      return (
-        <>
-          {actionTitle ? `${actionTitle}: ` : formatText(MSG.unknownChange)}
-          {actionMetadataDescription || formatText(MSG.unknownAction)}
-        </>
-      );
-    }
-
     const firstPart = {
+      [NotificationType.MotionCreated]: formatText(MSG.created),
       [NotificationType.MotionOpposed]: formatText(MSG.opposed),
       [NotificationType.MotionSupported]: formatText(MSG.supported),
       [NotificationType.MotionVoting]: formatText(MSG.voting),
       [NotificationType.MotionReveal]: formatText(MSG.reveal),
       [NotificationType.MotionFinalized]: formatText(MSG.finalized),
-      default: formatText(MSG.unknownChange),
     }[notificationType];
 
     const secondPart =

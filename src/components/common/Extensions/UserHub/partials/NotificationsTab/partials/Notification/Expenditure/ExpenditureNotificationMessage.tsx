@@ -1,14 +1,7 @@
-import React, { useMemo, type FC } from 'react';
+import React, { type ReactNode, useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { getActionTitleValues } from '~common/ColonyActions/helpers/index.ts';
-import {
-  type ColonyActionFragment,
-  type NotificationColonyFragment,
-  type ExpenditureFragment,
-  NotificationType,
-} from '~gql';
-import { type Notification } from '~types/notifications.ts';
+import { NotificationType } from '~gql';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
@@ -17,14 +10,17 @@ const displayName =
   'common.Extensions.UserHub.partials.ExpenditureNotificationMessage';
 
 interface ExpenditureNotificationMessageProps {
-  action: ColonyActionFragment | null | undefined;
-  colony: NotificationColonyFragment | null | undefined;
-  expenditure: ExpenditureFragment | null | undefined;
+  actionMetadataDescription: ReactNode;
+  actionTitle: string;
   loading: boolean;
-  notification: Notification;
+  notificationType: NotificationType;
 }
 
 const MSG = defineMessages({
+  review: {
+    id: `${displayName}.review`,
+    defaultMessage: 'Payment ready for review:',
+  },
   finalized: {
     id: `${displayName}.finalized`,
     defaultMessage: 'Payment made:',
@@ -45,65 +41,29 @@ const MSG = defineMessages({
     id: `${displayName}.unknownAction`,
     defaultMessage: 'A payment was updated',
   },
-  unknownChange: {
-    id: `${displayName}.unknownChange`,
-    defaultMessage: 'Payment updated: ',
-  },
 });
 
 const ExpenditureNotificationMessage: FC<
   ExpenditureNotificationMessageProps
-> = ({ action, colony, expenditure, loading, notification }) => {
-  const { notificationType } = notification.customAttributes || {};
-
-  const actionMetadataDescription = useMemo(() => {
-    if (!expenditure || !action || !colony) {
-      return formatText(MSG.unknownAction);
-    }
-
-    return formatText(
-      { id: 'action.title' },
-      getActionTitleValues({
-        actionData: action,
-        colony: {
-          nativeToken: {
-            ...colony.nativeToken,
-          },
-          metadata: colony.metadata,
-        },
-        expenditureData: expenditure,
-      }),
-    );
-  }, [action, colony, expenditure]);
-
+> = ({ actionTitle, actionMetadataDescription, loading, notificationType }) => {
   const Message = useMemo(() => {
-    if (!expenditure || !action || !notificationType) {
-      return formatText(MSG.unknownAction);
-    }
-
-    // If this is an "Expenditure ready for review" action, we simply display it in the same way as an "action created" notification.
-    if (notificationType === NotificationType.ExpenditureReadyForReview) {
-      return (
-        <>
-          {action.metadata?.customTitle}: {actionMetadataDescription}
-        </>
-      );
-    }
-
     const firstPart = {
+      [NotificationType.ExpenditureReadyForReview]: formatText(MSG.review),
       [NotificationType.ExpenditureReadyForFunding]: formatText(MSG.funding),
       [NotificationType.ExpenditureReadyForRelease]: formatText(MSG.release),
       [NotificationType.ExpenditureCancelled]: formatText(MSG.cancelled),
       [NotificationType.ExpenditureFinalized]: formatText(MSG.finalized),
-      default: formatText(MSG.unknownChange),
     }[notificationType];
+
+    const secondPart =
+      actionTitle || actionMetadataDescription || formatText(MSG.unknownAction);
 
     return (
       <>
-        {firstPart} {action.metadata?.customTitle || actionMetadataDescription}
+        {firstPart} {secondPart}
       </>
     );
-  }, [action, actionMetadataDescription, expenditure, notificationType]);
+  }, [actionTitle, actionMetadataDescription, notificationType]);
 
   return <NotificationMessage loading={loading}>{Message}</NotificationMessage>;
 };

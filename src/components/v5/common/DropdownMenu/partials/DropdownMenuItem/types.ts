@@ -8,6 +8,7 @@ export type DropdownMenuItemProps = (
   | Omit<LinkProps, 'text' | 'textValues'>
   | ButtonHTMLAttributes<HTMLButtonElement>
 ) & {
+  disabled?: boolean;
   label: string;
   icon?: ComponentType<IconProps>;
   chevronIcon?: ComponentType<IconProps>;

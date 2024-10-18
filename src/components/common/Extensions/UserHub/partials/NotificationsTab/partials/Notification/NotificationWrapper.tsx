@@ -47,11 +47,14 @@ const NotificationWrapper: FC<NotificationWrapperProps> = ({
   };
 
   return (
-    <li className="w-full py-3.5 first-of-type:pt-0">
+    <li className="w-full ">
       <button
-        className={clsx('relative  flex w-full gap-2 text-left', {
-          skeleton: loadingColony,
-        })}
+        className={clsx(
+          'relative flex w-full gap-2 px-6 py-3.5 text-left sm:hover:bg-gray-50',
+          {
+            skeleton: loadingColony,
+          },
+        )}
         onClick={handleNotificationClicked}
         type="button"
       >
