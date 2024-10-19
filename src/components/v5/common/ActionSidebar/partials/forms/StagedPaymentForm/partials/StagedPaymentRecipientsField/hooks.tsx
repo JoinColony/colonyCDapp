@@ -16,7 +16,7 @@ import {
   type StagedPaymentRecipientsFieldModel,
 } from './types.ts';
 
-export const useStagedPaymentTableColumns = (
+export const useStagedPaymentRecipientsTableColumns = (
   name: string,
   data: StagedPaymentRecipientsFieldModel[],
 ) => {
