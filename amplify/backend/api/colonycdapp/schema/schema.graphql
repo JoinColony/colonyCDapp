@@ -3883,6 +3883,10 @@ type Expenditure @model {
   Address of StagedExpenditure extension which set the expenditure as staged, if applicable
   """
   stagedExpenditureAddress: ID
+  """
+  Address of StakedExpenditure extension which created the expenditure, if applicable
+  """
+  stakedExpenditureAddress: ID
 }
 
 """

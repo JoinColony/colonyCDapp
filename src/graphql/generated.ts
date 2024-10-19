@@ -1708,6 +1708,7 @@ export type CreateExpenditureInput = {
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
   stagedExpenditureAddress?: InputMaybe<Scalars['ID']>;
+  stakedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   status: ExpenditureStatus;
   type: ExpenditureType;
   userStakeId?: InputMaybe<Scalars['ID']>;
@@ -2359,6 +2360,8 @@ export type Expenditure = {
   slots: Array<ExpenditureSlot>;
   /** Address of StagedExpenditure extension which set the expenditure as staged, if applicable */
   stagedExpenditureAddress?: Maybe<Scalars['ID']>;
+  /** Address of StakedExpenditure extension which created the expenditure, if applicable */
+  stakedExpenditureAddress?: Maybe<Scalars['ID']>;
   /** Status of the expenditure */
   status: ExpenditureStatus;
   type: ExpenditureType;
@@ -3589,6 +3592,7 @@ export type ModelExpenditureConditionInput = {
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
   stagedExpenditureAddress?: InputMaybe<ModelIdInput>;
+  stakedExpenditureAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
   userStakeId?: InputMaybe<ModelIdInput>;
@@ -3615,6 +3619,7 @@ export type ModelExpenditureFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
   stagedExpenditureAddress?: InputMaybe<ModelIdInput>;
+  stakedExpenditureAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
   type?: InputMaybe<ModelExpenditureTypeInput>;
   userStakeId?: InputMaybe<ModelIdInput>;
@@ -4471,6 +4476,7 @@ export type ModelSubscriptionExpenditureFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
   stagedExpenditureAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  stakedExpenditureAddress?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
   type?: InputMaybe<ModelSubscriptionStringInput>;
   userStakeId?: InputMaybe<ModelSubscriptionIdInput>;
@@ -9731,6 +9737,7 @@ export type UpdateExpenditureInput = {
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
   stagedExpenditureAddress?: InputMaybe<Scalars['ID']>;
+  stakedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ExpenditureStatus>;
   type?: InputMaybe<ExpenditureType>;
   userStakeId?: InputMaybe<Scalars['ID']>;
