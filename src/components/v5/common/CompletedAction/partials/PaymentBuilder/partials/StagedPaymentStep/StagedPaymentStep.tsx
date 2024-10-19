@@ -69,7 +69,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     setSelectedMilestones,
     selectedReleaseAction,
   } = usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const { stagedExpenditureAddress } = useEnabledExtensions();
   const [isWaitingForStagesRelease, setIsWaitingForStagesRelease] =
     useState(false);
 
@@ -139,14 +139,18 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     slot.payouts?.every((payout) => payout.isClaimed),
   );
 
+  const isCorrectExtensionInstalled =
+    !!expenditure.stagedExpenditureAddress &&
+    stagedExpenditureAddress === expenditure.stagedExpenditureAddress;
+
   const shouldShowReleaseButton =
-    isStagedExtensionInstalled &&
+    isCorrectExtensionInstalled &&
     !isAnyReleaseStagesMotionInProgress &&
     !allStagesReleased;
 
   return (
     <>
-      {!isStagedExtensionInstalled && (
+      {!isCorrectExtensionInstalled && (
         <StepDetailsBlock
           text={formatText(MSG.extensionUninstalled)}
           content={

@@ -10,7 +10,7 @@ import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/
 import Table from '~v5/common/Table/Table.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
-import { useStagedPaymentTableColumns } from './hooks.tsx';
+import { useStagedPaymentRecipientsTableColumns } from './hooks.tsx';
 import {
   type StagedPaymentRecipientsTableModel,
   type StagedPaymentRecipientsFieldProps,
@@ -35,7 +35,7 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
     key: id,
   }));
   const value: StagedPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
-  const columns = useStagedPaymentTableColumns(name, value);
+  const columns = useStagedPaymentRecipientsTableColumns(name, value);
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
   const getMenuProps = ({ index }) => ({

@@ -8,6 +8,7 @@ import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/Payment
 import { useMobile, useTablet } from '~hooks';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useWrapWithRef from '~hooks/useWrapWithRef.ts';
+import { type Expenditure } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import { type StagedPaymentRecipientsFieldModel } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/partials/StagedPaymentRecipientsField/types.ts';
@@ -36,25 +37,29 @@ const MSG = defineMessages({
 
 interface StagedPaymentTableColumnsProps {
   data: MilestoneItem[];
-  finalizedAt: number;
   isPaymentStep?: boolean;
   isLoading?: boolean;
+  expenditure: Expenditure;
 }
 
 const useStagedPaymentTableColumns = ({
   data,
-  finalizedAt,
   isPaymentStep,
   isLoading,
+  expenditure,
 }: StagedPaymentTableColumnsProps) => {
   const dataRef = useWrapWithRef(data);
   const hasMoreThanOneToken = dataRef.current.length > 1;
   const isMobile = useMobile();
   const { toggleOnMilestoneModal: showModal, setSelectedMilestones } =
     usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const { stagedExpenditureAddress } = useEnabledExtensions();
   const hasMoreThanOneMilestone =
     dataRef.current.filter((item) => !item.isClaimed).length > 1;
+
+  const isCorrectExtensionInstalled =
+    !!expenditure.stagedExpenditureAddress &&
+    expenditure.stagedExpenditureAddress === stagedExpenditureAddress;
 
   const columns: ColumnDef<StagedPaymentRecipientsFieldModel, string>[] =
     useMemo(() => {
@@ -116,7 +121,7 @@ const useStagedPaymentTableColumns = ({
                   {isMobile &&
                     isPaymentStep &&
                     hasMoreThanOneMilestone &&
-                    isStagedExtensionInstalled && (
+                    isCorrectExtensionInstalled && (
                       <ReleaseAllButton items={dataRef.current} />
                     )}
                 </>
@@ -146,7 +151,7 @@ const useStagedPaymentTableColumns = ({
                     </PillsBase>
                   ) : (
                     <>
-                      {isStagedExtensionInstalled ? (
+                      {isCorrectExtensionInstalled ? (
                         <div className="flex items-center justify-end gap-3">
                           <button
                             key={row.id}
@@ -162,7 +167,7 @@ const useStagedPaymentTableColumns = ({
                             {formatText(MSG.payNow)}
                           </button>
                           <ClaimDelayTooltip
-                            finalizedAt={finalizedAt}
+                            finalizedAt={expenditure.finalizedAt ?? 0}
                             claimDelay={row.original.claimDelay || '0'}
                           />
                         </div>
@@ -173,7 +178,7 @@ const useStagedPaymentTableColumns = ({
                 footer:
                   !isMobile &&
                   hasMoreThanOneMilestone &&
-                  isStagedExtensionInstalled
+                  isCorrectExtensionInstalled
                     ? () => <ReleaseAllButton items={dataRef.current} />
                     : undefined,
               }),
@@ -182,31 +187,32 @@ const useStagedPaymentTableColumns = ({
       ];
     }, [
       hasMoreThanOneToken,
-      hasMoreThanOneMilestone,
       isPaymentStep,
       isMobile,
-      dataRef,
+      hasMoreThanOneMilestone,
+      isCorrectExtensionInstalled,
       isLoading,
+      dataRef,
+      expenditure.finalizedAt,
       setSelectedMilestones,
       showModal,
-      isStagedExtensionInstalled,
-      finalizedAt,
     ]);
 
   return columns;
 };
 
 const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
-  stages,
-  slots,
+  expenditure,
   isPaymentStep,
   isLoading,
-  finalizedAt,
 }) => {
   const isTablet = useTablet();
+
+  const { slots } = expenditure;
+  const { stages } = expenditure.metadata ?? {};
   const data: MilestoneItem[] = useMemo(
     () =>
-      stages.map((item) => {
+      stages?.map((item) => {
         const payout = (slots || []).find((slot) => slot.id === item.slotId);
         const amount = payout?.payouts?.[0].amount;
         const tokenAddress = payout?.payouts?.[0].tokenAddress;
@@ -220,15 +226,15 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
           isClaimed: isClaimed || false,
           claimDelay: payout?.claimDelay || '0',
         };
-      }),
+      }) ?? [],
     [stages, slots],
   );
 
   const columns = useStagedPaymentTableColumns({
     data,
-    finalizedAt,
     isPaymentStep,
     isLoading,
+    expenditure,
   });
 
   return (

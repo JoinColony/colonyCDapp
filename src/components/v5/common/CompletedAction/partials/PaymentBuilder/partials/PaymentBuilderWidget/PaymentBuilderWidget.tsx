@@ -55,7 +55,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const { stagedExpenditureAddress } = useEnabledExtensions();
 
   const {
     isFundingModalOpen,
@@ -173,6 +173,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const shouldShowFundingButton =
     !isAnyFundingMotionInProgress && !isExpenditureFunded;
 
+  const shouldShowUninstalledExtensionBox =
+    isStagedExpenditure &&
+    stagedExpenditureAddress !== expenditure.stagedExpenditureAddress;
+
   const {
     motionState: releaseMotionState,
     refetchMotionState: refetchReleaseMotionState,
@@ -282,7 +286,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       content:
         expenditureStep === ExpenditureStep.Review ? (
           <>
-            {!isStagedExtensionInstalled && isStagedExpenditure ? (
+            {shouldShowUninstalledExtensionBox ? (
               <UninstalledExtensionBox />
             ) : (
               <StepDetailsBlock
@@ -345,7 +349,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       },
       content: (
         <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
+          {shouldShowUninstalledExtensionBox ? (
             <UninstalledExtensionBox />
           ) : (
             <div className="flex flex-col gap-2">
@@ -404,7 +408,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
       content: (
         <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
+          {shouldShowUninstalledExtensionBox ? (
             <UninstalledExtensionBox />
           ) : (
             <>
