@@ -4,11 +4,12 @@ import { FormattedDate, defineMessages } from 'react-intl';
 
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { removeCacheEntry } from '~utils/queries.ts';
+import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import FinalizeButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/FinalizeButton/FinalizeButton.tsx';
 import {
   getIsMultiSigExecutable,
@@ -159,6 +160,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     : false;
 
   const isMultiSigExecuted = multiSigData.isExecuted;
+  const previousIsMultiSigExecuted = usePrevious(isMultiSigExecuted);
   const hasMultiSigActionCompleted = multiSigData.hasActionCompleted;
   const isMultiSigRejected = multiSigData.isRejected;
   // used if failing execution after a week
@@ -219,13 +221,18 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     }
     if (isMultiSigExecuted) {
       handleMotionCompleted(action);
+    }
+  }, [isMultiSigExecuted, isMultiSigRejected, action]);
+
+  useEffect(() => {
+    if (isMultiSigExecuted && previousIsMultiSigExecuted === false) {
       /**
        * We need to remove all getDomainBalance queries once a payment or funding has been successfully completed
        * By default it will refetch all active queries
        */
-      removeCacheEntry('getDomainBalance');
+      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected, action]);
+  }, [isMultiSigExecuted, previousIsMultiSigExecuted]);
 
   return (
     <MenuWithStatusText

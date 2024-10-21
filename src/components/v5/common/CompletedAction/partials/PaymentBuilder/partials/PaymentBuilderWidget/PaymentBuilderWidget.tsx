@@ -13,7 +13,11 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval, removeCacheEntry } from '~utils/queries.ts';
+import {
+  CacheQueryKeys,
+  getSafePollingInterval,
+  removeCacheEntry,
+} from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
@@ -124,7 +128,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     if (expenditureStep === ExpenditureStep.Payment) {
       // Payments with 0 claim delay will be paid immediately once at the payment step
       // we need to remove all getDomainBalance queries to refetch the correct balances
-      removeCacheEntry('getDomainBalance');
+      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
     }
   }, [expenditureStep]);
 
