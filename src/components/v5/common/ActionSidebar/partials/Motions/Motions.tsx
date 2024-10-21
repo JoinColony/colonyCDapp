@@ -10,11 +10,12 @@ import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import { removeCacheEntry } from '~utils/queries.ts';
+import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
@@ -58,6 +59,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const { motionData, rootHash } = action || {};
   const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
+  const previousIsFinalized = usePrevious(motionData?.isFinalized);
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
 
@@ -81,14 +83,15 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   ]);
 
   useEffect(() => {
-    if (motionData?.isFinalized) {
+    // previousIsFinalized can be undefined when opening an already closed action
+    if (motionData?.isFinalized && previousIsFinalized === false) {
       /**
        * We need to remove all getDomainBalance queries once a payment or funding has been successfully completed
        * By default it will refetch all active queries
        */
-      removeCacheEntry('getDomainBalance');
+      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
     }
-  }, [motionData?.isFinalized]);
+  }, [motionData?.isFinalized, previousIsFinalized]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};

@@ -64,14 +64,6 @@ export const useTotalData = (domainId?: string) => {
     return () => {
       cancelQuery();
     };
-    // We want this use effect to get triggered when a new instance of the abort controller is present
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [memoizedQueryVariables.abortController]);
-
-  useEffect(() => {
-    return () => {
-      cancelQuery();
-    };
     // We want this use effect to get triggered only on mounting/unmounting
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

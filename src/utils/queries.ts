@@ -7,6 +7,10 @@ import {
 } from '~gql';
 import { type Address } from '~types/index.ts';
 
+export enum CacheQueryKeys {
+  GetDomainBalance = 'getDomainBalance',
+}
+
 /*
  * Wrapper around the getTokenFromEveryWhereQuery
  * to ensure that the right type is passed as the

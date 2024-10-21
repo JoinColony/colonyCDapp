@@ -14,6 +14,7 @@ export interface ActionSidebarContentProps {
   formRef: React.RefObject<UseFormReturn<object, any, undefined>>;
   defaultValues: ActionFormProps<any>['defaultValues'];
   isMotion?: boolean;
+  isMultiSig?: boolean;
 }
 
 export interface PermissionSidebarProps {
