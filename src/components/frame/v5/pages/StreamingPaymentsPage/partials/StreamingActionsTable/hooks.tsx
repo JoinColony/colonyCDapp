@@ -43,7 +43,7 @@ export const useStreamingActionsTableColumns = () => {
         cell: ({ row }) => (
           <Numeral
             className="text-md text-gray-600"
-            value={row.original.amount}
+            value={row.original.totalStreamedAmount}
             decimals={row.original.token?.decimals || DEFAULT_TOKEN_DECIMALS}
           />
         ),

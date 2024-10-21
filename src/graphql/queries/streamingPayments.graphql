@@ -25,7 +25,7 @@ query SearchStreamingPayments(
         }
       ) {
         items {
-          ...ColonyAction
+          ...ExpenditureAction
         }
       }
       ...StreamingPayment

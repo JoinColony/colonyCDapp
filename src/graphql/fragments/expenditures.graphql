@@ -129,4 +129,7 @@ fragment ExpenditureAction on ColonyAction {
   motionData {
     ...ColonyMotion
   }
+  metadata {
+    customTitle
+  }
 }

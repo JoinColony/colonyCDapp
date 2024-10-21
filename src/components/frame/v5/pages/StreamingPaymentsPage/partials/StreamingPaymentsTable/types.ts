@@ -6,7 +6,7 @@ import { type UserStreamsItem } from './partials/UserStreams/UserStreams.ts';
 
 export interface StreamingTableFieldModel {
   user: string;
-  userStreams: UserStreamsItem[];
+  tokenTotalsPerMonth: UserStreamsItem[];
   actions: StreamingActionTableFieldModel[];
 }
 
@@ -16,4 +16,5 @@ export interface StreamingActionTableFieldModel extends StreamingPayment {
   transactionId: string;
   status: StreamingPaymentStatus;
   endCondition?: StreamingPaymentEndCondition;
+  totalStreamedAmount: string;
 }

@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { useSearchStreamingPaymentsQuery } from '~gql';
@@ -17,6 +16,7 @@ import {
   getStreamingPaymentAmountsLeft,
   getStreamingPaymentStatus,
 } from '~utils/streamingPayments.ts';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import StreamingActionsTable from '../StreamingActionsTable/StreamingActionsTable.tsx';
 
@@ -60,7 +60,7 @@ export const useStreamingTableColumns = (loading: boolean) => {
           loading ? (
             <div className="h-5 w-10 skeleton" />
           ) : (
-            <UserStreams items={row.original.userStreams} />
+            <UserStreams items={row.original.tokenTotalsPerMonth} />
           ),
       }),
       helper.display({
@@ -152,15 +152,14 @@ export const useStreamingPaymentTable = () => {
   const { totalMembers: members } = useMemberContext();
   const allTokens = useGetAllTokens();
 
-  const groupedStreamingPayments: StreamingTableFieldModel[] = (
-    data?.searchStreamingPayments?.items || []
-  )
+  const groupedStreamingPayments = (data?.searchStreamingPayments?.items || [])
     .filter(notNull)
     .map((item) => {
-      const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
-        item,
-        Math.floor(blockTime ?? Date.now() / 1000),
-      );
+      const { amountAvailableToClaim, amountClaimedToDate } =
+        getStreamingPaymentAmountsLeft(
+          item,
+          Math.floor(blockTime ?? Date.now() / 1000),
+        );
       const paymentStatus = getStreamingPaymentStatus({
         streamingPayment: item,
         currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
@@ -169,6 +168,9 @@ export const useStreamingPaymentTable = () => {
       const selectedToken = allTokens.find(
         (token) => token.token.tokenAddress === item.tokenAddress,
       );
+      const summedAmount = BigNumber.from(amountAvailableToClaim).add(
+        BigNumber.from(amountClaimedToDate),
+      );
 
       return {
         title: item.actions?.items[0]?.metadata?.customTitle || '',
@@ -176,6 +178,7 @@ export const useStreamingPaymentTable = () => {
         nativeDomainId: item.nativeDomainId,
         paymentId: item.id,
         amount: item.amount,
+        totalStreamedAmount: summedAmount.toString(),
         creatorAddress: item.creatorAddress,
         recipientAddress: item.recipientAddress,
         interval: item.interval,
@@ -200,7 +203,7 @@ export const useStreamingPaymentTable = () => {
       if (existingEntryIndex < 0) {
         result.push({
           user: recipientAddress,
-          userStreams: [],
+          tokenTotalsPerMonth: [],
           actions: [],
         });
         existingEntryIndex = result.length - 1;
@@ -209,7 +212,7 @@ export const useStreamingPaymentTable = () => {
       const existingUser = result[existingEntryIndex];
       const tokenAddress = item.token?.tokenAddress || '';
 
-      let userStreamIndex = existingUser.userStreams.findIndex(
+      let userStreamIndex = existingUser.tokenTotalsPerMonth.findIndex(
         (stream) => stream.tokenAddress === tokenAddress,
       );
 
@@ -217,26 +220,26 @@ export const useStreamingPaymentTable = () => {
 
       if (isPaymentActive) {
         if (userStreamIndex < 0) {
-          existingUser.userStreams.push({
+          existingUser.tokenTotalsPerMonth.push({
             tokenAddress,
             amount: '0',
-            tokenDecimals: item.token?.decimals || DEFAULT_TOKEN_DECIMALS,
+            tokenDecimals: getTokenDecimalsWithFallback(item.token?.decimals),
             tokenSymbol: item.token?.symbol || '',
           });
-          userStreamIndex = existingUser.userStreams.length - 1;
+          userStreamIndex = existingUser.tokenTotalsPerMonth.length - 1;
         }
 
         const monthlyAmount = convertToMonthlyAmount(
           BigNumber.from(item.amount),
-          Number(item.interval),
+          BigNumber.from(item.interval),
         );
 
-        const currentStream = existingUser.userStreams[userStreamIndex];
+        const currentStream = existingUser.tokenTotalsPerMonth[userStreamIndex];
         const totalAmount = BigNumber.from(currentStream.amount)
           .add(monthlyAmount)
           .toString();
 
-        existingUser.userStreams[userStreamIndex] = {
+        existingUser.tokenTotalsPerMonth[userStreamIndex] = {
           ...currentStream,
           amount: totalAmount,
         };
