@@ -34,7 +34,7 @@ const Notification: FC<NotificationProps> = ({
 }) => {
   const { colony: currentColony } = useColonyContext();
 
-  const { colonyAddress, notificationType } =
+  const { colonyAddress, notificationType, expenditureID } =
     notification.customAttributes || {};
 
   const { data: colonyData, loading: loadingColony } =
@@ -49,6 +49,8 @@ const Notification: FC<NotificationProps> = ({
 
   const isCurrentColony = currentColony.name === notificationColony?.name;
 
+  const hasExpenditureId = !!expenditureID;
+
   // If there is no notification type, something is wrong with this notification
   // and we won't know what to display, so skip it.
   if (!notificationType) {
@@ -57,6 +59,7 @@ const Notification: FC<NotificationProps> = ({
 
   // If the notification type is permissions action, a multisig action, a motion, or a mention (always tied to an action):
   if (
+    !hasExpenditureId &&
     [
       NotificationType.PermissionsAction,
       NotificationType.Mention,
@@ -83,8 +86,16 @@ const Notification: FC<NotificationProps> = ({
   }
 
   // If the notification type is an expenditure update:
+  // Or a motion supporting an expenditure (eg. for funding)
   if (
+    hasExpenditureId &&
     [
+      NotificationType.MotionCreated,
+      NotificationType.MotionOpposed,
+      NotificationType.MotionSupported,
+      NotificationType.MotionVoting,
+      NotificationType.MotionReveal,
+      NotificationType.MotionFinalized,
       NotificationType.ExpenditureReadyForReview,
       NotificationType.ExpenditureReadyForFunding,
       NotificationType.ExpenditureReadyForRelease,
