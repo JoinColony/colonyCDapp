@@ -1,9 +1,9 @@
+import clsx from 'clsx';
 import { type BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 
 import Numeral from '~shared/Numeral/index.ts';
 import { type Token } from '~types/graphql.ts';
-import { formatText } from '~utils/intl.ts';
 import { multiLineTextEllipsis } from '~utils/strings.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
@@ -11,12 +11,17 @@ import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 interface TokenItemProps {
   token: Token;
   tokenBalance?: BigNumber;
+  className?: string;
 }
 
-export const TokenItem: FC<TokenItemProps> = ({ token, tokenBalance }) => {
+export const TokenItem: FC<TokenItemProps> = ({
+  token,
+  tokenBalance,
+  className,
+}) => {
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className={clsx('flex items-center gap-1', className)}>
         <TokenAvatar
           size={18}
           tokenName={token.name}
@@ -29,10 +34,6 @@ export const TokenItem: FC<TokenItemProps> = ({ token, tokenBalance }) => {
       </div>
       {tokenBalance && (
         <span className="ml-2 whitespace-nowrap text-sm text-gray-400">
-          {formatText({
-            id: 'actionSidebar.availableFunds',
-          })}
-          {': '}
           <Numeral
             value={tokenBalance}
             decimals={getTokenDecimalsWithFallback(token?.decimals)}
