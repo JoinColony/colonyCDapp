@@ -211,6 +211,14 @@ test.describe('Create Colony flow', () => {
       await page.getByLabel(/token name/i).fill(tokenName);
 
       await page.getByLabel(/token symbol/i).fill(tokenSymbol);
+
+      // The entered token name and symbol should persist after navigating forward and back
+
+      await page.getByRole('button', { name: /continue/i }).click();
+      await page.getByRole('button', { name: /back/i }).click();
+
+      await expect(page.getByLabel(/token name/i)).toHaveValue(tokenName);
+      await expect(page.getByLabel(/token symbol/i)).toHaveValue(tokenSymbol);
     });
 
     test('Token Logo file uploader should work correctly', async ({ page }) => {
