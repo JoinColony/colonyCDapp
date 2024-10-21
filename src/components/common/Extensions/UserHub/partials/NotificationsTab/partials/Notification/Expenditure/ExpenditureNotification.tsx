@@ -7,6 +7,7 @@ import {
   NotificationType,
   useGetColonyActionQuery,
   useGetExpenditureQuery,
+  ColonyActionType,
 } from '~gql';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
@@ -14,6 +15,7 @@ import { formatText } from '~utils/intl.ts';
 
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
+import ExpenditureFundingMotionNotificationMessage from './ExpenditureFundingMotionNotificationMessage.tsx';
 import ExpenditureNotificationMessage from './ExpenditureNotificationMessage.tsx';
 
 const displayName =
@@ -34,8 +36,32 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const { expenditureID, notificationType } =
-    notification.customAttributes || {};
+  const {
+    expenditureID,
+    notificationType,
+    transactionHash: notificationTransactionHash,
+  } = notification.customAttributes || {};
+
+  const isExpenditureNotification =
+    !!notificationType &&
+    [
+      NotificationType.ExpenditureReadyForReview,
+      NotificationType.ExpenditureReadyForFunding,
+      NotificationType.ExpenditureReadyForRelease,
+      NotificationType.ExpenditureCancelled,
+      NotificationType.ExpenditureFinalized,
+    ].includes(notificationType);
+
+  const isExpenditureMotionNotification =
+    !!notificationType &&
+    [
+      NotificationType.MotionCreated,
+      NotificationType.MotionOpposed,
+      NotificationType.MotionSupported,
+      NotificationType.MotionVoting,
+      NotificationType.MotionReveal,
+      NotificationType.MotionFinalized,
+    ].includes(notificationType);
 
   const { data: expenditureData, loading: loadingExpenditure } =
     useGetExpenditureQuery({
@@ -58,6 +84,32 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   });
 
   const action = actionData?.getColonyAction;
+
+  const { data: notificationActionData, loading: loadingNotificationAction } =
+    useGetColonyActionQuery({
+      variables: {
+        transactionHash: notificationTransactionHash || '',
+      },
+      skip:
+        !notificationTransactionHash ||
+        notificationTransactionHash === transactionHash,
+    });
+
+  const notificationAction = notificationActionData?.getColonyAction;
+
+  let isExpenditureFundingMotionNotification = isExpenditureMotionNotification;
+
+  if (notificationTransactionHash !== transactionHash) {
+    isExpenditureFundingMotionNotification =
+      isExpenditureFundingMotionNotification &&
+      notificationAction?.type === ColonyActionType.FundExpenditureMotion;
+  }
+
+  const loading =
+    loadingColony ||
+    loadingAction ||
+    loadingNotificationAction ||
+    loadingExpenditure;
 
   const handleNotificationClicked = () => {
     if (!transactionHash) {
@@ -102,21 +154,22 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
-      {notificationType &&
-        [
-          NotificationType.ExpenditureReadyForReview,
-          NotificationType.ExpenditureReadyForFunding,
-          NotificationType.ExpenditureReadyForRelease,
-          NotificationType.ExpenditureCancelled,
-          NotificationType.ExpenditureFinalized,
-        ].includes(notificationType) && (
-          <ExpenditureNotificationMessage
-            actionTitle={actionTitle}
-            actionMetadataDescription={actionMetadataDescription}
-            loading={loadingColony || loadingAction || loadingExpenditure}
-            notificationType={notificationType}
-          />
-        )}
+      {isExpenditureNotification && (
+        <ExpenditureNotificationMessage
+          actionTitle={actionTitle}
+          actionMetadataDescription={actionMetadataDescription}
+          loading={loading}
+          notificationType={notificationType}
+        />
+      )}
+      {isExpenditureFundingMotionNotification && (
+        <ExpenditureFundingMotionNotificationMessage
+          actionTitle={actionTitle}
+          actionMetadataDescription={actionMetadataDescription}
+          loading={loading}
+          notificationType={notificationType as NotificationType}
+        />
+      )}
     </NotificationWrapper>
   );
 };
