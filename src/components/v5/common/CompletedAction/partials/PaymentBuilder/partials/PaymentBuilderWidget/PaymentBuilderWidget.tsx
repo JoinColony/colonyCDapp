@@ -129,7 +129,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         fieldName: 'getDomainBalance',
       });
     }
-
   }, [expenditureStep, refetchColony, refetchExpenditures]);
 
   useEffect(() => {
