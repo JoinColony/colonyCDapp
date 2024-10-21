@@ -34,7 +34,7 @@ const Notification: FC<NotificationProps> = ({
 }) => {
   const { colony: currentColony } = useColonyContext();
 
-  const { colonyAddress, notificationType } =
+  const { colonyAddress, notificationType, expenditureID } =
     notification.customAttributes || {};
 
   const { data: colonyData, loading: loadingColony } =
@@ -49,6 +49,8 @@ const Notification: FC<NotificationProps> = ({
 
   const isCurrentColony = currentColony.name === notificationColony?.name;
 
+  const hasExpenditureId = !!expenditureID;
+
   // If there is no notification type, something is wrong with this notification
   // and we won't know what to display, so skip it.
   if (!notificationType) {
@@ -57,6 +59,7 @@ const Notification: FC<NotificationProps> = ({
 
   // If the notification type is permissions action, a multisig action, a motion, or a mention (always tied to an action):
   if (
+    !hasExpenditureId &&
     [
       NotificationType.PermissionsAction,
       NotificationType.Mention,
@@ -83,24 +86,35 @@ const Notification: FC<NotificationProps> = ({
   }
 
   // If the notification type is an expenditure update:
-  if (
-    [
-      NotificationType.ExpenditureReadyForReview,
-      NotificationType.ExpenditureReadyForFunding,
-      NotificationType.ExpenditureReadyForRelease,
-      NotificationType.ExpenditureFinalized,
-      NotificationType.ExpenditureCancelled,
-      NotificationType.ExpenditurePayoutClaimed,
-    ].includes(notificationType)
-  ) {
-    return (
-      <ExpenditureNotification
-        colony={notificationColony}
-        isCurrentColony={isCurrentColony}
-        loadingColony={loadingColony}
-        notification={notification}
-      />
-    );
+  // Or a motion supporting an expenditure (eg. for funding)
+  if (hasExpenditureId) {
+    if (
+      [
+        NotificationType.MotionCreated,
+        NotificationType.MotionOpposed,
+        NotificationType.MotionSupported,
+        NotificationType.MotionVoting,
+        NotificationType.MotionReveal,
+        NotificationType.MotionFinalized,
+        NotificationType.ExpenditureReadyForReview,
+        NotificationType.ExpenditureReadyForFunding,
+        NotificationType.ExpenditureReadyForRelease,
+        NotificationType.ExpenditureFinalized,
+        NotificationType.ExpenditureCancelled,
+        NotificationType.ExpenditurePayoutClaimed,
+      ].includes(notificationType)
+    ) {
+      return (
+        <ExpenditureNotification
+          colony={notificationColony}
+          isCurrentColony={isCurrentColony}
+          loadingColony={loadingColony}
+          notification={notification}
+        />
+      );
+    }
+    // if isExpenditure is true but we have a mention notification we'll not display it
+    return null;
   }
 
   if (notificationType === NotificationType.FundsClaimed) {
