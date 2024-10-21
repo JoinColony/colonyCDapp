@@ -4,6 +4,10 @@ export interface ImageCarouselProps {
   slideUrls?: string[];
   options?: EmblaOptionsType;
   className?: string;
+  isImageFullWidth?: boolean;
+  isAutoplay?: boolean;
+  isChangeSlideDotButton?: boolean;
+  setSelectedIndex?: (index: number) => void;
 }
 
 export type DotButtonProps = React.DetailedHTMLProps<
