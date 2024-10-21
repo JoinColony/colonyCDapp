@@ -45,6 +45,7 @@ const VotingStep: FC<VotingStepProps> = ({
   startPollingAction,
   stopPollingAction,
   transactionId,
+  isActionCancelled,
 }) => {
   const {
     currentReputationPercent,
@@ -112,6 +113,19 @@ const VotingStep: FC<VotingStepProps> = ({
         </div>
       }
       sections={[
+        ...(isActionCancelled
+          ? [
+              {
+                key: '1',
+                content: (
+                  <p className="text-sm">
+                    {formatText({ id: 'motion.cancelled' })}
+                  </p>
+                ),
+                className: 'bg-negative-100 text-negative-400 !py-3',
+              },
+            ]
+          : []),
         {
           key: VotingStepSections.Vote,
           content: (
