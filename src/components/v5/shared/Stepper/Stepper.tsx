@@ -6,6 +6,7 @@ import { InView } from 'react-intersection-observer';
 
 import { accordionAnimation } from '~constants/accordionAnimation.ts';
 import { useMobile } from '~hooks/index.ts';
+import { formatText } from '~utils/intl.ts';
 
 import { MIN_NUMBER_OF_STEPS_WITHOUT_MOBILE_NAVIGATION } from './consts.ts';
 import { StepStage } from './partials/StepperButton/consts.ts';
@@ -17,10 +18,13 @@ const displayName = 'v5.Stepper';
 function Stepper<TKey extends React.Key>({
   activeStepKey,
   setActiveStepKey,
+  setCurrentStepKey,
   items,
 }: StepperProps<TKey>): JSX.Element | null {
   const activeItemIndex = items.findIndex(({ key }) => key === activeStepKey);
-  const [hiddenItem, setHiddenItem] = useState<TKey | undefined>(undefined);
+  const [hiddenItem, setHiddenItem] = useState<TKey | string | undefined>(
+    undefined,
+  );
   const [openItemIndex, setOpenItemIndex] = useState(activeItemIndex);
   const isMobile = useMobile();
   const openedItem = items[openItemIndex];
@@ -71,7 +75,7 @@ function Stepper<TKey extends React.Key>({
     handleResize();
   }, [activeItemIndex]);
 
-  const handleChange = (name: TKey, inView: boolean) => {
+  const handleChange = (name: TKey | string, inView: boolean) => {
     if (!inView) {
       setHiddenItem(name);
     } else {
@@ -96,7 +100,11 @@ function Stepper<TKey extends React.Key>({
     <>
       <div className="flex w-full items-center gap-1">
         {isMobile && isScrollableList && (
-          <button type="button" onClick={scrollLeft}>
+          <button
+            type="button"
+            onClick={scrollLeft}
+            aria-label={formatText({ id: 'ariaLabel.previous' })}
+          >
             <CaretLeft className="text-gray-400" size={18} />
           </button>
         )}
@@ -190,6 +198,7 @@ function Stepper<TKey extends React.Key>({
                       onClick={() => {
                         setOpenItemIndex(index);
                         setHiddenItem(undefined);
+                        setCurrentStepKey?.(key);
 
                         if (index > activeItemIndex && setActiveStepKey) {
                           setActiveStepKey(key);
@@ -223,7 +232,11 @@ function Stepper<TKey extends React.Key>({
           )}
         </ul>
         {isMobile && isScrollableList && (
-          <button type="button" onClick={scrollRight}>
+          <button
+            type="button"
+            onClick={scrollRight}
+            aria-label={formatText({ id: 'ariaLabel.next' })}
+          >
             <CaretRight className="text-gray-400" size={18} />
           </button>
         )}

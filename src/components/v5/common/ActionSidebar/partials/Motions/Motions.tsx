@@ -339,7 +339,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     >
       <Stepper<Steps>
         activeStepKey={activeStepKey}
-        setActiveStepKey={setActiveStepKey}
+        setActiveStepKey={(key: Steps) => setActiveStepKey(key)}
         items={items}
       />
     </MotionProvider>

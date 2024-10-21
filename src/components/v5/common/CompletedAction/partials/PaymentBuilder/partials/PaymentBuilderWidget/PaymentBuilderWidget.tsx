@@ -2,6 +2,7 @@ import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
@@ -15,7 +16,9 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { type ExpenditureAction } from '~types/graphql.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -35,6 +38,7 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
+import EditStep from '../EditStep/EditStep.tsx';
 import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import FundingRequests from '../FundingRequests/FundingRequests.tsx';
@@ -48,11 +52,14 @@ import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExten
 
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import {
-  getCancelStepIndex,
   getExpenditureStep,
   getShouldShowMotionTimer,
   isExpenditureFullyFunded,
   sortActionsByCreatedDate,
+  getCurrentStepIndex,
+  getFundingItemIndex,
+  segregateFundingActions,
+  segregateEditActions,
 } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
@@ -73,11 +80,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isReleaseModalOpen: isReleasePaymentModalOpen,
     toggleOffReleaseModal: hideReleasePaymentModal,
     toggleOnReleaseModal: showReleasePaymentModal,
-    selectedFundingAction,
     selectedReleaseAction,
-    setSelectedFundingAction,
     setSelectedReleaseAction,
+    currentStep,
+    setCurrentStep,
+    setSelectedEditingAction,
+    selectedFundingAction,
+    setSelectedFundingAction,
   } = usePaymentBuilderContext();
+  const { isEditMode } = useActionSidebarContext();
 
   const { expenditureId } = action;
 
@@ -107,6 +118,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
+  const [activeStepKey, setActiveStepKey] = useState<ExpenditureStep | string>(
+    expenditureStep,
+  );
   const [isWaitingForClaimedPayouts, setIsWaitingForClaimedPayouts] =
     useState(false);
 
@@ -129,7 +143,30 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       refetchColony();
       refetchExpenditures();
     }
-  }, [expenditureStep, refetchColony, refetchExpenditures]);
+
+    if (expenditureStep.startsWith(ExpenditureStep.Funding)) {
+      const groupedFundingActions = segregateFundingActions(expenditure);
+      const itemIndex = getFundingItemIndex(groupedFundingActions);
+
+      setActiveStepKey(`${ExpenditureStep.Funding}-${itemIndex}`);
+      setCurrentStep(`${ExpenditureStep.Funding}-${itemIndex}`);
+
+      return;
+    }
+    setActiveStepKey(expenditureStep);
+    setCurrentStep(expenditureStep);
+  }, [
+    expenditure,
+    expenditureStep,
+    refetchColony,
+    refetchExpenditures,
+    setCurrentStep,
+    setSelectedEditingAction,
+  ]);
+
+  useEffect(() => {
+    setSelectedEditingAction(null);
+  }, [currentStep, setSelectedEditingAction]);
 
   useEffect(() => {
     if (
@@ -169,32 +206,164 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isHidden: expenditureStep !== ExpenditureStep.Cancel,
   };
 
-  const isStagedExpenditure = expenditure?.type === ExpenditureType.Staged;
-  const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
-  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
+  const getEditItem = (actions: ExpenditureAction[], index: number) => {
+    return {
+      key: `${ExpenditureStep.Edit}-${index}`,
+      heading: {
+        label: formatText({ id: 'expenditure.editStage.label' }),
+      },
+      content: expenditure ? <EditStep actions={actions} /> : null,
+    };
+  };
 
-  const {
-    motionState: fundingMotionState,
-    refetchMotionState: refetchFundingMotionState,
-  } = useGetColonyAction(selectedFundingAction?.transactionHash);
+  const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
+
+  const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const sortedFundingActions = useMemo(
     () =>
-      fundingActions?.items.filter(notNull).sort(sortActionsByCreatedDate) ??
-      [],
+      fundingActions?.items.filter(notNull).sort((a, b) => {
+        if (a?.createdAt && b?.createdAt) {
+          return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+        return 0;
+      }) ?? [],
     [fundingActions?.items],
   );
-  const allFundingMotions = sortedFundingActions
-    .map((fundingAction) => fundingAction.motionData)
-    .filter(notMaybe);
-  const selectedFundingMotion = selectedFundingAction?.motionData;
 
-  const isAnyFundingMotionInProgress = allFundingMotions.some(
-    (motion) =>
-      !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
+  const { motionData: selectedFundingMotion } = selectedFundingAction ?? {};
+  const { motionState, refetchMotionState } = useGetColonyAction(
+    selectedFundingAction?.transactionHash,
   );
-  const shouldShowFundingButton =
-    !isAnyFundingMotionInProgress && !isExpenditureFunded;
+
+  const shouldShowFundingMotionTimer =
+    motionState &&
+    [
+      MotionState.Staking,
+      MotionState.Supported,
+      MotionState.Voting,
+      MotionState.Reveal,
+    ].includes(motionState);
+
+  useEffect(() => {
+    if (!selectedFundingAction && sortedFundingActions.length > 0) {
+      setSelectedFundingAction(sortedFundingActions[0]);
+    }
+
+    if (
+      selectedFundingAction &&
+      !sortedFundingActions.some(
+        (fundingAction) =>
+          fundingAction.transactionHash ===
+          selectedFundingAction.transactionHash,
+      )
+    ) {
+      setSelectedFundingAction(null);
+    }
+  }, [selectedFundingAction, setSelectedFundingAction, sortedFundingActions]);
+
+  const getFundingItem = (itemIndex: number) => {
+    const segregatedFundingActions = segregateFundingActions(expenditure);
+
+    const currentActions = segregatedFundingActions?.[itemIndex]
+      ? segregatedFundingActions[itemIndex]
+      : [];
+
+    const allFundingMotions = currentActions
+      .map((fundingAction) => fundingAction.motionData)
+      .filter(notMaybe);
+    const isAnyFundingMotionInProgress = allFundingMotions.some(
+      (motion) =>
+        !motion.isFinalized &&
+        !motion.motionStateHistory.hasFailedNotFinalizable,
+    );
+    const shouldShowFundingButton =
+      !isAnyFundingMotionInProgress && !isExpenditureFunded;
+
+    const itemKey = `${ExpenditureStep.Funding}-${itemIndex}`;
+
+    const isSelectedActionInCurrentActions = currentActions.some(
+      (currentAction) =>
+        currentAction.transactionHash ===
+        selectedFundingAction?.transactionHash,
+    );
+    const isSelectedMotionInCurrentActions = currentActions.some(
+      (currentAction) =>
+        currentAction.motionData?.motionId === selectedFundingMotion?.motionId,
+    );
+
+    const fundingItem = {
+      key: itemKey,
+      heading: {
+        label: formatText({ id: 'expenditure.fundingStage.label' }),
+        decor:
+          selectedFundingMotion &&
+          shouldShowFundingMotionTimer &&
+          expenditureStep === itemKey ? (
+            <MotionCountDownTimer
+              motionState={motionState}
+              motionId={selectedFundingMotion.motionId}
+              motionStakes={selectedFundingMotion.motionStakes}
+              refetchMotionState={refetchMotionState}
+            />
+          ) : null,
+      },
+      content: (
+        <div className="flex flex-col gap-2">
+          {currentActions.length > 0 && (
+            <FundingRequests actions={currentActions} />
+          )}
+
+          {selectedFundingMotion && isSelectedMotionInCurrentActions && (
+            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+          )}
+
+          {selectedFundingAction &&
+            isSelectedActionInCurrentActions &&
+            !selectedFundingMotion && (
+              <ActionWithPermissionsInfo action={selectedFundingAction} />
+            )}
+
+          {shouldShowFundingButton && expenditureStep === itemKey && (
+            <StepDetailsBlock
+              text={formatText({
+                id: 'expenditure.fundingStage.info',
+              })}
+              content={
+                <>
+                  {expectedStepKey === ExpenditureStep.Release ? (
+                    <IconButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      disabled={isEditMode}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                    />
+                  )}
+                </>
+              }
+            />
+          )}
+        </div>
+      ),
+    };
+
+    return fundingItem;
+  };
+
+  const isStagedExpenditure = expenditure?.type === ExpenditureType.Staged;
 
   const {
     motionState: releaseMotionState,
@@ -350,78 +519,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           </>
         ),
     },
-    {
-      key: ExpenditureStep.Funding,
-      heading: {
-        label: formatText({ id: 'expenditure.fundingStage.label' }),
-        decor:
-          selectedFundingMotion &&
-          fundingMotionState &&
-          getShouldShowMotionTimer(fundingMotionState) ? (
-            <MotionCountDownTimer
-              motionState={fundingMotionState}
-              motionId={selectedFundingMotion.motionId}
-              motionStakes={selectedFundingMotion.motionStakes}
-              refetchMotionState={refetchFundingMotionState}
-            />
-          ) : null,
-      },
-      content: (
-        <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
-            <UninstalledExtensionBox />
-          ) : (
-            <div className="flex flex-col gap-2">
-              {sortedFundingActions.length > 0 && (
-                <FundingRequests actions={sortedFundingActions} />
-              )}
-
-              {selectedFundingMotion && (
-                <MotionBox
-                  transactionId={selectedFundingMotion.transactionHash}
-                />
-              )}
-
-              {selectedFundingAction && !selectedFundingMotion && (
-                <ActionWithPermissionsInfo action={selectedFundingAction} />
-              )}
-
-              {shouldShowFundingButton && (
-                <StepDetailsBlock
-                  text={formatText({
-                    id: 'expenditure.fundingStage.info',
-                  })}
-                  content={
-                    <>
-                      {expectedStepKey === ExpenditureStep.Release ? (
-                        <IconButton
-                          className="w-full"
-                          rounded="s"
-                          text={{ id: 'button.pending' }}
-                          icon={
-                            <span className="ml-1.5 flex shrink-0">
-                              <SpinnerGap className="animate-spin" size={14} />
-                            </span>
-                          }
-                        />
-                      ) : (
-                        <Button
-                          className="w-full"
-                          onClick={showFundingModal}
-                          text={formatText({
-                            id: 'expenditure.fundingStage.button',
-                          })}
-                        />
-                      )}
-                    </>
-                  }
-                />
-              )}
-            </div>
-          )}
-        </>
-      ),
-    },
+    getFundingItem(0),
     {
       key: ExpenditureStep.Release,
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
@@ -475,7 +573,95 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     paymentStep,
   ];
 
-  const currentIndex = getCancelStepIndex(expenditure);
+  const currentIndex = getCurrentStepIndex(expenditure);
+  const editedActions = segregateEditActions(expenditure);
+  const fundingPillItems = segregateFundingActions(expenditure);
+
+  if (fundingPillItems && fundingPillItems.length > 0) {
+    fundingPillItems.forEach(() => {
+      const fundingItems = items.filter((item) =>
+        item.key.startsWith(ExpenditureStep.Funding),
+      );
+
+      const newestFundingItemKey = fundingItems
+        .map((fundingItem) => {
+          const [fundingIndex] = fundingItem.key.split('-').slice(-1);
+          return Number(fundingIndex);
+        })
+        .sort((a, b) => b - a)[0];
+
+      const latestFundingItem = fundingItems.find(
+        (fundingItem) =>
+          fundingItem.key ===
+          `${ExpenditureStep.Funding}-${newestFundingItemKey}`,
+      );
+
+      const fundingStepIndex = items.findIndex(
+        (item) => item.key === latestFundingItem?.key,
+      );
+
+      const numberOfFundingItemsNeeded = fundingPillItems.length;
+      const numberOfFundingItems = fundingItems.length;
+
+      const nextFundingStepKey = `${ExpenditureStep.Funding}-${newestFundingItemKey + 1}`;
+
+      const needsMoreFundingItems =
+        numberOfFundingItemsNeeded > numberOfFundingItems;
+      const isAtNextFundingStep =
+        numberOfFundingItemsNeeded === numberOfFundingItems &&
+        !isExpenditureFunded &&
+        expenditureStep === nextFundingStepKey;
+
+      if (needsMoreFundingItems || isAtNextFundingStep) {
+        items.splice(
+          fundingStepIndex + 1,
+          0,
+          getFundingItem(newestFundingItemKey + 1),
+        );
+      }
+    });
+  }
+
+  if (editedActions) {
+    const fundingItems = items.filter((item) =>
+      item.key.startsWith(ExpenditureStep.Funding),
+    );
+
+    if (editedActions.funding.length > 0) {
+      editedActions.funding.forEach((actions, index) => {
+        const selectedFundingItem = fundingItems[index];
+        const latestFundingItem = fundingItems[fundingItems.length - 1];
+
+        const fundingStepIndex = items.findIndex(
+          (item) => item.key === selectedFundingItem?.key,
+        );
+        const latestFundingItemIndex = items.findIndex(
+          (item) => item.key === latestFundingItem.key,
+        );
+
+        items.splice(
+          selectedFundingItem ? fundingStepIndex : latestFundingItemIndex + 1,
+          0,
+          getEditItem(
+            actions,
+            selectedFundingItem ? fundingStepIndex : latestFundingItemIndex,
+          ),
+        );
+      });
+    }
+
+    if (editedActions.finalizing.length > 0) {
+      const releaseStepIndex = items.findIndex(
+        (item) => item.key === ExpenditureStep.Release,
+      );
+
+      items.splice(
+        releaseStepIndex,
+        0,
+        getEditItem(editedActions.finalizing, releaseStepIndex),
+      );
+    }
+  }
 
   const updatedItems = isExpenditureCanceled
     ? [...items.slice(0, currentIndex), cancelItem]
@@ -489,7 +675,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     <>
       <Stepper<ExpenditureStep>
         items={updatedItems}
-        activeStepKey={expenditureStep}
+        activeStepKey={activeStepKey}
+        setActiveStepKey={setActiveStepKey}
+        setCurrentStepKey={setCurrentStep}
       />
       {expenditure && (
         <>

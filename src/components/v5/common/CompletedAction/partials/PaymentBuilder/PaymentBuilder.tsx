@@ -1,5 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
-import { Copy, Prohibit } from '@phosphor-icons/react';
+import { Copy, PencilLine, Prohibit } from '@phosphor-icons/react';
 import moveDecimal from 'move-decimal-point';
 import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
@@ -76,6 +76,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, transactionHash, fromDomain, annotation } = action;
   const allTokens = useGetAllTokens();
+  const { setIsEditMode } = useActionSidebarContext();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
@@ -140,16 +141,32 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     requiredRoles: [ColonyRole.Arbitration],
     requiredRolesDomain: expenditure.nativeDomainId,
   });
-  const showCancelOption =
+  const showCancel =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
     expenditure?.status !== ExpenditureStatus.Finalized &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
+  const showEditOption =
+    expenditure?.status !== ExpenditureStatus.Cancelled &&
+    expenditure?.status !== ExpenditureStatus.Draft &&
+    expenditure?.status !== ExpenditureStatus.Finalized &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
-    ...(showCancelOption
+    ...(showEditOption
       ? [
           {
             key: '1',
+            label: formatText({ id: 'expenditure.editPayment' }),
+            icon: PencilLine,
+            onClick: () => setIsEditMode(true),
+          },
+        ]
+      : []),
+    ...(showCancel
+      ? [
+          {
+            key: '2',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
             onClick: toggleOnCancelModal,
@@ -157,7 +174,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         ]
       : []),
     {
-      key: '2',
+      key: '4',
       label: formatText({ id: 'expenditure.copyLink' }),
       renderItemWrapper: (itemWrapperProps, children) => (
         <MeatballMenuCopyItem

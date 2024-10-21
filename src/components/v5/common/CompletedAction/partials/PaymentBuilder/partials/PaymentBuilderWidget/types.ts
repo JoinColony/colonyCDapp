@@ -7,6 +7,7 @@ export enum ExpenditureStep {
   Release = 'RELEASE',
   Payment = 'PAYMENT',
   Cancel = 'CANCEL',
+  Edit = 'EDIT',
 }
 
 export interface PaymentBuilderWidgetProps {
