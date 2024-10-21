@@ -15,7 +15,7 @@ import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import ActiveFiltersList from '../ActiveFiltersList/ActiveFiltersList.tsx';
 import StreamingPaymentFiltersItem from '../StreamingPaymentPageFiltersItem/StreamingPaymentPageFiltersItem.tsx';
 
-import { filterItems } from './consts.tsx';
+import { filterItems, sortItems } from './consts.tsx';
 
 const StreamingPaymentPageFilters: FC = () => {
   const { searchFilter, setSearchFilter, selectedFiltersCount } =
@@ -54,6 +54,18 @@ const StreamingPaymentPageFilters: FC = () => {
       </h4>
       <ul className="flex flex-col gap-7 sm:gap-0">
         {filterItems.map(({ icon, label, children }) => (
+          <li key={label}>
+            <StreamingPaymentFiltersItem label={label} icon={icon}>
+              {children}
+            </StreamingPaymentFiltersItem>
+          </li>
+        ))}
+        <li className="hidden sm:block">
+          <h4 className="pb-2 pt-2 uppercase text-gray-400 text-4 sm:px-4">
+            {formatText({ id: 'streamingPayment.table.filter.sortBy' })}
+          </h4>
+        </li>
+        {sortItems.map(({ icon, label, children }) => (
           <li key={label}>
             <StreamingPaymentFiltersItem label={label} icon={icon}>
               {children}

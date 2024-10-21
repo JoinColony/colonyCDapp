@@ -6,7 +6,10 @@ import React, {
   useCallback,
 } from 'react';
 
-import { type StreamingPaymentEndCondition } from '~gql';
+import {
+  type ModelSortDirection,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import { STATUS_FILTERS } from '../partials/StreamingPaymentFilters/partials/StatusFilters/consts.ts';
@@ -25,6 +28,9 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
   const [searchFilter, setSearchFilter] = useState('');
   const [statuses, setStatuses] = useState<StreamingPaymentStatus[]>([]);
   const [tokenTypes, setTokenTypes] = useState<TokenTypes>({});
+  const [totalStreamedFilters, setTotalStreamedFilters] = useState<
+    ModelSortDirection | undefined
+  >(undefined);
   const [endConditions, setEndConditions] = useState<
     StreamingPaymentEndCondition[]
   >([]);
@@ -107,6 +113,19 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     },
     [dateFilters],
   );
+  const handleTotalStreamedFilterChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const isChecked = event.target.checked;
+      const name = event.target.name as ModelSortDirection;
+
+      if (isChecked) {
+        setTotalStreamedFilters(name);
+      } else {
+        setTotalStreamedFilters(undefined);
+      }
+    },
+    [],
+  );
 
   const activeFilters: StreamingPaymentFilters = useMemo(() => {
     const date = getDateFilter(dateFilters);
@@ -114,12 +133,20 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     return {
       ...(statuses.length ? { statuses } : {}),
       ...(endConditions.length ? { endConditions } : {}),
+      ...(totalStreamedFilters ? { totalStreamedFilters } : {}),
       ...(tokenTypes.length ? { endConditions } : {}),
       ...(searchFilter ? { search: searchFilter } : {}),
       ...(Object.keys(tokenTypes).length ? { tokenTypes } : {}),
       ...(date || {}),
     };
-  }, [dateFilters, statuses, endConditions, tokenTypes, searchFilter]);
+  }, [
+    dateFilters,
+    statuses,
+    endConditions,
+    tokenTypes,
+    searchFilter,
+    totalStreamedFilters,
+  ]);
 
   const handleResetFilters = useCallback((filter: FiltersValues) => {
     switch (filter) {
@@ -168,6 +195,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       endConditions,
       tokenTypes,
       activeFilters,
+      totalStreamedFilters,
       selectedFiltersCount,
       handleStatusesFilterChange,
       handleResetFilters,
@@ -175,6 +203,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       handleCustomDateFilterChange,
       handleEndConditionsFilterChange,
       handleTokenTypesFilterChange,
+      handleTotalStreamedFilterChange,
     }),
     [
       searchFilter,
@@ -183,6 +212,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       dateFilters,
       tokenTypes,
       activeFilters,
+      totalStreamedFilters,
       selectedFiltersCount,
       handleStatusesFilterChange,
       handleResetFilters,
@@ -190,6 +220,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       handleCustomDateFilterChange,
       handleEndConditionsFilterChange,
       handleTokenTypesFilterChange,
+      handleTotalStreamedFilterChange,
     ],
   );
 

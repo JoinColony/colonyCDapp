@@ -1,5 +1,8 @@
 import { type TokenTypes } from '~frame/v5/pages/StreamingPaymentsPage/partials/StreamingPaymentsTable/FiltersContext/types.ts';
-import { type StreamingPaymentEndCondition } from '~gql';
+import {
+  type ModelSortDirection,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 export interface StreamingPaymentFilters {
@@ -9,6 +12,7 @@ export interface StreamingPaymentFilters {
   search?: string;
   tokenTypes?: TokenTypes;
   endConditions?: StreamingPaymentEndCondition[];
+  totalStreamedFilters?: ModelSortDirection | undefined;
 }
 
 export interface DateOptions {

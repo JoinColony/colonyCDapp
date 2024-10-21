@@ -6,6 +6,7 @@ export enum FiltersValues {
   Custom = 'custom',
   EndCondition = 'endCondition',
   TokenType = 'tokenType',
+  TotalStreamedFilters = 'TotalStreamedFilters',
 }
 
 export interface TokenTypes {

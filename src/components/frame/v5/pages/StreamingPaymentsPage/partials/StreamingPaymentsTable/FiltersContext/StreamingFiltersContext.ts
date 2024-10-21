@@ -1,6 +1,9 @@
 import { createContext, useContext } from 'react';
 
-import { type StreamingPaymentEndCondition } from '~gql';
+import {
+  type ModelSortDirection,
+  type StreamingPaymentEndCondition,
+} from '~gql';
 import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import {
@@ -20,6 +23,7 @@ interface StreamingFiltersContextValue {
   tokenTypes: TokenTypes;
   dateFilters: DateOptions;
   activeFilters: StreamingPaymentFilters;
+  totalStreamedFilters: ModelSortDirection | undefined;
   selectedFiltersCount: number;
   handleStatusesFilterChange: (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -28,6 +32,9 @@ interface StreamingFiltersContextValue {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   handleTokenTypesFilterChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => void;
+  handleTotalStreamedFilterChange: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;
   handleDateFilterChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

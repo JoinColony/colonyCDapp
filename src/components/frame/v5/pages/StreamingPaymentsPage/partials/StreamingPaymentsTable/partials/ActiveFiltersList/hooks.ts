@@ -8,6 +8,7 @@ import { DATE_FILTERS } from '../StreamingPaymentFilters/partials/DateFilters/co
 import { END_CONDIDION_FILTERS } from '../StreamingPaymentFilters/partials/EndConditionFilters/consts.ts';
 import { STATUS_FILTERS } from '../StreamingPaymentFilters/partials/StatusFilters/consts.ts';
 import { useGetTokenTypeFilters } from '../StreamingPaymentFilters/partials/TokenFilters/hooks.ts';
+import { TOTAL_STREAMED_FILTERS } from '../StreamingPaymentFilters/partials/TotalStreamedFilters/consts.ts';
 import { getCustomDateLabel } from '../StreamingPaymentFilters/utils.ts';
 
 export const useActiveFilters = () => {
@@ -17,6 +18,7 @@ export const useActiveFilters = () => {
     dateFilters,
     endConditions,
     tokenTypes,
+    totalStreamedFilters,
   } = useStreamingFiltersContext();
 
   const tokenTypesFilters = useGetTokenTypeFilters();
@@ -58,6 +60,19 @@ export const useActiveFilters = () => {
             },
           ]
         : []),
+      ...(totalStreamedFilters && totalStreamedFilters.length
+        ? [
+            {
+              filter: FiltersValues.TotalStreamed,
+              label: formatText({
+                id: 'streamingPayment.table.filter.totalStreamed',
+              }),
+              items: TOTAL_STREAMED_FILTERS.filter(({ name }) =>
+                totalStreamedFilters.includes(name),
+              ).map(({ label }) => label),
+            },
+          ]
+        : []),
       ...(Object.values(tokenTypes).some((value) => value === true)
         ? [
             {
@@ -94,7 +109,14 @@ export const useActiveFilters = () => {
           ]
         : []),
     ];
-  }, [dateFilters, endConditions, statuses, tokenItems, tokenTypes]);
+  }, [
+    dateFilters,
+    endConditions,
+    statuses,
+    tokenItems,
+    tokenTypes,
+    totalStreamedFilters,
+  ]);
 
   return { activeFiltersToDisplay, handleResetFilters };
 };

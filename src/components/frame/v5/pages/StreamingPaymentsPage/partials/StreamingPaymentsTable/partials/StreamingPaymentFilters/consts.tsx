@@ -3,6 +3,7 @@ import {
   CalendarBlank,
   ClockCountdown,
   CoinVertical,
+  Vignette,
 } from '@phosphor-icons/react';
 import React from 'react';
 
@@ -12,6 +13,7 @@ import DateFilters from './partials/DateFilters/DateFilters.tsx';
 import EndConditionFilters from './partials/EndConditionFilters/EndConditionFilters.tsx';
 import StatusFilters from './partials/StatusFilters/StatusFilters.tsx';
 import TokenFilters from './partials/TokenFilters/TokenFilters.tsx';
+import TotalStreamedFilters from './partials/TotalStreamedFilters/TotalStreamedFilters.tsx';
 
 export const filterItems = [
   {
@@ -37,5 +39,14 @@ export const filterItems = [
     label: formatText({ id: 'streamingPayment.table.filter.date' }),
     name: 'date',
     children: <DateFilters />,
+  },
+];
+
+export const sortItems = [
+  {
+    icon: Vignette,
+    label: formatText({ id: 'streamingPayment.table.filter.totalStreamed' }),
+    name: 'totalStreamed',
+    children: <TotalStreamedFilters />,
   },
 ];

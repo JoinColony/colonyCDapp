@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { useSearchStreamingPaymentsQuery } from '~gql';
+import { ModelSortDirection, useSearchStreamingPaymentsQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
@@ -275,8 +275,37 @@ export const useStreamingPaymentTable = () => {
       filterByEndCondition(action, activeFilters.endConditions),
   );
 
+  const sortedActions = useMemo(
+    () =>
+      filteredActions.sort((a, b) => {
+        const totalStreamedFilter = activeFilters.totalStreamedFilters;
+
+        if (!totalStreamedFilter) {
+          return 0;
+        }
+
+        const aTotalStreamed = a.actions.reduce(
+          (acc, { totalStreamedAmount }) =>
+            acc.add(BigNumber.from(totalStreamedAmount)),
+          BigNumber.from(0),
+        );
+        const bTotalStreamed = b.actions.reduce(
+          (acc, { totalStreamedAmount }) =>
+            acc.add(BigNumber.from(totalStreamedAmount)),
+          BigNumber.from(0),
+        );
+
+        if (totalStreamedFilter === ModelSortDirection.Asc) {
+          return aTotalStreamed.lt(bTotalStreamed) ? -1 : 1;
+        }
+
+        return aTotalStreamed.gt(bTotalStreamed) ? -1 : 1;
+      }),
+    [filteredActions, activeFilters.totalStreamedFilters],
+  );
+
   return {
-    items: filteredActions,
+    items: sortedActions,
     loading,
   };
 };
