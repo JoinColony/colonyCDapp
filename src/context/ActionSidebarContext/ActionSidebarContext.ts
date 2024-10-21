@@ -6,6 +6,7 @@ import {
   type OnBeforeCloseCallback,
   type UseToggleReturnType,
 } from '~hooks/useToggle/types.ts';
+import noop from '~utils/noop.ts';
 
 type ActionSidebarToggle = [
   boolean,
@@ -21,12 +22,18 @@ type ActionSidebarToggle = [
 export interface ActionSidebarContextValue {
   actionSidebarToggle: ActionSidebarToggle;
   cancelModalToggle: UseToggleReturnType;
+  cancelEditModalToggle: UseToggleReturnType;
   actionSidebarInitialValues?: FieldValues;
+  isEditMode: boolean;
+  setIsEditMode: (isEditMode: boolean) => void;
 }
 
 export const ActionSidebarContext = createContext<ActionSidebarContextValue>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  cancelEditModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  setIsEditMode: noop,
+  isEditMode: false,
 });
 
 export const useActionSidebarContext = () => useContext(ActionSidebarContext);
