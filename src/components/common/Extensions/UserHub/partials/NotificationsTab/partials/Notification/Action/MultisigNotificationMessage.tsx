@@ -17,6 +17,10 @@ interface MultisigNotificationMessageProps {
 }
 
 const MSG = defineMessages({
+  created: {
+    id: `${displayName}.created`,
+    defaultMessage: 'Multi-sig decision:',
+  },
   finalized: {
     id: `${displayName}.finalized`,
     defaultMessage: 'Finalized:',
@@ -33,10 +37,6 @@ const MSG = defineMessages({
     id: `${displayName}.unknownAction`,
     defaultMessage: 'Unknown multisig action',
   },
-  unknownChange: {
-    id: `${displayName}.unknownChange`,
-    defaultMessage: 'Multisig action updated: ',
-  },
 });
 
 const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
@@ -46,20 +46,11 @@ const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
   notificationType,
 }) => {
   const Message = useMemo(() => {
-    if (notificationType === NotificationType.MultisigActionCreated) {
-      return (
-        <>
-          {actionTitle ? `${actionTitle}: ` : formatText(MSG.unknownChange)}
-          {actionMetadataDescription || formatText(MSG.unknownAction)}
-        </>
-      );
-    }
-
     const firstPart = {
+      [NotificationType.MultisigActionCreated]: formatText(MSG.created),
       [NotificationType.MultisigActionFinalized]: formatText(MSG.finalized),
       [NotificationType.MultisigActionApproved]: formatText(MSG.approved),
       [NotificationType.MultisigActionRejected]: formatText(MSG.rejected),
-      default: formatText(MSG.unknownChange),
     }[notificationType];
 
     const secondPart =
