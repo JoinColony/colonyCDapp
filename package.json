@@ -201,6 +201,7 @@
     "date-fns": "^2.30.0",
     "decimal.js": "^10.2.1",
     "dompurify": "^3.0.8",
+    "embla-carousel-autoplay": "^8.0.0-rc11",
     "embla-carousel-react": "^8.0.0-rc11",
     "eth-ens-namehash-ms": "^2.2.0",
     "ethers": "^5.6.8",
