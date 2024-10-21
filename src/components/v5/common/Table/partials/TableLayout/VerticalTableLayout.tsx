@@ -17,6 +17,9 @@ export const VerticalTableLayout = <T,>({
     <>
       {rows.map((row) => {
         const cells = row.getVisibleCells();
+        const renderSubComponent = rowsConfig?.renderSubComponent;
+        const showExpandableContent =
+          row.getIsExpanded() && !!renderSubComponent;
 
         return (
           <tbody
@@ -91,6 +94,13 @@ export const VerticalTableLayout = <T,>({
                   </TableRow>
                 );
               }),
+            )}
+            {renderSubComponent && showExpandableContent && (
+              <tr>
+                <td colSpan={row.getVisibleCells().length}>
+                  {renderSubComponent?.({ row })}
+                </td>
+              </tr>
             )}
           </tbody>
         );
