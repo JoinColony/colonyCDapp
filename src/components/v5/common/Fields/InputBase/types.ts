@@ -23,6 +23,7 @@ export interface FormInputBaseProps
   extends Omit<InputBaseProps, 'onChange' | 'state' | 'value'> {
   name: string;
   onChange?: () => void;
+  shouldAllowOnlyNumbers?: boolean;
 }
 
 export interface FormattedInputProps extends Omit<InputBaseProps, 'prefix'> {
