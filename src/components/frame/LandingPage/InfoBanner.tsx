@@ -1,4 +1,4 @@
-import { Password, Confetti, Keyhole } from '@phosphor-icons/react';
+import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import { formatText } from '~utils/intl.ts';
 
 export interface InfoBannerProps {
   variant?: 'info' | 'success' | 'error';
+  icon?: Icon;
   loading?: boolean;
   title: string;
   text: string;
@@ -16,21 +17,11 @@ const displayName = 'frame.LandingPage';
 
 const InfoBanner = ({
   variant = 'info',
+  icon: Icon,
   loading,
   title,
   text,
 }: InfoBannerProps) => {
-  const renderIcon = () => {
-    switch (variant) {
-      case 'success':
-        return <Confetti size={20} className="text-success-400" />;
-      case 'error':
-        return <Password size={20} className="text-negative-400" />;
-      default:
-        return <Keyhole size={20} className="text-blue-400" />;
-    }
-  };
-
   return (
     <div
       className={clsx('rounded-lg border p-6', {
@@ -57,15 +48,21 @@ const InfoBanner = ({
             },
           )}
         >
-          {variant === 'info' && formatText({ id: 'landingPage.badge.info' })}
-          {variant === 'success' &&
-            formatText({ id: 'landingPage.badge.success' })}
-          {variant === 'error' && formatText({ id: 'landingPage.badge.error' })}
+          {formatText({ id: `landingPage.badge.${variant}` })}
         </span>
       </LoadingSkeleton>
       <div className="flex items-center gap-[.375rem] pb-2 pt-3">
         <LoadingSkeleton className="h-5 w-5 rounded-3xl" isLoading={loading}>
-          {renderIcon()}
+          {Icon && (
+            <Icon
+              size={20}
+              className={clsx({
+                'text-success-400': variant === 'success',
+                'text-negative-400': variant === 'error',
+                'text-blue-400': variant === 'info',
+              })}
+            />
+          )}
         </LoadingSkeleton>
         <LoadingSkeleton
           className="h-[1.75rem] w-[7.5rem] rounded"
