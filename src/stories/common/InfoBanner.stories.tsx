@@ -1,3 +1,4 @@
+import { Password, Confetti, Keyhole } from '@phosphor-icons/react';
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
@@ -38,6 +39,10 @@ const meta: Meta<typeof InfoBanner> = {
         type: 'text',
       },
     },
+    icon: {
+      name: 'Icon',
+      control: 'text',
+    },
   },
 };
 
@@ -49,6 +54,7 @@ export const Info: Story = {
     title: 'Title of info banner',
     text: 'Text of info banner',
     variant: 'info',
+    icon: Keyhole,
   },
 };
 
@@ -57,6 +63,7 @@ export const Success: Story = {
     title: 'Title of success banner',
     text: 'Text of success banner',
     variant: 'success',
+    icon: Confetti,
   },
 };
 
@@ -65,6 +72,7 @@ export const Error: Story = {
     title: 'Title of error banner',
     text: 'Text of error banner',
     variant: 'error',
+    icon: Password,
   },
 };
 
