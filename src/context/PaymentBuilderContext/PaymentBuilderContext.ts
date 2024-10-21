@@ -29,6 +29,8 @@ export const PaymentBuilderContext = createContext<{
   setSelectedReleaseAction: (action: ExpenditureAction | null) => void;
   selectedMilestones: MilestoneItem[];
   setSelectedMilestones: (transaction: MilestoneItem[]) => void;
+  selectedCancellingAction: ExpenditureAction | null;
+  setSelectedCancellingAction: (action: ExpenditureAction | null) => void;
 }>({
   toggleOnFundingModal: noop,
   toggleOffFundingModal: noop,
@@ -52,6 +54,8 @@ export const PaymentBuilderContext = createContext<{
   setSelectedReleaseAction: noop,
   selectedMilestones: [],
   setSelectedMilestones: noop,
+  selectedCancellingAction: null,
+  setSelectedCancellingAction: noop,
 });
 
 export const usePaymentBuilderContext = () => useContext(PaymentBuilderContext);

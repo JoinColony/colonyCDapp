@@ -24,6 +24,8 @@ fragment Expenditure on Expenditure {
   userStake {
     amount
     isClaimed
+    isForfeited
+    userAddress
   }
   balances {
     ...ExpenditureBalance
@@ -52,6 +54,7 @@ fragment Expenditure on Expenditure {
     filter: {
       or: [
         { type: { eq: MOVE_FUNDS } }
+        { type: { eq: MOVE_FUNDS_MOTION } }
         { type: { eq: FUND_EXPENDITURE_MOTION } }
         { type: { eq: FUND_EXPENDITURE_MULTISIG } }
       ]
@@ -74,7 +77,10 @@ fragment Expenditure on Expenditure {
   }
   cancellingActions: actions(
     filter: {
-      type: { eq: CANCEL_EXPENDITURE }
+      or: [
+        { type: { eq: CANCEL_EXPENDITURE } }
+        { type: { eq: CANCEL_EXPENDITURE_MOTION } }
+      ]
       isMotionFinalization: { ne: true }
     }
   ) {

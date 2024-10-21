@@ -227,6 +227,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           expenditure={expenditure}
           onClose={toggleOffCancelModal}
           refetchExpenditure={refetchExpenditure}
+          isActionStaked={expenditure.isStaked}
         />
       </>
     );
@@ -281,6 +282,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         expenditure={expenditure}
         onClose={toggleOffCancelModal}
         refetchExpenditure={refetchExpenditure}
+        isActionStaked={expenditure.isStaked}
       />
     </>
   );

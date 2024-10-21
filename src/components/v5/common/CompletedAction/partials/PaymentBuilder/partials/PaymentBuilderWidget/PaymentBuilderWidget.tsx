@@ -14,8 +14,11 @@ import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
+import { MotionState } from '~utils/colonyMotions.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
@@ -27,6 +30,7 @@ import {
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -37,7 +41,9 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
+import CancelRequests from '../CancelRequests/CancelRequests.tsx';
 import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
+import FormatDate from '../FormatDate/FormatDate.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
@@ -56,10 +62,12 @@ import {
   getShouldShowMotionTimer,
   isExpenditureFullyFunded,
   sortActionsByCreatedDate,
+  segregateCancelActions,
 } from './utils.ts';
 
 const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const { colony, refetchColony } = useColonyContext();
+  const { nativeToken } = colony;
   const { refetch: refetchExpenditures } = useGetColonyExpendituresQuery({
     variables: {
       colonyAddress: colony.colonyAddress,
@@ -80,6 +88,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     selectedReleaseAction,
     setSelectedFundingAction,
     setSelectedReleaseAction,
+    selectedCancellingAction,
+    setSelectedCancellingAction,
   } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
@@ -103,10 +113,15 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     ownerAddress,
     status,
   } = expenditure || {};
-  const { amount: stakeAmount = '' } = userStake || {};
+  const {
+    amount: stakeAmount = '',
+    isClaimed: isUserStakeClaimed,
+    userAddress,
+  } = userStake || {};
   const previousStatus = usePrevious(status);
 
   const expenditureStep = getExpenditureStep(expenditure);
+  const [isClaiming, setIsClaiming] = useState(false);
 
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
@@ -150,7 +165,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     if (expectedStepKey === expenditureStep) {
       setExpectedStepKey(null);
     }
-  }, [expectedStepKey, expenditureStep]);
+  }, [expectedStepKey, expenditureStep, setExpectedStepKey]);
 
   const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
     () =>
@@ -163,17 +178,197 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     [colony.colonyAddress, expenditure],
   );
 
-  const cancelItem: StepperItem<ExpenditureStep> = {
-    key: ExpenditureStep.Cancel,
+  const { motionData: selectedCancellingMotion } =
+    selectedCancellingAction ?? {};
+  const {
+    motionState: cancellingMotionState,
+    refetchMotionState: refetchCancellingMotionState,
+  } = useGetColonyAction(selectedCancellingAction?.transactionHash);
+
+  const shouldShowCancellingMotionTimer =
+    cancellingMotionState &&
+    [
+      MotionState.Staking,
+      MotionState.Supported,
+      MotionState.Voting,
+      MotionState.Reveal,
+    ].includes(cancellingMotionState);
+
+  const sortedCancellingActions = useMemo(
+    () =>
+      cancellingActions?.items.filter(notNull).sort((a, b) => {
+        if (a?.createdAt && b?.createdAt) {
+          return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+        return 0;
+      }) ?? [],
+    [cancellingActions?.items],
+  );
+  const allCancelledMotions = sortedCancellingActions
+    .map((cancellingAction) => cancellingAction?.motionData)
+    .filter(notMaybe);
+  const isAnyCancellingMotionInProgress = allCancelledMotions?.some(
+    (motion) =>
+      !motion.motionStateHistory.hasPassed &&
+      !motion.isFinalized &&
+      !motion.motionStateHistory.hasFailedNotFinalizable,
+  );
+  const isExpenditureCanceled =
+    expenditureStep.includes(ExpenditureStep.Cancel) ||
+    expenditureStep === ExpenditureStep.Reclaim;
+
+  useEffect(() => {
+    if (!selectedCancellingAction && sortedCancellingActions.length > 0) {
+      setSelectedCancellingAction(sortedCancellingActions[0]);
+    }
+
+    if (
+      selectedCancellingAction &&
+      !sortedCancellingActions.some(
+        (cancellingAction) =>
+          cancellingAction.transactionHash ===
+          selectedCancellingAction.transactionHash,
+      )
+    ) {
+      setSelectedCancellingAction(null);
+    }
+  }, [
+    selectedCancellingAction,
+    setSelectedCancellingAction,
+    sortedCancellingActions,
+  ]);
+
+  const segregatedCancelActions = segregateCancelActions(expenditure);
+
+  const getCancelItem = (
+    itemIndex: number,
+    actions,
+  ): StepperItem<ExpenditureStep> => {
+    const allCancelMotions = actions
+      .map((cancelActions) => cancelActions.motionData)
+      .filter(notMaybe);
+    const isSelectedActionInCurrentActions = actions.some(
+      (currentAction) =>
+        currentAction.transactionHash ===
+        selectedCancellingAction?.transactionHash,
+    );
+    const isSelectedMotionInCurrentActions = actions.some(
+      (currentAction) =>
+        currentAction.motionData?.motionId ===
+        selectedCancellingMotion?.motionId,
+    );
+    const itemKey = `${ExpenditureStep.Cancel}-${itemIndex}`;
+
+    return {
+      key: itemKey,
+      heading: {
+        label: formatText({ id: 'expenditure.cancelStage.label' }),
+        decor:
+          selectedCancellingMotion &&
+          shouldShowCancellingMotionTimer &&
+          itemKey === expenditureStep ? (
+            <MotionCountDownTimer
+              motionState={cancellingMotionState}
+              motionId={selectedCancellingMotion.motionId}
+              motionStakes={selectedCancellingMotion.motionStakes}
+              refetchMotionState={refetchCancellingMotionState}
+            />
+          ) : null,
+      },
+      content:
+        allCancelMotions.length > 0 ? (
+          <div className="flex flex-col gap-2">
+            {allCancelMotions.length > 0 && (
+              <CancelRequests actions={actions} />
+            )}
+
+            {selectedCancellingMotion && isSelectedMotionInCurrentActions && (
+              <MotionBox
+                transactionId={selectedCancellingMotion.transactionHash}
+              />
+            )}
+
+            {selectedCancellingAction &&
+              isSelectedActionInCurrentActions &&
+              !selectedCancellingMotion && (
+                <ActionWithPermissionsInfo action={selectedCancellingAction} />
+              )}
+          </div>
+        ) : (
+          <ActionWithPermissionsInfo
+            action={sortedCancellingActions?.[0]}
+            title={formatText({ id: 'expenditure.cancelStage.info' })}
+          />
+        ),
+      isHidden: allCancelMotions.length === 0 && !isExpenditureCanceled,
+    };
+  };
+
+  const isUserStaker = walletAddress === userAddress;
+  const reclaimStakePayload: ReclaimExpenditureStakePayload = {
+    colonyAddress: colony.colonyAddress,
+    nativeExpenditureId: expenditure?.nativeId || 0,
+  };
+
+  const reclaimStakeItem: StepperItem<ExpenditureStep> = {
+    key: ExpenditureStep.Reclaim,
     heading: {
-      label: formatText({ id: 'expenditure.cancelStage.label' }),
+      label: formatText({ id: 'expenditure.reclaimStage.label' }),
     },
-    content: <ActionWithPermissionsInfo action={cancellingActions?.items[0]} />,
-    isHidden: expenditureStep !== ExpenditureStep.Cancel,
+    content: (
+      <StepDetailsBlock
+        text={formatText({ id: 'expenditure.reclaimStage.title' })}
+        content={
+          <>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <h5 className="text-1">
+                {formatText({ id: 'expenditure.staking.overview' })}
+              </h5>
+              {isUserStakeClaimed && isUserStaker && (
+                <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
+                  {formatText({ id: 'motion.finalizeStep.claimed' })}
+                </PillsBase>
+              )}
+            </div>
+            {isUserStaker && (
+              <div className="mb-2 flex items-center justify-between gap-2 text-sm">
+                <p>{formatText({ id: 'expenditure.staking.amount' })}</p>
+                <p>
+                  <Numeral
+                    value={stakeAmount}
+                    decimals={nativeToken.decimals}
+                  />{' '}
+                  {nativeToken.symbol}
+                </p>
+              </div>
+            )}
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <p>{formatText({ id: 'expenditure.staking.canceled' })}</p>
+              <FormatDate value={cancellingActions?.items?.[0]?.createdAt} />
+            </div>
+            {!isUserStakeClaimed && isUserStaker && (
+              <div className="mt-6">
+                <ActionButton
+                  disabled={!isUserStaker}
+                  onSuccess={() => setIsClaiming(true)}
+                  loadingBehavior={LoadingBehavior.TxLoader}
+                  text={formatText({ id: 'expenditure.staking.claim' })}
+                  values={reclaimStakePayload}
+                  actionType={ActionTypes.RECLAIM_EXPENDITURE_STAKE}
+                  mode="primarySolid"
+                  className="w-full"
+                  isLoading={isClaiming}
+                />
+              </div>
+            )}
+          </>
+        }
+      />
+    ),
+    isHidden: expenditureStep !== ExpenditureStep.Reclaim,
   };
 
   const isStagedExpenditure = expenditure?.type === ExpenditureType.Staged;
-  const isExpenditureCanceled = expenditureStep === ExpenditureStep.Cancel;
   const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const {
@@ -519,11 +714,45 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     paymentStep,
   ];
 
-  const currentIndex = getCancelStepIndex(expenditure);
+  if (allCancelledMotions.length > 0) {
+    if (
+      segregatedCancelActions.beforeLocked &&
+      segregatedCancelActions.beforeLocked.length > 0
+    ) {
+      items.splice(
+        1,
+        0,
+        getCancelItem(0, segregatedCancelActions.beforeLocked),
+      );
+    }
+    if (
+      segregatedCancelActions.locked &&
+      segregatedCancelActions.locked.length > 0
+    ) {
+      items.splice(2, 0, getCancelItem(1, segregatedCancelActions.locked));
+    }
+    if (
+      segregatedCancelActions.funding &&
+      segregatedCancelActions.funding.length > 0
+    ) {
+      const fundingItemIndex = items.findIndex(
+        (item) => item.key === ExpenditureStep.Funding,
+      );
 
-  const updatedItems = isExpenditureCanceled
-    ? [...items.slice(0, currentIndex), cancelItem]
-    : items;
+      items.splice(
+        fundingItemIndex + 1,
+        0,
+        getCancelItem(2, segregatedCancelActions.funding),
+      );
+    }
+  }
+
+  const currentIndex = getCancelStepIndex(expenditure, items);
+
+  const updatedItems =
+    isExpenditureCanceled && !isAnyCancellingMotionInProgress
+      ? [...items.slice(0, currentIndex), reclaimStakeItem]
+      : items;
 
   if (loadingExpenditure) {
     return <SpinnerLoader appearance={{ size: 'medium' }} />;
