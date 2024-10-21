@@ -19,14 +19,16 @@ export const waitForDbAfterExtensionAction = (
         latestVersion: number;
       }
     | {
-        method: ExtensionMethods.INSTALL;
+        method: ExtensionMethods.INSTALL | ExtensionMethods.ENABLE;
         initialiseTransactionFailed?: boolean;
         setUserRolesTransactionFailed?: boolean;
       }
     | {
         method: Exclude<
           ExtensionMethods,
-          ExtensionMethods.UPGRADE | ExtensionMethods.INSTALL
+          | ExtensionMethods.UPGRADE
+          | ExtensionMethods.INSTALL
+          | ExtensionMethods.ENABLE
         >;
       }
   ),
@@ -57,38 +59,51 @@ export const waitForDbAfterExtensionAction = (
       let condition = false;
 
       switch (args.method) {
-        case ExtensionMethods.INSTALL: {
+        case ExtensionMethods.INSTALL:
+        case ExtensionMethods.ENABLE: {
+          // If there is no extensionData, return early
+          if (!extensionData) {
+            condition = false;
+            break;
+          }
+
           if (
-            extensionData?.autoEnableAfterInstall &&
-            !!args.initialiseTransactionFailed
+            args.method === ExtensionMethods.INSTALL &&
+            !extensionData.autoEnableAfterInstall
           ) {
+            // If it appears in the query, it means it's been installed
             condition = !!extensionData;
             break;
           }
 
-          if (
-            extensionData?.autoEnableAfterInstall &&
-            !!args.setUserRolesTransactionFailed
-          ) {
+          // If we are enabling, or autoEnableAfterInstall is true, then check for transaction failures
+
+          if (args.initialiseTransactionFailed) {
+            // If initialise failed, then continue so long as there is extensionData
+            condition = !!extensionData;
+            break;
+          }
+
+          if (args.setUserRolesTransactionFailed) {
+            // The setUserRoles transaction always comes after the initialise transaction, so we should wait to check the extension is enabled
+            // An extension is still considered enabled if it has no initialise parameters, so if there is no initialise transaction required, this will return true
             condition = !!extensionData.isEnabled;
             break;
           }
 
-          if (extensionData?.autoEnableAfterInstall) {
+          if (extensionData.extensionId === Extension.MultisigPermissions) {
+            // Wait until MultiSig params are present
             condition =
+              !!extensionData.params?.multiSig &&
               !!extensionData.isEnabled &&
               extensionData.missingColonyPermissions.length === 0;
             break;
           }
 
-          if (extensionData?.extensionId === Extension.MultisigPermissions) {
-            // Wait until MultiSig params are present
-            condition = !!extensionData.params?.multiSig;
-            break;
-          }
-
-          // If it appears in the query, it means it's been installed
-          condition = !!extensionData;
+          // All transactions succeeded, return true once extension is enabled and it has all permissions
+          condition =
+            !!extensionData.isEnabled &&
+            extensionData.missingColonyPermissions.length === 0;
           break;
         }
         case ExtensionMethods.DEPRECATE: {
@@ -97,15 +112,6 @@ export const waitForDbAfterExtensionAction = (
         }
         case ExtensionMethods.REENABLE: {
           condition = !extensionData?.isDeprecated;
-          break;
-        }
-
-        case ExtensionMethods.ENABLE: {
-          // condition = !!extensionData?.isInitialized;
-
-          condition =
-            !!extensionData?.isEnabled &&
-            extensionData?.missingColonyPermissions.length === 0;
           break;
         }
 
