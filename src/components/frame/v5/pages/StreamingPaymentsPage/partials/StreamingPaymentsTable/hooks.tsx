@@ -6,7 +6,7 @@ import React, { useMemo } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { ModelSortDirection, useSearchStreamingPaymentsQuery } from '~gql';
+import { useSearchStreamingPaymentsQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
@@ -33,6 +33,7 @@ import {
   filterByActionStatus,
   filterByEndCondition,
   searchStreamingPayments,
+  sortStreamingPayments,
 } from './utils.ts';
 
 export const useRenderSubComponent = () => {
@@ -240,20 +241,6 @@ export const useStreamingPaymentTable = () => {
     ...paymentData,
   }));
 
-  paymentsArray.sort((a, b) => {
-    const aHasActive = a.actions.some(
-      (action) => action.status === StreamingPaymentStatus.Active,
-    );
-    const bHasActive = b.actions.some(
-      (action) => action.status === StreamingPaymentStatus.Active,
-    );
-
-    if (aHasActive === bHasActive) {
-      return 0;
-    }
-    return aHasActive ? -1 : 1;
-  });
-
   const searchedStreamingPayments = useMemo(
     () => searchStreamingPayments(paymentsArray, members, searchFilter),
     [paymentsArray, searchFilter, members],
@@ -266,32 +253,8 @@ export const useStreamingPaymentTable = () => {
   );
 
   const sortedActions = useMemo(
-    () =>
-      filteredActions.sort((a, b) => {
-        const totalStreamedFilter = activeFilters.totalStreamedFilters;
-
-        if (!totalStreamedFilter) {
-          return 0;
-        }
-
-        const aTotalStreamed = a.actions.reduce(
-          (acc, { totalStreamedAmount }) =>
-            acc.add(BigNumber.from(totalStreamedAmount)),
-          BigNumber.from(0),
-        );
-        const bTotalStreamed = b.actions.reduce(
-          (acc, { totalStreamedAmount }) =>
-            acc.add(BigNumber.from(totalStreamedAmount)),
-          BigNumber.from(0),
-        );
-
-        if (totalStreamedFilter === ModelSortDirection.Asc) {
-          return aTotalStreamed.lt(bTotalStreamed) ? -1 : 1;
-        }
-
-        return aTotalStreamed.gt(bTotalStreamed) ? -1 : 1;
-      }),
-    [filteredActions, activeFilters.totalStreamedFilters],
+    () => sortStreamingPayments(filteredActions, activeFilters),
+    [filteredActions, activeFilters],
   );
 
   return {

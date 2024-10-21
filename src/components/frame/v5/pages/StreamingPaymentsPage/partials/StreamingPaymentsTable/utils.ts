@@ -1,7 +1,10 @@
-import { type StreamingPaymentEndCondition } from '~gql';
-import { type ColonyContributor } from '~types/graphql.ts';
-import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
+import { BigNumber } from 'ethers';
 
+import { ModelSortDirection, type StreamingPaymentEndCondition } from '~gql';
+import { type ColonyContributor } from '~types/graphql.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
+
+import { type StreamingPaymentFilters } from './partials/StreamingPaymentFilters/types.ts';
 import { type StreamingTableFieldModel } from './types.ts';
 
 export const searchStreamingPayments = (
@@ -67,3 +70,41 @@ export const filterByEndCondition = (
     return endConditions.includes(endCondition);
   });
 };
+
+export const sortStreamingPayments = (
+  actions: StreamingTableFieldModel[],
+  activeFilters: StreamingPaymentFilters,
+) =>
+  actions.sort((a, b) => {
+    const totalStreamedFilter = activeFilters.totalStreamedFilters;
+
+    if (totalStreamedFilter) {
+      const aTotalStreamed = a.actions.reduce(
+        (acc, { totalStreamedAmount }) =>
+          acc.add(BigNumber.from(totalStreamedAmount)),
+        BigNumber.from(0),
+      );
+      const bTotalStreamed = b.actions.reduce(
+        (acc, { totalStreamedAmount }) =>
+          acc.add(BigNumber.from(totalStreamedAmount)),
+        BigNumber.from(0),
+      );
+
+      if (totalStreamedFilter === ModelSortDirection.Asc) {
+        return aTotalStreamed.lt(bTotalStreamed) ? -1 : 1;
+      }
+      return aTotalStreamed.gt(bTotalStreamed) ? -1 : 1;
+    }
+
+    const aHasActive = a.actions.some(
+      (action) => action.status === StreamingPaymentStatus.Active,
+    );
+    const bHasActive = b.actions.some(
+      (action) => action.status === StreamingPaymentStatus.Active,
+    );
+
+    if (aHasActive === bHasActive) {
+      return 0;
+    }
+    return aHasActive ? -1 : 1;
+  });

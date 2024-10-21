@@ -170,6 +170,9 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       case FiltersValues.TokenType: {
         return setTokenTypes({});
       }
+      case FiltersValues.TotalStreamedFilters: {
+        return setTotalStreamedFilters(undefined);
+      }
       default: {
         return undefined;
       }
