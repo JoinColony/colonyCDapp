@@ -11,6 +11,7 @@ import { type ExpenditureAction } from '~types/graphql.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
+import { MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [expectedStepKey, setExpectedStepKey] =
@@ -47,6 +48,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
     ExpenditureType | undefined
   >(undefined);
 
+  const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
+    [],
+  );
+  const [selectedCancellingAction, setSelectedCancellingAction] =
+    useState<ExpenditureAction | null>(null);
+
   const value = useMemo(
     () => ({
       toggleOnFundingModal,
@@ -74,6 +81,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     }),
     [
       toggleOnFundingModal,
@@ -95,6 +104,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     ],
   );
 

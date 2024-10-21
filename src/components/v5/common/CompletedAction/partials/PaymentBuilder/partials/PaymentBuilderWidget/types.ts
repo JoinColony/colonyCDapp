@@ -7,6 +7,7 @@ export enum ExpenditureStep {
   Release = 'RELEASE',
   Payment = 'PAYMENT',
   Cancel = 'CANCEL',
+  Reclaim = 'RECLAIM',
 }
 
 export interface PaymentBuilderWidgetProps {
@@ -16,6 +17,6 @@ export interface PaymentBuilderWidgetProps {
 export interface FinalizeStepProps {
   expenditure: Expenditure | undefined | null;
   expectedStepKey: ExpenditureStep | null;
-  expenditureStep: ExpenditureStep | null;
+  expenditureStep: string;
   setExpectedStepKey: (step: ExpenditureStep | null) => void;
 }

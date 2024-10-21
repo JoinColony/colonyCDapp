@@ -147,6 +147,7 @@ fragment ColonyAction on ColonyAction {
         transactionHash: id
       }
     }
+    nativeId
   }
   arbitraryTransactions {
     contractAddress
@@ -206,6 +207,7 @@ fragment ColonyMotion on ColonyMotion {
     ...Domain
   }
   nativeMotionDomainId
+  willPunishExpenditureStaker
   stakerRewards {
     address
     rewards {

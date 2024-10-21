@@ -41,7 +41,6 @@ import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 
 import CompletedExpenditureContent from '../CompletedExpenditureContent/CompletedExpenditureContent.tsx';
 
-import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
 import { ExpenditureStep } from './partials/PaymentBuilderWidget/types.ts';
 import { getExpenditureStep } from './partials/PaymentBuilderWidget/utils.ts';
@@ -76,8 +75,9 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { initiatorUser, transactionHash, fromDomain, annotation } = action;
   const allTokens = useGetAllTokens();
 
-  const { expenditure, loadingExpenditure, refetchExpenditure } =
-    useGetExpenditureData(action.expenditureId);
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action.expenditureId,
+  );
   const expenditureStep = getExpenditureStep(expenditure);
   const { user: recipient } = useUserByAddress(
     expenditure?.slots?.[0]?.recipientAddress || '',
@@ -85,9 +85,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const {
     expectedExpenditureType,
     setExpectedExpenditureType,
-    isCancelModalOpen,
     toggleOnCancelModal,
-    toggleOffCancelModal,
   } = usePaymentBuilderContext();
 
   useEffect(() => {
@@ -214,12 +212,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
           isLoading={!expenditure.metadata?.stages?.length}
           isPaymentStep={expenditureStep === ExpenditureStep.Payment}
         />
-        <CancelModal
-          isOpen={isCancelModalOpen}
-          expenditure={expenditure}
-          onClose={toggleOffCancelModal}
-          refetchExpenditure={refetchExpenditure}
-        />
       </>
     );
   }
@@ -267,12 +259,6 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         status={status}
         finalizedTimestamp={finalizedAt}
         expectedNumberOfPayouts={expectedNumberOfPayouts}
-      />
-      <CancelModal
-        isOpen={isCancelModalOpen}
-        expenditure={expenditure}
-        onClose={toggleOffCancelModal}
-        refetchExpenditure={refetchExpenditure}
       />
     </>
   );

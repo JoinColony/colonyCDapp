@@ -14,4 +14,5 @@ export type Steps = MotionState | CustomStep;
 
 export interface MotionBoxProps {
   transactionId: string;
+  isActionCancelled?: boolean;
 }
