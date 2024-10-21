@@ -5,6 +5,7 @@ export interface VotingStepProps {
   stopPollingAction: () => void;
   actionData: MotionAction;
   transactionId: string;
+  isActionCancelled?: boolean;
 }
 
 export interface VotingFormValues {

@@ -6,9 +6,12 @@ import { defineMessages } from 'react-intl';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
+import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -45,7 +48,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
-  const { refetchColony } = useColonyContext();
+  const { refetchColony, colony } = useColonyContext();
   const {
     isFinalizable,
     transform: finalizePayload,
@@ -60,6 +63,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     claimPayload,
     canClaimStakes,
   } = useClaimConfig(actionData, startPollingAction);
+  const { type, expenditure } = actionData;
 
   const isMotionFinalized = actionData.motionData.isFinalized;
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
@@ -73,11 +77,32 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       !isMotionFailed &&
       !isMotionFailedNotFinalizable) ||
     (isMotionAgreement && !isClaimed);
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
+  const associatedActionId = getMotionAssociatedActionId(actionData);
 
-  const handleSuccess = () => {
+  const handleSuccess = async () => {
     startPollingAction(getSafePollingInterval());
     setIsPolling(true);
     onFinalizeSuccessCallback(actionData);
+    const associatedActionId = getMotionAssociatedActionId(actionData);
+
+    if (
+      type === ColonyActionType.CancelExpenditureMotion &&
+      !actionData.motionData.willPunishExpenditureStaker &&
+      expenditure?.isStaked
+    ) {
+      const payload: ReclaimExpenditureStakePayload = {
+        colonyAddress: colony.colonyAddress,
+        nativeExpenditureId: expenditure.nativeId,
+        associatedActionId,
+      };
+
+      await reclaimExpenditureStake(payload);
+    }
   };
 
   /* Stop polling when mounted / dismounted */

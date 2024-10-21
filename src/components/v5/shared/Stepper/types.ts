@@ -1,7 +1,7 @@
 import { type StepperButtonProps } from './partials/StepperButton/types.ts';
 
 export interface StepperItem<TKey> {
-  key: TKey;
+  key: TKey | string;
   heading: Omit<StepperButtonProps, 'onClick' | 'stage'> & {
     decor?: JSX.Element | null;
   };
@@ -13,7 +13,7 @@ export interface StepperItem<TKey> {
 
 export interface StepperProps<TKey> {
   items: StepperItem<TKey>[];
-  activeStepKey: TKey;
-  setActiveStepKey?: (key: TKey) => void;
+  activeStepKey: TKey | string;
+  setActiveStepKey?: (key: TKey | string) => void;
   disablePreviousSteps?: boolean;
 }
