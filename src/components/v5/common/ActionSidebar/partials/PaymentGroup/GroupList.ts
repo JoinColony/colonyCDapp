@@ -2,9 +2,10 @@ import {
   HandCoins,
   Money,
 
-  // @TODO: uncomment when streaming payment,split payment and staged payment will be ready
+  // @TODO: uncomment when streaming payment is ready
   // Waves,
-  // ArrowsOutLineHorizontal,
+  ArrowsOutLineHorizontal,
+  // @TODO: uncomment when staged payment is ready
   // Steps,
 } from '@phosphor-icons/react';
 
@@ -27,8 +28,9 @@ export const GROUP_LIST = [
     }),
     Icon: HandCoins,
     action: Action.PaymentBuilder,
+    isNew: true,
   },
-  // @TODO: uncomment when streaming payment,split payment and staged payment will be ready
+  // @TODO: uncomment when streaming payment is ready
   // {
   //   title: formatText({ id: 'actions.streamingPayment' }),
   //   description: formatText({
@@ -36,13 +38,16 @@ export const GROUP_LIST = [
   //   }),
   //   Icon: Waves,
   //   action: Action.StreamingPayment,
+  //   isNew: true,
   // },
-  // {
-  //   title: formatText({ id: 'actions.splitPayment' }),
-  //   description: formatText({ id: 'actions.description.splitPayment' }),
-  //   Icon: ArrowsOutLineHorizontal,
-  //   action: Action.SplitPayment,
-  // },
+  {
+    title: formatText({ id: 'actions.splitPayment' }),
+    description: formatText({ id: 'actions.description.splitPayment' }),
+    Icon: ArrowsOutLineHorizontal,
+    action: Action.SplitPayment,
+    isNew: true,
+  },
+  // @TODO: uncomment when staged payment is ready
   // {
   //   title: formatText({ id: 'actions.stagedPayment' }),
   //   description: formatText({

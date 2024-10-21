@@ -37,7 +37,6 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   const bootIntercom = useCallback(() => {
     if (typeof window.Intercom !== 'undefined') {
       window.Intercom('boot', {
-        // eslint-disable-next-line camelcase
         alignment: widgetPlacement?.alignment ?? 'left',
         // eslint-disable-next-line camelcase
         horizontal_padding: widgetPlacement?.horizontalPadding ?? 0,
