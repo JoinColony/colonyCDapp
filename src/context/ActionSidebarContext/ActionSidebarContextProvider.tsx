@@ -45,7 +45,9 @@ const OPEN_ACTION_PANEL_EVENT: AnalyticsEvent = {
 const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [actionSidebarInitialValues, setActionSidebarInitialValues] =
     useState<FieldValues>();
+  const [isEditMode, setIsEditMode] = useState(false);
   const cancelModalToggle = useToggle();
+  const cancelEditModalToggle = useToggle();
   const isTablet = useTablet();
   const [
     isActionSidebarOpen,
@@ -147,6 +149,9 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       ],
       updateActionSidebarInitialValues,
       cancelModalToggle,
+      cancelEditModalToggle,
+      setIsEditMode,
+      isEditMode,
       actionSidebarInitialValues,
     }),
     [
@@ -159,6 +164,9 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggle,
       toggleOff,
       toggleOn,
+      setIsEditMode,
+      isEditMode,
+      cancelEditModalToggle,
     ],
   );
 

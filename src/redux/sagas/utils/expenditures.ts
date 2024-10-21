@@ -184,48 +184,52 @@ export const getResolvedPayouts = (
   payouts: ExpenditurePayoutFieldValue[],
   expenditure: Expenditure,
 ) => {
+  if (!payouts.every((payout) => !!payout.slotId)) {
+    throw new Error('All payouts must have a slotId');
+  }
+
+  if (new Set(payouts.map((payout) => payout.slotId)).size !== payouts.length) {
+    throw new Error('Cannot resolve payouts with duplicate slotIds');
+  }
+
   const resolvedPayouts: ExpenditurePayoutFieldValue[] = [];
 
-  const payoutsWithSlotIds = getPayoutsWithSlotIds(payouts);
+  // Iterate over existing slots to set the new token/amount and remove any existing payouts in different tokens
+  expenditure.slots.forEach((slot) => {
+    const existingPayouts = slot.payouts ?? [];
 
-  payoutsWithSlotIds.forEach((payout) => {
-    // Add payout as specified in the form
-    resolvedPayouts.push(payout);
+    const payoutToSet = payouts.find((payout) => payout.slotId === slot.id);
+    if (payoutToSet) {
+      resolvedPayouts.push(payoutToSet);
+    }
 
-    const existingSlot = expenditure.slots.find(
-      (slot) => slot.id === payout.slotId,
-    );
-
-    // Set the amounts for any existing payouts in different tokens to 0
+    // Remove existing payouts by setting their amounts to 0
     resolvedPayouts.push(
-      ...(existingSlot?.payouts
+      ...(existingPayouts
         ?.filter(
-          (slotPayout) =>
-            slotPayout.tokenAddress !== payout.tokenAddress &&
-            BigNumber.from(slotPayout.amount).gt(0),
+          (existingPayout) =>
+            (!payoutToSet ||
+              existingPayout.tokenAddress !== payoutToSet.tokenAddress) &&
+            BigNumber.from(existingPayout.amount).gt(0),
         )
         .map((slotPayout) => ({
-          slotId: payout.slotId,
-          recipientAddress: payout.recipientAddress,
+          slotId: slot.id,
+          recipientAddress:
+            payoutToSet?.recipientAddress ?? slot.recipientAddress ?? '',
           tokenAddress: slotPayout.tokenAddress,
           amount: '0',
-          claimDelay: payout.claimDelay,
+          claimDelay: payoutToSet?.claimDelay ?? slot.claimDelay ?? '',
         })) ?? []),
     );
   });
 
-  // If there are now less payouts than expenditure slots, we need to remove them by setting their amounts to 0
-  const remainingSlots = expenditure.slots.slice(payouts.length);
-  remainingSlots.forEach((slot) => {
-    slot.payouts?.forEach((payout) => {
-      resolvedPayouts.push({
-        slotId: slot.id,
-        recipientAddress: slot.recipientAddress ?? '',
-        tokenAddress: payout.tokenAddress,
-        amount: '0',
-        claimDelay: slot.claimDelay ?? '0',
-      });
-    });
+  // Add remaining payouts that were not in the existing slots
+  const existingSlotIds = new Set(resolvedPayouts.map((rp) => rp.slotId));
+  const payoutsToAdd = payouts.filter(
+    (payout) => !existingSlotIds.has(payout.slotId),
+  );
+  payoutsToAdd.forEach((payout) => {
+    resolvedPayouts.push(payout);
   });
 
   return resolvedPayouts;

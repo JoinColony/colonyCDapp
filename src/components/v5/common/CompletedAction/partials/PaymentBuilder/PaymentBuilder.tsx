@@ -1,5 +1,5 @@
 import { ColonyRole } from '@colony/colony-js';
-import { Copy, Prohibit } from '@phosphor-icons/react';
+import { Copy, PencilLine, Prohibit } from '@phosphor-icons/react';
 import moveDecimal from 'move-decimal-point';
 import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
@@ -8,6 +8,7 @@ import { generatePath } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
@@ -40,6 +41,7 @@ import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpe
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 
 import CompletedExpenditureContent from '../CompletedExpenditureContent/CompletedExpenditureContent.tsx';
+import PaymentBuilderEdit from '../PaymentBuilderEdit/PaymentBuilderEdit.tsx';
 
 import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import PaymentBuilderTable from './partials/PaymentBuilderTable/PaymentBuilderTable.tsx';
@@ -75,6 +77,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
   const { customTitle = formatText(MSG.defaultTitle) } = action?.metadata || {};
   const { initiatorUser, transactionHash, fromDomain, annotation } = action;
   const allTokens = useGetAllTokens();
+  const { setIsEditMode, isEditMode } = useActionSidebarContext();
 
   const { expenditure, loadingExpenditure, refetchExpenditure } =
     useGetExpenditureData(action.expenditureId);
@@ -132,16 +135,30 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     requiredRoles: [ColonyRole.Arbitration],
     requiredRolesDomain: expenditure.nativeDomainId,
   });
-  const showCancelOption =
+  const showCancel =
     expenditure?.status !== ExpenditureStatus.Cancelled &&
     expenditure?.status !== ExpenditureStatus.Finalized &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
+  const showEditOption =
+    expenditure?.status === ExpenditureStatus.Locked &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
-    ...(showCancelOption
+    ...(showEditOption
       ? [
           {
             key: '1',
+            label: formatText({ id: 'expenditure.editPayment' }),
+            icon: PencilLine,
+            onClick: () => setIsEditMode(true),
+          },
+        ]
+      : []),
+    ...(showCancel
+      ? [
+          {
+            key: '2',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
             onClick: toggleOnCancelModal,
@@ -149,7 +166,7 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
         ]
       : []),
     {
-      key: '2',
+      key: '4',
       label: formatText({ id: 'expenditure.copyLink' }),
       renderItemWrapper: (itemWrapperProps, children) => (
         <MeatballMenuCopyItem
@@ -164,6 +181,10 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
       icon: Copy,
     },
   ];
+
+  if (isEditMode) {
+    return <PaymentBuilderEdit action={action} />;
+  }
 
   if (expenditure.type === ExpenditureType.Staged) {
     return (
