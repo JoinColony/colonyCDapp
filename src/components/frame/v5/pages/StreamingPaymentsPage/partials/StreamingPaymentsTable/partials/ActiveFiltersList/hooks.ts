@@ -63,7 +63,7 @@ export const useActiveFilters = () => {
       ...(totalStreamedFilters && totalStreamedFilters.length
         ? [
             {
-              filter: FiltersValues.TotalStreamed,
+              filter: FiltersValues.TotalStreamedFilters,
               label: formatText({
                 id: 'streamingPayment.table.filter.totalStreamed',
               }),
