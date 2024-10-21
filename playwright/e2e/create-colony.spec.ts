@@ -378,19 +378,65 @@ test.describe('Create Colony flow', () => {
       );
     });
 
-    test('Should create a colony and navigate to the Complete Setup step', async ({
+    test('Should create a colony and navigate to the newly created colony URL', async ({
       page,
     }) => {
       await fillNativeTokenStepWithExistingToken(page, validToken);
 
       await page.getByRole('button', { name: /continue/i }).click();
 
-      await expect(page.getByText(/Complete setup/i)).toBeVisible();
       await expect(
-        page.getByText(
-          /Deploying to the blockchain requires you to sign a transaction in your wallet for each step/i,
-        ),
+        page
+          .getByTestId('onboarding-heading')
+          .filter({ hasText: /Complete setup/i }),
       ).toBeVisible();
+      await expect(
+        page.getByTestId('onboarding-subheading').filter({
+          hasText:
+            /Deploying to the blockchain requires you to sign a transaction in your wallet for each step/i,
+        }),
+      ).toBeVisible();
+
+      // Expect the transition to the newly created colony URL
+      await page.waitForURL(customColonyURL);
+
+      // Expect the Colony Created dialog to be visible
+      const colonyCreateDialog = page
+        .getByRole('dialog')
+        .filter({ hasText: /Congratulations/i });
+      await expect(colonyCreateDialog).toBeVisible();
+
+      await expect(
+        colonyCreateDialog.getByRole('button', {
+          name: /explore your colony/i,
+        }),
+      ).toBeVisible();
+      // This section is not shown on first time creation of a colony by a given user
+      const isInviteBlockPresent = await colonyCreateDialog
+        .getByRole('heading', {
+          name: /Invite a person to create a Colony/i,
+        })
+        .isVisible();
+
+      // eslint-disable-next-line playwright/no-conditional-in-test
+      if (isInviteBlockPresent) {
+        // eslint-disable-next-line playwright/no-conditional-expect
+        await expect(
+          colonyCreateDialog.getByRole('button', { name: /copy/i }),
+        ).toBeVisible();
+
+        // eslint-disable-next-line playwright/no-conditional-expect
+        await expect(
+          colonyCreateDialog.getByText(/\/create-colony\/.*/),
+        ).toBeVisible();
+
+        // eslint-disable-next-line playwright/no-conditional-expect
+        await expect(
+          colonyCreateDialog.getByRole('heading', {
+            name: /Invite a person to create a Colony/i,
+          }),
+        ).toBeVisible();
+      }
     });
   });
 });
