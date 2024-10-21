@@ -28,7 +28,7 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
     {
       ...props,
       showUserAvatar: false,
-        showTotalPagesNumber: !loadingActionsCount,
+      showTotalPagesNumber: !loadingActionsCount,
       isRecentActivityVariant: true,
     },
     actionProps.setSelectedAction,
