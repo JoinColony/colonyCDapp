@@ -56,6 +56,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
     [],
   );
+  const [selectedCancellingAction, setSelectedCancellingAction] =
+    useState<ExpenditureAction | null>(null);
 
   const value = useMemo(
     () => ({
@@ -89,6 +91,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     }),
     [
       toggleOnFundingModal,
@@ -114,6 +118,8 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       toggleOffFinalizeModal,
       selectedFinalizeAction,
       setSelectedFinalizeAction,
+      selectedCancellingAction,
+      setSelectedCancellingAction,
     ],
   );
 
