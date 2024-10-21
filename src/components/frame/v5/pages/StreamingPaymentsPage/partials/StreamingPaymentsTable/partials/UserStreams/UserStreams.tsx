@@ -1,5 +1,11 @@
 import Decimal from 'decimal.js';
-import React, { useCallback, type FC, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  type FC,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import { calculateToCurrency } from '~common/Extensions/UserHub/partials/BalanceTab/partials/StreamsInfoRow/utils.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -9,13 +15,14 @@ import Numeral from '~shared/Numeral/Numeral.tsx';
 
 export interface UserStreamsItem {
   amount: string;
-  tokenAddress: string;
   tokenDecimals: number;
   tokenSymbol: string;
 }
 
 interface UserStreamsProps {
-  items: UserStreamsItem[];
+  items: {
+    [tokenAddress: string]: UserStreamsItem;
+  };
 }
 
 const UserStreams: FC<UserStreamsProps> = ({ items }) => {
@@ -24,26 +31,36 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
   const [calculatedAmountPerToken, setCalculatedAmountPerToken] = useState<
     { tokenAddress: string; amount: Decimal | null }[]
   >([]);
+  const tokenTotals = useMemo(
+    () =>
+      Object.entries(items).map(([tokenAddress, item]) => ({
+        ...item,
+        tokenAddress,
+      })),
+    [items],
+  );
 
   const calculateFunds = useCallback(async () => {
     const accumulatedAmounts: { [tokenAddress: string]: Decimal } = {};
 
-    const calculationPromises = items.map(async ({ amount, tokenAddress }) => {
-      const calculatedAmount = await calculateToCurrency({
-        amount,
-        tokenAddress,
-        currency,
-        colony,
-      });
+    const calculationPromises = tokenTotals.map(
+      async ({ amount, tokenAddress }) => {
+        const calculatedAmount = await calculateToCurrency({
+          amount,
+          tokenAddress,
+          currency,
+          colony,
+        });
 
-      if (accumulatedAmounts[tokenAddress]) {
-        accumulatedAmounts[tokenAddress] = accumulatedAmounts[
-          tokenAddress
-        ].plus(calculatedAmount || new Decimal(0));
-      } else {
-        accumulatedAmounts[tokenAddress] = calculatedAmount || new Decimal(0);
-      }
-    });
+        if (accumulatedAmounts[tokenAddress]) {
+          accumulatedAmounts[tokenAddress] = accumulatedAmounts[
+            tokenAddress
+          ].plus(calculatedAmount || new Decimal(0));
+        } else {
+          accumulatedAmounts[tokenAddress] = calculatedAmount || new Decimal(0);
+        }
+      },
+    );
 
     await Promise.all(calculationPromises);
 
@@ -52,7 +69,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
     );
 
     setCalculatedAmountPerToken(calculatedAmountArray);
-  }, [colony, currency, items]);
+  }, [colony, currency, tokenTotals]);
 
   useEffect(() => {
     calculateFunds();
@@ -76,16 +93,14 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
           placement="bottom"
           tooltipContent={
             <span>
-              {items.map(
+              {tokenTotals.map(
                 ({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
                   <span key={tokenSymbol}>
                     <Numeral value={amount} decimals={tokenDecimals} />{' '}
                     {tokenSymbol} {' /month'} (
                     <Numeral
                       value={
-                        calculatedAmountPerToken.find(
-                          (item) => item.tokenAddress === tokenAddress,
-                        )?.amount || '0'
+                        calculatedAmountPerToken[tokenAddress]?.amount || '0'
                       }
                     />{' '}
                     {currency}

@@ -25,7 +25,10 @@ import { type SearchStreamingPaymentFilterVariable } from './FiltersContext/type
 import { type StreamingPaymentFilters } from './partials/StreamingPaymentFilters/types.ts';
 import UserField from './partials/UserField/UserField.tsx';
 import UserStreams from './partials/UserStreams/UserStreams.tsx';
-import { type StreamingTableFieldModel } from './types.ts';
+import {
+  type StreamingPaymentItem,
+  type StreamingTableFieldModel,
+} from './types.ts';
 import {
   filterByActionStatus,
   filterByEndCondition,
@@ -175,58 +178,38 @@ export const useStreamingPaymentTable = () => {
       return {
         title: item.actions?.items[0]?.metadata?.customTitle || '',
         token: item.token || selectedToken?.token,
-        nativeDomainId: item.nativeDomainId,
         paymentId: item.id,
-        amount: item.amount,
         totalStreamedAmount: summedAmount.toString(),
-        creatorAddress: item.creatorAddress,
-        recipientAddress: item.recipientAddress,
-        interval: item.interval,
         transactionId: item.actions?.items[0]?.transactionHash || '',
-        id: item.id,
-        nativeId: item.nativeId,
-        startTime: item.startTime,
-        endTime: item.endTime,
-        tokenAddress: item.tokenAddress,
-        createdAt: item.createdAt,
         status: paymentStatus,
         endCondition: item.metadata?.endCondition,
+        ...item,
       };
     })
-    .reduce<StreamingTableFieldModel[]>((result, item) => {
+    .reduce<StreamingPaymentItem>((result, item) => {
       const { recipientAddress } = item;
 
-      let existingEntryIndex = result.findIndex((entry) => {
-        return entry.user === recipientAddress;
-      });
+      const newResult = { ...result };
 
-      if (existingEntryIndex < 0) {
-        result.push({
-          user: recipientAddress,
-          tokenTotalsPerMonth: [],
+      if (!newResult[recipientAddress]) {
+        newResult[recipientAddress] = {
+          tokenTotalsPerMonth: {},
           actions: [],
-        });
-        existingEntryIndex = result.length - 1;
+        };
       }
 
-      const existingUser = result[existingEntryIndex];
-      const tokenAddress = item.token?.tokenAddress || '';
-
-      let userStreamIndex = existingUser.tokenTotalsPerMonth.findIndex(
-        (stream) => stream.tokenAddress === tokenAddress,
-      );
+      const existingUser = newResult[recipientAddress];
+      const tokenAddress = item.token?.tokenAddress || item.tokenAddress;
 
       const isPaymentActive = item.status === StreamingPaymentStatus.Active;
 
       if (isPaymentActive) {
-        if (userStreamIndex < 0) {
-          existingUser.tokenTotalsPerMonth.push({
-            tokenAddress,
+        if (!existingUser.tokenTotalsPerMonth[tokenAddress]) {
+          existingUser.tokenTotalsPerMonth[tokenAddress] = {
             amount: '0',
             tokenDecimals: getTokenDecimalsWithFallback(item.token?.decimals),
             tokenSymbol: item.token?.symbol || '',
-          });
-          userStreamIndex = existingUser.tokenTotalsPerMonth.length - 1;
+          };
         }
 
         const monthlyAmount = convertToMonthlyAmount(
@@ -234,12 +217,12 @@ export const useStreamingPaymentTable = () => {
           BigNumber.from(item.interval),
         );
 
-        const currentStream = existingUser.tokenTotalsPerMonth[userStreamIndex];
+        const currentStream = existingUser.tokenTotalsPerMonth[tokenAddress];
         const totalAmount = BigNumber.from(currentStream.amount)
           .add(monthlyAmount)
           .toString();
 
-        existingUser.tokenTotalsPerMonth[userStreamIndex] = {
+        existingUser.tokenTotalsPerMonth[tokenAddress] = {
           ...currentStream,
           amount: totalAmount,
         };
@@ -247,26 +230,33 @@ export const useStreamingPaymentTable = () => {
 
       existingUser.actions = [...existingUser.actions, item];
 
-      return result;
-    }, [])
-    .sort((a, b) => {
-      const aHasActive = a.actions.some(
-        (action) => action.status === StreamingPaymentStatus.Active,
-      );
-      const bHasActive = b.actions.some(
-        (action) => action.status === StreamingPaymentStatus.Active,
-      );
+      return newResult;
+    }, {});
 
-      if (aHasActive === bHasActive) {
-        return 0;
-      }
-      return aHasActive ? -1 : 1;
-    });
+  const paymentsArray: StreamingTableFieldModel[] = Object.entries(
+    groupedStreamingPayments,
+  ).map(([user, paymentData]) => ({
+    user,
+    ...paymentData,
+  }));
+
+  paymentsArray.sort((a, b) => {
+    const aHasActive = a.actions.some(
+      (action) => action.status === StreamingPaymentStatus.Active,
+    );
+    const bHasActive = b.actions.some(
+      (action) => action.status === StreamingPaymentStatus.Active,
+    );
+
+    if (aHasActive === bHasActive) {
+      return 0;
+    }
+    return aHasActive ? -1 : 1;
+  });
 
   const searchedStreamingPayments = useMemo(
-    () =>
-      searchStreamingPayments(groupedStreamingPayments, members, searchFilter),
-    [groupedStreamingPayments, searchFilter, members],
+    () => searchStreamingPayments(paymentsArray, members, searchFilter),
+    [paymentsArray, searchFilter, members],
   );
 
   const filteredActions = searchedStreamingPayments.filter(

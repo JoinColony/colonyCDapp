@@ -4,9 +4,20 @@ import { type StreamingPaymentStatus } from '~types/streamingPayments.ts';
 
 import { type UserStreamsItem } from './partials/UserStreams/UserStreams.ts';
 
+export interface StreamingPaymentItem {
+  [user: string]: {
+    tokenTotalsPerMonth: {
+      [token: string]: UserStreamsItem;
+    };
+    actions: StreamingActionTableFieldModel[];
+  };
+}
+
 export interface StreamingTableFieldModel {
   user: string;
-  tokenTotalsPerMonth: UserStreamsItem[];
+  tokenTotalsPerMonth: {
+    [token: string]: UserStreamsItem;
+  };
   actions: StreamingActionTableFieldModel[];
 }
 
