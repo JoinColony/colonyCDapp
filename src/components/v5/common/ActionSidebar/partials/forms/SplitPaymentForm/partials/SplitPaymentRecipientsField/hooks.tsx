@@ -1,5 +1,6 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import Decimal from 'decimal.js';
+import moveDecimal from 'move-decimal-point';
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
 
@@ -31,6 +32,7 @@ export const useRecipientsFieldTableColumns = ({
   amount,
   fieldArrayMethods: { update },
   disabled,
+  distributionMethod,
 }: {
   name: string;
   token: Token;
@@ -38,6 +40,7 @@ export const useRecipientsFieldTableColumns = ({
   amount: string | undefined;
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
   disabled?: boolean;
+  distributionMethod?: SplitPaymentDistributionType;
 }): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
   const isTablet = useTablet();
   const columnHelper = useMemo(
@@ -106,6 +109,10 @@ export const useRecipientsFieldTableColumns = ({
               <SplitPaymentPayoutsTotal
                 data={dataRef.current || []}
                 token={token}
+                value={
+                  distributionMethod === SplitPaymentDistributionType.Equal &&
+                  (amount ? moveDecimal(amount, token.decimals) : 0)
+                }
                 convertToWEI
               />
               {isTablet && (
@@ -113,7 +120,8 @@ export const useRecipientsFieldTableColumns = ({
                   {parseFloat(
                     (
                       dataRef.current?.reduce(
-                        (acc, _, index) => acc + getPercentValue(index),
+                        (acc, _, index) =>
+                          Number(acc) + Number(getPercentValue(index)),
                         0,
                       ) || 0
                     ).toFixed(4),
@@ -161,19 +169,23 @@ export const useRecipientsFieldTableColumns = ({
             />
           ),
           footer: !isTablet
-            ? () => (
-                <span className="text-md font-medium text-gray-900">
-                  {parseFloat(
-                    (
-                      dataRef.current?.reduce(
-                        (acc, _, index) => acc + getPercentValue(index),
-                        0,
-                      ) || 0
-                    ).toFixed(4),
-                  )}
-                  %
-                </span>
-              )
+            ? () => {
+                return (
+                  <span className="text-md font-medium text-gray-900">
+                    {distributionMethod === SplitPaymentDistributionType.Equal
+                      ? '100%'
+                      : `${Number(
+                          dataRef.current
+                            ?.reduce(
+                              (acc, _, index) =>
+                                Number(acc) + Number(getPercentValue(index)),
+                              0,
+                            )
+                            .toFixed(4) || 0,
+                        )}%`}
+                  </span>
+                );
+              }
             : undefined,
         }),
       ],
@@ -210,8 +222,7 @@ export const useDistributionMethodUpdate = ({
               percent: Number(percentPerRecipient.toFixed(4)),
               amount: amount
                 ? new Decimal(amount)
-                    .mul(percentPerRecipient)
-                    .div(100)
+                    .div(data.length || 1)
                     .toDecimalPlaces(
                       getSelectedToken(colony, data[index].tokenAddress || '')
                         ?.decimals || DEFAULT_TOKEN_DECIMALS,

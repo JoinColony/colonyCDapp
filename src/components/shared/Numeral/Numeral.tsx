@@ -8,11 +8,11 @@ import numbroLanguage from './numbroLanguage.ts';
 import { NumeralBase } from './NumeralBase.tsx';
 import { type NumeralProps } from './types.ts';
 
+const displayName = 'Numeral';
+
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);
 numbro.setLanguage('en-GB');
-
-const displayName = 'Numeral';
 
 const Numeral = ({
   value,

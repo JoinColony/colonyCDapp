@@ -45,6 +45,7 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
     amount,
     fieldArrayMethods,
     disabled,
+    distributionMethod,
   });
   const isTablet = useTablet();
   const getMenuProps = ({ index }) => ({
