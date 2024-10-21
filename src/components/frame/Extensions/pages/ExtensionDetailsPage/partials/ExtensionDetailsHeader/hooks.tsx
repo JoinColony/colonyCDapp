@@ -10,7 +10,7 @@ import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/Extension
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
-import { ExtensionInstallAndEnableErrorStep } from '~redux/sagas/extensions/extensionInstallAndEnable.ts';
+import { type ExtensionInstallAndEnableError } from '~redux/sagas/extensions/extensionInstallAndEnable.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 
@@ -172,16 +172,15 @@ export const useInstall = (extensionData: AnyExtensionData) => {
   );
 
   const handleInstallError = useCallback(
-    (error: any) => {
-      const { step } = error;
+    (error: ExtensionInstallAndEnableError) => {
+      const { initialiseTransactionFailed, setUserRolesTransactionFailed } =
+        error;
 
-      if (step === ExtensionInstallAndEnableErrorStep.Initialise) {
-        handleInstallSuccess({ initialiseTransactionFailed: true });
-        return;
-      }
-
-      if (step === ExtensionInstallAndEnableErrorStep.SetUserRoles) {
-        handleInstallSuccess({ setUserRolesTransactionFailed: true });
+      if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
+        handleInstallSuccess({
+          initialiseTransactionFailed,
+          setUserRolesTransactionFailed,
+        });
         return;
       }
 

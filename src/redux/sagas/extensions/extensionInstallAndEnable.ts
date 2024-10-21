@@ -29,10 +29,9 @@ import {
   getColonyManager,
 } from '../utils/index.ts';
 
-export enum ExtensionInstallAndEnableErrorStep {
-  InstallExtension = 'installExtension',
-  Initialise = 'initialise',
-  SetUserRoles = 'setUserRoles',
+export interface ExtensionInstallAndEnableError extends Error {
+  initialiseTransactionFailed?: boolean;
+  setUserRolesTransactionFailed?: boolean;
 }
 
 // Saga will attempt to
@@ -115,14 +114,8 @@ export function* extensionInstallAndEnable({
       yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    try {
-      yield initiateTransaction(installExtension.id);
-      yield waitForTxResult(installExtension.channel);
-    } catch (error) {
-      // Declare an error step for the error handler
-      error.step = ExtensionInstallAndEnableErrorStep.InstallExtension;
-      throw error;
-    }
+    yield initiateTransaction(installExtension.id);
+    yield waitForTxResult(installExtension.channel);
 
     // If not enabledAutomaticallyAfterInstall return success here
     if (!autoEnableAfterInstall) {
@@ -174,8 +167,8 @@ export function* extensionInstallAndEnable({
         yield initiateTransaction(initialise.id);
         yield waitForTxResult(initialise.channel);
       } catch (error) {
-        // Declare an error step for the error handler
-        error.step = ExtensionInstallAndEnableErrorStep.Initialise;
+        (error as ExtensionInstallAndEnableError).initialiseTransactionFailed =
+          true;
         throw error;
       }
     }
@@ -203,8 +196,8 @@ export function* extensionInstallAndEnable({
       yield initiateTransaction(setUserRoles.id);
       yield waitForTxResult(setUserRoles.channel);
     } catch (error) {
-      // Declare an error step for the error handler
-      error.step = ExtensionInstallAndEnableErrorStep.SetUserRoles;
+      (error as ExtensionInstallAndEnableError).setUserRolesTransactionFailed =
+        true;
       throw error;
     }
 
@@ -217,7 +210,7 @@ export function* extensionInstallAndEnable({
     console.error(error);
     return yield putError(
       ActionTypes.EXTENSION_INSTALL_AND_ENABLE_ERROR,
-      error,
+      error as ExtensionInstallAndEnableError,
       meta,
     );
   } finally {
