@@ -45,7 +45,11 @@ const StepColonyName = ({
     user?.profile?.displayName ?? splitWalletAddress(user?.walletAddress ?? '');
 
   return (
-    <Form<Step1> onSubmit={nextStep} validationSchema={validationSchema}>
+    <Form<Step1>
+      onSubmit={nextStep}
+      validationSchema={validationSchema}
+      mode="onChange"
+    >
       <HeaderRow
         heading={MSG.heading}
         headingValues={{ username }}
