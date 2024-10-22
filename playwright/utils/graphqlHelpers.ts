@@ -65,3 +65,32 @@ export async function fetchFirstValidTokenAddress() {
 
   return tokenAddress;
 }
+
+export async function getColonyAddressByName(name: string = 'planex') {
+  const QUERY = `
+    query GetColonyByName {
+       getColonyByName(name: "${name}", limit: 1) {
+        items {
+          id
+        }
+      }
+    }
+  `;
+
+  const requestContext = await request.newContext({
+    baseURL: GRAPHQL_URI,
+    extraHTTPHeaders: {
+      'x-api-key': API_KEY,
+    },
+  });
+
+  const response = await requestContext.post(GRAPHQL_URI, {
+    data: {
+      query: QUERY,
+    },
+  });
+
+  const responseBody = await response.json();
+
+  return responseBody.data.getColonyByName.items[0].id;
+}
