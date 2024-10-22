@@ -44,7 +44,7 @@ const Breadcrumbs: FC<BreadcrumbsProps> = ({ className }) => {
     <ul
       className={clsx(
         className,
-        'modal-blur flex items-center gap-2 text-sm text-gray-700',
+        'modal-blur flex items-center gap-2 text-sm text-gray-700 md:pt-2.5',
       )}
     >
       {rootBreadcrumbItem ? (

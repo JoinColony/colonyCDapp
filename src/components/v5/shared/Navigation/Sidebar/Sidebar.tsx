@@ -34,7 +34,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         ref={ref}
         className={clsx(
           'modal-blur top-[calc(var(--header-nav-section-height)+var(--top-content-height))]',
-          'z-sidebar hidden h-full w-fit flex-col items-start rounded-lg bg-gray-900 px-2 pb-4.5 pt-[13.5px] md:flex',
+          'z-sidebar hidden h-full w-fit flex-col items-start rounded-lg bg-gray-900 px-2 pb-5 pt-[15.5px] md:flex',
           {
             '!bg-gray-100': isDarkMode,
           },
