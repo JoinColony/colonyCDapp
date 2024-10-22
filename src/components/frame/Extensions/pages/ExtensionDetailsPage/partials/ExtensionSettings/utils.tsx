@@ -33,7 +33,66 @@ import {
   getGlobalThresholdType,
 } from './MultiSigSettings/utils.ts';
 
-const getIsSaveChanges = (extensionData: AnyExtensionData) => {
+const getInitializationDefaultValues = (
+  initializationParams: ExtensionInitParam[],
+) => {
+  return initializationParams.reduce<
+    Record<string, string | number | undefined>
+  >((initialValues, param) => {
+    return {
+      ...initialValues,
+      [param.paramName]: param.defaultValue,
+    };
+  }, {});
+};
+
+export const getExtensionSettingsDefaultValues = (
+  extensionData: AnyExtensionData,
+): object => {
+  const { initializationParams = [] } = extensionData;
+  const defaultValues = getInitializationDefaultValues(initializationParams);
+
+  if (!isInstalledExtensionData(extensionData)) {
+    return defaultValues;
+  }
+
+  switch (extensionData.extensionId) {
+    case Extension.StakedExpenditure: {
+      return {
+        stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
+          ? convertFractionToEth(
+              extensionData.params.stakedExpenditure.stakeFraction,
+            )
+          : String(defaultValues.stakeFraction),
+      };
+    }
+    case Extension.MultisigPermissions: {
+      const { colonyThreshold: globalThreshold } =
+        extensionData.params?.multiSig ?? {};
+
+      return {
+        thresholdType:
+          globalThreshold !== undefined
+            ? getGlobalThresholdType(globalThreshold)
+            : MultiSigThresholdType.MAJORITY_APPROVAL,
+        globalThreshold: globalThreshold ?? 0,
+        domainThresholds: [],
+      } satisfies MultiSigSettingsFormValues;
+    }
+    default: {
+      return defaultValues;
+    }
+  }
+};
+
+const getIsSaveChanges = (
+  extensionData: AnyExtensionData,
+  method: ExtensionMethods.INSTALL | ExtensionMethods.ENABLE,
+) => {
+  if (method === ExtensionMethods.INSTALL) {
+    return false;
+  }
+
   return (
     extensionData &&
     isInstalledExtensionData(extensionData) &&
@@ -59,7 +118,7 @@ const showEnableErrorToast = (isSaveChanges?: boolean) => {
   );
 };
 
-const handleWaitingForDbAfterFormCompletion = async ({
+export const handleWaitingForDbAfterFormCompletion = async ({
   setWaitingForActionConfirmation,
   extensionData,
   refetchExtensionData,
@@ -67,6 +126,7 @@ const handleWaitingForDbAfterFormCompletion = async ({
   initialiseTransactionFailed,
   setUserRolesTransactionFailed,
   reset,
+  method,
 }: {
   setWaitingForActionConfirmation: SetStateFn;
   setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
@@ -75,18 +135,32 @@ const handleWaitingForDbAfterFormCompletion = async ({
   initialiseTransactionFailed?: boolean;
   setUserRolesTransactionFailed?: boolean;
   reset: UseFormReset<object>;
+  method: ExtensionMethods.INSTALL | ExtensionMethods.ENABLE;
 }) => {
   setWaitingForActionConfirmation(true);
-  const isSaveChanges = getIsSaveChanges(extensionData);
+
+  const isSaveChanges = getIsSaveChanges(extensionData, method);
 
   try {
     if (!isSaveChanges) {
       await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.ENABLE,
+        method,
         refetchExtensionData,
         initialiseTransactionFailed,
         setUserRolesTransactionFailed,
       });
+
+      if (method === ExtensionMethods.INSTALL) {
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'extensionInstall.toast.title.success' }}
+            description={{
+              id: 'extensionInstall.toast.description.success',
+            }}
+          />,
+        );
+      }
 
       if (initialiseTransactionFailed) {
         toast.error(
@@ -96,10 +170,7 @@ const handleWaitingForDbAfterFormCompletion = async ({
             description={{ id: 'extensionEnable.toast.description.error' }}
           />,
         );
-        return;
       }
-
-      reset();
 
       if (setUserRolesTransactionFailed) {
         toast.error(
@@ -111,29 +182,61 @@ const handleWaitingForDbAfterFormCompletion = async ({
             }}
           />,
         );
+      }
+
+      if (
+        method === ExtensionMethods.INSTALL &&
+        (extensionData.initializationParams || extensionData.configurable)
+      ) {
+        // Reset the form to the default values using most recent extension data
+        const updatedExtensionData = await refetchExtensionData();
+        if (updatedExtensionData) {
+          reset(getExtensionSettingsDefaultValues(updatedExtensionData));
+          setActiveTab(ExtensionDetailsPageTabId.Settings);
+        }
+      }
+
+      if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
         return;
       }
 
-      setActiveTab(ExtensionDetailsPageTabId.Overview);
+      if (method === ExtensionMethods.ENABLE) {
+        reset();
+        setActiveTab(ExtensionDetailsPageTabId.Overview);
+      }
     }
 
-    toast.success(
-      <Toast
-        type="success"
-        title={{
-          id: isSaveChanges
-            ? 'extensionSaveChanges.toast.title.success'
-            : 'extensionEnable.toast.title.success',
-        }}
-        description={{
-          id: isSaveChanges
-            ? 'extensionSaveChanges.toast.description.success'
-            : 'extensionEnable.toast.description.success',
-        }}
-      />,
-    );
+    if (method === ExtensionMethods.ENABLE) {
+      toast.success(
+        <Toast
+          type="success"
+          title={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.title.success'
+              : 'extensionEnable.toast.title.success',
+          }}
+          description={{
+            id: isSaveChanges
+              ? 'extensionSaveChanges.toast.description.success'
+              : 'extensionEnable.toast.description.success',
+          }}
+        />,
+      );
+    }
   } catch {
-    showEnableErrorToast(isSaveChanges);
+    if (method === ExtensionMethods.INSTALL) {
+      toast.error(
+        <Toast
+          type="error"
+          title={{ id: 'extensionInstall.toast.title.error' }}
+          description={{ id: 'extensionInstall.toast.description.error' }}
+        />,
+      );
+    }
+
+    if (method === ExtensionMethods.ENABLE) {
+      showEnableErrorToast(isSaveChanges);
+    }
   } finally {
     setWaitingForActionConfirmation(false);
   }
@@ -158,6 +261,7 @@ export const getFormSuccessFn =
       refetchExtensionData,
       setActiveTab,
       reset,
+      method: ExtensionMethods.ENABLE,
     });
   };
 
@@ -186,11 +290,16 @@ export const getFormErrorFn =
         reset,
         initialiseTransactionFailed,
         setUserRolesTransactionFailed,
+        method: ExtensionMethods.ENABLE,
       });
       return;
     }
 
-    const isSaveChanges = getIsSaveChanges(extensionData);
+    const isSaveChanges = getIsSaveChanges(
+      extensionData,
+      ExtensionMethods.ENABLE,
+    );
+
     showEnableErrorToast(isSaveChanges);
   };
 
@@ -250,56 +359,4 @@ export const mapExtensionActionPayload = (
     },
     {},
   );
-};
-
-const getInitializationDefaultValues = (
-  initializationParams: ExtensionInitParam[],
-) => {
-  return initializationParams.reduce<
-    Record<string, string | number | undefined>
-  >((initialValues, param) => {
-    return {
-      ...initialValues,
-      [param.paramName]: param.defaultValue,
-    };
-  }, {});
-};
-
-export const getExtensionSettingsDefaultValues = (
-  extensionData: AnyExtensionData,
-): object => {
-  const { initializationParams = [] } = extensionData;
-  const defaultValues = getInitializationDefaultValues(initializationParams);
-
-  if (!isInstalledExtensionData(extensionData)) {
-    return defaultValues;
-  }
-
-  switch (extensionData.extensionId) {
-    case Extension.StakedExpenditure: {
-      return {
-        stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
-          ? convertFractionToEth(
-              extensionData.params.stakedExpenditure.stakeFraction,
-            )
-          : String(defaultValues.stakeFraction),
-      };
-    }
-    case Extension.MultisigPermissions: {
-      const { colonyThreshold: globalThreshold } =
-        extensionData.params?.multiSig ?? {};
-
-      return {
-        thresholdType:
-          globalThreshold !== undefined
-            ? getGlobalThresholdType(globalThreshold)
-            : MultiSigThresholdType.MAJORITY_APPROVAL,
-        globalThreshold: globalThreshold ?? 0,
-        domainThresholds: [],
-      } satisfies MultiSigSettingsFormValues;
-    }
-    default: {
-      return defaultValues;
-    }
-  }
 };
