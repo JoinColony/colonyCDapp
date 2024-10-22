@@ -21,21 +21,21 @@ export const CreateActionTourSteps: Step[] = [
       image: CreateAProfileBanner,
       triggerIdentifier: TourTriggerIdentifier.openActionSidebar,
       nextButtonText: formatText({
-        id: 'createAction.skipForNow',
-        defaultMessage: 'Skip for now',
-      }),
-      skipButtonText: formatText({
         id: 'createAction.TakeATour',
         defaultMessage: 'Take a quick tour',
       }),
+      skipButtonText: formatText({
+        id: 'createAction.skipForNow',
+        defaultMessage: 'Skip for now',
+      }),
     },
     title: formatText({
-      id: 'createAction.creatingActions',
-      defaultMessage: messages.creatingActions,
+      id: 'createAction.introTitle',
+      defaultMessage: messages.introTitle,
     }),
     content: formatText({
-      id: 'createAction.creatingActions',
-      defaultMessage: messages.creatingActions,
+      id: 'createAction.introDesc',
+      defaultMessage: messages.introDesc,
     }),
   },
   {
