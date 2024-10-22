@@ -90,6 +90,7 @@ const Notification: FC<NotificationProps> = ({
       NotificationType.ExpenditureReadyForRelease,
       NotificationType.ExpenditureFinalized,
       NotificationType.ExpenditureCancelled,
+      NotificationType.ExpenditurePayoutClaimed,
     ].includes(notificationType)
   ) {
     return (
