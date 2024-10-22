@@ -76,7 +76,7 @@ const FiatTransfersTable = () => {
         renderSubComponent={({ row }) => (
           <FiatTransferDescription actionRow={row} loading={loading} />
         )}
-        className="[&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600 [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
+        className="pb-8 pt-1.5 [&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600 [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
         emptyContent={
           !sortedData.length &&
           !loading && (

@@ -328,7 +328,7 @@ const Table = <T,>({
                         {row.getVisibleCells().map((cell) => {
                           const renderCellWrapperCommonArgs = [
                             clsx(
-                              'flex h-full flex-col items-start justify-center p-[1.1rem] text-md',
+                              'flex h-full flex-col items-start justify-center p-4 text-md',
                               {
                                 'text-gray-500': !isDisabled,
                                 'text-gray-300': isDisabled,
