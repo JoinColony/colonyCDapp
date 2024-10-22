@@ -66,7 +66,7 @@ export const useFiatTransfersTableColumns = (
             return <div className="h-4 w-20 skeleton" />;
           }
           return (
-            <div className="my-2">
+            <div>
               {getFormattedAmount(
                 row.original.amount,
                 SupportedCurrencies[row.original.currency.toUpperCase()] ??
@@ -84,7 +84,7 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('createdAt', {
         header: () => formatText({ id: 'table.row.date' }),
         headCellClassName: isMobile ? 'pr-2' : undefined,
-        staticSize: '180px',
+        staticSize: '150px',
         cell: ({ row }) => {
           if (loading) {
             return <div className="h-4 w-20 skeleton" />;
@@ -95,7 +95,7 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('state', {
         header: () => formatText({ id: 'table.row.status' }),
         headCellClassName: isMobile ? 'pr-2' : undefined,
-        staticSize: isMobile ? '155px' : '180px',
+        staticSize: isMobile ? '145px' : '170px',
         cell: ({ row: { original, getIsExpanded } }) => {
           const status = original.state as keyof typeof statusPillScheme;
           const statusScheme =
@@ -128,7 +128,7 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('receipt', {
         header: () => formatText({ id: 'table.row.receipt' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
-        staticSize: '180px',
+        staticSize: '165px',
         cell: ({ row }) => {
           if (loading) {
             return <div className="h-4 w-12 skeleton" />;
@@ -146,7 +146,7 @@ export const useFiatTransfersTableColumns = (
             <ExternalLink
               href={row.original.receipt.url}
               key={row.original.receipt.url}
-              className="flex items-center gap-2 text-md text-gray-700 underline transition-colors hover:text-blue-400"
+              className="flex items-center gap-2 text-sm text-gray-700 underline transition-colors hover:text-blue-400"
             >
               <ArrowSquareOut size={18} />
               {formatText({ id: 'table.content.viewReceipt' })}
