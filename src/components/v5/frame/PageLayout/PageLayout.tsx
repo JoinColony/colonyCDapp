@@ -89,9 +89,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
                   >
                     {isTablet && <Breadcrumbs />}
                     {pageTitle && (
-                      <h1 className="pt-2 text-gray-900 heading-3 md:pt-0">
+                      <h3 className="pt-2 text-gray-900 heading-3 md:pt-0">
                         {pageTitle}
-                      </h1>
+                      </h3>
                     )}
                   </section>
                 )}
