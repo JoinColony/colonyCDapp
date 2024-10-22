@@ -6,10 +6,12 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+// import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
 import { ActionTypes } from '~redux/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
+// import { waitForDbAfterExtensionAction } from '../utils';
 
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
@@ -51,12 +53,20 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
   });
 
+  // const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
+
   const enableAndCheckStatus = async () => {
     await asyncFunction({
       colonyAddress: colony.colonyAddress,
       extensionData,
     });
     refetchColony();
+    // @TODO: Ideally we would call this here to refresh the extensions data in the ExtensionDetailsHeader component
+    // However, this causes the PermissionsNeededBanner component not to be rendered, so it will never show the success banner
+    // await waitForDbAfterExtensionAction({
+    //   method: ExtensionMethods.ENABLE,
+    //   refetchExtensionData,
+    // });
   };
 
   const handleEnableClick = async () => {
