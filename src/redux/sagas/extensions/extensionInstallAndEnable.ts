@@ -29,10 +29,7 @@ import {
   getColonyManager,
 } from '../utils/index.ts';
 
-export interface ExtensionInstallAndEnableError extends Error {
-  initialiseTransactionFailed?: boolean;
-  setUserRolesTransactionFailed?: boolean;
-}
+import { type ExtensionEnableError } from './extensionEnable.ts';
 
 // Saga will attempt to
 // 1. Install extension
@@ -167,8 +164,7 @@ export function* extensionInstallAndEnable({
         yield initiateTransaction(initialise.id);
         yield waitForTxResult(initialise.channel);
       } catch (error) {
-        (error as ExtensionInstallAndEnableError).initialiseTransactionFailed =
-          true;
+        (error as ExtensionEnableError).initialiseTransactionFailed = true;
         throw error;
       }
     }
@@ -196,8 +192,7 @@ export function* extensionInstallAndEnable({
       yield initiateTransaction(setUserRoles.id);
       yield waitForTxResult(setUserRoles.channel);
     } catch (error) {
-      (error as ExtensionInstallAndEnableError).setUserRolesTransactionFailed =
-        true;
+      (error as ExtensionEnableError).setUserRolesTransactionFailed = true;
       throw error;
     }
 
@@ -210,7 +205,7 @@ export function* extensionInstallAndEnable({
     console.error(error);
     return yield putError(
       ActionTypes.EXTENSION_INSTALL_AND_ENABLE_ERROR,
-      error as ExtensionInstallAndEnableError,
+      error as ExtensionEnableError,
       meta,
     );
   } finally {

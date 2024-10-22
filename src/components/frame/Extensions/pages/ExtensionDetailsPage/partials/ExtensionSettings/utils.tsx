@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import React from 'react';
-import { type FieldValues } from 'react-hook-form';
+import { type UseFormReset, type FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
@@ -10,7 +10,9 @@ import {
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
+import { type ExtensionEnableError } from '~redux/sagas/extensions/extensionEnable.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { type CustomSubmitErrorHandler } from '~shared/Fields/Form/Form.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type SetStateFn } from '~types';
 import {
@@ -31,6 +33,112 @@ import {
   getGlobalThresholdType,
 } from './MultiSigSettings/utils.ts';
 
+const getIsSaveChanges = (extensionData: AnyExtensionData) => {
+  return (
+    extensionData &&
+    isInstalledExtensionData(extensionData) &&
+    (extensionData.isInitialized || extensionData.configurable)
+  );
+};
+
+const showEnableErrorToast = (isSaveChanges?: boolean) => {
+  toast.error(
+    <Toast
+      type="error"
+      title={{
+        id: isSaveChanges
+          ? 'extensionSaveChanges.toast.title.error'
+          : 'extensionEnable.toast.title.error',
+      }}
+      description={{
+        id: isSaveChanges
+          ? 'extensionSaveChanges.toast.description.error'
+          : 'extensionEnable.toast.description.error',
+      }}
+    />,
+  );
+};
+
+const handleWaitingForDbAfterFormCompletion = async ({
+  setWaitingForActionConfirmation,
+  extensionData,
+  refetchExtensionData,
+  setActiveTab,
+  initialiseTransactionFailed,
+  setUserRolesTransactionFailed,
+  reset,
+}: {
+  setWaitingForActionConfirmation: SetStateFn;
+  setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
+  extensionData: AnyExtensionData;
+  refetchExtensionData: RefetchExtensionDataFn;
+  initialiseTransactionFailed?: boolean;
+  setUserRolesTransactionFailed?: boolean;
+  reset: UseFormReset<object>;
+}) => {
+  setWaitingForActionConfirmation(true);
+  const isSaveChanges = getIsSaveChanges(extensionData);
+
+  try {
+    if (!isSaveChanges) {
+      await waitForDbAfterExtensionAction({
+        method: ExtensionMethods.ENABLE,
+        refetchExtensionData,
+        initialiseTransactionFailed,
+        setUserRolesTransactionFailed,
+      });
+
+      if (initialiseTransactionFailed) {
+        toast.error(
+          <Toast
+            type="error"
+            title={{ id: 'extensionEnable.toast.title.error' }}
+            description={{ id: 'extensionEnable.toast.description.error' }}
+          />,
+        );
+        return;
+      }
+
+      reset();
+
+      if (setUserRolesTransactionFailed) {
+        toast.error(
+          <Toast
+            type="error"
+            title={{ id: 'extensionSetUserRoles.toast.title.error' }}
+            description={{
+              id: 'extensionSetUserRoles.toast.description.error',
+            }}
+          />,
+        );
+        return;
+      }
+
+      setActiveTab(ExtensionDetailsPageTabId.Overview);
+    }
+
+    toast.success(
+      <Toast
+        type="success"
+        title={{
+          id: isSaveChanges
+            ? 'extensionSaveChanges.toast.title.success'
+            : 'extensionEnable.toast.title.success',
+        }}
+        description={{
+          id: isSaveChanges
+            ? 'extensionSaveChanges.toast.description.success'
+            : 'extensionEnable.toast.description.success',
+        }}
+      />,
+    );
+  } catch {
+    showEnableErrorToast(isSaveChanges);
+  } finally {
+    setWaitingForActionConfirmation(false);
+  }
+};
+
 export const getFormSuccessFn =
   <T extends FieldValues>({
     setWaitingForActionConfirmation,
@@ -43,59 +151,47 @@ export const getFormSuccessFn =
     extensionData: AnyExtensionData;
     refetchExtensionData: RefetchExtensionDataFn;
   }): OnSuccess<T> =>
-  async (fieldValues, { reset }) => {
-    setWaitingForActionConfirmation(true);
-    const isSaveChanges =
-      extensionData &&
-      isInstalledExtensionData(extensionData) &&
-      (extensionData.isInitialized || extensionData.configurable);
+  async (_, { reset }) => {
+    await handleWaitingForDbAfterFormCompletion({
+      setWaitingForActionConfirmation,
+      extensionData,
+      refetchExtensionData,
+      setActiveTab,
+      reset,
+    });
+  };
 
-    try {
-      if (!isSaveChanges) {
-        await waitForDbAfterExtensionAction({
-          method: ExtensionMethods.ENABLE,
-          refetchExtensionData,
-        });
+export const getFormErrorFn =
+  <T extends FieldValues>({
+    setWaitingForActionConfirmation,
+    extensionData,
+    refetchExtensionData,
+    setActiveTab,
+  }: {
+    setWaitingForActionConfirmation: SetStateFn;
+    setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
+    extensionData: AnyExtensionData;
+    refetchExtensionData: RefetchExtensionDataFn;
+  }): CustomSubmitErrorHandler<T> =>
+  async (error, { reset }) => {
+    const { initialiseTransactionFailed, setUserRolesTransactionFailed } =
+      error as ExtensionEnableError;
 
-        reset();
-
-        setActiveTab(ExtensionDetailsPageTabId.Overview);
-      }
-
-      toast.success(
-        <Toast
-          type="success"
-          title={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.title.success'
-              : 'extensionEnable.toast.title.success',
-          }}
-          description={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.description.success'
-              : 'extensionEnable.toast.description.success',
-          }}
-        />,
-      );
-    } catch (error) {
-      toast.error(
-        <Toast
-          type="error"
-          title={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.title.error'
-              : 'extensionEnable.toast.title.error',
-          }}
-          description={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.description.error'
-              : 'extensionEnable.toast.description.error',
-          }}
-        />,
-      );
-    } finally {
-      setWaitingForActionConfirmation(false);
+    if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
+      await handleWaitingForDbAfterFormCompletion({
+        setWaitingForActionConfirmation,
+        extensionData,
+        refetchExtensionData,
+        setActiveTab,
+        reset,
+        initialiseTransactionFailed,
+        setUserRolesTransactionFailed,
+      });
+      return;
     }
+
+    const isSaveChanges = getIsSaveChanges(extensionData);
+    showEnableErrorToast(isSaveChanges);
   };
 
 export const getExtensionSettingsActionType = (

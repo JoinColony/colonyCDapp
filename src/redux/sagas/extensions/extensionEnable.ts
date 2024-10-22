@@ -28,6 +28,11 @@ import {
   initiateTransaction,
 } from '../utils/index.ts';
 
+export interface ExtensionEnableError extends Error {
+  initialiseTransactionFailed?: boolean;
+  setUserRolesTransactionFailed?: boolean;
+}
+
 function* extensionEnable({
   meta,
   payload,
@@ -114,15 +119,25 @@ function* extensionEnable({
     }
 
     if (needsInitialisation) {
-      yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
-      yield initiateTransaction(initialise.id);
-      yield waitForTxResult(initialise.channel);
+      try {
+        yield takeFrom(initialise.channel, ActionTypes.TRANSACTION_CREATED);
+        yield initiateTransaction(initialise.id);
+        yield waitForTxResult(initialise.channel);
+      } catch (error) {
+        (error as ExtensionEnableError).initialiseTransactionFailed = true;
+        throw error;
+      }
     }
 
     if (needsSettingRoles) {
-      yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
-      yield initiateTransaction(setUserRoles.id);
-      yield waitForTxResult(setUserRoles.channel);
+      try {
+        yield takeFrom(setUserRoles.channel, ActionTypes.TRANSACTION_CREATED);
+        yield initiateTransaction(setUserRoles.id);
+        yield waitForTxResult(setUserRoles.channel);
+      } catch (error) {
+        (error as ExtensionEnableError).setUserRolesTransactionFailed = true;
+        throw error;
+      }
     }
 
     yield put({
@@ -134,7 +149,11 @@ function* extensionEnable({
     yield clearContributorsAndRolesCache();
   } catch (error) {
     console.error(error);
-    return yield putError(ActionTypes.EXTENSION_ENABLE_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.EXTENSION_ENABLE_ERROR,
+      error as ExtensionEnableError,
+      meta,
+    );
   } finally {
     [initialise, setUserRoles].map(({ channel }) => channel.close());
   }
