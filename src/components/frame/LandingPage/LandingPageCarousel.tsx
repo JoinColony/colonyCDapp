@@ -10,7 +10,7 @@ import SlideMobile from '~images/assets/landing/sliderMobile.png';
 
 const displayName = 'frame.LandingPageCarousel';
 
-const titleMSG = defineMessages({
+const MSG = defineMessages({
   titleSlide0: {
     id: `${displayName}.titleSlide0`,
     defaultMessage: 'A powerful, all-in-one payments suite',
@@ -23,25 +23,37 @@ const titleMSG = defineMessages({
     id: `${displayName}.titleSlide2`,
     defaultMessage: 'Easily track & manage shared finances',
   },
-});
-
-const descriptionMSG = defineMessages({
   descriptionSlide0: {
-    id: `${displayName}.dascriptionSlide0`,
+    id: `${displayName}.descriptionSlide0`,
     defaultMessage:
       'From simple transactions to complex financial operations like Streaming, Milestone based, and Split payments, you can do it with Colony.',
   },
   descriptionSlide1: {
-    id: `${displayName}.dascriptionSlide0`,
+    id: `${displayName}.descriptionSlide1`,
     defaultMessage:
       'Make bulk payments to different recipients using various tokens, amounts and scheduling. Saving time and reducing potential errors.',
   },
   descriptionSlide2: {
-    id: `${displayName}.dascriptionSlide0`,
+    id: `${displayName}.descriptionSlide2`,
     defaultMessage:
       'Transparency and clarity around shared finances is made simply with dashboard highlights, transaction history, and shared decision making. ',
   },
 });
+
+const slides = [
+  {
+    title: MSG.titleSlide0,
+    description: MSG.descriptionSlide0,
+  },
+  {
+    title: MSG.titleSlide1,
+    description: MSG.descriptionSlide1,
+  },
+  {
+    title: MSG.titleSlide2,
+    description: MSG.descriptionSlide2,
+  },
+];
 
 const LandingPageCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -52,46 +64,42 @@ const LandingPageCarousel = () => {
         <img className="h-auto w-full" src={SlideMobile} alt="slider mobile" />
       </div>
       <div className="hidden w-full max-w-[31.25rem] overflow-hidden md:block">
-        <div>
-          <div className="relative h-[4.75rem]">
-            {Object.keys(titleMSG).map((_, index) => (
-              <h1
-                className={clsx(
-                  'absolute left-0 top-0 transition-opacity duration-normal heading-2',
-                  {
-                    'opacity-100': currentSlide === index,
-                    'opacity-0': currentSlide !== index,
-                    'delay-150': currentSlide === index,
-                  },
-                )}
-              >
-                <FormattedMessage {...titleMSG[`titleSlide${index}`]} />
-              </h1>
-            ))}
-          </div>
-          <div className="relative mb-9 mt-[.875rem] h-[2.5rem]">
-            {Object.keys(descriptionMSG).map((_, index) => (
-              <p
-                className={clsx(
-                  'absolute left-0 top-0 text-md font-normal transition-opacity duration-normal',
-                  {
-                    'opacity-100': currentSlide === index,
-                    'opacity-0': currentSlide !== index,
-                    'delay-150': currentSlide === index,
-                  },
-                )}
-              >
-                <FormattedMessage
-                  {...descriptionMSG[`descriptionSlide${index}`]}
-                />
-              </p>
-            ))}
-          </div>
+        <div className="relative mb-9 h-[7.25rem]">
+          {slides.map((slide, index) => {
+            const isCurrentSlide = currentSlide === index;
+            return (
+              <div className="absolute left-0 top-0">
+                <h1
+                  className={clsx(
+                    'transition-opacity duration-normal heading-2',
+                    {
+                      'opacity-100 delay-150': isCurrentSlide,
+                      'opacity-0': !isCurrentSlide,
+                    },
+                  )}
+                >
+                  <FormattedMessage {...slide.title} />
+                </h1>
+                <p
+                  className={clsx(
+                    'mt-[.875rem] text-md font-normal transition-opacity duration-normal',
+                    {
+                      'opacity-100 delay-150': isCurrentSlide,
+                      'opacity-0': !isCurrentSlide,
+                    },
+                  )}
+                >
+                  <FormattedMessage {...slide.description} />
+                </p>
+              </div>
+            );
+          })}
         </div>
         <ImageCarousel
           slideUrls={[Slide1, Slide2, Slide3]}
+          slideWrapperClassName="min-w-full"
+          slideImageClassName="w-full object-cover"
           options={{ align: 'center', loop: true }}
-          isImageFullWidth
           isAutoplay
           isChangeSlideDotButton={false}
           setSelectedIndex={(currentSlideIndex) =>
