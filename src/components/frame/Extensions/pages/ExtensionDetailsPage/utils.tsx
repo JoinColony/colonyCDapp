@@ -33,7 +33,7 @@ export const waitForDbAfterExtensionAction = (
       }
   ),
 ) => {
-  const { refetchExtensionData, interval = 1000 } = args;
+  const { refetchExtensionData, interval = 1000, method } = args;
 
   return new Promise<void>((res, rej) => {
     const initTime = new Date().valueOf();
@@ -50,15 +50,16 @@ export const waitForDbAfterExtensionAction = (
       }
 
       const shouldRefetchPermissions =
-        args.method === ExtensionMethods.INSTALL ||
-        args.method === ExtensionMethods.ENABLE;
+        method === ExtensionMethods.INSTALL ||
+        method === ExtensionMethods.ENABLE;
+
       const extensionData = await refetchExtensionData(
         shouldRefetchPermissions,
       );
 
       let condition = false;
 
-      switch (args.method) {
+      switch (method) {
         case ExtensionMethods.INSTALL:
         case ExtensionMethods.ENABLE: {
           // If there is no extensionData, return early
@@ -68,7 +69,7 @@ export const waitForDbAfterExtensionAction = (
           }
 
           if (
-            args.method === ExtensionMethods.INSTALL &&
+            method === ExtensionMethods.INSTALL &&
             !extensionData.autoEnableAfterInstall
           ) {
             // If it appears in the query, it means it's been installed
