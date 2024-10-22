@@ -2169,6 +2169,8 @@ export type DomainBalanceArguments = {
   colonyAddress: Scalars['String'];
   /** Domain id within a colony */
   domainId?: InputMaybe<Scalars['String']>;
+  /** This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable */
+  queryRunId?: InputMaybe<Scalars['String']>;
   /** The currency in which we want to exchange the in/out token balance */
   selectedCurrency?: InputMaybe<ExtendedSupportedCurrencies>;
   /** The timeframe period for which we want to get the in/out token balance */

@@ -3,6 +3,10 @@ Input data for fetching domain balance in/out values within a specific timeframe
 """
 input DomainBalanceArguments {
   """
+  This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+  """
+  queryRunId: String
+  """
   Address of the colony on the blockchain
   """
   colonyAddress: String!

@@ -1,3 +1,4 @@
+import { uniqueId } from 'lodash';
 import React, {
   useMemo,
   type FC,
@@ -40,6 +41,8 @@ const TotalInOutBalanceChartContextProvider: FC<PropsWithChildren> = ({
       queryOptions: {
         variables: {
           input: {
+            // This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+            queryRunId: uniqueId(),
             colonyAddress,
             domainId: selectedDomainId,
             selectedCurrency:

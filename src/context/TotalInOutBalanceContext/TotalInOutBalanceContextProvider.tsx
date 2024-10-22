@@ -1,4 +1,5 @@
 import { type WatchQueryFetchPolicy } from '@apollo/client';
+import { uniqueId } from 'lodash';
 import React, {
   useMemo,
   type FC,
@@ -44,6 +45,8 @@ const TotalInOutBalanceContextProvider: FC<PropsWithChildren> = ({
       queryOptions: {
         variables: {
           input: {
+            // This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+            queryRunId: uniqueId(),
             colonyAddress,
             domainId: selectedDomainId,
             selectedCurrency:
@@ -68,6 +71,8 @@ const TotalInOutBalanceContextProvider: FC<PropsWithChildren> = ({
       abortController,
       queryOptions: {
         variables: {
+          // This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+          queryRunId: uniqueId(),
           colonyAddress,
           filter: {
             domainId: { eq: selectedDomainId },
