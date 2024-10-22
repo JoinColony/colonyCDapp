@@ -2,7 +2,6 @@ import React, { type FC } from 'react';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import RelativeDate from '~v5/shared/RelativeDate/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
@@ -13,9 +12,7 @@ import { type PermissionSidebarProps } from '../types.ts';
 
 const displayName = 'v5.PermissionSidebar';
 
-const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
-  const { action } = useGetColonyAction(transactionId);
-
+const PermissionSidebar: FC<PermissionSidebarProps> = ({ action }) => {
   const { initiatorAddress, createdAt } = action || {};
 
   return (
@@ -48,13 +45,12 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                       id: 'action.executed.permissions.member',
                     })}
                   </span>
-                  <div className="ml-auto">
-                    <UserPopover
-                      size={20}
-                      textClassName="text-sm"
-                      walletAddress={initiatorAddress || ''}
-                    />
-                  </div>
+                  <UserPopover
+                    className="ml-auto"
+                    size={20}
+                    textClassName="text-sm"
+                    walletAddress={initiatorAddress || ''}
+                  />
                 </div>
               )}
               {initiatorAddress && (
