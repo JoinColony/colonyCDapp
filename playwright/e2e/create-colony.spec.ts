@@ -15,18 +15,19 @@ import {
 import {
   fetchFirstValidTokenAddress,
   generateCreateColonyUrl,
+  getColonyAddressByName,
 } from '../utils/graphqlHelpers.ts';
 
 test.describe('Create Colony flow', () => {
   let colonyUrl: string;
   const colonyName = 'testcolonyname';
-  let validToken: string;
+  let existingToken: string;
   const invalidToken = 'invalidtoken';
   let customColonyURL = '';
   test.beforeAll(async () => {
     customColonyURL = generateRandomString();
     colonyUrl = await generateCreateColonyUrl();
-    validToken = await fetchFirstValidTokenAddress();
+    existingToken = await fetchFirstValidTokenAddress();
   });
 
   test.beforeEach(async ({ page }) => {
@@ -166,6 +167,11 @@ test.describe('Create Colony flow', () => {
   });
 
   test.describe('Native Token step', () => {
+    let colonyAddress: string;
+    test.beforeAll(async () => {
+      colonyAddress = await getColonyAddressByName();
+    });
+
     test.beforeEach(async ({ page }) => {
       await fillColonyNameStep(page, {
         nameFieldValue: colonyName,
@@ -221,7 +227,9 @@ test.describe('Create Colony flow', () => {
       await expect(page.getByLabel(/token symbol/i)).toHaveValue(tokenSymbol);
     });
 
-    test('Token Logo file uploader should work correctly', async ({ page }) => {
+    test('Should accept and validate existing token properly', async ({
+      page,
+    }) => {
       const validFilePath =
         'playwright/fixtures/images/jaya-the-beast_400KB.png';
 
@@ -278,18 +286,104 @@ test.describe('Create Colony flow', () => {
 
       await expect(page.getByLabel(/Create a new token/i)).not.toBeChecked();
       const input = page.getByLabel(/Existing token address/i);
-      await input.fill(invalidToken);
 
-      await expect(page.getByText(/Invalid address/i)).toBeVisible();
-      await expect(
-        page.getByRole('button', { name: /continue/i }),
-      ).toBeDisabled();
-      await input.fill(validToken);
-      await expect(page.getByText(/Invalid address/i)).toBeHidden();
-      await expect(page.getByText(/Token found:/i)).toBeVisible();
-      await expect(
-        page.getByRole('button', { name: /continue/i }),
-      ).toBeEnabled();
+      await test.step('Should not accept incorrectly formated token address', async () => {
+        await input.fill(invalidToken);
+
+        await expect(page.getByText(/Invalid address/i)).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but a User address', async () => {
+        const userAddress = '0x3a965407cEd5E62C5aD71dE491Ce7B23DA5331A4';
+        await input.fill(userAddress);
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step("Should not accept an 'address zero'", async () => {
+        const addressZero = '0x0000000000000000000000000000000000000000';
+        await input.fill(addressZero);
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /You cannot use ETH token as a native token for colony/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but a colony address', async () => {
+        await input.fill(colonyAddress);
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but not existing token address', async () => {
+        // This mocked address passes client side validation but fails on BE side
+        const notExistingToken = '0x6b175474e89094c44da98b954eedeac495271d0f';
+
+        await input.fill(notExistingToken);
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should accept correctly formated, and existing token address', async () => {
+        await input.fill(existingToken);
+        await expect(page.getByText(/Invalid address/i)).toBeHidden();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeHidden();
+        await expect(page.getByText(/Token found:/i)).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeEnabled();
+      });
     });
   });
 
@@ -302,7 +396,7 @@ test.describe('Create Colony flow', () => {
     });
 
     test('Should render Confirmation step as expected', async ({ page }) => {
-      await fillNativeTokenStepWithExistingToken(page, validToken);
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
       // Heading of the Step
       await expect(
         page.getByText(/Confirm your Colony’s details/i),
@@ -347,7 +441,7 @@ test.describe('Create Colony flow', () => {
     test('Should navigate to Details step when Edit colony details is clicked', async ({
       page,
     }) => {
-      await fillNativeTokenStepWithExistingToken(page, validToken);
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page
         .getByTestId('colony-details-card')
@@ -365,7 +459,7 @@ test.describe('Create Colony flow', () => {
     test('Should navigate to Native token step when Edit token is clicked', async ({
       page,
     }) => {
-      await fillNativeTokenStepWithExistingToken(page, validToken);
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page
         .getByTestId('colony-token-card')
@@ -374,14 +468,14 @@ test.describe('Create Colony flow', () => {
 
       await expect(page.getByLabel(/Existing token address/i)).toBeVisible();
       await expect(page.getByLabel(/Existing token address/i)).toHaveValue(
-        validToken,
+        existingToken,
       );
     });
 
     test('Should create a colony and navigate to the newly created colony URL', async ({
       page,
     }) => {
-      await fillNativeTokenStepWithExistingToken(page, validToken);
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page.getByRole('button', { name: /continue/i }).click();
 
