@@ -152,7 +152,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
       default:
-        return <PermissionSidebar transactionId={action.transactionHash} />;
+        return <PermissionSidebar action={action} />;
     }
   };
 
