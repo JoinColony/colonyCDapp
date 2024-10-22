@@ -88,6 +88,6 @@ export const useDomainThreshold = ({
 
   return {
     thresholdPerRole: getDomainThreshold(),
-    isLoading: loadingExtension,
+    isLoading: loadingExtension || loadingEligibleSignees,
   };
 };

@@ -60,7 +60,7 @@ const MSG = defineMessages({
   multipleRolesHeading: {
     id: `${displayName}.multipleRolesHeading`,
     defaultMessage:
-      'Multiple permissions are required for this action.\nEach permission held counts as an approval',
+      'This action requires a bundled approval. Each approval is based on the permissions you hold.',
   },
   approvals: {
     id: `${displayName}.approvals`,
@@ -337,7 +337,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
           content: (
             <div>
               <Tooltip
-                placement="bottom-start"
+                placement="top-start"
                 offset={[0, 4]}
                 tooltipContent={formatText(MSG.tooltip, {
                   permission: findFirstUserRoleWithColonyRoles({

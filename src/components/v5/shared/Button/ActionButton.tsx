@@ -35,6 +35,7 @@ const ActionButton: FC<ActionButtonProps> = ({
     success: successAction,
     transform,
   });
+  const shouldShowLoading = loading || isLoading;
 
   const handleClick = async () => {
     if (props.disabled) return;
@@ -53,26 +54,28 @@ const ActionButton: FC<ActionButtonProps> = ({
     }
   };
 
-  if (loadingBehavior === LoadingBehavior.TxLoader && (isLoading || loading)) {
-    <IconButton
-      rounded="s"
-      isFullSize={props.isFullSize || isMobile}
-      text={{ id: 'button.pending' }}
-      icon={
-        <span className="ml-2 flex shrink-0">
-          <SpinnerGap size={18} className="animate-spin" />
-        </span>
-      }
-      className="!px-4 !text-md"
-    />;
+  if (loadingBehavior === LoadingBehavior.TxLoader && shouldShowLoading) {
+    return (
+      <IconButton
+        rounded="s"
+        isFullSize={props.isFullSize || isMobile}
+        text={{ id: 'button.pending' }}
+        icon={
+          <span className="ml-2 flex shrink-0">
+            <SpinnerGap size={18} className="animate-spin" />
+          </span>
+        }
+        className="!px-4 !text-md"
+      />
+    );
   }
 
-  if (loadingBehavior === LoadingBehavior.Disabled && (isLoading || loading)) {
+  if (loadingBehavior === LoadingBehavior.Disabled && shouldShowLoading) {
     return <Button onClick={handleClick} disabled {...props} />;
   }
 
   return (
-    <Button onClick={handleClick} loading={loading || isLoading} {...props} />
+    <Button onClick={handleClick} loading={shouldShowLoading} {...props} />
   );
 };
 
