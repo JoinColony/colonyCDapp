@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { uniqueId } from 'lodash';
+import { useEffect, useMemo } from 'react';
 
 import { useBalanceCurrencyContext } from '~context/BalanceCurrencyContext/BalanceCurrencyContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -32,6 +33,8 @@ export const useTotalData = (domainId?: string) => {
       queryOptions: {
         variables: {
           input: {
+            // This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+            queryRunId: uniqueId(),
             colonyAddress,
             domainId: domainId ?? '',
             selectedCurrency:
@@ -54,19 +57,15 @@ export const useTotalData = (domainId?: string) => {
     memoizedQueryVariables.queryOptions,
   );
 
-  const cancelQuery = useCallback(() => {
-    if (loading) {
-      memoizedQueryVariables.abortController.abort();
-    }
-  }, [memoizedQueryVariables.abortController, loading]);
-
   useEffect(() => {
     return () => {
-      cancelQuery();
+      if (loading && !memoizedQueryVariables.abortController.signal.aborted) {
+        memoizedQueryVariables.abortController.abort();
+      }
     };
-    // We want this use effect to get triggered only on mounting/unmounting
+    // We want this use effect to get triggered memoizedQueryVariables is changing
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [memoizedQueryVariables]);
 
   const domainBalanceData = data?.getDomainBalance;
 
@@ -92,6 +91,8 @@ export const usePreviousTotalData = () => {
       abortController,
       queryOptions: {
         variables: {
+          // This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+          queryRunId: uniqueId(),
           colonyAddress,
           filter: {
             domainId: { eq: selectedDomain?.id ?? '' },
@@ -113,11 +114,13 @@ export const usePreviousTotalData = () => {
 
   useEffect(() => {
     return () => {
-      if (loading) {
+      if (loading && !memoizedQueryVariables.abortController.signal.aborted) {
         memoizedQueryVariables.abortController.abort();
       }
     };
-  }, [loading, memoizedQueryVariables.abortController]);
+    // We want this use effect to get triggered memoizedQueryVariables is changing
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memoizedQueryVariables]);
 
   const previousBalance = data?.cacheTotalBalanceByColonyAddress?.items[0];
 
