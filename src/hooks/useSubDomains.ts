@@ -1,16 +1,20 @@
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFiltersContext.ts';
 
 export const useSubDomains = () => {
-  const selectedDomain = useGetSelectedDomainFilter();
+  const { filteredTeam } = useColonyFiltersContext();
 
   const { colony } = useColonyContext();
 
   const domains = colony.domains?.items || [];
 
-  if (!selectedDomain) {
+  if (!filteredTeam) {
     return domains;
   }
+
+  const selectedDomain = domains?.find(
+    (domain) => domain?.nativeId?.toString() === filteredTeam,
+  );
 
   if (selectedDomain && selectedDomain.isRoot) {
     return domains?.filter((domain) => !domain?.isRoot);
