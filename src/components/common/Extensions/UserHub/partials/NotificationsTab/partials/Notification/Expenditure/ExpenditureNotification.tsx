@@ -165,6 +165,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       {isExpenditureFundingMotionNotification && (
         <ExpenditureFundingMotionNotificationMessage
           actionTitle={actionTitle}
+          actionMetadataDescription={actionMetadataDescription}
           loading={loading}
           notificationType={notificationType as NotificationType}
         />

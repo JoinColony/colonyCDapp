@@ -87,34 +87,31 @@ const Notification: FC<NotificationProps> = ({
 
   // If the notification type is an expenditure update:
   // Or a motion supporting an expenditure (eg. for funding)
-  if (hasExpenditureId) {
-    if (
-      [
-        NotificationType.MotionCreated,
-        NotificationType.MotionOpposed,
-        NotificationType.MotionSupported,
-        NotificationType.MotionVoting,
-        NotificationType.MotionReveal,
-        NotificationType.MotionFinalized,
-        NotificationType.ExpenditureReadyForReview,
-        NotificationType.ExpenditureReadyForFunding,
-        NotificationType.ExpenditureReadyForRelease,
-        NotificationType.ExpenditureFinalized,
-        NotificationType.ExpenditureCancelled,
-        NotificationType.ExpenditurePayoutClaimed,
-      ].includes(notificationType)
-    ) {
-      return (
-        <ExpenditureNotification
-          colony={notificationColony}
-          isCurrentColony={isCurrentColony}
-          loadingColony={loadingColony}
-          notification={notification}
-        />
-      );
-    }
-    // if isExpenditure is true but we have a mention notification we'll not display it
-    return null;
+  if (
+    hasExpenditureId &&
+    [
+      NotificationType.MotionCreated,
+      NotificationType.MotionOpposed,
+      NotificationType.MotionSupported,
+      NotificationType.MotionVoting,
+      NotificationType.MotionReveal,
+      NotificationType.MotionFinalized,
+      NotificationType.ExpenditureReadyForReview,
+      NotificationType.ExpenditureReadyForFunding,
+      NotificationType.ExpenditureReadyForRelease,
+      NotificationType.ExpenditureFinalized,
+      NotificationType.ExpenditureCancelled,
+      NotificationType.ExpenditurePayoutClaimed,
+    ].includes(notificationType)
+  ) {
+    return (
+      <ExpenditureNotification
+        colony={notificationColony}
+        isCurrentColony={isCurrentColony}
+        loadingColony={loadingColony}
+        notification={notification}
+      />
+    );
   }
 
   if (notificationType === NotificationType.FundsClaimed) {
