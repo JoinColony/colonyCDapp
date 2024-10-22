@@ -16,6 +16,7 @@ const ParamNames = {
   etherscanApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FETHERSCAN_API_KEY`,
   bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_KEY`,
   bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_URL`,
+  liquidationAddressOverrides: `%2Famplify%2Fcdapp%2F${ENV}%2FLIQUIDATION_ADDRESS_OVERRIDES`,
 };
 
 const getParam = async (paramName) => {
