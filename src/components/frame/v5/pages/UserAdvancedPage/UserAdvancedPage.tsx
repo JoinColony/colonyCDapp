@@ -22,7 +22,7 @@ const MSG = defineMessages({
 const UserAdvancedPage = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
 
-  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+  useSetPageHeadingTitle(formatText({ id: 'advancedSettings.title' }));
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;

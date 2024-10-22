@@ -27,7 +27,7 @@ const UserAccountPage: FC = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const { handleSubmit } = useUserProfile();
 
-  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+  useSetPageHeadingTitle(formatText({ id: 'userProfileTab.title' }));
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;

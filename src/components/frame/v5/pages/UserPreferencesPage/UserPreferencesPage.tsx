@@ -25,7 +25,7 @@ const UserPreferencesPage: FC = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
   const { handleSubmit, onSubmit, columnsList } = useUserPreferencesPage();
 
-  useSetPageHeadingTitle(formatText({ id: 'userProfile.title' }));
+  useSetPageHeadingTitle(formatText({ id: 'userPreferencesPage.title' }));
 
   if (userLoading || walletConnecting) {
     return <LoadingTemplate loadingText={MSG.loadingText} />;
@@ -38,9 +38,6 @@ const UserPreferencesPage: FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-6">
-        <h4 className="heading-4">
-          {formatText({ id: 'userPreferencesPage.accountPreferences' })}
-        </h4>
         <Rows groups={columnsList} className="flex-row" />
       </div>
     </form>
