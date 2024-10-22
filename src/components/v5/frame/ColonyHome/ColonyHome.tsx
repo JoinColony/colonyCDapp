@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';

@@ -24,8 +24,8 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
   let nextButtonText = '';
   let skipButtonText = '';
 
-  skipButtonText = step.data.nextButtonText
-    ? step.data.nextButtonText
+  skipButtonText = step.data.skipButtonText
+    ? step.data.skipButtonText
     : formatMessage({ id: 'tour.skip', defaultMessage: 'Skip' });
 
   if (continuous) {
@@ -54,8 +54,7 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
     <div
       {...restTooltipProps}
       className={clsx(
-        'max-w-lg rounded-lg bg-base-white shadow-lg',
-        'flex flex-col',
+        'base relative flex h-full max-h-full w-screen shrink-0 flex-col overflow-hidden bg-base-white shadow-default outline-0 md:h-auto md:w-[30.3125rem] md:rounded-xl md:border md:border-gray-200',
       )}
     >
       {/* Close Button */}
@@ -76,7 +75,7 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
         </div>
       )}
 
-      <div className="mb-6 p-6 text-gray-700">
+      <div className="p-6 text-gray-700">
         {step.data.icon && (
           <span
             className={clsx(
@@ -89,13 +88,14 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
         {step.title && (
           <h3 className="mb-2 text-xl font-semibold">{step.title}</h3>
         )}
-        <div className="mb-6 text-gray-700">{step.content}</div>
-        <div className="flex items-center justify-between">
+        <div className="mb-6 text-md text-gray-700">{step.content}</div>
+        <div className="flex flex-col-reverse gap-3 sm:flex-row">
           {index > 0 && (
             <Button
               {...backProps}
               mode="primaryOutline"
               text={formatText({ id: 'button.back', defaultMessage: 'Back' })}
+              className="flex-grow"
             />
           )}
 
@@ -104,10 +104,16 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
               {...skipProps}
               mode="primaryOutline"
               text={skipButtonText}
+              className="flex-grow"
             />
           )}
 
-          <Button {...primaryProps} mode="primarySolid" text={nextButtonText} />
+          <Button
+            {...primaryProps}
+            mode="primarySolid"
+            text={nextButtonText}
+            className="flex-grow"
+          />
         </div>
       </div>
     </div>
