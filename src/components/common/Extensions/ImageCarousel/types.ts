@@ -2,9 +2,10 @@ import { type EmblaOptionsType } from 'embla-carousel-react';
 
 export interface ImageCarouselProps {
   slideUrls?: string[];
+  slideWrapperClassName?: string;
+  slideImageClassName?: string;
   options?: EmblaOptionsType;
   className?: string;
-  isImageFullWidth?: boolean;
   isAutoplay?: boolean;
   isChangeSlideDotButton?: boolean;
   setSelectedIndex?: (index: number) => void;
