@@ -37,7 +37,7 @@ const getIsSaveChanges = (extensionData: AnyExtensionData) => {
   return (
     extensionData &&
     isInstalledExtensionData(extensionData) &&
-    (extensionData.isInitialized || extensionData.configurable)
+    extensionData.isInitialized
   );
 };
 

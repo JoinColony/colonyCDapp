@@ -52,7 +52,6 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
   });
 
   const enableAndCheckStatus = async () => {
-    // @SAM-TODO: handle extension enable here
     await asyncFunction({
       colonyAddress: colony.colonyAddress,
       extensionData,
