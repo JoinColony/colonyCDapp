@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { formatText } from '~utils/intl.ts';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import BaseColonyCard from './BaseColonyCard/BaseColonyCard.tsx';
 
@@ -11,6 +10,13 @@ export interface ColonyCardProps {
 }
 
 const displayName = 'frame.LandingPage.ColonyCards';
+
+const MSG = defineMessages({
+  members: {
+    id: `${displayName}.members`,
+    defaultMessage: `{members} Members`,
+  },
+});
 
 export const ColonyCard = ({
   colonyName,
@@ -29,12 +35,10 @@ export const ColonyCard = ({
   >
     <p className="text-md font-medium">{colonyName}</p>
     <p className="text-xs font-normal">
-      {formatText(
-        {
-          id: 'landingPage.card.members',
-        },
-        { members: membersCount.toLocaleString('en-US') },
-      )}
+      <FormattedMessage
+        {...MSG.members}
+        values={{ members: membersCount.toLocaleString('en-US') }}
+      />
     </p>
   </BaseColonyCard>
 );
