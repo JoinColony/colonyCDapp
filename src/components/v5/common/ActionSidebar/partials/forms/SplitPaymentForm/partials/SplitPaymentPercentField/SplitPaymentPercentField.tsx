@@ -26,7 +26,8 @@ const SplitPaymentPercentField: FC<SplitPaymentPercentFieldProps> = ({
         }
       }}
       wrapperClassName="flex-row flex text-md"
-      type="number"
+      type="text"
+      shouldAllowOnlyNumbers
       mode="secondary"
       placeholder={formatText({ id: 'actionSidebar.enterValue' })}
       suffix="%"
