@@ -195,7 +195,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
         formRef={formRef}
         defaultValues={actionSidebarInitialValues}
         isMotion={!!isMotion}
-        isMultiSig={!!isMultiSig}
       />
     );
   };

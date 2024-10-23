@@ -5,8 +5,13 @@ import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { ExpenditureType, useGetColonyExpendituresQuery } from '~gql';
+import {
+  ExpenditureStatus,
+  ExpenditureType,
+  useGetColonyExpendituresQuery,
+} from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
@@ -93,8 +98,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isStaked,
     userStake,
     ownerAddress,
+    status,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
+  const previousStatus = usePrevious(status);
 
   const expenditureStep = getExpenditureStep(expenditure);
 
@@ -125,12 +132,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   }, [expenditureStep, refetchColony, refetchExpenditures]);
 
   useEffect(() => {
-    if (expenditureStep === ExpenditureStep.Payment) {
+    if (
+      expenditureStep === ExpenditureStep.Payment &&
+      previousStatus !== undefined &&
+      previousStatus !== ExpenditureStatus.Finalized
+    ) {
       // Payments with 0 claim delay will be paid immediately once at the payment step
       // we need to remove all getDomainBalance queries to refetch the correct balances
       removeCacheEntry(CacheQueryKeys.GetDomainBalance);
     }
-  }, [expenditureStep]);
+  }, [expenditureStep, previousStatus]);
 
   useEffect(() => {
     if (expectedStepKey === expenditureStep) {

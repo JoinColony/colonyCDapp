@@ -9,7 +9,6 @@ import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import FinalizeButton from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/FinalizeButton/FinalizeButton.tsx';
 import {
   getIsMultiSigExecutable,
@@ -219,20 +218,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     if (isMultiSigExecuted || isMultiSigRejected) {
       setIsFinalizePending(false);
     }
-    if (isMultiSigExecuted) {
+    if (isMultiSigExecuted && previousIsMultiSigExecuted === false) {
       handleMotionCompleted(action);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected, action]);
-
-  useEffect(() => {
-    if (isMultiSigExecuted && previousIsMultiSigExecuted === false) {
-      /**
-       * We need to remove all getDomainBalance queries once a payment or funding has been successfully completed
-       * By default it will refetch all active queries
-       */
-      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
-    }
-  }, [isMultiSigExecuted, previousIsMultiSigExecuted]);
+  }, [
+    isMultiSigExecuted,
+    previousIsMultiSigExecuted,
+    isMultiSigRejected,
+    action,
+  ]);
 
   return (
     <MenuWithStatusText

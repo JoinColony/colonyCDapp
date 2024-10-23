@@ -10,6 +10,7 @@ import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
+import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
@@ -124,5 +125,14 @@ export const useTransferFunds = (
       ),
       [colony],
     ),
+    onSuccess: () => {
+      /**
+       * We need to remove all getDomainBalance queries once a payment has been successfully completed
+       * By default it will refetch all active queries
+       */
+      if (decisionMethod === DecisionMethod.Permissions) {
+        removeCacheEntry(CacheQueryKeys.GetDomainBalance);
+      }
+    },
   });
 };
