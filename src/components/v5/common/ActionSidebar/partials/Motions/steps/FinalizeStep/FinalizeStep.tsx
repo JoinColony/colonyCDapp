@@ -1,11 +1,12 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useEffect, useState, useRef } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
+import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -45,7 +46,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const { canInteract } = useAppContext();
   const [isPolling, setIsPolling] = useState(false);
-  const hasFinalizedHandlerRun = useRef(false);
   const { refetchColony } = useColonyContext();
   const {
     isFinalizable,
@@ -63,6 +63,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const isMotionFinalized = actionData.motionData.isFinalized;
+  const previousIsMotionFinalized = usePrevious(isMotionFinalized);
   const isMotionFailedNotFinalizable =
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
   const isMotionFailed = actionData.motionData.motionStateHistory.hasFailed;
@@ -92,14 +93,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   useEffect(() => {
     if (
       (isMotionAgreement || isMotionFinalized) &&
-      !hasFinalizedHandlerRun.current
+      previousIsMotionFinalized === false
     ) {
       refetchColony();
       setIsPolling(false);
       handleMotionCompleted(actionData);
-      hasFinalizedHandlerRun.current = true;
     }
-  }, [isMotionAgreement, isMotionFinalized, actionData, refetchColony]);
+  }, [
+    isMotionAgreement,
+    isMotionFinalized,
+    previousIsMotionFinalized,
+    actionData,
+    refetchColony,
+  ]);
 
   /*
    * @NOTE This is just needed until we properly save motion data in the db

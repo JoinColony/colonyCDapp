@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
+import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
@@ -45,5 +46,14 @@ export const useMintToken = (
       ),
       [colony],
     ),
+    onSuccess: () => {
+      /**
+       * We need to remove all getDomainBalance queries once a payment has been successfully completed
+       * By default it will refetch all active queries
+       */
+      if (decisionMethod === DecisionMethod.Permissions) {
+        removeCacheEntry(CacheQueryKeys.GetDomainBalance);
+      }
+    },
   });
 };

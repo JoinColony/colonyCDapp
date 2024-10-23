@@ -4,7 +4,6 @@ import React, {
   type FC,
   type PropsWithChildren,
   useEffect,
-  useCallback,
 } from 'react';
 
 import { useBalanceCurrencyContext } from '~context/BalanceCurrencyContext/BalanceCurrencyContext.ts';
@@ -65,27 +64,15 @@ const TotalInOutBalanceChartContextProvider: FC<PropsWithChildren> = ({
     memoizedQueryVariables.queryOptions,
   );
 
-  const cancelQuery = useCallback(() => {
-    if (loading) {
-      memoizedQueryVariables.abortController.abort();
-    }
-  }, [memoizedQueryVariables.abortController, loading]);
-
   useEffect(() => {
     return () => {
-      cancelQuery();
+      if (loading && !memoizedQueryVariables.abortController.signal.aborted) {
+        memoizedQueryVariables.abortController.abort();
+      }
     };
     // We want this use effect to get triggered when a new instance of the abort controller is present
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memoizedQueryVariables.abortController]);
-
-  useEffect(() => {
-    return () => {
-      cancelQuery();
-    };
-    // We want this use effect to get triggered only on mounting/unmounting of the context
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const domainBalanceData = data?.getDomainBalance;
 
