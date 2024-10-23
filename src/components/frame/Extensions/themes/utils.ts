@@ -69,6 +69,7 @@ export const mapTheme = (variables: ITheme): IMappedTheme => {
     '--color-teams-grey-50': variables.teamsGrey50 || '',
     '--color-teams-grey-100': variables.teamsGrey100 || '',
     '--color-teams-grey-500': variables.teamsGrey500 || '',
+    '--color-skeleton-gradient': variables.skeletonGradient || '',
   };
 };
 

@@ -65,6 +65,7 @@ export const light = {
   teamsGrey50: '#F4F4F4',
   teamsGrey100: '#D7E2EE',
   teamsGrey500: '#415A77',
+  skeletonGradient: 'rgba(255, 255, 255, 0.5)',
 };
 
 export const dark = {
@@ -134,4 +135,5 @@ export const dark = {
   teamsGrey50: '#2E405E',
   teamsGrey100: '#314972',
   teamsGrey500: '#5A7BA0',
+  skeletonGradient: 'rgba(146, 149, 152, 0.5)',
 };
