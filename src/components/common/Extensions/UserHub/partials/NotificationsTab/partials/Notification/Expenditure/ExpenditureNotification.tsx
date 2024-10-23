@@ -50,6 +50,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       NotificationType.ExpenditureReadyForRelease,
       NotificationType.ExpenditureCancelled,
       NotificationType.ExpenditureFinalized,
+      NotificationType.ExpenditurePayoutClaimed,
     ].includes(notificationType);
 
   const isExpenditureMotionNotification =

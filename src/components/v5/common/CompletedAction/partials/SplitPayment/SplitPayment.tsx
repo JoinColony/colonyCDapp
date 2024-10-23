@@ -29,6 +29,7 @@ import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import {
+  getNumeralTokenAmount,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -63,7 +64,6 @@ import {
   DescriptionRow,
   TeamFromRow,
 } from '../rows/index.ts';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 import SplitPaymentTable from './partials/SplitPaymentTable/SplitPaymentTable.tsx';
 
@@ -168,7 +168,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
             distributionMethod: distributionType,
             [TEAM_FIELD_NAME]: fundFromDomainNativeId,
-            [AMOUNT_FIELD_NAME]: getFormattedTokenAmount(
+            [AMOUNT_FIELD_NAME]: getNumeralTokenAmount(
               amount,
               splitToken?.decimals,
             ),

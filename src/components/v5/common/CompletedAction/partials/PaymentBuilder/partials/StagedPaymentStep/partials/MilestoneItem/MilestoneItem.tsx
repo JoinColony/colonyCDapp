@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
+import { getNumeralTokenAmount } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 import { type MilestoneItemProps } from './types.ts';
@@ -15,7 +15,7 @@ const MilestoneItem: FC<MilestoneItemProps> = ({
   const selectedToken = allTokens.find(
     ({ token }) => token.tokenAddress === tokenAddress,
   );
-  const formattedAmount = getFormattedTokenAmount(
+  const formattedAmount = getNumeralTokenAmount(
     amount,
     selectedToken?.token.decimals,
   );
