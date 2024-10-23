@@ -31,9 +31,6 @@ const useGetAllAgreements = () => {
       colonyAddress,
       filter: {
         type: { eq: ColonyActionType.CreateDecisionMotion },
-        showInActionsList: {
-          eq: true,
-        },
       },
       sortDirection: ModelSortDirection.Desc,
       limit: QUERY_PAGE_SIZE,

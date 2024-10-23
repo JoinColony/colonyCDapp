@@ -51,19 +51,22 @@ const AgreementsPage: FC = () => {
   const passedAgreements = searchedAgreements.filter(
     (agreement) => agreement.showInActionsList,
   );
-
   const notPassedAgreements = searchedAgreements.filter(
     (agreement) =>
       agreement.initiatorUser?.walletAddress === user?.walletAddress &&
       !agreement.showInActionsList,
   );
-
   const allAgreements =
     notPassedAgreements.length > 0
       ? [...notPassedAgreements, ...passedAgreements]
       : [...passedAgreements];
-
   const sortedAgreeements = sortAgreementsByDate(allAgreements);
+
+  const hasAgreements = allAgreements && allAgreements.length > 0;
+  const showCreateDecision =
+    !hasAgreements && !loading && !loadingMotionStateFilter && !isFilterActive;
+  const showNoResults =
+    !hasAgreements && !loading && !loadingMotionStateFilter && isFilterActive;
 
   return (
     <ContentWithTeamFilter>
@@ -103,7 +106,7 @@ const AgreementsPage: FC = () => {
         </ul>
       ) : (
         <>
-          {allAgreements && allAgreements?.length > 0 && (
+          {hasAgreements && (
             <ul className="grid auto-rows-fr grid-cols-1 gap-6 sm:auto-rows-auto sm:grid-cols-2">
               {sortedAgreeements.map(({ transactionHash }) => (
                 <motion.li
@@ -123,35 +126,29 @@ const AgreementsPage: FC = () => {
               ))}
             </ul>
           )}
-          {allAgreements?.length === 0 &&
-            !loading &&
-            !loadingMotionStateFilter &&
-            !isFilterActive && (
-              <EmptyContent
-                description={{ id: 'agreementsPage.empty.description' }}
-                className="border-dashed px-5 py-[5.75rem]"
-                buttonText={{ id: 'agreementsPage.empty.button' }}
-                onClick={() => {
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
-                  });
-                }}
-                buttonIcon={FilePlus}
-                withBorder
-              />
-            )}
-          {allAgreements?.length === 0 &&
-            !loading &&
-            !loadingMotionStateFilter &&
-            isFilterActive && (
-              <EmptyContent
-                title={{ id: 'agreementsPage.empty.title.filter' }}
-                description={{ id: 'agreementsPage.empty.description.filter' }}
-                className="px-6 pb-9 pt-10"
-                icon={Binoculars}
-                withBorder
-              />
-            )}
+          {showCreateDecision && (
+            <EmptyContent
+              description={{ id: 'agreementsPage.empty.description' }}
+              className="border-dashed px-5 py-[5.75rem]"
+              buttonText={{ id: 'agreementsPage.empty.button' }}
+              onClick={() => {
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                });
+              }}
+              buttonIcon={FilePlus}
+              withBorder
+            />
+          )}
+          {showNoResults && (
+            <EmptyContent
+              title={{ id: 'agreementsPage.empty.title.filter' }}
+              description={{ id: 'agreementsPage.empty.description.filter' }}
+              className="px-6 pb-9 pt-10"
+              icon={Binoculars}
+              withBorder
+            />
+          )}
         </>
       )}
     </ContentWithTeamFilter>
