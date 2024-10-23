@@ -42,6 +42,7 @@ const { formatMessage } = intl({
   'error.invalidToken': 'Invalid address.',
   'error.tokenNotFound':
     'Token data not found. Please check the token contract address.',
+  'error.tokenNameInvalid': 'Invalid token name',
   'error.tokenNameRequired': 'Enter a token name to continue',
   'error.tokenSymbolRequired': 'Enter a token symbol to continue',
   'error.tokenNameLength': 'Token name should be 255 characters or fewer',
@@ -116,6 +117,11 @@ export const createTokenValidationSchema = object({
       then: (schema) =>
         schema
           .max(MAX_TOKEN_NAME, '')
+          .test(
+            'isNotOnlySpaces',
+            formatMessage({ id: 'error.tokenNameInvalid' }),
+            (value) => value.trim().length > 0,
+          )
           .required(formatMessage({ id: 'error.tokenNameRequired' })),
       otherwise: (schema) => schema.notRequired(),
     }),
