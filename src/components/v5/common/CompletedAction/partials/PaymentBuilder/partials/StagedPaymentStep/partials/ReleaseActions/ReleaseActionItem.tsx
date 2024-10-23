@@ -4,7 +4,6 @@ import { defineMessages } from 'react-intl';
 
 import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionBadge.tsx';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { type Expenditure, type ExpenditureAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
@@ -32,7 +31,6 @@ const ReleaseActionItem: FC<ReleaseActionItemProps> = ({
 }) => {
   const { setSelectedReleaseAction, selectedReleaseAction } =
     usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
   const { motionState, loadingAction } = useGetColonyAction(
     action?.transactionHash,
   );
@@ -47,10 +45,6 @@ const ReleaseActionItem: FC<ReleaseActionItemProps> = ({
       className="group flex w-full items-center justify-between gap-2"
       type="button"
       onClick={() => {
-        if (!isStagedExtensionInstalled) {
-          return;
-        }
-
         setSelectedReleaseAction(action);
       }}
     >
