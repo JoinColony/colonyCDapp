@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import ColonyCard from '~frame/LandingPage/ColonyCard.tsx';
+import ColonyCard from '~frame/LandingPage/ColonyCards/ColonyCard.tsx';
 
 const meta: Meta<typeof ColonyCard> = {
   title: 'Common/Colony Card',
@@ -32,41 +32,16 @@ const meta: Meta<typeof ColonyCard> = {
         type: 'number',
       },
     },
-    invitationsRemaining: {
-      name: 'Invitations remaining',
-      control: {
-        type: 'number',
-      },
-    },
-    loading: {
-      name: 'Loading',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof ColonyCard>;
 
-export const ActiveColony: Story = {
+export const Base: Story = {
   args: {
     colonyName: 'Beta colony',
     colonyAvatar: 'https://picsum.photos/200',
     membersCount: 1520,
-    invitationsRemaining: 2,
-  },
-};
-
-export const CreateColony: Story = {
-  args: {
-    invitationsRemaining: 3,
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    loading: true,
   },
 };
