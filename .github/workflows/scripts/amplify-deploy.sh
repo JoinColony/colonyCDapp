@@ -16,6 +16,10 @@ fi
 # Get the name of the current directory (repo name)
 REPO_NAME=$(basename $(pwd))
 
+# Run the transpile step for Lambda functions
+echo "Transpiling Lambda functions..."
+npm run lambdas:transpile
+
 # Create a separate directory for Amplify at the same level as the repo
 AMPLIFY_DIR="../amplify"
 mkdir -p $AMPLIFY_DIR

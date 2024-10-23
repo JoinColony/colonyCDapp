@@ -1,6 +1,17 @@
-const fetch = require('cross-fetch');
+import fetch from 'cross-fetch';
 
-const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
+interface GraphQLResponse {
+  data?: any;
+  errors?: any[];
+}
+
+// @TODO: Lambda utils refactor candidate
+export const graphqlRequest = async (
+  queryOrMutation: string,
+  variables: Record<string, any>,
+  url: string,
+  authKey: string,
+): Promise<GraphQLResponse | null> => {
   const options = {
     method: 'POST',
     headers: {
@@ -13,22 +24,15 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     }),
   };
 
-  let body;
-  let response;
+  let response: Response;
+  let body: GraphQLResponse;
 
   try {
     response = await fetch(url, options);
     body = await response.json();
     return body;
   } catch (error) {
-    /*
-     * Something went wrong... obviously 🦆
-     */
     console.error(error);
     return null;
   }
-};
-
-module.exports = {
-  graphqlRequest,
 };

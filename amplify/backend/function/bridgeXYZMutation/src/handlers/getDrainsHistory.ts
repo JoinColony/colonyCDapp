@@ -1,15 +1,17 @@
-const fetch = require('cross-fetch');
-const { graphqlRequest } = require('../utils');
-const { getUser } = require('../graphql');
-const { getLiquidationAddresses } = require('./utils');
+import fetch from 'cross-fetch';
+import { graphqlRequest } from '../utils';
+import { getUser } from '../graphql';
+import { getLiquidationAddresses } from './utils';
+import { AppSyncResolverEvent, HandlerContext } from 'src/types';
+import { BridgeDrain, LiquidationAddress } from '~gql';
 
-const getDrainsHistoryHandler = async (
-  event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
+export const getDrainsHistoryHandler = async (
+  event: AppSyncResolverEvent,
+  { appSyncApiKey, apiKey, apiUrl, graphqlURL }: HandlerContext,
 ) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
 
-  const { data: graphQlData } = await graphqlRequest(
+  const response = await graphqlRequest(
     getUser,
     {
       id: checksummedWalletAddress,
@@ -17,15 +19,13 @@ const getDrainsHistoryHandler = async (
     graphqlURL,
     appSyncApiKey,
   );
-  const colonyUser = graphQlData?.getUser;
+
+  const colonyUser = response?.data?.getUser;
 
   const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
-  const liquidationAddresses = await getLiquidationAddresses(
-    apiUrl,
-    apiKey,
-    bridgeCustomerId,
-  );
+  const liquidationAddresses: LiquidationAddress[] =
+    await getLiquidationAddresses(apiUrl, apiKey, bridgeCustomerId);
 
   if (!liquidationAddresses.length) {
     return [];
@@ -33,7 +33,7 @@ const getDrainsHistoryHandler = async (
 
   const liquidationAddressIds = liquidationAddresses.map((item) => item.id);
 
-  const drains = [];
+  const drains: BridgeDrain[] = [];
 
   for (const liquidationAddressId of liquidationAddressIds) {
     const drainsRes = await fetch(
@@ -47,13 +47,14 @@ const getDrainsHistoryHandler = async (
       },
     );
 
-    const drainsResult = await drainsRes.json();
+    const drainsResult: { data: BridgeDrain[] } = await drainsRes.json();
 
-    const mappedDrains = drainsResult.data.map((drain) => ({
+    const mappedDrains: BridgeDrain[] = drainsResult.data.map((drain) => ({
       id: drain.id,
       amount: drain.amount,
       currency: drain.currency,
       state: drain.state,
+      // @ts-ignore
       createdAt: drain.created_at,
       receipt: drain.receipt
         ? {
@@ -68,6 +69,4 @@ const getDrainsHistoryHandler = async (
   return drains;
 };
 
-module.exports = {
-  getDrainsHistoryHandler,
-};
+export default getDrainsHistoryHandler;

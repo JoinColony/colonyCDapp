@@ -5,11 +5,15 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.92"
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "^22.7.5",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "cross-fetch": "^4.0.0",
     "ethers": "^5.7.2",
+    "source-map-support": "^0.5.21",
     "uuid": "^10.0.0"
   }
 }
