@@ -1,21 +1,20 @@
 import React from 'react';
 
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import FundsTable from '~frame/v5/pages/FundsPage/partials/FundsTable/index.ts';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import { formatText } from '~utils/intl.ts';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 const displayName = 'common.ColonyFunding';
 
 const ColonyFunding = () => {
   useSetPageHeadingTitle(formatText({ id: 'incomingFundsPage.title' }));
-  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
-  useSetPageBreadcrumbs(teamsBreadcrumbs);
 
-  return <FundsTable />;
+  return (
+    <ContentWithTeamFilter>
+      <FundsTable />
+    </ContentWithTeamFilter>
+  );
 };
 
 ColonyFunding.displayName = displayName;

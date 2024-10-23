@@ -5,15 +5,24 @@ import { Action } from '~constants/actions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
-import { ExpenditureType, useGetColonyExpendituresQuery } from '~gql';
+import {
+  ExpenditureStatus,
+  ExpenditureType,
+  useGetColonyExpendituresQuery,
+} from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
+import {
+  CacheQueryKeys,
+  getSafePollingInterval,
+  removeCacheEntry,
+} from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
@@ -89,8 +98,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isStaked,
     userStake,
     ownerAddress,
+    status,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
+  const previousStatus = usePrevious(status);
 
   const expenditureStep = getExpenditureStep(expenditure);
 
@@ -119,6 +130,18 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       refetchExpenditures();
     }
   }, [expenditureStep, refetchColony, refetchExpenditures]);
+
+  useEffect(() => {
+    if (
+      expenditureStep === ExpenditureStep.Payment &&
+      previousStatus !== undefined &&
+      previousStatus !== ExpenditureStatus.Finalized
+    ) {
+      // Payments with 0 claim delay will be paid immediately once at the payment step
+      // we need to remove all getDomainBalance queries to refetch the correct balances
+      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
+    }
+  }, [expenditureStep, previousStatus]);
 
   useEffect(() => {
     if (expectedStepKey === expenditureStep) {

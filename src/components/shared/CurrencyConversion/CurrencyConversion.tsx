@@ -6,9 +6,8 @@ import React from 'react';
 import { DEFAULT_NETWORK } from '~constants';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import useCurrency from '~hooks/useCurrency.ts';
-import Numeral, {
-  type Props as NumeralProps,
-} from '~shared/Numeral/Numeral.tsx';
+import Numeral from '~shared/Numeral/Numeral.tsx';
+import { type NumeralProps } from '~shared/Numeral/types.ts';
 import { type Network } from '~types/network.ts';
 import { type FetchCurrentPriceArgs } from '~utils/currency/index.ts';
 

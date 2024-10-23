@@ -7,6 +7,10 @@ import {
 } from '~gql';
 import { type Address } from '~types/index.ts';
 
+export enum CacheQueryKeys {
+  GetDomainBalance = 'getDomainBalance',
+}
+
 /*
  * Wrapper around the getTokenFromEveryWhereQuery
  * to ensure that the right type is passed as the
@@ -53,4 +57,10 @@ export const getSafePollingInterval = (): number => {
     return 1 * 1000; // fall back to 1 second
   }
   return (blockTime - 1) * 1000; // one second less than the actual block time
+};
+
+export const removeCacheEntry = (cacheEntryName: string) => {
+  apolloClient.cache.evict({
+    fieldName: cacheEntryName,
+  });
 };

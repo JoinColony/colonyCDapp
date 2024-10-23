@@ -58,11 +58,13 @@ export const GroupedActionItem: FC<GroupedActionItemProps> = ({
   isNew = false,
 }) => {
   const {
+    actionSidebarInitialValues,
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
 
   const onClick = () => {
     toggleActionSidebarOn({
+      ...actionSidebarInitialValues,
       [ACTION_TYPE_FIELD_NAME]: action,
     });
   };

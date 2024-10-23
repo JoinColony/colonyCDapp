@@ -9,6 +9,7 @@ import { type ClaimExpenditurePayload } from '~redux/sagas/expenditures/claimExp
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
+import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
@@ -28,6 +29,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
   const { colony } = useColonyContext();
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
+
   const {
     slots = [],
     finalizedAt,
@@ -180,6 +182,10 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
                   }
 
                   fetchCurrentBlockTime();
+
+                  // When a payment has been claimed successfully
+                  // we need to remove all getDomainBalance queries to refetch the correct balances
+                  removeCacheEntry(CacheQueryKeys.GetDomainBalance);
                 }}
                 isLoading={isWaitingForClaimedPayouts}
               />

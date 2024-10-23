@@ -31,7 +31,6 @@ function* createRootMotionSaga({
   payload: {
     operationName,
     colonyAddress,
-    colonyName,
     motionParams,
     annotationMessage,
     customActionTitle,
@@ -39,7 +38,7 @@ function* createRootMotionSaga({
     colonyDomains,
     isMultiSig = false,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ROOT_MOTION>) {
   let txChannel;
@@ -203,16 +202,11 @@ function* createRootMotionSaga({
     }
 
     setTxHash?.(txHash);
+
     yield put<AllActions>({
       type: ActionTypes.ROOT_MOTION_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (caughtError) {
     yield putError(ActionTypes.ROOT_MOTION_ERROR, caughtError, meta);
   } finally {

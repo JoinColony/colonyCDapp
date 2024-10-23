@@ -1,0 +1,164 @@
+"""
+Input data for fetching domain balance in/out values within a specific timeframe
+"""
+input DomainBalanceArguments {
+  """
+  This is a unique identifier to distinguish between the triggered queries and make query aborting more predictable
+  """
+  queryRunId: String
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: String!
+  """
+  Domain id within a colony
+  """
+  domainId: String
+  """
+  The chain id the colony is on
+  """
+  chainId: String
+  """
+  The currency in which we want to exchange the in/out token balance
+  """
+  selectedCurrency: ExtendedSupportedCurrencies 
+  """
+  The timeframe type (day/week/month/total) for which we want to get the in/out token balance
+  Defaults to TimeframeType.MONTHLY
+  """
+  timeframeType: TimeframeType
+  """
+  The timeframe period for which we want to get the in/out token balance
+  """
+  timeframePeriod: Int!
+  """
+  The timeframe period end date until which we want to compute the in/out token balance
+  Default to Date.now()
+  """
+  timeframePeriodEndDate: AWSDateTime
+}
+
+"""
+Return type for domain balance in/out values
+"""
+type DomainBalanceInOut {
+  """
+  The totalIn - totalOut value
+  """
+  total: String
+  totalIn: String
+  totalOut: String
+}
+
+"""
+Return type for domain balance for a timeframe item
+"""
+type TimeframeDomainBalanceInOut {
+  """
+  The timeframe item key representing a day/week/month based on the selected timeframeType
+  """  
+  key: String!
+  """
+  The timeframe item value holding the computed values
+  """
+  value: DomainBalanceInOut
+}
+
+"""
+Return type for domain balance 
+"""
+type DomainBalanceReturn {
+  """
+  The totalIn - totalOut value
+  """
+  total: String
+  totalIn: String
+  totalOut: String
+  timeframe: [TimeframeDomainBalanceInOut]
+}
+
+"""
+Return type for cache all domain balance
+"""
+type CacheAllDomainBalanceReturn {
+  success: Boolean!
+}
+
+"""
+Variants of different timeframe periods we can request balance for
+"""
+enum TimeframeType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  TOTAL
+}
+
+"""
+Represents a market price exchange rate for a specific currency
+"""
+type MarketPrice {
+  currency: SupportedCurrencies!
+  rate: Float
+}
+
+"""
+Represents a table with token exchange rates
+"""
+type TokenExchangeRate @model {
+  """
+  Unique identifier for the token id
+  """
+  tokenId: String! @index(name: "byTokenId", queryField: "tokenExhangeRateByTokenId", sortKeyFields: ["date"], )
+  """
+  Exchange timestamp
+  """
+  date: AWSDateTime!
+  """
+  Exchange currency
+  """
+  marketPrice: [MarketPrice]!
+}
+
+"""
+Represents a table for caching the total balance
+"""
+type CacheTotalBalance @model {
+  """
+  Unique identifier
+  """
+  id: ID!
+  """
+  Address of the colony on the blockchain
+  """
+  colonyAddress: ID! @index(name: "byColonyAddress", queryField: "cacheTotalBalanceByColonyAddress", sortKeyFields: ["date"] )
+  """
+  Domain id within a colony
+  """
+  domainId: String
+  """
+  The timeframe type (day/week/month) for which we want to cache the in/out token balance
+  Defaults to TimeframeType.DAILY
+  """
+  timeframeType: TimeframeType!
+  """
+  The timeframe period for which we want to cache the in/out token balance
+  """
+  timeframePeriod: Int!
+  """
+  Request timestamp
+  """
+  date: AWSDateTime!
+  """
+  The total in balance in USDC
+  """
+  totalUSDCIn: String
+  """
+  The total out balance in USDC
+  """
+  totalUSDCOut: String
+  """
+  The total balance (totalIn - totalOut) in USDC
+  """
+  totalUSDC: String
+}

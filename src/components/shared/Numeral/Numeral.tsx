@@ -1,36 +1,18 @@
-import { type BigNumber } from 'ethers';
 import numbro from 'numbro';
-import React, { type HTMLAttributes } from 'react';
+import React from 'react';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 
 import { getFormattedNumeralValue } from './helpers.tsx';
 import numbroLanguage from './numbroLanguage.ts';
-
-import type Decimal from 'decimal.js';
+import { NumeralBase } from './NumeralBase.tsx';
+import { type NumeralProps } from './types.ts';
 
 // needed for capitalized abbreviations
 numbro.registerLanguage(numbroLanguage);
 numbro.setLanguage('en-GB');
 
 const displayName = 'Numeral';
-
-export type NumeralValue = string | number | BigNumber | Decimal;
-
-export interface Appearance {
-  theme?: 'dark';
-  size?: 'small';
-}
-
-export interface Props extends HTMLAttributes<HTMLSpanElement> {
-  value: NumeralValue;
-  prefix?: string;
-  suffix?: string;
-  className?: string;
-
-  /** If specified, the value will be shifted by the indicated decimals */
-  decimals?: number;
-}
 
 const Numeral = ({
   value,
@@ -39,17 +21,20 @@ const Numeral = ({
   suffix,
   className,
   ...rest
-}: Props) => {
+}: NumeralProps) => {
   const convertedValue = convertToDecimal(value, decimals || 0);
 
   const formattedValue = getFormattedNumeralValue(convertedValue, value);
 
   return (
-    <span className={className} {...rest}>
-      {prefix && `${prefix} `}
+    <NumeralBase
+      prefix={prefix && `${prefix} `}
+      suffix={suffix}
+      className={className}
+      {...rest}
+    >
       {formattedValue}
-      {suffix}
-    </span>
+    </NumeralBase>
   );
 };
 

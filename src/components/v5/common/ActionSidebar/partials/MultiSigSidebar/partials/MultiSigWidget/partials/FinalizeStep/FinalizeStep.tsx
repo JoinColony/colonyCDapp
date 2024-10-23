@@ -4,6 +4,7 @@ import { FormattedDate, defineMessages } from 'react-intl';
 
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
@@ -158,6 +159,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     : false;
 
   const isMultiSigExecuted = multiSigData.isExecuted;
+  const previousIsMultiSigExecuted = usePrevious(isMultiSigExecuted);
   const hasMultiSigActionCompleted = multiSigData.hasActionCompleted;
   const isMultiSigRejected = multiSigData.isRejected;
   // used if failing execution after a week
@@ -216,10 +218,15 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     if (isMultiSigExecuted || isMultiSigRejected) {
       setIsFinalizePending(false);
     }
-    if (isMultiSigExecuted) {
+    if (isMultiSigExecuted && previousIsMultiSigExecuted === false) {
       handleMotionCompleted(action);
     }
-  }, [isMultiSigExecuted, isMultiSigRejected, action]);
+  }, [
+    isMultiSigExecuted,
+    previousIsMultiSigExecuted,
+    isMultiSigRejected,
+    action,
+  ]);
 
   return (
     <MenuWithStatusText

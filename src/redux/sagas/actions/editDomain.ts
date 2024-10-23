@@ -39,7 +39,6 @@ import {
 function* editDomainAction({
   payload: {
     colonyAddress,
-    colonyName,
     domainName,
     domainColor,
     domainPurpose,
@@ -47,7 +46,7 @@ function* editDomainAction({
     annotationMessage,
     customActionTitle,
   },
-  meta: { id: metaId, navigate, setTxHash },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_DOMAIN_EDIT>) {
   let txChannel;
@@ -185,12 +184,6 @@ function* editDomainAction({
       type: ActionTypes.ACTION_DOMAIN_EDIT_SUCCESS,
       meta,
     });
-
-    if (colonyName && navigate) {
-      navigate(`/${colonyName}?tx=${txHash}`, {
-        state: { isRedirect: true },
-      });
-    }
   } catch (error) {
     yield putError(ActionTypes.ACTION_DOMAIN_EDIT_ERROR, error, meta);
   } finally {

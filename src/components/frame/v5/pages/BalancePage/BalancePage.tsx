@@ -2,6 +2,7 @@ import React, { type FC } from 'react';
 
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { formatText } from '~utils/intl.ts';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import { FiltersContextProvider } from './partials/BalanceTable/Filters/FiltersContext/index.ts';
 import BalanceTable from './partials/BalanceTable/index.ts';
@@ -12,11 +13,11 @@ const BalancePage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'navigation.finances.balance' }));
 
   return (
-    <div className="w-full">
+    <ContentWithTeamFilter>
       <FiltersContextProvider>
         <BalanceTable />
       </FiltersContextProvider>
-    </div>
+    </ContentWithTeamFilter>
   );
 };
 

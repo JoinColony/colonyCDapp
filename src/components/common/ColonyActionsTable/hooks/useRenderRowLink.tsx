@@ -11,6 +11,7 @@ import Link from '~v5/shared/Link/index.ts';
 
 const useRenderRowLink = (
   loading: boolean,
+  isRecentActivityVariant: boolean = false,
 ): RenderCellWrapper<ActivityFeedColonyAction> => {
   const cellClassName = tw(
     'flex h-full flex-col justify-center py-1 text-md text-gray-500',
@@ -27,12 +28,13 @@ const useRenderRowLink = (
       </div>
     ) : (
       <Link
-        className={clsx(cellClassName, 'items-start')}
-        to={setQueryParamOnUrl(
-          window.location.search,
-          TX_SEARCH_PARAM,
-          row.original.transactionHash,
-        )}
+        className={clsx(cellClassName, {
+          'items-end': isRecentActivityVariant,
+          'items-start': !isRecentActivityVariant,
+        })}
+        to={setQueryParamOnUrl({
+          params: { [TX_SEARCH_PARAM]: row.original.transactionHash },
+        })}
       >
         {content}
       </Link>

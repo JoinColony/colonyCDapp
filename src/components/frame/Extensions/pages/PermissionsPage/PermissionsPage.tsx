@@ -6,18 +6,15 @@ import {
   useResolvedPath,
 } from 'react-router-dom';
 
-import {
-  useSetPageBreadcrumbs,
-  useSetPageHeadingTitle,
-} from '~context/PageHeadingContext/PageHeadingContext.ts';
+import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
-import { useCreateTeamBreadcrumbs } from '~hooks/useTeamsBreadcrumbs.ts';
 import {
   COLONY_MULTISIG_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
 } from '~routes/index.ts';
 import Tabs from '~shared/Extensions/Tabs/index.ts';
 import { formatText } from '~utils/intl.ts';
+import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import { useGetMembersForPermissions } from './hooks.tsx';
 import { PermissionType } from './types.ts';
@@ -31,7 +28,6 @@ const PermissionsPage: FC = () => {
   const resolvedPermissionsPath = useResolvedPath(COLONY_PERMISSIONS_ROUTE);
   const resolvedMultisigPath = useResolvedPath(COLONY_MULTISIG_ROUTE);
   const [activeTab, setActiveTab] = useState(PermissionType.Individual);
-  const teamsBreadcrumbs = useCreateTeamBreadcrumbs();
   const { itemsByRole, itemsByMultiSigRole, isLoading } =
     useGetMembersForPermissions();
   const individualMembersCount = Object.values(itemsByRole).reduce(
@@ -64,41 +60,41 @@ const PermissionsPage: FC = () => {
     resolvedMultisigPath.pathname,
   ]);
 
-  useSetPageBreadcrumbs(teamsBreadcrumbs);
   useSetPageHeadingTitle(formatText({ id: 'permissionsPage.title' }));
 
   return (
-    <Tabs
-      activeTab={activeTab}
-      className="pt-6"
-      onTabClick={(_, id) =>
-        navigate(
-          id === PermissionType.Individual
-            ? `${COLONY_PERMISSIONS_ROUTE}${searchRef.current}`
-            : `${COLONY_MULTISIG_ROUTE}${searchRef.current}`,
-        )
-      }
-      items={[
-        {
-          id: PermissionType.Individual,
-          title: formatText({ id: 'permissionsPage.individual' }),
-          content: <Outlet />,
-          notificationNumber: isLoading ? undefined : individualMembersCount,
-        },
-        ...(isMultiSigEnabled
-          ? [
-              {
-                id: PermissionType.MultiSig,
-                title: formatText({ id: 'permissionsPage.multisig' }),
-                content: <Outlet />,
-                notificationNumber: isLoading
-                  ? undefined
-                  : individualMembersWithMultiSigCount,
-              },
-            ]
-          : []),
-      ]}
-    />
+    <ContentWithTeamFilter>
+      <Tabs
+        activeTab={activeTab}
+        onTabClick={(_, id) =>
+          navigate(
+            id === PermissionType.Individual
+              ? COLONY_PERMISSIONS_ROUTE
+              : COLONY_MULTISIG_ROUTE,
+          )
+        }
+        items={[
+          {
+            id: PermissionType.Individual,
+            title: formatText({ id: 'permissionsPage.individual' }),
+            content: <Outlet />,
+            notificationNumber: isLoading ? undefined : individualMembersCount,
+          },
+          ...(isMultiSigEnabled
+            ? [
+                {
+                  id: PermissionType.MultiSig,
+                  title: formatText({ id: 'permissionsPage.multisig' }),
+                  content: <Outlet />,
+                  notificationNumber: isLoading
+                    ? undefined
+                    : individualMembersWithMultiSigCount,
+                },
+              ]
+            : []),
+        ]}
+      />
+    </ContentWithTeamFilter>
   );
 };
 

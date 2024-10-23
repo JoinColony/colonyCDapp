@@ -8,6 +8,7 @@ import {
   clearContributorsAndRolesCache,
   updateContributorVerifiedStatus,
 } from '~utils/members.ts';
+import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -26,6 +27,20 @@ export const translateAction = (action?: Action) => {
 
 export const handleMotionCompleted = (action: ColonyAction) => {
   switch (action.type) {
+    case ColonyActionType.MintTokensMotion:
+    case ColonyActionType.MintTokensMultisig:
+    case ColonyActionType.PaymentMotion:
+    case ColonyActionType.PaymentMultisig:
+    case ColonyActionType.MoveFundsMotion:
+    case ColonyActionType.MoveFundsMultisig: {
+      /**
+       * This is not done in another place only because data might not yet be available in DB
+       * We need to remove all getDomainBalance queries once a payment or funding has been successfully completed
+       * By default it will refetch all active queries
+       */
+      removeCacheEntry(CacheQueryKeys.GetDomainBalance);
+      break;
+    }
     case ColonyActionType.AddVerifiedMembersMotion:
     case ColonyActionType.AddVerifiedMembersMultisig: {
       if (action.members) {
