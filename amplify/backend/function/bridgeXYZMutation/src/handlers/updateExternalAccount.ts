@@ -1,19 +1,33 @@
-const fetch = require('cross-fetch');
-const { graphqlRequest } = require('../utils');
-const { createExternalAccount, deleteExternalAccount, getLiquidationAddresses, getExternalAccounts } = require('./utils');
+import fetch from 'cross-fetch';
+import { graphqlRequest } from '../utils';
+import {
+  createExternalAccount,
+  deleteExternalAccount,
+  getLiquidationAddresses,
+  getExternalAccounts,
+} from './utils';
+import { getUser } from '../graphql';
+import { HandlerContext } from '../types';
+import { AppSyncResolverEvent } from 'aws-lambda';
+import { BridgeCreateBankAccountInput, User } from '~gql';
 
-const { getUser } = require('../graphql');
+type InputArguments = {
+  input: {
+    account?: BridgeCreateBankAccountInput;
+    id?: string;
+  };
+};
 
-const updateExternalAccountHandler = async (
-  event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
-) => {
+export const updateExternalAccountHandler = async (
+  event: AppSyncResolverEvent<InputArguments>,
+  { appSyncApiKey, apiKey, apiUrl, graphqlURL }: HandlerContext,
+): Promise<{ success: boolean }> => {
   const input = event.arguments.input;
   const account = input.account;
 
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
 
-  if (!account.iban && !account.usAccount) {
+  if (!account?.iban && !account?.usAccount) {
     throw new Error('Account details must be provided');
   }
 
@@ -21,7 +35,7 @@ const updateExternalAccountHandler = async (
     throw new Error('Address must be provided for US accounts');
   }
 
-  const { data: graphQlData } = await graphqlRequest(
+  const response = await graphqlRequest(
     getUser,
     {
       id: checksummedWalletAddress,
@@ -30,9 +44,18 @@ const updateExternalAccountHandler = async (
     appSyncApiKey,
   );
 
-  const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
+  const bridgeCustomerId: User['bridgeCustomerId'] =
+    response?.data?.getUser?.bridgeCustomerId;
 
-  const externalAccounts = await getExternalAccounts(apiUrl, apiKey, bridgeCustomerId);
+  if (!bridgeCustomerId) {
+    throw new Error('No bridgeCustomerId found');
+  }
+
+  const externalAccounts = await getExternalAccounts(
+    apiUrl,
+    apiKey,
+    bridgeCustomerId,
+  );
 
   const newAccount = await createExternalAccount(
     apiUrl,
@@ -42,7 +65,8 @@ const updateExternalAccountHandler = async (
   );
 
   const deletePromises = externalAccounts.map(async ({ id }) =>
-    deleteExternalAccount(apiUrl, apiKey, bridgeCustomerId, id));
+    deleteExternalAccount(apiUrl, apiKey, bridgeCustomerId, id),
+  );
 
   await Promise.all(deletePromises);
 
@@ -56,6 +80,7 @@ const updateExternalAccountHandler = async (
     apiKey,
     bridgeCustomerId,
   );
+
   const targetLiquidationAddress = liquidationAddresses.find(
     (address) => address.external_account_id === input.id,
   );
@@ -79,7 +104,7 @@ const updateExternalAccountHandler = async (
     );
 
     if (updateAddressRes.status !== 200) {
-      throw Error(
+      throw new Error(
         `Error updating liquidation address: ${await updateAddressRes.text()}`,
       );
     }
@@ -90,6 +115,4 @@ const updateExternalAccountHandler = async (
   };
 };
 
-module.exports = {
-  updateExternalAccountHandler,
-};
+export default updateExternalAccountHandler;

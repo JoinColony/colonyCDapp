@@ -19,6 +19,10 @@ cypress/screenshots
 
 /dist
 
+# Ignore bridgeXYZMutation lambda esbuild artifacts
+amplify/backend/function/bridgeXYZMutation/src/**/*.js
+amplify/backend/function/bridgeXYZMutation/src/**/*.map
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*

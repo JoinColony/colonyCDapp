@@ -10,7 +10,7 @@ const watchDir = './amplify';
 const targetDir = '/colonyCDapp';
 
 const watcher = chokidar.watch(watchDir, {
-  ignored: /^(?!.*\.env$).*\/\.[^/]+/, // ignore dotfiles except .env
+  ignored: /^(?!.*\.env$).*\/\.[^/]+|\/node_modules\//, // Ignore dotfiles except .env and ignore node_modules
   ignoreInitial: true,
 });
 

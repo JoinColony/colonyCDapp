@@ -1,11 +1,12 @@
-const fetch = require('cross-fetch');
-const { v4: uuid } = require('uuid');
+import fetch from 'cross-fetch';
+import { v4 as uuid } from 'uuid';
+import { BridgeCreateBankAccountInput } from '~gql';
 
-const createExternalAccount = async (
-  apiUrl,
-  apiKey,
-  bridgeCustomerId,
-  account,
+export const createExternalAccount = async (
+  apiUrl: string,
+  apiKey: string,
+  bridgeCustomerId: string,
+  account: BridgeCreateBankAccountInput,
 ) => {
   const [firstName, lastName] = account.accountOwner.split(' ');
 
@@ -37,13 +38,17 @@ const createExternalAccount = async (
 
   if (createAccountRes.status !== 201) {
     console.error(createAccountJson);
-    throw Error('Error creating external account');
+    throw new Error('Error creating external account');
   }
 
   return createAccountJson;
 };
 
-const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
+export const getLiquidationAddresses = async (
+  apiUrl: string,
+  apiKey: string,
+  bridgeCustomerId: string,
+) => {
   const liquidationAddressesRes = await fetch(
     `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses?limit=100`,
     {
@@ -64,7 +69,11 @@ const getLiquidationAddresses = async (apiUrl, apiKey, bridgeCustomerId) => {
   return liquidationAddressesJson.data;
 };
 
-const getExternalAccounts = async (apiUrl, apiKey, bridgeCustomerId) => {
+export const getExternalAccounts = async (
+  apiUrl: string,
+  apiKey: string,
+  bridgeCustomerId: string,
+) => {
   const externalAccountsRes = await fetch(
     `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
     {
@@ -76,7 +85,9 @@ const getExternalAccounts = async (apiUrl, apiKey, bridgeCustomerId) => {
   );
 
   if (externalAccountsRes.status !== 200) {
-    console.log(`Could not fetch external accounts for customer ${bridgeCustomerId}`);
+    console.log(
+      `Could not fetch external accounts for customer ${bridgeCustomerId}`,
+    );
     return null;
   }
 
@@ -85,7 +96,12 @@ const getExternalAccounts = async (apiUrl, apiKey, bridgeCustomerId) => {
   return externalAccountsJson.data;
 };
 
-const deleteExternalAccount = async (apiUrl, apiKey, bridgeCustomerId, id) => {
+export const deleteExternalAccount = async (
+  apiUrl: string,
+  apiKey: string,
+  bridgeCustomerId: string,
+  id: string,
+) => {
   const deleteAccountRes = await fetch(
     `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${id}`,
     {
@@ -102,11 +118,3 @@ const deleteExternalAccount = async (apiUrl, apiKey, bridgeCustomerId, id) => {
     );
   }
 };
-
-module.exports = {
-  createExternalAccount,
-  deleteExternalAccount,
-  getExternalAccounts,
-  getLiquidationAddresses,
-};
-

@@ -17,7 +17,7 @@
     "docker:build:all": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify && npm run docker:build:auth && npm run docker:build:mocking",
     "docker:compose:core": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "docker:compose:all": "docker compose --file docker/colony-cdapp-dev-env-orchestration-all.yaml",
-    "dev": "npm run watch-amplify & npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
+    "dev": "npm run lambdas:watch & npm run watch-amplify & npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
     "dev:all": "npm run docker:build:all && npm run docker:compose:all up -- --force-recreate -V",
     "lint": "eslint src --fix --ext ts,tsx --report-unused-disable-directives",
     "lint:ci": "eslint src --ext ts,tsx --report-unused-disable-directives",
@@ -41,7 +41,9 @@
     "forward-time": "node scripts/forward-time",
     "playwright:install": "npx playwright install --with-deps",
     "playwright:run": "playwright test",
-    "playwright:watch": "playwright test --ui"
+    "playwright:watch": "playwright test --ui",
+    "lambdas:watch": "node scripts/transpile-lambdas.js --watch",
+    "lambdas:transpile": "node scripts/transpile-lambdas.js"
   },
   "repository": {
     "type": "git",
