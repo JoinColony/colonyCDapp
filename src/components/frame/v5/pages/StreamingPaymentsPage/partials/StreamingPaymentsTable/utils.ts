@@ -44,24 +44,36 @@ export const searchStreamingPayments = (
 export const filterByActionStatus = (
   action: StreamingTableFieldModel,
   statuses?: StreamingPaymentStatus[],
-) => {
+): StreamingTableFieldModel | null => {
   if (!statuses) {
-    return true;
+    return action;
   }
 
-  return action.actions.some((stream) => statuses.includes(stream.status));
+  const filteredActions = action.actions.filter((actionItem) =>
+    statuses.includes(actionItem.status),
+  );
+
+  if (filteredActions.length > 0) {
+    return {
+      user: action.user,
+      tokenTotalsPerMonth: action.tokenTotalsPerMonth,
+      actions: filteredActions,
+    };
+  }
+
+  return null;
 };
 
 export const filterByEndCondition = (
   action: StreamingTableFieldModel,
   endConditions?: StreamingPaymentEndCondition[],
-) => {
+): StreamingTableFieldModel | null => {
   if (!endConditions) {
-    return true;
+    return action;
   }
 
-  return action.actions.some((stream) => {
-    const { endCondition } = stream || {};
+  const filteredActions = action.actions.filter((actionItem) => {
+    const { endCondition } = actionItem || {};
 
     if (!endCondition) {
       return false;
@@ -69,6 +81,15 @@ export const filterByEndCondition = (
 
     return endConditions.includes(endCondition);
   });
+
+  if (filteredActions.length > 0) {
+    return {
+      ...action,
+      actions: filteredActions,
+    };
+  }
+
+  return null;
 };
 
 export const sortStreamingPayments = (

@@ -50,7 +50,7 @@ export const useActiveFilters = () => {
       ...(endConditions.length
         ? [
             {
-              filter: FiltersValues.Status,
+              filter: FiltersValues.EndCondition,
               label: formatText({
                 id: 'streamingPayment.table.filter.endCondition',
               }),

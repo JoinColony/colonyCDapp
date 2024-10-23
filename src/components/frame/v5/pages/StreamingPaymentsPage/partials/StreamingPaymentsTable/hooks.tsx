@@ -246,11 +246,11 @@ export const useStreamingPaymentTable = () => {
     [paymentsArray, searchFilter, members],
   );
 
-  const filteredActions = searchedStreamingPayments.filter(
-    (action) =>
-      filterByActionStatus(action, activeFilters.statuses) &&
-      filterByEndCondition(action, activeFilters.endConditions),
-  );
+  const filteredActions = searchedStreamingPayments
+    .map((action) => filterByActionStatus(action, activeFilters.statuses))
+    .filter(notNull)
+    .map((action) => filterByEndCondition(action, activeFilters.endConditions))
+    .filter(notNull);
 
   const sortedActions = useMemo(
     () => sortStreamingPayments(filteredActions, activeFilters),
