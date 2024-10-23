@@ -28,9 +28,9 @@ interface UserStreamsProps {
 const UserStreams: FC<UserStreamsProps> = ({ items }) => {
   const { currency } = useCurrencyContext();
   const { colony } = useColonyContext();
-  const [calculatedAmountPerToken, setCalculatedAmountPerToken] = useState<
-    { tokenAddress: string; amount: Decimal | null }[]
-  >([]);
+  const [calculatedAmountPerToken, setCalculatedAmountPerToken] = useState<{
+    [tokenAddress: string]: Decimal;
+  }>({});
   const tokenTotals = useMemo(
     () =>
       Object.entries(items).map(([tokenAddress, item]) => ({
@@ -64,22 +64,22 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
 
     await Promise.all(calculationPromises);
 
-    const calculatedAmountArray = Object.entries(accumulatedAmounts).map(
-      ([tokenAddress, amount]) => ({ tokenAddress, amount }),
-    );
-
-    setCalculatedAmountPerToken(calculatedAmountArray);
+    setCalculatedAmountPerToken(accumulatedAmounts);
   }, [colony, currency, tokenTotals]);
 
   useEffect(() => {
     calculateFunds();
   }, [calculateFunds]);
 
-  const totalFunds = calculatedAmountPerToken.reduce(
+  const calculatedAmountArray = Object.entries(calculatedAmountPerToken).map(
+    ([tokenAddress, amount]) => ({ tokenAddress, amount }),
+  );
+
+  const totalFunds = calculatedAmountArray.reduce(
     (acc, { amount }) => acc.plus(amount || 0),
     new Decimal(0),
   );
-  const shouldShowTooltip = calculatedAmountPerToken.length > 0;
+  const shouldShowTooltip = calculatedAmountArray.length > 0;
   const content = (
     <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
       {currency} <Numeral value={totalFunds} /> {' /month'}
@@ -99,9 +99,7 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
                     <Numeral value={amount} decimals={tokenDecimals} />{' '}
                     {tokenSymbol} {' /month'} (
                     <Numeral
-                      value={
-                        calculatedAmountPerToken[tokenAddress]?.amount || '0'
-                      }
+                      value={calculatedAmountPerToken[tokenAddress] || '0'}
                     />{' '}
                     {currency}
                     )

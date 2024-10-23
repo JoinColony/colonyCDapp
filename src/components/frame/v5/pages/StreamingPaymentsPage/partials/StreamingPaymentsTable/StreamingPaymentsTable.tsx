@@ -7,11 +7,11 @@ import Table from '~v5/common/Table/Table.tsx';
 
 import { useStreamingFiltersContext } from './FiltersContext/StreamingFiltersContext.ts';
 import {
-  useRenderSubComponent,
   useStreamingPaymentTable,
   useStreamingTableColumns,
 } from './hooks.tsx';
 import { type StreamingTableFieldModel } from './types.ts';
+import { useRenderSubComponent } from './useRenderSubComponent.tsx';
 
 const displayName =
   'pages.StreamingPaymentsPage.partials.StreamingPaymentsTable';
@@ -21,7 +21,7 @@ const StreamingPaymentsTable = () => {
   const { items, loading } = useStreamingPaymentTable();
 
   const columns = useStreamingTableColumns(loading);
-  const renderSubComponent = useRenderSubComponent();
+  const renderSubComponent = useRenderSubComponent(loading);
 
   return (
     <Table<StreamingTableFieldModel>

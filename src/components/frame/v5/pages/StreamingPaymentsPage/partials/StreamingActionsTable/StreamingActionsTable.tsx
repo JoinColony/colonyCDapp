@@ -32,10 +32,12 @@ import useRenderSubComponent from './partials/StreamingActionMobileItem/hooks.ts
 
 interface StreamingActionsTableProps {
   actionRow: Row<StreamingTableFieldModel>;
+  isLoading: boolean;
 }
 
 const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
   actionRow,
+  isLoading,
 }) => {
   const {
     colony: { name: colonyName },
@@ -92,7 +94,7 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
 
   return (
     <Table<StreamingActionTableFieldModel>
-      data={original.actions}
+      data={isLoading ? [] : original.actions}
       columns={columns}
       className={clsx(
         '[&_td:first-child]:!pl-0 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td]:border-none',

@@ -1,5 +1,5 @@
 import { CaretDown } from '@phosphor-icons/react';
-import { type Row, createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
@@ -18,8 +18,6 @@ import {
 } from '~utils/streamingPayments.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
-import StreamingActionsTable from '../StreamingActionsTable/StreamingActionsTable.tsx';
-
 import { useStreamingFiltersContext } from './FiltersContext/StreamingFiltersContext.ts';
 import { type SearchStreamingPaymentFilterVariable } from './FiltersContext/types.ts';
 import { type StreamingPaymentFilters } from './partials/StreamingPaymentFilters/types.ts';
@@ -35,12 +33,6 @@ import {
   searchStreamingPayments,
   sortStreamingPayments,
 } from './utils.ts';
-
-export const useRenderSubComponent = () => {
-  return ({ row }: { row: Row<StreamingTableFieldModel> }) => (
-    <StreamingActionsTable actionRow={row} />
-  );
-};
 
 export const useStreamingTableColumns = (loading: boolean) => {
   return useMemo(() => {
