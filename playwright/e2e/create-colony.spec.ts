@@ -6,6 +6,7 @@ import {
   validColonyNameFieldValues,
   validColonyURLFieldValues,
 } from '../fixtures/colony.ts';
+import { acceptCookieConsentBanner } from '../utils/common.ts';
 import {
   fillColonyNameStep,
   fillNativeTokenStepWithExistingToken,
@@ -34,6 +35,8 @@ test.describe('Create Colony flow', () => {
     await page.goto(colonyUrl);
 
     await selectWalletAndUserProfile(page);
+
+    await acceptCookieConsentBanner(page);
   });
   test.describe('Details step', () => {
     test('Should render Details step correctly', async ({ page }) => {
