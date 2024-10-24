@@ -171,51 +171,53 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
 
   return (
     <div className="flex-shrink-0">
-      <Button
-        mode="tertiary"
-        size="large"
-        isFullRounded
-        ref={setTriggerRef}
-        className={clsx(
-          {
-            '!border-blue-400': visible,
-          },
-          '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
-        )}
-        onClick={handleButtonClick}
-      >
-        <div className="flex flex-shrink-0 items-center">
-          {/* If there's a user, there's a wallet */}
-          {walletAddress ? (
-            <>
-              <UserAvatar
-                className="flex-shrink-0"
-                userAvatarSrc={user?.profile?.avatar ?? undefined}
-                userName={userName}
-                userAddress={wallet.address}
-                size={isMobile ? 18 : 16}
-              />
-              {!isMobile && (
-                <>
-                  <p className="ml-1 truncate text-sm font-medium">
-                    {userName}
-                  </p>
-                  <div className="md:ml-2">
-                    <MemberReputation
-                      colonyAddress={colonyAddress}
-                      hideOnMobile
-                      walletAddress={walletAddress}
-                    />
-                  </div>
-                </>
-              )}
-            </>
-          ) : null}
-        </div>
-        <NotificationsEnabledWrapper>
-          <NotificationDot />
-        </NotificationsEnabledWrapper>
-      </Button>
+      <div className="relative">
+        <Button
+          mode="tertiary"
+          size="large"
+          isFullRounded
+          ref={setTriggerRef}
+          className={clsx(
+            {
+              '!border-blue-400': visible,
+            },
+            '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
+          )}
+          onClick={handleButtonClick}
+        >
+          <div className="flex flex-shrink-0 items-center">
+            {/* If there's a user, there's a wallet */}
+            {walletAddress ? (
+              <>
+                <UserAvatar
+                  className="flex-shrink-0"
+                  userAvatarSrc={user?.profile?.avatar ?? undefined}
+                  userName={userName}
+                  userAddress={wallet.address}
+                  size={isMobile ? 18 : 16}
+                />
+                {!isMobile && (
+                  <>
+                    <p className="ml-1 truncate text-sm font-medium">
+                      {userName}
+                    </p>
+                    <div className="md:ml-2">
+                      <MemberReputation
+                        colonyAddress={colonyAddress}
+                        hideOnMobile
+                        walletAddress={walletAddress}
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            ) : null}
+          </div>
+          <NotificationsEnabledWrapper>
+            <NotificationDot />
+          </NotificationsEnabledWrapper>
+        </Button>
+      </div>
       {visible && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
