@@ -1,12 +1,14 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { CaretDown, WarningCircle } from '@phosphor-icons/react';
+import { type Row, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useMemo } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
-import { useTablet } from '~hooks';
+import { useMobile, useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
@@ -14,13 +16,17 @@ import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import Table from '~v5/common/Table/index.ts';
 
+import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
+
 import AmountField from './partials/AmountField/AmountField.tsx';
 import ClaimStatusBadge from './partials/ClaimStatusBadge/ClaimStatusBadge.tsx';
+import EditContent from './partials/EditContent/EditContent.tsx';
 import RecipientField from './partials/RecipientField/RecipientField.tsx';
 import {
   type PaymentBuilderTableModel,
   type PaymentBuilderTableProps,
 } from './types.ts';
+import { getChangedSlots } from './utils.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.PaymentBuilderTable';
 
@@ -44,6 +50,9 @@ const useGetPaymentBuilderColumns = ({
   const hasMoreThanOneToken = data.length > 1;
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
+  const { selectedEditingAction, currentStep } = usePaymentBuilderContext();
+  const isEditStepActive =
+    currentStep?.startsWith(ExpenditureStep.Edit) && !!selectedEditingAction;
 
   const claimablePayouts = useMemo(
     () => getClaimableExpenditurePayouts(slots, blockTime, finalizedTimestamp),
@@ -69,36 +78,42 @@ const useGetPaymentBuilderColumns = ({
             address={row.original.recipient}
           />
         ),
-        footer: hasMoreThanOneToken
-          ? () => (
-              <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
-                {data.length <= 7
-                  ? formatText({ id: 'table.footer.total' })
-                  : formatText(
-                      { id: 'table.footer.totalPayments' },
-                      { payments: totalNumberOfPayments },
-                    )}
-              </span>
-            )
-          : undefined,
+        footer:
+          hasMoreThanOneToken && !isEditStepActive
+            ? ({ table }) => {
+                const { length: dataLength } = table.getRowModel().rows;
+
+                return (
+                  <span className="flex min-h-[1.875rem] items-center text-xs text-gray-400">
+                    {dataLength <= 7
+                      ? formatText({ id: 'table.footer.total' })
+                      : formatText(
+                          { id: 'table.footer.totalPayments' },
+                          { payments: dataLength },
+                        )}
+                  </span>
+                );
+              }
+            : undefined,
       }),
       paymentBuilderColumnHelper.accessor('amount', {
         enableSorting: false,
         header: formatText({ id: 'table.row.amount' }),
-        footer: hasMoreThanOneToken
-          ? () => (
-              <LoadingSkeleton
-                isLoading={!allPaymentsLoaded}
-                className="h-4 w-3/4 rounded"
-              >
-                <PaymentBuilderPayoutsTotal
-                  data={data}
-                  itemClassName="justify-end md:justify-start"
-                  buttonClassName="justify-end md:justify-start"
-                />
-              </LoadingSkeleton>
-            )
-          : undefined,
+        footer:
+          hasMoreThanOneToken && !isEditStepActive
+            ? () => (
+                <LoadingSkeleton
+                  isLoading={!allPaymentsLoaded}
+                  className="h-4 w-3/4 rounded"
+                >
+                  <PaymentBuilderPayoutsTotal
+                    data={data}
+                    itemClassName="justify-end md:justify-start"
+                    buttonClassName="justify-end md:justify-start"
+                  />
+                </LoadingSkeleton>
+              )
+            : undefined,
         cell: ({ row }) => (
           <AmountField
             isLoading={row.original.isLoading ?? false}
@@ -113,21 +128,48 @@ const useGetPaymentBuilderColumns = ({
         staticSize: status === ExpenditureStatus.Finalized ? '7rem' : undefined,
         cell: ({ row }) => {
           const formattedHours = convertPeriodToHours(row.original.claimDelay);
+          const hasChanges =
+            !!row.original.oldValues || !!row.original.newValues;
+
+          const { toggleExpanded, getIsExpanded } = row;
 
           return (
-            <LoadingSkeleton
-              isLoading={row.original.isLoading}
-              className="h-4 w-[4rem] rounded"
-            >
-              <span className="text-md text-gray-900">
-                {formatText(
-                  { id: 'table.column.claimDelayField' },
-                  {
-                    hours: formattedHours,
-                  },
-                )}
-              </span>
-            </LoadingSkeleton>
+            <div className="flex items-center justify-between gap-4">
+              <LoadingSkeleton
+                isLoading={row.original.isLoading}
+                className="h-4 w-[4rem] rounded"
+              >
+                <span className="text-md text-gray-900">
+                  {formatText(
+                    { id: 'table.column.claimDelayField' },
+                    {
+                      hours: formattedHours,
+                    },
+                  )}
+                </span>
+              </LoadingSkeleton>
+              {hasChanges && isEditStepActive && (
+                <div className="absolute right-4 top-4 flex gap-2 sm:static">
+                  <button
+                    type="button"
+                    onClick={() => toggleExpanded()}
+                    aria-label={formatText({ id: 'ariaLabel.showChanges' })}
+                  >
+                    <span className="text-gray-400">
+                      <CaretDown
+                        size={14}
+                        className={clsx('transition', {
+                          'rotate-180': getIsExpanded(),
+                        })}
+                      />
+                    </span>
+                  </button>
+                  <span className="hidden text-blue-400 sm:block">
+                    <WarningCircle size={16} />
+                  </span>
+                </div>
+              )}
+            </div>
           );
         },
       }),
@@ -162,14 +204,20 @@ const useGetPaymentBuilderColumns = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       claimablePayouts,
-      data,
       fetchCurrentBlockTime,
       finalizedTimestamp,
       hasMoreThanOneToken,
       totalNumberOfPayments,
       isTablet,
       status,
+      isEditStepActive,
     ],
+  );
+};
+
+const useRenderSubComponent = () => {
+  return ({ row }: { row: Row<PaymentBuilderTableModel> }) => (
+    <EditContent actionRow={row} />
   );
 };
 
@@ -180,9 +228,14 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
   expectedNumberOfPayouts,
 }) => {
   const isTablet = useTablet();
+  const isMobile = useMobile();
   const {
     colony: { expendituresGlobalClaimDelay },
   } = useColonyContext();
+  const { selectedEditingAction, currentStep } = usePaymentBuilderContext();
+  const { expenditureSlotChanges } = selectedEditingAction || {};
+  const isEditStepActive =
+    !!selectedEditingAction && currentStep?.startsWith(ExpenditureStep.Edit);
 
   const data = useMemo<PaymentBuilderTableModel[]>(() => {
     const populatedItems = items.flatMap((item) => {
@@ -236,19 +289,51 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     return [...populatedItems, ...placeholderItems];
   }, [expendituresGlobalClaimDelay, items, expectedNumberOfPayouts]);
 
+  const sortedData = useMemo(() => {
+    if (!expenditureSlotChanges) {
+      return data;
+    }
+
+    const { newSlots, oldSlots } = expenditureSlotChanges;
+
+    const changedSlots = getChangedSlots(newSlots, oldSlots);
+    const changedData = data.filter((item) =>
+      changedSlots.map((slot) => slot.id).includes(item.id),
+    );
+    const unchangedData = data.filter(
+      (item) => !changedSlots.map((slot) => slot.id).includes(item.id),
+    );
+
+    return [...changedData, ...unchangedData];
+  }, [data, expenditureSlotChanges]);
+
   const columns = useGetPaymentBuilderColumns({
-    data,
+    data: sortedData,
     status,
     slots: items,
     finalizedTimestamp,
     expectedNumberOfPayouts,
   });
 
+  const renderSubComponent = useRenderSubComponent();
+
   return (
     <div className="mt-7">
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
+      {isEditStepActive && isMobile && (
+        <div className="mb-2 flex items-center gap-2 text-blue-400 text-2">
+          <WarningCircle size={16} />
+          <p>
+            {formatText({
+              id: selectedEditingAction?.motionData
+                ? 'paymentBuilder.table.proposedChanges'
+                : 'paymentBuilder.table.changes',
+            })}
+          </p>
+        </div>
+      )}
       <Table<PaymentBuilderTableModel>
         virtualizedProps={
           data.length > 10
@@ -258,15 +343,17 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             : undefined
         }
         className={clsx(
-          '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
+          '[&_tbody]:relative [&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
             '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
             '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
               !isTablet,
+            '[&_*]:border-blue-400': isEditStepActive,
           },
         )}
+        renderSubComponent={renderSubComponent}
         data={
-          !data.length
+          !sortedData.length
             ? [
                 {
                   recipient: '0x000',
@@ -296,7 +383,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
                   isLoading: true,
                 },
               ]
-            : data
+            : sortedData
         }
         columns={columns}
         renderCellWrapper={(_, content) => content}
