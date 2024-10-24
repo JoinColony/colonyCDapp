@@ -28,8 +28,6 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
         mode,
         reValidateMode,
         onSuccess,
-        actionFormSubmitButtonType,
-        onActionFormButtonClick,
         id,
         primaryButton: {
           type: primaryButton?.type,

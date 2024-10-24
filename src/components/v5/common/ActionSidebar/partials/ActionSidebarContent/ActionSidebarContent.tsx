@@ -221,6 +221,17 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
+            onSubmitClick={
+              shouldShowCreateStakedExpenditureModal
+                ? async () => {
+                    await trigger();
+
+                    if (isValid) {
+                      showCreateStakedExpenditureModal();
+                    }
+                  }
+                : undefined
+            }
             primaryButton={primaryButton}
           />
         </div>
