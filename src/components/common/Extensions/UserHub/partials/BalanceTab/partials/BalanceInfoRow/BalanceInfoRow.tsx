@@ -96,7 +96,6 @@ const BalanceInfoRow: FC<BalanceInfoRowProps> = ({
               value={tokenBalanceData?.balance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-              appearance={{ size: 'small' }}
             />
           ),
         },
@@ -108,7 +107,6 @@ const BalanceInfoRow: FC<BalanceInfoRowProps> = ({
               value={tokenBalanceData?.activeBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-              appearance={{ size: 'small' }}
             />
           ),
         },
@@ -120,7 +118,6 @@ const BalanceInfoRow: FC<BalanceInfoRowProps> = ({
               value={tokenBalanceData?.lockedBalance ?? 0}
               decimals={tokenDecimals}
               suffix={` ${multiLineTextEllipsis(nativeToken?.symbol ?? 'CLNY', 5)}`}
-              appearance={{ size: 'small' }}
             />
           ),
         },
