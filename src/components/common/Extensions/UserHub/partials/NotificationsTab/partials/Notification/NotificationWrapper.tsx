@@ -49,12 +49,7 @@ const NotificationWrapper: FC<NotificationWrapperProps> = ({
   return (
     <li className="w-full ">
       <button
-        className={clsx(
-          'relative flex w-full gap-2 px-6 py-3.5 text-left sm:hover:bg-gray-50',
-          {
-            skeleton: loadingColony,
-          },
-        )}
+        className="relative flex w-full gap-2 px-6 py-3.5 text-left sm:hover:bg-gray-50"
         onClick={handleNotificationClicked}
         type="button"
       >
@@ -65,8 +60,15 @@ const NotificationWrapper: FC<NotificationWrapperProps> = ({
             colony?.metadata?.avatar || colony?.metadata?.thumbnail || undefined
           }
           colonyName={colony?.name || formatText(MSG.unknownColony)}
+          className={
+            loadingColony ? 'overflow-hidden rounded-full skeleton' : undefined
+          }
         />
-        <div className=" w-full flex-col">
+        <div
+          className={clsx('w-full flex-col', {
+            skeleton: loadingColony,
+          })}
+        >
           <div className="relative flex items-center gap-2">
             {!notification.readAt && (
               <div className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full border border-base-white bg-blue-400" />

@@ -149,7 +149,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
         networkInverseFee,
       }),
     );
-  }, [action, expenditure, colony]);
+  }, [action, colony, expenditure, networkInverseFee]);
 
   return (
     <NotificationWrapper

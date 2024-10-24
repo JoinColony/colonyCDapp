@@ -85,7 +85,7 @@ const ActionNotification: FC<NotificationProps> = ({
         networkInverseFee,
       }),
     );
-  }, [action, colony]);
+  }, [action, colony, networkInverseFee]);
 
   const actionTitle =
     action?.metadata?.customTitle || action?.decisionData?.title || '';
