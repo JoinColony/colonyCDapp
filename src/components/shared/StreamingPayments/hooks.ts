@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
-import { useGetStreamingPaymentsByColonyLazyQuery } from '~gql';
+import { useGetStreamingPaymentsByColonyQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -19,12 +19,12 @@ import {
 } from './utils.ts';
 
 interface useStreamingPaymentsTotalFundsProps {
-  getDataByRecipentAddress?: boolean;
+  isFilteredByWalletAddress?: boolean;
   nativeDomainId?: number;
 }
 
 export const useStreamingPaymentsTotalFunds = ({
-  getDataByRecipentAddress = true,
+  isFilteredByWalletAddress = true,
   nativeDomainId = undefined,
 }: useStreamingPaymentsTotalFundsProps) => {
   const { user } = useAppContext();
@@ -32,45 +32,44 @@ export const useStreamingPaymentsTotalFunds = ({
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
   const { colony } = useColonyContext();
 
-  const [getStreamingPaymentsByColony, { data, loading, fetchMore }] =
-    useGetStreamingPaymentsByColonyLazyQuery({
-      variables: {
-        ...(getDataByRecipentAddress &&
-          walletAddress && {
-            recipientAddress: walletAddress,
-          }),
-        ...(nativeDomainId && {
-          domainId: nativeDomainId,
+  const { data, loading, fetchMore } = useGetStreamingPaymentsByColonyQuery({
+    variables: {
+      ...(isFilteredByWalletAddress &&
+        walletAddress && {
+          recipientAddress: walletAddress,
         }),
-        colonyId: colony.colonyAddress,
-      },
-      onCompleted: (receivedData) => {
-        if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
-          fetchMore({
-            variables: {
-              nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
-            },
-            updateQuery: (prev, { fetchMoreResult }) => {
-              if (!fetchMoreResult) return prev;
+      ...(nativeDomainId && {
+        domainId: nativeDomainId,
+      }),
+      colonyId: colony.colonyAddress,
+    },
+    onCompleted: (receivedData) => {
+      if (receivedData?.getStreamingPaymentsByColony?.nextToken) {
+        fetchMore({
+          variables: {
+            nextToken: receivedData.getStreamingPaymentsByColony.nextToken,
+          },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult) return prev;
 
-              return {
-                ...prev,
-                getStreamingPaymentsByColony: {
-                  ...prev.getStreamingPaymentsByColony,
-                  items: [
-                    ...(prev?.getStreamingPaymentsByColony?.items || []),
-                    ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
-                      []),
-                  ],
-                  nextToken:
-                    fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
-                },
-              };
-            },
-          });
-        }
-      },
-    });
+            return {
+              ...prev,
+              getStreamingPaymentsByColony: {
+                ...prev.getStreamingPaymentsByColony,
+                items: [
+                  ...(prev?.getStreamingPaymentsByColony?.items || []),
+                  ...(fetchMoreResult?.getStreamingPaymentsByColony?.items ||
+                    []),
+                ],
+                nextToken:
+                  fetchMoreResult?.getStreamingPaymentsByColony?.nextToken,
+              },
+            };
+          },
+        });
+      }
+    },
+  });
 
   const streamingPayments = useMemo(
     () => data?.getStreamingPaymentsByColony?.items?.filter(notNull) || [],
@@ -107,7 +106,7 @@ export const useStreamingPaymentsTotalFunds = ({
       });
 
       const averageStreamingPerMonth = calculateAverageStreamingPayment(
-        new Date(blockTime ?? Date.now() / 1000),
+        new Date(blockTime ? blockTime * 1000 : Date.now()),
         itemsCountedToAverage,
       );
 
@@ -145,13 +144,15 @@ export const useStreamingPaymentsTotalFunds = ({
   );
 
   useEffect(() => {
-    getStreamingPaymentsByColony();
-  }, [getDataByRecipentAddress, nativeDomainId, getStreamingPaymentsByColony]);
-
-  useEffect(() => {
     fetchMore({
       variables: {
-        recipientAddress: walletAddress ?? '',
+        ...(isFilteredByWalletAddress &&
+          walletAddress && {
+            recipientAddress: walletAddress,
+          }),
+        ...(nativeDomainId && {
+          domainId: nativeDomainId,
+        }),
         colonyId: colony.colonyAddress,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
@@ -170,7 +171,13 @@ export const useStreamingPaymentsTotalFunds = ({
         };
       },
     });
-  }, [colony.colonyAddress, fetchMore, walletAddress]);
+  }, [
+    colony.colonyAddress,
+    fetchMore,
+    walletAddress,
+    isFilteredByWalletAddress,
+    nativeDomainId,
+  ]);
 
   useEffect(() => {
     getTotalFunds(streamingPayments);

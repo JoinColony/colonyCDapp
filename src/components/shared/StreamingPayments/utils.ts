@@ -45,23 +45,17 @@ export const calculateToCurrency = async ({
   return new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0);
 };
 
-const isDateEarlierThanOneYear = (currentDate: Date, dateToCheck: Date) => {
-  const today = currentDate;
-
-  return (
-    isAfter(today, dateToCheck) && differenceInYears(today, dateToCheck) === 0
-  );
-};
+const isDateWithinPastYear = (currentDate: Date, dateToCheck: Date) =>
+  isAfter(currentDate, dateToCheck) &&
+  differenceInYears(currentDate, dateToCheck) === 0;
 
 export const calculateAverageStreamingPayment = (
   currentDate: Date,
   items: {
     startDate: Date;
-    claimedFunds: any;
+    claimedFunds: number;
   }[],
 ) => {
-  const dateToday = new Date(+currentDate * 1000);
-
   const oldestItemDate = items.length
     ? items.reduce((oldest, item) => {
         return item.startDate < oldest.startDate ? item : oldest;
@@ -69,7 +63,7 @@ export const calculateAverageStreamingPayment = (
     : 0;
 
   const monthsDifference =
-    oldestItemDate !== 0 ? differenceInMonths(dateToday, oldestItemDate) : 0;
+    oldestItemDate !== 0 ? differenceInMonths(currentDate, oldestItemDate) : 0;
 
   const totalClaimedFunds = items.length
     ? items.reduce((sum, item) => {
@@ -133,7 +127,7 @@ export const calculateTotalsFromStreams = async ({
         colony,
       });
 
-      const isItemsCountedToAverage = isDateEarlierThanOneYear(
+      const isItemsCountedToAverage = isDateWithinPastYear(
         new Date(currentTimestamp * 1000),
         new Date(+item.startTime * 1000),
       );

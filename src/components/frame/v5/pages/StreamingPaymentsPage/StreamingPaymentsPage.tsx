@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useStreamingPaymentsTotalFunds } from '~common/Extensions/UserHub/partials/BalanceTab/partials/StreamsInfoRow/hooks.ts';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
+import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
 import { formatText } from '~utils/intl.ts';
 
 import StatsCards from './partials/StatsCards/StatsCards.tsx';
@@ -19,7 +19,7 @@ const StreamingPaymentsPage = () => {
 
   const { totalFunds, activeStreamingPayments, averagePerMonth, currency } =
     useStreamingPaymentsTotalFunds({
-      getDataByRecipentAddress: false,
+      isFilteredByWalletAddress: false,
       nativeDomainId,
     });
 
