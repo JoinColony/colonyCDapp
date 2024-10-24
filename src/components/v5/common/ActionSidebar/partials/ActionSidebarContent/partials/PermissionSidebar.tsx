@@ -39,14 +39,13 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ action }) => {
                 })}
               </h4>
               {initiatorAddress && (
-                <div className="mt-2 flex items-center gap-2">
+                <div className="mt-2 flex items-center justify-between">
                   <span className="text-sm text-gray-600">
                     {formatText({
                       id: 'action.executed.permissions.member',
                     })}
                   </span>
                   <UserPopover
-                    className="ml-auto"
                     size={20}
                     textClassName="text-sm"
                     walletAddress={initiatorAddress || ''}
