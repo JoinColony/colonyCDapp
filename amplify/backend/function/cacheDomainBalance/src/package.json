@@ -5,12 +5,12 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@colony/colony-js": "^0.0.0-snapshot-69cce09-20240724101901",
-    "@colony/events": "^0.0.0-snapshot-20240329154314",
-    "@types/aws-lambda": "^8.10.92",
-    "cross-fetch": "^4.0.0"
+    "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
-    "date-fns": "^3.6.0"
+    "date-fns": "^3.6.0",
+    "cross-fetch": "^4.0.0",
+    "@colony/colony-js": "^0.0.0-snapshot-69cce09-20240724101901",
+    "@colony/events": "^0.0.0-snapshot-20240329154314"
   }
 }
