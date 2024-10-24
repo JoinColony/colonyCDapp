@@ -35,7 +35,7 @@ const acceptedColonyActionTypes = [
 ];
 
 const getActionFinalizedDate = (action) => {
-  if (action.isMotion) {
+  if (action.isMotion && action.motionData) {
     const motionData = action.motionData;
     return motionData.motionStateHistory.hasPassed &&
       motionData.motionStateHistory.finalizedAt
@@ -43,7 +43,7 @@ const getActionFinalizedDate = (action) => {
       : null;
   }
 
-  if (action.isMultiSig) {
+  if (action.isMultiSig && action.multiSigData) {
     const multiSigData = action.multiSigData;
     return multiSigData.isExecuted && multiSigData.executedAt
       ? multiSigData.executedAt
