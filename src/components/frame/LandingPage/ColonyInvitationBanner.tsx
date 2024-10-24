@@ -22,12 +22,14 @@ const ColonyInvitationBanner = ({
 }: ColonyInvitationBannerProps) => {
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
+  const hasColoniesRemaining = coloniesRemaining > 0;
+
   return (
     <div className="w-full max-w-[31.25rem] rounded-2xl border px-6 py-6">
       <div className="flex h-10 w-10 items-center justify-center rounded-md border">
-        <SmileySticker size={20} />
+        <SmileySticker size={24} />
       </div>
-      <h1 className="mb-[.625rem] mt-[.625rem] heading-4">
+      <h1 className="my-2.5 heading-4">
         {formatText({ id: 'landingPage.invitationBanner.title' })}
       </h1>
       <span className="rounded-xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400">
@@ -37,15 +39,14 @@ const ColonyInvitationBanner = ({
         )}
       </span>
 
-      <p className="mt-2 text-sm font-normal">
+      <p className="mt-2 text-sm font-normal text-gray-700">
         {formatText({
-          id:
-            coloniesRemaining > 0
-              ? 'landingPage.invitationBanner.descriptionRemaining'
-              : 'landingPage.invitationBanner.descriptionNoRemaining',
+          id: hasColoniesRemaining
+            ? 'landingPage.invitationBanner.descriptionRemaining'
+            : 'landingPage.invitationBanner.descriptionNoRemaining',
         })}
       </p>
-      {coloniesRemaining > 0 && (
+      {hasColoniesRemaining && (
         <div className="mt-2 flex flex-col gap-2 rounded-md bg-gray-50 px-3 py-3">
           <div className="flex items-center gap-2">
             <Ticket size={18} />
