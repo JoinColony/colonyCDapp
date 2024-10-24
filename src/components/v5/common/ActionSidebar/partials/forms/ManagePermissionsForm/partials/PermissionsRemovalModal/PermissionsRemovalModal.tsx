@@ -5,22 +5,21 @@ import { defineMessages } from 'react-intl';
 import usePermissionsTableProps from '~hooks/usePermissionsTableProps/index.ts';
 import { type PermissionsTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
-import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
-import Table from '~v5/common/Table/Table.tsx';
-import Button from '~v5/shared/Button/index.ts';
-import Modal from '~v5/shared/Modal/index.ts';
-
 import {
   MANAGE_PERMISSIONS_ACTION_FORM_ID,
   UserRoleModifier,
-} from '../../consts.ts';
+} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import {
   getFormPermissions,
   getRemovedInheritedPermissions,
-} from '../../utils.ts';
+} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
+import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
+import Table from '~v5/common/Table/Table.tsx';
+import IconButton from '~v5/shared/Button/IconButton.tsx';
+import Button from '~v5/shared/Button/index.ts';
+import Modal from '~v5/shared/Modal/index.ts';
 
 import { type PermissionsRemovalModalProps } from './types.ts';
-import IconButton from '~v5/shared/Button/IconButton.tsx';
 
 const displayName = 'ManagePermissionsForm.partials.PermissionsRemovalModal';
 

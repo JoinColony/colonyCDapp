@@ -26,10 +26,8 @@ import {
   TEAM_FIELD_NAME,
   TOKEN_FIELD_NAME,
 } from '../consts.ts';
-import { AVAILABLE_ROLES } from '../partials/forms/ManagePermissionsForm/consts.ts';
-import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
-import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
 import { AVAILABLE_PERMISSIONS } from '../partials/forms/ManagePermissionsForm/consts.ts';
+import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
 import { useGetExpenditureData } from './useGetExpenditureData.ts';

@@ -6,10 +6,9 @@ import { useMobile } from '~hooks';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { formatText } from '~utils/intl.ts';
+import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import { getPermissionName } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
 import { FormSwitch } from '~v5/common/Fields/Switch/index.ts';
-
-import { type ManagePermissionsFormValues } from '../../consts.ts';
-import { getPermissionName } from '../../utils.ts';
 
 import { CUSTOM_PERMISSIONS_TABLE_MSG } from './consts.ts';
 

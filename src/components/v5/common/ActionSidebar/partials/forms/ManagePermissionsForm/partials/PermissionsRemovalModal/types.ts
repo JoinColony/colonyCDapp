@@ -1,4 +1,4 @@
-import { type ManagePermissionsFormValues } from '../../consts.ts';
+import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 
 export interface PermissionsRemovalModalProps {
   isOpen: boolean;

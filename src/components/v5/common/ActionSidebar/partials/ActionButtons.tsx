@@ -34,6 +34,7 @@ const displayName = 'v5.common.ActionSidebar.partials.ActionButtons';
 const ActionButtons: FC<ActionButtonsProps> = ({
   isActionDisabled,
   primaryButton,
+  onSubmitClick,
 }) => {
   const isMobile = useMobile();
   const { colony } = useColonyContext();
@@ -84,6 +85,10 @@ const ActionButtons: FC<ActionButtonsProps> = ({
     return undefined;
   });
 
+  const primaryButtonType = onSubmitClick
+    ? 'button'
+    : primaryButton?.type ?? 'submit';
+
   return (
     <div
       className="mt-8 flex flex-col-reverse items-center
@@ -120,7 +125,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
             disabled={isActionDisabled || isButtonDisabled || isFieldDisabled}
             text={submitText}
             isFullSize={isMobile}
-            type={primaryButton?.type ?? 'submit'}
+            type={primaryButtonType}
             onClick={() =>
               primaryButton?.type === 'button' && primaryButton?.onClick?.()
             }
