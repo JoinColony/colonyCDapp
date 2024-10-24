@@ -64,7 +64,7 @@ const VotingReputationParams: FC<VotingReputationParamsProps> = ({
                     : formatText({ id: 'hours' })}
                 </div>
               </div>
-              <p className="text-sm">{formatText(description)}</p>
+              <p className="text-sm text-gray-600">{formatText(description)}</p>
             </div>
           );
         })}
