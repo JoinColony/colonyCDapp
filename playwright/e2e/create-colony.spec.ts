@@ -67,8 +67,8 @@ test.describe('Create Colony flow', () => {
         expect(sidebarNav.getByText('Confirmation')).toBeVisible(),
         expect(sidebarNav.getByText('Complete')).toBeVisible(),
         expect(
-          sidebarNav.getByRole('link', { name: /visit our docs/i }),
-        ).toHaveAttribute('href', 'https://docs.colony.io/'),
+          sidebarNav.getByRole('button', { name: 'Help & Feedback' }),
+        ).toBeVisible(),
       ]);
     });
 
@@ -193,7 +193,9 @@ test.describe('Create Colony flow', () => {
         page.getByRole('button', { name: /continue/i }),
       ).toBeVisible();
 
-      await expect(page.getByRole('button', { name: /back/i })).toBeVisible();
+      await expect(
+        page.getByRole('button', { name: 'Back', exact: true }),
+      ).toBeVisible();
 
       await expect(page.getByLabel(/Create a new token/i)).toBeVisible();
 
@@ -224,7 +226,7 @@ test.describe('Create Colony flow', () => {
       // The entered token name and symbol should persist after navigating forward and back
 
       await page.getByRole('button', { name: /continue/i }).click();
-      await page.getByRole('button', { name: /back/i }).click();
+      await page.getByRole('button', { name: 'Back', exact: true }).click();
 
       await expect(page.getByLabel(/token name/i)).toHaveValue(tokenName);
       await expect(page.getByLabel(/token symbol/i)).toHaveValue(tokenSymbol);
@@ -428,7 +430,9 @@ test.describe('Create Colony flow', () => {
         colonyTokenCard.getByRole('button', { name: 'Edit' }),
       ).toBeEnabled();
 
-      await expect(page.getByRole('button', { name: 'Back' })).toBeVisible();
+      await expect(
+        page.getByRole('button', { name: 'Back', exact: true }),
+      ).toBeVisible();
 
       await expect(
         page.getByRole('img', {
@@ -478,6 +482,8 @@ test.describe('Create Colony flow', () => {
     test('Should create a colony and navigate to the newly created colony URL', async ({
       page,
     }) => {
+      // This test awaits all the transactions and graphql operations on the final step of the Colony Creation to complete
+      test.slow();
       await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page.getByRole('button', { name: /continue/i }).click();
