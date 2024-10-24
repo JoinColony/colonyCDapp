@@ -17,8 +17,8 @@
     "docker:build:all": "npm run docker:build:base && npm run docker:build:network && npm run docker:build:monitor && npm run docker:build:ingestor && npm run docker:build:amplify && npm run docker:build:auth && npm run docker:build:mocking",
     "docker:compose:core": "docker compose --file docker/colony-cdapp-dev-env-orchestration.yaml",
     "docker:compose:all": "docker compose --file docker/colony-cdapp-dev-env-orchestration-all.yaml",
-    "dev": "npm run watch-amplify & npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
-    "dev:all": "npm run docker:build:all && npm run docker:compose:all up -- --force-recreate -V",
+    "dev": "npm run watch-amplify & npm run generate-notifications-dev-key && npm run docker:build:core && npm run docker:compose:core up -- --force-recreate -V",
+    "dev:all": "npm run generate-notifications-dev-key && npm run docker:build:all && npm run docker:compose:all up -- --force-recreate -V",
     "lint": "eslint src --fix --ext ts,tsx --report-unused-disable-directives",
     "lint:ci": "eslint src --ext ts,tsx --report-unused-disable-directives",
     "stylelint:ci": "stylelint --allow-empty-input \"src/**/*.css\"",
@@ -26,7 +26,7 @@
     "frontend": "ulimit -n 2048 && vite",
     "frontend:safe": "SAFE_ENABLED=true ulimit -n 2048 && vite",
     "build": "vite build",
-    "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \"cd colonyNetwork && npx hardhat console --network localhost\"",
+    "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \". /root/.nvm/nvm.sh && cd colonyNetwork && npx hardhat console --network localhost\"",
     "hardhat:cmd": "./scripts/hardhat-cmd.js",
     "truffle": "echo 'Please use `npm run hardhat` instead of `npm run truffle`'",
     "amplify": "amplify",
@@ -41,7 +41,8 @@
     "forward-time": "node scripts/forward-time",
     "playwright:install": "npx playwright install --with-deps",
     "playwright:run": "playwright test",
-    "playwright:watch": "playwright test --ui"
+    "playwright:watch": "playwright test --ui",
+    "generate-notifications-dev-key": "node scripts/generate-local-notifications-key"
   },
   "repository": {
     "type": "git",
@@ -160,6 +161,7 @@
     "@nivo/core": "^0.87.0",
     "@nivo/pie": "^0.87.0",
     "@nivo/tooltip": "^0.87.0",
+    "@magicbell/react-headless": "^5.0.1",
     "@phosphor-icons/react": "^2.1.5",
     "@popperjs/core": "^2.3.3",
     "@tanstack/react-table": "^8.10.0",

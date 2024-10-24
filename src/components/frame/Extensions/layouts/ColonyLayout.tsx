@@ -23,6 +23,8 @@ import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
+import useLocationChange from '~hooks/useLocationChange.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
 import ColonyCreatedModal from '~v5/common/Modals/ColonyCreatedModal/index.ts';
@@ -54,8 +56,10 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
   const { actionSidebarToggle } = useActionSidebarContext();
-  const [isActionSidebarOpen, { toggleOn: toggleActionSidebarOn }] =
-    actionSidebarToggle;
+  const [
+    isActionSidebarOpen,
+    { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
+  ] = actionSidebarToggle;
   const isTablet = useTablet();
   const { clearUserHubTab, setUserHubTab, userHubTab } = usePageLayoutContext();
 
@@ -76,6 +80,13 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const hasRecentlyCreatedColony = locationState?.hasRecentlyCreatedColony;
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
+  const previousTransactionId = usePrevious(transactionId);
+
+  useLocationChange(() => {
+    if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
+      toggleActionSidebarOff();
+    }
+  });
 
   useEffect(() => {
     if (transactionId) {

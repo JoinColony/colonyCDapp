@@ -8,9 +8,9 @@ import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 
-import Rows from '../UserProfilePage/partials/Row/index.ts';
-
-import { useUserPreferencesPage } from './hooks.tsx';
+import EmailSection from './partials/EmailSection/EmailSection.tsx';
+import NotificationSettingsSection from './partials/NotificationSettingsSection.tsx';
+import WalletSection from './partials/WalletSection.tsx';
 
 const displayName = 'v5.pages.UserPreferencesPage';
 
@@ -23,7 +23,6 @@ const MSG = defineMessages({
 
 const UserPreferencesPage: FC = () => {
   const { user, userLoading, walletConnecting } = useAppContext();
-  const { handleSubmit, onSubmit, columnsList } = useUserPreferencesPage();
 
   useSetPageHeadingTitle(formatText({ id: 'userPreferencesPage.title' }));
 
@@ -36,11 +35,11 @@ const UserPreferencesPage: FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-6">
-        <Rows groups={columnsList} className="flex-row" />
-      </div>
-    </form>
+    <div className="flex flex-col">
+      <EmailSection />
+      <WalletSection />
+      <NotificationSettingsSection />
+    </div>
   );
 };
 

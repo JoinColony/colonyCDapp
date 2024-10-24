@@ -42,6 +42,16 @@ input CreateUniqueUserInput {
 }
 
 """
+Input data for creating notifications data for a user
+"""
+input CreateUserNotificationsDataInput {
+  """
+  Unique identifier for the user. This is the user's wallet address
+  """
+  id: ID!
+}
+
+"""
 Input data for a user's profile metadata
 """
 input ProfileMetadataInput {
@@ -968,6 +978,53 @@ enum UserStakeType {
 }
 
 """
+Type of notifications that can be sent
+"""
+enum NotificationType {
+  # Expenditures
+  EXPENDITURE_READY_FOR_REVIEW
+  EXPENDITURE_READY_FOR_FUNDING
+  EXPENDITURE_READY_FOR_RELEASE
+  EXPENDITURE_FINALIZED
+  EXPENDITURE_PAYOUT_CLAIMED
+  EXPENDITURE_CANCELLED
+
+  # Extensions
+  EXTENSION_INSTALLED
+  EXTENSION_UPGRADED
+  EXTENSION_ENABLED
+  EXTENSION_DEPRECATED
+  EXTENSION_UNINSTALLED
+  EXTENSION_SETTINGS_CHANGED
+
+  # Funds
+  FUNDS_CLAIMED
+
+  # Mentions
+  MENTION
+
+  # Motions
+  MOTION_CREATED
+  MOTION_SUPPORTED
+  MOTION_OPPOSED
+  MOTION_VOTING
+  MOTION_REVEAL
+  MOTION_FINALIZED
+
+  # Multisig
+  MULTISIG_ACTION_CREATED
+  MULTISIG_ACTION_FINALIZED
+  MULTISIG_ACTION_APPROVED
+  MULTISIG_ACTION_REJECTED
+
+  # Actions made with permissions
+  PERMISSIONS_ACTION
+  # versions
+  NEW_COLONY_VERSION
+  NEW_EXTENSION_VERSION
+}
+
+"""
 Root query type
 """
 type Query {
@@ -1040,15 +1097,20 @@ type Query {
   """
   Fetch a domain total balance
   """
-  getDomainBalance(
-    input: DomainBalanceArguments!
-  ): DomainBalanceReturn @function(name: "fetchDomainBalance-${env}")
+  getDomainBalance(input: DomainBalanceArguments!): DomainBalanceReturn
+    @function(name: "fetchDomainBalance-${env}")
 
   """
   Trigger the balance caching
   """
-  cacheAllDomainBalance: CacheAllDomainBalanceReturn @function(name: "cacheDomainBalance-${env}")
+  cacheAllDomainBalance: CacheAllDomainBalanceReturn
+    @function(name: "cacheDomainBalance-${env}")
 
+  """
+  Generate key for the user in Magicbell, used for secure fetching of notifications
+  """
+  getUserNotificationsHMAC: String
+    @function(name: "getUserNotificationsHMAC-${env}")
 }
 
 """
@@ -1060,6 +1122,14 @@ type Mutation {
   """
   createUniqueUser(input: CreateUniqueUserInput): User
     @function(name: "createUniqueUser-${env}")
+
+  """
+  Create notification data for a user
+  """
+  createUserNotificationsData(
+    input: CreateUserNotificationsDataInput!
+  ): NotificationsData @function(name: "createUserNotificationsData-${env}")
+
   """
   Create temporary metadata entry for an upcoming colony (that will be created by the ingestor)
   """
@@ -1499,7 +1569,8 @@ type Colony @model {
   # Ideally we would merge data from these two into one field, but I couldn't do that
   # meaning we'll have to merge this data in-app (or not at all, works either way)
   # If you have a better idea, on how to merged them, I'll all ears..
-  fundsClaimData: [ColonyFundsClaim] @hasMany(indexName: "byColony", fields: ["id"])
+  fundsClaimData: [ColonyFundsClaim]
+    @hasMany(indexName: "byColony", fields: ["id"])
   """
   Native chain token claim (e.g., Token 0x0000...0000: ETH, xDAI, etc.)
   This is not an array since only a single token type can be returned
@@ -1996,6 +2067,44 @@ type User @model {
   """
   liquidationAddresses: [LiquidationAddress!]
     @hasMany(indexName: "byUserAddress", fields: ["id"])
+  """
+  Notifications data for the user
+  """
+  notificationsData: NotificationsData @hasOne(fields: "id")
+}
+
+"""
+Holds the notifications data for the user, such as their unique Magicbell user id, and their notifications preferences.
+"""
+type NotificationsData @model {
+  """
+  Unique identifier for the user
+  """
+  userAddress: ID! @primaryKey
+  """
+  Unique identifier for the user in Magicbell
+  """
+  magicbellUserId: ID!
+  """
+  Boolean to indicate if the user has disabled notifications app wide
+  """
+  notificationsDisabled: Boolean!
+  """
+  List of addresses of colonies that the user has muted
+  """
+  mutedColonyAddresses: [ID!]!
+  """
+  Boolean to indicate if the user has disabled payment notifications
+  """
+  paymentNotificationsDisabled: Boolean!
+  """
+  Boolean to indicate if the user has disabled mention notifications
+  """
+  mentionNotificationsDisabled: Boolean!
+  """
+  Boolean to indicate if the user has disabled admin notifications
+  """
+  adminNotificationsDisabled: Boolean!
 }
 
 """
@@ -2047,7 +2156,12 @@ type Domain @model {
   """
   Colony ID associated with the Domain
   """
-  colonyId: ID! @index(name: "byColony", sortKeyFields: ["nativeId"], queryField: "getDomainsByColony")
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      sortKeyFields: ["nativeId"]
+      queryField: "getDomainsByColony"
+    )
   """
   Colony associated with the Domain
   """
@@ -2164,7 +2278,12 @@ type ColonyFundsClaim @model {
   """
   The identifier of the Colony the Colony Funds Claim belong to
   """
-  colonyFundsClaimsId: ID @index(name: "byColony", sortKeyFields: ["createdAt"], queryField: "getFundsClaimsByColony")
+  colonyFundsClaimsId: ID
+    @index(
+      name: "byColony"
+      sortKeyFields: ["createdAt"]
+      queryField: "getFundsClaimsByColony"
+    )
   """
   Token associated with the Colony Funds Claim
   """

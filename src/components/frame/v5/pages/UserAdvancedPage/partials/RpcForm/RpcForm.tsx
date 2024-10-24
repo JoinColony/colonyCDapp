@@ -8,6 +8,7 @@ import SettingsRow from '~v5/common/SettingsRow/index.ts';
 
 import { useRpcForm } from './hooks.ts';
 
+// @TODO this needs to be refactored and we need to build a custom toggle button that will show up the input
 const RpcForm = () => {
   const {
     customRpc,
@@ -27,21 +28,30 @@ const RpcForm = () => {
       onSubmit={noop}
     >
       {() => (
-        <>
-          <SettingsRow
-            title={{ id: 'advancedSettings.rpc.title' }}
-            description={{ id: 'advancedSettings.rpc.description' }}
-            tooltipMessage={{ id: 'advancedSettings.rpc.tooltip' }}
-            name="decentralizedModeEnabled"
-            className="items-end pt-0"
-            titleClassName="!font-semibold !text-lg"
-            additionalContent={formatText({ id: 'profilePage.customRpc' })}
-          />
+        <SettingsRow.Container>
+          <SettingsRow.Content>
+            <div className="flex items-center gap-1.5">
+              <SettingsRow.Title>
+                {formatText({ id: 'advancedSettings.rpc.title' })}
+              </SettingsRow.Title>
+              <SettingsRow.Tooltip>
+                {formatText({ id: 'advancedSettings.rpc.tooltip' })}
+              </SettingsRow.Tooltip>
+            </div>
+            <SettingsRow.Description>
+              {formatText({ id: 'advancedSettings.rpc.description' })}
+            </SettingsRow.Description>
+          </SettingsRow.Content>
+          <SettingsRow.Content>
+            <SettingsRow.Subtitle>
+              {formatText({ id: 'profilePage.customRpc' })}
+            </SettingsRow.Subtitle>
+          </SettingsRow.Content>
           <SettingsInputRow
             isOpen={isInputVisible}
             handleSubmit={handleSubmit}
           />
-        </>
+        </SettingsRow.Container>
       )}
     </Form>
   );

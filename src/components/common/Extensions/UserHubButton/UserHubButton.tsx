@@ -22,6 +22,7 @@ import {
   useGroupedTransactions,
 } from '~state/transactionState.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/NotificationsEnabledWrapper.tsx';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button from '~v5/shared/Button/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
@@ -30,6 +31,7 @@ import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import { UserHubTab } from '../UserHub/types.ts';
 
 import { OPEN_USER_HUB_EVENT } from './consts.ts';
+import NotificationDot from './partials/NotificationDot.tsx';
 
 interface Props {
   openTab?: UserHubTab;
@@ -169,48 +171,53 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
 
   return (
     <div className="flex-shrink-0">
-      <Button
-        mode="tertiary"
-        size="large"
-        isFullRounded
-        ref={setTriggerRef}
-        className={clsx(
-          {
-            '!border-blue-400': visible,
-          },
-          '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
-        )}
-        onClick={handleButtonClick}
-      >
-        <div className="flex flex-shrink-0 items-center">
-          {/* If there's a user, there's a wallet */}
-          {walletAddress ? (
-            <>
-              <UserAvatar
-                className="flex-shrink-0"
-                userAvatarSrc={user?.profile?.avatar ?? undefined}
-                userName={userName}
-                userAddress={wallet.address}
-                size={isMobile ? 18 : 16}
-              />
-              {!isMobile && (
-                <>
-                  <p className="ml-1 truncate text-sm font-medium">
-                    {userName}
-                  </p>
-                  <div className="md:ml-2">
-                    <MemberReputation
-                      colonyAddress={colonyAddress}
-                      hideOnMobile
-                      walletAddress={walletAddress}
-                    />
-                  </div>
-                </>
-              )}
-            </>
-          ) : null}
-        </div>
-      </Button>
+      <div className="relative">
+        <Button
+          mode="tertiary"
+          size="large"
+          isFullRounded
+          ref={setTriggerRef}
+          className={clsx(
+            {
+              '!border-blue-400': visible,
+            },
+            '!min-h-[2.375rem] min-w-[2.875rem] !px-3 !py-0 md:hover:!border-blue-400',
+          )}
+          onClick={handleButtonClick}
+        >
+          <div className="flex flex-shrink-0 items-center">
+            {/* If there's a user, there's a wallet */}
+            {walletAddress ? (
+              <>
+                <UserAvatar
+                  className="flex-shrink-0"
+                  userAvatarSrc={user?.profile?.avatar ?? undefined}
+                  userName={userName}
+                  userAddress={wallet.address}
+                  size={isMobile ? 18 : 16}
+                />
+                {!isMobile && (
+                  <>
+                    <p className="ml-1 truncate text-sm font-medium">
+                      {userName}
+                    </p>
+                    <div className="md:ml-2">
+                      <MemberReputation
+                        colonyAddress={colonyAddress}
+                        hideOnMobile
+                        walletAddress={walletAddress}
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            ) : null}
+          </div>
+          <NotificationsEnabledWrapper>
+            <NotificationDot />
+          </NotificationsEnabledWrapper>
+        </Button>
+      </div>
       {visible && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
@@ -225,7 +232,10 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
             },
           )}
         >
-          <UserHub initialOpenTab={initialOpenTab} />
+          <UserHub
+            initialOpenTab={initialOpenTab}
+            closeUserHub={closeUserHub}
+          />
         </PopoverBase>
       )}
     </div>

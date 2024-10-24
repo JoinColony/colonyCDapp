@@ -30,3 +30,17 @@ mutation InitializeUser($input: InitializeUserInput!) {
     }
   }
 }
+
+mutation CreateUserNotificationsData(
+  $input: CreateUserNotificationsDataInput!
+) {
+  createUserNotificationsData(input: $input) {
+    userAddress
+  }
+}
+
+mutation UpdateUserNotificationData($input: UpdateNotificationsDataInput!) {
+  updateNotificationsData(input: $input) {
+    userAddress
+  }
+}

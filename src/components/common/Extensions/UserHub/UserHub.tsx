@@ -3,17 +3,21 @@ import React, { type FC, useState, useContext } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import CryptoToFiatContextProvider from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContextProvider.tsx';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
+import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/NotificationsEnabledWrapper.tsx';
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
 import BalanceTab from './partials/BalanceTab/index.ts';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
+import NotificationsTab from './partials/NotificationsTab/NotificationsTab.tsx';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
+import UnreadNotifications from './partials/UnreadNotifications.tsx';
 import { UserHubTab } from './types.ts';
 
 // @BETA: Disabled for now
@@ -23,6 +27,7 @@ import { UserHubTab } from './types.ts';
 
 interface Props {
   initialOpenTab?: UserHubTab;
+  closeUserHub: () => void;
 }
 
 const displayName = 'common.Extensions.UserHub.partials.UserHub';
@@ -38,17 +43,28 @@ const MSG = defineMessages({
   },
 });
 
-const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
+const UserHub: FC<Props> = ({
+  initialOpenTab = UserHubTab.Balance,
+  closeUserHub,
+}) => {
   const isMobile = useMobile();
   const featureFlags = useContext(FeatureFlagsContext);
   const [selectedTab, setSelectedTab] = useState(initialOpenTab);
 
-  const filteredTabList = tabList.filter(
-    (tabItem) =>
+  const { areNotificationsEnabled } = useNotificationsUserContext();
+
+  const filteredTabList = tabList.filter((tabItem) => {
+    const isFeatureFlagEnabled =
       !tabItem.featureFlag ||
       (!featureFlags[tabItem.featureFlag]?.isLoading &&
-        featureFlags[tabItem.featureFlag]?.isEnabled),
-  );
+        featureFlags[tabItem.featureFlag]?.isEnabled);
+
+    if (tabItem.id !== UserHubTab.Notifications) {
+      return isFeatureFlagEnabled;
+    }
+
+    return isFeatureFlagEnabled && areNotificationsEnabled;
+  });
 
   const handleTabChange = (newTab: UserHubTab) => {
     setSelectedTab(newTab);
@@ -111,7 +127,12 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
                           'font-medium': selectedTab === id,
                         })}
                       >
-                        <span className="mr-2 flex shrink-0">
+                        <span className="relative mr-2 flex shrink-0">
+                          {id === UserHubTab.Notifications && (
+                            <NotificationsEnabledWrapper>
+                              <UnreadNotifications />
+                            </NotificationsEnabledWrapper>
+                          )}
                           <Icon size={14} />
                         </span>
                         {formatText(label)}
@@ -130,10 +151,13 @@ const UserHub: FC<Props> = ({ initialOpenTab = UserHubTab.Balance }) => {
         {selectedTab === UserHubTab.Balance && (
           <BalanceTab onTabChange={handleTabChange} />
         )}
-        {selectedTab === UserHubTab.Stakes && <StakesTab />}
+        {selectedTab === UserHubTab.Notifications && (
+          <NotificationsTab closeUserHub={closeUserHub} />
+        )}
         {selectedTab === UserHubTab.Transactions && (
           <TransactionsTab appearance={{ interactive: true }} />
         )}
+        {selectedTab === UserHubTab.Stakes && <StakesTab />}
         {selectedTab === UserHubTab.CryptoToFiat && (
           <CryptoToFiatContextProvider>
             <CryptoToFiatTab />

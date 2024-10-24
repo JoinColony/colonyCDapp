@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useColonyDashboardContext } from '~context/ColonyDashboardContext/ColonyDashboardContext.ts';
+import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 // import { COLONY_DETAILS_ROUTE } from '~routes/index.ts';
@@ -22,8 +23,10 @@ import {
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
 import { sortExternalLinks } from './helpers.ts';
+import useMuteColonyItem from './useMuteColonyItem.tsx';
 
 export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
+  const { areNotificationsEnabled } = useNotificationsUserContext();
   const isMobile = useMobile();
 
   const { colony, colonySubscription } = useColonyContext();
@@ -46,6 +49,8 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
   const externalLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks)
     : [];
+
+  const toggleMuteColonyItem = useMuteColonyItem();
 
   const menuItems: DropdownMenuGroup[] = [
     {
@@ -112,21 +117,14 @@ export const useHeaderLinks = (): { dropdownMenuProps: DropdownMenuProps } => {
         },
       ],
     },
-    // @BETA: Notifcations not implemented yet
-    // {
-    //   key: 'headerDropdown.section3',
-    //   items: [
-    //     {
-    //       key: 'headerDropdown.section3.notifications',
-    //       label: formatText({
-    //         id: 'dashboard.burgerMenu.item.notifications',
-    //       }),
-    //       icon: BellRinging,
-    //       // @TODO: open Notification tab when will be ready
-    //       onClick: () => {},
-    //     },
-    //   ],
-    // },
+    ...(areNotificationsEnabled
+      ? [
+          {
+            key: 'headerDropdown.section3',
+            items: [toggleMuteColonyItem],
+          },
+        ]
+      : []),
     {
       key: 'headerDropdown.section4',
       items: isWatching

@@ -8,6 +8,9 @@ fragment User on User {
     shareableInvites
   }
   bridgeCustomerId
+  notificationsData {
+    ...NotificationsData
+  }
 }
 
 fragment UserDisplay on User {
@@ -36,4 +39,13 @@ fragment Profile on Profile {
   }
   preferredCurrency
   isAutoOfframpEnabled
+}
+
+fragment NotificationsData on NotificationsData {
+  magicbellUserId
+  notificationsDisabled
+  mutedColonyAddresses
+  paymentNotificationsDisabled
+  mentionNotificationsDisabled
+  adminNotificationsDisabled
 }

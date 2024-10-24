@@ -17,6 +17,8 @@ const ParamNames = {
   bridgeXYZApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_KEY`,
   bridgeXYZApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FBRIDGEXYZ_API_URL`,
   liquidationAddressOverrides: `%2Famplify%2Fcdapp%2F${ENV}%2FLIQUIDATION_ADDRESS_OVERRIDES`,
+  magicbellApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FMAGICBELL_API_KEY`,
+  magicbellApiSecret: `%2Famplify%2Fcdapp%2F${ENV}%2FMAGICBELL_API_SECRET`,
 };
 
 const getParam = async (paramName) => {
