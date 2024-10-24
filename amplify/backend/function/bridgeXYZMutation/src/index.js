@@ -18,15 +18,24 @@ let graphqlURL = 'http://localhost:20002/graphql';
 let appSyncApiKey = 'da2-fakeApiId123456';
 let apiUrl = process.env.BRIDGE_API_URL;
 let apiKey = process.env.BRIDGE_API_KEY;
+let temp_liquidationAddressOverrides =
+  process.env.LIQUIDATION_ADDRESS_OVERRIDES;
 
 const setEnvVariables = async () => {
   if (!isDev) {
     const { getParams } = require('/opt/nodejs/getParams');
-    [appSyncApiKey, apiKey, apiUrl, graphqlURL] = await getParams([
+    [
+      appSyncApiKey,
+      apiKey,
+      apiUrl,
+      graphqlURL,
+      temp_liquidationAddressOverrides,
+    ] = await getParams([
       'appsyncApiKey',
       'bridgeXYZApiKey',
       'bridgeXYZApiUrl',
       'graphqlUrl',
+      'liquidationAddressOverrides',
     ]);
   }
 };
@@ -68,7 +77,13 @@ exports.handler = async (event) => {
     handlers[path] || handlers[event.fieldName] || handlers.default;
 
   try {
-    return await handler(event, { appSyncApiKey, apiKey, apiUrl, graphqlURL });
+    return await handler(event, {
+      appSyncApiKey,
+      apiKey,
+      apiUrl,
+      graphqlURL,
+      temp_liquidationAddressOverrides,
+    });
   } catch (error) {
     console.error(
       `bridgeXYZMutation handler ${handler.name} failed with error: ${error}`,

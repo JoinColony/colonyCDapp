@@ -1,4 +1,3 @@
-const fetch = require('cross-fetch');
 const { graphqlRequest } = require('../utils');
 const { getLiquidationAddresses, getExternalAccounts } = require('./utils');
 
@@ -6,9 +5,24 @@ const { getUser } = require('../graphql');
 
 const getUserLiquidationAddressHandler = async (
   event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
+  {
+    appSyncApiKey,
+    apiKey,
+    apiUrl,
+    graphqlURL,
+    temp_liquidationAddressOverrides,
+  },
 ) => {
   const userAddress = event.arguments.userAddress;
+
+  try {
+    const overrides = JSON.parse(temp_liquidationAddressOverrides);
+    if (overrides[userAddress]) {
+      return overrides[userAddress];
+    }
+  } catch (e) {
+    console.log('Error parsing liquidation address overrides: ', e);
+  }
 
   const { data: graphQlData } = await graphqlRequest(
     getUser,
@@ -25,7 +39,11 @@ const getUserLiquidationAddressHandler = async (
     return null;
   }
 
-  const externalAccounts = await getExternalAccounts(apiUrl, apiKey, bridgeCustomerId);
+  const externalAccounts = await getExternalAccounts(
+    apiUrl,
+    apiKey,
+    bridgeCustomerId,
+  );
   const firstAccount = externalAccounts?.[0];
 
   if (!firstAccount) {
