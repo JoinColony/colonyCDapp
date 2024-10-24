@@ -65,6 +65,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   } = useGetActionData(transactionId);
 
   const {
+    actionSidebarMotions: { motionsLoading },
     actionSidebarToggle: [
       isActionSidebarOpen,
       { toggle: toggleActionSidebarOff, registerContainerRef },
@@ -109,13 +110,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const isLoading =
     transactionId !== undefined && (loadingAction || loadingExpenditure);
 
+  const isContentLoading = isLoading || motionsLoading;
+
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (isLoading) {
-      return <ActionSidebarLoadingSkeleton />;
-    }
-
     if (action) {
       return <CompletedAction action={action} />;
     }
@@ -317,7 +316,14 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      {getSidebarContent()}
+      {isContentLoading && <ActionSidebarLoadingSkeleton />}
+      <div
+        className={clsx('flex flex-grow', {
+          hidden: isContentLoading,
+        })}
+      >
+        {getSidebarContent()}
+      </div>
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({
