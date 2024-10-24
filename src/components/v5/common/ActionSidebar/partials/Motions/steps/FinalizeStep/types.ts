@@ -18,4 +18,5 @@ export enum WinningsItems {
   Staked = 'staked',
   Winnings = 'winnings',
   Total = 'total',
+  Completed = 'completed',
 }
