@@ -107,6 +107,9 @@ module.exports = {
         100: 'var(--color-teams-grey-100)',
         500: 'var(--color-teams-grey-500)',
       },
+      gradient: {
+        base: 'var(--color-skeleton-gradient)',
+      },
     },
     fontFamily: {
       inter: ['Inter', 'sans-serif'],
@@ -254,8 +257,7 @@ module.exports = {
             'background-color': theme('colors.gray.100'),
             'background-repeat': 'no-repeat',
             'min-height': '1em',
-            'background-image':
-              'linear-gradient(90deg,rgba(255, 255, 255, 0),rgba(255, 255, 255, 0.5),rgba(255, 255, 255, 0))',
+            'background-image': `linear-gradient(90deg,rgba(255, 255, 255, 0),${theme('colors.gradient.base')},rgba(255, 255, 255, 0))`,
             'background-size': '2.5rem 100%',
             'background-position': 'left -2.5rem top 0',
             animation: 'shine 1.125s ease infinite',

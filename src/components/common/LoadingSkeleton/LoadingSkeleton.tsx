@@ -15,7 +15,6 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
   ) : (
     <>{children}</>
   );
-
 LoadingSkeleton.displayName = displayName;
 
 export default LoadingSkeleton;
