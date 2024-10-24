@@ -36,6 +36,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
     <Modal {...props} onClose={onClose} shouldShowHeader>
       <ActionForm
         actionType={actionType}
+        className="flex flex-grow flex-col"
         // defaultValues={{ amount: '0' }} // Disable default value
         validationSchema={validationSchema}
         transform={transform}
@@ -46,64 +47,66 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
         }}
       >
         {({ setValue, formState: { isSubmitting, isLoading } }) => (
-          <>
-            <h4 className="mb-1.5 heading-5">
-              {formatText({ id: `tokensModal.${type}.title` })}
-            </h4>
-            <p className="mb-6 text-md text-gray-600">
-              {formatText({ id: `tokensModal.${type}.description` })}
-            </p>
-            <div className="mb-1 flex items-center justify-between gap-2">
-              <p className="text-1">
-                {formatText({ id: `tokensModal.${type}.input` })}
+          <div className="flex flex-grow flex-col justify-between">
+            <div>
+              <h4 className="mb-1.5 heading-5">
+                {formatText({ id: `tokensModal.${type}.title` })}
+              </h4>
+              <p className="mb-6 text-md text-gray-600">
+                {formatText({ id: `tokensModal.${type}.description` })}
               </p>
-              <span className="flex items-center gap-1 text-sm text-gray-600">
-                {formatText(
-                  { id: 'tokensModal.balance' },
-                  {
-                    value: loading ? (
-                      <SpinnerLoader appearance={{ size: 'small' }} />
-                    ) : (
-                      <Numeral
-                        value={tokenBalanceData || 0}
-                        decimals={tokenDecimals}
-                        suffix={` ${tokenSymbol}`}
-                      />
-                    ),
+              <div className="mb-1 flex items-center justify-between gap-2">
+                <p className="text-1">
+                  {formatText({ id: `tokensModal.${type}.input` })}
+                </p>
+                <span className="flex items-center gap-1 text-sm text-gray-600">
+                  {formatText(
+                    { id: 'tokensModal.balance' },
+                    {
+                      value: loading ? (
+                        <SpinnerLoader appearance={{ size: 'small' }} />
+                      ) : (
+                        <Numeral
+                          value={tokenBalanceData || 0}
+                          decimals={tokenDecimals}
+                          suffix={` ${tokenSymbol}`}
+                        />
+                      ),
+                    },
+                  )}
+                </span>
+              </div>
+              <FormFormattedInput
+                name="amount"
+                placeholder={formatMessage({ id: 'tokensModal.placeholder' })}
+                customPrefix={
+                  nativeToken ? (
+                    <TokenAvatar
+                      size={18}
+                      tokenName={nativeToken.name}
+                      tokenAddress={nativeToken.tokenAddress}
+                      tokenAvatarSrc={nativeToken.avatar ?? undefined}
+                    />
+                  ) : undefined
+                }
+                options={{
+                  numeralDecimalScale: tokenDecimals,
+                  numeralPositiveOnly: true,
+                  tailPrefix: true,
+                }}
+                buttonProps={{
+                  label: formatText({ id: 'button.max' }) || '',
+                  onClick: () => {
+                    setValue('amount', tokenBalanceInEthers, {
+                      shouldTouch: true,
+                      shouldValidate: true,
+                      shouldDirty: true,
+                    });
                   },
-                )}
-              </span>
+                }}
+                wrapperClassName="mb-8"
+              />
             </div>
-            <FormFormattedInput
-              name="amount"
-              placeholder={formatMessage({ id: 'tokensModal.placeholder' })}
-              customPrefix={
-                nativeToken ? (
-                  <TokenAvatar
-                    size={18}
-                    tokenName={nativeToken.name}
-                    tokenAddress={nativeToken.tokenAddress}
-                    tokenAvatarSrc={nativeToken.avatar ?? undefined}
-                  />
-                ) : undefined
-              }
-              options={{
-                numeralDecimalScale: tokenDecimals,
-                numeralPositiveOnly: true,
-                tailPrefix: true,
-              }}
-              buttonProps={{
-                label: formatText({ id: 'button.max' }) || '',
-                onClick: () => {
-                  setValue('amount', tokenBalanceInEthers, {
-                    shouldTouch: true,
-                    shouldValidate: true,
-                    shouldDirty: true,
-                  });
-                },
-              }}
-              wrapperClassName="mb-8"
-            />
             <div className="flex flex-col-reverse gap-3 sm:flex-row">
               <Button
                 mode="primaryOutline"
@@ -133,7 +136,7 @@ const TokensModal: FC<TokensModalProps> = ({ type, onClose, ...props }) => {
                 />
               )}
             </div>
-          </>
+          </div>
         )}
       </ActionForm>
     </Modal>
