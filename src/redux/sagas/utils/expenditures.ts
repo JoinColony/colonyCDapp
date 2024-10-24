@@ -1,6 +1,6 @@
 import { type AnyColonyClient, type Network, Tokens } from '@colony/colony-js';
 import { BigNumber } from 'ethers';
-import { getAddress } from 'ethers/lib/utils';
+import { getAddress, isAddress } from 'ethers/lib/utils';
 
 import { apolloClient } from '~apollo';
 import { DEV_USDC_ADDRESS, isDev } from '~constants';
@@ -267,7 +267,7 @@ export const adjustRecipientAddress = async (
   const liquidationAddress =
     liquidationAddressData?.bridgeGetUserLiquidationAddress;
 
-  if (!liquidationAddress) {
+  if (!liquidationAddress || !isAddress(liquidationAddress)) {
     return recipientAddress;
   }
 
