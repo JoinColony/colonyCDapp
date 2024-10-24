@@ -48,5 +48,5 @@
     "target": "es2020",
     "types": ["vite/client"]
   },
-  "include": ["src", "playwright.config.ts", "playwright"]
+  "include": ["src", "playwright.config.ts", "playwright/**/*.ts"]
 }
