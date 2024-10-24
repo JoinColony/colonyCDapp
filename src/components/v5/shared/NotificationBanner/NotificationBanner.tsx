@@ -40,7 +40,7 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
           })}
         />
       ) : null}
-      <div className="flex flex-1 flex-col items-start gap-2 @[600px]/notificationBanner:flex-row @[600px]/notificationBanner:items-center">
+      <div className="flex flex-1 flex-col items-start gap-2 @[600px]/notificationBanner:items-center">
         <div className="flex flex-1 flex-col items-start gap-2 text-md break-word">
           {children}
           {description ? (
