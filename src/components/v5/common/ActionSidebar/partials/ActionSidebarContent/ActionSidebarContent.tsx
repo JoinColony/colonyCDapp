@@ -54,6 +54,7 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   isMotion,
+  actionFormProps: { primaryButton },
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -204,7 +205,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
               status="error"
               icon={WarningCircle}
               description={
-                <ul className="list-inside list-disc text-negative-400">
+                <ul className="list-outside list-disc text-negative-400">
                   {flatFormErrors.map(({ key, message }) => (
                     <li key={key}>{message}</li>
                   ))}
@@ -231,6 +232,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
                   }
                 : undefined
             }
+            primaryButton={primaryButton}
           />
         </div>
       )}
@@ -320,6 +322,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             getFormOptions={getFormOptions}
             isMotion={isMotion}
             transactionId={transactionId}
+            actionFormProps={actionFormProps}
           />
         </ActionForm>
       </div>

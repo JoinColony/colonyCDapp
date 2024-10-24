@@ -7,11 +7,13 @@ import { type ColonyAction } from '~types/graphql.ts';
 export interface ActionButtonsProps {
   isActionDisabled?: boolean;
   onSubmitClick?: () => void;
+  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormOptions
   extends Omit<ActionFormProps<any>, 'children' | 'onSuccess'> {
   onSuccess?: () => void;
+  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormBaseProps {
@@ -26,13 +28,15 @@ export type UseActionFormBaseHook = (
     getFormOptions: ActionFormBaseProps['getFormOptions'];
   } & Pick<
     ActionFormOptions,
-    | 'transform'
     | 'actionType'
+    | 'transform'
     | 'defaultValues'
     | 'validationSchema'
     | 'mode'
     | 'reValidateMode'
     | 'onSuccess'
+    | 'id'
+    | 'primaryButton'
   >,
 ) => void;
 

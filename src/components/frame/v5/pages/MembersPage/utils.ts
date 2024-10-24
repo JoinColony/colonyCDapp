@@ -38,7 +38,7 @@ const getRoleInfo = ({
     colonyRoles,
     userAddress: contributorAddress,
     domainId: selectedTeamId || Id.RootDomain,
-    excludeInherited: true,
+    constraint: 'excludeInheritedRoles',
     isMultiSig,
   });
 

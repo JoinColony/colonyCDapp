@@ -56,7 +56,7 @@ export const getCustomPermissionsTableColumns = (
     cell: ({ row }) => (
       <Switch
         readOnly
-        checked={
+        defaultChecked={
           userColonyRoles.find((role) => role === row.original.key) !==
           undefined
         }
