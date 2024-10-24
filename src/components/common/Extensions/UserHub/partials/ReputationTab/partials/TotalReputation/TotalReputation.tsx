@@ -74,7 +74,6 @@ const TotalReputation: FC<TotalReputationProps> = ({
                       : percentageReputation || 0
                   }
                   suffix=" %"
-                  appearance={{ size: 'small' }}
                 />
               )}
             </div>
@@ -83,13 +82,7 @@ const TotalReputation: FC<TotalReputationProps> = ({
         {
           key: '2',
           label: formatText(MSG.reputationPoints),
-          value: (
-            <Numeral
-              value={formattedReputationPoints}
-              suffix=" pts"
-              appearance={{ size: 'small' }}
-            />
-          ),
+          value: <Numeral value={formattedReputationPoints} suffix=" pts" />,
         },
       ]}
     />

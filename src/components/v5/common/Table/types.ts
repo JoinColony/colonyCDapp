@@ -44,4 +44,8 @@ export interface TableProps<T>
   };
   tableClassName?: string;
   tableBodyRowKeyProp?: Extract<keyof T, React.Key>;
+  loadMoreProps?: {
+    canLoadMore: boolean;
+    content: React.ReactNode;
+  };
 }

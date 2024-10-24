@@ -6,10 +6,10 @@ import { defineMessages } from 'react-intl';
 import { type StreamingActionTableFieldModel } from '~frame/v5/pages/StreamingPaymentsPage/partials/StreamingPaymentsTable/types.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import StreamingPaymentStatusPill from '~v5/common/ActionSidebar/partials/StreamingPaymentStatusPill/StreamingPaymentStatusPill.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
-import StatusPill from '../StatusPill/StatusPill.tsx';
 import TeamField from '../TeamField/TeamField.tsx';
 
 interface StreamingActionMobileItemProps {
@@ -46,7 +46,7 @@ const StreamingActionMobileItem: FC<StreamingActionMobileItemProps> = ({
   getMenuProps,
 }) => {
   const {
-    original: { amount, nativeDomainId, token, paymentId },
+    original: { amount, nativeDomainId, token, status },
   } = actionRow;
 
   const meatBallMenuProps = getMenuProps(actionRow);
@@ -93,7 +93,7 @@ const StreamingActionMobileItem: FC<StreamingActionMobileItemProps> = ({
           {formatText(MSG.status, {
             status: (
               <span className={clsx(textClassName, 'text-gray-600')}>
-                <StatusPill paymentId={paymentId} />
+                <StreamingPaymentStatusPill status={status} />
               </span>
             ),
             p: renderLabel,

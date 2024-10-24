@@ -1,7 +1,14 @@
 import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
-import { type SortingState, type Row } from '@tanstack/react-table';
+import { ArrowCircleDown } from '@phosphor-icons/react/dist/ssr/ArrowCircleDown';
+import {
+  type SortingState,
+  type Row,
+  getSortedRowModel,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
+import { defineMessages } from 'react-intl';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
@@ -25,14 +32,30 @@ import {
 
 import { useStreamingActionsTableColumns } from './hooks.tsx';
 import useRenderSubComponent from './partials/StreamingActionMobileItem/hooks.tsx';
+import useRenderRowLink from './useRenderRowLink.tsx';
+
+const displayName =
+  'pages.StreamingPaymentsPage.partials.StreamingActionsTable.StreamingActionsTable';
+
+const MSG = defineMessages({
+  loadMoreStreams: {
+    id: `${displayName}.loadMoreStreams`,
+    defaultMessage: 'Load more streams',
+  },
+});
 
 interface StreamingActionsTableProps {
   actionRow: Row<StreamingTableFieldModel>;
+  isLoading: boolean;
 }
+
+const ACTION_TO_SHOW = 5;
 
 const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
   actionRow,
+  isLoading,
 }) => {
+  const [showedActions, setShowedActions] = useState(ACTION_TO_SHOW);
   const {
     colony: { name: colonyName },
   } = useColonyContext();
@@ -85,20 +108,49 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
   const renderSubComponent = useRenderSubComponent({
     getMenuProps,
   });
+  const renderRowLink = useRenderRowLink(isLoading);
+
+  const actionsToShow = original.actions.slice(0, showedActions);
+  const handleLoadMore = () => {
+    setShowedActions(showedActions + ACTION_TO_SHOW);
+  };
+  const canLoadMore = original.actions.length > showedActions;
 
   return (
     <Table<StreamingActionTableFieldModel>
-      data={original.actions}
+      data={isLoading ? [] : actionsToShow}
       columns={columns}
+      renderCellWrapper={isMobile ? undefined : renderRowLink}
       className={clsx(
-        '[&_td:first-child]:!pl-0 [&_td]:border-b [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td]:border-none',
+        '[&_td:first-child]:!pl-0 [&_td>a]:px-[1.125rem] [&_td>a]:py-2 [&_td>div]:px-[1.125rem] [&_td>div]:py-2 [&_td]:border-b  [&_td]:border-gray-100 [&_td]:!pr-0 [&_th:not(:first-child)]:sm:text-center [&_th]:!rounded-none [&_th]:!border-b [&_th]:!border-solid [&_th]:border-gray-200 [&_tr.expanded-below_td]:border-none sm:[&_tr:hover]:bg-gray-25 [&_tr:last-child_td]:border-none',
         {
           '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_th:not(:first-child)]:pl-0':
             !isTablet,
+          '[&_tr:nth-last-child(2)_td]:border-none': canLoadMore,
         },
       )}
       enableSortingRemoval={false}
+      enableSorting
+      loadMoreProps={{
+        canLoadMore,
+        content: (
+          <button
+            type="button"
+            onClick={handleLoadMore}
+            className="flex h-full w-full items-center justify-center gap-1 transition-colors text-3 hover:text-blue-400"
+          >
+            <ArrowCircleDown size={16} />
+            {formatText(MSG.loadMoreStreams)}
+          </button>
+        ),
+      }}
+      initialState={{
+        pagination: {
+          pageSize: 10000,
+        },
+      }}
       state={{
+        sorting,
         columnVisibility: isMobile
           ? {
               title: true,
@@ -111,14 +163,18 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
           : {
               expander: false,
             },
-        sorting,
       }}
+      getRowId={(row) => row.transactionId}
       getMenuProps={getMenuProps}
       onSortingChange={setSorting}
+      getSortedRowModel={getSortedRowModel()}
+      getPaginationRowModel={getPaginationRowModel()}
       renderSubComponent={renderSubComponent}
       tableClassName="border-none"
     />
   );
 };
+
+StreamingActionsTable.displayName = displayName;
 
 export default StreamingActionsTable;
