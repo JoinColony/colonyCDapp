@@ -14,6 +14,9 @@ export const getReleaseDecisionMethodDescriptions = (
       permission: userRole,
     },
   ),
+  [DecisionMethod.Reputation]: formatText({
+    id: 'releaseModal.reputationDescription',
+  }),
   [DecisionMethod.PaymentCreator]: formatText({
     id: 'releaseModal.paymentCreatorDescription',
   }),
