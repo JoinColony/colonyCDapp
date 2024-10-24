@@ -5,7 +5,6 @@ import { FormattedDate, defineMessages } from 'react-intl';
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
 import StatusText from '~v5/shared/StatusText/StatusText.tsx';
@@ -63,9 +62,7 @@ const formatDate = (value: string | undefined) => {
   );
 };
 
-const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
-  const { action } = useGetColonyAction(transactionId);
-
+const PermissionSidebar: FC<PermissionSidebarProps> = ({ action }) => {
   const { initiatorAddress, createdAt } = action || {};
 
   const formattedDate = formatDate(createdAt);
@@ -94,19 +91,17 @@ const PermissionSidebar: FC<PermissionSidebarProps> = ({ transactionId }) => {
                 })}
               </h4>
               {initiatorAddress && (
-                <div className="mt-2 flex items-center gap-2">
+                <div className="mt-2 flex items-center justify-between">
                   <span className="text-sm text-gray-600">
                     {formatText({
                       id: 'action.executed.permissions.member',
                     })}
                   </span>
-                  <div className="ml-auto">
-                    <UserPopover
-                      size={20}
-                      textClassName="text-sm"
-                      walletAddress={initiatorAddress || ''}
-                    />
-                  </div>
+                  <UserPopover
+                    size={20}
+                    textClassName="text-sm"
+                    walletAddress={initiatorAddress || ''}
+                  />
                 </div>
               )}
               {initiatorAddress && (
