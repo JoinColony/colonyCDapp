@@ -88,6 +88,6 @@ exports.handler = async (event) => {
     console.error(
       `bridgeXYZMutation handler ${handler.name} failed with error: ${error}`,
     );
-    return { success: false };
+    return null;
   }
 };
