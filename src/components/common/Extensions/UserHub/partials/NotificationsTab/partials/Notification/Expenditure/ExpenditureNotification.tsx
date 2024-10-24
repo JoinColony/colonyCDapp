@@ -9,6 +9,7 @@ import {
   useGetExpenditureQuery,
   ColonyActionType,
 } from '~gql';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
@@ -34,6 +35,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   loadingColony,
   notification,
 }) => {
+  const { networkInverseFee } = useNetworkInverseFee();
   const navigate = useNavigate();
 
   const {
@@ -144,6 +146,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
           metadata: colony.metadata,
         },
         expenditureData: expenditure ?? undefined,
+        networkInverseFee,
       }),
     );
   }, [action, expenditure, colony]);

@@ -8,6 +8,7 @@ import {
   useGetColonyActionQuery,
   useGetUserByAddressQuery,
 } from '~gql';
+import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
@@ -33,6 +34,7 @@ const ActionNotification: FC<NotificationProps> = ({
   loadingColony,
   notification,
 }) => {
+  const { networkInverseFee } = useNetworkInverseFee();
   const navigate = useNavigate();
 
   const { creator, notificationType, transactionHash } =
@@ -80,6 +82,7 @@ const ActionNotification: FC<NotificationProps> = ({
           },
           metadata: colony.metadata,
         },
+        networkInverseFee,
       }),
     );
   }, [action, colony]);
