@@ -7,14 +7,13 @@ import UserHubInfoSection from '~common/Extensions/UserHub/partials/UserHubInfoS
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { currencySymbolMap } from '~constants/currency.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
+import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
 import { formatText } from '~utils/intl.ts';
 // @todo: uncomment and update when claim all streams functionality will be implemented
 // import Button from '~v5/shared/Button/Button.tsx';
 // import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 
 import AvailableToClaimCounter from '../AvailableToClaimCounter/AvailableToClaimCounter.tsx';
-
-import { useStreamingPaymentsTotalFunds } from './hooks.ts';
 
 const displayName =
   'common.Extensions.UserHub.partials.BalanceTab.partials.StreamsInfoRow';
