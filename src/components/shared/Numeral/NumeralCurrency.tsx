@@ -3,7 +3,7 @@ import React from 'react';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 
-import { getFormattedNumeralValue } from './helpers.tsx';
+import { getFormattedCurrencyValue } from './helpers.tsx';
 import numbroLanguage from './numbroLanguage.ts';
 import { NumeralBase } from './NumeralBase.tsx';
 import { type NumeralProps } from './types.ts';
@@ -12,9 +12,9 @@ import { type NumeralProps } from './types.ts';
 numbro.registerLanguage(numbroLanguage);
 numbro.setLanguage('en-GB');
 
-const displayName = 'Numeral';
+const displayName = 'NumeralCurrency';
 
-const Numeral = ({
+const NumeralCurrency = ({
   value,
   decimals,
   prefix,
@@ -24,11 +24,11 @@ const Numeral = ({
 }: NumeralProps) => {
   const convertedValue = convertToDecimal(value, decimals || 0);
 
-  const formattedValue = getFormattedNumeralValue(convertedValue, value);
+  const formattedValue = getFormattedCurrencyValue(convertedValue, value);
 
   return (
     <NumeralBase
-      prefix={prefix && `${prefix} `}
+      prefix={prefix}
       suffix={suffix}
       className={className}
       {...rest}
@@ -38,6 +38,6 @@ const Numeral = ({
   );
 };
 
-Numeral.displayName = displayName;
+NumeralCurrency.displayName = displayName;
 
-export default Numeral;
+export { NumeralCurrency };

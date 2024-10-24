@@ -12,6 +12,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import Numeral from '~shared/Numeral/Numeral.tsx';
+import { NumeralCurrency } from '~shared/Numeral/NumeralCurrency.tsx';
 
 export interface UserStreamsItem {
   amount: string;
@@ -23,9 +24,10 @@ interface UserStreamsProps {
   items: {
     [tokenAddress: string]: UserStreamsItem;
   };
+  toggleExpanded: (expanded?: boolean | undefined) => void;
 }
 
-const UserStreams: FC<UserStreamsProps> = ({ items }) => {
+const UserStreams: FC<UserStreamsProps> = ({ items, toggleExpanded }) => {
   const { currency } = useCurrencyContext();
   const { colony } = useColonyContext();
   const [calculatedAmountPerToken, setCalculatedAmountPerToken] = useState<{
@@ -82,38 +84,50 @@ const UserStreams: FC<UserStreamsProps> = ({ items }) => {
   const shouldShowTooltip = calculatedAmountArray.length > 0;
   const content = (
     <div className="flex w-full items-center justify-end gap-[0.125rem] text-1">
-      {currency} <Numeral value={totalFunds} /> {' /month'}
+      {currency} <NumeralCurrency value={totalFunds} /> {' /month'}
     </div>
   );
 
   return totalFunds ? (
     <>
       {shouldShowTooltip ? (
-        <Tooltip
-          placement="bottom"
-          tooltipContent={
-            <span>
-              {tokenTotals.map(
-                ({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
-                  <span key={tokenSymbol}>
-                    <Numeral value={amount} decimals={tokenDecimals} />{' '}
-                    {tokenSymbol} {' /month'} (
-                    <Numeral
-                      value={calculatedAmountPerToken[tokenAddress] || '0'}
-                    />{' '}
-                    {currency}
-                    )
-                    <br />
-                  </span>
-                ),
-              )}
-            </span>
-          }
+        <button
+          type="button"
+          onClick={() => toggleExpanded()}
+          className="h-full w-full pr-4"
+        >
+          <Tooltip
+            placement="bottom"
+            tooltipContent={
+              <span>
+                {tokenTotals.map(
+                  ({ amount, tokenSymbol, tokenDecimals, tokenAddress }) => (
+                    <span key={tokenSymbol}>
+                      <Numeral value={amount} decimals={tokenDecimals} />{' '}
+                      {tokenSymbol} {' /month'} (
+                      <NumeralCurrency
+                        value={calculatedAmountPerToken[tokenAddress] || '0'}
+                      />{' '}
+                      {currency}
+                      )
+                      <br />
+                    </span>
+                  ),
+                )}
+              </span>
+            }
+          >
+            {content}
+          </Tooltip>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => toggleExpanded()}
+          className="h-full w-full pr-4"
         >
           {content}
-        </Tooltip>
-      ) : (
-        <div>{content}</div>
+        </button>
       )}
     </>
   ) : (

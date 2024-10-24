@@ -48,6 +48,7 @@ const Table = <T,>({
   tableClassName,
   tableBodyRowKeyProp,
   footerColSpan,
+  loadMoreProps,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -382,6 +383,16 @@ const Table = <T,>({
                     </React.Fragment>
                   );
                 })
+              )}
+              {loadMoreProps && loadMoreProps.canLoadMore && (
+                <tr className="loadMore">
+                  <td
+                    colSpan={totalColumnsCount}
+                    className="h-full px-[1.1rem] pb-5 pt-2.5 text-center"
+                  >
+                    {loadMoreProps.content}
+                  </td>
+                </tr>
               )}
             </tbody>
           </>

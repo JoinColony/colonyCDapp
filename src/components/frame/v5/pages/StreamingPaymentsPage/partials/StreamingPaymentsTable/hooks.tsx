@@ -44,19 +44,26 @@ export const useStreamingTableColumns = (loading: boolean) => {
         enableSorting: false,
         header: () => null,
         cell: ({ row }) => (
-          <UserField address={row.original.user} isLoading={loading} />
+          <UserField
+            address={row.original.user}
+            isLoading={loading}
+            toggleExpanded={row.toggleExpanded}
+          />
         ),
       }),
       helper.display({
         id: 'amount',
-        staticSize: '8.5rem',
+        staticSize: '13rem',
         enableSorting: false,
         header: () => null,
         cell: ({ row }) =>
           loading ? (
             <div className="h-5 w-10 skeleton" />
           ) : (
-            <UserStreams items={row.original.tokenTotalsPerMonth} />
+            <UserStreams
+              items={row.original.tokenTotalsPerMonth}
+              toggleExpanded={row.toggleExpanded}
+            />
           ),
       }),
       helper.display({
@@ -68,7 +75,11 @@ export const useStreamingTableColumns = (loading: boolean) => {
           loading ? (
             <div className="h-4 w-4 skeleton" />
           ) : (
-            <button type="button" onClick={() => toggleExpanded()}>
+            <button
+              type="button"
+              onClick={() => toggleExpanded()}
+              className="flex h-full w-full items-center"
+            >
               <CaretDown
                 size={18}
                 className={clsx('transition', {
