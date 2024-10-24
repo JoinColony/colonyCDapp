@@ -306,6 +306,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
         expenditure={expenditure}
         onClose={toggleCancelModalOff}
         refetchExpenditure={refetchExpenditure}
+        isActionStaked={expenditure.isStaked}
       />
     </>
   );
