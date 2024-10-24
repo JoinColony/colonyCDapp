@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { type Page } from '@playwright/test';
 
 export const acceptCookieConsentBanner = async (page: Page) => {
@@ -11,8 +10,5 @@ export const acceptCookieConsentBanner = async (page: Page) => {
     const acceptButton = page.locator('#ez-cookie-notification__accept');
 
     await acceptButton.click();
-    console.log('Cookie banner accepted');
-  } else {
-    console.log('No cookie banner found');
   }
 };
