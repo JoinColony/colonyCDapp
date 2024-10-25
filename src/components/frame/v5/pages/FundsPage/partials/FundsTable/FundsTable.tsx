@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-table';
 import React, { type FC } from 'react';
 
+import { IncomingFundsLoadingContextProvider } from '~frame/v5/pages/FundsPage/context/IncomingFundsLoadingContextProvider.tsx';
 import { useMobile } from '~hooks';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
@@ -32,7 +33,7 @@ const FundsTable: FC = () => {
   );
 
   return (
-    <>
+    <IncomingFundsLoadingContextProvider>
       <TableHeader title={formatText({ id: 'incomingFundsPage.table.title' })}>
         <div className="flex items-center gap-2">
           {!isMobile &&
@@ -107,7 +108,7 @@ const FundsTable: FC = () => {
           )
         }
       />
-    </>
+    </IncomingFundsLoadingContextProvider>
   );
 };
 

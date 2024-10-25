@@ -1,6 +1,7 @@
 import React, { type FC, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useIncomingFundsLoadingContext } from '~frame/v5/pages/FundsPage/context/IncomingFundsLoadingContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mergePayload } from '~utils/actions.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
@@ -23,6 +24,9 @@ const AcceptButton: FC<AcceptButtonProps> = ({
   } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
 
+  const { isAcceptLoading, enableAcceptLoading, disableAcceptLoading } =
+    useIncomingFundsLoadingContext();
+
   const transform = mergePayload({
     colonyAddress: colony?.colonyAddress,
     tokenAddresses,
@@ -32,6 +36,11 @@ const AcceptButton: FC<AcceptButtonProps> = ({
     setIsClaimed(true);
     startPollingColonyData(1_000);
     setTimeout(stopPollingColonyData, 10_000);
+    disableAcceptLoading();
+  };
+
+  const getPayload = () => {
+    enableAcceptLoading();
   };
 
   return (
@@ -40,9 +49,13 @@ const AcceptButton: FC<AcceptButtonProps> = ({
       actionType={ActionTypes.CLAIM_TOKEN}
       transform={transform}
       onSuccess={handleClaimSuccess}
-      disabled={disabled || !canInteractWithColony || isClaimed}
+      onError={disableAcceptLoading}
+      disabled={
+        disabled || !canInteractWithColony || isClaimed || isAcceptLoading
+      }
       mode="primarySolid"
       size="small"
+      values={getPayload}
     >
       {children}
     </ActionButton>
