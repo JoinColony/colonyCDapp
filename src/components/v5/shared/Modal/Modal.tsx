@@ -63,9 +63,9 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
       withPaddingBottom={withPaddingBottom}
     >
       <div
-        className={`${styles.modalContentWrapper} overflow-y-auto overflow-x-hidden`}
+        className={`${styles.modalContentWrapper} min-h-full overflow-y-auto overflow-x-hidden`}
       >
-        <div ref={contentRef} className="relative">
+        <div ref={contentRef} className="relative flex min-h-full flex-col">
           {Icon && (
             <span
               className={clsx(
@@ -92,7 +92,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           />
           <div
             className={clsx(
-              'flex w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
+              'flex h-full w-full flex-grow flex-col [-webkit-overflow-scrolling:touch]',
               {
                 'pr-6': withPadding,
                 'pb-6': withPadding && !withPaddingBottom,
