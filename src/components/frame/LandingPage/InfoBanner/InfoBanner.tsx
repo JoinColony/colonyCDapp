@@ -1,42 +1,10 @@
 import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC } from 'react';
+import React from 'react';
 
-import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { formatText } from '~utils/intl.ts';
 
-interface LoadingInfoBannerProps {
-  containerClassNames: string;
-  contentClassNames: string;
-}
-
-const LoadingInfoBanner: FC<LoadingInfoBannerProps> = ({
-  containerClassNames,
-  contentClassNames,
-}) => {
-  return (
-    <div className={clsx(containerClassNames, 'border-gray-200')}>
-      <LoadingSkeleton
-        isLoading
-        className="h-[1.625rem] w-[7.5rem] rounded-3xl"
-      />
-      <div className={contentClassNames}>
-        <LoadingSkeleton className="h-5 w-5 rounded-3xl" isLoading />
-        <LoadingSkeleton className="h-[1.75rem] w-[7.5rem] rounded" isLoading />
-      </div>
-      <div>
-        <LoadingSkeleton
-          className="mb-[.5625rem] h-[.6875rem] w-full rounded"
-          isLoading
-        />
-        <LoadingSkeleton
-          className="h-[.6875rem] w-full max-w-[23.3125rem] rounded"
-          isLoading
-        />
-      </div>
-    </div>
-  );
-};
+import LoadingInfoBanner from './LoadingInfoBanner.tsx';
 
 export interface InfoBannerProps {
   variant?: 'info' | 'success' | 'error';
@@ -46,7 +14,7 @@ export interface InfoBannerProps {
   text: string;
 }
 
-const displayName = 'frame.LandingPage';
+const displayName = 'frame.LandingPage.InfoBanner';
 
 const InfoBanner = ({
   variant = 'info',
@@ -56,7 +24,7 @@ const InfoBanner = ({
   text,
 }: InfoBannerProps) => {
   const containerClassNames = 'rounded-lg border p-6';
-  const contentClassNames = 'flex items-center gap-[.375rem] pb-2 pt-3';
+  const contentClassNames = 'flex items-center gap-1.5 pb-2 pt-3';
 
   if (loading) {
     return (
@@ -104,7 +72,7 @@ const InfoBanner = ({
         )}
         <h1 className="heading-5">{title}</h1>
       </div>
-      <p className="text-3">{text}</p>
+      <p className="text-gray-700 text-3">{text}</p>
     </div>
   );
 };
