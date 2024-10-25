@@ -11,12 +11,12 @@ const {
   getToken,
 } = require('./schemas.js');
 
-const EnvVarsSetupFactory = require('../../config/envVars.js');
+const EnvVarsConfig = require('../../config/envVars.js');
 
 const { acceptedColonyActionTypes } = require('../../utils.js');
 
 const graphqlRequest = async (queryOrMutation, variables) => {
-  const { apiKey, graphqlURL } = await EnvVarsSetupFactory.getEnvVars();
+  const { apiKey, graphqlURL } = await EnvVarsConfig.getEnvVars();
   const options = {
     method: 'POST',
     headers: {
