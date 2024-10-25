@@ -63,7 +63,7 @@ const LandingPageCarousel = () => {
       <div className="w-full max-w-[31.25rem] md:hidden">
         <img className="h-auto w-full" src={SlideMobile} alt="slider mobile" />
       </div>
-      <div className="hidden w-full max-w-[31.25rem] overflow-hidden md:block">
+      <div className="hidden w-full max-w-[31.25rem] md:block">
         <div className="relative mb-9 h-[7.25rem]">
           {slides.map((slide, index) => {
             const isCurrentSlide = currentSlide === index;
