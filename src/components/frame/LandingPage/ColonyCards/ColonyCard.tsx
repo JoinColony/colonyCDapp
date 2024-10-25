@@ -33,11 +33,14 @@ export const ColonyCard = ({
       />
     }
   >
-    <p className="text-md font-medium">{colonyName}</p>
-    <p className="text-xs font-normal">
+    <p className="flex-1 truncate text-ellipsis text-md font-medium">
+      {colonyName}
+    </p>
+    <p className="max-w-[150px] justify-self-end truncate text-ellipsis text-xs font-normal">
       <FormattedMessage
         {...MSG.members}
         values={{ members: membersCount.toLocaleString('en-US') }}
+        {...(membersCount === 1 ? { defaultMessage: '1 Member' } : {})}
       />
     </p>
   </BaseColonyCard>
