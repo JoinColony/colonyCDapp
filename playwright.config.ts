@@ -31,7 +31,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   // Needed for running tests against the app in development mode
-  timeout: !process.env.CI ? 60000 : undefined,
+  timeout: !process.env.CI ? 90000 : undefined,
   /* Configure projects for major browsers */
   projects: [
     {

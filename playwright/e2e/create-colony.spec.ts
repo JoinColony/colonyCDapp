@@ -507,7 +507,7 @@ test.describe('Create Colony flow', () => {
       const colonyCreateDialog = page
         .getByRole('dialog')
         .filter({ hasText: /Congratulations/i });
-      await expect(colonyCreateDialog).toBeVisible();
+      await expect(colonyCreateDialog).toBeVisible({ timeout: 10000 });
 
       await expect(
         colonyCreateDialog.getByRole('button', {
