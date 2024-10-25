@@ -30,7 +30,9 @@ export const useEmblaCarouselSettings = (options, autoplay) => {
   }, []);
 
   const onSelect = useCallback((embla: EmblaCarouselType) => {
+    const emblaAutoplay = emblaApi?.plugins().autoplay;
     setSelectedIndex(embla.selectedScrollSnap());
+    emblaAutoplay?.reset();
   }, []);
 
   useEffect(() => {
