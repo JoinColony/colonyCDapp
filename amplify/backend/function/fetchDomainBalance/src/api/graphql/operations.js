@@ -50,7 +50,7 @@ const getAllPages = async (getData, params) => {
   let nextToken = null;
 
   do {
-    const actionsData = await getData({ ...params, nextToken });
+    const actionsData = await getData({ ...params, nextToken, limit: 1000 });
     nextToken = actionsData?.nextToken;
     if (actionsData?.items) {
       items.push(...actionsData.items);
