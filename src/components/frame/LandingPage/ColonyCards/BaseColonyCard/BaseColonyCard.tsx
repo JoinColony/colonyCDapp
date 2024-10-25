@@ -3,7 +3,12 @@ import React, { type PropsWithChildren } from 'react';
 
 const displayName = 'frame.LandingPage.ColonyCards.BaseColonyCard';
 
-export interface BaseColonyCardProps extends PropsWithChildren {
+export interface BaseColonyCardProps
+  extends PropsWithChildren,
+    React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLDivElement>,
+      HTMLDivElement
+    > {
   avatarPlaceholder: React.ReactNode;
   isClickable?: boolean;
 }
@@ -11,19 +16,23 @@ const BaseColonyCard = ({
   isClickable,
   avatarPlaceholder,
   children,
+  ...props
 }: BaseColonyCardProps) => (
   <div
+    {...props}
     className={clsx(
-      'flex h-[4.5rem] items-center gap-[.875rem] rounded border px-5 py-4 transition-colors duration-normal',
+      'flex h-[4.5rem] items-center justify-between gap-[.875rem] rounded border px-5 py-4 transition-colors duration-normal',
       {
-        'hover:border-gray-900': isClickable,
+        'cursor-pointer hover:border-gray-900': isClickable,
       },
     )}
   >
-    <div className="flex h-8 w-8 items-center justify-center">
-      {avatarPlaceholder}
+    <div>
+      <div className="flex h-8 w-8 items-center justify-center">
+        {avatarPlaceholder}
+      </div>
     </div>
-    <div className="flex w-full items-center justify-between">{children}</div>
+    {children}
   </div>
 );
 
