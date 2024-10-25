@@ -89,7 +89,8 @@
           },
           "arn:aws:lambda:eu-west-2:133256977650:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4"
         ],
-        "Timeout": 300
+        "Timeout": 300,
+        "MemorySize": 256
       }
     },
     "LambdaExecutionRole": {
