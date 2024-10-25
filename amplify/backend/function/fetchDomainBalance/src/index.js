@@ -5,13 +5,13 @@ const {
   utils: { Logger },
 } = require('ethers');
 const { getPeriodFor } = require('./utils');
-const ExchangeRatesFactory = require('./config/exchangeRates');
 const {
   getInOutActions,
   getTokensDatesMap,
   filterActionsWithinTimeframe,
   groupBalanceByPeriod,
 } = require('./services/actions');
+const ExchangeRatesService = require('./services/exchangeRates');
 const { getTotalFiatAmountFor } = require('./services/tokens');
 Logger.setLogLevel(Logger.levels.ERROR);
 
@@ -50,7 +50,7 @@ exports.handler = async (event) => {
       inOutActionsWithinTimeframe,
       domainId,
     );
-    const exchangeRates = await ExchangeRatesFactory.getExchangeRates(
+    const exchangeRates = await ExchangeRatesService.getExchangeRates(
       getTokensDatesMap(inOutActionsWithinTimeframe),
       selectedCurrency,
       chainId,

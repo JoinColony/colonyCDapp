@@ -1,4 +1,4 @@
-const CoinGeckoConfig = require('./coinGeckoConfig');
+const CoinGeckoConfig = require('../config/coinGeckoConfig');
 const { getFiatExchangeRate } = require('../api/rest/getFiatExchangeRate');
 const { getTokensList } = require('../api/rest/getTokensList');
 const {
@@ -13,7 +13,7 @@ const ADDRESS_ZERO = ethersConstants.AddressZero;
 
 const isDev = process.env.ENV === 'dev';
 
-const ExchangeRatesFactory = (() => {
+const ExchangeRatesService = (() => {
   const exchangeRates = {};
 
   const saveEntryToDB = async ({ tokenId, date, marketPrice }) => {
@@ -195,4 +195,4 @@ const ExchangeRatesFactory = (() => {
   };
 })();
 
-module.exports = ExchangeRatesFactory;
+module.exports = ExchangeRatesService;
