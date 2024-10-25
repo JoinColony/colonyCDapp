@@ -14,6 +14,8 @@ import Toast from '~shared/Extensions/Toast/Toast.tsx';
 import { type BridgeBankAccount } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { SEPARATOR_REGEX } from '../BankDetailsForm/constants.ts';
+
 const displayName = 'v5.pages.UserCryptoToFiatPage.partials.BankDetailsModal';
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -101,8 +103,8 @@ export const useBankDetailsFields = ({
         currency === CURRENCY_VALUES[SupportedCurrencies.Eur]
           ? {
               // eslint-disable-next-line camelcase
-              account_number: iban,
-              bic: swift,
+              account_number: iban.replace(SEPARATOR_REGEX, ''),
+              bic: swift.replace(SEPARATOR_REGEX, ''),
               country,
             }
           : undefined,
@@ -110,9 +112,9 @@ export const useBankDetailsFields = ({
         currency === CURRENCY_VALUES[SupportedCurrencies.Usd]
           ? {
               // eslint-disable-next-line camelcase
-              account_number: accountNumber,
+              account_number: accountNumber.replace(SEPARATOR_REGEX, ''),
               // eslint-disable-next-line camelcase
-              routing_number: routingNumber,
+              routing_number: routingNumber.replace(SEPARATOR_REGEX, ''),
             }
           : undefined,
       address:

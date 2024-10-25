@@ -8,7 +8,8 @@ import { capitalizeFirstLetter } from '~utils/strings.ts';
 import {
   BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS,
   BANK_DETAILS_FORM_MSG,
-  BIC_REGEX,
+  ALPHANUMERIC_WITH_SEPARATORS_REGEX,
+  SEPARATOR_REGEX,
   IBAN_REGEX,
 } from './constants.ts';
 
@@ -23,7 +24,10 @@ export enum BankDetailsFields {
   ROUTING_NUMBER = 'routingNumber',
 }
 
-const { accountNumber, routingNumber } = BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS;
+const { accountNumber, routingNumber, swift } =
+  BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS;
+
+const stripSeparators = (value: string) => value.replace(SEPARATOR_REGEX, '');
 
 export const validationSchema = object({
   [BankDetailsFields.ACCOUNT_OWNER]: string().required(
@@ -53,8 +57,22 @@ export const validationSchema = object({
         }),
       )
       .matches(
-        IBAN_REGEX,
+        ALPHANUMERIC_WITH_SEPARATORS_REGEX,
+        formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+      )
+      .test(
+        'is-valid-iban',
         formErrorMessage(BANK_DETAILS_FORM_MSG.ibanLabel, 'invalid'),
+        (value) => {
+          if (!value) {
+            return false;
+          }
+
+          // Strip separators before validating
+          const cleanedValue = stripSeparators(value);
+
+          return IBAN_REGEX.test(cleanedValue);
+        },
       ),
     otherwise: string().notRequired(),
   }),
@@ -67,8 +85,22 @@ export const validationSchema = object({
         }),
       )
       .matches(
-        BIC_REGEX,
+        ALPHANUMERIC_WITH_SEPARATORS_REGEX,
+        formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+      )
+      .test(
+        'is-valid-swift',
         formErrorMessage(BANK_DETAILS_FORM_MSG.swiftLabel, 'invalid'),
+        (value) => {
+          if (!value) {
+            return false;
+          }
+
+          // Strip separators before validating
+          const cleanedValue = stripSeparators(value);
+
+          return swift.lengths.includes(cleanedValue.length);
+        },
       ),
     otherwise: string().notRequired(),
   }),
@@ -83,7 +115,11 @@ export const validationSchema = object({
           }),
         )
         .matches(
-          /^[0-9]+$/,
+          ALPHANUMERIC_WITH_SEPARATORS_REGEX,
+          formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+        )
+        .test(
+          'is-valid-account-number',
           capitalizeFirstLetter(
             formErrorMessage(
               BANK_DETAILS_FORM_MSG.accountNumberLabel,
@@ -91,22 +127,19 @@ export const validationSchema = object({
             ),
             { lowerCaseRemainingLetters: true },
           ),
-        )
-        .min(
-          accountNumber.min,
-          formErrorMessage(
-            BANK_DETAILS_FORM_MSG.accountNumberLabel,
-            'min',
-            accountNumber.min,
-          ),
-        )
-        .max(
-          accountNumber.max,
-          formErrorMessage(
-            BANK_DETAILS_FORM_MSG.accountNumberLabel,
-            'max',
-            accountNumber.max,
-          ),
+          (value) => {
+            if (!value) {
+              return false;
+            }
+
+            // Strip separators before validating
+            const cleanedValue = stripSeparators(value);
+
+            return (
+              cleanedValue.length >= accountNumber.min &&
+              cleanedValue.length <= accountNumber.max
+            );
+          },
         ),
       otherwise: string().notRequired(),
     },
@@ -122,7 +155,11 @@ export const validationSchema = object({
           }),
         )
         .matches(
-          /^[0-9]+$/,
+          ALPHANUMERIC_WITH_SEPARATORS_REGEX,
+          formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+        )
+        .test(
+          'is-valid-routing-number',
           capitalizeFirstLetter(
             formErrorMessage(
               BANK_DETAILS_FORM_MSG.routingNumberLabel,
@@ -130,14 +167,16 @@ export const validationSchema = object({
             ),
             { lowerCaseRemainingLetters: true },
           ),
-        )
-        .length(
-          routingNumber.length,
-          formErrorMessage(
-            BANK_DETAILS_FORM_MSG.routingNumberLabel,
-            'length',
-            routingNumber.length,
-          ),
+          (value) => {
+            if (!value) {
+              return false;
+            }
+
+            // Strip separators before validating
+            const cleanedValue = stripSeparators(value);
+
+            return cleanedValue.length === routingNumber.length;
+          },
         ),
       otherwise: string().notRequired(),
     },
