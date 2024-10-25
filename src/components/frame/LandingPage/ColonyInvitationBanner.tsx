@@ -5,9 +5,9 @@ import {
   Check,
 } from '@phosphor-icons/react';
 import React from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
-import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 const displayName = 'frame.LandingPage';
@@ -16,6 +16,30 @@ export interface ColonyInvitationBannerProps {
   inviteLink: string;
   coloniesRemaining: number;
 }
+
+const MSG = defineMessages({
+  title: {
+    id: `${displayName}.title`,
+    defaultMessage: `Early access colony invitations`,
+  },
+  remaining: {
+    id: `${displayName}.remaining`,
+    defaultMessage: `{remaining} colonies remaining`,
+  },
+  descriptionRemaining: {
+    id: `${displayName}.descriptionRemaining`,
+    defaultMessage: `As a part of the early access, creating a colony is limited to invites only. You can use the invites yourself or share with others.`,
+  },
+  descriptionNoRemaining: {
+    id: `${displayName}.descriptionNoRemaining`,
+    defaultMessage: `During early access, creating a colony is limited to invites only. You have no colony creation invites remaining. You can request additional invites.`,
+  },
+  copyButton: {
+    id: `${displayName}.copyButton`,
+    defaultMessage: `Copy link`,
+  },
+});
+
 const ColonyInvitationBanner = ({
   inviteLink,
   coloniesRemaining,
@@ -30,26 +54,28 @@ const ColonyInvitationBanner = ({
         <SmileySticker size={24} />
       </div>
       <h1 className="my-2.5 heading-4">
-        {formatText({ id: 'landingPage.invitationBanner.title' })}
+        <FormattedMessage {...MSG.title} />
       </h1>
       <span className="rounded-xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400">
-        {formatText(
-          { id: 'landingPage.invitationBanner.remaining' },
-          { remaining: coloniesRemaining },
-        )}
+        <FormattedMessage
+          {...MSG.remaining}
+          values={{ remaining: coloniesRemaining }}
+        />
       </span>
 
       <p className="mt-2 text-sm font-normal text-gray-700">
-        {formatText({
-          id: hasColoniesRemaining
-            ? 'landingPage.invitationBanner.descriptionRemaining'
-            : 'landingPage.invitationBanner.descriptionNoRemaining',
-        })}
+        <FormattedMessage
+          {...(hasColoniesRemaining
+            ? MSG.descriptionRemaining
+            : MSG.descriptionNoRemaining)}
+        />
       </p>
       {hasColoniesRemaining && (
         <div className="mt-2 flex flex-col gap-2 rounded-md bg-gray-50 px-3 py-3">
           <div className="flex items-center gap-2">
-            <Ticket size={18} />
+            <div>
+              <Ticket size={18} />
+            </div>
             <p className="truncate text-ellipsis text-md font-normal">
               {inviteLink}
             </p>
@@ -59,7 +85,7 @@ const ColonyInvitationBanner = ({
             mode="primaryOutline"
             onClick={() => handleClipboardCopy(inviteLink)}
           >
-            {formatText({ id: 'landingPage.invitationBanner.copyButton' })}
+            <FormattedMessage {...MSG.copyButton} />
           </Button>
         </div>
       )}
