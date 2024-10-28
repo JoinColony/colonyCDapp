@@ -41,7 +41,6 @@ const FiatTransfersTable = () => {
   const { formatMessage } = useIntl();
   const [sorting, setSorting] = useState<SortingState>([
     { desc: true, id: 'createdAt' },
-    { desc: true, id: 'state' },
   ]);
 
   const isMobile = useMobile();
@@ -73,6 +72,7 @@ const FiatTransfersTable = () => {
         getSortedRowModel={getSortedRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
         getRowCanExpand={() => isMobile}
+        shouldHideSortingArrow={false}
         renderSubComponent={({ row }) => (
           <FiatTransferDescription actionRow={row} loading={loading} />
         )}

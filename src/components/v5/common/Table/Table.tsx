@@ -52,6 +52,7 @@ const Table = <T,>({
   showTableBorder = true,
   alwaysShowPagination = false,
   footerColSpan,
+  shouldHideSortingArrow = true,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -277,8 +278,9 @@ const Table = <T,>({
                                   header.column.getIsSorted() === 'desc' &&
                                   !shouldShowEmptyContent,
                                 hidden:
-                                  header.column.getIsSorted() === false ||
-                                  shouldShowEmptyContent,
+                                  shouldHideSortingArrow &&
+                                  (header.column.getIsSorted() === false ||
+                                    shouldShowEmptyContent),
                               },
                             )}
                           />

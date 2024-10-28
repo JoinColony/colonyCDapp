@@ -128,6 +128,7 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('receipt', {
         header: () => formatText({ id: 'table.row.receipt' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
+        enableSorting: false,
         staticSize: '165px',
         cell: ({ row }) => {
           if (loading) {
