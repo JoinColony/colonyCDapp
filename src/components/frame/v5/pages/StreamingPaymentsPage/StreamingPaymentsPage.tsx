@@ -17,18 +17,23 @@ const StreamingPaymentsPage = () => {
 
   const nativeDomainId = useGetSelectedDomainFilter()?.nativeId;
 
-  const { totalFunds, activeStreamingPayments, averagePerMonth, currency } =
-    useStreamingPaymentsTotalFunds({
-      isFilteredByWalletAddress: false,
-      nativeDomainId,
-    });
+  const {
+    totalFunds,
+    activeStreamingPayments,
+    averagePerMonth,
+    currency,
+    totalStreamed,
+  } = useStreamingPaymentsTotalFunds({
+    isFilteredByWalletAddress: false,
+    nativeDomainId,
+  });
 
   return (
     <div>
       <StatsCards
         streamingPerMonth={averagePerMonth}
         totalActiveStreams={activeStreamingPayments}
-        totalStreamed={totalFunds.totalClaimed}
+        totalStreamed={totalStreamed}
         unclaimedFounds={totalFunds.totalAvailable}
         prefix={currencySymbolMap[currency]}
         suffix={currency}
