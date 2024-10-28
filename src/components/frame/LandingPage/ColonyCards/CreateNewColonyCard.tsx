@@ -16,7 +16,7 @@ export interface ColonyCreateCardProps {
 const MSG = defineMessages({
   remaining: {
     id: `${displayName}.remaining`,
-    defaultMessage: `{remaining} INVITATIONS REMANING`,
+    defaultMessage: `{remaining} {remaining, plural, one {INVITATION} other {INVITATIONS}} REMANING`,
   },
   createColony: {
     id: `${displayName}.createColony`,
@@ -48,7 +48,7 @@ export const CreateNewColonyCard = ({
     >
       <div className="flex flex-1 flex-col gap-1">
         <div className="flex">
-          <span className="rounded bg-blue-100 px-[.1875rem] py-[.1563rem] text-2xs font-extrabold text-blue-400">
+          <span className="rounded bg-blue-100 px-[.1875rem] py-[.1563rem] text-2xs font-bold text-blue-400">
             <FormattedMessage
               {...MSG.remaining}
               values={{ remaining: invitationsRemaining }}
@@ -60,7 +60,7 @@ export const CreateNewColonyCard = ({
         </p>
       </div>
       <Button
-        icon={Plus}
+        icon={isHovered ? undefined : Plus}
         className="border-gray-900"
         mode={isHovered ? 'primaryOutline' : 'primarySolid'}
       >
