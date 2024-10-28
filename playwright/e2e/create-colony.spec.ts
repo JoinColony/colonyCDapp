@@ -20,18 +20,18 @@ import {
 } from '../utils/graphqlHelpers.ts';
 
 test.describe('Create Colony flow', () => {
-  let colonyUrl: string;
   const colonyName = 'testcolonyname';
   let existingToken: string;
   const invalidToken = 'invalidtoken';
   let customColonyURL = '';
   test.beforeAll(async () => {
     customColonyURL = generateRandomString();
-    colonyUrl = await generateCreateColonyUrl();
     existingToken = await fetchFirstValidTokenAddress();
   });
 
   test.beforeEach(async ({ page }) => {
+    const colonyUrl = await generateCreateColonyUrl();
+
     await page.goto(colonyUrl);
 
     await selectWalletAndUserProfile(page);
@@ -160,7 +160,6 @@ test.describe('Create Colony flow', () => {
 
           for (const value of values) {
             await inputField.fill(value);
-            await inputField.blur();
 
             await expect(page.getByTestId('form-error')).toBeVisible();
           }
