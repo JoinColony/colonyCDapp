@@ -80,7 +80,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
                 className={clsx(
                   'mx-1 mx-[.3125rem] h-2 h-[.1875rem] w-2 w-[5.875rem] cursor-pointer rounded-full bg-gray-200 transition-all duration-normal group-hover:bg-blue-400',
                   {
-                    'bg-gray-500': index === selectedIndex,
+                    'bg-gray-900': index === selectedIndex,
                   },
                 )}
               />

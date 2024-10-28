@@ -29,11 +29,15 @@ export const useEmblaCarouselSettings = (options, autoplay) => {
     setScrollSnaps(embla.scrollSnapList());
   }, []);
 
-  const onSelect = useCallback((embla: EmblaCarouselType) => {
-    const emblaAutoplay = emblaApi?.plugins().autoplay;
-    setSelectedIndex(embla.selectedScrollSnap());
-    emblaAutoplay?.reset();
-  }, []);
+  const onSelect = useCallback(
+    (embla: EmblaCarouselType) => {
+      setSelectedIndex(embla.selectedScrollSnap());
+      if (emblaApi?.plugins().autoplay) {
+        emblaApi?.plugins().autoplay?.reset();
+      }
+    },
+    [emblaApi?.plugins().autoplay],
+  );
 
   useEffect(() => {
     if (!emblaApi) return;
