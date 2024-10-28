@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
 
+import noop from '~utils/noop.ts';
+
 interface IncomingFundsLoadingContextValues {
   isAcceptLoading: boolean;
   enableAcceptLoading: () => void;
@@ -9,8 +11,8 @@ interface IncomingFundsLoadingContextValues {
 export const IncomingFundsLoadingContext =
   createContext<IncomingFundsLoadingContextValues>({
     isAcceptLoading: false,
-    enableAcceptLoading: () => {},
-    disableAcceptLoading: () => {},
+    enableAcceptLoading: noop,
+    disableAcceptLoading: noop,
   });
 
 export const useIncomingFundsLoadingContext = () => {
