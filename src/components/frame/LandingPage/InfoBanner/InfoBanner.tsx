@@ -1,8 +1,9 @@
 import { type Icon } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { formatText } from '~utils/intl.ts';
+import { tw } from '~utils/css/index.ts';
 
 import LoadingInfoBanner from './LoadingInfoBanner.tsx';
 
@@ -11,10 +12,25 @@ export interface InfoBannerProps {
   icon?: Icon;
   loading?: boolean;
   title: string;
-  text: string;
+  text: string | React.ReactNode;
 }
 
 const displayName = 'frame.LandingPage.InfoBanner';
+
+const MSG = defineMessages({
+  info: {
+    id: `${displayName}.info`,
+    defaultMessage: 'Invite only',
+  },
+  success: {
+    id: `${displayName}.success`,
+    defaultMessage: 'Congratulations',
+  },
+  error: {
+    id: `${displayName}.error`,
+    defaultMessage: 'Invalid code',
+  },
+});
 
 const InfoBanner = ({
   variant = 'info',
@@ -23,8 +39,8 @@ const InfoBanner = ({
   title,
   text,
 }: InfoBannerProps) => {
-  const containerClassNames = 'rounded-lg border p-6';
-  const contentClassNames = 'flex items-center gap-1.5 pb-2 pt-3';
+  const containerClassNames = tw`rounded-lg border p-6`;
+  const contentClassNames = tw`flex items-center gap-1.5 pb-2 pt-3`;
 
   if (loading) {
     return (
@@ -57,7 +73,7 @@ const InfoBanner = ({
           },
         )}
       >
-        {formatText({ id: `landingPage.badge.${variant}` })}
+        <FormattedMessage {...MSG[variant]} />
       </span>
       <div className={contentClassNames}>
         {Icon && (
@@ -72,7 +88,7 @@ const InfoBanner = ({
         )}
         <h1 className="heading-5">{title}</h1>
       </div>
-      <p className="text-gray-700 text-3">{text}</p>
+      <p className="text-sm font-normal text-gray-700">{text}</p>
     </div>
   );
 };
