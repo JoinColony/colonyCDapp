@@ -1,9 +1,4 @@
-import {
-  SmileySticker,
-  Ticket,
-  CopySimple,
-  Check,
-} from '@phosphor-icons/react';
+import { SmileySticker, Ticket, CopySimple } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
@@ -24,7 +19,7 @@ const MSG = defineMessages({
   },
   remaining: {
     id: `${displayName}.remaining`,
-    defaultMessage: `{remaining} colonies remaining`,
+    defaultMessage: `{remaining} {remaining, plural, one {colony} other {colonies}} remaining`,
   },
   descriptionRemaining: {
     id: `${displayName}.descriptionRemaining`,
@@ -38,6 +33,10 @@ const MSG = defineMessages({
     id: `${displayName}.copyButton`,
     defaultMessage: `Copy link`,
   },
+  copiedButton: {
+    id: `${displayName}.copiedButton`,
+    defaultMessage: `Link copied`,
+  },
 });
 
 const ColonyInvitationBanner = ({
@@ -49,8 +48,8 @@ const ColonyInvitationBanner = ({
   const hasColoniesRemaining = coloniesRemaining > 0;
 
   return (
-    <div className="w-full max-w-[31.25rem] rounded-2xl border px-6 py-6">
-      <div className="flex h-10 w-10 items-center justify-center rounded-md border">
+    <div className="w-full max-w-[31.25rem] rounded-lg border p-6">
+      <div className="flex h-10 w-10 items-center justify-center rounded-[.25rem] border">
         <SmileySticker size={24} />
       </div>
       <h1 className="my-2.5 heading-4">
@@ -71,7 +70,7 @@ const ColonyInvitationBanner = ({
         />
       </p>
       {hasColoniesRemaining && (
-        <div className="mt-2 flex flex-col gap-2 rounded-md bg-gray-50 px-3 py-3">
+        <div className="mt-2 flex flex-col gap-4 rounded-md bg-gray-50 p-3">
           <div className="flex items-center gap-2">
             <div>
               <Ticket size={18} />
@@ -81,11 +80,13 @@ const ColonyInvitationBanner = ({
             </p>
           </div>
           <Button
-            icon={isCopied ? Check : CopySimple}
-            mode="primaryOutline"
+            icon={!isCopied ? CopySimple : undefined}
+            mode={isCopied ? 'completed' : 'primaryOutline'}
             onClick={() => handleClipboardCopy(inviteLink)}
           >
-            <FormattedMessage {...MSG.copyButton} />
+            <FormattedMessage
+              {...(isCopied ? MSG.copiedButton : MSG.copyButton)}
+            />
           </Button>
         </div>
       )}
