@@ -40,8 +40,8 @@
     "watch-amplify": "node scripts/watchAmplifyFiles",
     "forward-time": "node scripts/forward-time",
     "e2e:install": "npx playwright install --with-deps",
-    "e2e": "playwright test",
-    "e2e:watch": "playwright test --ui",
+    "e2e": "playwright test --project=chromium",
+    "e2e:ui": "playwright test --ui",
     "generate-notifications-dev-key": "node scripts/generate-local-notifications-key"
   },
   "repository": {
