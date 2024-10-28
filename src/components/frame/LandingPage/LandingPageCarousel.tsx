@@ -36,7 +36,7 @@ const MSG = defineMessages({
   descriptionSlide2: {
     id: `${displayName}.descriptionSlide2`,
     defaultMessage:
-      'Transparency and clarity around shared finances is made simply with dashboard highlights, transaction history, and shared decision making. ',
+      'Transparency and clarity around shared finances is made simply with dashboard highlights, transaction history, and shared decision making.',
   },
 });
 
@@ -82,7 +82,7 @@ const LandingPageCarousel = () => {
                 </h1>
                 <p
                   className={clsx(
-                    'mt-[.875rem] text-md font-normal transition-opacity duration-normal',
+                    'mt-[.875rem] text-md font-normal text-gray-600 transition-opacity duration-normal',
                     {
                       'opacity-100 delay-150': isCurrentSlide,
                       'opacity-0': !isCurrentSlide,
@@ -102,9 +102,7 @@ const LandingPageCarousel = () => {
           options={{ align: 'center', loop: true }}
           isAutoplay
           isChangeSlideDotButton={false}
-          setSelectedIndex={(currentSlideIndex) =>
-            setCurrentSlide(currentSlideIndex)
-          }
+          setSelectedIndex={setCurrentSlide}
           className="mx-[-30px] pb-[115px]"
         />
       </div>
