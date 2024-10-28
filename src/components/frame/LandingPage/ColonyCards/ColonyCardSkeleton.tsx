@@ -14,7 +14,6 @@ export const ColonyCardSkeleton = () => (
   >
     <div className="flex flex-1 flex-col gap-1">
       <LoadingSkeleton isLoading className="h-5 w-[7.5rem] rounded" />
-      <LoadingSkeleton isLoading className="h-[.6875rem] w-[4.25rem] rounded" />
     </div>
   </BaseColonyCard>
 );
