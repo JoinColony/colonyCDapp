@@ -10,4 +10,5 @@ export type NotificationBannerProps = PropsWithChildren<{
   callToAction?: ReactNode;
   descriptionClassName?: string;
   callToActionClassName?: string;
+  contentClassName?: string;
 }>;
