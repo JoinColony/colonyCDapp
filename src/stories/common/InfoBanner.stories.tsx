@@ -70,7 +70,12 @@ export const Success: Story = {
 export const Error: Story = {
   args: {
     title: 'Title of error banner',
-    text: 'Text of error banner',
+    text: (
+      <p>
+        Your invite code to <span className="font-bold">BetaColony</span> is not
+        valid. Please check the code and try again.
+      </p>
+    ),
     variant: 'error',
     icon: Password,
   },
