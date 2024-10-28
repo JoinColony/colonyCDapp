@@ -36,10 +36,15 @@ export const ColonyCard = ({
     <p className="flex-1 truncate text-ellipsis text-md font-medium">
       {colonyName}
     </p>
-    <p className="max-w-[150px] justify-self-end truncate text-ellipsis text-xs font-normal text-gray-600">
+    <p className="max-w-[150px] justify-self-end text-xs font-normal text-gray-600">
       <FormattedMessage
         {...MSG.members}
-        values={{ members: membersCount.toLocaleString('en-US') }}
+        values={{
+          members:
+            membersCount > 100000000
+              ? `${(membersCount / 1000000).toFixed(0)}M`
+              : membersCount.toLocaleString('en-US'),
+        }}
       />
     </p>
   </BaseColonyCard>
