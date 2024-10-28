@@ -1,21 +1,18 @@
-import { CircleWavyCheck } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { noop } from 'lodash';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { ContributorType, useGetColonyContributorQuery } from '~gql';
+import { ContributorType } from '~gql';
 import { useMobile } from '~hooks/index.ts';
-import useContributorBreakdown from '~hooks/members/useContributorBreakdown.ts';
-import { getColonyContributorId } from '~utils/members.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
 import UserDetails from '../UserDetails/UserDetails.tsx';
 
+import { useGetUserData } from './hooks.ts';
 import UserInfo from './partials/UserInfo.tsx';
+import UserInfoPopoverTrigger from './partials/UserInfoPopoverTrigger.tsx';
 import UserNotVerified from './partials/UserNotVerified.tsx';
 import { type UserInfoPopoverProps } from './types.ts';
 
@@ -35,44 +32,15 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   const {
-    colony: { colonyAddress },
-  } = useColonyContext();
-
-  const { totalMembers, loading: isColonyMembersDataLoading } =
-    useMemberContext();
-
-  const contributorData = totalMembers.find(
-    (member) => member?.contributorAddress === walletAddress,
-  );
-
-  const {
-    data: colonyContributorData,
-    loading: isColonyContributorDataLoading,
-  } = useGetColonyContributorQuery({
-    variables: {
-      id: getColonyContributorId(colonyAddress, walletAddress),
-      colonyAddress,
-    },
-    fetchPolicy: 'cache-first',
-    skip: !!contributorData,
-  });
-
-  const contributor =
-    contributorData || colonyContributorData?.getColonyContributor;
-  const { bio } = contributor?.user?.profile || {};
-  const { isVerified, type: contributorType } = contributor || {};
-  const domains = useContributorBreakdown(contributor);
-  const resolvedUser = contributor?.user ?? user;
-  const { profile } = resolvedUser || {};
-  const { avatar, displayName: userName } = profile || {};
-
-  const onOpenModal = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const onCloseModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    bio,
+    domains,
+    userName,
+    avatar,
+    isVerified,
+    contributorType,
+    isDataLoading,
+    resolvedUser,
+  } = useGetUserData(walletAddress, user);
 
   const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip(
     {
@@ -87,42 +55,24 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
     popperOptions,
   );
 
-  const openUserPopover = () => {
+  const onOpenModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const onCloseModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const openUserPopover = useCallback(() => {
     setIsTooltipVisible(true);
-  };
-  const closeUserPopover = () => {
+  }, []);
+  const closeUserPopover = useCallback(() => {
     setIsTooltipVisible(false);
-  };
+  }, []);
 
-  const button = (
-    <button
-      ref={setTriggerRef}
-      onClick={isMobile ? onOpenModal : openUserPopover}
-      onMouseEnter={isMobile ? noop : () => onOpenModal()}
-      onMouseLeave={isMobile ? noop : () => onCloseModal()}
-      type="button"
-      className={clsx(
-        'inline-flex flex-shrink-0 items-center transition-all duration-normal hover:text-blue-400',
-        className,
-        {
-          skeleton:
-            isColonyMembersDataLoading || isColonyContributorDataLoading,
-        },
-      )}
-      disabled={isColonyMembersDataLoading || isColonyContributorDataLoading}
-    >
-      {typeof children === 'function'
-        ? children(resolvedUser ?? undefined)
-        : children}
-
-      {withVerifiedBadge && isVerified && (
-        <CircleWavyCheck
-          size={14}
-          className="ml-1 flex-shrink-0 text-blue-400"
-        />
-      )}
-    </button>
-  );
+  const onClickHandler = isMobile ? onOpenModal : openUserPopover;
+  const onMouseEnterHandler = isMobile ? noop : onOpenModal;
+  const onMouseLeaveHandler = isMobile ? noop : onCloseModal;
 
   const content = (
     <UserInfo
@@ -158,7 +108,19 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
 
   return (
     <>
-      {button}
+      <UserInfoPopoverTrigger
+        onClick={onClickHandler}
+        onMouseEnter={onMouseEnterHandler}
+        onMouseLeave={onMouseLeaveHandler}
+        ref={setTriggerRef}
+        className={className}
+        isLoading={isDataLoading}
+        showVerifiedBadge={withVerifiedBadge && isVerified}
+      >
+        {typeof children === 'function'
+          ? children(resolvedUser ?? undefined)
+          : children}
+      </UserInfoPopoverTrigger>
       {isMobile ? (
         <Modal
           isFullOnMobile={false}
@@ -176,7 +138,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
-              classNames="sm:w-[20rem]"
+              classNames="sm:w-[21.875rem]"
               withTooltipStyles={false}
               cardProps={{
                 rounded: 's',
