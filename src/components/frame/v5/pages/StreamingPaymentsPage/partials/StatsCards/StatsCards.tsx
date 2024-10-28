@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { type NumeralValue } from '~shared/Numeral/Numeral.tsx';
-import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 import WidgetBox from '~v5/common/WidgetBox/WidgetBox.tsx';
 
 export interface StatsCardsProps {
@@ -34,10 +34,9 @@ const StatsCards = ({
           <div className="align-center flex gap-2">
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
-              <Numeral
-                className="self-center font-semibold heading-4"
-                value={streamingPerMonth}
-              />
+              <p className="self-center font-semibold heading-4">
+                {getFormattedTokenAmount(`${streamingPerMonth}`, 0)}
+              </p>
             </div>
             <p className="self-center text-1">{suffix} / month</p>
           </div>
@@ -52,10 +51,9 @@ const StatsCards = ({
           <div className="align-center flex gap-2">
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
-              <Numeral
-                className="self-center font-semibold heading-4"
-                value={totalStreamed}
-              />
+              <p className="self-center font-semibold heading-4">
+                {getFormattedTokenAmount(`${totalStreamed}`, 0)}
+              </p>
             </div>
             <p className="self-center text-1">{suffix}</p>
           </div>
@@ -69,10 +67,9 @@ const StatsCards = ({
           <div className="align-center flex gap-2">
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
-              <Numeral
-                className="self-center font-semibold heading-4"
-                value={unclaimedFounds}
-              />
+              <p className="self-center font-semibold heading-4">
+                {getFormattedTokenAmount(`${unclaimedFounds}`, 0)}
+              </p>
             </div>
             <p className="self-center text-1">{suffix}</p>
           </div>
