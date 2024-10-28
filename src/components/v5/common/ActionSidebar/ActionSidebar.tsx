@@ -190,7 +190,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
     return (
       <ActionSidebarContent
-        key={transactionId}
         transactionId={transactionId}
         formRef={formRef}
         defaultValues={actionSidebarInitialValues}

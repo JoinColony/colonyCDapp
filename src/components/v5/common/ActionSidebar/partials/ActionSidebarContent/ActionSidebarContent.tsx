@@ -35,14 +35,12 @@ import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
 import CreateStakedExpenditureModal from '../CreateStakedExpenditureModal/CreateStakedExpenditureModal.tsx';
-import Motions from '../Motions/index.ts';
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
 import { MultiSigMembersError } from './partials/MultiSigMembersError/MultiSigMembersError.tsx';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
 import NoReputationError from './partials/NoReputationError.tsx';
-import PermissionSidebar from './partials/PermissionSidebar.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';
 import {
   type ActionSidebarContentProps,
@@ -53,7 +51,6 @@ const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
-  isMotion,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -216,7 +213,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           </div>
         ) : null}
       </div>
-      {!isMotion && !readonly && (
+      {!readonly && (
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
@@ -270,31 +267,15 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 };
 
 const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
-  transactionId,
   formRef,
   defaultValues,
-  isMotion,
 }) => {
-  const { getFormOptions, actionFormProps } = useActionFormProps(
-    defaultValues,
-    !!transactionId,
-  );
+  const { getFormOptions, actionFormProps } = useActionFormProps(defaultValues);
   const client = useApolloClient();
 
   return (
-    <div
-      className={clsx('flex w-full flex-grow', {
-        'flex-col-reverse overflow-auto sm:overflow-hidden md:flex-row':
-          !!transactionId,
-        'overflow-hidden': !transactionId,
-      })}
-    >
-      <div
-        className={clsx('flex-grow pb-6 pt-8', {
-          'w-full': !isMotion,
-          'w-full sm:w-[calc(100%-23.75rem)]': isMotion,
-        })}
-      >
+    <div className="flex w-full flex-grow overflow-hidden">
+      <div className="w-full flex-grow pb-6 pt-8">
         <ActionForm
           {...actionFormProps}
           key={actionFormProps.mode}
@@ -316,38 +297,9 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
             actionFormProps?.onSuccess?.();
           }}
         >
-          <ActionSidebarFormContent
-            getFormOptions={getFormOptions}
-            isMotion={isMotion}
-            transactionId={transactionId}
-          />
+          <ActionSidebarFormContent getFormOptions={getFormOptions} />
         </ActionForm>
       </div>
-      {transactionId && (
-        <div
-          className="
-            w-full
-            border-b
-            border-b-gray-200
-            bg-gray-25
-            px-6
-            py-8
-            sm:h-full
-            sm:w-[23.75rem]
-            sm:flex-shrink-0
-            sm:overflow-y-auto
-            sm:border-b-0
-            sm:border-l
-            sm:border-l-gray-200
-          "
-        >
-          {isMotion ? (
-            <Motions transactionId={transactionId} />
-          ) : (
-            <PermissionSidebar transactionId={transactionId} />
-          )}
-        </div>
-      )}
     </div>
   );
 };
