@@ -14,7 +14,7 @@ const displayName = 'frame.LandingPage.ColonyCards';
 const MSG = defineMessages({
   members: {
     id: `${displayName}.members`,
-    defaultMessage: `{members} Members`,
+    defaultMessage: `{members} {members, plural, one {Member} other {Members}}`,
   },
 });
 
@@ -36,11 +36,10 @@ export const ColonyCard = ({
     <p className="flex-1 truncate text-ellipsis text-md font-medium">
       {colonyName}
     </p>
-    <p className="max-w-[150px] justify-self-end truncate text-ellipsis text-xs font-normal">
+    <p className="max-w-[150px] justify-self-end truncate text-ellipsis text-xs font-normal text-gray-600">
       <FormattedMessage
         {...MSG.members}
         values={{ members: membersCount.toLocaleString('en-US') }}
-        {...(membersCount === 1 ? { defaultMessage: '1 Member' } : {})}
       />
     </p>
   </BaseColonyCard>
