@@ -107,6 +107,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
          case ColonyActionType.EmitDomainReputationPenalty:
           return <ManageReputation action={action} />; */
       case ColonyActionType.CreateExpenditure:
+      case ExtendedColonyActionType.StagedPayment:
         return <PaymentBuilder action={action} />;
       case ColonyActionType.ManageTokens:
       case ColonyActionType.ManageTokensMotion:
@@ -149,6 +150,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <Motions transactionId={action.transactionHash} />;
       // @todo: reorganize folder structure after all of the advanced payments will be ready
       case ColonyActionType.CreateExpenditure:
+      case ExtendedColonyActionType.StagedPayment:
       case ExtendedColonyActionType.SplitPayment:
         return <PaymentBuilderWidget action={action} />;
       default:

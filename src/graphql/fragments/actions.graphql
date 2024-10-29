@@ -134,8 +134,15 @@ fragment ColonyAction on ColonyAction {
   }
   expenditure {
     isStaked
+    type
+    slots {
+      ...ExpenditureSlot
+    }
     metadata {
       distributionType
+      stages {
+        ...ExpenditureStage
+      }
     }
   }
 }

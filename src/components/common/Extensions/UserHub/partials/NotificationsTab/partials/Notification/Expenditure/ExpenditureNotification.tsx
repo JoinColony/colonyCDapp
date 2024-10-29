@@ -1,7 +1,7 @@
 import React, { useMemo, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import useGetActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
 import {
   type NotificationColonyFragment,
   NotificationType,
@@ -130,26 +130,29 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 
   const actionTitle = action?.metadata?.customTitle || '';
 
+  const actionTitleValues = useGetActionTitleValues({
+    actionData: action,
+    colony: {
+      nativeToken: {
+        ...colony?.nativeToken,
+        decimals: colony?.nativeToken?.decimals || 18,
+        name: colony?.nativeToken?.name || '',
+        symbol: colony?.nativeToken?.symbol || '',
+        tokenAddress: colony?.nativeToken?.tokenAddress || '',
+      },
+      metadata: colony?.metadata,
+    },
+    expenditureData: expenditure ?? undefined,
+    networkInverseFee,
+  });
+
   const actionMetadataDescription = useMemo(() => {
     if (!action || !colony) {
       return null;
     }
 
-    return formatText(
-      { id: 'action.title' },
-      getActionTitleValues({
-        actionData: action,
-        colony: {
-          nativeToken: {
-            ...colony.nativeToken,
-          },
-          metadata: colony.metadata,
-        },
-        expenditureData: expenditure ?? undefined,
-        networkInverseFee,
-      }),
-    );
-  }, [action, colony, expenditure, networkInverseFee]);
+    return formatText({ id: 'action.title' }, actionTitleValues);
+  }, [action, actionTitleValues, colony]);
 
   return (
     <NotificationWrapper

@@ -1,9 +1,13 @@
 import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
+import { BigNumber } from 'ethers';
+import moveDecimal from 'move-decimal-point';
 import React from 'react';
 
 import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
+import { getNetworkTokenList } from '~constants/tokens/getNetworkTokenList.ts';
 import { ColonyActionType, type SimpleTarget } from '~gql';
+import useUserByAddress from '~hooks/useUserByAddress.ts';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
@@ -16,8 +20,10 @@ import {
   type ColonyExtension,
   type Token,
   type Expenditure,
+  type ExpenditureStage,
+  type ExpenditureSlot,
 } from '~types/graphql.ts';
-import { notMaybe } from '~utils/arrays/index.ts';
+import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { getAmountLessFee } from '~utils/getAmountLessFee.ts';
@@ -53,8 +59,8 @@ const getDomainNameFromChangelog = (
   return changelogItem.newName;
 };
 
-const getRecipientData = (
-  actionData: ColonyAction,
+const useGetRecipientData = (
+  actionData: ColonyAction | null | undefined,
 ):
   | User
   | Colony
@@ -70,8 +76,14 @@ const getRecipientData = (
     recipientToken,
     safeTransaction,
     recipientAddress,
-  } = actionData;
+    expenditure,
+  } = actionData || {};
   const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
+  const stagedPaymentRecipientAddress =
+    expenditure?.slots[0].recipientAddress || '';
+  const stagedPaymentRecipient = useUserByAddress(
+    stagedPaymentRecipientAddress,
+  );
 
   return (
     [
@@ -81,12 +93,13 @@ const getRecipientData = (
       recipientToken,
       safeRecipient,
       recipientAddress,
+      stagedPaymentRecipient.user,
     ].find(notMaybe) || undefined
   );
 };
 
-const getRecipient = (actionData: ColonyAction) => {
-  const recipient = getRecipientData(actionData);
+const useGetRecipient = (actionData: ColonyAction | null | undefined) => {
+  const recipient = useGetRecipientData(actionData);
 
   return (
     <span>
@@ -135,22 +148,68 @@ const getInitiator = (actionData: ColonyAction) => {
   );
 };
 
-export const mapColonyActionToExpectedFormat = ({
+const getExpenditureStagesData = (
+  stages: ExpenditureStage[],
+  slots: ExpenditureSlot[],
+  colony: Pick<Colony, 'tokens'>,
+) => {
+  const predefinedTokens = getNetworkTokenList();
+  const colonyTokens = colony.tokens?.items.filter(notNull) || [];
+  const allTokens = [...colonyTokens, ...predefinedTokens];
+
+  const mappedStages = (stages || []).map((stage) => {
+    const currentSlot = slots.find((slot) => slot.id === stage.slotId);
+    const token = allTokens.find(
+      ({ token: currentToken }) =>
+        currentToken.tokenAddress === currentSlot?.payouts?.[0].tokenAddress,
+    );
+
+    return {
+      milestone: stage.name,
+      amount: moveDecimal(
+        currentSlot?.payouts?.[0].amount,
+        -getTokenDecimalsWithFallback(token?.token.decimals),
+      ),
+      tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
+    };
+  });
+
+  const summedAmount = mappedStages
+    .reduce((acc, { amount, tokenAddress }) => {
+      const token = allTokens.find(
+        ({ token: currentToken }) => currentToken.tokenAddress === tokenAddress,
+      );
+      const formattedAmount = moveDecimal(
+        amount || '0',
+        getTokenDecimalsWithFallback(token?.token.decimals),
+      );
+
+      return BigNumber.from(acc).add(BigNumber.from(formattedAmount));
+    }, BigNumber.from('0'))
+    .toString();
+  const stagedPaymentToken = allTokens.find(
+    ({ token }) => token.tokenAddress === mappedStages?.[0]?.tokenAddress,
+  )?.token;
+
+  return {
+    summedAmount,
+    stagedPaymentToken,
+  };
+};
+
+export const useMapColonyActionToExpectedFormat = ({
   actionData,
   colony,
   keyFallbackValues = {},
   expenditureData,
   networkInverseFee,
 }: {
-  actionData: ColonyAction;
-  colony: Pick<Colony, 'nativeToken' | 'tokens'>;
+  actionData: ColonyAction | null | undefined;
+  colony: Pick<Colony, 'nativeToken' | 'tokens'> | undefined;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
   networkInverseFee?: string;
 }) => {
-  //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
-  const formattedRolesTitle = formatRolesTitle(actionData.roles);
-
   const getFormattedValueWithFallback = (
     value: React.ReactNode,
     fallbackKey: ActionTitleMessageKeys,
@@ -162,6 +221,17 @@ export const mapColonyActionToExpectedFormat = ({
 
     return keyFallbackValues[fallbackKey];
   };
+
+  const recipient = getFormattedValueWithFallback(
+    useGetRecipient(actionData),
+    ActionTitleMessageKeys.Recipient,
+    notMaybe(useGetRecipientData(actionData)),
+  );
+  if (!actionData || !colony) {
+    return {};
+  }
+  //  // @TODO: item.actionType === ColonyMotions.SetUserRolesMotion ? updatedRoles : roles,
+  const formattedRolesTitle = formatRolesTitle(actionData.roles);
 
   const getAmount = (
     actionType: ColonyActionType,
@@ -209,6 +279,12 @@ export const mapColonyActionToExpectedFormat = ({
       actionData.fromDomain?.metadata || actionData.pendingDomainMetadata;
   }
 
+  const { stagedPaymentToken, summedAmount } = getExpenditureStagesData(
+    actionData.expenditure?.metadata?.stages || [],
+    actionData.expenditure?.slots || [],
+    colony,
+  );
+
   return {
     ...actionData,
     [ActionTitleMessageKeys.Amount]: getFormattedValueWithFallback(
@@ -237,11 +313,7 @@ export const mapColonyActionToExpectedFormat = ({
       ActionTitleMessageKeys.Initiator,
       notMaybe(getInitiatorData(actionData)),
     ),
-    [ActionTitleMessageKeys.Recipient]: getFormattedValueWithFallback(
-      getRecipient(actionData),
-      ActionTitleMessageKeys.Recipient,
-      notMaybe(getRecipientData(actionData)),
-    ),
+    [ActionTitleMessageKeys.Recipient]: recipient,
     [ActionTitleMessageKeys.ToDomain]: getFormattedValueWithFallback(
       actionData.toDomain?.metadata?.name ??
         formatMessage({ id: 'unknownDomain' }),
@@ -317,6 +389,12 @@ export const mapColonyActionToExpectedFormat = ({
           id: 'decisionMethod.multiSig',
         })} `
       : '',
+    [ActionTitleMessageKeys.StagedAmount]: (
+      <Numeral
+        value={summedAmount}
+        decimals={getTokenDecimalsWithFallback(stagedPaymentToken?.decimals)}
+      />
+    ),
     [ActionTitleMessageKeys.SplitAmount]: getFormattedValueWithFallback(
       <Numeral
         value={

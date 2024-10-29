@@ -3,7 +3,11 @@ import { type BigNumber } from 'ethers';
 import { type ReactNode } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
-import { type ColonyActionRoles, ColonyActionType } from '~gql';
+import {
+  type ColonyActionRoles,
+  ColonyActionType,
+  ExpenditureType,
+} from '~gql';
 import {
   type AnyActionType,
   ExtendedColonyActionType,
@@ -606,6 +610,10 @@ export const getExtendedActionType = (
 
   if (safeType) {
     return safeType;
+  }
+
+  if (actionData.expenditure?.type === ExpenditureType.Staged) {
+    return ExtendedColonyActionType.StagedPayment;
   }
 
   if (actionData.expenditure?.metadata?.distributionType) {
