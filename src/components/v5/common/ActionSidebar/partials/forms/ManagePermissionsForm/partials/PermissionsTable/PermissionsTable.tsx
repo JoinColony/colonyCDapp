@@ -5,14 +5,17 @@ import { useFormContext, useWatch } from 'react-hook-form';
 
 import { UserRole } from '~constants/permissions.ts';
 import { useMobile } from '~hooks/index.ts';
-import { usePermissionsTableProps } from '~hooks/usePermissionsTableProps.tsx';
+import usePermissionsTableProps from '~hooks/usePermissionsTableProps/index.ts';
 import {
   type PermissionsTableModel,
   type CustomPermissionTableModel,
   type PermissionsTableProps,
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
-import { type ManagePermissionsFormValues } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import {
+  UserRoleModifier,
+  type ManagePermissionsFormValues,
+} from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
@@ -21,18 +24,28 @@ const displayName = 'v5.common.ActionsContent.partials.PermissionsTable';
 
 const PermissionsTable: FC<PermissionsTableProps> = ({
   name,
-  role,
   className,
+  dbRoleForDomain,
+  dbPermissionsForDomain,
+  formRole,
+  dbInheritedPermissions,
 }) => {
-  const isMobile = useMobile();
-  const customPermissionsTableColumns = useCustomPermissionsTableColumns(name);
-  const permissionsTableProps = usePermissionsTableProps(role);
-  const { formState } = useFormContext<ManagePermissionsFormValues>();
-  const team: string | undefined = useWatch({ name: 'team' });
+  const team = useWatch<ManagePermissionsFormValues, 'team'>({ name: 'team' });
 
-  if (!role) {
-    return null;
-  }
+  const isMobile = useMobile();
+  const customPermissionsTableColumns = useCustomPermissionsTableColumns({
+    name,
+    team,
+    dbInheritedPermissions,
+  });
+
+  const permissionsTableProps = usePermissionsTableProps({
+    dbRoleForDomain,
+    formRole,
+    dbPermissionsForDomain,
+    isRemovePermissions: formRole === UserRoleModifier.Remove,
+  });
+  const { formState } = useFormContext<ManagePermissionsFormValues>();
 
   const ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT =
     CUSTOM_PERMISSION_TABLE_CONTENT.filter(({ key }) =>
@@ -43,14 +56,7 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
 
   return (
     <div className={className}>
-      {role !== UserRole.Custom ? (
-        <Table<PermissionsTableModel>
-          {...permissionsTableProps}
-          tableClassName={clsx({
-            '!border-negative-300': !!formState.errors.role,
-          })}
-        />
-      ) : (
+      {formRole === UserRole.Custom ? (
         <Table<CustomPermissionTableModel>
           className="sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0"
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
@@ -61,6 +67,13 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
             '!border-negative-300': !!formState.errors.permissions,
           })}
           tableBodyRowKeyProp="type"
+        />
+      ) : (
+        <Table<PermissionsTableModel>
+          {...permissionsTableProps}
+          tableClassName={clsx({
+            '!border-negative-300': !!formState.errors.role,
+          })}
         />
       )}
     </div>

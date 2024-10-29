@@ -37,6 +37,10 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
             {
               'border-gray-200 bg-gray-200': !isDarkMode,
               'border-gray-300 bg-gray-300': isDarkMode,
+              'peer-checked:border-gray-900 peer-checked:bg-gray-900':
+                !disabledProp,
+              'peer-checked:border-gray-100 peer-checked:bg-gray-100':
+                disabledProp,
             },
           )}
         />

@@ -4,7 +4,12 @@ import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-export interface ActionSidebarFormContentProps extends ActionFormBaseProps {}
+export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
+  isMotion?: boolean;
+  transactionId?: string;
+  isExpenditure?: boolean;
+  actionFormProps: Omit<ActionFormProps, 'children' | 'actionType'>;
+}
 
 export interface ActionSidebarContentProps {
   transactionId?: string;

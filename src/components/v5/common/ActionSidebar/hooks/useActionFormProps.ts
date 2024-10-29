@@ -1,9 +1,10 @@
+import { noop } from 'lodash';
 import { useCallback, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { type Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ActionTypes } from '~redux/index.ts';
+import { ActionTypes } from '~redux';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { mapPayload, pipe, withMeta } from '~utils/actions.ts';
@@ -19,13 +20,15 @@ const useActionFormProps = (
   isReadonly?: boolean,
 ) => {
   const prevActionTypeRef = useRef<Action | undefined>();
-  const navigate = useNavigate();
   const [actionFormProps, setActionFormProps] = useState<ActionFormOptions>({
     actionType: ActionTypes.ACTION_EXPENDITURE_PAYMENT,
     defaultValues,
     mode: 'onChange',
-    onSuccess: () => {},
     validationSchema: ACTION_BASE_VALIDATION_SCHEMA,
+    onSuccess: noop,
+    primaryButton: {
+      type: 'submit',
+    },
   });
   const { colony } = useColonyContext();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,7 +95,13 @@ const useActionFormProps = (
         keepDirtyValues: true,
       });
     },
-    [defaultValues, colony.nativeToken.tokenAddress, isReadonly, navigate],
+    [
+      defaultValues,
+      colony.nativeToken.tokenAddress,
+      isReadonly,
+      searchParams,
+      setSearchParams,
+    ],
   );
 
   return {

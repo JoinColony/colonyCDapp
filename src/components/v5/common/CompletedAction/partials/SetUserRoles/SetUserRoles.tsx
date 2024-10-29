@@ -60,7 +60,7 @@ const transformActionRolesToColonyRoles = (
   const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key])
+    .filter((key) => roles[key] !== null)
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -114,19 +114,26 @@ const SetUserRoles = ({ action }: Props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  // if it's the first time assigning roles, we use the action roles
-  const userColonyRoles = transformActionRolesToColonyRoles(
+  const isMultiSig = roleAuthority === Authority.ViaMultiSig;
+
+  const dbPermissionsOld = transformActionRolesToColonyRoles(roles);
+
+  const { role: dbRoleForDomainOld } = getRole(dbPermissionsOld, isMultiSig);
+
+  const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole || roles,
   );
 
-  const rolesTitle = formatRolesTitle(roles);
-
-  const { name: roleName, role } = getRole(
-    userColonyRoles,
-    roleAuthority === Authority.ViaMultiSig,
+  const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(
+    dbPermissionsNew,
+    isMultiSig,
   );
 
-  const metadata = action.motionData?.motionDomain.metadata;
+  const metadata =
+    action.motionData?.motionDomain.metadata ??
+    action.multiSigData?.multiSigDomain.metadata;
+
+  const rolesTitle = formatRolesTitle(roles);
 
   return (
     <>
@@ -139,11 +146,16 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
-            role,
+            role: dbRoleForDomainNew,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
           }}
+          showRedoItem={
+            !!dbPermissionsNew.length ||
+            (!!action.motionData && !action.motionData?.isFinalized) ||
+            (!!action.multiSigData && !action.multiSigData?.isExecuted)
+          }
         />
       </div>
       <ActionSubtitle>
@@ -217,8 +229,8 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.permissions' })}
           rowContent={
-            userColonyRoles.length
-              ? roleName
+            dbPermissionsNew.length
+              ? dbRoleNameNew
               : formatText({
                   id: 'actionSidebar.managePermissions.roleSelect.remove.title',
                 })
@@ -234,13 +246,13 @@ const SetUserRoles = ({ action }: Props) => {
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
-      {!!userColonyRoles.length && (
-        <PermissionsTableRow
-          role={role}
-          domainId={action.fromDomain?.nativeId}
-          userColonyRoles={userColonyRoles}
-        />
-      )}
+      <PermissionsTableRow
+        dbPermissionsOld={dbPermissionsOld}
+        dbPermissionsNew={dbPermissionsNew}
+        domainId={action.fromDomain?.nativeId}
+        dbRoleForDomainNew={dbRoleForDomainNew}
+        dbRoleForDomainOld={dbRoleForDomainOld}
+      />
     </>
   );
 };
