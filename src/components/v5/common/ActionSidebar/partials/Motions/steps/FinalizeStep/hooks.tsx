@@ -120,7 +120,7 @@ export const useClaimConfig = (
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
-  const userVote = voterRecord.some((item) => item.address === userAddress);
+  const hasUserVoted = voterRecord.some((item) => item.address === userAddress);
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
@@ -319,6 +319,6 @@ export const useClaimConfig = (
     claimPayload,
     canClaimStakes,
     userStake,
-    userVote,
+    hasUserVoted,
   };
 };

@@ -62,7 +62,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     claimPayload,
     canClaimStakes,
     userStake,
-    userVote,
+    hasUserVoted,
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
   const isMotionFinalized = actionData.motionData.isFinalized;
@@ -149,7 +149,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
             ? formatText({ id: statusId })
             : formatText({
                 id:
-                  isMotionFailedNotFinalizable || (!userStake && userVote)
+                  isMotionFailedNotFinalizable || (!userStake && hasUserVoted)
                     ? 'motion.finalizeStep.failed.statusText'
                     : 'motion.finalizeStep.complete.statusText',
               })}
