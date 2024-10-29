@@ -2,9 +2,6 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
-// Load .env file
-dotenv.config();
-
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
@@ -26,7 +23,7 @@ export default defineConfig({
     baseURL: 'http://localhost:9091',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
   // Needed for running tests against the app in development mode
   timeout: !process.env.CI ? 90000 : undefined,
