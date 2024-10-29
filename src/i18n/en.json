@@ -1463,6 +1463,7 @@
     "motion.finalizeStep.failedNotAchieving.statusText": "Action failed due to not achieving required stake.",
     "motion.finalizeStep.complete.statusText": "Action has passed and is now complete.",
     "motion.finalizeStep.failed.statusText": "Action failed and cannot be executed.",
+    "motion.finalizeStep.votedAndNotStaked.statusText": "Action has passed and can be executed.",
     "motion.finalizeStep.staked": "Your stake",
     "motion.finalizeStep.winnings": "Your reward",
     "motion.finalizeStep.total": "Total",
