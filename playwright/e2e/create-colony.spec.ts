@@ -23,9 +23,8 @@ test.describe('Create Colony flow', () => {
   const colonyName = 'testcolonyname';
   let existingToken: string;
   const invalidToken = 'invalidtoken';
-  let customColonyURL = '';
+
   test.beforeAll(async () => {
-    customColonyURL = generateRandomString();
     existingToken = await fetchFirstValidTokenAddress();
   });
 
@@ -81,7 +80,7 @@ test.describe('Create Colony flow', () => {
 
       // Fill in colony name and custom URL
       await page.getByLabel(/colony Name/i).fill(colonyName);
-      await page.getByLabel(/custom colony URL/i).fill(customColonyURL);
+      await page.getByLabel(/custom colony URL/i).fill(generateRandomString());
       await page.getByLabel(/custom colony URL/i).blur();
 
       // Check if URL is available
@@ -177,7 +176,7 @@ test.describe('Create Colony flow', () => {
     test.beforeEach(async ({ page }) => {
       await fillColonyNameStep(page, {
         nameFieldValue: colonyName,
-        urlFieldValue: customColonyURL,
+        urlFieldValue: generateRandomString(),
       });
     });
 
@@ -392,14 +391,11 @@ test.describe('Create Colony flow', () => {
   });
 
   test.describe('Confirmation step', () => {
-    test.beforeEach(async ({ page }) => {
+    test('Should render Confirmation step as expected', async ({ page }) => {
       await fillColonyNameStep(page, {
         nameFieldValue: colonyName,
-        urlFieldValue: customColonyURL,
+        urlFieldValue: generateRandomString(),
       });
-    });
-
-    test('Should render Confirmation step as expected', async ({ page }) => {
       await fillNativeTokenStepWithExistingToken(page, existingToken);
       // Heading of the Step
       await expect(
@@ -447,6 +443,12 @@ test.describe('Create Colony flow', () => {
     test('Should navigate to Details step when Edit colony details is clicked', async ({
       page,
     }) => {
+      const customColonyURL = generateRandomString();
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: customColonyURL,
+      });
+
       await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page
@@ -465,6 +467,10 @@ test.describe('Create Colony flow', () => {
     test('Should navigate to Native token step when Edit token is clicked', async ({
       page,
     }) => {
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: generateRandomString(),
+      });
       await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page
@@ -483,6 +489,11 @@ test.describe('Create Colony flow', () => {
     }) => {
       // This test awaits all the transactions and graphql operations on the final step of the Colony Creation to complete
       test.slow();
+      const colonyURL = generateRandomString();
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: colonyURL,
+      });
       await fillNativeTokenStepWithExistingToken(page, existingToken);
 
       await page.getByRole('button', { name: /continue/i }).click();
@@ -500,7 +511,7 @@ test.describe('Create Colony flow', () => {
       ).toBeVisible();
 
       // Expect the transition to the newly created colony URL
-      await page.waitForURL(customColonyURL);
+      await page.waitForURL(colonyURL);
 
       // Expect the Colony Created dialog to be visible
       const colonyCreateDialog = page
