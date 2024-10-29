@@ -11,6 +11,7 @@ import {
   ALPHANUMERIC_WITH_SEPARATORS_REGEX,
   SEPARATOR_REGEX,
   IBAN_REGEX,
+  NUMERIC_WITH_SEPARATORS_REGEX,
 } from './constants.ts';
 
 export enum BankDetailsFields {
@@ -115,8 +116,8 @@ export const validationSchema = object({
           }),
         )
         .matches(
-          ALPHANUMERIC_WITH_SEPARATORS_REGEX,
-          formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+          NUMERIC_WITH_SEPARATORS_REGEX,
+          formatText(BANK_DETAILS_FORM_MSG.numeric),
         )
         .test(
           'is-valid-account-number',
@@ -155,8 +156,8 @@ export const validationSchema = object({
           }),
         )
         .matches(
-          ALPHANUMERIC_WITH_SEPARATORS_REGEX,
-          formatText(BANK_DETAILS_FORM_MSG.alphanumeric),
+          NUMERIC_WITH_SEPARATORS_REGEX,
+          formatText(BANK_DETAILS_FORM_MSG.numeric),
         )
         .test(
           'is-valid-routing-number',

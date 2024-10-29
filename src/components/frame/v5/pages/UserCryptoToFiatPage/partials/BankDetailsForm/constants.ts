@@ -2,6 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export const ALPHANUMERIC_WITH_SEPARATORS_REGEX = /^[A-Za-z0-9 -]*$/;
 
+export const NUMERIC_WITH_SEPARATORS_REGEX = /^[0-9 -]*$/;
+
 export const SEPARATOR_REGEX = /[ -]/g;
 
 // Strip any separators before comparing against this regex
@@ -86,6 +88,10 @@ export const BANK_DETAILS_FORM_MSG = defineMessages({
   alphanumeric: {
     id: `${displayName}.alphanumeric`,
     defaultMessage: 'Please enter only letters and numbers',
+  },
+  numeric: {
+    id: `${displayName}.numeric`,
+    defaultMessage: 'Please enter only numbers',
   },
 });
 
