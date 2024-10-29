@@ -73,12 +73,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               )}
             >
               <div
-                className={clsx(
-                  'mx-auto h-full max-w-[79.875rem] pb-4 pt-6 md:pt-0',
-                  {
-                    '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
-                  },
-                )}
+                className={clsx('mx-auto max-w-[79.875rem] pb-4 pt-6 md:pt-0', {
+                  '!pt-0': enableMobileAndDesktopLayoutBreakpoints,
+                })}
               >
                 {(pageTitle || isTablet) && (
                   <section
