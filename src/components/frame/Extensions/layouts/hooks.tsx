@@ -13,17 +13,13 @@ import { useLocation } from 'react-router-dom';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useColonyContractVersion from '~hooks/useColonyContractVersion.ts';
-import useTransformer from '~hooks/useTransformer.ts';
 import {
   COLONY_FOLLOWERS_ROUTE,
   COLONY_MULTISIG_ROUTE,
 } from '~routes/routeConstants.ts';
-import { getAllUserRoles } from '~transformers/index.ts';
-import { canColonyBeUpgraded, hasRoot } from '~utils/checks/index.ts';
-import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type NavigationSidebarItem } from '~v5/frame/NavigationSidebar/partials/NavigationSidebarMainMenu/types.ts';
@@ -45,17 +41,10 @@ import type { UseCalamityBannerInfoReturnType } from './types.ts';
 export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
-  const { user, wallet } = useAppContext();
-  const allUserRoles = useTransformer(getAllUserRoles, [
-    extractColonyRoles(colony.roles),
-    wallet?.address || '',
-  ]);
 
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
-
-  const canUpgradeColony = user?.profile?.displayName && hasRoot(allUserRoles);
 
   const handleUpgradeColony = useCallback(
     () =>
@@ -78,13 +67,12 @@ export const useCalamityBannerInfo = (): UseCalamityBannerInfoReturnType => {
         buttonProps: {
           onClick: handleUpgradeColony,
           text: formatText({ id: 'button.upgrade' }),
-          disabled: !canUpgradeColony,
         },
         mode: 'info',
         title: formatText({ id: 'calamityBanner.available' }),
       },
     ],
-    [canUpgradeColony, handleUpgradeColony],
+    [handleUpgradeColony],
   );
 
   return {
