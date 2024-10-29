@@ -29,6 +29,13 @@ export const summaryLegendColor = {
   default: 'bg-blue-400',
 };
 
+export const pieChartArcsLayerConfig = {
+  startAngle: 0,
+  endAngle: 2 * Math.PI,
+  borderColor: 'none',
+  borderWidth: 0,
+};
+
 export const pieChartConfig: Partial<PieSvgProps<ReputationChartDataItem>> = {
   colors: ({ data }) => `var(${data.color})`,
   innerRadius: 0.75,
