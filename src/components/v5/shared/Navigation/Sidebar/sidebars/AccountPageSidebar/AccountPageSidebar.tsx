@@ -4,8 +4,10 @@ import {
   UserCircleGear,
   Wrench,
 } from '@phosphor-icons/react';
-import React from 'react';
+import React, { useContext } from 'react';
 
+import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import {
   USER_ADVANCED_ROUTE,
   USER_CRYPTO_TO_FIAT_ROUTE,
@@ -17,6 +19,12 @@ import SidebarRouteItem from '~v5/shared/Navigation/Sidebar/partials/SidebarRout
 import Sidebar from '~v5/shared/Navigation/Sidebar/Sidebar.tsx';
 
 export const AccountPageSidebar = () => {
+  const featureFlags = useContext(FeatureFlagsContext);
+  const cryptoToFiatFeatureFlag = featureFlags[FeatureFlag.CRYPTO_TO_FIAT];
+
+  const showCryptoToFiatNavItem =
+    !cryptoToFiatFeatureFlag?.isLoading && cryptoToFiatFeatureFlag?.isEnabled;
+
   return (
     <Sidebar
       className="!w-[216px] overflow-y-auto"
@@ -41,12 +49,16 @@ export const AccountPageSidebar = () => {
           icon={Wrench}
         />
       </section>
-      <div className="mx-3 my-[15px] border-b border-gray-200 md:mx-2 md:border-gray-700" />
-      <SidebarRouteItem
-        path={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
-        translation={{ id: 'userCryptoToFiatPage.title' }}
-        icon={CreditCard}
-      />
+      {showCryptoToFiatNavItem && (
+        <>
+          <div className="mx-3 my-[15px] border-b border-gray-200 md:mx-2 md:border-gray-700" />
+          <SidebarRouteItem
+            path={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
+            translation={{ id: 'userCryptoToFiatPage.title' }}
+            icon={CreditCard}
+          />
+        </>
+      )}
     </Sidebar>
   );
 };
