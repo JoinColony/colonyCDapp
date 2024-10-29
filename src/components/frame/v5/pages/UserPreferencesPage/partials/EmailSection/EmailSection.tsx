@@ -135,7 +135,10 @@ const EmailSection = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <SettingsRow.Container>
-        <SettingsRow.Content rightContent={getRightContent()}>
+        <SettingsRow.Content
+          rightContent={getRightContent()}
+          className="flex-col gap-2 md:flex-row"
+        >
           <SettingsRow.Subtitle>
             {formatText({ id: 'field.email' })}
           </SettingsRow.Subtitle>
