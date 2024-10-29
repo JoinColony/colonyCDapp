@@ -133,6 +133,19 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionFailedNotFinalizable && !isMotionFinalized && !isMotionAgreement;
 
   const showClaimButton = isMotionClaimable && canClaimStakes && !isClaimed;
+  const canBeExecuted =
+    !isPolling &&
+    !isMotionFailedNotFinalizable &&
+    !isMotionFinalized &&
+    !isMotionAgreement;
+
+  const successStatusText = canBeExecuted
+    ? 'motion.finalizeStep.votedAndNotStaked.statusText'
+    : 'motion.finalizeStep.complete.statusText';
+
+  const statusText = isMotionFailedNotFinalizable
+    ? 'motion.finalizeStep.failed.statusText'
+    : successStatusText;
 
   return (
     <MenuWithStatusText
@@ -143,7 +156,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           iconAlignment="top"
           iconSize={16}
         >
-          {formatText({ id: statusId })}
+          {actionType === ColonyActionType.CreateDecisionMotion
+            ? formatText({ id: statusId })
+            : formatText({
+                id: statusText,
+              })}
         </StatusText>
       }
       content={
