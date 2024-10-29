@@ -1,8 +1,8 @@
 import { CaretDown } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
-import { useMatch, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useMatch, useParams } from 'react-router-dom';
 
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
@@ -29,6 +29,8 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
   isColonyRoute,
 }) => {
   const { colonyName } = useParams();
+
+  const location = useLocation();
 
   const derivedPath = isColonyRoute
     ? `/${colonyName}${path ? `/${path}` : ''}`
@@ -65,6 +67,20 @@ const SidebarRouteItem: React.FC<SidebarRouteItemProps> = ({
       toggleTabletSidebar();
     }
   };
+
+  useEffect(() => {
+    // I don't want to overly complicate this for now.
+    // In the future, if we ever end up having multiple levels of route nesting,
+    // adjust this accordingly via a recursive approach.
+    if (
+      isAccordion &&
+      subItems
+        .map((subItem) => subItem.path)
+        .find((subItemPath) => location.pathname.endsWith(subItemPath))
+    ) {
+      setIsAccordionExpanded(true);
+    }
+  }, [isAccordion, location.pathname, matchingRoute, subItems]);
 
   const shouldHighlightItem = !!matchingRoute && !isAccordion;
 
