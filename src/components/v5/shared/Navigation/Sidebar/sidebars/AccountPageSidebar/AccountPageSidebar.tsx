@@ -15,6 +15,7 @@ import {
   USER_HOME_ROUTE,
   USER_PREFERENCES_ROUTE,
 } from '~routes';
+import { SidebarContentDivider } from '~v5/shared/Navigation/Sidebar/partials/SidebarContentDivider.tsx';
 import SidebarRouteItem from '~v5/shared/Navigation/Sidebar/partials/SidebarRouteItem/index.ts';
 import Sidebar from '~v5/shared/Navigation/Sidebar/Sidebar.tsx';
 
