@@ -51,7 +51,7 @@ const NotificationsSection = () => {
   );
 
   return (
-    <SettingsRow.Container>
+    <SettingsRow.Container className="border-none">
       <SettingsRow.Content>
         <div className="flex items-center gap-1.5">
           <SettingsRow.Title>{formatText(MSG.sectionTitle)}</SettingsRow.Title>

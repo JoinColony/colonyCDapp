@@ -14,7 +14,7 @@ const SettingsRowContainer: FC<SettingsRowContainerProps> = ({
   return (
     <div
       className={clsx(
-        'flex w-full flex-col items-start gap-6 border-b border-gray-200 py-6',
+        'flex w-full flex-col items-start gap-6 border-b border-gray-200 pb-6',
         className,
       )}
     >
