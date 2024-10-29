@@ -7,6 +7,7 @@ import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingC
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 import EmailSection from './partials/EmailSection/EmailSection.tsx';
 import NotificationSettingsSection from './partials/NotificationSettingsSection.tsx';
@@ -36,6 +37,9 @@ const UserPreferencesPage: FC = () => {
 
   return (
     <div className="flex flex-col gap-6">
+      <h4 className="heading-4">
+        {formatMessage({ id: 'userPreferencesPage.accountPreferences' })}
+      </h4>
       <EmailSection />
       <WalletSection />
       <NotificationSettingsSection />

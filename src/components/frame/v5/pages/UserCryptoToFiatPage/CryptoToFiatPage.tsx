@@ -12,6 +12,7 @@ import {
   USER_HOME_ROUTE,
 } from '~routes';
 import { formatText } from '~utils/intl.ts';
+import { formatMessage } from '~utils/yup/tests/helpers.ts';
 
 import CryptoToFiatContextProvider from './context/CryptoToFiatContextProvider.tsx';
 import AutomaticDeposits from './partials/AutomaticDeposits/AutomaticDeposits.tsx';
@@ -53,6 +54,9 @@ const UserCryptoToFiatPage = () => {
   return (
     <CryptoToFiatContextProvider>
       <div className="flex flex-col gap-6">
+        <h4 className="heading-4">
+          {formatMessage({ id: 'userCryptoToFiatPage.heading' })}
+        </h4>
         <p className="text-md text-gray-500">
           {formatText(MSG.pageSubHeading)}
         </p>

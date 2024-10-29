@@ -45,7 +45,7 @@ export const AccountPageSidebar = () => {
         />
         <SidebarRouteItem
           path={`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`}
-          translation={{ id: 'advancedSettings.title' }}
+          translation={{ id: 'userAdvancedPage.title' }}
           icon={Wrench}
         />
       </section>
