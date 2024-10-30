@@ -83,6 +83,10 @@ export const useActionsTableProps = (
     original: { transactionHash },
   }) => ({
     disabled: loading,
+    dropdownPlacementProps: {
+      withAutoTopPlacement: true,
+      top: 10,
+    },
     items: [
       {
         key: '1',
