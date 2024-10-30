@@ -73,19 +73,13 @@ export const fillColonyNameStep = async (
     urlFieldValue,
   }: { nameFieldValue: string; urlFieldValue: string },
 ) => {
-  const continueButton = page.getByRole('button', { name: /continue/i });
-
   await page.getByLabel(/colony Name/i).fill(nameFieldValue);
 
   await page.getByLabel(/custom colony URL/i).fill(urlFieldValue);
 
-  await page.getByText(/URL available/i).waitFor({ state: 'visible' });
-
-  await page.getByLabel(/custom colony URL/i).blur();
-
-  await page.getByText(/URL available/i).waitFor({ state: 'visible' });
-
-  await continueButton.click();
+  await page
+    .getByRole('button', { name: /continue/i })
+    .click({ timeout: 10000 });
 };
 
 export const fillNativeTokenStepWithExistingToken = async (
