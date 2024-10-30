@@ -1,5 +1,18 @@
 import { useEffect } from 'react';
 
+/**
+ * This hook locks or unlocks body scroll based on the given boolean flag.
+ * It is a very simplified version of the `useDisableBodyScroll` hook.
+ *
+ * @param {boolean} [shouldLock=true] - Determines whether to lock the body scroll or not. Defaults to true.
+ *
+ * @description
+ * This hook manages the document's body scroll by setting the `overflow` style to `'hidden'` when the
+ * `shouldLock` flag is true and restoring the original overflow style when it's false or on cleanup.
+ *
+ * @note
+ * It is still recommended to use the `useDisableBodyScroll` hook for most use cases.
+ */
 export const useLockBodyScroll = (shouldLock: boolean = true) => {
   useEffect(() => {
     const { body } = document;
