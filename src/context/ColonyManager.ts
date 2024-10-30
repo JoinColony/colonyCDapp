@@ -11,15 +11,20 @@ import {
   type AnyColonyClient,
   type AnyMultisigPermissionsClient,
 } from '@colony/colony-js';
+import { type Abi, CustomContract, ContractConfig } from '@colony/sdk';
 import { type Signer, type providers } from 'ethers';
 
+import { DEFAULT_NETWORK } from '~constants/index.ts';
 import { type Address } from '~types/index.ts';
+import { ColonyJSNetworkMapping } from '~types/network.ts';
 import { isAddress } from '~utils/web3/index.ts';
 
 export default class ColonyManager {
   private metaColonyClient?: any;
 
   colonyClients: Map<Address, Promise<any>>;
+
+  customContracts: Map<Address, CustomContract<any>>;
 
   extensionClients: Map<string, Promise<ExtensionClient>>;
 
@@ -38,6 +43,7 @@ export default class ColonyManager {
     this.extensionClients = new Map();
     this.tokenClients = new Map();
     this.tokenLockingClients = new Map();
+    this.customContracts = new Map();
     this.networkClient = networkClient;
     this.provider = networkClient.provider;
     this.signer = networkClient.signer;
@@ -251,5 +257,35 @@ export default class ColonyManager {
       this.tokenLockingClients.set(address, clientPromise);
     }
     return clientPromise;
+  }
+
+  /*
+   * Get a custom colony contract by address and ABI (using Colony SDK)
+   *
+   * @example
+   * ```ts
+   * import { abi as colonyNetworkAbi } from '../../network-files/contracts/colonyNetwork/ColonyNetwork.sol/ColonyNetwork.json';
+   * const networkAddress = import.meta.env.NETWORK_CONTRACT_ADDRESS || ColonyNetworkAddress[DEFAULT_NETWORK];
+   * const customColonyNetwork = colonyManager.getCustomContract(networkAddress, colonyNetworkAbi);
+   * ```
+   */
+  getCustomContract<A extends Abi>(address: string, abi: A): CustomContract<A> {
+    const reputationOracleEndpoint = import.meta.env.REPUTATION_ORACLE_ENDPOINT
+      ? new URL(import.meta.env.REPUTATION_ORACLE_ENDPOINT)
+      : new URL(`/reputation`, window.location.origin);
+
+    const metaTxBroadcasterEndpoint = `${import.meta.env.METATX_BROADCASTER_ENDPOINT}/broadcast`;
+
+    const config = new ContractConfig(this.signer || this.provider, {
+      metaTxBroadcasterEndpoint,
+      network: ColonyJSNetworkMapping[DEFAULT_NETWORK],
+      reputationOracleEndpoint: reputationOracleEndpoint.toString(),
+    });
+
+    if (this.customContracts.has(address)) {
+      return this.customContracts.get(address) as CustomContract<A>;
+    }
+
+    return new CustomContract(address as `0x${string}`, abi, config);
   }
 }
