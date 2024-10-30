@@ -52,7 +52,6 @@ const Table = <T,>({
   showTableBorder = true,
   alwaysShowPagination = false,
   footerColSpan,
-  shouldHideSortingArrow = true,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -239,7 +238,7 @@ const Table = <T,>({
                         key={header.id}
                         className={clsx(
                           header.column.columnDef.headCellClassName,
-                          'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
+                          'group border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
                           {
                             'cursor-pointer':
                               header.column.getCanSort() &&
@@ -277,10 +276,9 @@ const Table = <T,>({
                                 'rotate-0':
                                   header.column.getIsSorted() === 'desc' &&
                                   !shouldShowEmptyContent,
-                                hidden:
-                                  shouldHideSortingArrow &&
-                                  (header.column.getIsSorted() === false ||
-                                    shouldShowEmptyContent),
+                                'opacity-0 group-hover:opacity-100':
+                                  header.column.getIsSorted() === false ||
+                                  shouldShowEmptyContent,
                               },
                             )}
                           />

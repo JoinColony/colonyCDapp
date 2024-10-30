@@ -72,7 +72,6 @@ const FiatTransfersTable = () => {
         getSortedRowModel={getSortedRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
         getRowCanExpand={() => isMobile}
-        shouldHideSortingArrow={false}
         renderSubComponent={({ row }) => (
           <FiatTransferDescription actionRow={row} loading={loading} />
         )}

@@ -48,5 +48,4 @@ export interface TableProps<T>
   showTableHead?: boolean;
   showTableBorder?: boolean;
   alwaysShowPagination?: boolean;
-  shouldHideSortingArrow?: boolean;
 }
