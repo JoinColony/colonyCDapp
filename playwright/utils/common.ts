@@ -12,3 +12,19 @@ export const acceptCookieConsentBanner = async (page: Page) => {
     await acceptButton.click();
   }
 };
+
+export const fillInputByLabelWithDelay = async ({
+  page,
+  label,
+  value,
+  timeout = 500,
+}: {
+  page: Page;
+  label: string | RegExp;
+  value: string;
+  timeout?: number;
+}) => {
+  await page.getByLabel(label).pressSequentially(value, { delay: 100 });
+  // eslint-disable-next-line playwright/no-wait-for-timeout
+  await page.waitForTimeout(timeout);
+};

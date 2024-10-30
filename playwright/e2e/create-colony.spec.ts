@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test';
 
-import { acceptCookieConsentBanner } from '../utils/common.ts';
+import {
+  acceptCookieConsentBanner,
+  fillInputByLabelWithDelay,
+} from '../utils/common.ts';
 import {
   generateRandomString,
   selectWalletAndUserProfile,
@@ -62,12 +65,17 @@ test.describe('Create Colony flow', () => {
       ).toBeDisabled();
 
       // Fill in colony name and custom URL
-      await page
-        .getByLabel(/colony Name/i)
-        .pressSequentially(colonyName, { delay: 100 });
-      await page
-        .getByLabel(/custom colony URL/i)
-        .pressSequentially(generateRandomString(), { delay: 100 });
+      await fillInputByLabelWithDelay({
+        page,
+        label: /colony name/i,
+        value: colonyName,
+      });
+
+      await fillInputByLabelWithDelay({
+        page,
+        label: /custom colony URL/i,
+        value: generateRandomString(),
+      });
 
       // Check if URL is available
       await expect(page.getByText(/URL available/i)).toBeVisible();
@@ -104,11 +112,11 @@ test.describe('Create Colony flow', () => {
         }
       });
 
-      const colonyUrlField = page.getByLabel(/custom colony URL/i);
-
-      await colonyUrlField.pressSequentially('takenurl', { delay: 100 });
-
-      await page.getByLabel(/colony name/i).focus();
+      await fillInputByLabelWithDelay({
+        page,
+        label: /custom colony URL/i,
+        value: 'takenurl',
+      });
 
       await expect(
         page.getByText(/This colony URL is already taken/i),
@@ -117,42 +125,58 @@ test.describe('Create Colony flow', () => {
 
     test('Should reject invalid colony name', async ({ page }) => {
       // More than 20 characters
-      await page
-        .getByLabel(/colony name/i)
-        .pressSequentially('A'.repeat(21), { delay: 100 });
+      await fillInputByLabelWithDelay({
+        page,
+        label: /colony name/i,
+        value: 'A'.repeat(21),
+      });
 
       await expect(page.getByTestId('form-error')).toBeVisible();
     });
 
     test("Should reject invalid custom colony URL's", async ({ page }) => {
-      await test.step('Invalid name', async () => {
-        await page
-          .getByLabel(/custom colony URL/i)
-          .pressSequentially('invalid name', { delay: 100 });
+      await test.step('Invalid value', async () => {
+        await fillInputByLabelWithDelay({
+          page,
+          label: /custom colony URL/i,
+          value: 'invalid name',
+        });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('Contains invalid character', async () => {
-        await page
-          .getByLabel(/custom colony URL/i)
-          .pressSequentially('/invalid', { delay: 100 });
+        await page.getByLabel(/custom colony URL/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /custom colony URL/i,
+          value: '/invalid',
+        });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('More than 20 characters', async () => {
-        await page
-          .getByLabel(/custom colony URL/i)
-          .pressSequentially('a'.repeat(21), { delay: 100 });
+        await page.getByLabel(/custom colony URL/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /custom colony URL/i,
+          value: 'a'.repeat(21),
+        });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('Reserved keyword', async () => {
-        await page
-          .getByLabel(/custom colony URL/i)
-          .pressSequentially('account', { delay: 100 });
+        await page.getByLabel(/custom colony URL/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /custom colony URL/i,
+          value: 'account',
+        });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
