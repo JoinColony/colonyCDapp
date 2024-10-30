@@ -98,7 +98,7 @@ const ColonyLinks = () => {
           isSuccess={isColonyAddressCopied}
           tooltipContent={formatText({
             id: isColonyAddressCopied
-              ? 'colony.tooltip.url.copied'
+              ? 'colony.tooltip.colonyAddress.copied'
               : 'colony.tooltip.contractAddress.copy',
           })}
           isCopy
