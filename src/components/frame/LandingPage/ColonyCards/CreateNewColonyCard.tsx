@@ -1,5 +1,5 @@
 import { Plus } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import Button from '~v5/shared/Button/Button.tsx';
@@ -32,13 +32,9 @@ export const CreateNewColonyCard = ({
   invitationsRemaining,
   onCreate,
 }: ColonyCreateCardProps) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <BaseColonyCard
       onClick={() => onCreate()}
-      onMouseOver={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       isClickable
       avatarPlaceholder={
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
@@ -59,11 +55,7 @@ export const CreateNewColonyCard = ({
           <FormattedMessage {...MSG.createColony} />
         </p>
       </div>
-      <Button
-        icon={isHovered ? undefined : Plus}
-        className="border-gray-900"
-        mode={isHovered ? 'primaryOutline' : 'primarySolid'}
-      >
+      <Button icon={Plus} className="border-gray-900" mode="primarySolid">
         <FormattedMessage {...MSG.createButton} />
       </Button>
     </BaseColonyCard>
