@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React, { type FC } from 'react';
 
-import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
+import Numeral from '~shared/Numeral/Numeral.tsx';
+import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
 interface TokenFieldProps {
@@ -17,10 +17,6 @@ const TokenField: FC<TokenFieldProps> = ({ amount, tokenAddress, isNew }) => {
   const currentToken = allTokens.find(
     ({ token }) => token.tokenAddress === tokenAddress,
   );
-  const formattedAmount = getFormattedTokenAmount(
-    amount,
-    currentToken?.token.decimals || DEFAULT_TOKEN_DECIMALS,
-  );
 
   return amount ? (
     <div className="flex items-center gap-1 text-3">
@@ -30,7 +26,10 @@ const TokenField: FC<TokenFieldProps> = ({ amount, tokenAddress, isNew }) => {
           'text-gray-900': !isNew,
         })}
       >
-        {formattedAmount}
+        <Numeral
+          value={amount}
+          decimals={getTokenDecimalsWithFallback(currentToken?.token.decimals)}
+        />
       </span>
       <TokenAvatar
         tokenAddress={currentToken?.token.tokenAddress || ''}
