@@ -18,6 +18,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
+import { isMultiSig } from '~utils/multiSig/index.ts';
 import {
   CacheQueryKeys,
   getSafePollingInterval,
@@ -26,6 +27,7 @@ import {
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import MultiSigWidget from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/MultiSigWidget.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -174,6 +176,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const {
+    action: fundingAction,
     motionState: fundingMotionState,
     refetchMotionState: refetchFundingMotionState,
   } = useGetColonyAction(selectedFundingAction?.transactionHash);
@@ -185,7 +188,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     [fundingActions?.items],
   );
   const allFundingMotions = sortedFundingActions
-    .map((fundingAction) => fundingAction.motionData)
+    .map((fundingMotionAction) => fundingMotionAction.motionData)
     .filter(notMaybe);
   const selectedFundingMotion = selectedFundingAction?.motionData;
 
@@ -197,8 +200,17 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     expenditure?.stagedExpenditureAddress &&
     stagedExpenditureAddress !== expenditure.stagedExpenditureAddress;
 
+  const allFundingMultiSigs = sortedFundingActions
+    .map((fundingMultiSigAction) => fundingMultiSigAction.multiSigData)
+    .filter(notMaybe);
+  const selectedFundingMultiSig = selectedFundingAction?.multiSigData;
+  const isAnyFundingMultiSigInProgress = allFundingMultiSigs.some(
+    (multiSig) => !multiSig.isExecuted && !multiSig.isRejected,
+  );
+
   const shouldShowFundingButton =
     !isAnyFundingMotionInProgress &&
+    !isAnyFundingMultiSigInProgress &&
     !isExpenditureFunded &&
     !hasUninstalledExtension;
 
@@ -292,6 +304,20 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ),
       };
 
+  const getFundingStepContent = () => {
+    if (selectedFundingMotion) {
+      return (
+        <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+      );
+    }
+
+    if (selectedFundingMultiSig && fundingAction && isMultiSig(fundingAction)) {
+      return <MultiSigWidget action={fundingAction} />;
+    }
+
+    return <ActionWithPermissionsInfo action={selectedFundingAction} />;
+  };
+
   const items: StepperItem<ExpenditureStep>[] = [
     {
       key: ExpenditureStep.Create,
@@ -379,17 +405,40 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditureStep === ExpenditureStep.Funding && (
               <UninstalledExtensionBox />
             )}
-
           {sortedFundingActions.length > 0 && (
             <FundingRequests actions={sortedFundingActions} />
           )}
-
-          {selectedFundingMotion && (
-            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
-          )}
-
-          {selectedFundingAction && !selectedFundingMotion && (
-            <ActionWithPermissionsInfo action={selectedFundingAction} />
+          {getFundingStepContent()}
+          {shouldShowFundingButton && (
+            <StepDetailsBlock
+              text={formatText({
+                id: 'expenditure.fundingStage.info',
+              })}
+              content={
+                <>
+                  {expectedStepKey === ExpenditureStep.Release ? (
+                    <IconButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                    />
+                  )}
+                </>
+              }
+            />
           )}
 
           {shouldShowFundingButton && (

@@ -215,6 +215,11 @@ const FundingModal: FC<FundingModalProps> = ({
     error: ActionTypes.MOTION_EXPENDITURE_FUND_ERROR,
     success: ActionTypes.MOTION_EXPENDITURE_FUND_SUCCESS,
   });
+  const fundExpenditureViaMultisig = useAsyncFunction({
+    submit: ActionTypes.MULTISIG_EXPENDITURE_FUND,
+    error: ActionTypes.MULTISIG_EXPENDITURE_FUND_ERROR,
+    success: ActionTypes.MULTISIG_EXPENDITURE_FUND_SUCCESS,
+  });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleFundExpenditure = async ({ decisionMethod, ...restValues }) => {
@@ -249,6 +254,8 @@ const FundingModal: FC<FundingModalProps> = ({
         decisionMethod.value === DecisionMethod.Reputation
       ) {
         await fundExpenditureViaMotion(motionPayload);
+      } else if (decisionMethod.value === DecisionMethod.MultiSig) {
+        await fundExpenditureViaMultisig(payload);
       } else {
         await fundExpenditure(payload);
       }

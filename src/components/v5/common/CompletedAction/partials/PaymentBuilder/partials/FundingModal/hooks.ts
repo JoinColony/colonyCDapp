@@ -10,7 +10,8 @@ export const useFundingDecisionMethods = (
   actionType: Action,
 ): DecisionMethodOption[] => {
   const userHasPermissions = useCheckIfUserHasPermissions(actionType);
-  const { isVotingReputationEnabled } = useEnabledExtensions();
+  const { isVotingReputationEnabled, isMultiSigEnabled } =
+    useEnabledExtensions();
 
   return [
     {
@@ -25,6 +26,16 @@ export const useFundingDecisionMethods = (
               id: 'decisionMethod.reputation',
             }),
             value: DecisionMethod.Reputation,
+          },
+        ]
+      : []),
+    ...(isMultiSigEnabled
+      ? [
+          {
+            label: formatText({
+              id: 'decisionMethod.multiSig',
+            }),
+            value: DecisionMethod.MultiSig,
           },
         ]
       : []),
