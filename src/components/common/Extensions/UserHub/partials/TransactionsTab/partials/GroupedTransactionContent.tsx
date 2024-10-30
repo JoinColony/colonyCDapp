@@ -99,6 +99,7 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
           <NotificationBanner
             status="error"
             callToActionClassName="w-full no-underline"
+            contentClassName="@[600px]/notificationBanner:flex-col"
             callToAction={
               <div className="flex justify-between">
                 <button
