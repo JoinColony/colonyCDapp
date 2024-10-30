@@ -318,8 +318,6 @@ const Table = <T,>({
                         itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
                         isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
-                          '[&:not(:first-child)]:after:absolute [&:not(:first-child)]:after:left-4 [&:not(:first-child)]:after:top-0 [&:not(:first-child)]:after:w-[calc(100%-2rem)] [&:not(:first-child)]:after:border-b [&:not(:first-child)]:after:border-gray-100':
-                            withNarrowBorder,
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
@@ -406,6 +404,20 @@ const Table = <T,>({
                           </td>
                         </tr>
                       )}
+                      {
+                        /** Unfortunately Safari is not yet that friendly to allow the usage of absolutely positioned (pseudo)-element inside tables
+                         * So, for the moment, this is our best shot for showing borders with paddings from the tr margins
+                         */
+                        withNarrowBorder && (
+                          <tr className="relative w-full [&:last-of-type]:hidden [&:not(last-child)>#divider-cell>div]:!py-0 [&:not(last-child)>#divider-cell]:!px-0 [&>#divider-cell]:!h-[1px]">
+                            <td colSpan={100} id="divider-cell">
+                              <div className="h-full w-full !py-0 px-4">
+                                <div className="border-b border-gray-100" />
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      }
                     </React.Fragment>
                   );
                 })
