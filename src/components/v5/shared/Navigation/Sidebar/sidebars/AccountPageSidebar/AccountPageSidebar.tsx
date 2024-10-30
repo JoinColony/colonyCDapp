@@ -52,7 +52,7 @@ export const AccountPageSidebar = () => {
       </section>
       {showCryptoToFiatNavItem && (
         <>
-          <div className="mx-3 my-[15px] border-b border-gray-200 md:mx-2 md:border-gray-700" />
+          <SidebarContentDivider className="my-[0.938rem]" />
           <SidebarRouteItem
             path={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
             translation={{ id: 'userCryptoToFiatPage.title' }}

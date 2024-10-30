@@ -3,7 +3,11 @@ import React from 'react';
 
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 
-export const SidebarContentDivider = () => {
+export const SidebarContentDivider = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const { isDarkMode } = usePageThemeContext();
 
   return (
@@ -13,6 +17,7 @@ export const SidebarContentDivider = () => {
         {
           'md:!border-gray-200': isDarkMode,
         },
+        className,
       )}
     />
   );
