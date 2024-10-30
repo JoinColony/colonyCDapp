@@ -22,6 +22,9 @@ export const getFundingDecisionMethodDescriptions = (userRole: string) => ({
   [DecisionMethod.Reputation]: formatText({
     id: 'fundingModal.reputationDescription',
   }),
+  [DecisionMethod.MultiSig]: formatText({
+    id: 'fundingModal.multiSigDescription',
+  }),
 });
 
 export const getValidationSchema = (

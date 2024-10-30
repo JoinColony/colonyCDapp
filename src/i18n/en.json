@@ -1847,6 +1847,7 @@
     "fundingModal.note": "Note: ",
     "fundingModal.permissionsDescription": "This will use your {permission} permissions to immediately make the decision and fund the payment.",
     "fundingModal.reputationDescription": "This will start the lazy consensus process using reputation to make the decision for funding the payment.",
+    "fundingModal.multiSigDescription": "This will start the multisig process to make the decision for funding the payment.",
     "milestoneModal.permissionsDescription": "This will use your {permission} permissions to immediately make the selected milestone payments.",
     "milestoneModal.reputationDescription": "This will start the lazy consensus process using reputation to make the decision, for making the selected milestone payments.",
     "milestoneModal.paymentCreatorDescription": "This will use your temporary permissions as the payment creator to immediately make the selected milestone payments.",
