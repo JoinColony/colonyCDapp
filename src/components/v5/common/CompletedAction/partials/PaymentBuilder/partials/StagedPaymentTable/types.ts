@@ -1,9 +1,7 @@
-import { type ExpenditureStage } from '~gql';
-import { type ExpenditureSlot } from '~types/graphql.ts';
+import { type Expenditure } from '~types/graphql.ts';
 
 export interface StagedPaymentTableProps {
-  stages: ExpenditureStage[];
-  slots: ExpenditureSlot[];
+  expenditure: Expenditure;
   isLoading?: boolean;
   isPaymentStep?: boolean;
   finalizedAt: number;

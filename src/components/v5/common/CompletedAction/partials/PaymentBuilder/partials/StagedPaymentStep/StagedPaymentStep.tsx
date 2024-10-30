@@ -69,7 +69,7 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     setSelectedMilestones,
     selectedReleaseAction,
   } = usePaymentBuilderContext();
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const { stagedExpenditureAddress } = useEnabledExtensions();
   const [isWaitingForStagesRelease, setIsWaitingForStagesRelease] =
     useState(false);
 
@@ -139,25 +139,29 @@ const StagedPaymentStep: FC<StagedPaymentStepProps> = ({
     slot.payouts?.every((payout) => payout.isClaimed),
   );
 
+  const isCorrectExtensionInstalled =
+    !!expenditure.stagedExpenditureAddress &&
+    stagedExpenditureAddress === expenditure.stagedExpenditureAddress;
+
   const shouldShowReleaseButton =
-    isStagedExtensionInstalled &&
+    isCorrectExtensionInstalled &&
     !isAnyReleaseStagesMotionInProgress &&
     !allStagesReleased;
 
   return (
     <>
-      {!isStagedExtensionInstalled && (
-        <StepDetailsBlock
-          text={formatText(MSG.extensionUninstalled)}
-          content={
-            <div className="-m-[1.125rem] bg-negative-100 p-[1.125rem] text-sm text-negative-400">
-              {formatText(MSG.extensionDescription)}
-            </div>
-          }
-        />
-      )}
-
       <div className="flex flex-col gap-2">
+        {!isCorrectExtensionInstalled && (
+          <StepDetailsBlock
+            text={formatText(MSG.extensionUninstalled)}
+            content={
+              <div className="-m-[1.125rem] bg-negative-100 p-[1.125rem] text-sm text-negative-400">
+                {formatText(MSG.extensionDescription)}
+              </div>
+            }
+          />
+        )}
+
         {releaseActions.length > 0 && (
           <ReleaseActions expenditure={expenditure} actions={releaseActions} />
         )}

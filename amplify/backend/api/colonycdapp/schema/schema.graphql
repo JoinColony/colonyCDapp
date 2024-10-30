@@ -3879,6 +3879,14 @@ type Expenditure @model {
   Hash of the first transaction that contained ExpenditurePayoutSet event
   """
   firstEditTransactionHash: String
+  """
+  Address of StagedExpenditure extension which set the expenditure as staged, if applicable
+  """
+  stagedExpenditureAddress: ID
+  """
+  Address of StakedExpenditure extension which created the expenditure, if applicable
+  """
+  stakedExpenditureAddress: ID
 }
 
 """

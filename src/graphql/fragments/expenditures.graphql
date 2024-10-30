@@ -28,6 +28,7 @@ fragment Expenditure on Expenditure {
   balances {
     ...ExpenditureBalance
   }
+  stagedExpenditureAddress
   # @NOTE: If querying actions field multiple times proves slow, we could query it once and filter on the client
   creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
     items {

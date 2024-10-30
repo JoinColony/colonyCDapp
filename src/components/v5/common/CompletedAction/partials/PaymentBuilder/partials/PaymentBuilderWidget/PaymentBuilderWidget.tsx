@@ -64,7 +64,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   });
   const { user } = useAppContext();
   const { walletAddress } = user || {};
-  const { isStagedExtensionInstalled } = useEnabledExtensions();
+  const { stagedExpenditureAddress } = useEnabledExtensions();
 
   const {
     isFundingModalOpen,
@@ -193,8 +193,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     (motion) =>
       !motion.isFinalized && !motion.motionStateHistory.hasFailedNotFinalizable,
   );
+  const hasUninstalledExtension =
+    expenditure?.stagedExpenditureAddress &&
+    stagedExpenditureAddress !== expenditure.stagedExpenditureAddress;
+
   const shouldShowFundingButton =
-    !isAnyFundingMotionInProgress && !isExpenditureFunded;
+    !isAnyFundingMotionInProgress &&
+    !isExpenditureFunded &&
+    !hasUninstalledExtension;
 
   const {
     motionState: releaseMotionState,
@@ -305,7 +311,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       content:
         expenditureStep === ExpenditureStep.Review ? (
           <>
-            {!isStagedExtensionInstalled && isStagedExpenditure ? (
+            {hasUninstalledExtension ? (
               <UninstalledExtensionBox />
             ) : (
               <StepDetailsBlock
@@ -367,59 +373,56 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           ) : null,
       },
       content: (
-        <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
-            <UninstalledExtensionBox />
-          ) : (
-            <div className="flex flex-col gap-2">
-              {sortedFundingActions.length > 0 && (
-                <FundingRequests actions={sortedFundingActions} />
-              )}
+        <div className="flex flex-col gap-2">
+          {hasUninstalledExtension &&
+            expenditureStep === ExpenditureStep.Funding && (
+              <UninstalledExtensionBox />
+            )}
 
-              {selectedFundingMotion && (
-                <MotionBox
-                  transactionId={selectedFundingMotion.transactionHash}
-                />
-              )}
-
-              {selectedFundingAction && !selectedFundingMotion && (
-                <ActionWithPermissionsInfo action={selectedFundingAction} />
-              )}
-
-              {shouldShowFundingButton && (
-                <StepDetailsBlock
-                  text={formatText({
-                    id: 'expenditure.fundingStage.info',
-                  })}
-                  content={
-                    <>
-                      {expectedStepKey === ExpenditureStep.Release ? (
-                        <IconButton
-                          className="w-full"
-                          rounded="s"
-                          text={{ id: 'button.pending' }}
-                          icon={
-                            <span className="ml-1.5 flex shrink-0">
-                              <SpinnerGap className="animate-spin" size={14} />
-                            </span>
-                          }
-                        />
-                      ) : (
-                        <Button
-                          className="w-full"
-                          onClick={showFundingModal}
-                          text={formatText({
-                            id: 'expenditure.fundingStage.button',
-                          })}
-                        />
-                      )}
-                    </>
-                  }
-                />
-              )}
-            </div>
+          {sortedFundingActions.length > 0 && (
+            <FundingRequests actions={sortedFundingActions} />
           )}
-        </>
+
+          {selectedFundingMotion && (
+            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+          )}
+
+          {selectedFundingAction && !selectedFundingMotion && (
+            <ActionWithPermissionsInfo action={selectedFundingAction} />
+          )}
+
+          {shouldShowFundingButton && (
+            <StepDetailsBlock
+              text={formatText({
+                id: 'expenditure.fundingStage.info',
+              })}
+              content={
+                <>
+                  {expectedStepKey === ExpenditureStep.Release ? (
+                    <IconButton
+                      className="w-full"
+                      rounded="s"
+                      text={{ id: 'button.pending' }}
+                      icon={
+                        <span className="ml-1.5 flex shrink-0">
+                          <SpinnerGap className="animate-spin" size={14} />
+                        </span>
+                      }
+                    />
+                  ) : (
+                    <Button
+                      className="w-full"
+                      onClick={showFundingModal}
+                      text={formatText({
+                        id: 'expenditure.fundingStage.button',
+                      })}
+                    />
+                  )}
+                </>
+              }
+            />
+          )}
+        </div>
       ),
     },
     {
@@ -427,11 +430,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
       content: (
         <>
-          {!isStagedExtensionInstalled && isStagedExpenditure ? (
-            <UninstalledExtensionBox />
-          ) : (
+          {expenditureStep === ExpenditureStep.Release ? (
             <>
-              {expenditureStep === ExpenditureStep.Release ? (
+              {hasUninstalledExtension ? (
+                <UninstalledExtensionBox />
+              ) : (
                 <StepDetailsBlock
                   text={formatText({
                     id: 'expenditure.releaseStage.info',
@@ -447,25 +450,25 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                     />
                   }
                 />
-              ) : (
+              )}
+            </>
+          ) : (
+            <>
+              {finalizedAt ? (
                 <>
-                  {finalizedAt ? (
-                    <>
-                      {finalizingActions?.items[0]?.initiatorAddress ===
-                      ownerAddress ? (
-                        <FinalizeByPaymentCreatorInfo
-                          userAdddress={expenditure?.ownerAddress}
-                        />
-                      ) : (
-                        <ActionWithPermissionsInfo
-                          action={finalizingActions?.items[0]}
-                        />
-                      )}
-                    </>
+                  {finalizingActions?.items[0]?.initiatorAddress ===
+                  ownerAddress ? (
+                    <FinalizeByPaymentCreatorInfo
+                      userAdddress={expenditure?.ownerAddress}
+                    />
                   ) : (
-                    <div />
+                    <ActionWithPermissionsInfo
+                      action={finalizingActions?.items[0]}
+                    />
                   )}
                 </>
+              ) : (
+                <div />
               )}
             </>
           )}
