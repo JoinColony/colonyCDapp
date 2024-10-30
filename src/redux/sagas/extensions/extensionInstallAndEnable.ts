@@ -29,6 +29,8 @@ import {
   getColonyManager,
 } from '../utils/index.ts';
 
+import { type ExtensionEnableError } from './extensionEnable.ts';
+
 // Saga will attempt to
 // 1. Install extension
 // Then, if enabledAutomaticallyAfterInstall is true
@@ -158,8 +160,13 @@ export function* extensionInstallAndEnable({
       const initParams = modifyParams(initializationParams, defaultParams);
       yield transactionSetParams(initialise.id, initParams);
 
-      yield initiateTransaction(initialise.id);
-      yield waitForTxResult(initialise.channel);
+      try {
+        yield initiateTransaction(initialise.id);
+        yield waitForTxResult(initialise.channel);
+      } catch (error) {
+        (error as ExtensionEnableError).initialiseTransactionFailed = true;
+        throw error;
+      }
     }
 
     const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -181,8 +188,13 @@ export function* extensionInstallAndEnable({
       bytes32Roles,
     ]);
 
-    yield initiateTransaction(setUserRoles.id);
-    yield waitForTxResult(setUserRoles.channel);
+    try {
+      yield initiateTransaction(setUserRoles.id);
+      yield waitForTxResult(setUserRoles.channel);
+    } catch (error) {
+      (error as ExtensionEnableError).setUserRolesTransactionFailed = true;
+      throw error;
+    }
 
     yield put({
       type: ActionTypes.EXTENSION_INSTALL_AND_ENABLE_SUCCESS,
@@ -193,7 +205,7 @@ export function* extensionInstallAndEnable({
     console.error(error);
     return yield putError(
       ActionTypes.EXTENSION_INSTALL_AND_ENABLE_ERROR,
-      error,
+      error as ExtensionEnableError,
       meta,
     );
   } finally {

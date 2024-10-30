@@ -990,6 +990,8 @@
     "extensionInstallAndEnable.toast.description.success": "The extension has been installed and enabled.",
     "extensionInstallAndEnable.toast.title.error": "Extension failed to install or enable",
     "extensionInstallAndEnable.toast.description.error": "Due to a transaction error, the extension was not installed or enabled.",
+    "extensionSetUserRoles.toast.title.error": "Failed to assign extension permissions",
+    "extensionSetUserRoles.toast.description.error": "Due to a transaction error, the extension was not assigned the permissions it needs to work.",
     "extensionSaveChanges.toast.title.success": "Updated",
     "extensionSaveChanges.toast.description.success": "The extension parameters have been successfully updated.",
     "extensionSaveChanges.toast.title.error": "Extension failed to update",

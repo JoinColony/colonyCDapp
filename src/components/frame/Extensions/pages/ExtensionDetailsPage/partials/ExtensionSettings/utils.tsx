@@ -1,6 +1,6 @@
 import { Extension } from '@colony/colony-js';
 import React from 'react';
-import { type FieldValues } from 'react-hook-form';
+import { type UseFormReset, type FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
@@ -10,7 +10,9 @@ import {
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
+import { type ExtensionEnableError } from '~redux/sagas/extensions/extensionEnable.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
+import { type CustomSubmitErrorHandler } from '~shared/Fields/Form/Form.tsx';
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type SetStateFn } from '~types';
 import {
@@ -31,37 +33,180 @@ import {
   getGlobalThresholdType,
 } from './MultiSigSettings/utils.ts';
 
-export const getFormSuccessFn =
-  <T extends FieldValues>({
-    setWaitingForActionConfirmation,
-    extensionData,
-    refetchExtensionData,
-    setActiveTab,
-  }: {
-    setWaitingForActionConfirmation: SetStateFn;
-    setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
-    extensionData: AnyExtensionData;
-    refetchExtensionData: RefetchExtensionDataFn;
-  }): OnSuccess<T> =>
-  async (fieldValues, { reset }) => {
-    setWaitingForActionConfirmation(true);
-    const isSaveChanges =
-      extensionData &&
-      isInstalledExtensionData(extensionData) &&
-      (extensionData.isInitialized || extensionData.configurable);
+const getInitializationDefaultValues = (
+  initializationParams: ExtensionInitParam[],
+) => {
+  return initializationParams.reduce<
+    Record<string, string | number | undefined>
+  >((initialValues, param) => {
+    return {
+      ...initialValues,
+      [param.paramName]: param.defaultValue,
+    };
+  }, {});
+};
 
-    try {
-      if (!isSaveChanges) {
-        await waitForDbAfterExtensionAction({
-          method: ExtensionMethods.ENABLE,
-          refetchExtensionData,
-        });
+export const getExtensionSettingsDefaultValues = (
+  extensionData: AnyExtensionData,
+): object => {
+  const { initializationParams = [] } = extensionData;
+  const defaultValues = getInitializationDefaultValues(initializationParams);
 
-        reset();
+  if (!isInstalledExtensionData(extensionData)) {
+    return defaultValues;
+  }
 
-        setActiveTab(ExtensionDetailsPageTabId.Overview);
+  switch (extensionData.extensionId) {
+    case Extension.StakedExpenditure: {
+      return {
+        stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
+          ? convertFractionToEth(
+              extensionData.params.stakedExpenditure.stakeFraction,
+            )
+          : String(defaultValues.stakeFraction),
+      };
+    }
+    case Extension.MultisigPermissions: {
+      const { colonyThreshold: globalThreshold } =
+        extensionData.params?.multiSig ?? {};
+
+      return {
+        thresholdType:
+          globalThreshold !== undefined
+            ? getGlobalThresholdType(globalThreshold)
+            : MultiSigThresholdType.MAJORITY_APPROVAL,
+        globalThreshold: globalThreshold ?? 0,
+        domainThresholds: [],
+      } satisfies MultiSigSettingsFormValues;
+    }
+    default: {
+      return defaultValues;
+    }
+  }
+};
+
+const getIsSaveChanges = (
+  extensionData: AnyExtensionData,
+  method: ExtensionMethods.INSTALL | ExtensionMethods.ENABLE,
+) => {
+  if (method === ExtensionMethods.INSTALL) {
+    return false;
+  }
+
+  return (
+    extensionData &&
+    isInstalledExtensionData(extensionData) &&
+    extensionData.isInitialized
+  );
+};
+
+const showEnableErrorToast = (isSaveChanges?: boolean) => {
+  toast.error(
+    <Toast
+      type="error"
+      title={{
+        id: isSaveChanges
+          ? 'extensionSaveChanges.toast.title.error'
+          : 'extensionEnable.toast.title.error',
+      }}
+      description={{
+        id: isSaveChanges
+          ? 'extensionSaveChanges.toast.description.error'
+          : 'extensionEnable.toast.description.error',
+      }}
+    />,
+  );
+};
+
+export const handleWaitingForDbAfterFormCompletion = async ({
+  setWaitingForActionConfirmation,
+  extensionData,
+  refetchExtensionData,
+  setActiveTab,
+  initialiseTransactionFailed,
+  setUserRolesTransactionFailed,
+  reset,
+  method,
+}: {
+  setWaitingForActionConfirmation: SetStateFn;
+  setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
+  extensionData: AnyExtensionData;
+  refetchExtensionData: RefetchExtensionDataFn;
+  initialiseTransactionFailed?: boolean;
+  setUserRolesTransactionFailed?: boolean;
+  reset: UseFormReset<object>;
+  method: ExtensionMethods.INSTALL | ExtensionMethods.ENABLE;
+}) => {
+  setWaitingForActionConfirmation(true);
+
+  const isSaveChanges = getIsSaveChanges(extensionData, method);
+
+  try {
+    if (!isSaveChanges) {
+      await waitForDbAfterExtensionAction({
+        method,
+        refetchExtensionData,
+        initialiseTransactionFailed,
+        setUserRolesTransactionFailed,
+      });
+
+      if (method === ExtensionMethods.INSTALL) {
+        toast.success(
+          <Toast
+            type="success"
+            title={{ id: 'extensionInstall.toast.title.success' }}
+            description={{
+              id: 'extensionInstall.toast.description.success',
+            }}
+          />,
+        );
       }
 
+      if (initialiseTransactionFailed) {
+        toast.error(
+          <Toast
+            type="error"
+            title={{ id: 'extensionEnable.toast.title.error' }}
+            description={{ id: 'extensionEnable.toast.description.error' }}
+          />,
+        );
+      }
+
+      if (setUserRolesTransactionFailed) {
+        toast.error(
+          <Toast
+            type="error"
+            title={{ id: 'extensionSetUserRoles.toast.title.error' }}
+            description={{
+              id: 'extensionSetUserRoles.toast.description.error',
+            }}
+          />,
+        );
+      }
+
+      if (
+        method === ExtensionMethods.INSTALL &&
+        (extensionData.initializationParams || extensionData.configurable)
+      ) {
+        // Reset the form to the default values using most recent extension data
+        const updatedExtensionData = await refetchExtensionData();
+        if (updatedExtensionData) {
+          reset(getExtensionSettingsDefaultValues(updatedExtensionData));
+          setActiveTab(ExtensionDetailsPageTabId.Settings);
+        }
+      }
+
+      if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
+        return;
+      }
+
+      if (method === ExtensionMethods.ENABLE) {
+        reset();
+        setActiveTab(ExtensionDetailsPageTabId.Overview);
+      }
+    }
+
+    if (method === ExtensionMethods.ENABLE) {
       toast.success(
         <Toast
           type="success"
@@ -77,25 +222,85 @@ export const getFormSuccessFn =
           }}
         />,
       );
-    } catch (error) {
+    }
+  } catch {
+    if (method === ExtensionMethods.INSTALL) {
       toast.error(
         <Toast
           type="error"
-          title={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.title.error'
-              : 'extensionEnable.toast.title.error',
-          }}
-          description={{
-            id: isSaveChanges
-              ? 'extensionSaveChanges.toast.description.error'
-              : 'extensionEnable.toast.description.error',
-          }}
+          title={{ id: 'extensionInstall.toast.title.error' }}
+          description={{ id: 'extensionInstall.toast.description.error' }}
         />,
       );
-    } finally {
-      setWaitingForActionConfirmation(false);
     }
+
+    if (method === ExtensionMethods.ENABLE) {
+      showEnableErrorToast(isSaveChanges);
+    }
+  } finally {
+    setWaitingForActionConfirmation(false);
+  }
+};
+
+export const getFormSuccessFn =
+  <T extends FieldValues>({
+    setWaitingForActionConfirmation,
+    extensionData,
+    refetchExtensionData,
+    setActiveTab,
+  }: {
+    setWaitingForActionConfirmation: SetStateFn;
+    setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
+    extensionData: AnyExtensionData;
+    refetchExtensionData: RefetchExtensionDataFn;
+  }): OnSuccess<T> =>
+  async (_, { reset }) => {
+    await handleWaitingForDbAfterFormCompletion({
+      setWaitingForActionConfirmation,
+      extensionData,
+      refetchExtensionData,
+      setActiveTab,
+      reset,
+      method: ExtensionMethods.ENABLE,
+    });
+  };
+
+export const getFormErrorFn =
+  <T extends FieldValues>({
+    setWaitingForActionConfirmation,
+    extensionData,
+    refetchExtensionData,
+    setActiveTab,
+  }: {
+    setWaitingForActionConfirmation: SetStateFn;
+    setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
+    extensionData: AnyExtensionData;
+    refetchExtensionData: RefetchExtensionDataFn;
+  }): CustomSubmitErrorHandler<T> =>
+  async (error, { reset }) => {
+    const { initialiseTransactionFailed, setUserRolesTransactionFailed } =
+      error as ExtensionEnableError;
+
+    if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
+      await handleWaitingForDbAfterFormCompletion({
+        setWaitingForActionConfirmation,
+        extensionData,
+        refetchExtensionData,
+        setActiveTab,
+        reset,
+        initialiseTransactionFailed,
+        setUserRolesTransactionFailed,
+        method: ExtensionMethods.ENABLE,
+      });
+      return;
+    }
+
+    const isSaveChanges = getIsSaveChanges(
+      extensionData,
+      ExtensionMethods.ENABLE,
+    );
+
+    showEnableErrorToast(isSaveChanges);
   };
 
 export const getExtensionSettingsActionType = (
@@ -154,56 +359,4 @@ export const mapExtensionActionPayload = (
     },
     {},
   );
-};
-
-const getInitializationDefaultValues = (
-  initializationParams: ExtensionInitParam[],
-) => {
-  return initializationParams.reduce<
-    Record<string, string | number | undefined>
-  >((initialValues, param) => {
-    return {
-      ...initialValues,
-      [param.paramName]: param.defaultValue,
-    };
-  }, {});
-};
-
-export const getExtensionSettingsDefaultValues = (
-  extensionData: AnyExtensionData,
-): object => {
-  const { initializationParams = [] } = extensionData;
-  const defaultValues = getInitializationDefaultValues(initializationParams);
-
-  if (!isInstalledExtensionData(extensionData)) {
-    return defaultValues;
-  }
-
-  switch (extensionData.extensionId) {
-    case Extension.StakedExpenditure: {
-      return {
-        stakeFraction: extensionData?.params?.stakedExpenditure?.stakeFraction
-          ? convertFractionToEth(
-              extensionData.params.stakedExpenditure.stakeFraction,
-            )
-          : String(defaultValues.stakeFraction),
-      };
-    }
-    case Extension.MultisigPermissions: {
-      const { colonyThreshold: globalThreshold } =
-        extensionData.params?.multiSig ?? {};
-
-      return {
-        thresholdType:
-          globalThreshold !== undefined
-            ? getGlobalThresholdType(globalThreshold)
-            : MultiSigThresholdType.MAJORITY_APPROVAL,
-        globalThreshold: globalThreshold ?? 0,
-        domainThresholds: [],
-      } satisfies MultiSigSettingsFormValues;
-    }
-    default: {
-      return defaultValues;
-    }
-  }
 };

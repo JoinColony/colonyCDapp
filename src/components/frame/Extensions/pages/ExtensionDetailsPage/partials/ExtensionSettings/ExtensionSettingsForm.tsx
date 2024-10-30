@@ -12,6 +12,7 @@ import {
   getExtensionSettingsActionType,
   mapExtensionActionPayload,
   getExtensionSettingsDefaultValues,
+  getFormErrorFn,
 } from './utils.tsx';
 import { getValidationSchema } from './validation.ts';
 
@@ -46,6 +47,13 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
     setActiveTab,
   });
 
+  const handleFormError = getFormErrorFn<typeof defaultValues>({
+    extensionData,
+    refetchExtensionData,
+    setWaitingForActionConfirmation,
+    setActiveTab,
+  });
+
   return (
     <ActionForm<typeof defaultValues>
       actionType={getExtensionSettingsActionType(extensionData)}
@@ -53,6 +61,7 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
       defaultValues={defaultValues}
       validationSchema={validationSchema}
       onSuccess={handleFormSuccess}
+      onError={handleFormError}
     >
       {children}
     </ActionForm>

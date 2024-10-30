@@ -1,19 +1,19 @@
 import { type Extension } from '@colony/colony-js';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
-import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux';
+import { type ExtensionEnableError } from '~redux/sagas/extensions/extensionEnable.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 
-import { getExtensionSettingsDefaultValues } from '../ExtensionSettings/utils.tsx';
+import { handleWaitingForDbAfterFormCompletion } from '../ExtensionSettings/utils.tsx';
 
 export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,63 +75,47 @@ export const useInstall = (extensionData: AnyExtensionData) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const showErrorToast = useCallback(() => {
-    toast.error(
-      <Toast
-        type="error"
-        title={{ id: 'extensionInstall.toast.title.error' }}
-        description={{ id: 'extensionInstall.toast.description.error' }}
-      />,
-    );
-  }, []);
-
-  const handleInstallSuccess = useCallback(async () => {
+  const handleInstallSuccess = async () => {
     setIsLoading(true);
-    setWaitingForActionConfirmation(true);
+    await handleWaitingForDbAfterFormCompletion({
+      setWaitingForActionConfirmation,
+      extensionData,
+      refetchExtensionData,
+      setActiveTab,
+      reset,
+      method: ExtensionMethods.INSTALL,
+    });
+    setIsLoading(false);
+  };
 
-    try {
-      await waitForDbAfterExtensionAction({
-        method: ExtensionMethods.INSTALL,
-        refetchExtensionData,
-      });
+  const handleInstallError = async (error: ExtensionEnableError) => {
+    const { initialiseTransactionFailed, setUserRolesTransactionFailed } =
+      error;
 
-      toast.success(
+    if (!initialiseTransactionFailed && !setUserRolesTransactionFailed) {
+      toast.error(
         <Toast
-          type="success"
-          title={{ id: 'extensionInstall.toast.title.success' }}
-          description={{
-            id: 'extensionInstall.toast.description.success',
-          }}
+          type="error"
+          title={{ id: 'extensionInstall.toast.title.error' }}
+          description={{ id: 'extensionInstall.toast.description.error' }}
         />,
       );
-
-      if (extensionData.initializationParams || extensionData.configurable) {
-        // Reset the form to the default values using most recent extension data
-        const updatedExtensionData = await refetchExtensionData();
-        if (updatedExtensionData) {
-          reset(getExtensionSettingsDefaultValues(updatedExtensionData));
-          setActiveTab(ExtensionDetailsPageTabId.Settings);
-        }
-      }
-    } catch {
-      showErrorToast();
-    } finally {
-      setIsLoading(false);
-      setWaitingForActionConfirmation(false);
+      return;
     }
-  }, [
-    extensionData.configurable,
-    extensionData.initializationParams,
-    refetchExtensionData,
-    reset,
-    setActiveTab,
-    setWaitingForActionConfirmation,
-    showErrorToast,
-  ]);
 
-  const handleInstallError = useCallback(() => {
-    showErrorToast();
-  }, [showErrorToast]);
+    setIsLoading(true);
+    await handleWaitingForDbAfterFormCompletion({
+      setWaitingForActionConfirmation,
+      extensionData,
+      refetchExtensionData,
+      setActiveTab,
+      reset,
+      method: ExtensionMethods.INSTALL,
+      initialiseTransactionFailed,
+      setUserRolesTransactionFailed,
+    });
+    setIsLoading(false);
+  };
 
   return {
     handleInstallSuccess,
