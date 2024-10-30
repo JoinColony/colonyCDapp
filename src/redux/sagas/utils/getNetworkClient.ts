@@ -42,6 +42,7 @@ const getNetworkClient = async (signerOrProvider?: SignerOrProvider) => {
     return getColonyNetworkClient(ColonyJSNetwork.Custom, signer, {
       networkAddress,
       reputationOracleEndpoint: reputationOracleUrl.href,
+      disableVersionCheck: true,
     });
   }
 
@@ -58,6 +59,7 @@ const getNetworkClient = async (signerOrProvider?: SignerOrProvider) => {
         import.meta.env.NETWORK_CONTRACT_ADDRESS ||
         ColonyNetworkAddress[network],
       reputationOracleEndpoint: reputationOracleUrl.href,
+      disableVersionCheck: true,
     },
   );
 };
