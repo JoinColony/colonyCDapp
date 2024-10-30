@@ -8,17 +8,17 @@ export const getMilestoneReleaseDecisionMethodDescriptions = (
 ) => ({
   [DecisionMethod.Permissions]: formatText(
     {
-      id: 'fundingModal.permissionsDescription',
+      id: 'milestoneModal.permissionsDescription',
     },
     {
       permission: userRole,
     },
   ),
   [DecisionMethod.Reputation]: formatText({
-    id: 'fundingModal.reputationDescription',
+    id: 'milestoneModal.reputationDescription',
   }),
   [DecisionMethod.PaymentCreator]: formatText({
-    id: 'releaseModal.paymentCreatorDescription',
+    id: 'milestoneModal.paymentCreatorDescription',
   }),
 });
 
