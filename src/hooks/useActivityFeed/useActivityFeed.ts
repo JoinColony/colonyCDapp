@@ -49,10 +49,11 @@ const useActivityFeed = (
    * It's set one page ahead to prefetch the next page actions
    */
   const requestedActionsCount = pageSize * (pageNumber + 1);
+  const stringifiedFilters = JSON.stringify(filters);
 
   useEffect(() => {
     setPageNumber(1);
-  }, [filters]);
+  }, [stringifiedFilters]);
 
   const { data, fetchMore, loading } = useSearchActionsQuery({
     variables: {
