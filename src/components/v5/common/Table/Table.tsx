@@ -7,8 +7,9 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
+import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
@@ -55,6 +56,7 @@ const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
+  const isMobile = useMobile();
 
   const columnsWithMenu = useMemo(
     () => [
@@ -109,6 +111,16 @@ const Table = <T,>({
   const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
+
+  useEffect(() => {
+    if (!isMobile) {
+      rows.forEach((row) => {
+        if (row.getIsExpanded()) {
+          row.toggleExpanded(false);
+        }
+      });
+    }
+  }, [isMobile, rows]);
 
   return (
     <div className={className}>
