@@ -1,6 +1,8 @@
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
+
 import BaseColonyCard from './BaseColonyCard/BaseColonyCard.tsx';
 
 export interface ColonyCardProps {
@@ -40,10 +42,7 @@ export const ColonyCard = ({
       <FormattedMessage
         {...MSG.members}
         values={{
-          members:
-            membersCount > 100000000
-              ? `${(membersCount / 1000000).toFixed(0)}M`
-              : membersCount.toLocaleString('en-US'),
+          members: getFormattedTokenAmount(`${membersCount}`, 0),
         }}
       />
     </p>
