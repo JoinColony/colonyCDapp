@@ -13,6 +13,7 @@ services:
     image: colony-cdapp-dev-env/network:latest
     volumes:
       - 'amplify-mock-data:/colonyCDapp/amplify/mock-data'
+      - '../network-files/:/colonyCDappBackend/colonyNetwork/artifacts'
     ports:
       - '8545:8545'
       - '3002:3002'
