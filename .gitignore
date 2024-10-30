@@ -9,6 +9,7 @@ cypress/screenshots
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/network-files
 
 .vscode
 .DS_Store
