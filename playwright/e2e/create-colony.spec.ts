@@ -62,8 +62,12 @@ test.describe('Create Colony flow', () => {
       ).toBeDisabled();
 
       // Fill in colony name and custom URL
-      await page.getByLabel(/colony Name/i).fill(colonyName);
-      await page.getByLabel(/custom colony URL/i).fill(generateRandomString());
+      await page
+        .getByLabel(/colony Name/i)
+        .pressSequentially(colonyName, { delay: 100 });
+      await page
+        .getByLabel(/custom colony URL/i)
+        .pressSequentially(generateRandomString(), { delay: 100 });
 
       // Check if URL is available
       await expect(page.getByText(/URL available/i)).toBeVisible();
@@ -102,7 +106,7 @@ test.describe('Create Colony flow', () => {
 
       const colonyUrlField = page.getByLabel(/custom colony URL/i);
 
-      await colonyUrlField.fill('takenurl');
+      await colonyUrlField.pressSequentially('takenurl', { delay: 100 });
 
       await page.getByLabel(/colony name/i).focus();
 
@@ -113,32 +117,42 @@ test.describe('Create Colony flow', () => {
 
     test('Should reject invalid colony name', async ({ page }) => {
       // More than 20 characters
-      await page.getByLabel(/colony name/i).fill('A'.repeat(21));
+      await page
+        .getByLabel(/colony name/i)
+        .pressSequentially('A'.repeat(21), { delay: 100 });
 
       await expect(page.getByTestId('form-error')).toBeVisible();
     });
 
     test("Should reject invalid custom colony URL's", async ({ page }) => {
       await test.step('Invalid name', async () => {
-        await page.getByLabel(/custom colony URL/i).fill('invalid name');
+        await page
+          .getByLabel(/custom colony URL/i)
+          .pressSequentially('invalid name', { delay: 100 });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('Contains invalid character', async () => {
-        await page.getByLabel(/custom colony URL/i).fill('/invalid');
+        await page
+          .getByLabel(/custom colony URL/i)
+          .pressSequentially('/invalid', { delay: 100 });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('More than 20 characters', async () => {
-        await page.getByLabel(/custom colony URL/i).fill('a'.repeat(21));
+        await page
+          .getByLabel(/custom colony URL/i)
+          .pressSequentially('a'.repeat(21), { delay: 100 });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
 
       await test.step('Reserved keyword', async () => {
-        await page.getByLabel(/custom colony URL/i).fill('account');
+        await page
+          .getByLabel(/custom colony URL/i)
+          .pressSequentially('account', { delay: 100 });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
       });
