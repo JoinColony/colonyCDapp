@@ -6,6 +6,7 @@ import { useReputationChartContext } from '~context/ReputationChartContext/Reput
 import { pieChartConfig } from '../consts.ts';
 import { type ReputationChartDataItem } from '../types.ts';
 
+import { ChartCustomArcsLayer } from './ChartCustomArcsLayer.tsx';
 import { ChartLoadingLayer } from './ChartLoadingLayer.tsx';
 import { ChartTooltip } from './ChartTooltip.tsx';
 import Legend from './Legend.tsx';
@@ -20,6 +21,7 @@ interface ChartProps {
 
 export const Chart: FC<ChartProps> = ({ data, emptyChartItem, isLoading }) => {
   const { setActiveLegendItem } = useReputationChartContext();
+
   return (
     <>
       <div className="relative mb-3.5 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
@@ -30,6 +32,7 @@ export const Chart: FC<ChartProps> = ({ data, emptyChartItem, isLoading }) => {
           isInteractive={!!data.length}
           onActiveIdChange={setActiveLegendItem}
           tooltip={ChartTooltip}
+          layers={[ChartCustomArcsLayer]}
         />
       </div>
 
