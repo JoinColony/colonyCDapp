@@ -7,7 +7,7 @@
 }
 
 .Toastify__toast {
-  @apply relative mb-0 rounded-l-none rounded-r-lg border border-gray-200 bg-base-white p-6 shadow-lg before:absolute before:left-0 before:top-0 before:block before:h-full before:w-[0.375rem] before:content-[''] sm:min-w-[24.375rem];
+  @apply relative mb-0 rounded-l-none rounded-r-lg border border-gray-200 bg-base-white p-6 shadow-lg before:absolute before:left-0 before:top-0 before:block before:h-full before:w-1.5 before:content-[''] sm:w-[24.375rem];
 }
 
 .Toastify__toast-body {
