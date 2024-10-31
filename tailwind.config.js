@@ -270,10 +270,13 @@ module.exports = {
         '.no-scrollbar::-webkit-scrollbar': {
           display: 'none',
         },
+        '.scrollbar-gutter-stable': {
+          'scrollbar-gutter': 'stable',
+        },
         '.bold-on-hover': {
           '@apply relative after:w-full after:h-4.5 after:z-base after:block after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:overflow-hidden after:text-gray-700 hover:after:text-gray-900 after:font-medium hover:after:font-semibold after:content-[attr(aria-label)]':
             {},
-        }
+        },
       });
       addComponents({
         '.inner': {
