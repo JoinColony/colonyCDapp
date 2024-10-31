@@ -19,6 +19,8 @@ const ParamNames = {
   liquidationAddressOverrides: `%2Famplify%2Fcdapp%2F${ENV}%2FLIQUIDATION_ADDRESS_OVERRIDES`,
   magicbellApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FMAGICBELL_API_KEY`,
   magicbellApiSecret: `%2Famplify%2Fcdapp%2F${ENV}%2FMAGICBELL_API_SECRET`,
+  coinGeckoApiUrl: `%2Famplify%2Fcdapp%2F${ENV}%2FCOINGECKO_API_URL`,
+  coinGeckoApiKey: `%2Famplify%2Fcdapp%2F${ENV}%2FCOINGECKO_API_KEY`,
 };
 
 const getParam = async (paramName) => {

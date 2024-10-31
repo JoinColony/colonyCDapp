@@ -193,8 +193,9 @@ const getFormattedActions = (actions, domainId) => {
 
   return actions
     .filter((action) => !action.initiatorExtension?.id)
+    .map((action) => getActionWithFinalizedDate(action))
+    .filter((action) => !action.finalizedDate)
     .map((action) => {
-      const actionWithFinalizedDate = getActionWithFinalizedDate(action);
       let amount = action.amount;
       let networkFee = action.networkFee;
 
@@ -216,7 +217,7 @@ const getFormattedActions = (actions, domainId) => {
       }
 
       return {
-        ...actionWithFinalizedDate,
+        ...action,
         amount,
         networkFee,
       };

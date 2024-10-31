@@ -1,4 +1,4 @@
-const CoinGeckoConfig = require('./coinGeckoConfig');
+const CoinGeckoConfig = require('../config/coinGeckoConfig');
 const { getFiatExchangeRate } = require('../api/rest/getFiatExchangeRate');
 const { getTokensList } = require('../api/rest/getTokensList');
 const {
@@ -13,16 +13,18 @@ const ADDRESS_ZERO = ethersConstants.AddressZero;
 
 const isDev = process.env.ENV === 'dev';
 
-const ExchangeRatesFactory = (() => {
+const ExchangeRatesService = (() => {
   const exchangeRates = {};
 
   const saveEntryToDB = async ({ tokenId, date, marketPrice }) => {
+    const { mappings } = await CoinGeckoConfig.getConfig();
+
     const marketPriceToArrayAndSupportedCurrency =
       Object.keys(marketPrice)
         .map((marketPriceCurrency) => {
-          const supportedCurrencyEntry = Object.entries(currencies).find(
-            ([, value]) => value === marketPriceCurrency,
-          );
+          const supportedCurrencyEntry = Object.entries(
+            mappings.currencies,
+          ).find(([, value]) => value === marketPriceCurrency);
 
           if (!supportedCurrencyEntry) {
             return null;
@@ -54,7 +56,8 @@ const ExchangeRatesFactory = (() => {
   };
 
   const getApiTokenIdFromAddress = async ({ tokenAddress, chainId }) => {
-    const { mappings } = await CoinGeckoConfig.getConfig();
+    const { mappings, DEFAULT_NETWORK_TOKEN } =
+      await CoinGeckoConfig.getConfig();
 
     if (tokenAddress === ADDRESS_ZERO) {
       return mappings.networkTokens[DEFAULT_NETWORK_TOKEN.symbol];
@@ -192,4 +195,4 @@ const ExchangeRatesFactory = (() => {
   };
 })();
 
-module.exports = ExchangeRatesFactory;
+module.exports = ExchangeRatesService;
