@@ -41,7 +41,7 @@ const ColonyHome = () => {
           <ReputationChart />
         </div>
       </div>
-      <div className="mb-4 flex flex-grow flex-col rounded-lg border border-gray-200 pb-[1.4375rem] sm:max-h-[37.625rem]">
+      <div className="flex flex-grow flex-col rounded-lg border border-gray-200 pb-[1.4375rem] sm:max-h-[37.625rem]">
         <div className="flex justify-between px-5 pb-[11px] pt-6">
           <h3 className="heading-5">
             {formatText({ id: 'dashboard.recentActivity' })}
