@@ -66,9 +66,11 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
   const openUserPopover = useCallback(() => {
     setIsTooltipVisible(true);
   }, []);
-  const closeUserPopover = useCallback(() => {
+
+  const closeUserInfoPopup = () => {
+    onCloseModal();
     setIsTooltipVisible(false);
-  }, []);
+  };
 
   const onClickHandler = isMobile ? onOpenModal : openUserPopover;
   const onMouseEnterHandler = isMobile ? noop : onOpenModal;
@@ -91,7 +93,7 @@ const UserInfoPopover: FC<UserInfoPopoverProps> = ({
       additionalContent={
         !isVerified ? (
           <UserNotVerified
-            onClick={closeUserPopover}
+            onClick={closeUserInfoPopup}
             walletAddress={walletAddress}
             description={
               <div className="mt-2 break-words pb-2 text-sm font-semibold">
