@@ -69,7 +69,7 @@ const DomainPermissionList: FC<DomainPermissionListProps> = ({
             return (
               <li
                 key={domainId}
-                className="grid h-12 min-h-12 w-full grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:min-w-[302px] sm:max-w-[302px]"
+                className="grid h-12 min-h-12 w-full grid-cols-[2fr,1fr] items-center rounded border border-gray-100 px-[11px] font-medium sm:min-w-[18.875rem] sm:max-w-[18.875rem]"
               >
                 <div className="flex flex-row items-center truncate">
                   <div

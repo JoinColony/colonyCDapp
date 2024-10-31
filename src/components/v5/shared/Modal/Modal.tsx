@@ -69,7 +69,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
           {Icon && (
             <span
               className={clsx(
-                'mb-4 flex h-[2.5rem] w-[2.5rem] flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
+                'mb-4 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded border border-gray-200 shadow-content',
                 {
                   'border-negative-200 text-negative-400': isWarning,
                 },
