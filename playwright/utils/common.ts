@@ -28,6 +28,4 @@ export const fillInputByLabelWithDelay = async ({
   await page.waitForTimeout(timeout);
 
   await page.getByLabel(label).pressSequentially(value, { delay: 100 });
-  // eslint-disable-next-line playwright/no-wait-for-timeout
-  await page.waitForTimeout(timeout);
 };
