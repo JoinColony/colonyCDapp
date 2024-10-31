@@ -131,6 +131,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
       ),
       tokenAddress: slot.payouts?.[0].tokenAddress,
       delay: convertPeriodToHours(slot.claimDelay || '0'),
+      // slotId: slot.id, // @TODO: Add slotId
     };
   });
 
@@ -189,6 +190,7 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
         defaultValues={{ payments }}
         onSubmit={(values) => {
           const mappedValues = values.payments.map((payment) => ({
+            // @TODO: Add slotId
             recipientAddress: payment.recipient,
             tokenAddress: payment.tokenAddress,
             claimDelay: convertPeriodToSeconds(

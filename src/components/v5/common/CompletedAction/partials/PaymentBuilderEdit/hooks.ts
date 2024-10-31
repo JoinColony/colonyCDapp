@@ -2,7 +2,7 @@ import { unformatNumeral } from 'cleave-zen';
 import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
-import { array, object, string } from 'yup';
+import { array, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
@@ -33,6 +33,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
             .of(
               object()
                 .shape({
+                  slotId: number(),
                   recipient: string()
                     .required(({ path }) => {
                       const index = getLastIndexFromPath(path);

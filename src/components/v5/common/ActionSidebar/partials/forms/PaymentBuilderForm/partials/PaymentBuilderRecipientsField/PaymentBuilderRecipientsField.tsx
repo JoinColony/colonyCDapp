@@ -178,6 +178,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
           isFullSize={isMobile}
           onClick={() => {
             fieldArrayMethods.append({
+              // @TODO: Add slotId (find highest existing slotId and add 1)
               recipient: '',
               amount: '',
               tokenAddress: nativeToken?.tokenAddress || '',
