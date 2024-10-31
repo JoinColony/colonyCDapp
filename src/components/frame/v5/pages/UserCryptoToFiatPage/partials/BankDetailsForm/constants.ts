@@ -1,11 +1,16 @@
 import { defineMessages } from 'react-intl';
 
-export const IBAN_REGEX =
-  /^([A-Z]{2}[ +\\-]?[0-9]{2})(?=(?:[ +\\-]?[A-Z0-9]){9,30}$)((?:[ +\\-]?[A-Z0-9]{3,5}){2,7})([ +\\-]?[A-Z0-9]{1,3})?$/;
+export const ALPHANUMERIC_WITH_SEPARATORS_REGEX = /^[A-Za-z0-9 -]*$/;
 
-export const BIC_REGEX =
-  // eslint-disable-next-line max-len
-  /^([a-zA-Z]{4})([a-zA-Z]{2})(([2-9a-zA-Z]{1})([0-9a-np-zA-NP-Z]{1}))((([0-9a-wy-zA-WY-Z]{1})([0-9a-zA-Z]{2}))|([xX]{3})?)$/;
+export const NUMERIC_WITH_SEPARATORS_REGEX = /^[0-9 -]*$/;
+
+export const SEPARATOR_REGEX = /[ -]/g;
+
+// Strip any separators before comparing against this regex
+// 1.	Two uppercase letters at the start (for the country code).
+// 2.	Two digits immediately following (for the checksum).
+// 3.	11–30 alphanumeric characters after that, allowing for a total length of 15–34 characters.
+export const IBAN_REGEX = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/;
 
 export const displayName =
   'v5.pages.UserCryptoToFiatPage.partials.BankDetailsForm';
@@ -80,14 +85,25 @@ export const BANK_DETAILS_FORM_MSG = defineMessages({
     id: `${displayName}.routingNumberLabel`,
     defaultMessage: 'Routing number',
   },
+  alphanumeric: {
+    id: `${displayName}.alphanumeric`,
+    defaultMessage: 'Please enter only letters and numbers',
+  },
+  numeric: {
+    id: `${displayName}.numeric`,
+    defaultMessage: 'Please enter only numbers',
+  },
 });
 
 export const BANK_DETAILS_FORM_FIELD_VALUE_LENGTHS = {
   accountNumber: {
-    min: 8,
+    min: 6,
     max: 17,
   },
   routingNumber: {
     length: 9,
+  },
+  swift: {
+    lengths: [8, 11],
   },
 };
