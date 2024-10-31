@@ -1,7 +1,6 @@
 import { AddressZero } from '@ethersproject/constants';
 import Decimal from 'decimal.js';
 import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import React from 'react';
 
 import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
@@ -189,19 +188,9 @@ const getExpenditureStagesData = (
         ({ token: currentToken }) => currentToken.tokenAddress === tokenAddress,
       );
 
-      const amount = moveDecimal(
-        currentSlot?.payouts?.[0]?.amount || '0',
-        -getTokenDecimalsWithFallback(token?.token.decimals),
-      );
-
-      const formattedAmount = moveDecimal(
-        amount,
-        getTokenDecimalsWithFallback(token?.token.decimals),
-      );
-
       return {
         summedAmount: BigNumber.from(acc.summedAmount)
-          .add(BigNumber.from(formattedAmount))
+          .add(BigNumber.from(currentSlot?.payouts?.[0]?.amount || '0'))
           .toString(),
         stagedPaymentToken: acc.stagedPaymentToken || token?.token,
       };
