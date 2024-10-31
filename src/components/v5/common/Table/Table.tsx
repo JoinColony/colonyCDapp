@@ -112,16 +112,17 @@ const Table = <T,>({
   const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
+  const hasExpandableRows = !!renderSubComponent;
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!isMobile && hasExpandableRows) {
       rows.forEach((row) => {
         if (row.getIsExpanded()) {
           row.toggleExpanded(false);
         }
       });
     }
-  }, [isMobile, rows]);
+  }, [isMobile, hasExpandableRows, rows]);
 
   return (
     <div className={className}>
