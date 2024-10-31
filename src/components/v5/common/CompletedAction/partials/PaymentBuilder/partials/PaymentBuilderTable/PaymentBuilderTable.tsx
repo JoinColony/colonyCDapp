@@ -2,7 +2,7 @@ import { CaretDown, WarningCircle } from '@phosphor-icons/react';
 import { type Row, createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { type FC, useMemo } from 'react';
+import React, { type FC, useMemo, useEffect } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -253,6 +253,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
           isLoading: true,
         };
       }
+
       return item.payouts.map((payout) => {
         return {
           recipient: item.recipientAddress || '',
@@ -289,7 +290,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     return [...populatedItems, ...placeholderItems];
   }, [expendituresGlobalClaimDelay, items, expectedNumberOfPayouts]);
 
-  const sortedData = useMemo(() => {
+  const dataWithChanges = useMemo(() => {
     if (!expenditureSlotChanges) {
       return data;
     }
@@ -297,9 +298,19 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     const { newSlots, oldSlots } = expenditureSlotChanges;
 
     const changedSlots = getChangedSlots(newSlots, oldSlots);
-    const changedData = data.filter((item) =>
-      changedSlots.map((slot) => slot.id).includes(item.id),
-    );
+    const changedData = data
+      .filter((item) => changedSlots.map((slot) => slot.id).includes(item.id))
+      .map((item) => {
+        const newSlot = newSlots.find((slot) => slot.id === item.id);
+        const oldSlot = oldSlots.find((slot) => slot.id === item.id);
+
+        return {
+          ...item,
+          newValues: newSlot,
+          oldValues: oldSlot,
+        };
+      });
+
     const unchangedData = data.filter(
       (item) => !changedSlots.map((slot) => slot.id).includes(item.id),
     );
@@ -307,8 +318,13 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
     return [...changedData, ...unchangedData];
   }, [data, expenditureSlotChanges]);
 
+  const filteredData = dataWithChanges.filter((item) =>
+    BigNumber.from(item.amount).gt(0),
+  );
+  const tableData = isEditStepActive ? dataWithChanges : filteredData;
+
   const columns = useGetPaymentBuilderColumns({
-    data: sortedData,
+    data: filteredData,
     status,
     slots: items,
     finalizedTimestamp,
@@ -316,9 +332,51 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
   });
 
   const renderSubComponent = useRenderSubComponent();
+  const tableRef = React.useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const tableRefCurrent = tableRef.current;
+
+    if (isEditStepActive && tableRefCurrent) {
+      const tableRows = tableRefCurrent.querySelectorAll('tbody>tr');
+      const changedItemsCount = dataWithChanges.filter(
+        (item) => item.newValues,
+      ).length;
+
+      const lastChangedTableRow = tableRows[changedItemsCount - 1];
+      const hasAllRowsChanged = changedItemsCount === dataWithChanges.length;
+      const rowsBeforeLastChanged = Array.from(tableRows).slice(
+        0,
+        changedItemsCount - 1,
+      );
+
+      if (rowsBeforeLastChanged.length) {
+        rowsBeforeLastChanged.forEach((row) => {
+          row.classList.add('previous-row');
+        });
+      }
+
+      if (lastChangedTableRow) {
+        lastChangedTableRow.classList.add('last-edited-row');
+
+        if (hasAllRowsChanged) {
+          lastChangedTableRow.classList.add('last-row');
+        }
+      }
+    }
+
+    return () => {
+      if (tableRefCurrent) {
+        const tableRows = tableRefCurrent.querySelectorAll('tbody>tr');
+        tableRows.forEach((row) => {
+          row.classList.remove('previous-row', 'last-edited-row', 'last-row');
+        });
+      }
+    };
+  }, [isEditStepActive, dataWithChanges, selectedEditingAction]);
 
   return (
-    <div className="mt-7">
+    <div className="mt-7" ref={tableRef}>
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
@@ -348,12 +406,13 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             '[&_tfoot>tr>td:empty]:hidden [&_th]:w-[6.25rem]': isTablet,
             '[&_table]:table-auto lg:[&_table]:table-fixed [&_tbody_td]:h-[54px] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_tfoot_td:first-child]:pl-4 [&_tfoot_td:not(:first-child)]:pl-0 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
               !isTablet,
-            '[&_*]:border-blue-400': isEditStepActive,
+            ' [&_thead]:relative [&_thead]:after:absolute [&_thead]:after:-left-px [&_thead]:after:-right-px [&_thead]:after:-top-px [&_thead]:after:bottom-0 [&_thead]:after:rounded-t-lg [&_thead]:after:border [&_thead]:after:border-blue-400 [&_tr.last-edited-row_td:first-child]:after:border-l [&_tr.last-edited-row_td:last-child]:after:border-r [&_tr.last-edited-row_td]:after:border-b [&_tr.last-edited-row_td]:after:border-blue-400 [&_tr.last-row_td:first-child]:after:rounded-bl-lg [&_tr.last-row_td:last-child]:after:rounded-br-lg [&_tr.previous-row_td:first-child]:after:border-l [&_tr.previous-row_td:last-child]:after:border-r [&_tr_td>div]:relative [&_tr_td]:relative [&_tr_td]:after:absolute [&_tr_td]:after:-inset-px [&_tr_td]:after:border-blue-400 [&_tr_td_*]:z-[1]':
+              isEditStepActive,
           },
         )}
         renderSubComponent={renderSubComponent}
         data={
-          !sortedData.length
+          !tableData.length
             ? [
                 {
                   recipient: '0x000',
@@ -383,7 +442,7 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
                   isLoading: true,
                 },
               ]
-            : sortedData
+            : tableData
         }
         columns={columns}
         renderCellWrapper={(_, content) => content}

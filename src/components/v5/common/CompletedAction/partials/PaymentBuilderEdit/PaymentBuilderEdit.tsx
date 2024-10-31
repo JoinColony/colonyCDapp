@@ -51,6 +51,14 @@ const MSG = defineMessages({
     id: `${displayName}.defaultTitle`,
     defaultMessage: 'Advanced payment',
   },
+  makeChanges: {
+    id: `${displayName}.makeChanges`,
+    defaultMessage: 'Make changes',
+  },
+  cancelEditMode: {
+    id: `${displayName}.cancelEditMode`,
+    defaultMessage: 'Cancel edit mode',
+  },
 });
 
 const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
@@ -207,10 +215,10 @@ const PaymentBuilderEdit: FC<PaymentBuilderEditProps> = ({ action }) => {
                     onClick={toggleOnCancelModal}
                     isFullSize={isMobile}
                   >
-                    Cancel edit mode
+                    {formatText(MSG.cancelEditMode)}
                   </Button>
                   <Button type="submit" isFullSize={isMobile}>
-                    Make changes
+                    {formatText(MSG.makeChanges)}
                   </Button>
                 </div>
               </div>

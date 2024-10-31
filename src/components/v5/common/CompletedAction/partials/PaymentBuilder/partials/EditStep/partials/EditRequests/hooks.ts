@@ -10,8 +10,15 @@ const useCountChanges = (
     changes += newSlots.length - oldSlots.length;
   }
 
-  newSlots.forEach((newSlot, index) => {
-    const oldSlot = oldSlots[index];
+  const sortedOldSlots = oldSlots
+    ? [...oldSlots].sort((a, b) => a.id - b.id)
+    : [];
+  const sortedNewSlots = newSlots
+    ? [...newSlots].sort((a, b) => a.id - b.id)
+    : [];
+
+  sortedNewSlots.forEach((newSlot, index) => {
+    const oldSlot = sortedOldSlots[index];
 
     if (!oldSlot) return;
 

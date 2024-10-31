@@ -1789,6 +1789,7 @@
     "badge.verified": "Verified",
     "badge.removed": "Removed",
     "badge.duplicate": "Duplicate",
+    "badge.edit": "Edit",
     "membersPage.allMembers": "All members",
     "membersPage.allMembers.title": "All members",
     "membersPage.allMembers.description": "Everyone in the Colony",

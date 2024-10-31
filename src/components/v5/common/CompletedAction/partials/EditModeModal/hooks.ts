@@ -14,7 +14,7 @@ export const useEditDecisionMethods = (): DecisionMethodOption[] => {
 
   return [
     {
-      label: formatText({ id: 'decisionMethodSelect.decision.permissions' }),
+      label: formatText({ id: 'decisionMethod.permissions' }),
       value: DecisionMethod.Permissions,
       isDisabled: !userHasPermissions,
     },
@@ -22,7 +22,7 @@ export const useEditDecisionMethods = (): DecisionMethodOption[] => {
       ? [
           {
             label: formatText({
-              id: 'decisionMethodSelect.decision.reputation',
+              id: 'decisionMethod.reputation',
             }),
             value: DecisionMethod.Reputation,
           },
