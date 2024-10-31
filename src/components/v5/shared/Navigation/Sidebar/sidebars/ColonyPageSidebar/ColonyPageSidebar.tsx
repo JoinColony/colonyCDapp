@@ -8,6 +8,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks/index.ts';
+import { useLockBodyScroll } from '~hooks/useLockBodyScroll/index.ts';
 import LearnMore from '~shared/Extensions/LearnMore/LearnMore.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Sidebar from '~v5/shared/Navigation/Sidebar/index.ts';
@@ -57,6 +58,8 @@ const ColonyPageSidebar = () => {
     // the Action Form slides into view
     setTimeout(() => setShowTabletSidebar(false), 500);
   };
+
+  useLockBodyScroll(isTablet && showTabletSidebar);
 
   if (isTablet) {
     return (
