@@ -24,7 +24,7 @@ export const useEligibleSignees = ({
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [signeesResult, setSigneesResult] = useState<GetEligibleSigneesResult>({
     countPerRole: {},
