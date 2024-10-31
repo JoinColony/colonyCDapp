@@ -6,7 +6,7 @@ import React from 'react';
 
 import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
 import { getNetworkTokenList } from '~constants/tokens/getNetworkTokenList.ts';
-import { ColonyActionType, type SimpleTarget } from '~gql';
+import { ColonyActionType, type TokenFragment, type SimpleTarget } from '~gql';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
 import FriendlyName from '~shared/FriendlyName/index.ts';
 import MaskedAddress from '~shared/MaskedAddress/index.ts';
@@ -61,6 +61,7 @@ const getDomainNameFromChangelog = (
 
 const useGetRecipientData = (
   actionData: ColonyAction | null | undefined,
+  expenditure: Expenditure | null | undefined,
 ):
   | User
   | Colony
@@ -76,7 +77,6 @@ const useGetRecipientData = (
     recipientToken,
     safeTransaction,
     recipientAddress,
-    expenditure,
   } = actionData || {};
   const safeRecipient = safeTransaction?.transactions?.items[0]?.recipient;
   const stagedPaymentRecipientAddress =
@@ -98,8 +98,11 @@ const useGetRecipientData = (
   );
 };
 
-const useGetRecipient = (actionData: ColonyAction | null | undefined) => {
-  const recipient = useGetRecipientData(actionData);
+const useGetRecipient = (
+  actionData: ColonyAction | null | undefined,
+  expenditure: Expenditure | null | undefined,
+) => {
+  const recipient = useGetRecipientData(actionData, expenditure);
 
   return (
     <span>
@@ -148,6 +151,11 @@ const getInitiator = (actionData: ColonyAction) => {
   );
 };
 
+interface ExpenditureStagesData {
+  summedAmount: string;
+  stagedPaymentToken: TokenFragment | null | undefined;
+}
+
 const getExpenditureStagesData = (
   stages: ExpenditureStage[],
   slots: ExpenditureSlot[],
@@ -157,43 +165,56 @@ const getExpenditureStagesData = (
   const colonyTokens = colony.tokens?.items.filter(notNull) || [];
   const allTokens = [...colonyTokens, ...predefinedTokens];
 
-  const mappedStages = (stages || []).map((stage) => {
-    const currentSlot = slots.find((slot) => slot.id === stage.slotId);
-    const token = allTokens.find(
-      ({ token: currentToken }) =>
-        currentToken.tokenAddress === currentSlot?.payouts?.[0].tokenAddress,
-    );
+  const tokensSet = new Set(
+    slots.flatMap(
+      (slot) => slot.payouts?.map((payout) => payout.tokenAddress) ?? [],
+    ),
+  );
 
+  const hasSingleTokenType = tokensSet.size === 1;
+
+  if (!hasSingleTokenType) {
     return {
-      milestone: stage.name,
-      amount: moveDecimal(
-        currentSlot?.payouts?.[0].amount,
-        -getTokenDecimalsWithFallback(token?.token.decimals),
-      ),
-      tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
+      summedAmount: '0',
+      stagedPaymentToken: null,
     };
-  });
+  }
 
-  const summedAmount = mappedStages
-    .reduce((acc, { amount, tokenAddress }) => {
+  const result = stages.reduce<ExpenditureStagesData>(
+    (acc, stage): ExpenditureStagesData => {
+      const currentSlot = slots.find((slot) => slot.id === stage.slotId);
+      const tokenAddress = currentSlot?.payouts?.[0]?.tokenAddress;
+
       const token = allTokens.find(
         ({ token: currentToken }) => currentToken.tokenAddress === tokenAddress,
       );
+
+      const amount = moveDecimal(
+        currentSlot?.payouts?.[0]?.amount || '0',
+        -getTokenDecimalsWithFallback(token?.token.decimals),
+      );
+
       const formattedAmount = moveDecimal(
-        amount || '0',
+        amount,
         getTokenDecimalsWithFallback(token?.token.decimals),
       );
 
-      return BigNumber.from(acc).add(BigNumber.from(formattedAmount));
-    }, BigNumber.from('0'))
-    .toString();
-  const stagedPaymentToken = allTokens.find(
-    ({ token }) => token.tokenAddress === mappedStages?.[0]?.tokenAddress,
-  )?.token;
+      return {
+        summedAmount: BigNumber.from(acc.summedAmount)
+          .add(BigNumber.from(formattedAmount))
+          .toString(),
+        stagedPaymentToken: acc.stagedPaymentToken || token?.token,
+      };
+    },
+    {
+      summedAmount: BigNumber.from('0').toString(),
+      stagedPaymentToken: null,
+    },
+  );
 
   return {
-    summedAmount,
-    stagedPaymentToken,
+    summedAmount: result.summedAmount.toString(),
+    stagedPaymentToken: result.stagedPaymentToken,
   };
 };
 
@@ -223,9 +244,9 @@ export const useMapColonyActionToExpectedFormat = ({
   };
 
   const recipient = getFormattedValueWithFallback(
-    useGetRecipient(actionData),
+    useGetRecipient(actionData, expenditureData),
     ActionTitleMessageKeys.Recipient,
-    notMaybe(useGetRecipientData(actionData)),
+    notMaybe(useGetRecipientData(actionData, expenditureData)),
   );
   if (!actionData || !colony) {
     return {};
@@ -280,8 +301,8 @@ export const useMapColonyActionToExpectedFormat = ({
   }
 
   const { stagedPaymentToken, summedAmount } = getExpenditureStagesData(
-    actionData.expenditure?.metadata?.stages || [],
-    actionData.expenditure?.slots || [],
+    expenditureData?.metadata?.stages || [],
+    expenditureData?.slots || [],
     colony,
   );
 

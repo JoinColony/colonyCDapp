@@ -46,9 +46,7 @@ export enum ActionTitleMessageKeys {
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
-    case actionType.includes(ColonyActionType.Payment) &&
-      !actionType.includes(ExtendedColonyActionType.StagedPayment) &&
-      !actionType.includes(ExtendedColonyActionType.SplitPayment):
+    case actionType === ColonyActionType.Payment:
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,

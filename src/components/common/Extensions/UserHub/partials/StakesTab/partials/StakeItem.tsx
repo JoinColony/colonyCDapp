@@ -2,7 +2,7 @@ import React, { useMemo, type FC } from 'react';
 import { FormattedDate, useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import { useGetActionTitleValues } from '~common/ColonyActions/index.ts';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import Numeral from '~shared/Numeral/index.ts';
@@ -55,6 +55,13 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
       : window.location.pathname;
   }, [colonyNameUrl, stakeColonyName]);
 
+  const titleValues = useGetActionTitleValues({
+    actionData: stake.action,
+    colony: partialStakeColony || undefined,
+    expenditureData: expenditure ?? undefined,
+    networkInverseFee,
+  });
+
   return (
     <li className="flex flex-col border-b border-gray-100 first:pt-2 last:pb-6 sm:first:pt-0 sm:last:border-none sm:last:pb-1.5">
       <button
@@ -96,15 +103,7 @@ const StakeItem: FC<StakeItemProps> = ({ stake }) => {
             </div>
             <div className="text-gray-600">
               {stake.action && partialStakeColony
-                ? formatMessage(
-                    { id: 'action.title' },
-                    getActionTitleValues({
-                      actionData: stake.action,
-                      colony: partialStakeColony,
-                      expenditureData: expenditure ?? undefined,
-                      networkInverseFee,
-                    }),
-                  )
+                ? formatMessage({ id: 'action.title' }, titleValues)
                 : '-'}
             </div>
           </div>

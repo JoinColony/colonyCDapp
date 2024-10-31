@@ -132,16 +132,12 @@ const ExpenditureNotification: FC<NotificationProps> = ({
 
   const actionTitleValues = useGetActionTitleValues({
     actionData: action,
-    colony: {
-      nativeToken: {
-        ...colony?.nativeToken,
-        decimals: colony?.nativeToken?.decimals || 18,
-        name: colony?.nativeToken?.name || '',
-        symbol: colony?.nativeToken?.symbol || '',
-        tokenAddress: colony?.nativeToken?.tokenAddress || '',
-      },
-      metadata: colony?.metadata,
-    },
+    colony: colony
+      ? {
+          nativeToken: colony?.nativeToken,
+          metadata: colony?.metadata,
+        }
+      : undefined,
     expenditureData: expenditure ?? undefined,
     networkInverseFee,
   });
