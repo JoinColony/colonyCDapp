@@ -1,26 +1,22 @@
 import { ColonyRole, Id } from '@colony/colony-js';
-import { CheckCircle, WarningCircle } from '@phosphor-icons/react';
-import React, { useState } from 'react';
+import { WarningCircle } from '@phosphor-icons/react';
+import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
-// import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData';
+import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { addressHasRoles } from '~utils/checks/index.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
-// import { waitForDbAfterExtensionAction } from '../utils';
 
 const displayName =
   'frame.Extensions.ExtensionDetailsPage.PermissionsNeededBanner';
 
 const MSG = defineMessages({
-  updatedPermission: {
-    id: `${displayName}.updatedPermission`,
-    defaultMessage: 'The required permissions have been updated.',
-  },
   missingPermission: {
     id: `${displayName}.missingPermission`,
     defaultMessage:
@@ -34,12 +30,16 @@ const MSG = defineMessages({
 
 interface Props {
   extensionData: AnyExtensionData;
+  setHasSuccessfullyEnabled: (value: boolean) => void;
 }
 
-const PermissionsNeededBanner = ({ extensionData }: Props) => {
+const PermissionsNeededBanner = ({
+  extensionData,
+  setHasSuccessfullyEnabled,
+}: Props) => {
   const { colony, refetchColony } = useColonyContext();
   const { user } = useAppContext();
-  const [hasSuccessfullyEnabled, setHasSuccessfullyEnabled] = useState(false);
+
   const userHasRoles = addressHasRoles({
     requiredRolesDomain: Id.RootDomain,
     colony,
@@ -53,7 +53,7 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     success: ActionTypes.EXTENSION_ENABLE_SUCCESS,
   });
 
-  // const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
+  const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
 
   const enableAndCheckStatus = async () => {
     await asyncFunction({
@@ -61,12 +61,10 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
       extensionData,
     });
     refetchColony();
-    // @TODO: Ideally we would call this here to refresh the extensions data in the ExtensionDetailsHeader component
-    // However, this causes the PermissionsNeededBanner component not to be rendered, so it will never show the success banner
-    // await waitForDbAfterExtensionAction({
-    //   method: ExtensionMethods.ENABLE,
-    //   refetchExtensionData,
-    // });
+    await waitForDbAfterExtensionAction({
+      method: ExtensionMethods.ENABLE,
+      refetchExtensionData,
+    });
   };
 
   const handleEnableClick = async () => {
@@ -78,33 +76,22 @@ const PermissionsNeededBanner = ({ extensionData }: Props) => {
     }
   };
 
-  const getBanner = () => {
-    if (hasSuccessfullyEnabled) {
-      return (
-        <NotificationBanner icon={CheckCircle} status="success">
-          <FormattedMessage {...MSG.updatedPermission} />
-        </NotificationBanner>
-      );
-    }
-
-    return (
-      <NotificationBanner
-        icon={WarningCircle}
-        status="warning"
-        callToAction={
-          userHasRoles && (
-            <button type="button" onClick={handleEnableClick}>
-              <FormattedMessage {...MSG.enablePermission} />
-            </button>
-          )
-        }
-      >
-        <FormattedMessage {...MSG.missingPermission} />
-      </NotificationBanner>
-    );
-  };
-
-  return <div className="mb-6">{getBanner()}</div>;
+  return (
+    <NotificationBanner
+      icon={WarningCircle}
+      status="warning"
+      className="mb-6"
+      callToAction={
+        userHasRoles && (
+          <button type="button" onClick={handleEnableClick}>
+            <FormattedMessage {...MSG.enablePermission} />
+          </button>
+        )
+      }
+    >
+      <FormattedMessage {...MSG.missingPermission} />
+    </NotificationBanner>
+  );
 };
 
 PermissionsNeededBanner.displayName = displayName;

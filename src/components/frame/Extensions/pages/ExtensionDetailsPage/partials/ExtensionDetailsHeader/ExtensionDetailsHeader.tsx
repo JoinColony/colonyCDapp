@@ -7,7 +7,7 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 
-import PermissionsNeededBanner from '../PermissionsNeededBanner.tsx';
+import ExtensionPermissionsBanner from '../ExtensionPermissionsBanner/ExtensionPermissionsBanner.tsx';
 
 import ActiveInstalls from './ActiveInstalls.tsx';
 import { extensionsBadgeModeMap, extensionsBadgeTextMap } from './consts.ts';
@@ -53,9 +53,10 @@ const ExtensionDetailsHeader: FC = () => {
 
   return (
     <>
-      {isPermissionsBannerVisible && (
-        <PermissionsNeededBanner extensionData={extensionData} />
-      )}
+      <ExtensionPermissionsBanner
+        extensionData={extensionData}
+        isPermissionsBannerVisible={isPermissionsBannerVisible}
+      />
       <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
