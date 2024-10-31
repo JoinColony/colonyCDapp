@@ -45,7 +45,6 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
       withNarrowBorder
       alwaysShowPagination={totalActions > 0}
       showTotalPagesNumber={pageCount > 1}
-      tableClassName="flex-auto"
     />
   );
 };
