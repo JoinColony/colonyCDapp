@@ -15,20 +15,20 @@ import { ColonyFiltersContext } from './ColonyFiltersContext.ts';
 const ColonyFiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { colonyName } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const teamSearchParam = searchParams.get(TEAM_SEARCH_PARAM);
 
   const [filteredTeam, setFilteredTeam] = useState<string | null>(
-    searchParams.get(TEAM_SEARCH_PARAM),
+    teamSearchParam,
   );
 
   const [currentColonyName, setCurrentColonyName] = useState(colonyName);
 
   const updateTeamFilter = useCallback(
-    (domainId: string) => {
+    (domainId: string, options) => {
       setFilteredTeam(domainId);
       const newSearchParams = new URLSearchParams(searchParams);
       newSearchParams.set(TEAM_SEARCH_PARAM, domainId);
-      setSearchParams(newSearchParams);
-      setFilteredTeam(domainId);
+      setSearchParams(newSearchParams, options);
     },
     [searchParams, setSearchParams],
   );
@@ -55,6 +55,17 @@ const ColonyFiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setCurrentColonyName(colonyName);
     }
   }, [colonyName, currentColonyName]);
+
+  useEffect(() => {
+    /**
+     * If the TEAM_SEARCH_PARAM changed in the meantime and is different than the cached filteredTeam
+     * We want to update the filteredTeam to reflect the search params change
+     */
+    if (teamSearchParam && teamSearchParam !== filteredTeam) {
+      setFilteredTeam(teamSearchParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teamSearchParam]);
 
   return (
     <ColonyFiltersContext.Provider value={value}>
