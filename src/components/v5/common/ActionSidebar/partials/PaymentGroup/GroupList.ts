@@ -6,13 +6,23 @@ import {
   // Waves,
   ArrowsOutLineHorizontal,
   // @TODO: uncomment when staged payment is ready
-  // Steps,
+  Steps,
+  type Icon,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const GROUP_LIST = [
+type GroupListItem = {
+  title: string;
+  description: string;
+  Icon: Icon;
+  action: Action;
+  isNew?: boolean;
+  isHidden?: boolean;
+};
+
+export const GROUP_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.simplePayment' }),
     description: formatText({
@@ -47,14 +57,13 @@ export const GROUP_LIST = [
     action: Action.SplitPayment,
     isNew: true,
   },
-  // @TODO: uncomment when staged payment is ready
-  // {
-  //   title: formatText({ id: 'actions.stagedPayment' }),
-  //   description: formatText({
-  //     id: 'actions.description.stagedPayment',
-  //   }),
-  //   Icon: Steps,
-  //   action: Action.StagedPayment,
-  //   isNew: true,
-  // },
+  {
+    title: formatText({ id: 'actions.stagedPayment' }),
+    description: formatText({
+      id: 'actions.description.stagedPayment',
+    }),
+    Icon: Steps,
+    action: Action.StagedPayment,
+    isNew: true,
+  },
 ];
