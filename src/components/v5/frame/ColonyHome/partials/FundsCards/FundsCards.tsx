@@ -1,32 +1,37 @@
-import { Plus } from '@phosphor-icons/react';
+/* eslint-disable no-lone-blocks */
+// import { Plus } from '@phosphor-icons/react';
 import React from 'react';
 
-import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+// import { Action } from '~constants/actions.ts';
+// import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSubDomains } from '~hooks/useSubDomains.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
-import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+// import { formatText } from '~utils/intl.ts';
+// import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
-import { useIsAddNewTeamVisible } from './hooks.ts';
+// import { useIsAddNewTeamVisible } from './hooks.ts';
 import { FundsCardsItem } from './partials/FundsCardsItem.tsx';
 import { FundsCardsTotalItem } from './partials/FundsCardsTotalItem.tsx';
 
-export const FundsCards = () => {
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+{
+  /* @TODO: New team card disabled temporarily until an accessibility audit is completed on this component */
+}
 
-  const onNewTeamClick = () => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
-    });
-  };
+export const FundsCards = () => {
+  // const {
+  //   actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  // } = useActionSidebarContext();
+
+  // const onNewTeamClick = () => {
+  //   toggleActionSidebarOn({
+  //     [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+  //   });
+  // };
 
   const subTeams = useSubDomains();
 
-  const isAddNewTeamVisible = useIsAddNewTeamVisible();
+  // const isAddNewTeamVisible = useIsAddNewTeamVisible();
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2 md:pt-1">
       <WidgetCards.List className="w-full">
@@ -42,7 +47,7 @@ export const FundsCards = () => {
             />
           ))}
 
-        {isAddNewTeamVisible && (
+        {/* {isAddNewTeamVisible && (
           <WidgetCards.Item
             variant="dashed"
             icon={Plus}
@@ -54,7 +59,7 @@ export const FundsCards = () => {
             onClick={onNewTeamClick}
             className="justify-center uppercase text-gray-200"
           />
-        )}
+        )} */}
       </WidgetCards.List>
     </div>
   );
