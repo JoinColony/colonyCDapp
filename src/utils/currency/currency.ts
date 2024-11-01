@@ -1,8 +1,13 @@
 import { Tokens } from '@colony/colony-js';
 
-import { ADDRESS_ZERO, DEFAULT_NETWORK_TOKEN, isDev } from '~constants';
+import {
+  ADDRESS_ZERO,
+  DEFAULT_NETWORK,
+  DEFAULT_NETWORK_TOKEN,
+  isDev,
+} from '~constants';
 import { SupportedCurrencies } from '~gql';
-import { Network } from '~types/network.ts';
+import { ColonyJSNetworkMapping, Network } from '~types/network.ts';
 
 import { coinGeckoMappings } from './config.ts';
 import { getSavedPrice, savePrice } from './memo.ts';
@@ -46,9 +51,13 @@ const fetchPriceFromCoinGecko = async ({
 
 export const getCLNYPriceInUSD = async () => {
   // Returns 1 CLNY in terms of USD, 1 CLNY : x USD
+  const chainId = (DEFAULT_NETWORK as Network) ?? Network.ArbitrumOne;
+  const colonyJSNetwork = ColonyJSNetworkMapping[chainId];
+  const contractAddress =
+    Tokens[colonyJSNetwork]?.CLNY ?? Tokens.ArbitrumOne.CLNY;
   return fetchTokenPriceByAddress({
-    contractAddress: Tokens.Mainnet.CLNY,
-    chainId: Network.Mainnet,
+    contractAddress,
+    chainId,
     conversionDenomination: SupportedCurrencies.Usd,
   });
 };
