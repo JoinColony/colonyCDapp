@@ -5,10 +5,15 @@ import {
   fillInputByLabelWithDelay,
 } from '../utils/common.ts';
 import {
+  fillColonyNameStep,
   generateRandomString,
   selectWalletAndUserProfile,
 } from '../utils/create-colony.ts';
-import { generateCreateColonyUrl } from '../utils/graphqlHelpers.ts';
+import {
+  fetchFirstValidTokenAddress,
+  generateCreateColonyUrl,
+  getColonyAddressByName,
+} from '../utils/graphqlHelpers.ts';
 
 test.describe('Create Colony flow', () => {
   const colonyName = 'testcolonyname';
@@ -179,6 +184,281 @@ test.describe('Create Colony flow', () => {
         });
 
         await expect(page.getByTestId('form-error')).toBeVisible();
+      });
+    });
+  });
+
+  test.describe('Native Token step', () => {
+    const invalidToken = 'invalidtoken';
+
+    test.beforeEach(async ({ page }) => {
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: generateRandomString(),
+      });
+    });
+
+    test('Should render Native Token step correctly', async ({ page }) => {
+      await expect(
+        page.getByRole('heading', {
+          name: /Creating a new native token or use existing?/i,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole('button', { name: /continue/i }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole('button', { name: 'Back', exact: true }),
+      ).toBeVisible();
+
+      await expect(page.getByLabel(/Create a new token/i)).toBeVisible();
+
+      await expect(page.getByLabel(/Use an existing token/i)).toBeVisible();
+    });
+
+    test('Should accept New Colony Token data and navigate to new step', async ({
+      page,
+    }) => {
+      const tokenName = 'Test Token Name';
+      const tokenSymbol = 'TTN';
+
+      await page.getByLabel(/Create a new token/i).check();
+      await page.getByRole('button', { name: /continue/i }).click();
+
+      await expect(
+        page.getByRole('heading', { name: /Your Colony's native token/i }),
+      ).toBeVisible();
+
+      await expect(page.getByLabel(/Create a new token/)).toBeChecked();
+
+      await expect(page.getByLabel(/Use an existing token/i)).not.toBeChecked();
+
+      await fillInputByLabelWithDelay({
+        page,
+        label: /token name/i,
+        value: tokenName,
+      });
+
+      await fillInputByLabelWithDelay({
+        page,
+        label: /token symbol/i,
+        value: tokenSymbol,
+      });
+
+      // The entered token name and symbol should persist after navigating forward and back
+
+      await page.getByRole('button', { name: /continue/i }).click();
+      await page.getByRole('button', { name: 'Back', exact: true }).click();
+
+      await page
+        .getByLabel(/Create a new token/i)
+        .waitFor({ state: 'visible' });
+
+      await expect(page.getByLabel(/token name/i)).toHaveValue(tokenName);
+      await expect(page.getByLabel(/token symbol/i)).toHaveValue(tokenSymbol);
+    });
+
+    test('Should accept and validate existing token properly', async ({
+      page,
+    }) => {
+      const validImage = 'playwright/fixtures/images/jaya-the-beast_400KB.png';
+
+      const invalidImage =
+        'playwright/fixtures/images/cat-image-new-1_3_MB.png';
+
+      // Select New token option
+      await page.getByLabel(/Create a new token/i).check();
+      await page.getByRole('button', { name: /continue/i }).click();
+
+      // Upload valid image
+      const tokenImageInput = page.locator('input[type="file"]');
+      await tokenImageInput.setInputFiles(validImage);
+
+      await expect(
+        page.getByRole('button', { name: /change logo/i }),
+      ).toBeVisible();
+
+      const tokenLogo = page.getByRole('img', { name: /avatar of token/i });
+      await expect(tokenLogo).toBeVisible();
+
+      // Removing the image
+      await page.getByRole('button', { name: /remove/i }).click();
+      await expect(tokenLogo).toBeHidden();
+
+      // Uploading invalid image
+      await tokenImageInput.setInputFiles(invalidImage);
+
+      // Validation message appears
+      const message = page.getByText(
+        /File size is too large, it should not exceed 1MB/i,
+      );
+      await expect(message).toBeVisible();
+      await expect(
+        page.getByRole('button', { name: /try again/i }),
+      ).toBeEnabled();
+
+      await page.getByTestId('file-remove').click();
+
+      await expect(message).toBeHidden();
+      await expect(page.getByTestId('file-remove')).toBeHidden();
+      await expect(
+        page.getByRole('button', { name: /try again/i }),
+      ).toBeHidden();
+    });
+
+    test('Should accept existing token and display validation message', async ({
+      page,
+    }) => {
+      await page.getByLabel(/Use an existing token/i).check();
+      await page.getByRole('button', { name: /continue/i }).click();
+
+      await expect(page.getByLabel(/Use an existing token/)).toBeChecked();
+
+      await expect(page.getByLabel(/Create a new token/i)).not.toBeChecked();
+
+      await test.step('Should not accept incorrectly formated token address', async () => {
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: invalidToken,
+        });
+
+        await expect(page.getByText(/Invalid address/i)).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but a User address', async () => {
+        const userAddress = '0x3a965407cEd5E62C5aD71dE491Ce7B23DA5331A4';
+
+        await page.getByLabel(/Existing token address/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: userAddress,
+        });
+
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step("Should not accept an 'address zero'", async () => {
+        const addressZero = '0x0000000000000000000000000000000000000000';
+
+        await page.getByLabel(/existing token address/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: addressZero,
+        });
+
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /You cannot use ETH token as a native token for colony/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but a colony address', async () => {
+        const colonyAddress = await getColonyAddressByName();
+
+        await page.getByLabel(/existing token address/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: colonyAddress,
+        });
+
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should not accept correctly formated, but not existing token address', async () => {
+        // This mocked address passes client side validation but fails on BE side
+        const notExistingToken = '0x6b175474e89094c44da98b954eedeac495271d0f';
+
+        await page.getByLabel(/existing token address/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: notExistingToken,
+        });
+
+        await expect(
+          page.getByText(/Fetching your token's details/i),
+        ).toBeVisible();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeVisible();
+        await expect(
+          page.getByText(/Is the address definitely correct?/i),
+        ).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeDisabled();
+      });
+
+      await test.step('Should accept correctly formated, and existing token address', async () => {
+        const existingToken = await fetchFirstValidTokenAddress();
+
+        await page.getByLabel(/existing token address/i).clear();
+
+        await fillInputByLabelWithDelay({
+          page,
+          label: /existing token address/i,
+          value: existingToken,
+        });
+
+        await expect(page.getByText(/Invalid address/i)).toBeHidden();
+        await expect(
+          page.getByText(
+            /Token data not found. Please check the token contract address/i,
+          ),
+        ).toBeHidden();
+        await expect(page.getByText(/Token found:/i)).toBeVisible();
+        await expect(
+          page.getByRole('button', { name: /continue/i }),
+        ).toBeEnabled();
       });
     });
   });
