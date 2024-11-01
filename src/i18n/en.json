@@ -805,6 +805,7 @@
     "userPreferencesPage.displayPreferences": "Display preferences",
     "userAdvancedPage.title": "Advanced",
     "userCryptoToFiatPage.title": "Crypto to fiat",
+    "userCryptoToFiatPage.heading": "Crypto to fiat settings",
     "userAdvancedPage.description": "Customise and control your Colony account",
     "advancedSettings.fees.title": "Colony pays my gas fees",
     "advancedSettings.fees.description": "Enable this to have the Metacolony cover your gas fees when performing actions on Colony. All you need to do is sign it. This is currently supported on select chains.",

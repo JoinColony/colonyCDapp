@@ -15,6 +15,7 @@ import {
   USER_HOME_ROUTE,
   USER_PREFERENCES_ROUTE,
 } from '~routes';
+import { SidebarContentDivider } from '~v5/shared/Navigation/Sidebar/partials/SidebarContentDivider.tsx';
 import SidebarRouteItem from '~v5/shared/Navigation/Sidebar/partials/SidebarRouteItem/index.ts';
 import Sidebar from '~v5/shared/Navigation/Sidebar/Sidebar.tsx';
 
@@ -45,13 +46,13 @@ export const AccountPageSidebar = () => {
         />
         <SidebarRouteItem
           path={`${USER_HOME_ROUTE}/${USER_ADVANCED_ROUTE}`}
-          translation={{ id: 'advancedSettings.title' }}
+          translation={{ id: 'userAdvancedPage.title' }}
           icon={Wrench}
         />
       </section>
       {showCryptoToFiatNavItem && (
         <>
-          <div className="mx-3 my-[15px] border-b border-gray-200 md:mx-2 md:border-gray-700" />
+          <SidebarContentDivider className="my-[0.938rem]" />
           <SidebarRouteItem
             path={`${USER_HOME_ROUTE}/${USER_CRYPTO_TO_FIAT_ROUTE}`}
             translation={{ id: 'userCryptoToFiatPage.title' }}

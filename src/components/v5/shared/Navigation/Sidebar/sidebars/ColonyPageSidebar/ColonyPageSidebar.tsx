@@ -1,17 +1,16 @@
 import { Plus } from '@phosphor-icons/react';
-import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
 import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
-import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import { useLockBodyScroll } from '~hooks/useLockBodyScroll/index.ts';
 import LearnMore from '~shared/Extensions/LearnMore/LearnMore.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import Sidebar from '~v5/shared/Navigation/Sidebar/index.ts';
+import { SidebarContentDivider } from '~v5/shared/Navigation/Sidebar/partials/SidebarContentDivider.tsx';
 
 import {
   colonyPageSidebarDesktopClass,
@@ -24,19 +23,10 @@ import { SidebarRoutesSection } from './partials/SidebarRoutesSection.tsx';
 const displayName = 'v5.shared.Navigation.Sidebar.sidebars.ColonyPageSidebar';
 
 const ColonyPageSidebarContent = () => {
-  const { isDarkMode } = usePageThemeContext();
-
   return (
     <section className="flex flex-col gap-3 overflow-y-auto md:gap-4">
       <SidebarActionsSection />
-      <div
-        className={clsx(
-          'mx-3 border-b border-gray-200 md:mx-2 md:border-gray-700',
-          {
-            'md:!border-gray-200': isDarkMode,
-          },
-        )}
-      />
+      <SidebarContentDivider />
       <SidebarRoutesSection />
     </section>
   );
