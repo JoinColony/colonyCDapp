@@ -1,4 +1,3 @@
-import { ColonyRole } from '@colony/colony-js';
 import { ShieldStar, Signature, UserFocus } from '@phosphor-icons/react';
 import React from 'react';
 
@@ -6,12 +5,7 @@ import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import {
-  ColonyActionType,
-  useGetColonyHistoricRoleRolesQuery,
-  type GetColonyHistoricRoleRolesQuery,
-  type ColonyActionRoles,
-} from '~gql';
+import { ColonyActionType, useGetColonyHistoricRoleRolesQuery } from '~gql';
 import { getUserRolesForDomain } from '~transformers';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -47,37 +41,13 @@ import {
   TeamFromRow,
 } from '../rows/index.ts';
 
+import { transformActionRolesToColonyRoles } from './utils.ts';
+
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
 interface Props {
   action: ColonyAction;
 }
-
-const transformActionRolesToColonyRoles = (
-  roles:
-    | GetColonyHistoricRoleRolesQuery['getColonyHistoricRole']
-    | ColonyActionRoles,
-): ColonyRole[] => {
-  if (!roles) return [];
-
-  const roleKeys = Object.keys(roles);
-
-  const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key])
-    .map((key) => {
-      const match = key.match(/role_(\d+)/); // Extract the role number
-      if (match && match[1]) {
-        const roleIndex = parseInt(match[1], 10);
-        if (roleIndex in ColonyRole) {
-          return roleIndex;
-        }
-      }
-      return null;
-    })
-    .filter((role): role is ColonyRole => role !== null);
-
-  return colonyRoles;
-};
 
 const SetUserRoles = ({ action }: Props) => {
   const {

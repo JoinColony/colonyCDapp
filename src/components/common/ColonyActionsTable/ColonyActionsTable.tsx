@@ -6,7 +6,7 @@ import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
 import { useActionsTableProps } from './hooks/useActionsTableProps.tsx';
-import { useRedoAction } from './hooks/useRedoAction.ts';
+import { useHandleRedoAction } from './hooks/useHandleRedoAction.ts';
 import ActionsTableFilters from './partials/ActionsTableFilters/index.ts';
 import { type ColonyActionsTableProps } from './types.ts';
 
@@ -22,7 +22,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
     actionProps.setSelectedAction,
   );
 
-  useRedoAction({ actionProps });
+  useHandleRedoAction({ actionProps });
 
   return (
     <>

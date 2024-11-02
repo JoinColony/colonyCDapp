@@ -4,7 +4,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 
 import { type ColonyActionsTableProps } from '../types.ts';
 
-export const useRedoAction = ({
+export const useHandleRedoAction = ({
   actionProps,
 }: {
   actionProps: ColonyActionsTableProps['actionProps'];

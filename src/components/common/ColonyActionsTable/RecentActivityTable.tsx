@@ -6,7 +6,7 @@ import { type ColonyAction } from '~types/graphql.ts';
 import Table from '~v5/common/Table/index.ts';
 
 import { useActionsTableProps } from './hooks/useActionsTableProps.tsx';
-import { useRedoAction } from './hooks/useRedoAction.ts';
+import { useHandleRedoAction } from './hooks/useHandleRedoAction.ts';
 import { type ColonyActionsTableProps } from './types.ts';
 
 const displayName = 'common.RecentActivityTable';
@@ -35,7 +35,7 @@ const RecentActivityTable: FC<ColonyActionsTableProps> = ({
     actionProps.setSelectedAction,
   );
 
-  useRedoAction({ actionProps });
+  useHandleRedoAction({ actionProps });
 
   return (
     <Table<ColonyAction>
