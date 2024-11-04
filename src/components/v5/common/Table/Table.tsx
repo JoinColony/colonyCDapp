@@ -114,7 +114,7 @@ const Table = <T,>({
     <div className={className}>
       <table
         className={clsx(
-          'h-px w-full table-fixed',
+          'w-full table-fixed',
           {
             'border-separate border-spacing-0 rounded-lg border border-gray-200':
               showTableBorder,
