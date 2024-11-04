@@ -25,10 +25,10 @@ const Tabs: FC<PropsWithChildren<TabsProps>> = ({
         activeTab={activeTab}
         onTabClick={onTabClick}
         tabsUpperContainerClassName={clsx(
-          'before:content-[" "] relative flex w-full items-center p-0 font-semibold before:absolute before:bottom-0 before:left-0 before:block before:h-px before:w-full before:bg-gray-200',
+          'before:content-[" "] relative flex w-full items-start p-0 font-semibold before:absolute before:bottom-0 before:left-0 before:block before:h-px before:w-full before:bg-gray-200',
           upperContainerClassName,
         )}
-        leftNavBtnClassName="absolute top-[50%] translate-y-[-50%] left-0 z-base"
+        leftNavBtnClassName="absolute left-0 z-base"
         rightNavBtnClassName="z-base"
         // @ts-ignore - react-tabs-scrollable has invalid type for this prop
         leftBtnIcon={<CaretLeft size={12} />}
