@@ -112,10 +112,6 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const actionNotFound = transactionId && !action;
 
   const getSidebarContent = () => {
-    if (isLoading) {
-      return <ActionSidebarLoadingSkeleton />;
-    }
-
     if (action) {
       return <CompletedAction action={action} />;
     }
@@ -316,7 +312,15 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
           <div>{children}</div>
         </div>
       </div>
-      {getSidebarContent()}
+      {isLoading && <ActionSidebarLoadingSkeleton />}
+      <div
+        className={clsx('flex flex-grow', {
+          hidden: isLoading,
+        })}
+      >
+        {getSidebarContent()}
+      </div>
+
       <Modal
         title={formatText({ id: 'actionSidebar.cancelModal.title' })}
         subTitle={formatText({
