@@ -6,7 +6,9 @@ import Description from '~v5/common/ActionSidebar/partials/Description/index.ts'
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
-const displayName = 'v5.common.ActionSidebar.partials.SinglePaymentForm';
+import ArbitraryTransactionsField from './partials/ArbitraryTransactionsField/index.ts';
+
+const displayName = 'v5.common.ActionSidebar.partials.ArbitraryTxsForm';
 
 const ArbitraryTxsForm: FC<ActionFormBaseProps> = () => {
   const isFieldDisabled = useIsFieldDisabled();
@@ -16,6 +18,7 @@ const ArbitraryTxsForm: FC<ActionFormBaseProps> = () => {
       <DecisionMethodField disabled={isFieldDisabled} />
       <CreatedIn />
       <Description />
+      <ArbitraryTransactionsField />
     </>
   );
 };
