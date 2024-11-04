@@ -24,7 +24,6 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
-import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasActionPermissions from '~v5/common/ActionSidebar/hooks/permissions/useHasActionPermissions.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import useActionFormProps from '~v5/common/ActionSidebar/hooks/useActionFormProps.ts';
@@ -34,7 +33,6 @@ import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner
 
 import ActionButtons from '../ActionButtons.tsx';
 import ActionSidebarDescription from '../ActionSidebarDescription/ActionSidebarDescription.tsx';
-import CreateStakedExpenditureModal from '../CreateStakedExpenditureModal/CreateStakedExpenditureModal.tsx';
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
@@ -76,11 +74,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   const {
     formState: {
       errors: { this: customError },
-      isValid,
     },
     getValues,
     reset,
-    trigger,
   } = useFormContext();
 
   const formValues = getValues();
@@ -109,21 +105,9 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     { toggleOn: showRemoveDraftModal, toggleOff: hideRemoveDraftModal },
   ] = useToggle();
 
-  const [
-    isCreateStakedExpenditureModalVisible,
-    {
-      toggleOn: showCreateStakedExpenditureModal,
-      toggleOff: hideCreateStakedExpenditureModal,
-    },
-  ] = useToggle();
-
   const draftAgreement = useSelector(
     getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
   );
-
-  const shouldShowCreateStakedExpenditureModal =
-    actionsWithStakingDecisionMethod.includes(actionType) &&
-    decisionMethod === DecisionMethod.Staking;
 
   useEffect(() => {
     if (
@@ -218,17 +202,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         <div className="mt-auto">
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
-            onSubmitClick={
-              shouldShowCreateStakedExpenditureModal
-                ? async () => {
-                    await trigger();
-
-                    if (isValid) {
-                      showCreateStakedExpenditureModal();
-                    }
-                  }
-                : undefined
-            }
             primaryButton={primaryButton}
           />
         </div>
@@ -254,14 +227,6 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             });
             hideRemoveDraftModal();
           }}
-        />
-      )}
-      {shouldShowCreateStakedExpenditureModal && (
-        <CreateStakedExpenditureModal
-          actionType={actionType}
-          isOpen={isCreateStakedExpenditureModalVisible}
-          onClose={hideCreateStakedExpenditureModal}
-          formValues={formValues}
         />
       )}
     </>

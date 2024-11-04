@@ -24,7 +24,9 @@ const displayName = 'v5.common.ActionSidebar.partials.StagedPaymentForm';
 
 const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  useStagePayment(getFormOptions);
+
+  const { renderStakedExpenditureModal } = useStagePayment(getFormOptions);
+
   const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
     DecisionMethod.MultiSig,
     DecisionMethod.Reputation,
@@ -65,6 +67,7 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <CreatedIn />
       <Description />
       <StagedPaymentRecipientsField name="stages" />
+      {renderStakedExpenditureModal()}
     </>
   );
 };

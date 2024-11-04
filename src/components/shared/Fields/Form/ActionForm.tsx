@@ -1,4 +1,7 @@
-import React, { type ButtonHTMLAttributes } from 'react';
+import React, {
+  type MouseEventHandler,
+  type ButtonHTMLAttributes,
+} from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
 import { authenticateWallet } from '~auth';
@@ -56,7 +59,7 @@ export interface ActionFormProps<
     type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 
     /** Function called when the form's primary button type is set to "button" */
-    onClick?: () => void;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
   };
 }
 
