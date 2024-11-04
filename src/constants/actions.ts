@@ -34,6 +34,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
 };
 
 export enum Action {
+  ArbitraryTxs = 'arbitrary-txs',
   PaymentGroup = 'payment-group',
   SimplePayment = 'simple-payment',
   PaymentBuilder = 'payment-builder',
