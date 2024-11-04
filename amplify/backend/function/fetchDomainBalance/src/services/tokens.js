@@ -1,6 +1,6 @@
 const { BigNumber } = require('ethers');
 const { getStartOfDayFor, DEFAULT_TOKEN_DECIMALS } = require('../utils');
-const CoinGeckoConfig = require('../config/coinGeckoConfig');
+const NetworkConfig = require('../config/networkConfig');
 
 const getConvertedTokenAmount = (
   amount,
@@ -33,7 +33,7 @@ const getConvertedTokenAmount = (
 };
 
 const getTotalFiatAmountFor = async (items, exchangeRates) => {
-  const { DEFAULT_NETWORK_TOKEN } = await CoinGeckoConfig.getConfig();
+  const { DEFAULT_NETWORK_TOKEN } = await NetworkConfig.getConfig();
   let totalAmount = BigNumber.from(0);
   for (let item of items) {
     const { amount, networkFee, token, finalizedDate } = item;
