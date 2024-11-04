@@ -314,7 +314,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       </div>
       {isLoading && <ActionSidebarLoadingSkeleton />}
       <div
-        className={clsx('flex flex-grow', {
+        className={clsx('flex flex-grow overflow-y-auto', {
           hidden: isLoading,
         })}
       >
