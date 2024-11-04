@@ -9,7 +9,7 @@ const absoluteCenteredClass = tw`absolute left-1/2 top-1/2 z-base -translate-x-1
 export const ChartLoadingLayer = () => {
   return (
     <div className={absoluteCenteredClass}>
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-full bg-transparent">
         <LoadingSkeleton
           className="h-[138px] w-[138px] rounded-full"
           isLoading
