@@ -53,10 +53,10 @@ const TeamItem: FC<TeamItemProps> = ({
       type="button"
       aria-label={label}
       className={clsx(
-        'box-border inline-flex h-full w-full items-center justify-center border-y border-solid bg-base-white px-4 py-2 text-sm text-transparent bold-on-hover',
+        'box-border inline-flex h-full w-full items-center justify-center border-y border-solid bg-base-white px-4 py-2 text-sm font-medium text-transparent bold-on-hover',
         selected ? teamColor : null,
         {
-          'border-gray-200 font-medium hover:bg-gray-50': !selected,
+          'border-gray-200 hover:bg-gray-50': !selected,
           'border-l border-transparent after:font-semibold after:text-base-white hover:after:text-base-white':
             selected,
           'border-r': hasDelimiter,
