@@ -1,7 +1,6 @@
 import { Repeat, UserFocus } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import moveDecimal from 'move-decimal-point';
 import React, { type FC } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
@@ -20,7 +19,6 @@ import {
 } from '~types/graphql.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
-import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -74,32 +72,18 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
 
   const stages = (metadata?.stages || []).map((stage) => {
     const currentSlot = slots.find((slot) => slot.id === stage.slotId);
-    const token = allTokens.find(
-      ({ token: currentToken }) =>
-        currentToken.tokenAddress === currentSlot?.payouts?.[0].tokenAddress,
-    );
 
     return {
       milestone: stage.name,
-      amount: moveDecimal(
-        currentSlot?.payouts?.[0].amount,
-        -getTokenDecimalsWithFallback(token?.token.decimals),
-      ),
+      amount: currentSlot?.payouts?.[0].amount,
       tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
     };
   });
 
-  const summedAmount = stages.reduce((acc, { amount, tokenAddress }) => {
-    const token = allTokens.find(
-      ({ token: currentToken }) => currentToken.tokenAddress === tokenAddress,
-    );
-    const formattedAmount = moveDecimal(
-      amount || '0',
-      getTokenDecimalsWithFallback(token?.token.decimals),
-    );
-
-    return BigNumber.from(acc).add(BigNumber.from(formattedAmount));
-  }, BigNumber.from('0'));
+  const summedAmount = stages.reduce(
+    (acc, { amount }) => BigNumber.from(acc).add(BigNumber.from(amount)),
+    BigNumber.from('0'),
+  );
 
   const tokensCount = getTokensNumber(expenditure);
   const stagedPaymentTokenSymbol =
