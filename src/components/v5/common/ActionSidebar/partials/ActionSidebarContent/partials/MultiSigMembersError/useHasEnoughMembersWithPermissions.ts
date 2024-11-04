@@ -51,7 +51,7 @@ export const useHasEnoughMembersWithPermissions = ({
 
   const isLoading = isDomainThresholdLoading || areEligibleSigneesLoading;
 
-  if (!thresholdPerRole || !requiredRoles) {
+  if (!thresholdPerRole || !requiredRoles || isLoading) {
     return {
       hasEnoughMembersWithPermissions: true,
       isLoading,
