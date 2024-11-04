@@ -38,10 +38,10 @@ const ColonySwitcher: React.FC<ColonySwitcherProps> = ({
 
   const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({
-      placement: 'right',
+      placement: 'right-start',
       trigger: 'click',
       interactive: true,
-      offset: offset ?? [-20, 16],
+      offset: offset ?? [-31, 16],
     });
 
   const colonyName =
