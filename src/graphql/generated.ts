@@ -710,7 +710,9 @@ export enum ColonyActionType {
   /** An action related to upgrading a Colony's version via multiSig */
   VersionUpgradeMultisig = 'VERSION_UPGRADE_MULTISIG',
   /** An action unrelated to the currently viewed Colony */
-  WrongColony = 'WRONG_COLONY'
+  WrongColony = 'WRONG_COLONY',
+  /** An action related to arbitrary transaction */
+  ArbitraryTxs = 'ARBITRARY_TRANSACTION'
 }
 
 /** Represents a Colony balance for a specific domain and token */

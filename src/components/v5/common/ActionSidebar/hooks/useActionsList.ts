@@ -133,6 +133,18 @@ const useActionsList = () => {
           // },
         ],
       },
+      {
+        key: '6',
+        isAccordion: true,
+        title: { id: 'actions.transactions' },
+        options: [
+          {
+            label: { id: 'actions.arbitraryTxs' },
+            value: Action.ArbitraryTxs,
+            isNew: true,
+          },
+        ],
+      },
     ];
     if (!isStagedExpenditureEnabled) {
       const stagedPaymentIndex = actionsListOptions[0].options.findIndex(

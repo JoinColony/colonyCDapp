@@ -907,6 +907,8 @@
     "actions.description.streamingPayment": "Pay recipients continuously at an agreed rate",
     "actions.decisions": "Agreements",
     "actions.createDecision": "Create agreement",
+    "actions.transactions": "Transaction",
+    "actions.arbitraryTxs": "Arbitrary transaction",
     "actions.funds": "Funds",
     "actions.transferFunds": "Transfer funds",
     "actions.description.transferFunds": "Transfer funds between teams ",

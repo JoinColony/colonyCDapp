@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { Action } from '~constants/actions.ts';
 
 import { ACTION_TYPE_FIELD_NAME } from '../consts.ts';
+import ArbitraryTxsForm from '../partials/forms/ArbitraryTxsForm/index.ts';
 import BatchPaymentForm from '../partials/forms/BatchPaymentForm/index.ts';
 import CreateDecisionForm from '../partials/forms/CreateDecisionForm/index.ts';
 import CreateNewTeamForm from '../partials/forms/CreateNewTeamForm/index.ts';
@@ -47,6 +48,7 @@ const useSidebarActionForm = () => {
       [Action.ManagePermissions]: ManagePermissionsForm,
       [Action.ManageVerifiedMembers]: ManageVerifiedMembersForm,
       [Action.ManageReputation]: ManageReputationForm,
+      [Action.ArbitraryTxs]: ArbitraryTxsForm,
     }),
     [],
   );
