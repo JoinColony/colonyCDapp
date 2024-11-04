@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
-import { ColonyActionType, ExpenditureType } from '~gql';
+import { ColonyActionType } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
@@ -46,7 +46,6 @@ const useGetActionData = (transactionId: string | undefined) => {
     action?.expenditureId,
   );
   const allTokens = useGetAllTokens();
-
   const defaultValues = useMemo(() => {
     if (!action) {
       return undefined;
@@ -235,34 +234,6 @@ const useGetActionData = (transactionId: string | undefined) => {
           ...repeatableFields,
         };
       case ColonyActionType.CreateExpenditure: {
-        if (expenditure && expenditure.type === ExpenditureType.Staged) {
-          return {
-            [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
-            [FROM_FIELD_NAME]: fromDomain?.nativeId,
-            [RECIPIENT_FIELD_NAME]: expenditure?.slots?.[0]?.recipientAddress,
-            stages: (expenditure.metadata?.stages || []).map((stage) => {
-              const currentSlot = slots?.find(
-                (slot) => slot.id === stage.slotId,
-              );
-              const stagedToken = allTokens.find(
-                ({ token: currentToken }) =>
-                  currentToken.tokenAddress ===
-                  currentSlot?.payouts?.[0].tokenAddress,
-              );
-
-              return {
-                milestone: stage.name,
-                amount: moveDecimal(
-                  currentSlot?.payouts?.[0].amount ?? '0',
-                  -getTokenDecimalsWithFallback(stagedToken?.token.decimals),
-                ),
-                tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
-              };
-            }),
-            ...repeatableFields,
-          };
-        }
-
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
           [FROM_FIELD_NAME]: expenditureMetadata?.fundFromDomainNativeId,
@@ -280,6 +251,31 @@ const useGetActionData = (transactionId: string | undefined) => {
               ),
               tokenAddress: slot.payouts?.[0].tokenAddress,
               delay: convertPeriodToHours(slot.claimDelay || '0'),
+            };
+          }),
+          ...repeatableFields,
+        };
+      }
+      case ExtendedColonyActionType.StagedPayment: {
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
+          [FROM_FIELD_NAME]: fromDomain?.nativeId,
+          [RECIPIENT_FIELD_NAME]: expenditure?.slots?.[0]?.recipientAddress,
+          stages: (expenditure?.metadata?.stages || []).map((stage) => {
+            const currentSlot = slots?.find((slot) => slot.id === stage.slotId);
+            const stagedToken = allTokens.find(
+              ({ token: currentToken }) =>
+                currentToken.tokenAddress ===
+                currentSlot?.payouts?.[0].tokenAddress,
+            );
+
+            return {
+              milestone: stage.name,
+              amount: moveDecimal(
+                currentSlot?.payouts?.[0].amount ?? '0',
+                -getTokenDecimalsWithFallback(stagedToken?.token.decimals),
+              ),
+              tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
             };
           }),
           ...repeatableFields,

@@ -73,7 +73,7 @@ const actionsMessageDescriptors = {
       ${ExtendedColonyActionType.UpdateColonyObjectiveMotion} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.UpdateColonyObjectiveMultisig} {Manage objective by {initiator}}
       ${ExtendedColonyActionType.SplitPayment} {Split Payment of {splitAmount} {tokenSymbol} by {initiator}}
-      ${ExtendedColonyActionType.StagedPayment} {Staged payment to {recipient} by {initiator}}
+      ${ExtendedColonyActionType.StagedPayment} {Staged payment {tokensNumber, plural, one {of {stagedAmount} {tokenSymbol}} other {with {tokensNumber} tokens}} to {recipient} with {milestonesCount} {milestonesCount, plural, one {milestone} other {milestones}} by {initiator}}
       other {Generic action we don't have information about}
     }`,
   'action.type': `{actionType, select,

@@ -1,7 +1,7 @@
 import React, { useMemo, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getActionTitleValues } from '~common/ColonyActions/index.ts';
+import useGetActionTitleValues from '~common/ColonyActions/helpers/getActionTitleValues.ts';
 import {
   type NotificationColonyFragment,
   NotificationType,
@@ -67,25 +67,24 @@ const ActionNotification: FC<NotificationProps> = ({
     });
   };
 
+  const titleValues = useGetActionTitleValues({
+    actionData: action,
+    colony: colony
+      ? {
+          nativeToken: colony?.nativeToken,
+          metadata: colony?.metadata,
+        }
+      : undefined,
+    networkInverseFee,
+  });
+
   const actionMetadataDescription = useMemo(() => {
     if (!action || !colony) {
       return null;
     }
 
-    return formatText(
-      { id: 'action.title' },
-      getActionTitleValues({
-        actionData: action,
-        colony: {
-          nativeToken: {
-            ...colony.nativeToken,
-          },
-          metadata: colony.metadata,
-        },
-        networkInverseFee,
-      }),
-    );
-  }, [action, colony, networkInverseFee]);
+    return formatText({ id: 'action.title' }, titleValues);
+  }, [action, colony, titleValues]);
 
   const actionTitle =
     action?.metadata?.customTitle || action?.decisionData?.title || '';

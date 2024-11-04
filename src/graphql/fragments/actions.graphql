@@ -134,6 +134,7 @@ fragment ColonyAction on ColonyAction {
   }
   expenditure {
     isStaked
+    type
     metadata {
       distributionType
     }

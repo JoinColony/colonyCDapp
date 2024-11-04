@@ -14,7 +14,7 @@ import {
 } from '~utils/colonyActions.ts';
 
 import { generateMessageValues } from './getEventTitleValues.ts';
-import { mapColonyActionToExpectedFormat } from './mapItemToMessageFormat.tsx';
+import { useMapColonyActionToExpectedFormat } from './mapItemToMessageFormat.tsx';
 
 import type React from 'react';
 
@@ -38,13 +38,15 @@ export enum ActionTitleMessageKeys {
   RecipientsNumber = 'recipientsNumber',
   TokensNumber = 'tokensNumber',
   SplitAmount = 'splitAmount',
+  MilestonesCount = 'milestonesCount',
+  Milestones = 'milestones',
+  StagedAmount = 'stagedAmount',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
-    case actionType.includes(ColonyActionType.Payment) &&
-      !actionType.includes(ExtendedColonyActionType.SplitPayment):
+    case actionType === ColonyActionType.Payment:
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,
@@ -128,6 +130,11 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [
         ActionTitleMessageKeys.Initiator,
         ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.StagedAmount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Milestones,
+        ActionTitleMessageKeys.MilestonesCount,
+        ActionTitleMessageKeys.TokensNumber,
       ];
     case actionType.includes(ExtendedColonyActionType.AddSafe):
       return [ActionTitleMessageKeys.ChainName];
@@ -159,28 +166,32 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
 };
 
 /* Returns the correct message values according to the action type. */
-const getActionTitleValues = ({
+const useGetActionTitleValues = ({
   actionData,
   colony,
   keyFallbackValues,
   expenditureData,
   networkInverseFee,
 }: {
-  actionData: ColonyAction;
-  colony: Pick<Colony, 'metadata' | 'nativeToken'>;
+  actionData: ColonyAction | null | undefined;
+  colony: Pick<Colony, 'metadata' | 'nativeToken'> | undefined;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
   networkInverseFee?: string;
 }) => {
-  const { isMotion, pendingColonyMetadata } = actionData;
+  const { isMotion, pendingColonyMetadata } = actionData || {};
 
-  const updatedItem = mapColonyActionToExpectedFormat({
+  const updatedItem = useMapColonyActionToExpectedFormat({
     actionData,
     colony,
     keyFallbackValues,
     expenditureData,
     networkInverseFee,
   });
+
+  if (!actionData || !colony) {
+    return {};
+  }
 
   const actionType = getExtendedActionType(
     actionData,
@@ -193,4 +204,4 @@ const getActionTitleValues = ({
   });
 };
 
-export default getActionTitleValues;
+export default useGetActionTitleValues;

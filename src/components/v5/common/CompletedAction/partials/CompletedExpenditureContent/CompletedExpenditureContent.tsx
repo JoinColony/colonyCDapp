@@ -1,12 +1,15 @@
 import { Repeat, UserFocus } from '@phosphor-icons/react';
 import clsx from 'clsx';
+import { BigNumber } from 'ethers';
 import React, { type FC } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
-import { ADDRESS_ZERO } from '~constants';
+import { ADDRESS_ZERO, DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { ExpenditureType } from '~gql';
 import { useMobile } from '~hooks';
+import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import Numeral from '~shared/Numeral/Numeral.tsx';
 import { type AnyActionType } from '~types/actions.ts';
 import {
   type Expenditure,
@@ -56,6 +59,7 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
   expenditureMeatballOptions,
   redoActionValues,
 }) => {
+  const allTokens = useGetAllTokens();
   const isMobile = useMobile();
   const {
     actionSidebarToggle: [
@@ -64,7 +68,28 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
     ],
   } = useActionSidebarContext();
 
-  const { slots = [] } = expenditure;
+  const { slots = [], metadata } = expenditure;
+
+  const stages = (metadata?.stages || []).map((stage) => {
+    const currentSlot = slots.find((slot) => slot.id === stage.slotId);
+
+    return {
+      milestone: stage.name,
+      amount: currentSlot?.payouts?.[0].amount,
+      tokenAddress: currentSlot?.payouts?.[0].tokenAddress,
+    };
+  });
+
+  const summedAmount = stages.reduce(
+    (acc, { amount }) => BigNumber.from(acc).add(BigNumber.from(amount)),
+    BigNumber.from('0'),
+  );
+
+  const tokensCount = getTokensNumber(expenditure);
+  const stagedPaymentTokenSymbol =
+    tokensCount === 1 &&
+    allTokens.find(({ token }) => token.tokenAddress === stages[0].tokenAddress)
+      ?.token.symbol;
 
   return (
     <>
@@ -118,7 +143,13 @@ const CompletedExpenditureContent: FC<CompletedExpenditureContentProps> = ({
               </UserInfoPopover>
             ) : null,
             recipientsNumber: getRecipientsNumber(expenditure),
-            tokensNumber: getTokensNumber(expenditure),
+            tokensNumber: tokensCount,
+            stagedAmount: (
+              <Numeral value={summedAmount} decimals={DEFAULT_TOKEN_DECIMALS} />
+            ),
+            tokenSymbol: stagedPaymentTokenSymbol,
+            milestonesCount: stages.length,
+            milestones: stages.length,
           },
         )}
       </ActionSubtitle>
