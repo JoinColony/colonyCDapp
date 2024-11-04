@@ -60,10 +60,11 @@ const NotificationWrapper: FC<NotificationWrapperProps> = ({
             colony?.metadata?.avatar || colony?.metadata?.thumbnail || undefined
           }
           colonyName={colony?.name || formatText(MSG.unknownColony)}
-          className={
-            loadingColony ? 'overflow-hidden rounded-full skeleton' : undefined
-          }
+          className={clsx('mt-1', {
+            'overflow-hidden rounded-full skeleton': loadingColony,
+          })}
         />
+
         <div
           className={clsx('w-full flex-col', {
             skeleton: loadingColony,
