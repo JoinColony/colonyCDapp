@@ -14,7 +14,7 @@ const {
 
 const EnvVarsConfig = require('../../config/envVars.js');
 
-const { acceptedColonyActionTypes } = require('../../utils.js');
+const { acceptedColonyActionTypes } = require('../../consts.js');
 
 const graphqlRequest = async (queryOrMutation, variables) => {
   const { apiKey, graphqlURL } = await EnvVarsConfig.getEnvVars();

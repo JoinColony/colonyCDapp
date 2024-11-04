@@ -1,5 +1,27 @@
 const { Network: ColonyJSNetwork } = require('@colony/colony-js');
 
+const DEFAULT_TOKEN_DECIMALS = 18;
+
+const TimeframeType = {
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY',
+  MONTHLY: 'MONTHLY',
+  TOTAL: 'TOTAL',
+};
+
+const paymentActionTypes = ['PAYMENT', 'PAYMENT_MOTION', 'PAYMENT_MULTISIG'];
+
+const moveFundsActionTypes = [
+  'MOVE_FUNDS',
+  'MOVE_FUNDS_MOTION',
+  'MOVE_FUNDS_MULTISIG',
+];
+
+const acceptedColonyActionTypes = [
+  ...paymentActionTypes,
+  ...moveFundsActionTypes,
+];
+
 const SupportedNetwork = {
   Mainnet: 'mainnet',
   Goerli: 'goerli',
@@ -224,6 +246,11 @@ const coinGeckoMappings = {
 };
 
 module.exports = {
+  moveFundsActionTypes,
+  paymentActionTypes,
+  acceptedColonyActionTypes,
+  DEFAULT_TOKEN_DECIMALS,
+  TimeframeType,
   ColonyJSNetworkMapping,
   SupportedNetwork,
   SupportedCurrencies,

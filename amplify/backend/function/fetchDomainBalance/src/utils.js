@@ -15,27 +15,7 @@ const {
   isBefore,
 } = require('date-fns');
 
-const DEFAULT_TOKEN_DECIMALS = 18;
-
-const TimeframeType = {
-  DAILY: 'DAILY',
-  WEEKLY: 'WEEKLY',
-  MONTHLY: 'MONTHLY',
-  TOTAL: 'TOTAL',
-};
-
-const paymentActionTypes = ['PAYMENT', 'PAYMENT_MOTION', 'PAYMENT_MULTISIG'];
-
-const moveFundsActionTypes = [
-  'MOVE_FUNDS',
-  'MOVE_FUNDS_MOTION',
-  'MOVE_FUNDS_MULTISIG',
-];
-
-const acceptedColonyActionTypes = [
-  ...paymentActionTypes,
-  ...moveFundsActionTypes,
-];
+const { TimeframeType, paymentActionTypes } = require('./consts');
 
 const getActionFinalizedDate = (action) => {
   if (action.isMotion && action.motionData) {
@@ -272,8 +252,6 @@ const shouldFetchNetworkBalance = (timeframeType) =>
   timeframeType === TimeframeType.TOTAL;
 
 module.exports = {
-  DEFAULT_TOKEN_DECIMALS,
-  acceptedColonyActionTypes,
   getDifferenceInSeconds,
   getPeriodFormat,
   getPeriodFor,

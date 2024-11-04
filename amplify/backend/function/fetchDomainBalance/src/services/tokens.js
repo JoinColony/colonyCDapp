@@ -1,5 +1,6 @@
 const { BigNumber } = require('ethers');
-const { getStartOfDayFor, DEFAULT_TOKEN_DECIMALS } = require('../utils');
+const { getStartOfDayFor } = require('../utils');
+const { DEFAULT_TOKEN_DECIMALS } = require('../consts');
 const NetworkConfig = require('../config/networkConfig');
 
 const getConvertedTokenAmount = (

@@ -4,11 +4,8 @@ const {
   constants: { AddressZero },
 } = require('ethers');
 const EnvVarsConfig = require('../config/envVars');
-const {
-  getDifferenceInSeconds,
-  DEFAULT_TOKEN_DECIMALS,
-  getStartOfDayFor,
-} = require('../utils');
+const { getStartOfDayFor } = require('../utils');
+const { DEFAULT_TOKEN_DECIMALS } = require('../consts');
 const { getDomains, getAllColonyTokens } = require('../api/graphql/operations');
 const ExchangeRatesService = require('./exchangeRates');
 const { getTotalFiatAmountFor } = require('./tokens');
