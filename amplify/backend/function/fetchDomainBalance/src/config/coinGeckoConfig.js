@@ -1,3 +1,4 @@
+const { Network: ColonyJSNetwork } = require('@colony/colony-js');
 const EnvVarsConfig = require('./envVars.js');
 
 const SupportedNetwork = {
@@ -10,6 +11,16 @@ const SupportedNetwork = {
   Amoy: 'amoy',
   ArbitrumOne: 'arbitrumOne',
   ArbitrumSepolia: 'arbitrumSepolia',
+};
+
+const ColonyJSNetworkMapping = {
+  [ColonyJSNetwork.Mainnet]: SupportedNetwork.Mainnet,
+  [ColonyJSNetwork.Goerli]: SupportedNetwork.Goerli,
+  [ColonyJSNetwork.Xdai]: SupportedNetwork.Gnosis,
+  [ColonyJSNetwork.XdaiQa]: SupportedNetwork.GnosisFork,
+  [ColonyJSNetwork.Custom]: SupportedNetwork.Ganache,
+  [ColonyJSNetwork.ArbitrumOne]: SupportedNetwork.ArbitrumOne,
+  [ColonyJSNetwork.ArbitrumSepolia]: SupportedNetwork.ArbitrumSepolia,
 };
 
 // import from amplify backend schema.graphql
@@ -131,8 +142,13 @@ const CoinGeckoConfig = (() => {
 
   return {
     getConfig: async () => {
-      const { network, coinGeckoApiUrl, coinGeckoApiKey } =
-        await EnvVarsConfig.getEnvVars();
+      const {
+        network: colonyJSNetwork,
+        coinGeckoApiUrl,
+        coinGeckoApiKey,
+      } = await EnvVarsConfig.getEnvVars();
+
+      const network = ColonyJSNetworkMapping[colonyJSNetwork];
 
       return {
         DEFAULT_NETWORK_TOKEN: TOKEN_DATA[network],
