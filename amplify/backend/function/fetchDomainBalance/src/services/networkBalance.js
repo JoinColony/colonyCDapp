@@ -43,7 +43,10 @@ const getEstimatedBlockNumber = async ({
     numberOfSecondsAgo / averageBlockTime,
   );
 
-  // If estimatedBlocksDifference is negative, it means timeframePeriodEndDate is ahead of current network block time
+  /**
+   * If estimatedBlocksDifference is negative (due to numberOfSecondsAgo being negative)
+   * It means timeframePeriodEndDate is ahead of current network block time
+   */
   if (estimatedBlocksDifference < 0) {
     return currentBlockNumber;
   }
