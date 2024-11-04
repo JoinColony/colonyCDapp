@@ -8,6 +8,7 @@ const {
   getDomainExpenditures,
   getColonyExpenditures,
   getColonyFundsClaims,
+  getColonyTokens,
   getToken,
 } = require('./schemas.js');
 
@@ -66,6 +67,24 @@ const getDomains = async (colonyAddress) => {
   });
 
   return result.data.getDomainsByColony?.items;
+};
+
+const getColonyTokensData = async ({ colonyAddress, limit, nextToken }) => {
+  const result = await graphqlRequest(getColonyTokens, {
+    colonyAddress,
+    limit,
+    nextToken,
+  });
+
+  if (!result) {
+    console.warn('Could not find any colony funds claims in db.');
+  }
+
+  return result.data.listColonyTokens;
+};
+
+const getAllColonyTokens = async (colonyAddress) => {
+  return getAllPages(getColonyTokensData, { colonyAddress });
 };
 
 const getIncomingFundsData = async ({ colonyAddress, limit, nextToken }) => {
@@ -224,4 +243,5 @@ module.exports = {
   saveExchangeRate,
   getExchangeRate,
   getTokensDecimalsFor,
+  getAllColonyTokens,
 };

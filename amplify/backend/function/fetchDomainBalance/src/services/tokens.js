@@ -1,5 +1,5 @@
 const { BigNumber } = require('ethers');
-const { getStartOfDayFor } = require('../utils');
+const { getStartOfDayFor, DEFAULT_TOKEN_DECIMALS } = require('../utils');
 const CoinGeckoConfig = require('../config/coinGeckoConfig');
 
 const getConvertedTokenAmount = (
@@ -27,7 +27,7 @@ const getConvertedTokenAmount = (
   return BigNumber.from(amount)
     .add(formattedNetworkFee) // Add network fee to the initial amount
     .mul(normalizedTokenExchangeRate) // Adjust amount using the normalized exchange rate
-    .mul(BigNumber.from(10).pow(18)) // Scale the result to 10^18 format for consistency
+    .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS)) // Scale the result to 10^18 format for consistency
     .div(tokenScaleFactor) // Undo initial scaling of the amount and network fee
     .div(tokenScaleFactor); // Undo initial scaling of the exchange rate
 };
@@ -40,7 +40,10 @@ const getTotalFiatAmountFor = async (items, exchangeRates) => {
     const tokenId = token.id;
     const date = getStartOfDayFor(finalizedDate);
     const tokenExchangeRate = exchangeRates[tokenId][date];
-    const tokenDecimals = token.decimals ?? DEFAULT_NETWORK_TOKEN.decimals ?? 0;
+    const tokenDecimals =
+      token.decimals ??
+      DEFAULT_NETWORK_TOKEN.decimals ??
+      DEFAULT_TOKEN_DECIMALS;
 
     const convertedTokenValue = getConvertedTokenAmount(
       amount,

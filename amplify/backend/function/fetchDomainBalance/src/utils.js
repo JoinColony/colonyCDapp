@@ -1,4 +1,5 @@
 const {
+  differenceInSeconds,
   startOfDay,
   subDays,
   startOfWeek,
@@ -13,6 +14,8 @@ const {
   isAfter,
   isBefore,
 } = require('date-fns');
+
+const DEFAULT_TOKEN_DECIMALS = 18;
 
 const TimeframeType = {
   DAILY: 'DAILY',
@@ -194,7 +197,7 @@ const getFormattedActions = (actions, domainId) => {
   return actions
     .filter((action) => !action.initiatorExtension?.id)
     .map((action) => getActionWithFinalizedDate(action))
-    .filter((action) => !action.finalizedDate)
+    .filter((action) => !!action.finalizedDate)
     .map((action) => {
       let amount = action.amount;
       let networkFee = action.networkFee;
@@ -255,8 +258,23 @@ const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
   return formattedExpenditures;
 };
 
+const getDifferenceInSeconds = (startDateTimestamp, endDateTimestamp) => {
+  const endDate = endDateTimestamp ? new Date(endDateTimestamp) : new Date();
+
+  const startDate = startDateTimestamp
+    ? new Date(startDateTimestamp)
+    : new Date();
+
+  return differenceInSeconds(startDate, endDate, { roundingMethod: 'ceil' });
+};
+
+const shouldFetchNetworkBalance = (timeframeType) =>
+  timeframeType === TimeframeType.TOTAL;
+
 module.exports = {
+  DEFAULT_TOKEN_DECIMALS,
   acceptedColonyActionTypes,
+  getDifferenceInSeconds,
   getPeriodFormat,
   getPeriodFor,
   getFormattedIncomingFunds,
@@ -270,4 +288,5 @@ module.exports = {
   getStartOfDayFor,
   isAfter,
   isBefore,
+  shouldFetchNetworkBalance,
 };
