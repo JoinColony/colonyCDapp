@@ -7,12 +7,14 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
+import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
 import TablePagination from './partials/TablePagination/index.ts';
+import { TableRowDivider } from './partials/TableRowDivider.tsx';
 import { TableRow } from './partials/VirtualizedRow/VirtualizedRow.tsx';
 import { type TableProps } from './types.ts';
 import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
@@ -55,6 +57,7 @@ const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
+  const isMobile = useMobile();
 
   const columnsWithMenu = useMemo(
     () => [
@@ -109,6 +112,17 @@ const Table = <T,>({
   const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
+  const hasExpandableRows = !!renderSubComponent;
+
+  useEffect(() => {
+    if (!isMobile && hasExpandableRows) {
+      rows.forEach((row) => {
+        if (row.getIsExpanded()) {
+          row.toggleExpanded(false);
+        }
+      });
+    }
+  }, [isMobile, hasExpandableRows, rows]);
 
   return (
     <div className={className}>
@@ -318,8 +332,6 @@ const Table = <T,>({
                         itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
                         isEnabled={!!virtualizedProps}
                         className={clsx(getRowClassName(row), {
-                          '[&:not(:first-child)]:after:absolute [&:not(:first-child)]:after:left-4 [&:not(:first-child)]:after:top-0 [&:not(:first-child)]:after:w-[calc(100%-2rem)] [&:not(:first-child)]:after:border-b [&:not(:first-child)]:after:border-gray-100':
-                            withNarrowBorder,
                           'translate-z-0 relative [&>tr:first-child>td]:pr-9 [&>tr:last-child>td]:p-0 [&>tr:last-child>th]:p-0':
                             getMenuProps,
                           '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
@@ -406,6 +418,12 @@ const Table = <T,>({
                           </td>
                         </tr>
                       )}
+                      {
+                        /** Unfortunately Safari is not yet that friendly to allow the usage of absolutely positioned (pseudo)-element inside tables
+                         * So, for the moment, this is our best shot for showing borders with paddings from the tr margins
+                         */
+                        withNarrowBorder && <TableRowDivider />
+                      }
                     </React.Fragment>
                   );
                 })
