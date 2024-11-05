@@ -5,9 +5,10 @@ export const convertFromTokenToCurrency = (
   conversionRate?: number | null,
 ) => {
   const precision = conversionRate ? 1000 : 1;
-  const formattedConversionRate = conversionRate
-    ? Math.floor(conversionRate * precision)
-    : 0;
+  const formattedConversionRate =
+    conversionRate && Number.isFinite(conversionRate)
+      ? Math.floor(conversionRate * precision)
+      : 0;
 
   return BigNumber.from(value ?? 0)
     .mul(formattedConversionRate)
