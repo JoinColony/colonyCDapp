@@ -1,9 +1,11 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
-import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
+import AvatarWithAddress from '~v5/common/AvatarWithAddress/index.ts';
+
+import CellDescription from './CellDescription.tsx';
 
 export const useArbitraryTxsTableColumns = (): ColumnDef<
   AddTransactionTableModel,
@@ -23,44 +25,42 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             {formatText({ id: 'table.row.contract' })}
           </span>
         ),
-        cell: ({ getValue }) => (
-          <span className="max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal">
-            {getValue()}
-          </span>
-        ),
-        size: 35,
+        cellContentWrapperClassName: '!justify-start',
+
+        cell: ({ getValue }) => {
+          const address = getValue();
+          return (
+            <span className="flex max-w-full  self-start overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal">
+              <AvatarWithAddress address={address} />
+            </span>
+          );
+        },
+        size: 30,
       }),
-      columnHelper.accessor('method', {
-        enableSorting: false,
+      columnHelper.display({
+        id: 'description',
         header: () => (
           <span className="text-sm text-gray-600">
             {formatText({ id: 'table.row.details' })}
           </span>
         ),
         cell: ({ row: { original } }) => (
-          <div>
-            <span
-              className={clsx(
-                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
-              )}
-            >
-              <b>Method:</b> {original.method}
-            </span>
-            <span
-              className={clsx(
-                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
-              )}
-            >
-              <b>_to (address):</b> {original.to}
-            </span>
-            <span
-              className={clsx(
-                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
-              )}
-            >
-              <b>_amount (uint256):</b> {original.amount}
-            </span>
-          </div>
+          <CellDescription
+            data={[
+              {
+                title: 'Method',
+                value: original.method,
+              },
+              {
+                title: '_to (address)',
+                value: original.to,
+              },
+              {
+                title: '_amount (uint256)',
+                value: original.amount,
+              },
+            ]}
+          />
         ),
         size: 67,
       }),

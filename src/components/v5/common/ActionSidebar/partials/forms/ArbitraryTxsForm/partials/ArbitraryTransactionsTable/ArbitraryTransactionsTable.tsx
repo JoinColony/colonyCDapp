@@ -44,10 +44,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const fieldState = getFieldState(name);
 
   return (
-    <>
+    <div className="pt-4">
       {!!data.length && (
         <>
-          <h5 className="mb-3 mt-6 text-2">
+          <h5 className="mb-4 text-2">
             {formatText({ id: 'actionSidebar.transactions' })}
           </h5>
           <Table<AddTransactionTableModel>
@@ -77,7 +77,6 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             {formatText({ id: 'button.addTransaction' })}
           </Button>
           <AddTransactionModal
-            defaultValues={data}
             onClose={() => setIsModalOpen(false)}
             isOpen={isModalOpen}
             onSubmit={({ json, contract, method, amount, to }) => {
@@ -93,7 +92,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           />
         </>
       )}
-    </>
+    </div>
   );
 };
 
