@@ -1,4 +1,4 @@
-import { format, setMonth } from 'date-fns';
+import { format, parse, setMonth, setWeek, startOfWeek } from 'date-fns';
 import numbro from 'numbro';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -14,6 +14,23 @@ export const getMonthShortName = (month: string) => {
   const now = Date.now();
 
   return format(new Date(setMonth(now, parsedMonth)), 'MMM');
+};
+
+export const parseTimeframeKey = (key: string = '') => {
+  let parsedDate = new Date();
+  if (/^\d{2}-\d{2}-\d{4}$/.test(key)) {
+    parsedDate = parse(key, 'dd-MM-yyyy', new Date());
+  } else if (/^\d{2}W-\d{4}$/.test(key)) {
+    const [weekString, yearString] = key.split('W-');
+    const year = parseInt(yearString, 10);
+    const week = parseInt(weekString, 10);
+    const startOfYearDate = new Date(year, 0, 1);
+    parsedDate = startOfWeek(setWeek(startOfYearDate, week), {
+      weekStartsOn: 1,
+    });
+  }
+
+  return format(parsedDate, 'MM');
 };
 
 export const getFallbackData = () => {
