@@ -7,7 +7,7 @@ import { tw } from '~utils/css/index.ts';
 import { WidgetContent } from './partials/WidgetContent.tsx';
 
 const wrapperClassName = tw`
-  flex min-h-[6.5rem]
+  flex max-h-[6.9379rem] min-h-[6.5rem]
   min-w-[15.625rem] select-none flex-col justify-center rounded-lg
   border px-6 py-5 text-left
 `;
