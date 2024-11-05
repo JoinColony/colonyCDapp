@@ -1,6 +1,7 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 
+import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 import AvatarWithAddress from '~v5/common/AvatarWithAddress/index.ts';
@@ -15,6 +16,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
     () => createColumnHelper<AddTransactionTableModel>(),
     [],
   );
+  const isMobile = useMobile();
 
   const columns: ColumnDef<AddTransactionTableModel, string>[] = useMemo(
     () => [
@@ -35,7 +37,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             </span>
           );
         },
-        size: 30,
+        size: isMobile ? 100 : 30,
       }),
       columnHelper.display({
         id: 'description',
@@ -62,7 +64,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             ]}
           />
         ),
-        size: 67,
+        size: isMobile ? 100 : 67,
       }),
     ],
     [columnHelper],
