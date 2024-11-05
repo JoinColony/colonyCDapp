@@ -30,12 +30,13 @@ const SocialLinksTable = ({ socialLinks }: Props) => {
             {formatText({ id: 'editColony.socialLinks.table.title' })}
           </h5>
           <Table<SocialLinksTableModel>
-            sizeUnit="%"
-            meatBallMenuSize={10}
+            sizeUnit={isMobile ? undefined : '%'}
+            meatBallMenuSize={isMobile ? undefined : 10}
             getRowId={({ key }) => key}
             columns={columns}
             data={data}
             verticalLayout={isMobile}
+            withBorder={false}
           />
         </>
       )}
