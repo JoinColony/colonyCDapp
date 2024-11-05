@@ -119,6 +119,16 @@ const Tours: React.FC<ToursProps> = ({ setVisible }) => {
     tour.requiresColonyContext ? Boolean(colonyContext) : true,
   );
 
+  if (isMobile) {
+    return (
+      <EmptyContent
+        icon={Binoculars}
+        title={formatText(MSG.noToursAvailable)}
+        description={formatText(MSG.noToursDescription)}
+      />
+    );
+  }
+
   return (
     <MenuList>
       {availableTours.length > 0 ? (
