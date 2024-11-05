@@ -14,7 +14,7 @@ const MSG = defineMessages({
   },
 });
 
-interface UserAvatarProps {
+export interface UserAvatarProps {
   className?: string;
   size: number;
   userAddress: string;
