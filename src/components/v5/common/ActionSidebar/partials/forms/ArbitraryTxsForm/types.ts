@@ -9,4 +9,7 @@ export interface AddTransactionTableModel {
   contract: string;
   json: string;
   key: string;
+  method: string;
+  amount: string;
+  to: string;
 }
