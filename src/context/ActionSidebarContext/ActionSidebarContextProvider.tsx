@@ -2,7 +2,6 @@ import React, {
   type FC,
   type PropsWithChildren,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -77,12 +76,6 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     removeTxParamOnClose();
     return undefined;
   });
-
-  useEffect(() => {
-    if (!isActionSidebarOpen) {
-      setActionSidebarInitialValues(undefined);
-    }
-  }, [isActionSidebarOpen]);
 
   const toggleOn = useCallback(
     (initialValues) => {
