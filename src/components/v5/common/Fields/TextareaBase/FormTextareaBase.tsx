@@ -25,12 +25,14 @@ const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
   };
 
   return (
-    <TextareaBase
-      readOnly={readonly}
-      message={error?.message}
-      state={invalid ? FieldState.Error : undefined}
-      {...{ ...rest, ...field, onChange }}
-    />
+    <div>
+      <TextareaBase
+        readOnly={readonly}
+        message={error?.message}
+        state={invalid ? FieldState.Error : undefined}
+        {...{ ...rest, ...field, onChange }}
+      />
+    </div>
   );
 };
 
