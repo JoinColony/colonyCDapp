@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
-import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 export const useArbitraryTxsTableColumns = (): ColumnDef<
@@ -14,8 +13,6 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
     () => createColumnHelper<AddTransactionTableModel>(),
     [],
   );
-
-  const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const columns: ColumnDef<AddTransactionTableModel, string>[] = useMemo(
     () => [
@@ -33,30 +30,42 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
         ),
         size: 35,
       }),
-      columnHelper.accessor('json', {
+      columnHelper.accessor('method', {
         enableSorting: false,
         header: () => (
           <span className="text-sm text-gray-600">
             {formatText({ id: 'table.row.details' })}
           </span>
         ),
-        cell: ({ getValue }) => (
-          <span
-            className={clsx(
-              'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
-              {
-                'text-gray-700': !hasNoDecisionMethods,
-                'text-gray-300': hasNoDecisionMethods,
-              },
-            )}
-          >
-            {getValue()}
-          </span>
+        cell: ({ row: { original } }) => (
+          <div>
+            <span
+              className={clsx(
+                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
+              )}
+            >
+              <b>Method:</b> {original.method}
+            </span>
+            <span
+              className={clsx(
+                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
+              )}
+            >
+              <b>_to (address):</b> {original.to}
+            </span>
+            <span
+              className={clsx(
+                'block max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal',
+              )}
+            >
+              <b>_amount (uint256):</b> {original.amount}
+            </span>
+          </div>
         ),
         size: 67,
       }),
     ],
-    [columnHelper, hasNoDecisionMethods],
+    [columnHelper],
   );
 
   return columns;

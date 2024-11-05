@@ -5,7 +5,6 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useMobile } from '~hooks/index.ts';
-import { type SocialLinksTableProps } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
@@ -16,9 +15,16 @@ import AddTransactionModal from '../AddTransactionModal/AddTransactionModal.tsx'
 
 import { useArbitraryTxsTableColumns } from './hooks.tsx';
 
-const displayName = 'v5.common.ActionsContent.partials.SocialLinksTable';
+const displayName =
+  'v5.common.ActionsContent.partials.ArbitraryTransactionsTable';
 
-const ArbitraryTransactionsTable: FC<SocialLinksTableProps> = ({ name }) => {
+interface ArbitraryTransactionsTableProps {
+  name: string;
+}
+
+const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
+  name,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isMobile = useMobile();
@@ -42,7 +48,7 @@ const ArbitraryTransactionsTable: FC<SocialLinksTableProps> = ({ name }) => {
       {!!data.length && (
         <>
           <h5 className="mb-3 mt-6 text-2">
-            {formatText({ id: 'editColony.socialLinks.table.title' })}
+            {formatText({ id: 'actionSidebar.transactions' })}
           </h5>
           <Table<AddTransactionTableModel>
             sizeUnit={isMobile ? undefined : '%'}
@@ -74,10 +80,13 @@ const ArbitraryTransactionsTable: FC<SocialLinksTableProps> = ({ name }) => {
             defaultValues={data}
             onClose={() => setIsModalOpen(false)}
             isOpen={isModalOpen}
-            onSubmit={({ json, contract }) => {
+            onSubmit={({ json, contract, method, amount, to }) => {
               fieldArrayMethods.append({
                 json,
                 contract,
+                method,
+                amount,
+                to,
               });
               setIsModalOpen(false);
             }}

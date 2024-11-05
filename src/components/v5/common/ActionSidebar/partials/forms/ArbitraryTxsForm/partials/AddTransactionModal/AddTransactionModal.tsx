@@ -9,6 +9,7 @@ import {
   type AddTransactionTableModel,
 } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
+import { FormSelect } from '~v5/common/Fields/Select/FormSelect.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -42,6 +43,30 @@ const MSG = defineMessages({
     id: `${displayName}.abiJsonField`,
     defaultMessage: 'ABI/JSON',
   },
+  methodField: {
+    id: `${displayName}.methodField`,
+    defaultMessage: 'Select a method to interact with',
+  },
+  methodPlaceholder: {
+    id: `${displayName}.methodPlaceholder`,
+    defaultMessage: 'Select method',
+  },
+  toField: {
+    id: `${displayName}.toField`,
+    defaultMessage: '_to (address)',
+  },
+  toPlaceholder: {
+    id: `${displayName}.toPlaceholder`,
+    defaultMessage: 'Enter value',
+  },
+  amountField: {
+    id: `${displayName}.amountField`,
+    defaultMessage: '_amount (uint256)',
+  },
+  amountPlaceholder: {
+    id: `${displayName}.amountPlaceholder`,
+    defaultMessage: 'Enter value',
+  },
   submitButton: {
     id: `${displayName}.submitButton`,
     defaultMessage: 'Confirm',
@@ -53,6 +78,17 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
   ...rest
 }) => {
   const { onClose } = rest;
+
+  const methodOptions = [
+    {
+      value: 'mint',
+      label: 'mint',
+    },
+    {
+      value: 'mint2',
+      label: 'mint2',
+    },
+  ];
 
   return (
     <Modal buttonMode="primarySolid" icon={CodeBlock} isFullOnMobile {...rest}>
@@ -81,6 +117,24 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 className="min-h-[7rem] rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue"
               />
             </div>
+            <FormSelect
+              name="method"
+              labelMessage={formatText(MSG.methodField)}
+              placeholder={formatText(MSG.methodPlaceholder)}
+              options={methodOptions}
+            />
+            <FormInputBase
+              wrapperClassName="mt-6"
+              name="to"
+              label={formatText(MSG.toField)}
+              placeholder={formatText(MSG.toPlaceholder)}
+            />
+            <FormInputBase
+              wrapperClassName="mt-6"
+              name="amount"
+              label={formatText(MSG.amountField)}
+              placeholder={formatText(MSG.amountPlaceholder)}
+            />
             <div className="mt-[5.625rem] flex flex-col-reverse gap-3 sm:flex-row md:mt-8">
               <Button
                 type="button"
