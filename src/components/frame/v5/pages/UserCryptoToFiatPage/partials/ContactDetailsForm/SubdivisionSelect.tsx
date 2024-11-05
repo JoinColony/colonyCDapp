@@ -6,7 +6,7 @@ import {
   type SubdivisionData,
   getSubdivisionsByCountryCode,
 } from '~utils/subdivisions.ts';
-import { FormSelect } from '~v5/common/Fields/Select/FormSelect.tsx';
+import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
 import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
 import { AddressFields, type ContactDetailsFormSchema } from './validation.ts';

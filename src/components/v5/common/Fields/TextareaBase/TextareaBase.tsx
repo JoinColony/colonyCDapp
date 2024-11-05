@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useLayoutEffect } from 'react';
+import React, { useId, useLayoutEffect } from 'react';
 
 import { notMaybe } from '~utils/arrays/index.ts';
 import { FieldState } from '~v5/common/Fields/consts.ts';
@@ -23,6 +23,10 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       maxLength,
       shouldFocus,
       withoutCounter,
+      labelClassName,
+      mode,
+      label,
+      id: idProp,
       ...rest
     },
     ref,
@@ -36,6 +40,8 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
     );
 
     const textAreaRef = useAutosizeTextArea(value, ref);
+    const defaultId = useId();
+    const id = idProp || defaultId;
 
     useLayoutEffect(() => {
       if (textAreaRef.current && shouldFocus) {
@@ -45,22 +51,34 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
 
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>
+        {label && (
+          <label
+            className={clsx(labelClassName, 'flex flex-col pb-1 text-1')}
+            htmlFor={id}
+          >
+            {label}
+          </label>
+        )}
         <textarea
           rows={1}
           ref={textAreaRef}
           className={clsx(
             className,
             state ? stateClassNames[state] : undefined,
-            'w-full resize-none bg-base-white text-md outline-none',
+            'w-full resize-none bg-base-white align-top text-md outline-none',
             {
               'placeholder:text-gray-400': !disabled,
               'transition-colors md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
                 state !== FieldState.Error && !disabled,
+              'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':
+                mode === 'primary',
+              'border-none': mode === 'secondary',
               'pointer-events-none text-gray-300 placeholder:text-gray-300':
                 disabled,
             },
           )}
           value={value}
+          id={id}
           {...rest}
         />
         {state === FieldState.Error &&
