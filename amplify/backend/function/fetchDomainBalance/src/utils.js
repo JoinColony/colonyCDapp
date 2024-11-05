@@ -1,4 +1,5 @@
 const {
+  differenceInSeconds,
   startOfDay,
   subDays,
   startOfWeek,
@@ -14,25 +15,7 @@ const {
   isBefore,
 } = require('date-fns');
 
-const TimeframeType = {
-  DAILY: 'DAILY',
-  WEEKLY: 'WEEKLY',
-  MONTHLY: 'MONTHLY',
-  TOTAL: 'TOTAL',
-};
-
-const paymentActionTypes = ['PAYMENT', 'PAYMENT_MOTION', 'PAYMENT_MULTISIG'];
-
-const moveFundsActionTypes = [
-  'MOVE_FUNDS',
-  'MOVE_FUNDS_MOTION',
-  'MOVE_FUNDS_MULTISIG',
-];
-
-const acceptedColonyActionTypes = [
-  ...paymentActionTypes,
-  ...moveFundsActionTypes,
-];
+const { TimeframeType, paymentActionTypes } = require('./consts');
 
 const getActionFinalizedDate = (action) => {
   if (action.isMotion && action.motionData) {
@@ -194,7 +177,7 @@ const getFormattedActions = (actions, domainId) => {
   return actions
     .filter((action) => !action.initiatorExtension?.id)
     .map((action) => getActionWithFinalizedDate(action))
-    .filter((action) => !action.finalizedDate)
+    .filter((action) => !!action.finalizedDate)
     .map((action) => {
       let amount = action.amount;
       let networkFee = action.networkFee;
@@ -255,8 +238,21 @@ const getFormattedExpenditures = (expenditures, domainId, tokensDecimals) => {
   return formattedExpenditures;
 };
 
+const getDifferenceInSeconds = (startDateTimestamp, endDateTimestamp) => {
+  const endDate = endDateTimestamp ? new Date(endDateTimestamp) : new Date();
+
+  const startDate = startDateTimestamp
+    ? new Date(startDateTimestamp)
+    : new Date();
+
+  return differenceInSeconds(startDate, endDate, { roundingMethod: 'ceil' });
+};
+
+const shouldFetchNetworkBalance = (timeframeType) =>
+  timeframeType === TimeframeType.TOTAL;
+
 module.exports = {
-  acceptedColonyActionTypes,
+  getDifferenceInSeconds,
   getPeriodFormat,
   getPeriodFor,
   getFormattedIncomingFunds,
@@ -270,4 +266,5 @@ module.exports = {
   getStartOfDayFor,
   isAfter,
   isBefore,
+  shouldFetchNetworkBalance,
 };

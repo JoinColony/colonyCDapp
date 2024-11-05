@@ -8,12 +8,13 @@ const {
   getDomainExpenditures,
   getColonyExpenditures,
   getColonyFundsClaims,
+  getColonyTokens,
   getToken,
 } = require('./schemas.js');
 
 const EnvVarsConfig = require('../../config/envVars.js');
 
-const { acceptedColonyActionTypes } = require('../../utils.js');
+const { acceptedColonyActionTypes } = require('../../consts.js');
 
 const graphqlRequest = async (queryOrMutation, variables) => {
   const { apiKey, graphqlURL } = await EnvVarsConfig.getEnvVars();
@@ -66,6 +67,24 @@ const getDomains = async (colonyAddress) => {
   });
 
   return result.data.getDomainsByColony?.items;
+};
+
+const getColonyTokensData = async ({ colonyAddress, limit, nextToken }) => {
+  const result = await graphqlRequest(getColonyTokens, {
+    colonyAddress,
+    limit,
+    nextToken,
+  });
+
+  if (!result) {
+    console.warn('Could not find any colony funds claims in db.');
+  }
+
+  return result.data.listColonyTokens;
+};
+
+const getAllColonyTokens = async (colonyAddress) => {
+  return getAllPages(getColonyTokensData, { colonyAddress });
 };
 
 const getIncomingFundsData = async ({ colonyAddress, limit, nextToken }) => {
@@ -224,4 +243,5 @@ module.exports = {
   saveExchangeRate,
   getExchangeRate,
   getTokensDecimalsFor,
+  getAllColonyTokens,
 };

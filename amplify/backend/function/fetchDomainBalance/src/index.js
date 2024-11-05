@@ -4,7 +4,7 @@ const {
   BigNumber,
   utils: { Logger },
 } = require('ethers');
-const { getPeriodFor } = require('./utils');
+const { getPeriodFor, shouldFetchNetworkBalance } = require('./utils');
 const {
   getInOutActions,
   getTokensDatesMap,
@@ -13,6 +13,7 @@ const {
 } = require('./services/actions');
 const ExchangeRatesService = require('./services/exchangeRates');
 const { getTotalFiatAmountFor } = require('./services/tokens');
+const { getNetworkTotalBalance } = require('./services/networkBalance');
 Logger.setLogLevel(Logger.levels.ERROR);
 
 // @TODO maybe rename the lambda function
@@ -75,6 +76,22 @@ exports.handler = async (event) => {
 
       timeframeTotalIn = timeframeTotalIn.add(totalInBN);
       timeframeTotalOut = timeframeTotalOut.add(totalOutBN);
+    }
+
+    if (shouldFetchNetworkBalance(timeframeType)) {
+      const total = await getNetworkTotalBalance({
+        colonyAddress,
+        timeframePeriodEndDate,
+        domainId,
+        selectedCurrency,
+        chainId,
+      });
+      return {
+        totalIn: timeframeTotalIn.toString(),
+        totalOut: timeframeTotalOut.toString(),
+        total: total,
+        timeframe: [],
+      };
     }
 
     return {

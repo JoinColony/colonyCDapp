@@ -1,4 +1,5 @@
 const CoinGeckoConfig = require('../config/coinGeckoConfig');
+const NetworkConfig = require('../config/networkConfig');
 const { getFiatExchangeRate } = require('../api/rest/getFiatExchangeRate');
 const { getTokensList } = require('../api/rest/getTokensList');
 const {
@@ -6,6 +7,7 @@ const {
   saveExchangeRate,
 } = require('../api/graphql/operations');
 const { getStartOfDayFor } = require('../utils');
+const { SupportedCurrencies, SupportedNetwork } = require('../consts');
 
 const { constants: ethersConstants } = require('ethers');
 
@@ -56,8 +58,8 @@ const ExchangeRatesService = (() => {
   };
 
   const getApiTokenIdFromAddress = async ({ tokenAddress, chainId }) => {
-    const { mappings, DEFAULT_NETWORK_TOKEN } =
-      await CoinGeckoConfig.getConfig();
+    const { mappings } = await CoinGeckoConfig.getConfig();
+    const { DEFAULT_NETWORK_TOKEN } = await NetworkConfig.getConfig();
 
     if (tokenAddress === ADDRESS_ZERO) {
       return mappings.networkTokens[DEFAULT_NETWORK_TOKEN.symbol];
@@ -172,9 +174,6 @@ const ExchangeRatesService = (() => {
 
   return {
     getExchangeRates: async (tokens, currency, chainId) => {
-      const { SupportedCurrencies, SupportedNetwork } =
-        await CoinGeckoConfig.getConfig();
-
       const tokensExchangeRate = await Promise.all(
         Object.entries(tokens).map(async ([tokenAddress, dates]) => {
           return getExchangeRatesForToken({

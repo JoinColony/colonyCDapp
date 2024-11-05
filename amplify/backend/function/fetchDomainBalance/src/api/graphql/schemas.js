@@ -225,4 +225,24 @@ module.exports = {
       }
     }
   `,
+  getColonyTokens: /* GraphQL */ `
+    query GetColonyTokens(
+      $colonyAddress: ID!
+      $nextToken: String
+      $limit: Int
+    ) {
+      listColonyTokens(
+        filter: { colonyID: { eq: $colonyAddress } }
+        nextToken: $nextToken
+        limit: $limit
+      ) {
+        items {
+          token {
+            decimals
+            id
+          }
+        }
+      }
+    }
+  `,
 };
