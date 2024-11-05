@@ -13,6 +13,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type User } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import AvatarWithAddress from '~v5/common/AvatarWithAddress/index.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -108,43 +109,16 @@ const UserSelect: FC<UserSelectProps> = ({
         disabled={disabled}
       >
         {selectedUser || field.value ? (
-          <>
-            {isUserAddressValid ? (
-              <>
-                <UserAvatar
-                  userName={
-                    selectedUser?.profile?.displayName?.toString() ?? undefined
-                  }
-                  userAddress={userWalletAddress}
-                  userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
-                  size={20}
-                />
-                <p
-                  className={clsx('ml-2 truncate text-md font-medium', {
-                    'text-warning-400': !selectedUser?.isVerified,
-                    'text-gray-900': selectedUser?.isVerified,
-                  })}
-                >
-                  {formatText(userName || '')}
-                </p>
-                {selectedUser?.isVerified && (
-                  <CircleWavyCheck
-                    size={14}
-                    className="ml-1 flex-shrink-0 text-blue-400"
-                  />
-                )}
-              </>
-            ) : (
-              <div className="flex items-center gap-1 text-negative-400">
-                <WarningCircle size={16} />
-                <span className="text-md">
-                  {formatText({
-                    id: 'actionSidebar.addressError',
-                  })}
-                </span>
-              </div>
-            )}
-          </>
+          <AvatarWithAddress
+            userName={
+              selectedUser?.profile?.displayName?.toString() ?? undefined
+            }
+            address={userWalletAddress}
+            userAvatarSrc={selectedUser?.profile?.avatar ?? undefined}
+            size={20}
+            isVerified={selectedUser?.isVerified}
+            title={formatText(userName || '')}
+          />
         ) : (
           formatText({ id: 'actionSidebar.selectMember' })
         )}

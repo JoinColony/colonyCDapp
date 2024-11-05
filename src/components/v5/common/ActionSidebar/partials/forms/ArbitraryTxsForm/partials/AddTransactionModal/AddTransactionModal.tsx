@@ -1,6 +1,5 @@
 import { CodeBlock } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
-import { defineMessages } from 'react-intl';
 
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,64 +13,7 @@ import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.ts
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
-const displayName =
-  'v5.common.ActionSidebar.partials.ArbitraryTxsForm.partials.AddTransactionModal';
-
-const MSG = defineMessages({
-  title: {
-    id: `${displayName}.title`,
-    defaultMessage: 'Contract interaction',
-  },
-  description: {
-    id: `${displayName}.description`,
-    defaultMessage:
-      'Provide the contract address you want to interact with it. We will try to generate the ABI if found, otherwise, you can enter it in manually. Then select the action you want to take.',
-  },
-  link: {
-    id: `${displayName}.link`,
-    defaultMessage: 'Learn more about contract interactions',
-  },
-  contractAddressField: {
-    id: `${displayName}.contractAddressField`,
-    defaultMessage: 'Target contract address',
-  },
-  contractAddressPlaceholder: {
-    id: `${displayName}.contractAddressPlaceholder`,
-    defaultMessage: 'Enter contract address',
-  },
-  abiJsonField: {
-    id: `${displayName}.abiJsonField`,
-    defaultMessage: 'ABI/JSON',
-  },
-  methodField: {
-    id: `${displayName}.methodField`,
-    defaultMessage: 'Select a method to interact with',
-  },
-  methodPlaceholder: {
-    id: `${displayName}.methodPlaceholder`,
-    defaultMessage: 'Select method',
-  },
-  toField: {
-    id: `${displayName}.toField`,
-    defaultMessage: '_to (address)',
-  },
-  toPlaceholder: {
-    id: `${displayName}.toPlaceholder`,
-    defaultMessage: 'Enter value',
-  },
-  amountField: {
-    id: `${displayName}.amountField`,
-    defaultMessage: '_amount (uint256)',
-  },
-  amountPlaceholder: {
-    id: `${displayName}.amountPlaceholder`,
-    defaultMessage: 'Enter value',
-  },
-  submitButton: {
-    id: `${displayName}.submitButton`,
-    defaultMessage: 'Confirm',
-  },
-});
+import { displayName, MSG } from './translation.ts';
 
 const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
   onSubmit,
@@ -79,6 +21,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
 }) => {
   const { onClose } = rest;
 
+  // @TODO: it will be dynamic and will be updated in the next iteration
   const methodOptions = [
     {
       value: 'mint',
