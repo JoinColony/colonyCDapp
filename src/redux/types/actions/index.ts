@@ -1,5 +1,6 @@
 import { type NavigateFunction } from 'react-router-dom';
 
+import { type ArbitraryActionTypes } from './arbitrary.ts';
 import { type ColonyActionTypes } from './colony.ts';
 import { type ColonyActionsActionTypes } from './colonyActions.ts';
 import { type DecisionActionTypes } from './decisions.ts';
@@ -108,7 +109,8 @@ export type AllActions =
   | MetacolonyVestingTypes
   | WalletActionTypes
   | DecisionActionTypes
-  | ExpendituresActionTypes;
+  | ExpendituresActionTypes
+  | ArbitraryActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,
