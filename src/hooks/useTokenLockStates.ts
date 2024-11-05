@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetColonyTokenLockedStateLazyQuery } from '~gql';
@@ -10,7 +10,7 @@ const useTokenLockStates = (): Record<string, boolean> => {
   const [getColonyTokenLockedState] = useGetColonyTokenLockedStateLazyQuery();
   const [tokenLockStatesMap, setTokenLockStatesMap] = useState({});
 
-  const fetchTokenStates = useCallback(async () => {
+  const fetchTokenStates = async () => {
     if (!tokens) {
       return;
     }
@@ -39,11 +39,11 @@ const useTokenLockStates = (): Record<string, boolean> => {
     });
 
     setTokenLockStatesMap(newTokenLockStatesMap);
-  }, [getColonyTokenLockedState, tokens]);
+  };
 
   useEffect(() => {
     fetchTokenStates();
-  }, [fetchTokenStates]);
+  }, []);
 
   return tokenLockStatesMap;
 };
