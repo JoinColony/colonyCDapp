@@ -1,211 +1,246 @@
-import { Layout, UserCircle } from '@phosphor-icons/react';
-import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { Keyhole, Plus } from '@phosphor-icons/react';
+import clsx from 'clsx';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { Link } from 'react-router-dom';
 
-import InvitationBlock from '~common/InvitationBlock/index.ts';
-import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useBreadcrumbsContext } from '~context/BreadcrumbsContext/BreadcrumbsContext.ts';
-import { MainLayout } from '~frame/Extensions/layouts/index.ts';
+import { REQUEST_ACCESS } from '~constants';
+import { LandingPageLayout } from '~frame/Extensions/layouts/LandingPageLayout.tsx';
 import LoadingTemplate from '~frame/LoadingTemplate/index.ts';
-import ColonyIcon from '~icons/ColonyIcon.tsx';
-import CreateAColonyBanner from '~images/assets/landing/create-colony-banner.png';
-import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
-import {
-  CREATE_COLONY_ROUTE_BASE,
-  CREATE_PROFILE_ROUTE,
-  METACOLONY_HOME_ROUTE,
-  USER_EDIT_PROFILE_ROUTE,
-  USER_HOME_ROUTE,
-} from '~routes/index.ts';
-import Heading from '~shared/Heading/index.ts';
+import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import { BasicPageSidebar } from '~v5/shared/Navigation/Sidebar/sidebars/BasicPageSidebar.tsx';
 
-import LandingPageItem from './LandingPageItem.tsx';
+import ColonyCard from './ColonyCards/ColonyCard.tsx';
+import CreateNewColonyCard from './ColonyCards/CreateNewColonyCard.tsx';
+import ColonyInvitationBanner from './ColonyInvitationBanner.tsx';
+import { useLandingPage } from './hooks.ts';
+import InfoBanner from './InfoBanner/InfoBanner.tsx';
+import LandingPageLoadingSkeleton from './LandingPageLoadingSkeleton.tsx';
 
 const displayName = 'frame.LandingPage';
 
 const MSG = defineMessages({
-  privateBetaLabel: {
-    id: `${displayName}.privateBetaLabel`,
-    defaultMessage: 'Private Beta',
-  },
-  headerDescription: {
-    id: `${displayName}.headerDescription`,
-    defaultMessage:
-      'The best way to build your online organization. Create a new colony, create a profile so you can contribute to other colonies or start with exploring the Metacolony.',
-  },
   createColonyTitle: {
     id: `${displayName}.createColonyTitle`,
-    defaultMessage: 'Create a Colony',
+    defaultMessage: 'Create a colony or share and invite others',
   },
   createColonyDescription: {
     id: `${displayName}.createColonyDescription`,
     defaultMessage:
-      'Assemble your team, distribute authority, manage the money.',
+      'As a part of the early access, creating a colony is limited to invites only. You can use the invites yourself or share with others.',
   },
-  createColonyButtonText: {
-    id: `${displayName}.createColonyButtonText`,
-    defaultMessage: 'Get Started',
+  displayColoniesTitle: {
+    id: `${displayName}.displayColoniesTitle`,
+    defaultMessage: 'Explore your colonies',
   },
-  createUserProfileTitle: {
-    id: `${displayName}.createUserProfile`,
-    defaultMessage: 'Create a profile',
+  displayColoniesDescription: {
+    id: `${displayName}.displayColoniesDescription`,
+    defaultMessage: 'View and navigate to your existing colonies.',
   },
-  createUserProfileButtonText: {
-    id: `${displayName}.createUserProfileButtonText`,
-    defaultMessage: 'Create',
+  coloniesCardsTitle: {
+    id: `${displayName}.coloniesCardsTitle`,
+    defaultMessage: 'YOUR COLONIES',
   },
-  viewUserProfileTitle: {
-    id: `${displayName}.viewUserProfile`,
-    defaultMessage: 'View profile',
+  connectWalletTitle: {
+    id: `${displayName}.connectWalletTitle`,
+    defaultMessage: 'Get started',
   },
-  viewUserProfileDescription: {
-    id: `${displayName}.viewUserProfileDescription`,
+  connectWalletDescription: {
+    id: `${displayName}.connectWalletDescription`,
     defaultMessage:
-      'Define your identity, track your contributions, build your reputation.',
+      'Connect your wallet to sign in and check your access or return to your existing colonies.',
   },
-  viewUserProfileButtonText: {
-    id: `${displayName}.viewUserProfileButtonText`,
-    defaultMessage: 'View',
+  connectWalletButton: {
+    id: `${displayName}.connectWalletButton`,
+    defaultMessage: 'Connect wallet',
   },
-  exploreMetacolonyTitle: {
-    id: `${displayName}.exploreMetacolony`,
-    defaultMessage: 'Explore the Metacolony',
+  createColonyButton: {
+    id: `${displayName}.createColonyButton`,
+    defaultMessage: 'Create new Colony',
   },
-  exploreMetacolonyDescription: {
-    id: `${displayName}.exploreMetacolonyDescription`,
-    defaultMessage: 'The Colony using Colony to build Colony.',
+  requestAccessButton: {
+    id: `${displayName}.requestAccessButton`,
+    defaultMessage: 'Request additional colonies',
   },
-  exploreMetacolonyButtonText: {
-    id: `${displayName}.exploreMetacolonyButtonText`,
-    defaultMessage: 'Explore',
+  noAccessTitle: {
+    id: `${displayName}.noAccessTitle`,
+    defaultMessage: 'Welcome to Colony',
   },
-  inviteBlockTitle: {
-    id: `${displayName}.inviteBlockTitle`,
-    defaultMessage: 'Invite 1 person to create a Colony',
-  },
-  inviteBlockDescription: {
-    id: `${displayName}.inviteBlockDescription`,
+  noAccessDescription: {
+    id: `${displayName}.noAccessDescription`,
     defaultMessage:
-      'You can invite only one member to create a colony of their own using the new app during the private beta with this custom invite link: app.colony.io/createcolony/{invitationCode}',
+      'Tools to manage shared funds easily, openly, and securely.',
+  },
+  noAccessInfo: {
+    id: `${displayName}.noAccessInfo`,
+    defaultMessage:
+      'Colony is currently in limited early access. Request access to get on the list and be among the first to try out the new platform.',
+  },
+  noAccessButton: {
+    id: `${displayName}.noAccessButton`,
+    defaultMessage: 'Request access',
   },
 });
 
-const landingImagesSrc = [CreateAColonyBanner, CreateAProfileBanner];
-
 const LandingPage = () => {
-  const [, /* hoveredItemIndex */ setHoveredItemIndex] = useState<number>(1);
-  const navigate = useNavigate();
-  const { user, connectWallet, wallet, walletConnecting, userLoading } =
-    useAppContext();
-  const { setShouldShowBreadcrumbs } = useBreadcrumbsContext();
+  const {
+    availableColonies,
+    canInteract,
+    connectWallet,
+    inviteLink,
+    isLoading,
+    isCardsLoading,
+    onCreateColony,
+    remainingInvitations,
+    wallet,
+    hasShareableInvitationCode,
+    hasWalletConnected,
+  } = useLandingPage();
 
-  useEffect(() => {
-    setShouldShowBreadcrumbs(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (userLoading || walletConnecting) {
+  if (isLoading) {
     return <LoadingTemplate />;
   }
-  const hasShareableInvitationCode =
-    !!user?.privateBetaInviteCode?.shareableInvites;
 
   return (
-    <MainLayout sidebar={<BasicPageSidebar />}>
-      <div className="w-full">
-        <div className="mb-8">
-          <div className="mb-4 flex items-center">
-            <Heading
-              text={{ id: 'colonyWelcome' }}
-              className="text-3xl font-semibold text-gray-900"
-            />
-            <span className="ml-3 hidden rounded-3xl bg-blue-100 px-3 py-1 text-sm font-medium text-blue-400 sm:inline">
-              <FormattedMessage {...MSG.privateBetaLabel} />
-            </span>
-          </div>
-          <p className="text-md text-gray-600">
-            <FormattedMessage {...MSG.headerDescription} />
-          </p>
-        </div>
-        <div className="flex w-full justify-center gap-4">
-          <div className="flex w-full flex-col justify-between gap-6 sm:w-1/2 sm:gap-4">
-            <LandingPageItem
-              headingText={MSG.createColonyTitle}
-              headingDescription={MSG.createColonyDescription}
-              icon={Layout}
-              onMouseEnter={() => setHoveredItemIndex(0)}
-              onMouseLeave={() => setHoveredItemIndex(0)}
-              disabled
-            >
-              <Button
-                text={MSG.createColonyButtonText}
-                size="small"
-                mode="quinary"
-                isFullSize
-                onClick={() => navigate(CREATE_COLONY_ROUTE_BASE)}
-                disabled
+    <LandingPageLayout
+      rightComponent={
+        canInteract ? (
+          <div className="px-6 pt-8">
+            <div className="hidden max-w-[31.25rem] md:block">
+              <h1 className="pb-2 heading-2">
+                {formatText(MSG.createColonyTitle)}
+              </h1>
+              <p className="pb-14 text-md font-normal text-gray-600">
+                {formatText(MSG.createColonyDescription)}
+              </p>
+            </div>
+            <div>
+              <h1 className="pb-2 heading-2 md:hidden">
+                {formatText(MSG.displayColoniesTitle)}
+              </h1>
+              <p className="pb-14 text-md font-normal text-gray-600 md:hidden">
+                {formatText(MSG.displayColoniesDescription)}
+              </p>
+            </div>
+            <div className="w-[calc(100vw-48px)] md:w-full">
+              <ColonyInvitationBanner
+                coloniesRemaining={remainingInvitations}
+                inviteLink={inviteLink}
               />
-            </LandingPageItem>
-            <LandingPageItem
-              headingText={
-                user ? MSG.viewUserProfileTitle : MSG.createUserProfileTitle
-              }
-              headingDescription={MSG.viewUserProfileDescription}
-              icon={UserCircle}
-              onMouseEnter={() => setHoveredItemIndex(1)}
-              onMouseLeave={() => setHoveredItemIndex(0)}
-            >
-              <Button
-                text={
-                  user
-                    ? MSG.viewUserProfileButtonText
-                    : MSG.createUserProfileButtonText
-                }
-                size="small"
-                mode="quinary"
-                isFullSize
-                onClick={
-                  !wallet
-                    ? () => connectWallet()
-                    : () =>
-                        navigate(
-                          user
-                            ? `${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`
-                            : `${CREATE_PROFILE_ROUTE}`,
+            </div>
+          </div>
+        ) : undefined
+      }
+    >
+      {isCardsLoading ? (
+        <LandingPageLoadingSkeleton loadingCards={hasWalletConnected} />
+      ) : (
+        <div
+          className={clsx('flex px-6 pb-8 md:px-0', {
+            'h-full md:items-center md:pb-24': !canInteract,
+            'h-full md:h-full md:items-end md:pb-[3.125rem]': canInteract,
+          })}
+        >
+          {!wallet ? (
+            <div className="flex flex-col justify-between">
+              <div>
+                <h1 className="pb-2 heading-2">
+                  {formatText(MSG.connectWalletTitle)}
+                </h1>
+                <p className="text-md font-normal text-gray-600">
+                  {formatText(MSG.connectWalletDescription)}
+                </p>
+              </div>
+              <Button isFullSize className="mt-8" onClick={connectWallet}>
+                {formatText(MSG.connectWalletButton)}
+              </Button>
+            </div>
+          ) : (
+            <>
+              {canInteract ? (
+                <div className="w-full pt-8 md:pt-0">
+                  <div className="flex h-full flex-col">
+                    <h1 className="hidden pb-2 heading-2 md:block">
+                      {formatText(MSG.displayColoniesTitle)}
+                    </h1>
+                    <p className="hidden text-md font-normal text-gray-600 md:block">
+                      {formatText(MSG.displayColoniesDescription)}
+                    </p>
+                    <p className="pb-3 pt-[1.625rem] text-sm font-medium text-gray-400">
+                      {formatText(MSG.coloniesCardsTitle)}
+                    </p>
+                    <div className="flex h-full flex-col gap-3 overflow-y-auto md:h-[28.125rem]">
+                      {availableColonies.length ? (
+                        availableColonies.map(
+                          ({
+                            address,
+                            avatar,
+                            membersCount,
+                            name,
+                            displayName: colonyName,
+                          }) => (
+                            <Link to={`/${name}`}>
+                              <ColonyCard
+                                colonyAddress={address}
+                                colonyAvatar={avatar}
+                                colonyName={colonyName ?? ''}
+                                membersCount={membersCount ?? 0}
+                              />
+                            </Link>
+                          ),
                         )
-                }
-              />
-            </LandingPageItem>
-            <LandingPageItem
-              headingText={MSG.exploreMetacolonyTitle}
-              headingDescription={MSG.exploreMetacolonyDescription}
-              icon={ColonyIcon}
-              onMouseEnter={() => setHoveredItemIndex(0)}
-              onMouseLeave={() => setHoveredItemIndex(0)}
-              disabled
-            >
-              <Button
-                text={MSG.exploreMetacolonyButtonText}
-                size="small"
-                mode="quinary"
-                isFullSize
-                onClick={() => navigate(METACOLONY_HOME_ROUTE)}
-                disabled
-              />
-            </LandingPageItem>
-          </div>
-          <img
-            src={landingImagesSrc[1]} // @TODO: Change to hoveredItem once we enable the create colony landing page item
-            alt=""
-            className="hidden w-1/2 rounded-lg border border-gray-200 object-cover shadow-sm sm:block"
-          />
+                      ) : (
+                        <CreateNewColonyCard
+                          invitationsRemaining={remainingInvitations}
+                          onCreate={onCreateColony}
+                        />
+                      )}
+                    </div>
+                    {hasShareableInvitationCode ? (
+                      <Button
+                        icon={Plus}
+                        isFullSize
+                        className="mt-[1.875rem]"
+                        onClick={onCreateColony}
+                      >
+                        {formatText(MSG.createColonyButton)}
+                      </Button>
+                    ) : (
+                      <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+                        <Button isFullSize className="mt-[1.875rem]">
+                          {formatText(MSG.requestAccessButton)}
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <h1 className="pb-2 heading-2">
+                      {formatText(MSG.noAccessTitle)}
+                    </h1>
+                    <p className="pb-8 text-md font-normal text-gray-600">
+                      {formatText(MSG.noAccessDescription)}
+                    </p>
+                    <InfoBanner
+                      icon={Keyhole}
+                      title="Request early access"
+                      text={formatText(MSG.noAccessInfo)}
+                    />
+                  </div>
+                  <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+                    <Button isFullSize className="mt-8">
+                      {formatText(MSG.noAccessButton)}
+                    </Button>
+                  </a>
+                </div>
+              )}
+            </>
+          )}
         </div>
-        {hasShareableInvitationCode && <InvitationBlock />}
-      </div>
-    </MainLayout>
+      )}
+    </LandingPageLayout>
   );
 };
 
