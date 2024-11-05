@@ -46,8 +46,8 @@ const LegendItem: FC<LegendItemProps> = ({
         <span
           className={clsx('text-xs font-normal text-gray-500', {
             'text-gray-900': isLegendItemActive,
-            // @TODO here we'll need to add if the search param exists once another PR gets merged
-            'cursor-pointer hover:text-gray-900': !!value,
+            'hover:text-gray-900': !!value,
+            'cursor-pointer': !!searchParam,
           })}
         >
           {isTruncated

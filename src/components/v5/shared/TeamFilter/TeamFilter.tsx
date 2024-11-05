@@ -20,7 +20,7 @@ const TeamFilter = () => {
   // but only on the pages where we actually use this component
   useEffect(() => {
     if (filteredTeam && !searchParams.get(TEAM_SEARCH_PARAM)) {
-      updateTeamFilter(filteredTeam);
+      updateTeamFilter(filteredTeam, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
