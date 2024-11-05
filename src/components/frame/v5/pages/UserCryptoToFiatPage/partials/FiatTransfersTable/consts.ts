@@ -29,11 +29,11 @@ export const STATUS_MSGS = defineMessages({
   },
   [FiatTransferState.PaymentSubmitted]: {
     id: `${displayName}.paymentSubmitted`,
-    defaultMessage: 'Payment submitted',
+    defaultMessage: 'Submitted',
   },
   [FiatTransferState.PaymentProcessed]: {
     id: `${displayName}.paymentProcessed`,
-    defaultMessage: 'Payment processed',
+    defaultMessage: 'Processed',
   },
   [FiatTransferState.Canceled]: {
     id: `${displayName}.canceled`,

@@ -252,7 +252,7 @@ const Table = <T,>({
                         key={header.id}
                         className={clsx(
                           header.column.columnDef.headCellClassName,
-                          'border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
+                          'group border-b border-b-gray-200 bg-gray-50 px-[1.125rem] py-2.5 text-left text-sm font-normal text-gray-600 first:rounded-tl-lg last:rounded-tr-lg empty:p-0',
                           {
                             'cursor-pointer':
                               header.column.getCanSort() &&
@@ -290,7 +290,7 @@ const Table = <T,>({
                                 'rotate-0':
                                   header.column.getIsSorted() === 'desc' &&
                                   !shouldShowEmptyContent,
-                                hidden:
+                                'opacity-0 group-hover:opacity-100':
                                   header.column.getIsSorted() === false ||
                                   shouldShowEmptyContent,
                               },
@@ -345,7 +345,7 @@ const Table = <T,>({
                         {row.getVisibleCells().map((cell, index) => {
                           const renderCellWrapperCommonArgs = [
                             clsx(
-                              'flex h-full flex-col items-start justify-center p-[1.1rem] text-md',
+                              'flex h-full flex-col items-start justify-center p-4 text-md',
                               {
                                 'text-gray-500': !isDisabled,
                                 'text-gray-300': isDisabled,

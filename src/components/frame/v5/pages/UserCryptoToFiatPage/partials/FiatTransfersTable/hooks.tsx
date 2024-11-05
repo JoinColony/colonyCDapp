@@ -1,4 +1,4 @@
-import { ArrowSquareOut } from '@phosphor-icons/react';
+import { ArrowSquareOut, CaretDown } from '@phosphor-icons/react';
 import {
   type ColumnDef,
   createColumnHelper,
@@ -61,9 +61,6 @@ export const useFiatTransfersTableColumns = (
     return [
       columnHelper.accessor('amount', {
         header: () => formatText({ id: 'table.row.amount' }),
-        headCellClassName: clsx({
-          'pl-0 pr-2': isMobile,
-        }),
         cell: ({ row }) => {
           if (loading) {
             return <div className="h-4 w-20 skeleton" />;
@@ -87,7 +84,7 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('createdAt', {
         header: () => formatText({ id: 'table.row.date' }),
         headCellClassName: isMobile ? 'pr-2' : undefined,
-        staticSize: '180px',
+        staticSize: '150px',
         cell: ({ row }) => {
           if (loading) {
             return <div className="h-4 w-20 skeleton" />;
@@ -98,18 +95,21 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('state', {
         header: () => formatText({ id: 'table.row.status' }),
         headCellClassName: isMobile ? 'pr-2' : undefined,
-        staticSize: '180px',
-        cell: ({ row }) => {
-          const status = row.original.state as keyof typeof statusPillScheme;
+        staticSize: isMobile ? '145px' : '170px',
+        cell: ({ row: { original, getIsExpanded } }) => {
+          const status = original.state as keyof typeof statusPillScheme;
           const statusScheme =
             statusPillScheme[status] || statusPillScheme.default;
           if (loading) {
             return <div className="h-4 w-12 skeleton" />;
           }
-          return (
+          return getIsExpanded() ? undefined : (
             <PillsBase
               isCapitalized={false}
-              className={clsx(statusScheme.bgClassName, 'text-sm font-medium')}
+              className={clsx(
+                statusScheme.bgClassName,
+                'truncate text-sm font-medium',
+              )}
             >
               <span className={statusScheme.textClassName}>
                 {formatText(STATUS_MSGS[status as keyof typeof STATUS_MSGS])}
@@ -128,7 +128,8 @@ export const useFiatTransfersTableColumns = (
       columnHelper.accessor('receipt', {
         header: () => formatText({ id: 'table.row.receipt' }),
         headCellClassName: isMobile ? 'pr-2 pl-0' : undefined,
-        staticSize: '180px',
+        enableSorting: false,
+        staticSize: '165px',
         cell: ({ row }) => {
           if (loading) {
             return <div className="h-4 w-12 skeleton" />;
@@ -146,13 +147,32 @@ export const useFiatTransfersTableColumns = (
             <ExternalLink
               href={row.original.receipt.url}
               key={row.original.receipt.url}
-              className="flex items-center gap-2 text-md text-gray-700 underline transition-colors hover:text-blue-400"
+              className="flex items-center gap-2 text-sm text-gray-700 underline transition-colors hover:text-blue-400"
             >
               <ArrowSquareOut size={18} />
               {formatText({ id: 'table.content.viewReceipt' })}
             </ExternalLink>
           );
         },
+      }),
+      columnHelper.display({
+        id: 'expander',
+        staticSize: '2.25rem',
+        header: () => null,
+        enableSorting: false,
+        cell: ({ row: { getIsExpanded, toggleExpanded } }) => {
+          return (
+            <button type="button" onClick={() => toggleExpanded()}>
+              <CaretDown
+                size={18}
+                className={clsx('transition', {
+                  'rotate-180': getIsExpanded(),
+                })}
+              />
+            </button>
+          );
+        },
+        cellContentWrapperClassName: 'pl-0',
       }),
     ];
   }, [isMobile, columnHelper, loading]);

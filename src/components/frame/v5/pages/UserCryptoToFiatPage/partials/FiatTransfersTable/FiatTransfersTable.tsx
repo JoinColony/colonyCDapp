@@ -7,11 +7,13 @@ import {
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { useMobile } from '~hooks/index.ts';
 import { type BridgeDrain } from '~types/graphql.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
+import FiatTransferDescription from './FiatTransferDescription.tsx';
 import {
   useFiatTransfersData,
   useFiatTransfersTableColumns,
@@ -40,6 +42,8 @@ const FiatTransfersTable = () => {
   const [sorting, setSorting] = useState<SortingState>([
     { desc: true, id: 'createdAt' },
   ]);
+
+  const isMobile = useMobile();
   const { sortedData, loading } = useFiatTransfersData(sorting);
 
   const columns = useFiatTransfersTableColumns(loading);
@@ -50,14 +54,28 @@ const FiatTransfersTable = () => {
       <Table<BridgeDrain>
         columns={columns}
         data={loading ? Array(3).fill({}) : sortedData}
-        state={{ sorting }}
+        state={{
+          columnVisibility: isMobile
+            ? {
+                createdAt: false,
+                receipt: false,
+              }
+            : {
+                expander: false,
+              },
+          sorting,
+        }}
         getRowId={(row) => row.id}
         initialState={{ pagination: { pageSize: 10 } }}
         showPageNumber={sortedData.length >= 10}
         onSortingChange={setSorting}
         getSortedRowModel={getSortedRowModel()}
         getPaginationRowModel={getPaginationRowModel()}
-        className="[&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600"
+        getRowCanExpand={() => isMobile}
+        renderSubComponent={({ row }) => (
+          <FiatTransferDescription actionRow={row} loading={loading} />
+        )}
+        className="pb-8 pt-1.5 [&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600 [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
         emptyContent={
           !sortedData.length &&
           !loading && (
