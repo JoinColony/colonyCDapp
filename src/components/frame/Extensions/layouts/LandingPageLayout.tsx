@@ -16,7 +16,7 @@ export const LandingPageLayout = ({
 }: LandingPageLayoutProps) => {
   return (
     <div className="flex h-screen w-screen flex-col md:py-4 md:pl-4">
-      <div className="flex h-[calc(100vh-var(--top-content-height))] flex-row">
+      <div className="flex flex-row md:h-[calc(100vh-var(--top-content-height))]">
         <section>
           <BasicPageSidebar />
         </section>
@@ -28,7 +28,7 @@ export const LandingPageLayout = ({
             <PageHeader userNavigation={<UserNavigationWrapper />} />
           </div>
           <div className="md: flex h-full w-full flex-col-reverse bg-gray-50 md:flex-row md:bg-transparent">
-            <div className="flex w-full flex-1 justify-end">
+            <div className="flex h-full w-full flex-1 justify-center md:justify-end">
               <div className="flex w-full max-w-[39.375rem] justify-center">
                 <div className="w-full max-w-[28.125rem]">{children}</div>
               </div>
