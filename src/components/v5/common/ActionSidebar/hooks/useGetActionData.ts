@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import { useMemo } from 'react';
 
+import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
@@ -14,6 +15,7 @@ import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import {
+  getNumeralTokenAmount,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -27,6 +29,7 @@ import {
   TOKEN_FIELD_NAME,
 } from '../consts.ts';
 import { AVAILABLE_PERMISSIONS } from '../partials/forms/ManagePermissionsForm/consts.ts';
+import { ModificationOption } from '../partials/forms/ManageReputationForm/consts.ts';
 import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 import useGetColonyAction from './useGetColonyAction.ts';
@@ -42,6 +45,7 @@ const useGetActionData = (transactionId: string | undefined) => {
     startPollingForAction,
     stopPollingForAction,
   } = useGetColonyAction(transactionId);
+
   const { expenditure, loadingExpenditure } = useGetExpenditureData(
     action?.expenditureId,
   );
@@ -343,6 +347,38 @@ const useGetActionData = (transactionId: string | undefined) => {
                   {},
                 )
               : undefined,
+          ...repeatableFields,
+        };
+      }
+      case ColonyActionType.EmitDomainReputationReward:
+      case ColonyActionType.EmitDomainReputationRewardMotion:
+      case ColonyActionType.EmitDomainReputationRewardMultisig:
+      case ColonyActionType.EmitDomainReputationPenalty:
+      case ColonyActionType.EmitDomainReputationPenaltyMotion:
+      case ColonyActionType.EmitDomainReputationPenaltyMultisig: {
+        const isSmite = [
+          ColonyActionType.EmitDomainReputationPenalty,
+          ColonyActionType.EmitDomainReputationPenaltyMotion,
+          ColonyActionType.EmitDomainReputationPenaltyMultisig,
+        ].includes(action.type);
+
+        const positiveAmountValue = BigNumber.from(amount || '0')
+          .abs()
+          .toString();
+
+        const formattedAmount = getNumeralTokenAmount(
+          positiveAmountValue,
+          DEFAULT_TOKEN_DECIMALS,
+        );
+
+        return {
+          [ACTION_TYPE_FIELD_NAME]: Action.ManageReputation,
+          member: recipientAddress,
+          modification: isSmite
+            ? ModificationOption.RemoveReputation
+            : ModificationOption.AwardReputation,
+          [TEAM_FIELD_NAME]: fromDomain?.nativeId,
+          [AMOUNT_FIELD_NAME]: formattedAmount,
           ...repeatableFields,
         };
       }
