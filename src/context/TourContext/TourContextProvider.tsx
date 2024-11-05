@@ -37,6 +37,7 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
       };
     });
 
+    window.dispatchEvent(new Event('closeModals'));
     setSteps(stepsWithData);
     setStepIndex(0);
     setRun(true);

@@ -5,13 +5,13 @@ import { TourTriggerIdentifier } from '~constants/tourTriggers.ts';
 import CreateAProfileBanner from '~images/assets/landing/create-profile-banner.png';
 import { formatText } from '~utils/intl.ts';
 
-import { ActionTourTargets } from '../enums.ts';
+import { TourTargets } from '../enums.ts';
 
 import messages from './messages.tsx';
 
 export const CreateActionTourSteps: Step[] = [
   {
-    target: ActionTourTargets.NoTarget,
+    target: TourTargets.NoTarget,
     placement: 'center',
     disableBeacon: true,
     disableOverlay: false,
@@ -21,98 +21,98 @@ export const CreateActionTourSteps: Step[] = [
       image: CreateAProfileBanner,
       triggerIdentifier: TourTriggerIdentifier.openActionSidebar,
       nextButtonText: formatText({
-        id: 'createAction.TakeATour',
+        id: 'createActionTour.TakeATour',
         defaultMessage: 'Take a quick tour',
       }),
       skipButtonText: formatText({
-        id: 'createAction.skipForNow',
+        id: 'createActionTour.skipForNow',
         defaultMessage: 'Skip for now',
       }),
     },
     title: formatText({
-      id: 'createAction.introTitle',
+      id: 'createActionTour.introTitle',
       defaultMessage: messages.introTitle,
     }),
     content: formatText({
-      id: 'createAction.introDesc',
+      id: 'createActionTour.introDesc',
       defaultMessage: messages.introDesc,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ActionsPanel}"]`,
+    target: `[data-tour="${TourTargets.ActionsPanel}"]`,
     placement: 'left',
     content: formatText({
-      id: 'createAction.creatingActions',
+      id: 'createActionTour.creatingActions',
       defaultMessage: messages.creatingActions,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.EnterTitleField}"]`,
+    target: `[data-tour="${TourTargets.EnterTitleField}"]`,
     content: formatText({
-      id: 'createAction.enterTitle',
+      id: 'createActionTour.enterTitle',
       defaultMessage: messages.enterTitle,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ChooseActionButton}"]`,
+    target: `[data-tour="${TourTargets.ChooseActionButton}"]`,
     content: formatText({
-      id: 'createAction.chooseAction',
+      id: 'createActionTour.chooseAction',
       defaultMessage: messages.chooseAction,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.SelectActionButton}"]`,
+    target: `[data-tour="${TourTargets.SelectActionButton}"]`,
     content: formatText({
-      id: 'createAction.selectAction',
+      id: 'createActionTour.selectAction',
       defaultMessage: messages.selectAction,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.CreateSimplePayment}"]`,
+    target: `[data-tour="${TourTargets.CreateSimplePayment}"]`,
     content: formatText({
-      id: 'createAction.createSimplePayment',
+      id: 'createActionTour.createSimplePayment',
       defaultMessage: messages.createSimplePayment,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ActionOverviewSection}"]`,
+    target: `[data-tour="${TourTargets.ActionOverviewSection}"]`,
     content: formatText({
-      id: 'createAction.actionOverview',
+      id: 'createActionTour.actionOverview',
       defaultMessage: messages.actionOverview,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.CompleteDetailsSection}"]`,
+    target: `[data-tour="${TourTargets.CompleteDetailsSection}"]`,
     content: formatText({
-      id: 'createAction.completeDetails',
+      id: 'createActionTour.completeDetails',
       defaultMessage: messages.completeDetails,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.DecisionMethodField}"]`,
+    target: `[data-tour="${TourTargets.DecisionMethodField}"]`,
     content: formatText({
-      id: 'createAction.decisionMethod',
+      id: 'createActionTour.decisionMethod',
       defaultMessage: messages.decisionMethod,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ActionDescriptionField}"]`,
+    target: `[data-tour="${TourTargets.ActionDescriptionField}"]`,
     content: formatText({
-      id: 'createAction.actionDescription',
+      id: 'createActionTour.actionDescription',
       defaultMessage: messages.actionDescription,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.CancelActionButton}"]`,
+    target: `[data-tour="${TourTargets.CancelActionButton}"]`,
     content: formatText({
-      id: 'createAction.cancelAction',
+      id: 'createActionTour.cancelAction',
       defaultMessage: messages.cancelAction,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.CreateActionButton}"]`,
+    target: `[data-tour="${TourTargets.CreateActionButton}"]`,
     content: formatText({
-      id: 'createAction.createAction',
+      id: 'createActionTour.createActionTour',
       defaultMessage: messages.createAction,
     }),
   },

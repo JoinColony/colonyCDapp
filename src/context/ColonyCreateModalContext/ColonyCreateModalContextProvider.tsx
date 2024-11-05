@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { ColonyCreatedModalContext } from './ColonyCreatedModalContext.ts';
 
@@ -10,9 +10,19 @@ const ColonyCreatedModalContextProvider = ({
   const [isColonyCreatedModalOpen, setIsColonyCreatedModalOpen] =
     useState<boolean>(false);
 
+  useEffect(() => {
+    const handleCloseModals = () => {
+      setIsColonyCreatedModalOpen(false);
+    };
+
+    window.addEventListener('closeModals', handleCloseModals);
+
+    return () => window.removeEventListener('closeModals', handleCloseModals);
+  }, []);
+
   const value = useMemo(
     () => ({ isColonyCreatedModalOpen, setIsColonyCreatedModalOpen }),
-    [isColonyCreatedModalOpen, setIsColonyCreatedModalOpen],
+    [isColonyCreatedModalOpen],
   );
 
   return (

@@ -1,6 +1,11 @@
-export enum ActionTourTargets {
+export enum TourTargets {
   // General
   NoTarget = 'body',
+  MainMenu = 'mainMenu',
+  ActionsMenu = 'actionsMenu',
+  UserMenu = 'userMenu',
+  Breadcrumbs = 'breadcrumbs',
+  HelpAndFeedback = 'helpAndFeedback',
 
   // Action Panel
   ActionsPanel = 'actionPanel',
@@ -27,4 +32,14 @@ export enum ActionTourTargets {
   // Create action tour targets
   ActionOverviewSection = 'createActionOverview',
   CompleteDetailsSection = 'createActionCompleteDetails',
+
+  // Dashboard tour targets
+  Dashboard = 'dashboard',
+  DashboardOverviewSection = 'dashboardOverview',
+  DashboardNativeTokenSection = 'dashboardNativeToken',
+  DashboardTeamFilter = 'dashboardTeamFilter',
+  DashboardFundsSection = 'dashboardFunds',
+  DashboardFinancesSection = 'dashboardFinances',
+  DashboardReputationSection = 'dashboardReputation',
+  DashboardActivitySection = 'dashboardActivity',
 }

@@ -1,6 +1,6 @@
 import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 import React, {
   type ChangeEvent,
   type ChangeEventHandler,

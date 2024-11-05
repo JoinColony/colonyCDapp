@@ -1,23 +1,25 @@
 import {
-  Signpost,
-  FilePlus,
-  Bank,
-  HandCoins,
+  // Signpost,
+  // FilePlus,
+  // Bank,
+  // HandCoins,
   Layout,
-  IdentificationBadge,
+  // IdentificationBadge,
+  Binoculars,
 } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
+import { generatePath, useLocation, useNavigate } from 'react-router-dom';
 
-import { CreateActionTourSteps } from '~common/Tours/createAction/steps.ts';
-import { GetStartedTourSteps } from '~common/Tours/getStarted/steps.ts';
-// import { AddingFundsTourSteps } from '~components/common/Tours/tours/addingFunds';
-// import { MakePaymentsTourSteps } from '~components/common/Tours/tours/makePayments';
-// import { UsingTheAppTourSteps } from '~components/common/Tours/tours/usingTheApp';
-// import { UserDashboardTourSteps } from '~components/common/Tours/tours/userDashboard';
+// import { CreateActionTourSteps } from '~common/Tours/createAction/steps.ts';
+// import { GetStartedTourSteps } from '~common/Tours/getStarted/steps.ts';
+import { UsingTheAppTourSteps } from '~common/Tours/usingApp/steps.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTourContext } from '~context/TourContext/TourContext.ts';
 import { useMobile } from '~hooks';
+import { COLONY_HOME_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
+import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 
 import { ICON_SIZE, ICON_SIZE_MOBILE } from '../consts.ts';
 import MenuList from '../MenuList/index.ts';
@@ -36,21 +38,17 @@ const MSG = defineMessages({
     id: `${displayName}.createActions`,
     defaultMessage: 'Create actions',
   },
-  addingFunds: {
-    id: `${displayName}.addingFunds`,
-    defaultMessage: 'Adding funds',
-  },
-  makePayments: {
-    id: `${displayName}.makePayments`,
-    defaultMessage: 'Making payments',
-  },
   usingTheApp: {
     id: `${displayName}.usingTheApp`,
     defaultMessage: 'Using the app',
   },
-  userDashboard: {
-    id: `${displayName}.userDashboard`,
-    defaultMessage: 'User dashboard',
+  noToursAvailable: {
+    id: `${displayName}.noToursAvailable`,
+    defaultMessage: 'No supported tours',
+  },
+  noToursDescription: {
+    id: `${displayName}.noToursDescription`,
+    defaultMessage: 'There are no tours available on this page.',
   },
 });
 
@@ -63,105 +61,89 @@ const Tours: React.FC<ToursProps> = ({ setVisible }) => {
   const iconSize = isMobile ? ICON_SIZE_MOBILE : ICON_SIZE;
 
   const { startTour } = useTourContext();
+  const colonyContext = useColonyContext({ nullableContext: true });
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleStartGettingStartedTour = () => {
-    setVisible(false);
-    startTour(GetStartedTourSteps);
-  };
+  const colonyName = colonyContext?.colony?.name ?? '';
 
-  const handleStartCreateActionTour = () => {
-    setVisible(false);
-    startTour(CreateActionTourSteps);
-  };
+  const isOnDashboardPage =
+    colonyName &&
+    location.pathname === `/${generatePath(COLONY_HOME_ROUTE, { colonyName })}`;
 
-  const handleStartAddingFundsTour = () => {
-    setVisible(false);
-    // startTour(addingFundsTourSteps);
-  };
+  // const handleStartGettingStartedTour = () => {
+  //   setVisible(false);
+  //   startTour(GetStartedTourSteps);
+  // };
 
-  const handleStartMakePaymentsTour = () => {
-    setVisible(false);
-    // startTour(makePaymentsTourSteps);
-  };
+  // const handleStartCreateActionTour = () => {
+  //   setVisible(false);
+  //   startTour(CreateActionTourSteps);
+  // };
 
   const handleStartUsingTheAppTour = () => {
     setVisible(false);
-    // startTour(usingTheAppTourSteps);
+    if (!isOnDashboardPage) {
+      navigate(`/${generatePath(COLONY_HOME_ROUTE, { colonyName })}`);
+    }
+    startTour(UsingTheAppTourSteps);
   };
 
-  const handleStartUserDashboardTour = () => {
-    setVisible(false);
-    // startTour(userDashboardTourSteps);
-  };
+  const tours = [
+    // Disable incomplete tours
+    // {
+    //   label: MSG.gettingStarted,
+    //   icon: Signpost,
+    //   steps: GetStartedTourSteps,
+    //   handler: handleStartGettingStartedTour,
+    //   requiresColonyContext: false,
+    // },
+    // {
+    //   label: MSG.createActions,
+    //   icon: FilePlus,
+    //   steps: CreateActionTourSteps,
+    //   handler: handleStartCreateActionTour,
+    //   requiresColonyContext: true,
+    // },
+    {
+      label: MSG.usingTheApp,
+      icon: Layout,
+      steps: UsingTheAppTourSteps,
+      handler: handleStartUsingTheAppTour,
+      requiresColonyContext: true,
+    },
+  ];
+
+  // Filter tours based on colony context requirement
+  const availableTours = tours.filter((tour) =>
+    tour.requiresColonyContext ? Boolean(colonyContext) : true,
+  );
 
   return (
     <MenuList>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartGettingStartedTour}
-          className={actionItemClass}
-        >
-          <Signpost size={iconSize} />
-          <p className={actionItemLabelClass}>
-            {formatText(MSG.gettingStarted)}
-          </p>
-        </button>
-      </MenuListItem>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartCreateActionTour}
-          className={actionItemClass}
-        >
-          <FilePlus size={iconSize} />
-          <p className={actionItemLabelClass}>
-            {formatText(MSG.createActions)}
-          </p>
-        </button>
-      </MenuListItem>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartAddingFundsTour}
-          className={actionItemClass}
-        >
-          <Bank size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.addingFunds)}</p>
-        </button>
-      </MenuListItem>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartMakePaymentsTour}
-          className={actionItemClass}
-        >
-          <HandCoins size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.makePayments)}</p>
-        </button>
-      </MenuListItem>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartUsingTheAppTour}
-          className={actionItemClass}
-        >
-          <Layout size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.usingTheApp)}</p>
-        </button>
-      </MenuListItem>
-      <MenuListItem>
-        <button
-          type="button"
-          onClick={handleStartUserDashboardTour}
-          className={actionItemClass}
-        >
-          <IdentificationBadge size={iconSize} />
-          <p className={actionItemLabelClass}>
-            {formatText(MSG.userDashboard)}
-          </p>
-        </button>
-      </MenuListItem>
+      {availableTours.length > 0 ? (
+        availableTours.map((tour) => {
+          const IconComponent = tour.icon;
+          return (
+            <MenuListItem key={tour.label.id}>
+              <button
+                type="button"
+                onClick={tour.handler}
+                className={actionItemClass}
+              >
+                <IconComponent size={iconSize} />
+                <p className={actionItemLabelClass}>{formatText(tour.label)}</p>
+              </button>
+            </MenuListItem>
+          );
+        })
+      ) : (
+        <EmptyContent
+          icon={Binoculars}
+          title={formatText(MSG.noToursAvailable)}
+          description={formatText(MSG.noToursDescription)}
+        />
+      )}
     </MenuList>
   );
 };

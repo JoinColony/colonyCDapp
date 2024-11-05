@@ -3,6 +3,7 @@ import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { TourTargets } from '~common/Tours/enums.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
@@ -77,7 +78,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
   };
 
   return (
-    <div className="flex gap-1 md:relative">
+    <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
       {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">

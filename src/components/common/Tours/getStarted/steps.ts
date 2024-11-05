@@ -2,71 +2,71 @@ import { type Step } from 'react-joyride';
 
 import { formatText } from '~utils/intl.ts';
 
-import { ActionTourTargets } from '../enums.ts';
+import { TourTargets } from '../enums.ts';
 
 import messages from './messages.tsx';
 
 export const GetStartedTourSteps: Step[] = [
   {
-    target: `[data-tour="${ActionTourTargets.WelcomeButton}"]`,
+    target: `[data-tour="${TourTargets.WelcomeButton}"]`,
     content: formatText({
-      id: 'getStarted.welcome',
+      id: 'getStartedTour.welcome',
       defaultMessage: messages.welcome,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.EnterTitleField}"]`,
+    target: `[data-tour="${TourTargets.EnterTitleField}"]`,
     content: formatText({
-      id: 'getStarted.enterTitle',
+      id: 'getStartedTour.enterTitle',
       defaultMessage: messages.enterTitle,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ChooseActionButton}"]`,
+    target: `[data-tour="${TourTargets.ChooseActionButton}"]`,
     content: formatText({
-      id: 'getStarted.chooseAction',
+      id: 'getStartedTour.chooseAction',
       defaultMessage: messages.chooseAction,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.SelectActionButton}"]`,
+    target: `[data-tour="${TourTargets.SelectActionButton}"]`,
     content: formatText({
-      id: 'getStarted.selectAction',
+      id: 'getStartedTour.selectAction',
       defaultMessage: messages.selectAction,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.CustomizeColonyFields}"]`,
+    target: `[data-tour="${TourTargets.CustomizeColonyFields}"]`,
     content: formatText({
-      id: 'getStarted.customizeColony',
+      id: 'getStartedTour.customizeColony',
       defaultMessage: messages.customizeColony,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.SelectLogoField}"]`,
+    target: `[data-tour="${TourTargets.SelectLogoField}"]`,
     content: formatText({
-      id: 'getStarted.selectLogo',
+      id: 'getStartedTour.selectLogo',
       defaultMessage: messages.selectLogo,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.EnterDescriptionField}"]`,
+    target: `[data-tour="${TourTargets.EnterDescriptionField}"]`,
     content: formatText({
-      id: 'getStarted.enterDescription',
+      id: 'getStartedTour.enterDescription',
       defaultMessage: messages.enterDescription,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.SelectDecisionMethod}"]`,
+    target: `[data-tour="${TourTargets.SelectDecisionMethod}"]`,
     content: formatText({
-      id: 'getStarted.selectDecisionMethod',
+      id: 'getStartedTour.selectDecisionMethod',
       defaultMessage: messages.selectDecisionMethod,
     }),
   },
   {
-    target: `[data-tour="${ActionTourTargets.ConfirmActionButton}"]`,
+    target: `[data-tour="${TourTargets.ConfirmActionButton}"]`,
     content: formatText({
-      id: 'getStarted.confirmAction',
+      id: 'getStartedTour.confirmAction',
       defaultMessage: messages.confirmAction,
     }),
   },

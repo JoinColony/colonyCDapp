@@ -44,7 +44,10 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
 
   const onClose = () => {
     if (closeProps && closeProps.onClick) {
-      closeProps.onClick({} as React.MouseEvent<HTMLButtonElement>);
+      closeProps.onClick({
+        preventDefault: () => {},
+        stopPropagation: () => {},
+      } as React.MouseEvent<HTMLButtonElement>);
     }
   };
 
@@ -57,12 +60,13 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
         'base relative flex h-full max-h-full w-screen shrink-0 flex-col overflow-hidden bg-base-white shadow-default outline-0 md:h-auto md:w-[30.3125rem] md:rounded-xl md:border md:border-gray-200',
       )}
     >
-      {/* Close Button */}
       <CloseButton
         aria-label={formatMessage({ id: 'ariaLabel.closeModal' })}
         title={formatMessage({ id: 'button.cancel' })}
         onClick={onClose}
-        className={clsx(`absolute right-4 text-gray-400 hover:text-gray-600`)}
+        className={clsx(
+          `absolute right-4 top-4 text-gray-400 hover:text-gray-600`,
+        )}
       />
 
       {step.data?.image && (
@@ -99,7 +103,7 @@ const TourTooltip: React.FC<TooltipRenderProps> = (props) => {
             />
           )}
 
-          {!isLastStep && (
+          {index === 0 && (
             <Button
               {...skipProps}
               mode="primaryOutline"
