@@ -20,6 +20,10 @@ export const getMilestoneReleaseDecisionMethodDescriptions = (
   [DecisionMethod.PaymentCreator]: formatText({
     id: 'milestoneModal.paymentCreatorDescription',
   }),
+  // @TODO: Add multi-sig
+  // [DecisionMethod.PaymentCreator]: formatText({
+  //   id: 'milestoneModal.multiSig',
+  // }),
 });
 
 export const getValidationSchema = () =>
