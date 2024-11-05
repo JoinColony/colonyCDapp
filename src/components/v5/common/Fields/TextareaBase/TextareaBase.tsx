@@ -70,7 +70,6 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
               'placeholder:text-gray-400': !disabled,
               'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':
                 mode === 'primary',
-
               'border-none': mode === 'secondary',
               'pointer-events-none text-gray-300 placeholder:text-gray-300':
                 disabled,
