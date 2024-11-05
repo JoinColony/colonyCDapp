@@ -48,7 +48,7 @@ const ColonyInvitationBanner = ({
   const hasColoniesRemaining = coloniesRemaining > 0;
 
   return (
-    <div className="w-full max-w-[31.25rem] rounded-lg border p-6">
+    <div className="w-full rounded-lg border p-6 md:max-w-[31.25rem]">
       <div className="flex h-10 w-10 items-center justify-center rounded-[.25rem] border">
         <SmileySticker size={24} />
       </div>
