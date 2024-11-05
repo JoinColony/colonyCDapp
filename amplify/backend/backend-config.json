@@ -25,6 +25,11 @@
     }
   },
   "function": {
+    "authorizer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "bridgeXYZMutation": {
       "build": true,
       "dependsOn": [],
