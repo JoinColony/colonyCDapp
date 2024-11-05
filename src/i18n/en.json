@@ -154,6 +154,7 @@
     "button.createPayment": "Create payment",
     "button.createStream": "Create stream",
     "button.createTransfer": "Transfer funds",
+    "button.createTransaction": "Create transaction",
     "button.updateVerified": "Update verified",
     "button.createTokens": "Mint tokens",
     "button.unlockToken": "Unlock token",
