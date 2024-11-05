@@ -5,9 +5,9 @@ import { CURRENCY_VALUES } from '~frame/v5/pages/UserCryptoToFiatPage/constants.
 import { SupportedCurrencies } from '~gql';
 import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
-import { FormSelect } from '~v5/common/Fields/Select/FormSelect.tsx';
+import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
+import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
-import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 
 import { BANK_DETAILS_FORM_MSG } from './constants.ts';
