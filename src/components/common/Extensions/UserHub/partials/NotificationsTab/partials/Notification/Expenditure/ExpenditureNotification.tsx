@@ -8,12 +8,14 @@ import {
   useGetColonyActionQuery,
   useGetExpenditureQuery,
   ColonyActionType,
+  useGetUserByAddressQuery,
 } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
 
+import { MentionNotificationMessage } from '../Action/MentionNotificationMessage.tsx';
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
 import ExpenditureFundingMotionNotificationMessage from './ExpenditureFundingMotionNotificationMessage.tsx';
@@ -39,10 +41,16 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   const navigate = useNavigate();
 
   const {
+    creator,
     expenditureID,
     notificationType,
     transactionHash: notificationTransactionHash,
   } = notification.customAttributes || {};
+
+  const { data: userData, loading: loadingUser } = useGetUserByAddressQuery({
+    variables: { address: creator || '' },
+    skip: !creator,
+  });
 
   const isExpenditureNotification =
     !!notificationType &&
@@ -157,6 +165,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       notification={notification}
       onClick={handleNotificationClicked}
     >
+      {notificationType === NotificationType.Mention && (
+        <MentionNotificationMessage
+          actionMetadataDescription={actionMetadataDescription}
+          actionTitle={actionTitle}
+          creator={
+            userData?.getUserByAddress?.items[0]?.profile?.displayName ?? ''
+          }
+          loading={loadingColony || loadingAction || loadingUser}
+          notificationType={notificationType}
+        />
+      )}
       {isExpenditureNotification && (
         <ExpenditureNotificationMessage
           actionTitle={actionTitle}
