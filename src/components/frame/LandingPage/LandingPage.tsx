@@ -82,6 +82,92 @@ const MSG = defineMessages({
   },
 });
 
+interface RightComponentProps {
+  remainingInvitations: number;
+  inviteLink: string;
+}
+
+const RightComponent = ({
+  inviteLink,
+  remainingInvitations,
+}: RightComponentProps) => (
+  <div className="px-6 pt-8">
+    <div className="hidden max-w-[31.25rem] md:block">
+      <h1 className="pb-2 heading-2">{formatText(MSG.createColonyTitle)}</h1>
+      <p className="pb-14 text-md font-normal text-gray-600">
+        {formatText(MSG.createColonyDescription)}
+      </p>
+    </div>
+    <div>
+      <h1 className="pb-2 heading-2 md:hidden">
+        {formatText(MSG.displayColoniesTitle)}
+      </h1>
+      <p className="pb-14 text-md font-normal text-gray-600 md:hidden">
+        {formatText(MSG.displayColoniesDescription)}
+      </p>
+    </div>
+    <div className="w-[calc(100vw-48px)] md:w-full">
+      <ColonyInvitationBanner
+        coloniesRemaining={remainingInvitations}
+        inviteLink={inviteLink}
+      />
+    </div>
+  </div>
+);
+
+interface BottomComponentProps {
+  isWallet: boolean;
+  canInteract: boolean;
+  hasShareableInvitationCode: boolean;
+  onConnectWallet: () => void;
+  onCreateColony: () => void;
+}
+
+const BottomComponent = ({
+  canInteract,
+  hasShareableInvitationCode,
+  isWallet,
+  onConnectWallet,
+  onCreateColony,
+}: BottomComponentProps) => (
+  <div className="w-full px-6 pb-8 md:hidden">
+    {!isWallet ? (
+      <Button isFullSize className="mt-8" onClick={onConnectWallet}>
+        {formatText(MSG.connectWalletButton)}
+      </Button>
+    ) : (
+      <>
+        {canInteract ? (
+          <>
+            {hasShareableInvitationCode ? (
+              <Button
+                icon={Plus}
+                isFullSize
+                className="mt-8"
+                onClick={onCreateColony}
+              >
+                {formatText(MSG.createColonyButton)}
+              </Button>
+            ) : (
+              <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+                <Button isFullSize className="mt-8">
+                  {formatText(MSG.requestAccessButton)}
+                </Button>
+              </a>
+            )}
+          </>
+        ) : (
+          <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+            <Button isFullSize className="mt-8">
+              {formatText(MSG.noAccessButton)}
+            </Button>
+          </a>
+        )}
+      </>
+    )}
+  </div>
+);
+
 const LandingPage = () => {
   const {
     availableColonies,
@@ -105,44 +191,33 @@ const LandingPage = () => {
     <LandingPageLayout
       rightComponent={
         canInteract ? (
-          <div className="px-6 pt-8">
-            <div className="hidden max-w-[31.25rem] md:block">
-              <h1 className="pb-2 heading-2">
-                {formatText(MSG.createColonyTitle)}
-              </h1>
-              <p className="pb-14 text-md font-normal text-gray-600">
-                {formatText(MSG.createColonyDescription)}
-              </p>
-            </div>
-            <div>
-              <h1 className="pb-2 heading-2 md:hidden">
-                {formatText(MSG.displayColoniesTitle)}
-              </h1>
-              <p className="pb-14 text-md font-normal text-gray-600 md:hidden">
-                {formatText(MSG.displayColoniesDescription)}
-              </p>
-            </div>
-            <div className="w-[calc(100vw-48px)] md:w-full">
-              <ColonyInvitationBanner
-                coloniesRemaining={remainingInvitations}
-                inviteLink={inviteLink}
-              />
-            </div>
-          </div>
+          <RightComponent
+            inviteLink={inviteLink}
+            remainingInvitations={remainingInvitations}
+          />
         ) : undefined
+      }
+      bottomComponent={
+        <BottomComponent
+          canInteract={canInteract}
+          hasShareableInvitationCode={hasShareableInvitationCode}
+          isWallet={!!wallet}
+          onConnectWallet={connectWallet}
+          onCreateColony={onCreateColony}
+        />
       }
     >
       {isCardsLoading ? (
         <LandingPageLoadingSkeleton loadingCards={hasWalletConnected} />
       ) : (
         <div
-          className={clsx('flex px-6 pb-8 md:px-0', {
-            'h-full md:items-center md:pb-24': !canInteract,
-            'h-full md:h-full md:items-end md:pb-[3.125rem]': canInteract,
+          className={clsx('flex h-full px-6 pb-8 md:px-0', {
+            'md:items-center md:pb-24': !canInteract,
+            'md:items-end md:pb-[3.125rem]': canInteract,
           })}
         >
           {!wallet ? (
-            <div className="flex flex-col justify-between">
+            <div className="flex w-full flex-col justify-between">
               <div>
                 <h1 className="pb-2 heading-2">
                   {formatText(MSG.connectWalletTitle)}
@@ -151,7 +226,11 @@ const LandingPage = () => {
                   {formatText(MSG.connectWalletDescription)}
                 </p>
               </div>
-              <Button isFullSize className="mt-8" onClick={connectWallet}>
+              <Button
+                isFullSize
+                className="mt-8 hidden md:block"
+                onClick={connectWallet}
+              >
                 {formatText(MSG.connectWalletButton)}
               </Button>
             </div>
@@ -169,7 +248,7 @@ const LandingPage = () => {
                     <p className="pb-3 pt-[1.625rem] text-sm font-medium text-gray-400">
                       {formatText(MSG.coloniesCardsTitle)}
                     </p>
-                    <div className="flex h-full flex-col gap-3 overflow-y-auto md:h-[28.125rem]">
+                    <div className="flex h-full flex-col gap-3 md:h-[28.125rem] md:overflow-y-auto">
                       {availableColonies.length ? (
                         availableColonies.map(
                           ({
@@ -197,17 +276,22 @@ const LandingPage = () => {
                       )}
                     </div>
                     {hasShareableInvitationCode ? (
-                      <Button
-                        icon={Plus}
-                        isFullSize
-                        className="mt-[1.875rem]"
-                        onClick={onCreateColony}
-                      >
-                        {formatText(MSG.createColonyButton)}
-                      </Button>
+                      <div className="hidden md:block">
+                        <Button
+                          icon={Plus}
+                          isFullSize
+                          className="mt-[1.875rem]"
+                          onClick={onCreateColony}
+                        >
+                          {formatText(MSG.createColonyButton)}
+                        </Button>
+                      </div>
                     ) : (
                       <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
-                        <Button isFullSize className="mt-[1.875rem]">
+                        <Button
+                          isFullSize
+                          className="mt-[1.875rem] hidden md:block"
+                        >
                           {formatText(MSG.requestAccessButton)}
                         </Button>
                       </a>
@@ -215,7 +299,7 @@ const LandingPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col justify-between">
+                <div className="flex w-full flex-col justify-between">
                   <div>
                     <h1 className="pb-2 heading-2">
                       {formatText(MSG.noAccessTitle)}
@@ -230,7 +314,7 @@ const LandingPage = () => {
                     />
                   </div>
                   <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
-                    <Button isFullSize className="mt-8">
+                    <Button isFullSize className="mt-8 hidden md:block">
                       {formatText(MSG.noAccessButton)}
                     </Button>
                   </a>

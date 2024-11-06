@@ -10,7 +10,6 @@ export const useLandingPage = () => {
   const {
     canInteract,
     joinedColonies,
-    joinedColoniesLoading,
     user,
     connectWallet,
     wallet,
@@ -79,13 +78,14 @@ export const useLandingPage = () => {
     user?.privateBetaInviteCode?.shareableInvites ?? 0;
 
   const invitationCode = user?.privateBetaInviteCode?.id;
+
+  const baseInviteLink = `${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`;
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const inviteLink = useBaseUrl(
-    `${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`,
-  );
+  const inviteLink = useBaseUrl(baseInviteLink);
 
   const onCreateColony = () => {
-    navigate(`${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`);
+    navigate(baseInviteLink);
   };
 
   const membersCount =
@@ -114,7 +114,7 @@ export const useLandingPage = () => {
     connectWallet,
     wallet,
     isLoading: walletConnecting || userLoading,
-    isCardsLoading: joinedColoniesLoading || contributorsCountLoading,
+    isCardsLoading: contributorsCountLoading,
     onCreateColony,
     remainingInvitations,
     inviteLink,
