@@ -20,9 +20,9 @@ const StreamingPaymentsPage = () => {
   const {
     totalFunds,
     activeStreamingPayments,
-    averagePerMonth,
     currency,
     totalStreamed,
+    totalLastMonthStreaming,
   } = useStreamingPaymentsTotalFunds({
     isFilteredByWalletAddress: false,
     nativeDomainId,
@@ -31,7 +31,7 @@ const StreamingPaymentsPage = () => {
   return (
     <div>
       <StatsCards
-        streamingPerMonth={averagePerMonth}
+        streamingPerMonth={totalLastMonthStreaming}
         totalActiveStreams={activeStreamingPayments}
         totalStreamed={totalStreamed}
         unclaimedFounds={totalFunds.totalAvailable}
