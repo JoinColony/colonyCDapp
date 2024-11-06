@@ -98,6 +98,7 @@ const Form = <FormData extends FieldValues>({
     handleSubmit,
     watch,
     reset,
+    getValues,
     formState: { isSubmitting },
   } = formHelpers;
   const values = watch();
@@ -137,11 +138,14 @@ const Form = <FormData extends FieldValues>({
           ? await defaultValues()
           : defaultValues;
 
-      formHelpers.reset(resolvedDefaultValues);
+      const currentValues = getValues();
+      const mergedValues = { ...currentValues, ...resolvedDefaultValues };
+
+      reset(mergedValues, { keepDirtyValues: true });
     };
 
     initializeForm();
-  }, [defaultValues, formHelpers]);
+  }, [defaultValues, reset, getValues]);
 
   return (
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
