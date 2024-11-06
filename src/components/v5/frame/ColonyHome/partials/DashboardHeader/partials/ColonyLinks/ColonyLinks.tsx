@@ -1,11 +1,17 @@
 import { CopySimple, ShareNetwork } from '@phosphor-icons/react';
-import React, { type FC, type PropsWithChildren } from 'react';
+import React, {
+  useCallback,
+  useState,
+  type FC,
+  type PropsWithChildren,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { APP_URL } from '~constants/index.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { useOnElementScroll } from '~hooks/useOnElementScroll.tsx';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { type TooltipProps } from '~shared/Extensions/Tooltip/types.ts';
 import ExternalLink from '~shared/ExternalLink/index.ts';
@@ -13,7 +19,7 @@ import { formatText } from '~utils/intl.ts';
 import DropdownMenu from '~v5/common/DropdownMenu/index.ts';
 import { COLONY_LINK_CONFIG } from '~v5/shared/SocialLinks/colonyLinks.ts';
 
-import { sortExternalLinks } from './helpers.ts';
+import { getCopyVariant, sortExternalLinks } from './helpers.ts';
 import { useHeaderLinks } from './useHeaderLinks.ts';
 
 const displayName = 'v5.common.ColonyDashboardHeader.partials.ColonyLinks';
@@ -30,21 +36,40 @@ const ColonyLinkWrapper: FC<PropsWithChildren<ColonyLinkWrapperProps>> = ({
   isSuccess,
   isCopy,
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
   const isMobile = useMobile();
 
   if (isMobile && !isCopy) {
     return <>{children}</>;
   }
 
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+  const handleTouchStart = () => setIsHovered(true);
+  const handleTouchEnd = () => setIsHovered(false);
+
   return (
     <Tooltip
-      isOpen={isOpen}
-      isSuccess={isSuccess}
+      isOpen={isOpen || isHovered}
+      isSuccess={isMobile ? true : isSuccess}
       placement="top"
       tooltipContent={tooltipContent}
-      trigger={isMobile ? undefined : 'hover'}
+      trigger={null}
     >
-      {children}
+      <div
+        className="flex"
+        {...(isMobile
+          ? {
+              onTouchStart: handleTouchStart,
+              onTouchEnd: handleTouchEnd,
+            }
+          : {
+              onMouseEnter: handleMouseEnter,
+              onMouseLeave: handleMouseLeave,
+            })}
+      >
+        {children}
+      </div>
     </Tooltip>
   );
 };
@@ -58,16 +83,28 @@ const ColonyLinks = () => {
   const {
     handleClipboardCopy: handleShareUrlCopy,
     isCopied: isShareUrlCopied,
+    resetCopiedState: resetShareUrlCopiedState,
   } = useCopyToClipboard(5000);
   const {
     handleClipboardCopy: handleColonyAddressCopy,
     isCopied: isColonyAddressCopied,
+    resetCopiedState: resetColonyAddressCopiedState,
   } = useCopyToClipboard(5000);
 
   const colonyUrl = `${APP_URL.host}${pathname}`;
   const topLinks = metadata?.externalLinks
     ? sortExternalLinks(metadata.externalLinks).slice(0, 3)
     : [];
+
+  const resetCopiedStates = useCallback(() => {
+    resetShareUrlCopiedState();
+    resetColonyAddressCopiedState();
+  }, [resetColonyAddressCopiedState, resetShareUrlCopiedState]);
+
+  useOnElementScroll({
+    scrollableElementId: 'main-content-container',
+    callback: resetCopiedStates,
+  });
 
   return (
     <ul className="flex items-center gap-2.5">
@@ -96,10 +133,11 @@ const ColonyLinks = () => {
         <ColonyLinkWrapper
           isOpen={isColonyAddressCopied || undefined}
           isSuccess={isColonyAddressCopied}
-          tooltipContent={formatText({
-            id: isColonyAddressCopied
-              ? 'colony.tooltip.colonyAddress.copied'
-              : 'colony.tooltip.contractAddress.copy',
+          tooltipContent={getCopyVariant({
+            uncopied: 'colony.tooltip.contractAddress.copy',
+            copied: 'colony.tooltip.colonyAddress.copied',
+            isCopied: isColonyAddressCopied,
+            isMobile,
           })}
           isCopy
         >
@@ -116,10 +154,11 @@ const ColonyLinks = () => {
         <ColonyLinkWrapper
           isOpen={isShareUrlCopied || undefined}
           isSuccess={isShareUrlCopied}
-          tooltipContent={formatText({
-            id: isShareUrlCopied
-              ? 'colony.tooltip.url.copied'
-              : 'colony.tooltip.colonyAddress.copy',
+          tooltipContent={getCopyVariant({
+            uncopied: 'colony.tooltip.colonyAddress.copy',
+            copied: 'colony.tooltip.url.copied',
+            isCopied: isColonyAddressCopied,
+            isMobile,
           })}
           isCopy
         >
