@@ -13,7 +13,7 @@ import {
 } from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
-import { calculateStreamedFunds, calculateTotalsFromStreams } from './utils.ts';
+import { calculateTotalsFromStreams } from './utils.ts';
 
 interface useStreamingPaymentsTotalFundsProps {
   isFilteredByWalletAddress?: boolean;
@@ -85,7 +85,7 @@ export const useStreamingPaymentsTotalFunds = ({
   const [isAnyPaymentActive, setIsAnyPaymentActive] = useState(false);
   const [ratePerSecond, setRatePerSecond] = useState<number>(0);
   const [activeStreamingPayments, setActiveStreamingPayments] = useState(0);
-  const [averagePerMonth, setAveragePerMonth] = useState(0);
+  const [totalLastMonthStreaming, setTotalLastMonthStreaming] = useState(0);
 
   const getTotalFunds = useCallback(
     async (items: StreamingPaymentItems) => {
@@ -94,17 +94,15 @@ export const useStreamingPaymentsTotalFunds = ({
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond: ratePerSecondValue,
-        itemsWithinLastMonth,
+        lastMonthStreaming,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
         currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
         currency,
         colony,
       });
-      const averageStreamingPerMonth =
-        calculateStreamedFunds(itemsWithinLastMonth);
 
-      setAveragePerMonth(averageStreamingPerMonth);
+      setTotalLastMonthStreaming(lastMonthStreaming);
 
       setIsAnyPaymentActive(isAtLeastOnePaymentActive);
       setTotalFunds({
@@ -188,6 +186,6 @@ export const useStreamingPaymentsTotalFunds = ({
     getTotalFunds,
     streamingPayments,
     activeStreamingPayments,
-    averagePerMonth,
+    totalLastMonthStreaming,
   };
 };
