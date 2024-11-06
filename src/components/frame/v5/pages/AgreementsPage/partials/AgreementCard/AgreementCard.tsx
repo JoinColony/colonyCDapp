@@ -184,10 +184,6 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
                 contentWrapperClassName={clsx('sm:min-w-[17.375rem]', {
                   '!left-6 right-6': isMobile,
                 })}
-                dropdownPlacementProps={{
-                  withAutoTopPlacement: true,
-                  top: 12,
-                }}
                 items={[
                   {
                     key: '1',
