@@ -2042,8 +2042,6 @@ export type CreateMultiSigUserSignatureInput = {
   vote: MultiSigVote;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type CreateNotificationsDataInput = {
   adminNotificationsDisabled: Scalars['Boolean'];
   magicbellUserId: Scalars['ID'];
@@ -2052,15 +2050,8 @@ export type CreateNotificationsDataInput = {
   notificationsDisabled: Scalars['Boolean'];
   paymentNotificationsDisabled: Scalars['Boolean'];
   userAddress: Scalars['ID'];
-=======
-export type CreatePendingStreamingPaymentMetadataInput = {
-  endCondition: StreamingPaymentEndCondition;
-  id?: InputMaybe<Scalars['ID']>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type CreatePrivateBetaInviteCodeInput = {
   id?: InputMaybe<Scalars['ID']>;
   shareableInvites?: InputMaybe<Scalars['Int']>;
@@ -2421,18 +2412,10 @@ export type DeleteMultiSigUserSignatureInput = {
   id: Scalars['ID'];
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type DeleteNotificationsDataInput = {
   userAddress: Scalars['ID'];
-=======
-export type DeletePendingStreamingPaymentMetadataInput = {
-  id: Scalars['ID'];
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type DeletePrivateBetaInviteCodeInput = {
   id: Scalars['ID'];
 };
@@ -4231,8 +4214,6 @@ export type ModelMultiSigVoteInput = {
   ne?: InputMaybe<MultiSigVote>;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type ModelNotificationsDataConditionInput = {
   adminNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
@@ -4262,31 +4243,8 @@ export type ModelNotificationsDataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
   paymentNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
   userAddress?: InputMaybe<ModelIdInput>;
-=======
-export type ModelPendingStreamingPaymentMetadataConditionInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>>>;
-  endCondition?: InputMaybe<ModelStreamingPaymentEndConditionInput>;
-  not?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>>>;
 };
 
-export type ModelPendingStreamingPaymentMetadataConnection = {
-  __typename?: 'ModelPendingStreamingPaymentMetadataConnection';
-  items: Array<Maybe<PendingStreamingPaymentMetadata>>;
-  nextToken?: Maybe<Scalars['String']>;
-};
-
-export type ModelPendingStreamingPaymentMetadataFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>>>;
-  endCondition?: InputMaybe<ModelStreamingPaymentEndConditionInput>;
-  id?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>>>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-};
-
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type ModelPrivateBetaInviteCodeConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
   not?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
@@ -5043,8 +5001,6 @@ export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
   vote?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type ModelSubscriptionNotificationsDataFilterInput = {
   adminNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
@@ -5055,17 +5011,8 @@ export type ModelSubscriptionNotificationsDataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
   paymentNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
   userAddress?: InputMaybe<ModelSubscriptionIdInput>;
-=======
-export type ModelSubscriptionPendingStreamingPaymentMetadataFilterInput = {
-  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
-  endCondition?: InputMaybe<ModelSubscriptionStringInput>;
-  id?: InputMaybe<ModelSubscriptionIdInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>>>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -5755,14 +5702,7 @@ export type Mutation = {
   createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
   createMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   createNotificationsData?: Maybe<NotificationsData>;
-=======
-  createPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5810,14 +5750,7 @@ export type Mutation = {
   deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   deleteNotificationsData?: Maybe<NotificationsData>;
-=======
-  deletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5865,14 +5798,7 @@ export type Mutation = {
   updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   updateNotificationsData?: Maybe<NotificationsData>;
-=======
-  updatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -6120,22 +6046,13 @@ export type MutationCreateMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type MutationCreateNotificationsDataArgs = {
   condition?: InputMaybe<ModelNotificationsDataConditionInput>;
   input: CreateNotificationsDataInput;
-=======
-export type MutationCreatePendingStreamingPaymentMetadataArgs = {
-  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
-  input: CreatePendingStreamingPaymentMetadataInput;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
 /** Root mutation type */
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type MutationCreatePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: CreatePrivateBetaInviteCodeInput;
@@ -6449,22 +6366,13 @@ export type MutationDeleteMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type MutationDeleteNotificationsDataArgs = {
   condition?: InputMaybe<ModelNotificationsDataConditionInput>;
   input: DeleteNotificationsDataInput;
-=======
-export type MutationDeletePendingStreamingPaymentMetadataArgs = {
-  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
-  input: DeletePendingStreamingPaymentMetadataInput;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
 /** Root mutation type */
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type MutationDeletePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: DeletePrivateBetaInviteCodeInput;
@@ -6778,22 +6686,13 @@ export type MutationUpdateMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type MutationUpdateNotificationsDataArgs = {
   condition?: InputMaybe<ModelNotificationsDataConditionInput>;
   input: UpdateNotificationsDataInput;
-=======
-export type MutationUpdatePendingStreamingPaymentMetadataArgs = {
-  condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
-  input: UpdatePendingStreamingPaymentMetadataInput;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
 /** Root mutation type */
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type MutationUpdatePrivateBetaInviteCodeArgs = {
   condition?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
   input: UpdatePrivateBetaInviteCodeInput;
@@ -7227,14 +7126,7 @@ export type Query = {
   getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   getMultiSigUserSignatureByMultiSigId?: Maybe<ModelMultiSigUserSignatureConnection>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   getNotificationsData?: Maybe<NotificationsData>;
-=======
-  getPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -7305,14 +7197,7 @@ export type Query = {
   listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listMultiSigUserSignatures?: Maybe<ModelMultiSigUserSignatureConnection>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
-=======
-  listPendingStreamingPaymentMetadata?: Maybe<ModelPendingStreamingPaymentMetadataConnection>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
@@ -7877,20 +7762,12 @@ export type QueryGetMultiSigUserSignatureByMultiSigIdArgs = {
 
 
 /** Root query type */
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type QueryGetNotificationsDataArgs = {
   userAddress: Scalars['ID'];
-=======
-export type QueryGetPendingStreamingPaymentMetadataArgs = {
-  id: Scalars['ID'];
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
 /** Root query type */
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type QueryGetPrivateBetaInviteCodeArgs = {
   id: Scalars['ID'];
 };
@@ -8406,26 +8283,16 @@ export type QueryListMultiSigUserSignaturesArgs = {
 
 
 /** Root query type */
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type QueryListNotificationsDataArgs = {
   filter?: InputMaybe<ModelNotificationsDataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   userAddress?: InputMaybe<Scalars['ID']>;
-=======
-export type QueryListPendingStreamingPaymentMetadataArgs = {
-  filter?: InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
 /** Root query type */
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type QueryListPrivateBetaInviteCodesArgs = {
   filter?: InputMaybe<ModelPrivateBetaInviteCodeFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -9499,14 +9366,7 @@ export type Subscription = {
   onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   onCreateNotificationsData?: Maybe<NotificationsData>;
-=======
-  onCreatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -9550,14 +9410,7 @@ export type Subscription = {
   onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   onDeleteNotificationsData?: Maybe<NotificationsData>;
-=======
-  onDeletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -9601,14 +9454,7 @@ export type Subscription = {
   onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
-<<<<<<< HEAD
-<<<<<<< HEAD
   onUpdateNotificationsData?: Maybe<NotificationsData>;
-=======
-  onUpdatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -9771,19 +9617,11 @@ export type SubscriptionOnCreateMultiSigUserSignatureArgs = {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type SubscriptionOnCreateNotificationsDataArgs = {
   filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
-=======
-export type SubscriptionOnCreatePendingStreamingPaymentMetadataArgs = {
-  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type SubscriptionOnCreatePrivateBetaInviteCodeArgs = {
   filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
@@ -9999,19 +9837,11 @@ export type SubscriptionOnDeleteMultiSigUserSignatureArgs = {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type SubscriptionOnDeleteNotificationsDataArgs = {
   filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
-=======
-export type SubscriptionOnDeletePendingStreamingPaymentMetadataArgs = {
-  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type SubscriptionOnDeletePrivateBetaInviteCodeArgs = {
   filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
@@ -10227,19 +10057,11 @@ export type SubscriptionOnUpdateMultiSigUserSignatureArgs = {
 };
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type SubscriptionOnUpdateNotificationsDataArgs = {
   filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
-=======
-export type SubscriptionOnUpdatePendingStreamingPaymentMetadataArgs = {
-  filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type SubscriptionOnUpdatePrivateBetaInviteCodeArgs = {
   filter?: InputMaybe<ModelSubscriptionPrivateBetaInviteCodeFilterInput>;
 };
@@ -11001,8 +10823,6 @@ export type UpdateMultiSigUserSignatureInput = {
   vote?: InputMaybe<MultiSigVote>;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 export type UpdateNotificationsDataInput = {
   adminNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   magicbellUserId?: InputMaybe<Scalars['ID']>;
@@ -11011,15 +10831,8 @@ export type UpdateNotificationsDataInput = {
   notificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   paymentNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
   userAddress: Scalars['ID'];
-=======
-export type UpdatePendingStreamingPaymentMetadataInput = {
-  endCondition?: InputMaybe<StreamingPaymentEndCondition>;
-  id: Scalars['ID'];
->>>>>>> 0f3b0771a (Feat: Edit streams using motions)
 };
 
-=======
->>>>>>> 62000cf72 (Feat: Add changelog to streaming payment and streaming payment metadata)
 export type UpdatePrivateBetaInviteCodeInput = {
   id: Scalars['ID'];
   shareableInvites?: InputMaybe<Scalars['Int']>;
