@@ -5,15 +5,18 @@ import React from 'react';
 import { ADDRESS_ZERO } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { getRole } from '~constants/permissions.ts';
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   ColonyActionType,
   useGetColonyHistoricRoleRolesQuery,
   type GetColonyHistoricRoleRolesQuery,
   type ColonyActionRoles,
 } from '~gql';
+import { getUserRolesForDomain } from '~transformers';
 import { Authority } from '~types/authority.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatRolesTitle } from '~utils/colonyActions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
@@ -60,7 +63,7 @@ const transformActionRolesToColonyRoles = (
   const roleKeys = Object.keys(roles);
 
   const colonyRoles: ColonyRole[] = roleKeys
-    .filter((key) => roles[key] !== null)
+    .filter((key) => roles[key])
     .map((key) => {
       const match = key.match(/role_(\d+)/); // Extract the role number
       if (match && match[1]) {
@@ -77,6 +80,9 @@ const transformActionRolesToColonyRoles = (
 };
 
 const SetUserRoles = ({ action }: Props) => {
+  const {
+    colony: { roles: rolesInColony },
+  } = useColonyContext();
   const decisionMethod = useDecisionMethod(action);
   const {
     customTitle = formatText(
@@ -96,6 +102,7 @@ const SetUserRoles = ({ action }: Props) => {
     colonyAddress,
     rolesAreMultiSig,
   } = action;
+  const areRolesMultiSig = !!rolesAreMultiSig;
 
   const roleAuthority = rolesAreMultiSig
     ? Authority.ViaMultiSig
@@ -108,17 +115,33 @@ const SetUserRoles = ({ action }: Props) => {
         colonyAddress,
         nativeId: fromDomain?.nativeId,
         recipientAddress,
-        isMultiSig: rolesAreMultiSig,
+        isMultiSig: areRolesMultiSig,
       }),
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  const isMultiSig = roleAuthority === Authority.ViaMultiSig;
+  const colonyRoles = extractColonyRoles(rolesInColony);
+  const currentUserRoles = getUserRolesForDomain({
+    colonyRoles,
+    isMultiSig: areRolesMultiSig,
+    userAddress: recipientAddress ?? '', // this shouldn't be undefined
+    domainId: fromDomain?.nativeId,
+    constraint: 'excludeInheritedRoles',
+  });
 
-  const dbPermissionsOld = transformActionRolesToColonyRoles(roles);
+  const actionRoles = transformActionRolesToColonyRoles(roles);
+  // in case of motions, no historic roles are created so we just assume we are modifying their current roles (which contract wise we are)
 
-  const { role: dbRoleForDomainOld } = getRole(dbPermissionsOld, isMultiSig);
+  const dbPermissionsOld =
+    actionRoles.filter(Boolean).length > 0 // if we didnt just remove all the roles
+      ? actionRoles
+      : currentUserRoles;
+
+  const { role: dbRoleForDomainOld } = getRole(
+    dbPermissionsOld,
+    areRolesMultiSig,
+  );
 
   const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole || roles,
@@ -126,12 +149,10 @@ const SetUserRoles = ({ action }: Props) => {
 
   const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(
     dbPermissionsNew,
-    isMultiSig,
+    areRolesMultiSig,
   );
 
-  const metadata =
-    action.motionData?.motionDomain.metadata ??
-    action.multiSigData?.multiSigDomain.metadata;
+  const metadata = action.motionData?.motionDomain.metadata;
 
   const rolesTitle = formatRolesTitle(roles);
 
@@ -217,7 +238,7 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.authority' })}
           rowContent={
-            rolesAreMultiSig
+            areRolesMultiSig
               ? formatText({ id: 'actionSidebar.authority.viaMultiSig' })
               : formatText({ id: 'actionSidebar.authority.own' })
           }
