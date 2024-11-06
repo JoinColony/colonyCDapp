@@ -1,4 +1,4 @@
-import { Id } from '@colony/colony-js';
+import { ColonyRole, Id } from '@colony/colony-js';
 
 import {
   getInheritedPermissions,
@@ -58,9 +58,16 @@ const getRoleInfo = ({
     return { role: undefined, isInherited: false };
   }
 
-  const mergedPermissions = [
+  let mergedPermissions = [
     ...new Set([...parentPermissions, ...currentTeamPermissions]),
   ];
+
+  if (!isRootDomain) {
+    mergedPermissions = mergedPermissions.filter(
+      (permission) =>
+        permission !== ColonyRole.Root && permission !== ColonyRole.Recovery,
+    );
+  }
   return {
     role: getRole(mergedPermissions),
     isInherited: inheritedPermissions.length > 0,

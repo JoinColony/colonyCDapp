@@ -176,13 +176,22 @@ export const configureFormRoles = ({
 
   const isMultiSig = authority === Authority.ViaMultiSig;
 
-  const dbInheritedPermissions = getUserRolesForDomain({
+  const isRootDomain = team === Id.RootDomain;
+
+  let dbInheritedPermissions = getUserRolesForDomain({
     colonyRoles,
     userAddress: member,
     domainId: team,
     constraint: 'onlyInheritedRoles',
     isMultiSig,
   });
+
+  if (!isRootDomain) {
+    dbInheritedPermissions = dbInheritedPermissions.filter(
+      (permission) =>
+        permission !== ColonyRole.Root && permission !== ColonyRole.Recovery,
+    );
+  }
 
   const dbPermissionsForDomain = getUserRolesForDomain({
     colonyRoles,
