@@ -99,6 +99,35 @@ const subtractDaysFor = (numberOfDays, timeframePeriodEndDate) => {
   return startOfDay(new Date(subDays(now, numberOfDays)));
 };
 
+const getFullPeriodFormat = (date, timeframeType) => {
+  if (!date || timeframeType === TimeframeType.TOTAL) {
+    return '0';
+  }
+
+  let formattingPattern = ``;
+
+  switch (timeframeType) {
+    case TimeframeType.DAILY: {
+      formattingPattern = 'dd-MM-yyyy';
+      break;
+    }
+    case TimeframeType.WEEKLY: {
+      formattingPattern = `ww'W'-yyyy`;
+      break;
+    }
+    case TimeframeType.MONTHLY: {
+      formattingPattern = '01-MM-yyyy';
+      break;
+    }
+    default: {
+      formattingPattern = '01-01-yyyy';
+      break;
+    }
+  }
+
+  return format(new Date(date), formattingPattern);
+};
+
 const getPeriodFormat = (date, timeframeType) => {
   if (!date || timeframeType === TimeframeType.TOTAL) {
     return '0';
@@ -254,6 +283,7 @@ const shouldFetchNetworkBalance = (timeframeType) =>
 module.exports = {
   getDifferenceInSeconds,
   getPeriodFormat,
+  getFullPeriodFormat,
   getPeriodFor,
   getFormattedIncomingFunds,
   getFormattedActions,
