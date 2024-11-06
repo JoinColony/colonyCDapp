@@ -9,37 +9,44 @@ import UserNavigationWrapper from './partials/UserNavigationWrapper/UserNavigati
 
 export interface LandingPageLayoutProps extends PropsWithChildren {
   rightComponent?: React.ReactNode;
+  bottomComponent?: React.ReactNode;
 }
 export const LandingPageLayout = ({
   children,
   rightComponent,
+  bottomComponent,
 }: LandingPageLayoutProps) => {
   return (
-    <div className="flex h-screen w-screen flex-col md:py-4 md:pl-4">
-      <div className="flex flex-row md:h-[calc(100vh-var(--top-content-height))]">
+    <div className="flex h-screen w-screen flex-col justify-between md:py-4 md:pl-4">
+      <div className="block md:hidden">
+        <PageHeader userNavigation={<UserNavigationWrapper />} />
+      </div>
+      <div className="overflow-auto md:flex md:h-full md:flex-row">
         <section>
           <BasicPageSidebar />
         </section>
-        <div className="relative flex w-full flex-col md:flex-row">
-          <div className="relative left-0 top-0 flex w-full items-center md:absolute md:px-8 md:pt-5">
+        <div className="relative flex w-full flex-1 flex-col md:flex-row">
+          <div className="relative left-0 top-0 flex w-full flex-1 items-center md:absolute md:px-8 md:pt-5">
             <div className="hidden h-full min-w-[7.75rem] pb-2 md:block">
               <img className="h-4" alt="colony logo" src={Logo} />
             </div>
-            <PageHeader userNavigation={<UserNavigationWrapper />} />
+            <div className="hidden w-full md:block">
+              <PageHeader userNavigation={<UserNavigationWrapper />} />
+            </div>
           </div>
-          <div className="md: flex h-full w-full flex-col-reverse bg-gray-50 md:flex-row md:bg-transparent">
+          <div className="flex h-full w-full flex-col-reverse overflow-hidden md:flex-row md:bg-transparent">
             <div className="flex h-full w-full flex-1 justify-center md:justify-end">
-              <div className="flex w-full max-w-[39.375rem] justify-center">
-                <div className="w-full max-w-[28.125rem]">{children}</div>
+              <div className="flex w-full justify-center md:max-w-[39.375rem] md:px-8">
+                <div className="w-full md:max-w-[28.125rem]">{children}</div>
               </div>
             </div>
-            <div className="flex-none bg-gray-50 md:flex-1 md:rounded-l-3xl">
-              <div className="flex h-full w-full flex-col items-center justify-center md:max-w-[41.875rem]">
+            <div className="flex-none md:flex-1 md:rounded-l-3xl md:bg-gray-50">
+              <div className="flex h-full w-full flex-col items-center justify-center md:max-w-[43.75rem]">
                 <div className="block h-full w-full min-w-[7.75rem] px-6 pt-8 md:hidden">
                   <img className="h-4" alt="colony logo" src={Logo} />
                 </div>
                 {rightComponent ?? (
-                  <div className="flex h-full items-end pt-4 md:py-[3.125rem]">
+                  <div className="flex h-full items-end pt-4 md:px-8 md:py-[3.125rem]">
                     <LandingPageCarousel />
                   </div>
                 )}
@@ -47,6 +54,9 @@ export const LandingPageLayout = ({
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex flex-1 items-end justify-center">
+        {bottomComponent}
       </div>
     </div>
   );
