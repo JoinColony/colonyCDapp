@@ -10,6 +10,7 @@ import FinalizeStep from '~v5/common/ActionSidebar/partials/Motions/steps/Finali
 import RevealStep from '~v5/common/ActionSidebar/partials/Motions/steps/RevealStep/RevealStep.tsx';
 import StakingStep from '~v5/common/ActionSidebar/partials/Motions/steps/StakingStep/index.ts';
 import VotingStep from '~v5/common/ActionSidebar/partials/Motions/steps/VotingStep/VotingStep.tsx';
+import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 
 import { type Steps, CustomStep, type MotionBoxProps } from './types.ts';
 
@@ -128,19 +129,7 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
       ))}
     </MotionProvider>
   ) : (
-    <div className="h-[11.25rem] w-full overflow-hidden rounded-lg border border-gray-200">
-      <div className="w-full border-b border-gray-200 bg-gray-50 p-[1.125rem] py-3">
-        <div className="h-3 w-3/4 skeleton" />
-      </div>
-      <div>
-        <div className="gap-4 p-[1.125rem]">
-          <div className="mb-4 h-3 w-4/5 skeleton" />
-          <div className="mb-4 h-3 w-3/4 skeleton" />
-          <div className="mb-4 h-3 w-3/4 skeleton" />
-          <div className="h-3 w-3/4 skeleton" />
-        </div>
-      </div>
-    </div>
+    <MotionWidgetSkeleton />
   );
 };
 

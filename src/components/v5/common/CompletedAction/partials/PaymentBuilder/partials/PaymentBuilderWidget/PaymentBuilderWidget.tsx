@@ -32,6 +32,7 @@ import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import { LoadingBehavior } from '~v5/shared/Button/types.ts';
+import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
@@ -177,6 +178,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const {
     action: fundingAction,
+    loadingAction,
     motionState: fundingMotionState,
     refetchMotionState: refetchFundingMotionState,
   } = useGetColonyAction(selectedFundingAction?.transactionHash);
@@ -264,6 +266,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     };
   }, [setSelectedFundingAction, setSelectedReleaseAction]);
 
+  useEffect(() => {
+    // If the selected multisig motion was rejected we don't "expect" to get into the release step anymore
+    // This has no impact on the initial render, since the expected step is set when we start the motion process
+    if (selectedFundingMultiSig?.isRejected) {
+      setExpectedStepKey(null);
+    }
+  }, [selectedFundingMultiSig?.isRejected]);
+
   const paymentStep = isStagedExpenditure
     ? {
         key: ExpenditureStep.Payment,
@@ -305,14 +315,30 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       };
 
   const getFundingStepContent = () => {
+    if (!selectedFundingAction) {
+      return null;
+    }
+
     if (selectedFundingMotion) {
       return (
         <MotionBox transactionId={selectedFundingMotion.transactionHash} />
       );
     }
 
-    if (selectedFundingMultiSig && fundingAction && isMultiSig(fundingAction)) {
-      return <MultiSigWidget action={fundingAction} />;
+    // since the multisig widget doesn't fetch its own action we need to handle the loader here
+    if (selectedFundingMultiSig) {
+      if (loadingAction || !fundingAction) {
+        return <MotionWidgetSkeleton />;
+      }
+
+      if (isMultiSig(fundingAction)) {
+        return <MultiSigWidget action={fundingAction} variant="standalone" />;
+      }
+
+      console.warn(
+        "The provided assumed multiSig action doesn't pass the type guard, something is wrong",
+      );
+      return null;
     }
 
     return <ActionWithPermissionsInfo action={selectedFundingAction} />;
@@ -408,38 +434,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             <FundingRequests actions={sortedFundingActions} />
           )}
           {getFundingStepContent()}
-          {shouldShowFundingButton && (
-            <StepDetailsBlock
-              text={formatText({
-                id: 'expenditure.fundingStage.info',
-              })}
-              content={
-                <>
-                  {expectedStepKey === ExpenditureStep.Release ? (
-                    <IconButton
-                      className="w-full"
-                      rounded="s"
-                      text={{ id: 'button.pending' }}
-                      icon={
-                        <span className="ml-1.5 flex shrink-0">
-                          <SpinnerGap className="animate-spin" size={14} />
-                        </span>
-                      }
-                    />
-                  ) : (
-                    <Button
-                      className="w-full"
-                      onClick={showFundingModal}
-                      text={formatText({
-                        id: 'expenditure.fundingStage.button',
-                      })}
-                    />
-                  )}
-                </>
-              }
-            />
-          )}
-
           {shouldShowFundingButton && (
             <StepDetailsBlock
               text={formatText({
