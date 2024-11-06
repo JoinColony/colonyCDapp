@@ -43,6 +43,7 @@ const Notification: FC<NotificationProps> = ({
         address: colonyAddress || '',
       },
       skip: !colonyAddress || !notificationType,
+      fetchPolicy: 'cache-and-network',
     });
 
   const notificationColony = colonyData?.getColonyByAddress?.items[0];
