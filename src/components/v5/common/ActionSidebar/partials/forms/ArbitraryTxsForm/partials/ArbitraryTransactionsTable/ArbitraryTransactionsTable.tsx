@@ -53,7 +53,9 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           <Table<AddTransactionTableModel>
             sizeUnit={isMobile ? undefined : '%'}
             meatBallMenuSize={isMobile ? undefined : 10}
-            className={clsx({ '!border-negative-400': !!fieldState.error })}
+            className={clsx('mb-6', {
+              '!border-negative-400': !!fieldState.error,
+            })}
             getRowId={({ key }) => key}
             columns={columns}
             data={data}
@@ -67,7 +69,6 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             mode="primaryOutline"
             icon={Plus}
             size="small"
-            className="mt-6"
             isFullSize={isMobile}
             onClick={() => {
               setIsModalOpen(true);
@@ -79,10 +80,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           <AddTransactionModal
             onClose={() => setIsModalOpen(false)}
             isOpen={isModalOpen}
-            onSubmit={({ json, contract, method, amount, to }) => {
+            onSubmit={({ jsonAbi, contractAddress, method, amount, to }) => {
               fieldArrayMethods.append({
-                json,
-                contract,
+                jsonAbi,
+                contractAddress,
                 method,
                 amount,
                 to,

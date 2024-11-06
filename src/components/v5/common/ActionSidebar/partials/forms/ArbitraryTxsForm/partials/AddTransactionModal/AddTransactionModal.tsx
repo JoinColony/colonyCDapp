@@ -48,16 +48,17 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
             </a>
             <div className="mt-5 flex flex-col gap-4">
               <FormInput
-                name="contract"
+                name="contractAddress"
                 label={formatText(MSG.contractAddressField)}
                 placeholder={formatText(MSG.contractAddressPlaceholder)}
               />
               <FormTextareaBase
-                name="json"
+                name="jsonAbi"
                 label={formatText(MSG.abiJsonField)}
-                id="json"
+                id="jsonAbi"
                 mode="primary"
-                className="min-h-[10.25rem]"
+                className="h-[10.25rem]"
+                shouldUseAutoSize={false}
               />
               <FormSelect
                 name="method"
