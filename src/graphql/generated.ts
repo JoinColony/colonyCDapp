@@ -1851,9 +1851,20 @@ export type CreateMultiSigUserSignatureInput = {
   vote: MultiSigVote;
 };
 
+<<<<<<< HEAD
 export type CreatePendingStreamingPaymentMetadataInput = {
   endCondition: StreamingPaymentEndCondition;
   id?: InputMaybe<Scalars['ID']>;
+=======
+export type CreateNotificationsDataInput = {
+  adminNotificationsDisabled: Scalars['Boolean'];
+  magicbellUserId: Scalars['ID'];
+  mentionNotificationsDisabled: Scalars['Boolean'];
+  mutedColonyAddresses: Array<Scalars['ID']>;
+  notificationsDisabled: Scalars['Boolean'];
+  paymentNotificationsDisabled: Scalars['Boolean'];
+  userAddress: Scalars['ID'];
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 export type CreatePrivateBetaInviteCodeInput = {
@@ -2169,8 +2180,13 @@ export type DeleteMultiSigUserSignatureInput = {
   id: Scalars['ID'];
 };
 
+<<<<<<< HEAD
 export type DeletePendingStreamingPaymentMetadataInput = {
   id: Scalars['ID'];
+=======
+export type DeleteNotificationsDataInput = {
+  userAddress: Scalars['ID'];
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 export type DeletePrivateBetaInviteCodeInput = {
@@ -3982,6 +3998,7 @@ export type ModelMultiSigVoteInput = {
   ne?: InputMaybe<MultiSigVote>;
 };
 
+<<<<<<< HEAD
 export type ModelPendingStreamingPaymentMetadataConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>>>;
   endCondition?: InputMaybe<ModelStreamingPaymentEndConditionInput>;
@@ -4003,6 +4020,39 @@ export type ModelPendingStreamingPaymentMetadataFilterInput = {
   or?: InputMaybe<Array<InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>>>;
 };
 
+=======
+export type ModelNotificationsDataConditionInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
+  magicbellUserId?: InputMaybe<ModelIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  mutedColonyAddresses?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelNotificationsDataConditionInput>;
+  notificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataConditionInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+};
+
+export type ModelNotificationsDataConnection = {
+  __typename?: 'ModelNotificationsDataConnection';
+  items: Array<Maybe<NotificationsData>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelNotificationsDataFilterInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
+  magicbellUserId?: InputMaybe<ModelIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  mutedColonyAddresses?: InputMaybe<ModelIdInput>;
+  not?: InputMaybe<ModelNotificationsDataFilterInput>;
+  notificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelNotificationsDataFilterInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelBooleanInput>;
+  userAddress?: InputMaybe<ModelIdInput>;
+};
+
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 export type ModelPrivateBetaInviteCodeConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelPrivateBetaInviteCodeConditionInput>>>;
   not?: InputMaybe<ModelPrivateBetaInviteCodeConditionInput>;
@@ -4695,11 +4745,24 @@ export type ModelSubscriptionMultiSigUserSignatureFilterInput = {
   vote?: InputMaybe<ModelSubscriptionStringInput>;
 };
 
+<<<<<<< HEAD
 export type ModelSubscriptionPendingStreamingPaymentMetadataFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
   endCondition?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>>>;
+=======
+export type ModelSubscriptionNotificationsDataFilterInput = {
+  adminNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
+  magicbellUserId?: InputMaybe<ModelSubscriptionIdInput>;
+  mentionNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
+  mutedColonyAddresses?: InputMaybe<ModelSubscriptionIdInput>;
+  notificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionNotificationsDataFilterInput>>>;
+  paymentNotificationsDisabled?: InputMaybe<ModelSubscriptionBooleanInput>;
+  userAddress?: InputMaybe<ModelSubscriptionIdInput>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 export type ModelSubscriptionPrivateBetaInviteCodeFilterInput = {
@@ -5359,7 +5422,11 @@ export type Mutation = {
   createLiquidationAddress?: Maybe<LiquidationAddress>;
   createMotionMessage?: Maybe<MotionMessage>;
   createMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   createPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  createNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5407,7 +5474,11 @@ export type Mutation = {
   deleteLiquidationAddress?: Maybe<LiquidationAddress>;
   deleteMotionMessage?: Maybe<MotionMessage>;
   deleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   deletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  deleteNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5455,7 +5526,11 @@ export type Mutation = {
   updateLiquidationAddress?: Maybe<LiquidationAddress>;
   updateMotionMessage?: Maybe<MotionMessage>;
   updateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   updatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  updateNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -5703,9 +5778,15 @@ export type MutationCreateMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
+<<<<<<< HEAD
 export type MutationCreatePendingStreamingPaymentMetadataArgs = {
   condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
   input: CreatePendingStreamingPaymentMetadataInput;
+=======
+export type MutationCreateNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: CreateNotificationsDataInput;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -6023,9 +6104,15 @@ export type MutationDeleteMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
+<<<<<<< HEAD
 export type MutationDeletePendingStreamingPaymentMetadataArgs = {
   condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
   input: DeletePendingStreamingPaymentMetadataInput;
+=======
+export type MutationDeleteNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: DeleteNotificationsDataInput;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -6343,9 +6430,15 @@ export type MutationUpdateMultiSigUserSignatureArgs = {
 
 
 /** Root mutation type */
+<<<<<<< HEAD
 export type MutationUpdatePendingStreamingPaymentMetadataArgs = {
   condition?: InputMaybe<ModelPendingStreamingPaymentMetadataConditionInput>;
   input: UpdatePendingStreamingPaymentMetadataInput;
+=======
+export type MutationUpdateNotificationsDataArgs = {
+  condition?: InputMaybe<ModelNotificationsDataConditionInput>;
+  input: UpdateNotificationsDataInput;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -6791,7 +6884,11 @@ export type Query = {
   getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   getMultiSigUserSignatureByMultiSigId?: Maybe<ModelMultiSigUserSignatureConnection>;
+<<<<<<< HEAD
   getPendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  getNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   getPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
@@ -6862,7 +6959,11 @@ export type Query = {
   listLiquidationAddresses?: Maybe<ModelLiquidationAddressConnection>;
   listMotionMessages?: Maybe<ModelMotionMessageConnection>;
   listMultiSigUserSignatures?: Maybe<ModelMultiSigUserSignatureConnection>;
+<<<<<<< HEAD
   listPendingStreamingPaymentMetadata?: Maybe<ModelPendingStreamingPaymentMetadataConnection>;
+=======
+  listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
@@ -6879,11 +6980,8 @@ export type Query = {
   listVoterRewardsHistories?: Maybe<ModelVoterRewardsHistoryConnection>;
   searchColonyActions?: Maybe<SearchableColonyActionConnection>;
   searchColonyContributors?: Maybe<SearchableColonyContributorConnection>;
-<<<<<<< HEAD
-  tokenExhangeRateByTokenId?: Maybe<ModelTokenExchangeRateConnection>;
-=======
   searchStreamingPayments?: Maybe<SearchableStreamingPaymentConnection>;
->>>>>>> d4f57e208 (Schema update: Add creatorAddress to StreamingPayment, make it @searchable)
+  tokenExhangeRateByTokenId?: Maybe<ModelTokenExchangeRateConnection>;
 };
 
 
@@ -7430,8 +7528,13 @@ export type QueryGetMultiSigUserSignatureByMultiSigIdArgs = {
 
 
 /** Root query type */
+<<<<<<< HEAD
 export type QueryGetPendingStreamingPaymentMetadataArgs = {
   id: Scalars['ID'];
+=======
+export type QueryGetNotificationsDataArgs = {
+  userAddress: Scalars['ID'];
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -7951,10 +8054,19 @@ export type QueryListMultiSigUserSignaturesArgs = {
 
 
 /** Root query type */
+<<<<<<< HEAD
 export type QueryListPendingStreamingPaymentMetadataArgs = {
   filter?: InputMaybe<ModelPendingStreamingPaymentMetadataFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
+=======
+export type QueryListNotificationsDataArgs = {
+  filter?: InputMaybe<ModelNotificationsDataFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  userAddress?: InputMaybe<Scalars['ID']>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -8093,15 +8205,6 @@ export type QuerySearchColonyContributorsArgs = {
 
 
 /** Root query type */
-<<<<<<< HEAD
-export type QueryTokenExhangeRateByTokenIdArgs = {
-  date?: InputMaybe<ModelStringKeyConditionInput>;
-  filter?: InputMaybe<ModelTokenExchangeRateFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  tokenId: Scalars['String'];
-=======
 export type QuerySearchStreamingPaymentsArgs = {
   aggregates?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentAggregationInput>>>;
   filter?: InputMaybe<SearchableStreamingPaymentFilterInput>;
@@ -8109,7 +8212,17 @@ export type QuerySearchStreamingPaymentsArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<InputMaybe<SearchableStreamingPaymentSortInput>>>;
->>>>>>> d4f57e208 (Schema update: Add creatorAddress to StreamingPayment, make it @searchable)
+};
+
+
+/** Root query type */
+export type QueryTokenExhangeRateByTokenIdArgs = {
+  date?: InputMaybe<ModelStringKeyConditionInput>;
+  filter?: InputMaybe<ModelTokenExchangeRateFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+  tokenId: Scalars['String'];
 };
 
 export type ReputationMiningCycleMetadata = {
@@ -8773,7 +8886,11 @@ export type Subscription = {
   onCreateLiquidationAddress?: Maybe<LiquidationAddress>;
   onCreateMotionMessage?: Maybe<MotionMessage>;
   onCreateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   onCreatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  onCreateNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8817,7 +8934,11 @@ export type Subscription = {
   onDeleteLiquidationAddress?: Maybe<LiquidationAddress>;
   onDeleteMotionMessage?: Maybe<MotionMessage>;
   onDeleteMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   onDeletePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  onDeleteNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -8861,7 +8982,11 @@ export type Subscription = {
   onUpdateLiquidationAddress?: Maybe<LiquidationAddress>;
   onUpdateMotionMessage?: Maybe<MotionMessage>;
   onUpdateMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
+<<<<<<< HEAD
   onUpdatePendingStreamingPaymentMetadata?: Maybe<PendingStreamingPaymentMetadata>;
+=======
+  onUpdateNotificationsData?: Maybe<NotificationsData>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
@@ -9024,8 +9149,13 @@ export type SubscriptionOnCreateMultiSigUserSignatureArgs = {
 };
 
 
+<<<<<<< HEAD
 export type SubscriptionOnCreatePendingStreamingPaymentMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
+=======
+export type SubscriptionOnCreateNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -9244,8 +9374,13 @@ export type SubscriptionOnDeleteMultiSigUserSignatureArgs = {
 };
 
 
+<<<<<<< HEAD
 export type SubscriptionOnDeletePendingStreamingPaymentMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
+=======
+export type SubscriptionOnDeleteNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -9464,8 +9599,13 @@ export type SubscriptionOnUpdateMultiSigUserSignatureArgs = {
 };
 
 
+<<<<<<< HEAD
 export type SubscriptionOnUpdatePendingStreamingPaymentMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionPendingStreamingPaymentMetadataFilterInput>;
+=======
+export type SubscriptionOnUpdateNotificationsDataArgs = {
+  filter?: InputMaybe<ModelSubscriptionNotificationsDataFilterInput>;
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 
@@ -10174,9 +10314,20 @@ export type UpdateMultiSigUserSignatureInput = {
   vote?: InputMaybe<MultiSigVote>;
 };
 
+<<<<<<< HEAD
 export type UpdatePendingStreamingPaymentMetadataInput = {
   endCondition?: InputMaybe<StreamingPaymentEndCondition>;
   id: Scalars['ID'];
+=======
+export type UpdateNotificationsDataInput = {
+  adminNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
+  magicbellUserId?: InputMaybe<Scalars['ID']>;
+  mentionNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
+  mutedColonyAddresses?: InputMaybe<Array<Scalars['ID']>>;
+  notificationsDisabled?: InputMaybe<Scalars['Boolean']>;
+  paymentNotificationsDisabled?: InputMaybe<Scalars['Boolean']>;
+  userAddress: Scalars['ID'];
+>>>>>>> 8fe7cf4d2 (Chore: update generated and block-ingestor hash post-rebase)
 };
 
 export type UpdatePrivateBetaInviteCodeInput = {
