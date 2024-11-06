@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { type Action } from '~constants/actions.ts';
@@ -32,6 +32,17 @@ const useActionFormProps = (
   });
   const { colony } = useColonyContext();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // This ensures that actionFormProps always receives the freshest defaultValues updates
+  useEffect(() => {
+    if (defaultValues) {
+      setActionFormProps((state) => ({
+        ...state,
+        actionType: defaultValues.actionType,
+        defaultValues,
+      }));
+    }
+  }, [defaultValues]);
 
   const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
     async (formOptions, form) => {
@@ -82,7 +93,7 @@ const useActionFormProps = (
           readonly: isReadonly,
           ...formOptions.options,
         },
-        defaultValues: formOptionsWithDefaults,
+        defaultValues: actionFormProps.defaultValues,
       });
 
       if (prevActionTypeRef.current === actionType) {
@@ -99,6 +110,7 @@ const useActionFormProps = (
       defaultValues,
       colony.nativeToken.tokenAddress,
       isReadonly,
+      actionFormProps.defaultValues,
       searchParams,
       setSearchParams,
     ],

@@ -129,6 +129,20 @@ const Form = <FormData extends FieldValues>({
     [handleSubmit, onSubmit, formHelpers, onError],
   );
 
+  // Separate concern for handling defaultValues updates
+  useEffect(() => {
+    const initializeForm = async () => {
+      const resolvedDefaultValues =
+        typeof defaultValues === 'function'
+          ? await defaultValues()
+          : defaultValues;
+
+      formHelpers.reset(resolvedDefaultValues);
+    };
+
+    initializeForm();
+  }, [defaultValues, formHelpers]);
+
   return (
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
