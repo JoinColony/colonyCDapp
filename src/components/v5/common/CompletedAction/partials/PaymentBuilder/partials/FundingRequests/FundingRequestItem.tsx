@@ -19,7 +19,7 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
   const isSelected =
     selectedFundingAction?.transactionHash === action.transactionHash;
 
-  const isMotion = !!action.motionData;
+  const isMotion = !!action.motionData || !!action.multiSigData;
 
   return (
     <button
