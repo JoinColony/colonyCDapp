@@ -20,15 +20,15 @@ const LandingPageLoadingSkeleton = ({
         <div className="flex h-full w-full flex-col justify-end">
           <LoadingSkeleton
             isLoading
-            className="mb-3 h-[2.375rem] w-full max-w-[25rem] rounded-[.25rem]"
+            className="rounded-4 mb-3 h-[2.375rem] w-full max-w-[25rem]"
           />
           <LoadingSkeleton
             isLoading
-            className="mb-[1.625rem] h-5 w-full max-w-[20.0625rem] rounded-[.25rem]"
+            className="rounded-4 mb-[1.625rem] h-5 w-full max-w-[20.0625rem]"
           />
           <LoadingSkeleton
             isLoading
-            className="mb-4 h-[.6875rem] w-full max-w-[5.625rem] rounded-[.25rem]"
+            className="rounded-4 mb-4 h-[.6875rem] w-full max-w-[5.625rem]"
           />
           <div className="mb-4 flex flex-col gap-4 md:min-h-[28.125rem]">
             <ColonyCardSkeleton />
@@ -40,7 +40,7 @@ const LandingPageLoadingSkeleton = ({
         <div className="w-full">
           <LoadingSkeleton
             isLoading
-            className="h-[2.125rem] w-full rounded-[.25rem]"
+            className="rounded-4 h-[2.125rem] w-full"
           />
         </div>
       </div>
@@ -51,18 +51,18 @@ const LandingPageLoadingSkeleton = ({
         <div className="flex h-full w-full flex-col justify-center">
           <LoadingSkeleton
             isLoading
-            className="mb-3 h-[2.375rem] w-full max-w-[25rem] rounded-[.25rem]"
+            className="rounded-4 mb-3 h-[2.375rem] w-full max-w-[25rem]"
           />
           <LoadingSkeleton
             isLoading
-            className="mb-8 h-5 w-full max-w-[20.0625rem] rounded-[.25rem]"
+            className="rounded-4 mb-8 h-5 w-full max-w-[20.0625rem]"
           />
           <div className="mb-8">
             <InfoBanner text="" title="" loading />
           </div>
           <LoadingSkeleton
             isLoading
-            className="h-[2.125rem] w-full rounded-[.25rem]"
+            className="rounded-4 h-[2.125rem] w-full"
           />
         </div>
       </div>
