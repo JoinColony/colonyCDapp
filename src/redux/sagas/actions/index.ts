@@ -1,6 +1,6 @@
 import { all, call } from 'redux-saga/effects';
 
-import arbitraryTxsActionSaga from './arbitrationTxs.ts';
+import arbitraryTxActionSaga from './arbitraryTx.ts';
 import createDomainActionSaga from './createDomain.ts';
 import editColonyActionSaga from './editColony.ts';
 import editDomainActionSaga from './editDomain.ts';
@@ -34,6 +34,6 @@ export default function* actionsSagas() {
     call(manageExistingSafesActionSaga),
     call(initiateSafeTransactionSaga),
     call(manageVerifiedMembersActionSaga),
-    call(arbitraryTxsActionSaga),
+    call(arbitraryTxActionSaga),
   ]);
 }

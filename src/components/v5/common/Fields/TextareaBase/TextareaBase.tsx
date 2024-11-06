@@ -24,6 +24,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       shouldFocus,
       withoutCounter,
       labelClassName,
+      shouldUseAutoSize = true,
       mode,
       label,
       id: idProp,
@@ -39,7 +40,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       stateClassNamesProp,
     );
 
-    const textAreaRef = useAutosizeTextArea(value, ref);
+    const textAreaRef = useAutosizeTextArea(value, ref, shouldUseAutoSize);
     const defaultId = useId();
     const id = idProp || defaultId;
 

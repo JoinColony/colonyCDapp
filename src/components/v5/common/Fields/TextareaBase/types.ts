@@ -12,6 +12,7 @@ export interface TextareaBaseProps
   label?: string;
   labelClassName?: string;
   mode?: 'primary' | 'secondary';
+  shouldUseAutoSize?: boolean;
 }
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {

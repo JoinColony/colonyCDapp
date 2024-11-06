@@ -1,10 +1,12 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import { isAddress } from 'ethers/lib/utils';
 import React, { useMemo } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
+import getMaskedAddress from '~shared/MaskedAddress/getMaskedAddress.ts';
 import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
-import AvatarWithAddress from '~v5/common/AvatarWithAddress/index.ts';
+import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import CellDescription from './CellDescription.tsx';
 
@@ -20,7 +22,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
 
   const columns: ColumnDef<AddTransactionTableModel, string>[] = useMemo(
     () => [
-      columnHelper.accessor('contract', {
+      columnHelper.accessor('contractAddress', {
         enableSorting: false,
         header: () => (
           <span className="text-sm text-gray-600">
@@ -31,9 +33,17 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
 
         cell: ({ getValue }) => {
           const address = getValue();
+          const isAddressValid = isAddress(address);
+          const maskedAddress = getMaskedAddress({
+            address,
+          });
           return (
-            <span className="flex max-w-full  self-start overflow-hidden overflow-ellipsis whitespace-nowrap text-md font-normal">
-              <AvatarWithAddress address={address} />
+            <span className="flex max-w-full items-center gap-2">
+              {isAddressValid && <UserAvatar userAddress={address} size={20} />}
+
+              <span className="truncate text-md font-medium text-gray-900">
+                {maskedAddress.result}
+              </span>
             </span>
           );
         },
@@ -46,28 +56,34 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             {formatText({ id: 'table.row.details' })}
           </span>
         ),
-        cell: ({ row: { original } }) => (
-          <CellDescription
-            data={[
-              {
-                title: 'Method',
-                value: original.method,
-              },
-              {
-                title: '_to (address)',
-                value: original.to,
-              },
-              {
-                title: '_amount (uint256)',
-                value: original.amount,
-              },
-            ]}
-          />
-        ),
+        cell: ({ row: { original } }) => {
+          const addressTo = getMaskedAddress({
+            address: original.to,
+            isFull: !isMobile,
+          });
+          return (
+            <CellDescription
+              data={[
+                {
+                  title: 'Method',
+                  value: original.method,
+                },
+                {
+                  title: '_to (address)',
+                  value: addressTo.result,
+                },
+                {
+                  title: '_amount (uint256)',
+                  value: original.amount,
+                },
+              ]}
+            />
+          );
+        },
         size: isMobile ? 100 : 67,
       }),
     ],
-    [columnHelper],
+    [columnHelper, isMobile],
   );
 
   return columns;

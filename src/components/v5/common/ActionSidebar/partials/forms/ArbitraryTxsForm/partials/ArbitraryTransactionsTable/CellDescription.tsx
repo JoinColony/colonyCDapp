@@ -1,20 +1,20 @@
-import React, { type FC } from 'react';
+import React, { type ReactNode, type FC } from 'react';
 
 interface CellDescriptionProps {
   data: {
-    title: string;
-    value: string;
+    title: ReactNode;
+    value: ReactNode;
   }[];
 }
 
 const CellDescription: FC<CellDescriptionProps> = ({ data }) => {
   return (
-    <div>
+    <div className="w-full">
       {data.map(({ title, value }) => {
         return (
-          <span className="mb-3 flex flex-col">
+          <span key={`${title}-${value}`} className="mb-3 flex flex-col">
             <span className="font-medium text-gray-900">{title}:</span>
-            <span className="text-gray-600">{value}</span>
+            <span className="truncate text-gray-600">{value}</span>
           </span>
         );
       })}
