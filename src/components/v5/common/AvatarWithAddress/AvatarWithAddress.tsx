@@ -1,7 +1,7 @@
 import { CircleWavyCheck, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import { isAddress } from 'ethers/lib/utils';
-import React, { type FC } from 'react';
+import React, { type ReactNode, type FC } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import UserAvatar, {
@@ -12,7 +12,7 @@ interface AvatarWithAddressProps
   extends Omit<UserAvatarProps, 'userAddress' | 'size'> {
   address: string;
   isVerified?: boolean;
-  title?: string;
+  title?: ReactNode | string;
   size?: UserAvatarProps['size'];
 }
 const AvatarWithAddress: FC<AvatarWithAddressProps> = ({

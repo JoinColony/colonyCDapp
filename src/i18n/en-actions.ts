@@ -57,7 +57,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
-      ${ColonyActionType.ArbitraryTxs} {Arbitrary transaction by {initiator}}
+      ${ColonyActionType.ArbitraryTx} {Arbitrary transaction by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}

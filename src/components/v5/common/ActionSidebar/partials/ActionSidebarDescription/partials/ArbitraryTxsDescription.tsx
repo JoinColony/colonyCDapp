@@ -13,7 +13,7 @@ export const ArbitraryTxsDescription = () => {
     <FormattedMessage
       id="action.title"
       values={{
-        actionType: ColonyActionType.ArbitraryTxs,
+        actionType: ColonyActionType.ArbitraryTx,
         initiator: <CurrentUser />,
       }}
     />

@@ -5,8 +5,8 @@ export interface AddTransactionFormModalProps extends ModalProps {
 }
 
 export interface AddTransactionTableModel {
-  contract: string;
-  json: string;
+  contractAddress: string;
+  jsonAbi: string;
   key: string;
   method: string;
   amount: string;

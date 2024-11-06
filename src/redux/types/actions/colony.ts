@@ -109,4 +109,5 @@ export type ColonyActionTypes =
   | UniqueActionType<ActionTypes.EXTENSION_UPGRADE_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UPGRADE_ERROR, object>
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
-  | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>;
+  | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
+  | UniqueActionType<ActionTypes.CREATE_ARBITRARY_TRANSACTION, object, object>;
