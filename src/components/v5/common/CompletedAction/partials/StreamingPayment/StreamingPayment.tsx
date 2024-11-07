@@ -34,7 +34,7 @@ import {
   getAmountPerValue,
   getStreamingPaymentLimit,
 } from '~utils/streamingPayments.ts';
-import { getSelectedToken } from '~utils/tokens.ts';
+import { getNumeralTokenAmount, getSelectedToken } from '~utils/tokens.ts';
 import { END_OPTIONS } from '~v5/common/ActionSidebar/partials/TimeRow/consts.ts';
 import { DEFAULT_DATE_TIME_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
@@ -54,7 +54,6 @@ import CreatedInRow from '../rows/CreatedIn.tsx';
 import DecisionMethodRow from '../rows/DecisionMethod.tsx';
 import DescriptionRow from '../rows/Description.tsx';
 import TeamFromRow from '../rows/TeamFrom.tsx';
-import { getFormattedTokenAmount } from '../utils.ts';
 
 import { type StreamingPaymentProps } from './types.ts';
 
@@ -105,7 +104,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     metadata: streamingPaymentMetadata,
   } = streamingPaymentData;
   const selectedToken = getSelectedToken(colony, tokenAddress || '');
-  const formattedAmount = getFormattedTokenAmount(
+  const formattedAmount = getNumeralTokenAmount(
     amount || '1',
     selectedToken?.decimals,
   );
