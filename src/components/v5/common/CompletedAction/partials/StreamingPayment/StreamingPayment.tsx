@@ -177,6 +177,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   const isStartImmediately =
     Math.abs(startTimeDate.getTime() - new Date(createdAt).getTime()) < 60000;
 
+  // console.log({isStartImmediately, startTimeDate, createdAt});
+
   const meatballOptions: MeatBallMenuItem[] = [
     {
       key: '1',
