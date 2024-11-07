@@ -164,6 +164,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
     amount || '1',
     selectedToken?.decimals,
   );
+
   const { endCondition } = streamingPaymentMetadata || {};
   const selectedTeam = findDomainByNativeId(nativeDomainId, colony);
   const motionDomain = motionData?.motionDomain ?? null;
@@ -200,6 +201,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
 
   const isStartImmediately =
     Math.abs(startTimeDate.getTime() - new Date(createdAt).getTime()) < 60000;
+
+  // console.log({isStartImmediately, startTimeDate, createdAt});
 
   const meatballOptions: MeatBallMenuItem[] = [
     {
