@@ -1,4 +1,4 @@
-import { animated, useSpring } from '@react-spring/web';
+import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import { CHART_CONFIG_VALUES } from '../consts.ts';
@@ -20,7 +20,7 @@ export const ChartCustomYAxisStep: FC<ChartCustomYAxisStepProps> = ({
   value,
   width,
 }) => {
-  const animatedProps = useSpring({
+  const motionProps = {
     to: {
       opacity: 1,
       transform: `translate(0, ${y}px)`,
@@ -31,20 +31,25 @@ export const ChartCustomYAxisStep: FC<ChartCustomYAxisStepProps> = ({
       transform: `translate(0, ${y}px)`,
       textTransform: 'scale(0.8)',
     },
-    config: { tension: 170, friction: 26 },
-  });
+    transition: {
+      type: 'spring',
+      stiffness: 170,
+      damping: 26,
+      mass: 1,
+    },
+  };
 
   return (
     <>
       <ChartCustomBarLabel
         value={value}
         textColor={textColor}
-        animatedProps={animatedProps}
         textAnchor="end"
         textBaseline="middle"
         shouldTranslateX
+        motionProps={motionProps}
       />
-      <animated.line
+      <motion.line
         x1={0}
         x2={width}
         y1={y}
@@ -53,7 +58,9 @@ export const ChartCustomYAxisStep: FC<ChartCustomYAxisStepProps> = ({
         strokeWidth={CHART_CONFIG_VALUES.GRID_LINE_WIDTH}
         strokeDasharray={CHART_CONFIG_VALUES.GRID_LINE_DASHED}
         strokeLinecap="round"
-        opacity={animatedProps.opacity}
+        initial={{ opacity: 0, transform: `translate(0, ${y}px) scale(0.8)` }}
+        animate={{ opacity: 1, transform: `translate(0, ${y}px) scale(1)` }}
+        transition={{ duration: 0.5 }}
       />
     </>
   );

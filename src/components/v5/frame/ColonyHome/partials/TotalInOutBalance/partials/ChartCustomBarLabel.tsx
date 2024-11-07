@@ -1,16 +1,31 @@
 import { type AxisTickProps } from '@nivo/axes';
-import { animated } from '@react-spring/web';
+import { motion } from 'framer-motion';
 import React, { type FC } from 'react';
 
 import { CHART_CONFIG_VALUES } from '../consts.ts';
 
 interface ChartCustomBarLabelProps
-  extends Pick<
-    AxisTickProps<string>,
-    'value' | 'textAnchor' | 'textBaseline' | 'animatedProps'
-  > {
+  extends Pick<AxisTickProps<string>, 'value' | 'textAnchor' | 'textBaseline'> {
   textColor: string;
   shouldTranslateX?: boolean;
+  motionProps: {
+    from: {
+      opacity: number;
+      transform: string;
+      textTransform: string;
+    };
+    to: {
+      opacity: number;
+      transform: string;
+      textTransform: string;
+    };
+    transition: {
+      type: string;
+      stiffness: number;
+      damping: number;
+      mass: number;
+    };
+  };
 }
 
 export const ChartCustomBarLabel: FC<ChartCustomBarLabelProps> = ({
@@ -18,14 +33,21 @@ export const ChartCustomBarLabel: FC<ChartCustomBarLabelProps> = ({
   textAnchor,
   textColor,
   textBaseline,
-  animatedProps,
   shouldTranslateX,
+  motionProps,
 }) => {
+  const { from, to, transition } = motionProps;
+
   return (
-    <animated.g style={{ transform: animatedProps.transform }}>
-      <animated.text
-        opacity={animatedProps.opacity}
-        transform={animatedProps.textTransform}
+    <motion.g
+      initial={{ opacity: from.opacity, transform: from.transform }}
+      animate={{ opacity: to.opacity, transform: to.transform }}
+      transition={transition}
+    >
+      <motion.text
+        initial={{ opacity: from.opacity, transform: from.textTransform }}
+        animate={{ opacity: to.opacity, transform: to.textTransform }}
+        transition={transition}
         textAnchor={textAnchor}
         dominantBaseline={textBaseline}
         style={{
@@ -38,7 +60,7 @@ export const ChartCustomBarLabel: FC<ChartCustomBarLabelProps> = ({
         }}
       >
         {value}
-      </animated.text>
-    </animated.g>
+      </motion.text>
+    </motion.g>
   );
 };

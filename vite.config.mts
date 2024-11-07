@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
     importMetaEnv.vite({
       example: '.env.example',
       env: '.env',
-    })
+    }),
   ],
   resolve: {
     alias: {
@@ -51,7 +51,11 @@ export default defineConfig(({ mode }) => ({
   },
   // NOTE: Do not define environment variables here. Instead, use .env files (__COMMIT_HASH__ is an exception)
   define: {
-    __COMMIT_HASH__: mode === 'production' ? JSON.stringify(__COMMIT_HASH__) : undefined,
+    __COMMIT_HASH__:
+      mode === 'production' ? JSON.stringify(__COMMIT_HASH__) : undefined,
+  },
+  optimizeDeps: {
+    exclude: ['react-spring'],
   },
   server: {
     port: 9091,
