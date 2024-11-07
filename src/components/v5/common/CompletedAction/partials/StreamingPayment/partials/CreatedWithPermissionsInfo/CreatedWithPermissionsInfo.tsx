@@ -5,6 +5,7 @@ import { formatDate } from '~utils/date.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import { StatusTypes } from '~v5/shared/StatusText/consts.ts';
+import StatusText from '~v5/shared/StatusText/StatusText.tsx';
 import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import { type CreatedWithPermissionsInfoProps } from './types.ts';
@@ -20,16 +21,19 @@ const CreatedWithPermissionsInfo: FC<CreatedWithPermissionsInfoProps> = ({
 
   return (
     <MenuWithStatusText
-      statusTextSectionProps={{
-        status: StatusTypes.Info,
-        children: formatText({
-          id: 'action.executed.permissions.description',
-        }),
-        textClassName: 'text-4 text-gray-900',
-        iconAlignment: 'top',
-        iconSize: 16,
-        iconClassName: 'text-gray-500',
-      }}
+      statusText={
+        <StatusText
+          status={StatusTypes.Info}
+          textClassName="text-4 text-gray-900"
+          iconAlignment="top"
+          iconSize={16}
+          iconClassName="text-gray-500"
+        >
+          {formatText({
+            id: 'action.executed.permissions.description',
+          })}
+        </StatusText>
+      }
       sections={[
         {
           key: '1',
