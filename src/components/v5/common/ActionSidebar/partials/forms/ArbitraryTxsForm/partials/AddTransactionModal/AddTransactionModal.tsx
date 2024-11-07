@@ -59,6 +59,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 mode="primary"
                 className="h-[10.25rem]"
                 shouldUseAutoSize={false}
+                rows={7}
               />
               <FormSelect
                 name="method"
