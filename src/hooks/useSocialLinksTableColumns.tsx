@@ -2,6 +2,7 @@ import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
+import { useMobile } from '~hooks';
 import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -16,6 +17,8 @@ export const useSocialLinksTableColumns = (): ColumnDef<
   );
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+
+  const isMobile = useMobile();
 
   const columns: ColumnDef<SocialLinksTableModel, string>[] = useMemo(
     () => [
@@ -36,7 +39,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
             {getValue()}
           </span>
         ),
-        size: 23,
+        size: isMobile ? 118 : 23,
       }),
       columnHelper.accessor('link', {
         enableSorting: false,
@@ -61,7 +64,7 @@ export const useSocialLinksTableColumns = (): ColumnDef<
         size: 67,
       }),
     ],
-    [columnHelper, hasNoDecisionMethods],
+    [columnHelper, hasNoDecisionMethods, isMobile],
   );
 
   return columns;
