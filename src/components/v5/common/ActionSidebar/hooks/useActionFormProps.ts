@@ -38,8 +38,10 @@ const useActionFormProps = (
     if (defaultValues) {
       setActionFormProps((state) => ({
         ...state,
-        actionType: defaultValues.actionType,
-        defaultValues,
+        defaultValues: {
+          ...state.defaultValues,
+          ...defaultValues,
+        },
       }));
     }
   }, [defaultValues]);
@@ -93,7 +95,7 @@ const useActionFormProps = (
           readonly: isReadonly,
           ...formOptions.options,
         },
-        defaultValues: actionFormProps.defaultValues,
+        defaultValues: formOptionsWithDefaults,
       });
 
       if (prevActionTypeRef.current === actionType) {
@@ -110,7 +112,6 @@ const useActionFormProps = (
       defaultValues,
       colony.nativeToken.tokenAddress,
       isReadonly,
-      actionFormProps.defaultValues,
       searchParams,
       setSearchParams,
     ],
