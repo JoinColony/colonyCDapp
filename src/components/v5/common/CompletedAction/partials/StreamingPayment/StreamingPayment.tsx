@@ -142,6 +142,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     amount || '1',
     selectedToken?.decimals,
   );
+
   const { endCondition } = streamingPaymentMetadata || {};
   const motionDomain = motionData?.motionDomain ?? null;
 
@@ -175,6 +176,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
 
   const isStartImmediately =
     Math.abs(startTimeDate.getTime() - new Date(createdAt).getTime()) < 60000;
+
+  // console.log({isStartImmediately, startTimeDate, createdAt});
 
   const meatballOptions: MeatBallMenuItem[] = [
     {
