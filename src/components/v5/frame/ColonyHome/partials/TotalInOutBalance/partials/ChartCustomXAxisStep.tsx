@@ -1,4 +1,3 @@
-import { useSpring } from '@react-spring/web';
 import React, { type FC } from 'react';
 
 import { CHART_CONFIG_VALUES } from '../consts.ts';
@@ -16,27 +15,32 @@ export const ChartCustomXAxisStep: FC<ChartCustomXAxisStepProps> = ({
   value,
   textColor,
 }) => {
-  const animatedProps = useSpring({
-    to: {
-      opacity: 1,
-      transform: `translate(${x + CHART_CONFIG_VALUES.MARGIN_BOTTOM}px, 0)`,
-      textTransform: 'scale(1)',
-    },
+  const motionProps = {
     from: {
       opacity: 0,
-      transform: `translate(${x + CHART_CONFIG_VALUES.MARGIN_BOTTOM}px, 0)`,
+      transform: `translate(${x + CHART_CONFIG_VALUES.MARGIN_BOTTOM}px, 0) scale(0.8)`,
       textTransform: 'scale(0.8)',
     },
-    config: { tension: 170, friction: 26 },
-  });
+    to: {
+      opacity: 1,
+      transform: `translate(${x + CHART_CONFIG_VALUES.MARGIN_BOTTOM}px, 0) scale(1)`,
+      textTransform: 'scale(1)',
+    },
+    transition: {
+      type: 'spring',
+      stiffness: 170,
+      damping: 26,
+      mass: 1,
+    },
+  };
 
   return (
     <ChartCustomBarLabel
       value={value}
       textColor={textColor}
-      animatedProps={animatedProps}
       textAnchor="middle"
       textBaseline="hanging"
+      motionProps={motionProps}
     />
   );
 };
