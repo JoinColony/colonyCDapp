@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { type NumeralValue } from '~shared/Numeral/Numeral.tsx';
+import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
+import { type NumeralValue } from '~shared/Numeral/types.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { formatText } from '~utils/intl.ts';
-import { getFormattedTokenAmount } from '~v5/common/CompletedAction/partials/utils.ts';
 import WidgetBox from '~v5/common/WidgetBox/WidgetBox.tsx';
 
 export interface StatsCardsProps {
@@ -24,6 +25,10 @@ const StatsCards = ({
   prefix,
   suffix,
 }: StatsCardsProps) => {
+  const streamingPerMonthDecimal = convertToDecimal(streamingPerMonth, 0);
+  const totalStreamedDecimal = convertToDecimal(totalStreamed, 0);
+  const unclaimedFoundsDecimal = convertToDecimal(unclaimedFounds, 0);
+
   return (
     <div className="mt-6 flex flex-col gap-2 md:mt-0  md:flex-row md:gap-6">
       <WidgetBox
@@ -35,7 +40,7 @@ const StatsCards = ({
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
               <p className="self-center font-semibold heading-4">
-                {getFormattedTokenAmount(`${streamingPerMonth}`, 0)}
+                {getFormattedNumeralValue(streamingPerMonthDecimal, 0)}
               </p>
             </div>
             <p className="self-center text-1">{suffix} / month</p>
@@ -52,7 +57,7 @@ const StatsCards = ({
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
               <p className="self-center font-semibold heading-4">
-                {getFormattedTokenAmount(`${totalStreamed}`, 0)}
+                {getFormattedNumeralValue(totalStreamedDecimal, 0)}
               </p>
             </div>
             <p className="self-center text-1">{suffix}</p>
@@ -68,7 +73,7 @@ const StatsCards = ({
             <div className="flex">
               <h4 className="font-semibold heading-4">{prefix}</h4>
               <p className="self-center font-semibold heading-4">
-                {getFormattedTokenAmount(`${unclaimedFounds}`, 0)}
+                {getFormattedNumeralValue(unclaimedFoundsDecimal, 0)}
               </p>
             </div>
             <p className="self-center text-1">{suffix}</p>
