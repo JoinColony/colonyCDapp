@@ -32,10 +32,30 @@ exports.handler = async (event) => {
       timeframeType,
       timeframePeriodEndDate,
     } = event.arguments?.input || {};
+
+    /**
+     * We want to early return if there is no positive period for which to compute values
+     */
+    if (timeframePeriod <= 0) {
+      return {
+        totalIn: 0,
+        totalOut: 0,
+        total: 0,
+        timeframe: [],
+      };
+    }
+
     const periodForTimeframe = getPeriodFor(
       timeframePeriod,
       timeframeType,
       timeframePeriodEndDate,
+    );
+
+    console.log(
+      `Date for ${timeframePeriod} timeframe, ` +
+        `${timeframeType} type, and ` +
+        `${timeframePeriodEndDate} end date: ` +
+        `${periodForTimeframe}`,
     );
 
     const inOutActions = await getInOutActions(colonyAddress, domainId);

@@ -69,17 +69,17 @@ const subtractYearsFor = (numberOfYears, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(
-    new Date(startOfYear(new Date(subYears(now, numberOfYears)))),
-  );
+  const timeOffset = numberOfYears > 0 ? numberOfYears - 1 : 0;
+  return startOfDay(new Date(startOfYear(new Date(subYears(now, timeOffset)))));
 };
 
 const subtractMonthsFor = (numberOfMonths, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
+  const timeOffset = numberOfMonths > 0 ? numberOfMonths - 1 : 0;
   return startOfDay(
-    new Date(startOfMonth(new Date(subMonths(now, numberOfMonths)))),
+    new Date(startOfMonth(new Date(subMonths(now, timeOffset)))),
   );
 };
 
@@ -87,16 +87,16 @@ const subtractWeeksFor = (numberOfWeeks, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(
-    new Date(startOfWeek(new Date(subWeeks(now, numberOfWeeks)))),
-  );
+  const timeOffset = numberOfWeeks > 0 ? numberOfWeeks - 1 : 0;
+  return startOfDay(new Date(startOfWeek(new Date(subWeeks(now, timeOffset)))));
 };
 
 const subtractDaysFor = (numberOfDays, timeframePeriodEndDate) => {
   const now = timeframePeriodEndDate
     ? new Date(timeframePeriodEndDate)
     : new Date();
-  return startOfDay(new Date(subDays(now, numberOfDays)));
+  const timeOffset = numberOfDays > 0 ? numberOfDays - 1 : 0;
+  return startOfDay(new Date(subDays(now, timeOffset)));
 };
 
 const getFullPeriodFormat = (date, timeframeType) => {
