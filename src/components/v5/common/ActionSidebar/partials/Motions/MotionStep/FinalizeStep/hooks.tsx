@@ -123,6 +123,7 @@ export const useClaimConfig = ({
     motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
+
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );

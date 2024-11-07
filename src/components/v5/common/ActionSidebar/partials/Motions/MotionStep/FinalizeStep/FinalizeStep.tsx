@@ -140,8 +140,8 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionAgreement;
 
   const successStatusText = canBeExecuted
-    ? 'motion.finalizeStep.votedAndNotStaked.statusText'
-    : 'motion.finalizeStep.complete.statusText';
+    ? 'motion.finalizeStep.passedAction'
+    : 'motion.finalizeStep.completedStatusText';
 
   const statusText = isMotionFailedNotFinalizable
     ? 'motion.finalizeStep.failed.statusText'
