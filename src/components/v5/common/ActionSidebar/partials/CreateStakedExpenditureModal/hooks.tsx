@@ -29,18 +29,16 @@ export const useShowCreateStakedExpenditureModal = (actionType: Action) => {
   const renderStakedExpenditureModal = useCallback(() => {
     const originalWatchValues = JSON.parse(stringifiedWatchValues);
 
-    if (shouldShowStakedExpenditureModal && isStakedExpenditureModalVisible) {
-      return (
-        <CreateStakedExpenditureModal
-          actionType={actionType}
-          isOpen={isStakedExpenditureModalVisible}
-          onClose={toggleOff}
-          formValues={originalWatchValues}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <CreateStakedExpenditureModal
+        actionType={actionType}
+        isOpen={
+          shouldShowStakedExpenditureModal && isStakedExpenditureModalVisible
+        }
+        onClose={toggleOff}
+        formValues={originalWatchValues}
+      />
+    );
   }, [
     actionType,
     isStakedExpenditureModalVisible,
