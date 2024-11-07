@@ -100,7 +100,6 @@ export const useClaimConfig = (
       databaseMotionId,
       remainingStakes,
       motionStateHistory,
-      voterRecord,
     },
     transactionHash,
   } = actionData;
@@ -120,7 +119,7 @@ export const useClaimConfig = (
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
-  const hasUserVoted = voterRecord.some((item) => item.address === userAddress);
+
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
@@ -318,7 +317,5 @@ export const useClaimConfig = (
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
-    userStake,
-    hasUserVoted,
   };
 };
