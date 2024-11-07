@@ -180,7 +180,7 @@ export const useStreamingPayment = (
           return getStreamingPaymentPayload(colony, values, blockTime);
         }),
       ),
-      [colony, networkInverseFee],
+      [colony, networkInverseFee, blockTime],
     ),
   });
 };
