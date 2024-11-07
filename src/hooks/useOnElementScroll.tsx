@@ -1,4 +1,5 @@
 import { noop } from 'lodash';
+import throttle from 'lodash/throttle';
 import { useEffect } from 'react';
 
 /**
@@ -7,6 +8,7 @@ import { useEffect } from 'react';
  * @param {string} scrollableElementId - The ID of the element to listen for scroll events.
  * @param {() => void} callback - The function to run on each scroll.
  * @param {boolean} [shouldExecute=true] - Whether to set up the scroll listener.
+ * @param {number} [scrollThrottle=100] - Throttle delay for the scroll event handler.
  *
  * @example
  * useOnElementScroll({
@@ -19,10 +21,12 @@ export const useOnElementScroll = ({
   scrollableElementId,
   callback,
   shouldExecute = true,
+  scrollThrottle = 100,
 }: {
   scrollableElementId: string;
   callback: () => void;
   shouldExecute?: boolean;
+  scrollThrottle?: number;
 }) => {
   useEffect(() => {
     if (!shouldExecute) {
@@ -38,7 +42,13 @@ export const useOnElementScroll = ({
 
     const handleScroll = () => callback();
 
-    scrollElement.addEventListener('scroll', handleScroll, { passive: true });
+    scrollElement.addEventListener(
+      'scroll',
+      throttle(handleScroll, scrollThrottle),
+      {
+        passive: true,
+      },
+    );
 
     return () => {
       scrollElement?.removeEventListener('scroll', handleScroll);

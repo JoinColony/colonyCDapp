@@ -157,7 +157,7 @@ const ColonyLinks = () => {
           tooltipContent={getCopyVariant({
             uncopied: 'colony.tooltip.colonyAddress.copy',
             copied: 'colony.tooltip.url.copied',
-            isCopied: isColonyAddressCopied,
+            isCopied: isShareUrlCopied,
             isMobile,
           })}
           isCopy
