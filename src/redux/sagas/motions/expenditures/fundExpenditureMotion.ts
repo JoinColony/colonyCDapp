@@ -1,6 +1,5 @@
 import {
   ClientType,
-  ColonyRole,
   Id,
   getChildIndex,
   getPermissionProofs,
@@ -10,6 +9,7 @@ import { constants } from 'ethers';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { ADDRESS_ZERO, APP_URL } from '~constants/index.ts';
+import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
   createGroupTransaction,
@@ -98,13 +98,14 @@ function* fundExpenditureMotion({
     );
 
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
+    const requiredRoles = [FUND_EXPENDITURE_REQUIRED_ROLE];
 
     const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
       getPermissionProofs,
       colonyClient.networkClient,
       colonyClient,
       fromDomainId,
-      [ColonyRole.Funding],
+      requiredRoles,
       votingReputationClient.address,
     );
 
@@ -119,7 +120,7 @@ function* fundExpenditureMotion({
       colonyClient.networkClient,
       colonyClient,
       expenditurePotDomain,
-      [ColonyRole.Funding],
+      requiredRoles,
       votingReputationClient.address,
     );
 

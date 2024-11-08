@@ -1,7 +1,7 @@
 import { Id } from '@colony/colony-js';
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import { BigNumber } from 'ethers';
-import React, { useEffect, type FC } from 'react';
+import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
@@ -29,7 +29,8 @@ import {
   getValidationSchema,
 } from './consts.ts';
 import { useFundingDecisionMethods } from './hooks.ts';
-import TokenItem from './TokenItem.tsx';
+import { MultiSigFundingMembers } from './partials/MultiSigFundingMembers.tsx';
+import TokenItem from './partials/TokenItem.tsx';
 import {
   type FundingModalContentProps,
   type FundingModalProps,
@@ -50,9 +51,24 @@ const MSG = defineMessages({
 const FundingModalContent: FC<FundingModalContentProps> = ({
   fundingItems,
   onClose,
-  teamName,
-  actionType,
+  fundingDomainId,
+  fundingDomainName,
 }) => {
+  // @TODO I pulled this out of ActionSidebarContent, but that one is really hard wired to work with action formState
+  // we should somehow simplify MultiSigMembersError to not have so much form logic
+  const [areMemberPermissionsLoading, setAreMemberPermissionsLoading] =
+    useState(false);
+  // Until we choose Multi-Sig as the decision method we can safely assume this is true
+  const [canCreateAction, setCanCreateAction] = useState(true);
+
+  const updateMembersLoadingState = (isLoading: boolean) => {
+    setAreMemberPermissionsLoading(isLoading);
+  };
+
+  const updateCanCreateAction = (canCreate: boolean) => {
+    setCanCreateAction(canCreate);
+  };
+
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const {
@@ -68,7 +84,8 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   const fundingDecisionMethodDescriptions =
     getFundingDecisionMethodDescriptions(userRole.name);
 
-  const fundingDecisionMethodOptions = useFundingDecisionMethods(actionType);
+  const fundingDecisionMethodOptions =
+    useFundingDecisionMethods(fundingDomainId);
 
   const noDecisionMethodAvailable = fundingDecisionMethodOptions.every(
     ({ isDisabled }) => isDisabled,
@@ -79,6 +96,8 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
   }, [trigger]);
 
   const hasEnoughFunds = !errors.fundingItems;
+  const isMultiSigSelected = method && method.value === DecisionMethod.MultiSig;
+  const isSubmitDisabled = !canCreateAction || areMemberPermissionsLoading;
 
   return (
     <>
@@ -124,7 +143,7 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
         {!hasEnoughFunds && (
           <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm text-negative-400">
             {formatText(MSG.notEnoughTokens, {
-              team: teamName,
+              team: fundingDomainName,
             })}
           </div>
         )}
@@ -134,6 +153,13 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
               id: 'fundingModal.noDecisionMethodAvailable',
             })}
           </div>
+        )}
+        {isMultiSigSelected && (
+          <MultiSigFundingMembers
+            updateCanCreateAction={updateCanCreateAction}
+            updateMembersLoadingState={updateMembersLoadingState}
+            fundingDomainId={fundingDomainId}
+          />
         )}
       </div>
       <div className="mt-auto flex flex-col-reverse items-center justify-between gap-3 sm:flex-row">
@@ -153,7 +179,12 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
               }
             />
           ) : (
-            <Button mode="primarySolid" isFullSize type="submit">
+            <Button
+              mode="primarySolid"
+              isFullSize
+              type="submit"
+              disabled={isSubmitDisabled}
+            >
               {formatText({ id: 'fundingModal.accept' })}
             </Button>
           )}
@@ -167,7 +198,6 @@ const FundingModal: FC<FundingModalProps> = ({
   onClose,
   expenditure,
   onSuccess,
-  actionType,
   ...rest
 }) => {
   const { colony } = useColonyContext();
@@ -281,8 +311,8 @@ const FundingModal: FC<FundingModalProps> = ({
         <FundingModalContent
           fundingItems={fundingItems}
           onClose={onClose}
-          teamName={selectedTeam?.metadata?.name || ''}
-          actionType={actionType}
+          fundingDomainName={selectedTeam?.metadata?.name || ''}
+          fundingDomainId={selectedTeam?.nativeId || Id.RootDomain}
         />
       </Form>
     </Modal>

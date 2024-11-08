@@ -1,14 +1,9 @@
-import {
-  ClientType,
-  ColonyRole,
-  Extension,
-  getPotDomain,
-} from '@colony/colony-js';
+import { ClientType, Extension, getPotDomain } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { type BigNumberish } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import {
   type ChannelDefinition,
@@ -68,7 +63,7 @@ function* fundExpenditureMultiSig({
     meta.id,
     ['createMultiSig', 'annotateMultiSig'],
   );
-  const requiredRoles = PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
+  const requiredRoles = [FUND_EXPENDITURE_REQUIRED_ROLE];
 
   try {
     const userAddress = yield colonyClient.signer.getAddress();
@@ -97,7 +92,7 @@ function* fundExpenditureMultiSig({
         colonyRoles,
         colonyDomains,
         requiredDomainId: Number(fromDomainId),
-        requiredColonyRole: ColonyRole.Funding,
+        requiredColonyRole: FUND_EXPENDITURE_REQUIRED_ROLE,
         permissionAddress: userAddress,
         isMultiSig: true,
       },
