@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 import {
-  acceptCookieConsentBanner,
   fillInputByLabelWithDelay,
+  setCookieConsent,
 } from '../utils/common.ts';
 import {
   fillColonyNameStep,
@@ -19,15 +19,15 @@ import {
 test.describe('Create Colony flow', () => {
   const colonyName = 'testcolonyname';
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context, baseURL }) => {
+    await setCookieConsent(context, baseURL);
     const colonyUrl = await generateCreateColonyUrl();
 
     await page.goto(colonyUrl);
 
     await selectWalletAndUserProfile(page);
-
-    await acceptCookieConsentBanner(page);
   });
+
   test.describe('Details step', () => {
     test('Should render Details step correctly', async ({ page }) => {
       // Heading of the step and form is shown
@@ -565,7 +565,6 @@ test.describe('Create Colony flow', () => {
     test('Should create a colony and navigate to the newly created colony URL', async ({
       page,
     }) => {
-      test.slow();
       const colonyURL = generateRandomString();
       await fillColonyNameStep(page, {
         nameFieldValue: colonyName,
@@ -610,17 +609,14 @@ test.describe('Create Colony flow', () => {
 
       // eslint-disable-next-line playwright/no-conditional-in-test
       if (isInviteBlockPresent) {
-        // eslint-disable-next-line playwright/no-conditional-expect
         await expect(
           colonyCreateDialog.getByRole('button', { name: /copy/i }),
         ).toBeVisible();
 
-        // eslint-disable-next-line playwright/no-conditional-expect
         await expect(
           colonyCreateDialog.getByText(/\/create-colony\/.*/),
         ).toBeVisible();
 
-        // eslint-disable-next-line playwright/no-conditional-expect
         await expect(
           colonyCreateDialog.getByRole('heading', {
             name: /Invite a person to create a Colony/i,

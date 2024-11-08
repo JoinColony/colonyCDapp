@@ -51,6 +51,7 @@ module.exports = {
       extends: 'plugin:playwright/recommended',
       rules: {
         'no-await-in-loop': 'off',
+        'playwright/no-conditional-expect': 'off',
       },
     },
   ],
