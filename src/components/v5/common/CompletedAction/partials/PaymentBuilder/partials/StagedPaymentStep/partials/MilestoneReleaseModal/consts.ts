@@ -8,18 +8,22 @@ export const getMilestoneReleaseDecisionMethodDescriptions = (
 ) => ({
   [DecisionMethod.Permissions]: formatText(
     {
-      id: 'fundingModal.permissionsDescription',
+      id: 'milestoneModal.permissionsDescription',
     },
     {
       permission: userRole,
     },
   ),
   [DecisionMethod.Reputation]: formatText({
-    id: 'fundingModal.reputationDescription',
+    id: 'milestoneModal.reputationDescription',
   }),
   [DecisionMethod.PaymentCreator]: formatText({
-    id: 'releaseModal.paymentCreatorDescription',
+    id: 'milestoneModal.paymentCreatorDescription',
   }),
+  // @TODO: Add multi-sig
+  // [DecisionMethod.PaymentCreator]: formatText({
+  //   id: 'milestoneModal.multiSig',
+  // }),
 });
 
 export const getValidationSchema = () =>
