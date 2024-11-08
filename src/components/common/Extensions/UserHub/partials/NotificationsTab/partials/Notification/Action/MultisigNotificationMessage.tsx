@@ -1,20 +1,15 @@
-import React, { type ReactNode, useMemo, type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { NotificationType } from '~gql';
+import { type RequireProps } from '~types';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
+import { type BaseNotificationMessageProps } from '../types.ts';
 
 const displayName =
   'common.Extensions.UserHub.partials.MultisigNotificationMessage';
-
-interface MultisigNotificationMessageProps {
-  actionMetadataDescription: ReactNode;
-  actionTitle: string;
-  loading: boolean;
-  notificationType: NotificationType;
-}
 
 const MSG = defineMessages({
   created: {
@@ -39,12 +34,9 @@ const MSG = defineMessages({
   },
 });
 
-const MultisigNotificationMessage: FC<MultisigNotificationMessageProps> = ({
-  actionMetadataDescription,
-  actionTitle,
-  loading,
-  notificationType,
-}) => {
+const MultisigNotificationMessage: FC<
+  RequireProps<BaseNotificationMessageProps, 'notificationType'>
+> = ({ actionMetadataDescription, actionTitle, loading, notificationType }) => {
   const Message = useMemo(() => {
     const firstPart = {
       [NotificationType.MultisigActionCreated]: formatText(MSG.created),

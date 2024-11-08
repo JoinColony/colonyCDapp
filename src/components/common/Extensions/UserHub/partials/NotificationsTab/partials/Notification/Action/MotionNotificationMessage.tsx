@@ -1,20 +1,15 @@
-import React, { type ReactNode, useMemo, type FC } from 'react';
+import React, { useMemo, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { NotificationType } from '~gql';
+import { type RequireProps } from '~types';
 import { formatText } from '~utils/intl.ts';
 
 import NotificationMessage from '../NotificationMessage.tsx';
+import { type BaseNotificationMessageProps } from '../types.ts';
 
 const displayName =
   'common.Extensions.UserHub.partials.MotionNotificationMessage';
-
-interface MotionNotificationMessageProps {
-  actionMetadataDescription: ReactNode;
-  actionTitle: string;
-  loading: boolean;
-  notificationType: NotificationType;
-}
 
 const MSG = defineMessages({
   created: {
@@ -47,12 +42,9 @@ const MSG = defineMessages({
   },
 });
 
-const MotionNotificationMessage: FC<MotionNotificationMessageProps> = ({
-  actionMetadataDescription,
-  actionTitle,
-  loading,
-  notificationType,
-}) => {
+const MotionNotificationMessage: FC<
+  RequireProps<BaseNotificationMessageProps, 'notificationType'>
+> = ({ actionMetadataDescription, actionTitle, loading, notificationType }) => {
   const Message = useMemo(() => {
     const firstPart = {
       [NotificationType.MotionCreated]: formatText(MSG.created),
