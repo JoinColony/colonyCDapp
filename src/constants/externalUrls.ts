@@ -14,6 +14,7 @@ export const PRIVACY_POLICY = `https://colony.io/terms-of-service#privacy-policy
 export const TERMS_AND_CONDITIONS = `https://colony.io/terms-of-service`;
 export const ADVANCED_SETTINGS = `https://docs.colony.io/use/advanced-features/`;
 export const REQUEST_ACCESS = `https://colony.io/request-access`;
+export const REQUEST_INVITES = `https://colony.io/request-invite`;
 
 /*
  * Utils

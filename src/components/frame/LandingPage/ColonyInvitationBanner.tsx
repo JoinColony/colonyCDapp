@@ -2,7 +2,9 @@ import { SmileySticker, Ticket, CopySimple } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
+import { REQUEST_INVITES } from '~constants';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
+import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
 const displayName = 'frame.LandingPage';
@@ -37,6 +39,10 @@ const MSG = defineMessages({
     id: `${displayName}.copiedButton`,
     defaultMessage: `Link copied`,
   },
+  requestColoniesButton: {
+    id: `${displayName}.requestColoniesButton`,
+    defaultMessage: `Request additional colonies`,
+  },
 });
 
 const ColonyInvitationBanner = ({
@@ -48,7 +54,7 @@ const ColonyInvitationBanner = ({
   const hasColoniesRemaining = coloniesRemaining > 0;
 
   return (
-    <div className="w-full rounded-lg border p-6 md:max-w-[31.25rem]">
+    <div className="w-full rounded-lg border bg-base-white p-6 md:max-w-[31.25rem]">
       <div className="flex h-10 w-10 items-center justify-center rounded-[.25rem] border">
         <SmileySticker size={24} />
       </div>
@@ -61,15 +67,14 @@ const ColonyInvitationBanner = ({
           values={{ remaining: coloniesRemaining }}
         />
       </span>
-
-      <p className="mt-2 text-sm font-normal text-gray-700">
+      <p className="mt-2 text-sm font-normal text-gray-700 md:hidden">
         <FormattedMessage
           {...(hasColoniesRemaining
             ? MSG.descriptionRemaining
             : MSG.descriptionNoRemaining)}
         />
       </p>
-      {hasColoniesRemaining && (
+      {hasColoniesRemaining ? (
         <div className="mt-2 flex flex-col gap-4 rounded-md bg-gray-50 p-3">
           <div className="flex items-center gap-2">
             <div>
@@ -89,6 +94,16 @@ const ColonyInvitationBanner = ({
             />
           </Button>
         </div>
+      ) : (
+        <a href={REQUEST_INVITES} target="_blank" rel="noreferrer">
+          <Button
+            isFullSize
+            className="mt-4 hidden md:block"
+            mode="primaryOutline"
+          >
+            {formatText(MSG.requestColoniesButton)}
+          </Button>
+        </a>
       )}
     </div>
   );
