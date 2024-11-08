@@ -27,7 +27,7 @@ const ReleaseAllButton: FC<ReleaseAllButtonProps> = ({ items }) => {
   return (
     <button
       type="button"
-      className="w-full text-center text-gray-900 underline transition-colors text-3 hover:text-blue-400"
+      className="w-full text-end text-gray-900 underline transition-colors text-3 hover:text-blue-400"
       onClick={() => {
         setSelectedMilestones(notReleasedMilestones);
         showModal();

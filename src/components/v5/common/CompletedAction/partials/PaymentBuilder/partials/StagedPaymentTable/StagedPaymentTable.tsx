@@ -142,13 +142,15 @@ const useStagedPaymentTableColumns = ({
                   const isClaimed = currentMilestone?.isClaimed;
 
                   return isClaimed ? (
-                    <PillsBase
-                      className={clsx(
-                        'bg-teams-blue-50 text-sm font-medium text-teams-blue-400',
-                      )}
-                    >
-                      {formatText(MSG.released)}
-                    </PillsBase>
+                    <div className="flex items-center justify-end">
+                      <PillsBase
+                        className={clsx(
+                          'bg-teams-blue-50 text-sm font-medium text-teams-blue-400',
+                        )}
+                      >
+                        {formatText(MSG.released)}
+                      </PillsBase>
+                    </div>
                   ) : (
                     <>
                       {isCorrectExtensionInstalled ? (
