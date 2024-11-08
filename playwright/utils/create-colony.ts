@@ -103,6 +103,10 @@ export const fillNativeTokenStepWithExistingToken = async (
   await page.getByLabel(/Use an existing token/i).check();
   await page.getByRole('button', { name: /continue/i }).click();
 
-  await page.getByLabel(/Existing token address/i).fill(token);
+  await fillInputByLabelWithDelay({
+    page,
+    label: /Existing token address/i,
+    value: token,
+  });
   await page.getByRole('button', { name: /continue/i }).click();
 };
