@@ -1,5 +1,7 @@
 import { type Page } from '@playwright/test';
 
+import { fillInputByLabelWithDelay } from './common.ts';
+
 export const generateRandomString = () => {
   return Math.random().toString(36).substring(2, 8);
 };
@@ -73,13 +75,25 @@ export const fillColonyNameStep = async (
     urlFieldValue,
   }: { nameFieldValue: string; urlFieldValue: string },
 ) => {
-  await page.getByLabel(/colony Name/i).fill(nameFieldValue);
+  await fillInputByLabelWithDelay({
+    page,
+    label: /colony name/i,
+    value: nameFieldValue,
+  });
 
-  await page.getByLabel(/custom colony URL/i).fill(urlFieldValue);
+  await fillInputByLabelWithDelay({
+    page,
+    label: /custom colony URL/i,
+    value: urlFieldValue,
+  });
 
   await page
     .getByRole('button', { name: /continue/i })
     .click({ timeout: 10000 });
+
+  await page
+    .getByRole('heading', { name: /creating a new native token/i })
+    .waitFor({ state: 'visible' });
 };
 
 export const fillNativeTokenStepWithExistingToken = async (
