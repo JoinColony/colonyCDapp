@@ -50,7 +50,6 @@ const ColonyRoute = () => {
       name: colonyName,
     },
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
   });
 
   const { user, userLoading, walletConnecting } = useAppContext();
