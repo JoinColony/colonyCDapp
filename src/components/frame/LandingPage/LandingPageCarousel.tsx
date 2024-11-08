@@ -67,8 +67,9 @@ const LandingPageCarousel = () => {
         <div className="relative mb-9 h-[7.25rem]">
           {slides.map((slide, index) => {
             const isCurrentSlide = currentSlide === index;
+
             return (
-              <div className="absolute left-0 top-0">
+              <div className="absolute left-0 top-0" key={slide.title.id}>
                 <h1
                   className={clsx(
                     'transition-opacity duration-normal heading-2',
