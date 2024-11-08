@@ -570,7 +570,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               setExpectedStepKey(ExpenditureStep.Release);
             }}
             // @todo: update when split payment will be ready
-            actionType={Action.PaymentBuilder}
           />
         </>
       )}

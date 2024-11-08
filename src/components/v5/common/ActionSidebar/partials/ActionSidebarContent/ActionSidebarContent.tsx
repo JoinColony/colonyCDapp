@@ -38,7 +38,7 @@ import CreateStakedExpenditureModal from '../CreateStakedExpenditureModal/Create
 import RemoveDraftModal from '../RemoveDraftModal/RemoveDraftModal.tsx';
 
 import { useGetFormActionErrors } from './hooks.ts';
-import { MultiSigMembersError } from './partials/MultiSigMembersError/MultiSigMembersError.tsx';
+import { MultiSigMembersError } from './partials/MultiSigMembersError.tsx';
 import NoPermissionsError from './partials/NoPermissionsError.tsx';
 import NoReputationError from './partials/NoReputationError.tsx';
 import { SidebarBanner } from './partials/SidebarBanner.tsx';

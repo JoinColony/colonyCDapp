@@ -6,7 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
-import { type TokenItemProps } from './types.ts';
+import { type TokenItemProps } from '../types.ts';
 
 const TokenItem: FC<TokenItemProps> = ({
   amount,
