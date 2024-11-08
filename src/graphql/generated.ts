@@ -1707,6 +1707,7 @@ export type CreateExpenditureInput = {
   nativeId: Scalars['Int'];
   ownerAddress: Scalars['ID'];
   slots: Array<ExpenditureSlotInput>;
+  splitPaymentPayoutClaimedNotificationSent?: InputMaybe<Scalars['Boolean']>;
   stagedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   stakedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   status: ExpenditureStatus;
@@ -2358,6 +2359,8 @@ export type Expenditure = {
   ownerAddress: Scalars['ID'];
   /** Array containing expenditure slots */
   slots: Array<ExpenditureSlot>;
+  /** Indicates whether the splitPaymentClaimedNotification has been sent to prevent sending multiple notifications */
+  splitPaymentPayoutClaimedNotificationSent?: Maybe<Scalars['Boolean']>;
   /** Address of StagedExpenditure extension which set the expenditure as staged, if applicable */
   stagedExpenditureAddress?: Maybe<Scalars['ID']>;
   /** Address of StakedExpenditure extension which created the expenditure, if applicable */
@@ -3591,6 +3594,7 @@ export type ModelExpenditureConditionInput = {
   not?: InputMaybe<ModelExpenditureConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureConditionInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
+  splitPaymentPayoutClaimedNotificationSent?: InputMaybe<ModelBooleanInput>;
   stagedExpenditureAddress?: InputMaybe<ModelIdInput>;
   stakedExpenditureAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
@@ -3618,6 +3622,7 @@ export type ModelExpenditureFilterInput = {
   not?: InputMaybe<ModelExpenditureFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelIdInput>;
+  splitPaymentPayoutClaimedNotificationSent?: InputMaybe<ModelBooleanInput>;
   stagedExpenditureAddress?: InputMaybe<ModelIdInput>;
   stakedExpenditureAddress?: InputMaybe<ModelIdInput>;
   status?: InputMaybe<ModelExpenditureStatusInput>;
@@ -4475,6 +4480,7 @@ export type ModelSubscriptionExpenditureFilterInput = {
   nativeId?: InputMaybe<ModelSubscriptionIntInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionExpenditureFilterInput>>>;
   ownerAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  splitPaymentPayoutClaimedNotificationSent?: InputMaybe<ModelSubscriptionBooleanInput>;
   stagedExpenditureAddress?: InputMaybe<ModelSubscriptionIdInput>;
   stakedExpenditureAddress?: InputMaybe<ModelSubscriptionIdInput>;
   status?: InputMaybe<ModelSubscriptionStringInput>;
@@ -9736,6 +9742,7 @@ export type UpdateExpenditureInput = {
   nativeId?: InputMaybe<Scalars['Int']>;
   ownerAddress?: InputMaybe<Scalars['ID']>;
   slots?: InputMaybe<Array<ExpenditureSlotInput>>;
+  splitPaymentPayoutClaimedNotificationSent?: InputMaybe<Scalars['Boolean']>;
   stagedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   stakedExpenditureAddress?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ExpenditureStatus>;
