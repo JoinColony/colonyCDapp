@@ -1,7 +1,9 @@
 import React, { type PropsWithChildren } from 'react';
 
+import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
+import { light } from '~frame/Extensions/themes/consts.ts';
 import LandingPageCarousel from '~frame/LandingPage/LandingPageCarousel.tsx';
-import Logo from '~images/assets/landing/logo.png';
+import ColonyLogo from '~icons/ColonyLogoLandingPage.tsx';
 import PageHeader from '~v5/frame/PageLayout/partials/PageHeader/PageHeader.tsx';
 import { BasicPageSidebar } from '~v5/shared/Navigation/Sidebar/sidebars/BasicPageSidebar.tsx';
 
@@ -16,6 +18,8 @@ export const LandingPageLayout = ({
   rightComponent,
   bottomComponent,
 }: LandingPageLayoutProps) => {
+  const { isDarkMode } = usePageThemeContext();
+
   return (
     <div className="flex h-screen w-screen flex-col justify-between md:py-4 md:pl-4">
       <div className="block md:hidden">
@@ -28,7 +32,9 @@ export const LandingPageLayout = ({
         <div className="relative flex w-full flex-1 flex-col md:flex-row">
           <div className="relative left-0 top-0 flex w-full flex-1 items-center md:absolute md:px-8 md:pt-5">
             <div className="hidden h-full min-w-[7.75rem] pb-2 md:block">
-              <img className="h-4" alt="colony logo" src={Logo} />
+              <ColonyLogo
+                color={isDarkMode ? light.baseWhite : light.gray900}
+              />
             </div>
             <div className="hidden w-full md:block">
               <PageHeader userNavigation={<UserNavigationWrapper />} />
@@ -36,14 +42,16 @@ export const LandingPageLayout = ({
           </div>
           <div className="flex h-full w-full flex-col-reverse overflow-hidden md:flex-row md:bg-transparent">
             <div className="flex h-full w-full flex-1 justify-center md:justify-end">
-              <div className="flex w-full justify-center md:max-w-[39.375rem] md:px-8">
+              <div className="flex w-full justify-center md:max-w-[43.75rem] md:px-8">
                 <div className="w-full md:max-w-[28.125rem]">{children}</div>
               </div>
             </div>
             <div className="flex-none md:flex-1 md:rounded-l-3xl md:bg-gray-50">
               <div className="flex h-full w-full flex-col items-center justify-center md:max-w-[43.75rem]">
                 <div className="block h-full w-full min-w-[7.75rem] px-6 pt-8 md:hidden">
-                  <img className="h-4" alt="colony logo" src={Logo} />
+                  <ColonyLogo
+                    color={isDarkMode ? light.baseWhite : light.gray900}
+                  />
                 </div>
                 {rightComponent ?? (
                   <div className="flex h-full items-end pt-4 md:px-8 md:py-[3.125rem]">

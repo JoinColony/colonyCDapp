@@ -21,7 +21,7 @@ const BaseColonyCard = ({
   <div
     {...props}
     className={clsx(
-      'flex h-[4.5rem] items-center justify-between gap-[.875rem] rounded border px-5 py-4 transition-colors duration-normal',
+      'flex items-center justify-between gap-[.875rem] rounded border px-5 py-4 transition-colors duration-normal',
       {
         'cursor-pointer hover:border-gray-900': isClickable,
       },
