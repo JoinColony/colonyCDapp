@@ -43,6 +43,7 @@ export const ContractAddressInput = () => {
         console.log(response);
         setServerError(response.result);
       } else {
+        setServerError('');
         setValue('jsonAbi', response.result);
       }
     }
