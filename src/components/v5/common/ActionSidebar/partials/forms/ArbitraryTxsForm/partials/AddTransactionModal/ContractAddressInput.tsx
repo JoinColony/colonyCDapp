@@ -1,5 +1,5 @@
 import { isAddress } from 'ethers/lib/utils';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
@@ -20,9 +20,16 @@ export const ContractAddressInput = () => {
   console.log('errors', errors);
   const contractAddressField = watch('contractAddress');
 
+  const [serverError, setServerError] = useState('');
+
   useEffect(() => {
     if (isAddress(contractAddressField)) {
       getABIFromContractAddress(contractAddressField);
+    } else {
+      setError('contractAddress', {
+        type: 'custom',
+        message: formatText(MSG.contractAddressError),
+      });
     }
 
     async function getABIFromContractAddress(contractAddress: string) {
@@ -34,10 +41,7 @@ export const ContractAddressInput = () => {
         // @TODO: remove console log here
         // eslint-disable-next-line no-console
         console.log(response);
-        setError('contractAddress', {
-          type: 'custom',
-          message: response.result,
-        });
+        setServerError(response.result);
       } else {
         setValue('jsonAbi', response.result);
       }
@@ -49,6 +53,7 @@ export const ContractAddressInput = () => {
       name="contractAddress"
       label={formatText(MSG.contractAddressField)}
       placeholder={formatText(MSG.contractAddressPlaceholder)}
+      error={serverError || undefined}
     />
   );
 };
