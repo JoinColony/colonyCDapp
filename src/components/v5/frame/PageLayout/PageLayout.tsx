@@ -50,7 +50,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         <section ref={topContentContainerRef}>{topContent}</section>
         <div className="flex h-[calc(100vh-var(--top-content-height))] flex-row">
           <section
-            className={clsx('md:py-4 md:pl-4', {
+            className={clsx('relative md:py-4 md:pl-4', {
               'sm:py-4 sm:pl-4': enableMobileAndDesktopLayoutBreakpoints,
             })}
           >
