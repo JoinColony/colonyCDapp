@@ -10,18 +10,21 @@ interface FormInputProps<T> {
   label?: string;
   placeholder?: string;
   shouldFocus?: boolean;
+  error?: string;
 }
 const FormInput = <T,>({
   name,
   label,
   shouldFocus,
   placeholder,
+  error,
 }: FormInputProps<T>) => {
   const {
     register,
     formState: { isSubmitting, errors },
   } = useFormContext();
-  const error = get(errors, name)?.message as Message | undefined;
+  const errorMessage =
+    error || (get(errors, name)?.message as Message | undefined);
 
   return (
     <Input
@@ -32,8 +35,8 @@ const FormInput = <T,>({
       labelMessage={label}
       shouldFocus={shouldFocus}
       placeholder={placeholder}
-      isError={!!error}
-      customErrorMessage={error ? formatText(error) : ''}
+      isError={!!errorMessage}
+      customErrorMessage={errorMessage ? formatText(errorMessage) : ''}
       allowLayoutShift
     />
   );
