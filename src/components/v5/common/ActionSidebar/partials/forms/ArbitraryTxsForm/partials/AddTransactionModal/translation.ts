@@ -57,4 +57,8 @@ export const MSG = defineMessages({
     id: `${displayName}.submitButton`,
     defaultMessage: 'Confirm',
   },
+  contractAddressError: {
+    id: `${displayName}.contractAddressError`,
+    defaultMessage: 'Please enter a valid contract address.',
+  },
 });

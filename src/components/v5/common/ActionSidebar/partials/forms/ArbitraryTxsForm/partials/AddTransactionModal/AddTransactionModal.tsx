@@ -13,6 +13,8 @@ import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.ts
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
+import { validationSchema } from './consts.tsx';
+import { ContractAddressInput } from './ContractAddressInput.tsx';
 import { displayName, MSG } from './translation.ts';
 
 const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
@@ -35,7 +37,10 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
 
   return (
     <Modal buttonMode="primarySolid" icon={CodeBlock} isFullOnMobile {...rest}>
-      <Form<AddTransactionTableModel> onSubmit={onSubmit}>
+      <Form<AddTransactionTableModel>
+        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+      >
         {() => (
           <>
             <h5 className="mb-1.5 heading-5">{formatText(MSG.title)}</h5>
@@ -47,11 +52,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
               {formatText(MSG.link)}
             </a>
             <div className="mt-5 flex flex-col gap-4">
-              <FormInput
-                name="contractAddress"
-                label={formatText(MSG.contractAddressField)}
-                placeholder={formatText(MSG.contractAddressPlaceholder)}
-              />
+              <ContractAddressInput />
               <FormTextareaBase
                 name="jsonAbi"
                 label={formatText(MSG.abiJsonField)}
