@@ -10725,16 +10725,6 @@ export type GetColonyContributorQueryVariables = Exact<{
 
 export type GetColonyContributorQuery = { __typename?: 'Query', getColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null };
 
-export type GetColonyContributorsQueryVariables = Exact<{
-  colonyAddress: Scalars['ID'];
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type GetColonyContributorsQuery = { __typename?: 'Query', getContributorsByColony?: { __typename?: 'ModelColonyContributorConnection', nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
-
 export type GetContributorsByAddressQueryVariables = Exact<{
   contributorAddress: Scalars['ID'];
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -10754,6 +10744,14 @@ export type SearchColonyContributorsQueryVariables = Exact<{
 
 
 export type SearchColonyContributorsQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null, nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
+
+export type GetMembersCountQueryVariables = Exact<{
+  filter: SearchableColonyContributorFilterInput;
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetMembersCountQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', nextToken?: string | null, aggregateItems: Array<{ __typename?: 'SearchableAggregateResult', name: string, result?: { __typename?: 'SearchableAggregateBucketResult', buckets?: Array<{ __typename?: 'SearchableAggregateBucketResultItem', doc_count: number, key: string } | null> | null } | { __typename?: 'SearchableAggregateScalarResult' } | null } | null> } | null };
 
 export type GetColonyDecisionsQueryVariables = Exact<{
   colonyAddress: Scalars['String'];
@@ -14253,52 +14251,6 @@ export function useGetColonyContributorLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetColonyContributorQueryHookResult = ReturnType<typeof useGetColonyContributorQuery>;
 export type GetColonyContributorLazyQueryHookResult = ReturnType<typeof useGetColonyContributorLazyQuery>;
 export type GetColonyContributorQueryResult = Apollo.QueryResult<GetColonyContributorQuery, GetColonyContributorQueryVariables>;
-export const GetColonyContributorsDocument = gql`
-    query GetColonyContributors($colonyAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String) {
-  getContributorsByColony(
-    colonyAddress: $colonyAddress
-    sortDirection: $sortDirection
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      ...ColonyContributor
-    }
-    nextToken
-  }
-}
-    ${ColonyContributorFragmentDoc}`;
-
-/**
- * __useGetColonyContributorsQuery__
- *
- * To run a query within a React component, call `useGetColonyContributorsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetColonyContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetColonyContributorsQuery({
- *   variables: {
- *      colonyAddress: // value for 'colonyAddress'
- *      sortDirection: // value for 'sortDirection'
- *      limit: // value for 'limit'
- *      nextToken: // value for 'nextToken'
- *   },
- * });
- */
-export function useGetColonyContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
-      }
-export function useGetColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>(GetColonyContributorsDocument, options);
-        }
-export type GetColonyContributorsQueryHookResult = ReturnType<typeof useGetColonyContributorsQuery>;
-export type GetColonyContributorsLazyQueryHookResult = ReturnType<typeof useGetColonyContributorsLazyQuery>;
-export type GetColonyContributorsQueryResult = Apollo.QueryResult<GetColonyContributorsQuery, GetColonyContributorsQueryVariables>;
 export const GetContributorsByAddressDocument = gql`
     query GetContributorsByAddress($contributorAddress: ID!, $sortDirection: ModelSortDirection = ASC, $limit: Int = 100, $nextToken: String, $isWatching: Boolean) {
   getContributorsByAddress(
@@ -14398,6 +14350,58 @@ export function useSearchColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQu
 export type SearchColonyContributorsQueryHookResult = ReturnType<typeof useSearchColonyContributorsQuery>;
 export type SearchColonyContributorsLazyQueryHookResult = ReturnType<typeof useSearchColonyContributorsLazyQuery>;
 export type SearchColonyContributorsQueryResult = Apollo.QueryResult<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>;
+export const GetMembersCountDocument = gql`
+    query GetMembersCount($filter: SearchableColonyContributorFilterInput!, $nextToken: String) {
+  searchColonyContributors(
+    aggregates: {type: terms, field: colonyAddress, name: "membersCount"}
+    filter: $filter
+    limit: 1000
+    nextToken: $nextToken
+  ) {
+    aggregateItems {
+      result {
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            doc_count
+            key
+          }
+        }
+      }
+      name
+    }
+    nextToken
+  }
+}
+    `;
+
+/**
+ * __useGetMembersCountQuery__
+ *
+ * To run a query within a React component, call `useGetMembersCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembersCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembersCountQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      nextToken: // value for 'nextToken'
+ *   },
+ * });
+ */
+export function useGetMembersCountQuery(baseOptions: Apollo.QueryHookOptions<GetMembersCountQuery, GetMembersCountQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
+      }
+export function useGetMembersCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMembersCountQuery, GetMembersCountQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMembersCountQuery, GetMembersCountQueryVariables>(GetMembersCountDocument, options);
+        }
+export type GetMembersCountQueryHookResult = ReturnType<typeof useGetMembersCountQuery>;
+export type GetMembersCountLazyQueryHookResult = ReturnType<typeof useGetMembersCountLazyQuery>;
+export type GetMembersCountQueryResult = Apollo.QueryResult<GetMembersCountQuery, GetMembersCountQueryVariables>;
 export const GetColonyDecisionsDocument = gql`
     query getColonyDecisions($colonyAddress: String!, $sortDirection: ModelSortDirection = ASC, $filter: ModelColonyDecisionFilterInput, $limit: Int = 10) {
   getColonyDecisionByColonyAddress(

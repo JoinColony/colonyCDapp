@@ -9,8 +9,6 @@ export const MemberContext = createContext<
       verifiedMembers: ColonyContributor[];
       totalMemberCount: number;
       totalMembers: ColonyContributor[];
-      followersCount: number;
-      followers: ColonyContributor[];
       pagedMembers: ColonyContributor[];
       moreMembers: boolean;
       loadMoreMembers: () => void;
@@ -22,6 +20,7 @@ export const MemberContext = createContext<
       moreContributors: boolean;
       loadMoreContributors: () => void;
       loading: boolean;
+      hasActiveFilter: boolean;
     }
   | undefined
 >(undefined);

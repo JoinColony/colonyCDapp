@@ -18,6 +18,8 @@ export const useMembersPage = () => {
     loadMoreMembers,
     moreMembers,
     totalMemberCount,
+    totalContributorCount,
+    hasActiveFilter,
   } = useMemberContext();
   const { colony } = useColonyContext();
   const selectedDomain = useGetSelectedDomainFilter();
@@ -28,14 +30,19 @@ export const useMembersPage = () => {
   );
 
   const membersList = useMemo(
-    () => getMembersList(pagedMembers, selectedDomain?.nativeId, colony),
-    [colony, pagedMembers, selectedDomain],
+    // Members list should not be filtered by domain
+    () => getMembersList(pagedMembers, undefined, colony),
+    [colony, pagedMembers],
   );
 
-  const sortedContributorCount = filteredContributors.length;
-  const sortedMemberCount = !selectedDomain?.nativeId
-    ? totalMemberCount
-    : filteredMembers.length;
+  const sortedContributorCount =
+    hasActiveFilter || !!selectedDomain?.nativeId
+      ? filteredContributors.length
+      : totalContributorCount;
+
+  const sortedMemberCount = hasActiveFilter
+    ? filteredMembers.length
+    : totalMemberCount;
 
   return {
     contributorsList,
@@ -47,5 +54,6 @@ export const useMembersPage = () => {
     loadMoreMembers,
     sortedContributorCount,
     sortedMemberCount,
+    totalContributorCount,
   };
 };

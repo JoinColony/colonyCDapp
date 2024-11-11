@@ -15,6 +15,7 @@ import {
   HOMEPAGE_MOBILE_MEMBERS_LIST_LIMIT,
   VERIFIED_MEMBERS_LIST_LIMIT,
 } from '~constants/index.ts';
+import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import {
   useOnUpdateColonySubscription,
   useSearchColonyContributorsQuery,
@@ -22,6 +23,10 @@ import {
 import { useMobile } from '~hooks/index.ts';
 import useAllMembers from '~hooks/members/useAllMembers.ts';
 import useColonyContributors from '~hooks/members/useColonyContributors.ts';
+import {
+  useGetColonyContributorsCount,
+  useGetColonyFollowersCount,
+} from '~hooks/useGetColoniesMembersCount.ts';
 import { COLONY_VERIFIED_ROUTE } from '~routes/index.ts';
 import { type ColonyContributor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
@@ -38,6 +43,16 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
   } = useColonyContext();
   const isMobile = useMobile();
   const isVerifiedPage = useMatch(`${colonyName}/${COLONY_VERIFIED_ROUTE}`);
+
+  const {
+    colonyMemberCount: totalFollowersCount,
+    loading: followersCountLoading,
+  } = useGetColonyFollowersCount(colonyAddress);
+
+  const {
+    colonyMemberCount: totalContributorCount,
+    loading: contributorsCountLoading,
+  } = useGetColonyContributorsCount(colonyAddress);
 
   const contributorsPageSize = useMemo(() => {
     let itemsToShow = CONTRIBUTORS_MEMBERS_LIST_LIMIT;
@@ -91,6 +106,14 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     () => new Set(getFilterContributorType()),
     [getFilterContributorType],
   );
+
+  const { searchValue } = useSearchContext();
+
+  const hasActiveFilter =
+    !!filterStatus ||
+    Object.keys(permissions).length > 0 ||
+    contributorTypes.size > 0 ||
+    searchValue.length > 0;
 
   const {
     data: memberSearchData,
@@ -154,21 +177,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [memberSearchData],
   );
 
-  const followers = useMemo(
-    () =>
-      memberSearchData?.searchColonyContributors?.items.filter(
-        (item): item is NonNullable<typeof item> =>
-          item !== null && !!item.isWatching,
-      ) || [],
-    [memberSearchData],
-  );
-
   const {
     contributors: filteredContributors,
     pagedContributors,
     canLoadMore: moreContributors,
     loadMore: loadMoreContributors,
-    totalContributorCount,
     totalContributors,
   } = useColonyContributors({
     allMembers,
@@ -222,10 +235,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      totalMemberCount: memberSearchData?.searchColonyContributors?.total || 0,
+      totalMemberCount: totalFollowersCount,
       totalMembers: allMembers,
-      followersCount: followers.length,
-      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -236,7 +247,8 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       pagedContributors,
       moreContributors,
       loadMoreContributors,
-      loading,
+      loading: loading || followersCountLoading || contributorsCountLoading,
+      hasActiveFilter,
     }),
     [
       membersByAddress,
@@ -244,7 +256,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       verifiedMembers,
       memberSearchData,
       allMembers,
-      followers,
       pagedMembers,
       moreMembers,
       loadMoreMembers,
@@ -256,6 +267,11 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       moreContributors,
       loadMoreContributors,
       loading,
+      followersCountLoading,
+      contributorsCountLoading,
+      totalFollowersCount,
+      totalContributorCount,
+      hasActiveFilter,
     ],
   );
 

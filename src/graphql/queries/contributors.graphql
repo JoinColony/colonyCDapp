@@ -4,25 +4,6 @@ query GetColonyContributor($id: ID!, $colonyAddress: ID!) {
   }
 }
 
-query GetColonyContributors(
-  $colonyAddress: ID!
-  $sortDirection: ModelSortDirection = ASC
-  $limit: Int = 100
-  $nextToken: String
-) {
-  getContributorsByColony(
-    colonyAddress: $colonyAddress
-    sortDirection: $sortDirection
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      ...ColonyContributor
-    }
-    nextToken
-  }
-}
-
 query GetContributorsByAddress(
   $contributorAddress: ID!
   $sortDirection: ModelSortDirection = ASC
@@ -64,6 +45,31 @@ query SearchColonyContributors(
       ...ColonyContributor
     }
     total
+    nextToken
+  }
+}
+
+query GetMembersCount(
+  $filter: SearchableColonyContributorFilterInput!
+  $nextToken: String
+) {
+  searchColonyContributors(
+    aggregates: { type: terms, field: colonyAddress, name: "membersCount" }
+    filter: $filter
+    limit: 1000
+    nextToken: $nextToken
+  ) {
+    aggregateItems {
+      result {
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            doc_count
+            key
+          }
+        }
+      }
+      name
+    }
     nextToken
   }
 }
