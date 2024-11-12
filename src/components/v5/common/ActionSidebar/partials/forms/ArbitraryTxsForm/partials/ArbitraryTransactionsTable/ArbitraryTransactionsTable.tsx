@@ -80,13 +80,11 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           <AddTransactionModal
             onClose={() => setIsModalOpen(false)}
             isOpen={isModalOpen}
-            onSubmit={({ jsonAbi, contractAddress, method, amount, to }) => {
+            onSubmit={({ jsonAbi, contractAddress, ...rest }) => {
               fieldArrayMethods.append({
                 jsonAbi,
                 contractAddress,
-                method,
-                amount,
-                to,
+                ...rest,
               });
               setIsModalOpen(false);
             }}

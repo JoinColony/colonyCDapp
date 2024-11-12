@@ -8,7 +8,4 @@ export interface AddTransactionTableModel {
   contractAddress: string;
   jsonAbi: string;
   key: string;
-  method: string;
-  amount: string;
-  to: string;
 }

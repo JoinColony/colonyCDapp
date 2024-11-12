@@ -8,23 +8,20 @@ import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 import { MSG } from './translation.ts';
 
 export const ContractAddressInput = () => {
-  const {
-    watch,
-    setError,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
+  const { watch, setError, setValue, clearErrors } = useFormContext();
 
-  // @TODO: remove console log here
-  // eslint-disable-next-line no-console
-  console.log('errors', errors);
   const contractAddressField = watch('contractAddress');
 
+  const jsonAbiField = watch('jsonAbi');
   const [serverError, setServerError] = useState('');
 
   useEffect(() => {
     if (isAddress(contractAddressField)) {
-      getABIFromContractAddress(contractAddressField);
+      setServerError('');
+      clearErrors();
+      if (!jsonAbiField) {
+        getABIFromContractAddress(contractAddressField);
+      }
     } else {
       setError('contractAddress', {
         type: 'custom',
@@ -38,16 +35,12 @@ export const ContractAddressInput = () => {
       ).then((result) => result.json());
 
       if (response.status === '0') {
-        // @TODO: remove console log here
-        // eslint-disable-next-line no-console
-        console.log(response);
         setServerError(response.result);
       } else {
-        setServerError('');
         setValue('jsonAbi', response.result);
       }
     }
-  }, [contractAddressField, setError, setValue]);
+  }, [contractAddressField, setError, setValue, clearErrors, jsonAbiField]);
 
   return (
     <FormInput

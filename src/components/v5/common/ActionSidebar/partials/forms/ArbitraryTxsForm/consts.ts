@@ -14,9 +14,6 @@ export const validationSchema = object()
           .shape({
             contractAddress: string().defined(),
             jsonAbi: string().defined(),
-            method: string().defined(),
-            amount: string().defined(),
-            to: string().defined(),
           })
           .defined(),
       )
