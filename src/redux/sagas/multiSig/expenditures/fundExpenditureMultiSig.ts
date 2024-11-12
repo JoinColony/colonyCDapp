@@ -14,8 +14,8 @@ import {
 import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures.ts';
 import {
   getColonyManager,
+  getMoveFundsPermissionProofs,
   getPermissionProofsLocal,
-  getSinglePermissionProofsFromSourceDomain,
   initiateTransaction,
   putError,
   takeFrom,
@@ -67,11 +67,23 @@ function* fundExpenditureMultiSig({
 
   try {
     const userAddress = yield colonyClient.signer.getAddress();
-
     const fromDomainId: BigNumberish = yield getPotDomain(
       colonyClient,
       fromDomainFundingPotId,
     );
+    const expenditurePotDomainId: BigNumberish = yield call(
+      getPotDomain,
+      colonyClient,
+      expenditureFundingPotId,
+    );
+
+    const { actionDomainId, fromChildSkillIndex, toChildSkillIndex } =
+      yield call(getMoveFundsPermissionProofs, {
+        toDomainId: expenditurePotDomainId,
+        fromDomainId,
+        colonyDomains,
+        colonyAddress,
+      });
 
     const [multiSigPermissionDomainId, multiSigChildSkillIndex] = yield call(
       getPermissionProofsLocal,
@@ -79,58 +91,33 @@ function* fundExpenditureMultiSig({
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: Number(fromDomainId),
+        requiredDomainId: Number(actionDomainId),
         requiredColonyRoles: requiredRoles,
         permissionAddress: multiSigClient.address,
         isMultiSig: false,
       },
     );
     const [userPermissionDomainId, userChildSkillIndex] = yield call(
-      getSinglePermissionProofsFromSourceDomain,
+      getPermissionProofsLocal,
       {
         networkClient: colonyClient.networkClient,
         colonyRoles,
         colonyDomains,
-        requiredDomainId: Number(fromDomainId),
-        requiredColonyRole: FUND_EXPENDITURE_REQUIRED_ROLE,
+        requiredDomainId: Number(actionDomainId),
+        requiredColonyRoles: requiredRoles,
         permissionAddress: userAddress,
         isMultiSig: true,
       },
     );
-    const [, fromChildSkillIndex] = yield call(getPermissionProofsLocal, {
-      networkClient: colonyClient.networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId: Number(fromDomainId),
-      requiredColonyRoles: requiredRoles,
-      permissionAddress: userAddress,
-      isMultiSig: true,
-    });
-
-    const expenditurePotDomain = yield call(
-      getPotDomain,
-      colonyClient,
-      expenditureFundingPotId,
-    );
-
-    const [, toChildSkillIndex] = yield call(getPermissionProofsLocal, {
-      networkClient: colonyClient.networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId: Number(expenditurePotDomain),
-      requiredColonyRoles: requiredRoles,
-      permissionAddress: userAddress,
-      isMultiSig: true,
-    });
 
     const multicallData = [...balancesByTokenAddresses.entries()].map(
-      ([tokenAddress, amount]) =>
-        colonyClient.interface.encodeFunctionData(
+      ([tokenAddress, amount]) => {
+        return colonyClient.interface.encodeFunctionData(
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           [
             multiSigPermissionDomainId,
             multiSigChildSkillIndex,
-            userPermissionDomainId,
+            actionDomainId,
             fromChildSkillIndex,
             toChildSkillIndex,
             fromDomainFundingPotId,
@@ -138,7 +125,8 @@ function* fundExpenditureMultiSig({
             amount,
             tokenAddress,
           ],
-        ),
+        );
+      },
     );
 
     yield fork(createTransaction, createMultiSig.id, {
