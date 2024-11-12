@@ -1,49 +1,61 @@
 import { isAddress, Interface } from 'ethers/lib/utils';
-import { type InferType, object, string, type ObjectSchema } from 'yup';
+import { string } from 'yup';
 
 import { formatText } from '~utils/intl.ts';
 
 import { MSG } from './translation.ts';
 
-export const validationSchema: ObjectSchema<any> = object()
-  .shape({
-    contractAddress: string()
-      .test('is-address', formatText(MSG.contractAddressError), (value) => {
-        if (!value) {
-          return true;
-        }
+export const validateContractAddress = (value: string) => {
+  const schema = string()
+    .test('is-address', formatText(MSG.contractAddressError), (val) => {
+      if (!val) {
+        return true;
+      }
+      return isAddress(val);
+    })
+    .required();
 
-        return isAddress(value);
-      })
-      .required(),
-    jsonAbi: string()
-      .test('is-valid-json', formatText(MSG.jsonParseError), (value) => {
-        if (!value) {
-          return true;
-        }
+  try {
+    schema.validateSync(value);
+    return true;
+  } catch (error) {
+    return error.message;
+  }
+};
 
-        try {
-          JSON.parse(value);
-          return true;
-        } catch (error) {
-          return false;
-        }
-      })
-      .test('is-valid-abi', formatText(MSG.invalidAbiError), (value) => {
-        if (!value) {
-          return true;
-        }
+export const validateJsonAbi = (value: string) => {
+  const schema = string()
+    .test('is-valid-json', formatText(MSG.jsonParseError), (val) => {
+      if (!val) {
+        return true;
+      }
 
-        try {
-          const parsedAbi = JSON.parse(value);
-          // eslint-disable-next-line no-new
-          new Interface(parsedAbi);
-          return true;
-        } catch (error) {
-          return false;
-        }
-      }),
-  })
-  .defined();
+      try {
+        JSON.parse(val);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    })
+    .test('is-valid-abi', formatText(MSG.invalidAbiError), (val) => {
+      if (!val) {
+        return true;
+      }
 
-export type ManageTokensFormValues = InferType<typeof validationSchema>;
+      try {
+        const parsedAbi = JSON.parse(val);
+        // eslint-disable-next-line no-new
+        new Interface(parsedAbi);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    });
+
+  try {
+    schema.validateSync(value);
+    return true;
+  } catch (error) {
+    return error.message;
+  }
+};

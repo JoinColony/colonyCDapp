@@ -37,13 +37,14 @@ const Input: FC<InputProps> = ({
   setIsTyping,
   shouldFocus,
   allowLayoutShift = false,
+  registerOptions,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
     maxCharNumber,
     defaultValue,
   );
-  const registerField = register && register(name);
+  const registerField = register && register(name, registerOptions);
 
   const isErrorStatus = isCharLenghtError || isError;
 

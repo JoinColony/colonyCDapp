@@ -5,6 +5,7 @@ import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
+import { validateJsonAbi } from './consts.tsx';
 import { MSG } from './translation.ts';
 
 interface JsonAbiInputProps {
@@ -52,6 +53,7 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
         shouldUseAutoSize={false}
         rows={7}
         disabled={disabled}
+        rules={{ validate: validateJsonAbi }}
       />
     </div>
   );
