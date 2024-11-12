@@ -1,5 +1,10 @@
 import React from 'react';
-import { Controller, type Message, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  type Message,
+  type UseControllerProps,
+  useFormContext,
+} from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
@@ -14,6 +19,7 @@ interface FormSelectProps<T> {
   handleChange?: any;
   placeholder?: string;
   formatOptionLabel?: (option: SelectOption) => JSX.Element;
+  rules?: UseControllerProps['rules'];
 }
 
 const FormSelect = <T,>({
@@ -23,6 +29,7 @@ const FormSelect = <T,>({
   placeholder,
   handleChange,
   formatOptionLabel,
+  rules,
 }: FormSelectProps<T>) => {
   const {
     control,
@@ -34,6 +41,7 @@ const FormSelect = <T,>({
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field }) => (
         <div>
           {labelMessage && (

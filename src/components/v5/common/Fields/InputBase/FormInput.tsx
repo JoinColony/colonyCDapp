@@ -3,7 +3,7 @@ import { type Message, useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
-import Input from '~v5/common/Fields/Input/index.ts';
+import Input, { type InputProps } from '~v5/common/Fields/Input/index.ts';
 
 interface FormInputProps<T> {
   name: Extract<keyof T, string>;
@@ -11,6 +11,7 @@ interface FormInputProps<T> {
   placeholder?: string;
   shouldFocus?: boolean;
   error?: string;
+  registerOptions?: InputProps['registerOptions'];
 }
 const FormInput = <T,>({
   name,
@@ -18,6 +19,7 @@ const FormInput = <T,>({
   shouldFocus,
   placeholder,
   error,
+  registerOptions,
 }: FormInputProps<T>) => {
   const {
     register,
@@ -30,6 +32,7 @@ const FormInput = <T,>({
     <Input
       name={name}
       register={register}
+      registerOptions={registerOptions}
       className="border-gray-300 text-md"
       isDisabled={isSubmitting}
       labelMessage={label}

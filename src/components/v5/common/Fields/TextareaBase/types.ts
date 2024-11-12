@@ -1,4 +1,5 @@
 import { type TextareaHTMLAttributes } from 'react';
+import { type UseControllerProps } from 'react-hook-form';
 
 import { type BaseFieldProps } from '../types.ts';
 
@@ -17,4 +18,5 @@ export interface TextareaBaseProps
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {
   name: string;
+  rules?: UseControllerProps['rules'];
 }

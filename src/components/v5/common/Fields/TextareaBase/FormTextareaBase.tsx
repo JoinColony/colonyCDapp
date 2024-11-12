@@ -10,12 +10,17 @@ import { type FormTextareaBaseProps } from './types.ts';
 
 const displayName = 'v5.common.Fields.FormTextAreaBase';
 
-const FormTextareaBase: FC<FormTextareaBaseProps> = ({ name, ...rest }) => {
+const FormTextareaBase: FC<FormTextareaBaseProps> = ({
+  name,
+  rules,
+  ...rest
+}) => {
   const {
     field,
     fieldState: { invalid, error },
   } = useController({
     name,
+    rules,
   });
   const { readonly } = useAdditionalFormOptionsContext();
 
