@@ -5,6 +5,7 @@ import { type TestContext } from 'yup';
 
 import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
+import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -24,15 +25,13 @@ export const getPaymentBuilderPayload = (
   colony: Colony,
   values: PaymentBuilderFormValues,
   networkInverseFee: string,
-): CreateExpenditurePayload | null => {
+): CreateExpenditurePayload | CreateStakedExpenditurePayload | null => {
   const colonyTokens = colony.tokens?.items.filter(notNull);
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   const createdInDomain =
-    findDomainByNativeId(values.createdIn, colony) || rootDomain;
-
-  if (!createdInDomain) {
-    return null;
-  }
+    values.decisionMethod === 'Permissions'
+      ? undefined
+      : findDomainByNativeId(values.createdIn, colony) || rootDomain;
 
   return {
     colonyAddress: colony.colonyAddress,
