@@ -55,7 +55,7 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
         />
       )}
       {methodInputs.map((input) => (
-        <FormInput
+        <FormInput<any>
           key={input.name}
           name={`args.${input.name}`}
           label={`${input.name} (${input.type})`}
