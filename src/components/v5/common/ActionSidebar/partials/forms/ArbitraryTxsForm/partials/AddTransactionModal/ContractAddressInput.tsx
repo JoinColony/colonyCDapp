@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 
+import { validateContractAddress } from './consts.tsx';
 import { MSG } from './translation.ts';
 
 export const ContractAddressInput = () => {
@@ -12,16 +13,13 @@ export const ContractAddressInput = () => {
 
   const contractAddressField = watch('contractAddress');
 
-  const jsonAbiField = watch('jsonAbi');
   const [serverError, setServerError] = useState('');
 
   useEffect(() => {
     if (isAddress(contractAddressField)) {
       setServerError('');
       clearErrors();
-      if (!jsonAbiField) {
-        getABIFromContractAddress(contractAddressField);
-      }
+      getABIFromContractAddress(contractAddressField);
     } else {
       setError('contractAddress', {
         type: 'custom',
@@ -40,7 +38,7 @@ export const ContractAddressInput = () => {
         setValue('jsonAbi', response.result);
       }
     }
-  }, [contractAddressField, setError, setValue, clearErrors, jsonAbiField]);
+  }, [contractAddressField, setError, setValue, clearErrors]);
 
   return (
     <FormInput
@@ -48,6 +46,9 @@ export const ContractAddressInput = () => {
       label={formatText(MSG.contractAddressField)}
       placeholder={formatText(MSG.contractAddressPlaceholder)}
       error={serverError || undefined}
+      registerOptions={{
+        validate: validateContractAddress,
+      }}
     />
   );
 };

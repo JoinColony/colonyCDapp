@@ -13,8 +13,8 @@ import {
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
-import { validationSchema } from './consts.tsx';
 import { ContractAddressInput } from './ContractAddressInput.tsx';
+import { DynamicInputs } from './DynamicInputs.tsx';
 import { JsonAbiInput } from './JsonAbiInput.tsx';
 import { displayName, MSG } from './translation.ts';
 
@@ -26,10 +26,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
 
   return (
     <Modal buttonMode="primarySolid" icon={CodeBlock} isFullOnMobile {...rest}>
-      <Form<AddTransactionTableModel>
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
+      <Form<AddTransactionTableModel> onSubmit={onSubmit}>
         {() => (
           <>
             <h5 className="mb-1.5 heading-5">{formatText(MSG.title)}</h5>
@@ -46,6 +43,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
             <div className="mt-5 flex flex-col gap-4">
               <ContractAddressInput />
               <JsonAbiInput />
+              <DynamicInputs />
               {/* <FormSelect
                 name="method"
                 labelMessage={formatText(MSG.methodField)}

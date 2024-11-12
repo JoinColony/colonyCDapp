@@ -1,4 +1,8 @@
-import { type UseFormRegister, type FieldValues } from 'react-hook-form';
+import {
+  type UseFormRegister,
+  type FieldValues,
+  type RegisterOptions,
+} from 'react-hook-form';
 
 import { type Message } from '~types/index.ts';
 
@@ -27,6 +31,7 @@ export type InputProps = {
   setIsTyping?: React.Dispatch<React.SetStateAction<boolean>>;
   shouldFocus?: boolean;
   allowLayoutShift?: boolean;
+  registerOptions?: RegisterOptions<FieldValues>;
 };
 
 export type PillProps = {
