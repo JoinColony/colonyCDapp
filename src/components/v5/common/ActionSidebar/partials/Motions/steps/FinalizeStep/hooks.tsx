@@ -135,13 +135,14 @@ export const useClaimConfig = (
     }
   }, [stakerReward?.isClaimed, isClaimed]);
 
+  const userReward = voterRewards?.items.find(
+    (voterReward) => voterReward?.userAddress === userAddress,
+  );
+
   const userVoteRewardAmount = useMemo(() => {
     if (!userAddress || !voterRewards?.items) {
       return 0;
     }
-    const userReward = voterRewards.items.find(
-      (voterReward) => voterReward?.userAddress === userAddress,
-    );
 
     if (!userReward) {
       return 0;
@@ -179,7 +180,9 @@ export const useClaimConfig = (
   // Else, return full widget
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
-  const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
+  const canClaimStakes = userTotalStake
+    ? !userTotalStake.isZero()
+    : !!userReward;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
     startPollingAction(getSafePollingInterval());
