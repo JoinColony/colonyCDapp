@@ -8,6 +8,7 @@ import useUserByAddress from '~hooks/useUserByAddress.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
 import { toFinite } from '~utils/lodash.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -63,7 +64,7 @@ const ManageReputationDescription: FC = () => {
           getTokenDecimalsWithFallback(nativeToken.decimals),
         ),
         reputationChangeNumeral: amount ? (
-          <Numeral value={toFinite(amount)} />
+          <Numeral value={toFinite(getSafeStringifiedNumber(amount))} />
         ) : (
           formatText({
             id: 'actionSidebar.metadataDescription.anAmount',

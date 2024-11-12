@@ -7,6 +7,7 @@ import { useWatch } from 'react-hook-form';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { getInputTextWidth } from '~utils/elements.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
 import { calculatePercentageReputation } from '~utils/reputation.ts';
 import {
   getFormattedTokenValue,
@@ -85,7 +86,7 @@ export const useReputationFields = () => {
 
   const amountValueCalculated = BigNumber.from(
     moveDecimal(
-      amount || '0',
+      getSafeStringifiedNumber(amount),
       getTokenDecimalsWithFallback(nativeToken.decimals),
     ),
   ).toString();

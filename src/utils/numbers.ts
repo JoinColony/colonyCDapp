@@ -52,3 +52,50 @@ export const adjustPercentagesTo100 = (
   // Convert back to percentages with the specified number of decimals
   return roundedValues.map((value) => value / multiplier);
 };
+
+/**
+ * Safely converts a given value to a numeric string. If the input value is `null`, `undefined`,
+ * or an invalid number, a fallback value is used. If the provided fallback value is also invalid,
+ * it defaults to "0".
+ *
+ * @param {string | number | null | undefined} value - The input value to convert.
+ *    If it's a string, commas are removed before validation.
+ * @param {string | number} [fallbackValue='0'] - The fallback value to use if the input value is
+ *    invalid. If this fallback is not a valid number, it defaults to "0".
+ * @returns {string} A numeric string representing the input value or a valid fallback.
+ *
+ * @example
+ * getSafeStringifiedNumber("20,000") // "20000"
+ * getSafeStringifiedNumber("abc", 100) // "100"
+ * getSafeStringifiedNumber(null, "invalid") // "0"
+ * getSafeStringifiedNumber(undefined) // "0"
+ * getSafeStringifiedNumber(NaN, 50) // "50"
+ */
+export const getSafeStringifiedNumber = (
+  value: string | number | null | undefined,
+  fallbackValue: string | number = '0',
+): string => {
+  // Ensure the fallback value is a valid number
+  const safeFallback = !Number.isNaN(Number(fallbackValue))
+    ? String(fallbackValue)
+    : '0';
+
+  if (value === null || value === undefined) {
+    // If value is null or undefined, use the safe fallback
+    return safeFallback;
+  }
+
+  if (typeof value === 'string') {
+    // Remove commas and check if the result is a valid number
+    const numericString = value.replace(/,/g, '');
+    return !Number.isNaN(Number(numericString)) ? numericString : safeFallback;
+  }
+
+  if (typeof value === 'number') {
+    // Check if the number is NaN
+    return Number.isNaN(value) ? safeFallback : String(value);
+  }
+
+  // Default case if the type is unexpected
+  return safeFallback;
+};

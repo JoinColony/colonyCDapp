@@ -9,6 +9,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import { formatText } from '~utils/intl.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
@@ -78,7 +79,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     ColonyActionType.EmitDomainReputationPenaltyMultisig,
   ].includes(action.type);
 
-  const positiveAmountValue = BigNumber.from(amount || '0')
+  const positiveAmountValue = BigNumber.from(getSafeStringifiedNumber(amount))
     .abs()
     .toString();
 

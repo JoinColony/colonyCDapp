@@ -8,6 +8,7 @@ import { type ManageReputationMotionPayload } from '~redux/sagas/motions/manageR
 import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { getMotionPayload } from '~utils/motions.ts';
+import { getSafeStringifiedNumber } from '~utils/numbers.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 
 import { ModificationOption } from './consts.ts';
@@ -99,6 +100,9 @@ export const moreThanZeroAmountValidation = (
   const { nativeToken } = colony;
 
   return BigNumber.from(
-    moveDecimal(value, getTokenDecimalsWithFallback(nativeToken.decimals)),
+    moveDecimal(
+      getSafeStringifiedNumber(value),
+      getTokenDecimalsWithFallback(nativeToken.decimals),
+    ),
   ).gt(0);
 };
