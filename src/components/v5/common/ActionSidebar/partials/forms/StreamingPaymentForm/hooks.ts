@@ -16,7 +16,6 @@ import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
 import { amountGreaterThanValidation } from '~utils/validation/amountGreaterThanValidation.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
-import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
 import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
 import { AmountPerInterval } from '~v5/common/ActionSidebar/partials/AmountPerPeriodRow/types.ts';
@@ -51,18 +50,6 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
               },
               (value, context) =>
                 amountGreaterThanZeroValidation({ value, context, colony }),
-            )
-            .test(
-              'enough-tokens',
-              formatText({ id: 'errors.amount.notEnoughTokens' }) || '',
-              (value, context) =>
-                hasEnoughFundsValidation({
-                  value,
-                  context,
-                  domainId: fromDomainId,
-                  colony,
-                  networkInverseFee,
-                }),
             ),
           tokenAddress: string().address().required(),
           limitTokenAddress: string().address(),
