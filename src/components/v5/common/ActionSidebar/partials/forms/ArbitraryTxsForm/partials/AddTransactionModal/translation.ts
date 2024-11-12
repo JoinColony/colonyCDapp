@@ -25,40 +25,28 @@ export const MSG = defineMessages({
     id: `${displayName}.contractAddressPlaceholder`,
     defaultMessage: 'Enter contract address',
   },
-  abiJsonField: {
-    id: `${displayName}.abiJsonField`,
+  contractAddressError: {
+    id: `${displayName}.contractAddressError`,
+    defaultMessage: 'Please enter a valid contract address.',
+  },
+  jsonAbiField: {
+    id: `${displayName}.jsonAbiField`,
     defaultMessage: 'ABI/JSON',
   },
-  methodField: {
-    id: `${displayName}.methodField`,
-    defaultMessage: 'Select a method to interact with',
+  jsonParseError: {
+    id: `${displayName}.jsonParseError`,
+    defaultMessage: 'Please ensure value is valid JSON.',
   },
-  methodPlaceholder: {
-    id: `${displayName}.methodPlaceholder`,
-    defaultMessage: 'Select method',
+  invalidAbiError: {
+    id: `${displayName}.invalidAbiError`,
+    defaultMessage: 'Please ensure value is valid ABI.',
   },
-  toField: {
-    id: `${displayName}.toField`,
-    defaultMessage: '_to (address)',
-  },
-  toPlaceholder: {
-    id: `${displayName}.toPlaceholder`,
-    defaultMessage: 'Enter value',
-  },
-  amountField: {
-    id: `${displayName}.amountField`,
-    defaultMessage: '_amount (uint256)',
-  },
-  amountPlaceholder: {
-    id: `${displayName}.amountPlaceholder`,
-    defaultMessage: 'Enter value',
+  jsonAbiFormatLink: {
+    id: `${displayName}.jsonAbiFormatLink`,
+    defaultMessage: 'Format JSON',
   },
   submitButton: {
     id: `${displayName}.submitButton`,
     defaultMessage: 'Confirm',
-  },
-  contractAddressError: {
-    id: `${displayName}.contractAddressError`,
-    defaultMessage: 'Please enter a valid contract address.',
   },
 });
