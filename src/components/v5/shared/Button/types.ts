@@ -30,7 +30,8 @@ export type ButtonMode =
   | 'septenary'
   | 'completed'
   | 'filled'
-  | 'notFilled';
+  | 'notFilled'
+  | 'link';
 
 export type ButtonSize =
   | 'default'

@@ -94,7 +94,16 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
               {typeof value === 'string' && value.length}/{maxLength}
             </div>
           )}
-        {message}
+        {!!message && (
+          <span
+            className={clsx(
+              'border-0 text-md',
+              state ? stateClassNames[state] : undefined,
+            )}
+          >
+            {message}
+          </span>
+        )}
       </div>
     );
   },

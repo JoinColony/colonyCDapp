@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
-import CellDescription from './CellDescription.tsx';
+// import CellDescription from './CellDescription.tsx';
 
 export const useArbitraryTxsTableColumns = (): ColumnDef<
   AddTransactionTableModel,
@@ -56,28 +56,29 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             {formatText({ id: 'table.row.details' })}
           </span>
         ),
-        cell: ({ row: { original } }) => {
-          const addressTo = getMaskedAddress({
-            address: original.to,
-            isFull: !isMobile,
-          });
+        cell: () => {
+          // const addressTo = getMaskedAddress({
+          //   address: original.to,
+          //   isFull: !isMobile,
+          // });
           return (
-            <CellDescription
-              data={[
-                {
-                  title: 'Method',
-                  value: original.method,
-                },
-                {
-                  title: '_to (address)',
-                  value: addressTo.result,
-                },
-                {
-                  title: '_amount (uint256)',
-                  value: original.amount,
-                },
-              ]}
-            />
+            <div>this one will come soon</div>
+            // <CellDescription
+            //   data={[
+            //     {
+            //       title: 'Method',
+            //       value: original.method,
+            //     },
+            //     {
+            //       title: '_to (address)',
+            //       value: addressTo.result,
+            //     },
+            //     {
+            //       title: '_amount (uint256)',
+            //       value: original.amount,
+            //     },
+            //   ]}
+            // />
           );
         },
         size: isMobile ? 100 : 67,

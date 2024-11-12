@@ -7,14 +7,15 @@ import {
   type AddTransactionFormModalProps,
   type AddTransactionTableModel,
 } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
-import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
-import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
-import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
+// import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
+// import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
+// import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import { validationSchema } from './consts.tsx';
 import { ContractAddressInput } from './ContractAddressInput.tsx';
+import { JsonAbiInput } from './JsonAbiInput.tsx';
 import { displayName, MSG } from './translation.ts';
 
 const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
@@ -22,18 +23,6 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
   ...rest
 }) => {
   const { onClose } = rest;
-
-  // @TODO: it will be dynamic and will be updated in the next iteration
-  const methodOptions = [
-    {
-      value: 'mint',
-      label: 'mint',
-    },
-    {
-      value: 'mint2',
-      label: 'mint2',
-    },
-  ];
 
   return (
     <Modal buttonMode="primarySolid" icon={CodeBlock} isFullOnMobile {...rest}>
@@ -48,21 +37,16 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
               {formatText(MSG.description)}
             </p>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a href="#" className="mb-4 text-sm text-blue-400 underline">
+            <a
+              href="#"
+              className="mb-4 text-sm font-medium text-blue-400 underline"
+            >
               {formatText(MSG.link)}
             </a>
             <div className="mt-5 flex flex-col gap-4">
               <ContractAddressInput />
-              <FormTextareaBase
-                name="jsonAbi"
-                label={formatText(MSG.abiJsonField)}
-                id="jsonAbi"
-                mode="primary"
-                className="h-[10.25rem]"
-                shouldUseAutoSize={false}
-                rows={7}
-              />
-              <FormSelect
+              <JsonAbiInput />
+              {/* <FormSelect
                 name="method"
                 labelMessage={formatText(MSG.methodField)}
                 placeholder={formatText(MSG.methodPlaceholder)}
@@ -77,7 +61,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 name="amount"
                 label={formatText(MSG.amountField)}
                 placeholder={formatText(MSG.amountPlaceholder)}
-              />
+              /> */}
             </div>
             <div className="mt-[3rem] flex flex-col-reverse gap-3 sm:flex-row md:mt-8">
               <Button
