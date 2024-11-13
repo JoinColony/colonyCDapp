@@ -54,8 +54,16 @@ export const MSG = defineMessages({
     defaultMessage: 'Format JSON',
   },
   methodsField: {
-    id: `${displayName}.methodsField`,
-    defaultMessage: 'Methods',
+    id: `${displayName}.methodField`,
+    defaultMessage: 'Select a method to interact with',
+  },
+  methodsPlaceholder: {
+    id: `${displayName}.methodPlaceholder`,
+    defaultMessage: 'Select method',
+  },
+  dynamicFieldPlaceholder: {
+    id: `${displayName}.dynamicFieldPlaceholder`,
+    defaultMessage: 'Enter value',
   },
   submitButton: {
     id: `${displayName}.submitButton`,

@@ -6,7 +6,7 @@ import { formatText } from '~utils/intl.ts';
 import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
-import { validateDynamicMethodInput } from './consts.ts';
+import { validateDynamicMethodInput, validateMethod } from './consts.ts';
 import { MSG } from './translation.ts';
 
 interface MethodItem {
@@ -64,9 +64,10 @@ export const DynamicInputs: React.FC = () => {
       {!!methodOptions.length && (
         <FormSelect
           labelMessage={formatText(MSG.methodsField)}
+          placeholder={formatText(MSG.methodsPlaceholder)}
           name="method"
           options={methodOptions}
-          rules={{ required: 'Required' }}
+          rules={{ validate: validateMethod }}
         />
       )}
       {methodInputs.map((input) => (
@@ -75,6 +76,7 @@ export const DynamicInputs: React.FC = () => {
           name={`args.${input.name}.value`}
           label={`${input.name} (${input.type})`}
           registerOptions={{ validate: validateDynamicMethodInput(input.type) }}
+          placeholder={formatText(MSG.dynamicFieldPlaceholder)}
         />
       ))}
     </div>

@@ -74,8 +74,11 @@ export const validateJsonAbi = createValidator(
       'is-abi-has-methods',
       formatText(MSG.emptyMethodsAbiError),
       (val) => !val || hasAbiMethods(val),
-    ),
+    )
+    .required(),
 );
+
+export const validateMethod = createValidator(string().required());
 
 export const validateDynamicMethodInput = (type) => (value: string) => {
   const isValid = validateType(type, value);
