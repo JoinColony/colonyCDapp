@@ -20,6 +20,7 @@ import {
   createActionMetadataInDB,
   getPermissionProofsLocal,
   getColonyManager,
+  getMoveFundsActionDomain,
 } from '../utils/index.ts';
 
 function* createMoveFundsAction({
@@ -82,13 +83,21 @@ function* createMoveFundsAction({
       ['moveFunds', 'annotateMoveFunds'],
     );
 
-    const { actionDomainId, fromChildSkillIndex, toChildSkillIndex } =
-      yield call(getMoveFundsPermissionProofs, {
+    const actionDomainId = getMoveFundsActionDomain({
+      actionDomainId: null,
+      fromDomainId: fromDomain.nativeId,
+      toDomainId: toDomain.nativeId,
+    });
+    const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+      getMoveFundsPermissionProofs,
+      {
+        actionDomainId,
         toDomainId: toDomain.nativeId,
         fromDomainId: fromDomain.nativeId,
         colonyDomains,
         colonyAddress,
-      });
+      },
+    );
 
     const [userPermissionDomainId] = yield call(getPermissionProofsLocal, {
       networkClient: colonyClient.networkClient,

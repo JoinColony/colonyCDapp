@@ -381,30 +381,51 @@ export const getPermissionProofsLocal = async ({
   });
 };
 
-/*
- * How this works (or should work) is, you pass it two domains and it returns you the domain the action is in and both child skill indices
- * Friendly note, a childSkillIndex of MaxUint256 means that we are targeting the domain itself, not any of its children
- * It then returns the domain the action is happening in:
- * 1. if we are moving funds from a parent domain to the child domain, it's created in a common parent domain, fromChildSkillIndex should be MaxUint256, toChildSkillIndex should be the index of the child domain in the parent
- * 2. If we are moving funds from a child domain to a parent domain, it's created in a common parent domain, fromChildSkillIndex should be the index of the child domain in the parent, toChildSkillIndex should be MaxUint256
- * 3. If we are moving funds inside the same domain (when funding an expenditure), it should return that domain, fromChildSkillIndex should be MaxUint256 and toChildSkillIndex should be MaxUint256
- */
+interface GetMoveFundsActionDomainParams {
+  actionDomainId: BigNumberish | null;
+  fromDomainId: BigNumberish;
+  toDomainId: BigNumberish;
+}
+// If you mess up and send a motionDomainId that's a child domain of any of the other two, it's on you ;)
+export function getMoveFundsActionDomain({
+  actionDomainId,
+  toDomainId,
+  fromDomainId,
+}: GetMoveFundsActionDomainParams): BigNumberish {
+  // override if the motion was created in a different domain
+  if (actionDomainId) {
+    return actionDomainId;
+  }
+
+  // if moving funds in the same domain but not as a motion in any parent domain
+  if (Number(fromDomainId) === Number(toDomainId)) {
+    return fromDomainId; // they are the same
+  }
+
+  // return the parent domain, as all other things, Id.RootDomain until we implement nested teams
+  const parentDomainId = Id.RootDomain;
+
+  return parentDomainId;
+}
+
 interface GetMoveFundsPermissionProofsResult {
-  actionDomainId: BigNumberish;
   fromChildSkillIndex: BigNumber;
   toChildSkillIndex: BigNumber;
 }
 export async function getMoveFundsPermissionProofs({
+  actionDomainId,
   colonyAddress,
   fromDomainId,
   toDomainId,
   colonyDomains,
 }: {
   colonyAddress: string;
+  actionDomainId: BigNumberish;
   fromDomainId: BigNumberish;
   toDomainId: BigNumberish;
   colonyDomains: Domain[];
 }): Promise<GetMoveFundsPermissionProofsResult> {
+  // the action domain can technically be the same as from or to, but these helpers should still work
   const colonyManager: ColonyManager = await getColonyManager();
 
   const colonyClient = await colonyManager.getClient(
@@ -412,19 +433,8 @@ export async function getMoveFundsPermissionProofs({
     colonyAddress,
   );
 
-  if (Number(fromDomainId) === Number(toDomainId)) {
-    return {
-      actionDomainId: fromDomainId, // they are the same anyways
-      fromChildSkillIndex: constants.MaxUint256,
-      toChildSkillIndex: constants.MaxUint256,
-    };
-  }
-
-  // if they are not the same we must find their common parent domain, yet another thing to fix when we do nested teams
-  const commonParentDomain = Id.RootDomain;
-
   const parentDomain = colonyDomains.find((domain) =>
-    BigNumber.from(domain.nativeId).eq(commonParentDomain),
+    BigNumber.from(domain.nativeId).eq(actionDomainId),
   );
   const fromDomain = colonyDomains.find((domain) =>
     BigNumber.from(domain.nativeId).eq(fromDomainId),
@@ -454,7 +464,6 @@ export async function getMoveFundsPermissionProofs({
   });
 
   return {
-    actionDomainId: commonParentDomain,
     fromChildSkillIndex,
     toChildSkillIndex,
   };

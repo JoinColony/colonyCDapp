@@ -27,7 +27,6 @@ import {
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
-import MultiSigWidget from '~v5/common/ActionSidebar/partials/MultiSigSidebar/partials/MultiSigWidget/MultiSigWidget.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -49,6 +48,7 @@ import StagedPaymentStep from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
+import MultiSigFunding from './partials/MultiSigFunding.tsx';
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import {
   getCancelStepIndex,
@@ -332,7 +332,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       }
 
       if (isMultiSig(fundingAction)) {
-        return <MultiSigWidget action={fundingAction} variant="standalone" />;
+        return <MultiSigFunding action={fundingAction} />;
       }
 
       console.warn(
