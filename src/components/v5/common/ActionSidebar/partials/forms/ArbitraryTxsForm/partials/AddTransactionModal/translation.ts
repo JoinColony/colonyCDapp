@@ -57,4 +57,28 @@ export const MSG = defineMessages({
     id: `${displayName}.submitButton`,
     defaultMessage: 'Confirm',
   },
+  validationAddressError: {
+    id: `${displayName}.validationAddressError`,
+    defaultMessage: 'Please enter a valid contract address',
+  },
+  validationIntError: {
+    id: `${displayName}.validationIntError`,
+    defaultMessage: 'Please enter a valid number for this field',
+  },
+  validationBooleanError: {
+    id: `${displayName}.validationBooleanError`,
+    defaultMessage: 'Please enter either "true" or "false"',
+  },
+  validationByteError: {
+    id: `${displayName}.validationByteError`,
+    defaultMessage: 'Please enter a valid byte string',
+  },
+  validationArrayError: {
+    id: `${displayName}.validationArrayError`,
+    defaultMessage: 'Please enter a valid array format',
+  },
+  validationInputError: {
+    id: `${displayName}.validationInputError`,
+    defaultMessage: 'Please enter a valid input for this field',
+  },
 });

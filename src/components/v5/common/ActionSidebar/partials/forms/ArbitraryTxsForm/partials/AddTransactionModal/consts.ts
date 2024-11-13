@@ -101,16 +101,16 @@ export const validateDynamicMethodInput = (type) => (value: string) => {
   switch (true) {
     case type.startsWith('uint'):
     case type.startsWith('int'):
-      return formatText('Invalid number for the given type');
+      return formatText(MSG.validationIntError);
     case type === 'address':
-      return formatText('Invalid address');
+      return formatText(MSG.validationAddressError);
     case type === 'bool':
-      return formatText('Invalid boolean value');
+      return formatText(MSG.validationBooleanError);
     case type.startsWith('bytes'):
-      return formatText(`Invalid ${type} string`);
+      return formatText(MSG.validationByteError);
     case type.includes('[]'):
-      return formatText('Invalid array');
+      return formatText(MSG.validationArrayError);
     default:
-      return formatText('Invalid input');
+      return formatText(MSG.validationInputError);
   }
 };
