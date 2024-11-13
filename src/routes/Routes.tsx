@@ -82,12 +82,12 @@ const Routes = () => {
     <RoutesSwitch>
       <Route path="/" element={<RootRoute />}>
         <Route index element={<LandingPage />} />
+        <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
 
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         {/* Main routes */}
         <Route element={<MainRoute />}>
-          <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
           <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
         </Route>
 

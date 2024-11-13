@@ -107,7 +107,8 @@ export const useLandingPage = () => {
   );
 
   return {
-    canInteract,
+    canInteract:
+      canInteract && (hasShareableInvitationCode || !!joinedColonies.length),
     connectWallet,
     wallet,
     isLoading: walletConnecting || userLoading,
