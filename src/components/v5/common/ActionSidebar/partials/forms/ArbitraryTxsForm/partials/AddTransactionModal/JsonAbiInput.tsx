@@ -8,22 +8,27 @@ import Button from '~v5/shared/Button/Button.tsx';
 import { validateJsonAbi } from './consts.ts';
 import { MSG } from './translation.ts';
 
-interface JsonAbiInputProps {
-  disabled?: boolean;
-}
-
-export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
-  const { watch, setValue, clearErrors } = useFormContext();
+export const JsonAbiInput: React.FC = () => {
+  const { watch, setValue, clearErrors, trigger } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const [isFormatted, setIsFormatted] = useState(false);
   const [hideEditWarning, setHideEditWarning] = useState(false);
+  const contractAddressField = watch('contractAddress');
 
   useEffect(() => {
+    // reset jsonAbi state if contractAddress updated
+    // jsonAbi will be filled with data after successful ABI response
+    setValue('jsonAbi', '');
+    setIsFormatted(false);
+  }, [contractAddressField, setValue]);
+
+  useEffect(() => {
+    trigger('jsonAbi'); // trigger errors in case value was updated by ContractAddress component
     if (!jsonAbiField) {
       setHideEditWarning(false);
       clearErrors();
     }
-  }, [jsonAbiField, clearErrors]);
+  }, [jsonAbiField, clearErrors, trigger]);
 
   const toggleJsonFormat = () => {
     try {
@@ -47,7 +52,6 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
       <Button
         className="absolute right-0"
         mode="link"
-        disabled={disabled}
         onClick={toggleJsonFormat}
       >
         {formatText(MSG.jsonAbiFormatLink)}
@@ -60,7 +64,6 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
           className="h-[10.25rem]"
           shouldUseAutoSize={false}
           rows={7}
-          disabled={disabled}
           label={formatText(MSG.jsonAbiField)}
           rules={{ validate: validateJsonAbi }}
           textareaOverlay={

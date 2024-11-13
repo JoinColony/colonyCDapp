@@ -42,7 +42,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
               <JsonAbiInput />
               <DynamicInputs />
             </div>
-            <div className="mt-4 flex flex-col-reverse gap-3 sm:flex-row">
+            <div className="mt-4 flex flex-col-reverse gap-3 sm:flex-row md:mt-8">
               <Button
                 type="button"
                 mode="primaryOutline"

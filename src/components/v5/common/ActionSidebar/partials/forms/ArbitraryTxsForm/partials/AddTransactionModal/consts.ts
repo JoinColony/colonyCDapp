@@ -6,16 +6,7 @@ import { validateType } from '~utils/safes/contractParserValidation.ts';
 
 import { MSG } from './translation.ts';
 
-export const validateContractAddress = (value: string) => {
-  const schema = string()
-    .test('is-address', formatText(MSG.contractAddressError), (val) => {
-      if (!val) {
-        return true;
-      }
-      return isAddress(val);
-    })
-    .required();
-
+const createValidator = (schema: any) => (value: string) => {
   try {
     schema.validateSync(value);
     return true;
@@ -24,63 +15,67 @@ export const validateContractAddress = (value: string) => {
   }
 };
 
-export const validateJsonAbi = (value: string) => {
-  const schema = string()
-    .test('is-valid-json', formatText(MSG.jsonParseError), (val) => {
-      if (!val) {
-        return true;
-      }
-
-      try {
-        JSON.parse(val);
-        return true;
-      } catch (error) {
-        return false;
-      }
-    })
-    .test('is-valid-abi', formatText(MSG.invalidAbiError), (val) => {
-      if (!val) {
-        return true;
-      }
-
-      try {
-        const parsedAbi = JSON.parse(val);
-        // eslint-disable-next-line no-new
-        new Interface(parsedAbi);
-
-        return true;
-      } catch (error) {
-        return false;
-      }
-    })
-    .test('is-abi-has-methods', formatText(MSG.emptyMethodsAbiError), (val) => {
-      if (!val) {
-        return true;
-      }
-
-      try {
-        const parsedAbi = JSON.parse(val);
-        const IJsonAbi = new Interface(parsedAbi);
-        const functions = IJsonAbi.fragments.filter(
-          ({ type }) => type === 'function',
-        );
-        if (!functions.length) {
-          return false;
-        }
-
-        return true;
-      } catch (error) {
-        return false;
-      }
-    });
-
+const isValidJson = (val: string) => {
   try {
-    schema.validateSync(value);
+    JSON.parse(val);
     return true;
   } catch (error) {
-    return error.message;
+    return false;
   }
 };
+
+const isValidAbi = (val: string) => {
+  try {
+    const parsedAbi = JSON.parse(val);
+    // eslint-disable-next-line no-new
+    new Interface(parsedAbi); // This line will throw an error if Abi is not valid
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+const hasAbiMethods = (val: string) => {
+  try {
+    const parsedAbi = JSON.parse(val);
+    const IJsonAbi = new Interface(parsedAbi);
+    const functions = IJsonAbi.fragments.filter(
+      ({ type }) => type === 'function',
+    );
+    return functions.length > 0;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const validateContractAddress = createValidator(
+  string()
+    .test(
+      'is-address',
+      formatText(MSG.contractAddressError),
+      (val) => !val || isAddress(val),
+    )
+    .required(),
+);
+
+export const validateJsonAbi = createValidator(
+  string()
+    .test(
+      'is-valid-json',
+      formatText(MSG.jsonParseError),
+      (val) => !val || isValidJson(val),
+    )
+    .test(
+      'is-valid-abi',
+      formatText(MSG.invalidAbiError),
+      (val) => !val || isValidAbi(val),
+    )
+    .test(
+      'is-abi-has-methods',
+      formatText(MSG.emptyMethodsAbiError),
+      (val) => !val || hasAbiMethods(val),
+    ),
+);
 
 export const validateDynamicMethodInput = (type) => (value: string) => {
   const isValid = validateType(type, value);
@@ -92,9 +87,9 @@ export const validateDynamicMethodInput = (type) => (value: string) => {
   // Handle array validation errors
   if (typeof isValid === 'number') {
     if (isValid === -1) {
-      return formatText('Invalid array format');
+      return formatText(MSG.validationArrayError);
     }
-    return formatText(`Invalid value at index ${isValid}`);
+    return formatText(MSG.validationByIndexError, { index: isValid });
   }
 
   // Generate error messages for specific types

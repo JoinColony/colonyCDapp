@@ -17,14 +17,8 @@ export const ContractAddressInput = () => {
   const [serverError, setServerError] = useState('');
 
   useEffect(() => {
-    setValue('jsonAbi', '');
     if (isAddress(contractAddressField)) {
       getABIFromContractAddress(contractAddressField);
-    } else {
-      setError('contractAddress', {
-        type: 'custom',
-        message: formatText(MSG.contractAddressError),
-      });
     }
 
     async function getABIFromContractAddress(contractAddress: string) {
@@ -35,7 +29,6 @@ export const ContractAddressInput = () => {
       } else {
         setServerError('');
         setValue('jsonAbi', response.result);
-        trigger('jsonAbi');
       }
     }
   }, [contractAddressField, setError, setValue, clearErrors, trigger]);
