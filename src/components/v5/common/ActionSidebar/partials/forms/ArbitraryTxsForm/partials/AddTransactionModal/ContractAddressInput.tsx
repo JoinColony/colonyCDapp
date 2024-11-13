@@ -29,6 +29,7 @@ export const ContractAddressInput = () => {
       } else {
         setServerError('');
         setValue('jsonAbi', response.result);
+        trigger('jsonAbi'); // trigger validation to clear previous errors
       }
     }
   }, [contractAddressField, setError, setValue, clearErrors, trigger]);
