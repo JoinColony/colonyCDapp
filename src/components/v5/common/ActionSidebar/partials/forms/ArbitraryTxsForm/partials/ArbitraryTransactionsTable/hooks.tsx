@@ -8,7 +8,21 @@ import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
-// import CellDescription from './CellDescription.tsx';
+import CellDescription, {
+  type CellDescriptionItem,
+} from './CellDescription.tsx';
+
+const getValueByType = ({ type, value, isFull }) => {
+  if (type === 'address') {
+    const address = getMaskedAddress({
+      address: value,
+      isFull,
+    });
+    return address.result;
+  }
+
+  return value;
+};
 
 export const useArbitraryTxsTableColumns = (): ColumnDef<
   AddTransactionTableModel,
@@ -56,30 +70,27 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             {formatText({ id: 'table.row.details' })}
           </span>
         ),
-        cell: () => {
-          // const addressTo = getMaskedAddress({
-          //   address: original.to,
-          //   isFull: !isMobile,
-          // });
-          return (
-            <div>this one will come soon</div>
-            // <CellDescription
-            //   data={[
-            //     {
-            //       title: 'Method',
-            //       value: original.method,
-            //     },
-            //     {
-            //       title: '_to (address)',
-            //       value: addressTo.result,
-            //     },
-            //     {
-            //       title: '_amount (uint256)',
-            //       value: original.amount,
-            //     },
-            //   ]}
-            // />
-          );
+        cell: ({ row: { original } }) => {
+          const data: CellDescriptionItem[] = [];
+          if (original?.method) {
+            data.push({
+              title: 'Method',
+              value: original?.method,
+            });
+          }
+          if (original?.args) {
+            Object.entries(original.args).forEach((item) => {
+              data.push({
+                title: item[0],
+                value: getValueByType({
+                  value: item[1].value,
+                  type: item[1].type,
+                  isFull: !isMobile,
+                }),
+              });
+            });
+          }
+          return <CellDescription data={data} />;
         },
         size: isMobile ? 100 : 67,
       }),

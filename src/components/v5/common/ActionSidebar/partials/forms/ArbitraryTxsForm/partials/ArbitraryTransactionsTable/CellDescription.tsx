@@ -1,10 +1,11 @@
 import React, { type ReactNode, type FC } from 'react';
 
+export interface CellDescriptionItem {
+  title: ReactNode;
+  value: ReactNode;
+}
 interface CellDescriptionProps {
-  data: {
-    title: ReactNode;
-    value: ReactNode;
-  }[];
+  data: CellDescriptionItem[];
 }
 
 const CellDescription: FC<CellDescriptionProps> = ({ data }) => {

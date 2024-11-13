@@ -9,16 +9,15 @@ import { validateContractAddress } from './consts.tsx';
 import { MSG } from './translation.ts';
 
 export const ContractAddressInput = () => {
-  const { watch, setError, setValue, clearErrors } = useFormContext();
+  const { watch, setError, setValue, clearErrors, trigger } = useFormContext();
 
   const contractAddressField = watch('contractAddress');
 
   const [serverError, setServerError] = useState('');
 
   useEffect(() => {
+    setValue('jsonAbi', '');
     if (isAddress(contractAddressField)) {
-      setServerError('');
-      clearErrors();
       getABIFromContractAddress(contractAddressField);
     } else {
       setError('contractAddress', {
@@ -35,10 +34,12 @@ export const ContractAddressInput = () => {
       if (response.status === '0') {
         setServerError(response.result);
       } else {
+        setServerError('');
         setValue('jsonAbi', response.result);
+        trigger('jsonAbi');
       }
     }
-  }, [contractAddressField, setError, setValue, clearErrors]);
+  }, [contractAddressField, setError, setValue, clearErrors, trigger]);
 
   return (
     <FormInput

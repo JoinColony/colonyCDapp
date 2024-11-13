@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
@@ -13,9 +13,17 @@ interface JsonAbiInputProps {
 }
 
 export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, clearErrors } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const [isFormatted, setIsFormatted] = useState(false);
+  const [hideEditWarning, setHideEditWarning] = useState(false);
+
+  useEffect(() => {
+    if (!jsonAbiField) {
+      setHideEditWarning(false);
+      clearErrors();
+    }
+  }, [jsonAbiField, clearErrors]);
 
   const toggleJsonFormat = () => {
     try {
@@ -44,17 +52,33 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ disabled }) => {
       >
         {formatText(MSG.jsonAbiFormatLink)}
       </Button>
-      <FormTextareaBase
-        name="jsonAbi"
-        label={formatText(MSG.jsonAbiField)}
-        id="jsonAbi"
-        mode="primary"
-        className="h-[10.25rem]"
-        shouldUseAutoSize={false}
-        rows={7}
-        disabled={disabled}
-        rules={{ validate: validateJsonAbi }}
-      />
+      <div>
+        <FormTextareaBase
+          name="jsonAbi"
+          id="jsonAbi"
+          mode="primary"
+          className="h-[10.25rem]"
+          shouldUseAutoSize={false}
+          rows={7}
+          disabled={disabled}
+          label={formatText(MSG.jsonAbiField)}
+          rules={{ validate: validateJsonAbi }}
+          textareaOverlay={
+            jsonAbiField &&
+            !hideEditWarning && (
+              <div className="absolute bottom-0 left-0 right-0 top-0 flex cursor-pointer items-center justify-center rounded bg-base-sprite opacity-0 transition-opacity hover:opacity-100">
+                <Button
+                  onClick={() => {
+                    setHideEditWarning(true);
+                  }}
+                >
+                  {formatText(MSG.jsonAbiEditInfo)}
+                </Button>
+              </div>
+            )
+          }
+        />
+      </div>
     </div>
   );
 };

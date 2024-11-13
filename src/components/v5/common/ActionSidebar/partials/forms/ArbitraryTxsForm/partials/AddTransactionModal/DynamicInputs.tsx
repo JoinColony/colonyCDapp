@@ -5,11 +5,13 @@ import { useFormContext } from 'react-hook-form';
 import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
+import { validateDynamicMethodInput } from './consts.ts';
+
 interface JsonAbiInputProps {
   disabled?: boolean;
 }
 export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
-  const { watch } = useFormContext();
+  const { watch, setValue } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const selectedMethod = watch('method');
   const [methodOptions, setMethodOptions] = useState<
@@ -20,10 +22,13 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
   >([]);
 
   useEffect(() => {
+    setValue('method', '');
     if (jsonAbiField) {
       try {
         const IJsonAbi = new Interface(jsonAbiField);
-        const functions = Object.keys(IJsonAbi.functions);
+        const functions = IJsonAbi.fragments
+          .filter(({ type }) => type === 'function')
+          .map((item) => item.name);
         const options =
           functions?.map((func) => ({ value: func, label: func })) || [];
         setMethodOptions(options);
@@ -31,7 +36,7 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
         setMethodOptions([]);
       }
     }
-  }, [jsonAbiField]);
+  }, [jsonAbiField, setValue]);
 
   useEffect(() => {
     if (selectedMethod && jsonAbiField) {
@@ -39,11 +44,14 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
         const IJsonAbi = new Interface(jsonAbiField);
         const functionFragment = IJsonAbi.getFunction(selectedMethod);
         setMethodInputs(functionFragment.inputs);
+        functionFragment.inputs.forEach((item) => {
+          setValue(`args.${item.name}.type`, item.type);
+        });
       } catch (e) {
         setMethodInputs([]);
       }
     }
-  }, [selectedMethod, jsonAbiField]);
+  }, [selectedMethod, jsonAbiField, setValue]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -57,9 +65,9 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
       {methodInputs.map((input) => (
         <FormInput<any>
           key={input.name}
-          name={`args.${input.name}`}
+          name={`args.${input.name}.value`}
           label={`${input.name} (${input.type})`}
-          registerOptions={{ required: 'Required' }}
+          registerOptions={{ validate: validateDynamicMethodInput(input.type) }}
         />
       ))}
     </div>
