@@ -1,28 +1,30 @@
-import { Interface } from 'ethers/lib/utils';
+import { Interface, type ParamType } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { formatText } from '~utils/intl.ts';
 import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
 import { validateDynamicMethodInput } from './consts.ts';
+import { MSG } from './translation.ts';
 
-interface JsonAbiInputProps {
-  disabled?: boolean;
+interface MethodItem {
+  value: string;
+  label: string;
 }
-export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
+
+export const DynamicInputs: React.FC = () => {
   const { watch, setValue } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const selectedMethod = watch('method');
-  const [methodOptions, setMethodOptions] = useState<
-    Array<{ value: string; label: string }>
-  >([]);
-  const [methodInputs, setMethodInputs] = useState<
-    Array<{ name: string; type: string }>
-  >([]);
+  const [methodOptions, setMethodOptions] = useState<MethodItem[]>([]);
+  const [methodInputs, setMethodInputs] = useState<ParamType[]>([]);
 
   useEffect(() => {
-    setValue('method', '');
+    setValue('method', ''); // Clean method field when jsonAbi updated
+    setMethodInputs([]);
+    setMethodOptions([]);
     if (jsonAbiField) {
       try {
         const IJsonAbi = new Interface(jsonAbiField);
@@ -45,7 +47,7 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
         const functionFragment = IJsonAbi.getFunction(selectedMethod);
         setMethodInputs(functionFragment.inputs);
         functionFragment.inputs.forEach((item) => {
-          setValue(`args.${item.name}.type`, item.type);
+          setValue(`args.${item.name}.type`, item.type); // Setting type as value to use it in table rendering
         });
       } catch (e) {
         setMethodInputs([]);
@@ -53,10 +55,15 @@ export const DynamicInputs: React.FC<JsonAbiInputProps> = () => {
     }
   }, [selectedMethod, jsonAbiField, setValue]);
 
+  if (!methodOptions.length && !methodInputs.length) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {!!methodOptions.length && (
         <FormSelect
+          labelMessage={formatText(MSG.methodsField)}
           name="method"
           options={methodOptions}
           rules={{ required: 'Required' }}

@@ -53,6 +53,10 @@ export const MSG = defineMessages({
     id: `${displayName}.jsonAbiFormatLink`,
     defaultMessage: 'Format JSON',
   },
+  methodsField: {
+    id: `${displayName}.methodsField`,
+    defaultMessage: 'Methods',
+  },
   submitButton: {
     id: `${displayName}.submitButton`,
     defaultMessage: 'Confirm',
@@ -80,5 +84,9 @@ export const MSG = defineMessages({
   validationInputError: {
     id: `${displayName}.validationInputError`,
     defaultMessage: 'Please enter a valid input for this field',
+  },
+  validationByIndexError: {
+    id: `${displayName}.validationByIndexError`,
+    defaultMessage: 'Error in array item {index}: Invalid value',
   },
 });
