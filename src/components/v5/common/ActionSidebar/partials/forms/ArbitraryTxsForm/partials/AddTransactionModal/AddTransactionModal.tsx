@@ -61,7 +61,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 placeholder={formatText(MSG.amountPlaceholder)}
               /> */}
             </div>
-            <div className="mt-[3rem] flex flex-col-reverse gap-3 sm:flex-row md:mt-8">
+            <div className="mt-4 flex flex-col-reverse gap-3 sm:flex-row">
               <Button
                 type="button"
                 mode="primaryOutline"

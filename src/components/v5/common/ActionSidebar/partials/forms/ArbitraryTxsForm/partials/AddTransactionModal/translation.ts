@@ -33,6 +33,10 @@ export const MSG = defineMessages({
     id: `${displayName}.jsonAbiField`,
     defaultMessage: 'ABI/JSON',
   },
+  jsonAbiEditInfo: {
+    id: `${displayName}.jsonAbiEditInfo`,
+    defaultMessage: 'Edit generated ABI',
+  },
   jsonParseError: {
     id: `${displayName}.jsonParseError`,
     defaultMessage: 'Please ensure value is valid JSON.',
@@ -40,6 +44,10 @@ export const MSG = defineMessages({
   invalidAbiError: {
     id: `${displayName}.invalidAbiError`,
     defaultMessage: 'Please ensure value is valid ABI.',
+  },
+  emptyMethodsAbiError: {
+    id: `${displayName}.emptyMethodsAbiError`,
+    defaultMessage: "Contract ABI doesn't have any available methods.",
   },
   jsonAbiFormatLink: {
     id: `${displayName}.jsonAbiFormatLink`,

@@ -1,4 +1,4 @@
-import { type TextareaHTMLAttributes } from 'react';
+import { type ReactNode, type TextareaHTMLAttributes } from 'react';
 import { type UseControllerProps } from 'react-hook-form';
 
 import { type BaseFieldProps } from '../types.ts';
@@ -14,6 +14,7 @@ export interface TextareaBaseProps
   labelClassName?: string;
   mode?: 'primary' | 'secondary';
   shouldUseAutoSize?: boolean;
+  textareaOverlay?: ReactNode;
 }
 
 export interface FormTextareaBaseProps extends TextareaBaseProps {
