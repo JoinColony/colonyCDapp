@@ -2,10 +2,11 @@ import { isAddress } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { fetchArbiscanContract } from '~utils/arbitraryTransaction/fetchArbiscanContract.ts';
 import { formatText } from '~utils/intl.ts';
 import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 
-import { validateContractAddress } from './consts.tsx';
+import { validateContractAddress } from './consts.ts';
 import { MSG } from './translation.ts';
 
 export const ContractAddressInput = () => {
@@ -27,9 +28,7 @@ export const ContractAddressInput = () => {
     }
 
     async function getABIFromContractAddress(contractAddress: string) {
-      const response = await fetch(
-        `https://api.arbiscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${import.meta.env.ARBISCAN_API}`,
-      ).then((result) => result.json());
+      const response = await fetchArbiscanContract(contractAddress);
 
       if (response.status === '0') {
         setServerError(response.result);
