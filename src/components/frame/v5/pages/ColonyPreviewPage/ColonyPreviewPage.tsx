@@ -9,10 +9,11 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { REQUEST_ACCESS } from '~constants/index.ts';
+import { ADDRESS_ZERO, REQUEST_ACCESS } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { LandingPageLayout } from '~frame/Extensions/layouts/LandingPageLayout.tsx';
 import InfoBanner from '~frame/LandingPage/InfoBanner/InfoBanner.tsx';
+import LoadingTemplate from '~frame/LoadingTemplate/LoadingTemplate.tsx';
 import {
   useGetColonyMemberInviteQuery,
   useValidateUserInviteMutation,
@@ -21,8 +22,10 @@ import {
 import useIsContributor from '~hooks/useIsContributor.ts';
 import { CREATE_PROFILE_ROUTE, NOT_FOUND_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
-import PageLoader from '~v5/common/PageLoader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/CardWithCallout.tsx';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/ColonyAvatar.tsx';
+import SocialLinks from '~v5/shared/SocialLinks/SocialLinks.tsx';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -33,7 +36,11 @@ const MSG = defineMessages({
   },
   title: {
     id: `${displayName}.title`,
-    defaultMessage: `Welcome to Colony`,
+    defaultMessage: `
+    {noWallet, select,
+    true {Get started}
+    other {Welcome to Colony}
+  }`,
   },
   info: {
     id: `${displayName}.info`,
@@ -65,11 +72,15 @@ const MSG = defineMessages({
   },
   infoBannerDescription: {
     id: `${displayName}.infoBannerDescription`,
-    defaultMessage: ` 
+    defaultMessage: `
       {needsToRequestAccess, select,
       true {Your invite code to {colony} is not valid. Please check the code and try again.}
       other {You’ve been invited to join the {colony}. Connect your wallet below to join the colony!}
     }`,
+  },
+  restrictedAccessMessage: {
+    id: `${displayName}.restrictedAccessMessage`,
+    defaultMessage: `This Colony has restricted access during early access. Only members who have been invited can access the Colony.`,
   },
 });
 
@@ -126,7 +137,7 @@ const ColonyPreviewPage = () => {
     isContributorLoading ||
     colonyLoading
   ) {
-    return <PageLoader loadingText={formatMessage(MSG.loadingMessage)} />;
+    return <LoadingTemplate loadingText={formatMessage(MSG.loadingMessage)} />;
   }
 
   if (wallet && !user) {
@@ -150,6 +161,9 @@ const ColonyPreviewPage = () => {
   const inviteIsInvalid = inviteCode && !inviteIsValid;
   const colonyDisplayName =
     colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
+  const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
+  const socialLinks =
+    colonyData?.getColonyByName?.items[0]?.metadata?.externalLinks || [];
 
   return (
     <LandingPageLayout
@@ -181,7 +195,9 @@ const ColonyPreviewPage = () => {
       <div className="flex h-full items-center px-8 md:px-0">
         <div className="w-full">
           <div className="mb-8">
-            <h1 className="heading-2">{formatText(MSG.title)}</h1>
+            <h1 className="heading-2">
+              {formatText(MSG.title, { noWallet: !wallet })}
+            </h1>
             <p
               className={clsx(
                 'pt-2 text-md font-normal text-gray-600 md:block',
@@ -195,19 +211,49 @@ const ColonyPreviewPage = () => {
               })}
             </p>
             <div className="pt-9 md:pt-8">
-              <InfoBanner
-                icon={inviteIsValid ? Confetti : Password}
-                title={formatText(MSG.infoBannerTitle, {
-                  needsToRequestAccess: inviteIsInvalid,
-                })}
-                text={formatText(MSG.infoBannerDescription, {
-                  needsToRequestAccess: inviteIsInvalid,
-                  colony: (
-                    <span className="font-bold">{colonyDisplayName}</span>
-                  ),
-                })}
-                variant={inviteIsValid ? 'success' : 'error'}
-              />
+              {inviteCode ? (
+                <InfoBanner
+                  icon={inviteIsValid ? Confetti : Password}
+                  title={formatText(MSG.infoBannerTitle, {
+                    needsToRequestAccess: inviteIsInvalid,
+                  })}
+                  text={formatText(MSG.infoBannerDescription, {
+                    needsToRequestAccess: inviteIsInvalid,
+                    colony: (
+                      <span className="font-bold">{colonyDisplayName}</span>
+                    ),
+                  })}
+                  variant={inviteIsValid ? 'success' : 'error'}
+                />
+              ) : (
+                <CardWithCallout
+                  className="border-grey-200"
+                  title={
+                    <div className="flex w-full flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
+                      <ColonyAvatar
+                        colonyImageSrc={
+                          colonyMetadata?.thumbnail ||
+                          colonyMetadata?.avatar ||
+                          undefined
+                        }
+                        colonyAddress={colonyAddress || ADDRESS_ZERO}
+                        colonyName={colonyDisplayName}
+                        size={24}
+                      />
+                      <h1 className="inline text-md font-medium">
+                        {colonyDisplayName}
+                      </h1>
+                    </div>
+                  }
+                >
+                  {formatText(MSG.restrictedAccessMessage)}
+
+                  <SocialLinks
+                    className="mt-3.5 w-full sm:ml-auto sm:w-auto"
+                    externalLinks={socialLinks}
+                  />
+                </CardWithCallout>
+              )}
             </div>
           </div>
           <div className="hidden w-full md:block">
