@@ -2,6 +2,7 @@ import { isAddress, Interface } from 'ethers/lib/utils';
 import { string } from 'yup';
 
 import { formatText } from '~utils/intl.ts';
+import { validateType } from '~utils/safes/contractParserValidation.ts';
 
 import { MSG } from './translation.ts';
 
@@ -46,6 +47,27 @@ export const validateJsonAbi = (value: string) => {
         const parsedAbi = JSON.parse(val);
         // eslint-disable-next-line no-new
         new Interface(parsedAbi);
+
+        return true;
+      } catch (error) {
+        return false;
+      }
+    })
+    .test('is-abi-has-methods', formatText(MSG.emptyMethodsAbiError), (val) => {
+      if (!val) {
+        return true;
+      }
+
+      try {
+        const parsedAbi = JSON.parse(val);
+        const IJsonAbi = new Interface(parsedAbi);
+        const functions = IJsonAbi.fragments.filter(
+          ({ type }) => type === 'function',
+        );
+        if (!functions.length) {
+          return false;
+        }
+
         return true;
       } catch (error) {
         return false;
@@ -57,5 +79,38 @@ export const validateJsonAbi = (value: string) => {
     return true;
   } catch (error) {
     return error.message;
+  }
+};
+
+export const validateDynamicMethodInput = (type) => (value: string) => {
+  const isValid = validateType(type, value);
+
+  if (isValid === true) {
+    return true;
+  }
+
+  // Handle array validation errors
+  if (typeof isValid === 'number') {
+    if (isValid === -1) {
+      return formatText('Invalid array format');
+    }
+    return formatText(`Invalid value at index ${isValid}`);
+  }
+
+  // Generate error messages for specific types
+  switch (true) {
+    case type.startsWith('uint'):
+    case type.startsWith('int'):
+      return formatText('Invalid number for the given type');
+    case type === 'address':
+      return formatText('Invalid address');
+    case type === 'bool':
+      return formatText('Invalid boolean value');
+    case type.startsWith('bytes'):
+      return formatText(`Invalid ${type} string`);
+    case type.includes('[]'):
+      return formatText('Invalid array');
+    default:
+      return formatText('Invalid input');
   }
 };

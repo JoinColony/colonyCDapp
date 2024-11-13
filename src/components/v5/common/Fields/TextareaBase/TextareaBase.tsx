@@ -28,6 +28,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
       mode,
       label,
       id: idProp,
+      textareaOverlay,
       ...rest
     },
     ref,
@@ -60,28 +61,31 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
             {label}
           </label>
         )}
-        <textarea
-          rows={1}
-          ref={textAreaRef}
-          className={clsx(
-            className,
-            state ? stateClassNames[state] : undefined,
-            'w-full resize-none bg-base-white align-top text-md outline-none',
-            {
-              'placeholder:text-gray-400': !disabled,
-              'transition-colors md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
-                state !== FieldState.Error && !disabled,
-              'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':
-                mode === 'primary',
-              'border-none': mode === 'secondary',
-              'pointer-events-none text-gray-300 placeholder:text-gray-300':
-                disabled,
-            },
-          )}
-          value={value}
-          id={id}
-          {...rest}
-        />
+        <div className="relative">
+          {textareaOverlay}
+          <textarea
+            rows={1}
+            ref={textAreaRef}
+            className={clsx(
+              className,
+              state ? stateClassNames[state] : undefined,
+              'w-full resize-none bg-base-white align-top text-md outline-none',
+              {
+                'placeholder:text-gray-400': !disabled,
+                'transition-colors md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+                  state !== FieldState.Error && !disabled,
+                'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':
+                  mode === 'primary',
+                'border-none': mode === 'secondary',
+                'pointer-events-none text-gray-300 placeholder:text-gray-300':
+                  disabled,
+              },
+            )}
+            value={value}
+            id={id}
+            {...rest}
+          />
+        </div>
         {state === FieldState.Error &&
           notMaybe(maxLength) &&
           !withoutCounter && (
