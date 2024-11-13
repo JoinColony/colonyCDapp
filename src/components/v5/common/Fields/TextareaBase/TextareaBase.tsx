@@ -101,7 +101,7 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
         {!!message && (
           <span
             className={clsx(
-              'border-0 text-md',
+              'border-0 text-sm',
               state ? stateClassNames[state] : undefined,
             )}
           >

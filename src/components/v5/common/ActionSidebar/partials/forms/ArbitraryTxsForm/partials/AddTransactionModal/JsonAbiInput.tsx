@@ -23,7 +23,6 @@ export const JsonAbiInput: React.FC = () => {
   }, [contractAddressField, setValue]);
 
   useEffect(() => {
-    trigger('jsonAbi'); // trigger errors in case value was updated by ContractAddress component
     if (!jsonAbiField) {
       setHideEditWarning(false);
       clearErrors();
