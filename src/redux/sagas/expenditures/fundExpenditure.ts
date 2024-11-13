@@ -15,6 +15,7 @@ import {
 import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
 import {
   getColonyManager,
+  getMoveFundsActionDomain,
   getMoveFundsPermissionProofs,
   getPermissionProofsLocal,
   initiateTransaction,
@@ -73,13 +74,21 @@ function* fundExpenditure({
       colonyClient,
       expenditureFundingPotId,
     );
-    const { actionDomainId, fromChildSkillIndex, toChildSkillIndex } =
-      yield call(getMoveFundsPermissionProofs, {
+    const actionDomainId = getMoveFundsActionDomain({
+      actionDomainId: null,
+      fromDomainId,
+      toDomainId: expenditurePotDomainId,
+    });
+    const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+      getMoveFundsPermissionProofs,
+      {
+        actionDomainId,
         toDomainId: expenditurePotDomainId,
         fromDomainId,
         colonyDomains,
         colonyAddress,
-      });
+      },
+    );
 
     const [userPermissionDomainId, userChildSkillIndex] = yield call(
       getPermissionProofsLocal,

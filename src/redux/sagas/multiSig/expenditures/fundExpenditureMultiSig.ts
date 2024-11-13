@@ -14,6 +14,7 @@ import {
 import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures.ts';
 import {
   getColonyManager,
+  getMoveFundsActionDomain,
   getMoveFundsPermissionProofs,
   getPermissionProofsLocal,
   initiateTransaction,
@@ -77,13 +78,22 @@ function* fundExpenditureMultiSig({
       expenditureFundingPotId,
     );
 
-    const { actionDomainId, fromChildSkillIndex, toChildSkillIndex } =
-      yield call(getMoveFundsPermissionProofs, {
+    const actionDomainId = getMoveFundsActionDomain({
+      actionDomainId: null,
+      fromDomainId,
+      toDomainId: expenditurePotDomainId,
+    });
+
+    const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+      getMoveFundsPermissionProofs,
+      {
+        actionDomainId,
         toDomainId: expenditurePotDomainId,
         fromDomainId,
         colonyDomains,
         colonyAddress,
-      });
+      },
+    );
 
     const [multiSigPermissionDomainId, multiSigChildSkillIndex] = yield call(
       getPermissionProofsLocal,
