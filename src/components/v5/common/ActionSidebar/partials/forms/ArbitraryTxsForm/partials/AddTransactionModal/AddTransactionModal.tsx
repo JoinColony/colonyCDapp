@@ -7,9 +7,6 @@ import {
   type AddTransactionFormModalProps,
   type AddTransactionTableModel,
 } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
-// import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
-// import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
-// import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -44,22 +41,6 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
               <ContractAddressInput />
               <JsonAbiInput />
               <DynamicInputs />
-              {/* <FormSelect
-                name="method"
-                labelMessage={formatText(MSG.methodField)}
-                placeholder={formatText(MSG.methodPlaceholder)}
-                options={methodOptions}
-              />
-              <FormInput
-                name="to"
-                label={formatText(MSG.toField)}
-                placeholder={formatText(MSG.toPlaceholder)}
-              />
-              <FormInput
-                name="amount"
-                label={formatText(MSG.amountField)}
-                placeholder={formatText(MSG.amountPlaceholder)}
-              /> */}
             </div>
             <div className="mt-4 flex flex-col-reverse gap-3 sm:flex-row">
               <Button

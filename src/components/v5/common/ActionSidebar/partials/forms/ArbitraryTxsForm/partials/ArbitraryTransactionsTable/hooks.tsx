@@ -81,7 +81,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
           if (original?.args) {
             Object.entries(original.args).forEach((item) => {
               data.push({
-                title: item[0],
+                title: `${item[0]} (${item[1].type})`,
                 value: getValueByType({
                   value: item[1].value,
                   type: item[1].type,
