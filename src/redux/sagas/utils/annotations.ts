@@ -1,5 +1,6 @@
 import { call } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateAnnotationDocument,
@@ -32,20 +33,22 @@ export const uploadAnnotationToDb = async ({
 }) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  await apolloClient.mutate<
-    CreateAnnotationMutation,
-    CreateAnnotationMutationVariables
-  >({
-    mutation: CreateAnnotationDocument,
-    variables: {
-      input: {
-        message,
-        id: annotationId,
-        actionId,
-        ipfsHash,
+  await mutateWithAuthRetry(() =>
+    apolloClient.mutate<
+      CreateAnnotationMutation,
+      CreateAnnotationMutationVariables
+    >({
+      mutation: CreateAnnotationDocument,
+      variables: {
+        input: {
+          message,
+          id: annotationId,
+          actionId,
+          ipfsHash,
+        },
       },
-    },
-  });
+    }),
+  );
 };
 
 export function* uploadAnnotation({

@@ -5,6 +5,7 @@ import {
 } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ACTION_DECISION_MOTION_CODE, ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -132,24 +133,26 @@ function* createDecisionMotion({
       ActionTypes.TRANSACTION_ERROR,
     ]);
 
-    yield apolloClient.mutate<
-      CreateColonyDecisionMutation,
-      CreateColonyDecisionMutationVariables
-    >({
-      mutation: CreateColonyDecisionDocument,
-      variables: {
-        input: {
-          id: getColonyDecisionId(colonyAddress, txHash),
-          actionId: txHash,
-          colonyAddress,
-          description,
-          title,
-          motionDomainId,
-          walletAddress,
-          showInDecisionsList: false,
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateColonyDecisionMutation,
+        CreateColonyDecisionMutationVariables
+      >({
+        mutation: CreateColonyDecisionDocument,
+        variables: {
+          input: {
+            id: getColonyDecisionId(colonyAddress, txHash),
+            actionId: txHash,
+            colonyAddress,
+            description,
+            title,
+            motionDomainId,
+            walletAddress,
+            showInDecisionsList: false,
+          },
         },
-      },
-    });
+      }),
+    );
 
     // yield transactionSetPending(annotateMotion.id);
 

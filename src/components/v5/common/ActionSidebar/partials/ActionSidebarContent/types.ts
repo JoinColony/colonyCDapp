@@ -9,6 +9,7 @@ export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   transactionId?: string;
   isExpenditure?: boolean;
   actionFormProps: Omit<ActionFormProps, 'children' | 'actionType'>;
+  showApolloNetworkError?: boolean;
 }
 
 export interface ActionSidebarContentProps {

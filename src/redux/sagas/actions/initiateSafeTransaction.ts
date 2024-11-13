@@ -1,6 +1,7 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   type CreateSafeTransactionMutation,
@@ -121,36 +122,40 @@ function* initiateSafeTransactionAction({
     /**
      * Create parent safe transaction in the database
      */
-    const safeTransaction = yield apolloClient.mutate<
-      CreateSafeTransactionMutation,
-      CreateSafeTransactionMutationVariables
-    >({
-      mutation: CreateSafeTransactionDocument,
-      variables: {
-        input: {
-          id: txHash,
-          safe,
+    const safeTransaction = yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateSafeTransactionMutation,
+        CreateSafeTransactionMutationVariables
+      >({
+        mutation: CreateSafeTransactionDocument,
+        variables: {
+          input: {
+            id: txHash,
+            safe,
+          },
         },
-      },
-    });
+      }),
+    );
 
     /*
      * Create individual safe transaction data records
      */
     for (const transaction of transactions) {
-      yield apolloClient.mutate<
-        CreateSafeTransactionDataMutation,
-        CreateSafeTransactionDataMutationVariables
-      >({
-        mutation: CreateSafeTransactionDataDocument,
-        variables: {
-          input: {
-            ...omit(transaction, 'token'),
-            tokenAddress: transaction.token?.tokenAddress,
-            transactionHash: safeTransaction.data.createSafeTransaction.id,
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          CreateSafeTransactionDataMutation,
+          CreateSafeTransactionDataMutationVariables
+        >({
+          mutation: CreateSafeTransactionDataDocument,
+          variables: {
+            input: {
+              ...omit(transaction, 'token'),
+              tokenAddress: transaction.token?.tokenAddress,
+              transactionHash: safeTransaction.data.createSafeTransaction.id,
+            },
           },
-        },
-      });
+        }),
+      );
     }
 
     yield createActionMetadataInDB(txHash, customActionTitle);

@@ -1,7 +1,7 @@
 import React, { type ButtonHTMLAttributes } from 'react';
 import { type FieldValues, type UseFormReturn } from 'react-hook-form';
 
-import { authenticateWallet } from '~auth';
+import { authenticateWalletWithRetry } from '~auth';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { type ActionTypes, type ActionTypeString } from '~redux/index.ts';
 import { type ActionTransformFnType, getFormAction } from '~utils/actions.ts';
@@ -81,7 +81,7 @@ const ActionForm = <V extends Record<string, any>>({
   const handleSubmit: CustomSubmitHandler<V> = async (values, formHelpers) => {
     try {
       // Force re-auth check to account for loss of auth/connection after the session has been started
-      await authenticateWallet();
+      await authenticateWalletWithRetry();
       const res = await asyncFunction(values);
       onSuccess?.(values, formHelpers, res);
     } catch (e) {

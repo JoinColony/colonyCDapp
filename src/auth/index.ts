@@ -70,11 +70,47 @@ export const authenticateWallet = async (): Promise<void> => {
 
     const signature = await signer.signMessage(message);
 
-    return authProxyRequest('auth', {
+    const authRequest = await authProxyRequest('auth', {
       method: 'POST',
       body: JSON.stringify({ message, signature }),
     });
+
+    if (authRequest.type === 'error') {
+      throw new Error('Auth failed');
+    }
+
+    return authRequest;
   }
 
   return authCheck;
+};
+
+export const authenticateWalletWithRetry = async (
+  maxRetries: number = 3,
+): Promise<void> => {
+  let attempts = 0;
+  let result: any;
+
+  while (attempts < maxRetries) {
+    attempts += 1;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      result = await authenticateWallet();
+
+      // Return if no errors
+      return result;
+    } catch (error) {
+      console.error(error);
+
+      if (attempts >= maxRetries) {
+        throw error;
+      }
+
+      if ((error.message as unknown) !== 'Auth failed') {
+        throw error;
+      }
+    }
+  }
+
+  return result;
 };

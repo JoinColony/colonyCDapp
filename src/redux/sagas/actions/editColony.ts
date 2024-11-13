@@ -1,8 +1,10 @@
 import { ClientType } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
+  type ColonyMetadataFragment,
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   type UpdateColonyMetadataMutation,
@@ -153,35 +155,37 @@ function* editColonyAction({
      * Save the updated metadata in the database
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<
-        UpdateColonyMetadataMutation,
-        UpdateColonyMetadataMutationVariables
-      >({
-        mutation: UpdateColonyMetadataDocument,
-        variables: {
-          input: {
-            id: colonyAddress,
-            displayName: colonyDisplayName,
-            avatar: colonyAvatarImage,
-            thumbnail: colonyThumbnail,
-            description: colonyDescription,
-            externalLinks: colonyExternalLinks,
-            changelog: getUpdatedColonyMetadataChangelog({
-              transactionHash: txHash,
-              metadata: colony.metadata,
-              newDisplayName: colonyDisplayName,
-              newAvatarImage: colonyAvatarImage,
-              hasDescriptionChanged:
-                metadata?.description !== colonyDescription,
-              haveExternalLinksChanged: !isEqual(
-                metadata?.externalLinks,
-                colonyExternalLinks,
-              ),
-            }),
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          UpdateColonyMetadataMutation,
+          UpdateColonyMetadataMutationVariables
+        >({
+          mutation: UpdateColonyMetadataDocument,
+          variables: {
+            input: {
+              id: colonyAddress,
+              displayName: colonyDisplayName,
+              avatar: colonyAvatarImage,
+              thumbnail: colonyThumbnail,
+              description: colonyDescription,
+              externalLinks: colonyExternalLinks,
+              changelog: getUpdatedColonyMetadataChangelog({
+                transactionHash: txHash,
+                metadata: colony.metadata as ColonyMetadataFragment,
+                newDisplayName: colonyDisplayName,
+                newAvatarImage: colonyAvatarImage,
+                hasDescriptionChanged:
+                  metadata?.description !== colonyDescription,
+                haveExternalLinksChanged: !isEqual(
+                  metadata?.externalLinks,
+                  colonyExternalLinks,
+                ),
+              }),
+            },
           },
-        },
-        refetchQueries: [GetFullColonyByNameDocument],
-      });
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
     }
 
     yield createActionMetadataInDB(txHash, customActionTitle);

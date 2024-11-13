@@ -7,6 +7,7 @@ import {
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
@@ -182,22 +183,24 @@ function* createStreamingPaymentAction({
       streamingPaymentsClient.getNumStreamingPayments,
     );
 
-    yield apolloClient.mutate<
-      CreateStreamingPaymentMetadataMutation,
-      CreateStreamingPaymentMetadataMutationVariables
-    >({
-      mutation: CreateStreamingPaymentMetadataDocument,
-      variables: {
-        input: {
-          id: getExpenditureDatabaseId(
-            colonyAddress,
-            toNumber(streamingPaymentId),
-          ),
-          endCondition,
-          limitAmount,
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateStreamingPaymentMetadataMutation,
+        CreateStreamingPaymentMetadataMutationVariables
+      >({
+        mutation: CreateStreamingPaymentMetadataDocument,
+        variables: {
+          input: {
+            id: getExpenditureDatabaseId(
+              colonyAddress,
+              toNumber(streamingPaymentId),
+            ),
+            endCondition,
+            limitAmount,
+          },
         },
-      },
-    });
+      }),
+    );
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
