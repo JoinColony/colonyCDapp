@@ -26,10 +26,7 @@ export const useLandingPage = () => {
   } = useGetMembersCountQuery({
     variables: {
       filter: {
-        isWatching: { eq: true },
-        or: joinedColonies.map((colony) => ({
-          colonyAddress: { eq: colony.colonyAddress },
-        })),
+        or: [{ hasReputation: { eq: true } }, { hasPermissions: { eq: true } }],
       },
     },
     onCompleted: (data) => {
