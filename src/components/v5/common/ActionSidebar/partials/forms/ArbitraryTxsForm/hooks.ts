@@ -1,5 +1,5 @@
 import { Id } from '@colony/colony-js';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload } from '~utils/actions.ts';
@@ -22,19 +22,15 @@ export const useCreateArbitraryTxs = (
       }),
       [],
     ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    transform: useCallback(
-      mapPayload((payload) => {
-        const safeDescription = sanitizeHTML(payload.description || '');
+    transform: mapPayload((payload) => {
+      const safeDescription = sanitizeHTML(payload.description || '');
 
-        return {
-          decisionMethod: payload.decisionMethod,
-          description: safeDescription,
-          customActionTitle: payload.title,
-          transactions: payload.transactions,
-        };
-      }),
-      [],
-    ),
+      return {
+        decisionMethod: payload.decisionMethod,
+        description: safeDescription,
+        customActionTitle: payload.title,
+        transactions: payload.transactions,
+      };
+    }),
   });
 };

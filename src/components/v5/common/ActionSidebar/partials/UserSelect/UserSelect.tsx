@@ -13,7 +13,6 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type User } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
-import AvatarWithAddress from '~v5/common/AvatarWithAddress/index.ts';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
