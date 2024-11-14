@@ -30,15 +30,16 @@ const MSG = defineMessages({
   },
 });
 
-const PaymentNotifications = () => {
-  const toggleButton = (
-    <NotificationTypeToggle
-      notificationType="paymentNotificationsDisabled"
-      toastTextEnabled={formatText(MSG.toastPaymentNotificationsEnabled)}
-      toastTextDisabled={formatText(MSG.toastPaymentNotificationsDisabled)}
-    />
-  );
+const toggleButton = (
+  <NotificationTypeToggle
+    testId="payment-notifications-toggle"
+    notificationType="paymentNotificationsDisabled"
+    toastTextEnabled={formatText(MSG.toastPaymentNotificationsEnabled)}
+    toastTextDisabled={formatText(MSG.toastPaymentNotificationsDisabled)}
+  />
+);
 
+const PaymentNotifications = () => {
   return (
     <SettingsRow.Content rightContent={toggleButton}>
       <SettingsRow.Subtitle>

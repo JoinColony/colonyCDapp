@@ -20,6 +20,7 @@ interface UserAvatarProps {
   userAddress: string;
   userAvatarSrc?: string;
   userName?: string;
+  testId?: string;
 }
 
 export const UserAvatar: FC<UserAvatarProps> = ({
@@ -28,6 +29,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({
   userAddress,
   userAvatarSrc,
   userName,
+  testId,
 }) => {
   return (
     <Avatar
@@ -36,6 +38,7 @@ export const UserAvatar: FC<UserAvatarProps> = ({
       alt={formatText(MSG.defaultAlt, { name: userName ?? userAddress })}
       src={userAvatarSrc}
       address={userAddress}
+      testId={testId}
     />
   );
 };

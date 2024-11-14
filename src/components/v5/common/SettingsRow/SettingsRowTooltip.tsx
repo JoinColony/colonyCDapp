@@ -9,7 +9,7 @@ interface SettingsRowTooltipProps extends PropsWithChildren {}
 
 const SettingsRowTooltip: FC<SettingsRowTooltipProps> = ({ children }) => {
   return (
-    <Tooltip tooltipContent={children}>
+    <Tooltip tooltipContent={children} testId="settings-row-tooltip">
       <span className="flex text-gray-400">
         <Info size={18} />
       </span>

@@ -40,18 +40,22 @@ const MSG = defineMessages({
   },
 });
 
+const toggleButton = (
+  <NotificationTypeToggle
+    testId="notifications-toggle"
+    notificationType="notificationsDisabled"
+    toastTextEnabled={formatText(MSG.toastNotificationsEnabled)}
+    toastTextDisabled={formatText(MSG.toastNotificationsDisabled)}
+  />
+);
+
 // @TODO if we get more items in this "section" split the sections up and rename this
 const NotificationsSection = () => {
-  const toggleButton = (
-    <NotificationTypeToggle
-      notificationType="notificationsDisabled"
-      toastTextEnabled={formatText(MSG.toastNotificationsEnabled)}
-      toastTextDisabled={formatText(MSG.toastNotificationsDisabled)}
-    />
-  );
-
   return (
-    <SettingsRow.Container className="border-none">
+    <SettingsRow.Container
+      className="border-none"
+      testId="notifications-section"
+    >
       <SettingsRow.Content>
         <div className="flex items-center gap-1.5">
           <SettingsRow.Title>{formatText(MSG.sectionTitle)}</SettingsRow.Title>

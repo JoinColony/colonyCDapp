@@ -108,6 +108,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
         iconSize={isMobile ? 18 : 16}
         setTriggerRef={setTriggerRef}
         onClick={onUserMenuButtonClick}
+        data-testid="user-navigation-hamburger"
       />
       {visible && (
         <UserMenu

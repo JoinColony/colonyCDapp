@@ -30,15 +30,16 @@ const MSG = defineMessages({
   },
 });
 
-const MentionNotifications = () => {
-  const toggleButton = (
-    <NotificationTypeToggle
-      notificationType="mentionNotificationsDisabled"
-      toastTextEnabled={formatText(MSG.toastMentionNotificationsEnabled)}
-      toastTextDisabled={formatText(MSG.toastMentionNotificationsDisabled)}
-    />
-  );
+const toggleButton = (
+  <NotificationTypeToggle
+    testId="mention-notifications-toggle"
+    notificationType="mentionNotificationsDisabled"
+    toastTextEnabled={formatText(MSG.toastMentionNotificationsEnabled)}
+    toastTextDisabled={formatText(MSG.toastMentionNotificationsDisabled)}
+  />
+);
 
+const MentionNotifications = () => {
   return (
     <SettingsRow.Content rightContent={toggleButton}>
       <SettingsRow.Subtitle>

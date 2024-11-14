@@ -55,6 +55,7 @@ const MetatransactionsToggle = () => {
 
   return (
     <Switch
+      testId="metatransactions-toggle"
       checked={areMetaTxEnabled}
       disabled={loading}
       onChange={async () => {

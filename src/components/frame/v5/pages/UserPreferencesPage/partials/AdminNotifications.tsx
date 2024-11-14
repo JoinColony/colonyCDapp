@@ -28,15 +28,16 @@ const MSG = defineMessages({
   },
 });
 
-const AdminNotifications = () => {
-  const toggleButton = (
-    <NotificationTypeToggle
-      toastTextEnabled={formatText(MSG.toastAdminNotificationsEnabled)}
-      toastTextDisabled={formatText(MSG.toastAdminNotificationsDisabled)}
-      notificationType="adminNotificationsDisabled"
-    />
-  );
+const toggleButton = (
+  <NotificationTypeToggle
+    testId="admin-notifications-toggle"
+    toastTextEnabled={formatText(MSG.toastAdminNotificationsEnabled)}
+    toastTextDisabled={formatText(MSG.toastAdminNotificationsDisabled)}
+    notificationType="adminNotificationsDisabled"
+  />
+);
 
+const AdminNotifications = () => {
   return (
     <SettingsRow.Content rightContent={toggleButton}>
       <SettingsRow.Subtitle>{formatText(MSG.adminTitle)}</SettingsRow.Subtitle>

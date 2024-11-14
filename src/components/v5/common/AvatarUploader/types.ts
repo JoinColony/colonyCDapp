@@ -51,6 +51,7 @@ export interface AvatarUploaderProps {
   SuccessComponent?: React.FC<SuccessContentProps>;
   uploaderText?: string;
   uploaderShownByDefault?: boolean;
+  testId?: string;
 }
 
 export interface DefaultContentProps extends Pick<ErrorContentProps, 'open'> {

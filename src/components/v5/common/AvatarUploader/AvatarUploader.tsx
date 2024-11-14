@@ -32,6 +32,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   SuccessComponent,
   uploaderText,
   uploaderShownByDefault = true,
+  testId,
 }) => {
   const {
     uploadAvatarError,
@@ -72,7 +73,7 @@ const AvatarUploader: FC<AvatarUploaderProps & UseAvatarUploaderProps> = ({
   }, [uploadProgress, uploaderShownByDefault]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-testid={testId}>
       <div className="flex flex-row items-start gap-4">
         <div className="flex-shrink-0">
           {isLoading ? (

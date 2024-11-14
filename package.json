@@ -25,6 +25,7 @@
     "typecheck": "tsc --noEmit",
     "frontend": "ulimit -n 2048 && vite",
     "frontend:safe": "SAFE_ENABLED=true ulimit -n 2048 && vite",
+    "preview": "ulimit -n 2048 && NODE_ENV=development npm run build && npx import-meta-env -x .env && vite preview --port=9091",
     "build": "vite build",
     "hardhat": "docker exec -e DISABLE_DOCKER=true -it network bash -c \". /root/.nvm/nvm.sh && cd colonyNetwork && npx hardhat console --network localhost\"",
     "hardhat:cmd": "./scripts/hardhat-cmd.js",
