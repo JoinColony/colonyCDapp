@@ -10,6 +10,7 @@ export const useLandingPage = () => {
   const {
     canInteract,
     joinedColonies,
+    joinedColoniesLoading,
     user,
     connectWallet,
     wallet,
@@ -26,17 +27,38 @@ export const useLandingPage = () => {
   } = useGetMembersCountQuery({
     variables: {
       filter: {
-        or: [{ hasReputation: { eq: true } }, { hasPermissions: { eq: true } }],
+        or: joinedColonies.map((colony) => ({
+          and: [
+            { colonyAddress: { eq: colony.colonyAddress } },
+            {
+              or: [
+                { hasPermissions: { eq: true } },
+                { hasReputation: { eq: true } },
+              ],
+            },
+          ],
+        })),
       },
     },
+    skip: !joinedColonies.length,
+    fetchPolicy: 'cache-and-network',
     onCompleted: (data) => {
       if (data.searchColonyContributors?.nextToken) {
         fetchMore({
           variables: {
-            isWatching: { eq: true },
-            or: joinedColonies.map((colony) => ({
-              colonyAddress: { eq: colony.colonyAddress },
-            })),
+            filter: {
+              or: joinedColonies.map((colony) => ({
+                and: [
+                  { colonyAddress: { eq: colony.colonyAddress } },
+                  {
+                    or: [
+                      { hasPermissions: { eq: true } },
+                      { hasReputation: { eq: true } },
+                    ],
+                  },
+                ],
+              })),
+            },
             nextToken: data.searchColonyContributors.nextToken,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
@@ -111,8 +133,9 @@ export const useLandingPage = () => {
       canInteract && (hasShareableInvitationCode || !!joinedColonies.length),
     connectWallet,
     wallet,
-    isLoading: walletConnecting || userLoading,
-    isCardsLoading: contributorsCountLoading,
+    isLoading: walletConnecting,
+    isContentLoading:
+      userLoading || joinedColoniesLoading || contributorsCountLoading,
     onCreateColony,
     remainingInvitations,
     inviteLink,
