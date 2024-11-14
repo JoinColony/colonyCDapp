@@ -334,7 +334,9 @@ const useGetActionData = (transactionId: string | undefined) => {
         return {
           [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
           member: recipientAddress,
-          authority: Authority.Own,
+          authority: action.rolesAreMultiSig
+            ? Authority.ViaMultiSig
+            : Authority.Own,
           role,
           team: fromDomain?.nativeId,
           permissions:
