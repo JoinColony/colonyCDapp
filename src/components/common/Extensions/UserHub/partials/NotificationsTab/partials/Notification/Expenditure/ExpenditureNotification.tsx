@@ -19,6 +19,7 @@ import { MentionNotificationMessage } from '../Action/MentionNotificationMessage
 import NotificationWrapper from '../NotificationWrapper.tsx';
 
 import ExpenditureFundingMotionNotificationMessage from './ExpenditureFundingMotionNotificationMessage.tsx';
+import ExpenditureFundingMultiSigNotificationMessage from './ExpenditureFundingMultiSigNotificationMessage.tsx';
 import ExpenditureNotificationMessage from './ExpenditureNotificationMessage.tsx';
 
 const displayName =
@@ -74,6 +75,15 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       NotificationType.MotionFinalized,
     ].includes(notificationType);
 
+  const isExpenditureMultiSigNotification =
+    !!notificationType &&
+    [
+      NotificationType.MultisigActionCreated,
+      NotificationType.MultisigActionApproved,
+      NotificationType.MultisigActionRejected,
+      NotificationType.MultisigActionFinalized,
+    ].includes(notificationType);
+
   const { data: expenditureData, loading: loadingExpenditure } =
     useGetExpenditureQuery({
       variables: {
@@ -109,11 +119,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
   const notificationAction = notificationActionData?.getColonyAction;
 
   let isExpenditureFundingMotionNotification = isExpenditureMotionNotification;
+  let isExpenditureFundingMultiSigNotification =
+    isExpenditureMultiSigNotification;
 
   if (notificationTransactionHash !== transactionHash) {
     isExpenditureFundingMotionNotification =
       isExpenditureFundingMotionNotification &&
       notificationAction?.type === ColonyActionType.FundExpenditureMotion;
+
+    isExpenditureFundingMultiSigNotification =
+      isExpenditureFundingMultiSigNotification &&
+      notificationAction?.type === ColonyActionType.FundExpenditureMultisig;
   }
 
   const loading =
@@ -186,6 +202,14 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       )}
       {isExpenditureFundingMotionNotification && (
         <ExpenditureFundingMotionNotificationMessage
+          actionTitle={actionTitle}
+          actionMetadataDescription={actionMetadataDescription}
+          loading={loading}
+          notificationType={notificationType as NotificationType}
+        />
+      )}
+      {isExpenditureFundingMultiSigNotification && (
+        <ExpenditureFundingMultiSigNotificationMessage
           actionTitle={actionTitle}
           actionMetadataDescription={actionMetadataDescription}
           loading={loading}

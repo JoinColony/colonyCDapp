@@ -87,7 +87,7 @@ const Notification: FC<NotificationProps> = ({
   }
 
   // If the notification type is an expenditure update:
-  // Or a motion supporting an expenditure (eg. for funding)
+  // Or a motion/multisig motion supporting an expenditure (eg. for funding)
   if (
     hasExpenditureId &&
     [
@@ -97,6 +97,10 @@ const Notification: FC<NotificationProps> = ({
       NotificationType.MotionVoting,
       NotificationType.MotionReveal,
       NotificationType.MotionFinalized,
+      NotificationType.MultisigActionCreated,
+      NotificationType.MultisigActionApproved,
+      NotificationType.MultisigActionRejected,
+      NotificationType.MultisigActionFinalized,
       NotificationType.ExpenditureReadyForReview,
       NotificationType.ExpenditureReadyForFunding,
       NotificationType.ExpenditureReadyForRelease,
