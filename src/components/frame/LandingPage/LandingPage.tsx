@@ -133,7 +133,7 @@ const BottomComponent = ({
 }: BottomComponentProps) => (
   <div className="w-full px-6 pb-6 md:hidden">
     {!isWallet ? (
-      <Button isFullSize className="mt-8" onClick={onConnectWallet}>
+      <Button isFullSize onClick={onConnectWallet}>
         {formatText(MSG.connectWalletButton)}
       </Button>
     ) : (
@@ -141,21 +141,14 @@ const BottomComponent = ({
         {canInteract ? (
           <>
             {displayCreateButton && (
-              <Button
-                icon={Plus}
-                isFullSize
-                className="mt-8"
-                onClick={onCreateColony}
-              >
+              <Button icon={Plus} isFullSize onClick={onCreateColony}>
                 {formatText(MSG.createColonyButton)}
               </Button>
             )}
           </>
         ) : (
           <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
-            <Button isFullSize className="mt-8">
-              {formatText(MSG.noAccessButton)}
-            </Button>
+            <Button isFullSize>{formatText(MSG.noAccessButton)}</Button>
           </a>
         )}
       </>
@@ -170,7 +163,7 @@ const LandingPage = () => {
     connectWallet,
     inviteLink,
     isLoading,
-    isCardsLoading,
+    isContentLoading,
     onCreateColony,
     remainingInvitations,
     wallet,
@@ -193,7 +186,7 @@ const LandingPage = () => {
         ) : undefined
       }
       bottomComponent={
-        isCardsLoading && hasWalletConnected ? (
+        isContentLoading ? (
           <LoadingSkeleton
             isLoading
             className="m-6 h-[2.125rem] w-full rounded md:hidden"
@@ -211,7 +204,7 @@ const LandingPage = () => {
         )
       }
     >
-      {isCardsLoading ? (
+      {isContentLoading ? (
         <LandingPageLoadingSkeleton loadingCards={hasWalletConnected} />
       ) : (
         <div
