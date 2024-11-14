@@ -13,8 +13,8 @@ export const MSG = defineMessages({
     defaultMessage:
       'Provide the contract address you want to interact with it. We will try to generate the ABI if found, otherwise, you can enter it in manually. Then select the action you want to take.',
   },
-  link: {
-    id: `${displayName}.link`,
+  learnMoreLink: {
+    id: `${displayName}.learnMoreLink`,
     defaultMessage: 'Learn more about contract interactions',
   },
   contractAddressField: {
@@ -32,6 +32,10 @@ export const MSG = defineMessages({
   jsonAbiField: {
     id: `${displayName}.jsonAbiField`,
     defaultMessage: 'ABI/JSON',
+  },
+  jsonAbiFieldPlaceholder: {
+    id: `${displayName}.jsonAbiFieldPlaceholder`,
+    defaultMessage: 'Enter contract ABI/JSON',
   },
   jsonAbiEditInfo: {
     id: `${displayName}.jsonAbiEditInfo`,
