@@ -4,6 +4,7 @@ import { useEffect, useImperativeHandle, useRef } from 'react';
 const useAutosizeTextArea = (
   value: string | number | readonly string[] | undefined,
   externalInputRef: React.ForwardedRef<HTMLTextAreaElement>,
+  shouldUseAutoSize?: boolean,
 ) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -16,7 +17,7 @@ const useAutosizeTextArea = (
   });
 
   useEffect(() => {
-    if (!textAreaRef.current) {
+    if (!textAreaRef.current || !shouldUseAutoSize) {
       return noop;
     }
 
@@ -34,7 +35,7 @@ const useAutosizeTextArea = (
     return () => {
       textArea.style.height = '';
     };
-  }, [textAreaRef, value]);
+  }, [textAreaRef, value, shouldUseAutoSize]);
 
   return textAreaRef;
 };

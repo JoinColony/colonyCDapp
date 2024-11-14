@@ -898,6 +898,10 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  An action related to arbitrary transaction
+  """
+  ARBITRARY_TX
 }
 
 """

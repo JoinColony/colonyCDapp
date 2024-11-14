@@ -11,7 +11,7 @@ interface FormInputProps<T> {
   placeholder?: string;
   shouldFocus?: boolean;
 }
-export const FormInput = <T,>({
+const FormInput = <T,>({
   name,
   label,
   shouldFocus,
@@ -38,3 +38,5 @@ export const FormInput = <T,>({
     />
   );
 };
+
+export default FormInput;

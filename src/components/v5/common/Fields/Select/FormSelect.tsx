@@ -16,7 +16,7 @@ interface FormSelectProps<T> {
   formatOptionLabel?: (option: SelectOption) => JSX.Element;
 }
 
-export const FormSelect = <T,>({
+const FormSelect = <T,>({
   name,
   options,
   labelMessage,
@@ -35,7 +35,7 @@ export const FormSelect = <T,>({
       name={name}
       control={control}
       render={({ field }) => (
-        <>
+        <div>
           {labelMessage && (
             <label
               className="flex flex-col pb-1.5 text-1"
@@ -62,8 +62,10 @@ export const FormSelect = <T,>({
               {formatText(error)}
             </FormError>
           )}
-        </>
+        </div>
       )}
     />
   );
 };
+
+export default FormSelect;
