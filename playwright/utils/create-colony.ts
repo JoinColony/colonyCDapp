@@ -6,45 +6,7 @@ export const generateRandomString = () => {
   return Math.random().toString(36).substring(2, 8);
 };
 
-const generateRandomUsername = () => {
-  return `user_${generateRandomString()}`;
-};
-
-const generateRandomEmail = () => {
-  return `test_${generateRandomString()}@example.com`;
-};
-
-const fillUserProfile = async (page: Page) => {
-  const username = generateRandomUsername();
-  const email = generateRandomEmail();
-
-  await page.getByLabel(/Email address/i).fill(email);
-  await page.getByLabel(/username/i).fill(username);
-
-  await page.getByRole('button', { name: /continue/i }).click();
-};
-
 export const selectWalletAndUserProfile = async (page: Page) => {
-  let isUserConnected = false;
-
-  await page.route('**/graphql', async (route, request) => {
-    const postData = request.postDataJSON(); // Get the request body as JSON
-    if (postData.operationName === 'GetUserByAddress') {
-      // Fetch original response.
-      const response = await route.fetch();
-
-      const jsonResponse = await response.json();
-
-      // Check if the user exists and has a profile
-      const items = jsonResponse.data?.getUserByAddress?.items;
-      if (items && items.length > 0) {
-        isUserConnected = !!items[0]?.profile?.displayName;
-      }
-    }
-
-    route.continue();
-  });
-
   await page
     .getByRole('button', { name: /connect wallet/i })
     .first()
@@ -61,10 +23,6 @@ export const selectWalletAndUserProfile = async (page: Page) => {
 
   if (loadingIndicatorVisible) {
     await loadingIndicator.waitFor({ state: 'hidden' });
-  }
-
-  if (!isUserConnected) {
-    await fillUserProfile(page);
   }
 };
 
@@ -103,6 +61,10 @@ export const fillNativeTokenStepWithExistingToken = async (
   await page.getByLabel(/Use an existing token/i).check();
   await page.getByRole('button', { name: /continue/i }).click();
 
-  await page.getByLabel(/Existing token address/i).fill(token);
+  await fillInputByLabelWithDelay({
+    page,
+    label: /Existing token address/i,
+    value: token,
+  });
   await page.getByRole('button', { name: /continue/i }).click();
 };

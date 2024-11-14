@@ -1,11 +1,12 @@
 import { expect, test } from '@playwright/test';
 
 import {
-  acceptCookieConsentBanner,
   fillInputByLabelWithDelay,
+  setCookieConsent,
 } from '../utils/common.ts';
 import {
   fillColonyNameStep,
+  fillNativeTokenStepWithExistingToken,
   generateRandomString,
   selectWalletAndUserProfile,
 } from '../utils/create-colony.ts';
@@ -18,15 +19,15 @@ import {
 test.describe('Create Colony flow', () => {
   const colonyName = 'testcolonyname';
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context, baseURL }) => {
+    await setCookieConsent(context, baseURL);
     const colonyUrl = await generateCreateColonyUrl();
 
     await page.goto(colonyUrl);
 
     await selectWalletAndUserProfile(page);
-
-    await acceptCookieConsentBanner(page);
   });
+
   test.describe('Details step', () => {
     test('Should render Details step correctly', async ({ page }) => {
       // Heading of the step and form is shown
@@ -460,6 +461,168 @@ test.describe('Create Colony flow', () => {
           page.getByRole('button', { name: /continue/i }),
         ).toBeEnabled();
       });
+    });
+  });
+
+  test.describe('Confirmation step', () => {
+    let existingToken: string;
+    test.beforeAll(async () => {
+      existingToken = await fetchFirstValidTokenAddress();
+    });
+    test('Should render Confirmation step as expected', async ({ page }) => {
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: generateRandomString(),
+      });
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
+      // Heading of the Step
+      await expect(
+        page.getByText(/Confirm your Colony’s details/i),
+      ).toBeVisible();
+      // Subheading
+      await expect(
+        page.getByText(
+          /Check to ensure your Colony’s details are correct as they can not be changed later/i,
+        ),
+      ).toBeVisible();
+
+      const colonyNameCard = page.getByTestId('colony-details-card');
+      const colonyTokenCard = page.getByTestId('colony-token-card');
+
+      await expect(colonyNameCard.getByText('testcolonyname')).toBeVisible();
+
+      await expect(
+        colonyNameCard.getByRole('button', { name: 'Edit' }),
+      ).toBeEnabled();
+
+      await expect(
+        colonyTokenCard.getByText('DAI for Local Development'),
+      ).toBeVisible();
+
+      await expect(
+        colonyTokenCard.getByRole('button', { name: 'Edit' }),
+      ).toBeEnabled();
+
+      await expect(
+        page.getByRole('button', { name: 'Back', exact: true }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole('img', {
+          name: /Avatar of token DAI for Local Development/i,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        page.getByRole('button', { name: /continue/i }),
+      ).toBeEnabled();
+    });
+
+    test('Should navigate to Details step when Edit colony details is clicked', async ({
+      page,
+    }) => {
+      const customColonyURL = generateRandomString();
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: customColonyURL,
+      });
+
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
+
+      await page
+        .getByTestId('colony-details-card')
+        .getByRole('button', { name: 'Edit' })
+        .click();
+
+      await expect(page.getByLabel(/Colony name/i)).toBeVisible();
+      await expect(page.getByLabel(/Colony name/i)).toHaveValue(colonyName);
+      await expect(page.getByLabel(/Custom Colony URL/i)).toBeVisible();
+      await expect(page.getByLabel(/Custom Colony URL/i)).toHaveValue(
+        customColonyURL,
+      );
+    });
+
+    test('Should navigate to Native token step when Edit token is clicked', async ({
+      page,
+    }) => {
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: generateRandomString(),
+      });
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
+
+      await page
+        .getByTestId('colony-token-card')
+        .getByRole('button', { name: 'Edit' })
+        .click();
+
+      await expect(page.getByLabel(/Existing token address/i)).toBeVisible();
+      await expect(page.getByLabel(/Existing token address/i)).toHaveValue(
+        existingToken,
+      );
+    });
+
+    test('Should create a colony and navigate to the newly created colony URL', async ({
+      page,
+    }) => {
+      const colonyURL = generateRandomString();
+      await fillColonyNameStep(page, {
+        nameFieldValue: colonyName,
+        urlFieldValue: colonyURL,
+      });
+      await fillNativeTokenStepWithExistingToken(page, existingToken);
+
+      await page.getByRole('button', { name: /continue/i }).click();
+
+      await expect(
+        page
+          .getByTestId('onboarding-heading')
+          .filter({ hasText: /Complete setup/i }),
+      ).toBeVisible();
+      await expect(
+        page.getByTestId('onboarding-subheading').filter({
+          hasText:
+            /Deploying to the blockchain requires you to sign a transaction in your wallet for each step/i,
+        }),
+      ).toBeVisible();
+
+      // Expect the transition to the newly created colony URL
+      await page.waitForURL(colonyURL);
+
+      // Expect the Colony Created dialog to be visible
+      const colonyCreateDialog = page
+        .getByRole('dialog')
+        .filter({ hasText: /Congratulations/i });
+      await expect(colonyCreateDialog).toBeVisible({ timeout: 10000 });
+
+      await expect(
+        colonyCreateDialog.getByRole('button', {
+          name: /explore your colony/i,
+        }),
+      ).toBeVisible();
+      // This section is not shown on first time creation of a colony by a given user
+      const isInviteBlockPresent = await colonyCreateDialog
+        .getByRole('heading', {
+          name: /Invite a person to create a Colony/i,
+        })
+        .isVisible();
+
+      // eslint-disable-next-line playwright/no-conditional-in-test
+      if (isInviteBlockPresent) {
+        await expect(
+          colonyCreateDialog.getByRole('button', { name: /copy/i }),
+        ).toBeVisible();
+
+        await expect(
+          colonyCreateDialog.getByText(/\/create-colony\/.*/),
+        ).toBeVisible();
+
+        await expect(
+          colonyCreateDialog.getByRole('heading', {
+            name: /Invite a person to create a Colony/i,
+          }),
+        ).toBeVisible();
+      }
     });
   });
 });

@@ -1,4 +1,4 @@
-import { type Page } from '@playwright/test';
+import { type BrowserContext, type Page } from '@playwright/test';
 
 export const acceptCookieConsentBanner = async (page: Page) => {
   // Check if the cookie banner is present on the page
@@ -11,6 +11,27 @@ export const acceptCookieConsentBanner = async (page: Page) => {
 
     await acceptButton.click();
   }
+};
+
+const cookieNames = [
+  'cookies-analytics',
+  'cookies-marketing',
+  'cookies-prefernces',
+  'cookies-functional',
+];
+
+export const setCookieConsent = async (
+  context: BrowserContext,
+  baseUrl: string = '',
+) => {
+  await context.addCookies(
+    cookieNames.map((cookie) => ({
+      name: cookie,
+      value: 'true',
+      url: baseUrl,
+      expires: Date.now() / 1000 + 60 * 60 * 24 * 365,
+    })),
+  );
 };
 
 export const fillInputByLabelWithDelay = async ({
@@ -27,5 +48,5 @@ export const fillInputByLabelWithDelay = async ({
   // eslint-disable-next-line playwright/no-wait-for-timeout
   await page.waitForTimeout(timeout);
 
-  await page.getByLabel(label).pressSequentially(value, { delay: 100 });
+  await page.getByLabel(label).fill(value);
 };
