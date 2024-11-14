@@ -25,7 +25,7 @@ export const LandingPageLayout = ({
       <div className="block md:hidden">
         <PageHeader userNavigation={<UserNavigationWrapper />} />
       </div>
-      <div className="overflow-auto md:flex md:h-full md:flex-row">
+      <div className="overflow-auto pb-8 md:flex md:h-full md:flex-row">
         <section>
           <BasicPageSidebar />
         </section>
