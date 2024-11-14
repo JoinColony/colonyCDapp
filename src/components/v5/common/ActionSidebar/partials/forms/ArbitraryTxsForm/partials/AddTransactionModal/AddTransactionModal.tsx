@@ -1,6 +1,8 @@
 import { CodeBlock } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import { LEARN_MORE_ARBITRARY_TRANSACTIONS } from '~constants/externalUrls.ts';
+import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
 import {
@@ -30,13 +32,13 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
             <p className="mb-4 text-md text-gray-600">
               {formatText(MSG.description)}
             </p>
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a
-              href="#"
-              className="mb-4 text-sm font-medium text-blue-400 underline"
+            <ExternalLink
+              className="text-sm font-medium !text-blue-400 underline"
+              href={LEARN_MORE_ARBITRARY_TRANSACTIONS}
+              target="_blank"
             >
-              {formatText(MSG.link)}
-            </a>
+              {formatText(MSG.learnMoreLink)}
+            </ExternalLink>
             <div className="mt-5 flex flex-col gap-4">
               <ContractAddressInput />
               <JsonAbiInput />

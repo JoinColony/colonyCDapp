@@ -51,6 +51,7 @@ export const JsonAbiInput: React.FC = () => {
       <Button
         className="absolute right-0"
         mode="link"
+        type="button"
         onClick={toggleJsonFormat}
       >
         {formatText(MSG.jsonAbiFormatLink)}
@@ -62,6 +63,7 @@ export const JsonAbiInput: React.FC = () => {
           mode="primary"
           className="h-[10.25rem]"
           shouldUseAutoSize={false}
+          placeholder={formatText(MSG.jsonAbiFieldPlaceholder)}
           rows={7}
           label={formatText(MSG.jsonAbiField)}
           rules={{ validate: validateJsonAbi }}
