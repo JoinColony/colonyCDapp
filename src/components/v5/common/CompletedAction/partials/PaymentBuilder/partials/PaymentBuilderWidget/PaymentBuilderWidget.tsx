@@ -266,14 +266,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     };
   }, [setSelectedFundingAction, setSelectedReleaseAction]);
 
-  useEffect(() => {
-    // If the selected multisig motion was rejected we don't "expect" to get into the release step anymore
-    // This has no impact on the initial render, since the expected step is set when we start the motion process
-    if (selectedFundingMultiSig?.isRejected) {
-      setExpectedStepKey(null);
-    }
-  }, [selectedFundingMultiSig?.isRejected]);
-
   const paymentStep = isStagedExpenditure
     ? {
         key: ExpenditureStep.Payment,
@@ -315,16 +307,11 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       };
 
   const getFundingStepContent = () => {
-    if (!selectedFundingAction) {
-      return null;
-    }
-
     if (selectedFundingMotion) {
       return (
         <MotionBox transactionId={selectedFundingMotion.transactionHash} />
       );
     }
-
     // since the multisig widget doesn't fetch its own action we need to handle the loader here
     if (selectedFundingMultiSig) {
       if (loadingAction || !fundingAction) {
@@ -341,7 +328,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       return null;
     }
 
-    return <ActionWithPermissionsInfo action={selectedFundingAction} />;
+    if (selectedFundingAction) {
+      return <ActionWithPermissionsInfo action={selectedFundingAction} />;
+    }
+    return null;
   };
 
   const items: StepperItem<ExpenditureStep>[] = [

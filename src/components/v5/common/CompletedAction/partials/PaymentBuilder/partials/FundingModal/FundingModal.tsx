@@ -97,7 +97,8 @@ const FundingModalContent: FC<FundingModalContentProps> = ({
 
   const hasEnoughFunds = !errors.fundingItems;
   const isMultiSigSelected = method && method.value === DecisionMethod.MultiSig;
-  const isSubmitDisabled = !canCreateAction || areMemberPermissionsLoading;
+  const isSubmitDisabled =
+    isMultiSigSelected && (!canCreateAction || areMemberPermissionsLoading);
 
   return (
     <>
