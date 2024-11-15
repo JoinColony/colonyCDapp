@@ -381,12 +381,40 @@ export const getPermissionProofsLocal = async ({
   });
 };
 
+interface IsValidMoveFundsActionDomainParams {
+  actionDomainId: BigNumberish;
+  fromDomainId: BigNumberish;
+  toDomainId: BigNumberish;
+}
+
+export function isValidMoveFundsActionDomain({
+  actionDomainId,
+  toDomainId,
+  fromDomainId,
+}: IsValidMoveFundsActionDomainParams): boolean {
+  // That's right, nested teams is gonna handle this B)
+  const isParentDomain = actionDomainId === Id.RootDomain;
+  const isSameDomain = Number(fromDomainId) === Number(toDomainId);
+
+  if (isSameDomain) {
+    const isDomainForAction = Number(actionDomainId) === Number(fromDomainId);
+
+    if (!isParentDomain && !isDomainForAction) {
+      return false;
+    }
+
+    return true;
+  }
+
+  return isParentDomain;
+}
+
 interface GetMoveFundsActionDomainParams {
   actionDomainId: BigNumberish | null;
   fromDomainId: BigNumberish;
   toDomainId: BigNumberish;
 }
-// If you mess up and send a motionDomainId that's a child domain of any of the other two, it's on you ;)
+
 export function getMoveFundsActionDomain({
   actionDomainId,
   toDomainId,
@@ -394,6 +422,18 @@ export function getMoveFundsActionDomain({
 }: GetMoveFundsActionDomainParams): BigNumberish {
   // override if the motion was created in a different domain
   if (actionDomainId) {
+    if (
+      !isValidMoveFundsActionDomain({
+        actionDomainId,
+        fromDomainId,
+        toDomainId,
+      })
+    ) {
+      throw new Error(
+        `Action domain ${actionDomainId} must be a parent domain of ${fromDomainId} and ${toDomainId} or equal to them.`,
+      );
+    }
+
     return actionDomainId;
   }
 

@@ -267,10 +267,10 @@ const FundingModal: FC<FundingModalProps> = ({
 
       const motionPayload: ExpenditureFundMotionPayload = {
         ...commonPayload,
-        colony,
-        motionDomainId: Id.RootDomain,
-        fromDomainFundingPotId: Id.RootDomain,
-        fromDomainId: Id.RootDomain,
+        motionDomainId: Id.RootDomain, // @TODO wire this up in the future
+        colonyAddress: colony.colonyAddress,
+        expenditure,
+        fromDomainFundingPotId: selectedTeam.nativeFundingPotId,
       };
 
       const payload: FundExpenditurePayload = {

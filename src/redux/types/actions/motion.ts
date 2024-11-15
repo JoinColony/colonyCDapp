@@ -40,14 +40,9 @@ export enum RootMotionMethodNames {
   UnlockToken = 'unlockToken',
 }
 
-export type ExpenditureFundMotionPayload = Omit<
-  ExpenditureFundPayload,
-  'colonyAddress'
-> & {
-  fromDomainId: number;
+export interface ExpenditureFundMotionPayload extends ExpenditureFundPayload {
   motionDomainId: number;
-  colony: Colony;
-};
+}
 
 export type StakedExpenditureCancelMotionPayload =
   CancelStakedExpenditurePayload & {
