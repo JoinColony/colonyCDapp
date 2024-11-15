@@ -1,3 +1,4 @@
+import { backOff } from 'exponential-backoff';
 import { SiweMessage } from 'siwe';
 
 import { APP_URL } from '~constants/index.ts';
@@ -88,29 +89,14 @@ export const authenticateWallet = async (): Promise<void> => {
 export const authenticateWalletWithRetry = async (
   maxRetries: number = 3,
 ): Promise<void> => {
-  let attempts = 0;
-  let result: any;
-
-  while (attempts < maxRetries) {
-    attempts += 1;
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      result = await authenticateWallet();
-
-      // Return if no errors
-      return result;
-    } catch (error) {
+  return backOff(() => authenticateWallet(), {
+    numOfAttempts: maxRetries,
+    retry: async (error) => {
       console.error(error);
-
-      if (attempts >= maxRetries) {
-        throw error;
-      }
-
       if ((error.message as unknown) !== 'Auth failed') {
         throw error;
       }
-    }
-  }
-
-  return result;
+      return true;
+    },
+  });
 };
