@@ -14,6 +14,14 @@
   @apply bg-transparent text-gray-300;
 }
 
+.wrapper :global(.select__control--is-disabled .select__single-value) {
+  @apply text-gray-300;
+}
+
+.wrapper :global(.select__control--is-disabled .select__indicator) {
+  @apply text-gray-300;
+}
+
 .wrapper :global(.select__placeholder) {
   @apply font-normal text-gray-400;
 }
