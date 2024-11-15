@@ -15,4 +15,5 @@ export interface StepperProps<TKey> {
   items: StepperItem<TKey>[];
   activeStepKey: TKey;
   setActiveStepKey?: (key: TKey) => void;
+  disablePreviousSteps?: boolean;
 }
