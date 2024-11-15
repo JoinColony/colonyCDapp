@@ -46,7 +46,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     isSubmitting,
     formValues: {
       team,
-      authority,
       role,
       member,
       permissions,
@@ -66,7 +65,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
     },
   ] = useToggle();
 
-  const isModRoleSelected = role === UserRole.Mod;
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const createdInFilterFn = useFilterCreatedInField('team');
 
@@ -99,9 +97,6 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       options: options.filter(({ value }) => {
         if (value === UserRole.Owner) {
           return team === undefined || Number(team) === Id.RootDomain;
-        }
-        if (value === UserRole.Mod) {
-          return authority !== Authority.ViaMultiSig;
         }
         return true;
       }),
@@ -173,26 +168,12 @@ const ManagePermissionsForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
               id: 'actionSidebar.tooltip.authority',
             }),
           },
-          content: isModRoleSelected
-            ? {
-                tooltipContent: formatText({
-                  id: 'actionSidebar.managePermissions.authority.disbaledTooltip',
-                }),
-                selectTriggerRef: (triggerRef) => {
-                  if (!triggerRef) {
-                    return null;
-                  }
-
-                  return triggerRef.querySelector('span');
-                },
-              }
-            : undefined,
         }}
         title={formatText({ id: 'actionSidebar.authority' })}
         isDisabled={hasNoDecisionMethods}
       >
         <FormCardSelect
-          disabled={isModRoleSelected || hasNoDecisionMethods}
+          disabled={hasNoDecisionMethods}
           name="authority"
           options={AUTHORITY_OPTIONS}
           title={formatText({
