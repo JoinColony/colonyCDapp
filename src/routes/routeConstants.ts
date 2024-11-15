@@ -61,6 +61,8 @@ export const CRYPTO_TO_FIAT_VERIFICATION_SEARCH_PARAM = 'verification';
 
 // Note all base routes begin with a '/'
 
+// Make sure this is kept up to date with the same set in the block-ingestor
+// src/constants.ts
 export const RESERVED_ROUTES = new Set([
   NOT_FOUND_ROUTE,
   METACOLONY_HOME_ROUTE,
