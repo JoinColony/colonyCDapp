@@ -30,7 +30,7 @@ import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.ts';
 
 import { getStagedPaymentPayload } from './utils.ts';
 
-export const useValidationSchema = (networkInverseFee: string | undefined) => {
+export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
@@ -115,7 +115,6 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         value,
                         context,
                         colony,
-                        networkInverseFee,
                       }),
                     ),
                   [TOKEN_FIELD_NAME]: string().required(),
@@ -146,7 +145,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee],
+    [colony, colonyTokens],
   );
 };
 
@@ -160,7 +159,7 @@ export const useStagePayment = (
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { networkInverseFee = '0' } = useNetworkInverseFee();
-  const validationSchema = useValidationSchema(networkInverseFee);
+  const validationSchema = useValidationSchema();
   const { setExpectedExpenditureType } = usePaymentBuilderContext();
 
   useActionFormBaseHook({

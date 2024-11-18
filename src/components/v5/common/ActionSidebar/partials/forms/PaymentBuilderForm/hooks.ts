@@ -26,7 +26,7 @@ import {
   getPaymentBuilderPayload,
 } from './utils.ts';
 
-export const useValidationSchema = (networkInverseFee: string | undefined) => {
+export const useValidationSchema = () => {
   const { colony } = useColonyContext();
   const colonyTokens = useMemo(
     () =>
@@ -41,6 +41,11 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
     () =>
       object()
         .shape({
+          /**
+           * Stores a map of the sums for each token present on the form
+           * @internal
+           */
+          _tokenSums: object(),
           from: number().required(
             formatText({ id: 'errors.fundFrom.required' }),
           ),
@@ -90,7 +95,6 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                         value,
                         context,
                         colony,
-                        networkInverseFee,
                       }),
                     ),
                   tokenAddress: string()
@@ -168,7 +172,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         )
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens, networkInverseFee, tokenLockStatesMap],
+    [colony, colonyTokens, tokenLockStatesMap],
   );
 };
 
@@ -182,7 +186,7 @@ export const usePaymentBuilder = (
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const { networkInverseFee = '0' } = useNetworkInverseFee();
-  const validationSchema = useValidationSchema(networkInverseFee);
+  const validationSchema = useValidationSchema();
 
   useActionFormBaseHook({
     validationSchema,

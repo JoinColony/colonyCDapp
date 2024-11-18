@@ -17,6 +17,7 @@ import { type ExpenditurePayoutFieldValue } from '~types/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { convertEnotationToNumber } from '~utils/numbers.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -45,6 +46,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
     name,
   });
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+
+  useBuildTokenSumsMap();
 
   useEffect(() => {
     if (paymentsFromFile) {
