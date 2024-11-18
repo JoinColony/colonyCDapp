@@ -1,4 +1,4 @@
-import { Plus } from '@phosphor-icons/react';
+import { Plus, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
@@ -10,13 +10,12 @@ import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
+import Modal from '~v5/shared/Modal/Modal.tsx';
 
 import AddTransactionModal from '../AddTransactionModal/AddTransactionModal.tsx';
 
 import { useArbitraryTxsTableColumns } from './hooks.tsx';
-
-const displayName =
-  'v5.common.ActionsContent.partials.ArbitraryTransactionsTable';
+import { displayName, MSG } from './translation.ts';
 
 interface ArbitraryTransactionsTableProps {
   name: string;
@@ -26,6 +25,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   name,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
   const isMobile = useMobile();
   const fieldArrayMethods = useFieldArray({ name });
@@ -33,7 +33,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const { readonly } = useAdditionalFormOptionsContext();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
-  const columns = useArbitraryTxsTableColumns();
+  const openTransactionModal = () => {
+    setIsModalOpen(true);
+  };
+  const columns = useArbitraryTxsTableColumns({ openTransactionModal });
   const data: AddTransactionTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
       key: id,
@@ -45,24 +48,20 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
 
   return (
     <div className="pt-4">
-      {!!data.length && (
-        <>
-          <h5 className="mb-4 text-2">
-            {formatText({ id: 'actionSidebar.transactions' })}
-          </h5>
-          <Table<AddTransactionTableModel>
-            sizeUnit={isMobile ? undefined : '%'}
-            meatBallMenuSize={isMobile ? undefined : 10}
-            className={clsx('mb-6', {
-              '!border-negative-400': !!fieldState.error,
-            })}
-            getRowId={({ key }) => key}
-            columns={columns}
-            data={data}
-            verticalLayout={isMobile}
-          />
-        </>
-      )}
+      <h5 className="mb-4 text-2">
+        {formatText({ id: 'actionSidebar.transactions' })}
+      </h5>
+      <Table<AddTransactionTableModel>
+        sizeUnit={isMobile ? undefined : '%'}
+        meatBallMenuSize={isMobile ? undefined : 10}
+        className={clsx('mb-6', {
+          '!border-negative-400': !!fieldState.error,
+        })}
+        getRowId={({ key }) => key}
+        columns={columns}
+        data={data.length === 0 ? [{} as AddTransactionTableModel] : data}
+        verticalLayout={isMobile}
+      />
       {!readonly && (
         <>
           <Button
@@ -70,15 +69,15 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             icon={Plus}
             size="small"
             isFullSize={isMobile}
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
+            onClick={openTransactionModal}
             disabled={hasNoDecisionMethods}
           >
             {formatText({ id: 'button.addTransaction' })}
           </Button>
           <AddTransactionModal
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => {
+              setIsCancelModalOpen(true);
+            }}
             isOpen={isModalOpen}
             onSubmit={({ jsonAbi, contractAddress, ...rest }) => {
               fieldArrayMethods.append({
@@ -88,6 +87,24 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
               });
               setIsModalOpen(false);
             }}
+          />
+          <Modal
+            title={formatText(MSG.contractModalCancelTitle)}
+            subTitle={formatText(MSG.contractModalCancelSubtitle)}
+            isOpen={isCancelModalOpen}
+            className="md:mt-[10rem]"
+            onClose={() => {
+              setIsCancelModalOpen(false);
+            }}
+            isFullOnMobile={false}
+            onConfirm={() => {
+              setIsCancelModalOpen(false);
+              setIsModalOpen(false);
+            }}
+            icon={WarningCircle}
+            buttonMode="primarySolid"
+            confirmMessage={formatText(MSG.contractModalCancelButtonCancel)}
+            closeMessage={formatText(MSG.contractModalCancelButtonContinue)}
           />
         </>
       )}

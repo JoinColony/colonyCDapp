@@ -1,4 +1,4 @@
-import { isAddress, Interface } from 'ethers/lib/utils';
+import { isAddress, Interface, type Fragment } from 'ethers/lib/utils';
 import { string } from 'yup';
 
 import { formatText } from '~utils/intl.ts';
@@ -35,13 +35,21 @@ const isValidAbi = (val: string) => {
   }
 };
 
+export const abiFunctionsFilterFn = ({
+  type,
+  stateMutability,
+  constant,
+}: Fragment & { stateMutability?: string; constant?: boolean }) =>
+  type === 'function' &&
+  stateMutability !== 'view' &&
+  stateMutability !== 'pure' &&
+  constant !== true;
+
 const hasAbiMethods = (val: string) => {
   try {
     const parsedAbi = JSON.parse(val);
     const IJsonAbi = new Interface(parsedAbi);
-    const functions = IJsonAbi.fragments.filter(
-      ({ type }) => type === 'function',
-    );
+    const functions = IJsonAbi.fragments.filter(abiFunctionsFilterFn);
     return functions.length > 0;
   } catch (error) {
     return false;
@@ -55,7 +63,7 @@ export const validateContractAddress = createValidator(
       formatText(MSG.contractAddressError),
       (val) => !val || isAddress(val),
     )
-    .required(),
+    .required(formatText({ id: 'validation.required' })),
 );
 
 export const validateJsonAbi = createValidator(
@@ -75,10 +83,12 @@ export const validateJsonAbi = createValidator(
       formatText(MSG.emptyMethodsAbiError),
       (val) => !val || hasAbiMethods(val),
     )
-    .required(),
+    .required(formatText({ id: 'validation.required' })),
 );
 
-export const validateMethod = createValidator(string().required());
+export const validateMethod = createValidator(
+  string().required(formatText({ id: 'validation.required' })),
+);
 
 export const validateDynamicMethodInput = (type) => (value: string) => {
   const isValid = validateType(type, value);
