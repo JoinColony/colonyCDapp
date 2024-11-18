@@ -61,8 +61,11 @@ const calculateStreamsForLast30Days = ({
   const intervalInDays = interval / 24 / 3600;
 
   const startDate = new Date(startTimestamp * 1000);
-  const endDate = new Date(endTimestamp * 1000);
   const currentDate = new Date(currentTimestamp * 1000);
+  // eslint-disable-next-line no-restricted-globals
+  const endDate = isNaN(new Date(endTimestamp * 1000) as any)
+    ? currentDate
+    : new Date(endTimestamp * 1000);
 
   const date30DaysAgo = subDays(currentDate, 30);
 
@@ -141,9 +144,9 @@ export const calculateTotalsFromStreams = async ({
 
       const streamedFundsInLast30Days = calculateStreamsForLast30Days({
         currentTimestamp,
-        endTimestamp: +item.endTime,
-        startTimestamp: +item.startTime,
-        interval: +item.interval,
+        endTimestamp: Number(item.endTime),
+        startTimestamp: Number(item.startTime),
+        interval: Number(item.interval),
         totalClaimedAmount: amountClaimedToDateToCurrency?.toNumber() ?? 0,
       });
 

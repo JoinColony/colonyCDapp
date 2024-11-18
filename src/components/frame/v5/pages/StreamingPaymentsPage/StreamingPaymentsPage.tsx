@@ -29,16 +29,14 @@ const StreamingPaymentsPage = () => {
   });
 
   return (
-    <div>
-      <StatsCards
-        streamingPerMonth={totalLastMonthStreaming}
-        totalActiveStreams={activeStreamingPayments}
-        totalStreamed={totalStreamed}
-        unclaimedFounds={totalFunds.totalAvailable}
-        prefix={currencySymbolMap[currency]}
-        suffix={currency}
-      />
-    </div>
+    <StatsCards
+      streamingPerMonth={totalLastMonthStreaming}
+      totalActiveStreams={activeStreamingPayments}
+      totalStreamed={totalStreamed}
+      unclaimedFounds={totalFunds.totalAvailable}
+      prefix={currencySymbolMap[currency]}
+      suffix={currency}
+    />
   );
 };
 
