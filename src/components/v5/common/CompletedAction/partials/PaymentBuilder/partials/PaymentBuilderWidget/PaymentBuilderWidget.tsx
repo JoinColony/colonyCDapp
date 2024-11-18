@@ -35,7 +35,6 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
-import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FundingModal from '../FundingModal/FundingModal.tsx';
 import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
@@ -97,7 +96,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     finalizedAt,
     isStaked,
     userStake,
-    ownerAddress,
     status,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
@@ -455,18 +453,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           ) : (
             <>
               {finalizedAt ? (
-                <>
-                  {finalizingActions?.items[0]?.initiatorAddress ===
-                  ownerAddress ? (
-                    <FinalizeByPaymentCreatorInfo
-                      userAdddress={expenditure?.ownerAddress}
-                    />
-                  ) : (
-                    <ActionWithPermissionsInfo
-                      action={finalizingActions?.items[0]}
-                    />
-                  )}
-                </>
+                <ActionWithPermissionsInfo
+                  action={finalizingActions?.items[0]}
+                />
               ) : (
                 <div />
               )}
