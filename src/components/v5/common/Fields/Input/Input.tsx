@@ -3,6 +3,7 @@ import React, { type FC, useEffect, useLayoutEffect } from 'react';
 import { useIntl } from 'react-intl';
 
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import FormError from '~v5/shared/FormError/index.ts';
 
@@ -38,6 +39,7 @@ const Input: FC<InputProps> = ({
   shouldFocus,
   allowLayoutShift = false,
   registerOptions,
+  loading,
 }) => {
   const { formatMessage } = useIntl();
   const { isTyping, isCharLenghtError, currentCharNumber, onChange } = useInput(
@@ -87,6 +89,11 @@ const Input: FC<InputProps> = ({
         disabled={isDisabled}
         id={`id-${name}`}
       />
+      {!!loading && (
+        <div className="absolute bottom-0 right-4 top-0 flex items-center">
+          <SpinnerLoader appearance={{ size: 'small' }} />
+        </div>
+      )}
     </div>
   );
 

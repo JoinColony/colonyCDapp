@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
-import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
-import { validateDynamicMethodInput, validateMethod } from './consts.ts';
+import { abiFunctionsFilterFn, validateMethod } from './consts.ts';
+import { MethodInput } from './MethodInput.tsx';
 import { MSG } from './translation.ts';
 
 interface MethodItem {
@@ -15,7 +15,7 @@ interface MethodItem {
 }
 
 export const DynamicInputs: React.FC = () => {
-  const { watch, setValue } = useFormContext();
+  const { watch, setValue, unregister } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const selectedMethod = watch('method');
   const [methodOptions, setMethodOptions] = useState<MethodItem[]>([]);
@@ -29,7 +29,7 @@ export const DynamicInputs: React.FC = () => {
       try {
         const IJsonAbi = new Interface(jsonAbiField);
         const functions = IJsonAbi.fragments
-          .filter(({ type }) => type === 'function')
+          .filter(abiFunctionsFilterFn)
           .map((item) => item.name);
         const options =
           functions?.map((func) => ({ value: func, label: func })) || [];
@@ -45,6 +45,12 @@ export const DynamicInputs: React.FC = () => {
       try {
         const IJsonAbi = new Interface(jsonAbiField);
         const functionFragment = IJsonAbi.getFunction(selectedMethod);
+
+        // Remove previous method inputs
+        methodInputs.forEach((input) => {
+          unregister(`args.${input.name}`);
+        });
+
         setMethodInputs(functionFragment.inputs);
         functionFragment.inputs.forEach((item) => {
           setValue(`args.${item.name}.type`, item.type); // Setting type as value to use it in table rendering
@@ -52,8 +58,13 @@ export const DynamicInputs: React.FC = () => {
       } catch (e) {
         setMethodInputs([]);
       }
+    } else {
+      // Clear method inputs when no method is selected
+      setMethodInputs([]);
     }
-  }, [selectedMethod, jsonAbiField, setValue]);
+    // this line is disabled to not add methodInputs to dependencies and avoid infinite reloading
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedMethod, jsonAbiField, setValue, unregister]);
 
   if (!methodOptions.length && !methodInputs.length) {
     return null;
@@ -71,13 +82,7 @@ export const DynamicInputs: React.FC = () => {
         />
       )}
       {methodInputs.map((input) => (
-        <FormInput<any>
-          key={input.name}
-          name={`args.${input.name}.value`}
-          label={`${input.name} (${input.type})`}
-          registerOptions={{ validate: validateDynamicMethodInput(input.type) }}
-          placeholder={formatText(MSG.dynamicFieldPlaceholder)}
-        />
+        <MethodInput key={input.name} name={input.name} type={input.type} />
       ))}
     </div>
   );
