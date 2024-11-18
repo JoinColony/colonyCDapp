@@ -1,5 +1,5 @@
 import { CodeBlock } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import React, { useState, type FC } from 'react';
 
 import { LEARN_MORE_ARBITRARY_TRANSACTIONS } from '~constants/externalUrls.ts';
 import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
@@ -23,26 +23,36 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
 }) => {
   const { onClose } = rest;
 
+  const [contractAbiLoading, setContractAbiLoading] = useState(false);
+
   return (
-    <Modal buttonMode="primarySolid" icon={CodeBlock} isFullOnMobile {...rest}>
-      <Form<AddTransactionTableModel> onSubmit={onSubmit}>
+    <Modal buttonMode="primarySolid" icon={CodeBlock} {...rest}>
+      <Form<AddTransactionTableModel>
+        onSubmit={onSubmit}
+        className="flex h-full w-full flex-grow flex-col"
+      >
         {() => (
-          <>
-            <h5 className="mb-1.5 heading-5">{formatText(MSG.title)}</h5>
-            <p className="mb-4 text-md text-gray-600">
-              {formatText(MSG.description)}
-            </p>
-            <ExternalLink
-              className="text-sm font-medium !text-blue-400 underline"
-              href={LEARN_MORE_ARBITRARY_TRANSACTIONS}
-              target="_blank"
-            >
-              {formatText(MSG.learnMoreLink)}
-            </ExternalLink>
-            <div className="mt-5 flex flex-col gap-4">
-              <ContractAddressInput />
-              <JsonAbiInput />
-              <DynamicInputs />
+          <div className="flex h-full w-full flex-grow flex-col">
+            <div className="flex-grow">
+              <h5 className="mb-1.5 heading-5">{formatText(MSG.title)}</h5>
+              <p className="mb-4 text-md text-gray-600">
+                {formatText(MSG.description)}
+              </p>
+              <ExternalLink
+                className="text-sm font-medium !text-blue-400 underline"
+                href={LEARN_MORE_ARBITRARY_TRANSACTIONS}
+                target="_blank"
+              >
+                {formatText(MSG.learnMoreLink)}
+              </ExternalLink>
+              <div className="relative mt-5 flex flex-col gap-4">
+                <ContractAddressInput
+                  setContractAbiLoading={setContractAbiLoading}
+                  contractAbiLoading={contractAbiLoading}
+                />
+                <JsonAbiInput loading={contractAbiLoading} />
+                <DynamicInputs />
+              </div>
             </div>
             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
               <Button
@@ -57,7 +67,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 {formatText(MSG.submitButton)}
               </Button>
             </div>
-          </>
+          </div>
         )}
       </Form>
     </Modal>

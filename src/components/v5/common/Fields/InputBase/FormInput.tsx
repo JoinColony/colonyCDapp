@@ -12,6 +12,7 @@ interface FormInputProps<T> {
   shouldFocus?: boolean;
   error?: string;
   registerOptions?: InputProps['registerOptions'];
+  loading?: boolean;
 }
 const FormInput = <T,>({
   name,
@@ -20,6 +21,7 @@ const FormInput = <T,>({
   placeholder,
   error,
   registerOptions,
+  loading,
 }: FormInputProps<T>) => {
   const {
     register,
@@ -41,6 +43,7 @@ const FormInput = <T,>({
       isError={!!errorMessage}
       customErrorMessage={errorMessage ? formatText(errorMessage) : ''}
       allowLayoutShift
+      loading={loading}
     />
   );
 };

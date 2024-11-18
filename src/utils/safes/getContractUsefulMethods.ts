@@ -1,7 +1,11 @@
 import { type JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
-import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants/index.ts';
+import {
+  BINANCE_NETWORK,
+  GANACHE_NETWORK,
+  SUPPORTED_SAFE_NETWORKS,
+} from '~constants/index.ts';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;
@@ -18,6 +22,9 @@ const getCurrentNetworkData = (chainId: string) => {
 export const getApiKey = (chainId: string) => {
   if (chainId === BINANCE_NETWORK.chainId) {
     return import.meta.env.BSCSCAN_API_KEY;
+  }
+  if (chainId === GANACHE_NETWORK.chainId) {
+    return import.meta.env.ARBISCAN_API_KEY;
   }
   return import.meta.env.ETHERSCAN_API_KEY;
 };

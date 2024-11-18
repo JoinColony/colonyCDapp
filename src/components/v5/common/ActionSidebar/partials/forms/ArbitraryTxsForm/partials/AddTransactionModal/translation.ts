@@ -57,6 +57,10 @@ export const MSG = defineMessages({
     id: `${displayName}.jsonAbiFormatLink`,
     defaultMessage: 'Format JSON',
   },
+  jsonAbiStringifyLink: {
+    id: `${displayName}.jsonAbiStringifyLink`,
+    defaultMessage: 'Stringify JSON',
+  },
   methodsField: {
     id: `${displayName}.methodField`,
     defaultMessage: 'Select a method to interact with',

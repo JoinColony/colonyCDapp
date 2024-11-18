@@ -32,6 +32,7 @@ export type InputProps = {
   shouldFocus?: boolean;
   allowLayoutShift?: boolean;
   registerOptions?: RegisterOptions<FieldValues>;
+  loading?: boolean;
 };
 
 export type PillProps = {

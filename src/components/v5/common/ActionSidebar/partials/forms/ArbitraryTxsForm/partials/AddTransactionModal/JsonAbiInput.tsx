@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { formatText } from '~utils/intl.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -8,12 +9,17 @@ import Button from '~v5/shared/Button/Button.tsx';
 import { validateJsonAbi } from './consts.ts';
 import { MSG } from './translation.ts';
 
-export const JsonAbiInput: React.FC = () => {
-  const { watch, setValue, clearErrors, trigger } = useFormContext();
+interface JsonAbiInputProps {
+  loading?: boolean;
+}
+export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ loading }) => {
+  const { watch, setValue, clearErrors, trigger, getFieldState } =
+    useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const [isFormatted, setIsFormatted] = useState(false);
   const [hideEditWarning, setHideEditWarning] = useState(false);
   const contractAddressField = watch('contractAddress');
+  const { error: jsonAbiFieldError } = getFieldState('jsonAbi');
 
   useEffect(() => {
     // reset jsonAbi state if contractAddress updated
@@ -46,15 +52,41 @@ export const JsonAbiInput: React.FC = () => {
       console.error('Invalid JSON:', error);
     }
   };
+  const getTextareaOverlay = () => {
+    if (loading) {
+      return (
+        <div className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center rounded bg-base-sprite">
+          <SpinnerLoader appearance={{ size: 'medium' }} />
+        </div>
+      );
+    }
+    if (jsonAbiField && !hideEditWarning) {
+      return (
+        <div className="absolute bottom-0 left-0 right-0 top-0 flex cursor-pointer items-center justify-center rounded bg-base-sprite opacity-0 transition-opacity hover:opacity-100">
+          <Button
+            onClick={() => {
+              setHideEditWarning(true);
+            }}
+          >
+            {formatText(MSG.jsonAbiEditInfo)}
+          </Button>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div className="relative">
       <Button
-        className="absolute right-0"
+        className="absolute right-0 z-base text-sm"
         mode="link"
         type="button"
         onClick={toggleJsonFormat}
+        disabled={!jsonAbiField || !!jsonAbiFieldError}
       >
-        {formatText(MSG.jsonAbiFormatLink)}
+        {isFormatted
+          ? formatText(MSG.jsonAbiStringifyLink)
+          : formatText(MSG.jsonAbiFormatLink)}
       </Button>
       <div>
         <FormTextareaBase
@@ -64,23 +96,12 @@ export const JsonAbiInput: React.FC = () => {
           className="h-[10.25rem]"
           shouldUseAutoSize={false}
           placeholder={formatText(MSG.jsonAbiFieldPlaceholder)}
+          disabled={loading}
           rows={7}
           label={formatText(MSG.jsonAbiField)}
+          labelClassName="mr-[5rem]"
           rules={{ validate: validateJsonAbi }}
-          textareaOverlay={
-            jsonAbiField &&
-            !hideEditWarning && (
-              <div className="absolute bottom-0 left-0 right-0 top-0 flex cursor-pointer items-center justify-center rounded bg-base-sprite opacity-0 transition-opacity hover:opacity-100">
-                <Button
-                  onClick={() => {
-                    setHideEditWarning(true);
-                  }}
-                >
-                  {formatText(MSG.jsonAbiEditInfo)}
-                </Button>
-              </div>
-            )
-          }
+          textareaOverlay={getTextareaOverlay()}
         />
       </div>
     </div>
