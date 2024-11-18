@@ -57,9 +57,9 @@ export const MSG = defineMessages({
     id: `${displayName}.jsonAbiFormatLink`,
     defaultMessage: 'Format JSON',
   },
-  jsonAbiStringifyLink: {
-    id: `${displayName}.jsonAbiStringifyLink`,
-    defaultMessage: 'Stringify JSON',
+  jsonAbiUnformatLink: {
+    id: `${displayName}.jsonAbiUnformatLink`,
+    defaultMessage: 'Unformat JSON',
   },
   methodsField: {
     id: `${displayName}.methodField`,
