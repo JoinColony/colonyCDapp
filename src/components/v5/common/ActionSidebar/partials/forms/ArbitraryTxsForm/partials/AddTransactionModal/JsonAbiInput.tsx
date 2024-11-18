@@ -85,7 +85,7 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ loading }) => {
         disabled={!jsonAbiField || !!jsonAbiFieldError}
       >
         {isFormatted
-          ? formatText(MSG.jsonAbiStringifyLink)
+          ? formatText(MSG.jsonAbiUnformatLink)
           : formatText(MSG.jsonAbiFormatLink)}
       </Button>
       <div>
