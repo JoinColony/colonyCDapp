@@ -1,4 +1,4 @@
-import { Plus } from '@phosphor-icons/react';
+import { CopySimple, Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
@@ -50,6 +50,30 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
     }),
   );
 
+  const getMenuProps = ({ index }) =>
+    !readonly
+      ? {
+          cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+          items: [
+            {
+              key: 'duplicate',
+              onClick: () =>
+                fieldArrayMethods.insert(index + 1, {
+                  ...value[index],
+                }),
+              label: formatText({ id: 'table.row.duplicate' }),
+              icon: CopySimple,
+            },
+            {
+              key: 'remove',
+              onClick: () => fieldArrayMethods.remove(index),
+              label: formatText({ id: 'table.row.remove' }),
+              icon: Trash,
+            },
+          ],
+        }
+      : undefined;
+
   return (
     <div className="pt-4">
       <h5 className="mb-4 text-2">
@@ -64,6 +88,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
         })}
         getRowId={({ key }) => key}
         columns={columns}
+        getMenuProps={getMenuProps}
         data={data.length === 0 ? [{} as AddTransactionTableModel] : data}
         verticalLayout={isMobile}
       />
