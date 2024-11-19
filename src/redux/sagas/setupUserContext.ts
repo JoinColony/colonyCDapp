@@ -21,6 +21,7 @@ import extensionSagas from './extensions/index.ts';
 import motionSagas from './motions/index.ts';
 import multiSigSagas from './multiSig/index.ts';
 // import { setupUserBalanceListener } from './setupUserBalanceListener';
+import proxyColoniesSagas from './proxyColonies/index.ts';
 import setupTransactionsSaga from './transactions/transactionsToDb.ts';
 import { setupUsersSagas, userLogout } from './users/index.ts';
 import { getGasPrices, putError } from './utils/index.ts';
@@ -61,6 +62,7 @@ function* setupContextDependentSagas() {
     call(setupUsersSagas),
     call(expendituresSagas),
     call(setupTransactionsSaga),
+    call(proxyColoniesSagas),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
      * all the app's routes

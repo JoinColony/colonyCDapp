@@ -1,6 +1,6 @@
 import { defineConfig } from '@wagmi/cli';
 import { fetch } from '@wagmi/cli/plugins';
-import { type Address} from 'viem'
+import { type Address } from 'viem';
 
 interface Contract {
   name: string;
@@ -16,6 +16,12 @@ const contracts: Contract[] = [
     address: '0x777760996135F0791E2e1a74aFAa060711197777',
     path: 'colonyNetwork/ColonyNetwork.sol/ColonyNetwork.json',
   },
+  {
+    name: 'Colony',
+    // I just incremented the EtherRouter address by one. This is fake. Do not refer to it
+    address: '0x777760996135F0791E2e1a74aFAa060711197778',
+    path: 'colony/Colony.sol/Colony.json',
+  },
 ];
 
 export default defineConfig({
@@ -29,17 +35,21 @@ export default defineConfig({
         return abi;
       },
       request(contract) {
-        if (!contract.address ) {
-          throw new Error('Contract address is required')
+        if (!contract.address) {
+          throw new Error('Contract address is required');
         }
-        const contractDefinition = contracts.find(({ address }) => address === contract.address);
+        const contractDefinition = contracts.find(
+          ({ address }) => address === contract.address,
+        );
         if (!contractDefinition) {
-          throw new Error(`Could not find contract with address ${contract.address}`)
+          throw new Error(
+            `Could not find contract with address ${contract.address}`,
+          );
         }
         return {
           // Anyone remember trufflepig?
-          url: `http://localhost:3006/artifacts/contracts/${contractDefinition.path}`
-        }
+          url: `http://localhost:3006/artifacts/contracts/${contractDefinition.path}`,
+        };
       },
     }),
   ],
