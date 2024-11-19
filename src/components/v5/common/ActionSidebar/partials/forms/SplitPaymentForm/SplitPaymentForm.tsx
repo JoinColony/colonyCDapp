@@ -23,7 +23,8 @@ import SplitPaymentRecipientsField from './partials/SplitPaymentRecipientsField/
 const displayName = 'v5.common.ActionSidebar.partials.SplitPaymentForm';
 
 const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  const { currentToken, distributionMethod } = useSplitPayment(getFormOptions);
+  const { currentToken, distributionMethod, renderStakedExpenditureModal } =
+    useSplitPayment(getFormOptions);
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const { watch, trigger } = useFormContext();
@@ -112,6 +113,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={hasNoDecisionMethods}
         />
       )}
+      {renderStakedExpenditureModal()}
     </>
   );
 };

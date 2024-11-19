@@ -18,7 +18,7 @@ import PaymentBuilderRecipientsField from './partials/PaymentBuilderRecipientsFi
 const displayName = 'v5.common.ActionSidebar.partials.PaymentBuilderForm';
 
 const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
-  usePaymentBuilder(getFormOptions);
+  const { renderStakedExpenditureModal } = usePaymentBuilder(getFormOptions);
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const createdInFilterFn = useFilterCreatedInField('from');
@@ -49,6 +49,7 @@ const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       <PaymentBuilderRecipientsField name="payments" />
+      {renderStakedExpenditureModal()}
     </>
   );
 };

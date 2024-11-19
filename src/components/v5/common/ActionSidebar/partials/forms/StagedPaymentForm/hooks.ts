@@ -4,6 +4,7 @@ import { type DeepPartial } from 'utility-types';
 import { type InferType, array, number, object, string } from 'yup';
 
 import { MAX_MILESTONE_LENGTH } from '~constants';
+import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureType } from '~gql';
@@ -24,6 +25,7 @@ import {
   FROM_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { useShowCreateStakedExpenditureModal } from '~v5/common/ActionSidebar/partials/CreateStakedExpenditureModal/hooks.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { allTokensAmountValidation } from '../PaymentBuilderForm/utils.ts';
@@ -163,6 +165,9 @@ export const useStagePayment = (
   const validationSchema = useValidationSchema(networkInverseFee);
   const { setExpectedExpenditureType } = usePaymentBuilderContext();
 
+  const { renderStakedExpenditureModal, showStakedExpenditureModal } =
+    useShowCreateStakedExpenditureModal(Action.StagedPayment);
+
   useActionFormBaseHook({
     validationSchema,
     defaultValues: useMemo<DeepPartial<StagedPaymentFormValues>>(
@@ -189,5 +194,13 @@ export const useStagePayment = (
     transform: mapPayload((payload: StagedPaymentFormValues) => {
       return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),
+    primaryButton: {
+      type: 'button',
+      onClick: showStakedExpenditureModal,
+    },
   });
+
+  return {
+    renderStakedExpenditureModal,
+  };
 };
