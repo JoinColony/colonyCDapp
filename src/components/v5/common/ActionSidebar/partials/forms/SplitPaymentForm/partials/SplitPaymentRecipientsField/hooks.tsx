@@ -48,6 +48,7 @@ export const useRecipientsFieldTableColumns = ({
     [],
   );
   const dataRef = useWrapWithRef(data);
+  const distributionMethodRef = useWrapWithRef(distributionMethod);
   const getPercentValue = useCallback((index: number): number => {
     const percent = dataRef.current?.[index]?.percent || 0;
 
@@ -110,7 +111,8 @@ export const useRecipientsFieldTableColumns = ({
                 data={dataRef.current || []}
                 token={token}
                 value={
-                  distributionMethod === SplitPaymentDistributionType.Equal &&
+                  distributionMethodRef?.current ===
+                    SplitPaymentDistributionType.Equal &&
                   (amount ? moveDecimal(amount, token.decimals) : 0)
                 }
                 convertToWEI
@@ -172,7 +174,8 @@ export const useRecipientsFieldTableColumns = ({
             ? () => {
                 return (
                   <span className="text-md font-medium text-gray-900">
-                    {distributionMethod === SplitPaymentDistributionType.Equal
+                    {distributionMethodRef?.current ===
+                    SplitPaymentDistributionType.Equal
                       ? '100%'
                       : `${Number(
                           dataRef.current
