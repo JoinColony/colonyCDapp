@@ -23,7 +23,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
 }) => {
   const { onClose } = rest;
 
-  const [contractAbiLoading, setContractAbiLoading] = useState(true);
+  const [contractAbiLoading, setContractAbiLoading] = useState(false);
 
   return (
     <Modal buttonMode="primarySolid" icon={CodeBlock} {...rest}>
