@@ -65,6 +65,7 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
               {headerProps ? <PageHeader {...headerProps} /> : header}
             </section>
             <section
+              id="main-content-container"
               className={clsx(
                 'modal-blur h-full w-full overflow-auto px-6 scrollbar-gutter-stable md:p-8 md:pb-0 md:pt-2',
                 {

@@ -1,27 +1,31 @@
 import copyToClipboard from 'copy-to-clipboard';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const useCopyToClipboard = (copyTimeOut = 2000) => {
   const [isCopied, setCopied] = useState(false);
 
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
+
   const handleClipboardCopy = (dataToCopy: string) => {
+    clearTimeout(timeout.current); // Clear any existing timeout
     setCopied(true);
     copyToClipboard(dataToCopy);
+    timeout.current = setTimeout(() => setCopied(false), copyTimeOut);
   };
 
+  const resetCopiedState = useCallback(() => {
+    clearTimeout(timeout.current);
+    setCopied(false);
+  }, []);
+
   useEffect(() => {
-    let timeout;
-    if (isCopied) {
-      timeout = setTimeout(() => setCopied(false), copyTimeOut);
-    }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [copyTimeOut, isCopied]);
+    return resetCopiedState; // Cleanup on unmount
+  }, [resetCopiedState]);
 
   return {
     isCopied,
     handleClipboardCopy,
+    resetCopiedState,
   };
 };
 
