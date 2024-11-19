@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers';
 import { getAddress, isAddress } from 'ethers/lib/utils';
 
 import { apolloClient } from '~apollo';
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
   CreateExpenditureMetadataDocument,
@@ -83,25 +84,27 @@ export function* saveExpenditureMetadata({
   numberOfTokens,
   distributionType,
 }: SaveExpenditureMetadataParams) {
-  yield apolloClient.mutate<
-    CreateExpenditureMetadataMutation,
-    CreateExpenditureMetadataMutationVariables
-  >({
-    mutation: CreateExpenditureMetadataDocument,
-    variables: {
-      input: {
-        id: getExpenditureDatabaseId(colonyAddress, expenditureId),
-        fundFromDomainNativeId: fundFromDomainId,
-        stages: stages?.map((stage, index) => ({
-          name: stage.name,
-          slotId: index + 1,
-        })),
-        expectedNumberOfPayouts: numberOfPayouts,
-        expectedNumberOfTokens: numberOfTokens,
-        distributionType,
+  yield mutateWithAuthRetry(() =>
+    apolloClient.mutate<
+      CreateExpenditureMetadataMutation,
+      CreateExpenditureMetadataMutationVariables
+    >({
+      mutation: CreateExpenditureMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(colonyAddress, expenditureId),
+          fundFromDomainNativeId: fundFromDomainId,
+          stages: stages?.map((stage, index) => ({
+            name: stage.name,
+            slotId: index + 1,
+          })),
+          expectedNumberOfPayouts: numberOfPayouts,
+          expectedNumberOfTokens: numberOfTokens,
+          distributionType,
+        },
       },
-    },
-  });
+    }),
+  );
 }
 
 export const getPayoutsWithSlotIds = (

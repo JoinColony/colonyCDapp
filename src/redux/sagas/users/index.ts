@@ -4,6 +4,7 @@ import { ClientType, Tokens, type TokenLockingClient } from '@colony/colony-js';
 import { BigNumber, utils } from 'ethers';
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { deauthenticateWallet } from '~auth/index.ts';
 import { DEV_USDC_ADDRESS, isDev } from '~constants';
 import {
@@ -45,10 +46,13 @@ import {
 //   try {
 //     const { walletAddress } = yield getLoggedInUser();
 //     const apolloClient = getContext(ContextModule.ApolloClient);
-//     yield apolloClient.mutate<EditUserMutation, EditUserMutationVariables>({
-//       mutation: EditUserDocument,
-//       variables: { input: { avatarHash: null } },
-//     });
+
+// yield mutateWithAuthRetry(() =>
+//   apolloClient.mutate<EditUserMutation, EditUserMutationVariables>({
+//     mutation: EditUserDocument,
+//     variables: { input: { avatarHash: null } },
+//   }),
+// );
 
 //     yield put<AllActions>({
 //       type: ActionTypes.USER_AVATAR_REMOVE_SUCCESS,
@@ -81,10 +85,12 @@ import {
 //       }
 //     }
 
-//     yield apolloClient.mutate<EditUserMutation, EditUserMutationVariables>({
-//       mutation: EditUserDocument,
-//       variables: { input: { avatarHash: ipfsHash } },
-//     });
+// yield mutateWithAuthRetry(() =>
+//   apolloClient.mutate<EditUserMutation, EditUserMutationVariables>({
+//     mutation: EditUserDocument,
+//     variables: { input: { avatarHash: ipfsHash } },
+//   }),
+// );
 
 //     yield put<AllActions>({
 //       type: ActionTypes.USER_AVATAR_UPLOAD_SUCCESS,
@@ -133,22 +139,24 @@ function* usernameCreate({
     /*
      * Write user to db
      */
-    yield apolloClient.mutate<
-      CreateUniqueUserMutation,
-      CreateUniqueUserMutationVariables
-    >({
-      mutation: CreateUniqueUserDocument,
-      variables: {
-        input: {
-          id: walletAddress,
-          profile: {
-            displayName: username,
-            email: emailAddress || undefined,
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateUniqueUserMutation,
+        CreateUniqueUserMutationVariables
+      >({
+        mutation: CreateUniqueUserDocument,
+        variables: {
+          input: {
+            id: walletAddress,
+            profile: {
+              displayName: username,
+              email: emailAddress || undefined,
+            },
           },
         },
-      },
-      refetchQueries,
-    });
+        refetchQueries,
+      }),
+    );
 
     if (updateUser) {
       yield call(updateUser, walletAddress, true);

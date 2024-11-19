@@ -1,8 +1,9 @@
-import { useApolloClient } from '@apollo/client';
+import { ApolloError, useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
@@ -49,9 +50,18 @@ import {
 
 const displayName = 'v5.common.ActionsContent.partials.ActionSidebarContent';
 
+const MSG = defineMessages({
+  apolloNetworkError: {
+    id: `${displayName}.apolloNetworkError`,
+    defaultMessage:
+      'There has been a database error. Your transaction may still have been processed.',
+  },
+});
+
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   actionFormProps: { primaryButton },
+  showApolloNetworkError,
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
@@ -102,7 +112,8 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     hasPermissions === false ||
     areMemberPermissionsLoading ||
     !canCreateAction ||
-    hasNoDecisionMethods;
+    hasNoDecisionMethods ||
+    showApolloNetworkError;
 
   const [
     isRemoveDraftModalVisible,
@@ -189,6 +200,13 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         <NoReputationError />
+        {showApolloNetworkError && (
+          <div className="mt-7">
+            <NotificationBanner icon={WarningCircle} status="error">
+              {showApolloNetworkError && formatText(MSG.apolloNetworkError)}
+            </NotificationBanner>
+          </div>
+        )}
         {customError && (
           <div className="mt-7">
             <NotificationBanner icon={WarningCircle} status="error">
@@ -275,6 +293,8 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   const { getFormOptions, actionFormProps } = useActionFormProps(defaultValues);
   const client = useApolloClient();
 
+  const [showApolloNetworkError, setShowApolloNetworkError] = useState(false);
+
   return (
     <div className="flex w-full flex-grow overflow-hidden">
       <div className="w-full flex-grow pb-6 pt-8">
@@ -283,6 +303,29 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           key={actionFormProps.mode}
           className="flex h-full flex-col"
           innerRef={formRef}
+          onError={(error) => {
+            console.error(error);
+
+            // Auth failed before transaction was sent
+            if (
+              (error.message as unknown) === 'Auth failed' ||
+              (error.code as unknown) === 4001
+            ) {
+              setShowApolloNetworkError(true);
+            }
+
+            // Mutation failed in saga
+            if (error instanceof ApolloError) {
+              const { networkError } = error;
+
+              const statusCode = (networkError as { statusCode?: number })
+                ?.statusCode;
+
+              if (statusCode === 403) {
+                setShowApolloNetworkError(true);
+              }
+            }
+          }}
           onSuccess={() => {
             if (isQueryActive('SearchActions')) {
               client.refetchQueries({
@@ -302,6 +345,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}
             actionFormProps={actionFormProps}
+            showApolloNetworkError={showApolloNetworkError}
           />
         </ActionForm>
       </div>

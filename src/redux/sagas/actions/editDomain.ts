@@ -1,12 +1,14 @@
 import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import {
   ContextModule,
   getContext,
   type ColonyManager,
 } from '~context/index.ts';
 import {
+  type DomainMetadataFragment,
   GetFullColonyByNameDocument,
   UpdateDomainMetadataDocument,
   type UpdateDomainMetadataMutation,
@@ -144,28 +146,30 @@ function* editDomainAction({
      * Save the updated metadata in the database
      */
     if (domain.metadata) {
-      yield apolloClient.mutate<
-        UpdateDomainMetadataMutation,
-        UpdateDomainMetadataMutationVariables
-      >({
-        mutation: UpdateDomainMetadataDocument,
-        variables: {
-          input: {
-            id: getDomainDatabaseId(colonyAddress, domain.nativeId),
-            name: domainName,
-            color: domainColor,
-            description: domainPurpose,
-            changelog: getUpdatedDomainMetadataChangelog({
-              transactionHash: txHash,
-              metadata: domain.metadata,
-              newName: domainName,
-              newColor: domainColor,
-              newDescription: domainPurpose,
-            }),
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          UpdateDomainMetadataMutation,
+          UpdateDomainMetadataMutationVariables
+        >({
+          mutation: UpdateDomainMetadataDocument,
+          variables: {
+            input: {
+              id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+              name: domainName,
+              color: domainColor,
+              description: domainPurpose,
+              changelog: getUpdatedDomainMetadataChangelog({
+                transactionHash: txHash,
+                metadata: domain.metadata as DomainMetadataFragment,
+                newName: domainName,
+                newColor: domainColor,
+                newDescription: domainPurpose,
+              }),
+            },
           },
-        },
-        refetchQueries: [GetFullColonyByNameDocument],
-      });
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
     }
 
     yield createActionMetadataInDB(txHash, customActionTitle);

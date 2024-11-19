@@ -1,3 +1,4 @@
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   type CreateColonyActionMetadataMutation,
@@ -8,16 +9,18 @@ import {
 export function* createActionMetadataInDB(txHash: string, customTitle: string) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
-  yield apolloClient.mutate<
-    CreateColonyActionMetadataMutation,
-    CreateColonyActionMetadataMutationVariables
-  >({
-    mutation: CreateColonyActionMetadataDocument,
-    variables: {
-      input: {
-        id: txHash,
-        customTitle,
+  yield mutateWithAuthRetry(() =>
+    apolloClient.mutate<
+      CreateColonyActionMetadataMutation,
+      CreateColonyActionMetadataMutationVariables
+    >({
+      mutation: CreateColonyActionMetadataDocument,
+      variables: {
+        input: {
+          id: txHash,
+          customTitle,
+        },
       },
-    },
-  });
+    }),
+  );
 }

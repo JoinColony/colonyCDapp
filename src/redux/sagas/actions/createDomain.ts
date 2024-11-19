@@ -6,6 +6,7 @@ import {
 } from '@colony/colony-js';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import {
   ContextModule,
   getContext,
@@ -68,6 +69,7 @@ function* createDomainAction({
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = TRANSACTION_METHODS.CreateDomain;
+
     const {
       createDomainAction: createDomain,
       annotateCreateDomainAction: annotateCreateDomain,
@@ -147,20 +149,22 @@ function* createDomainAction({
     /**
      * Save domain metadata in the database
      */
-    yield apolloClient.mutate<
-      CreateDomainMetadataMutation,
-      CreateDomainMetadataMutationVariables
-    >({
-      mutation: CreateDomainMetadataDocument,
-      variables: {
-        input: {
-          id: getDomainDatabaseId(colonyAddress, nativeDomainId),
-          name: domainName,
-          color: domainColor,
-          description: domainPurpose,
+    yield mutateWithAuthRetry(() =>
+      apolloClient.mutate<
+        CreateDomainMetadataMutation,
+        CreateDomainMetadataMutationVariables
+      >({
+        mutation: CreateDomainMetadataDocument,
+        variables: {
+          input: {
+            id: getDomainDatabaseId(colonyAddress, nativeDomainId),
+            name: domainName,
+            color: domainColor,
+            description: domainPurpose,
+          },
         },
-      },
-    });
+      }),
+    );
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 

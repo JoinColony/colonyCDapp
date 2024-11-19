@@ -3,6 +3,7 @@ import { type ClientTypeTokens } from '@colony/colony-js';
 import { utils, BigNumber } from 'ethers';
 import { useMemo } from 'react';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -294,60 +295,62 @@ export const addTransactionToDb = async (
     options: JSON.stringify(options),
   };
 
-  await apollo.mutate<
-    CreateTransactionMutation,
-    CreateTransactionMutationVariables
-  >({
-    mutation: CreateTransactionDocument,
-    variables: {
-      input,
-    },
-    update: (cache, { data }) => {
-      const newTx = data?.createTransaction;
+  await mutateWithAuthRetry(() =>
+    apollo.mutate<
+      CreateTransactionMutation,
+      CreateTransactionMutationVariables
+    >({
+      mutation: CreateTransactionDocument,
+      variables: {
+        input,
+      },
+      update: (cache, { data }) => {
+        const newTx = data?.createTransaction;
 
-      if (!newTx) {
-        return;
-      }
+        if (!newTx) {
+          return;
+        }
 
-      cache.updateQuery<
-        GetUserTransactionsQuery,
-        GetUserTransactionsQueryVariables
-      >(
-        {
-          query: GetUserTransactionsDocument,
-          variables: {
-            userAddress: fromAddress,
-            limit: TX_PAGE_SIZE,
+        cache.updateQuery<
+          GetUserTransactionsQuery,
+          GetUserTransactionsQueryVariables
+        >(
+          {
+            query: GetUserTransactionsDocument,
+            variables: {
+              userAddress: fromAddress,
+              limit: TX_PAGE_SIZE,
+            },
+          },
+          (result) => {
+            if (!result?.getTransactionsByUser) {
+              return result;
+            }
+
+            return {
+              ...result,
+              getTransactionsByUser: {
+                ...result.getTransactionsByUser,
+                items: [newTx, ...result.getTransactionsByUser.items],
+              },
+            };
+          },
+        );
+      },
+      optimisticResponse: {
+        createTransaction: {
+          __typename: 'Transaction',
+          ...input,
+          id,
+          createdAt: txCreatedAt,
+          group: {
+            __typename: 'TransactionGroup',
+            ...input.group,
           },
         },
-        (result) => {
-          if (!result?.getTransactionsByUser) {
-            return result;
-          }
-
-          return {
-            ...result,
-            getTransactionsByUser: {
-              ...result.getTransactionsByUser,
-              items: [newTx, ...result.getTransactionsByUser.items],
-            },
-          };
-        },
-      );
-    },
-    optimisticResponse: {
-      createTransaction: {
-        __typename: 'Transaction',
-        ...input,
-        id,
-        createdAt: txCreatedAt,
-        group: {
-          __typename: 'TransactionGroup',
-          ...input.group,
-        },
       },
-    },
-  });
+    }),
+  );
 };
 
 export const updateTransaction = async (
@@ -384,77 +387,83 @@ export const updateTransaction = async (
     };
   }
 
-  return apollo.mutate<
-    UpdateTransactionMutation,
-    UpdateTransactionMutationVariables
-  >(mutationOpts);
+  await mutateWithAuthRetry(() =>
+    apollo.mutate<
+      UpdateTransactionMutation,
+      UpdateTransactionMutationVariables
+    >(mutationOpts),
+  );
+  // return;
 };
 
 export const deleteTransaction = async (id: string) => {
   const apollo = getContext(ContextModule.ApolloClient);
   const wallet = getContext(ContextModule.Wallet);
   const walletAddress = utils.getAddress(wallet.address);
-  await apollo.mutate<
-    UpdateTransactionMutation,
-    UpdateTransactionMutationVariables
-  >({
-    mutation: UpdateTransactionDocument,
-    variables: {
-      input: {
-        id,
-        from: walletAddress,
-        status: TransactionStatus.Failed,
-        deleted: true,
-      },
-    },
-    optimisticResponse: {
-      updateTransaction: {
-        __typename: 'Transaction',
-        id,
-        deleted: true,
-        status: TransactionStatus.Failed,
-        // null values for optimistic response
-        error: null,
-        identifier: null,
-        params: null,
-      },
-    },
-    update: (cache, { data }) => {
-      const newTx = data?.updateTransaction;
 
-      if (!newTx) {
-        return;
-      }
-
-      cache.updateQuery<
-        GetUserTransactionsQuery,
-        GetUserTransactionsQueryVariables
-      >(
-        {
-          query: GetUserTransactionsDocument,
-          variables: {
-            userAddress: walletAddress,
-            limit: TX_PAGE_SIZE,
-          },
+  await mutateWithAuthRetry(() =>
+    apollo.mutate<
+      UpdateTransactionMutation,
+      UpdateTransactionMutationVariables
+    >({
+      mutation: UpdateTransactionDocument,
+      variables: {
+        input: {
+          id,
+          from: walletAddress,
+          status: TransactionStatus.Failed,
+          deleted: true,
         },
-        (result) => {
-          if (!result?.getTransactionsByUser) {
-            return result;
-          }
+      },
+      optimisticResponse: {
+        updateTransaction: {
+          __typename: 'Transaction',
+          id,
+          deleted: true,
+          status: TransactionStatus.Failed,
+          // null values for optimistic response
+          error: null,
+          identifier: null,
+          params: null,
+        },
+      },
+      update: (cache, { data }) => {
+        const newTx = data?.updateTransaction;
 
-          return {
-            ...result,
-            getTransactionsByUser: {
-              ...result.getTransactionsByUser,
-              items: result.getTransactionsByUser.items.filter(
-                (tx) => tx?.id !== id,
-              ),
+        if (!newTx) {
+          return;
+        }
+
+        cache.updateQuery<
+          GetUserTransactionsQuery,
+          GetUserTransactionsQueryVariables
+        >(
+          {
+            query: GetUserTransactionsDocument,
+            variables: {
+              userAddress: walletAddress,
+              limit: TX_PAGE_SIZE,
             },
-          };
-        },
-      );
-    },
-  });
+          },
+          (result) => {
+            if (!result?.getTransactionsByUser) {
+              return result;
+            }
+
+            return {
+              ...result,
+              getTransactionsByUser: {
+                ...result.getTransactionsByUser,
+                items: result.getTransactionsByUser.items.filter(
+                  (tx) => tx?.id !== id,
+                ),
+              },
+            };
+          },
+        );
+      },
+    }),
+  );
 };
 
 // Update the transaction status to pending in the database

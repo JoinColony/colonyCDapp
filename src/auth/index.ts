@@ -1,3 +1,4 @@
+import { backOff } from 'exponential-backoff';
 import { SiweMessage } from 'siwe';
 
 import { APP_URL } from '~constants/index.ts';
@@ -70,11 +71,32 @@ export const authenticateWallet = async (): Promise<void> => {
 
     const signature = await signer.signMessage(message);
 
-    return authProxyRequest('auth', {
+    const authRequest = await authProxyRequest('auth', {
       method: 'POST',
       body: JSON.stringify({ message, signature }),
     });
+
+    if (authRequest.type === 'error') {
+      throw new Error('Auth failed');
+    }
+
+    return authRequest;
   }
 
   return authCheck;
+};
+
+export const authenticateWalletWithRetry = async (
+  maxRetries: number = 3,
+): Promise<void> => {
+  return backOff(() => authenticateWallet(), {
+    numOfAttempts: maxRetries,
+    retry: async (error) => {
+      console.error(error);
+      if ((error.message as unknown) !== 'Auth failed') {
+        throw error;
+      }
+      return true;
+    },
+  });
 };

@@ -1,8 +1,10 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
+  type ColonyMetadataFragment,
   GetFullColonyByNameDocument,
   UpdateColonyMetadataDocument,
   type UpdateColonyMetadataMutation,
@@ -140,25 +142,27 @@ function* manageExistingSafesAction({
      * Update colony metadata in the db
      */
     if (colony.metadata) {
-      yield apolloClient.mutate<
-        UpdateColonyMetadataMutation,
-        UpdateColonyMetadataMutationVariables
-      >({
-        mutation: UpdateColonyMetadataDocument,
-        variables: {
-          input: {
-            id: colonyAddress,
-            safes: updatedColonySafes,
-            changelog: getUpdatedColonyMetadataChangelog({
-              transactionHash: txHash,
-              metadata: colony.metadata,
-              newSafes: updatedColonySafes,
-            }),
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          UpdateColonyMetadataMutation,
+          UpdateColonyMetadataMutationVariables
+        >({
+          mutation: UpdateColonyMetadataDocument,
+          variables: {
+            input: {
+              id: colonyAddress,
+              safes: updatedColonySafes,
+              changelog: getUpdatedColonyMetadataChangelog({
+                transactionHash: txHash,
+                metadata: colony.metadata as ColonyMetadataFragment,
+                newSafes: updatedColonySafes,
+              }),
+            },
           },
-        },
-        // Update colony object with modified metadata
-        refetchQueries: [GetFullColonyByNameDocument],
-      });
+          // Update colony object with modified metadata
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
     }
 
     yield put<AllActions>({

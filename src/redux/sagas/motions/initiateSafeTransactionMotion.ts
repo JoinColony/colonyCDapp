@@ -1,6 +1,7 @@
 import { ClientType, getChildIndex, Id } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -193,19 +194,21 @@ function* initiateSafeTransactionMotion({
      * Create individual safe transaction data records
      */
     for (const transaction of transactions) {
-      yield apolloClient.mutate<
-        CreateSafeTransactionDataMutation,
-        CreateSafeTransactionDataMutationVariables
-      >({
-        mutation: CreateSafeTransactionDataDocument,
-        variables: {
-          input: {
-            ...omit(transaction, 'token'),
-            tokenAddress: transaction.token?.tokenAddress,
-            transactionHash: safeTransaction.data.createSafeTransaction.id,
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          CreateSafeTransactionDataMutation,
+          CreateSafeTransactionDataMutationVariables
+        >({
+          mutation: CreateSafeTransactionDataDocument,
+          variables: {
+            input: {
+              ...omit(transaction, 'token'),
+              tokenAddress: transaction.token?.tokenAddress,
+              transactionHash: safeTransaction.data.createSafeTransaction.id,
+            },
           },
-        },
-      });
+        }),
+      );
     }
 
     setTxHash?.(txHash);
