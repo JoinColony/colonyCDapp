@@ -112,7 +112,11 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
               onChange={onChange}
               state={state}
               message={message}
+              shouldFocus
               value={searchValue}
+              className={clsx({
+                'focus:shadow-transparent': !searchValue.length,
+              })}
               placeholder={
                 placeholder ??
                 formatText({
