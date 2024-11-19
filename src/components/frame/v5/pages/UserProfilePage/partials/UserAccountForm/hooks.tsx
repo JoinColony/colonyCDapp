@@ -128,7 +128,8 @@ export const useUserProfilePageForm = () => {
           descriptionClassName,
           inputProps: {
             maxCharNumber: MAX_DISPLAYNAME_CHARS,
-            shouldNumberOfCharsBeVisible: true,
+            shouldNumberOfCharsBeVisible: canChangeUsername,
+            defaultValue: user?.profile?.displayName || '',
             name: 'displayName',
             isDisabled: !canChangeUsername,
             register,
