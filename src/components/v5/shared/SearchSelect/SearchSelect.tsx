@@ -42,13 +42,18 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
       additionalButtons,
       className,
       placeholder,
+      shouldReturnAddresses = false,
     },
     ref,
   ) => {
     const [searchValue, setSearchValue] = useState('');
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
     const isMobile = useMobile();
-    const filteredList = useSearchSelect(items, debouncedSearchValue);
+    const filteredList = useSearchSelect(
+      items,
+      debouncedSearchValue,
+      shouldReturnAddresses,
+    );
 
     useEffect(() => {
       const debounceTimeout = setTimeout(() => {
