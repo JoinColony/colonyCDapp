@@ -52,6 +52,7 @@ const MobileWizardHeader = ({ currentStep, wizardSteps }: WizardProps) => {
       <Stepper
         activeStepKey={activeStepKey}
         items={steps.filter((step) => !!step)}
+        disablePreviousSteps
       />
     </div>
   );
