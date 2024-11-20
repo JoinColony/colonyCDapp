@@ -7,4 +7,5 @@ export interface SplitPaymentPayoutsTotalProps {
   token: Token;
   convertToWEI?: boolean;
   className?: string;
+  value?: string;
 }

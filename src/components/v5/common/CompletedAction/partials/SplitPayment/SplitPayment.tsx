@@ -153,6 +153,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     amount,
     -getTokenDecimalsWithFallback(splitToken?.decimals),
   );
+  const redoAmount = getNumeralTokenAmount(amount, splitToken?.decimals);
 
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
     {
@@ -168,10 +169,10 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
             distributionMethod: distributionType,
             [TEAM_FIELD_NAME]: fundFromDomainNativeId,
-            [AMOUNT_FIELD_NAME]: getNumeralTokenAmount(
-              amount,
-              splitToken?.decimals,
-            ),
+            [AMOUNT_FIELD_NAME]:
+              typeof redoAmount === 'string'
+                ? redoAmount.replace(',', '')
+                : redoAmount,
             payments: slots.map((slot) => {
               const currentAmount = moveDecimal(
                 slot.payouts?.[0].amount,

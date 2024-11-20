@@ -13,6 +13,7 @@ const SplitPaymentPayoutsTotal: FC<SplitPaymentPayoutsTotalProps> = ({
   token,
   convertToWEI,
   className,
+  value,
 }) => {
   const summedAmount =
     useMemo(() => {
@@ -44,7 +45,7 @@ const SplitPaymentPayoutsTotal: FC<SplitPaymentPayoutsTotalProps> = ({
         'flex items-center gap-3 text-gray-900 text-1',
       )}
     >
-      <Numeral value={summedAmount} decimals={token.decimals} />
+      <Numeral value={value || summedAmount} decimals={token.decimals} />
       <div className="flex items-center gap-1">
         <TokenAvatar
           tokenAddress={token.tokenAddress}
