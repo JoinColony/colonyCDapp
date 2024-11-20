@@ -1,5 +1,5 @@
 import { Interface, type ParamType } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
@@ -19,54 +19,102 @@ export const DynamicInputs: React.FC = () => {
   const jsonAbiField = watch('jsonAbi');
   const selectedMethod = watch('method');
   const [methodOptions, setMethodOptions] = useState<MethodItem[]>([]);
-  const [methodInputs, setMethodInputs] = useState<ParamType[]>([]);
+  const [methodArgs, setMethodArgs] = useState<ParamType[]>([]);
 
-  useEffect(() => {
-    setValue('method', ''); // Clean method field when jsonAbi updated
-    setMethodInputs([]);
-    setMethodOptions([]);
-    if (jsonAbiField) {
-      try {
-        const IJsonAbi = new Interface(jsonAbiField);
-        const functions = IJsonAbi.fragments
-          .filter(abiFunctionsFilterFn)
-          .map((item) => item.name);
-        const options =
-          functions?.map((func) => ({ value: func, label: func })) || [];
-        setMethodOptions(options);
-      } catch (e) {
-        setMethodOptions([]);
-      }
+  const removePrevMethodArgs = useCallback(() => {
+    methodArgs.forEach((input) => {
+      unregister(`args.${input.name}`);
+    });
+    setMethodArgs([]);
+  }, [methodArgs, setMethodArgs, unregister]);
+
+  const methodOptionsSetter = ({ jsonAbi }) => {
+    try {
+      const IJsonAbi = new Interface(jsonAbi);
+      const functions = IJsonAbi.fragments
+        .filter(abiFunctionsFilterFn)
+        .map((item) => item.name);
+      const options =
+        functions?.map((func) => ({ value: func, label: func })) || [];
+      setMethodOptions(options);
+    } catch (e) {
+      setMethodOptions([]);
     }
-  }, [jsonAbiField, setValue]);
+  };
 
-  useEffect(() => {
-    if (selectedMethod && jsonAbiField) {
+  const methodArgsSetter = useCallback(
+    ({ jsonAbi, method }) => {
       try {
-        const IJsonAbi = new Interface(jsonAbiField);
-        const functionFragment = IJsonAbi.getFunction(selectedMethod);
-
-        // Remove previous method inputs
-        methodInputs.forEach((input) => {
-          unregister(`args.${input.name}`);
-        });
-
-        setMethodInputs(functionFragment.inputs);
+        const IJsonAbi = new Interface(jsonAbi);
+        const functionFragment = IJsonAbi.getFunction(method);
+        setMethodArgs(functionFragment.inputs);
         functionFragment.inputs.forEach((item) => {
           setValue(`args.${item.name}.type`, item.type); // Setting type as value to use it in table rendering
         });
       } catch (e) {
-        setMethodInputs([]);
+        setMethodArgs([]);
       }
-    } else {
-      // Clear method inputs when no method is selected
-      setMethodInputs([]);
-    }
-    // this line is disabled to not add methodInputs to dependencies and avoid infinite reloading
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMethod, jsonAbiField, setValue, unregister]);
+    },
+    [setValue],
+  );
 
-  if (!methodOptions.length && !methodInputs.length) {
+  const onJsonAbiChanged = useCallback(
+    ({ jsonAbi }) => {
+      if (jsonAbi) {
+        setValue('method', '');
+        removePrevMethodArgs();
+        methodOptionsSetter({ jsonAbi });
+      }
+    },
+    [setValue, removePrevMethodArgs],
+  );
+
+  const onMethodChanged = useCallback(
+    ({ method, jsonAbi }) => {
+      if (method && jsonAbi) {
+        removePrevMethodArgs();
+        methodArgsSetter({ jsonAbi, method });
+      }
+    },
+    [removePrevMethodArgs, methodArgsSetter],
+  );
+
+  useEffect(() => {
+    // Initial render for "edit" state when we have defaultValues
+    if (jsonAbiField && selectedMethod) {
+      methodOptionsSetter({ jsonAbi: jsonAbiField });
+      methodArgsSetter({ jsonAbi: jsonAbiField, method: selectedMethod });
+    }
+    // This hook is intentionally called only for the first render
+    // Other updates will be handled in the "watch" subscription
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const { unsubscribe } = watch(({ method, jsonAbi }, { name }) => {
+      switch (name) {
+        case 'jsonAbi':
+          onJsonAbiChanged({ jsonAbi });
+          break;
+        case 'method':
+          onMethodChanged({ method, jsonAbi });
+          break;
+        default:
+      }
+    });
+
+    return () => unsubscribe();
+  }, [
+    watch,
+    methodArgs,
+    setValue,
+    unregister,
+    removePrevMethodArgs,
+    onMethodChanged,
+    onJsonAbiChanged,
+  ]);
+
+  if (!methodOptions.length && !methodArgs.length) {
     return null;
   }
 
@@ -81,7 +129,7 @@ export const DynamicInputs: React.FC = () => {
           rules={{ validate: validateMethod }}
         />
       )}
-      {methodInputs.map((input) => (
+      {methodArgs.map((input) => (
         <MethodInput key={input.name} name={input.name} type={input.type} />
       ))}
     </div>

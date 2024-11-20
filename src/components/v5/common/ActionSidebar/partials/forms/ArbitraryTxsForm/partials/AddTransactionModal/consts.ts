@@ -28,7 +28,7 @@ const isValidAbi = (val: string) => {
   try {
     const parsedAbi = JSON.parse(val);
     // eslint-disable-next-line no-new
-    new Interface(parsedAbi); // This line will throw an error if Abi is not valid
+    new Interface(parsedAbi); // This line will throw an error if the ABI is not valid
     return true;
   } catch (error) {
     return false;
