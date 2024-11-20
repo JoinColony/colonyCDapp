@@ -6,7 +6,7 @@ const motionStatesMessageDescriptors = {
       ${MotionState.Staking} {Staking}
       ${MotionState.Voting} {Voting}
       ${MotionState.Reveal} {Reveal}
-      ${MotionState.Opposed} {Objected}
+      ${MotionState.Opposed} {Opposed}
       ${MotionState.Motion} {Motion}
       ${MotionState.Failed} {Failed}
       ${MotionState.Finalizable} {Finalizable}
