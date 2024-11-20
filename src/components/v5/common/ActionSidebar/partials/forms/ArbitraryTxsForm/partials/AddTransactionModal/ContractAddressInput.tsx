@@ -18,19 +18,19 @@ export const ContractAddressInput: FC<ContractAddressInputProps> = ({
   setContractAbiLoading,
   contractAbiLoading,
 }) => {
-  const { watch, setError, setValue, clearErrors, trigger } = useFormContext();
-
-  const contractAddressField = watch('contractAddress');
+  const { watch, setValue, trigger } = useFormContext();
 
   const [serverError, setServerError] = useState('');
   const networkInfo = useGetCurrentNetwork();
 
   useEffect(() => {
-    if (!isAddress(contractAddressField)) {
-      return;
-    }
-
-    getABIFromContractAddress(contractAddressField);
+    const { unsubscribe } = watch(
+      ({ contractAddress: contractAddressField }, { name }) => {
+        if (name === 'contractAddress' && isAddress(contractAddressField)) {
+          getABIFromContractAddress(contractAddressField);
+        }
+      },
+    );
 
     async function getABIFromContractAddress(contractAddress: string) {
       if (!networkInfo?.chainId) {
@@ -47,7 +47,7 @@ export const ContractAddressInput: FC<ContractAddressInputProps> = ({
         if (response.status === '1') {
           setServerError('');
           setValue('jsonAbi', response.result);
-          trigger('jsonAbi'); // trigger validation to clear previous errors
+          trigger('jsonAbi'); // Trigger validation to clear previous errors
         } else {
           setServerError(
             response?.result ?? formatText({ id: 'error.message' }),
@@ -60,15 +60,9 @@ export const ContractAddressInput: FC<ContractAddressInputProps> = ({
         console.log(e);
       }
     }
-  }, [
-    contractAddressField,
-    setError,
-    setValue,
-    clearErrors,
-    trigger,
-    setContractAbiLoading,
-    networkInfo,
-  ]);
+
+    return () => unsubscribe();
+  }, [watch, networkInfo?.chainId, setContractAbiLoading, setValue, trigger]);
 
   return (
     <div className="relative">

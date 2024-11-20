@@ -36,6 +36,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const openTransactionModal = () => {
     setIsModalOpen(true);
   };
+  const closeTransactionModal = () => {
+    setIsModalOpen(false);
+    setIsCancelModalOpen(false);
+  };
   const columns = useArbitraryTxsTableColumns({ openTransactionModal });
   const data: AddTransactionTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
@@ -79,11 +83,12 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
               setIsCancelModalOpen(true);
             }}
             isOpen={isModalOpen}
-            onSubmit={({ jsonAbi, contractAddress, ...rest }) => {
+            onSubmit={({ jsonAbi, contractAddress, method, args = [] }) => {
               fieldArrayMethods.append({
                 jsonAbi,
                 contractAddress,
-                ...rest,
+                method,
+                args,
               });
               setIsModalOpen(false);
             }}
@@ -92,15 +97,12 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             title={formatText(MSG.contractModalCancelTitle)}
             subTitle={formatText(MSG.contractModalCancelSubtitle)}
             isOpen={isCancelModalOpen}
-            className="md:mt-[10rem]"
+            className="md:mt-[3rem]"
             onClose={() => {
               setIsCancelModalOpen(false);
             }}
             isFullOnMobile={false}
-            onConfirm={() => {
-              setIsCancelModalOpen(false);
-              setIsModalOpen(false);
-            }}
+            onConfirm={closeTransactionModal}
             icon={WarningCircle}
             buttonMode="primarySolid"
             confirmMessage={formatText(MSG.contractModalCancelButtonCancel)}

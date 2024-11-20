@@ -13,20 +13,23 @@ interface JsonAbiInputProps {
   loading?: boolean;
 }
 export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ loading }) => {
-  const { watch, setValue, clearErrors, trigger, getFieldState } =
-    useFormContext();
+  const { watch, setValue, clearErrors, trigger } = useFormContext();
   const jsonAbiField = watch('jsonAbi');
   const [isFormatted, setIsFormatted] = useState(false);
   const [hideEditWarning, setHideEditWarning] = useState(false);
-  const contractAddressField = watch('contractAddress');
-  const { error: jsonAbiFieldError } = getFieldState('jsonAbi');
 
   useEffect(() => {
-    // reset jsonAbi state if contractAddress updated
-    // jsonAbi will be filled with data after successful ABI response
-    setValue('jsonAbi', '');
-    setIsFormatted(false);
-  }, [contractAddressField, setValue]);
+    const { unsubscribe } = watch((_, { name }) => {
+      if (name === 'contractAddress') {
+        // Reset jsonAbi state if contractAddress is updated
+        // jsonAbi will be filled with data after a successful ABI response
+        setValue('jsonAbi', '');
+        setIsFormatted(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [setValue, watch]);
 
   useEffect(() => {
     if (!jsonAbiField) {
@@ -82,7 +85,7 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ loading }) => {
         mode="link"
         type="button"
         onClick={toggleJsonFormat}
-        disabled={!jsonAbiField || !!jsonAbiFieldError}
+        disabled={!jsonAbiField}
       >
         {isFormatted
           ? formatText(MSG.jsonAbiUnformatLink)
