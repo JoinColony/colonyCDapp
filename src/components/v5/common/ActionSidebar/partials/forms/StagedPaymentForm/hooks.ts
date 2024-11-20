@@ -164,8 +164,11 @@ export const useStagePayment = (
   const validationSchema = useValidationSchema();
   const { setExpectedExpenditureType } = usePaymentBuilderContext();
 
-  const { renderStakedExpenditureModal, showStakedExpenditureModal } =
-    useShowCreateStakedExpenditureModal(Action.StagedPayment);
+  const {
+    renderStakedExpenditureModal,
+    showStakedExpenditureModal,
+    shouldShowStakedExpenditureModal,
+  } = useShowCreateStakedExpenditureModal(Action.StagedPayment);
 
   useActionFormBaseHook({
     validationSchema,
@@ -194,7 +197,7 @@ export const useStagePayment = (
       return getStagedPaymentPayload(colony, payload, networkInverseFee);
     }),
     primaryButton: {
-      type: 'button',
+      type: shouldShowStakedExpenditureModal ? 'button' : 'submit',
       onClick: showStakedExpenditureModal,
     },
   });

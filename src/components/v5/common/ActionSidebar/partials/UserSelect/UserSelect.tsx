@@ -121,8 +121,8 @@ const UserSelect: FC<UserSelectProps> = ({
                 />
                 <p
                   className={clsx('ml-2 truncate text-md font-medium', {
-                    'text-warning-400': !selectedUser?.isVerified,
-                    'text-gray-900': selectedUser?.isVerified,
+                    'text-warning-400': !selectedUser?.isVerified && !disabled,
+                    'text-gray-900': selectedUser?.isVerified && !disabled,
                   })}
                 >
                   {formatText(userName || '')}
