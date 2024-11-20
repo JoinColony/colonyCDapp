@@ -15,9 +15,11 @@ const NotificationBanner: FC<NotificationBannerProps> = ({
   descriptionClassName,
   callToActionClassName,
   contentClassName,
+  testId,
 }) => {
   return (
     <div
+      data-testid={testId}
       className={clsx(
         'flex flex-row items-start gap-2 rounded-lg border px-[1.125rem] py-3 text-gray-900 @container/notificationBanner',
         {

@@ -86,6 +86,7 @@ const ColonyPageSidebar = () => {
 
   return (
     <Sidebar
+      testId="colony-page-sidebar"
       className={colonyPageSidebarDesktopClass}
       showColonySwitcher={!isTablet}
       headerClassName="mb-[1.563rem]"

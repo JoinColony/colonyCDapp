@@ -4,4 +4,5 @@ export interface MenuContainerProps {
   rounded?: 's' | 'm';
   withPadding?: boolean;
   checked?: boolean;
+  testId?: string;
 }
