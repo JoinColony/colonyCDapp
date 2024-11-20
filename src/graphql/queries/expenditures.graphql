@@ -14,3 +14,9 @@ query GetExpenditure($expenditureId: ID!) {
     ...Expenditure
   }
 }
+
+subscription OnExpenditureUpdate {
+  onUpdateExpenditure {
+    ...Expenditure
+  }
+}

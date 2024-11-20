@@ -18,11 +18,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
-import {
-  CacheQueryKeys,
-  getSafePollingInterval,
-  removeCacheEntry,
-} from '~utils/queries.ts';
+import { CacheQueryKeys, removeCacheEntry } from '~utils/queries.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
@@ -81,13 +77,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const { expenditureId } = action;
 
-  const {
-    expenditure,
-    loadingExpenditure,
-    refetchExpenditure,
-    startPolling,
-    stopPolling,
-  } = useGetExpenditureData(expenditureId, { pollUntilUnmount: true });
+  const { expenditure, loadingExpenditure, refetchExpenditure } =
+    useGetExpenditureData(expenditureId);
 
   const {
     fundingActions,
@@ -114,12 +105,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     useState(0);
   const [previousReleaseActionsCount, setPreviousReleaseActionsCount] =
     useState(0);
-
-  useEffect(() => {
-    startPolling(getSafePollingInterval());
-
-    return () => stopPolling();
-  }, [startPolling, stopPolling]);
 
   useEffect(() => {
     if (expenditureStep === ExpenditureStep.Release) {
