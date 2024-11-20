@@ -7,6 +7,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile, useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
 import Table from '~v5/common/Table/Table.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -30,6 +31,8 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
   const { fields, append, insert, remove } = useFieldArray({
     name,
   });
+
+  useBuildTokenSumsMap();
 
   const data: StagedPaymentRecipientsTableModel[] = fields.map(({ id }) => ({
     key: id,
