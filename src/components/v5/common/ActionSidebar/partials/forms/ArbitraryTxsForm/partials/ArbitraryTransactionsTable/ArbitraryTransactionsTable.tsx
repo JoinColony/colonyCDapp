@@ -32,7 +32,9 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const value = useWatch({ name });
   const { readonly } = useAdditionalFormOptionsContext();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-
+  const [defaultValues, setDefaultValues] = useState(
+    {} as AddTransactionTableModel,
+  );
   const openTransactionModal = () => {
     setIsModalOpen(true);
   };
@@ -43,6 +45,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
     openTransactionModal,
     isError: !!fieldState.error,
   });
+  const closeTransactionModal = () => {
+    setDefaultValues({} as AddTransactionTableModel);
+    setIsModalOpen(false);
+  };
   const data: AddTransactionTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
       key: id,
@@ -50,11 +56,20 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
     }),
   );
 
-  const getMenuProps = ({ index }) =>
+  const getMenuProps = ({ index, original: rowValues }) =>
     !readonly
       ? {
           cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
           items: [
+            {
+              key: 'edit',
+              onClick: () => {
+                setDefaultValues(rowValues as AddTransactionTableModel);
+                setIsModalOpen(true);
+              },
+              label: formatText(MSG.contractTableEditRow),
+              icon: CopySimple,
+            },
             {
               key: 'duplicate',
               onClick: () =>
@@ -110,14 +125,38 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
               setIsModalOpen(false);
             }}
             isOpen={isModalOpen}
-            onSubmit={({ jsonAbi, contractAddress, method, args = {} }) => {
-              fieldArrayMethods.append({
+            defaultValues={defaultValues}
+            onSubmit={({
+              jsonAbi,
+              contractAddress,
+              method,
+              args = {},
+              key,
+            }) => {
+              const newItem = {
                 jsonAbi,
                 contractAddress,
                 method,
                 args,
-              });
-              setIsModalOpen(false);
+              };
+
+              if (key) {
+                const index = fieldArrayMethods.fields.findIndex(
+                  (field) => field.id === key,
+                );
+                if (index !== -1) {
+                  fieldArrayMethods.update(index, newItem);
+                } else {
+                  console.warn(
+                    `Item with key ${key} not found. Adding as new item.`,
+                  );
+                  fieldArrayMethods.append(newItem);
+                }
+              } else {
+                fieldArrayMethods.append(newItem);
+              }
+
+              closeTransactionModal();
             }}
           />
         </>
