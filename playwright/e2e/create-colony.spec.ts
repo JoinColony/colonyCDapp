@@ -319,7 +319,7 @@ test.describe('Create Colony flow', () => {
 
       await expect(page.getByLabel(/Create a new token/i)).not.toBeChecked();
 
-      await test.step('Should not accept incorrectly formated token address', async () => {
+      await test.step('Should not accept incorrectly formatted token address', async () => {
         await fillInputWithDelay({
           page,
           label: /existing token address/i,
@@ -332,7 +332,7 @@ test.describe('Create Colony flow', () => {
         ).toBeDisabled();
       });
 
-      await test.step('Should not accept correctly formated, but a User address', async () => {
+      await test.step('Should not accept correctly formatted, but a User address', async () => {
         const userAddress = '0x3a965407cEd5E62C5aD71dE491Ce7B23DA5331A4';
 
         await page.getByLabel(/Existing token address/i).clear();
@@ -384,7 +384,7 @@ test.describe('Create Colony flow', () => {
         ).toBeDisabled();
       });
 
-      await test.step('Should not accept correctly formated, but a colony address', async () => {
+      await test.step('Should not accept correctly formatted, but a colony address', async () => {
         const colonyAddress = await getColonyAddressByName();
 
         await page.getByLabel(/existing token address/i).clear();
@@ -411,7 +411,7 @@ test.describe('Create Colony flow', () => {
         ).toBeDisabled();
       });
 
-      await test.step('Should not accept correctly formated, but not existing token address', async () => {
+      await test.step('Should not accept correctly formatted, but not existing token address', async () => {
         // This mocked address passes client side validation but fails on BE side
         const notExistingToken = '0x6b175474e89094c44da98b954eedeac495271d0f';
 
@@ -439,7 +439,7 @@ test.describe('Create Colony flow', () => {
         ).toBeDisabled();
       });
 
-      await test.step('Should accept correctly formated, and existing token address', async () => {
+      await test.step('Should accept correctly formatted, and existing token address', async () => {
         const existingToken = await fetchFirstValidTokenAddress();
 
         await page.getByLabel(/existing token address/i).clear();

@@ -16,7 +16,7 @@ export const acceptCookieConsentBanner = async (page: Page) => {
 const cookieNames = [
   'cookies-analytics',
   'cookies-marketing',
-  'cookies-prefernces',
+  'cookies-preferences',
   'cookies-functional',
 ];
 
@@ -39,7 +39,7 @@ export const fillInputWithDelay = async ({
   label,
   selector,
   value,
-  timeout = 500,
+  // timeout = 500,
 }: {
   page: Page;
   label?: string | RegExp;
@@ -51,8 +51,8 @@ export const fillInputWithDelay = async ({
     throw new Error('You must provide either a label or a selector');
   }
   const input = label ? page.getByLabel(label) : page.locator(selector!);
-  // eslint-disable-next-line playwright/no-wait-for-timeout
-  await page.waitForTimeout(timeout);
+
+  // await page.waitForTimeout(timeout);
   await input.fill(value);
   await expect(input).toHaveValue(value);
 };
@@ -64,6 +64,8 @@ export const generateRandomString = () => {
 export const generateRandomEmail = () => {
   return `${generateRandomString()}@example.com`;
 };
+
+const customTimeout = parseInt(process.env.E2E_TIMEOUT || '2000', 10); // Allow to run with different timeout, defaults to 2000ms
 
 export const selectWallet = async (
   page: Page,
@@ -86,4 +88,11 @@ export const selectWallet = async (
   if (loadingIndicatorVisible) {
     await loadingIndicator.waitFor({ state: 'hidden' });
   }
+  // Using waitForTimeout as a temporary workaround,
+  // to ensure all input fields and buttons are fully interactive.
+  // Otherwise tests might randomply fail
+  // due to elements not being fully ready for actions.
+  // Look for a better signal to wait for.
+  // eslint-disable-next-line playwright/no-wait-for-timeout
+  await page.waitForTimeout(customTimeout);
 };

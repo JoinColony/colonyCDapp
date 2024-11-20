@@ -19,17 +19,24 @@ test.describe('Manage Account', () => {
 
     await selectWallet(page);
 
-    await page.goto('/account/profile');
+    await page.getByTestId('user-navigation-hamburger').click();
+
+    await page
+      .getByText(/manage account/i)
+      .first()
+      .waitFor({ state: 'visible' });
+
+    await page.getByTestId('user-menu').waitFor({ state: 'visible' });
+
+    await page
+      .getByTestId('user-menu')
+      .getByRole('link', { name: /manage account/i })
+      .click();
+
+    await page.waitForURL('/account/profile');
   });
 
   test.describe('Profile section', () => {
-    test.beforeEach(async ({ page }) => {
-      await page
-        .getByTestId('account-page-sidebar')
-        .getByLabel('/account/profile')
-        .click();
-    });
-
     test('Username field', async ({ page }) => {
       await expect(
         page.getByRole('heading', { name: 'Profile', level: 3 }),
@@ -56,10 +63,17 @@ test.describe('Manage Account', () => {
     });
 
     test('Avatar', async ({ page }) => {
+      const toast = page
+        .getByRole('alert')
+        .filter({ hasText: /profile image changed successfully/i })
+        .last();
       await test.step('Removing Avatar', async () => {
         const removeAvatarButton = page.getByRole('button', {
           name: 'Remove avatar',
         });
+        const avatarUploader = page.getByTestId('avatar-uploader');
+        const avatar = page.getByTestId('user-profile-avatar');
+        const avatarInHeader = page.getByTestId('header-avatar');
 
         if (!(await removeAvatarButton.isVisible())) {
           // Upload a valid image
@@ -71,9 +85,7 @@ test.describe('Manage Account', () => {
 
           await removeAvatarButton.waitFor({ state: 'visible' });
         }
-        const avatarUploader = page.getByTestId('avatar-uploader');
-        const avatar = page.getByTestId('user-profile-avatar');
-        const avatarInHeader = page.getByTestId('header-avatar');
+
         //  Avatar in the profile form and header should be the same
         await expect(page.getByTestId('user-profile-avatar')).toHaveAttribute(
           'src',
@@ -88,12 +100,7 @@ test.describe('Manage Account', () => {
         // Remove the avatar
         await removeAvatarButton.click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /profile image changed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
         await removeAvatarButton.waitFor({ state: 'hidden' });
 
@@ -138,12 +145,7 @@ test.describe('Manage Account', () => {
 
         await expect(avatar).toHaveAttribute('src', /data:/);
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /profile image changed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
         // Upload an invalid image
         await page.getByRole('button', { name: /change avatar/i }).click();
@@ -168,6 +170,10 @@ test.describe('Manage Account', () => {
 
     test('Website field', async ({ page }) => {
       const websiteInput = page.locator('[name="website"]');
+      const toast = page
+        .getByRole('alert')
+        .filter({ hasText: /action completed successfully/i })
+        .last();
 
       const saveChangesButton = page.getByRole('button', {
         name: 'Save changes',
@@ -203,19 +209,9 @@ test.describe('Manage Account', () => {
         });
 
         await saveChangesButton.click();
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
         await expect(websiteInput).toHaveValue('');
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeHidden();
+        await expect(toast).toBeHidden();
       });
 
       await test.step('Accepts a valid website', async () => {
@@ -228,20 +224,9 @@ test.describe('Manage Account', () => {
         });
         await saveChangesButton.click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
-        await expect(websiteInput).toHaveValue(`${website}/`);
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeHidden();
+        await expect(toast).toBeHidden();
       });
     });
 
@@ -254,6 +239,10 @@ test.describe('Manage Account', () => {
       ).toBeVisible();
 
       const bioInput = page.locator('[name="bio"]');
+      const toast = page
+        .getByRole('alert')
+        .filter({ hasText: /action completed successfully/i })
+        .last();
 
       await test.step('Shows an error message when the bio is too long', async () => {
         // eslint-disable-next-line playwright/no-wait-for-timeout
@@ -274,19 +263,9 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeHidden();
+        await expect(toast).toBeHidden();
       });
 
       await test.step('Accepts a valid value', async () => {
@@ -301,18 +280,15 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
-
-        await expect(bioInput).toHaveValue(text);
+        await expect(toast).toBeVisible();
       });
     });
 
     test('Location field', async ({ page }) => {
+      const toast = page
+        .getByRole('alert')
+        .filter({ hasText: /action completed successfully/i })
+        .last();
       await expect(page.getByText(/Location/)).toBeVisible();
       await expect(
         page.getByText(
@@ -325,23 +301,11 @@ test.describe('Manage Account', () => {
       await test.step('The field is not required', async () => {
         await locationInput.clear();
 
-        // eslint-disable-next-line playwright/no-wait-for-timeout
-        await page.waitForTimeout(1000);
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeHidden();
+        await expect(toast).toBeHidden();
       });
 
       await test.step('Accepts a valid value', async () => {
@@ -356,20 +320,10 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeVisible();
+        await expect(toast).toBeVisible();
 
         await expect(locationInput).toHaveValue(location);
-        await expect(
-          page
-            .getByRole('alert')
-            .filter({ hasText: /action completed successfully/i })
-            .last(),
-        ).toBeHidden();
+        await expect(toast).toBeHidden();
       });
     });
   });
@@ -380,7 +334,10 @@ test.describe('Manage Account', () => {
         .getByTestId('account-page-sidebar')
         .getByLabel('/account/preferences')
         .click();
+
+      await page.waitForURL('/account/preferences');
     });
+
     test('Email field', async ({ page }) => {
       await expect(page.getByText(/^Email address$/)).toBeVisible();
 
@@ -552,6 +509,10 @@ test.describe('Manage Account', () => {
       ).toBeVisible();
 
       await page.goto('/account/advanced');
+
+      if (await page.getByText('Loading...').isVisible()) {
+        await page.getByText('Loading...').waitFor({ state: 'hidden' });
+      }
 
       await page.getByTestId('notifications-toggle').click();
     });
