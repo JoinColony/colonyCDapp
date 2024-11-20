@@ -162,7 +162,10 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           })}
         />
         {selectedAction && (
-          <div className="text-md text-gray-900">
+          <div
+            className="text-md text-gray-900"
+            data-testid="action-sidebar-description"
+          >
             <ActionSidebarDescription />
           </div>
         )}
@@ -194,7 +197,11 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         )}
         {customError && (
           <div className="mt-7">
-            <NotificationBanner icon={WarningCircle} status="error">
+            <NotificationBanner
+              icon={WarningCircle}
+              status="error"
+              testId="action-sidebar-error"
+            >
               {customError.message?.toString()}
             </NotificationBanner>
           </div>
@@ -202,6 +209,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {flatFormErrors.length ? (
           <div className="mt-7">
             <NotificationBanner
+              testId="action-sidebar-error"
               status="error"
               icon={WarningCircle}
               description={
@@ -265,6 +273,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
     <div
       className="flex w-full flex-grow overflow-hidden"
       data-tour={TourTargets.ActionsPanel}
+      data-testid="action-sidebar-content"
     >
       <div className="w-full flex-grow pb-6 pt-8">
         <ActionForm
@@ -310,6 +319,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
 
             actionFormProps?.onSuccess?.();
           }}
+          testId="action-form"
         >
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}

@@ -41,6 +41,7 @@ const UserInfo: FC<UserInfoProps> = ({
 
   return (
     <div
+      data-testid="user-info"
       className={clsx('flex flex-col', {
         'sm:min-w-[17rem]': !isTopContributorType,
         'sm:min-w-[20rem]': isTopContributorType,

@@ -11,7 +11,10 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
   children,
 }) =>
   isLoading ? (
-    <span className={clsx('block overflow-hidden skeleton', className)} />
+    <span
+      className={clsx('block overflow-hidden skeleton', className)}
+      data-testid="loading-skeleton"
+    />
   ) : (
     <>{children}</>
   );
