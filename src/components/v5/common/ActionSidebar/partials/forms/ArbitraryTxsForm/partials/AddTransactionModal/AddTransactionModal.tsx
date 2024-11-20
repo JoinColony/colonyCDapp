@@ -19,6 +19,7 @@ import useCloseModalClick from './useCloseModalClick.ts';
 const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
   onSubmit,
   onClose,
+  defaultValues,
   ...rest
 }) => {
   const {
@@ -39,6 +40,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
     >
       <Form<AddTransactionTableModel>
         onSubmit={onSubmit}
+        defaultValues={defaultValues}
         className="flex h-full w-full flex-grow flex-col"
         innerRef={formRef}
       >
