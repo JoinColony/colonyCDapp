@@ -29,7 +29,9 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
   const isExpandButtonVisible = !isExpanded && isDescriptionClamped;
 
   const onClickText = () => {
-    if (!isExpanded) setIsExpanded(true);
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
   };
 
   return (
