@@ -1,5 +1,4 @@
 import { SpinnerGap } from '@phosphor-icons/react';
-import { BigNumber } from 'ethers';
 import React, { useState, type FC, useEffect, useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
@@ -7,7 +6,6 @@ import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import {
-  type ExpenditurePayout,
   ExpenditureStatus,
   ExpenditureType,
   useGetColonyExpendituresQuery,
@@ -101,73 +99,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     colony,
     expenditure?.slots?.[0].payouts?.[0].tokenAddress ?? '',
   );
-
-  const data = useMemo(() => {
-    const populatedItems = expenditure?.slots.flatMap((item) => {
-      if (!item.payouts) {
-        return {
-          amount: '0',
-          tokenAddress: '',
-        };
-      }
-      return item.payouts.map((payout) => {
-        return {
-          amount: payout.amount || '0',
-          tokenAddress: payout.tokenAddress || '',
-        };
-      });
-    });
-
-    return populatedItems;
-  }, [expenditure?.slots]);
-
-  const sortedTokens =
-    useMemo(() => {
-      const summedTokens = data?.reduce<ExpenditurePayout[]>((result, item) => {
-        if (!item) {
-          return result;
-        }
-
-        const { amount = '0', tokenAddress } = item;
-
-        if (!tokenAddress) {
-          return result;
-        }
-
-        if (!tokenData) {
-          return result;
-        }
-
-        const existingEntryIndex = result.findIndex(
-          (entry) => entry.tokenAddress === tokenAddress,
-        );
-
-        const tokenAmount = amount;
-
-        if (existingEntryIndex < 0) {
-          return [
-            ...result,
-            {
-              tokenAddress,
-              isClaimed: false,
-              amount: tokenAmount,
-            },
-          ];
-        }
-
-        return [
-          ...result.slice(0, existingEntryIndex),
-          {
-            ...result[existingEntryIndex],
-            amount: BigNumber.from(result[existingEntryIndex].amount)
-              .add(BigNumber.from(tokenAmount || '0'))
-              .toString(),
-          },
-          ...result.slice(existingEntryIndex + 1),
-        ];
-      }, []);
-      return summedTokens;
-    }, [data, tokenData]) || [];
 
   const {
     fundingActions,
@@ -461,39 +392,45 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                           id: 'expenditure.reviewStage.confirmDetails.title',
                         })}
                       </h4>
-                      <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
-                        <dt className="text-gray-600">
-                          {formatText({
-                            id: 'expenditure.reviewStage.confirmDetails.creator',
-                          })}
-                        </dt>
-                        <dd>
-                          <div className="flex w-full items-center">
-                            <Avatar
-                              address={initiatorUser?.walletAddress ?? ''}
-                              size={20}
-                              src={initiatorUser?.profile?.avatar ?? ''}
-                            />
-                            <p className="ml-2.5">
-                              {initiatorUser?.profile?.displayName}
-                            </p>
+                      {isStaked ? (
+                        <>
+                          <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                            <dt className="text-gray-600">
+                              {formatText({
+                                id: 'expenditure.reviewStage.confirmDetails.creator',
+                              })}
+                            </dt>
+                            <dd>
+                              <div className="flex w-full items-center">
+                                <Avatar
+                                  address={initiatorUser?.walletAddress ?? ''}
+                                  size={20}
+                                  src={initiatorUser?.profile?.avatar ?? ''}
+                                />
+                                <p className="ml-2.5">
+                                  {initiatorUser?.profile?.displayName}
+                                </p>
+                              </div>
+                            </dd>
                           </div>
-                        </dd>
-                      </div>
-                      <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
-                        <dt className="text-gray-600">
-                          {formatText({
-                            id: 'expenditure.reviewStage.confirmDetails.stakeAmount',
-                          })}
-                        </dt>
-                        <dd>
-                          <Numeral
-                            value={sortedTokens[0].amount}
-                            decimals={tokenData?.decimals}
-                          />{' '}
-                          {tokenData?.symbol}
-                        </dd>
-                      </div>
+                          <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                            <dt className="text-gray-600">
+                              {formatText({
+                                id: 'expenditure.reviewStage.confirmDetails.stakeAmount',
+                              })}
+                            </dt>
+                            <dd>
+                              <Numeral
+                                value={stakeAmount}
+                                decimals={tokenData?.decimals}
+                              />{' '}
+                              {tokenData?.symbol}
+                            </dd>
+                          </div>
+                        </>
+                      ) : (
+                        <div /> // implement designs for mermissions
+                      )}
                     </div>
                   ) : (
                     <ActionButton
