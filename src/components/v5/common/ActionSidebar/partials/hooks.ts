@@ -74,19 +74,40 @@ export const useSubmitButtonDisabled = () => {
 };
 
 export const useIsFieldDisabled = () => {
-  const { extensionData, loading } = useExtensionData(
-    Extension.VotingReputation,
-  );
+  const {
+    extensionData: votingReputationExtensionData,
+    loading: votingReputationLoading,
+  } = useExtensionData(Extension.VotingReputation);
+
+  const {
+    extensionData: stagedExpenditureExtensionData,
+    loading: stagedExpenditureLoading,
+  } = useExtensionData(Extension.StagedExpenditure);
+
   const selectedAction = useActiveActionType();
-  const isExtensionEnabled =
-    extensionData &&
-    isInstalledExtensionData(extensionData) &&
-    extensionData.isEnabled;
+
+  const isVotingReputationExtensionEnabled =
+    votingReputationExtensionData &&
+    isInstalledExtensionData(votingReputationExtensionData) &&
+    votingReputationExtensionData.isEnabled;
 
   if (
     selectedAction === Action.CreateDecision &&
-    !isExtensionEnabled &&
-    !loading
+    !isVotingReputationExtensionEnabled &&
+    !votingReputationLoading
+  ) {
+    return true;
+  }
+
+  const isStagedExpenditureExtensionEnabled =
+    stagedExpenditureExtensionData &&
+    isInstalledExtensionData(stagedExpenditureExtensionData) &&
+    stagedExpenditureExtensionData.isEnabled;
+
+  if (
+    selectedAction === Action.StagedPayment &&
+    !isStagedExpenditureExtensionEnabled &&
+    !stagedExpenditureLoading
   ) {
     return true;
   }

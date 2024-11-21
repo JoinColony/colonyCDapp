@@ -8,6 +8,7 @@ import { useMobile, useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
+import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import Table from '~v5/common/Table/Table.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -21,6 +22,7 @@ import {
 const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
   name,
 }) => {
+  const isFieldDisabled = useIsFieldDisabled();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const {
     colony: { nativeToken },
@@ -71,7 +73,7 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.stages' })}
       </h5>
-      {!!data.length && !hasNoDecisionMethods && (
+      {!!data.length && !hasNoDecisionMethods && !isFieldDisabled && (
         <Table<StagedPaymentRecipientsTableModel>
           tableClassName={clsx(
             '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
@@ -111,7 +113,9 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
               tokenAddress: nativeToken?.tokenAddress || '',
             });
           }}
-          disabled={hasNoDecisionMethods || data.length === 400}
+          disabled={
+            hasNoDecisionMethods || data.length === 400 || isFieldDisabled
+          }
         >
           {formatText({ id: 'button.addMilestone' })}
         </Button>

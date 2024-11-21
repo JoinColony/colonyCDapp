@@ -12,6 +12,7 @@ import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/
 import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
+import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
@@ -26,6 +27,8 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const { renderStakedExpenditureModal } = useStagePayment(getFormOptions);
+
+  const isFieldDisabled = useIsFieldDisabled();
 
   const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
     DecisionMethod.MultiSig,
@@ -45,9 +48,12 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.fundFrom' })}
-        isDisabled={hasNoDecisionMethods}
+        isDisabled={hasNoDecisionMethods || isFieldDisabled}
       >
-        <TeamsSelect name={FROM_FIELD_NAME} disabled={hasNoDecisionMethods} />
+        <TeamsSelect
+          name={FROM_FIELD_NAME}
+          disabled={hasNoDecisionMethods || isFieldDisabled}
+        />
       </ActionFormRow>
       <ActionFormRow
         icon={UserFocus}
@@ -60,12 +66,19 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           },
         }}
         title={formatText({ id: 'actionSidebar.recipient' })}
+        isDisabled={hasNoDecisionMethods || isFieldDisabled}
       >
-        <UserSelect name={RECIPIENT_FIELD_NAME} />
+        <UserSelect
+          name={RECIPIENT_FIELD_NAME}
+          disabled={hasNoDecisionMethods || isFieldDisabled}
+        />
       </ActionFormRow>
-      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
-      <CreatedIn />
-      <Description />
+      <DecisionMethodField
+        filterOptionsFn={decisionMethodFilterFn}
+        disabled={isFieldDisabled}
+      />
+      <CreatedIn disabled={isFieldDisabled} />
+      <Description disabled={isFieldDisabled} />
       <StagedPaymentRecipientsField name="stages" />
       {renderStakedExpenditureModal()}
     </>

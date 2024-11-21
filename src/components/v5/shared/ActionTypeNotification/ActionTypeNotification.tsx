@@ -28,10 +28,15 @@ const MSG = defineMessages({
     defaultMessage:
       'This will disable the Colony and prevent any further activity until resolved.',
   },
-  createDecisionError: {
-    id: `${displayName}.createDecisionError`,
+  votingReputationExtensionNotEnabledError: {
+    id: `${displayName}.votingReputationExtensionNotEnabledError`,
     defaultMessage:
       'Agreements requires the Reputation weighted extension to be enabled.',
+  },
+  stagedExpenditureExtensionNotEnabledError: {
+    id: `${displayName}.stagedExpenditureExtensionNotEnabledError`,
+    defaultMessage:
+      'Staged payments requires the Staged payments extension to be enabled.',
   },
   learnMore: {
     id: `${displayName}.learnMore`,
@@ -70,7 +75,11 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return formatText(MSG.enterRecoveryModeError);
       case Action.CreateDecision:
         return isFieldDisabled
-          ? formatText(MSG.createDecisionError)
+          ? formatText(MSG.votingReputationExtensionNotEnabledError)
+          : undefined;
+      case Action.StagedPayment:
+        return isFieldDisabled
+          ? formatText(MSG.stagedExpenditureExtensionNotEnabledError)
           : undefined;
       default:
         return undefined;
