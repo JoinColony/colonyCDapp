@@ -64,6 +64,7 @@ import {
   COLONY_MULTISIG_ROUTE,
   COLONY_AGREEMENTS_ROUTE,
   USER_CRYPTO_TO_FIAT_ROUTE,
+  RESERVED_ROUTES,
   // ACTIONS_PAGE_ROUTE,
   // UNWRAP_TOKEN_ROUTE,
   // CLAIM_TOKEN_ROUTE,
@@ -118,6 +119,11 @@ const Routes = () => {
           path={CREATE_COLONY_ROUTE}
           element={<OnboardingPage flow={Flow.Colony} />}
         />
+
+        {/* If a reserved route has not been used by this point, redirect to NotFoundRoute */}
+        {[...RESERVED_ROUTES].map((route) => (
+          <Route path={route} element={<NotFoundRoute />} />
+        ))}
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
