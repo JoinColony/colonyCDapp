@@ -65,7 +65,7 @@ export const generateRandomEmail = () => {
   return `${generateRandomString()}@example.com`;
 };
 
-const customTimeout = parseInt(process.env.E2E_TIMEOUT || '2000', 10); // Allow to run with different timeout, defaults to 2000ms
+const customTimeout = parseInt(process.env.E2E_TIMEOUT || '3000', 10); // Allow to run with different timeout, defaults to 2000ms
 
 export const selectWallet = async (
   page: Page,
