@@ -87,7 +87,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     refetchExpenditure,
     startPolling,
     stopPolling,
-  } = useGetExpenditureData(expenditureId);
+  } = useGetExpenditureData(expenditureId, { pollUntilUnmount: true });
 
   const {
     fundingActions,
@@ -336,6 +336,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                     mode="primarySolid"
                     className="w-full"
                     isLoading={expectedStepKey === ExpenditureStep.Funding}
+                    isFullSize
                   />
                 }
               />
