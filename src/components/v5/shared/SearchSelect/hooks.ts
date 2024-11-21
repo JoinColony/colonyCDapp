@@ -8,6 +8,7 @@ import { type SearchSelectOptionProps } from './types.ts';
 export const useSearchSelect = (
   items: SearchSelectOptionProps[],
   searchValue: string,
+  shouldReturnAddresses: boolean,
 ) => {
   const searchedOptions = useMemo(
     () =>
@@ -25,27 +26,37 @@ export const useSearchSelect = (
           );
         });
 
-        const options =
-          searchValue &&
-          !filteredOptions.length &&
-          utils.isHexString(searchValue)
-            ? [
-                {
-                  ...item.options[0],
-                  avatar: item.options[0]?.showAvatar ? '' : undefined,
-                  value: searchValue,
-                  label: searchValue,
-                  walletAddress: searchValue,
-                },
-              ]
-            : filteredOptions;
+        const options = (() => {
+          if (filteredOptions.length > 0) {
+            return filteredOptions;
+          }
+
+          if (
+            shouldReturnAddresses &&
+            searchValue &&
+            utils.isHexString(searchValue)
+          ) {
+            // Return search value as an option
+            return [
+              {
+                ...item.options[0],
+                avatar: item.options[0]?.showAvatar ? '' : undefined,
+                value: searchValue,
+                label: searchValue,
+                walletAddress: searchValue,
+              },
+            ];
+          }
+
+          return [];
+        })();
 
         return {
           ...item,
           options,
         };
       }),
-    [items, searchValue],
+    [items, searchValue, shouldReturnAddresses],
   );
 
   const filteredOptions = useMemo(
