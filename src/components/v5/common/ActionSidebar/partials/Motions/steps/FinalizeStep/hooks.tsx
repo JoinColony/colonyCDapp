@@ -220,7 +220,14 @@ export const useClaimConfig = (
   );
 
   const getDescriptionItems = (): DescriptionListItem[] => {
-    if (!isMotionFailedNotFinalizable && !isMotionFinalized) {
+    const isMotionAgreement =
+      actionData.type === ColonyActionType.CreateDecisionMotion;
+
+    if (
+      !isMotionFailedNotFinalizable &&
+      !isMotionFinalized &&
+      !isMotionAgreement
+    ) {
       return [];
     }
 

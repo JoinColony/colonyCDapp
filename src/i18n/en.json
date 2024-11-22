@@ -1459,6 +1459,8 @@
     "motion.staking.accordion.title.hide": "Hide staking information",
     "motion.finalize.label": "Finalize",
     "motion.finalizeStep.statusText": "Finalize to execute the agreed transactions and return stakes.",
+    "motion.finalizeStep.finalizeAgreement": "Agreement process is complete and stakes have been returned.",
+    "motion.finalizeStep.claimable.finalizeAgreement": "Agreement process is complete, finalize to return stakes.",
     "motion.finalizeStep.claimable.statusText": "Action has passed and has been executed.",
     "motion.finalizeStep.title": "Your overview",
     "motion.finalizeStep.failedNotAchieving.statusText": "Action failed due to not achieving required stake.",
