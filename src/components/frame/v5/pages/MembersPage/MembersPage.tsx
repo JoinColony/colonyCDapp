@@ -171,7 +171,7 @@ const MembersPage: FC = () => {
   if (activeTab === 1) {
     return (
       <>
-        <div className="h-[58px]" />
+        <div className="h-[3.625rem]" />
         {tabs}
       </>
     );

@@ -40,7 +40,7 @@ const MembersInformation = () => {
         />
         <LoadingSkeleton
           isLoading={membersLoading}
-          className="h-4 w-[70px] rounded"
+          className="h-4 w-[4.375rem] rounded"
         >
           <p>
             {/* What the UI calls members, the context calls contributors */}
@@ -55,7 +55,7 @@ const MembersInformation = () => {
       >
         <LoadingSkeleton
           isLoading={membersLoading}
-          className="h-4 w-[70px] rounded"
+          className="h-4 w-[4.375rem] rounded"
         >
           <p>
             {/* What the UI calls followers, the context calls members */}
