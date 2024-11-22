@@ -17,6 +17,7 @@ const {
 
 const {
   graphqlRequest,
+  repMinerRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
   createContributorReputationInDb,
