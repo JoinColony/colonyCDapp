@@ -142,7 +142,7 @@ const getContributorType = (total, idx, createdAt) => {
 const createContributorReputationInDb = async ({
   colonyAddress,
   contributorAddress,
-  nativeDomainId,
+  nativeId,
   reputationPercentage,
   id,
   reputationRaw,
@@ -156,7 +156,7 @@ const createContributorReputationInDb = async ({
         input: {
           colonyAddress,
           contributorAddress,
-          domainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          domainId: getDomainDatabaseId(colonyAddress, nativeId),
           id,
           reputationRaw,
           reputationPercentage,
