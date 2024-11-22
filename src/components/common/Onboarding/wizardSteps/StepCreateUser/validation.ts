@@ -33,7 +33,8 @@ function isValidEmail(email: string) {
 const MSG = defineMessages({
   usernameRequired: {
     id: 'error.usernameRequired',
-    defaultMessage: 'A valid username is required',
+    defaultMessage:
+      'Usernames can contain letters, numbers or dashes and be between 3 and 30 characters.',
   },
   usernameTaken: {
     id: 'error.usernameTaken',
@@ -46,10 +47,6 @@ const MSG = defineMessages({
   emailAlreadyRegistered: {
     id: 'error.emailAlreadyRegistered',
     defaultMessage: 'This email is already associated with a colony username',
-  },
-  usernameLength: {
-    id: 'error.usernameLength',
-    defaultMessage: 'Too many characters',
   },
 });
 
@@ -67,7 +64,8 @@ export const isUsernameTaken = createYupTestFromQuery({
 export const validationSchema = object({
   username: string()
     .required(formatText(MSG.usernameRequired))
-    .max(30, formatText(MSG.usernameLength))
+    .min(3, formatText(MSG.usernameRequired))
+    .max(30, formatText(MSG.usernameRequired))
     .test(
       'isValidUsername',
       formatText(MSG.usernameRequired) as string,
