@@ -40,6 +40,27 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
   }
 };
 
+const repMinerRequest = async (repMinerURL) => {
+  const options = {
+    method: 'GET',
+  };
+
+  let body;
+  let response;
+
+  try {
+    response = await fetch(repMinerURL, options);
+    body = await response.json();
+    return body;
+  } catch (error) {
+    /*
+     * Something went wrong... obviously
+     */
+    console.error(`Reputation Miner Fetch Error: ${errror}`);
+    return null;
+  }
+};
+
 const getDomainDatabaseId = (colonyAddress, nativeDomainId) => {
   return `${colonyAddress}_${nativeDomainId}`;
 };
@@ -307,6 +328,7 @@ const calculatePercentageReputation = (userReputation, totalReputation) => {
 
 module.exports = {
   graphqlRequest,
+  repMinerRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
   updateContributorReputationInDb,
