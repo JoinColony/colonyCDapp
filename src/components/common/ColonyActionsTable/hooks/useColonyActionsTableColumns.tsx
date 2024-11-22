@@ -27,6 +27,7 @@ const useColonyActionsTableColumns = ({
   loadingMotionStates,
   refetchMotionStates,
   showUserAvatar = true,
+  isRecentActivityVariant = false,
 }) => {
   const isMobile = useMobile();
 
@@ -122,6 +123,9 @@ const useColonyActionsTableColumns = ({
           );
         },
         colSpan: (isExpanded) => (isExpanded ? 0 : undefined),
+        cellContentWrapperClassName: isRecentActivityVariant
+          ? 'flex items-end'
+          : '',
       }),
       helper.display({
         id: 'expander',
@@ -145,6 +149,7 @@ const useColonyActionsTableColumns = ({
     ];
   }, [
     isMobile,
+    isRecentActivityVariant,
     loading,
     loadingMotionStates,
     refetchMotionStates,

@@ -54,6 +54,7 @@ export const useActionsTableProps = (
     loadingMotionStates,
     refetchMotionStates,
     showUserAvatar,
+    isRecentActivityVariant,
   });
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
