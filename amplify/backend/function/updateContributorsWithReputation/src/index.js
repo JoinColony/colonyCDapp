@@ -4,6 +4,7 @@ const {
   providers,
   constants: { AddressZero },
   utils: { Logger, getAddress },
+  BigNumber,
 } = require('ethers');
 
 const {
@@ -92,16 +93,27 @@ exports.handler = async (event) => {
       reputationOracleEndpoint,
     });
 
+    // get the current colony from the db, along with it's domain information
+    const { data } =
+      (await graphqlRequest(
+        getColony,
+        { colonyAddress },
+        graphqlURL,
+        apiKey,
+      )) ?? {};
+
+    const colony = data?.getColony ?? {};
+    const domains = colony?.domains?.items ?? [];
+    const rootDomain = domains.find(({ isRoot }) => isRoot);
+
+    // TODO Remove usage of colonyJS
     const colonyClient = await networkClient.getColonyClient(colonyAddress);
-    const { skillId: rootSkillId } = await colonyClient.getDomain(
-      Id.RootDomain,
-    );
 
     let totalRepInColony;
     try {
       ({ reputationAmount: totalRepInColony } =
         await colonyClient.getReputationWithoutProofs(
-          rootSkillId,
+          BigNumber.from(rootDomain.nativeSkillId),
           AddressZero,
         ));
     } catch (e) {
@@ -112,16 +124,7 @@ exports.handler = async (event) => {
 
     console.log({ totalRepInColony: totalRepInColony?.toString() });
 
-    // query all domains
-
-    const { data } =
-      (await graphqlRequest(
-        getColony,
-        { colonyAddress },
-        graphqlURL,
-        apiKey,
-      )) ?? {};
-
+    // query database rep metadata
     const { data: response } =
       (await graphqlRequest(
         getReputationMiningCycleMetadata,
@@ -131,7 +134,7 @@ exports.handler = async (event) => {
       )) ?? {};
 
     const lastUpdatedCache =
-      data?.getColony?.lastUpdatedContributorsWithReputation;
+      colony?.lastUpdatedContributorsWithReputation || null;
 
     const lastReputationMiningCycleCompletion =
       response?.getReputationMiningCycleMetadata?.lastCompletedAt;
@@ -155,13 +158,9 @@ exports.handler = async (event) => {
       return true;
     }
 
-    const allNativeDomainIds =
-      data?.getColony?.domains?.items?.map(({ nativeId }) => nativeId) ?? [];
-
     const promiseResults = await Promise.allSettled(
-      allNativeDomainIds.map(async (nativeDomainId) => {
-        // TODO Fetch skillId from the getColony query
-        const { skillId } = await colonyClient.getDomain(nativeDomainId);
+      domains.map(async ({ nativeId, nativeSkillId, isRoot }) => {
+        const skillId = BigNumber.from(nativeSkillId);
         let addresses;
         let totalRepInDomain;
 
@@ -179,7 +178,7 @@ exports.handler = async (event) => {
 
         // update total rep in domain in db
         await updateReputationInDomain({
-          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          databaseDomainId: getDomainDatabaseId(colonyAddress, nativeId),
           apiKey,
           graphqlURL,
           reputation: totalRepInDomain.toString(),
@@ -189,6 +188,7 @@ exports.handler = async (event) => {
         // For each domain, sort addresses by reputation, get the contributor type, and
         // update the database with the corresponding Contributor entry
 
+        // This will take a long time depending on how many reputation holders there are
         const sortedAddresses = await sortAddressesDescendingByReputation(
           colonyClient,
           skillId,
@@ -198,10 +198,15 @@ exports.handler = async (event) => {
         const totalAddresses = sortedAddresses.length;
 
         console.log({
-          nativeDomainId,
-          nativeSkillId: skillId.toString(),
+          nativeId,
+          nativeSkillId,
           totalRepInDomain: totalRepInDomain?.toString(),
-          totalAddressesWithReputation: totalAddresses,
+          addressesWithReputation: JSON.stringify(
+            sortedAddresses.map(({ address, reputationBN }) => ({
+              address,
+              reputationBN: reputationBN.toString(),
+            })),
+          ),
         });
 
         const promiseStatuses = await Promise.allSettled(
@@ -218,10 +223,9 @@ exports.handler = async (event) => {
               totalRepInDomain,
             );
 
-            const contributorReputationId = `${colonyAddress}_${nativeDomainId}_${contributorAddress}`;
+            const contributorReputationId = `${colonyAddress}_${nativeId}_${contributorAddress}`;
             const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
             const reputation = reputationBN.toString();
-            const isRootDomain = nativeDomainId === Id.RootDomain;
 
             const { data: repResponse } =
               (await graphqlRequest(
@@ -232,7 +236,7 @@ exports.handler = async (event) => {
               )) ?? {};
 
             // If root domain, check if we have a contributor entry
-            if (isRootDomain) {
+            if (isRoot) {
               const { data: contributorResponse } =
                 (await graphqlRequest(
                   getColonyContributor,
@@ -288,7 +292,7 @@ exports.handler = async (event) => {
               await createContributorReputationInDb({
                 colonyAddress,
                 contributorAddress,
-                nativeDomainId,
+                nativeId,
                 id: contributorReputationId,
                 reputationRaw: reputation,
                 reputationPercentage: domainReputationPercentage,
