@@ -56,8 +56,8 @@ const TeamItem: FC<TeamItemProps> = ({
         'box-border inline-flex h-full w-full items-center justify-center border-y border-solid bg-base-white px-4 py-2 text-sm font-medium text-transparent bold-on-hover',
         selected ? teamColor : null,
         {
-          'border-gray-200 hover:bg-gray-50': !selected,
-          'border-l border-transparent after:font-semibold after:text-base-white hover:after:text-base-white':
+          'border-gray-200 outline-offset-[-2px] hover:bg-gray-50': !selected,
+          'border-l border-transparent outline-offset-[-1px] after:font-semibold after:text-base-white hover:after:text-base-white':
             selected,
           'border-r': hasDelimiter,
         },
