@@ -41,8 +41,25 @@ const useAllMembers = ({
     0,
   );
 
+  /*
+   * To be considered a follower, you must match ANY of the following criteria:
+   * have "joined" the colony (isWatching)
+   * is a verified member
+   * have at least one permission
+   * have at least some reputation
+   */
+
+  const allFollowers = useMemo(
+    () =>
+      allMembers.filter(
+        ({ hasReputation, hasPermissions, isWatching, isVerified }) =>
+          hasReputation || hasPermissions || isWatching || isVerified,
+      ),
+    [allMembers],
+  );
+
   const filteredMembers = useMemberFilters({
-    members: allMembers,
+    members: allFollowers,
     contributorTypes,
     filterPermissions,
     nativeDomainIds,
