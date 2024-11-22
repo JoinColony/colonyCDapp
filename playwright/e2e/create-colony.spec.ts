@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 import {
-  fillInputWithDelay,
+  fillInput,
   selectWallet,
   setCookieConsent,
   generateRandomString,
@@ -71,13 +71,13 @@ test.describe('Create Colony flow', () => {
       ).toBeDisabled();
 
       // Fill in colony name and custom URL
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /colony name/i,
         value: colonyName,
       });
 
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /custom colony URL/i,
         value: generateRandomString(),
@@ -118,7 +118,7 @@ test.describe('Create Colony flow', () => {
         }
       });
 
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /custom colony URL/i,
         value: 'takenurl',
@@ -131,7 +131,7 @@ test.describe('Create Colony flow', () => {
 
     test('Should reject invalid colony name', async ({ page }) => {
       // More than 20 characters
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /colony name/i,
         value: 'A'.repeat(21),
@@ -142,7 +142,7 @@ test.describe('Create Colony flow', () => {
 
     test("Should reject invalid custom colony URL's", async ({ page }) => {
       await test.step('Invalid value', async () => {
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /custom colony URL/i,
           value: 'invalid name',
@@ -154,7 +154,7 @@ test.describe('Create Colony flow', () => {
       await test.step('Contains invalid character', async () => {
         await page.getByLabel(/custom colony URL/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /custom colony URL/i,
           value: '/invalid',
@@ -166,7 +166,7 @@ test.describe('Create Colony flow', () => {
       await test.step('More than 20 characters', async () => {
         await page.getByLabel(/custom colony URL/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /custom colony URL/i,
           value: 'a'.repeat(21),
@@ -178,7 +178,7 @@ test.describe('Create Colony flow', () => {
       await test.step('Reserved keyword', async () => {
         await page.getByLabel(/custom colony URL/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /custom colony URL/i,
           value: 'account',
@@ -236,13 +236,13 @@ test.describe('Create Colony flow', () => {
 
       await expect(page.getByLabel(/Use an existing token/i)).not.toBeChecked();
 
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /token name/i,
         value: tokenName,
       });
 
-      await fillInputWithDelay({
+      await fillInput({
         page,
         label: /token symbol/i,
         value: tokenSymbol,
@@ -320,7 +320,7 @@ test.describe('Create Colony flow', () => {
       await expect(page.getByLabel(/Create a new token/i)).not.toBeChecked();
 
       await test.step('Should not accept incorrectly formatted token address', async () => {
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: invalidToken,
@@ -337,7 +337,7 @@ test.describe('Create Colony flow', () => {
 
         await page.getByLabel(/Existing token address/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: userAddress,
@@ -365,7 +365,7 @@ test.describe('Create Colony flow', () => {
 
         await page.getByLabel(/existing token address/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: addressZero,
@@ -389,7 +389,7 @@ test.describe('Create Colony flow', () => {
 
         await page.getByLabel(/existing token address/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: colonyAddress,
@@ -417,7 +417,7 @@ test.describe('Create Colony flow', () => {
 
         await page.getByLabel(/existing token address/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: notExistingToken,
@@ -444,7 +444,7 @@ test.describe('Create Colony flow', () => {
 
         await page.getByLabel(/existing token address/i).clear();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           label: /existing token address/i,
           value: existingToken,

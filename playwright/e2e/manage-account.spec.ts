@@ -5,7 +5,7 @@ import {
   selectWallet,
   setCookieConsent,
   generateRandomEmail,
-  fillInputWithDelay,
+  fillInput,
 } from '../utils/common.ts';
 
 const validImagePath = 'playwright/fixtures/images/jaya-the-beast_400KB.png';
@@ -53,7 +53,7 @@ test.describe('Manage Account', () => {
       const displayNameInput = page.locator('[name="displayName"]');
 
       // Should be pre-filled with the user's display name
-      await expect(displayNameInput.inputValue).toBeTruthy();
+      await expect(displayNameInput.inputValue()).toBeTruthy();
 
       await displayNameInput.hover();
 
@@ -100,7 +100,7 @@ test.describe('Manage Account', () => {
         // Remove the avatar
         await removeAvatarButton.click();
 
-        await expect(toast).toBeVisible();
+        await toast.waitFor({ state: 'visible' });
 
         await removeAvatarButton.waitFor({ state: 'hidden' });
 
@@ -181,12 +181,11 @@ test.describe('Manage Account', () => {
       await expect(page.getByText('Website', { exact: true })).toBeVisible();
       await expect(page.getByText('Your website is optional')).toBeVisible();
       await expect(websiteInput).toBeEnabled();
-
       // Verify that the website field is pre-filled with the user's website
-      await expect(websiteInput.inputValue).toBeTruthy();
+      await expect(websiteInput.inputValue()).toBeTruthy();
 
       await test.step('Shows an error message when the website is invalid', async () => {
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="website"]',
           value: 'invalid-website',
@@ -202,7 +201,7 @@ test.describe('Manage Account', () => {
 
       await test.step('The field is not required', async () => {
         await websiteInput.clear();
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="website"]',
           value: '',
@@ -217,7 +216,7 @@ test.describe('Manage Account', () => {
       await test.step('Accepts a valid website', async () => {
         const website = 'https://colony.io';
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="website"]',
           value: website,
@@ -272,7 +271,7 @@ test.describe('Manage Account', () => {
         const text = 'This is my bio';
 
         await bioInput.clear();
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="bio"]',
           value: text,
@@ -312,7 +311,7 @@ test.describe('Manage Account', () => {
         const location = 'New York';
 
         await locationInput.clear();
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="location"]',
           value: location,
@@ -372,7 +371,7 @@ test.describe('Manage Account', () => {
 
         await emailInput.waitFor({ state: 'visible' });
         await emailInput.clear();
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="email"]',
           value: emailValue,
@@ -392,7 +391,7 @@ test.describe('Manage Account', () => {
       await test.step('Shows an error message when the email is invalid', async () => {
         await page.getByRole('button', { name: /update email/i }).click();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="email"]',
           value: 'invalid-email',
@@ -410,7 +409,7 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /update email/i }).click();
 
-        await fillInputWithDelay({
+        await fillInput({
           page,
           selector: '[name="email"]',
           value: email,

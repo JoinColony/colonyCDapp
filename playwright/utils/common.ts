@@ -34,25 +34,22 @@ export const setCookieConsent = async (
   );
 };
 
-export const fillInputWithDelay = async ({
+export const fillInput = async ({
   page,
   label,
   selector,
   value,
-  // timeout = 500,
 }: {
   page: Page;
   label?: string | RegExp;
   selector?: string;
   value: string;
-  timeout?: number;
 }) => {
   if (!label && !selector) {
     throw new Error('You must provide either a label or a selector');
   }
   const input = label ? page.getByLabel(label) : page.locator(selector!);
 
-  // await page.waitForTimeout(timeout);
   await input.fill(value);
   await expect(input).toHaveValue(value);
 };
@@ -65,7 +62,7 @@ export const generateRandomEmail = () => {
   return `${generateRandomString()}@example.com`;
 };
 
-const customTimeout = parseInt(process.env.E2E_TIMEOUT || '3000', 10); // Allow to run with different timeout, defaults to 2000ms
+const customTimeout = parseInt(process.env.E2E_TIMEOUT || '3000', 10); // Allow to run with different timeout, defaults to 3000ms
 
 export const selectWallet = async (
   page: Page,

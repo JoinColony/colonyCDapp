@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 
-import { fillInputWithDelay } from './common.ts';
+import { fillInput } from './common.ts';
 
 export const fillColonyNameStep = async (
   page: Page,
@@ -9,13 +9,13 @@ export const fillColonyNameStep = async (
     urlFieldValue,
   }: { nameFieldValue: string; urlFieldValue: string },
 ) => {
-  await fillInputWithDelay({
+  await fillInput({
     page,
     label: /colony name/i,
     value: nameFieldValue,
   });
 
-  await fillInputWithDelay({
+  await fillInput({
     page,
     label: /custom colony URL/i,
     value: urlFieldValue,
@@ -37,7 +37,7 @@ export const fillNativeTokenStepWithExistingToken = async (
   await page.getByLabel(/Use an existing token/i).check();
   await page.getByRole('button', { name: /continue/i }).click();
 
-  await fillInputWithDelay({
+  await fillInput({
     page,
     label: /Existing token address/i,
     value: token,
