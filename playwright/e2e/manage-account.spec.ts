@@ -21,11 +21,6 @@ test.describe('Manage Account', () => {
 
     await page.getByTestId('user-navigation-hamburger').click();
 
-    await page
-      .getByText(/manage account/i)
-      .first()
-      .waitFor({ state: 'visible' });
-
     await page.getByTestId('user-menu').waitFor({ state: 'visible' });
 
     await page
