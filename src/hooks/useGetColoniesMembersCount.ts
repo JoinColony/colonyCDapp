@@ -16,35 +16,30 @@ export const useGetColoniesMembersCount = (
   colonyAddresses: string[],
   filterOptions: SearchableColonyContributorFilterInput,
 ) => {
+  const queryFilter = {
+    or: colonyAddresses.map((colonyAddress) => ({
+      and: [
+        { colonyAddress: { eq: colonyAddress } },
+        {
+          ...filterOptions,
+        },
+      ],
+    })),
+  };
+
   const {
     data: contributorsCount,
     fetchMore,
     loading: contributorsCountLoading,
   } = useGetMembersCountQuery({
     variables: {
-      filter: {
-        or: colonyAddresses.map((colonyAddress) => ({
-          and: [
-            { colonyAddress: { eq: colonyAddress } },
-            {
-              ...filterOptions,
-            },
-          ],
-        })),
-      },
+      filter: { ...queryFilter },
     },
     onCompleted: (data) => {
       if (data.searchColonyContributors?.nextToken) {
         fetchMore({
           variables: {
-            or: colonyAddresses.map((colonyAddress) => ({
-              and: [
-                { colonyAddress: { eq: colonyAddress } },
-                {
-                  ...filterOptions,
-                },
-              ],
-            })),
+            ...queryFilter,
             nextToken: data.searchColonyContributors.nextToken,
           },
           updateQuery: (prev, { fetchMoreResult }) => {
