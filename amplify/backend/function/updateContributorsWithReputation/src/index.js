@@ -1,5 +1,5 @@
 require('cross-fetch/polyfill');
-const { getColonyNetworkClient, Network, Id } = require('@colony/colony-js');
+const { getColonyNetworkClient, Network, Id, w } = require('@colony/colony-js');
 const {
   providers,
   constants: { AddressZero },
@@ -84,6 +84,8 @@ exports.handler = async (event) => {
       return true;
     }
 
+    console.log(`Colony ${colonyAddress} reputation update started`);
+
     const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
     const networkClient = getColonyNetworkClient(network, provider, {
@@ -109,6 +111,8 @@ exports.handler = async (event) => {
       return true;
     }
 
+    console.log({ totalRepInColony: totalRepInColony?.toString() });
+
     // query all domains
 
     const { data } =
@@ -133,6 +137,17 @@ exports.handler = async (event) => {
     const lastReputationMiningCycleCompletion =
       response?.getReputationMiningCycleMetadata?.lastCompletedAt;
 
+    console.log({
+      lastUpdatedCache,
+      lastReputationMiningCycleCompletion,
+      willUpdateCache: !(
+        new Date(lastReputationMiningCycleCompletion).valueOf() <
+        new Date(lastUpdatedCache).valueOf()
+      ),
+      // willUpdateCache: 'forced true',
+    });
+
+    // TODO use latest hash to decide if to update reputation
     // We only need to update the cache if the reputation mining cycle has completed since the last time we updated the cache
     if (
       new Date(lastReputationMiningCycleCompletion).valueOf() <
@@ -146,6 +161,7 @@ exports.handler = async (event) => {
 
     const promiseResults = await Promise.allSettled(
       allNativeDomainIds.map(async (nativeDomainId) => {
+        // TODO Fetch skillId from the getColony query
         const { skillId } = await colonyClient.getDomain(nativeDomainId);
         let addresses;
         let totalRepInDomain;
@@ -181,6 +197,13 @@ exports.handler = async (event) => {
         );
 
         const totalAddresses = sortedAddresses.length;
+
+        console.log({
+          nativeDomainId,
+          nativeSkillId: skillId.toString(),
+          totalRepInDomain: totalRepInDomain?.toString(),
+          totalAddressesWithReputation: totalAddresses,
+        });
 
         const promiseStatuses = await Promise.allSettled(
           sortedAddresses.map(async ({ address, reputationBN }, idx) => {
@@ -294,7 +317,9 @@ exports.handler = async (event) => {
 
     for (const { status, reason } of promiseResults) {
       if (status === 'rejected') {
-        console.error(reason);
+        console.log(
+          `ERROR: Some reputation entries could not be processed -- ${reason}`,
+        );
         allFulfilled = false;
       }
     }
@@ -316,7 +341,7 @@ exports.handler = async (event) => {
 
     return allFulfilled;
   } catch (e) {
-    console.error(e);
+    console.log(`ERROR: ${e}`);
     return false;
   }
 };
