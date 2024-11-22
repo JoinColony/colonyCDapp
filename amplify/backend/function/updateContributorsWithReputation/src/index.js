@@ -5,7 +5,6 @@ const {
   constants: { AddressZero },
   utils: { Logger, getAddress },
 } = require('ethers');
-const Decimal = require('decimal.js');
 
 const {
   getContributorReputation,
@@ -208,7 +207,6 @@ exports.handler = async (event) => {
         const promiseStatuses = await Promise.allSettled(
           sortedAddresses.map(async ({ address, reputationBN }, idx) => {
             const contributorAddress = getAddress(address);
-            const contributorRepDecimal = new Decimal(reputationBN.toString());
 
             const colonyReputationPercentage = calculatePercentageReputation(
               reputationBN,
