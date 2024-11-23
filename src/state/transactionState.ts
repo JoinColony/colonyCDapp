@@ -115,17 +115,14 @@ export const getGroupStatus = (txGroup: TransactionType[]) => {
   if (txGroup.some((tx) => tx.status === TransactionStatus.Failed)) {
     return TransactionStatus.Failed;
   }
-  if (
-    txGroup.every(
-      (tx) =>
-        tx.status === TransactionStatus.Succeeded &&
-        tx.hash !== DEFAULT_TX_HASH,
-    )
-  ) {
+  if (txGroup.every((tx) => tx.status === TransactionStatus.Succeeded)) {
     return TransactionStatus.Succeeded;
   }
   return TransactionStatus.Pending;
 };
+
+export const getHasZeroAddressTransaction = (txGroup: TransactionType[]) =>
+  txGroup.some((tx) => tx.hash === DEFAULT_TX_HASH);
 
 // Get the index of the first transaction in a group that is ready to sign
 export const getActiveTransactionIdx = (txGroup: TransactionType[]) => {
