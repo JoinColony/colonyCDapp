@@ -72,10 +72,7 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
       contentWrapperClassName={clsx('sm:min-w-[12.75rem]', {
         '!left-6 right-6': isMobile,
       })}
-      dropdownPlacementProps={{
-        withAutoTopPlacement: true,
-        top: 12,
-      }}
+      hasLeftAlignment
       items={items}
     />
   );

@@ -29,8 +29,15 @@ export interface MeatBallMenuProps {
   renderItemWrapper?: RenderMeatBallItemWrapper;
   withVerticalIcon?: boolean;
   iconSize?: number;
-  dropdownPlacementProps?: {
-    top?: number;
-    withAutoTopPlacement?: boolean;
-  };
+  hasLeftAlignment?: boolean;
+}
+
+export interface MeatBallMenuItemsProps {
+  items: MeatBallMenuItem[];
+  renderItemWrapper: RenderMeatBallItemWrapper;
+  onClose: () => void;
+}
+
+export interface MeatBallMenuCloseTriggerProps {
+  onClick: () => void;
 }

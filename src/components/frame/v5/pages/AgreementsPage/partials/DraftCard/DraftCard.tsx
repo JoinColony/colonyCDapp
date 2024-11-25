@@ -151,10 +151,6 @@ const DraftCard: FC = () => {
               contentWrapperClassName={clsx('sm:min-w-[14.375rem]', {
                 '!left-6 right-6': isMobile,
               })}
-              dropdownPlacementProps={{
-                withAutoTopPlacement: true,
-                top: 12,
-              }}
               items={[
                 {
                   key: '1',
