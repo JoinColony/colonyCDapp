@@ -15,7 +15,7 @@ export const useGetStreamingPaymentData = (
       variables: {
         streamingPaymentId: streamingPaymentId || '',
       },
-      skip: !streamingPaymentId,
+      skip: Number.isNaN(streamingPaymentId) || !streamingPaymentId,
       fetchPolicy: 'cache-and-network',
       pollInterval,
     });

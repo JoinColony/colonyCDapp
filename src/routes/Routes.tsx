@@ -22,6 +22,7 @@ import MembersPage, {
   ContributorsPage,
 } from '~frame/v5/pages/MembersPage/index.ts';
 import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
+import StreamingFiltersContextProvider from '~frame/v5/pages/StreamingPaymentsPage/partials/StreamingPaymentsTable/FiltersContext/StreamingFiltersContextProvider.tsx';
 import StreamingPaymentsPage from '~frame/v5/pages/StreamingPaymentsPage/StreamingPaymentsPage.tsx';
 import TeamsPage from '~frame/v5/pages/TeamsPage/index.ts';
 import UserAdvancedPage from '~frame/v5/pages/UserAdvancedPage/index.ts';
@@ -152,7 +153,11 @@ const Routes = () => {
             <Route path={COLONY_TEAMS_ROUTE} element={<TeamsPage />} />
             <Route
               path={COLONY_STREAMING_PAYMENTS_ROUTE}
-              element={<StreamingPaymentsPage />}
+              element={
+                <StreamingFiltersContextProvider>
+                  <StreamingPaymentsPage />
+                </StreamingFiltersContextProvider>
+              }
             />
           </Route>
 

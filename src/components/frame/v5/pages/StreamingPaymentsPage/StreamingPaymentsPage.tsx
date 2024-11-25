@@ -8,6 +8,7 @@ import { formatText } from '~utils/intl.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
 import StatsCards from './partials/StatsCards/StatsCards.tsx';
+import StreamingPaymentsTable from './partials/StreamingPaymentsTable/StreamingPaymentsTable.tsx';
 
 const displayName = 'v5.pages.StreamingPaymentsPage';
 
@@ -37,6 +38,7 @@ const StreamingPaymentsPage = () => {
         prefix={currencySymbolMap[currency]}
         suffix={currency}
       />
+      <StreamingPaymentsTable />
     </ContentWithTeamFilter>
   );
 };
