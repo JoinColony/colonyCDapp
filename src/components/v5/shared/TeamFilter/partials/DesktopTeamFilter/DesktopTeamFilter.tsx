@@ -2,9 +2,8 @@ import clsx from 'clsx';
 import { throttle } from 'lodash';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
-import { notMaybe } from '~utils/arrays/index.ts';
+import { type Domain } from '~types/graphql.ts';
 
 import AllTeamsItem from '../AllTeamsItem.tsx';
 import CreateNewTeamItem from '../CreateNewTeamItem.tsx';
@@ -15,24 +14,15 @@ import { getOrderedDomains } from './helpers.ts';
 
 const displayName = 'v5.shared.TeamFilter.DesktopTeamFilter';
 
-const DesktopTeamFilter = () => {
+const DesktopTeamFilter = ({ allDomains }: { allDomains: Domain[] }) => {
   const [teamsWidth, setTeamsWidth] = useState(0);
   const [overflowingItemIndex, setOverFlowingItemIndex] = useState(-1);
 
   const teamItemsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const {
-    colony: { domains },
-  } = useColonyContext();
-
   const selectedDomain = useGetSelectedDomainFilter();
   const isAllTeamsFilterActive = selectedDomain === undefined;
-
-  // this is in memo due to being a dependency for the other memo
-  const allDomains = useMemo(() => {
-    return domains?.items.filter(notMaybe) || [];
-  }, [domains?.items]);
 
   useEffect(() => {
     const { current: teamsElement } = containerRef;
