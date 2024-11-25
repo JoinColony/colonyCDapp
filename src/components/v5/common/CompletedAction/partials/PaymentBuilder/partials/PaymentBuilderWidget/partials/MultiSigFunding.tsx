@@ -13,9 +13,13 @@ const displayName =
 
 interface MultiSigFundingProps {
   action: MultiSigAction;
+  onMultiSigRejected?: () => void;
 }
 
-const MultiSigFunding: FC<MultiSigFundingProps> = ({ action }) => {
+const MultiSigFunding: FC<MultiSigFundingProps> = ({
+  action,
+  onMultiSigRejected,
+}) => {
   const { extensionData, loading } = useExtensionData(
     Extension.MultisigPermissions,
   );
@@ -31,7 +35,13 @@ const MultiSigFunding: FC<MultiSigFundingProps> = ({ action }) => {
     return <UninstalledMessage extension={Extension.MultisigPermissions} />;
   }
 
-  return <MultiSigWidget action={action} variant="standalone" />;
+  return (
+    <MultiSigWidget
+      action={action}
+      variant="standalone"
+      onMultiSigRejected={onMultiSigRejected}
+    />
+  );
 };
 
 MultiSigFunding.displayName = displayName;

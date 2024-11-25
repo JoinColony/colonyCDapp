@@ -4,6 +4,7 @@ import { DEFAULT_TOKEN_DECIMALS } from '~constants';
 import { SplitPaymentDistributionType } from '~gql';
 import { type CreateExpenditurePayload } from '~redux/sagas/expenditures/createExpenditure.ts';
 import { type CreateStakedExpenditurePayload } from '~redux/sagas/expenditures/createStakedExpenditure.ts';
+import { DecisionMethod } from '~types/actions.ts';
 import { type Colony } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
@@ -28,7 +29,7 @@ export const getSplitPaymentPayload = (
   } = values;
   const rootDomain = findDomainByNativeId(Id.RootDomain, colony);
   const createdInDomain =
-    decisionMethod === 'Permissions'
+    decisionMethod === DecisionMethod.Permissions
       ? undefined
       : findDomainByNativeId(createdIn, colony) || rootDomain;
 

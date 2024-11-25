@@ -27,6 +27,7 @@ const displayName =
 interface MultiSigWidgetProps {
   action: MultiSigAction;
   variant: 'stepper' | 'standalone';
+  onMultiSigRejected?: () => void;
 }
 
 const MSG = defineMessages({
@@ -44,7 +45,11 @@ const MSG = defineMessages({
   },
 });
 
-const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action, variant }) => {
+const MultiSigWidget: FC<MultiSigWidgetProps> = ({
+  action,
+  variant,
+  onMultiSigRejected,
+}) => {
   const { type: actionType, multiSigData } = action;
 
   // this is only because managing permissions in a subdomain requires signees in the parent domain
@@ -91,6 +96,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action, variant }) => {
             multiSigData={multiSigData}
             requiredRoles={requiredRoles}
             initiatorAddress={action.initiatorAddress}
+            onMultiSigRejected={onMultiSigRejected}
           />
         ),
         heading: {
@@ -119,6 +125,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action, variant }) => {
     multiSigData,
     requiredRoles,
     action,
+    onMultiSigRejected,
   ]);
 
   const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(

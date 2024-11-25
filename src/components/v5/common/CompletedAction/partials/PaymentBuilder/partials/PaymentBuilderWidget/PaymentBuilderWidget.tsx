@@ -319,7 +319,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       }
 
       if (isMultiSig(fundingAction)) {
-        return <MultiSigFunding action={fundingAction} />;
+        return (
+          <MultiSigFunding
+            action={fundingAction}
+            onMultiSigRejected={() => {
+              setExpectedStepKey(null);
+            }}
+          />
+        );
       }
 
       console.warn(

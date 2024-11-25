@@ -12,6 +12,7 @@ import {
 } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { type Threshold } from '~types/multiSig.ts';
@@ -49,6 +50,7 @@ interface ApprovalStepProps {
   multiSigData: ColonyMultiSigFragment;
   requiredRoles: ColonyRole[];
   initiatorAddress: string;
+  onMultiSigRejected?: () => void;
 }
 
 const MSG = defineMessages({
@@ -119,6 +121,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   multiSigData,
   initiatorAddress,
   requiredRoles,
+  onMultiSigRejected,
 }) => {
   const { createdAt } = multiSigData;
   const { user } = useAppContext();
@@ -128,6 +131,8 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   const [isRemovingVote, setIsRemovingVote] = useState(false);
 
   const isOwner = user?.walletAddress === initiatorAddress;
+  const isMultiSigRejected = multiSigData.isRejected;
+  const previousIsMultiSigRejected = usePrevious(isMultiSigRejected);
 
   const doesActionRequireMultipleRoles = requiredRoles.length > 1;
   const { currentBlockTime } = useCurrentBlockTime();
@@ -150,6 +155,12 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
     setIsRejecting(false);
     setIsRemovingVote(false);
   }, [userSignature]);
+
+  useEffect(() => {
+    if (isMultiSigRejected && previousIsMultiSigRejected === false) {
+      onMultiSigRejected?.();
+    }
+  }, [isMultiSigRejected, onMultiSigRejected, previousIsMultiSigRejected]);
 
   const { isLoading: areEligibleSigneesLoading, uniqueEligibleSignees } =
     useEligibleSignees({
@@ -224,7 +235,6 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
   );
 
   const isMultiSigExecuted = multiSigData.isExecuted;
-  const isMultiSigRejected = multiSigData.isRejected;
   const isMultiSigInFinalizeState =
     isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected;
 
