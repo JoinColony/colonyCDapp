@@ -1,4 +1,4 @@
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
@@ -29,21 +29,31 @@ const Filter: FC<FilterProps> = ({
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
-  const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
     placement: 'bottom-end',
     trigger: 'click',
     interactive: true,
+    visible: isSearchOpened,
+    onVisibleChange: setIsSearchOpened,
   });
 
   const { selectedFilterCount } = useFilterContext();
   const { searchValue, setSearchValue } = useSearchContext();
+
+  const searchPill = (
+    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
+      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
+      <button
+        type="button"
+        onClick={() => setSearchValue('')}
+        className="ml-2 flex-shrink-0"
+      >
+        <X size={12} className="text-inherit" />
+      </button>
+    </div>
+  );
 
   return (
     <>
@@ -64,6 +74,7 @@ const Filter: FC<FilterProps> = ({
           >
             <MagnifyingGlass size={14} />
           </Button>
+          {!!searchValue && searchPill}
           <Modal
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
@@ -93,13 +104,14 @@ const Filter: FC<FilterProps> = ({
         <>
           <div className="flex flex-row gap-2">
             <TableFiltering />
+            {!!searchValue && searchPill}
             <FilterButton
-              isOpen={isFiltersOpen}
+              isOpen={isSearchOpened}
               setTriggerRef={setTriggerRef}
               customLabel={customLabel}
             />
           </div>
-          {isFiltersOpen && (
+          {isSearchOpened && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}

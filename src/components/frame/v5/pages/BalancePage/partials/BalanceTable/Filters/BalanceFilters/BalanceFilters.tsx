@@ -1,4 +1,4 @@
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -23,14 +23,15 @@ const BalanceFilters: FC = () => {
   const [isOpened, setOpened] = useState(false);
   const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
-  const { getTooltipProps, setTooltipRef, setTriggerRef, visible } =
-    usePopperTooltip({
-      delayShow: 200,
-      delayHide: 200,
-      placement: 'bottom-end',
-      trigger: 'click',
-      interactive: true,
-    });
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
+    delayShow: 200,
+    delayHide: 200,
+    placement: 'bottom-end',
+    trigger: 'click',
+    interactive: true,
+    visible: isSearchOpened,
+    onVisibleChange: setIsSearchOpened,
+  });
 
   const filtersContent = (
     <div>
@@ -60,6 +61,19 @@ const BalanceFilters: FC = () => {
     />
   );
 
+  const searchPill = (
+    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
+      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchFilter}</p>
+      <button
+        type="button"
+        onClick={() => setSearchFilter('')}
+        className="ml-2 flex-shrink-0"
+      >
+        <X size={12} className="text-inherit" />
+      </button>
+    </div>
+  );
+
   return (
     <div className="mr-2">
       {isMobile ? (
@@ -79,6 +93,7 @@ const BalanceFilters: FC = () => {
           >
             <MagnifyingGlass size={14} />
           </Button>
+          {!!searchFilter && searchPill}
           <Modal
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
@@ -103,13 +118,14 @@ const BalanceFilters: FC = () => {
         <>
           <div className="flex flex-row items-start justify-end gap-2">
             <ActiveFiltersList />
+            {!!searchFilter && searchPill}
             <FilterButton
-              isOpen={visible}
+              isOpen={isSearchOpened}
               setTriggerRef={setTriggerRef}
               customLabel={formatText({ id: 'allFilters' })}
             />
           </div>
-          {visible && (
+          {isSearchOpened && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}

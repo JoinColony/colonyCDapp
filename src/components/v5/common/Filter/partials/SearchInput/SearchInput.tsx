@@ -79,6 +79,11 @@ const SearchInput: FC<SearchInputProps> = ({
         )}
         type="text"
         onInput={onInput}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onSearchButtonClick();
+          }
+        }}
         placeholder={searchInputPlaceholder}
         defaultValue={searchValue}
       />

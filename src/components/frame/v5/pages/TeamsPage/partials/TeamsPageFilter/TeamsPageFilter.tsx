@@ -1,4 +1,4 @@
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -24,17 +24,15 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
   filterValue,
   hasFilterChanged,
 }) => {
-  const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
+  const [isSearchOpened, setIsSearchOpened] = useState(false);
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
     placement: 'bottom-end',
     trigger: 'click',
     interactive: true,
+    visible: isSearchOpened,
+    onVisibleChange: setIsSearchOpened,
   });
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
@@ -45,7 +43,19 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
     },
     [onSearch],
   );
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
+
+  const searchPill = (
+    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
+      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
+      <button
+        type="button"
+        onClick={() => onSearch('')}
+        className="ml-2 flex-shrink-0"
+      >
+        <X size={12} className="text-inherit" />
+      </button>
+    </div>
+  );
 
   const RootItems = items.map(
     ({ icon, items: nestedItems, label, name, title, filterName }) => (
@@ -66,23 +76,27 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
   return (
     <>
       <div className="flex flex-row gap-2">
+        {!!searchValue && !isMobile && searchPill}
         <FilterButton
-          isOpen={isFiltersOpen}
+          isOpen={isSearchOpened}
           onClick={toggleModalOn}
           setTriggerRef={setTriggerRef}
           customLabel={formatText({ id: 'teamsPage.filter.filterButton' })}
           numberSelectedFilters={hasFilterChanged && isMobile ? 1 : 0}
         />
         {isMobile && (
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+          <>
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={() => setIsSearchOpened(true)}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            {!!searchValue && searchPill}
+          </>
         )}
       </div>
       {isMobile && (
@@ -120,7 +134,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           </Modal>
         </>
       )}
-      {isFiltersOpen && !isMobile && (
+      {isSearchOpened && !isMobile && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -135,6 +149,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
+              onClose={() => setIsSearchOpened(false)}
               placeholder={formatText({ id: 'teamsPage.filter.search' })}
               value={searchValue}
             />

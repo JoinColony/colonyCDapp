@@ -1,4 +1,4 @@
-import { MagnifyingGlass } from '@phosphor-icons/react';
+import { MagnifyingGlass, X } from '@phosphor-icons/react';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -24,17 +24,15 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
   filterValue,
   activeFiltersNumber,
 }) => {
-  const {
-    getTooltipProps,
-    setTooltipRef,
-    setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
+  const [isSearchOpened, setIsSearchOpened] = useState(false);
+  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
     delayShow: 200,
     delayHide: 200,
     placement: 'bottom-end',
     trigger: 'click',
     interactive: true,
+    visible: isSearchOpened,
+    onVisibleChange: setIsSearchOpened,
   });
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
@@ -45,7 +43,6 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
     },
     [onSearch],
   );
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
 
   const RootItems = items.map(
     ({ icon, items: nestedItems, label, name, title }) => (
@@ -62,11 +59,25 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
     ),
   );
 
+  const searchPill = (
+    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
+      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
+      <button
+        type="button"
+        onClick={() => onSearch('')}
+        className="ml-2 flex-shrink-0"
+      >
+        <X size={12} className="text-inherit" />
+      </button>
+    </div>
+  );
+
   return (
     <>
       <div className="flex flex-row gap-2">
+        {!!searchValue && !isMobile && searchPill}
         <FilterButton
-          isOpen={isFiltersOpen}
+          isOpen={isSearchOpened}
           onClick={toggleModalOn}
           setTriggerRef={setTriggerRef}
           customLabel={formatText({ id: 'allFilters' })}
@@ -83,6 +94,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             <MagnifyingGlass size={14} />
           </Button>
         )}
+        {!!searchValue && isMobile && searchPill}
       </div>
       {isMobile && (
         <>
@@ -119,7 +131,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           </Modal>
         </>
       )}
-      {isFiltersOpen && !isMobile && (
+      {isSearchOpened && !isMobile && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -134,6 +146,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
+              onClose={() => setIsSearchOpened(false)}
               placeholder={formatText({ id: 'permissionsPage.filter.search' })}
               value={searchValue}
             />
