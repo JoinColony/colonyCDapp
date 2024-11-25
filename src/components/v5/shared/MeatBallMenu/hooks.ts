@@ -11,11 +11,11 @@ export const useMobileMenuPosition = ({
   triggerRef: React.RefObject<HTMLButtonElement>;
   menuRef: React.RefObject<HTMLDivElement>;
 }) => {
+  const trigger = triggerRef.current;
+  const menu = menuRef.current;
+
   useEffect(() => {
     const adjustMenuPosition = () => {
-      const trigger = triggerRef.current;
-      const menu = menuRef.current;
-
       if (!trigger || !menu) return;
 
       const triggerPlacement = trigger.getBoundingClientRect();
@@ -43,5 +43,5 @@ export const useMobileMenuPosition = ({
 
     window.addEventListener('resize', adjustMenuPosition);
     return () => window.removeEventListener('resize', adjustMenuPosition);
-  }, [isMobile, triggerRef.current, menuRef.current]);
+  }, [isMobile, trigger, menu, hasLeftAlignment]);
 };

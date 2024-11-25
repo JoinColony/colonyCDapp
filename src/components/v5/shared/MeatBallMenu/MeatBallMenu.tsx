@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import React, { useRef, type FC } from 'react';
 
 import { useMobile } from '~hooks';
+import useDropdown from '~hooks/useDropdown.ts';
 import { formatText } from '~utils/intl.ts';
-import useDropdown from '~v5/frame/ColonyHome/partials/ReputationChart/hooks/useDropdown.ts';
 
 import MenuContainer from '../MenuContainer/index.ts';
 
