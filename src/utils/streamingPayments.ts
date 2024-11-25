@@ -1,6 +1,10 @@
 import { BigNumber } from 'ethers';
 
-import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
+import {
+  ONE_DAY_IN_SECONDS,
+  ONE_HOUR_IN_SECONDS,
+  SECONDS_IN_MONTH,
+} from '~constants/time.ts';
 import {
   StreamingPaymentEndCondition,
   type StreamingPaymentFragment,
@@ -238,4 +242,13 @@ export const getAmountPerValue = (interval: string) => {
         },
       );
   }
+};
+
+export const convertToMonthlyAmount = (
+  amount: BigNumber,
+  interval: BigNumber,
+): BigNumber => {
+  const intervalsPerMonth = BigNumber.from(SECONDS_IN_MONTH).div(interval);
+
+  return amount.mul(intervalsPerMonth);
 };

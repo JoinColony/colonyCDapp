@@ -153,6 +153,7 @@ fragment ColonyAction on ColonyAction {
     contractAddress
     encodedFunction
   }
+  streamingPaymentId
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
