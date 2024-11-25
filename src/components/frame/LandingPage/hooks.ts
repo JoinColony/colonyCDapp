@@ -1,8 +1,10 @@
+import { isEqual } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useGetMembersCountQuery } from '~gql';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
+import usePrevious from '~hooks/usePrevious.ts';
 import { CREATE_COLONY_ROUTE_BASE } from '~routes';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
@@ -128,14 +130,24 @@ export const useLandingPage = () => {
     }),
   );
 
+  const previousJoinedColonies = usePrevious(joinedColonies);
+
+  const joinedColoniesFirstTimeLoading =
+    !isEqual(previousJoinedColonies, joinedColonies) && joinedColoniesLoading;
+
+  const isContentLoading =
+    (userLoading ||
+      joinedColoniesFirstTimeLoading ||
+      contributorsCountLoading) &&
+    !!wallet;
+
   return {
     canInteract:
       canInteract && (hasShareableInvitationCode || !!joinedColonies.length),
     connectWallet,
     wallet,
     isLoading: walletConnecting,
-    isContentLoading:
-      userLoading || joinedColoniesLoading || contributorsCountLoading,
+    isContentLoading,
     onCreateColony,
     remainingInvitations,
     inviteLink,
