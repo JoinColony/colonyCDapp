@@ -36,7 +36,7 @@ const AllTeamsItem: FC<AllTeamsItemProps> = ({
       type="button"
       aria-label={label}
       className={clsx(
-        'inline-flex items-center rounded-l-lg border-y border-l border-solid border-gray-200 px-4 py-2 text-sm text-transparent outline-offset-[-1px] bold-on-hover',
+        'inline-flex items-center rounded-l-lg border-y border-l border-solid border-gray-200 px-4 py-2 text-sm text-transparent bold-on-hover focus-visible:z-10',
         {
           'bg-base-white hover:bg-gray-50': !selected,
           'bg-gray-50 after:font-semibold after:text-gray-900': selected,
