@@ -49,6 +49,7 @@ const UserAccountPage: FC = () => {
         website: user?.profile?.website || '',
       }}
       resetOnSubmit
+      mode="onChange"
     >
       <UserAccountForm />
     </Form>
