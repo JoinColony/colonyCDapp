@@ -92,7 +92,7 @@ const RightComponent = ({
   inviteLink,
   remainingInvitations,
 }: RightComponentProps) => (
-  <div className="px-6 pt-8">
+  <div className="w-full px-6 pt-8 md:w-auto">
     <div className="hidden max-w-[31.25rem] md:block">
       <h1 className="pb-2 heading-2">{formatText(MSG.createColonyTitle)}</h1>
       <p className="pb-14 text-md font-normal text-gray-600">
@@ -107,7 +107,7 @@ const RightComponent = ({
         {formatText(MSG.displayColoniesDescription)}
       </p>
     </div>
-    <div className="w-[calc(100vw-48px)] md:w-full">
+    <div className="w-full">
       <ColonyInvitationBanner
         coloniesRemaining={remainingInvitations}
         inviteLink={inviteLink}
