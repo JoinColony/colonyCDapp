@@ -1968,6 +1968,11 @@
     "streamingPayment.status.ended": "Ended",
     "streamingPayment.status.cancelled": "Cancelled",
     "streamingPayment.status.limitReached": "Limit reached",
+    "streamingPayment.table.description": "Description",
+    "streamingPayment.table.streamed": "Streamed",
+    "streamingPayment.table.token": "Token",
+    "streamingPayment.table.team": "Team",
+    "streamingPayment.table.status": "Status",
     "action.createdAt.todayAt": "Today at {time}",
     "action.createdAt.yesterdayAt": "Yesterday at {time}",
     "action.createdAt.at": "{date} at {time}"

@@ -4,6 +4,36 @@ query GetStreamingPayment($streamingPaymentId: ID!) {
   }
 }
 
+query SearchStreamingPayments(
+  $nextToken: String
+  $limit: Int
+  $sort: [SearchableStreamingPaymentSortInput]
+  $colonyId: ID!
+) {
+  searchStreamingPayments(
+    limit: $limit
+    nextToken: $nextToken
+    sort: $sort
+    filter: { colonyId: { eq: $colonyId } }
+    from: 0
+  ) {
+    items {
+      actions(
+        filter: {
+          type: { eq: CREATE_STREAMING_PAYMENT }
+          isMotionFinalization: { ne: true }
+        }
+      ) {
+        items {
+          ...ColonyAction
+        }
+      }
+      ...StreamingPayment
+    }
+    nextToken
+  }
+}
+
 query GetStreamingPaymentsByColony(
   $colonyId: ID!
   $sortDirection: ModelSortDirection = ASC
