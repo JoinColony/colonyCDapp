@@ -70,6 +70,7 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({ loading }) => {
             onClick={() => {
               setHideEditWarning(true);
             }}
+            className="min-w-[12.5rem]"
           >
             {formatText(MSG.jsonAbiEditInfo)}
           </Button>
