@@ -103,34 +103,38 @@ const DesktopTeamFilter = () => {
   );
 
   return (
-    <div className="flex h-[34px] w-fit overflow-hidden whitespace-nowrap">
+    <div className="mt-[-2px] flex h-[38px] w-fit overflow-hidden whitespace-nowrap p-[2px]">
       <AllTeamsItem
         selected={isAllTeamsFilterActive}
         // The item should have a delimiter only if it is not the first one before the selected team
         hasDelimiter={selectedDomainIndex !== 0}
       />
-      <div className="flex flex-wrap overflow-hidden" ref={containerRef}>
-        {displayDomains.map((domain, index) => (
-          <div
-            ref={(el) => {
-              if (el) {
-                teamItemsRef.current[index] = el;
-              }
-            }}
-            key={`teamFilter.${domain.id}`}
-            className={clsx('h-full flex-1 flex-shrink-0', {
-              'pointer-events-none opacity-0':
-                overflowingItemIndex > -1 && index >= overflowingItemIndex,
-            })}
-          >
-            <TeamItem
-              selected={selectedDomain?.nativeId === domain.nativeId}
-              // The item should have a delimiter only if it is not the first one before the selected team
-              hasDelimiter={index !== selectedDomainIndex - 1}
-              domain={domain}
-            />
-          </div>
-        ))}
+      <div className="flex flex-wrap" ref={containerRef}>
+        {displayDomains.map((domain, index) => {
+          const isHidden =
+            overflowingItemIndex > -1 && index >= overflowingItemIndex;
+          return (
+            <div
+              ref={(el) => {
+                if (el) {
+                  teamItemsRef.current[index] = el;
+                }
+              }}
+              key={`teamFilter.${domain.id}`}
+              className={clsx('h-full flex-1 flex-shrink-0', {
+                'pointer-events-none opacity-0': isHidden,
+              })}
+            >
+              <TeamItem
+                selected={selectedDomain?.nativeId === domain.nativeId}
+                // The item should have a delimiter only if it is not the first one before the selected team
+                hasDelimiter={index !== selectedDomainIndex - 1}
+                domain={domain}
+                tabIndex={isHidden ? -1 : 0}
+              />
+            </div>
+          );
+        })}
       </div>
       {overflowingItemIndex > -1 && (
         <TeamsDropdown domains={displayDomains.slice(overflowingItemIndex)} />
