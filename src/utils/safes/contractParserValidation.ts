@@ -1,5 +1,14 @@
 import { BigNumber } from 'ethers';
 import { isAddress, isHexString } from 'ethers/lib/utils';
+import { isNaN } from 'lodash';
+
+const validateIntegerFrom8To256 = (numBytes: number, intName = 'int') => {
+  if (isNaN(numBytes) || numBytes < 8 || numBytes > 256 || numBytes % 8 !== 0) {
+    throw new Error(
+      `Invalid ${intName} type. Must be between ${intName}8 and ${intName}256, in steps of 8.`,
+    );
+  }
+};
 
 const getMaxSafeUnsignedInteger = (input: string): BigNumber => {
   let bytes = input.substring(4);
@@ -7,9 +16,11 @@ const getMaxSafeUnsignedInteger = (input: string): BigNumber => {
   if (bytes === '') {
     bytes = '256';
   }
-  const base = BigNumber.from(2);
+  const numBytes = parseInt(bytes, 10);
+  validateIntegerFrom8To256(numBytes, 'uint');
 
-  return base.pow(bytes).sub(1);
+  const base = BigNumber.from(2);
+  return base.pow(numBytes).sub(1);
 };
 
 const getMaxSafeInteger = (input: string): BigNumber => {
@@ -17,6 +28,9 @@ const getMaxSafeInteger = (input: string): BigNumber => {
   if (bytes === '') {
     bytes = '256';
   }
+
+  const numBytes = parseInt(bytes, 10);
+  validateIntegerFrom8To256(numBytes);
 
   /*
    * We're checking signed ints. Unsigned would be, e.g. 2**256 - 1.
@@ -31,11 +45,13 @@ const isUintSafe = (value: string, inputType: string) => {
   if (value === '' || value[0] === '-') {
     return false;
   }
-  const max = getMaxSafeUnsignedInteger(inputType);
+
   let isSafe: boolean;
   try {
+    const max = getMaxSafeUnsignedInteger(inputType);
     isSafe = max.gte(value);
-  } catch {
+  } catch (e) {
+    console.error(e);
     isSafe = false;
   }
   return isSafe;
@@ -51,7 +67,8 @@ const isIntSafe = (value: string, inputType: string) => {
     const max = getMaxSafeInteger(inputType);
     const val = BigNumber.from(value);
     isSafe = val.gte(0) ? max.gte(val) : max.mul(-1).lte(val);
-  } catch {
+  } catch (e) {
+    console.error(e);
     isSafe = false;
   }
   return isSafe;

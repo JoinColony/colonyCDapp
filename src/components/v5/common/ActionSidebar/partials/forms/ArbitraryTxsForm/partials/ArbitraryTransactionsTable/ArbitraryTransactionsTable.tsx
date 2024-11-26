@@ -40,15 +40,19 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
     setIsModalOpen(false);
     setIsCancelModalOpen(false);
   };
-  const columns = useArbitraryTxsTableColumns({ openTransactionModal });
+  const { getFieldState } = useFormContext();
+  const fieldState = getFieldState(name);
+
+  const columns = useArbitraryTxsTableColumns({
+    openTransactionModal,
+    isError: !!fieldState.error,
+  });
   const data: AddTransactionTableModel[] = fieldArrayMethods.fields.map(
     ({ id }, index) => ({
       key: id,
       ...(value?.[index] || {}),
     }),
   );
-  const { getFieldState } = useFormContext();
-  const fieldState = getFieldState(name);
 
   return (
     <div className="pt-4">
@@ -59,7 +63,8 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
         sizeUnit={isMobile ? undefined : '%'}
         meatBallMenuSize={isMobile ? undefined : 10}
         className={clsx('mb-6', {
-          '!border-negative-400': !!fieldState.error,
+          '[&_table]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+            !!fieldState.error,
         })}
         getRowId={({ key }) => key}
         columns={columns}

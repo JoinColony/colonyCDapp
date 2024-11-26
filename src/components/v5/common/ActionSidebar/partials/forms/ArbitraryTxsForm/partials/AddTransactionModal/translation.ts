@@ -79,7 +79,7 @@ export const MSG = defineMessages({
   },
   validationAddressError: {
     id: `${displayName}.validationAddressError`,
-    defaultMessage: 'Please enter a valid contract address',
+    defaultMessage: 'Please enter a valid address.',
   },
   validationIntError: {
     id: `${displayName}.validationIntError`,

@@ -1,4 +1,5 @@
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useMemo } from 'react';
 
@@ -27,6 +28,7 @@ const getValueByType = ({ type, value, isFull }) => {
 
 export const useArbitraryTxsTableColumns = ({
   openTransactionModal,
+  isError,
 }): ColumnDef<AddTransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<AddTransactionTableModel>(),
@@ -57,7 +59,12 @@ export const useArbitraryTxsTableColumns = ({
                 type="button"
                 onClick={openTransactionModal}
                 mode="link"
-                className="text-gray-400 no-underline md:hover:text-blue-400"
+                className={clsx(
+                  'text-gray-400 no-underline md:hover:text-blue-400',
+                  {
+                    'text-negative-400': isError,
+                  },
+                )}
               >
                 {formatText({ id: 'button.addTransaction' })}
               </Button>
