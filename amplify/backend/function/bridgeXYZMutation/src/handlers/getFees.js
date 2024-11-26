@@ -1,8 +1,11 @@
 const fetch = require('cross-fetch');
 const { v4: uuid } = require('uuid');
 
-const getFeesHandler = async (event, { apiKey, apiUrl }) => {
+const EnvVarsConfig = require('../config/envVars.js');
+
+const getFeesHandler = async (event) => {
   const { path } = event.arguments?.input || {};
+  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
 
   try {
     const res = await fetch(`${apiUrl}/${path}`, {
