@@ -36,12 +36,12 @@ const StatsCards = ({
           id: 'streamingPaymentsPage.widget.totalStreaming',
         })}
         value={
-          <div className="align-center flex gap-2">
+          <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
-              <h4 className="font-semibold heading-4">{prefix}</h4>
-              <p className="self-center font-semibold heading-4">
+              <h4 className="self-center font-semibold heading-4">
+                {prefix}
                 {getFormattedNumeralValue(streamingPerMonthDecimal, 0)}
-              </p>
+              </h4>
             </div>
             <p className="self-center text-1">{suffix} / month</p>
           </div>
@@ -53,12 +53,12 @@ const StatsCards = ({
           id: 'streamingPaymentsPage.widget.totalStreamed',
         })}
         value={
-          <div className="align-center flex gap-2">
+          <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
-              <h4 className="font-semibold heading-4">{prefix}</h4>
-              <p className="self-center font-semibold heading-4">
+              <h4 className="self-center font-semibold heading-4">
+                {prefix}
                 {getFormattedNumeralValue(totalStreamedDecimal, 0)}
-              </p>
+              </h4>
             </div>
             <p className="self-center text-1">{suffix}</p>
           </div>
@@ -69,12 +69,12 @@ const StatsCards = ({
           id: 'streamingPaymentsPage.widget.unclaimedFounds',
         })}
         value={
-          <div className="align-center flex gap-2">
+          <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
-              <h4 className="font-semibold heading-4">{prefix}</h4>
-              <p className="self-center font-semibold heading-4">
+              <h4 className="self-center font-semibold heading-4">
+                {prefix}
                 {getFormattedNumeralValue(unclaimedFoundsDecimal, 0)}
-              </p>
+              </h4>
             </div>
             <p className="self-center text-1">{suffix}</p>
           </div>
