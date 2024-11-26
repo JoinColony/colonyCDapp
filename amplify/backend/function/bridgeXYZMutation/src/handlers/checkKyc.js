@@ -5,7 +5,7 @@ const {
   getBridgeCustomer,
   getLiquidationAddresses,
   getExternalAccounts,
-  getKYCLinks,
+  createKYCLinks,
   createLiquidationAddress,
 } = require('../api/rest/bridge');
 /*
@@ -88,7 +88,7 @@ const generateKYCLinks = async (bridgeCustomer, colonyUser) => {
   const fullName = `${bridgeCustomer.first_name}${bridgeCustomer.last_name}`;
   const email = bridgeCustomer.email;
 
-  const data = await getKYCLinks(fullName, email);
+  const data = await createKYCLinks(fullName, email);
   const { existing_kyc_link, kyc_link, kyc_status } = data;
 
   let kycStatus = (existing_kyc_link?.kyc_status || kyc_status)?.toUpperCase();

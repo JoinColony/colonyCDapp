@@ -3,93 +3,74 @@ const { v4: uuid } = require('uuid');
 
 const EnvVarsConfig = require('../../config/envVars.js');
 
-const createExternalAccount = async (bridgeCustomerId, account) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const [firstName, lastName] = account.accountOwner.split(' ');
+const handleResponse = async (response, path) => {
+  const responseJson = await response.json();
 
-  const createAccountRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Idempotency-Key': uuid(),
-        'Api-Key': apiKey,
-      },
-      body: JSON.stringify({
-        bank_name: account.bankName,
-        currency: account.currency,
-        account: account.usAccount,
-        iban: account.iban,
-        account_owner_type: 'individual',
-        account_owner_name: account.accountOwner,
-        account_type: account.currency === 'usd' ? 'us' : 'iban',
-        address: account.address,
-        first_name: firstName,
-        last_name: lastName,
-      }),
-      method: 'POST',
-    },
-  );
-
-  const createAccountJson = await createAccountRes.json();
-
-  if (createAccountRes.status !== 201) {
-    console.error(createAccountJson);
-    throw Error('Error creating external account');
+  if (!response.ok) {
+    console.error(`Failed request to ${path}. Status: ${response.status}`);
+    return {
+      error: true,
+      status: response.status,
+      message: `Request failed: ${JSON.stringify(responseJson)}`,
+      data: responseJson,
+    };
   }
 
-  return createAccountJson;
+  return {
+    error: false,
+    status: response.status,
+    data: responseJson,
+  };
 };
 
-const getLiquidationAddresses = async (bridgeCustomerId) => {
+const handlePost = async (path, body = {}) => {
   const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const liquidationAddressesRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses?limit=100`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
+
+  const response = await fetch(`${apiUrl}/${path}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Idempotency-Key': uuid(),
+      'Api-Key': apiKey,
     },
-  );
+    body: JSON.stringify(body),
+    method: 'POST',
+  });
 
-  const liquidationAddressesJson = await liquidationAddressesRes.json();
-
-  if (liquidationAddressesRes.status !== 200) {
-    console.error(liquidationAddressesJson);
-    throw new Error('Error fetching liquidation addresses');
-  }
-
-  return liquidationAddressesJson.data;
+  return handleResponse(response, path);
 };
 
-const getExternalAccounts = async (bridgeCustomerId) => {
+const handlePut = async (path, body = {}) => {
   const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const externalAccountsRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
+
+  const response = await fetch(`${apiUrl}/${path}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Api-Key': apiKey,
     },
-  );
+    body: JSON.stringify(body),
+    method: 'PUT',
+  });
 
-  if (externalAccountsRes.status !== 200) {
-    console.log(
-      `Could not fetch external accounts for customer ${bridgeCustomerId}`,
-    );
-    return null;
-  }
+  return handleResponse(response, path);
+};
 
-  const externalAccountsJson = await externalAccountsRes.json();
+const handleGet = async (path, headers = {}) => {
+  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
 
-  return externalAccountsJson.data;
+  const response = await fetch(`${apiUrl}/${path}`, {
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+      'Api-Key': apiKey,
+    },
+  });
+
+  return handleResponse(response, path);
 };
 
 const deleteExternalAccount = async (bridgeCustomerId, id) => {
   const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const deleteAccountRes = await fetch(
+  const response = await fetch(
     `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${id}`,
     {
       headers: {
@@ -99,49 +80,49 @@ const deleteExternalAccount = async (bridgeCustomerId, id) => {
     },
   );
 
-  if (deleteAccountRes.status !== 200) {
-    console.log(
-      `Error deleting external account: ${await deleteAccountRes.text()}`,
-    );
+  if (response.status !== 200) {
+    console.log(`Error deleting external account: ${await response.text()}`);
   }
 };
 
-const getBridgeCustomer = async (bridgeCustomerId) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const customerRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}`,
+const createExternalAccount = async (bridgeCustomerId, account) => {
+  const [firstName, lastName] = account.accountOwner.split(' ');
+  const response = await handlePost(
+    `v0/customers/${bridgeCustomerId}/external_accounts`,
     {
-      headers: {
-        'Api-Key': apiKey,
-      },
+      bank_name: account.bankName,
+      currency: account.currency,
+      account: account.usAccount,
+      iban: account.iban,
+      account_owner_type: 'individual',
+      account_owner_name: account.accountOwner,
+      account_type: account.currency === 'usd' ? 'us' : 'iban',
+      address: account.address,
+      first_name: firstName,
+      last_name: lastName,
     },
   );
-  return customerRes.json();
-};
 
-const getKYCLinks = async (fullName, email) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const kycLinksRes = await fetch(`${apiUrl}/v0/kyc_links`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Idempotency-Key': uuid(),
-      'Api-Key': apiKey,
-    },
-    body: JSON.stringify({
-      full_name: fullName,
-      email,
-      type: 'individual',
-    }),
-    method: 'POST',
-  });
-
-  const kycLinksJson = await kycLinksRes.json();
-
-  if (kycLinksRes.status !== 200) {
-    console.log(`Could not generate KYC links`);
+  if (response.status !== 201) {
+    console.error(response.message);
+    throw Error(`Error creating external account: ${response.message}`);
   }
 
-  return kycLinksJson;
+  return response.data;
+};
+
+const createKYCLinks = async (fullName, email) => {
+  const response = await handlePost(`v0/kyc_links`, {
+    full_name: fullName,
+    email,
+    type: 'individual',
+  });
+
+  if (response.status !== 200) {
+    console.log(`Could not generate new KYC links`);
+  }
+
+  return response.data;
 };
 
 const createLiquidationAddress = async (
@@ -149,78 +130,83 @@ const createLiquidationAddress = async (
   accountId,
   accountCurrency,
 ) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-  const liquidationAddressCreation = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+  const response = await handlePost(
+    `v0/customers/${bridgeCustomerId}/liquidation_addresses`,
     {
-      headers: {
-        'Content-Type': 'application/json',
-        'Idempotency-Key': uuid(),
-        'Api-Key': apiKey,
-      },
-      method: 'POST',
-      body: JSON.stringify({
-        chain: 'arbitrum',
-        currency: 'usdc',
-        external_account_id: accountId,
-        destination_payment_rail: accountCurrency === 'usd' ? 'ach' : 'sepa',
-        destination_currency: accountCurrency,
-      }),
+      chain: 'arbitrum',
+      currency: 'usdc',
+      external_account_id: accountId,
+      destination_payment_rail: accountCurrency === 'usd' ? 'ach' : 'sepa',
+      destination_currency: accountCurrency,
     },
   );
 
-  const liquidationAddressCreationJson =
-    await liquidationAddressCreation.json();
+  if (response.status !== 201) {
+    console.error('Failed to create liquidation address');
+    return null;
+  }
 
-  if (liquidationAddressCreation.status !== 201) {
-    console.error(
-      'Failed to create liquidation address: ',
-      liquidationAddressCreationJson,
+  return response.data;
+};
+
+const getLiquidationAddresses = async (bridgeCustomerId) => {
+  const response = await handleGet(
+    `v0/customers/${bridgeCustomerId}/liquidation_addresses?limit=100`,
+  );
+
+  if (response.error) {
+    console.error(response.message);
+    throw new Error('Error fetching liquidation addresses');
+  }
+
+  return response.data.data;
+};
+
+const getExternalAccounts = async (bridgeCustomerId) => {
+  const response = await handleGet(
+    `v0/customers/${bridgeCustomerId}/external_accounts`,
+  );
+
+  if (response.error) {
+    console.log(
+      `Could not fetch external accounts for customer ${bridgeCustomerId}`,
     );
     return null;
   }
 
-  return liquidationAddressCreationJson;
+  return response.data.data;
+};
+
+const getBridgeCustomer = async (bridgeCustomerId) => {
+  const response = await handleGet(`v0/customers/${bridgeCustomerId}`);
+  return response.data;
 };
 
 const getGatewayFee = async () => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
+  const response = await handleGet(`v0/developer/fees`);
 
-  const res = await fetch(`${apiUrl}/v0/developer/fees`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Api-Key': apiKey,
-    },
-  });
-
-  return res.json();
+  return response.data;
 };
 
 const getDrainsHistory = async (bridgeCustomerId, liquidationAddressId) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
-
-  const drainsRes = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddressId}/drains`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
-      method: 'GET',
-    },
+  const response = await handleGet(
+    `v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddressId}/drains`,
   );
 
-  return drainsRes.json();
+  return response.data;
 };
 
 module.exports = {
+  handlePost,
+  handlePut,
+  handleGet,
   createExternalAccount,
   deleteExternalAccount,
   createLiquidationAddress,
+  createKYCLinks,
   getBridgeCustomer,
   getExternalAccounts,
   getLiquidationAddresses,
-  getKYCLinks,
   getGatewayFee,
   getDrainsHistory,
 };

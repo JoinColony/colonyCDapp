@@ -1,16 +1,14 @@
-const fetch = require('cross-fetch');
 const { getUser } = require('../api/graphql/schemas');
 const { graphqlRequest } = require('../api/graphql/utils');
 const {
+  handlePut,
   createExternalAccount,
   deleteExternalAccount,
   getLiquidationAddresses,
   getExternalAccounts,
 } = require('../api/rest/bridge');
-const EnvVarsConfig = require('../config/envVars');
 
 const updateExternalAccountHandler = async (event) => {
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
   const input = event.arguments.input;
   const account = input.account;
 
@@ -54,23 +52,16 @@ const updateExternalAccountHandler = async (event) => {
     targetLiquidationAddress &&
     targetLiquidationAddress.destination_currency === newAccount.currency
   ) {
-    const updateAddressRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${targetLiquidationAddress.id}`,
+    const updateAddressRes = await handlePut(
+      `v0/customers/${bridgeCustomerId}/liquidation_addresses/${targetLiquidationAddress.id}`,
       {
-        headers: {
-          'Content-Type': 'application/json',
-          'Api-Key': apiKey,
-        },
-        body: JSON.stringify({
-          external_account_id: newAccount.id,
-        }),
-        method: 'PUT',
+        external_account_id: newAccount.id,
       },
     );
 
     if (updateAddressRes.status !== 200) {
       throw Error(
-        `Error updating liquidation address: ${await updateAddressRes.text()}`,
+        `Error updating liquidation address: ${updateAddressRes.message}`,
       );
     }
   }

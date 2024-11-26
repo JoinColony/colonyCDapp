@@ -1,7 +1,6 @@
-const fetch = require('cross-fetch');
-const { v4: uuid } = require('uuid');
 const { graphqlRequest } = require('../api/graphql/utils');
-const EnvVarsConfig = require('../config/envVars.js');
+
+const { handlePost } = require('../api/rest/bridge');
 
 /*
  * @TODO This needs to be imported properly into the project (maybe?)
@@ -30,23 +29,13 @@ const extractCustomerId = (tosLink) => {
 const kycLinksHandler = async (event) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
   const { body, path } = event.arguments?.input || {};
-  const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
 
   try {
-    const res = await fetch(`${apiUrl}/${path}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Idempotency-Key': uuid(),
-        'Api-Key': apiKey,
-      },
-      body: JSON.stringify({
-        ...body,
-        type: 'individual',
-      }),
-      method: 'POST',
+    const response = await handlePost(path, {
+      ...body,
+      type: 'individual',
     });
-
-    const data = await res.json();
+    const data = response.data;
 
     /**
      * customer_id in the kyc link object will be null until both TOS/KYC approved
