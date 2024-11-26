@@ -71,7 +71,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
     loadingStreamingPayment,
     refetchStreamingPayment,
     streamingPaymentData,
-  } = useGetStreamingPaymentData(action.streamingPaymentId);
+  } = useGetStreamingPaymentData(action?.streamingPaymentId);
   const {
     actionStatus,
     setActionStatus,
