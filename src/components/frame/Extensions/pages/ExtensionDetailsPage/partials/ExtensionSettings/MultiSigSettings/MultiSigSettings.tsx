@@ -1,11 +1,12 @@
 import { CaretDown } from '@phosphor-icons/react';
-import React, { type FC } from 'react';
+import React, { useEffect, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { InputGroup } from '~common/Extensions/Fields/InputGroup/InputGroup.tsx';
 import RadioBase from '~common/Extensions/Fields/RadioList/RadioBase.tsx';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
@@ -105,8 +106,31 @@ const MultiSigSettings: FC = () => {
     handleGlobalThresholdTypeChange,
   } = useThresholdData(extensionData);
 
-  const [isCustomSettingsVisible, { toggle: toggleCustomSettings }] =
+  const [isCustomSettingsVisible, { toggle: toggleCustomSettings, toggleOn }] =
     useToggle();
+
+  useEffect(() => {
+    const multiSigConfig = isInstalledExtensionData(extensionData)
+      ? extensionData.params?.multiSig || null
+      : null;
+
+    const { colonyThreshold, domainThresholds } = multiSigConfig || {};
+
+    if (!domainThresholds) {
+      return;
+    }
+
+    // If any custom settings have been adjusted, show the custom thresholds accordion on load
+    const shouldShowCustomSettings = domainThresholds.some((domain) => {
+      const { domainThreshold } = domain || {};
+
+      return domainThreshold !== colonyThreshold;
+    });
+
+    if (shouldShowCustomSettings) {
+      toggleOn();
+    }
+  }, [extensionData, toggleOn]);
 
   const handleOnKeyDown = (e) => {
     if (['.', ','].includes(e.key)) {
