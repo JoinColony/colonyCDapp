@@ -2,10 +2,10 @@ import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 
-import ColonyCardSkeleton from './ColonyCards/ColonyCardSkeleton.tsx';
-import InfoBanner from './InfoBanner/InfoBanner.tsx';
+import ColonyCardSkeleton from '../ColonyCards/ColonyCardSkeleton.tsx';
+import InfoBanner from '../InfoBanner/InfoBanner.tsx';
 
-const displayName = 'frame.LandingPage';
+const displayName = 'frame.LandingPage.partials.LandingPageLoadingSkeleton';
 
 interface LandingPageLoadingSkeletonProps {
   loadingCards: boolean;

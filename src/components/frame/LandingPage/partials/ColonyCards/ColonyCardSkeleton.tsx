@@ -4,7 +4,7 @@ import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 
 import BaseColonyCard from './BaseColonyCard/BaseColonyCard.tsx';
 
-const displayName = 'frame.LandingPage.ColonyCards';
+const displayName = 'frame.LandingPage.partials.ColonyCards';
 
 export const ColonyCardSkeleton = () => (
   <BaseColonyCard
