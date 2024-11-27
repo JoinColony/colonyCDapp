@@ -19,6 +19,7 @@ import { type Schema } from 'yup';
 
 import { type AdditionalFormOptionsContextValue } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import AdditionalFormOptionsContextProvider from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContextProvider.tsx';
+import { useStableDepsEffect } from '~hooks/useStableDepsEffect.ts';
 
 const displayName = 'Form';
 
@@ -66,6 +67,7 @@ const Form = <FormData extends FieldValues>({
   id,
 }: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
+
   // Resolver updated to have the access to all of the form values inside a field validator context
   const resolver = useMemo<Resolver<FormData> | undefined>(() => {
     if (!validationSchema) {
@@ -131,7 +133,7 @@ const Form = <FormData extends FieldValues>({
   );
 
   // Separate concern for handling defaultValues updates
-  useEffect(() => {
+  useStableDepsEffect(() => {
     const initializeForm = async () => {
       const resolvedDefaultValues =
         typeof defaultValues === 'function'
@@ -141,7 +143,7 @@ const Form = <FormData extends FieldValues>({
       const currentValues = getValues();
       const mergedValues = { ...currentValues, ...resolvedDefaultValues };
 
-      reset(mergedValues, { keepDirtyValues: true, keepValues: true });
+      reset(mergedValues, { keepDirtyValues: true });
     };
 
     initializeForm();
