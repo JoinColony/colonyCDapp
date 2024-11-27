@@ -18,6 +18,8 @@ const {
   createLiquidationAddress: createLiquidationAddressMutation,
 } = require('../api/graphql/schemas');
 
+const { CHAIN_ID } = require('../consts.js');
+
 const KYC_STATUS = {
   NOT_STARTED: 'NOT_STARTED',
   INCOMPLETE: 'INCOMPLETE',
@@ -67,6 +69,7 @@ const checkKYCHandler = async (event) => {
     }
 
     const liquidationAddress = await getLiquidationAddress(
+      checksummedWalletAddress,
       bridgeCustomerId,
       bankAccount.id,
       bankAccount.currency,
@@ -138,6 +141,7 @@ const getBankAccountDetails = async (bridgeCustomerId) => {
 };
 
 const getLiquidationAddress = async (
+  userAddress,
   bridgeCustomerId,
   externalAccountId,
   externalAccountCurrency,
@@ -173,9 +177,10 @@ const getLiquidationAddress = async (
       // create liquidation address entry in the database
       await graphqlRequest(createLiquidationAddressMutation, {
         input: {
-          chainId: 42161,
+          // @TODO here use dynamic chainId
+          chainId: CHAIN_ID,
           liquidationAddress: checksummedLiquidationAddress,
-          userAddress: checksummedWalletAddress,
+          userAddress,
         },
       });
 

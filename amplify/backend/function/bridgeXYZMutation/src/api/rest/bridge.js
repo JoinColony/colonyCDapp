@@ -3,6 +3,12 @@ const { v4: uuid } = require('uuid');
 
 const EnvVarsConfig = require('../../config/envVars.js');
 
+const {
+  bridgeApiConfig,
+  USDC_TOKEN_NAME,
+  CHAIN_SHORT_NAME,
+} = require('../../consts.js');
+
 const handleResponse = async (response, path) => {
   const responseJson = await response.json();
 
@@ -71,7 +77,7 @@ const handleGet = async (path, headers = {}) => {
 const deleteExternalAccount = async (bridgeCustomerId, id) => {
   const { apiKey, apiUrl } = await EnvVarsConfig.getEnvVars();
   const response = await fetch(
-    `${apiUrl}/v0/customers/${bridgeCustomerId}/external_accounts/${id}`,
+    `${apiUrl}/${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.externalAccounts}/${id}`,
     {
       headers: {
         'Api-Key': apiKey,
@@ -88,15 +94,18 @@ const deleteExternalAccount = async (bridgeCustomerId, id) => {
 const createExternalAccount = async (bridgeCustomerId, account) => {
   const [firstName, lastName] = account.accountOwner.split(' ');
   const response = await handlePost(
-    `v0/customers/${bridgeCustomerId}/external_accounts`,
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.externalAccounts}`,
     {
       bank_name: account.bankName,
       currency: account.currency,
       account: account.usAccount,
       iban: account.iban,
-      account_owner_type: 'individual',
+      account_owner_type: bridgeApiConfig.constants.accountOwnerType,
       account_owner_name: account.accountOwner,
-      account_type: account.currency === 'usd' ? 'us' : 'iban',
+      account_type:
+        account.currency === 'usd'
+          ? bridgeApiConfig.constants.accountType.US
+          : bridgeApiConfig.constants.accountType.IBAN,
       address: account.address,
       first_name: firstName,
       last_name: lastName,
@@ -112,11 +121,14 @@ const createExternalAccount = async (bridgeCustomerId, account) => {
 };
 
 const createKYCLinks = async (fullName, email) => {
-  const response = await handlePost(`v0/kyc_links`, {
-    full_name: fullName,
-    email,
-    type: 'individual',
-  });
+  const response = await handlePost(
+    `${bridgeApiConfig.endpoints.routes.kycLinks}`,
+    {
+      full_name: fullName,
+      email,
+      type: bridgeApiConfig.constants.accountOwnerType,
+    },
+  );
 
   if (response.status !== 200) {
     console.log(`Could not generate new KYC links`);
@@ -131,12 +143,15 @@ const createLiquidationAddress = async (
   accountCurrency,
 ) => {
   const response = await handlePost(
-    `v0/customers/${bridgeCustomerId}/liquidation_addresses`,
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.liquidationAddresses}`,
     {
-      chain: 'arbitrum',
-      currency: 'usdc',
+      chain: CHAIN_SHORT_NAME,
+      currency: USDC_TOKEN_NAME,
       external_account_id: accountId,
-      destination_payment_rail: accountCurrency === 'usd' ? 'ach' : 'sepa',
+      destination_payment_rail:
+        accountCurrency === 'usd'
+          ? bridgeApiConfig.constants.paymentRail.ACH
+          : bridgeApiConfig.constants.paymentRail.SEPA,
       destination_currency: accountCurrency,
     },
   );
@@ -151,7 +166,7 @@ const createLiquidationAddress = async (
 
 const getLiquidationAddresses = async (bridgeCustomerId) => {
   const response = await handleGet(
-    `v0/customers/${bridgeCustomerId}/liquidation_addresses?limit=100`,
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.liquidationAddresses}?limit=100`,
   );
 
   if (response.error) {
@@ -164,7 +179,7 @@ const getLiquidationAddresses = async (bridgeCustomerId) => {
 
 const getExternalAccounts = async (bridgeCustomerId) => {
   const response = await handleGet(
-    `v0/customers/${bridgeCustomerId}/external_accounts`,
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.externalAccounts}`,
   );
 
   if (response.error) {
@@ -178,19 +193,23 @@ const getExternalAccounts = async (bridgeCustomerId) => {
 };
 
 const getBridgeCustomer = async (bridgeCustomerId) => {
-  const response = await handleGet(`v0/customers/${bridgeCustomerId}`);
+  const response = await handleGet(
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}`,
+  );
   return response.data;
 };
 
 const getGatewayFee = async () => {
-  const response = await handleGet(`v0/developer/fees`);
+  const response = await handleGet(
+    `${bridgeApiConfig.endpoints.routes.developer}/${bridgeApiConfig.endpoints.resources.fees}`,
+  );
 
   return response.data;
 };
 
 const getDrainsHistory = async (bridgeCustomerId, liquidationAddressId) => {
   const response = await handleGet(
-    `v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddressId}/drains`,
+    `${bridgeApiConfig.endpoints.routes.customers}/${bridgeCustomerId}/${bridgeApiConfig.endpoints.resources.liquidationAddresses}/${liquidationAddressId}/${bridgeApiConfig.endpoints.resources.drains}`,
   );
 
   return response.data;
