@@ -15,6 +15,7 @@ import {
   getGroupValues,
   getActiveTransactionIdx,
   getGroupId,
+  getHasZeroAddressTransaction,
 } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
@@ -55,6 +56,8 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const groupId = getGroupId(transactionGroup);
   const status = getGroupStatus(transactionGroup);
   const values = getGroupValues<TransactionType>(transactionGroup);
+  const hasZeroAddressTransaction =
+    getHasZeroAddressTransaction(transactionGroup);
 
   const groupMsgId = `transaction.group`;
 
@@ -95,7 +98,8 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
     !GROUP_KEYS_WHICH_CANNOT_LINK.includes(
       values.group.key as TRANSACTION_METHODS,
     ) &&
-    status === TransactionStatus.Succeeded;
+    status === TransactionStatus.Succeeded &&
+    !hasZeroAddressTransaction;
 
   const createdAt =
     transactionGroup?.[0].createdAt &&
@@ -127,7 +131,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
               onClick={handleNavigateToAction}
               disabled={!canLinkToAction || hideSummary}
               className={clsx(
-                'flex w-full flex-col items-start gap-1  sm:px-6',
+                'flex w-full flex-col items-start gap-1 sm:px-6',
                 {
                   'cursor-default': !canLinkToAction,
                 },
