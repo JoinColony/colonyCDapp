@@ -85,7 +85,7 @@ const ActionNotification: FC<NotificationProps> = ({
       return null;
     }
 
-    return formatText({ id: 'action.title' }, titleValues);
+    return formatText({ id: 'action.title' }, titleValues, notification.id);
   }, [action, colony, titleValues]);
 
   const actionTitle =

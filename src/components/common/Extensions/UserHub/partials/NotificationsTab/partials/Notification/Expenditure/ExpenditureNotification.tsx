@@ -155,7 +155,11 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       return null;
     }
 
-    return formatText({ id: 'action.title' }, actionTitleValues);
+    return formatText(
+      { id: 'action.title' },
+      actionTitleValues,
+      notification.id,
+    );
   }, [action, actionTitleValues, colony]);
 
   return (
