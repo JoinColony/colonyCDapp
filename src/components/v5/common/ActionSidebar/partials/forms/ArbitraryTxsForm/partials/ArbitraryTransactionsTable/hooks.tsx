@@ -114,7 +114,7 @@ export const useArbitraryTxsTableColumns = ({
         size: isMobile ? 100 : 67,
       }),
     ],
-    [columnHelper, isMobile, openTransactionModal],
+    [columnHelper, isMobile, openTransactionModal, isError],
   );
 
   return columns;
