@@ -2,12 +2,18 @@ import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
 
 const useActionsList = () => {
   const { colony } = useColonyContext();
   const { isStagedExpenditureEnabled } = useEnabledExtensions();
+
+  const featureFlags = useFeatureFlagsContext();
+  const isFeatureFlagArbitraryTxsEnabled =
+    featureFlags.ARBITRARY_TXS_ACTION?.isLoading ||
+    featureFlags.ARBITRARY_TXS_ACTION?.isEnabled;
 
   return useMemo((): SearchSelectOptionProps[] => {
     const actionsListOptions: SearchSelectOptionProps[] = [
@@ -133,7 +139,9 @@ const useActionsList = () => {
           // },
         ],
       },
-      {
+    ];
+    if (isFeatureFlagArbitraryTxsEnabled) {
+      actionsListOptions.push({
         key: '6',
         isAccordion: true,
         title: { id: 'actions.transactions' },
@@ -144,8 +152,8 @@ const useActionsList = () => {
             isNew: true,
           },
         ],
-      },
-    ];
+      });
+    }
     if (!isStagedExpenditureEnabled) {
       const stagedPaymentIndex = actionsListOptions[0].options.findIndex(
         ({ value }) => value === Action.StagedPayment,
@@ -160,7 +168,7 @@ const useActionsList = () => {
       actionsListOptions[2].options[2].isDisabled = true;
     }
     return actionsListOptions;
-  }, [colony, isStagedExpenditureEnabled]);
+  }, [colony, isStagedExpenditureEnabled, isFeatureFlagArbitraryTxsEnabled]);
 };
 
 export default useActionsList;
