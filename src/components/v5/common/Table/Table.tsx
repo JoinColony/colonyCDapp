@@ -7,7 +7,7 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
@@ -54,6 +54,8 @@ const Table = <T,>({
   showTableBorder = true,
   alwaysShowPagination = false,
   footerColSpan,
+  loadMoreProps,
+  hidePagination,
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
@@ -124,6 +126,16 @@ const Table = <T,>({
     }
   }, [isMobile, hasExpandableRows, rows]);
 
+  const [showedActions, setShowedActions] = useState(
+    loadMoreProps?.itemsPerPage,
+  );
+
+  const rowsToShow = loadMoreProps ? rows.slice(0, showedActions) : rows;
+  const handleLoadMore = () => {
+    setShowedActions((showedActions ?? 0) + (loadMoreProps?.itemsPerPage ?? 0));
+  };
+  const canLoadMore = rows.length > (showedActions ?? 0);
+
   return (
     <div className={className}>
       <table
@@ -139,7 +151,7 @@ const Table = <T,>({
         cellSpacing="0"
       >
         {verticalLayout ? (
-          rows.map((row) => {
+          rowsToShow.map((row) => {
             const cells = row.getVisibleCells();
 
             return (
@@ -313,7 +325,7 @@ const Table = <T,>({
                   </td>
                 </tr>
               ) : (
-                rows.map((row) => {
+                rowsToShow.map((row) => {
                   const showExpandableContent =
                     row.getIsExpanded() && renderSubComponent;
 
@@ -408,7 +420,7 @@ const Table = <T,>({
                       </TableRow>
                       {showExpandableContent && (
                         <tr
-                          className={clsx({
+                          className={clsx('expanded-content', {
                             '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
                               !withNarrowBorder,
                           })}
@@ -427,6 +439,16 @@ const Table = <T,>({
                     </React.Fragment>
                   );
                 })
+              )}
+              {loadMoreProps && canLoadMore && (
+                <tr className="loadMore">
+                  <td
+                    colSpan={totalColumnsCount}
+                    className="h-full px-[1.1rem] pb-5 pt-2.5 text-center"
+                  >
+                    {loadMoreProps.renderContent(handleLoadMore)}
+                  </td>
+                </tr>
               )}
             </tbody>
           </>
@@ -463,6 +485,7 @@ const Table = <T,>({
       </table>
       {(hasPagination || alwaysShowPagination) &&
         showPageNumber &&
+        !hidePagination &&
         (canGoToPreviousPage || canGoToNextPage) && (
           <TablePagination
             onNextClick={goToNextPage}

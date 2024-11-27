@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client';
 import { ColonyRole } from '@colony/colony-js';
 import {
   Calendar,
@@ -11,7 +12,7 @@ import {
 import clsx from 'clsx';
 import format from 'date-fns/format';
 import { BigNumber } from 'ethers';
-import React, { type FC } from 'react';
+import React, { useEffect, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
@@ -19,7 +20,11 @@ import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMe
 import { ADDRESS_ZERO, APP_URL } from '~constants';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
+import {
+  ColonyActionType,
+  SearchStreamingPaymentsDocument,
+  StreamingPaymentEndCondition,
+} from '~gql';
 import { useMobile } from '~hooks';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -30,6 +35,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
+import { isQueryActive } from '~utils/isQueryActive.ts';
 import {
   getAmountPerValue,
   getStreamingPaymentLimit,
@@ -73,8 +79,17 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const isMobile = useMobile();
+  const client = useApolloClient();
 
   const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
+
+  useEffect(() => {
+    if (isQueryActive('SearchStreamingPayments')) {
+      client.refetchQueries({
+        include: [SearchStreamingPaymentsDocument],
+      });
+    }
+  }, [client]);
 
   if (loadingStreamingPayment) {
     return (

@@ -55,7 +55,7 @@ const TitleField: FC<TitleFieldProps> = ({
 
   return (
     <div className="flex flex-col gap-[0.125rem]">
-      <p className="text-1">{title}</p>
+      <p className="text-gray-900 text-1">{title}</p>
       {isMobile && hideDescription && (
         <p className="text-sm text-gray-600">
           {formatText(MSG.title, {
