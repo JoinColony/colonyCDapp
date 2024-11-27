@@ -5,6 +5,7 @@ import { GetProfileByEmailDocument, GetUserByNameDocument } from '~gql';
 import { formatText } from '~utils/intl.ts';
 import { createYupTestFromQuery } from '~utils/yup/tests/index.ts';
 
+export const MIN_USERNAME_LENGTH = 3;
 export const MAX_USERNAME_LENGTH = 30;
 
 /*
@@ -30,15 +31,19 @@ function isValidEmail(email: string) {
   return email ? new RegExp(EMAIL_REGEX).test(email) : false;
 }
 
-const MSG = defineMessages({
-  usernameRequired: {
-    id: 'error.usernameRequired',
-    defaultMessage: 'A valid username is required',
+export const USERNAME_MSG = defineMessages({
+  username: {
+    id: 'error.username',
+    defaultMessage:
+      'Usernames can contain letters, numbers or dashes and be between 3 and 30 characters.',
   },
   usernameTaken: {
     id: 'error.usernameTaken',
     defaultMessage: 'Username unavailable',
   },
+});
+
+const MSG = defineMessages({
   validEmail: {
     id: 'error.validEmail',
     defaultMessage: 'A valid email is required',
@@ -46,10 +51,6 @@ const MSG = defineMessages({
   emailAlreadyRegistered: {
     id: 'error.emailAlreadyRegistered',
     defaultMessage: 'This email is already associated with a colony username',
-  },
-  usernameLength: {
-    id: 'error.usernameLength',
-    defaultMessage: 'Too many characters',
   },
 });
 
@@ -66,16 +67,17 @@ export const isUsernameTaken = createYupTestFromQuery({
 
 export const validationSchema = object({
   username: string()
-    .required(formatText(MSG.usernameRequired))
-    .max(30, formatText(MSG.usernameLength))
+    .required(formatText(USERNAME_MSG.username))
+    .min(MIN_USERNAME_LENGTH, formatText(USERNAME_MSG.username))
+    .max(MAX_USERNAME_LENGTH, formatText(USERNAME_MSG.username))
     .test(
       'isValidUsername',
-      formatText(MSG.usernameRequired) as string,
+      formatText(USERNAME_MSG.username) as string,
       isValidUsername,
     )
     .test(
       'isUsernameTaken',
-      formatText(MSG.usernameTaken) as string,
+      formatText(USERNAME_MSG.usernameTaken) as string,
       isUsernameTaken,
     ),
   emailAddress: string()
