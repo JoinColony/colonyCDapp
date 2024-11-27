@@ -100,7 +100,7 @@ const UserHub: FC<Props> = ({
           <>
             <div>
               <TitleLabel
-                className="pb-3"
+                className="pb-3.5"
                 text={formatText(MSG.titleColonyOverview)}
               />
               <ul className="-ml-4 flex w-[calc(100%+2rem)] flex-col">
