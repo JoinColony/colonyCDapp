@@ -14,9 +14,7 @@ import Button from '~v5/shared/Button/Button.tsx';
 import AddTransactionModal from '../AddTransactionModal/AddTransactionModal.tsx';
 
 import { useArbitraryTxsTableColumns } from './hooks.tsx';
-
-const displayName =
-  'v5.common.ActionsContent.partials.ArbitraryTransactionsTable';
+import { MSG, displayName } from './translation.ts';
 
 interface ArbitraryTransactionsTableProps {
   name: string;
@@ -57,7 +55,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   );
 
   const getMenuProps = ({ index, original: rowValues }) =>
-    !readonly
+    !readonly && data.length > 0
       ? {
           cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
           items: [
