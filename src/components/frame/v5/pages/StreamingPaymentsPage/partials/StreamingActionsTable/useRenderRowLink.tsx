@@ -29,11 +29,9 @@ const useRenderRowLink = (
     ) : (
       <Link
         className={clsx(cellClassName, 'items-start')}
-        to={setQueryParamOnUrl(
-          window.location.search,
-          TX_SEARCH_PARAM,
-          row.original.transactionId,
-        )}
+        to={setQueryParamOnUrl({
+          params: { [TX_SEARCH_PARAM]: row.original.transactionId },
+        })}
       >
         {content}
       </Link>
