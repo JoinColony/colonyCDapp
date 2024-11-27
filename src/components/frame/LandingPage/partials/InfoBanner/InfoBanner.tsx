@@ -15,7 +15,7 @@ export interface InfoBannerProps {
   text: string | React.ReactNode;
 }
 
-const displayName = 'frame.LandingPage.InfoBanner';
+const displayName = 'frame.LandingPage.partials.InfoBanner';
 
 const MSG = defineMessages({
   info: {

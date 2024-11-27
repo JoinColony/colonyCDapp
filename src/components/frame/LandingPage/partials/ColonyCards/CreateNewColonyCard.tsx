@@ -6,7 +6,7 @@ import Button from '~v5/shared/Button/Button.tsx';
 
 import BaseColonyCard from './BaseColonyCard/BaseColonyCard.tsx';
 
-const displayName = 'frame.LandingPage.ColonyCards';
+const displayName = 'frame.LandingPage.partials.ColonyCards';
 
 export interface ColonyCreateCardProps {
   invitationsRemaining: number;

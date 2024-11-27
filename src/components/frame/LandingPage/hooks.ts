@@ -8,6 +8,14 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { CREATE_COLONY_ROUTE_BASE } from '~routes';
 import { getLastWallet } from '~utils/autoLogin.ts';
 
+export type AvailableColonies = {
+  address: string;
+  avatar: string | undefined;
+  displayName: string | undefined;
+  name: string;
+  membersCount: number | undefined;
+}[];
+
 export const useLandingPage = () => {
   const {
     canInteract,
@@ -116,7 +124,7 @@ export const useLandingPage = () => {
           ?.buckets
       : [];
 
-  const availableColonies = joinedColonies.map(
+  const availableColonies: AvailableColonies = joinedColonies.map(
     ({ metadata, colonyAddress, name }) => ({
       address: colonyAddress,
       avatar: metadata?.avatar

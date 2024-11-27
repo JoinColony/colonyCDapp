@@ -12,7 +12,7 @@ import {
 import { ADDRESS_ZERO, REQUEST_ACCESS } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { LandingPageLayout } from '~frame/Extensions/layouts/LandingPageLayout.tsx';
-import InfoBanner from '~frame/LandingPage/InfoBanner/InfoBanner.tsx';
+import InfoBanner from '~frame/LandingPage/partials/InfoBanner/InfoBanner.tsx';
 import LoadingTemplate from '~frame/LoadingTemplate/LoadingTemplate.tsx';
 import {
   useGetColonyMemberInviteQuery,
