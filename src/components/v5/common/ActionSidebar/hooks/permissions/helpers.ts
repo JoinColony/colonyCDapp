@@ -124,6 +124,7 @@ export const getPermissionsDomainIdForAction = (
   switch (actionType) {
     case Action.SimplePayment:
     case Action.PaymentBuilder:
+    case Action.StagedPayment:
       if (!isMotion) {
         return from;
       }
@@ -133,6 +134,7 @@ export const getPermissionsDomainIdForAction = (
       return undefined;
     case Action.ManageReputation:
     case Action.EditExistingTeam:
+    case Action.SplitPayment:
       if (!isMotion) {
         return team;
       }
