@@ -8,7 +8,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import { getInputTextWidth } from '~utils/elements.ts';
 import { getSafeStringifiedNumber } from '~utils/numbers.ts';
-import { calculatePercentageReputation } from '~utils/reputation.ts';
+import {
+  calculatePercentageReputation,
+  getReputationDifference,
+} from '~utils/reputation.ts';
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
@@ -111,11 +114,10 @@ export const useReputationFields = () => {
     getTokenDecimalsWithFallback(nativeToken.decimals),
   );
 
-  const amountPercentageValue =
-    typeof newPercentageReputation === 'number' &&
-    typeof percentageReputation === 'number'
-      ? Math.abs(newPercentageReputation - percentageReputation)
-      : '~0';
+  const amountPercentageValue = getReputationDifference(
+    newPercentageReputation,
+    percentageReputation,
+  );
 
   const newValueIsGreaterThanZero = isSmite
     ? BigNumber.from(userReputation || '0').gte(amountValueCalculated)

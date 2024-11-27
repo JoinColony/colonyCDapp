@@ -2,7 +2,10 @@ import { BigNumber } from 'ethers';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
-import { calculatePercentageReputation } from '~utils/reputation.ts';
+import {
+  calculatePercentageReputation,
+  getReputationDifference,
+} from '~utils/reputation.ts';
 import {
   getFormattedTokenValue,
   getTokenDecimalsWithFallback,
@@ -59,11 +62,11 @@ export const useManageReputationTableData = ({
     newReputation || 0,
     getTokenDecimalsWithFallback(nativeToken.decimals),
   );
-  const amountPercentageValue =
-    typeof newPercentageReputation === 'number' &&
-    typeof percentageReputation === 'number'
-      ? Math.abs(newPercentageReputation - percentageReputation)
-      : '~0';
+
+  const amountPercentageValue = getReputationDifference(
+    newPercentageReputation,
+    percentageReputation,
+  );
 
   return {
     amountPercentageValue,
