@@ -22,7 +22,8 @@ import {
   initiateTransaction,
   createActionMetadataInDB,
   getPermissionProofsLocal,
-  getChildIndexLocal,
+  getMoveFundsActionDomain,
+  getMoveFundsPermissionProofs,
 } from '../utils/index.ts';
 
 function* moveFundsMotion({
@@ -105,20 +106,27 @@ function* moveFundsMotion({
         throw new Error('Cannot find rootDomain in colony domains');
       }
 
-      const { nativeFundingPotId: fromPot } = fromDomain;
-      const { nativeFundingPotId: toPot } = toDomain;
+      const { nativeFundingPotId: fromPot, nativeId: fromDomainId } =
+        fromDomain;
+      const { nativeFundingPotId: toPot, nativeId: toDomainId } = toDomain;
 
       if (isMultiSig) {
         const multiSigClient = yield colonyClient.getExtensionClient(
           Extension.MultisigPermissions,
         );
 
+        const actionDomainId = getMoveFundsActionDomain({
+          actionDomainId: null,
+          fromDomainId,
+          toDomainId,
+        });
+
         const [multiSigPermissionDomainId, multiSigChildSkillIndex] =
           yield call(getPermissionProofsLocal, {
             networkClient: colonyClient.networkClient,
             colonyRoles,
             colonyDomains,
-            requiredDomainId: Id.RootDomain,
+            requiredDomainId: Number(actionDomainId),
             requiredColonyRoles: requiredRoles,
             permissionAddress: multiSigClient.address,
             isMultiSig: false,
@@ -130,28 +138,23 @@ function* moveFundsMotion({
             networkClient: colonyClient.networkClient,
             colonyRoles,
             colonyDomains,
-            requiredDomainId: Id.RootDomain,
+            requiredDomainId: Number(actionDomainId),
             requiredColonyRoles: requiredRoles,
             permissionAddress: userAddress,
             isMultiSig: true,
           },
         );
 
-        const fromChildSkillIndex = yield call(getChildIndexLocal, {
-          networkClient: colonyClient.networkClient,
-          parentDomainNativeId: rootDomain.nativeId,
-          parentDomainSkillId: rootDomain.nativeSkillId,
-          domainNativeId: fromDomain.nativeId,
-          domainSkillId: fromDomain.nativeSkillId,
-        });
-
-        const toChildSkillIndex = yield call(getChildIndexLocal, {
-          networkClient: colonyClient.networkClient,
-          parentDomainNativeId: rootDomain.nativeId,
-          parentDomainSkillId: rootDomain.nativeSkillId,
-          domainNativeId: toDomain.nativeId,
-          domainSkillId: toDomain.nativeSkillId,
-        });
+        const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+          getMoveFundsPermissionProofs,
+          {
+            actionDomainId,
+            toDomainId,
+            fromDomainId,
+            colonyDomains,
+            colonyAddress,
+          },
+        );
 
         const encodedAction = colonyClient.interface.encodeFunctionData(
           contractMethod,
@@ -159,7 +162,7 @@ function* moveFundsMotion({
             ...(isOldVersion
               ? []
               : [multiSigPermissionDomainId, multiSigChildSkillIndex]),
-            userPermissionDomainId,
+            actionDomainId,
             fromChildSkillIndex,
             toChildSkillIndex,
             fromPot,
@@ -192,9 +195,15 @@ function* moveFundsMotion({
         Extension.VotingReputation,
       );
 
+      const actionDomainId = getMoveFundsActionDomain({
+        actionDomainId: createdInDomain?.nativeId,
+        fromDomainId,
+        toDomainId,
+      });
+
       const { skillId } = yield call(
         [colonyClient, colonyClient.getDomain],
-        createdInDomain.nativeId,
+        Number(actionDomainId),
       );
 
       const { key, value, branchMask, siblings } = yield call(
@@ -203,42 +212,37 @@ function* moveFundsMotion({
         AddressZero,
       );
 
-      const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
+      const [votRepPermissionDomainId, votRepChildSkillIndex] = yield call(
         getPermissionProofsLocal,
         {
           networkClient: colonyClient.networkClient,
           colonyRoles,
           colonyDomains,
-          requiredDomainId: fromDomain.nativeId,
+          requiredDomainId: Number(actionDomainId),
           requiredColonyRoles: requiredRoles,
           permissionAddress: votingReputationClient.address,
           isMultiSig: false,
         },
       );
 
-      const toChildSkillIndex = yield call(getChildIndexLocal, {
-        networkClient: colonyClient.networkClient,
-        parentDomainNativeId: rootDomain.nativeId,
-        parentDomainSkillId: rootDomain.nativeSkillId,
-        domainNativeId: toDomain.nativeId,
-        domainSkillId: toDomain.nativeSkillId,
-      });
-
-      const motionChildSkillIndex = yield call(getChildIndexLocal, {
-        networkClient: colonyClient.networkClient,
-        parentDomainNativeId: createdInDomain.nativeId,
-        parentDomainSkillId: createdInDomain.nativeSkillId,
-        domainNativeId: createdInDomain.nativeId,
-        domainSkillId: createdInDomain.nativeSkillId,
-      });
+      const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+        getMoveFundsPermissionProofs,
+        {
+          actionDomainId,
+          toDomainId,
+          fromDomainId,
+          colonyDomains,
+          colonyAddress,
+        },
+      );
 
       const encodedAction = colonyClient.interface.encodeFunctionData(
         contractMethod,
         [
           ...(isOldVersion
             ? []
-            : [fromPermissionDomainId, constants.MaxUint256]),
-          fromPermissionDomainId,
+            : [votRepPermissionDomainId, votRepChildSkillIndex]),
+          actionDomainId,
           fromChildSkillIndex,
           toChildSkillIndex,
           fromPot,
@@ -253,8 +257,8 @@ function* moveFundsMotion({
         methodName: 'createMotion',
         identifier: colonyAddress,
         params: [
-          createdInDomain.nativeId,
-          motionChildSkillIndex,
+          actionDomainId,
+          constants.MaxUint256,
           AddressZero,
           encodedAction,
           key,
