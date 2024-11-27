@@ -4,7 +4,10 @@ import { type UseFormReset, type FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { ExtensionDetailsPageTabId } from '~frame/Extensions/pages/ExtensionDetailsPage/types.ts';
-import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
+import {
+  waitForDbAfterExtensionAction,
+  waitForDbAfterExtensionSettingsChange,
+} from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
@@ -204,6 +207,13 @@ export const handleWaitingForDbAfterFormCompletion = async ({
         reset();
         setActiveTab(ExtensionDetailsPageTabId.Overview);
       }
+    }
+
+    if (isSaveChanges && extensionData.configurable) {
+      await waitForDbAfterExtensionSettingsChange({
+        extensionData,
+        refetchExtensionData,
+      });
     }
 
     if (method === ExtensionMethods.ENABLE) {

@@ -1,30 +1,20 @@
 import { type ExpenditurePayoutWithSlotId } from '~types/expenditures.ts';
+import { waitForCondition } from '~utils/waitForCondition.ts';
 import { type RefetchExpenditureType } from '~v5/common/CompletedAction/partials/PaymentBuilder/types.ts';
 
-export const waitForDbAfterClaimingPayouts = (
+export const waitForDbAfterClaimingPayouts = async (
   payouts: ExpenditurePayoutWithSlotId[],
   refetchExpenditure: RefetchExpenditureType,
 ) => {
   const interval = 1000;
   const timeout = 30 * 1000; // 30 seconds
 
-  return new Promise<void>((resolve, reject) => {
-    const initTime = new Date().valueOf();
-    const intervalId = setInterval(async () => {
-      if (new Date().valueOf() - initTime > timeout) {
-        // after timeout, assume something went wrong
-        clearInterval(intervalId);
-        reject(
-          new Error(
-            `After 30 seconds, could not verify all payouts as claimed in the database.`,
-          ),
-        );
-      }
-
+  await waitForCondition(
+    async () => {
       const response = await refetchExpenditure();
       const expenditure = response.data.getExpenditure;
       if (!expenditure) {
-        return;
+        return false;
       }
 
       // Check if all payouts are claimed
@@ -42,10 +32,11 @@ export const waitForDbAfterClaimingPayouts = (
         return targetPayout?.isClaimed === true;
       });
 
-      if (allPayoutsClaimed) {
-        clearInterval(intervalId);
-        resolve();
-      }
-    }, interval);
-  });
+      return allPayoutsClaimed;
+    },
+    {
+      interval,
+      timeout,
+    },
+  );
 };
