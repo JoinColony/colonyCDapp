@@ -1,5 +1,5 @@
-import { CodeBlock } from '@phosphor-icons/react';
-import React, { useState, type FC } from 'react';
+import { CodeBlock, WarningCircle } from '@phosphor-icons/react';
+import React, { type FC } from 'react';
 
 import { LEARN_MORE_ARBITRARY_TRANSACTIONS } from '~constants/externalUrls.ts';
 import ExternalLink from '~shared/ExternalLink/ExternalLink.tsx';
@@ -12,24 +12,35 @@ import {
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
-import { ContractAddressInput } from './ContractAddressInput.tsx';
-import { DynamicInputs } from './DynamicInputs.tsx';
-import { JsonAbiInput } from './JsonAbiInput.tsx';
+import { AddTransactionForm } from './AddTransactionForm.tsx';
 import { displayName, MSG } from './translation.ts';
+import useCloseModalClick from './useCloseModalClick.ts';
 
 const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
   onSubmit,
+  onClose,
   ...rest
 }) => {
-  const { onClose } = rest;
-
-  const [contractAbiLoading, setContractAbiLoading] = useState(false);
+  const {
+    isCancelModalOpen,
+    toggleCancelModalOff,
+    closeFormModalClick,
+    formRef,
+  } = useCloseModalClick({
+    onTransactionModalClose: onClose,
+  });
 
   return (
-    <Modal buttonMode="primarySolid" icon={CodeBlock} {...rest}>
+    <Modal
+      buttonMode="primarySolid"
+      icon={CodeBlock}
+      onClose={closeFormModalClick}
+      {...rest}
+    >
       <Form<AddTransactionTableModel>
         onSubmit={onSubmit}
         className="flex h-full w-full flex-grow flex-col"
+        innerRef={formRef}
       >
         {() => (
           <div className="flex h-full w-full flex-grow flex-col">
@@ -46,12 +57,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 {formatText(MSG.learnMoreLink)}
               </ExternalLink>
               <div className="relative mt-5 flex flex-col gap-4">
-                <ContractAddressInput
-                  setContractAbiLoading={setContractAbiLoading}
-                  contractAbiLoading={contractAbiLoading}
-                />
-                <JsonAbiInput loading={contractAbiLoading} />
-                <DynamicInputs />
+                <AddTransactionForm />
               </div>
             </div>
             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row">
@@ -59,7 +65,7 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 type="button"
                 mode="primaryOutline"
                 isFullSize
-                onClick={() => onClose()}
+                onClick={() => closeFormModalClick()}
               >
                 {formatText({ id: 'button.cancel' })}
               </Button>
@@ -67,6 +73,21 @@ const AddTransactionModal: FC<AddTransactionFormModalProps> = ({
                 {formatText(MSG.submitButton)}
               </Button>
             </div>
+            <Modal
+              title={formatText(MSG.contractModalCancelTitle)}
+              subTitle={formatText(MSG.contractModalCancelSubtitle)}
+              isOpen={isCancelModalOpen}
+              className="md:mt-[3rem]"
+              onClose={() => {
+                toggleCancelModalOff();
+              }}
+              isFullOnMobile={false}
+              onConfirm={onClose}
+              icon={WarningCircle}
+              buttonMode="primarySolid"
+              confirmMessage={formatText(MSG.contractModalCancelButtonCancel)}
+              closeMessage={formatText(MSG.contractModalCancelButtonContinue)}
+            />
           </div>
         )}
       </Form>

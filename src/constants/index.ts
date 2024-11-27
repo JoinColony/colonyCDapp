@@ -150,7 +150,7 @@ export const GANACHE_NETWORK: NetworkInfo = {
   displayENSDomain: 'joincolony.eth',
   tokenExplorerLink: 'http://localhost',
   contractAddressLink: 'http://localhost',
-  apiUri: 'https://api.arbiscan.io/api',
+  apiUri: 'https://api-sepolia.arbiscan.io/api',
   icon: GanacheIcon,
   nativeToken: ETHER_TOKEN,
   blockTime: 5,
@@ -203,6 +203,7 @@ export const ARBITRUM_NETWORK: NetworkInfo = {
   tokenExplorerLink: 'https://arbiscan.io/tokens',
   contractAddressLink: 'https://arbiscan.io/address',
   displayENSDomain: 'joincolony.arbitrum',
+  apiUri: 'https://api.arbiscan.io/api',
   icon: ArbitrumIcon,
   blockTime: 4,
 };
@@ -326,6 +327,10 @@ export const VOTING_THRESHOLD = 40;
 export const SUPPORTED_SAFE_NETWORKS: NetworkInfo[] = [
   ETHEREUM_NETWORK,
   BINANCE_NETWORK,
+];
+export const ARBITRARY_TRANSACTION_NETWORKS: NetworkInfo[] = [
+  ARBITRUM_NETWORK,
+  ARBITRUM_SEPOLIA_NETWORK,
   GANACHE_NETWORK,
 ];
 
