@@ -12,6 +12,7 @@ import { formatText } from '~utils/intl.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/index.ts';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { type ActionDescriptionProps } from './types.ts';
 
@@ -82,15 +83,24 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           {loading ? (
             <div className="aspect-square h-[26px] w-auto rounded-full skeleton before:rounded-full" />
           ) : (
-            <UserAvatar
-              size={26}
-              userAddress={walletAddress}
-              userName={user?.profile?.displayName ?? undefined}
-              userAvatarSrc={
-                user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
-              }
-              className="flex-shrink-0 flex-grow-0"
-            />
+            <UserInfoPopover
+              walletAddress={walletAddress}
+              user={user}
+              popperOptions={{
+                placement: 'bottom-start',
+              }}
+              withVerifiedBadge={false}
+            >
+              <UserAvatar
+                size={26}
+                userAddress={walletAddress}
+                userName={user?.profile?.displayName ?? undefined}
+                userAvatarSrc={
+                  user?.profile?.thumbnail ?? user?.profile?.avatar ?? undefined
+                }
+                className="flex-shrink-0 flex-grow-0"
+              />
+            </UserInfoPopover>
           )}
         </>
       )}
