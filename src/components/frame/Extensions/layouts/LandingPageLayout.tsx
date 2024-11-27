@@ -2,7 +2,7 @@ import React, { type PropsWithChildren } from 'react';
 
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { light } from '~frame/Extensions/themes/consts.ts';
-import LandingPageCarousel from '~frame/LandingPage/LandingPageCarousel.tsx';
+import LandingPageCarousel from '~frame/LandingPage/partials/LandingPageCarousel/LandingPageCarousel.tsx';
 import ColonyLogo from '~icons/ColonyLogoLandingPage.tsx';
 import PageHeader from '~v5/frame/PageLayout/partials/PageHeader/PageHeader.tsx';
 import { BasicPageSidebar } from '~v5/shared/Navigation/Sidebar/sidebars/BasicPageSidebar.tsx';

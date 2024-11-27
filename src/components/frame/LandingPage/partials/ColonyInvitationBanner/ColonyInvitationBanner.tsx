@@ -7,7 +7,7 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
-const displayName = 'frame.LandingPage';
+const displayName = 'frame.LandingPage.partials.ColonyInvitationBanner';
 
 export interface ColonyInvitationBannerProps {
   inviteLink: string;

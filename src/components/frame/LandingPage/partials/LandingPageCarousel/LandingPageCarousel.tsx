@@ -8,7 +8,7 @@ import Slide2 from '~images/assets/landing/slider2.png';
 import Slide3 from '~images/assets/landing/slider3.png';
 import SlideMobile from '~images/assets/landing/sliderMobile.png';
 
-const displayName = 'frame.LandingPageCarousel';
+const displayName = 'frame.LandingPage.partials.LandingPageCarousel';
 
 const MSG = defineMessages({
   titleSlide0: {
