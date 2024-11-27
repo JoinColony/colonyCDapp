@@ -197,3 +197,5 @@ export const getInheritedPermissions = ({
       !currentPermissions.includes(permission),
   );
 };
+
+export const FUND_EXPENDITURE_REQUIRED_ROLE = ColonyRole.Funding;

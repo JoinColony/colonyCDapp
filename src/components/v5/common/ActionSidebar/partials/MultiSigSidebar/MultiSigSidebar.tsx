@@ -41,7 +41,7 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
 
   return (
     <div>
-      <MultiSigWidget action={action} />
+      <MultiSigWidget action={action} variant="stepper" />
     </div>
   );
 };

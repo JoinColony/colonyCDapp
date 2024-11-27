@@ -51,8 +51,6 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         payouts: ExpenditurePayoutFieldValue[];
-        // the domain to create the expenditure in
-        createdInDomain: Domain;
         // id of the domain to fund the expenditure from
         fundFromDomainId: number;
         isStaged?: boolean;

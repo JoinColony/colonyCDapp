@@ -1,14 +1,11 @@
 import {
-  ColonyRole,
+  type ColonyRole,
   Id,
   ClientType,
-  getPotDomain,
   getPermissionProofs,
-  getChildIndex,
   type ColonyNetworkClient,
 } from '@colony/colony-js';
 import { BigNumber, constants, type BigNumberish } from 'ethers';
-import { call } from 'redux-saga/effects';
 
 import { type ColonyManager } from '~context/index.ts';
 import { type ColonyRoleFragment } from '~gql';
@@ -25,6 +22,7 @@ interface GetChildIndexLocalParams {
   domainSkillId: BigNumberish;
 }
 
+// @TODO reword this so the params aren't named "parent" since that insinuates you can't pass in the same domain twice (you in fact can)
 export async function getChildIndexLocal({
   networkClient,
   parentDomainNativeId,
@@ -383,100 +381,132 @@ export const getPermissionProofsLocal = async ({
   });
 };
 
-export function* getMoveFundsPermissionProofs({
+interface IsValidMoveFundsActionDomainParams {
+  actionDomainId: BigNumberish;
+  fromDomainId: BigNumberish;
+  toDomainId: BigNumberish;
+}
+
+export function isValidMoveFundsActionDomain({
+  actionDomainId,
+  toDomainId,
+  fromDomainId,
+}: IsValidMoveFundsActionDomainParams): boolean {
+  // That's right, nested teams is gonna handle this B)
+  const isParentDomain = actionDomainId === Id.RootDomain;
+  const isSameDomain = Number(fromDomainId) === Number(toDomainId);
+
+  if (isSameDomain) {
+    const isDomainForAction = Number(actionDomainId) === Number(fromDomainId);
+
+    if (!isParentDomain && !isDomainForAction) {
+      return false;
+    }
+
+    return true;
+  }
+
+  return isParentDomain;
+}
+
+interface GetMoveFundsActionDomainParams {
+  actionDomainId: BigNumberish | null;
+  fromDomainId: BigNumberish;
+  toDomainId: BigNumberish;
+}
+
+export function getMoveFundsActionDomain({
+  actionDomainId,
+  toDomainId,
+  fromDomainId,
+}: GetMoveFundsActionDomainParams): BigNumberish {
+  // override if the motion was created in a different domain
+  if (actionDomainId) {
+    if (
+      !isValidMoveFundsActionDomain({
+        actionDomainId,
+        fromDomainId,
+        toDomainId,
+      })
+    ) {
+      throw new Error(
+        `Action domain ${actionDomainId} must be a parent domain of ${fromDomainId} and ${toDomainId} or equal to them.`,
+      );
+    }
+
+    return actionDomainId;
+  }
+
+  // if moving funds in the same domain but not as a motion in any parent domain
+  if (Number(fromDomainId) === Number(toDomainId)) {
+    return fromDomainId; // they are the same
+  }
+
+  // return the parent domain, as all other things, Id.RootDomain until we implement nested teams
+  const parentDomainId = Id.RootDomain;
+
+  return parentDomainId;
+}
+
+interface GetMoveFundsPermissionProofsResult {
+  fromChildSkillIndex: BigNumber;
+  toChildSkillIndex: BigNumber;
+}
+export async function getMoveFundsPermissionProofs({
+  actionDomainId,
   colonyAddress,
-  fromPotId,
-  toPotId,
+  fromDomainId,
+  toDomainId,
   colonyDomains,
-  colonyRoles,
 }: {
   colonyAddress: string;
-  fromPotId: BigNumberish;
-  toPotId: BigNumberish;
+  actionDomainId: BigNumberish;
+  fromDomainId: BigNumberish;
+  toDomainId: BigNumberish;
   colonyDomains: Domain[];
-  colonyRoles: ColonyRoleFragment[];
-}) {
-  const colonyManager: ColonyManager = yield getColonyManager();
+}): Promise<GetMoveFundsPermissionProofsResult> {
+  // the action domain can technically be the same as from or to, but these helpers should still work
+  const colonyManager: ColonyManager = await getColonyManager();
 
-  const colonyClient = yield colonyManager.getClient(
+  const colonyClient = await colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
   );
 
-  const userAddress = yield colonyClient.signer.getAddress();
-
-  const fromDomainId: BigNumberish = yield getPotDomain(
-    colonyClient,
-    fromPotId,
+  const parentDomain = colonyDomains.find((domain) =>
+    BigNumber.from(domain.nativeId).eq(actionDomainId),
   );
-  const toDomainId: BigNumberish = yield getPotDomain(colonyClient, toPotId);
-
-  const [fromPermissionDomainId, fromChildSkillIndex] = yield call(
-    getPermissionProofsLocal,
-    {
-      networkClient: colonyClient.networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId: Number(fromDomainId),
-      requiredColonyRoles: ColonyRole.Funding,
-      permissionAddress: userAddress,
-    },
+  const fromDomain = colonyDomains.find((domain) =>
+    BigNumber.from(domain.nativeId).eq(fromDomainId),
+  );
+  const toDomain = colonyDomains.find((domain) =>
+    BigNumber.from(domain.nativeId).eq(toDomainId),
   );
 
-  const [toPermissionDomainId, toChildSkillIndex] = yield call(
-    getPermissionProofsLocal,
-    {
-      networkClient: colonyClient.networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId: Number(toDomainId),
-      requiredColonyRoles: ColonyRole.Funding,
-      permissionAddress: userAddress,
-    },
-  );
-  // Here's a weird case. We have found permissions for these domains but they don't share
-  // a parent domain with that permission. We can still find a common parent domain that
-  // has the funding permission
-  if (!fromPermissionDomainId.eq(toPermissionDomainId)) {
-    const hasFundingInRoot = yield colonyClient.hasUserRole(
-      userAddress,
-      Id.RootDomain,
-      ColonyRole.Funding,
-    );
-    // @TODO: In the future we have to not only check the ROOT domain but traverse the tree
-    // (binary search) to find a common parent domain with funding permission
-    // ALTHOUGH there might not be a colony version that supports the old
-    // moveFundsBetweenPots function AND nested domains
-    if (hasFundingInRoot) {
-      const rootFromChildSkillIndex = yield getChildIndex(
-        colonyClient.networkClient,
-        colonyClient,
-        Id.RootDomain,
-        fromDomainId,
-      );
-      const rootToChildSkillIndex = yield getChildIndex(
-        colonyClient.networkClient,
-        colonyClient,
-        Id.RootDomain,
-        toDomainId,
-      );
-      // This shouldn't really happen as we have already checked whether the user has funding
-      if (rootFromChildSkillIndex.lt(0) || rootToChildSkillIndex.lt(0)) {
-        throw new Error(
-          `User does not have the funding permission in any parent domain`,
-        );
-      }
-      return [
-        fromPermissionDomainId,
-        rootFromChildSkillIndex,
-        rootToChildSkillIndex,
-      ];
-    }
-    throw new Error(
-      'User has to have the funding role in a domain that both associated pots a children of',
-    );
+  if (!fromDomain || !toDomain || !parentDomain) {
+    throw new Error('No fromDomain, expenditurePotDomain or rootDomain found');
   }
-  return [fromPermissionDomainId, fromChildSkillIndex, toChildSkillIndex];
+
+  const fromChildSkillIndex = await getChildIndexLocal({
+    networkClient: colonyClient.networkClient,
+    parentDomainSkillId: parentDomain.nativeSkillId,
+    parentDomainNativeId: parentDomain.nativeId,
+    domainSkillId: fromDomain.nativeSkillId,
+    domainNativeId: fromDomain.nativeId,
+  });
+
+  const toChildSkillIndex = await getChildIndexLocal({
+    networkClient: colonyClient.networkClient,
+    parentDomainSkillId: parentDomain.nativeSkillId,
+    parentDomainNativeId: parentDomain.nativeId,
+    domainSkillId: toDomain.nativeSkillId,
+    domainNativeId: toDomain.nativeId,
+  });
+
+  return {
+    fromChildSkillIndex,
+    toChildSkillIndex,
+  };
 }
 
 export function* getMultiPermissionProofs({
@@ -524,58 +554,3 @@ export function* getMultiPermissionProofs({
   // It does not need to be an array because if we get here, all the proofs are the same
   return proofs[0];
 }
-
-interface GetSinglePermissionProofsFromSourceDomainParams {
-  networkClient: ColonyNetworkClient;
-  colonyRoles: ColonyRoleFragment[];
-  colonyDomains: Domain[];
-  requiredDomainId: number;
-  requiredColonyRole: ColonyRole;
-  permissionAddress: string;
-  isMultiSig?: boolean;
-}
-
-// Returns the permission proofs from the domain where the user has been assigned the permissions
-// If the user has permissions directly in the requiredDomainId those will be returned first
-// However, if the user has inherited permissions in the requiredDomainId,
-// the permission proofs will be returned from the domain from which they are inherited
-export const getSinglePermissionProofsFromSourceDomain = async ({
-  networkClient,
-  colonyRoles,
-  colonyDomains,
-  requiredDomainId,
-  requiredColonyRole,
-  permissionAddress,
-  isMultiSig = false,
-}: GetSinglePermissionProofsFromSourceDomainParams): Promise<
-  [BigNumber, BigNumber, string]
-> => {
-  const [permissionDomainId, childSkillIndex] =
-    await getSinglePermissionProofsLocal({
-      networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId,
-      requiredColonyRole,
-      permissionAddress,
-      isMultiSig,
-    });
-
-  if (Number(permissionDomainId) === requiredDomainId) {
-    return [permissionDomainId, childSkillIndex, permissionAddress];
-  }
-
-  // Once nested teams is implemented, this should get from the next parent, then work it's way up the tree to root
-  const [rootPermissionDomainId, rootChildSkillIndex] =
-    await getSinglePermissionProofsLocal({
-      networkClient,
-      colonyRoles,
-      colonyDomains,
-      requiredDomainId: Id.RootDomain,
-      requiredColonyRole,
-      permissionAddress,
-      isMultiSig,
-    });
-
-  return [rootPermissionDomainId, rootChildSkillIndex, permissionAddress];
-};

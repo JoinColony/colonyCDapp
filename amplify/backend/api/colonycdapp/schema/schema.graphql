@@ -2861,6 +2861,16 @@ type ColonyMultiSig @model {
   The timestamp when the motion was created at
   """
   createdAt: AWSDateTime!
+  """
+  In case of multiple funding actions in a multisig, when funding an expenditure, array containing
+  the details of tokens and amounts to be funded
+  """
+  expenditureFunding: [ExpenditureFundingItem!]
+  """
+  Expenditure associated with the motion, if any
+  """
+  expenditureId: ID
+    @index(name: "byExpenditureId", queryField: "getMultiSigByExpenditureId")
 }
 """
 Represents a Motion within a Colony

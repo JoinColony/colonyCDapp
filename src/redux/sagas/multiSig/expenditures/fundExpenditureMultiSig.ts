@@ -1,18 +1,17 @@
-import { ClientType, getPotDomain } from '@colony/colony-js';
+import { ClientType, Extension, getPotDomain } from '@colony/colony-js';
+import { AddressZero } from '@ethersproject/constants';
 import { type BigNumberish } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { TRANSACTION_METHODS } from '~types/transactions.ts';
-
 import {
   type ChannelDefinition,
   createTransaction,
   createTransactionChannels,
   waitForTxResult,
-} from '../transactions/index.ts';
-import { getExpenditureBalancesByTokenAddress } from '../utils/expenditures.ts';
+} from '~redux/sagas/transactions/index.ts';
+import { getExpenditureBalancesByTokenAddress } from '~redux/sagas/utils/expenditures.ts';
 import {
   getColonyManager,
   getMoveFundsActionDomain,
@@ -22,12 +21,13 @@ import {
   putError,
   takeFrom,
   uploadAnnotation,
-} from '../utils/index.ts';
+} from '~redux/sagas/utils/index.ts';
+import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 export type FundExpenditurePayload =
-  Action<ActionTypes.EXPENDITURE_FUND>['payload'];
+  Action<ActionTypes.MULTISIG_EXPENDITURE_FUND>['payload'];
 
-function* fundExpenditure({
+function* fundExpenditureMultiSig({
   payload: {
     colonyAddress,
     expenditure,
@@ -37,11 +37,14 @@ function* fundExpenditure({
     annotationMessage,
   },
   meta,
-}: Action<ActionTypes.EXPENDITURE_FUND>) {
+}: Action<ActionTypes.MULTISIG_EXPENDITURE_FUND>) {
   const colonyManager = yield getColonyManager();
   const colonyClient = yield colonyManager.getClient(
     ClientType.ColonyClient,
     colonyAddress,
+  );
+  const multiSigClient = yield colonyClient.getExtensionClient(
+    Extension.MultisigPermissions,
   );
 
   const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
@@ -55,16 +58,16 @@ function* fundExpenditure({
 
   // Create channel for each token, using its address as channel id
   const {
-    annotateFundExpenditure,
-    fundMulticall,
+    annotateMultiSig,
+    createMultiSig,
   }: Record<string, ChannelDefinition> = yield createTransactionChannels(
     meta.id,
-    ['fundMulticall', 'annotateFundExpenditure'],
+    ['createMultiSig', 'annotateMultiSig'],
   );
+  const requiredRoles = [FUND_EXPENDITURE_REQUIRED_ROLE];
 
   try {
     const userAddress = yield colonyClient.signer.getAddress();
-
     const fromDomainId: BigNumberish = yield getPotDomain(
       colonyClient,
       fromDomainFundingPotId,
@@ -74,11 +77,13 @@ function* fundExpenditure({
       colonyClient,
       expenditureFundingPotId,
     );
+
     const actionDomainId = getMoveFundsActionDomain({
       actionDomainId: null,
       fromDomainId,
       toDomainId: expenditurePotDomainId,
     });
+
     const { fromChildSkillIndex, toChildSkillIndex } = yield call(
       getMoveFundsPermissionProofs,
       {
@@ -90,6 +95,18 @@ function* fundExpenditure({
       },
     );
 
+    const [multiSigPermissionDomainId, multiSigChildSkillIndex] = yield call(
+      getPermissionProofsLocal,
+      {
+        networkClient: colonyClient.networkClient,
+        colonyRoles,
+        colonyDomains,
+        requiredDomainId: Number(actionDomainId),
+        requiredColonyRoles: requiredRoles,
+        permissionAddress: multiSigClient.address,
+        isMultiSig: false,
+      },
+    );
     const [userPermissionDomainId, userChildSkillIndex] = yield call(
       getPermissionProofsLocal,
       {
@@ -97,31 +114,19 @@ function* fundExpenditure({
         colonyRoles,
         colonyDomains,
         requiredDomainId: Number(actionDomainId),
-        requiredColonyRoles: [FUND_EXPENDITURE_REQUIRED_ROLE],
+        requiredColonyRoles: requiredRoles,
         permissionAddress: userAddress,
+        isMultiSig: true,
       },
     );
 
-    /*
-     * What are the parameters passed here?
-     * 1. The domain where the user/extension has permissions in
-     * 2. The child skill index, so MaxUint256 if it's in the same domain, or the index of the child domain in the parent's subdomains
-     * 3. The domainId where the action is happening (parent domain, except when moving funds between the same domain, then it's that domain)
-     * 4. The fromChildSkillIndex in relation to domain from point 3(!!!) which should be MaxUint256
-     * if we are moving funds from the same domain, or the appropriate childSkillIndex if we are moving funds
-     * from a subdomain of domain from point 3
-     * 5. The toChildSkillIndex in relation to domain from point 3(!!!) which should be MaxUint256
-     * if we are moving funds to the same domain, or the appropriate childSkillIndex if
-     * we are moving funds from a subdomain of domain from point 3
-     * 6-8 are self explanatory, the first 4 are the tricky ones
-     */
     const multicallData = [...balancesByTokenAddresses.entries()].map(
-      ([tokenAddress, amount]) =>
-        colonyClient.interface.encodeFunctionData(
+      ([tokenAddress, amount]) => {
+        return colonyClient.interface.encodeFunctionData(
           'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,address)',
           [
-            userPermissionDomainId,
-            userChildSkillIndex,
+            multiSigPermissionDomainId,
+            multiSigChildSkillIndex,
             actionDomainId,
             fromChildSkillIndex,
             toChildSkillIndex,
@@ -130,12 +135,19 @@ function* fundExpenditure({
             amount,
             tokenAddress,
           ],
-        ),
+        );
+      },
     );
 
-    yield fork(createTransaction, fundMulticall.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'multicall',
+    yield fork(createTransaction, createMultiSig.id, {
+      context: ClientType.MultisigPermissionsClient,
+      methodName: 'createMotion',
+      params: [
+        userPermissionDomainId,
+        userChildSkillIndex,
+        multicallData.map(() => AddressZero),
+        multicallData,
+      ],
       identifier: colonyAddress,
       group: {
         key: batchKey,
@@ -143,11 +155,10 @@ function* fundExpenditure({
         index: 0,
       },
       ready: false,
-      params: [multicallData],
     });
 
     if (annotationMessage) {
-      yield fork(createTransaction, annotateFundExpenditure.id, {
+      yield fork(createTransaction, annotateMultiSig.id, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -160,45 +171,48 @@ function* fundExpenditure({
       });
     }
 
-    yield takeFrom(fundMulticall.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(createMultiSig.channel, ActionTypes.TRANSACTION_CREATED);
     if (annotationMessage) {
-      yield takeFrom(
-        annotateFundExpenditure.channel,
-        ActionTypes.TRANSACTION_CREATED,
-      );
+      yield takeFrom(annotateMultiSig.channel, ActionTypes.TRANSACTION_CREATED);
     }
 
-    yield initiateTransaction(fundMulticall.id);
+    yield initiateTransaction(createMultiSig.id);
 
     const {
       payload: {
         receipt: { transactionHash: txHash },
       },
-    } = yield waitForTxResult(fundMulticall.channel);
+    } = yield waitForTxResult(createMultiSig.channel);
 
     if (annotationMessage) {
       yield uploadAnnotation({
-        txChannel: annotateFundExpenditure,
+        txChannel: annotateMultiSig,
         message: annotationMessage,
         txHash,
       });
     }
 
     yield put<AllActions>({
-      type: ActionTypes.EXPENDITURE_FUND_SUCCESS,
-      payload: {},
+      type: ActionTypes.MULTISIG_EXPENDITURE_FUND_SUCCESS,
       meta,
     });
   } catch (error) {
-    return yield putError(ActionTypes.EXPENDITURE_FUND_ERROR, error, meta);
+    return yield putError(
+      ActionTypes.MULTISIG_EXPENDITURE_FUND_ERROR,
+      error,
+      meta,
+    );
   } finally {
-    fundMulticall.channel.close();
-    annotateFundExpenditure.channel.close();
+    createMultiSig.channel.close();
+    annotateMultiSig.channel.close();
   }
 
   return null;
 }
 
-export default function* fundExpenditureSaga() {
-  yield takeEvery(ActionTypes.EXPENDITURE_FUND, fundExpenditure);
+export default function* fundExpenditureMultiSigSaga() {
+  yield takeEvery(
+    ActionTypes.MULTISIG_EXPENDITURE_FUND,
+    fundExpenditureMultiSig,
+  );
 }

@@ -18,6 +18,7 @@ import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
+import { isMultiSig } from '~utils/multiSig/index.ts';
 import {
   CacheQueryKeys,
   getSafePollingInterval,
@@ -30,6 +31,7 @@ import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import { LoadingBehavior } from '~v5/shared/Button/types.ts';
+import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
@@ -46,6 +48,7 @@ import StagedPaymentStep from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
+import MultiSigFunding from './partials/MultiSigFunding.tsx';
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import {
   getCancelStepIndex,
@@ -174,6 +177,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const isExpenditureFunded = isExpenditureFullyFunded(expenditure);
 
   const {
+    action: fundingAction,
+    loadingAction,
     motionState: fundingMotionState,
     refetchMotionState: refetchFundingMotionState,
   } = useGetColonyAction(selectedFundingAction?.transactionHash);
@@ -185,7 +190,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     [fundingActions?.items],
   );
   const allFundingMotions = sortedFundingActions
-    .map((fundingAction) => fundingAction.motionData)
+    .map((fundingMotionAction) => fundingMotionAction.motionData)
     .filter(notMaybe);
   const selectedFundingMotion = selectedFundingAction?.motionData;
 
@@ -197,8 +202,17 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     expenditure?.stagedExpenditureAddress &&
     stagedExpenditureAddress !== expenditure.stagedExpenditureAddress;
 
+  const allFundingMultiSigs = sortedFundingActions
+    .map((fundingMultiSigAction) => fundingMultiSigAction.multiSigData)
+    .filter(notMaybe);
+  const selectedFundingMultiSig = selectedFundingAction?.multiSigData;
+  const isAnyFundingMultiSigInProgress = allFundingMultiSigs.some(
+    (multiSig) => !multiSig.isExecuted && !multiSig.isRejected,
+  );
+
   const shouldShowFundingButton =
     !isAnyFundingMotionInProgress &&
+    !isAnyFundingMultiSigInProgress &&
     !isExpenditureFunded &&
     !hasUninstalledExtension;
 
@@ -292,6 +306,41 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ),
       };
 
+  const getFundingStepContent = () => {
+    if (selectedFundingMotion) {
+      return (
+        <MotionBox transactionId={selectedFundingMotion.transactionHash} />
+      );
+    }
+    // since the multisig widget doesn't fetch its own action we need to handle the loader here
+    if (selectedFundingMultiSig) {
+      if (loadingAction || !fundingAction) {
+        return <MotionWidgetSkeleton />;
+      }
+
+      if (isMultiSig(fundingAction)) {
+        return (
+          <MultiSigFunding
+            action={fundingAction}
+            onMultiSigRejected={() => {
+              setExpectedStepKey(null);
+            }}
+          />
+        );
+      }
+
+      console.warn(
+        "The provided assumed multiSig action doesn't pass the type guard, something is wrong",
+      );
+      return null;
+    }
+
+    if (selectedFundingAction) {
+      return <ActionWithPermissionsInfo action={selectedFundingAction} />;
+    }
+    return null;
+  };
+
   const items: StepperItem<ExpenditureStep>[] = [
     {
       key: ExpenditureStep.Create,
@@ -379,19 +428,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             expenditureStep === ExpenditureStep.Funding && (
               <UninstalledExtensionBox />
             )}
-
           {sortedFundingActions.length > 0 && (
             <FundingRequests actions={sortedFundingActions} />
           )}
-
-          {selectedFundingMotion && (
-            <MotionBox transactionId={selectedFundingMotion.transactionHash} />
-          )}
-
-          {selectedFundingAction && !selectedFundingMotion && (
-            <ActionWithPermissionsInfo action={selectedFundingAction} />
-          )}
-
+          {getFundingStepContent()}
           {shouldShowFundingButton && (
             <StepDetailsBlock
               text={formatText({
@@ -528,7 +568,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               setExpectedStepKey(ExpenditureStep.Release);
             }}
             // @todo: update when split payment will be ready
-            actionType={Action.PaymentBuilder}
           />
         </>
       )}

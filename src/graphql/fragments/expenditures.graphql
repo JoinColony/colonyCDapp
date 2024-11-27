@@ -53,6 +53,7 @@ fragment Expenditure on Expenditure {
       or: [
         { type: { eq: MOVE_FUNDS } }
         { type: { eq: FUND_EXPENDITURE_MOTION } }
+        { type: { eq: FUND_EXPENDITURE_MULTISIG } }
       ]
       isMotionFinalization: { ne: true }
     }
@@ -144,5 +145,8 @@ fragment ExpenditureAction on ColonyAction {
   }
   motionData {
     ...ColonyMotion
+  }
+  multiSigData {
+    ...ColonyMultiSig
   }
 }

@@ -110,6 +110,7 @@ const ACTION_TYPES_TO_HIDE = [
   ColonyActionType.FinalizeExpenditure,
   ColonyActionType.FinalizeExpenditureMotion,
   ColonyActionType.FundExpenditureMotion,
+  ColonyActionType.FundExpenditureMultisig,
   ColonyActionType.SetExpenditureStateMotion,
   ColonyActionType.EditExpenditure,
   ColonyActionType.EditExpenditureMotion,

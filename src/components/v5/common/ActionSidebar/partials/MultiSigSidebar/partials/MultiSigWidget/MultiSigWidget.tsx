@@ -8,6 +8,7 @@ import { type MultiSigAction } from '~types/motions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { getRolesNeededForMultiSigAction } from '~utils/multiSig/index.ts';
+import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import NotificationBanner from '~v5/shared/NotificationBanner/NotificationBanner.tsx';
 import Stepper from '~v5/shared/Stepper/Stepper.tsx';
 
@@ -25,6 +26,8 @@ const displayName =
 
 interface MultiSigWidgetProps {
   action: MultiSigAction;
+  variant: 'stepper' | 'standalone';
+  onMultiSigRejected?: () => void;
 }
 
 const MSG = defineMessages({
@@ -42,7 +45,11 @@ const MSG = defineMessages({
   },
 });
 
-const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
+const MultiSigWidget: FC<MultiSigWidgetProps> = ({
+  action,
+  variant,
+  onMultiSigRejected,
+}) => {
   const { type: actionType, multiSigData } = action;
 
   // this is only because managing permissions in a subdomain requires signees in the parent domain
@@ -89,6 +96,7 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
             multiSigData={multiSigData}
             requiredRoles={requiredRoles}
             initiatorAddress={action.initiatorAddress}
+            onMultiSigRejected={onMultiSigRejected}
           />
         ),
         heading: {
@@ -117,10 +125,13 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
     multiSigData,
     requiredRoles,
     action,
+    onMultiSigRejected,
   ]);
 
   const [activeStepKey, setActiveStepKey] = useState<MultiSigState>(
-    MultiSigState.Approval,
+    isMultiSigExecutable || isMultiSigExecuted || isMultiSigRejected
+      ? MultiSigState.Finalize
+      : MultiSigState.Approval,
   );
 
   useEffect(() => {
@@ -141,15 +152,23 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({ action }) => {
     );
   }
 
-  return (
-    <div>
+  if (variant === 'stepper') {
+    return (
       <Stepper<MultiSigState>
         items={items}
         activeStepKey={activeStepKey}
         setActiveStepKey={setActiveStepKey}
       />
-    </div>
-  );
+    );
+  }
+
+  // The stepper handles its own loading somehow
+  if (isLoading) {
+    return <MotionWidgetSkeleton />;
+  }
+  const activeItem = items.find((item) => item.key === activeStepKey);
+
+  return activeItem?.content ?? null;
 };
 
 MultiSigWidget.displayName = displayName;

@@ -1,11 +1,8 @@
 import { ClientType } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import {
-  transactionSetParams,
-  transactionSetPending,
-} from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
@@ -21,6 +18,9 @@ import {
   getMoveFundsPermissionProofs,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
+  getColonyManager,
+  getMoveFundsActionDomain,
 } from '../utils/index.ts';
 
 function* createMoveFundsAction({
@@ -38,6 +38,11 @@ function* createMoveFundsAction({
   meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.ACTION_MOVE_FUNDS>) {
+  const colonyManager = yield getColonyManager();
+  const colonyClient = yield colonyManager.getClient(
+    ClientType.ColonyClient,
+    colonyAddress,
+  );
   let txChannel;
   try {
     /*
@@ -72,17 +77,51 @@ function* createMoveFundsAction({
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.MoveFunds;
 
+    const userAddress = yield colonyClient.signer.getAddress();
     const { moveFunds, annotateMoveFunds } = yield createTransactionChannels(
       metaId,
       ['moveFunds', 'annotateMoveFunds'],
     );
+
+    const actionDomainId = getMoveFundsActionDomain({
+      actionDomainId: null,
+      fromDomainId: fromDomain.nativeId,
+      toDomainId: toDomain.nativeId,
+    });
+    const { fromChildSkillIndex, toChildSkillIndex } = yield call(
+      getMoveFundsPermissionProofs,
+      {
+        actionDomainId,
+        toDomainId: toDomain.nativeId,
+        fromDomainId: fromDomain.nativeId,
+        colonyDomains,
+        colonyAddress,
+      },
+    );
+
+    const [userPermissionDomainId] = yield call(getPermissionProofsLocal, {
+      networkClient: colonyClient.networkClient,
+      colonyRoles,
+      colonyDomains,
+      requiredDomainId: Number(actionDomainId),
+      requiredColonyRoles: PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds,
+      permissionAddress: userAddress,
+    });
 
     yield fork(createTransaction, moveFunds.id, {
       context: ClientType.ColonyClient,
       methodName:
         'moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address)',
       identifier: colonyAddress,
-      params: [],
+      params: [
+        userPermissionDomainId,
+        fromChildSkillIndex,
+        toChildSkillIndex,
+        fromPot,
+        toPot,
+        amount,
+        tokenAddress,
+      ],
       group: {
         key: batchKey,
         id: metaId,
@@ -114,27 +153,6 @@ function* createMoveFundsAction({
         ActionTypes.TRANSACTION_CREATED,
       );
     }
-
-    yield transactionSetPending(moveFunds.id);
-
-    const [permissionDomainId, fromChildSkillIndex, toChildSkillIndex] =
-      yield getMoveFundsPermissionProofs({
-        colonyAddress,
-        fromPotId: fromPot,
-        toPotId: toPot,
-        colonyDomains,
-        colonyRoles,
-      });
-
-    yield transactionSetParams(moveFunds.id, [
-      permissionDomainId,
-      fromChildSkillIndex,
-      toChildSkillIndex,
-      fromPot,
-      toPot,
-      amount,
-      tokenAddress,
-    ]);
 
     yield initiateTransaction(moveFunds.id);
 
