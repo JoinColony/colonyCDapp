@@ -1,9 +1,9 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import ColonyCard from '~frame/LandingPage/ColonyCards/ColonyCard.tsx';
-import SkeletonCard from '~frame/LandingPage/ColonyCards/ColonyCardSkeleton.tsx';
-import CreateNewColonyCard from '~frame/LandingPage/ColonyCards/CreateNewColonyCard.tsx';
+import ColonyCard from '~frame/LandingPage/partials/ColonyCards/ColonyCard.tsx';
+import SkeletonCard from '~frame/LandingPage/partials/ColonyCards/ColonyCardSkeleton.tsx';
+import CreateNewColonyCard from '~frame/LandingPage/partials/ColonyCards/CreateNewColonyCard.tsx';
 
 const meta: Meta<typeof ColonyCard | typeof CreateNewColonyCard> = {
   title: 'Common/Colony Card',
