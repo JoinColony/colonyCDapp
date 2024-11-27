@@ -105,4 +105,23 @@ export const MSG = defineMessages({
     id: `${displayName}.validationByIndexError`,
     defaultMessage: 'Error in array item {index}: Invalid value',
   },
+  contractModalCancelTitle: {
+    id: `${displayName}.contractModalCancelTitle`,
+    defaultMessage: 'Do you wish to cancel the arbitrary transaction creation?',
+  },
+
+  contractModalCancelSubtitle: {
+    id: `${displayName}.contractModalCancelSubtitle`,
+    defaultMessage: 'All entered data will be lost.',
+  },
+
+  contractModalCancelButtonCancel: {
+    id: `${displayName}.contractModalCancelButtonCancel`,
+    defaultMessage: 'Yes, cancel the form creation',
+  },
+
+  contractModalCancelButtonContinue: {
+    id: `${displayName}.contractModalCancelButtonContinue`,
+    defaultMessage: 'No, go back to editing',
+  },
 });
