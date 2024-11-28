@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
+
 import {
   type SearchableColonyContributorFilterInput,
   useGetMembersCountQuery,
+  useOnCreateColonyContributorSubscription,
 } from '~gql';
 
 /**
@@ -31,6 +34,7 @@ export const useGetColoniesMembersCount = (
     data: contributorsCount,
     fetchMore,
     loading: contributorsCountLoading,
+    refetch: refetchMembersCount,
   } = useGetMembersCountQuery({
     variables: {
       filter: { ...queryFilter },
@@ -70,6 +74,27 @@ export const useGetColoniesMembersCount = (
       }
     },
   });
+
+  const { data: newColonyContributorResult } =
+    useOnCreateColonyContributorSubscription();
+
+  const newColonyContributor =
+    newColonyContributorResult?.onCreateColonyContributor?.contributorAddress;
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
+    if (newColonyContributor) {
+      // It looks hacky, but we need the timeout to ensure that opensearch has been updated before we refetch.
+      timeout = setTimeout(refetchMembersCount, 2000);
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [newColonyContributor, refetchMembersCount]);
 
   const membersCount =
     contributorsCount?.searchColonyContributors?.aggregateItems[0]?.result
