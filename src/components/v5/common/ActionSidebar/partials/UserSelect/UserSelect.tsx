@@ -228,7 +228,6 @@ const UserSelect: FC<UserSelectProps> = ({
               }}
               isLoading={usersOptions.isLoading}
               className="z-sidebar"
-              showEmptyContent={false}
               shouldReturnAddresses
             />
           )}

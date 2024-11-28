@@ -49,6 +49,12 @@ query SearchColonyContributors(
   }
 }
 
+subscription OnCreateColonyContributor {
+  onCreateColonyContributor {
+    contributorAddress
+  }
+}
+
 query GetMembersCount(
   $filter: SearchableColonyContributorFilterInput!
   $nextToken: String
