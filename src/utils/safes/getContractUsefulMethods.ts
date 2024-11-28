@@ -4,7 +4,6 @@ import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 import {
   ARBITRARY_TRANSACTION_NETWORKS,
   BINANCE_NETWORK,
-  GANACHE_NETWORK,
 } from '~constants/index.ts';
 
 export interface AbiItemExtended extends JsonFragment {
@@ -24,9 +23,6 @@ const getCurrentNetworkData = (chainId: string) => {
 export const getApiKey = (chainId: string) => {
   if (chainId === BINANCE_NETWORK.chainId) {
     return import.meta.env.BSCSCAN_API_KEY;
-  }
-  if (chainId === GANACHE_NETWORK.chainId) {
-    return import.meta.env.ARBISCAN_API_KEY;
   }
   return import.meta.env.ETHERSCAN_API_KEY;
 };
@@ -70,7 +66,7 @@ export const fetchContractABI = async (
 
     const currentNetworkData = getCurrentNetworkData(chainId)!;
 
-    const apiKey = getApiKey(currentNetworkData.chainId);
+    const apiKey = import.meta.env.ARBISCAN_API_KEY;
     const apiUri =
       `${currentNetworkData.apiUri}` +
       `?apiKey=${apiKey}` +
