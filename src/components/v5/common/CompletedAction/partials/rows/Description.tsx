@@ -28,6 +28,12 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
 
   const isExpandButtonVisible = !isExpanded && isDescriptionClamped;
 
+  const onClickText = () => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+  };
+
   return (
     <div
       className={clsx('mt-4 flex items-start text-md text-gray-900', {
@@ -59,9 +65,13 @@ const DescriptionRow = ({ description }: DescriptionRowProps) => {
       </div>
       <div
         className={clsx('flex items-start', {
-          'h-10 flex-1': !isExpanded,
-          'mt-4 w-full flex-col': isExpanded,
+          'h-10 flex-1 cursor-pointer': !isExpanded,
+          'mt-4 w-full cursor-default flex-col': isExpanded,
         })}
+        onClick={onClickText}
+        onKeyDown={onClickText}
+        role="button"
+        tabIndex={0}
       >
         <RichTextDisplay
           content={description}
