@@ -257,7 +257,7 @@ export const useTeams = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const defaultFilterValue: TeamsPageFilters = {
-    field: TeamsPageFiltersField.FUNDS,
+    field: TeamsPageFiltersField.REPUTATION,
     direction: ModelSortDirection.Desc,
   };
   const [hasFilterChanged, setHasFilterChanged] = useState(false);
