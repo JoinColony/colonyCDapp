@@ -1,10 +1,11 @@
-import { MagnifyingGlass, X } from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInput from '~v5/common/Filter/partials/SearchInput/index.ts';
+import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -21,17 +22,15 @@ const BalanceFilters: FC = () => {
     useFiltersContext();
 
   const [isOpened, setOpened] = useState(false);
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
   const isMobile = useMobile();
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-end',
-    trigger: 'click',
-    interactive: true,
-    visible: isSearchOpened,
-    onVisibleChange: setIsSearchOpened,
-  });
+  const {
+    isSearchOpened,
+    openSearch,
+    closeSearch,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+  } = useSearchFilter();
 
   const filtersContent = (
     <div>
@@ -52,26 +51,13 @@ const BalanceFilters: FC = () => {
 
   const searchInput = (
     <SearchInput
-      onSearchButtonClick={() => setIsSearchOpened(false)}
+      onSearchButtonClick={closeSearch}
       searchValue={searchFilter}
       setSearchValue={setSearchFilter}
       searchInputPlaceholder={formatText({
         id: 'balancePage.filter.search',
       })}
     />
-  );
-
-  const searchPill = (
-    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
-      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchFilter}</p>
-      <button
-        type="button"
-        onClick={() => setSearchFilter('')}
-        className="ml-2 flex-shrink-0"
-      >
-        <X size={12} className="text-inherit" />
-      </button>
-    </div>
   );
 
   return (
@@ -89,11 +75,16 @@ const BalanceFilters: FC = () => {
             className="flex sm:hidden"
             size="small"
             aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
+            onClick={openSearch}
           >
             <MagnifyingGlass size={14} />
           </Button>
-          {!!searchFilter && searchPill}
+          {!!searchFilter && (
+            <SearchPill
+              value={searchFilter}
+              onClick={() => setSearchFilter('')}
+            />
+          )}
           <Modal
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
@@ -104,7 +95,7 @@ const BalanceFilters: FC = () => {
           </Modal>
           <Modal
             isFullOnMobile={false}
-            onClose={() => setIsSearchOpened(false)}
+            onClose={closeSearch}
             isOpen={isSearchOpened}
             withPaddingBottom
           >
@@ -118,7 +109,12 @@ const BalanceFilters: FC = () => {
         <>
           <div className="flex flex-row items-start justify-end gap-2">
             <ActiveFiltersList />
-            {!!searchFilter && searchPill}
+            {!!searchFilter && (
+              <SearchPill
+                value={searchFilter}
+                onClick={() => setSearchFilter('')}
+              />
+            )}
             <FilterButton
               isOpen={isSearchOpened}
               setTriggerRef={setTriggerRef}

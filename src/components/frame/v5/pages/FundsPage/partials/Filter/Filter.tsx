@@ -1,11 +1,12 @@
-import { MagnifyingGlass, X } from '@phosphor-icons/react';
-import React, { useCallback, useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import { MagnifyingGlass } from '@phosphor-icons/react';
+import React, { useCallback } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
+import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
+import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -29,16 +30,14 @@ function Filter<TValue extends FilterValue>({
   filtersHeader = 'filters',
   buttonText,
 }: FilterProps<TValue>) {
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-end',
-    trigger: 'click',
-    interactive: true,
-    visible: isSearchOpened,
-    onVisibleChange: setIsSearchOpened,
-  });
+  const {
+    isSearchOpened,
+    openSearch,
+    closeSearch,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+  } = useSearchFilter();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -68,23 +67,12 @@ function Filter<TValue extends FilterValue>({
     return acc + Object.values(obj).filter((item) => item === true).length;
   }, 0);
 
-  const searchPill = (
-    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
-      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
-      <button
-        type="button"
-        onClick={() => onSearch('')}
-        className="ml-2 flex-shrink-0"
-      >
-        <X size={12} className="text-inherit" />
-      </button>
-    </div>
-  );
-
   return (
     <>
       <div className="flex flex-row gap-2">
-        {!!searchValue && !isMobile && searchPill}
+        {!!searchValue && !isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
+        )}
         <FilterButton
           isOpen={isSearchOpened}
           onClick={toggleModalOn}
@@ -98,12 +86,14 @@ function Filter<TValue extends FilterValue>({
             className="flex sm:hidden"
             size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
+            onClick={openSearch}
           >
             <MagnifyingGlass size={14} />
           </Button>
         )}
-        {!!searchValue && isMobile && searchPill}
+        {!!searchValue && isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
+        )}
       </div>
       {isMobile && (
         <>
@@ -120,7 +110,7 @@ function Filter<TValue extends FilterValue>({
           </Modal>
           <Modal
             isFullOnMobile={false}
-            onClose={() => setIsSearchOpened(false)}
+            onClose={closeSearch}
             isOpen={isSearchOpened}
             withPaddingBottom
           >
@@ -129,7 +119,7 @@ function Filter<TValue extends FilterValue>({
             </p>
             <div className="sm:mb-6 sm:px-3.5">
               <SearchInputMobile
-                onSearchButtonClick={() => setIsSearchOpened(false)}
+                onSearchButtonClick={closeSearch}
                 setSearchValue={onInputChange}
                 searchValue={searchValue}
                 searchInputPlaceholder={searchInputPlaceholder}
@@ -153,7 +143,7 @@ function Filter<TValue extends FilterValue>({
           <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
-              onClose={() => setIsSearchOpened(false)}
+              onClose={closeSearch}
               placeholder={searchInputPlaceholder}
               value={searchValue}
             />

@@ -1,4 +1,4 @@
-import { MagnifyingGlass, X } from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
@@ -6,6 +6,7 @@ import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
+import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -44,19 +45,6 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
     [onSearch],
   );
 
-  const searchPill = (
-    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
-      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
-      <button
-        type="button"
-        onClick={() => onSearch('')}
-        className="ml-2 flex-shrink-0"
-      >
-        <X size={12} className="text-inherit" />
-      </button>
-    </div>
-  );
-
   const RootItems = items.map(
     ({ icon, items: nestedItems, label, name, title, filterName }) => (
       <FilterItem
@@ -76,7 +64,9 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
   return (
     <>
       <div className="flex flex-row gap-2">
-        {!!searchValue && !isMobile && searchPill}
+        {!!searchValue && !isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
+        )}
         <FilterButton
           isOpen={isSearchOpened}
           onClick={toggleModalOn}
@@ -95,7 +85,9 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             >
               <MagnifyingGlass size={14} />
             </Button>
-            {!!searchValue && searchPill}
+            {!!searchValue && (
+              <SearchPill value={searchValue} onClick={() => onSearch('')} />
+            )}
           </>
         )}
       </div>

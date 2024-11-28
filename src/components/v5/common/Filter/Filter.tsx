@@ -1,7 +1,6 @@
-import { MagnifyingGlass, X } from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
@@ -11,8 +10,10 @@ import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
+import SearchPill from '../Pills/SearchPill/SearchPill.tsx';
 import TableFiltering from '../TableFiltering/index.ts';
 
+import { useSearchFilter } from './hooks.ts';
 import FilterOptions from './partials/FilterOptions.tsx';
 import SearchInput from './partials/SearchInput/index.ts';
 import { type FilterProps } from './types.ts';
@@ -27,33 +28,18 @@ const Filter: FC<FilterProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
+  const {
+    isSearchOpened,
+    openSearch,
+    closeSearch,
+    getTooltipProps,
+    setTooltipRef,
+    setTriggerRef,
+  } = useSearchFilter();
   const isMobile = useMobile();
-  const { getTooltipProps, setTooltipRef, setTriggerRef } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-end',
-    trigger: 'click',
-    interactive: true,
-    visible: isSearchOpened,
-    onVisibleChange: setIsSearchOpened,
-  });
 
   const { selectedFilterCount } = useFilterContext();
   const { searchValue, setSearchValue } = useSearchContext();
-
-  const searchPill = (
-    <div className="flex items-center justify-end rounded-lg bg-blue-100 px-3 py-2 text-sm text-blue-400">
-      <p className="max-w-[12.5rem] truncate sm:max-w-full">{searchValue}</p>
-      <button
-        type="button"
-        onClick={() => setSearchValue('')}
-        className="ml-2 flex-shrink-0"
-      >
-        <X size={12} className="text-inherit" />
-      </button>
-    </div>
-  );
 
   return (
     <>
@@ -70,11 +56,16 @@ const Filter: FC<FilterProps> = ({
             className="flex sm:hidden"
             size="small"
             aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
+            onClick={openSearch}
           >
             <MagnifyingGlass size={14} />
           </Button>
-          {!!searchValue && searchPill}
+          {!!searchValue && (
+            <SearchPill
+              value={searchValue}
+              onClick={() => setSearchValue('')}
+            />
+          )}
           <Modal
             isFullOnMobile={false}
             onClose={() => setOpened(false)}
@@ -85,14 +76,14 @@ const Filter: FC<FilterProps> = ({
           </Modal>
           <Modal
             isFullOnMobile={false}
-            onClose={() => setIsSearchOpened(false)}
+            onClose={closeSearch}
             isOpen={isSearchOpened}
             withPaddingBottom
           >
             <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
             <div className="sm:mb-6 sm:px-3.5">
               <SearchInput
-                onSearchButtonClick={() => setIsSearchOpened(false)}
+                onSearchButtonClick={closeSearch}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
                 searchInputPlaceholder={searchInputPlaceholder}
@@ -104,7 +95,12 @@ const Filter: FC<FilterProps> = ({
         <>
           <div className="flex flex-row gap-2">
             <TableFiltering />
-            {!!searchValue && searchPill}
+            {!!searchValue && (
+              <SearchPill
+                value={searchValue}
+                onClick={() => setSearchValue('')}
+              />
+            )}
             <FilterButton
               isOpen={isSearchOpened}
               setTriggerRef={setTriggerRef}
@@ -125,7 +121,7 @@ const Filter: FC<FilterProps> = ({
             >
               <div className="sm:mb-6 sm:px-3.5">
                 <SearchInput
-                  onSearchButtonClick={() => setIsSearchOpened(false)}
+                  onSearchButtonClick={closeSearch}
                   searchValue={searchValue}
                   setSearchValue={setSearchValue}
                   searchInputPlaceholder={searchInputPlaceholder}
