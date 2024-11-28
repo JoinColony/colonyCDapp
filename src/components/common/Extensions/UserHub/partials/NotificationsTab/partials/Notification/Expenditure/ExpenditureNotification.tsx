@@ -160,7 +160,7 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       actionTitleValues,
       notification.id,
     );
-  }, [action, actionTitleValues, colony]);
+  }, [action, actionTitleValues, colony, notification.id]);
 
   return (
     <NotificationWrapper

@@ -86,7 +86,7 @@ const ActionNotification: FC<NotificationProps> = ({
     }
 
     return formatText({ id: 'action.title' }, titleValues, notification.id);
-  }, [action, colony, titleValues]);
+  }, [action, colony, titleValues, notification.id]);
 
   const actionTitle =
     action?.metadata?.customTitle || action?.decisionData?.title || '';
