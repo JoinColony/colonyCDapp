@@ -58,20 +58,22 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
     <div className={className}>
       {formRole === UserRole.Custom ? (
         <Table<CustomPermissionTableModel>
-          className="sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0"
+          className={clsx(
+            'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0',
+            {
+              '!border-negative-300': !!formState.errors.permissions,
+            },
+          )}
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
           verticalLayout={isMobile}
           withBorder={false}
-          tableClassName={clsx({
-            '!border-negative-300': !!formState.errors.permissions,
-          })}
           tableBodyRowKeyProp="type"
         />
       ) : (
         <Table<PermissionsTableModel>
           {...permissionsTableProps}
-          tableClassName={clsx({
+          className={clsx({
             '!border-negative-300': !!formState.errors.role,
           })}
         />
