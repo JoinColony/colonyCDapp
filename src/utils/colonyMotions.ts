@@ -55,6 +55,12 @@ export const getMotionState = (
       return MotionState.Uninstalled;
     }
     case NetworkMotionState.Staking: {
+      if (
+        BigNumber.from(nayStakes).gte(requiredStake) &&
+        BigNumber.from(yayStakes).isZero()
+      ) {
+        return MotionState.Opposed;
+      }
       return BigNumber.from(yayStakes).gte(requiredStake) &&
         BigNumber.from(nayStakes).isZero()
         ? MotionState.Supported
