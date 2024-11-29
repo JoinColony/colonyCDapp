@@ -209,6 +209,8 @@ const SearchSelect = React.forwardRef<HTMLDivElement, SearchSelectProps>(
                       icon={Binoculars}
                       title={{ id: 'actionSidebar.emptyTitle' }}
                       description={{ id: 'actionSidebar.emptyDescription' }}
+                      isDropdown
+                      className="!p-0"
                     />
                   )}
             </div>

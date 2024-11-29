@@ -1157,10 +1157,12 @@ export type ColonyMultiSig = {
   /** Extended user object for given executedBy */
   executedByUser?: Maybe<User>;
   /**
-   * In case of multiple multisig actions in a motion, when funding an expenditure, array containing
+   * In case of multiple funding actions in a multisig, when funding an expenditure, array containing
    * the details of tokens and amounts to be funded
    */
   expenditureFunding?: Maybe<Array<ExpenditureFundingItem>>;
+  /** Expenditure associated with the motion, if any */
+  expenditureId?: Maybe<Scalars['ID']>;
   /** Whether the underlying action completed */
   hasActionCompleted: Scalars['Boolean'];
   /**
@@ -1611,6 +1613,7 @@ export type CreateColonyMultiSigInput = {
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
   isDecision: Scalars['Boolean'];
@@ -2365,7 +2368,7 @@ export type Expenditure = {
   ownerAddress: Scalars['ID'];
   /** Array containing expenditure slots */
   slots: Array<ExpenditureSlot>;
-  /** Indicates whether the splitPaymentClaimedNotification has been sent to prevent sending multiple notifications */
+  /** Only used for Split Payments, used to prevent sending multiple payment notifications */
   splitPaymentPayoutClaimedNotificationSent?: Maybe<Scalars['Boolean']>;
   /** Address of StagedExpenditure extension which set the expenditure as staged, if applicable */
   stagedExpenditureAddress?: Maybe<Scalars['ID']>;
@@ -3295,6 +3298,7 @@ export type ModelColonyMultiSigConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
   isExecuted?: InputMaybe<ModelBooleanInput>;
@@ -3322,6 +3326,7 @@ export type ModelColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -4374,6 +4379,7 @@ export type ModelSubscriptionColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedBy?: InputMaybe<ModelSubscriptionIdInput>;
+  expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   hasActionCompleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -6674,6 +6680,7 @@ export type Query = {
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getMotionVoterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
   getMultiSigByColonyAddress?: Maybe<ModelColonyMultiSigConnection>;
+  getMultiSigByExpenditureId?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   getMultiSigUserSignatureByMultiSigId?: Maybe<ModelMultiSigUserSignatureConnection>;
@@ -7247,6 +7254,16 @@ export type QueryGetMotionVoterRewardsArgs = {
 /** Root query type */
 export type QueryGetMultiSigByColonyAddressArgs = {
   colonyAddress: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetMultiSigByExpenditureIdArgs = {
+  expenditureId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -9642,6 +9659,7 @@ export type UpdateColonyMultiSigInput = {
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isDecision?: InputMaybe<Scalars['Boolean']>;
@@ -10758,6 +10776,11 @@ export type SearchColonyContributorsQueryVariables = Exact<{
 
 
 export type SearchColonyContributorsQuery = { __typename?: 'Query', searchColonyContributors?: { __typename?: 'SearchableColonyContributorConnection', total?: number | null, nextToken?: string | null, items: Array<{ __typename?: 'ColonyContributor', contributorAddress: string, isVerified: boolean, hasPermissions?: boolean | null, hasReputation?: boolean | null, isWatching?: boolean | null, colonyReputationPercentage: number, type?: ContributorType | null, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, reputation?: { __typename?: 'ModelContributorReputationConnection', items: Array<{ __typename?: 'ContributorReputation', reputationPercentage: number, reputationRaw: string, domainId: string, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null, user?: { __typename?: 'User', walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null } | null } | null> } | null };
+
+export type OnCreateColonyContributorSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnCreateColonyContributorSubscription = { __typename?: 'Subscription', onCreateColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string } | null };
 
 export type GetMembersCountQueryVariables = Exact<{
   filter: SearchableColonyContributorFilterInput;
@@ -14368,6 +14391,35 @@ export function useSearchColonyContributorsLazyQuery(baseOptions?: Apollo.LazyQu
 export type SearchColonyContributorsQueryHookResult = ReturnType<typeof useSearchColonyContributorsQuery>;
 export type SearchColonyContributorsLazyQueryHookResult = ReturnType<typeof useSearchColonyContributorsLazyQuery>;
 export type SearchColonyContributorsQueryResult = Apollo.QueryResult<SearchColonyContributorsQuery, SearchColonyContributorsQueryVariables>;
+export const OnCreateColonyContributorDocument = gql`
+    subscription OnCreateColonyContributor {
+  onCreateColonyContributor {
+    contributorAddress
+  }
+}
+    `;
+
+/**
+ * __useOnCreateColonyContributorSubscription__
+ *
+ * To run a query within a React component, call `useOnCreateColonyContributorSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateColonyContributorSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnCreateColonyContributorSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnCreateColonyContributorSubscription(baseOptions?: Apollo.SubscriptionHookOptions<OnCreateColonyContributorSubscription, OnCreateColonyContributorSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OnCreateColonyContributorSubscription, OnCreateColonyContributorSubscriptionVariables>(OnCreateColonyContributorDocument, options);
+      }
+export type OnCreateColonyContributorSubscriptionHookResult = ReturnType<typeof useOnCreateColonyContributorSubscription>;
+export type OnCreateColonyContributorSubscriptionResult = Apollo.SubscriptionResult<OnCreateColonyContributorSubscription>;
 export const GetMembersCountDocument = gql`
     query GetMembersCount($filter: SearchableColonyContributorFilterInput!, $nextToken: String) {
   searchColonyContributors(
