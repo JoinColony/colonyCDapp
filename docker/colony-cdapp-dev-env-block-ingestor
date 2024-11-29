@@ -32,11 +32,13 @@ ADD docker/files/block-ingestor/env.base /colonyCDappBackend/block-ingestor/.env
 # to the block ingestor. You must ensure these env vars exist in your local env file for this to work properly.
 RUN --mount=type=bind,source=/.env,target=/tmpMount/.env grep -e MAGICBELL_API_KEY -e MAGICBELL_API_SECRET -e MAGICBELL_DEV_KEY /tmpMount/.env >> /colonyCDappBackend/block-ingestor/.env
 
+RUN npm i -g pnpm@9.5.0
+
 # Install block ingestor dependencies
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Compile JS files
-RUN npm run build
+RUN pnpm --filter @joincolony/main-chain run build
 
 WORKDIR /colonyCDappBackend
 
