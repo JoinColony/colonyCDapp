@@ -98,7 +98,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
         <div className="flex w-full min-w-0 flex-col">
           <p
             className={clsx(
-              'min-w-0 truncate text-md font-medium text-gray-900',
+              'line-clamp-2 min-w-0 break-words text-md font-medium text-gray-900 md:line-clamp-1',
               {
                 'overflow-hidden rounded skeleton sm:w-64': isLoading,
               },

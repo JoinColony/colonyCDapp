@@ -3,7 +3,11 @@ import React, { type PropsWithChildren } from 'react';
 export const ActionTitle = ({
   children,
 }: PropsWithChildren<Record<never, any>>) => {
-  return <h3 className="mb-2 text-2xl font-bold text-gray-900">{children}</h3>;
+  return (
+    <h3 className="mb-2 line-clamp-4 break-words text-2xl font-bold text-gray-900">
+      {children}
+    </h3>
+  );
 };
 
 export const ActionSubtitle = ({
