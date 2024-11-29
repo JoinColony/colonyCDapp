@@ -32,6 +32,7 @@ export const AccountPageSidebar = () => {
       headerClassName="mb-[27px]"
       colonySwitcherProps={{ showColonySwitcherText: true }}
       feedbackButtonProps={{ widgetPlacement: { horizontalPadding: 240 } }}
+      testId="account-page-sidebar"
     >
       <section className="flex flex-col gap-0.5">
         <SidebarRouteItem

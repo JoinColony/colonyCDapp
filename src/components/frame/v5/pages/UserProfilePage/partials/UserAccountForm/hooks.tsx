@@ -161,6 +161,7 @@ export const useUserProfilePageForm = () => {
                 size={60}
                 src={avatarUrl ?? undefined}
                 address={wallet.address}
+                testId="user-profile-avatar"
               />
             ) : (
               <div />
@@ -170,6 +171,7 @@ export const useUserProfilePageForm = () => {
             uploaderText,
             SuccessComponent: IconSuccessContent,
             uploaderShownByDefault: false,
+            testId: 'avatar-uploader',
           },
         },
       ],

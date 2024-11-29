@@ -25,6 +25,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
   isSuccess = false,
   isError = false,
   isFullWidthContent,
+  testId,
   className,
   contentWrapperClassName,
   selectTriggerRef = (v) => v,
@@ -60,6 +61,7 @@ const Tooltip: FC<PropsWithChildren<TooltipProps>> = ({
         ref={(ref) => {
           setTriggerRef(selectTriggerRef(ref));
         }}
+        data-testid={testId}
       >
         {children}
       </div>

@@ -23,6 +23,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
       className,
       headerClassName,
       footerClassName,
+      testId,
       children,
     },
     ref,
@@ -40,6 +41,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           },
           className,
         )}
+        data-testid={testId}
       >
         {showColonySwitcher && (
           <section

@@ -86,7 +86,9 @@ const EmailSection = () => {
     if (!isEmailInputVisible) {
       return (
         <div className="flex w-full flex-col gap-4 md:w-fit md:flex-row md:items-center md:justify-end md:gap-6">
-          <span className="text-md">{emailValue}</span>
+          <span className="text-md" data-testid="preferences-email-value">
+            {emailValue}
+          </span>
           <Button
             mode="primarySolid"
             text={{ id: 'button.updateEmail' }}

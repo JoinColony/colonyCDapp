@@ -39,11 +39,11 @@ const MSG = defineMessages({
     defaultMessage: 'You will no longer receive notifications.',
   },
 });
-
 // @TODO if we get more items in this "section" split the sections up and rename this
 const NotificationsSection = () => {
   const toggleButton = (
     <NotificationTypeToggle
+      testId="notifications-toggle"
       notificationType="notificationsDisabled"
       toastTextEnabled={formatText(MSG.toastNotificationsEnabled)}
       toastTextDisabled={formatText(MSG.toastNotificationsDisabled)}
@@ -51,7 +51,10 @@ const NotificationsSection = () => {
   );
 
   return (
-    <SettingsRow.Container className="border-none">
+    <SettingsRow.Container
+      className="border-none"
+      testId="notifications-section"
+    >
       <SettingsRow.Content>
         <div className="flex items-center gap-1.5">
           <SettingsRow.Title>{formatText(MSG.sectionTitle)}</SettingsRow.Title>

@@ -13,4 +13,5 @@ export interface SidebarProps extends PropsWithChildren {
   footerClassName?: string;
   colonySwitcherProps?: ColonySwitcherProps;
   feedbackButtonProps?: FeedbackButtonProps;
+  testId?: string;
 }

@@ -77,6 +77,7 @@ const UserMenu: FC<UserMenuProps> = ({
       )}
     >
       <div
+        data-testid="user-menu"
         className={clsx('transition-transform', {
           '-translate-x-0': !activeSubmenu,
           'absolute -translate-x-[100vw]': activeSubmenu,

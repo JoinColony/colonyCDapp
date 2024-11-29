@@ -21,6 +21,7 @@ export interface AvatarProps {
   alt?: string;
   address: string;
   size: number;
+  testId?: string;
 }
 
 export const Avatar: FC<AvatarProps> = ({
@@ -29,11 +30,13 @@ export const Avatar: FC<AvatarProps> = ({
   className,
   size,
   src,
+  testId,
 }) => {
   const source = src ?? getIcon(address.toLowerCase());
 
   return (
     <img
+      data-testid={testId}
       className={clsx('rounded-full', className)}
       src={source}
       alt={alt ?? formatText(MSG.defaultAlt, { address })}
