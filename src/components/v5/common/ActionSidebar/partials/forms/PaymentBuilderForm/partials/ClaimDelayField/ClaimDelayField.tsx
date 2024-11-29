@@ -67,6 +67,7 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
     >
       <input
         {...field}
+        value={field.value ?? ''}
         ref={inputRef}
         name={name}
         className={clsx(
@@ -85,6 +86,13 @@ const ClaimDelayField: FC<ClaimDelayFieldProps> = ({
             event.target.value,
             formattingOptions,
           );
+
+          if (
+            (!field.value && !formattedValue) ||
+            formattedValue === field.value
+          ) {
+            return;
+          }
 
           if (
             wrapperRef.current &&
