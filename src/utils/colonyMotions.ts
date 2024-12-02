@@ -75,7 +75,9 @@ export const getMotionState = (
     case NetworkMotionState.Closed: {
       return MotionState.Escalated;
     }
-    case NetworkMotionState.Finalizable:
+    case NetworkMotionState.Finalizable: {
+      return MotionState.Finalizable;
+    }
     case NetworkMotionState.Finalized: {
       /*
        * Both sides staked fully, we go to a vote
