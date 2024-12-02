@@ -6,6 +6,7 @@ import {
   Copy,
   HandPalm,
   Prohibit,
+  Repeat,
   UserFocus,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
@@ -17,6 +18,9 @@ import { generatePath } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { ADDRESS_ZERO, APP_URL } from '~constants';
+import { Action } from '~constants/actions.ts';
+import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
@@ -35,7 +39,22 @@ import {
   getStreamingPaymentLimit,
 } from '~utils/streamingPayments.ts';
 import { getNumeralTokenAmount, getSelectedToken } from '~utils/tokens.ts';
-import { END_OPTIONS } from '~v5/common/ActionSidebar/partials/TimeRow/consts.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  AMOUNT_FIELD_NAME,
+  CREATED_IN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+  DESCRIPTION_FIELD_NAME,
+  FROM_FIELD_NAME,
+  RECIPIENT_FIELD_NAME,
+  TITLE_FIELD_NAME,
+  TOKEN_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
+import {
+  END_OPTIONS,
+  START_IMMEDIATELY_VALUE,
+} from '~v5/common/ActionSidebar/partials/TimeRow/consts.ts';
+import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import { DEFAULT_DATE_TIME_FORMAT } from '~v5/common/Fields/datepickers/common/consts.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import { type MeatBallMenuItem } from '~v5/shared/MeatBallMenu/types.ts';
@@ -73,6 +92,13 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const isMobile = useMobile();
+  const {
+    actionSidebarToggle: [
+      ,
+      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
+    ],
+  } = useActionSidebarContext();
+  const decisionMethod = useDecisionMethod(action);
 
   const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
 
@@ -91,7 +117,15 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     return null;
   }
 
-  const { metadata, initiatorUser, transactionHash } = action || {};
+  const {
+    metadata,
+    initiatorUser,
+    transactionHash,
+    isMotion,
+    motionData,
+    annotation,
+    createdAt,
+  } = action || {};
   const { customTitle = formatText(MSG.defaultTitle) } = metadata || {};
   const {
     amount,
@@ -108,12 +142,19 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     amount || '1',
     selectedToken?.decimals,
   );
+
   const { endCondition } = streamingPaymentMetadata || {};
+  const motionDomain = motionData?.motionDomain ?? null;
 
   const selectedTeam = findDomainByNativeId(nativeDomainId, colony);
   const limitAmount = getStreamingPaymentLimit({
     streamingPayment: streamingPaymentData,
   });
+
+  const formattedLimitAmount = getNumeralTokenAmount(
+    limitAmount || '0',
+    selectedToken?.decimals,
+  );
 
   const hasPermissions = addressHasRoles({
     address: user?.walletAddress || '',
@@ -127,11 +168,63 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     streamingPaymentData.isCancelled &&
     (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
 
+  const isCustomInterval =
+    Number(interval) !== ONE_HOUR_IN_SECONDS &&
+    Number(interval) !== ONE_DAY_IN_SECONDS &&
+    Number(interval) !== ONE_DAY_IN_SECONDS * 7;
+  const startTimeDate = new Date(Number(startTime) * 1000);
+
+  const isStartImmediately =
+    Math.abs(startTimeDate.getTime() - new Date(createdAt).getTime()) < 60000;
+
   const meatballOptions: MeatBallMenuItem[] = [
+    {
+      key: '1',
+      label: formatText({ id: 'completedAction.redoAction' }),
+      icon: Repeat,
+      onClick: () => {
+        toggleActionSidebarOff();
+
+        setTimeout(() => {
+          toggleActionSidebarOn({
+            [TITLE_FIELD_NAME]: customTitle,
+            [ACTION_TYPE_FIELD_NAME]: Action.StreamingPayment,
+            [FROM_FIELD_NAME]: streamingPaymentData?.nativeDomainId,
+            [RECIPIENT_FIELD_NAME]: recipientAddress,
+            [AMOUNT_FIELD_NAME]: formattedAmount,
+            [TOKEN_FIELD_NAME]: selectedToken?.tokenAddress,
+            [DECISION_METHOD_FIELD_NAME]: decisionMethod,
+            starts: isStartImmediately
+              ? START_IMMEDIATELY_VALUE
+              : startTimeDate,
+            ends:
+              endCondition === StreamingPaymentEndCondition.FixedTime
+                ? new Date(Number(endTime) * 1000)
+                : endCondition,
+            period: isCustomInterval
+              ? {
+                  custom: Number(interval),
+                  interval: 'custom',
+                }
+              : {
+                  interval: getAmountPerValue(interval).toLowerCase(),
+                },
+            limit: limitAmount ? formattedLimitAmount : undefined,
+            limitTokenAddress: limitAmount
+              ? selectedToken?.tokenAddress
+              : undefined,
+            [CREATED_IN_FIELD_NAME]: isMotion
+              ? motionDomain?.nativeId
+              : streamingPaymentData?.nativeDomainId,
+            [DESCRIPTION_FIELD_NAME]: annotation?.message,
+          });
+        }, 500);
+      },
+    },
     ...(showCancelOption
       ? [
           {
-            key: '1',
+            key: '2',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
             onClick: () => {},
@@ -139,7 +232,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
         ]
       : []),
     {
-      key: '2',
+      key: '3',
       label: formatText({ id: 'expenditure.copyLink' }),
       renderItemWrapper: (itemWrapperProps, children) => (
         <MeatballMenuCopyItem

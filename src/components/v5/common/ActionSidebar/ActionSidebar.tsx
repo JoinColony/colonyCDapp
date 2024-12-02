@@ -39,8 +39,6 @@ import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
-import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
-import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
 import { type ActionSidebarProps } from './types.ts';
 
@@ -108,7 +106,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   useDisableBodyScroll(isActionSidebarOpen);
 
   const isLoading =
-    transactionId !== undefined && (loadingAction || loadingExpenditure || streamingPayment.loadingStreamingPayment);
+    transactionId !== undefined &&
+    (loadingAction ||
+      loadingExpenditure ||
+      streamingPayment.loadingStreamingPayment);
 
   const actionNotFound =
     transactionId &&
