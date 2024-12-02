@@ -33,7 +33,7 @@ export const getSplitPaymentPayload = (
       ? undefined
       : findDomainByNativeId(createdIn, colony) || rootDomain;
 
-  if (!createdInDomain || !payments.length) {
+  if (!payments.length) {
     return null;
   }
 
