@@ -15,7 +15,7 @@ import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
-import { ModelSortDirection } from '~gql';
+import { DomainColor, ModelSortDirection } from '~gql';
 import { useMobile } from '~hooks';
 import { useActivityData } from '~hooks/useActivityData.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -83,15 +83,15 @@ export const useTeams = () => {
 
       const { metadata, id, nativeId, reputationPercentage } = item;
 
-      if (!metadata) {
-        return result;
-      }
-
       if (selectedDomain && selectedDomain.nativeId !== nativeId) {
         return result;
       }
 
-      const { color, description, name } = metadata;
+      const { color, description, name } = metadata || {
+        color: DomainColor.Root,
+        description: '',
+        name: `Team #${nativeId}`,
+      };
 
       const domainActionsCount = domainsActionCount?.find(
         ({ key }) => key === id,

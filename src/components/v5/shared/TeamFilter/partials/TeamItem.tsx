@@ -47,7 +47,7 @@ const TeamItem: FC<TeamItemProps> = ({
     }
   };
 
-  const label = domain.metadata?.name ?? domain.id;
+  const label = domain.metadata?.name ?? `Team #${domain.nativeId}`;
 
   return (
     <button

@@ -13,6 +13,10 @@ import {
   UpdateDomainMetadataDocument,
   type UpdateDomainMetadataMutation,
   type UpdateDomainMetadataMutationVariables,
+  type CreateDomainMetadataMutation,
+  type CreateDomainMetadataMutationVariables,
+  CreateDomainMetadataDocument,
+  DomainColor,
 } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import {
@@ -42,7 +46,7 @@ function* editDomainAction({
   payload: {
     colonyAddress,
     domainName,
-    domainColor,
+    domainColor = DomainColor.Root,
     domainPurpose,
     domain,
     annotationMessage,
@@ -165,6 +169,25 @@ function* editDomainAction({
                 newColor: domainColor,
                 newDescription: domainPurpose,
               }),
+            },
+          },
+          refetchQueries: [GetFullColonyByNameDocument],
+        }),
+      );
+    } else {
+      // Create new metadata if no metadata exists
+      yield mutateWithAuthRetry(() =>
+        apolloClient.mutate<
+          CreateDomainMetadataMutation,
+          CreateDomainMetadataMutationVariables
+        >({
+          mutation: CreateDomainMetadataDocument,
+          variables: {
+            input: {
+              id: getDomainDatabaseId(colonyAddress, domain.nativeId),
+              name: domainName || `Team #${domain.nativeId}`,
+              color: domainColor,
+              description: domainPurpose,
             },
           },
           refetchQueries: [GetFullColonyByNameDocument],
