@@ -124,6 +124,7 @@ fragment ColonyAction on ColonyAction {
   members
   rootHash
   expenditureId
+  streamingPaymentId
   isMultiSig
   multiSigId
   multiSigData {

@@ -35,7 +35,8 @@ function CardSelect<TValue = string>({
   disabled,
   readonly,
   itemClassName = 'group flex text-md md:transition-colors md:hover:font-medium md:hover:bg-gray-50 rounded px-4 py-2 w-full cursor-pointer',
-  renderOptionWrapper = (props, children) => (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  renderOptionWrapper = ({ value, ...props }, children) => (
     <button type="button" {...props}>
       {children}
     </button>
@@ -171,6 +172,7 @@ function CardSelect<TValue = string>({
                                         onChange(optionValue);
                                         toggleSelectOff();
                                       },
+                                      value: optionValue,
                                     },
                                     label,
                                   )}

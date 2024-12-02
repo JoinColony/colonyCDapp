@@ -42,6 +42,7 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
     validationSchema,
     actionType,
     id,
+    transform,
     primaryButton?.onClick,
     primaryButton?.type,
   ]);
