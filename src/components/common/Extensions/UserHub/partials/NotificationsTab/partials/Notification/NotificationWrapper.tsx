@@ -47,9 +47,9 @@ const NotificationWrapper: FC<NotificationWrapperProps> = ({
   };
 
   return (
-    <li className="w-full ">
+    <li className="w-full border-b border-gray-100 last:border-none">
       <button
-        className="relative flex w-full gap-2 px-6 py-3.5 text-left sm:hover:bg-gray-50"
+        className="relative flex w-full gap-2 px-6 py-[0.875rem] text-left sm:hover:bg-gray-50"
         onClick={handleNotificationClicked}
         type="button"
       >

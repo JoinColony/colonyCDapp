@@ -24,7 +24,7 @@ const TransactionsTab: FC<TransactionsProps> = () => {
       <p className="px-6 pt-6 heading-5">
         {formatText({ id: 'transactions' })}
       </p>
-      <div className="h-full w-full px-6 sm:px-0">
+      <div className="h-full w-full px-6 pt-0.5 sm:px-0">
         {isEmpty ? (
           <EmptyContent
             title={{ id: 'empty.content.title.transactions' }}

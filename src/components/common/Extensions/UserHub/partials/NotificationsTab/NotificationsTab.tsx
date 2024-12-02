@@ -70,7 +70,7 @@ const NotificationsTab = ({ closeUserHub }: { closeUserHub: () => void }) => {
         {hasUnreadNotifications && markAllAsRead && (
           <button
             onClick={() => markAllAsRead()}
-            className="text-xs font-medium text-blue-400"
+            className="text-xs font-medium text-blue-400 hover:text-gray-900"
             type="button"
           >
             {formatText(MSG.markAllAsRead)}
