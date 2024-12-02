@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Block Ingestor
+
+cd block-ingestor
+
+echo "DEBUG: Starting script"
+
+CONTAINER_REPLICA_NUMBER=$(curl --unix-socket /var/run/docker.sock -s "http://localhost/containers/$HOSTNAME/json" | jq -r '.Config.Labels["com.docker.compose.container-number"]')
+
+echo "Running proxy-block-ingestor replica $CONTAINER_REPLICA_NUMBER"
+
+# If the label is missing or empty, you can set a default value
+if [ -z "$CONTAINER_REPLICA_NUMBER" ]; then
+  INDEX="0"
+else
+  INDEX=$((CONTAINER_REPLICA_NUMBER - 1))
+fi
+
+CONTRACT_ADDRESSES_ARRAY=($(echo "$CONTRACT_ADDRESSES" | jq -r '.[]'))
+CONTRACT_ADDRESS=${CONTRACT_ADDRESSES_ARRAY[$INDEX]}
+
+echo "Used Contract Address: $CONTRACT_ADDRESS"
+
+# Get etherrouter-address
+wget http://network-files:3006/etherrouter-address.json
+
+# Write to env file...
+# @TODO change to apps/proxy-chain/.env
+echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> apps/main-chain/.env
+# @TODO change to apps/proxy-chain/.env
+echo "CONTRACT_ADDRESS=\"$CONTRACT_ADDRESS\"" >> apps/main-chain/.env
+
+# @TODO change to @joincolony/proxy-chain
+pnpm --filter @joincolony/main-chain run start
