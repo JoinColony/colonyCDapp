@@ -1,6 +1,7 @@
-import { HandsClapping, HandWaving } from '@phosphor-icons/react';
+import { Confetti, Password } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import {
   Navigate,
   useLocation,
@@ -8,8 +9,11 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { ADDRESS_ZERO } from '~constants/index.ts';
+import { ADDRESS_ZERO, REQUEST_ACCESS } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
+import { LandingPageLayout } from '~frame/Extensions/layouts/LandingPageLayout.tsx';
+import InfoBanner from '~frame/LandingPage/partials/InfoBanner/InfoBanner.tsx';
+import LoadingTemplate from '~frame/LoadingTemplate/LoadingTemplate.tsx';
 import {
   useGetColonyMemberInviteQuery,
   useValidateUserInviteMutation,
@@ -17,13 +21,11 @@ import {
 } from '~gql';
 import useIsContributor from '~hooks/useIsContributor.ts';
 import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
-import PageLoader from '~v5/common/PageLoader/index.ts';
+import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
-import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
-import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
-import ColonyAvatar from '~v5/shared/ColonyAvatar/index.ts';
-import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
-import SocialLinks from '~v5/shared/SocialLinks/index.ts';
+import CardWithCallout from '~v5/shared/CardWithCallout/CardWithCallout.tsx';
+import ColonyAvatar from '~v5/shared/ColonyAvatar/ColonyAvatar.tsx';
+import SocialLinks from '~v5/shared/SocialLinks/SocialLinks.tsx';
 
 const displayName = 'pages.ColonyPreviewPage';
 
@@ -32,50 +34,53 @@ const MSG = defineMessages({
     id: `${displayName}.loadingMessage`,
     defaultMessage: 'Checking your access...',
   },
-  heading: {
-    id: `${displayName}.heading`,
-    defaultMessage: 'Welcome to Colony’s private beta',
-  },
-  description: {
-    id: `${displayName}.description`,
-    defaultMessage:
-      'The Colony app is in private beta, allowing invited members and Colony’s to test out the new features before launch.',
-  },
-  notificationBannerTitle: {
-    id: `${displayName}.notificationBannerTitle`,
-    defaultMessage:
-      'You have been invited to join {colonyName} for the private beta.',
-  },
-  invalidBannerTitle: {
-    id: `${displayName}.invalidBannerTitle`,
-    defaultMessage: 'Sorry, your invite code is not valid. Please check again.',
-  },
-  privateAccessHeading: {
-    id: `${displayName}.privateAccessHeading`,
-    defaultMessage: 'Private access only',
-  },
-  restrictedAccessMessage: {
-    id: `${displayName}.restrictedAccessMessage`,
-    /* eslint-disable max-len */
+  title: {
+    id: `${displayName}.title`,
     defaultMessage: `
-    This Colony has restricted access during the private beta test. Only members who have been invited can access the Colony.
-      {needsToRequestAccess, select,
-      true {To request access to this Colony, you can contact them via their social accounts above.}
-      other {}
+    {noWallet, select,
+    true {Get started}
+    other {Welcome to Colony}
+  }`,
+  },
+  info: {
+    id: `${displayName}.info`,
+    defaultMessage: `
+      {noWallet, select,
+      true {Connect your wallet to sign in and check your access or return to your existing colonies.}
+      other {Tools to manage shared funds easily, openly, and securely.}
     }`,
-    /* eslint-enable max-len */
+  },
+  connectWalletButton: {
+    id: `${displayName}.connectWalletButton`,
+    defaultMessage: `Connect wallet`,
   },
   joinColonyButton: {
     id: `${displayName}.joinColonyButton`,
-    defaultMessage: 'Join the Colony',
+    defaultMessage: `Join the colony`,
   },
-  connectWalletTitle: {
-    id: `${displayName}.connectWalletTitle`,
-    defaultMessage: 'Connect your wallet to check your access',
+  requestAccessButton: {
+    id: `${displayName}.requestAccessButton`,
+    defaultMessage: `Request access`,
   },
-  connectWalletText: {
-    id: `${displayName}.connectWalletText`,
-    defaultMessage: 'You might have private beta access already available.',
+  infoBannerTitle: {
+    id: `${displayName}.infoBannerTitle`,
+    defaultMessage: `
+      {needsToRequestAccess, select,
+      true {Invalid colony invite code}
+      other {You’ve been invited!}
+    }`,
+  },
+  infoBannerDescription: {
+    id: `${displayName}.infoBannerDescription`,
+    defaultMessage: `
+      {needsToRequestAccess, select,
+      true {Your invite code to {colony} is not valid. Please check the code and try again.}
+      other {You’ve been invited to join the {colony}. Connect your wallet below to join the colony!}
+    }`,
+  },
+  restrictedAccessMessage: {
+    id: `${displayName}.restrictedAccessMessage`,
+    defaultMessage: `This Colony has restricted access during early access. Only members who have been invited can access the Colony.`,
   },
 });
 
@@ -106,7 +111,6 @@ const ColonyPreviewPage = () => {
   const [validate] = useValidateUserInviteMutation();
 
   const colonyAddress = colonyData?.getColonyByName?.items[0]?.colonyAddress;
-  const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
 
   const { isContributor, loading: isContributorLoading } = useIsContributor({
     colonyAddress,
@@ -133,7 +137,7 @@ const ColonyPreviewPage = () => {
     isContributorLoading ||
     colonyLoading
   ) {
-    return <PageLoader loadingText={formatMessage(MSG.loadingMessage)} />;
+    return <LoadingTemplate loadingText={formatMessage(MSG.loadingMessage)} />;
   }
 
   if (wallet && !user) {
@@ -153,83 +157,126 @@ const ColonyPreviewPage = () => {
   const inviteIsInvalid = inviteCode && !inviteIsValid;
   const colonyDisplayName =
     colonyData?.getColonyByName?.items[0]?.metadata?.displayName || colonyName;
+  const colonyMetadata = colonyData?.getColonyByName?.items[0]?.metadata;
   const socialLinks =
     colonyData?.getColonyByName?.items[0]?.metadata?.externalLinks || [];
 
   return (
-    <div className="mx-auto max-w-[34rem]">
-      <h1 className="mb-2 text-2xl font-semibold">
-        <FormattedMessage {...MSG.heading} />
-      </h1>
-      <p className="mb-5 text-sm text-gray-600">
-        <FormattedMessage {...MSG.description} />
-      </p>
-      <hr className="mb-8" />
-      {inviteIsValid && (
-        <NotificationBanner
-          icon={HandsClapping}
-          status="success"
-          className="my-8"
-        >
-          {formatMessage(MSG.notificationBannerTitle, {
-            colonyName: colonyDisplayName,
-          })}
-        </NotificationBanner>
-      )}
-      {inviteIsInvalid && (
-        <NotificationBanner icon={HandWaving} status="error" className="my-8">
-          {formatMessage(MSG.invalidBannerTitle)}
-        </NotificationBanner>
-      )}
-      {wallet ? null : (
-        <CardConnectWallet
-          connectWallet={connectWallet}
-          title={formatMessage(MSG.connectWalletTitle)}
-          text={formatMessage(MSG.connectWalletText)}
-        />
-      )}
-      <h2 className="mb-3 mt-8 text-md font-semibold">
-        <FormattedMessage {...MSG.privateAccessHeading} />
-      </h2>
-      <CardWithCallout
-        className="border-grey-200"
-        button={
-          user && inviteIsValid ? (
-            <Button
-              className="w-full md:w-auto"
-              mode="quinary"
-              text={MSG.joinColonyButton}
-              onClick={() => validateInviteCode()}
-              size="small"
-            />
-          ) : null
-        }
-        title={
-          <div className="flex w-full flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
-            <ColonyAvatar
-              colonyImageSrc={
-                colonyMetadata?.thumbnail || colonyMetadata?.avatar || undefined
-              }
-              colonyAddress={colonyAddress || ADDRESS_ZERO}
-              colonyName={colonyDisplayName}
-              size={24}
-            />
-            <h1 className="inline text-md font-medium">{colonyDisplayName}</h1>
-            <SocialLinks
-              className="w-full sm:ml-auto sm:w-auto"
-              externalLinks={socialLinks}
-            />
+    <LandingPageLayout
+      bottomComponent={
+        <div className="w-full px-6 pb-6 md:hidden">
+          {!wallet ? (
+            <Button isFullSize onClick={connectWallet}>
+              {formatText(MSG.connectWalletButton)}
+            </Button>
+          ) : (
+            <>
+              {inviteIsValid && (
+                <Button isFullSize onClick={validateInviteCode}>
+                  {formatText(MSG.joinColonyButton)}
+                </Button>
+              )}
+              {inviteIsInvalid && (
+                <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+                  <Button isFullSize>
+                    {formatText(MSG.requestAccessButton)}
+                  </Button>
+                </a>
+              )}
+            </>
+          )}
+        </div>
+      }
+    >
+      <div className="flex h-full items-center px-8 md:px-0">
+        <div className="w-full">
+          <div className="mb-8">
+            <h1 className="heading-2">
+              {formatText(MSG.title, { noWallet: !wallet })}
+            </h1>
+            <p
+              className={clsx(
+                'pt-2 text-md font-normal text-gray-600 md:block',
+                {
+                  hidden: inviteIsValid && !wallet,
+                },
+              )}
+            >
+              {formatText(MSG.info, {
+                noWallet: !wallet && inviteIsInvalid,
+              })}
+            </p>
+            <div className="pt-9 md:pt-8">
+              {inviteCode ? (
+                <InfoBanner
+                  icon={inviteIsValid ? Confetti : Password}
+                  title={formatText(MSG.infoBannerTitle, {
+                    needsToRequestAccess: inviteIsInvalid,
+                  })}
+                  text={formatText(MSG.infoBannerDescription, {
+                    needsToRequestAccess: inviteIsInvalid,
+                    colony: (
+                      <span className="font-bold">{colonyDisplayName}</span>
+                    ),
+                  })}
+                  variant={inviteIsValid ? 'success' : 'error'}
+                />
+              ) : (
+                <CardWithCallout
+                  className="border-grey-200"
+                  title={
+                    <div className="flex w-full flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-4">
+                      <ColonyAvatar
+                        colonyImageSrc={
+                          colonyMetadata?.thumbnail ||
+                          colonyMetadata?.avatar ||
+                          undefined
+                        }
+                        colonyAddress={colonyAddress || ADDRESS_ZERO}
+                        colonyName={colonyDisplayName}
+                        size={24}
+                      />
+                      <h1 className="inline text-md font-medium">
+                        {colonyDisplayName}
+                      </h1>
+                    </div>
+                  }
+                >
+                  {formatText(MSG.restrictedAccessMessage)}
+
+                  <SocialLinks
+                    className="mt-3.5 w-full sm:ml-auto sm:w-auto"
+                    externalLinks={socialLinks}
+                  />
+                </CardWithCallout>
+              )}
+            </div>
           </div>
-        }
-      >
-        <FormattedMessage
-          {...MSG.restrictedAccessMessage}
-          values={{
-            needsToRequestAccess: !!(!inviteIsValid && socialLinks.length),
-          }}
-        />
-      </CardWithCallout>
-    </div>
+          <div className="hidden w-full md:block">
+            {!wallet ? (
+              <Button isFullSize onClick={connectWallet}>
+                {formatText(MSG.connectWalletButton)}
+              </Button>
+            ) : (
+              <>
+                {inviteIsValid && (
+                  <Button isFullSize onClick={validateInviteCode}>
+                    {formatText(MSG.joinColonyButton)}
+                  </Button>
+                )}
+                {inviteIsInvalid && (
+                  <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+                    <Button isFullSize>
+                      {formatText(MSG.requestAccessButton)}
+                    </Button>
+                  </a>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </LandingPageLayout>
   );
 };
 
