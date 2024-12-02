@@ -151,6 +151,29 @@ const cache = new InMemoryCache({
             };
           },
         },
+        getStreamingPaymentsByColony: {
+          keyArgs: ['$domainId', '$recipientAddress'],
+          merge(existing = {}, incoming, { args }) {
+            // remove duplicates from incoming data
+            const uniqueIncomingItems = Array.from(
+              new Map(
+                // eslint-disable-next-line no-underscore-dangle
+                incoming.items.map((item) => [item.__ref, item]),
+              ).values(),
+            );
+
+            if (!args?.nextToken) {
+              return {
+                ...incoming,
+                items: uniqueIncomingItems,
+              };
+            }
+            return {
+              ...incoming,
+              items: [...existing.items, ...uniqueIncomingItems],
+            };
+          },
+        },
       },
     },
     ...cacheUpdates,
