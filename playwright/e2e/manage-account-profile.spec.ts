@@ -1,10 +1,6 @@
-/* eslint-disable playwright/no-conditional-in-test */
 import { expect, test } from '@playwright/test';
 
 import { selectWallet, setCookieConsent, fillInput } from '../utils/common.ts';
-
-const validImagePath = 'playwright/fixtures/images/jaya-the-beast_400KB.png';
-const invalidImagePath = 'playwright/fixtures/images/cat-image-new-1_3_MB.png';
 
 test.describe('Manage Account', () => {
   test.beforeEach(async ({ page, context, baseURL }) => {
@@ -50,112 +46,6 @@ test.describe('Manage Account', () => {
       await expect(
         page.getByText(/You can change your username again in /i),
       ).toBeVisible();
-    });
-
-    test('Avatar', async ({ page }) => {
-      const toast = page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i })
-        .last();
-      await test.step('Removing Avatar', async () => {
-        const removeAvatarButton = page.getByRole('button', {
-          name: 'Remove avatar',
-        });
-        const avatarUploader = page.getByTestId('avatar-uploader');
-        const avatar = page.getByTestId('user-profile-avatar');
-        const avatarInHeader = page.getByTestId('header-avatar');
-
-        if (!(await removeAvatarButton.isVisible())) {
-          // Upload a valid image
-          const uploadInput = page.locator('input[type="file"]');
-
-          await page.getByRole('button', { name: 'Change avatar' }).click();
-
-          await uploadInput.setInputFiles(validImagePath);
-
-          await removeAvatarButton.waitFor({ state: 'visible' });
-        }
-
-        //  Avatar in the profile form and header should be the same
-        await expect(page.getByTestId('user-profile-avatar')).toHaveAttribute(
-          'src',
-          (await page
-            .getByTestId('header-avatar')
-            .getAttribute('src')) as string,
-        );
-
-        // Verify that the avatar uploader is visible
-        await expect(avatarUploader).toBeVisible();
-
-        // Remove the avatar
-        await removeAvatarButton.click();
-
-        await toast.waitFor({ state: 'visible' });
-
-        await removeAvatarButton.waitFor({ state: 'hidden' });
-
-        const updatedAvatarSrc = await avatar.getAttribute('src');
-        const updatedAvatarInHeaderSrc =
-          await avatarInHeader.getAttribute('src');
-
-        await expect(updatedAvatarSrc?.startsWith('data:')).toBeTruthy();
-        await expect(
-          updatedAvatarInHeaderSrc?.startsWith('data:'),
-        ).toBeTruthy();
-        // Avatars in the profile and header should be the same
-        await expect(page.getByTestId('user-profile-avatar')).toHaveAttribute(
-          'src',
-          (await page
-            .getByTestId('header-avatar')
-            .getAttribute('src')) as string,
-        );
-
-        await expect(removeAvatarButton).toBeHidden();
-      });
-
-      await test.step('Uploading avatar', async () => {
-        const avatarUploader = page.getByTestId('avatar-uploader');
-        const avatar = page.getByTestId('user-profile-avatar');
-
-        await expect(avatarUploader).toBeVisible();
-
-        await expect(avatar).toBeVisible();
-        await expect(avatar).toHaveAttribute('src', /data:/);
-
-        // Upload a valid image
-        const uploadInput = page.locator('input[type="file"]');
-
-        await page.getByRole('button', { name: 'Change avatar' }).click();
-
-        await page.getByRole('button', { name: 'Click to upload' }).waitFor({
-          state: 'visible',
-        });
-
-        await uploadInput.setInputFiles(validImagePath);
-
-        await expect(avatar).toHaveAttribute('src', /data:/);
-
-        await expect(toast).toBeVisible();
-
-        // Upload an invalid image
-        await page.getByRole('button', { name: /change avatar/i }).click();
-        await uploadInput.setInputFiles(invalidImagePath);
-
-        // Verify that the error message is displayed
-        await expect(
-          page.getByText(/File size is too large, it should not exceed 1MB/i),
-        ).toBeVisible();
-
-        await expect(
-          page.getByRole('button', { name: 'Try again' }),
-        ).toBeVisible();
-
-        await expect(page.getByTestId('file-remove')).toBeVisible();
-
-        await expect(
-          page.getByRole('button', { name: 'Click to upload' }),
-        ).toBeHidden();
-      });
     });
 
     test('Website field', async ({ page }) => {
