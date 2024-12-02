@@ -2,11 +2,11 @@ import { CoinVertical } from '@phosphor-icons/react';
 import React, {
   type FC,
   type PropsWithChildren,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
 
+import useCloseModals from '~hooks/useCloseModals.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { TokensModalType } from '~v5/common/TokensModal/consts.ts';
 import TokensModal from '~v5/common/TokensModal/index.ts';
@@ -22,15 +22,7 @@ const TokensModalContextProvider: FC<PropsWithChildren> = ({ children }) => {
     { toggleOn: toggleOnTokensModal, toggleOff: toggleOffTokensModal },
   ] = useToggle();
 
-  useEffect(() => {
-    const handleCloseModals = () => {
-      toggleOffTokensModal();
-    };
-
-    window.addEventListener('closeModals', handleCloseModals);
-
-    return () => window.removeEventListener('closeModals', handleCloseModals);
-  }, [toggleOffTokensModal]);
+  useCloseModals(() => toggleOffTokensModal());
 
   const value = useMemo(
     () => ({

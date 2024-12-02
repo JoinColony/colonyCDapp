@@ -3,6 +3,7 @@ import Joyride, { type CallBackProps, STATUS, type Step } from 'react-joyride';
 
 import TourTooltip from '~common/Tours/TourTooltip.tsx';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { CloseModalEvent } from '~hooks/useCloseModals.ts';
 
 import { TourContext, type TourContextValue } from './TourContext.ts';
 
@@ -21,23 +22,13 @@ const TourContextProvider: React.FC<TourContextProviderProps> = ({
   } = useActionSidebarContext();
 
   const startTour = useCallback((tourSteps: Step[]) => {
-    const stepsWithData = tourSteps.map((step) => {
-      const data = step.data || {};
-      return {
-        ...step,
-        data: {
-          ...data,
-          triggerIdentifier: data.triggerIdentifier,
-          triggerPayload: data.triggerPayload,
-          icon: data.icon,
-          image: data.image,
-          imageAlt: data.imageAlt,
-          title: step.title,
-        },
-      };
-    });
+    const stepsWithData = tourSteps.map((step) => ({
+      ...step,
+      data: step.data ? { ...step.data } : {}, // Retain data as is
+    }));
 
-    window.dispatchEvent(new Event('closeModals'));
+    window.dispatchEvent(new Event(CloseModalEvent.CloseModals));
+
     setSteps(stepsWithData);
     setStepIndex(0);
     setRun(true);

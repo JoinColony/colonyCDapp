@@ -4,7 +4,6 @@ export enum TourTargets {
   MainMenu = 'mainMenu',
   ActionsMenu = 'actionsMenu',
   UserMenu = 'userMenu',
-  Breadcrumbs = 'breadcrumbs',
   HelpAndFeedback = 'helpAndFeedback',
 
   // Action Panel
@@ -19,7 +18,6 @@ export enum TourTargets {
 
   // Action Types
   CreateSimplePayment = 'createActionSimplePayment',
-  CreateEditColony = 'createActionEditColony',
 
   // Get started tour targets
   WelcomeButton = 'getStartedWelcome',
@@ -35,11 +33,4 @@ export enum TourTargets {
 
   // Dashboard tour targets
   Dashboard = 'dashboard',
-  DashboardOverviewSection = 'dashboardOverview',
-  DashboardNativeTokenSection = 'dashboardNativeToken',
-  DashboardTeamFilter = 'dashboardTeamFilter',
-  DashboardFundsSection = 'dashboardFunds',
-  DashboardFinancesSection = 'dashboardFinances',
-  DashboardReputationSection = 'dashboardReputation',
-  DashboardActivitySection = 'dashboardActivity',
 }

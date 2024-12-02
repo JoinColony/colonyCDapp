@@ -1,7 +1,5 @@
 import { type Step } from 'react-joyride';
 
-import { formatText } from '~utils/intl.ts';
-
 import { TourTargets } from '../enums.ts';
 
 import messages from './messages.tsx';
@@ -9,65 +7,38 @@ import messages from './messages.tsx';
 export const GetStartedTourSteps: Step[] = [
   {
     target: `[data-tour="${TourTargets.WelcomeButton}"]`,
-    content: formatText({
-      id: 'getStartedTour.welcome',
-      defaultMessage: messages.welcome,
-    }),
+    content: messages.welcome,
   },
   {
     target: `[data-tour="${TourTargets.EnterTitleField}"]`,
-    content: formatText({
-      id: 'getStartedTour.enterTitle',
-      defaultMessage: messages.enterTitle,
-    }),
+    content: messages.enterTitle,
   },
   {
     target: `[data-tour="${TourTargets.ChooseActionButton}"]`,
-    content: formatText({
-      id: 'getStartedTour.chooseAction',
-      defaultMessage: messages.chooseAction,
-    }),
+    content: messages.chooseAction,
   },
   {
     target: `[data-tour="${TourTargets.SelectActionButton}"]`,
-    content: formatText({
-      id: 'getStartedTour.selectAction',
-      defaultMessage: messages.selectAction,
-    }),
+    content: messages.selectAction,
   },
   {
     target: `[data-tour="${TourTargets.CustomizeColonyFields}"]`,
-    content: formatText({
-      id: 'getStartedTour.customizeColony',
-      defaultMessage: messages.customizeColony,
-    }),
+    content: messages.customizeColony,
   },
   {
     target: `[data-tour="${TourTargets.SelectLogoField}"]`,
-    content: formatText({
-      id: 'getStartedTour.selectLogo',
-      defaultMessage: messages.selectLogo,
-    }),
+    content: messages.selectLogo,
   },
   {
     target: `[data-tour="${TourTargets.EnterDescriptionField}"]`,
-    content: formatText({
-      id: 'getStartedTour.enterDescription',
-      defaultMessage: messages.enterDescription,
-    }),
+    content: messages.enterDescription,
   },
   {
     target: `[data-tour="${TourTargets.SelectDecisionMethod}"]`,
-    content: formatText({
-      id: 'getStartedTour.selectDecisionMethod',
-      defaultMessage: messages.selectDecisionMethod,
-    }),
+    content: messages.selectDecisionMethod,
   },
   {
     target: `[data-tour="${TourTargets.ConfirmActionButton}"]`,
-    content: formatText({
-      id: 'getStartedTour.confirmAction',
-      defaultMessage: messages.confirmAction,
-    }),
+    content: messages.confirmAction,
   },
 ];

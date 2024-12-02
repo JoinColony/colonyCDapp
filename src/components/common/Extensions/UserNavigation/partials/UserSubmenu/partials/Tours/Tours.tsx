@@ -16,7 +16,7 @@ import { generatePath, useLocation, useNavigate } from 'react-router-dom';
 import { UsingTheAppTourSteps } from '~common/Tours/usingApp/steps.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useTourContext } from '~context/TourContext/TourContext.ts';
-import { useMobile } from '~hooks';
+import { useMobile, useTablet } from '~hooks';
 import { COLONY_HOME_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
@@ -58,6 +58,7 @@ interface ToursProps {
 
 const Tours: React.FC<ToursProps> = ({ setVisible }) => {
   const isMobile = useMobile();
+  const isTablet = useTablet();
   const iconSize = isMobile ? ICON_SIZE_MOBILE : ICON_SIZE;
 
   const { startTour } = useTourContext();
@@ -119,7 +120,7 @@ const Tours: React.FC<ToursProps> = ({ setVisible }) => {
     tour.requiresColonyContext ? Boolean(colonyContext) : true,
   );
 
-  if (isMobile) {
+  if (isTablet) {
     return (
       <EmptyContent
         icon={Binoculars}
