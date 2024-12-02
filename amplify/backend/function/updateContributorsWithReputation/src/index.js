@@ -28,6 +28,7 @@ const {
   updateReputationInDomain,
   getDomainDatabaseId,
   calculatePercentageReputation,
+  loggingFnFactory,
 } = require('./utils');
 
 Logger.setLogLevel(Logger.levels.ERROR);
@@ -39,6 +40,7 @@ let networkAddress;
 let reputationOracleEndpoint =
   'http://reputation-monitor:3001/reputation/local';
 let network = Network.Custom;
+let log = loggingFnFactory();
 
 const setEnvVariables = async () => {
   const ENV = process.env.ENV;
@@ -60,6 +62,7 @@ const setEnvVariables = async () => {
       'reputationEndpoint',
       'chainNetwork',
     ]);
+    log = loggingFnFactory(ENV);
   } else {
     const {
       etherRouterAddress,
@@ -85,7 +88,7 @@ exports.handler = async (event) => {
       return true;
     }
 
-    console.log(`Colony ${colonyAddress} reputation update started`);
+    log(`Colony ${colonyAddress} reputation update started`);
 
     const provider = new providers.StaticJsonRpcProvider(rpcURL);
 
@@ -123,7 +126,7 @@ exports.handler = async (event) => {
       return true;
     }
 
-    console.log({ totalRepInColony: totalRepInColony?.toString() });
+    log({ totalRepInColony: totalRepInColony?.toString() });
 
     // query database rep metadata
     const { data: response } =
@@ -140,14 +143,13 @@ exports.handler = async (event) => {
     const lastReputationMiningCycleCompletion =
       response?.getReputationMiningCycleMetadata?.lastCompletedAt;
 
-    console.log({
+    log({
       lastUpdatedCache,
       lastReputationMiningCycleCompletion,
       willUpdateCache: !(
         new Date(lastReputationMiningCycleCompletion).valueOf() <
         new Date(lastUpdatedCache).valueOf()
       ),
-      // willUpdateCache: 'forced true',
     });
 
     // TODO use latest hash to decide if to update reputation
@@ -198,7 +200,7 @@ exports.handler = async (event) => {
 
         const totalAddresses = sortedAddresses.length;
 
-        console.log({
+        log({
           nativeId,
           nativeSkillId,
           totalRepInDomain: totalRepInDomain?.toString(),
@@ -320,7 +322,7 @@ exports.handler = async (event) => {
 
     for (const { status, reason } of promiseResults) {
       if (status === 'rejected') {
-        console.log(
+        log(
           `ERROR: Some reputation entries could not be processed -- ${reason}`,
         );
         allFulfilled = false;
