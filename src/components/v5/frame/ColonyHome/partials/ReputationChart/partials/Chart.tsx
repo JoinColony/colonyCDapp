@@ -22,14 +22,18 @@ interface ChartProps {
 export const Chart: FC<ChartProps> = ({ data, emptyChartItem, isLoading }) => {
   const { setActiveLegendItem } = useReputationChartContext();
 
+  const pieChartData = data.filter(
+    (dataItem) => dataItem.value && dataItem.value > 0,
+  );
+
   return (
     <>
       <div className="relative mb-3.5 mt-5 flex h-[136px] w-full flex-shrink-0 items-center justify-center">
         {isLoading ? <ChartLoadingLayer /> : null}
         <ResponsivePie
           {...pieChartConfig}
-          data={data.length ? data : [emptyChartItem]}
-          isInteractive={!!data.length}
+          data={pieChartData.length ? pieChartData : [emptyChartItem]}
+          isInteractive={!!pieChartData.length}
           onActiveIdChange={setActiveLegendItem}
           tooltip={ChartTooltip}
           layers={[ChartCustomArcsLayer]}
@@ -58,11 +62,6 @@ export const Chart: FC<ChartProps> = ({ data, emptyChartItem, isLoading }) => {
 
           {!!data.length &&
             data.map((chartItem) => {
-              // if there is no value, it's value doesn't display in the chart and therefore it shouldn't display in the legend
-              if (chartItem.value === undefined || chartItem.value <= 0) {
-                return null;
-              }
-
               return <LegendItem key={chartItem.id} chartItem={chartItem} />;
             })}
         </Legend>

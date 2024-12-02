@@ -10,7 +10,7 @@ import { getTeamHexColor } from '~utils/teams.ts';
 import { CONTRIBUTORS_COLORS_LIST } from './consts.ts';
 import { type ContributorItem, type ReputationChartDataItem } from './types.ts';
 
-const WIDGET_TEAM_LIMIT = 4;
+const WIDGET_TEAM_LIMIT = 5;
 
 const MSG = defineMessages({
   otherLabel: {
@@ -64,32 +64,27 @@ export const getTeamReputationChartData = (
     0,
   );
 
-  const domainsWithoutRootWithReputationPercentage = domainsWithoutRoot
-    // Filter out the domains without reputation in order to not display blank spaces in the chart
-    .filter((domain) => !!domain.reputationPercentage);
+  let topTeams: ReputationChartDataItem[] = domainsWithoutRoot
+    .slice(0, WIDGET_TEAM_LIMIT)
+    .map((domain) => {
+      return {
+        id: domain.nativeId.toString(),
+        label: domain.metadata?.name || '',
+        value: getNormalisedReputationPercentage(
+          domain.reputation,
+          normalisedTotalReputation,
+        ),
+        color: getTeamHexColor(domain.metadata?.color),
+        searchParam: TEAM_SEARCH_PARAM,
+      };
+    });
 
-  let topTeams: ReputationChartDataItem[] =
-    domainsWithoutRootWithReputationPercentage
-      .slice(0, WIDGET_TEAM_LIMIT)
-      .map((domain) => {
-        return {
-          id: domain.nativeId.toString(),
-          label: domain.metadata?.name || '',
-          value: getNormalisedReputationPercentage(
-            domain.reputation,
-            normalisedTotalReputation,
-          ),
-          color: getTeamHexColor(domain.metadata?.color),
-          searchParam: TEAM_SEARCH_PARAM,
-        };
-      });
-
-  const reputationInOtherTeams = domainsWithoutRootWithReputationPercentage
+  const reputationInOtherTeams = domainsWithoutRoot
     .slice(WIDGET_TEAM_LIMIT)
     .reduce((reputation, team) => reputation + Number(team.reputation || 0), 0);
 
-  if (reputationInOtherTeams > 0) {
-    topTeams.push({
+  if (domainsWithoutRoot.length > WIDGET_TEAM_LIMIT) {
+    topTeams[topTeams.length - 1] = {
       id: 'allOtherTeams',
       label: formatText(MSG.otherLabel),
       value: getNormalisedReputationPercentage(
@@ -98,7 +93,7 @@ export const getTeamReputationChartData = (
       ),
       color: '--color-gray-400',
       shouldTruncateLegendLabel: false,
-    });
+    };
   }
 
   const adjustedValues = adjustPercentagesTo100(
@@ -138,12 +133,12 @@ export const getContributorReputationChartData = (
     );
 
   if (reputationOtherContributors > 0) {
-    topContributors.push({
+    topContributors[topContributors.length - 1] = {
       id: 'allOtherUsers',
       label: formatText(MSG.otherLabel),
       value: reputationOtherContributors,
       color: '--color-gray-400',
-    });
+    };
   }
 
   const adjustedValues = adjustPercentagesTo100(
