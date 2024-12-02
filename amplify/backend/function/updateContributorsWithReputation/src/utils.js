@@ -326,6 +326,15 @@ const calculatePercentageReputation = (userReputation, totalReputation) => {
   return reputation / 10 ** 2;
 };
 
+const loggingFnFactory =
+  (env = 'local') =>
+  (message) => {
+    // This should really be standardized as types
+    if (env === 'qa' || env === 'prod') {
+      console.log(message);
+    }
+  };
+
 module.exports = {
   graphqlRequest,
   repMinerRequest,
@@ -339,4 +348,5 @@ module.exports = {
   getDomainDatabaseId,
   reputationMiningCycleMetadataId,
   calculatePercentageReputation,
+  loggingFnFactory,
 };
