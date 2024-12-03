@@ -74,19 +74,21 @@ const contributorTypeMap = {
 };
 
 const sortAddressesDescendingByReputation = async (
-  colonyClient,
+  reputationOracleEndpoint,
+  currentRootHash,
+  colonyAddress,
   skillId,
   addresses,
 ) => {
   return (
     await Promise.all(
       addresses.map(async (address) => {
-        const { reputationAmount } =
-          await colonyClient.getReputationWithoutProofs(skillId, address);
+        const { reputationAmount } = await repMinerRequest(`
+            ${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}/${address}/noProof`);
 
         return {
           address,
-          reputationBN: reputationAmount,
+          reputationBN: BigNumber.from(reputationAmount),
         };
       }),
     )
@@ -330,9 +332,9 @@ const loggingFnFactory =
   (env = 'local') =>
   (message) => {
     // This should really be standardized as types
-    // if (env === 'qa' || env === 'prod') {
-    console.log(message);
-    // }
+    if (env === 'qa' || env === 'prod') {
+      console.log(message);
+    }
   };
 
 module.exports = {
