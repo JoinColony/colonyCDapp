@@ -265,6 +265,14 @@ export const useTeams = () => {
     useState<TeamsPageFilters>(defaultFilterValue);
 
   const sortedTeams = [...teams].sort((a, b) => {
+    // If values match, sort alphabetically
+    if (a[filterValue.field] === b[filterValue.field]) {
+      const nameA = a.title || '';
+      const nameB = b.title || '';
+
+      return nameA.localeCompare(nameB);
+    }
+
     if (filterValue.direction === ModelSortDirection.Asc) {
       return a[filterValue.field] - b[filterValue.field];
     }
