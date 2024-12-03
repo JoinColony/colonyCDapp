@@ -61,6 +61,12 @@ export interface ActionFormProps<
     /** Function called when the form's primary button type is set to "button" */
     onClick?: MouseEventHandler<HTMLButtonElement>;
   };
+
+  /** On form close behaviour overrides */
+  onFormClose?: {
+    /** When satisfied, it causes the cancel modal to be shown */
+    shouldShowCancelModal?: boolean;
+  };
 }
 
 const ActionForm = <V extends Record<string, any>>({
