@@ -12,7 +12,7 @@ export const transformActionRolesToColonyRoles = (
 ): ColonyRole[] => {
   if (!roles) return [];
 
-  const roleKeys = Object.keys(roles);
+  const roleKeys = Object.keys(roles).filter((key) => roles[key]);
 
   const colonyRoles: ColonyRole[] = roleKeys
     .filter((key) => roles[key] !== null)
