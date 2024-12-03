@@ -392,44 +392,41 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                           id: 'expenditure.reviewStage.confirmDetails.title',
                         })}
                       </h4>
-                      {isStaked ? (
-                        <>
-                          <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
-                            <dt className="text-gray-600">
-                              {formatText({
-                                id: 'expenditure.reviewStage.confirmDetails.creator',
-                              })}
-                            </dt>
-                            <dd>
-                              <div className="flex w-full items-center">
-                                <Avatar
-                                  address={initiatorUser?.walletAddress ?? ''}
-                                  size={20}
-                                  src={initiatorUser?.profile?.avatar ?? ''}
-                                />
-                                <p className="ml-2.5">
-                                  {initiatorUser?.profile?.displayName}
-                                </p>
-                              </div>
-                            </dd>
+
+                      <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                        <dt className="text-gray-600">
+                          {formatText({
+                            id: 'expenditure.reviewStage.confirmDetails.creator',
+                          })}
+                        </dt>
+                        <dd>
+                          <div className="flex w-full items-center">
+                            <Avatar
+                              address={initiatorUser?.walletAddress ?? ''}
+                              size={20}
+                              src={initiatorUser?.profile?.avatar ?? ''}
+                            />
+                            <p className="ml-2.5">
+                              {initiatorUser?.profile?.displayName}
+                            </p>
                           </div>
-                          <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
-                            <dt className="text-gray-600">
-                              {formatText({
-                                id: 'expenditure.reviewStage.confirmDetails.stakeAmount',
-                              })}
-                            </dt>
-                            <dd>
-                              <Numeral
-                                value={stakeAmount}
-                                decimals={tokenData?.decimals}
-                              />{' '}
-                              {tokenData?.symbol}
-                            </dd>
-                          </div>
-                        </>
-                      ) : (
-                        <div /> // implement designs for mermissions
+                        </dd>
+                      </div>
+                      {isStaked && (
+                        <div className="mb-2 flex items-center justify-between gap-2 text-sm last:mb-0">
+                          <dt className="text-gray-600">
+                            {formatText({
+                              id: 'expenditure.reviewStage.confirmDetails.stakeAmount',
+                            })}
+                          </dt>
+                          <dd>
+                            <Numeral
+                              value={stakeAmount}
+                              decimals={tokenData?.decimals}
+                            />{' '}
+                            {tokenData?.symbol}
+                          </dd>
+                        </div>
                       )}
                     </div>
                   ) : (
