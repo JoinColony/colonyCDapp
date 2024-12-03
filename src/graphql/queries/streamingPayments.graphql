@@ -8,13 +8,13 @@ query SearchStreamingPayments(
   $nextToken: String
   $limit: Int
   $sort: [SearchableStreamingPaymentSortInput]
-  $colonyId: ID!
+  $filter: SearchableStreamingPaymentFilterInput
 ) {
   searchStreamingPayments(
     limit: $limit
     nextToken: $nextToken
     sort: $sort
-    filter: { colonyId: { eq: $colonyId } }
+    filter: $filter
     from: 0
   ) {
     items {
@@ -25,7 +25,7 @@ query SearchStreamingPayments(
         }
       ) {
         items {
-          ...ColonyAction
+          ...ExpenditureAction
         }
       }
       ...StreamingPayment
