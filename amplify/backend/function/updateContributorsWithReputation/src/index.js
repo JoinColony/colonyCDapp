@@ -1,7 +1,5 @@
 require('cross-fetch/polyfill');
-const { getColonyNetworkClient, Network, Id, w } = require('@colony/colony-js');
 const {
-  providers,
   constants: { AddressZero },
   utils: { Logger, getAddress },
   BigNumber,
@@ -35,11 +33,8 @@ Logger.setLogLevel(Logger.levels.ERROR);
 
 let apiKey = 'da2-fakeApiId123456';
 let graphqlURL = 'http://localhost:20002/graphql';
-let rpcURL = 'http://network-contracts:8545'; // this needs to be extended to all supported networks
-let networkAddress;
 let reputationOracleEndpoint =
   'http://reputation-monitor:3001/reputation/local';
-let network = Network.Custom;
 let log = loggingFnFactory();
 
 const setEnvVariables = async () => {
@@ -47,27 +42,12 @@ const setEnvVariables = async () => {
 
   if (ENV === 'qa' || ENV === 'prod') {
     const { getParams } = require('/opt/nodejs/getParams');
-    [
-      apiKey,
-      graphqlURL,
-      rpcURL,
-      networkAddress,
-      reputationOracleEndpoint,
-      network,
-    ] = await getParams([
+    [apiKey, graphqlURL, reputationOracleEndpoint] = await getParams([
       'appsyncApiKey',
       'graphqlUrl',
-      'chainRpcEndpoint',
-      'networkContractAddress',
       'reputationEndpoint',
-      'chainNetwork',
     ]);
     log = loggingFnFactory(ENV);
-  } else {
-    const {
-      etherRouterAddress,
-    } = require('../../../../mock-data/colonyNetworkArtifacts/etherrouter-address.json');
-    networkAddress = etherRouterAddress;
   }
 };
 
@@ -90,13 +70,6 @@ exports.handler = async (event) => {
 
     log(`Colony ${colonyAddress} reputation update started`);
 
-    const provider = new providers.StaticJsonRpcProvider(rpcURL);
-
-    const networkClient = getColonyNetworkClient(network, provider, {
-      networkAddress,
-      reputationOracleEndpoint,
-    });
-
     // get the current colony from the db, along with it's domain information
     const { data } =
       (await graphqlRequest(
@@ -110,16 +83,15 @@ exports.handler = async (event) => {
     const domains = colony?.domains?.items ?? [];
     const rootDomain = domains.find(({ isRoot }) => isRoot);
 
-    // TODO Remove usage of colonyJS
-    const colonyClient = await networkClient.getColonyClient(colonyAddress);
+    const { currentRootHash } = await repMinerRequest(
+      `${reputationOracleEndpoint}/rootHashes`,
+    );
 
     let totalRepInColony;
     try {
-      ({ reputationAmount: totalRepInColony } =
-        await colonyClient.getReputationWithoutProofs(
-          BigNumber.from(rootDomain.nativeSkillId),
-          AddressZero,
-        ));
+      ({ reputationAmount: totalRepInColony } = await repMinerRequest(`
+          ${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${rootDomain.nativeSkillId}/${AddressZero}/noProof
+        `));
     } catch (e) {
       console.error('Could not get total reputation in colony', e);
       // may error if there's no rep in colony. In that case, there are no contributors to update.
@@ -153,11 +125,16 @@ exports.handler = async (event) => {
     });
 
     // We only need to update the cache if the reputation mining cycle has completed since the last time we updated the cache
+    /*
+     * @NOTE This could be improved by checking the current root hash against a pre-stored value eliminating the need for the ingestor
+     * In theory. In practice we still need the ingestor to UI visual updates on "how much time 'till the reputation updates"
+     * And since we already store all those values, changing this becomes a bit pointless
+     */
     if (
       new Date(lastReputationMiningCycleCompletion).valueOf() <
       new Date(lastUpdatedCache).valueOf()
     ) {
-      // return true;
+      return true;
     }
 
     const promiseResults = await Promise.allSettled(
@@ -167,12 +144,12 @@ exports.handler = async (event) => {
         let totalRepInDomain;
 
         try {
-          ({ addresses } = await colonyClient.getMembersReputation(skillId));
-          ({ reputationAmount: totalRepInDomain } =
-            await colonyClient.getReputationWithoutProofs(
-              skillId,
-              AddressZero,
-            ));
+          ({ addresses } = await await repMinerRequest(
+            `${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}`,
+          ));
+          ({ reputationAmount: totalRepInDomain } = await repMinerRequest(
+            `${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}/${AddressZero}/noProof`,
+          ));
         } catch (e) {
           // can error if no rep in domain. skip in this case.
           return;
@@ -192,7 +169,9 @@ exports.handler = async (event) => {
 
         // This will take a long time depending on how many reputation holders there are
         const sortedAddresses = await sortAddressesDescendingByReputation(
-          colonyClient,
+          reputationOracleEndpoint,
+          currentRootHash,
+          colonyAddress,
           skillId,
           addresses,
         );
