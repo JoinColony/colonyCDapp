@@ -15,6 +15,7 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
   getFormOptions,
   id,
   primaryButton,
+  onFormClose,
 }) => {
   const form = useFormContext();
 
@@ -33,6 +34,9 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
           type: primaryButton?.type,
           onClick: primaryButton?.onClick,
         },
+        onFormClose: {
+          shouldShowCancelModal: onFormClose?.shouldShowCancelModal,
+        },
       },
       form,
     );
@@ -44,6 +48,7 @@ const useActionFormBaseHook: UseActionFormBaseHook = ({
     id,
     primaryButton?.onClick,
     primaryButton?.type,
+    onFormClose?.shouldShowCancelModal,
   ]);
 
   useUnmountEffect(() => {

@@ -4,16 +4,15 @@ import { type ActionFormProps } from '~shared/Fields/Form/ActionForm.tsx';
 import { type Address } from '~types';
 import { type ColonyAction } from '~types/graphql.ts';
 
-export interface ActionButtonsProps {
+export interface ActionButtonsProps
+  extends Pick<ActionFormOptions, 'primaryButton' | 'onFormClose'> {
   isActionDisabled?: boolean;
   onSubmitClick?: () => void;
-  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormOptions
   extends Omit<ActionFormProps<any>, 'children' | 'onSuccess'> {
   onSuccess?: () => void;
-  primaryButton?: ActionFormProps['primaryButton'];
 }
 
 export interface ActionFormBaseProps {
@@ -37,6 +36,7 @@ export type UseActionFormBaseHook = (
     | 'onSuccess'
     | 'id'
     | 'primaryButton'
+    | 'onFormClose'
   >,
 ) => void;
 
