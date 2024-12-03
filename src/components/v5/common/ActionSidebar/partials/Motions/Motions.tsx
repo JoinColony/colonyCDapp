@@ -60,14 +60,20 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
 
+  const { hasPassed, endedAt } = motionStateHistory ?? {};
+
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
     networkMotionState === NetworkMotionState.Finalized ||
     networkMotionState === NetworkMotionState.Failed;
 
+  const motionOutcomeAvailable = motionFinished && endedAt;
+
   useEffect(() => {
     startPollingForAction();
+
     setActiveStepKey(networkMotionState);
+
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
     }
@@ -88,8 +94,6 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const isFullyStaked =
     objectingStakesPercentageValue === 100 &&
     supportingStakesPercentageValue === 100;
-
-  const hasVotedMotionPassed = motionStateHistory?.hasPassed;
 
   const motionStakedAndFinalizable =
     motionFinished &&
@@ -238,25 +242,24 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         key: CustomStep.VotedMotionOutcome,
         content: <OutcomeStep motionData={motionData} />,
         heading: {
-          icon: motionFinished
-            ? (hasVotedMotionPassed && ThumbsUp) || ThumbsDown
+          icon: motionOutcomeAvailable
+            ? (hasPassed && ThumbsUp) || ThumbsDown
             : undefined,
-          label: motionFinished
-            ? (hasVotedMotionPassed &&
-                formatText({ id: 'motion.support.wins.label' })) ||
+          label: motionOutcomeAvailable
+            ? (hasPassed && formatText({ id: 'motion.support.wins.label' })) ||
               formatText({ id: 'motion.oppose.wins.label' })
             : formatText({ id: 'motion.outcome.label' }) || '',
           className: clsx('z-base', {
             'border-purple-400 bg-base-white text-purple-400 md:enabled:hover:border-purple-400 md:enabled:hover:bg-purple-400 md:enabled:hover:text-base-white':
-              motionFinished && hasVotedMotionPassed,
+              motionOutcomeAvailable && hasPassed,
             'border-negative-400 bg-base-white text-negative-400 md:enabled:hover:border-negative-400 md:enabled:hover:bg-negative-400 md:enabled:hover:text-base-white':
-              motionFinished && !hasVotedMotionPassed,
+              motionOutcomeAvailable && !hasPassed,
           }),
           highlightedClassName: clsx({
             '!border-purple-400 !bg-purple-400 !text-base-white':
-              motionFinished && hasVotedMotionPassed,
+              motionOutcomeAvailable && hasPassed,
             '!border-negative-400 !bg-negative-400 !text-base-white':
-              motionFinished && !hasVotedMotionPassed,
+              motionOutcomeAvailable && !hasPassed,
           }),
           tooltipProps: {
             tooltipContent: getOutcomeStepTooltipText(
@@ -316,10 +319,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
     motionStateHistory?.hasPassed,
     motionStateHistory?.hasFailed,
     motionStateHistory?.hasFailedNotFinalizable,
-    motionFinished,
-    hasVotedMotionPassed,
+    hasPassed,
     refetchAction,
     canInteract,
+    motionOutcomeAvailable,
   ]);
 
   if (

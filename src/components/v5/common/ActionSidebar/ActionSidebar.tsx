@@ -302,9 +302,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
                     withAdditionalStatuses
                   />
                 )}
-                {(!!isMotion || !!isMultiSig) && motionState && (
-                  <MotionOutcomeBadge motionState={motionState} />
-                )}
+                {(!!(
+                  isMotion && action?.motionData?.motionStateHistory.endedAt
+                ) ||
+                  !!isMultiSig) &&
+                  motionState && (
+                    <MotionOutcomeBadge motionState={motionState} />
+                  )}
               </div>
             )}
             {isMobile && getShareButton()}
