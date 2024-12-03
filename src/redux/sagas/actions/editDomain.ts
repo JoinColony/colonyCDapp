@@ -25,6 +25,7 @@ import {
 } from '~state/transactionState.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { getDomainDatabaseId } from '~utils/databaseId.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 
 import {
   createGroupTransaction,
@@ -185,7 +186,10 @@ function* editDomainAction({
           variables: {
             input: {
               id: getDomainDatabaseId(colonyAddress, domain.nativeId),
-              name: domainName || `Team #${domain.nativeId}`,
+              name: getDomainNameFallback({
+                domainName,
+                nativeId: domain.nativeId,
+              }),
               color: domainColor,
               description: domainPurpose,
             },

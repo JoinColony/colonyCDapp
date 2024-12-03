@@ -5,6 +5,7 @@ import { useColonyFiltersContext } from '~context/GlobalFiltersContext/ColonyFil
 import { useMobile } from '~hooks/index.ts';
 import { useScrollIntoView } from '~hooks/useScrollIntoView.ts';
 import { type Domain } from '~types/graphql.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 import { getTeamColor } from '~utils/teams.ts';
 
 const displayName = 'v5.shared.TeamFilter.partials.TeamItem';
@@ -47,7 +48,10 @@ const TeamItem: FC<TeamItemProps> = ({
     }
   };
 
-  const label = domain.metadata?.name ?? `Team #${domain.nativeId}`;
+  const label = getDomainNameFallback({
+    domainName: domain.metadata?.name,
+    nativeId: domain.nativeId,
+  });
 
   return (
     <button

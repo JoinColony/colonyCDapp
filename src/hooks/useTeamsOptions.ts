@@ -1,6 +1,7 @@
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type Domain, DomainColor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 import {
   type SearchSelectOption,
   type SearchSelectOptionProps,
@@ -36,7 +37,10 @@ const useTeamsOptions = (
         const { color: teamColor, name: teamName } = metadata || {};
 
         return {
-          label: teamName || `Team #${nativeId}`,
+          label: getDomainNameFallback({
+            domainName: teamName,
+            nativeId,
+          }),
           value: nativeId,
           isDisabled: false,
           isRoot,

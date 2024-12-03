@@ -29,6 +29,7 @@ import {
 } from '~routes/index.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -90,7 +91,7 @@ export const useTeams = () => {
       const { color, description, name } = metadata || {
         color: DomainColor.Root,
         description: '',
-        name: `Team #${nativeId}`,
+        name: getDomainNameFallback({ nativeId }),
       };
 
       const domainActionsCount = domainsActionCount?.find(
