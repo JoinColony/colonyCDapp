@@ -97,7 +97,7 @@ export const useActiveFilters = () => {
             },
           ]
         : []),
-      ...(!dateFilters.custom && restDateFilters.length
+      ...(restDateFilters.length
         ? [
             {
               filter: FiltersValues.Date,

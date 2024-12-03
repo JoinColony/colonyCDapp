@@ -148,36 +148,44 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
     totalStreamedFilters,
   ]);
 
-  const handleResetFilters = useCallback((filter: FiltersValues) => {
-    switch (filter) {
-      case FiltersValues.Status: {
-        return setStatuses([]);
+  const handleResetFilters = useCallback(
+    (filter: FiltersValues) => {
+      switch (filter) {
+        case FiltersValues.Status: {
+          return setStatuses([]);
+        }
+        case FiltersValues.Date: {
+          return setDateFilters({
+            pastHour: false,
+            pastDay: false,
+            pastWeek: false,
+            pastMonth: false,
+            pastYear: false,
+            custom: dateFilters.custom,
+          });
+        }
+        case FiltersValues.Custom: {
+          return setDateFilters({
+            ...dateFilters,
+            custom: undefined,
+          });
+        }
+        case FiltersValues.EndCondition: {
+          return setEndConditions([]);
+        }
+        case FiltersValues.TokenType: {
+          return setTokenTypes({});
+        }
+        case FiltersValues.TotalStreamedFilters: {
+          return setTotalStreamedFilters(undefined);
+        }
+        default: {
+          return undefined;
+        }
       }
-      case FiltersValues.Date:
-      case FiltersValues.Custom: {
-        return setDateFilters({
-          pastHour: false,
-          pastDay: false,
-          pastWeek: false,
-          pastMonth: false,
-          pastYear: false,
-          custom: undefined,
-        });
-      }
-      case FiltersValues.EndCondition: {
-        return setEndConditions([]);
-      }
-      case FiltersValues.TokenType: {
-        return setTokenTypes({});
-      }
-      case FiltersValues.TotalStreamedFilters: {
-        return setTotalStreamedFilters(undefined);
-      }
-      default: {
-        return undefined;
-      }
-    }
-  }, []);
+    },
+    [dateFilters],
+  );
 
   const statusCount = statuses.reduce((acc, current) => {
     if (STATUS_FILTERS[current]) {

@@ -29,7 +29,7 @@ export const searchStreamingPayments = (
       searchedMember.contributorAddress === streamingPayment.user,
   );
   const filteredActions = streamingPayment.actions.filter((action) =>
-    action.title.startsWith(searchValue),
+    action.title.toLowerCase().startsWith(searchValue.toLowerCase()),
   );
 
   if (member) {

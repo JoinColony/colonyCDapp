@@ -7,9 +7,8 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 
@@ -59,7 +58,6 @@ const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
-  const isMobile = useMobile();
 
   const columnsWithMenu = useMemo(
     () => [
@@ -114,17 +112,18 @@ const Table = <T,>({
   const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
   const totalColumnsCount = table.getVisibleFlatColumns().length;
   const shouldShowEmptyContent = emptyContent && data.length === 0;
-  const hasExpandableRows = !!renderSubComponent;
 
-  useEffect(() => {
-    if (!isMobile && hasExpandableRows) {
-      rows.forEach((row) => {
-        if (row.getIsExpanded()) {
-          row.toggleExpanded(false);
-        }
-      });
-    }
-  }, [isMobile, hasExpandableRows, rows]);
+  // @TODO: Uncomment this when we have to close rows in other way, because now it blocks expanding on desktop
+
+  // useEffect(() => {
+  //   if (!isMobile && hasExpandableRows) {
+  //     rows.forEach((row) => {
+  //       if (row.getIsExpanded()) {
+  //         row.toggleExpanded(false);
+  //       }
+  //     });
+  //   }
+  // }, [isMobile, hasExpandableRows, rows]);
 
   const [showedActions, setShowedActions] = useState(
     loadMoreProps?.itemsPerPage,
