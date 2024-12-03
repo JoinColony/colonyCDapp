@@ -330,9 +330,9 @@ const loggingFnFactory =
   (env = 'local') =>
   (message) => {
     // This should really be standardized as types
-    if (env === 'qa' || env === 'prod') {
-      console.log(message);
-    }
+    // if (env === 'qa' || env === 'prod') {
+    console.log(message);
+    // }
   };
 
 module.exports = {

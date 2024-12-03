@@ -152,13 +152,12 @@ exports.handler = async (event) => {
       ),
     });
 
-    // TODO use latest hash to decide if to update reputation
     // We only need to update the cache if the reputation mining cycle has completed since the last time we updated the cache
     if (
       new Date(lastReputationMiningCycleCompletion).valueOf() <
       new Date(lastUpdatedCache).valueOf()
     ) {
-      return true;
+      // return true;
     }
 
     const promiseResults = await Promise.allSettled(
