@@ -128,12 +128,12 @@ export const getContributorReputationChartData = (
       };
     });
 
-  const numberOfContributorsWithReputation = contributorsList.filter(
+  const contributorsWithReputation = contributorsList.filter(
     (contributor) => contributor.reputation && contributor.reputation > 0,
   );
 
-  if (numberOfContributorsWithReputation.length > WIDGET_TEAM_LIMIT) {
-    const reputationOtherContributors = numberOfContributorsWithReputation
+  if (contributorsWithReputation.length > WIDGET_TEAM_LIMIT) {
+    const reputationOtherContributors = contributorsWithReputation
       .slice(WIDGET_TEAM_LIMIT - 1)
       .reduce(
         (reputation, contributor) => reputation + (contributor.reputation || 0),
