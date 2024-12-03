@@ -79,11 +79,14 @@ export const getTeamReputationChartData = (
       };
     });
 
-  const reputationInOtherTeams = domainsWithoutRoot
-    .slice(WIDGET_TEAM_LIMIT)
-    .reduce((reputation, team) => reputation + Number(team.reputation || 0), 0);
-
   if (domainsWithoutRoot.length > WIDGET_TEAM_LIMIT) {
+    const reputationInOtherTeams = domainsWithoutRoot
+      .slice(WIDGET_TEAM_LIMIT - 1)
+      .reduce(
+        (reputation, team) => reputation + Number(team.reputation || 0),
+        0,
+      );
+
     topTeams[topTeams.length - 1] = {
       id: 'allOtherTeams',
       label: formatText(MSG.otherLabel),
@@ -125,14 +128,18 @@ export const getContributorReputationChartData = (
       };
     });
 
-  const reputationOtherContributors = contributorsList
-    .slice(WIDGET_TEAM_LIMIT)
-    .reduce(
-      (reputation, contributor) => reputation + (contributor.reputation || 0),
-      0,
-    );
+  const numberOfContributorsWithReputation = contributorsList.filter(
+    (contributor) => contributor.reputation && contributor.reputation > 0,
+  );
 
-  if (reputationOtherContributors > 0) {
+  if (numberOfContributorsWithReputation.length > WIDGET_TEAM_LIMIT) {
+    const reputationOtherContributors = numberOfContributorsWithReputation
+      .slice(WIDGET_TEAM_LIMIT - 1)
+      .reduce(
+        (reputation, contributor) => reputation + (contributor.reputation || 0),
+        0,
+      );
+
     topContributors[topContributors.length - 1] = {
       id: 'allOtherUsers',
       label: formatText(MSG.otherLabel),
