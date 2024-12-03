@@ -46,13 +46,6 @@ export enum ActionTitleMessageKeys {
 /* Maps actionTypes to message values as found in en-actions.ts */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
-    case actionType === ColonyActionType.Payment:
-      return [
-        ActionTitleMessageKeys.Recipient,
-        ActionTitleMessageKeys.Amount,
-        ActionTitleMessageKeys.TokenSymbol,
-        ActionTitleMessageKeys.Initiator,
-      ];
     case actionType.includes(ColonyActionType.MoveFunds):
       return [
         ActionTitleMessageKeys.Amount,
@@ -159,6 +152,13 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.Initiator,
         ActionTitleMessageKeys.SplitAmount,
         ActionTitleMessageKeys.TokenSymbol,
+      ];
+    case actionType.includes(ColonyActionType.Payment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
       ];
     default:
       return [];
