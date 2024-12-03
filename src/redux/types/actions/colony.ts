@@ -7,8 +7,10 @@ import {
   type InstalledExtensionData,
 } from '~types/extensions.ts';
 import { type Address, type WithKey } from '~types/index.ts';
+import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 import {
+  type MetaWithSetter,
   type ActionType,
   type ErrorActionType,
   type UniqueActionType,
@@ -100,4 +102,18 @@ export type ColonyActionTypes =
   | ErrorActionType<ActionTypes.EXTENSION_UPGRADE_ERROR, object>
   | UniqueActionType<ActionTypes.EXTENSION_UNINSTALL_SUCCESS, object, object>
   | ErrorActionType<ActionTypes.EXTENSION_UNINSTALL_ERROR, object>
-  | UniqueActionType<ActionTypes.CREATE_ARBITRARY_TRANSACTION, object, object>;
+  | UniqueActionType<
+      ActionTypes.CREATE_ARBITRARY_TRANSACTION,
+      {
+        colonyAddress: Address;
+        customActionTitle: string;
+        transactions: AddTransactionTableModel[];
+      },
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.CREATE_ARBITRARY_TRANSACTION_SUCCESS,
+      object,
+      object
+    >
+  | ErrorActionType<ActionTypes.CREATE_ARBITRARY_TRANSACTION_ERROR, object>;

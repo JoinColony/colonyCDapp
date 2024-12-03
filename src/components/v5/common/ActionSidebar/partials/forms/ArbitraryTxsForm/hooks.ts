@@ -1,6 +1,7 @@
 import { Id } from '@colony/colony-js';
 import { useMemo } from 'react';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload } from '~utils/actions.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
@@ -12,6 +13,10 @@ import { validationSchema } from './consts.ts';
 export const useCreateArbitraryTxs = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
+  const {
+    colony: { colonyAddress },
+  } = useColonyContext();
+
   useActionFormBaseHook({
     actionType: ActionTypes.CREATE_ARBITRARY_TRANSACTION,
     validationSchema,
@@ -30,6 +35,7 @@ export const useCreateArbitraryTxs = (
         description: safeDescription,
         customActionTitle: payload.title,
         transactions: payload.transactions,
+        colonyAddress,
       };
     }),
   });
