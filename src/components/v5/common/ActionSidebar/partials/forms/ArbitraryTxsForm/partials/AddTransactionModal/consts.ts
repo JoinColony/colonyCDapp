@@ -1,4 +1,4 @@
-import { isAddress, Interface, type Fragment } from 'ethers/lib/utils';
+import { isAddress, Interface } from 'ethers/lib/utils';
 import { string } from 'yup';
 
 import { formatText } from '~utils/intl.ts';
@@ -35,21 +35,11 @@ const isValidAbi = (val: string) => {
   }
 };
 
-export const abiFunctionsFilterFn = ({
-  type,
-  stateMutability,
-  constant,
-}: Fragment & { stateMutability?: string; constant?: boolean }) =>
-  type === 'function' &&
-  stateMutability !== 'view' &&
-  stateMutability !== 'pure' &&
-  constant !== true;
-
 const hasAbiMethods = (val: string) => {
   try {
     const parsedAbi = JSON.parse(val);
     const IJsonAbi = new Interface(parsedAbi);
-    const functions = IJsonAbi.fragments.filter(abiFunctionsFilterFn);
+    const functions = Object.keys(IJsonAbi.functions);
     return functions.length > 0;
   } catch (error) {
     return false;

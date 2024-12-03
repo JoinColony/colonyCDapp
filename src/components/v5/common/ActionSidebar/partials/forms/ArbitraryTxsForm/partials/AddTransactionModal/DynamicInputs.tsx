@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
-import { abiFunctionsFilterFn, validateMethod } from './consts.ts';
+import { validateMethod } from './consts.ts';
 import { MethodInput } from './MethodInput.tsx';
 import { MSG } from './translation.ts';
 
@@ -22,8 +22,8 @@ export const DynamicInputs: React.FC = () => {
   const [methodArgs, setMethodArgs] = useState<ParamType[]>([]);
 
   const removePrevMethodArgs = useCallback(() => {
-    methodArgs.forEach((input) => {
-      unregister(`args.${input.name}`);
+    methodArgs.forEach((_, index) => {
+      unregister(`args[${index}]`);
     });
     setMethodArgs([]);
   }, [methodArgs, setMethodArgs, unregister]);
@@ -31,9 +31,7 @@ export const DynamicInputs: React.FC = () => {
   const methodOptionsSetter = ({ jsonAbi }) => {
     try {
       const IJsonAbi = new Interface(jsonAbi);
-      const functions = IJsonAbi.fragments
-        .filter(abiFunctionsFilterFn)
-        .map((item) => item.name);
+      const functions = Object.keys(IJsonAbi.functions);
       const options =
         functions?.map((func) => ({ value: func, label: func })) || [];
       setMethodOptions(options);
@@ -48,8 +46,9 @@ export const DynamicInputs: React.FC = () => {
         const IJsonAbi = new Interface(jsonAbi);
         const functionFragment = IJsonAbi.getFunction(method);
         setMethodArgs(functionFragment.inputs);
-        functionFragment.inputs.forEach((item) => {
-          setValue(`args.${item.name}.type`, item.type); // Setting type as value to use it in table rendering
+        functionFragment.inputs.forEach((item, index) => {
+          setValue(`args[${index}].type`, item.type); // Setting type as value to use it in table rendering
+          setValue(`args[${index}].title`, item.name); // Setting title as value to use it in table rendering
         });
       } catch (e) {
         setMethodArgs([]);
@@ -129,8 +128,13 @@ export const DynamicInputs: React.FC = () => {
           rules={{ validate: validateMethod }}
         />
       )}
-      {methodArgs.map((input) => (
-        <MethodInput key={input.name} name={input.name} type={input.type} />
+      {methodArgs.map((input, index) => (
+        <MethodInput
+          key={input.name}
+          name={input.name}
+          type={input.type}
+          index={index}
+        />
       ))}
     </div>
   );
