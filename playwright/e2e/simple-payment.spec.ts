@@ -1,32 +1,44 @@
-import { expect, test } from '@playwright/test';
+import { type BrowserContext, expect, type Page, test } from '@playwright/test';
 
-import { selectWallet, setCookieConsent } from '../utils/common.ts';
+import { setCookieConsent } from '../utils/common.ts';
 import {
+  closeSimplePaymentDrawer,
   openSimplePaymentDrawer,
+  signInAndNavigateToColony,
   tooltipMessages,
   validationMessages,
 } from '../utils/simple-payment.ts';
 
-test.describe.configure({ mode: 'serial' });
-
 test.describe('Simple payment', () => {
   test.describe('User has required permissions', () => {
-    test.beforeEach(async ({ page, context, baseURL }) => {
+    let page: Page;
+    let context: BrowserContext;
+
+    test.beforeAll(async ({ browser, baseURL }) => {
+      context = await browser.newContext();
+      page = await context.newPage();
+
       await setCookieConsent(context, baseURL);
 
-      await page.goto('/planex');
+      await signInAndNavigateToColony(page, {
+        colonyUrl: '/planex',
+        wallet: /dev wallet 1$/i,
+      });
+    });
 
-      await selectWallet(page, /dev wallet 1$/i);
+    test.afterAll(async () => {
+      await context?.close();
+    });
 
-      await page.getByText('Loading Colony').waitFor({ state: 'hidden' });
-      await page
-        .getByTestId('loading-skeleton')
-        .last()
-        .waitFor({ state: 'hidden' });
+    test.beforeEach(async () => {
       await openSimplePaymentDrawer(page);
     });
 
-    test('Should successfully create a simple payment', async ({ page }) => {
+    test.afterEach(async () => {
+      await closeSimplePaymentDrawer(page);
+    });
+
+    test('Should successfully create a simple payment', async () => {
       const actionDrawer = page.getByTestId('action-drawer');
       const actionForm = page.getByTestId('action-form');
 
@@ -86,9 +98,7 @@ test.describe('Simple payment', () => {
       ).toBeVisible();
     });
 
-    test('Should display validation errors for required fields and invalid inputs', async ({
-      page,
-    }) => {
+    test('Should display validation errors for required fields and invalid inputs', async () => {
       const actionDrawer = page.getByTestId('action-drawer');
       const actionForm = actionDrawer.getByTestId('action-form');
       const titleField = actionForm.getByPlaceholder('Enter title');
@@ -133,9 +143,7 @@ test.describe('Simple payment', () => {
       ).toBeHidden();
     });
 
-    test('Should display tooltips and user info on hover and click actions', async ({
-      page,
-    }) => {
+    test('Should display tooltips and user info on hover and click actions', async () => {
       const actionForm = page.getByTestId('action-form');
       await actionForm.getByText('From', { exact: true }).hover();
 
@@ -171,9 +179,7 @@ test.describe('Simple payment', () => {
       await expect(page.getByTestId('token-list')).toBeVisible();
     });
 
-    test('Should display the confirmation modal when the user tries to close the form', async ({
-      page,
-    }) => {
+    test('Should display the confirmation modal when the user tries to close the form', async () => {
       const simplePaymentForm = page.getByTestId('action-form');
       const dialog = page
         .getByRole('dialog')
@@ -203,22 +209,18 @@ test.describe('Simple payment', () => {
   });
 
   test.describe('User has no permissions', () => {
-    test.beforeEach(async ({ page, context, baseURL }) => {
-      await setCookieConsent(context, baseURL);
-
-      await page.goto('/planex');
-    });
-
     test('Should not allow to create a simple payment with no permissions', async ({
       page,
+      context,
+      baseURL,
     }) => {
+      await setCookieConsent(context, baseURL);
+
       // Log in with a wallet that has no permissions for simple payments
-      await selectWallet(page, /dev wallet 3$/i);
-      await page.getByText('Loading Colony').waitFor({ state: 'hidden' });
-      await page
-        .getByTestId('loading-skeleton')
-        .last()
-        .waitFor({ state: 'hidden' });
+      await signInAndNavigateToColony(page, {
+        colonyUrl: '/planex',
+        wallet: /dev wallet 3$/i,
+      });
 
       await openSimplePaymentDrawer(page);
 
