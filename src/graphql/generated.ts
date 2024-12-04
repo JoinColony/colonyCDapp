@@ -6818,6 +6818,7 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
+  getProxyColoniesByColonyAddress?: Maybe<ModelProxyColonyConnection>;
   getProxyColony?: Maybe<ProxyColony>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByColony?: Maybe<ModelColonyRoleConnection>;
@@ -7470,6 +7471,16 @@ export type QueryGetProfileByEmailArgs = {
 export type QueryGetProfileByUsernameArgs = {
   displayName: Scalars['String'];
   filter?: InputMaybe<ModelProfileFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetProxyColoniesByColonyAddressArgs = {
+  colonyAddress: Scalars['ID'];
+  filter?: InputMaybe<ModelProxyColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
@@ -10511,6 +10522,8 @@ export type ExtensionDisplayFragmentFragment = { __typename?: 'ColonyExtension',
 
 export type LiquidationAddressFragment = { __typename?: 'LiquidationAddress', id: string, chainId: number, userAddress: string, liquidationAddress: string, user?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null };
 
+export type ProxyColonyFragment = { __typename?: 'ProxyColony', id: string, colonyAddress: string, chainId: string, isActive: boolean };
+
 export type ColonyUserRoleFragment = { __typename?: 'ColonyRole', id: string, targetAddress: string, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, targetUser?: { __typename?: 'User', bridgeCustomerId?: string | null, walletAddress: string, profile?: { __typename?: 'Profile', avatar?: string | null, bio?: string | null, displayName?: string | null, displayNameChanged?: string | null, email?: string | null, location?: string | null, thumbnail?: string | null, website?: string | null, preferredCurrency?: SupportedCurrencies | null, isAutoOfframpEnabled?: boolean | null, meta?: { __typename?: 'ProfileMetadata', metatransactionsEnabled?: boolean | null, decentralizedModeEnabled?: boolean | null, customRpc?: string | null } | null } | null, privateBetaInviteCode?: { __typename?: 'PrivateBetaInviteCode', id: string, shareableInvites?: number | null } | null, notificationsData?: { __typename?: 'NotificationsData', magicbellUserId: string, notificationsDisabled: boolean, mutedColonyAddresses: Array<string>, paymentNotificationsDisabled: boolean, mentionNotificationsDisabled: boolean, adminNotificationsDisabled: boolean } | null } | null };
 
 export type NftDataFragment = { __typename?: 'NFTData', address: string, description?: string | null, id: string, imageUri?: string | null, logoUri: string, name?: string | null, tokenName: string, tokenSymbol: string, uri: string };
@@ -11104,6 +11117,13 @@ export type GetProfileByEmailQueryVariables = Exact<{
 
 
 export type GetProfileByEmailQuery = { __typename?: 'Query', getProfileByEmail?: { __typename?: 'ModelProfileConnection', items: Array<{ __typename?: 'Profile', id: string } | null> } | null };
+
+export type GetProxyColoniesQueryVariables = Exact<{
+  colonyAddress: Scalars['ID'];
+}>;
+
+
+export type GetProxyColoniesQuery = { __typename?: 'Query', getProxyColoniesByColonyAddress?: { __typename?: 'ModelProxyColonyConnection', items: Array<{ __typename?: 'ProxyColony', id: string, colonyAddress: string, chainId: string, isActive: boolean } | null> } | null };
 
 export type GetColonyHistoricRoleRolesQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -11898,6 +11918,14 @@ export const LiquidationAddressFragmentDoc = gql`
   liquidationAddress
 }
     ${UserFragmentDoc}`;
+export const ProxyColonyFragmentDoc = gql`
+    fragment ProxyColony on ProxyColony {
+  id
+  colonyAddress
+  chainId
+  isActive
+}
+    `;
 export const ColonyUserRoleFragmentDoc = gql`
     fragment ColonyUserRole on ColonyRole {
   id
@@ -15313,6 +15341,43 @@ export function useGetProfileByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetProfileByEmailQueryHookResult = ReturnType<typeof useGetProfileByEmailQuery>;
 export type GetProfileByEmailLazyQueryHookResult = ReturnType<typeof useGetProfileByEmailLazyQuery>;
 export type GetProfileByEmailQueryResult = Apollo.QueryResult<GetProfileByEmailQuery, GetProfileByEmailQueryVariables>;
+export const GetProxyColoniesDocument = gql`
+    query GetProxyColonies($colonyAddress: ID!) {
+  getProxyColoniesByColonyAddress(colonyAddress: $colonyAddress) {
+    items {
+      ...ProxyColony
+    }
+  }
+}
+    ${ProxyColonyFragmentDoc}`;
+
+/**
+ * __useGetProxyColoniesQuery__
+ *
+ * To run a query within a React component, call `useGetProxyColoniesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProxyColoniesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProxyColoniesQuery({
+ *   variables: {
+ *      colonyAddress: // value for 'colonyAddress'
+ *   },
+ * });
+ */
+export function useGetProxyColoniesQuery(baseOptions: Apollo.QueryHookOptions<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>(GetProxyColoniesDocument, options);
+      }
+export function useGetProxyColoniesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>(GetProxyColoniesDocument, options);
+        }
+export type GetProxyColoniesQueryHookResult = ReturnType<typeof useGetProxyColoniesQuery>;
+export type GetProxyColoniesLazyQueryHookResult = ReturnType<typeof useGetProxyColoniesLazyQuery>;
+export type GetProxyColoniesQueryResult = Apollo.QueryResult<GetProxyColoniesQuery, GetProxyColoniesQueryVariables>;
 export const GetColonyHistoricRoleRolesDocument = gql`
     query GetColonyHistoricRoleRoles($id: ID!) {
   getColonyHistoricRole(id: $id) {
