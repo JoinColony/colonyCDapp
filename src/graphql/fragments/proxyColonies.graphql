@@ -1,0 +1,6 @@
+fragment ProxyColony on ProxyColony {
+  id
+  colonyAddress
+  chainId
+  isActive
+}
