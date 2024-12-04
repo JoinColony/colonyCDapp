@@ -68,7 +68,9 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback(() => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
-      updatedWallet.address = utils.getAddress(updatedWallet.address);
+      updatedWallet.address = utils.getAddress(
+        updatedWallet.address,
+      ) as `0x${string}`;
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
       if (updatedWallet.address !== wallet?.address) {
