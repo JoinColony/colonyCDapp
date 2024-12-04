@@ -1,6 +1,5 @@
 import { SpinnerGap } from '@phosphor-icons/react';
 import React, { useEffect, useState } from 'react';
-import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
@@ -13,7 +12,6 @@ import {
   useGroupedTransactions,
 } from '~state/transactionState.ts';
 import { TransactionStatus } from '~types/graphql.ts';
-import { pipe, withMeta } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -21,13 +19,6 @@ import Button from '~v5/shared/Button/index.ts';
 import { type FormValues } from './types.ts';
 
 const displayName = 'common.CreateColonyWizard.StepFinishCreate';
-
-const MSG = defineMessages({
-  retry: {
-    id: `${displayName}.retry`,
-    defaultMessage: 'Retry',
-  },
-});
 
 type Props = Pick<WizardStepProps<FormValues>, 'wizardValues'> & {
   setFailedOnExtensions: (failedOnExtensions: boolean) => void;
@@ -42,7 +33,7 @@ const StepFinishCreate = ({
   const { transactions } = useGroupedTransactions();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const [finishCreateColonyTxs, setFinishCreateColonyTxs] = useState<
     (typeof transactions)[0] | null
@@ -50,7 +41,8 @@ const StepFinishCreate = ({
 
   // Find the first finishColonyCreation tx group that is still pending and then set it to the finish colony creation tx group
   useEffect(() => {
-    if (!hasSubmitted) {
+    // Only set transaction group is there is an error
+    if (!hasError) {
       return;
     }
 
@@ -68,7 +60,7 @@ const StepFinishCreate = ({
     }
 
     setFinishCreateColonyTxs(finishCreateColonyTxGroup);
-  }, [hasSubmitted, transactions]);
+  }, [hasError, transactions]);
 
   const groupStatus = finishCreateColonyTxs
     ? getGroupStatus(finishCreateColonyTxs)
@@ -91,26 +83,28 @@ const StepFinishCreate = ({
     }
   }, [finishCreateColonyTxs, groupStatus, isSubmitting, setFailedOnExtensions]);
 
-  // @TODO: Fail the previous create colony transactions when attempting this
-  const transform = pipe(withMeta({ navigate }));
-
   const finishCreateColony = useAsyncFunction({
     submit: ActionTypes.FINISH_CREATE,
     error: ActionTypes.FINISH_CREATE_ERROR,
     success: ActionTypes.FINISH_CREATE_SUCCESS,
-    transform,
   });
 
   const handleSubmit = async () => {
-    setHasSubmitted(true);
+    setHasError(false);
     setIsSubmitting(true);
     try {
       await finishCreateColony({
         colonyName,
         tokenChoice,
       });
+      navigate(`/${colonyName}`, {
+        state: {
+          isRedirect: true,
+          hasRecentlyCreatedColony: true,
+        },
+      });
     } catch {
-      //
+      setHasError(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -131,7 +125,7 @@ const StepFinishCreate = ({
         />
       ) : (
         <Button mode="primarySolid" isFullSize type="submit">
-          {formatText(MSG.retry)}
+          {formatText({ id: 'button.retry' })}
         </Button>
       )}
     </Form>

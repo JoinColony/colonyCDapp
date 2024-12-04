@@ -175,6 +175,7 @@ const StepConfirmTransactions = (props: Props) => {
     return (
       <NotificationBanner
         status="error"
+        className="w-[32rem]"
         callToAction={
           <Link
             to={`/${colonyName}`}
@@ -196,7 +197,7 @@ const StepConfirmTransactions = (props: Props) => {
     const { wizardValues } = props;
 
     return (
-      <>
+      <div className="flex w-[32rem] flex-col gap-4">
         <NotificationBanner status="error">
           {formatText(MSG.partialFailure)}
         </NotificationBanner>
@@ -204,7 +205,7 @@ const StepConfirmTransactions = (props: Props) => {
           wizardValues={wizardValues}
           setFailedOnExtensions={setFailedOnExtensions}
         />
-      </>
+      </div>
     );
   }
 
@@ -216,7 +217,6 @@ const StepConfirmTransactions = (props: Props) => {
         isContentOpened
         hideSummary
         isClickable={false}
-        isCancelable
       />
       {groupStatus === TransactionStatus.Succeeded && (
         <div className="mt-8 text-center text-sm text-gray-600">
