@@ -116,4 +116,11 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
   --onboard-black: var(--color-base-black);
   --onboard-shadow-2: transparent;
   --onboard-modal-z-index: 9999;
+
+  /* wallet connect modal */
+  --wcm-overlay-background-color: transparent !important;
+  --wcm-z-index: 10000 !important;
+
+  /* trezor wallet select modal */
+  --onboard-account-select-modal-z-index: 10000 !important;
 }
