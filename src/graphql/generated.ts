@@ -1738,6 +1738,7 @@ export type CreateExtensionInstallationsCountInput = {
 };
 
 export type CreateIngestorStatsInput = {
+  chainId: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
   value: Scalars['String'];
 };
@@ -1800,6 +1801,13 @@ export type CreateProfileInput = {
   preferredCurrency?: InputMaybe<SupportedCurrencies>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type CreateProxyColonyInput = {
+  chainId: Scalars['String'];
+  colonyAddress: Scalars['ID'];
+  id?: InputMaybe<Scalars['ID']>;
+  isActive: Scalars['Boolean'];
 };
 
 export type CreateReputationMiningCycleMetadataInput = {
@@ -2096,6 +2104,10 @@ export type DeletePrivateBetaInviteCodeInput = {
 };
 
 export type DeleteProfileInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteProxyColonyInput = {
   id: Scalars['ID'];
 };
 
@@ -2712,6 +2724,8 @@ export type GetVoterRewardsInput = {
 /** Model storing block ingestor stats, as key-value entries */
 export type IngestorStats = {
   __typename?: 'IngestorStats';
+  /** The chain id the stats are generated on */
+  chainId: Scalars['String'];
   createdAt: Scalars['AWSDateTime'];
   /** Unique identifier of the ingestor stats */
   id: Scalars['ID'];
@@ -3752,6 +3766,7 @@ export type ModelIdKeyConditionInput = {
 
 export type ModelIngestorStatsConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelIngestorStatsConditionInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelIngestorStatsConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelIngestorStatsConditionInput>>>;
   value?: InputMaybe<ModelStringInput>;
@@ -3765,6 +3780,7 @@ export type ModelIngestorStatsConnection = {
 
 export type ModelIngestorStatsFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelIngestorStatsFilterInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelIngestorStatsFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelIngestorStatsFilterInput>>>;
@@ -3978,6 +3994,31 @@ export type ModelProfileFilterInput = {
   preferredCurrency?: InputMaybe<ModelSupportedCurrenciesInput>;
   thumbnail?: InputMaybe<ModelStringInput>;
   website?: InputMaybe<ModelStringInput>;
+};
+
+export type ModelProxyColonyConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelProxyColonyConditionInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  isActive?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelProxyColonyConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelProxyColonyConditionInput>>>;
+};
+
+export type ModelProxyColonyConnection = {
+  __typename?: 'ModelProxyColonyConnection';
+  items: Array<Maybe<ProxyColony>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
+export type ModelProxyColonyFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelProxyColonyFilterInput>>>;
+  chainId?: InputMaybe<ModelStringInput>;
+  colonyAddress?: InputMaybe<ModelIdInput>;
+  id?: InputMaybe<ModelIdInput>;
+  isActive?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelProxyColonyFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelProxyColonyFilterInput>>>;
 };
 
 export type ModelReputationMiningCycleMetadataConditionInput = {
@@ -4545,6 +4586,7 @@ export type ModelSubscriptionIdInput = {
 
 export type ModelSubscriptionIngestorStatsFilterInput = {
   and?: InputMaybe<Array<InputMaybe<ModelSubscriptionIngestorStatsFilterInput>>>;
+  chainId?: InputMaybe<ModelSubscriptionStringInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   or?: InputMaybe<Array<InputMaybe<ModelSubscriptionIngestorStatsFilterInput>>>;
   value?: InputMaybe<ModelSubscriptionStringInput>;
@@ -4630,6 +4672,15 @@ export type ModelSubscriptionProfileFilterInput = {
   preferredCurrency?: InputMaybe<ModelSubscriptionStringInput>;
   thumbnail?: InputMaybe<ModelSubscriptionStringInput>;
   website?: InputMaybe<ModelSubscriptionStringInput>;
+};
+
+export type ModelSubscriptionProxyColonyFilterInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelSubscriptionProxyColonyFilterInput>>>;
+  chainId?: InputMaybe<ModelSubscriptionStringInput>;
+  colonyAddress?: InputMaybe<ModelSubscriptionIdInput>;
+  id?: InputMaybe<ModelSubscriptionIdInput>;
+  isActive?: InputMaybe<ModelSubscriptionBooleanInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelSubscriptionProxyColonyFilterInput>>>;
 };
 
 export type ModelSubscriptionReputationMiningCycleMetadataFilterInput = {
@@ -5259,6 +5310,7 @@ export type Mutation = {
   createNotificationsData?: Maybe<NotificationsData>;
   createPrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   createProfile?: Maybe<Profile>;
+  createProxyColony?: Maybe<ProxyColony>;
   createReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   createSafeTransaction?: Maybe<SafeTransaction>;
   createSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -5307,6 +5359,7 @@ export type Mutation = {
   deleteNotificationsData?: Maybe<NotificationsData>;
   deletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   deleteProfile?: Maybe<Profile>;
+  deleteProxyColony?: Maybe<ProxyColony>;
   deleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   deleteSafeTransaction?: Maybe<SafeTransaction>;
   deleteSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -5355,6 +5408,7 @@ export type Mutation = {
   updateNotificationsData?: Maybe<NotificationsData>;
   updatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   updateProfile?: Maybe<Profile>;
+  updateProxyColony?: Maybe<ProxyColony>;
   updateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   updateSafeTransaction?: Maybe<SafeTransaction>;
   updateSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -5617,6 +5671,13 @@ export type MutationCreatePrivateBetaInviteCodeArgs = {
 export type MutationCreateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: CreateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationCreateProxyColonyArgs = {
+  condition?: InputMaybe<ModelProxyColonyConditionInput>;
+  input: CreateProxyColonyInput;
 };
 
 
@@ -5941,6 +6002,13 @@ export type MutationDeleteProfileArgs = {
 
 
 /** Root mutation type */
+export type MutationDeleteProxyColonyArgs = {
+  condition?: InputMaybe<ModelProxyColonyConditionInput>;
+  input: DeleteProxyColonyInput;
+};
+
+
+/** Root mutation type */
 export type MutationDeleteReputationMiningCycleMetadataArgs = {
   condition?: InputMaybe<ModelReputationMiningCycleMetadataConditionInput>;
   input: DeleteReputationMiningCycleMetadataInput;
@@ -6257,6 +6325,13 @@ export type MutationUpdatePrivateBetaInviteCodeArgs = {
 export type MutationUpdateProfileArgs = {
   condition?: InputMaybe<ModelProfileConditionInput>;
   input: UpdateProfileInput;
+};
+
+
+/** Root mutation type */
+export type MutationUpdateProxyColonyArgs = {
+  condition?: InputMaybe<ModelProxyColonyConditionInput>;
+  input: UpdateProxyColonyInput;
 };
 
 
@@ -6606,10 +6681,12 @@ export type ProxyColony = {
   chainId: Scalars['String'];
   /** Address of the colony on the blockchain */
   colonyAddress: Scalars['ID'];
+  createdAt: Scalars['AWSDateTime'];
   /** id in the format of colonyAddress_chainId */
   id: Scalars['ID'];
   /** A flag that tells us if the proxy is active or not */
   isActive: Scalars['Boolean'];
+  updatedAt: Scalars['AWSDateTime'];
 };
 
 /** Root query type */
@@ -6675,6 +6752,7 @@ export type Query = {
   getExtensionsByHash?: Maybe<ModelColonyExtensionConnection>;
   getFundsClaimsByColony?: Maybe<ModelColonyFundsClaimConnection>;
   getIngestorStats?: Maybe<IngestorStats>;
+  getIngestorStatsByChainId?: Maybe<ModelIngestorStatsConnection>;
   getLiquidationAddress?: Maybe<LiquidationAddress>;
   getLiquidationAddressesByUserAddress?: Maybe<ModelLiquidationAddressConnection>;
   getMotionByExpenditureId?: Maybe<ModelColonyMotionConnection>;
@@ -6695,6 +6773,7 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
+  getProxyColony?: Maybe<ProxyColony>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByColony?: Maybe<ModelColonyRoleConnection>;
   getRoleByDomainAndColony?: Maybe<ModelColonyRoleConnection>;
@@ -6763,6 +6842,7 @@ export type Query = {
   listNotificationsData?: Maybe<ModelNotificationsDataConnection>;
   listPrivateBetaInviteCodes?: Maybe<ModelPrivateBetaInviteCodeConnection>;
   listProfiles?: Maybe<ModelProfileConnection>;
+  listProxyColonies?: Maybe<ModelProxyColonyConnection>;
   listReputationMiningCycleMetadata?: Maybe<ModelReputationMiningCycleMetadataConnection>;
   listSafeTransactionData?: Maybe<ModelSafeTransactionDataConnection>;
   listSafeTransactions?: Maybe<ModelSafeTransactionConnection>;
@@ -7182,6 +7262,16 @@ export type QueryGetIngestorStatsArgs = {
 
 
 /** Root query type */
+export type QueryGetIngestorStatsByChainIdArgs = {
+  chainId: Scalars['String'];
+  filter?: InputMaybe<ModelIngestorStatsFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetLiquidationAddressArgs = {
   id: Scalars['ID'];
 };
@@ -7328,6 +7418,12 @@ export type QueryGetProfileByUsernameArgs = {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetProxyColonyArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -7824,6 +7920,14 @@ export type QueryListPrivateBetaInviteCodesArgs = {
 /** Root query type */
 export type QueryListProfilesArgs = {
   filter?: InputMaybe<ModelProfileFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+};
+
+
+/** Root query type */
+export type QueryListProxyColoniesArgs = {
+  filter?: InputMaybe<ModelProxyColonyFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 };
@@ -8457,6 +8561,7 @@ export type Subscription = {
   onCreateNotificationsData?: Maybe<NotificationsData>;
   onCreatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onCreateProfile?: Maybe<Profile>;
+  onCreateProxyColony?: Maybe<ProxyColony>;
   onCreateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onCreateSafeTransaction?: Maybe<SafeTransaction>;
   onCreateSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -8501,6 +8606,7 @@ export type Subscription = {
   onDeleteNotificationsData?: Maybe<NotificationsData>;
   onDeletePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onDeleteProfile?: Maybe<Profile>;
+  onDeleteProxyColony?: Maybe<ProxyColony>;
   onDeleteReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onDeleteSafeTransaction?: Maybe<SafeTransaction>;
   onDeleteSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -8545,6 +8651,7 @@ export type Subscription = {
   onUpdateNotificationsData?: Maybe<NotificationsData>;
   onUpdatePrivateBetaInviteCode?: Maybe<PrivateBetaInviteCode>;
   onUpdateProfile?: Maybe<Profile>;
+  onUpdateProxyColony?: Maybe<ProxyColony>;
   onUpdateReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   onUpdateSafeTransaction?: Maybe<SafeTransaction>;
   onUpdateSafeTransactionData?: Maybe<SafeTransactionData>;
@@ -8717,6 +8824,11 @@ export type SubscriptionOnCreatePrivateBetaInviteCodeArgs = {
 
 export type SubscriptionOnCreateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnCreateProxyColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionProxyColonyFilterInput>;
 };
 
 
@@ -8940,6 +9052,11 @@ export type SubscriptionOnDeleteProfileArgs = {
 };
 
 
+export type SubscriptionOnDeleteProxyColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionProxyColonyFilterInput>;
+};
+
+
 export type SubscriptionOnDeleteReputationMiningCycleMetadataArgs = {
   filter?: InputMaybe<ModelSubscriptionReputationMiningCycleMetadataFilterInput>;
 };
@@ -9157,6 +9274,11 @@ export type SubscriptionOnUpdatePrivateBetaInviteCodeArgs = {
 
 export type SubscriptionOnUpdateProfileArgs = {
   filter?: InputMaybe<ModelSubscriptionProfileFilterInput>;
+};
+
+
+export type SubscriptionOnUpdateProxyColonyArgs = {
+  filter?: InputMaybe<ModelSubscriptionProxyColonyFilterInput>;
 };
 
 
@@ -9813,6 +9935,7 @@ export type UpdateExtensionInstallationsCountInput = {
 };
 
 export type UpdateIngestorStatsInput = {
+  chainId?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   value?: InputMaybe<Scalars['String']>;
 };
@@ -9875,6 +9998,13 @@ export type UpdateProfileInput = {
   preferredCurrency?: InputMaybe<SupportedCurrencies>;
   thumbnail?: InputMaybe<Scalars['String']>;
   website?: InputMaybe<Scalars['AWSURL']>;
+};
+
+export type UpdateProxyColonyInput = {
+  chainId?: InputMaybe<Scalars['String']>;
+  colonyAddress?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
+  isActive?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateReputationMiningCycleMetadataInput = {

@@ -141,6 +141,8 @@ services:
     image: colony-cdapp-dev-env/network-wormhole-relayer:latest
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
+    ports:
+      - '3007:3001'
     depends_on:
       network-contracts:
         condition: service_healthy
