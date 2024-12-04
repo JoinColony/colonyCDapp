@@ -6773,17 +6773,25 @@ export type ProxyColony = {
   /** Address of the colony on the blockchain */
   colonyAddress: Scalars['ID'];
 <<<<<<< HEAD
+<<<<<<< HEAD
   createdAt: Scalars['AWSDateTime'];
 =======
 >>>>>>> e2fd455e8 (wip: create proxy colony UI)
+=======
+  createdAt: Scalars['AWSDateTime'];
+>>>>>>> 798923e4c (Fix: multi-chain stats and refactoring)
   /** id in the format of colonyAddress_chainId */
   id: Scalars['ID'];
   /** A flag that tells us if the proxy is active or not */
   isActive: Scalars['Boolean'];
 <<<<<<< HEAD
+<<<<<<< HEAD
   updatedAt: Scalars['AWSDateTime'];
 =======
 >>>>>>> e2fd455e8 (wip: create proxy colony UI)
+=======
+  updatedAt: Scalars['AWSDateTime'];
+>>>>>>> 798923e4c (Fix: multi-chain stats and refactoring)
 };
 
 /** Root query type */
@@ -6871,7 +6879,10 @@ export type Query = {
   getProfile?: Maybe<Profile>;
   getProfileByEmail?: Maybe<ModelProfileConnection>;
   getProfileByUsername?: Maybe<ModelProfileConnection>;
+<<<<<<< HEAD
   getProxyColoniesByColonyAddress?: Maybe<ModelProxyColonyConnection>;
+=======
+>>>>>>> 798923e4c (Fix: multi-chain stats and refactoring)
   getProxyColony?: Maybe<ProxyColony>;
   getReputationMiningCycleMetadata?: Maybe<ReputationMiningCycleMetadata>;
   getRoleByColony?: Maybe<ModelColonyRoleConnection>;
@@ -7531,6 +7542,7 @@ export type QueryGetProfileByUsernameArgs = {
 
 
 /** Root query type */
+<<<<<<< HEAD
 export type QueryGetProxyColoniesByColonyAddressArgs = {
   colonyAddress: Scalars['ID'];
   filter?: InputMaybe<ModelProxyColonyFilterInput>;
@@ -7541,6 +7553,8 @@ export type QueryGetProxyColoniesByColonyAddressArgs = {
 
 
 /** Root query type */
+=======
+>>>>>>> 798923e4c (Fix: multi-chain stats and refactoring)
 export type QueryGetProxyColonyArgs = {
   id: Scalars['ID'];
 };
