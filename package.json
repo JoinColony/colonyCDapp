@@ -159,6 +159,9 @@
     "@colony/redux-promise-listener": "^1.2.0",
     "@colony/sdk": "^3.0.0-next.2",
     "@colony/unicode-confusables-noascii": "^0.1.2",
+    "@dynamic-labs/ethereum": "^3.8.5",
+    "@dynamic-labs/ethers-v5": "^2.6.2",
+    "@dynamic-labs/sdk-react-core": "^3.8.5",
     "@hookform/resolvers": "^2.9.10",
     "@magicbell/react-headless": "^5.0.1",
     "@nivo/arcs": "^0.87.0",
@@ -255,6 +258,7 @@
     "resolve": "^1.22.8",
     "siwe": "^2.1.4",
     "use-local-storage": "^3.0.0",
+    "viem": "^2.21.53",
     "yup": "^0.30.0"
   }
 }
