@@ -1,6 +1,8 @@
 /* eslint-disable no-warning-comments */
 import { type Page } from '@playwright/test';
 
+import { selectWallet } from './common.ts';
+
 export const validationMessages = {
   title: {
     maxLengthExceeded: 'Title must not exceed 60 characters',
@@ -48,4 +50,34 @@ export const openSimplePaymentDrawer = async (page: Page) => {
   await actionDrawer
     .getByTestId('action-sidebar-description')
     .waitFor({ state: 'visible' });
+};
+
+export const closeSimplePaymentDrawer = async (page: Page) => {
+  await page
+    .getByRole('button', { name: /close the modal/i })
+    // eslint-disable-next-line playwright/no-force-option
+    .click({ force: true });
+
+  const dialog = page
+    .getByRole('dialog')
+    .filter({ hasText: 'Do you wish to cancel the action creation?' });
+  if (await dialog.isVisible()) {
+    await dialog
+      .getByRole('button', { name: 'Yes, cancel the action' })
+      .click();
+  }
+};
+
+export const signInAndNavigateToColony = async (
+  page: Page,
+  { colonyUrl, wallet }: { colonyUrl: string; wallet: string | RegExp },
+) => {
+  await page.goto(colonyUrl);
+  await selectWallet(page, wallet);
+  // Wait for the Dashboard to load
+  await page.getByText('Loading Colony').waitFor({ state: 'hidden' });
+  await page
+    .getByTestId('loading-skeleton')
+    .last()
+    .waitFor({ state: 'hidden' });
 };
