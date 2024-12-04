@@ -1,3 +1,4 @@
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
@@ -79,6 +80,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
+      <DynamicWidget />
       {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">
