@@ -96,7 +96,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
         sizeUnit={isMobile ? undefined : '%'}
         meatBallMenuSize={isMobile ? undefined : 10}
         className={clsx('mb-6', {
-          '[&_table]:!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
+          '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
             !!fieldState.error,
         })}
         getRowId={({ key }) => key}
