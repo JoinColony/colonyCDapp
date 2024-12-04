@@ -104,11 +104,11 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
           )}
         </>
       )}
-      <div className="flex flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
-        <div>
+      <div className="flex min-w-0 flex-grow flex-col-reverse gap-0.5 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex w-full min-w-0 flex-col">
           <p
             className={clsx(
-              'line-clamp-2 text-md font-medium text-gray-900 md:line-clamp-1',
+              'line-clamp-2 min-w-0 break-words text-md font-medium text-gray-900 md:line-clamp-1',
               {
                 'overflow-hidden rounded skeleton sm:w-64': isLoading,
               },
