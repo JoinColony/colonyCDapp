@@ -7,7 +7,10 @@ import { useMobile } from '~hooks/index.ts';
 import useUserReputation from '~hooks/useUserReputation.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { calculatePercentageReputation } from '~utils/reputation.ts';
+import {
+  calculatePercentageReputation,
+  getReputationDifference,
+} from '~utils/reputation.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
 
@@ -41,11 +44,10 @@ const ManageReputationTableCompletedState: FC<
       updatedTotalReputation.toString(),
     ) || 0;
 
-  const UpdatedReputationPercentage =
-    typeof updatedPercentageReputation === 'number' &&
-    typeof oldPercentageReputation === 'number'
-      ? Math.abs(updatedPercentageReputation - oldPercentageReputation)
-      : '~0';
+  const UpdatedReputationPercentage = getReputationDifference(
+    updatedPercentageReputation,
+    oldPercentageReputation,
+  );
 
   const pill = (
     <PillsBase

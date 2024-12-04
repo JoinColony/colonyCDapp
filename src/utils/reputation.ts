@@ -6,6 +6,8 @@ import {
   getFormattedNumeralValue,
 } from '~shared/Numeral/index.ts';
 
+import { isNumeric } from './numbers.ts';
+
 export enum ZeroValue {
   Zero = '0',
   NearZero = '~0',
@@ -50,3 +52,11 @@ export const formatReputationChange = (
   const value = adjustConvertedValue(absoluteChange, decimals);
   return getFormattedNumeralValue(value, absoluteChange);
 };
+
+export const getReputationDifference = (
+  percentageA: number | ZeroValue,
+  percentageB: number | ZeroValue,
+) =>
+  isNumeric(percentageA) && isNumeric(percentageB)
+    ? Math.abs(Number(percentageA) - Number(percentageB))
+    : ZeroValue.NearZero;

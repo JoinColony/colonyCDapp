@@ -99,3 +99,7 @@ export const getSafeStringifiedNumber = (
   // Default case if the type is unexpected
   return safeFallback;
 };
+
+export const isNumeric = (value: unknown) =>
+  (typeof value === 'string' || typeof value === 'number') &&
+  !Number.isNaN(Number(value));

@@ -57,6 +57,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { nativeToken } = colony;
   const {
+    isMultiSig,
     isMotion,
     transactionHash,
     metadata,
@@ -66,12 +67,16 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
     amount,
     fromDomain,
     annotation,
+    multiSigData,
   } = action;
+
   const { networkMotionState } = useGetActionData(transactionHash);
   const motionFinished =
     networkMotionState === NetworkMotionState.Finalizable ||
     networkMotionState === NetworkMotionState.Finalized ||
     networkMotionState === NetworkMotionState.Failed;
+
+  const multiSigFinished = multiSigData?.isRejected || multiSigData?.isExecuted;
 
   const isSmite = [
     ColonyActionType.EmitDomainReputationPenalty,
@@ -190,7 +195,7 @@ const ManageReputation: FC<ManageReputationProps> = ({ action }) => {
       )}
       {positiveAmountValue && (
         <>
-          {isMotion && !motionFinished ? (
+          {(isMotion || isMultiSig) && !motionFinished && !multiSigFinished ? (
             <ManageReputationTableInMotion
               isSmite={isSmite}
               amount={positiveAmountValue}
