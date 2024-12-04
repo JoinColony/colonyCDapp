@@ -1,6 +1,7 @@
 import { all, call, fork, put } from 'redux-saga/effects';
 
 // import AppLoadingState from '~context/appLoadingState';
+import * as dynamic from "@dynamic-labs/sdk-react-core";
 
 import { authenticateWallet } from '~auth/index.ts';
 import { getContext, setContext, ContextModule } from '~context/index.ts';
@@ -76,6 +77,8 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
   yield fork(failPendingTransactions);
 }
 
+console.log({ dynamic })
+
 /*
  * Given an action to get the user’s wallet, use this wallet to initialise the initial
  * context that depends on it (the wallet itself, the DDB, the ColonyManager),
@@ -84,8 +87,9 @@ function* initializeFullWallet(lastWallet: LastWallet | null) {
 export function* setupUserContext() {
   try {
     /* Instantiate the onboard object and load into context */
-    const onboard = yield getOnboard();
-    setContext(ContextModule.Onboard, onboard);
+    // const onboard = yield getOnboard();
+    // setContext(ContextModule.Onboard, onboard);
+
     /*
      * Get the new wallet and set it in context.
      */

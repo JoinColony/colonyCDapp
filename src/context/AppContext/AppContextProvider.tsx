@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 
 import {
   GetUserByAddressDocument,
@@ -30,6 +31,11 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   // We need to start with true here as we can't know whethere we are going to try to connect
   // and the first render is important here
   const [walletConnecting, setWalletConnecting] = useState(true);
+  const { setShowAuthFlow } = useDynamicContext();
+
+  useDynamicEvents("walletAdded", (args) => {
+    console.log('dynamic wallet login success', args);
+  });
 
   const {
     joinedColonies,
@@ -102,15 +108,16 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
    */
   const connectWallet = useCallback(async () => {
     try {
-      await setupUserContext(undefined);
+      // await setupUserContext(undefined);
       setWalletConnecting(true);
-      updateWallet();
+      // updateWallet();
+      setShowAuthFlow(true);
     } catch (error) {
       console.error('Could not connect wallet', error);
     } finally {
       setWalletConnecting(false);
     }
-  }, [setupUserContext, updateWallet, setWalletConnecting]);
+  }, [setupUserContext, updateWallet, setWalletConnecting, setShowAuthFlow]);
 
   /*
    * Handle wallet disconnection
