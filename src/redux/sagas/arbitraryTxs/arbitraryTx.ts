@@ -40,7 +40,7 @@ function* arbitraryTxSaga({
       try {
         const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
           item.method,
-          item.args?.map((arg: any) => arg.value),
+          item.args?.map((arg) => arg.value),
         );
         contractAddresses.push(contractAddress);
         methodsBytes.push(encodedFunction);
