@@ -3523,6 +3523,8 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
+
+  arbitraryTransactions: [ColonyActionArbitraryTransaction]
 }
 
 """
@@ -3591,6 +3593,22 @@ type ColonyActionRoles {
   Administration role
   """
   role_6: Boolean
+}
+
+type ArbitraryTransactionMethodArg {
+  value: String
+  name: String
+  type: String
+}
+
+"""
+Colony Arbitrary transaction that can be involved in an action
+"""
+type ColonyActionArbitraryTransaction {
+  contractAddress: String
+  method: String
+  methodSignature: String
+  args: [ArbitraryTransactionMethodArg]
 }
 
 """

@@ -16,10 +16,16 @@ import {
   putError,
   takeFrom,
   createActionMetadataInDB,
+  uploadAnnotation,
 } from '../utils/index.ts';
 
 function* arbitraryTxSaga({
-  payload: { transactions, customActionTitle, colonyAddress },
+  payload: {
+    transactions,
+    customActionTitle,
+    colonyAddress,
+    annotationMessage,
+  },
   meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.CREATE_ARBITRARY_TRANSACTION>) {
@@ -46,10 +52,11 @@ function* arbitraryTxSaga({
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.ArbitraryTxs;
 
-    const { makeArbitraryTransactions } = yield createTransactionChannels(
-      metaId,
-      ['makeArbitraryTransactions'],
-    );
+    const { makeArbitraryTransactions, annotateMakeArbitraryTransactions } =
+      yield createTransactionChannels(metaId, [
+        'makeArbitraryTransactions',
+        'annotateMakeArbitraryTransactions',
+      ]);
 
     yield fork(createTransaction, makeArbitraryTransactions.id, {
       context: ClientType.ColonyClient,
@@ -64,10 +71,32 @@ function* arbitraryTxSaga({
       ready: false,
     });
 
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateMakeArbitraryTransactions.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 2,
+        },
+        ready: false,
+      });
+    }
+
     yield takeFrom(
       makeArbitraryTransactions.channel,
       ActionTypes.TRANSACTION_CREATED,
     );
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateMakeArbitraryTransactions.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
 
     yield initiateTransaction(makeArbitraryTransactions.id);
 
@@ -78,6 +107,14 @@ function* arbitraryTxSaga({
     } = yield waitForTxResult(makeArbitraryTransactions.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateMakeArbitraryTransactions,
+        message: annotationMessage,
+        txHash,
+      });
+    }
 
     setTxHash?.(txHash);
 

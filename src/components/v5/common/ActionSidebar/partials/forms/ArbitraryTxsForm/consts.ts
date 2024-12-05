@@ -9,26 +9,27 @@ export const validationSchema = object()
       .trim()
       .required(() => 'Please enter a title.'),
     decisionMethod: string().defined(),
-    transactions: array().of(
-      object()
-        .shape({
-          contractAddress: string().defined(),
-          jsonAbi: string().defined(),
-          method: string().defined(),
-          args: array().of(
-            object().shape({
-              value: string().required(
-                formatText({ id: 'validation.required' }),
-              ),
-              title: string().required(
-                formatText({ id: 'validation.required' }),
-              ),
-            }),
-          ),
-        })
-        .defined(),
-    ),
-    // .required(),
+    transactions: array()
+      .of(
+        object()
+          .shape({
+            contractAddress: string().defined(),
+            jsonAbi: string().defined(),
+            method: string().defined(),
+            args: array().of(
+              object().shape({
+                value: string().required(
+                  formatText({ id: 'validation.required' }),
+                ),
+                title: string().required(
+                  formatText({ id: 'validation.required' }),
+                ),
+              }),
+            ),
+          })
+          .defined(),
+      )
+      .required(),
   })
   .defined()
   .concat(ACTION_BASE_VALIDATION_SCHEMA);

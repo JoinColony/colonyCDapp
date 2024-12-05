@@ -139,6 +139,16 @@ fragment ColonyAction on ColonyAction {
       distributionType
     }
   }
+  arbitraryTransactions {
+    contractAddress
+    method
+    methodSignature
+    args {
+      value
+      name
+      type
+    }
+  }
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
