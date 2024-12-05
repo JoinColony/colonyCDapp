@@ -24,13 +24,9 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     }),
   };
 
-  let body;
-  let response;
-
   try {
-    response = await fetch(url, options);
-    body = await response.json();
-    return body;
+    const response = await fetch(url, options);
+    return response.json();
   } catch (error) {
     /*
      * Something went wrong... obviously
@@ -41,17 +37,9 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
 };
 
 const repMinerRequest = async (repMinerURL) => {
-  const options = {
-    method: 'GET',
-  };
-
-  let body;
-  let response;
-
   try {
-    response = await fetch(repMinerURL, options);
-    body = await response.json();
-    return body;
+    const response = await fetch(repMinerURL, { method: 'GET' });
+    return await response.json();
   } catch (error) {
     /*
      * Something went wrong... obviously
