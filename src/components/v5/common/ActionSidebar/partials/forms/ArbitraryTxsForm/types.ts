@@ -10,5 +10,5 @@ export interface AddTransactionTableModel {
   jsonAbi: string;
   key: string;
   method: string;
-  args?: Array<{ value: string; type: string; title: string }>;
+  args?: Array<{ value: string; type: string; name: string }>;
 }

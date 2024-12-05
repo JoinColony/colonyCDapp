@@ -48,7 +48,7 @@ export const DynamicInputs: React.FC = () => {
         setMethodArgs(functionFragment.inputs);
         functionFragment.inputs.forEach((item, index) => {
           setValue(`args[${index}].type`, item.type); // Setting type as value to use it in table rendering
-          setValue(`args[${index}].title`, item.name); // Setting title as value to use it in table rendering
+          setValue(`args[${index}].name`, item.name); // Setting title as value to use it in table rendering
         });
       } catch (e) {
         setMethodArgs([]);
