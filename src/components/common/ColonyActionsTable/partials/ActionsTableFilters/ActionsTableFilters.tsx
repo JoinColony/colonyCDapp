@@ -63,47 +63,51 @@ const ActionsTableFilters: FC = () => {
   return (
     <>
       {isMobile ? (
-        <div className="flex items-center gap-2">
-          <FilterButton
-            isOpen={isOpened}
-            onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={selectedFiltersCount}
-            customLabel={formatText({ id: 'allFilters' })}
-          />
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <FilterButton
+              isOpen={isOpened}
+              onClick={() => setOpened(!isOpened)}
+              numberSelectedFilters={selectedFiltersCount}
+              customLabel={formatText({ id: 'allFilters' })}
+            />
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            <Modal
+              isFullOnMobile={false}
+              onClose={() => setOpened(false)}
+              isOpen={isOpened}
+              withPaddingBottom
+            >
+              {filtersContent}
+            </Modal>
+            <Modal
+              isFullOnMobile={false}
+              onClose={closeSearch}
+              isOpen={isSearchOpened}
+              withPaddingBottom
+            >
+              <p className="mb-4 uppercase text-gray-400 text-4">
+                {formatText({
+                  id: 'activityFeedTable.filters.searchModalTitle',
+                })}
+              </p>
+              <div className="sm:mb-6 sm:px-3.5">{searchInput}</div>
+            </Modal>
+          </div>
           {!!searchFilter && (
             <SearchPill
               value={searchFilter}
               onClick={() => setSearchFilter('')}
             />
           )}
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setOpened(false)}
-            isOpen={isOpened}
-            withPaddingBottom
-          >
-            {filtersContent}
-          </Modal>
-          <Modal
-            isFullOnMobile={false}
-            onClose={closeSearch}
-            isOpen={isSearchOpened}
-            withPaddingBottom
-          >
-            <p className="mb-4 uppercase text-gray-400 text-4">
-              {formatText({ id: 'activityFeedTable.filters.searchModalTitle' })}
-            </p>
-            <div className="sm:mb-6 sm:px-3.5">{searchInput}</div>
-          </Modal>
         </div>
       ) : (
         <>

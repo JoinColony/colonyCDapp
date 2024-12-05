@@ -2,9 +2,12 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
 
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useFiltersContext } from '~frame/v5/pages/AgreementsPage/FiltersContext/FiltersContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInput from '~v5/common/Filter/partials/SearchInput/index.ts';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
@@ -22,6 +25,9 @@ const AgreementsPageFilters: FC = () => {
   const { searchFilter, setSearchFilter, selectedFiltersCount } =
     useFiltersContext();
   const [isOpened, setOpened] = useState(false);
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const isMobile = useMobile();
   const {
     isSearchOpened,
@@ -65,49 +71,63 @@ const AgreementsPageFilters: FC = () => {
   );
 
   return (
-    <>
+    <div className="flex flex-row items-center gap-2">
       {isMobile ? (
-        <div className="flex items-center gap-2">
-          <FilterButton
-            isOpen={isOpened}
-            onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={selectedFiltersCount}
-            customLabel={formatText({ id: 'allFilters' })}
-          />
-          <Button
-            mode="tertiary"
-            className="flex h-9 sm:hidden"
-            size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2">
+            <FilterButton
+              isOpen={isOpened}
+              onClick={() => setOpened(!isOpened)}
+              numberSelectedFilters={selectedFiltersCount}
+              customLabel={formatText({ id: 'allFilters' })}
+            />
+            <Button
+              mode="tertiary"
+              className="flex h-9 sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            <Button
+              mode="primarySolid"
+              size="small"
+              isFullSize={false}
+              onClick={() => {
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                });
+              }}
+            >
+              {formatText({ id: 'agreementsPage.createAgreement' })}
+            </Button>
+            <Modal
+              isFullOnMobile={false}
+              onClose={() => setOpened(false)}
+              isOpen={isOpened}
+              withPaddingBottom
+            >
+              {FiltersContent}
+            </Modal>
+            <Modal
+              isFullOnMobile={false}
+              onClose={closeSearch}
+              isOpen={isSearchOpened}
+              withPaddingBottom
+            >
+              <p className="mb-4 uppercase text-gray-400 text-4">
+                {formatText({ id: 'agreementsPage.filter.searchPlaceholder' })}
+              </p>
+              <div className="sm:mb-6 sm:px-3.5">{SearchInputComponent}</div>
+            </Modal>
+          </div>
           {!!searchFilter && (
             <SearchPill
               value={searchFilter}
               onClick={() => setSearchFilter('')}
             />
           )}
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setOpened(false)}
-            isOpen={isOpened}
-            withPaddingBottom
-          >
-            {FiltersContent}
-          </Modal>
-          <Modal
-            isFullOnMobile={false}
-            onClose={closeSearch}
-            isOpen={isSearchOpened}
-            withPaddingBottom
-          >
-            <p className="mb-4 uppercase text-gray-400 text-4">
-              {formatText({ id: 'agreementsPage.filter.searchPlaceholder' })}
-            </p>
-            <div className="sm:mb-6 sm:px-3.5">{SearchInputComponent}</div>
-          </Modal>
         </div>
       ) : (
         <>
@@ -124,6 +144,18 @@ const AgreementsPageFilters: FC = () => {
               setTriggerRef={setTriggerRef}
               customLabel={formatText({ id: 'allFilters' })}
             />
+            <Button
+              mode="primarySolid"
+              size="small"
+              isFullSize={false}
+              onClick={() => {
+                toggleActionSidebarOn({
+                  [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+                });
+              }}
+            >
+              {formatText({ id: 'agreementsPage.createAgreement' })}
+            </Button>
           </div>
           {isSearchOpened && (
             <PopoverBase
@@ -143,7 +175,7 @@ const AgreementsPageFilters: FC = () => {
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

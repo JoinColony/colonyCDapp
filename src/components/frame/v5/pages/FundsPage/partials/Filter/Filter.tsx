@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 
 import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
+import { formatText } from '~utils/intl.ts';
 import { formatMessage } from '~utils/yup/tests/helpers.ts';
 import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
@@ -13,6 +14,8 @@ import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 import SearchInputDesktop from '~v5/shared/SearchSelect/partials/SearchInput/index.ts';
 import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
+
+import AcceptButton from '../AcceptButton/AcceptButton.tsx';
 
 import FilterItem from './FilterItem.tsx';
 import { type FilterProps, type FilterValue } from './types.ts';
@@ -29,6 +32,9 @@ function Filter<TValue extends FilterValue>({
   searchInputPlaceholder,
   filtersHeader = 'filters',
   buttonText,
+  unclaimedClaims,
+  isButtonDisabled,
+  shouldShowButton,
 }: FilterProps<TValue>) {
   const {
     isSearchOpened,
@@ -69,28 +75,38 @@ function Filter<TValue extends FilterValue>({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
-        {!!searchValue && !isMobile && (
-          <SearchPill value={searchValue} onClick={() => onSearch('')} />
-        )}
-        <FilterButton
-          isOpen={isSearchOpened}
-          onClick={toggleModalOn}
-          setTriggerRef={setTriggerRef}
-          customLabel={buttonText}
-          numberSelectedFilters={isMobile ? filterCount : undefined}
-        />
-        {isMobile && (
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
-        )}
+      <div className="flex flex-col items-start gap-2">
+        <div className="flex flex-row gap-2">
+          {!!searchValue && !isMobile && (
+            <SearchPill value={searchValue} onClick={() => onSearch('')} />
+          )}
+          <FilterButton
+            isOpen={isSearchOpened}
+            onClick={toggleModalOn}
+            setTriggerRef={setTriggerRef}
+            customLabel={buttonText}
+            numberSelectedFilters={isMobile ? filterCount : undefined}
+          />
+          {isMobile && (
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+          )}
+          {shouldShowButton && (
+            <AcceptButton
+              tokenAddresses={unclaimedClaims}
+              disabled={isButtonDisabled}
+            >
+              {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}
+            </AcceptButton>
+          )}
+        </div>
         {!!searchValue && isMobile && (
           <SearchPill value={searchValue} onClick={() => onSearch('')} />
         )}

@@ -34,6 +34,9 @@ export interface FilterProps<TValue extends FilterValue> {
   searchInputPlaceholder: string;
   filtersHeader?: string;
   buttonText?: string;
+  unclaimedClaims: string[];
+  isButtonDisabled?: boolean;
+  shouldShowButton?: boolean;
 }
 
 export interface NestedFilterProps<

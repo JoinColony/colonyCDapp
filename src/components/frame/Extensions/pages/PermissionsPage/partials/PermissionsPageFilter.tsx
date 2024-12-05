@@ -1,9 +1,13 @@
 import { MagnifyingGlass } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC, useCallback } from 'react';
 
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
@@ -33,6 +37,9 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
     setTooltipRef,
     setTriggerRef,
   } = useSearchFilter();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -60,28 +67,46 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
-        {!!searchValue && !isMobile && (
-          <SearchPill value={searchValue} onClick={() => onSearch('')} />
-        )}
-        <FilterButton
-          isOpen={isSearchOpened}
-          onClick={toggleModalOn}
-          setTriggerRef={setTriggerRef}
-          customLabel={formatText({ id: 'allFilters' })}
-          numberSelectedFilters={activeFiltersNumber}
-        />
-        {isMobile && (
+      <div
+        className={clsx('flex flex-col', {
+          'items-start gap-2': isMobile && searchValue,
+        })}
+      >
+        <div className="flex flex-row gap-2">
+          {!!searchValue && !isMobile && (
+            <SearchPill value={searchValue} onClick={() => onSearch('')} />
+          )}
+          <FilterButton
+            isOpen={isSearchOpened}
+            onClick={toggleModalOn}
+            setTriggerRef={setTriggerRef}
+            customLabel={formatText({ id: 'allFilters' })}
+            numberSelectedFilters={activeFiltersNumber}
+          />
+          {isMobile && (
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+          )}
           <Button
-            mode="tertiary"
-            className="flex sm:hidden"
+            mode="primarySolid"
             size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
+            isFullSize={false}
+            onClick={() => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              });
+            }}
           >
-            <MagnifyingGlass size={14} />
+            {formatText({ id: 'permissionsPage.managePermissions' })}
           </Button>
-        )}
+        </div>
         {!!searchValue && isMobile && (
           <SearchPill value={searchValue} onClick={() => onSearch('')} />
         )}

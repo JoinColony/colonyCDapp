@@ -2,9 +2,12 @@ import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -35,6 +38,9 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
     visible: isSearchOpened,
     onVisibleChange: setIsSearchOpened,
   });
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -63,19 +69,19 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
-        {!!searchValue && !isMobile && (
-          <SearchPill value={searchValue} onClick={() => onSearch('')} />
-        )}
-        <FilterButton
-          isOpen={isSearchOpened}
-          onClick={toggleModalOn}
-          setTriggerRef={setTriggerRef}
-          customLabel={formatText({ id: 'teamsPage.filter.filterButton' })}
-          numberSelectedFilters={hasFilterChanged && isMobile ? 1 : 0}
-        />
-        {isMobile && (
-          <>
+      <div className="flex flex-col items-start gap-2">
+        <div className="flex flex-row gap-2">
+          {!!searchValue && !isMobile && (
+            <SearchPill value={searchValue} onClick={() => onSearch('')} />
+          )}
+          <FilterButton
+            isOpen={isSearchOpened}
+            onClick={toggleModalOn}
+            setTriggerRef={setTriggerRef}
+            customLabel={formatText({ id: 'teamsPage.filter.filterButton' })}
+            numberSelectedFilters={hasFilterChanged && isMobile ? 1 : 0}
+          />
+          {isMobile && (
             <Button
               mode="tertiary"
               className="flex sm:hidden"
@@ -85,10 +91,20 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
             >
               <MagnifyingGlass size={14} />
             </Button>
-            {!!searchValue && (
-              <SearchPill value={searchValue} onClick={() => onSearch('')} />
-            )}
-          </>
+          )}
+          <Button
+            onClick={() =>
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              })
+            }
+            text={formatText({ id: 'teamsPage.createNewTeam' })}
+            mode="primarySolid"
+            size="small"
+          />
+        </div>
+        {!!searchValue && isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
         )}
       </div>
       {isMobile && (

@@ -44,52 +44,54 @@ const Filter: FC<FilterProps> = ({
   return (
     <>
       {isMobile ? (
-        <div className="flex items-center gap-2">
-          <FilterButton
-            isOpen={isOpened}
-            onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={selectedFilterCount}
-            customLabel={customLabel}
-          />
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2">
+            <FilterButton
+              isOpen={isOpened}
+              onClick={() => setOpened(!isOpened)}
+              numberSelectedFilters={selectedFilterCount}
+              customLabel={customLabel}
+            />
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            <Modal
+              isFullOnMobile={false}
+              onClose={() => setOpened(false)}
+              isOpen={isOpened}
+              withPaddingBottom
+            >
+              <FilterOptions excludeFilterType={excludeFilterType} />
+            </Modal>
+            <Modal
+              isFullOnMobile={false}
+              onClose={closeSearch}
+              isOpen={isSearchOpened}
+              withPaddingBottom
+            >
+              <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
+              <div className="sm:mb-6 sm:px-3.5">
+                <SearchInput
+                  onSearchButtonClick={closeSearch}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchInputPlaceholder={searchInputPlaceholder}
+                />
+              </div>
+            </Modal>
+          </div>
           {!!searchValue && (
             <SearchPill
               value={searchValue}
               onClick={() => setSearchValue('')}
             />
           )}
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setOpened(false)}
-            isOpen={isOpened}
-            withPaddingBottom
-          >
-            <FilterOptions excludeFilterType={excludeFilterType} />
-          </Modal>
-          <Modal
-            isFullOnMobile={false}
-            onClose={closeSearch}
-            isOpen={isSearchOpened}
-            withPaddingBottom
-          >
-            <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
-            <div className="sm:mb-6 sm:px-3.5">
-              <SearchInput
-                onSearchButtonClick={closeSearch}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchInputPlaceholder={searchInputPlaceholder}
-              />
-            </div>
-          </Modal>
         </div>
       ) : (
         <>

@@ -2,26 +2,20 @@ import { Binoculars } from '@phosphor-icons/react';
 import { isEqual } from 'lodash';
 import React, { type FC } from 'react';
 
-import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { ModelSortDirection } from '~gql';
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import TeamCardList from '~v5/common/TeamCardList/index.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
-import Button, { CloseButton } from '~v5/shared/Button/index.ts';
+import { CloseButton } from '~v5/shared/Button/index.ts';
 
 import { useTeams } from './hooks.tsx';
 import TeamsPageFilter from './partials/TeamsPageFilter/TeamsPageFilter.tsx';
 
 const TeamsPage: FC = () => {
   useSetPageHeadingTitle(formatText({ id: 'teamsPage.title' }));
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
   const { filters, searchedTeams, defaultFilterValue, hasFilterChanged } =
     useTeams();
   const isMobile = useMobile();
@@ -63,16 +57,6 @@ const TeamsPage: FC = () => {
                 </div>
               )}
             <TeamsPageFilter {...filters} />
-            <Button
-              onClick={() =>
-                toggleActionSidebarOn({
-                  [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
-                })
-              }
-              text={formatText({ id: 'teamsPage.createNewTeam' })}
-              mode="primarySolid"
-              size="small"
-            />
           </div>
         </div>
         {searchedTeams.length > 0 ? (

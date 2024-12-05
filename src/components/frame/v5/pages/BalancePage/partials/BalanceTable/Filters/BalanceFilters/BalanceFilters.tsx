@@ -17,7 +17,11 @@ import BalanceTableFiltersItem from '../partials/BalanceTableFiltersItem/Balance
 
 import { filterItems } from './consts.tsx';
 
-const BalanceFilters: FC = () => {
+interface BalanceFiltersProps {
+  toggleAddFundsModalOn: () => void;
+}
+
+const BalanceFilters: FC<BalanceFiltersProps> = ({ toggleAddFundsModalOn }) => {
   const { searchFilter, setSearchFilter, selectedFiltersCount } =
     useFiltersContext();
 
@@ -63,47 +67,56 @@ const BalanceFilters: FC = () => {
   return (
     <div className="mr-2">
       {isMobile ? (
-        <div className="flex items-center gap-2">
-          <FilterButton
-            isOpen={isOpened}
-            onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={selectedFiltersCount}
-            customLabel={formatText({ id: 'allFilters' })}
-          />
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={openSearch}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2">
+            <FilterButton
+              isOpen={isOpened}
+              onClick={() => setOpened(!isOpened)}
+              numberSelectedFilters={selectedFiltersCount}
+              customLabel={formatText({ id: 'allFilters' })}
+            />
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            <Button
+              mode="primarySolid"
+              onClick={toggleAddFundsModalOn}
+              size="small"
+            >
+              {formatText({ id: 'balancePage.table.addFunds' })}
+            </Button>
+            <Modal
+              isFullOnMobile={false}
+              onClose={() => setOpened(false)}
+              isOpen={isOpened}
+              withPaddingBottom
+            >
+              {filtersContent}
+            </Modal>
+            <Modal
+              isFullOnMobile={false}
+              onClose={closeSearch}
+              isOpen={isSearchOpened}
+              withPaddingBottom
+            >
+              <p className="mb-4 uppercase text-gray-400 text-4">
+                {formatText({ id: 'balancePage.filter.searchModalTitle' })}
+              </p>
+              <div className="sm:mb-6 sm:px-3.5">{searchInput}</div>
+            </Modal>
+          </div>
           {!!searchFilter && (
             <SearchPill
               value={searchFilter}
               onClick={() => setSearchFilter('')}
             />
           )}
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setOpened(false)}
-            isOpen={isOpened}
-            withPaddingBottom
-          >
-            {filtersContent}
-          </Modal>
-          <Modal
-            isFullOnMobile={false}
-            onClose={closeSearch}
-            isOpen={isSearchOpened}
-            withPaddingBottom
-          >
-            <p className="mb-4 uppercase text-gray-400 text-4">
-              {formatText({ id: 'balancePage.filter.searchModalTitle' })}
-            </p>
-            <div className="sm:mb-6 sm:px-3.5">{searchInput}</div>
-          </Modal>
         </div>
       ) : (
         <>
@@ -120,6 +133,13 @@ const BalanceFilters: FC = () => {
               setTriggerRef={setTriggerRef}
               customLabel={formatText({ id: 'allFilters' })}
             />
+            <Button
+              mode="primarySolid"
+              onClick={toggleAddFundsModalOn}
+              size="small"
+            >
+              {formatText({ id: 'balancePage.table.addFunds' })}
+            </Button>
           </div>
           {isSearchOpened && (
             <PopoverBase
