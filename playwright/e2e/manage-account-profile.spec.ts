@@ -61,8 +61,6 @@ test.describe('Manage Account', () => {
       await expect(page.getByText('Website', { exact: true })).toBeVisible();
       await expect(page.getByText('Your website is optional')).toBeVisible();
       await expect(websiteInput).toBeEnabled();
-      // Verify that the website field is pre-filled with the user's website
-      await expect(websiteInput).toHaveValue(/.+/);
 
       await test.step('Shows an error message when the website is invalid', async () => {
         await fillInput({

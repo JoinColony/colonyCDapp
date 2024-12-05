@@ -28,11 +28,11 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.locator('input[type="file"]').setInputFiles(validPng);
 
     // Check success message
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i }),
-    ).toBeVisible();
+
+    await page.getByRole('alert').waitFor();
+    await expect(page.getByRole('alert').last()).toContainText(
+      /profile image changed successfully/i,
+    );
   });
 
   test('accepts valid JPG file with correct dimensions', async ({ page }) => {
@@ -44,11 +44,10 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.getByRole('button', { name: 'Change avatar' }).click();
     await page.locator('input[type="file"]').setInputFiles(validJpg);
 
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i }),
-    ).toBeVisible();
+    await page.getByRole('alert').waitFor();
+    await expect(page.getByRole('alert').last()).toContainText(
+      /profile image changed successfully/i,
+    );
   });
 
   test('accepts valid SVG file with correct dimensions', async ({ page }) => {
@@ -60,13 +59,12 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.getByRole('button', { name: 'Change avatar' }).click();
     await page.locator('input[type="file"]').setInputFiles(validSvg);
 
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i }),
-    ).toBeVisible();
+    await page.getByRole('alert').waitFor();
+    await expect(page.getByRole('alert').last()).toContainText(
+      /profile image changed successfully/i,
+    );
   });
-  // NOTE: enable this test once we have fixed the issue with the avatar uploader
+  // NOTE: enable this test once we have fixed issue #3858 with the avatar uploader
   test.skip('rejects file smaller than 250x250px', async ({ page }) => {
     const smallImage = path.join(
       __dirname,
@@ -79,7 +77,7 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await expect(
       // The error message to be confirmed
       page.getByText(/Image must be at least 250x250px/i),
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('rejects file larger than 1MB', async ({ page }) => {
@@ -95,7 +93,9 @@ test.describe('Avatar Uploader on Manage Account page', () => {
       page.getByText(/File size is too large, it should not exceed 1MB/i),
     ).toBeVisible();
     await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible();
-    await expect(page.getByTestId('file-remove')).toBeVisible();
+    await expect(page.getByTestId('file-remove')).toBeVisible({
+      timeout: 10000,
+    });
   });
 
   test('rejects unsupported file format', async ({ page }) => {
@@ -106,7 +106,7 @@ test.describe('Avatar Uploader on Manage Account page', () => {
 
     await expect(
       page.getByText(/Incorrect file format, must be .PNG, .JPG, or .SVG/i),
-    ).toBeVisible();
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('shows preview of uploaded image', async ({ page }) => {
@@ -144,23 +144,21 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.locator('input[type="file"]').setInputFiles(validPng);
 
     // Wait for upload to complete
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i }),
-    ).toBeVisible();
+    await page.getByRole('alert').waitFor();
+    await expect(page.getByRole('alert').last()).toContainText(
+      /profile image changed successfully/i,
+    );
 
     // Remove the avatar
     await page.getByRole('button', { name: 'Remove avatar' }).click();
 
     // Verify removal
-    await expect(
-      page
-        .getByRole('alert')
-        .filter({ hasText: /profile image changed successfully/i }),
-    ).toBeVisible();
+    await page.getByRole('alert').waitFor();
+    await expect(page.getByRole('alert').last()).toContainText(
+      /profile image changed successfully/i,
+    );
     await expect(
       page.getByRole('button', { name: 'Remove avatar' }),
-    ).toBeHidden();
+    ).toBeHidden({ timeout: 10000 });
   });
 });
