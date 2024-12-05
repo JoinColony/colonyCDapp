@@ -16,7 +16,7 @@ export interface ActionFormOptions
   primaryButton?: ActionFormProps['primaryButton'];
 }
 
-export interface ActionFormBaseProps {
+export interface CreateActionFormProps {
   getFormOptions: (
     formOptions: ActionFormOptions | undefined,
     form: UseFormReturn,
@@ -25,7 +25,7 @@ export interface ActionFormBaseProps {
 
 export type UseActionFormBaseHook = (
   options: {
-    getFormOptions: ActionFormBaseProps['getFormOptions'];
+    getFormOptions: CreateActionFormProps['getFormOptions'];
   } & Pick<
     ActionFormOptions,
     | 'actionType'
@@ -40,9 +40,9 @@ export type UseActionFormBaseHook = (
   >,
 ) => void;
 
-export interface ActionSidebarProps {
-  transactionId?: string;
-  className?: string;
+export enum ActionSidebarWidth {
+  Default,
+  Wide,
 }
 
 export type ClaimMintTokensActionParams = {

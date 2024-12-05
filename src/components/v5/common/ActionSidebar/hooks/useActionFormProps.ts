@@ -13,7 +13,10 @@ import {
   ACTION_BASE_VALIDATION_SCHEMA,
   ACTION_TYPE_FIELD_NAME,
 } from '../consts.ts';
-import { type ActionFormOptions, type ActionFormBaseProps } from '../types.ts';
+import {
+  type ActionFormOptions,
+  type CreateActionFormProps,
+} from '../types.ts';
 
 const useActionFormProps = (
   defaultValues: ActionFormProps<any>['defaultValues'],
@@ -46,7 +49,7 @@ const useActionFormProps = (
     }
   }, [defaultValues]);
 
-  const getFormOptions = useCallback<ActionFormBaseProps['getFormOptions']>(
+  const getFormOptions = useCallback<CreateActionFormProps['getFormOptions']>(
     async (formOptions, form) => {
       if (!formOptions) {
         return;

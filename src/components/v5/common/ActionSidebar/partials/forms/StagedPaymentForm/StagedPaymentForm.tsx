@@ -15,7 +15,7 @@ import Description from '~v5/common/ActionSidebar/partials/Description/Descripti
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 
 import { useStagePayment } from './hooks.ts';
@@ -23,7 +23,7 @@ import StagedPaymentRecipientsField from './partials/StagedPaymentRecipientsFiel
 
 const displayName = 'v5.common.ActionSidebar.partials.StagedPaymentForm';
 
-const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const StagedPaymentForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const { renderStakedExpenditureModal } = useStagePayment(getFormOptions);
