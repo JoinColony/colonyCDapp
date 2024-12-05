@@ -34,6 +34,10 @@ export interface FilterProps<TValue extends FilterValue> {
   searchInputPlaceholder: string;
   filtersHeader?: string;
   buttonText?: string;
+}
+
+export interface ExtendedFilterProps<TValue extends FilterValue>
+  extends FilterProps<TValue> {
   unclaimedClaims: string[];
   isButtonDisabled?: boolean;
   shouldShowButton?: boolean;

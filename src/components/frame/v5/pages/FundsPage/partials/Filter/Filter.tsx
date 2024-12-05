@@ -18,7 +18,7 @@ import Header from '~v5/shared/SubNavigationItem/partials/Header.tsx';
 import AcceptButton from '../AcceptButton/AcceptButton.tsx';
 
 import FilterItem from './FilterItem.tsx';
-import { type FilterProps, type FilterValue } from './types.ts';
+import { type ExtendedFilterProps, type FilterValue } from './types.ts';
 
 const displayName = 'v5.pages.FundsPage.partials.Filter';
 
@@ -35,7 +35,7 @@ function Filter<TValue extends FilterValue>({
   unclaimedClaims,
   isButtonDisabled,
   shouldShowButton,
-}: FilterProps<TValue>) {
+}: ExtendedFilterProps<TValue>) {
   const {
     isSearchOpened,
     openSearch,
