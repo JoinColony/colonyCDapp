@@ -9,7 +9,7 @@ import {
   type TokenAddressPriceSuccessResponse,
   type TokenAddressPriceResponse,
 } from './types.ts';
-import { buildAPIEndpoint, fetchData, mapToAPIFormat } from './utils.ts';
+import { buildAPIEndpoint, fetchJsonData, mapToAPIFormat } from './utils.ts';
 
 // The functions defined in this file assume something about the shape of the api response.
 // If that changes, or if we change the api, these functions will need to be updated.
@@ -76,24 +76,21 @@ export const fetchTokenPriceByAddress = async ({
     conversionDenomination,
   );
 
-  const price = await fetchData<TokenAddressPriceResponse, number>(
+  return fetchJsonData<TokenAddressPriceResponse>(
     url,
-    (data) => {
-      if (isAddressPriceSuccessResponse(data)) {
-        return extractAddressPriceFromResponse(
-          data,
-          contractAddress,
-          conversionDenomination,
-        );
-      }
-
-      console.error(
-        `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
-      );
-      return 0;
-    },
     `Api called failed at ${url}.`,
-  );
+  ).then((data) => {
+    if (isAddressPriceSuccessResponse(data)) {
+      return extractAddressPriceFromResponse(
+        data,
+        contractAddress,
+        conversionDenomination,
+      );
+    }
 
-  return price;
+    console.error(
+      `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
+    );
+    return 0;
+  });
 };

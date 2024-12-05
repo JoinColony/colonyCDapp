@@ -6,7 +6,7 @@ import {
   type TokenNamePriceSuccessResponse,
   type TokenNamePriceResponse,
 } from './types.ts';
-import { buildAPIEndpoint, fetchData, mapToAPIFormat } from './utils.ts';
+import { buildAPIEndpoint, fetchJsonData, mapToAPIFormat } from './utils.ts';
 
 // The functions defined in this file assume something about the shape of the api response.
 // If that changes, or if we change the api, these functions will need to be updated.
@@ -65,11 +65,13 @@ export const fetchTokenPriceByName = async ({
   tokenName: string;
   conversionDenomination: CoinGeckoSupportedCurrencies;
 }) => {
-  const url = buildTokenNameCoinGeckoURL(tokenName, conversionDenomination);
+  try {
+    const url = buildTokenNameCoinGeckoURL(tokenName, conversionDenomination);
 
-  const price = await fetchData<TokenNamePriceResponse, number>(
-    url,
-    (data) => {
+    return fetchJsonData<TokenNamePriceResponse>(
+      url,
+      `Api called failed at ${url}.`,
+    ).then((data) => {
       if (isTokenPriceSuccessResponse(data)) {
         return extractTokenPriceFromResponse(
           data,
@@ -82,9 +84,11 @@ export const fetchTokenPriceByName = async ({
         `Unable to get price for ${tokenName}. It probably doesn't have a listed exchange value.`,
       );
       return 0;
-    },
-    `Api called failed at ${url}.`,
-  );
-
-  return price;
+    });
+  } catch (e) {
+    if (import.meta.env.DEV) {
+      console.error(e);
+    }
+    return 0;
+  }
 };
