@@ -118,6 +118,7 @@ export type ColonyActionTypes =
         colonyAddress: Address;
         customActionTitle: string;
         transactions: AddTransactionTableModel[];
+        annotationMessage: string | null;
       },
       MetaWithSetter<object>
     >

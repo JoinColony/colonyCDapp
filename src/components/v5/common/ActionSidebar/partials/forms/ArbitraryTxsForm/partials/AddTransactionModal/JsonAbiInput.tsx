@@ -45,7 +45,7 @@ export const JsonAbiInput: React.FC<JsonAbiInputProps> = ({
         <div className="absolute bottom-0 left-0 right-0 top-0 flex cursor-pointer items-center justify-center rounded bg-base-sprite opacity-0 transition-opacity hover:opacity-100">
           <Button
             onClick={toggleShowEditWarningOff}
-            className="min-w-[12.5rem]"
+            className="min-w-[12.5rem] hover:border-gray-300"
           >
             {formatText(MSG.jsonAbiEditInfo)}
           </Button>

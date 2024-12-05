@@ -32,7 +32,7 @@ export const useCreateArbitraryTxs = (
 
       return {
         decisionMethod: payload.decisionMethod,
-        description: safeDescription,
+        annotationMessage: safeDescription,
         customActionTitle: payload.title,
         transactions: payload.transactions,
         colonyAddress,
