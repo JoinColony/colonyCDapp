@@ -142,6 +142,16 @@ function* editDomainAction({
       },
     } = yield waitForTxResult(editDomain.channel);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditDomain,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     /**
      * Save the updated metadata in the database
      */
@@ -170,16 +180,6 @@ function* editDomainAction({
           refetchQueries: [GetFullColonyByNameDocument],
         }),
       );
-    }
-
-    yield createActionMetadataInDB(txHash, customActionTitle);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateEditDomain,
-        message: annotationMessage,
-        txHash,
-      });
     }
 
     setTxHash?.(txHash);
