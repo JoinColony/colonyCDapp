@@ -20,16 +20,26 @@ fi
 CONTRACT_ADDRESSES_ARRAY=($(echo "$CONTRACT_ADDRESSES" | jq -r '.[]'))
 CONTRACT_ADDRESS=${CONTRACT_ADDRESSES_ARRAY[$INDEX]}
 
-echo "Used Contract Address: $CONTRACT_ADDRESS"
+echo "Used contract address: $CONTRACT_ADDRESS"
+
+CHAIN_RPC_ENDPOINTS_ARRAY=($(echo "$CHAIN_RPC_ENDPOINTS" | jq -r '.[]'))
+CHAIN_RPC_ENDPOINT=${CHAIN_RPC_ENDPOINTS_ARRAY[$INDEX]}
+
+echo "Used chain RPC endpoint: $CHAIN_RPC_ENDPOINT"
+
+STATS_PORTS_ARRAY=($(echo "$STATS_PORTS" | jq -r '.[]'))
+STATS_PORT=${STATS_PORTS_ARRAY[$INDEX]}
+
+echo "Used stats port: $STATS_PORT"
 
 # Get etherrouter-address
 wget http://network-files:3006/etherrouter-address.json
 
 # Write to env file...
-# @TODO change to apps/proxy-chain/.env
-echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> apps/main-chain/.env
-# @TODO change to apps/proxy-chain/.env
-echo "CONTRACT_ADDRESS=\"$CONTRACT_ADDRESS\"" >> apps/main-chain/.env
+echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> apps/proxy-chain/.env
+echo "CONTRACT_ADDRESS=$CONTRACT_ADDRESS" >> apps/proxy-chain/.env
+echo "CHAIN_RPC_ENDPOINT=$CHAIN_RPC_ENDPOINT" >> apps/proxy-chain/.env
+echo "STATS_PORT=$STATS_PORT" >> apps/proxy-chain/.env
 
 # @TODO change to @joincolony/proxy-chain
-pnpm --filter @joincolony/main-chain run start
+pnpm --filter @joincolony/proxy-chain run start
