@@ -88,8 +88,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock  # Mount Docker socket
     deploy:
       replicas: 2
+    ports:
+      - '10002-10003'
     depends_on:
-      network-contracts:
+      network-contracts-remote:
+        condition: service_healthy
+      network-contracts-remote-2:
         condition: service_healthy
       amplify:
         condition: service_healthy
