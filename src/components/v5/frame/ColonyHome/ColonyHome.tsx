@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
+import { TourTargets } from '~common/Tours/enums.ts';
 import { useMobile } from '~hooks/index.ts';
 import {
   // @BETA: Disabled for now
@@ -29,7 +30,10 @@ const ColonyHome = () => {
   const { defaultValues } = useGetActionData(selectedAction || undefined);
 
   return (
-    <div className="flex flex-grow flex-col gap-6 sm:min-h-full md:gap-4.5">
+    <div
+      className="flex flex-grow flex-col gap-6 sm:min-h-full md:gap-4.5"
+      data-tour={TourTargets.Dashboard}
+    >
       <div className="flex flex-col gap-8 sm:gap-6">
         <DashboardHeader />
         <TeamFilter />

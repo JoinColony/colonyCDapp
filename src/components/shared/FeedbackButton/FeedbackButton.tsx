@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { noop } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { TourTargets } from '~common/Tours/enums.ts';
 import { LEARN_MORE_COLONY_HELP_GENERAL } from '~constants';
 import { usePageThemeContext } from '~context/PageThemeContext/PageThemeContext.ts';
 import { formatText } from '~utils/intl.ts';
@@ -127,6 +128,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   const renderFeedbackButton = useCallback(
     () => (
       <div
+        data-tour={TourTargets.HelpAndFeedback}
         className={clsx('w-full', {
           relative: !isPopoverMode,
         })}
