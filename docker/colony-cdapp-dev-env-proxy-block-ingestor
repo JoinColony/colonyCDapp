@@ -1,7 +1,7 @@
 FROM colony-cdapp-dev-env/base:latest
 
 # @TODO maybe add a PROXY_BLOCK_INGESTOR_HASH and fallback to BLOCK_INGESTOR_HASH
-ENV BLOCK_INGESTOR_HASH=6a3e8fa3661f6ee328e45e6341cdd7cff2c012ec
+ENV BLOCK_INGESTOR_HASH=d5c077a352ee3ab75da70fb56666ba6c519237b1
 # @TODO do we need here a contract to be in the format:
 # {
 #   name: 'ColonyNetwork',
@@ -9,7 +9,9 @@ ENV BLOCK_INGESTOR_HASH=6a3e8fa3661f6ee328e45e6341cdd7cff2c012ec
 #   path: 'colonyNetwork/ColonyNetwork.sol/ColonyNetwork.json',
 # },
 # also the RPC url needs to be different for each chain
-ENV CONTRACT_ADDRESSES='["0x777760996135F0791E2e1a74aFAa060711197777", "0x777760996135F0791E2e1a74aFAa060711197778", "0x777760996135F0791E2e1a74aFAa060711197779"]'
+ENV CONTRACT_ADDRESSES='["0x777760996135F0791E2e1a74aFAa060711197777", "0x777760996135F0791E2e1a74aFAa060711197778"]'
+ENV CHAIN_RPC_ENDPOINTS='["http://network-contracts-remote:8545", "http://network-contracts-remote-2:8545"]'
+ENV STATS_PORTS='["10002", "10003"]'
 
 # Declare volumes to set up metadata
 VOLUME [ "/colonyCDapp/amplify/mock-data" ]
@@ -47,14 +49,13 @@ RUN npm i -g pnpm@9.5.0
 RUN pnpm install --frozen-lockfile
 
 # Compile JS files
-# @TODO change to @joincolony/proxy-chain
-RUN pnpm --filter @joincolony/main-chain run build 
+RUN pnpm --filter @joincolony/proxy-chain run build 
 
 WORKDIR /colonyCDappBackend
 
 # Open up ports to the docker image
 # Block Ingestor Stats
-EXPOSE 10001
+EXPOSE 10002 10003
 
 # Make the run script executable
 RUN chmod +x ./run.sh
