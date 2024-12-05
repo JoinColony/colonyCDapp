@@ -21,7 +21,7 @@ export const validationSchema = object()
                 value: string().required(
                   formatText({ id: 'validation.required' }),
                 ),
-                title: string().required(
+                name: string().required(
                   formatText({ id: 'validation.required' }),
                 ),
               }),
