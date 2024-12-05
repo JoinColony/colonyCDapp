@@ -80,6 +80,8 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   const isMobile = useMobile();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'sm:min-w-[9.625rem]',
+    contentWrapperClassName:
+      '!left-6 right-6 !z-[65] sm:!left-auto sm:!right-0',
     items: [
       {
         key: 'add-token',
@@ -135,6 +137,12 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
       item.tokenAddress === nativeToken?.tokenAddress,
   );
 
+  const latestSlotId = value.sort((a, b) => {
+    if (!a.slotId || !b.slotId) return 0;
+
+    return b.slotId - a.slotId;
+  })[0]?.slotId;
+
   return (
     <div>
       <h5 className="mb-3 mt-6 text-2">
@@ -185,6 +193,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
               amount: '',
               tokenAddress: nativeToken?.tokenAddress || '',
               delay: '',
+              slotId: latestSlotId ? latestSlotId + 1 : undefined,
             });
           }}
           disabled={hasNoDecisionMethods || data.length === 400}

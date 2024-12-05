@@ -5,9 +5,8 @@ import {
   getExpandedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 
 import { TableFooter } from './partials/TableFooter.tsx';
@@ -54,7 +53,6 @@ const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const helper = useMemo(() => createColumnHelper<T>(), []);
-  const isMobile = useMobile();
 
   const columnsWithMenu = useMemo(
     () => [
@@ -105,17 +103,18 @@ const Table = <T,>({
   const showPagination =
     alwaysShowPagination || (hasPagination && showPageNumber);
   const totalColumnsCount = table.getVisibleFlatColumns().length;
-  const hasExpandableRows = !!renderSubComponent;
+  // const hasExpandableRows = !!renderSubComponent;
 
-  useEffect(() => {
-    if (!isMobile && hasExpandableRows) {
-      rows.forEach((row) => {
-        if (row.getIsExpanded()) {
-          row.toggleExpanded(false);
-        }
-      });
-    }
-  }, [isMobile, hasExpandableRows, rows]);
+  // @TODO: This has broken the expandable rows on desktop
+  // useEffect(() => {
+  //   if (!isMobile && hasExpandableRows) {
+  //     rows.forEach((row) => {
+  //       if (row.getIsExpanded()) {
+  //         row.toggleExpanded(false);
+  //       }
+  //     });
+  //   }
+  // }, [isMobile, hasExpandableRows, rows]);
 
   return (
     <div

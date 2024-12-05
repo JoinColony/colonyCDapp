@@ -49,6 +49,11 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedMilestones, setSelectedMilestones] = useState<MilestoneItem[]>(
     [],
   );
+  const [selectedEditingAction, setSelectedEditingAction] =
+    useState<ExpenditureAction | null>(null);
+  const [currentStep, setCurrentStep] = useState<
+    ExpenditureStep | string | null
+  >(null);
 
   const value = useMemo(
     () => ({
@@ -73,6 +78,10 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setExpectedStepKey,
       selectedMilestones,
       setSelectedMilestones,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
       selectedFundingAction,
       setSelectedFundingAction,
       selectedReleaseAction,
@@ -94,8 +103,15 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       isReleaseModalOpen,
       expectedStepKey,
       selectedMilestones,
+      setSelectedMilestones,
+      selectedEditingAction,
+      setSelectedEditingAction,
+      currentStep,
+      setCurrentStep,
       selectedFundingAction,
+      setSelectedFundingAction,
       selectedReleaseAction,
+      setSelectedReleaseAction,
     ],
   );
 

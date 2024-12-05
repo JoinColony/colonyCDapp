@@ -15,4 +15,6 @@ export interface PaymentBuilderTableModel extends AmountFieldProps {
   claimDelay: string;
   isClaimed: boolean;
   id: number;
+  oldValues?: ExpenditureSlot;
+  newValues?: ExpenditureSlot;
 }
