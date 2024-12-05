@@ -3790,6 +3790,13 @@ type IngestorStats @model {
   """
   id: ID!
   """
+  The chain id the stats are generated on
+  """
+  chainId: String! @index(
+      name: "byChainId"
+      queryField: "getIngestorStatsByChainId"
+    )
+  """
   JSON string to pass custom, dynamic values
   """
   value: String!

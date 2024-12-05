@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useGetProxyColoniesQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import Select from '~v5/common/Fields/Select/Select.tsx';
@@ -11,6 +12,11 @@ import { SUPPORTED_CHAINS_OPTIONS } from './constants.ts';
 export const TmpProxyColonyDeploy = () => {
   const { colony } = useColonyContext();
   const [chainId, setChainId] = useState<number | undefined>(undefined);
+  const proxyColoniesResponse = useGetProxyColoniesQuery({
+    variables: {
+      colonyAddress: colony.colonyAddress,
+    },
+  });
 
   const createProxyColony = useAsyncFunction({
     submit: ActionTypes.PROXY_COLONY_CREATE,
@@ -38,6 +44,18 @@ export const TmpProxyColonyDeploy = () => {
       <Button onClick={handleClick} disabled={!chainId}>
         Create proxy colony
       </Button>
+      <ul>
+        {proxyColoniesResponse.data?.getProxyColoniesByColonyAddress?.items.map(
+          (proxyColony) => {
+            return (
+              <li key={proxyColony?.id}>
+                Status on chain {proxyColony?.chainId}:
+                {proxyColony?.isActive ? 'deployed' : 'not deployed'}
+              </li>
+            );
+          },
+        )}
+      </ul>
     </div>
   );
 };

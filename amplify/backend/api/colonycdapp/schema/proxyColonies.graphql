@@ -9,7 +9,10 @@ type ProxyColony @model {
   """
   Address of the colony on the blockchain
   """
-  colonyAddress: ID!
+  colonyAddress: ID! @index(
+      name: "byColonyAddress"
+      queryField: "getProxyColoniesByColonyAddress"
+    )
   """
   The chainId it's deployed on
   """
