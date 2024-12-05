@@ -14,6 +14,7 @@ import {
   type ActionType,
   type ErrorActionType,
   type UniqueActionType,
+  type ActionTypeWithMeta,
 } from './index.ts';
 
 export type ColonyActionTypes =
@@ -112,9 +113,8 @@ export type ColonyActionTypes =
       },
       MetaWithSetter<object>
     >
-  | UniqueActionType<
+  | ActionTypeWithMeta<
       ActionTypes.CREATE_ARBITRARY_TRANSACTION_SUCCESS,
-      object,
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.CREATE_ARBITRARY_TRANSACTION_ERROR, object>;

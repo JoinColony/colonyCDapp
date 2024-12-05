@@ -121,7 +121,6 @@ function* arbitraryTxSaga({
     yield put<AllActions>({
       type: ActionTypes.CREATE_ARBITRARY_TRANSACTION_SUCCESS,
       meta,
-      payload: {},
     });
   } catch (caughtError) {
     yield putError(
