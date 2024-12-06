@@ -74,7 +74,7 @@ export const allTokensAmountValidation = ({
   const { from, _tokenSums } = formValues || {};
   const { tokenAddress: fieldTokenAddress } = parent || {};
 
-  if (!fieldTokenAddress) {
+  if (!fieldTokenAddress || !from || !_tokenSums) {
     return false;
   }
 
