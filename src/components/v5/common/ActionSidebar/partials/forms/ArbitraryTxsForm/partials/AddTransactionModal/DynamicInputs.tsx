@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { formatText } from '~utils/intl.ts';
 import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
-import { validateMethod } from './consts.ts';
+import { filterAbiFunctions, validateMethod } from './consts.ts';
 import { MethodInput } from './MethodInput.tsx';
 import { MSG } from './translation.ts';
 
@@ -22,16 +22,14 @@ export const DynamicInputs: React.FC = () => {
   const [methodArgs, setMethodArgs] = useState<ParamType[]>([]);
 
   const removePrevMethodArgs = useCallback(() => {
-    methodArgs.forEach((_, index) => {
-      unregister(`args[${index}]`);
-    });
+    unregister('args');
     setMethodArgs([]);
-  }, [methodArgs, setMethodArgs, unregister]);
+  }, [setMethodArgs, unregister]);
 
   const methodOptionsSetter = ({ jsonAbi }) => {
     try {
       const IJsonAbi = new Interface(jsonAbi);
-      const functions = Object.keys(IJsonAbi.functions);
+      const functions = filterAbiFunctions(IJsonAbi.functions);
       const options =
         functions?.map((func) => ({ value: func, label: func })) || [];
       setMethodOptions(options);
