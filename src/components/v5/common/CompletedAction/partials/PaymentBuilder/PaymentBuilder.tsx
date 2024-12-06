@@ -8,7 +8,6 @@ import { generatePath } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
@@ -90,25 +89,18 @@ const PaymentBuilder = ({ action }: PaymentBuilderProps) => {
     toggleOnCancelModal,
     toggleOffCancelModal,
   } = usePaymentBuilderContext();
-  const {
-    actionSidebarToggle: [isActionSidebarOpen],
-  } = useActionSidebarContext();
 
   useEffect(() => {
-    if (!isActionSidebarOpen) {
-      setExpectedExpenditureType(undefined);
-      return;
-    }
-
     if (expenditure?.type && expectedExpenditureType === undefined) {
       setExpectedExpenditureType(expenditure.type);
     }
-  }, [
-    expectedExpenditureType,
-    expenditure?.type,
-    setExpectedExpenditureType,
-    isActionSidebarOpen,
-  ]);
+  }, [expectedExpenditureType, expenditure?.type, setExpectedExpenditureType]);
+
+  useEffect(() => {
+    return () => {
+      setExpectedExpenditureType(undefined);
+    };
+  }, [setExpectedExpenditureType]);
 
   if (loadingExpenditure || expectedExpenditureType !== expenditure?.type) {
     return (
