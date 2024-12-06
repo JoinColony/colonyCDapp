@@ -81,6 +81,12 @@ export const applyTheme = (theme: string): void => {
 
   const root = document.documentElement;
 
+  if (theme === 'dark') {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+
   Object.keys(themeObject).forEach((property) => {
     if (property === 'name') {
       return;

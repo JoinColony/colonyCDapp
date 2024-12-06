@@ -8,11 +8,12 @@ import {
   Plugs,
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
+import React, { type FC, useContext, useState } from 'react';
 
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
+import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import { useTablet } from '~hooks/index.ts';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -61,6 +62,14 @@ const UserMenu: FC<UserMenuProps> = ({
   };
 
   const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;
+
+  const featureFlags = useContext(FeatureFlagsContext);
+
+  const filteredUserMenuItems = userMenuItems.filter(({ featureFlag }) => {
+    if (!featureFlag) return true;
+    const flag = featureFlags[featureFlag];
+    return !flag?.isLoading && flag?.isEnabled;
+  });
 
   return (
     <PopoverBase
@@ -142,7 +151,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 </p>
               </Link>
             </li>
-            {userMenuItems.map(({ id, icon: Icon, name: itemName }) => (
+            {filteredUserMenuItems.map(({ id, icon: Icon, name: itemName }) => (
               <li
                 key={id}
                 className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0"

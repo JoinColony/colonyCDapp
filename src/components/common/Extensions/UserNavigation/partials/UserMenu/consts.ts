@@ -6,6 +6,7 @@ import {
   MapTrifold,
 } from '@phosphor-icons/react';
 
+import { FeatureFlag } from '~context/FeatureFlagsContext/types.ts';
 import { ExtendedSupportedCurrencies, SupportedCurrencies } from '~gql';
 import ClnyTokenIcon from '~icons/ClnyTokenIcon.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
@@ -39,11 +40,13 @@ export const userMenuItems: Array<{
   id: string;
   icon: Icon;
   name: UserMenuItemName;
+  featureFlag?: string;
 }> = [
   {
     id: '1',
     icon: MapTrifold,
     name: UserMenuItemName.GUIDED_TOURS,
+    featureFlag: FeatureFlag.GUIDED_TOURS,
   },
   {
     id: '2',
