@@ -3524,7 +3524,7 @@ type ColonyAction @model @searchable {
   """
   expenditureSlotIds: [Int!]
 
-  arbitraryTransactions: [ColonyActionArbitraryTransaction]
+  arbitraryTransactions: [ColonyActionArbitraryTransaction!]
 }
 
 """
@@ -3596,19 +3596,20 @@ type ColonyActionRoles {
 }
 
 type ArbitraryTransactionMethodArg {
-  value: String
+  value: String!
   name: String
-  type: String
+  type: String!
 }
 
 """
 Colony Arbitrary transaction that can be involved in an action
 """
 type ColonyActionArbitraryTransaction {
-  contractAddress: String
+  contractAddress: String!
   method: String
   methodSignature: String
-  args: [ArbitraryTransactionMethodArg]
+  args: [ArbitraryTransactionMethodArg!]
+  encodedFunction: String!
 }
 
 """

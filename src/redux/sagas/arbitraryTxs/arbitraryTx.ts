@@ -1,12 +1,12 @@
 import { ClientType } from '@colony/colony-js';
 import { Interface } from 'ethers/lib/utils';
-import { call, fork, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
 import {
-  createTransaction,
+  createGroupTransaction,
   createTransactionChannels,
   getTxChannel,
   waitForTxResult,
@@ -58,31 +58,31 @@ function* arbitraryTxSaga({
         'annotateMakeArbitraryTransactions',
       ]);
 
-    yield fork(createTransaction, makeArbitraryTransactions.id, {
-      context: ClientType.ColonyClient,
-      methodName: 'makeArbitraryTransactions',
-      identifier: colonyAddress,
-      params: [contractAddresses, methodsBytes, true],
-      group: {
-        key: batchKey,
-        id: metaId,
-        index: 0,
+    yield createGroupTransaction({
+      channel: makeArbitraryTransactions,
+      batchKey,
+      meta,
+      config: {
+        context: ClientType.ColonyClient,
+        methodName: 'makeArbitraryTransactions',
+        identifier: colonyAddress,
+        params: [contractAddresses, methodsBytes, true],
+        ready: false,
       },
-      ready: false,
     });
 
     if (annotationMessage) {
-      yield fork(createTransaction, annotateMakeArbitraryTransactions.id, {
-        context: ClientType.ColonyClient,
-        methodName: 'annotateTransaction',
-        identifier: colonyAddress,
-        params: [],
-        group: {
-          key: batchKey,
-          id: metaId,
-          index: 2,
+      yield createGroupTransaction({
+        channel: annotateMakeArbitraryTransactions,
+        batchKey,
+        meta,
+        config: {
+          context: ClientType.ColonyClient,
+          methodName: 'annotateTransaction',
+          identifier: colonyAddress,
+          params: [],
+          ready: false,
         },
-        ready: false,
       });
     }
 
