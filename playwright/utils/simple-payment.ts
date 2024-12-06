@@ -10,7 +10,7 @@ export const validationMessages = {
   },
   allRequiredFields: [
     'decisionMethod must be defined',
-    // TODO: Uncomment once issue #38102 is fixed
+    // TODO: Uncomment once issue #3802 is fixed
     // 'from is a required field',
     'recipient is a required field',
     'Amount must be greater than zero',
