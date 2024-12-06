@@ -8,7 +8,6 @@ import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import PermissionsModal from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/partials/PermissionsModal/PermissionsModal.tsx';
-import Button from '~v5/shared/Button/Button.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
 
 import { defaultPermissionsPageFilterValue } from '../hooks.tsx';
@@ -172,18 +171,6 @@ const PermissionsPageContent: FC<
             items={items}
             {...filters}
           />
-          <Button
-            mode="primarySolid"
-            size="small"
-            isFullSize={false}
-            onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
-              });
-            }}
-          >
-            {formatText({ id: 'permissionsPage.managePermissions' })}
-          </Button>
         </div>
       </div>
       {children}

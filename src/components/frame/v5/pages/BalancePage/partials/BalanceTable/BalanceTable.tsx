@@ -33,7 +33,6 @@ import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import Table from '~v5/common/Table/index.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
-import Button from '~v5/shared/Button/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 import BalanceFilters from './Filters/BalanceFilters/BalanceFilters.tsx';
@@ -175,14 +174,7 @@ const BalanceTable: FC = () => {
   return (
     <>
       <TableHeader title={formatText({ id: 'balancePage.table.title' })}>
-        <BalanceFilters />
-        <Button
-          mode="primarySolid"
-          onClick={toggleAddFundsModalOn}
-          size="small"
-        >
-          {formatText({ id: 'balancePage.table.addFunds' })}
-        </Button>
+        <BalanceFilters toggleAddFundsModalOn={toggleAddFundsModalOn} />
       </TableHeader>
       <Table<BalanceTableFieldModel>
         getRowId={({ token }) => (token ? token.tokenAddress : uniqueId())}

@@ -12,7 +12,6 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/EmptyContent.tsx';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
-import Button from '~v5/shared/Button/Button.tsx';
 
 import { useFiltersContext } from './FiltersContext/FiltersContext.ts';
 import { useGetAgreements } from './hooks.ts';
@@ -77,21 +76,7 @@ const AgreementsPage: FC = () => {
             {formatText({ id: 'agreementsPage.subtitle' })}
           </h4>
         </div>
-        <div className="flex items-center gap-2">
-          <AgreementsPageFilters />
-          <Button
-            mode="primarySolid"
-            size="small"
-            isFullSize={false}
-            onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
-              });
-            }}
-          >
-            {formatText({ id: 'agreementsPage.createAgreement' })}
-          </Button>
-        </div>
+        <AgreementsPageFilters />
       </div>
       {loading || loadingMotionStateFilter ? (
         <ul className="grid gap-6 sm:grid-cols-2">
