@@ -200,7 +200,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
             <NotificationBanner
               icon={WarningCircle}
               status="error"
-              testId="action-sidebar-error"
+              testId="action-sidebar-custom-error"
             >
               {customError.message?.toString()}
             </NotificationBanner>

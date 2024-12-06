@@ -67,12 +67,6 @@ test.describe('Simple payment', () => {
       await actionForm.getByPlaceholder('Enter amount').fill('1');
       await actionForm.getByRole('button', { name: 'Select method' }).click();
       await page.getByRole('button', { name: 'Permissions' }).click();
-      // await actionForm
-      //   .getByRole('button', { name: 'Enter a description' })
-      //   .click();
-      // await actionForm
-      //   .locator('[contenteditable="true"]')
-      //   .pressSequentially('**A simple payment**');
 
       await expect(
         actionForm.getByText(/^Pay \w+ 1 CREDS by \w+$/i),
