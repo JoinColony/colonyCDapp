@@ -151,6 +151,16 @@ function* editColonyAction({
       },
     } = yield waitForTxResult(editColony.channel);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateEditColony,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     /**
      * Save the updated metadata in the database
      */
@@ -188,22 +198,12 @@ function* editColonyAction({
       );
     }
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateEditColony,
-        message: annotationMessage,
-        txHash,
-      });
-    }
+    setTxHash?.(txHash);
 
     yield put<AllActions>({
       type: ActionTypes.ACTION_EDIT_COLONY_SUCCESS,
       meta,
     });
-
-    setTxHash?.(txHash);
   } catch (error) {
     yield putError(ActionTypes.ACTION_EDIT_COLONY_ERROR, error, meta);
   } finally {
