@@ -3,19 +3,22 @@ import { object, string } from 'yup';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const getReleaseDecisionMethodDescriptions = (
+export const getFinalizeDecisionMethodDescriptions = (
   userRole: string,
 ): Partial<Record<DecisionMethod, string>> => ({
   [DecisionMethod.Permissions]: formatText(
     {
-      id: 'releaseModal.permissionsDescription',
+      id: 'finalizeModal.permissionsDescription',
     },
     {
       permission: userRole,
     },
   ),
+  [DecisionMethod.Reputation]: formatText({
+    id: 'finalizeModal.reputationDescription',
+  }),
   [DecisionMethod.PaymentCreator]: formatText({
-    id: 'releaseModal.paymentCreatorDescription',
+    id: 'finalizeModal.paymentCreatorDescription',
   }),
 });
 
