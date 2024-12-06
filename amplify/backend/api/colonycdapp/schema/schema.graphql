@@ -3546,9 +3546,14 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
+<<<<<<< HEAD
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
   """
   Multichain info if the action is bridged
+=======
+  """
+  Multichain info if the action is bridged"
+>>>>>>> 4c26eff2a (Feat: Add multichain info to action)
   """
   multiChainInfo: MultiChainInfo
 }

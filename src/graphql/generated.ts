@@ -510,7 +510,11 @@ export type ColonyAction = {
   motionDomainId?: Maybe<Scalars['Int']>;
   /** The internal database id of the motion */
   motionId?: Maybe<Scalars['ID']>;
+<<<<<<< HEAD
   /** Multichain info if the action is bridged */
+=======
+  /** Multichain info if the action is bridged" */
+>>>>>>> 4c26eff2a (Feat: Add multichain info to action)
   multiChainInfo?: Maybe<MultiChainInfo>;
   /** Expanded `ColonyMultiSig` for the corresponding `multiSigId` */
   multiSigData?: Maybe<ColonyMultiSig>;
