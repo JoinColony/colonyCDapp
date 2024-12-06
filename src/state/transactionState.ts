@@ -41,8 +41,6 @@ import { filter, groupBy, mapValues, orderBy } from '~utils/lodash.ts';
 import { DEFAULT_TX_HASH } from './consts.ts';
 
 export const TX_PAGE_SIZE = 20;
-// In minutes
-export const TX_RETRY_TIMEOUT = 10;
 
 export const convertTransactionType = ({
   context,
@@ -522,19 +520,6 @@ export const transactionSetParams = async (
     ...input,
     status: TransactionStatus.Pending,
   });
-};
-
-// Set the transaction back to pending, remove any error
-export const transactionRetry = async (id: string) => {
-  const wallet = getContext(ContextModule.Wallet);
-  const walletAddress = utils.getAddress(wallet.address);
-  const input = {
-    id,
-    from: walletAddress,
-    status: TransactionStatus.Ready,
-    error: null,
-  };
-  return updateTransaction(input, input);
 };
 
 export const failPendingTransactions = async () => {

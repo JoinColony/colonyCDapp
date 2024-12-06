@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { TX_RETRY_TIMEOUT } from '~state/transactionState.ts';
 import { formatText } from '~utils/intl.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
@@ -10,7 +9,6 @@ import { type GroupedTransactionContentProps } from '../types.ts';
 
 import CancelTransaction from './CancelTransaction.tsx';
 import { useGroupedTransactionContent } from './hooks.tsx';
-import transactionsItemClasses from './TransactionsItem/TransactionsItem.styles.ts';
 import TransactionStatus from './TransactionStatus.tsx';
 import { shortErrorMessage } from './utils.ts';
 
@@ -36,7 +34,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   isCancelable = true,
   selected,
   transaction: {
-    createdAt,
     context,
     error,
     id,
@@ -61,7 +58,6 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
   );
 
   const {
-    handleRetryAction,
     failed,
     pending,
     succeeded,
@@ -74,18 +70,20 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
     selected,
   });
 
-  // Whether a retry of the transaction is possible
-  const retryable =
-    createdAt.valueOf() > Date.now() - TX_RETRY_TIMEOUT * 60 * 1000;
-
   return (
     <li
-      className={clsx(`${transactionsItemClasses.listItem}`, {
-        'before:bg-success-400': succeeded,
-        'before:bg-negative-400': failed,
-        'before:bg-blue-400': pending,
-        'font-semibold': selected,
-      })}
+      className={clsx(
+        `relative rounded bg-gray-50 px-3.5 py-[0.4375rem] text-sm 
+      before:absolute before:left-0 before:top-[0.4375rem] 
+      before:block before:h-[1rem] before:w-0.5 before:content-[""] 
+      first:pt-3 first:before:top-3 last:pb-3`,
+        {
+          'before:bg-success-400': succeeded,
+          'before:bg-negative-400': failed,
+          'before:bg-blue-400': pending,
+          'font-semibold': selected,
+        },
+      )}
     >
       <div className="flex items-center justify-between gap-2">
         <div className="text-gray-900">
@@ -94,21 +92,14 @@ const GroupedTransactionContent: FC<GroupedTransactionContentProps> = ({
 
         <TransactionStatus status={status} hasError={!!error} />
       </div>
-      {failed && error && retryable && (
+      {failed && error && (
         <div className="mt-2 md:mr-2">
           <NotificationBanner
             status="error"
             callToActionClassName="w-full no-underline"
             contentClassName="@[600px]/notificationBanner:flex-col"
             callToAction={
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={handleRetryAction}
-                  className="underline hover:no-underline"
-                >
-                  <FormattedMessage id="retry" />
-                </button>
+              <div className="flex justify-end">
                 {isCancelable && (
                   <CancelTransaction
                     isShowingCancelConfirmation={isShowingCancelConfirmation}

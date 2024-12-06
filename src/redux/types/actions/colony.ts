@@ -46,6 +46,16 @@ export type ColonyActionTypes =
   | ActionType<typeof ActionTypes.CREATE_CANCEL>
   | ErrorActionType<ActionTypes.CREATE_ERROR, object>
   | UniqueActionType<ActionTypes.CREATE_SUCCESS, void, object>
+  | UniqueActionType<
+      ActionTypes.FINISH_CREATE,
+      {
+        colonyName: string;
+        tokenChoice: 'create' | 'select';
+      },
+      { navigate?: NavigateFunction }
+    >
+  | ErrorActionType<ActionTypes.FINISH_CREATE_ERROR, object>
+  | UniqueActionType<ActionTypes.FINISH_CREATE_SUCCESS, void, object>
   | ErrorActionType<ActionTypes.RECOVERY_MODE_ENTER_ERROR, object>
   | UniqueActionType<ActionTypes.RECOVERY_MODE_ENTER_SUCCESS, object, object>
   | UniqueActionType<

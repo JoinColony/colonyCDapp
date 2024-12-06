@@ -3,13 +3,9 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { TransactionStatus } from '~gql';
-import {
-  transactionEstimateGas,
-  transactionCancel,
-} from '~redux/actionCreators/index.ts';
+import { transactionCancel } from '~redux/actionCreators/index.ts';
 import { type TransactionId } from '~redux/immutable/index.ts';
 import Toast from '~shared/Extensions/Toast/index.ts';
-import { transactionRetry } from '~state/transactionState.ts';
 
 export const useGroupedTransactionContent = ({
   id,
@@ -53,13 +49,7 @@ export const useGroupedTransactionContent = ({
   // A prior transaction was selected
   // const hasDependency = ready && !selected;
 
-  const handleRetryAction = async () => {
-    await transactionRetry(id);
-    dispatch(transactionEstimateGas(id));
-  };
-
   return {
-    handleRetryAction,
     failed,
     ready,
     pending,
