@@ -222,6 +222,7 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
       exit="hidden"
       initial="hidden"
       animate="visible"
+      data-testid="action-drawer"
       className={clsx(
         className,
         `
