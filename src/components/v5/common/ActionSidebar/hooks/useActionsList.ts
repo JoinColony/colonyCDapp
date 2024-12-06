@@ -116,6 +116,11 @@ const useActionsList = () => {
             value: Action.ManagePermissions,
           },
           {
+            label: { id: 'actions.arbitraryTxs' },
+            value: Action.ArbitraryTxs,
+            isNew: true,
+          },
+          {
             label: { id: 'actions.editColonyDetails' },
             value: Action.EditColonyDetails,
           },
@@ -140,19 +145,12 @@ const useActionsList = () => {
         ],
       },
     ];
-    if (isFeatureFlagArbitraryTxsEnabled) {
-      actionsListOptions.push({
-        key: '6',
-        isAccordion: true,
-        title: { id: 'actions.transactions' },
-        options: [
-          {
-            label: { id: 'actions.arbitraryTxs' },
-            value: Action.ArbitraryTxs,
-            isNew: true,
-          },
-        ],
-      });
+    if (!isFeatureFlagArbitraryTxsEnabled) {
+      const arbitraryTxsIndex = actionsListOptions[4].options.findIndex(
+        ({ value }) => value === Action.ArbitraryTxs,
+      );
+
+      actionsListOptions[4].options.splice(arbitraryTxsIndex, 1);
     }
     if (!isStagedExpenditureEnabled) {
       const stagedPaymentIndex = actionsListOptions[0].options.findIndex(

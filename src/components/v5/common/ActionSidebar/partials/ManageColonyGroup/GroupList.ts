@@ -10,13 +10,16 @@ import {
   HouseLine,
   Upload,
   UserCircleCheck,
+  Usb,
   // TrafficCone,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const GROUP_FUNDS_LIST = [
+import { type GroupListItem } from '../PaymentGroup/GroupList.ts';
+
+export const GROUP_FUNDS_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.transferFunds' }),
     description: formatText({
@@ -51,7 +54,7 @@ export const GROUP_FUNDS_LIST = [
   },
 ];
 
-export const GROUP_TEAMS_LIST = [
+export const GROUP_TEAMS_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.createNewTeam' }),
     description: formatText({
@@ -70,7 +73,7 @@ export const GROUP_TEAMS_LIST = [
   },
 ];
 
-export const GROUP_ADMIN_LIST = [
+export const GROUP_ADMIN_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.manageReputation' }),
     description: formatText({
@@ -86,6 +89,15 @@ export const GROUP_ADMIN_LIST = [
     }),
     Icon: IdentificationCard,
     action: Action.ManagePermissions,
+  },
+  {
+    title: formatText({ id: 'actions.arbitraryTxs' }),
+    description: formatText({
+      id: 'actions.description.arbitraryTxs',
+    }),
+    Icon: Usb,
+    action: Action.ArbitraryTxs,
+    isNew: true,
   },
   {
     title: formatText({ id: 'actions.editColonyDetails' }),
