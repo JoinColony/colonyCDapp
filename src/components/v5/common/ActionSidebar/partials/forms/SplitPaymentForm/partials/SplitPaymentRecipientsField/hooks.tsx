@@ -230,7 +230,7 @@ export const useDistributionMethodUpdate = ({
                       getSelectedToken(colony, data[index].tokenAddress || '')
                         ?.decimals || DEFAULT_TOKEN_DECIMALS,
                     )
-                    .toString()
+                    .toFixed()
                 : undefined,
             });
           });
