@@ -265,7 +265,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       membersByAddress,
       filteredMembers,
       verifiedMembers,
-      memberSearchData,
       allMembers,
       pagedMembers,
       moreMembers,
@@ -281,7 +280,6 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
       followersCountLoading,
       contributorsCountLoading,
       totalFollowersCount,
-      totalContributorCount,
       hasActiveFilter,
     ],
   );
