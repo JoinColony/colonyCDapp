@@ -1,6 +1,11 @@
 const fetch = require('cross-fetch');
 
-const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
+const EnvVarsConfig = require('../../config/envVars.js');
+
+const graphqlRequest = async (queryOrMutation, variables) => {
+  const { appSyncApiKey: authKey, graphqlURL: url } =
+    await EnvVarsConfig.getEnvVars();
+
   const options = {
     method: 'POST',
     headers: {

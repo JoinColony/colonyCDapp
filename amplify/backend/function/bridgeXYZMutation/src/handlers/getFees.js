@@ -1,19 +1,15 @@
-const fetch = require('cross-fetch');
 const { v4: uuid } = require('uuid');
 
-const getFeesHandler = async (event, { apiKey, apiUrl }) => {
+const { handleGet } = require('../api/rest/bridge');
+
+const getFeesHandler = async (event) => {
   const { path } = event.arguments?.input || {};
 
   try {
-    const res = await fetch(`${apiUrl}/${path}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Idempotency-Key': uuid(),
-        'Api-Key': apiKey,
-      },
+    const response = await handleGet(path, {
+      'Idempotency-Key': uuid(),
     });
-
-    const data = await res.json();
+    const data = response.data;
 
     if (!data.default_liquidation_address_fee_percent) {
       throw new Error('No default_liquidation_address_fee_percent returned');

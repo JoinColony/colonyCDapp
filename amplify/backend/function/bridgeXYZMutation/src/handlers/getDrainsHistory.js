@@ -1,31 +1,22 @@
 const fetch = require('cross-fetch');
-const { graphqlRequest } = require('../utils');
-const { getUser } = require('../graphql');
-const { getLiquidationAddresses } = require('./utils');
+const { graphqlRequest } = require('../api/graphql/utils');
+const { getUser } = require('../api/graphql/schemas');
+const {
+  getLiquidationAddresses,
+  getDrainsHistory,
+} = require('../api/rest/bridge');
 
-const getDrainsHistoryHandler = async (
-  event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
-) => {
+const getDrainsHistoryHandler = async (event) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
 
-  const { data: graphQlData } = await graphqlRequest(
-    getUser,
-    {
-      id: checksummedWalletAddress,
-    },
-    graphqlURL,
-    appSyncApiKey,
-  );
+  const { data: graphQlData } = await graphqlRequest(getUser, {
+    id: checksummedWalletAddress,
+  });
   const colonyUser = graphQlData?.getUser;
 
   const bridgeCustomerId = colonyUser?.bridgeCustomerId;
 
-  const liquidationAddresses = await getLiquidationAddresses(
-    apiUrl,
-    apiKey,
-    bridgeCustomerId,
-  );
+  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
 
   if (!liquidationAddresses.length) {
     return [];
@@ -36,18 +27,10 @@ const getDrainsHistoryHandler = async (
   const drains = [];
 
   for (const liquidationAddressId of liquidationAddressIds) {
-    const drainsRes = await fetch(
-      `${apiUrl}/v0/customers/${bridgeCustomerId}/liquidation_addresses/${liquidationAddressId}/drains`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Api-Key': apiKey,
-        },
-        method: 'GET',
-      },
+    const drainsResult = await getDrainsHistory(
+      bridgeCustomerId,
+      liquidationAddressId,
     );
-
-    const drainsResult = await drainsRes.json();
 
     const mappedDrains = drainsResult.data.map((drain) => ({
       id: drain.id,

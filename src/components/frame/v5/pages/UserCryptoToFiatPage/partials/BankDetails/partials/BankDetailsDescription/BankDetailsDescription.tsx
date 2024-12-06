@@ -37,6 +37,10 @@ const MSG = defineMessages({
     id: `${displayName}.columnHeadingBic`,
     defaultMessage: 'BIC',
   },
+  columnHeadingRoutingNumber: {
+    id: `${displayName}.columnHeadingRoutingNumber`,
+    defaultMessage: 'Routing number',
+  },
   columnHeadingPayoutCurrency: {
     id: `${displayName}.columnHeadingPayoutCurrency`,
     defaultMessage: 'Payout currency',
@@ -74,7 +78,11 @@ const BankDetailsDescription = ({
         </div>
 
         <div className="order-6 col-span-1 mt-3 text-left text-xs font-thin text-gray-500 sm:order-none sm:mt-0">
-          {formatMessage(MSG.columnHeadingBic)}
+          {formatMessage(
+            bankAccount?.usAccount?.routingNumber
+              ? MSG.columnHeadingRoutingNumber
+              : MSG.columnHeadingBic,
+          )}
         </div>
 
         <div className="order-8 col-span-1 text-left text-xs font-thin text-gray-500 sm:order-none">

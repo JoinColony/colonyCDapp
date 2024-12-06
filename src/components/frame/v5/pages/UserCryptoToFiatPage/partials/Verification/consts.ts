@@ -11,17 +11,16 @@ export const displayName =
 export const getBadgeProps = (
   status?: string | null,
 ): CryptoToFiatBadgeProps => {
+  const defaultBadgeProps: CryptoToFiatBadgeProps = {
+    text: formatText({
+      id: `${displayName}.pillCopy`,
+      defaultMessage: 'Not started',
+    }),
+    icon: WarningCircle,
+    theme: 'red',
+  };
+
   switch (status) {
-    case KycStatus.NotStarted: {
-      return {
-        text: formatText({
-          id: `${displayName}.pillCopy`,
-          defaultMessage: 'Not started',
-        }),
-        icon: WarningCircle,
-        theme: 'red',
-      };
-    }
     case KycStatus.Incomplete: {
       return {
         text: formatText({
@@ -68,11 +67,9 @@ export const getBadgeProps = (
         theme: 'red',
       };
     }
+    case KycStatus.NotStarted:
     default: {
-      return {
-        text: '',
-        theme: 'gray',
-      };
+      return defaultBadgeProps;
     }
   }
 };
@@ -83,8 +80,18 @@ export const getCTAProps = (
   ctaTitle?: MessageDescriptor;
   ctaDisabled?: boolean;
 } => {
+  const defaultCTAProps = {
+    ctaTitle: {
+      id: `${displayName}.headingTitle`,
+      defaultMessage: 'Start KYC',
+    },
+  };
+
   if (!status) {
-    return { ctaDisabled: true };
+    return {
+      ...defaultCTAProps,
+      ctaDisabled: true,
+    };
   }
 
   switch (status) {
@@ -124,12 +131,7 @@ export const getCTAProps = (
       };
     }
     default: {
-      return {
-        ctaTitle: {
-          id: `${displayName}.headingTitle`,
-          defaultMessage: 'Start KYC',
-        },
-      };
+      return defaultCTAProps;
     }
   }
 };

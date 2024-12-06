@@ -1,27 +1,19 @@
-const { graphqlRequest } = require('../utils');
-const { createExternalAccount } = require('./utils');
+const { graphqlRequest } = require('../api/graphql/utils');
+const { createExternalAccount } = require('../api/rest/bridge');
 
-const { getUser } = require('../graphql');
+const { getUser } = require('../api/graphql/schemas');
 
-const createExternalAccountHandler = async (
-  event,
-  { appSyncApiKey, apiKey, apiUrl, graphqlURL },
-) => {
+const createExternalAccountHandler = async (event) => {
   const checksummedWalletAddress = event.request.headers['x-wallet-address'];
   const input = event.arguments?.input;
 
-  const { data: graphQlData } = await graphqlRequest(
-    getUser,
-    {
-      id: checksummedWalletAddress,
-    },
-    graphqlURL,
-    appSyncApiKey,
-  );
+  const { data: graphQlData } = await graphqlRequest(getUser, {
+    id: checksummedWalletAddress,
+  });
 
   const bridgeCustomerId = graphQlData?.getUser?.bridgeCustomerId;
 
-  await createExternalAccount(apiUrl, apiKey, bridgeCustomerId, input);
+  await createExternalAccount(bridgeCustomerId, input);
 
   return {
     success: true,

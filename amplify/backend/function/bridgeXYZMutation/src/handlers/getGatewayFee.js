@@ -1,22 +1,16 @@
-const fetch = require('cross-fetch');
-const { v4: uuid } = require('uuid');
+const { getGatewayFee } = require('../api/rest/bridge');
 
-const getGatewayFeeHandler = async (_, { apiKey, apiUrl }) => {
+const getGatewayFeeHandler = async () => {
   try {
-    const res = await fetch(`${apiUrl}/v0/developer/fees`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': apiKey,
-      },
-    });
-
-    const data = await res.json();
+    const data = await getGatewayFee();
 
     if (!data.default_liquidation_address_fee_percent) {
       throw new Error('No default_liquidation_address_fee_percent returned');
     } else {
       return {
-        transactionFeePercentage: parseFloat(data.default_liquidation_address_fee_percent),
+        transactionFeePercentage: parseFloat(
+          data.default_liquidation_address_fee_percent,
+        ),
         success: true,
       };
     }
@@ -27,5 +21,5 @@ const getGatewayFeeHandler = async (_, { apiKey, apiUrl }) => {
 };
 
 module.exports = {
-    getGatewayFeeHandler,
+  getGatewayFeeHandler,
 };
