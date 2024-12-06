@@ -3,11 +3,12 @@ import { type FC } from 'react';
 import React from 'react';
 
 import useExtensionData from '~hooks/useExtensionData.ts';
-import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
+
+import ActionSidebarWidgetLoadingSkeleton from '../ActionSidebarWidgetLoadingSkeleton/ActionSidebarWidgetLoadingSkeleton.tsx';
 
 import MultiSigWidget from './partials/MultiSigWidget/MultiSigWidget.tsx';
 
@@ -23,13 +24,16 @@ const MultiSigSidebar: FC<MultiSigSidebarProps> = ({ transactionId }) => {
     Extension.MultisigPermissions,
   );
 
-  if (loadingAction || loadingExtension || !action) {
-    return <SpinnerLoader appearance={{ size: 'medium' }} />;
+  const isLoading = loadingAction || loadingExtension || !action;
+
+  if (action && !isMultiSig(action)) {
+    console.warn('Not a multisig action');
+
+    return null;
   }
 
-  if (!isMultiSig(action)) {
-    console.warn('Not a multisig action');
-    return null;
+  if (isLoading) {
+    return <ActionSidebarWidgetLoadingSkeleton />;
   }
 
   const isMultiSigExtensionInstalled =

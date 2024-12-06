@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
-import MenuWithStatusText from '~v5/shared/MenuWithStatusText/MenuWithStatusText.tsx';
+
+import ActionSidebarWidgetLoadingSkeleton from '../ActionSidebarWidgetLoadingSkeleton/ActionSidebarWidgetLoadingSkeleton.tsx';
 
 const displayName = `v5.common.ActionSidebar.partials.ActionSidebarLoadingSkeleton`;
 
@@ -106,115 +107,7 @@ const ActionSidebarLoadingSkeleton = () => {
               sm:border-l-gray-200
             `}
       >
-        <div className="flex">
-          <div className="mr-[-.3450rem] mt-2">
-            {new Array(72).fill(0).map((_, index) => (
-              <LoadingSkeleton
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                isLoading
-                className="mb-[.0625rem] h-[.1875rem] w-[.0625rem] rounded"
-              />
-            ))}
-            <LoadingSkeleton
-              isLoading
-              className="mb-[.0625rem] h-[40px] w-[.0625rem] rounded"
-            />
-          </div>
-          <div>
-            <div className="mb-4 flex items-center gap-4">
-              <LoadingSkeleton
-                isLoading
-                className="h-[.625rem] w-[.625rem] rounded-3xl"
-              />
-              <LoadingSkeleton
-                isLoading
-                className="h-6 w-[3.75rem] rounded-3xl"
-              />
-            </div>
-            <div className="ml-6 w-[19.3125rem]">
-              <MenuWithStatusText
-                statusText={
-                  <div className="flex items-center gap-2">
-                    <LoadingSkeleton
-                      isLoading
-                      className=" h-[.875rem] w-[.875rem] rounded"
-                    />
-                    <LoadingSkeleton
-                      isLoading
-                      className=" h-[.6875rem] w-full rounded"
-                    />
-                  </div>
-                }
-                sections={[
-                  {
-                    key: '1',
-                    content: (
-                      <div className="flex gap-4">
-                        <div className="w-full">
-                          {new Array(4).fill(0).map((_, index) => (
-                            <div
-                              // eslint-disable-next-line react/no-array-index-key
-                              key={index}
-                              className="mt-2 items-center gap-2"
-                            >
-                              <LoadingSkeleton
-                                isLoading
-                                className={clsx('h-5 rounded', {
-                                  'w-[4rem]': index % 2 === 0,
-                                  'w-[2.9375rem]': index % 2 === 1,
-                                })}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <div className="w-full">
-                          <LoadingSkeleton
-                            isLoading
-                            className="mt-2 h-5 w-0 rounded"
-                          />
-                          <div className="ml-[3.4375rem] flex w-full gap-2">
-                            <LoadingSkeleton
-                              isLoading
-                              className="mt-2 h-5 w-5 rounded-3xl"
-                            />
-                            <LoadingSkeleton
-                              isLoading
-                              className="mt-2 h-5 w-11 rounded"
-                            />
-                          </div>
-                          <LoadingSkeleton
-                            isLoading
-                            className="ml-[4.0625rem] mt-2 h-5 w-[4rem] rounded-3xl"
-                          />
-                          <LoadingSkeleton
-                            isLoading
-                            className="mt-2 h-5 w-full rounded"
-                          />
-                        </div>
-                      </div>
-                    ),
-                  },
-                ]}
-              />
-            </div>
-            {new Array(3).fill(0).map((_, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={index} className="mt-4 flex items-center gap-4">
-                <LoadingSkeleton
-                  isLoading
-                  className={clsx('h-[.625rem] w-[.625rem] rounded-3xl')}
-                />
-                <LoadingSkeleton
-                  isLoading
-                  className={clsx('h-6 w-[3.75rem] rounded-3xl', {
-                    'w-[4rem]': index === 1,
-                  })}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <ActionSidebarWidgetLoadingSkeleton />
       </div>
     </div>
   );
