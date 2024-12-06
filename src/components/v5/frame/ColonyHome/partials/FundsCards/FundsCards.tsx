@@ -8,6 +8,7 @@ import { useSubDomains } from '~hooks/useSubDomains.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 // import { formatText } from '~utils/intl.ts';
 // import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 import WidgetCards from '~v5/common/WidgetCards/index.ts';
 
 // import { useIsAddNewTeamVisible } from './hooks.ts';
@@ -36,16 +37,17 @@ export const FundsCards = () => {
     <div className="flex flex-col gap-4 sm:flex-row sm:gap-2 md:pt-1">
       <WidgetCards.List className="w-full">
         <FundsCardsTotalItem />
-        {subTeams
-          ?.filter(notMaybe)
-          .map((item) => (
-            <FundsCardsItem
-              key={item?.id}
-              domainId={item?.id}
-              domainName={item?.metadata?.name}
-              nativeId={item.nativeId}
-            />
-          ))}
+        {subTeams?.filter(notMaybe).map((item) => (
+          <FundsCardsItem
+            key={item?.id}
+            domainId={item?.id}
+            domainName={getDomainNameFallback({
+              domainName: item?.metadata?.name,
+              nativeId: item.nativeId,
+            })}
+            nativeId={item.nativeId}
+          />
+        ))}
 
         {/* {isAddNewTeamVisible && (
           <WidgetCards.Item

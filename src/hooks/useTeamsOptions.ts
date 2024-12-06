@@ -1,6 +1,7 @@
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { type Domain } from '~types/graphql.ts';
+import { type Domain, DomainColor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import { getDomainNameFallback } from '~utils/domains.ts';
 import {
   type SearchSelectOption,
   type SearchSelectOptionProps,
@@ -33,14 +34,17 @@ const useTeamsOptions = (
       .filter(notNull)
       .sort(sortByReputationAndName)
       .map(({ metadata, nativeId, isRoot }) => {
-        const { color, name: teamName } = metadata || {};
+        const { color: teamColor, name: teamName } = metadata || {};
 
         return {
-          label: teamName || '',
+          label: getDomainNameFallback({
+            domainName: teamName,
+            nativeId,
+          }),
           value: nativeId,
           isDisabled: false,
           isRoot,
-          color,
+          color: teamColor || DomainColor.Root,
         };
       }) || [];
 

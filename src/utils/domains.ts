@@ -30,3 +30,13 @@ export const extractColonyDomains = (
 ): Domain[] => {
   return colonyDomains?.items.filter(notMaybe) ?? [];
 };
+
+export const getDomainNameFallback = ({
+  domainName,
+  nativeId,
+}: {
+  domainName?: string;
+  nativeId: number;
+}) => {
+  return domainName || `Team #${nativeId}`;
+};
