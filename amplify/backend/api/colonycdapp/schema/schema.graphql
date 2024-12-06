@@ -898,6 +898,14 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  An action related to arbitrary transaction
+  """
+  ARBITRARY_TX
+  """
+  An action related to creating a proxy colony
+  """
+  ADD_PROXY_COLONY
 }
 
 """
@@ -3527,8 +3535,23 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
-
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
+  """
+  Multichain info if the action is bridged
+  """
+  multiChainInfo: MultiChainInfo
+}
+
+type MultiChainInfo {
+  targetChainId: Int!
+  completed: Boolean!
+  wormholeInfo: ActionWormholeInfo
+}
+
+type ActionWormholeInfo {
+  emitterChainId: Int
+  emitterAddress: String!
+  sequence: String!
 }
 
 """
@@ -3825,10 +3848,8 @@ type IngestorStats @model {
   """
   The chain id the stats are generated on
   """
-  chainId: String! @index(
-      name: "byChainId"
-      queryField: "getIngestorStatsByChainId"
-    )
+  chainId: String!
+    @index(name: "byChainId", queryField: "getIngestorStatsByChainId")
   """
   JSON string to pass custom, dynamic values
   """
