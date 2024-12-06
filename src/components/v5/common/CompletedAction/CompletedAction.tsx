@@ -12,6 +12,7 @@ import Motions from '../ActionSidebar/partials/Motions/index.ts';
 import MultiSigSidebar from '../ActionSidebar/partials/MultiSigSidebar/MultiSigSidebar.tsx';
 
 import AddVerifiedMembers from './partials/AddVerifiedMembers/index.ts';
+import ArbitraryTransaction from './partials/ArbitraryTransaction/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
@@ -94,6 +95,8 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMotion:
       case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
+      case ColonyActionType.MakeArbitraryTransaction:
+        return <ArbitraryTransaction action={action} />;
       /**
        * @deprecated
        * This is still needed to allow users to view existing Colony Objectives in the Completed Action component

@@ -93,17 +93,17 @@ export const useArbitraryTxsTableColumns = ({
           const data: CellDescriptionItem[] = [];
           if (original?.method) {
             data.push({
-              title: 'Method',
+              name: 'Method',
               value: original?.method,
             });
           }
           if (original?.args) {
-            Object.entries(original.args).forEach((item) => {
+            original.args?.forEach(({ name, type, value }) => {
               data.push({
-                title: `${item[0]} (${item[1].type})`,
+                name: `${name} (${type})`,
                 value: getValueByType({
-                  value: item[1].value,
-                  type: item[1].type,
+                  value,
+                  type,
                   isFull: !isMobile,
                 }),
               });
