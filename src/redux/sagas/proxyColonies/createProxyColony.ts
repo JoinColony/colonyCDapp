@@ -90,6 +90,8 @@ function* createProxyColony({
         params,
       }),
     );
+    // eslint-disable-next-line no-console
+    console.log('PROXY COLONY TXHASH', transaction.hash);
 
     const [eventData, receipt] = yield waitForMined();
 
