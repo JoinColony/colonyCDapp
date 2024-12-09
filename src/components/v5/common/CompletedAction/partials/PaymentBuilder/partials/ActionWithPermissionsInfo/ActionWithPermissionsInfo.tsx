@@ -65,6 +65,7 @@ const formatDate = (value: string | undefined) => {
 
 const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   action,
+  statusText,
 }) => {
   if (!action) {
     return null;
@@ -84,7 +85,7 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
           iconClassName="text-gray-500"
         >
           {formatText({
-            id: 'action.executed.permissions.description',
+            id: statusText ?? 'action.executed.permissions.description',
           })}
         </StatusText>
       }
