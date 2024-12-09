@@ -167,7 +167,11 @@ export const calculateTotalsFromStreams = async ({
         isAtLeastOnePaymentActive:
           paymentStatus === StreamingPaymentStatus.Active ||
           isAtLeastOnePaymentActive,
-        lastMonthStreaming: lastMonthStreaming.add(streamedFundsInLast30Days),
+        lastMonthStreaming: lastMonthStreaming.add(
+          paymentStatus === StreamingPaymentStatus.Active
+            ? streamedFundsInLast30Days
+            : 0,
+        ),
       };
     },
     Promise.resolve({
