@@ -51,7 +51,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
             onChange={(e) => {
               onChange(set(cloneDeep(value), path, e.target.checked));
             }}
-            classNames="subnav-button px-0 sm:px-3.5"
+            className="subnav-button px-0 sm:px-3.5"
           >
             {label}
           </Checkbox>
@@ -81,7 +81,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
               onChange={(e) => {
                 onChange(set(cloneDeep(value), path, e.target.checked));
               }}
-              classNames="subnav-button px-0 sm:px-3.5"
+              className="subnav-button px-0 sm:px-3.5"
             >
               {label}
             </Checkbox>
@@ -96,7 +96,7 @@ function NestedFilterItem<TValue extends FilterValue, TLevel extends number>({
                 hasShadow: true,
                 className: 'py-6 px-2',
               }}
-              classNames="w-full sm:max-w-[13.25rem] mr-2"
+              className="mr-2 w-full sm:max-w-[13.25rem]"
             >
               {NestedItems}
             </PopoverBase>

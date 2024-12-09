@@ -56,7 +56,7 @@ const FilterItem: FC<TeamsPageFilterRootProps> = ({
                   direction: value,
                 });
               }}
-              classNames="subnav-button px-0 sm:px-3.5"
+              className="subnav-button px-0 sm:px-3.5"
             >
               {checkboxLabel}
             </Checkbox>
@@ -82,7 +82,7 @@ const FilterItem: FC<TeamsPageFilterRootProps> = ({
                 hasShadow: true,
                 className: 'py-6 px-2',
               }}
-              classNames="w-full sm:max-w-[13.25rem] mr-2"
+              className="mr-2 w-full sm:max-w-[13.25rem]"
             >
               <>
                 <span className="px-3.5 pb-2 uppercase text-gray-400 text-4">
@@ -101,7 +101,7 @@ const FilterItem: FC<TeamsPageFilterRootProps> = ({
                         direction: value as ModelSortDirection,
                       });
                     }}
-                    classNames="subnav-button px-0 sm:px-3.5"
+                    className="subnav-button px-0 sm:px-3.5"
                   >
                     {checkboxLabel}
                   </Checkbox>

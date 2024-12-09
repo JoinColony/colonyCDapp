@@ -64,7 +64,7 @@ const CardWithBios: FC<CardWithBiosProps> = ({
                       hasShadow: true,
                       className: 'py-4 px-2',
                     }}
-                    classNames="w-full sm:max-w-[17.375rem]"
+                    className="w-full sm:max-w-[17.375rem]"
                   >
                     <SubNavigation user={user} />
                   </PopoverBase>
