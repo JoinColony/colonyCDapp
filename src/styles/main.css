@@ -61,6 +61,20 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
   @apply blur-[0.125rem];
 }
 
+/* Styling for React Joyride */
+.__floater__body div:first-child {
+  border-color: var(--color-base-white);
+}
+
+.__floater__arrow svg polygon {
+  fill: var(--color-base-white);
+}
+
+.dark .__floater__arrow svg polygon {
+  fill: var(--color-base-white);
+}
+
+/* Styling for onboardJS */
 :root {
   --onboard-connect-sidebar-background: var(--color-gray-200);
   --onboard-main-scroll-container-background: var(--color-base-white);
