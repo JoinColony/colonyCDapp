@@ -146,6 +146,16 @@ function* createDomainAction({
     const { domainId } = eventData?.DomainAdded || {};
     const nativeDomainId = toNumber(domainId);
 
+    yield createActionMetadataInDB(txHash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateCreateDomain,
+        message: annotationMessage,
+        txHash,
+      });
+    }
+
     /**
      * Save domain metadata in the database
      */
@@ -165,16 +175,6 @@ function* createDomainAction({
         },
       }),
     );
-
-    yield createActionMetadataInDB(txHash, customActionTitle);
-
-    if (annotationMessage) {
-      yield uploadAnnotation({
-        txChannel: annotateCreateDomain,
-        message: annotationMessage,
-        txHash,
-      });
-    }
 
     setTxHash?.(txHash);
 
