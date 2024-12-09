@@ -15,6 +15,7 @@ import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
 import { ActionTypes } from '~redux';
+import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import {
   type CancelStakedExpenditurePayload,
   type CancelExpenditurePayload,
@@ -102,6 +103,11 @@ const CancelModal: FC<CancelModalProps> = ({
     error: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_ERROR,
     success: ActionTypes.MOTION_STAKED_EXPENDITURE_CANCEL_SUCCESS,
   });
+  const reclaimExpenditureStake = useAsyncFunction({
+    submit: ActionTypes.RECLAIM_EXPENDITURE_STAKE,
+    error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
+    success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
+  });
 
   const handleFundExpenditure = async ({ decisionMethod, penalise }) => {
     setIsSubmitting(true);
@@ -124,6 +130,10 @@ const CancelModal: FC<CancelModalProps> = ({
         stakedExpenditureAddress,
         shouldPunish: penalise === PenaliseOptions.Yes,
       };
+      const reclaimPayload: ReclaimExpenditureStakePayload = {
+        colonyAddress: colony.colonyAddress,
+        nativeExpenditureId: expenditure.nativeId,
+      };
 
       if (
         decisionMethod &&
@@ -135,7 +145,8 @@ const CancelModal: FC<CancelModalProps> = ({
           await cancelExpenditureViaMotion(motionPayload);
         }
       } else if (penalise) {
-        cancelStakedExpenditure(stakedPayload);
+        await cancelStakedExpenditure(stakedPayload);
+        await reclaimExpenditureStake(reclaimPayload);
       } else {
         await cancelExpenditure(payload);
       }

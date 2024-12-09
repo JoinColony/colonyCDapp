@@ -14,7 +14,6 @@ import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
-import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import Numeral from '~shared/Numeral/Numeral.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
@@ -30,7 +29,7 @@ import {
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
-import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import PenaliseBadge from '~v5/common/Pills/PenaliseBadge/PenaliseBadge.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -121,7 +120,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const previousStatus = usePrevious(status);
 
   const expenditureStep = getExpenditureStep(expenditure);
-  const [isClaiming, setIsClaiming] = useState(false);
 
   const [expectedStepKey, setExpectedStepKey] =
     useState<ExpenditureStep | null>(null);
@@ -285,6 +283,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
             {selectedCancellingMotion && isSelectedMotionInCurrentActions && (
               <MotionBox
                 transactionId={selectedCancellingMotion.transactionHash}
+                isActionCancelled={
+                  expenditure?.status === ExpenditureStatus.Cancelled
+                }
               />
             )}
 
@@ -305,10 +306,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   };
 
   const isUserStaker = walletAddress === userAddress;
-  const reclaimStakePayload: ReclaimExpenditureStakePayload = {
-    colonyAddress: colony.colonyAddress,
-    nativeExpenditureId: expenditure?.nativeId || 0,
-  };
 
   const reclaimStakeItem: StepperItem<ExpenditureStep> = {
     key: ExpenditureStep.Reclaim,
@@ -325,9 +322,19 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 {formatText({ id: 'expenditure.staking.overview' })}
               </h5>
               {isUserStakeClaimed && isUserStaker && (
-                <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
-                  {formatText({ id: 'motion.finalizeStep.claimed' })}
-                </PillsBase>
+                <>
+                  {expenditure?.userStake?.isForfeited ? (
+                    <PenaliseBadge
+                      text={formatText({ id: 'expenditure.penalised' })}
+                      isPenalised
+                    />
+                  ) : (
+                    <PenaliseBadge
+                      text={formatText({ id: 'expenditure.noPenalty' })}
+                      isPenalised={false}
+                    />
+                  )}
+                </>
               )}
             </div>
             {isUserStaker && (
@@ -346,21 +353,6 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               <p>{formatText({ id: 'expenditure.staking.canceled' })}</p>
               <FormatDate value={cancellingActions?.items?.[0]?.createdAt} />
             </div>
-            {!isUserStakeClaimed && isUserStaker && (
-              <div className="mt-6">
-                <ActionButton
-                  disabled={!isUserStaker}
-                  onSuccess={() => setIsClaiming(true)}
-                  loadingBehavior={LoadingBehavior.TxLoader}
-                  text={formatText({ id: 'expenditure.staking.claim' })}
-                  values={reclaimStakePayload}
-                  actionType={ActionTypes.RECLAIM_EXPENDITURE_STAKE}
-                  mode="primarySolid"
-                  className="w-full"
-                  isLoading={isClaiming}
-                />
-              </div>
-            )}
           </>
         }
       />
@@ -714,7 +706,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     paymentStep,
   ];
 
-  if (allCancelledMotions.length > 0) {
+  if (allCancelledMotions.length > 0 || isExpenditureCanceled) {
     if (
       segregatedCancelActions.beforeLocked &&
       segregatedCancelActions.beforeLocked.length > 0
@@ -750,7 +742,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   const currentIndex = getCancelStepIndex(expenditure, items);
 
   const updatedItems =
-    isExpenditureCanceled && !isAnyCancellingMotionInProgress
+    (isExpenditureCanceled && !isAnyCancellingMotionInProgress) ||
+    expenditure?.status === ExpenditureStatus.Cancelled
       ? [...items.slice(0, currentIndex), reclaimStakeItem]
       : items;
 

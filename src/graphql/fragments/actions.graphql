@@ -138,6 +138,7 @@ fragment ColonyAction on ColonyAction {
     metadata {
       distributionType
     }
+    nativeId
   }
 }
 

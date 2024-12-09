@@ -36,9 +36,12 @@ const CancelRequestItem: FC<CancelRequestItemProps> = ({ action }) => {
       }}
     >
       <span
-        className={clsx('text-sm', {
-          underline: isSelected,
-        })}
+        className={clsx(
+          'text-sm group-hover:text-blue-400 group-hover:underline',
+          {
+            underline: isSelected,
+          },
+        )}
       >
         <FormattedDate
           value={new Date(action.createdAt)}

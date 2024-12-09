@@ -7,4 +7,5 @@ export interface RevealStepProps {
   rootHash: string | undefined;
   transactionId: string;
   motionState?: number;
+  isActionCancelled?: boolean;
 }
