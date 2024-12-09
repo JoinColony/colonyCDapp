@@ -5,7 +5,7 @@ import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 import type React from 'react';
 
 export type RenderCellWrapper<T> = (
-  classNames: string,
+  className: string,
   content: React.ReactNode,
   context: {
     cell: Cell<T, unknown>;

@@ -15,7 +15,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
   register,
   label = '',
   onChange,
-  classNames,
+  className,
   isChecked,
   children,
 }) => {
@@ -23,7 +23,7 @@ const Checkbox: FC<PropsWithChildren<CheckboxProps>> = ({
 
   return (
     <div
-      className={clsx(classNames, {
+      className={clsx(className, {
         'pointer-events-none opacity-50': disabled,
       })}
     >

@@ -161,7 +161,7 @@ const UninstallButton = ({
           label={MSG[extensionId].uninstallConfirmation}
           isChecked={isCheckboxChecked}
           onChange={() => setIsCheckboxChecked((prevState) => !prevState)}
-          classNames="mt-5"
+          className="mt-5"
         />
       </Modal>
     </>

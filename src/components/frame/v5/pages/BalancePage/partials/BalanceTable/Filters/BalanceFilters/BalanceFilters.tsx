@@ -119,7 +119,7 @@ const BalanceFilters: FC = () => {
                 hasShadow: true,
                 className: 'pt-6 pb-4 px-2',
               }}
-              classNames="sm:min-w-[20.375rem]"
+              className="sm:min-w-[20.375rem]"
             >
               <div className="mb-6 px-4">{searchInput}</div>
               {filtersContent}
