@@ -9,6 +9,7 @@ import { ColonyActionType } from '~gql';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -65,6 +66,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
   const isMotionFailedNotFinalizable =
     actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
+  const isMotionFailed = actionData.motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
     actionData.type === ColonyActionType.CreateDecisionMotion;
   const isMotionClaimable =
@@ -105,6 +107,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     refetchColony,
   ]);
 
+  const actionType = getExtendedActionType(
+    actionData,
+    actionData.colony.metadata,
+  );
+
   /*
    * @NOTE This is just needed until we properly save motion data in the db
    * For now, we just fetch it live from chain, so when we uninstall the extension
@@ -130,13 +137,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionFinalized &&
     !isMotionAgreement;
 
-  const successStatusText = canBeExecuted
+  const supportedStatusText = canBeExecuted
     ? 'motion.finalizeStep.passedAction'
     : 'motion.finalizeStep.completedStatusText';
 
+  const finalizeStatusText = isMotionFailed
+    ? 'motion.finalizeStep.opposedAction'
+    : supportedStatusText;
+
   const statusText = isMotionFailedNotFinalizable
     ? 'motion.finalizeStep.failed.statusText'
-    : successStatusText;
+    : finalizeStatusText;
 
   return (
     <MenuWithStatusText
