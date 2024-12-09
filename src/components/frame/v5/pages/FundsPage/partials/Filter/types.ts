@@ -36,6 +36,13 @@ export interface FilterProps<TValue extends FilterValue> {
   buttonText?: string;
 }
 
+export interface ExtendedFilterProps<TValue extends FilterValue>
+  extends FilterProps<TValue> {
+  unclaimedClaims: string[];
+  isButtonDisabled?: boolean;
+  shouldShowButton?: boolean;
+}
+
 export interface NestedFilterProps<
   TValue extends FilterValue,
   TLevel extends number,
