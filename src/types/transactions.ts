@@ -66,6 +66,7 @@ export enum TRANSACTION_METHODS {
   AddVerifiedMembers = 'addVerifiedMembers',
   Approve = 'approve',
   AnnotateTransaction = 'annotateTransaction',
+  ArbitraryTxs = 'arbitraryTxs',
   CancelDraftExpenditure = 'cancelDraftExpenditure',
   CancelLockedExpenditure = 'cancelLockedExpenditure',
   CancelStakedExpenditure = 'cancelStakedExpenditure',

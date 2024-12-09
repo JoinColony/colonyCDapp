@@ -119,16 +119,14 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           </Button>
 
           <AddTransactionModal
-            onClose={() => {
-              setIsModalOpen(false);
-            }}
+            onClose={closeTransactionModal}
             isOpen={isModalOpen}
             defaultValues={defaultValues}
             onSubmit={({
               jsonAbi,
               contractAddress,
               method,
-              args = {},
+              args = [],
               key,
             }) => {
               const newItem = {
