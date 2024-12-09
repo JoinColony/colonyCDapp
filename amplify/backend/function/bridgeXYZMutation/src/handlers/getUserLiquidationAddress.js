@@ -1,18 +1,15 @@
-const { graphqlRequest } = require('../utils');
-const { getLiquidationAddresses, getExternalAccounts } = require('./utils');
+const { graphqlRequest } = require('../api/graphql/utils');
+const {
+  getLiquidationAddresses,
+  getExternalAccounts,
+} = require('../api/rest/bridge');
 
-const { getUser } = require('../graphql');
+const EnvVarsConfig = require('../config/envVars.js');
 
-const getUserLiquidationAddressHandler = async (
-  event,
-  {
-    appSyncApiKey,
-    apiKey,
-    apiUrl,
-    graphqlURL,
-    temp_liquidationAddressOverrides,
-  },
-) => {
+const { getUser } = require('../api/graphql/schemas');
+
+const getUserLiquidationAddressHandler = async (event) => {
+  const { temp_liquidationAddressOverrides } = await EnvVarsConfig.getEnvVars();
   const userAddress = event.arguments.userAddress;
 
   try {
@@ -24,14 +21,9 @@ const getUserLiquidationAddressHandler = async (
     console.log('Error parsing liquidation address overrides: ', e);
   }
 
-  const { data: graphQlData } = await graphqlRequest(
-    getUser,
-    {
-      id: userAddress,
-    },
-    graphqlURL,
-    appSyncApiKey,
-  );
+  const { data: graphQlData } = await graphqlRequest(getUser, {
+    id: userAddress,
+  });
   const colonyUser = graphQlData?.getUser;
 
   const bridgeCustomerId = colonyUser?.bridgeCustomerId;
@@ -39,22 +31,14 @@ const getUserLiquidationAddressHandler = async (
     return null;
   }
 
-  const externalAccounts = await getExternalAccounts(
-    apiUrl,
-    apiKey,
-    bridgeCustomerId,
-  );
+  const externalAccounts = await getExternalAccounts(bridgeCustomerId);
   const firstAccount = externalAccounts?.[0];
 
   if (!firstAccount) {
     return null;
   }
 
-  const liquidationAddresses = await getLiquidationAddresses(
-    apiUrl,
-    apiKey,
-    bridgeCustomerId,
-  );
+  const liquidationAddresses = await getLiquidationAddresses(bridgeCustomerId);
 
   const relevantLiquidationAddress = liquidationAddresses.find(
     (address) => address.external_account_id === firstAccount.id,
