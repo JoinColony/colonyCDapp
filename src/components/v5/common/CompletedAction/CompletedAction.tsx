@@ -159,7 +159,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   return (
-    <div className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start">
+    <div
+      data-testid="completed-action"
+      className="flex flex-grow flex-col-reverse justify-end overflow-auto sm:flex-row sm:justify-start"
+    >
       <div
         className={clsx('w-full overflow-y-auto px-6 pb-6 pt-8', {
           'sm:w-[calc(100%-23.75rem)]': action.isMotion,
