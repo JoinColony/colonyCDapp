@@ -4,6 +4,7 @@ import { ColonyActionType, useGetColonyHistoricRoleRolesLazyQuery } from '~gql';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
+import { removeObjectFields } from '~utils/objects/index.ts';
 import { transformActionRolesToColonyRoles } from '~v5/common/CompletedAction/partials/SetUserRoles/utils.ts';
 
 export const useBuildRedoEnabledActionsMap = ({
@@ -69,7 +70,10 @@ export const useBuildRedoEnabledActionsMap = ({
               });
 
               const dbPermissionsNew = transformActionRolesToColonyRoles(
-                result?.data?.getColonyHistoricRole || roles,
+                removeObjectFields(
+                  result?.data?.getColonyHistoricRole || roles,
+                  ['__typename'],
+                ),
               );
 
               const isMotion = !!motionData;

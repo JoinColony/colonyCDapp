@@ -13,6 +13,7 @@ import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
+import { removeObjectFields } from '~utils/objects/index.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -100,7 +101,9 @@ const SetUserRoles = ({ action }: Props) => {
     constraint: 'excludeInheritedRoles',
   });
 
-  const actionRoles = transformActionRolesToColonyRoles(roles);
+  const actionRoles = transformActionRolesToColonyRoles(
+    removeObjectFields(roles, ['__typename']),
+  );
   // in case of motions, no historic roles are created so we just assume we are modifying their current roles (which contract wise we are)
 
   const dbPermissionsOld =
@@ -114,7 +117,9 @@ const SetUserRoles = ({ action }: Props) => {
   );
 
   const dbPermissionsNew = transformActionRolesToColonyRoles(
-    historicRoles?.getColonyHistoricRole || roles,
+    removeObjectFields(historicRoles?.getColonyHistoricRole || roles, [
+      '__typename',
+    ]),
   );
 
   const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(

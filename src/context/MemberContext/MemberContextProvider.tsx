@@ -18,6 +18,7 @@ import {
 import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
 import {
   useOnCreateColonyContributorSubscription,
+  useOnUpdateColonyContributorSubscription,
   useOnUpdateColonySubscription,
   useSearchColonyContributorsQuery,
 } from '~gql';
@@ -160,17 +161,27 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
     newColonyUpdateResult?.onUpdateColony
       ?.lastUpdatedContributorsWithReputation;
 
-  const { data: newColonyContributorResult } =
+  const { data: createColonyContributorSubscription } =
     useOnCreateColonyContributorSubscription();
 
-  const newColonyContributor =
-    newColonyContributorResult?.onCreateColonyContributor?.contributorAddress;
+  const newColonyContributorAdded =
+    createColonyContributorSubscription?.onCreateColonyContributor
+      ?.contributorAddress;
+
+  const { data: updateColonyContributorSubscription } =
+    useOnUpdateColonyContributorSubscription();
+
+  const newColonyContributorRolesUpdate =
+    updateColonyContributorSubscription?.onUpdateColonyContributor?.roles;
+
+  const newColonyContributorUpdate =
+    newColonyContributorAdded || newColonyContributorRolesUpdate;
 
   useEffect(() => {
     let timeout;
     // When the colony first loads, the reputation is updated asynchronously. This means that the currently
     // cached reputation might be out of date. If this is the case, we should refetch.
-    if (newColonyUpdate || newColonyContributor) {
+    if (newColonyUpdate || newColonyContributorUpdate) {
       // It looks hacky, but we need the timeout to ensure that opensearch has been updated before we refetch.
       timeout = setTimeout(refetchColonyContributors, 2000);
     }
@@ -180,7 +191,7 @@ const MemberContextProvider: FC<PropsWithChildren> = ({ children }) => {
         clearTimeout(timeout);
       }
     };
-  }, [newColonyUpdate, newColonyContributor, refetchColonyContributors]);
+  }, [newColonyContributorUpdate, newColonyUpdate, refetchColonyContributors]);
 
   const allMembers = useMemo(
     () =>
