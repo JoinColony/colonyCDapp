@@ -1,0 +1,10 @@
+type PrivateProfile @model @aws_lambda {
+  """
+  Unique identifier for the user's profile
+  """
+  id: ID!
+  email: AWSEmail
+  preferredCurrency: SupportedCurrencies
+  isAutoOfframpEnabled: Boolean
+  hasCompletedKYCFlow: Boolean
+}
