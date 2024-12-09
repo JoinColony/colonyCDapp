@@ -140,13 +140,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionFinalized &&
     !isMotionAgreement;
 
-  const successStatusText = canBeExecuted
+  const supportedStatusText = canBeExecuted
     ? 'motion.finalizeStep.passedAction'
     : 'motion.finalizeStep.completedStatusText';
 
+  const finalizeStatusText = isMotionFailed
+    ? 'motion.finalizeStep.opposedAction'
+    : supportedStatusText;
+
   const statusText = isMotionFailedNotFinalizable
     ? 'motion.finalizeStep.failed.statusText'
-    : successStatusText;
+    : finalizeStatusText;
 
   return (
     <MenuWithStatusText
@@ -211,7 +215,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       <div className="mb-2">
                         <h4 className="mb-3 flex items-center justify-between text-1">
                           {formatText({ id: 'motion.finalizeStep.title' })}
-                          {isClaimed && (
+                          {isClaimed && canClaimStakes && (
                             <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
                               {formatText({
                                 id: 'motion.finalizeStep.claimed',

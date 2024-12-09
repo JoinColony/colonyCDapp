@@ -1465,6 +1465,7 @@
     "motion.finalizeStep.complete.statusText": "Action has passed and is now complete.",
     "motion.finalizeStep.failed.statusText": "Action failed and cannot be executed.",
     "motion.finalizeStep.passedAction": "Action has passed and can be executed.",
+    "motion.finalizeStep.opposedAction": "Action was opposed and cannot be executed.",
     "motion.finalizeStep.staked": "Your stake",
     "motion.finalizeStep.winnings": "Your reward",
     "motion.finalizeStep.total": "Total",
