@@ -1,25 +1,31 @@
 import { type BrowserContext, expect, type Page, test } from '@playwright/test';
 
-import { setCookieConsent } from '../utils/common.ts';
+import { convertToDecimal } from '~utils/convertToDecimal.ts';
+
+import { SimplePayment } from '../models/simple-payment.ts';
 import {
-  closeSimplePaymentDrawer,
-  openSimplePaymentDrawer,
+  deprecateReputationWaightedExtension,
+  enableReputationWaightedExtension,
+  setCookieConsent,
   signInAndNavigateToColony,
-  tooltipMessages,
-  validationMessages,
-} from '../utils/simple-payment.ts';
+} from '../utils/common.ts';
+import { getFirstDomainAndTotalFunds } from '../utils/graphqlHelpers.ts';
+
+// NOTE: When running in parallel local mock of amplify fails to handle multiple parallel requests
+test.describe.configure({ mode: 'serial' });
 
 test.describe('Simple payment', () => {
   test.describe('User has required permissions', () => {
     let page: Page;
     let context: BrowserContext;
+    let simplePayment: SimplePayment;
 
     test.beforeAll(async ({ browser, baseURL }) => {
       context = await browser.newContext();
       page = await context.newPage();
+      simplePayment = new SimplePayment(page);
 
       await setCookieConsent(context, baseURL);
-
       await signInAndNavigateToColony(page, {
         colonyUrl: '/planex',
         wallet: /dev wallet 1$/i,
@@ -30,220 +36,204 @@ test.describe('Simple payment', () => {
       await context?.close();
     });
 
-    test.beforeEach(async () => {
-      await openSimplePaymentDrawer(page);
-    });
+    test('Should successfully create a simple payment with Permissions decision method', async () => {
+      const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
+      await simplePayment.open();
 
-    test.afterEach(async () => {
-      await closeSimplePaymentDrawer(page);
-    });
+      await simplePayment.setTitle('Pay fry');
+      await simplePayment.selectTeam('General');
+      await simplePayment.setRecipient(recipientAddress);
+      await simplePayment.setAmount('1');
+      await simplePayment.selectDecisionMethod('Permissions');
+      await simplePayment.submit();
 
-    test('Should successfully create a simple payment', async () => {
-      const actionDrawer = page.getByTestId('action-drawer');
-      const actionForm = page.getByTestId('action-form');
+      await simplePayment.waitForPending();
+      await simplePayment.waitForTransaction();
 
-      const menu = page.getByTestId('search-select-menu');
-      const memberAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
-
-      await actionForm.getByPlaceholder('Enter title').fill('Pay fry');
-
+      await expect(simplePayment.completedAction).toBeVisible();
       await expect(
-        actionForm.getByRole('button', { name: 'Simple payment' }),
-      ).toBeVisible();
-
-      await actionForm.getByRole('button', { name: 'Select team' }).click();
-      await menu.getByRole('button', { name: 'General' }).click();
-      await actionForm.getByLabel('Select user').click();
-      await page.getByPlaceholder('Search or add wallet address').click();
-      await page
-        .getByPlaceholder('Search or add wallet address')
-        .fill(memberAddress);
-      await page
-        .getByRole('button', {
-          name: memberAddress,
-        })
-        .click();
-
-      await actionForm.getByPlaceholder('Enter amount').fill('1');
-      await actionForm.getByRole('button', { name: 'Select method' }).click();
-      await page.getByRole('button', { name: 'Permissions' }).click();
-
-      await expect(
-        actionForm.getByText(/^Pay \w+ 1 CREDS by \w+$/i),
-      ).toBeVisible();
-      await actionForm.getByRole('button', { name: 'Create payment' }).click();
-
-      await actionForm
-        .getByRole('button', { name: 'Pending' })
-        .first()
-        .waitFor({ state: 'visible' });
-
-      await actionForm.waitFor({ state: 'hidden' });
-      await page.waitForURL(/planex\?tx=/);
-      await page
-        .getByTestId('loading-skeleton')
-        .last()
-        .waitFor({ state: 'hidden' });
-
-      await expect(
-        actionDrawer.getByText(
+        simplePayment.completedAction.getByText(
           /Member used permissions to create this action/i,
         ),
       ).toBeVisible();
+      await simplePayment.close();
     });
 
-    test('Should display validation errors for required fields and invalid inputs', async () => {
-      const actionDrawer = page.getByTestId('action-drawer');
-      const actionForm = actionDrawer.getByTestId('action-form');
-      const titleField = actionForm.getByPlaceholder('Enter title');
-      const amountField = actionForm.getByPlaceholder('Enter amount');
+    test('Should successfully create a simple payment with Reputation decision method', async () => {
+      const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
 
-      const errorNotification = actionForm.getByTestId('action-sidebar-error');
-      const submitPaymentButton = actionForm.getByRole('button', {
-        name: 'Create payment',
+      await enableReputationWaightedExtension(page, {
+        colonyPath: '/planex',
       });
 
-      // Verify the errors are shown when required fields are empty
-      await submitPaymentButton.click();
+      await simplePayment.open();
 
-      await errorNotification.waitFor({ state: 'visible' });
-      // Verify there is an error for each field
-      for (const message of validationMessages.allRequiredFields) {
-        await expect(actionForm.getByText(message)).toBeVisible();
+      await simplePayment.setTitle('Pay fry');
+      await simplePayment.selectTeam('General');
+      await simplePayment.setRecipient(recipientAddress);
+      await simplePayment.setAmount('1');
+      await simplePayment.selectDecisionMethod('Reputation');
+
+      await expect(simplePayment.form.getByText('Created In')).toBeVisible();
+      // Cretaed In value is the same as the team name by default
+      await expect(
+        simplePayment.form.getByRole('button', { name: 'General' }),
+      ).toHaveCount(2);
+
+      await simplePayment.submit();
+
+      await simplePayment.waitForPending();
+      await simplePayment.waitForTransaction();
+
+      await expect(simplePayment.stepper).toBeVisible();
+      await simplePayment.verifyStepperUI();
+      await simplePayment.close();
+
+      await deprecateReputationWaightedExtension(page, {
+        colonyPath: '/planex',
+      });
+    });
+
+    test('Should validate simple payment form fields', async () => {
+      await simplePayment.open();
+      await simplePayment.submit();
+
+      // Verify validation messages
+      for (const message of SimplePayment.validationMessages
+        .allRequiredFields) {
+        await expect(simplePayment.getValidationMessage(message)).toBeVisible();
       }
 
-      // Enter more than 60 chars in the Title field
-      await titleField.fill(
+      await simplePayment.setTitle(
         'This is a test title that exceeds the maximum character limit of sixty.',
       );
-
       await expect(
-        actionDrawer.getByText(validationMessages.title.maxLengthExceeded),
+        simplePayment.getValidationMessage(
+          SimplePayment.validationMessages.title.maxLengthExceeded,
+        ),
       ).toBeVisible();
-      // Enter amount more than the maximum available
-      await amountField.fill('100_000_000_000_000_000_000_000');
-
-      await submitPaymentButton.click();
-
-      await expect(
-        actionDrawer.getByText(validationMessages.amount.maxExceeded),
-      ).toBeVisible();
-
-      // Very small amount value should be accepted
-      await amountField.fill('0.0000000000000000000000001');
-
-      await expect(
-        actionDrawer.getByText(validationMessages.amount.mustBeGreaterThanZero),
-      ).toBeHidden();
+      await simplePayment.close();
     });
 
-    test('Should display tooltips and user info on hover and click actions', async () => {
-      const actionForm = page.getByTestId('action-form');
-      await actionForm.getByText('From', { exact: true }).hover();
+    test('Should display tooltips and user info', async () => {
+      await simplePayment.open();
 
-      await expect(page.getByText(tooltipMessages.from)).toBeVisible();
+      // Test tooltips
+      for (const [field, message] of Object.entries(
+        SimplePayment.tooltipMessages,
+      )) {
+        await simplePayment.form.getByText(field, { exact: true }).hover();
+        await expect(simplePayment.getTooltip(message)).toBeVisible();
+      }
 
-      await actionForm.getByText('Recipient').nth(1).hover();
-
-      await expect(page.getByText(tooltipMessages.recipient)).toBeVisible();
-
-      await actionForm.getByText('Amount', { exact: true }).hover();
-
-      await expect(page.getByText(tooltipMessages.amount)).toBeVisible({
-        timeout: 10000,
-      });
-
-      await actionForm.getByText('Decision method').hover();
-
-      await expect(
-        page.getByText(tooltipMessages.decisionMethod),
-      ).toBeVisible();
-
-      // Verify the User info is shown when clicking on the username
-      await actionForm
-        .getByTestId('action-sidebar-description')
-        .getByRole('button')
-        .click();
-
-      await expect(page.getByTestId('user-info')).toBeVisible();
-
-      // Verify select token modal is shown when clicking on the token
-      await actionForm.getByRole('button', { name: 'Select token' }).click();
-
-      await expect(page.getByTestId('token-list')).toBeVisible();
+      // Test user info
+      await simplePayment.openUserInfo();
+      await simplePayment.close();
     });
 
     test('Should display the confirmation modal when the user tries to close the form', async () => {
-      const simplePaymentForm = page.getByTestId('action-form');
-      const dialog = page
-        .getByRole('dialog')
-        .filter({ hasText: 'Do you wish to cancel the action creation?' });
-      await simplePaymentForm.getByPlaceholder('Enter title').fill('Pay Fry');
+      await simplePayment.open();
 
-      await page.getByRole('button', { name: /close the modal/i }).click();
+      await simplePayment.setTitle('Test');
 
-      await dialog.waitFor({ state: 'visible' });
+      await simplePayment.closeButton.click();
+
+      await simplePayment.getConfirmationDialog().waitFor({ state: 'visible' });
 
       await expect(
-        dialog.getByRole('button', { name: 'Yes, cancel the action' }),
+        simplePayment.getConfirmationDialog().getByRole('button', {
+          name: 'Yes, cancel the action',
+        }),
       ).toBeVisible();
 
       await expect(
-        dialog.getByRole('button', { name: 'No, go back to editing' }),
+        simplePayment.getConfirmationDialog().getByRole('button', {
+          name: 'No, go back to editing',
+        }),
       ).toBeVisible();
 
-      await dialog
-        .getByRole('button', { name: 'Yes, cancel the action' })
+      await simplePayment
+        .getConfirmationDialog()
+        .getByRole('button', { name: 'No, go back to editing' })
         .click();
 
-      await dialog.waitFor({ state: 'hidden' });
+      await simplePayment.getConfirmationDialog().waitFor({ state: 'hidden' });
 
-      await expect(simplePaymentForm).toBeVisible();
+      await expect(simplePayment.form).toBeVisible();
+      await simplePayment.close();
+    });
+
+    test("Shouldn't be able to make a payment with a locked token outside of it's native colony", async () => {
+      await simplePayment.open();
+      // Select a token that is not native to the colony
+      await simplePayment.selectToken('ƓƓƓ');
+
+      await expect(
+        simplePayment.getValidationMessage(
+          SimplePayment.validationMessages.token.locked,
+        ),
+      ).toBeVisible();
+
+      await simplePayment.close();
+    });
+
+    test('Should prevent payment amount equal to total domain balance to reserve funds for network fees', async () => {
+      const { balance, domainName, tokenDecimals, tokenSymbol } =
+        await getFirstDomainAndTotalFunds({
+          // Planex Colony
+          colonyName: 'planex',
+        });
+
+      expect(Number(balance)).toBeGreaterThan(0);
+
+      await simplePayment.open();
+
+      await simplePayment.selectTeam(domainName);
+
+      await simplePayment.selectToken(tokenSymbol);
+
+      await simplePayment.setAmount(
+        convertToDecimal(balance, tokenDecimals)?.toString() || '',
+      );
+
+      await expect(
+        simplePayment.getValidationMessage(
+          SimplePayment.validationMessages.amount.maxExceeded,
+        ),
+      ).toBeVisible();
+
+      await simplePayment.close();
     });
   });
 
   test.describe('User has no permissions', () => {
-    test('Should not allow to create a simple payment with no permissions', async ({
-      page,
-      context,
-      baseURL,
-    }) => {
+    let simplePayment: SimplePayment;
+
+    test.beforeEach(async ({ page, context, baseURL }) => {
+      simplePayment = new SimplePayment(page);
+
       await setCookieConsent(context, baseURL);
 
-      // Log in with a wallet that has no permissions for simple payments
       await signInAndNavigateToColony(page, {
         colonyUrl: '/planex',
+        // NOTE: This wallet should have no permissions for Simple Payment in Planex Colony
         wallet: /dev wallet 3$/i,
       });
 
-      await openSimplePaymentDrawer(page);
+      await simplePayment.open();
+    });
 
-      const actionDrawer = page.getByTestId('action-drawer');
-      const actionForm = actionDrawer.getByTestId('action-form');
-
+    test('Should not allow to create a simple payment with Permission Decision method', async () => {
       await expect(
-        actionForm.getByText(validationMessages.permissions),
+        simplePayment.getValidationMessage(
+          SimplePayment.validationMessages.permissions,
+        ),
       ).toBeVisible();
 
-      await expect(
-        actionForm.getByRole('button', { name: 'Create payment' }),
-      ).toBeDisabled();
-
+      await expect(simplePayment.submitButton).toBeDisabled();
       // User should still be able to change the action type
-      await actionForm.getByRole('button', { name: 'Simple payment' }).click();
-
-      await page
-        .getByTestId('search-select-menu')
-        .waitFor({ state: 'visible' });
-
-      await page
-        .getByTestId('search-select-menu')
-        .getByRole('button', { name: 'Advanced payment' })
-        .click();
-
-      await expect(
-        actionForm.getByRole('button', { name: 'Create payment' }),
-      ).toBeEnabled();
+      await simplePayment.changeActionType('Advanced payment');
+      await expect(simplePayment.submitButton).toBeEnabled();
     });
   });
 });

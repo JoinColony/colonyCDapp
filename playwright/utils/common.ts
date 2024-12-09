@@ -22,7 +22,7 @@ const cookieNames = [
 
 export const setCookieConsent = async (
   context: BrowserContext,
-  baseUrl: string = '',
+  baseUrl = '',
 ) => {
   await context.addCookies(
     cookieNames.map((cookie) => ({
@@ -92,4 +92,88 @@ export const selectWallet = async (
   // Look for a better signal to wait for.
   // eslint-disable-next-line playwright/no-wait-for-timeout
   await page.waitForTimeout(customTimeout);
+};
+
+export const signInAndNavigateToColony = async (
+  page: Page,
+  { colonyUrl, wallet }: { colonyUrl: string; wallet: string | RegExp },
+) => {
+  await page.goto(colonyUrl);
+  await selectWallet(page, wallet);
+  // Wait for the Dashboard to load
+  await page.getByText('Loading Colony').waitFor({ state: 'hidden' });
+  await page
+    .getByTestId('loading-skeleton')
+    .last()
+    .waitFor({ state: 'hidden' });
+};
+
+export const enableReputationWaightedExtension = async (
+  page: Page,
+  {
+    colonyPath,
+  }: {
+    colonyPath: string;
+  },
+) => {
+  await page.goto(`${colonyPath}/extensions/VotingReputation`);
+  await page.getByText('Loading colony').waitFor({ state: 'hidden' });
+
+  const installExtensionButton = page.getByRole('button', {
+    name: 'Install',
+  });
+
+  const enableExtensionButton = page.getByRole('button', {
+    name: 'Enable',
+  });
+
+  await installExtensionButton.click();
+
+  await enableExtensionButton.click();
+
+  await page.getByRole('button', { name: 'Pending' }).waitFor({
+    state: 'hidden',
+  });
+
+  await page
+    .getByRole('listitem')
+    .filter({ hasText: 'Testing governance' })
+    .click();
+
+  await enableExtensionButton.click();
+
+  await page.getByRole('button', { name: 'Deprecate extension' }).waitFor();
+};
+
+export const deprecateReputationWaightedExtension = async (
+  page: Page,
+  {
+    colonyPath,
+  }: {
+    colonyPath: string;
+  },
+) => {
+  await page.goto(`${colonyPath}/extensions/VotingReputation`);
+  await page.getByText('Loading colony').waitFor({ state: 'hidden' });
+
+  await page.getByRole('button', { name: 'Deprecate extension' }).click();
+
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Deprecate' })
+    .click();
+
+  await page.getByRole('button', { name: 'Uninstall extension' }).click();
+
+  await page
+    .getByRole('dialog')
+    .getByText('I understand that there is a risk')
+    .click();
+
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Continue with uninstalling' })
+    .click();
+
+  await page.getByRole('button', { name: 'Install' }).waitFor();
 };
