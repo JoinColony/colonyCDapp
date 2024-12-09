@@ -47,6 +47,12 @@ export const useStakingForm = () => {
     tokenBalanceData?.activeBalance ?? 0,
   ).add(tokenBalanceData?.inactiveBalance ?? 0);
 
+  const expenditureCreatedActionId = useMemo(() => {
+    return (
+      motionAction.expenditure?.creatingActions?.items[0]?.transactionHash ?? ''
+    );
+  }, [motionAction.expenditure?.creatingActions?.items]);
+
   const validationSchema: ObjectSchema<StakingFormValues> = object()
     .shape({
       amount: string()
@@ -114,20 +120,25 @@ export const useStakingForm = () => {
   const transform = useMemo(
     () =>
       getStakingTransformFn({
+        actionId: motionAction.transactionHash,
         userAddress: user?.walletAddress ?? '',
         colonyAddress: colony?.colonyAddress ?? '',
         motionId,
         nativeTokenDecimals: tokenDecimals,
         tokenAddress,
         activeAmount: tokenBalanceData?.activeBalance ?? '0',
+        associatedActionId:
+          expenditureCreatedActionId || motionAction.transactionHash,
       }),
     [
+      motionAction.transactionHash,
       user?.walletAddress,
       colony?.colonyAddress,
       motionId,
       tokenDecimals,
       tokenAddress,
       tokenBalanceData?.activeBalance,
+      expenditureCreatedActionId,
     ],
   );
 

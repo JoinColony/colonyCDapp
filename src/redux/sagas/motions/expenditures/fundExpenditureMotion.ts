@@ -43,7 +43,8 @@ function* fundExpenditureMotion({
 
   try {
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
-    const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
+    const { nativeFundingPotId: expenditureFundingPotId, creatingActions } =
+      expenditure;
 
     const colonyManager = yield call(getColonyManager);
     const colonyClient = yield colonyManager.getClient(
@@ -154,6 +155,7 @@ function* fundExpenditureMotion({
         index: 0,
       },
       ready: false,
+      associatedActionId: creatingActions?.items[0]?.transactionHash ?? '',
     });
 
     if (annotationMessage) {

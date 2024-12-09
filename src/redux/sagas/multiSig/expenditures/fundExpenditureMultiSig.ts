@@ -47,7 +47,8 @@ function* fundExpenditureMultiSig({
     Extension.MultisigPermissions,
   );
 
-  const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
+  const { creatingActions, nativeFundingPotId: expenditureFundingPotId } =
+    expenditure;
 
   const batchKey = TRANSACTION_METHODS.FundExpenditure;
 
@@ -155,6 +156,7 @@ function* fundExpenditureMultiSig({
         index: 0,
       },
       ready: false,
+      associatedActionId: creatingActions?.items[0]?.transactionHash,
     });
 
     if (annotationMessage) {
@@ -168,6 +170,7 @@ function* fundExpenditureMultiSig({
           index: 1,
         },
         ready: false,
+        associatedActionId: creatingActions?.items[0]?.transactionHash,
       });
     }
 

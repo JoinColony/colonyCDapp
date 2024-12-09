@@ -23,6 +23,7 @@ interface ChunkedMulticallParams<T> {
   batchKey: string;
   channelId: string;
   startIndex?: number;
+  associatedActionId?: string;
 }
 
 /**
@@ -38,6 +39,7 @@ export function chunkedMulticall<T>({
   batchKey,
   channelId,
   startIndex = 0,
+  associatedActionId,
 }: ChunkedMulticallParams<T>) {
   const chunks = chunkArray({ array: items, chunkSize });
   const channelIds = chunks.map((_, index) => `${channelId}-${index}`);
@@ -64,6 +66,7 @@ export function chunkedMulticall<T>({
           index: startIndex + index,
         },
         ready: false,
+        associatedActionId,
       });
     }
   }

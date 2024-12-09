@@ -79,7 +79,7 @@ export const useVotingStep = ({
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { motionData, rootHash } = actionData;
+  const { motionData, rootHash, transactionHash, expenditure } = actionData;
   const {
     motionId,
     voterRecord,
@@ -129,13 +129,22 @@ export const useVotingStep = ({
       mapPayload(
         ({ vote }) =>
           ({
+            associatedActionId:
+              expenditure?.creatingActions?.items[0]?.transactionHash ||
+              transactionHash,
             colonyAddress,
             userAddress: user?.walletAddress,
             vote: Number(vote),
             motionId: BigNumber.from(motionId),
           }) as MotionVotePayload,
       ),
-    [colonyAddress, user?.walletAddress, motionId],
+    [
+      expenditure?.creatingActions?.items,
+      transactionHash,
+      colonyAddress,
+      user?.walletAddress,
+      motionId,
+    ],
   );
 
   const getChangedVote = () => {
@@ -170,12 +179,15 @@ export const useVotingStep = ({
     startPollingAction();
   };
 
-  const getChangeVotePayload = () => {
+  const getChangeVotePayload = (): MotionVotePayload => {
     const changedVote = getChangedVote();
 
     return {
+      associatedActionId:
+        expenditure?.creatingActions?.items[0]?.transactionHash ||
+        transactionHash,
       colonyAddress,
-      userAddress: user?.walletAddress,
+      userAddress: user?.walletAddress || '',
       vote: Number(changedVote),
       motionId: BigNumber.from(motionId),
     };

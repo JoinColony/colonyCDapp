@@ -162,6 +162,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ? {
             colonyAddress: colony.colonyAddress,
             nativeExpenditureId: expenditure.nativeId,
+            associatedActionId:
+              expenditure.creatingActions?.items[0]?.transactionHash ?? '',
           }
         : null,
     [colony.colonyAddress, expenditure],

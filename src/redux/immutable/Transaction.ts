@@ -22,6 +22,8 @@ export interface TransactionError {
 export type TransactionId = string;
 
 interface TransactionRecordProps {
+  associatedActionId?: string;
+  colonyAddress: string;
   context: ClientType | ExtendedClientType;
   createdAt: Date;
   deployedContractAddress?: string;

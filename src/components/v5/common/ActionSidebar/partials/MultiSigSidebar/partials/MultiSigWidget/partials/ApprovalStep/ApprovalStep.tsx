@@ -5,16 +5,13 @@ import { defineMessages } from 'react-intl';
 
 import { findFirstUserRoleWithColonyRoles } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import {
-  type ColonyMultiSigFragment,
-  MultiSigVote,
-  type ColonyActionType,
-} from '~gql';
+import { MultiSigVote } from '~gql';
 import { useEligibleSignees } from '~hooks/multiSig/useEligibleSignees.ts';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { type MultiSigAction } from '~types/motions.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -45,12 +42,11 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.MultiSigWidget.partials.ApprovalStep';
 
 interface ApprovalStepProps {
-  actionType: ColonyActionType;
   thresholdPerRole: Threshold;
-  multiSigData: ColonyMultiSigFragment;
   requiredRoles: ColonyRole[];
   initiatorAddress: string;
   onMultiSigRejected?: () => void;
+  action: MultiSigAction;
 }
 
 const MSG = defineMessages({
@@ -116,13 +112,13 @@ const voteOrder = {
 };
 
 const ApprovalStep: FC<ApprovalStepProps> = ({
-  actionType,
   thresholdPerRole,
-  multiSigData,
   initiatorAddress,
   requiredRoles,
   onMultiSigRejected,
+  action,
 }) => {
+  const { multiSigData, type: actionType } = action;
   const { createdAt } = multiSigData;
   const { user } = useAppContext();
 
@@ -377,24 +373,18 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       <RemoveVoteButton
                         isLoading={isRemovingVote}
                         requiredRoles={requiredRoles}
-                        multiSigId={multiSigData.nativeMultiSigId}
-                        multiSigDomainId={Number(
-                          multiSigData.nativeMultiSigDomainId,
-                        )}
                         handleLoadingChange={(isLoading) => {
                           setIsRemovingVote(isLoading);
                         }}
+                        action={action}
                       />
                     </>
                   ) : (
                     <div className="mt-6 flex flex-col gap-2">
                       <VoteButton
+                        action={action}
                         isLoading={isApproving}
                         requiredRoles={requiredRoles}
-                        multiSigId={multiSigData.nativeMultiSigId}
-                        multiSigDomainId={Number(
-                          multiSigData.nativeMultiSigDomainId,
-                        )}
                         handleLoadingChange={(isLoading) => {
                           setIsApproving(isLoading);
                         }}
@@ -405,6 +395,7 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                       />
                       {isOwner || isMotionOlderThanWeek ? (
                         <CancelButton
+                          action={action}
                           isLoading={isRejecting}
                           multiSigId={multiSigData.nativeMultiSigId}
                           handleLoadingChange={(isLoading) => {
@@ -416,12 +407,9 @@ const ApprovalStep: FC<ApprovalStepProps> = ({
                         />
                       ) : (
                         <VoteButton
+                          action={action}
                           isLoading={isRejecting}
                           requiredRoles={requiredRoles}
-                          multiSigId={multiSigData.nativeMultiSigId}
-                          multiSigDomainId={Number(
-                            multiSigData.nativeMultiSigDomainId,
-                          )}
                           handleLoadingChange={(isLoading) => {
                             setIsRejecting(isLoading);
                           }}

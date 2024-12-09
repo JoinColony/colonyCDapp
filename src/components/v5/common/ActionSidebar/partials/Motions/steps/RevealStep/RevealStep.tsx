@@ -26,7 +26,7 @@ const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
 
 const RevealStep: FC<RevealStepProps> = ({
-  motionData,
+  actionData,
   motionState,
   startPollingAction,
   stopPollingAction,
@@ -48,7 +48,7 @@ const RevealStep: FC<RevealStepProps> = ({
     revealProgress,
     totalVoters,
   } = useRevealStep({
-    motionData,
+    actionData,
     startPollingAction,
     stopPollingAction,
     transactionId,

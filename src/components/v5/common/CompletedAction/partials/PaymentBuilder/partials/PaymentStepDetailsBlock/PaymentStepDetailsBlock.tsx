@@ -36,6 +36,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
     nativeId,
     userStake,
     isStaked,
+    creatingActions,
   } = expenditure || {};
   const { isClaimed: isStakeClaimed } = userStake || {};
 
@@ -86,6 +87,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
 
   const claimPayload: ClaimExpenditurePayload | undefined = nativeId
     ? {
+        associatedActionId: creatingActions?.items[0]?.transactionHash ?? '',
         colonyAddress: colony.colonyAddress,
         claimablePayouts,
         nativeExpenditureId: nativeId,
@@ -104,6 +106,7 @@ const PaymentStepDetailsBlock: FC<PaymentStepDetailsBlockProps> = ({
     }
 
     const payload: ReclaimExpenditureStakePayload = {
+      associatedActionId: creatingActions?.items[0]?.transactionHash ?? '',
       colonyAddress: colony.colonyAddress,
       nativeExpenditureId: expenditure?.nativeId,
     };

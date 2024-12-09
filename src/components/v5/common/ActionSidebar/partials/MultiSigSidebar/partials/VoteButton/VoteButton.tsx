@@ -6,6 +6,8 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { MultiSigVote } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
+import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
+import { type MultiSigAction } from '~types/motions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -16,9 +18,8 @@ const displayName =
   'v5.common.ActionSidebar.partials.MultiSig.partials.VoteButton';
 
 interface VoteButtonProps {
+  action: MultiSigAction;
   requiredRoles: ColonyRole[];
-  multiSigId: string;
-  multiSigDomainId: number;
   voteType: Exclude<MultiSigVote, MultiSigVote.None>;
   handleLoadingChange: (isLoading: boolean) => void;
   isLoading: boolean;
@@ -38,12 +39,11 @@ const MSG = defineMessages({
 
 const VoteButton: FC<VoteButtonProps> = ({
   requiredRoles,
-  multiSigId,
-  multiSigDomainId,
   voteType,
   buttonProps,
   handleLoadingChange,
   isLoading,
+  action,
 }) => {
   const { colony } = useColonyContext();
 
@@ -52,17 +52,24 @@ const VoteButton: FC<VoteButtonProps> = ({
     [MultiSigVote.Reject]: MSG.reject,
   };
 
-  const getVotePayload = () => {
+  const getVotePayload = (): VoteOnMultiSigActionPayload => {
     handleLoadingChange(true);
+
+    const {
+      multiSigData: { nativeMultiSigId, nativeMultiSigDomainId },
+    } = action;
 
     return {
       colonyAddress: colony.colonyAddress,
       colonyDomains: extractColonyDomains(colony.domains),
       colonyRoles: extractColonyRoles(colony.roles),
       vote: voteType,
-      domainId: multiSigDomainId,
-      multiSigId,
+      domainId: Number(nativeMultiSigDomainId),
+      multiSigId: nativeMultiSigId,
       roles: requiredRoles,
+      associatedActionId:
+        action.expenditure?.creatingActions?.items[0]?.transactionHash ||
+        action.transactionHash,
     };
   };
 

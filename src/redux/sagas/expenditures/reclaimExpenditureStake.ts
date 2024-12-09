@@ -15,7 +15,7 @@ export type ReclaimExpenditureStakePayload =
   Action<ActionTypes.RECLAIM_EXPENDITURE_STAKE>['payload'];
 
 function* reclaimExpenditureStake({
-  payload: { colonyAddress, nativeExpenditureId },
+  payload: { associatedActionId, colonyAddress, nativeExpenditureId },
   meta,
 }: Action<ActionTypes.RECLAIM_EXPENDITURE_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -31,6 +31,7 @@ function* reclaimExpenditureStake({
       methodName: 'reclaimStake',
       identifier: colonyAddress,
       params: [nativeExpenditureId],
+      associatedActionId,
     });
 
     yield initiateTransaction(meta.id);

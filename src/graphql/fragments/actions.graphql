@@ -142,6 +142,11 @@ fragment ColonyAction on ColonyAction {
     metadata {
       distributionType
     }
+    creatingActions: actions(filter: { type: { eq: CREATE_EXPENDITURE } }) {
+      items {
+        transactionHash: id
+      }
+    }
   }
   arbitraryTransactions {
     contractAddress

@@ -69,13 +69,22 @@ export const useFinalizeStep = (actionData: MotionAction) => {
     () =>
       mapPayload(
         (): MotionFinalizePayload => ({
+          associatedActionId:
+            actionData.expenditure?.creatingActions?.items[0]
+              ?.transactionHash || actionData.transactionHash,
           colonyAddress,
           userAddress: user?.walletAddress || '',
           motionId,
           canMotionFail: isMotionOlderThanWeek,
         }),
       ),
-    [colonyAddress, isMotionOlderThanWeek, motionId, user?.walletAddress],
+    [
+      actionData,
+      colonyAddress,
+      isMotionOlderThanWeek,
+      motionId,
+      user?.walletAddress,
+    ],
   );
 
   return {
@@ -91,6 +100,7 @@ export const useClaimConfig = (
   refetchAction: RefetchAction,
 ) => {
   const {
+    expenditure,
     motionData: {
       isFinalized: isMotionFinalized,
       stakerRewards,
@@ -214,9 +224,18 @@ export const useClaimConfig = (
             extensionData && isInstalledExtensionData(extensionData)
               ? extensionData.address
               : ADDRESS_ZERO,
+          associatedActionId:
+            expenditure?.creatingActions?.items[0]?.transactionHash ||
+            transactionHash,
         }),
       ),
-    [userAddress, colonyAddress, transactionHash, extensionData],
+    [
+      userAddress,
+      colonyAddress,
+      transactionHash,
+      extensionData,
+      expenditure?.creatingActions?.items,
+    ],
   );
 
   const getDescriptionItems = (): DescriptionListItem[] => {

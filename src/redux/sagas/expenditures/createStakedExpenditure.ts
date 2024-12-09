@@ -9,7 +9,10 @@ import { takeEvery, call, put } from 'redux-saga/effects';
 import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
-import { transactionSetParams } from '~state/transactionState.ts';
+import {
+  transactionSetParams,
+  updateTransaction,
+} from '~state/transactionState.ts';
 
 import {
   type ChannelDefinition,
@@ -320,6 +323,17 @@ function* createStakedExpenditure({
     });
 
     setTxHash?.(txHash);
+
+    [
+      approve,
+      deposit,
+      approveStake,
+      makeExpenditure,
+      setExpenditureStaged,
+      annotateMakeStagedExpenditure,
+    ].forEach(({ id }) => {
+      updateTransaction({ id, associatedActionId: txHash });
+    });
   } catch (error) {
     return yield putError(
       ActionTypes.STAKED_EXPENDITURE_CREATE_ERROR,
