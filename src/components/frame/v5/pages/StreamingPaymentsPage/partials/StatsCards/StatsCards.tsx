@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import React from 'react';
 
+import { useMobile, useTablet } from '~hooks';
 import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
 import { type NumeralValue } from '~shared/Numeral/types.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -25,6 +27,9 @@ const StatsCards = ({
   prefix,
   suffix,
 }: StatsCardsProps) => {
+  const isTablet = useTablet();
+  const isMobile = useMobile();
+
   const streamingPerMonthDecimal = convertToDecimal(streamingPerMonth, 0);
   const totalStreamedDecimal = convertToDecimal(totalStreamed, 0);
   const unclaimedFoundsDecimal = convertToDecimal(unclaimedFounds, 0);
@@ -35,6 +40,7 @@ const StatsCards = ({
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalStreaming',
         })}
+        titleClassName="font-normal text-md"
         value={
           <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
@@ -52,6 +58,7 @@ const StatsCards = ({
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalStreamed',
         })}
+        titleClassName="font-normal text-md"
         value={
           <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
@@ -68,6 +75,7 @@ const StatsCards = ({
         title={formatText({
           id: 'streamingPaymentsPage.widget.unclaimedFounds',
         })}
+        titleClassName="font-normal text-md"
         value={
           <div className="align-center flex flex-wrap gap-x-2">
             <div className="flex">
@@ -81,9 +89,13 @@ const StatsCards = ({
         }
       />
       <WidgetBox
+        className={clsx({
+          hidden: isTablet && !isMobile,
+        })}
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalActiveStreams',
         })}
+        titleClassName="font-normal text-md"
         value={<h4 className="font-thin heading-4">{totalActiveStreams}</h4>}
       />
     </div>

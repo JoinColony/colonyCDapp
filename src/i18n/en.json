@@ -753,7 +753,7 @@
     "members.modal.selectActions": "Select actions",
     "members.modal.selectMember": "Select member",
     "meatballMenu.selectAction": "Select action",
-    "streamingPaymentsPage.widget.totalStreaming": "Total streaming",
+    "streamingPaymentsPage.widget.totalStreaming": "Active streaming",
     "streamingPaymentsPage.widget.totalStreamed": "Total streamed",
     "streamingPaymentsPage.widget.unclaimedFounds": "Unclaimed funds",
     "streamingPaymentsPage.widget.totalActiveStreams": "Total active streams",
