@@ -79,6 +79,7 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       },
     });
   }, [
+    MSG.toastNotificationsUnmuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,
@@ -106,6 +107,7 @@ const useMuteColonyItem = (): DropdownMenuItem => {
       },
     });
   }, [
+    MSG.toastNotificationsMuted,
     colonyAddress,
     mutedColonyAddresses,
     updateMutedColonies,
