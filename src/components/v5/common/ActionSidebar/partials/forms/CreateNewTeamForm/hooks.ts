@@ -8,7 +8,7 @@ import { type DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import { validationSchema, type CreateNewTeamFormValues } from './consts.ts';
 import {
@@ -17,7 +17,7 @@ import {
 } from './utils.tsx';
 
 export const useCreateNewTeam = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const decisionMethod: DecisionMethod | undefined = useWatch({

@@ -8,8 +8,8 @@ import React, {
 import { type ExpenditureType } from '~gql';
 import useToggle from '~hooks/useToggle/index.ts';
 import { type ExpenditureAction } from '~types/graphql.ts';
-import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
-import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
+import { type ExpenditureStep } from '~v5/common/ActionSidebar/partials/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
+import { type MilestoneItem } from '~v5/common/ActionSidebar/partials/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 
 import { PaymentBuilderContext } from './PaymentBuilderContext.ts';
 

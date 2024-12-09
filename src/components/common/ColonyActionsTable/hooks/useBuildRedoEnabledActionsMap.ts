@@ -4,7 +4,7 @@ import { ColonyActionType, useGetColonyHistoricRoleRolesLazyQuery } from '~gql';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { ExtendedColonyActionType } from '~types/actions.ts';
 import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
-import { transformActionRolesToColonyRoles } from '~v5/common/CompletedAction/partials/SetUserRoles/utils.ts';
+import { transformActionRolesToColonyRoles } from '~v5/common/ActionSidebar/partials/CompletedAction/partials/SetUserRoles/utils.ts';
 
 export const useBuildRedoEnabledActionsMap = ({
   colonyActions = [],

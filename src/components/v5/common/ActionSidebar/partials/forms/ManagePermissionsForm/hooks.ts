@@ -12,7 +12,7 @@ import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 
 import {
   UserRoleModifier,
@@ -27,8 +27,8 @@ import {
   getRemovedInheritedPermissions,
 } from './utils.ts';
 
-export const useManagePermissionsForm = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
+export const useManagePermissions = (
+  getFormOptions: CreateActionFormProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();

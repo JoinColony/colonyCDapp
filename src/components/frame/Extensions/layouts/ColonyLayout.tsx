@@ -23,6 +23,7 @@ import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
+import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useLocationChange from '~hooks/useLocationChange.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
@@ -55,7 +56,8 @@ const displayName = 'frame.Extensions.layouts.ColonyLayout';
 const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
   // @TODO: Eventually we want the action sidebar context to be better intergrated in the layout (maybe only used here and not in UserNavigation(Wrapper))
-  const { actionSidebarToggle } = useActionSidebarContext();
+  const { actionSidebarToggle, actionSidebarInitialValues } =
+    useActionSidebarContext();
   const [
     isActionSidebarOpen,
     { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
@@ -93,6 +95,8 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       toggleActionSidebarOn();
     }
   }, [toggleActionSidebarOn, transactionId]);
+
+  useDisableBodyScroll(isActionSidebarOpen);
 
   useEffect(() => {
     if (hasRecentlyCreatedColony) {
@@ -171,11 +175,9 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
       <AnimatePresence>
         {isActionSidebarOpen && (
           <ActionSidebar
-            transactionId={transactionId || undefined}
-            className="modal-blur"
-          >
-            {isTablet ? getUserNavigation() : undefined}
-          </ActionSidebar>
+            initialValues={actionSidebarInitialValues}
+            userNavigation={isTablet ? getUserNavigation() : null}
+          />
         )}
       </AnimatePresence>
       <ManageMemberModal

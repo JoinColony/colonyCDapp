@@ -19,7 +19,6 @@ import {
   DESCRIPTION_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '../consts.ts';
-import useCloseSidebarClick from '../hooks/useCloseSidebarClick.ts';
 import { type ActionButtonsProps } from '../types.ts';
 
 import {
@@ -45,10 +44,9 @@ const ActionButtons: FC<ActionButtonsProps> = ({
     getValues,
   } = useFormContext();
   const {
-    actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback }],
+    actionSidebarToggle: [, { useRegisterOnBeforeCloseCallback, toggleOff }],
     cancelModalToggle: [isCancelModalOpen, { toggleOn: toggleCancelModalOn }],
   } = useActionSidebarContext();
-  const { closeSidebarClick } = useCloseSidebarClick();
   const isFieldDisabled = useIsFieldDisabled();
 
   const draftAgreement = useSelector(
@@ -99,7 +97,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
         <Button
           mode="primaryOutline"
           text={{ id: 'button.cancel' }}
-          onClick={closeSidebarClick}
+          onClick={toggleOff}
           isFullSize={isMobile}
         />
         {isSubmitting ? (
