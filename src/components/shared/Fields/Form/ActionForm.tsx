@@ -61,6 +61,7 @@ export interface ActionFormProps<
     /** Function called when the form's primary button type is set to "button" */
     onClick?: MouseEventHandler<HTMLButtonElement>;
   };
+  testId?: string;
 }
 
 const ActionForm = <V extends Record<string, any>>({

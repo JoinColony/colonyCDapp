@@ -17,10 +17,12 @@ const MenuContainer = React.forwardRef<
       className,
       withPadding = true,
       checked = false,
+      testId,
     },
     ref,
   ) => (
     <div
+      data-testid={testId}
       className={clsx(
         className,
         'flex flex-col border bg-base-white',

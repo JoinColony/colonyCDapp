@@ -50,6 +50,7 @@ export interface FormProps<FormData extends FieldValues> {
   className?: string;
   innerRef?: Ref<UseFormReturn<FormData>>;
   id?: string;
+  testId?: string;
 }
 
 const Form = <FormData extends FieldValues>({
@@ -65,6 +66,7 @@ const Form = <FormData extends FieldValues>({
   className,
   innerRef,
   id,
+  testId,
 }: FormProps<FormData>) => {
   const { readonly, ...formOptions } = options || {};
 
@@ -153,7 +155,13 @@ const Form = <FormData extends FieldValues>({
     <AdditionalFormOptionsContextProvider value={{ readonly }}>
       <FormProvider {...formHelpers}>
         {/* noValidate attribute added to hide native browser validation */}
-        <form id={id} className={className} onSubmit={submitHandler} noValidate>
+        <form
+          id={id}
+          className={className}
+          onSubmit={submitHandler}
+          noValidate
+          data-testid={testId}
+        >
           {typeof children === 'function' ? children(formHelpers) : children}
         </form>
       </FormProvider>

@@ -22,7 +22,7 @@ export const TokenList: FC<TokenListProps> = ({
   onSelect,
 }) => {
   return (
-    <ul className="h-full overflow-y-auto">
+    <ul className="h-full overflow-y-auto" data-testid="token-list">
       {colonyTokens.map((colonyToken) => {
         const tokenBalance = getBalanceForTokenAndDomain(
           colonyBalances,
@@ -31,7 +31,11 @@ export const TokenList: FC<TokenListProps> = ({
         );
 
         return (
-          <li key={colonyToken.tokenAddress} className="mb-1 last:mb-0">
+          <li
+            key={colonyToken.tokenAddress}
+            className="mb-1 last:mb-0"
+            data-testid="token-list-item"
+          >
             <HoverWidthWrapper hoverClassName="font-medium block">
               <button
                 type="button"
