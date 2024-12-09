@@ -79,7 +79,8 @@ const AmountField: FC<AmountFieldProps> = ({
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatNumeral(e.target.value, formattingOptions);
 
-    const unformattedValue = unformatNumeral(e.target.value);
+    // Strip 'M' from the input as the character 'M' is used as a placeholder in the unformatNumeral function and can result in weird values
+    const unformattedValue = unformatNumeral(e.target.value.replace('M', ''));
 
     if (
       wrapperRef.current &&
@@ -95,7 +96,7 @@ const AmountField: FC<AmountFieldProps> = ({
     onChange?.();
 
     field.onChange(unformattedValue.replace('-', ''));
-    setValue(formatNumeral(e.target.value, formattingOptions));
+    setValue(formattedValue);
   };
 
   const handleTokenSelect = (selectedTokenAddress: string) => {

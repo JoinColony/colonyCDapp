@@ -44,7 +44,8 @@ const ManageReputationTable: FC = () => {
     useReputationAmountField(120);
 
   const handleFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const unformattedValue = unformatNumeral(e.target.value);
+    // Strip 'M' from the input as the character 'M' is used as a placeholder in the unformatNumeral function and can result in weird values
+    const unformattedValue = unformatNumeral(e.target.value.replace('M', ''));
 
     field.onChange(unformattedValue);
     setValue(formatNumeral(e.target.value, formattingOptions));

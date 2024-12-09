@@ -29,7 +29,6 @@ import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import {
-  getNumeralTokenAmount,
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
@@ -153,7 +152,10 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
     amount,
     -getTokenDecimalsWithFallback(splitToken?.decimals),
   );
-  const redoAmount = getNumeralTokenAmount(amount, splitToken?.decimals);
+  const redoAmount = moveDecimal(
+    amount,
+    -getTokenDecimalsWithFallback(splitToken?.decimals),
+  );
 
   const expenditureMeatballOptions: MeatBallMenuItem[] = [
     {
