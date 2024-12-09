@@ -33,11 +33,18 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
   ] = useToggle();
 
   const [
+    isFinalizeModalOpen,
+    { toggleOn: toggleOnFinalizeModal, toggleOff: toggleOffFinalizeModal },
+  ] = useToggle();
+
+  const [
     isMilestoneModalOpen,
     { toggleOn: toggleOnMilestoneModal, toggleOff: toggleOffMilestoneModal },
   ] = useToggle();
 
   const [selectedFundingAction, setSelectedFundingAction] =
+    useState<ExpenditureAction | null>(null);
+  const [selectedFinalizeAction, setSelectedFinalizeAction] =
     useState<ExpenditureAction | null>(null);
   const [selectedReleaseAction, setSelectedReleaseAction] =
     useState<ExpenditureAction | null>(null);
@@ -77,6 +84,11 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       setSelectedFundingAction,
       selectedReleaseAction,
       setSelectedReleaseAction,
+      isFinalizeModalOpen,
+      toggleOnFinalizeModal,
+      toggleOffFinalizeModal,
+      selectedFinalizeAction,
+      setSelectedFinalizeAction,
     }),
     [
       toggleOnFundingModal,
@@ -96,6 +108,12 @@ const PaymentBuilderContextProvider: FC<PropsWithChildren> = ({ children }) => {
       selectedMilestones,
       selectedFundingAction,
       selectedReleaseAction,
+      setSelectedReleaseAction,
+      isFinalizeModalOpen,
+      toggleOnFinalizeModal,
+      toggleOffFinalizeModal,
+      selectedFinalizeAction,
+      setSelectedFinalizeAction,
     ],
   );
 

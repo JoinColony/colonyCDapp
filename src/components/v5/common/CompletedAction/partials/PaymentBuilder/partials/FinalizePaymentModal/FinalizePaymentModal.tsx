@@ -1,3 +1,4 @@
+import { Id } from '@colony/colony-js';
 import { SpinnerGap, Wallet } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
@@ -5,11 +6,14 @@ import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { ActionTypes } from '~redux';
 import { type FinalizeExpenditurePayload } from '~redux/sagas/expenditures/finalizeExpenditure.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
+import { type FinalizeExpenditureMotionPayload } from '~redux/sagas/motions/expenditures/finalizeExpenditureMotion.ts';
 import { Form } from '~shared/Fields/index.ts';
 import { getAllUserRoles } from '~transformers';
+import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -19,13 +23,13 @@ import Modal from '~v5/shared/Modal/index.ts';
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 
 import {
-  getReleaseDecisionMethodDescriptions,
+  getFinalizeDecisionMethodDescriptions,
   validationSchema,
 } from './consts.ts';
-import { useGetReleaseDecisionMethodItems } from './hooks.ts';
-import { type ReleasePaymentModalProps } from './types.ts';
+import { useGetFinalizeDecisionMethodItems } from './hooks.ts';
+import { type FinalizePaymentModalProps } from './types.ts';
 
-const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
+const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
   expenditure,
   isOpen,
   onClose,
@@ -35,20 +39,26 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const releaseDecisionMethodItems = useGetReleaseDecisionMethodItems(
+  const finalizeDecisionMethodItems = useGetFinalizeDecisionMethodItems(
     expenditure,
     actionType,
   );
 
-  const noDecisionMethodAvailable = releaseDecisionMethodItems.every(
+  const noDecisionMethodAvailable = finalizeDecisionMethodItems.every(
     ({ isDisabled }) => isDisabled,
   );
 
   const colonyRoles = extractColonyRoles(colony.roles);
   const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
   const userRole = getRole(userPermissions);
-  const releaseDecisionMethodDescriptions =
-    getReleaseDecisionMethodDescriptions(userRole.name);
+  const finalizeDecisionMethodDescriptions =
+    getFinalizeDecisionMethodDescriptions(userRole.name);
+
+  const finalizeExpenditureViaMotion = useAsyncFunction({
+    submit: ActionTypes.MOTION_EXPENDITURE_FINALIZE,
+    error: ActionTypes.MOTION_EXPENDITURE_FINALIZE_ERROR,
+    success: ActionTypes.MOTION_EXPENDITURE_FINALIZE_SUCCESS,
+  });
 
   const finalizeExpenditure = useAsyncFunction({
     submit: ActionTypes.EXPENDITURE_FINALIZE,
@@ -62,7 +72,9 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
     success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
 
-  const handleFinalizeExpenditure = async () => {
+  const { votingReputationAddress } = useEnabledExtensions();
+
+  const handleFinalizeExpenditure = async ({ decisionMethod }) => {
     try {
       if (!expenditure) {
         return;
@@ -74,7 +86,21 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
         userAddress: user?.walletAddress ?? '',
       };
 
-      await finalizeExpenditure(finalizePayload);
+      const motionFinalizepayload: FinalizeExpenditureMotionPayload = {
+        colony,
+        expenditure,
+        votingReputationAddress: votingReputationAddress || '',
+        motionDomainId: Id.RootDomain,
+      };
+
+      if (
+        decisionMethod &&
+        decisionMethod.value === DecisionMethod.Reputation
+      ) {
+        await finalizeExpenditureViaMotion(motionFinalizepayload);
+      } else {
+        await finalizeExpenditure(finalizePayload);
+      }
 
       if (expenditure.isStaked) {
         const payload: ReclaimExpenditureStakePayload = {
@@ -85,7 +111,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
         await reclaimExpenditureStake(payload);
       }
 
-      onSuccess();
+      onSuccess(decisionMethod);
       onClose();
     } catch (err) {
       onClose();
@@ -112,14 +138,14 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
           return (
             <>
               <h5 className="mb-2 heading-5">
-                {formatText({ id: 'releaseModal.title' })}
+                {formatText({ id: 'finalizeModal.title' })}
               </h5>
               <p className="mb-6 text-md text-gray-600">
-                {formatText({ id: 'releaseModal.description' })}
+                {formatText({ id: 'finalizeModal.description' })}
               </p>
               <div className="mb-8">
                 <DecisionMethodSelect
-                  options={releaseDecisionMethodItems}
+                  options={finalizeDecisionMethodItems}
                   name="decisionMethod"
                 />
                 {method && method.value && (
@@ -128,14 +154,14 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                       <span className="font-medium">
                         {formatText({ id: 'fundingModal.note' })}
                       </span>
-                      {releaseDecisionMethodDescriptions[method.value]}
+                      {finalizeDecisionMethodDescriptions[method.value]}
                     </p>
                   </div>
                 )}
                 {noDecisionMethodAvailable && (
                   <div className="mt-4 rounded-[.25rem] border border-negative-300 bg-negative-100 p-[1.125rem] text-sm font-medium text-negative-400">
                     {formatText({
-                      id: 'releaseModal.noDecisionMethodAvailable',
+                      id: 'finalizeModal.noDecisionMethodAvailable',
                     })}
                   </div>
                 )}
@@ -158,7 +184,7 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
                     />
                   ) : (
                     <Button type="submit" mode="primarySolid" isFullSize>
-                      {formatText({ id: 'releaseModal.accept' })}
+                      {formatText({ id: 'finalizeModal.accept' })}
                     </Button>
                   )}
                 </div>
@@ -171,4 +197,4 @@ const ReleasePaymentModal: FC<ReleasePaymentModalProps> = ({
   );
 };
 
-export default ReleasePaymentModal;
+export default FinalizePaymentModal;

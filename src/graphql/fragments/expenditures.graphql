@@ -64,7 +64,10 @@ fragment Expenditure on Expenditure {
   }
   finalizingActions: actions(
     filter: {
-      type: { eq: FINALIZE_EXPENDITURE }
+      or: [
+        { type: { eq: FINALIZE_EXPENDITURE } }
+        { type: { eq: FINALIZE_EXPENDITURE_MOTION } }
+      ]
       isMotionFinalization: { ne: true }
     }
   ) {

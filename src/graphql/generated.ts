@@ -11634,7 +11634,7 @@ export const ExpenditureFragmentDoc = gql`
     }
   }
   finalizingActions: actions(
-    filter: {type: {eq: FINALIZE_EXPENDITURE}, isMotionFinalization: {ne: true}}
+    filter: {or: [{type: {eq: FINALIZE_EXPENDITURE}}, {type: {eq: FINALIZE_EXPENDITURE_MOTION}}], isMotionFinalization: {ne: true}}
   ) {
     items {
       ...ExpenditureAction
