@@ -73,6 +73,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const { setActionsTableTriggers } = useColonyTriggersContext();
 
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
+  const isMotionFailed = motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
     actionType === ColonyActionType.CreateDecisionMotion;
 
@@ -139,13 +140,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionFinalized &&
     !isMotionAgreement;
 
-  const successStatusText = canBeExecuted
+  const supportedStatusText = canBeExecuted
     ? 'motion.finalizeStep.passedAction'
     : 'motion.finalizeStep.completedStatusText';
 
+  const finalizeStatusText = isMotionFailed
+    ? 'motion.finalizeStep.opposedAction'
+    : supportedStatusText;
+
   const statusText = isMotionFailedNotFinalizable
     ? 'motion.finalizeStep.failed.statusText'
-    : successStatusText;
+    : finalizeStatusText;
 
   return (
     <MenuWithStatusText
