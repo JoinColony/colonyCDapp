@@ -110,6 +110,9 @@ export const useBuildRedoEnabledActionsMap = ({
           case ColonyActionType.VersionUpgrade:
           case ColonyActionType.VersionUpgradeMotion:
           case ColonyActionType.VersionUpgradeMultisig:
+          case ColonyActionType.ManageTokens:
+          case ColonyActionType.ManageTokensMotion:
+          case ColonyActionType.ManageTokensMultisig:
           case ExtendedColonyActionType.UpdateColonyObjective:
           case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
           case ExtendedColonyActionType.UpdateColonyObjectiveMultisig:

@@ -141,7 +141,7 @@ const Form = <FormData extends FieldValues>({
           : defaultValues;
 
       const currentValues = getValues();
-      const mergedValues = { ...currentValues, ...resolvedDefaultValues };
+      const mergedValues = { ...resolvedDefaultValues, ...currentValues };
 
       reset(mergedValues, { keepDirtyValues: true });
     };
