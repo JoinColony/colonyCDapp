@@ -21,6 +21,7 @@ import {
   TEAM_FIELD_NAME,
   TITLE_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { UserRoleModifier } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
 import { useDecisionMethod } from '~v5/common/CompletedAction/hooks.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/index.ts';
 import UserPopover from '~v5/shared/UserPopover/index.ts';
@@ -41,7 +42,10 @@ import {
   TeamFromRow,
 } from '../rows/index.ts';
 
-import { transformActionRolesToColonyRoles } from './utils.ts';
+import {
+  getIsPermissionsRemoval,
+  transformActionRolesToColonyRoles,
+} from './utils.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.SetUserRoles';
 
@@ -71,6 +75,8 @@ const SetUserRoles = ({ action }: Props) => {
     blockNumber,
     colonyAddress,
     rolesAreMultiSig,
+    motionData,
+    multiSigData,
   } = action;
   const areRolesMultiSig = !!rolesAreMultiSig;
 
@@ -115,6 +121,9 @@ const SetUserRoles = ({ action }: Props) => {
 
   const dbPermissionsNew = transformActionRolesToColonyRoles(
     historicRoles?.getColonyHistoricRole || roles,
+    {
+      isMotion: !!motionData || !!multiSigData,
+    },
   );
 
   const { name: dbRoleNameNew, role: dbRoleForDomainNew } = getRole(
@@ -137,7 +146,9 @@ const SetUserRoles = ({ action }: Props) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
-            role: dbRoleForDomainNew,
+            role: getIsPermissionsRemoval(roles)
+              ? UserRoleModifier.Remove
+              : dbRoleForDomainNew,
             [TEAM_FIELD_NAME]: fromDomain?.nativeId,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,

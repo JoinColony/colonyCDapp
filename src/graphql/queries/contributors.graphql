@@ -55,6 +55,17 @@ subscription OnCreateColonyContributor {
   }
 }
 
+subscription OnUpdateColonyContributor {
+  onUpdateColonyContributor {
+    contributorAddress
+    roles {
+      items {
+        ...ContributorRoles
+      }
+    }
+  }
+}
+
 query GetMembersCount(
   $filter: SearchableColonyContributorFilterInput!
   $nextToken: String
