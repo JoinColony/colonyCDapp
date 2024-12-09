@@ -73,6 +73,7 @@ export enum TRANSACTION_METHODS {
   ClaimColonyFunds = 'claimColonyFunds',
   ClaimExpenditure = 'claimExpenditure',
   CreateColony = 'createColony',
+  FinishCreateColony = 'finishCreateColony',
   CreateDomain = 'createDomain',
   CreateExpenditure = 'createExpenditure',
   CreateMotion = 'createMotion',

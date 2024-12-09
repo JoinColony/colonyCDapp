@@ -413,7 +413,7 @@ function* colonyCreate({
 //   .mul(BigNumber.from(10).pow(DEFAULT_TOKEN_DECIMALS))
 //   .div(100); // 1% in wei
 
-function* deployExtensions(
+export function* deployExtensions(
   colonyClient: AnyColonyClient,
   channels: Record<string, ChannelDefinition>,
 ) {

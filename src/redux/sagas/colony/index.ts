@@ -14,6 +14,7 @@ import {
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 export { default as colonyCreateSaga } from './colonyCreate.ts';
+export { default as colonyFinishCreate } from './colonyFinishCreate.ts';
 
 function* colonyClaimToken({
   payload: { colonyAddress, tokenAddresses },
