@@ -12,7 +12,18 @@ export const transformActionRolesToColonyRoles = (
 ): ColonyRole[] => {
   if (!roles) return [];
 
-  const roleKeys = Object.keys(roles).filter((key) => roles[key]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { __typename, ...finalRoles } = roles;
+
+  let roleKeys = Object.keys(finalRoles);
+
+  const isRemovePermissionsAction = !Object.values(finalRoles).every(
+    (role) => !role,
+  );
+
+  if (isRemovePermissionsAction) {
+    roleKeys = roleKeys.filter((key) => finalRoles[key]);
+  }
 
   const colonyRoles: ColonyRole[] = roleKeys
     .filter((key) => roles[key] !== null)
