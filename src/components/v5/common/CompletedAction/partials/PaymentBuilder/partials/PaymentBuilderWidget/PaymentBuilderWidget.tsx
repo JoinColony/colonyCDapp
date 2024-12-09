@@ -455,6 +455,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               {finalizedAt ? (
                 <ActionWithPermissionsInfo
                   action={finalizingActions?.items[0]}
+                  statusText="action.executed.creator.description"
                 />
               ) : (
                 <div />
