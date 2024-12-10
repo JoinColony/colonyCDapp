@@ -121,9 +121,12 @@ const Routes = () => {
         />
 
         {/* If a reserved route has not been used by this point, redirect to NotFoundRoute */}
-        {[...RESERVED_ROUTES].map((route) => (
-          <Route path={route} element={<NotFoundRoute />} />
-        ))}
+        {[...RESERVED_ROUTES]
+          // Allow in use colony names
+          .filter((route) => !['/meta', '/beta'].includes(route))
+          .map((route) => (
+            <Route path={route} element={<NotFoundRoute />} />
+          ))}
 
         {/* Colony routes */}
         <Route path={COLONY_HOME_ROUTE} element={<ColonyRoute />}>
