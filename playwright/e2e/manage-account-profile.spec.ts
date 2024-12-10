@@ -137,7 +137,7 @@ test.describe('Manage Account', () => {
         await page.getByRole('button', { name: /save changes/i }).click();
 
         await expect(page.getByTestId('form-error')).toBeHidden();
-        await expect(locationInput).toHaveValue('');
+        await expect(bioInput).toHaveValue('');
       });
 
       await test.step('Accepts a valid value', async () => {
@@ -174,7 +174,7 @@ test.describe('Manage Account', () => {
         await page.getByRole('button', { name: /save changes/i }).click();
 
         await expect(page.getByTestId('form-error')).toBeHidden();
-        await expect(bioInput).toHaveValue('');
+        await expect(locationInput).toHaveValue('');
       });
 
       await test.step('Accepts a valid value', async () => {
