@@ -1,4 +1,3 @@
-import { isAfter, differenceInDays, subDays } from 'date-fns';
 import Decimal from 'decimal.js';
 
 import { type ColonyFragment, type SupportedCurrencies } from '~gql';
@@ -45,50 +44,15 @@ export const calculateToCurrency = async ({
   return new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0);
 };
 
-const calculateStreamsForLast30Days = ({
-  startTimestamp,
-  endTimestamp,
-  currentTimestamp,
-  interval,
-  totalClaimedAmount,
-}: {
-  startTimestamp: number;
-  endTimestamp: number;
-  currentTimestamp: number;
-  interval: number;
-  totalClaimedAmount: number;
-}) => {
-  const intervalInDays = interval / 24 / 3600;
+const calculateStreamsForLast30Days = (
+  singleStreamAmount: number,
+  streamingInterval: number,
+) => {
+  const thirtyDaysInSeconds = 30 * 24 * 3600;
 
-  const startDate = new Date(startTimestamp * 1000);
-  const currentDate = new Date(currentTimestamp * 1000);
-  // eslint-disable-next-line no-restricted-globals
-  const endDate = isNaN(new Date(endTimestamp * 1000) as any)
-    ? currentDate
-    : new Date(endTimestamp * 1000);
-
-  const date30DaysAgo = subDays(currentDate, 30);
-
-  if (isAfter(startDate, date30DaysAgo)) {
-    return totalClaimedAmount;
-  }
-  if (isAfter(endDate, date30DaysAgo)) {
-    const daysIncludedInLast30Days = Math.abs(
-      differenceInDays(
-        startDate > date30DaysAgo ? startDate : date30DaysAgo,
-        endDate > currentDate ? currentDate : endDate,
-      ),
-    );
-    const totalDays = Math.abs(differenceInDays(startDate, endDate));
-    const totalStreams = totalDays / intervalInDays;
-    const streamsPerDay = totalStreams / totalDays;
-    const amountPerOneStream = totalClaimedAmount / totalStreams;
-    const streamedFundsInLast30Days =
-      daysIncludedInLast30Days * streamsPerDay * amountPerOneStream;
-
-    return streamedFundsInLast30Days;
-  }
-  return 0;
+  const activeStreaming =
+    (singleStreamAmount / streamingInterval) * thirtyDaysInSeconds;
+  return activeStreaming;
 };
 
 export const calculateTotalsFromStreams = async ({
@@ -142,13 +106,19 @@ export const calculateTotalsFromStreams = async ({
         colony,
       });
 
-      const streamedFundsInLast30Days = calculateStreamsForLast30Days({
-        currentTimestamp,
-        endTimestamp: Number(item.endTime),
-        startTimestamp: Number(item.startTime),
-        interval: Number(item.interval),
-        totalClaimedAmount: amountClaimedToDateToCurrency?.toNumber() ?? 0,
+      const singleStreamAmount = await calculateToCurrency({
+        amount: item.amount,
+        tokenAddress: item.tokenAddress,
+        currency,
+        colony,
       });
+
+      const singleStreamAmountToNumber = singleStreamAmount?.toNumber() ?? 0;
+
+      const streamedFundsInLast30Days = calculateStreamsForLast30Days(
+        singleStreamAmountToNumber,
+        Number(item.interval),
+      );
 
       const {
         totalAvailable,
