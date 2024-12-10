@@ -44,7 +44,7 @@ export const calculateToCurrency = async ({
   return new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0);
 };
 
-const calculateStreamsForLast30Days = (
+const calculateActiveStreaming = (
   singleStreamAmount: number,
   streamingInterval: number,
 ) => {
@@ -115,7 +115,7 @@ export const calculateTotalsFromStreams = async ({
 
       const singleStreamAmountToNumber = singleStreamAmount?.toNumber() ?? 0;
 
-      const streamedFundsInLast30Days = calculateStreamsForLast30Days(
+      const streamedFundsInLast30Days = calculateActiveStreaming(
         singleStreamAmountToNumber,
         Number(item.interval),
       );
