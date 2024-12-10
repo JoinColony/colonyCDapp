@@ -1,0 +1,22 @@
+;;;;;
+Instructions here: https://go.clny.io/csv;;;;;
+;;;;;
+Address Book;;;;;
+;;;;;
+Username (for reference);Address (for reference);;;;
+leela;0xb77D57F4959eAfA0339424b83FcFaf9c15407461;;;;
+fry;0x27fF0C145E191C22C75cD123C679C3e1F58a4469;;;;
+amy;0x9dF24e73f40b2a911Eb254A8825103723E13209C;;;;
+;;;;;
+Token List;;;;;
+;;;;;
+Symbol (for reference);Token Contract Address (for reference);;;;
+CREDS;0xBaE2cc298449726064F39DED7eA84E51742130d5;;;;
+ƓƓƓ;0x273E0D4AB412194d018C40fE6EdBDc7d7Df8f34e;;;;
+ETH;0x0000000000000000000000000000000000000000;;;;
+;;;;;
+Payment Details;;;;;
+;;;;;
+Username (for reference);Address;Token Symbol (for reference);Token Contract Address;Amount;Claim delay (hours)
+fry;0x27fF0C145E191C22C75cD123C679C3e1F58a4469;CREDS;0x0000000000000000000000000000000000000000;2;24
+amy;0x9dF24e73f40b2a911Eb254A8825103723E13209C;CREDS;0x0000000000000000000000000000000000000000;3;12
