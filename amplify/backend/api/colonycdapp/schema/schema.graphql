@@ -3006,6 +3006,12 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+
+  """
+  In case of motions cancelling a staked expenditure, boolean indicating
+  whether the expenditure staker will be punished by losing their stake
+  """
+  willPunishExpenditureStaker: Boolean
 }
 
 type ExpenditureFundingItem {
