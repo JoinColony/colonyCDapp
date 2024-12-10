@@ -20,7 +20,7 @@ const displayName =
 export const StagedPaymentsDescription = () => {
   const allTokens = useGetAllTokens();
   const formValues = useFormContext<StagedPaymentFormValues>().getValues();
-  const { recipient, stages } = formValues;
+  const { recipient, stages = [] } = formValues;
 
   if (!recipient) {
     return (
@@ -46,12 +46,13 @@ export const StagedPaymentsDescription = () => {
   }, BigNumber.from('0'));
 
   const tokensCount = stages.reduce((acc, { tokenAddress }) => {
-    return acc + (tokenAddress !== stages[0].tokenAddress ? 1 : 0);
+    return acc + (tokenAddress !== stages[0]?.tokenAddress ? 1 : 0);
   }, 1);
   const stagedPaymentTokenSymbol =
     tokensCount === 1 &&
-    allTokens.find(({ token }) => token.tokenAddress === stages[0].tokenAddress)
-      ?.token.symbol;
+    allTokens.find(
+      ({ token }) => token.tokenAddress === stages[0]?.tokenAddress,
+    )?.token.symbol;
 
   return (
     <FormattedMessage

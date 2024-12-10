@@ -6,10 +6,8 @@ import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx';
 import { distributionMethodOptions } from '~v5/common/ActionSidebar/partials/consts.tsx';
-import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
@@ -30,7 +28,6 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { watch, trigger } = useFormContext();
   const selectedTeam = watch('team');
 
-  const createdInFilterFn = useFilterCreatedInField('team');
   const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
     DecisionMethod.Reputation,
     DecisionMethod.MultiSig,
@@ -103,7 +100,6 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
       <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
-      <CreatedIn filterOptionsFn={createdInFilterFn} />
       <Description />
       {currentToken && (
         <SplitPaymentRecipientsField
