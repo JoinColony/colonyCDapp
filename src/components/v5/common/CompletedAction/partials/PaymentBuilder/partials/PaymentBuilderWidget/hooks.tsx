@@ -26,6 +26,7 @@ export const useGetFinalizeStep = ({
   expectedStepKey,
   expenditure,
   expenditureStep,
+  setExpectedStepKey,
 }: FinalizeStepProps) => {
   const {
     setSelectedFinalizeAction,
@@ -68,6 +69,7 @@ export const useGetFinalizeStep = ({
     [
       MotionState.Staking,
       MotionState.Supported,
+      MotionState.Opposed,
       MotionState.Voting,
       MotionState.Reveal,
     ].includes(finalizeMotionState);
@@ -94,6 +96,18 @@ export const useGetFinalizeStep = ({
       setSelectedFinalizeAction(null);
     };
   }, [setSelectedFinalizeAction]);
+
+  useEffect(() => {
+    const latestMotion = sortedFinalizeActions[0];
+
+    const hasLatestFailedMotion =
+      latestMotion?.motionData?.motionStateHistory.hasFailedNotFinalizable ||
+      latestMotion?.motionData?.motionStateHistory.hasFailed;
+
+    if (hasLatestFailedMotion) {
+      setExpectedStepKey(ExpenditureStep.Release);
+    }
+  }, [sortedFinalizeActions, setExpectedStepKey]);
 
   return {
     key: ExpenditureStep.Release,

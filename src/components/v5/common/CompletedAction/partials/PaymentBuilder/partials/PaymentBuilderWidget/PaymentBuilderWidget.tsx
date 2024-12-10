@@ -153,6 +153,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     expectedStepKey,
     expenditure,
     expenditureStep,
+    setExpectedStepKey,
   });
 
   const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(

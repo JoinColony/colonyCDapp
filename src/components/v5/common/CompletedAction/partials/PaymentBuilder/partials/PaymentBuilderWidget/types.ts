@@ -17,4 +17,5 @@ export interface FinalizeStepProps {
   expenditure: Expenditure | undefined | null;
   expectedStepKey: ExpenditureStep | null;
   expenditureStep: ExpenditureStep | null;
+  setExpectedStepKey: (step: ExpenditureStep | null) => void;
 }
