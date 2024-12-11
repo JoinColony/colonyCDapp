@@ -2195,8 +2195,6 @@ export type Domain = {
 
 /** Input data for fetching domain balance in/out values within a specific timeframe */
 export type DomainBalanceArguments = {
-  /** The chain id the colony is on */
-  chainId?: InputMaybe<Scalars['String']>;
   /** Address of the colony on the blockchain */
   colonyAddress: Scalars['String'];
   /** Domain id within a colony */
@@ -2228,7 +2226,7 @@ export type DomainBalanceInOut = {
   totalOut?: Maybe<Scalars['String']>;
 };
 
-/** Return type for domain balance  */
+/** Return type for domain balance */
 export type DomainBalanceReturn = {
   __typename?: 'DomainBalanceReturn';
   timeframe?: Maybe<Array<Maybe<TimeframeDomainBalanceInOut>>>;

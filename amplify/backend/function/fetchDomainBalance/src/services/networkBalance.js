@@ -169,7 +169,6 @@ const getNetworkTotalBalance = async ({
   domainId,
   timeframePeriodEndDate,
   selectedCurrency,
-  chainId,
 }) => {
   const { DEFAULT_NETWORK_INFO } = await NetworkConfig.getConfig();
   const averageBlockTime = DEFAULT_NETWORK_INFO.blockTime;
@@ -222,7 +221,6 @@ const getNetworkTotalBalance = async ({
   const exchangeRates = await ExchangeRatesService.getExchangeRates(
     getTokensDatesMap(balances),
     selectedCurrency,
-    chainId,
   );
 
   return getTotalFiatAmountFor(balances, exchangeRates);

@@ -26,7 +26,6 @@ exports.handler = async (event) => {
     const {
       colonyAddress,
       domainId,
-      chainId,
       selectedCurrency,
       timeframePeriod = 4,
       timeframeType,
@@ -74,7 +73,6 @@ exports.handler = async (event) => {
     const exchangeRates = await ExchangeRatesService.getExchangeRates(
       getTokensDatesMap(inOutActionsWithinTimeframe),
       selectedCurrency,
-      chainId,
     );
 
     const inOutPeriodBalance = {};
@@ -104,7 +102,6 @@ exports.handler = async (event) => {
         timeframePeriodEndDate,
         domainId,
         selectedCurrency,
-        chainId,
       });
       return {
         totalIn: timeframeTotalIn.toString(),
