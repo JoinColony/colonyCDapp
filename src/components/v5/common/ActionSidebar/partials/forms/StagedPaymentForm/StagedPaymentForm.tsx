@@ -1,7 +1,6 @@
 import { UserFocus, UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
@@ -15,7 +14,6 @@ import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/TeamsSelect.tsx';
 import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/UserSelect.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
-import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 
 import { useStagePayment } from './hooks.ts';
 import StagedPaymentRecipientsField from './partials/StagedPaymentRecipientsField/StagedPaymentRecipientField.tsx';
@@ -28,11 +26,6 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const { renderStakedExpenditureModal } = useStagePayment(getFormOptions);
 
   const isFieldDisabled = useIsFieldDisabled();
-
-  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
-    DecisionMethod.MultiSig,
-    DecisionMethod.Reputation,
-  ]);
 
   return (
     <>
@@ -72,10 +65,7 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={hasNoDecisionMethods || isFieldDisabled}
         />
       </ActionFormRow>
-      <DecisionMethodField
-        filterOptionsFn={decisionMethodFilterFn}
-        disabled={isFieldDisabled}
-      />
+      <DecisionMethodField disabled={isFieldDisabled} />
       <Description disabled={isFieldDisabled} />
       <StagedPaymentRecipientsField name="stages" />
       {renderStakedExpenditureModal()}

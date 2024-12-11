@@ -1,7 +1,6 @@
 import { UsersThree } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -36,12 +35,7 @@ const PaymentBuilderForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="from" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <DecisionMethodField
-        // @TODO remove MultiSig once we add support for multisig advanced payments
-        filterOptionsFn={({ value }) =>
-          ![DecisionMethod.Reputation, DecisionMethod.MultiSig].includes(value)
-        }
-      />
+      <DecisionMethodField />
       <Description />
       <PaymentBuilderRecipientsField name="payments" />
       {renderStakedExpenditureModal()}
