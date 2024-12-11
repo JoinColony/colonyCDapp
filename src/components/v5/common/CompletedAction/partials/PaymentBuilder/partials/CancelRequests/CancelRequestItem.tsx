@@ -6,13 +6,16 @@ import ActionBadge from '~common/ColonyActionsTable/partials/ActionBadge/ActionB
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import PenaliseBadge from '~v5/common/Pills/PenaliseBadge/PenaliseBadge.tsx';
 
 import { type CancelRequestItemProps } from './types.ts';
 
 const CancelRequestItem: FC<CancelRequestItemProps> = ({ action }) => {
-  const { motionState, loadingAction } = useGetColonyAction(
-    action.transactionHash,
-  );
+  const {
+    motionState,
+    loadingAction,
+    action: colonyAction,
+  } = useGetColonyAction(action.transactionHash);
   const { selectedCancellingAction, setSelectedCancellingAction } =
     usePaymentBuilderContext();
 
@@ -20,6 +23,8 @@ const CancelRequestItem: FC<CancelRequestItemProps> = ({ action }) => {
     selectedCancellingAction?.transactionHash === action.transactionHash;
 
   const isMotion = !!action.motionData;
+  const isExpenditureStaked = colonyAction?.expenditure?.isStaked;
+  const shouldPenalise = action?.motionData?.willPunishExpenditureStaker;
 
   return (
     <button
@@ -50,13 +55,24 @@ const CancelRequestItem: FC<CancelRequestItemProps> = ({ action }) => {
           year="numeric"
         />
       </span>
-      {loadingAction ? (
-        <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
-      ) : (
-        <ActionBadge
-          motionState={isMotion ? motionState : MotionState.Passed}
-        />
-      )}
+      <div className="flex items-center gap-2">
+        {isExpenditureStaked && (
+          <>
+            {shouldPenalise ? (
+              <PenaliseBadge isPenalised text="Penalise" />
+            ) : (
+              <PenaliseBadge isPenalised={false} text="No penalty" />
+            )}
+          </>
+        )}
+        {loadingAction ? (
+          <div className="h-[1.625rem] w-14 overflow-hidden rounded-xl skeleton" />
+        ) : (
+          <ActionBadge
+            motionState={isMotion ? motionState : MotionState.Passed}
+          />
+        )}
+      </div>
     </button>
   );
 };
