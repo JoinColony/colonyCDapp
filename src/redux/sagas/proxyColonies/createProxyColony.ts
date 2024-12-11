@@ -1,8 +1,9 @@
 import { ClientType } from '@colony/colony-js';
 import { type CustomContract } from '@colony/sdk';
-import { utils } from 'ethers';
-import { put, takeEvery } from 'redux-saga/effects';
+import { utils, providers } from 'ethers';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
+import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
 import { colonyAbi } from '~constants/abis.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux';
@@ -32,6 +33,19 @@ function* createProxyColony({
   const { address } = getContext(ContextModule.Wallet);
 
   const walletAddress = utils.getAddress(address);
+
+  const provider = (() => {
+    if (isDev) {
+      return new providers.StaticJsonRpcProvider(GANACHE_LOCAL_RPC_URL);
+    }
+    return new providers.Web3Provider(window.ethereum!);
+  })();
+
+  /**
+   * For the networkClient.getColonyCreationSalt to properly work when passing the `from` value
+   * We need to instantiate the ColonyNetworkClient using a provider
+   */
+  const networkClient = yield call(getNetworkClient, provider);
 
   try {
     const proxyColonyContract: CustomContract<typeof colonyAbi> =
