@@ -23,6 +23,7 @@ const CountDownTimer: FC<CountDownTimerProps> = ({
   return (
     <div
       data-test="countDownTimer"
+      data-testid="countDownTimer"
       className={clsx('flex items-center gap-1', className)}
     >
       {prefix}
