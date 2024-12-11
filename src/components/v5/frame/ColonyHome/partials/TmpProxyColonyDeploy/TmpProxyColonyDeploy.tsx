@@ -25,9 +25,15 @@ export const TmpProxyColonyDeploy = () => {
   });
 
   const handleClick = async () => {
+    if (!colony.colonyCreateEvent) {
+      console.warn('No colony creation data');
+      return;
+    }
+
     await createProxyColony({
       colonyAddress: colony.colonyAddress,
-      createdAtBlock: colony.createdAtBlock,
+      signerAddress: colony.colonyCreateEvent.signerAddress,
+      blockNumber: colony.colonyCreateEvent.blockNumber,
       foreignChainId: chainId,
     });
   };
