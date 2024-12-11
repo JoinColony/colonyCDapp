@@ -11,6 +11,7 @@ import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 
 import {
   actionsWithStakingDecisionMethod,
+  actionsWithoutMultiSigDecisionMethod,
   actionsWithoutReputationDecisionMethod,
 } from './consts.ts';
 import {
@@ -46,7 +47,7 @@ const useHasNoDecisionMethods = () => {
     return true;
   }
 
-  // User can't use reputation to create Payment builder or split payment action
+  // User can't use reputation to create certain actions
   if (
     isVotingReputationEnabled &&
     !actionsWithoutReputationDecisionMethod.includes(actionType)
@@ -65,6 +66,9 @@ const useHasNoDecisionMethods = () => {
   if (!requiredPermissions) {
     return false;
   }
+
+  const actionSupportsMultisig =
+    !actionsWithoutMultiSigDecisionMethod.includes(actionType);
 
   const requiredRolesDomain = getPermissionsDomainIdForAction(actionType, {});
 
@@ -120,14 +124,16 @@ const useHasNoDecisionMethods = () => {
           };
         }
 
+        // Check if the user has the role or multisig role in any domain
         // @TODO: If an action requires multiple permissions (Simple Payment) then all the roles need to be in the same domain
         // This would require reworking `userRoles` and `userMultiSigRoles` to group roles by domain
+        const userHasRole = rolesToCheck.userRoles.includes(role);
+        const userHasMultiSigRole =
+          isMultiSigEnabled &&
+          actionSupportsMultisig &&
+          rolesToCheck.userMultiSigRoles.includes(role);
 
-        // Check if the user has the role in any domain
-        return (
-          rolesToCheck.userRoles.includes(role) ||
-          (isMultiSigEnabled && rolesToCheck.userMultiSigRoles.includes(role))
-        );
+        return userHasRole || userHasMultiSigRole;
       });
     })
   ) {
