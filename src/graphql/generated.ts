@@ -1120,6 +1120,11 @@ export type ColonyMotion = {
   /** A list of all of the votes cast within in the motion */
   voterRecord: Array<VoterRecord>;
   voterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
+  /**
+   * In case of motions cancelling a staked expenditure, boolean indicating
+   * whether the expenditure staker will be punished by losing their stake
+   */
+  willPunishExpenditureStaker?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1605,6 +1610,7 @@ export type CreateColonyMotionInput = {
   userMinStake: Scalars['String'];
   usersStakes: Array<UserMotionStakesInput>;
   voterRecord: Array<VoterRecordInput>;
+  willPunishExpenditureStaker?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type CreateColonyMultiSigInput = {
@@ -3261,6 +3267,7 @@ export type ModelColonyMotionConditionInput = {
   skillRep?: InputMaybe<ModelStringInput>;
   transactionHash?: InputMaybe<ModelIdInput>;
   userMinStake?: InputMaybe<ModelStringInput>;
+  willPunishExpenditureStaker?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelColonyMotionConnection = {
@@ -3290,6 +3297,7 @@ export type ModelColonyMotionFilterInput = {
   skillRep?: InputMaybe<ModelStringInput>;
   transactionHash?: InputMaybe<ModelIdInput>;
   userMinStake?: InputMaybe<ModelStringInput>;
+  willPunishExpenditureStaker?: InputMaybe<ModelBooleanInput>;
 };
 
 export type ModelColonyMultiSigConditionInput = {
@@ -4371,6 +4379,7 @@ export type ModelSubscriptionColonyMotionFilterInput = {
   skillRep?: InputMaybe<ModelSubscriptionStringInput>;
   transactionHash?: InputMaybe<ModelSubscriptionIdInput>;
   userMinStake?: InputMaybe<ModelSubscriptionStringInput>;
+  willPunishExpenditureStaker?: InputMaybe<ModelSubscriptionBooleanInput>;
 };
 
 export type ModelSubscriptionColonyMultiSigFilterInput = {
@@ -9651,6 +9660,7 @@ export type UpdateColonyMotionInput = {
   userMinStake?: InputMaybe<Scalars['String']>;
   usersStakes?: InputMaybe<Array<UserMotionStakesInput>>;
   voterRecord?: InputMaybe<Array<VoterRecordInput>>;
+  willPunishExpenditureStaker?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateColonyMultiSigInput = {
