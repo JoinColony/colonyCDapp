@@ -1537,6 +1537,17 @@ type ColonyContributor @model @searchable {
     @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
 }
 
+type ColonyCreateEvent {
+  """
+  The block number the colony was created at
+  """
+  blockNumber: Int!
+  """
+  The address that signed the transaction
+  """
+  signerAddress: String!
+}
+
 """
 Represents a Colony within the Colony Network
 """
@@ -1550,9 +1561,9 @@ type Colony @model {
   """
   name: String! @index(name: "byName", queryField: "getColonyByName")
   """
-  The block number the colony was created attached
+  Colony creation data
   """
-  createdAtBlock: Int
+  colonyCreateEvent: ColonyCreateEvent
   """
   The unique address of the native token of the Colony
   """
