@@ -96,31 +96,39 @@ export const useStreamingTableColumns = (loading: boolean) => {
 
 const getSearchStreamingPaymentsFilterVariable = (
   colonyAddress: string,
-  { dateFrom, dateTo, tokenTypes }: StreamingPaymentFilters = {},
+  { date, tokenTypes }: StreamingPaymentFilters = {},
 ): SearchStreamingPaymentFilterVariable => {
-  const dateFilter =
-    dateFrom && dateTo
-      ? {
-          createdAt: {
-            range: [dateFrom?.toISOString(), dateTo?.toISOString()],
-          },
-        }
-      : {
-          ...(dateFrom
-            ? {
-                createdAt: {
-                  gte: dateFrom?.toISOString(),
-                },
-              }
-            : {}),
-          ...(dateTo
-            ? {
-                createdAt: {
-                  lte: dateTo?.toISOString(),
-                },
-              }
-            : {}),
-        };
+  // const dateFilter =
+  //   dateFrom && dateTo
+  //     ? {
+  //         createdAt: {
+  //           range: [dateFrom?.toISOString(), dateTo?.toISOString()],
+  //         },
+  //       }
+  //     : {
+  //         ...(dateFrom
+  //           ? {
+  //               createdAt: {
+  //                 gte: dateFrom?.toISOString(),
+  //               },
+  //             }
+  //           : {}),
+  //         ...(dateTo
+  //           ? {
+  //               createdAt: {
+  //                 lte: dateTo?.toISOString(),
+  //               },
+  //             }
+  //           : {}),
+  //       };
+
+  const dateFilter = date
+    ? date.map(({ dateFrom, dateTo }) => ({
+        createdAt: {
+          range: [dateFrom.toISOString(), dateTo.toISOString()],
+        },
+      }))
+    : [];
 
   const activeTokens = tokenTypes
     ? Object.entries(tokenTypes)
@@ -134,7 +142,7 @@ const getSearchStreamingPaymentsFilterVariable = (
     and: [
       { colonyId: { eq: colonyAddress } },
       ...activeTokens,
-      dateFilter,
+      ...dateFilter,
     ].filter((obj) => Object.keys(obj).length > 0),
   };
 };
