@@ -29,6 +29,7 @@ const getValueByType = ({ type, value, isFull }) => {
 export const useArbitraryTxsTableColumns = ({
   openTransactionModal,
   isError,
+  hasNoDecisionMethods,
 }): ColumnDef<AddTransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<AddTransactionTableModel>(),
@@ -59,6 +60,7 @@ export const useArbitraryTxsTableColumns = ({
                 type="button"
                 onClick={openTransactionModal}
                 mode="link"
+                disabled={hasNoDecisionMethods}
                 className={clsx(
                   'text-gray-400 no-underline md:hover:text-blue-400',
                   {

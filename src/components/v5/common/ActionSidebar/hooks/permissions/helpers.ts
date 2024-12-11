@@ -106,6 +106,9 @@ export const getPermissionsNeededForAction = (
     case Action.StagedPayment: {
       return PERMISSIONS_NEEDED_FOR_ACTION.StagedPayment;
     }
+    case Action.ArbitraryTxs: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
+    }
 
     default:
       return undefined;

@@ -42,6 +42,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const columns = useArbitraryTxsTableColumns({
     openTransactionModal,
     isError: !!fieldState.error,
+    hasNoDecisionMethods,
   });
   const closeTransactionModal = () => {
     setDefaultValues({} as AddTransactionTableModel);
