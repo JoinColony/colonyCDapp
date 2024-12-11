@@ -140,14 +140,17 @@ export class SimplePayment {
     await this.submitButton.click();
   }
 
-  async waitForPending() {
+  async waitForTransaction() {
     await this.form
       .getByRole('button', { name: 'Pending' })
       .first()
       .waitFor({ state: 'visible' });
-  }
 
-  async waitForTransaction() {
+    await this.form
+      .getByRole('button', { name: 'Pending' })
+      .first()
+      .waitFor({ state: 'hidden' });
+
     await this.page.waitForURL(/\?tx=/);
     await this.page
       .getByTestId('loading-skeleton')
@@ -203,5 +206,96 @@ export class SimplePayment {
     return this.page
       .getByRole('dialog')
       .filter({ hasText: 'Do you wish to cancel the action creation?' });
+  }
+
+  async voteOnMotion(voteType: 'Support' | 'Oppose') {
+    await this.completedAction
+      .getByRole('heading', {
+        name: 'Total stake required',
+      })
+      .waitFor({ state: 'visible' });
+    await this.completedAction.getByTestId('countDownTimer').waitFor({
+      state: 'visible',
+    });
+    await this.completedAction.getByText(voteType, { exact: true }).click();
+    await this.completedAction.getByRole('button', { name: 'Max' }).click();
+
+    await this.completedAction.getByRole('button', { name: 'Stake' }).click();
+
+    await this.completedAction.getByRole('button', { name: 'Stake' }).waitFor({
+      state: 'hidden',
+    });
+  }
+
+  async finalize() {
+    await this.completedAction
+      .getByTestId('stepper')
+      .locator('form')
+      .getByRole('button', { name: 'Finalize' })
+      .click();
+
+    await this.completedAction
+      .getByRole('button', { name: 'Pending' })
+      .waitFor({ state: 'visible' });
+    await this.completedAction
+      .getByRole('button', { name: 'Pending' })
+      .waitFor({ state: 'hidden' });
+  }
+
+  async claim() {
+    await this.completedAction
+      .getByTestId('stepper')
+      .locator('form')
+      .getByRole('button', { name: 'Claim' })
+      .click();
+    await this.completedAction
+      .getByText('Claimed')
+      .waitFor({ state: 'visible' });
+  }
+
+  async fillForm({
+    title,
+    team,
+    recipient,
+    amount,
+    decisionMethod,
+    token,
+  }: {
+    title?: string;
+    team?: string;
+    recipient?: string;
+    amount?: string;
+    token?: string;
+    decisionMethod?: string;
+  }) {
+    if (title) {
+      await this.setTitle(title);
+    }
+    if (team) {
+      await this.selectTeam(team);
+    }
+    if (recipient) {
+      await this.setRecipient(recipient);
+    }
+    if (amount) {
+      await this.setAmount(amount);
+    }
+    if (decisionMethod) {
+      await this.selectDecisionMethod(decisionMethod);
+    }
+    if (token) {
+      await this.selectToken(token);
+    }
+  }
+
+  async reloadPage() {
+    await this.page.reload();
+
+    await this.page.getByText(/loading colon/i).waitFor({ state: 'hidden' });
+
+    await this.page
+      .getByTestId('loading-skeleton')
+      .last()
+      .waitFor({ state: 'hidden' });
   }
 }

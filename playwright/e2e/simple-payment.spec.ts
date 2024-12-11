@@ -4,14 +4,16 @@ import { convertToDecimal } from '~utils/convertToDecimal.ts';
 
 import { SimplePayment } from '../models/simple-payment.ts';
 import {
-  deprecateReputationWaightedExtension,
-  enableReputationWaightedExtension,
+  uninstallReputationWeightedExtension,
+  enableReputationWeightedExtension,
   setCookieConsent,
   signInAndNavigateToColony,
+  forwardTime,
 } from '../utils/common.ts';
 import { getFirstDomainAndTotalFunds } from '../utils/graphqlHelpers.ts';
 
-// NOTE: When running in parallel local mock of amplify fails to handle multiple parallel requests
+// eslint-disable-next-line no-warning-comments
+// TODO: Resolve issue with running in parallel (amplify mock fails to handle multiple parallel requests from test cases)
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Simple payment', () => {
@@ -30,24 +32,39 @@ test.describe('Simple payment', () => {
         colonyUrl: '/planex',
         wallet: /dev wallet 1$/i,
       });
+      await enableReputationWeightedExtension(page, {
+        colonyPath: '/planex',
+      });
     });
 
     test.afterAll(async () => {
+      await uninstallReputationWeightedExtension(page, {
+        colonyPath: '/planex',
+      });
       await context?.close();
     });
 
-    test('Should successfully create a simple payment with Permissions decision method', async () => {
-      const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
+    test.beforeEach(async () => {
       await simplePayment.open();
+    });
 
-      await simplePayment.setTitle('Pay fry');
-      await simplePayment.selectTeam('General');
-      await simplePayment.setRecipient(recipientAddress);
-      await simplePayment.setAmount('1');
-      await simplePayment.selectDecisionMethod('Permissions');
+    test.afterEach(async () => {
+      await simplePayment.close();
+    });
+
+    test('Should successfully create a simple payment (Permissions decision method)', async () => {
+      const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
+
+      await simplePayment.fillForm({
+        title: 'Test Simple Payment',
+        team: 'General',
+        recipient: recipientAddress,
+        amount: '1',
+        decisionMethod: 'Permissions',
+      });
+
       await simplePayment.submit();
 
-      await simplePayment.waitForPending();
       await simplePayment.waitForTransaction();
 
       await expect(simplePayment.completedAction).toBeVisible();
@@ -56,46 +73,86 @@ test.describe('Simple payment', () => {
           /Member used permissions to create this action/i,
         ),
       ).toBeVisible();
-      await simplePayment.close();
     });
 
-    test('Should successfully create a simple payment with Reputation decision method', async () => {
+    test('Should support a payment with reputation', async () => {
       const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
 
-      await enableReputationWaightedExtension(page, {
-        colonyPath: '/planex',
+      await simplePayment.fillForm({
+        title: 'Test Simple Payment',
+        team: 'General',
+        recipient: recipientAddress,
+        amount: '1',
+        decisionMethod: 'Reputation',
       });
 
-      await simplePayment.open();
-
-      await simplePayment.setTitle('Pay fry');
-      await simplePayment.selectTeam('General');
-      await simplePayment.setRecipient(recipientAddress);
-      await simplePayment.setAmount('1');
-      await simplePayment.selectDecisionMethod('Reputation');
-
       await expect(simplePayment.form.getByText('Created In')).toBeVisible();
-      // Cretaed In value is the same as the team name by default
+
       await expect(
         simplePayment.form.getByRole('button', { name: 'General' }),
       ).toHaveCount(2);
 
       await simplePayment.submit();
 
-      await simplePayment.waitForPending();
       await simplePayment.waitForTransaction();
 
       await expect(simplePayment.stepper).toBeVisible();
       await simplePayment.verifyStepperUI();
-      await simplePayment.close();
+      await simplePayment.voteOnMotion('Support');
 
-      await deprecateReputationWaightedExtension(page, {
-        colonyPath: '/planex',
+      await forwardTime(0.1);
+      await simplePayment.reloadPage();
+
+      await expect(
+        simplePayment.completedAction.getByText(
+          'Finalize to execute the agreed transactions and return stakes',
+        ),
+      ).toBeVisible();
+
+      await simplePayment.finalize();
+
+      await simplePayment.claim();
+    });
+
+    test('Should oppose a payment with reputation', async () => {
+      const recipientAddress = '0x27fF0C145E191C22C75cD123C679C3e1F58a4469';
+
+      await simplePayment.fillForm({
+        title: 'Test Simple Payment to Oppose',
+        team: 'General',
+        recipient: recipientAddress,
+        amount: '1',
+        decisionMethod: 'Reputation',
       });
+
+      await expect(simplePayment.form.getByText('Created In')).toBeVisible();
+      await expect(
+        simplePayment.form.getByRole('button', { name: 'General' }),
+      ).toHaveCount(2);
+
+      await simplePayment.submit();
+
+      await simplePayment.waitForTransaction();
+
+      await expect(simplePayment.stepper).toBeVisible();
+      await simplePayment.verifyStepperUI();
+      await simplePayment.voteOnMotion('Oppose');
+
+      await forwardTime(0.1);
+      await simplePayment.reloadPage();
+
+      await expect(
+        simplePayment.completedAction.getByText(
+          'Action failed and cannot be executed',
+        ),
+      ).toBeVisible();
+
+      await expect(
+        simplePayment.completedAction.getByRole('button', { name: 'Failed' }),
+      ).toBeVisible();
     });
 
     test('Should validate simple payment form fields', async () => {
-      await simplePayment.open();
       await simplePayment.submit();
 
       // Verify validation messages
@@ -112,13 +169,9 @@ test.describe('Simple payment', () => {
           SimplePayment.validationMessages.title.maxLengthExceeded,
         ),
       ).toBeVisible();
-      await simplePayment.close();
     });
 
     test('Should display tooltips and user info', async () => {
-      await simplePayment.open();
-
-      // Test tooltips
       for (const [field, message] of Object.entries(
         SimplePayment.tooltipMessages,
       )) {
@@ -126,14 +179,12 @@ test.describe('Simple payment', () => {
         await expect(simplePayment.getTooltip(message)).toBeVisible();
       }
 
-      // Test user info
       await simplePayment.openUserInfo();
-      await simplePayment.close();
+
+      await expect(simplePayment.drawer.getByTestId('user-info')).toBeVisible();
     });
 
     test('Should display the confirmation modal when the user tries to close the form', async () => {
-      await simplePayment.open();
-
       await simplePayment.setTitle('Test');
 
       await simplePayment.closeButton.click();
@@ -160,11 +211,9 @@ test.describe('Simple payment', () => {
       await simplePayment.getConfirmationDialog().waitFor({ state: 'hidden' });
 
       await expect(simplePayment.form).toBeVisible();
-      await simplePayment.close();
     });
 
     test("Shouldn't be able to make a payment with a locked token outside of it's native colony", async () => {
-      await simplePayment.open();
       // Select a token that is not native to the colony
       await simplePayment.selectToken('ƓƓƓ');
 
@@ -173,36 +222,29 @@ test.describe('Simple payment', () => {
           SimplePayment.validationMessages.token.locked,
         ),
       ).toBeVisible();
-
-      await simplePayment.close();
     });
 
     test('Should prevent payment amount equal to total domain balance to reserve funds for network fees', async () => {
       const { balance, domainName, tokenDecimals, tokenSymbol } =
         await getFirstDomainAndTotalFunds({
-          // Planex Colony
           colonyName: 'planex',
         });
 
       expect(Number(balance)).toBeGreaterThan(0);
 
-      await simplePayment.open();
-
-      await simplePayment.selectTeam(domainName);
-
-      await simplePayment.selectToken(tokenSymbol);
-
-      await simplePayment.setAmount(
-        convertToDecimal(balance, tokenDecimals)?.toString() || '',
-      );
+      await simplePayment.fillForm({
+        title: 'Test Simple Payment',
+        team: domainName,
+        amount: convertToDecimal(balance, tokenDecimals)?.toString() || '',
+        token: tokenSymbol,
+        decisionMethod: 'Permissions',
+      });
 
       await expect(
         simplePayment.getValidationMessage(
           SimplePayment.validationMessages.amount.maxExceeded,
         ),
       ).toBeVisible();
-
-      await simplePayment.close();
     });
   });
 
@@ -216,7 +258,7 @@ test.describe('Simple payment', () => {
 
       await signInAndNavigateToColony(page, {
         colonyUrl: '/planex',
-        // NOTE: This wallet should have no permissions for Simple Payment in Planex Colony
+        // NOTE: Assuming this test user does not have permissions for Simple Payment in Planex Colony
         wallet: /dev wallet 3$/i,
       });
 
