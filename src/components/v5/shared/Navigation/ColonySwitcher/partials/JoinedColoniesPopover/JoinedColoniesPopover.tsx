@@ -34,7 +34,7 @@ const JoinedColoniesPopover = ({
       setTooltipRef={setTooltipRef}
       tooltipProps={getTooltipProps}
       className={clsx(
-        'bg-white !left-[calc(100%+0.4rem)] z-top mt-4 max-h-[calc(100%-32px)] w-[252px] !transform-none rounded-lg border-gray-200 px-0 pb-4 pt-0 shadow-none',
+        'bg-white !left-[calc(100%+0.4rem)] z-top max-h-[calc(100%-32px)] w-[252px] !transform-none rounded-lg border-gray-200 px-0 pb-4 pt-0 shadow-none',
         {
           '!bg-gray-100': isDarkMode,
         },
