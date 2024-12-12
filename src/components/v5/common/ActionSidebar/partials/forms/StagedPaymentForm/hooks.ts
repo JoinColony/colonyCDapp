@@ -9,11 +9,13 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import { ExpenditureType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
+import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import getLastIndexFromPath from '~utils/getLastIndexFromPath.ts';
 import { formatText } from '~utils/intl.ts';
+import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import {
   ACTION_BASE_VALIDATION_SCHEMA,
@@ -41,6 +43,7 @@ export const useValidationSchema = () => {
         .map((colonyToken) => colonyToken.token) || [],
     [colony.tokens?.items],
   );
+  const tokenLockStatesMap = useTokenLockStates();
 
   return useMemo(
     () =>
@@ -119,7 +122,18 @@ export const useValidationSchema = () => {
                         colony,
                       }),
                     ),
-                  [TOKEN_FIELD_NAME]: string().required(),
+                  [TOKEN_FIELD_NAME]: string()
+                    .test(
+                      'token-unlocked',
+                      formatText({ id: 'errors.amount.tokenIsLocked' }) || '',
+                      (value) =>
+                        !shouldPreventPaymentsWithTokenInColony(
+                          value || '',
+                          colony,
+                          tokenLockStatesMap,
+                        ),
+                    )
+                    .required(),
                 })
                 .defined()
                 .required(),
@@ -145,9 +159,10 @@ export const useValidationSchema = () => {
             });
           },
         )
+
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, colonyTokens],
+    [colony, colonyTokens, tokenLockStatesMap],
   );
 };
 

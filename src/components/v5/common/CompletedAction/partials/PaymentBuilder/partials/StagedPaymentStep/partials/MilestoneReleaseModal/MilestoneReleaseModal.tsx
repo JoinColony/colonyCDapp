@@ -208,6 +208,14 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
   });
 
   const onSubmit = async ({ decisionMethod }) => {
+    const tokenAddresses: string[] = [];
+
+    items.forEach((item) => {
+      if (!tokenAddresses.includes(item.tokenAddress)) {
+        tokenAddresses.push(item.tokenAddress);
+      }
+    });
+
     try {
       const motionPayload: ReleaseExpenditureStagesMotionPayload = {
         colonyAddress: colony.colonyAddress,
@@ -217,12 +225,12 @@ const MilestoneReleaseModal: FC<MilestoneReleaseModalProps> = ({
         expenditure,
         slotIds: items.map(({ slotId }) => slotId),
         motionDomainId: expenditure.nativeDomainId,
-        tokenAddresses: [colony.nativeToken.tokenAddress],
+        tokenAddresses,
       };
       const payload: ReleaseExpenditureStagesPayload = {
         colonyAddress: colony.colonyAddress,
         expenditure,
-        tokenAddresses: [colony.nativeToken.tokenAddress],
+        tokenAddresses,
         stagedExpenditureAddress: stagedExpenditureAddress || '',
         slotIds: items.map(({ slotId }) => slotId),
         userAddress: user?.walletAddress || '',

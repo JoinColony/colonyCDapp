@@ -40,6 +40,10 @@ const ReleaseActionItem: FC<ReleaseActionItemProps> = ({
 
   const isReleasingMultipleMilestones = releasedSlotIds.length > 1;
 
+  const wasSuccessful = expenditure.slots
+    .filter((slot) => releasedSlotIds.includes(slot.id))
+    .every((slot) => slot.payouts?.every((payout) => payout.isClaimed));
+
   return (
     <button
       className="group flex w-full items-center justify-between gap-2"
@@ -63,10 +67,15 @@ const ReleaseActionItem: FC<ReleaseActionItemProps> = ({
       </span>
       {!action.motionData ? (
         <PillsBase
-          className="bg-success-100 text-success-400"
+          className={clsx({
+            'bg-success-100 text-success-400': wasSuccessful,
+            'bg-negative-100 text-negative-400': !wasSuccessful,
+          })}
           isCapitalized={false}
         >
-          {formatText({ id: 'action.passed' })}
+          {wasSuccessful
+            ? formatText({ id: 'action.passed' })
+            : formatText({ id: 'action.failed' })}
         </PillsBase>
       ) : (
         <>
