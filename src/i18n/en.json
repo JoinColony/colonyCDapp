@@ -1400,6 +1400,7 @@
     "motion.staking.input.error.moreThanRemaining": "You can't stake more than remaining stake",
     "action.executed.permissions": "Executed using permissions.",
     "action.executed.permissions.description": "Member used permissions to create this action.",
+    "action.executed.creator.description": "Member used payment creator to create this action.",
     "action.executed.permissions.overview": "Overview",
     "action.executed.permissions.member": "Member",
     "action.executed.permissions.permission": "Permission",
