@@ -24,18 +24,27 @@ const graphqlRequest = async (queryOrMutation, variables, url, authKey) => {
     }),
   };
 
-  let body;
-  let response;
-
   try {
-    response = await fetch(url, options);
-    body = await response.json();
-    return body;
+    const response = await fetch(url, options);
+    return response.json();
   } catch (error) {
     /*
      * Something went wrong... obviously
      */
     console.error(error);
+    return null;
+  }
+};
+
+const repMinerRequest = async (repMinerURL) => {
+  try {
+    const response = await fetch(repMinerURL, { method: 'GET' });
+    return await response.json();
+  } catch (error) {
+    /*
+     * Something went wrong... obviously
+     */
+    console.error(`Reputation Miner Fetch Error: ${errror}`);
     return null;
   }
 };
@@ -53,19 +62,21 @@ const contributorTypeMap = {
 };
 
 const sortAddressesDescendingByReputation = async (
-  colonyClient,
+  reputationOracleEndpoint,
+  currentRootHash,
+  colonyAddress,
   skillId,
   addresses,
 ) => {
   return (
     await Promise.all(
       addresses.map(async (address) => {
-        const { reputationAmount } =
-          await colonyClient.getReputationWithoutProofs(skillId, address);
+        const { reputationAmount } = await repMinerRequest(`
+            ${reputationOracleEndpoint}/${currentRootHash}/${colonyAddress}/${skillId}/${address}/noProof`);
 
         return {
           address,
-          reputationBN: reputationAmount,
+          reputationBN: BigNumber.from(reputationAmount),
         };
       }),
     )
@@ -142,7 +153,7 @@ const getContributorType = (total, idx, createdAt) => {
 const createContributorReputationInDb = async ({
   colonyAddress,
   contributorAddress,
-  nativeDomainId,
+  nativeId,
   reputationPercentage,
   id,
   reputationRaw,
@@ -156,7 +167,7 @@ const createContributorReputationInDb = async ({
         input: {
           colonyAddress,
           contributorAddress,
-          domainId: getDomainDatabaseId(colonyAddress, nativeDomainId),
+          domainId: getDomainDatabaseId(colonyAddress, nativeId),
           id,
           reputationRaw,
           reputationPercentage,
@@ -305,8 +316,18 @@ const calculatePercentageReputation = (userReputation, totalReputation) => {
   return reputation / 10 ** 2;
 };
 
+const loggingFnFactory =
+  (env = 'local') =>
+  (message) => {
+    // This should really be standardized as types
+    if (env === 'qa' || env === 'prod') {
+      console.log(message);
+    }
+  };
+
 module.exports = {
   graphqlRequest,
+  repMinerRequest,
   getContributorType,
   sortAddressesDescendingByReputation,
   updateContributorReputationInDb,
@@ -317,4 +338,5 @@ module.exports = {
   getDomainDatabaseId,
   reputationMiningCycleMetadataId,
   calculatePercentageReputation,
+  loggingFnFactory,
 };
