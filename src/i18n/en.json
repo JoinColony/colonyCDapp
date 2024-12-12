@@ -1412,6 +1412,7 @@
     "motion.staking.button.submit": "Stake",
     "motion.staking.chart.thresholdLabel": "Not public until min {value} is staked",
     "action.passed": "Passed",
+    "action.failed": "Failed",
     "motion.voting.label": "Voting",
     "motion.reveal.label": "Reveal",
     "motion.outcome.label": "Outcome",
