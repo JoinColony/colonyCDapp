@@ -10780,6 +10780,11 @@ export type OnCreateColonyContributorSubscriptionVariables = Exact<{ [key: strin
 
 export type OnCreateColonyContributorSubscription = { __typename?: 'Subscription', onCreateColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string } | null };
 
+export type OnUpdateColonyContributorSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnUpdateColonyContributorSubscription = { __typename?: 'Subscription', onUpdateColonyContributor?: { __typename?: 'ColonyContributor', contributorAddress: string, roles?: { __typename?: 'ModelColonyRoleConnection', items: Array<{ __typename?: 'ColonyRole', domainId: string, role_0?: boolean | null, role_1?: boolean | null, role_2?: boolean | null, role_3?: boolean | null, role_5?: boolean | null, role_6?: boolean | null, isMultiSig?: boolean | null, id: string, domain: { __typename?: 'Domain', id: string, nativeId: number, metadata?: { __typename?: 'DomainMetadata', name: string, color: DomainColor } | null } } | null> } | null } | null };
+
 export type GetMembersCountQueryVariables = Exact<{
   filter: SearchableColonyContributorFilterInput;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -14418,6 +14423,40 @@ export function useOnCreateColonyContributorSubscription(baseOptions?: Apollo.Su
       }
 export type OnCreateColonyContributorSubscriptionHookResult = ReturnType<typeof useOnCreateColonyContributorSubscription>;
 export type OnCreateColonyContributorSubscriptionResult = Apollo.SubscriptionResult<OnCreateColonyContributorSubscription>;
+export const OnUpdateColonyContributorDocument = gql`
+    subscription OnUpdateColonyContributor {
+  onUpdateColonyContributor {
+    contributorAddress
+    roles {
+      items {
+        ...ContributorRoles
+      }
+    }
+  }
+}
+    ${ContributorRolesFragmentDoc}`;
+
+/**
+ * __useOnUpdateColonyContributorSubscription__
+ *
+ * To run a query within a React component, call `useOnUpdateColonyContributorSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnUpdateColonyContributorSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnUpdateColonyContributorSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnUpdateColonyContributorSubscription(baseOptions?: Apollo.SubscriptionHookOptions<OnUpdateColonyContributorSubscription, OnUpdateColonyContributorSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OnUpdateColonyContributorSubscription, OnUpdateColonyContributorSubscriptionVariables>(OnUpdateColonyContributorDocument, options);
+      }
+export type OnUpdateColonyContributorSubscriptionHookResult = ReturnType<typeof useOnUpdateColonyContributorSubscription>;
+export type OnUpdateColonyContributorSubscriptionResult = Apollo.SubscriptionResult<OnUpdateColonyContributorSubscription>;
 export const GetMembersCountDocument = gql`
     query GetMembersCount($filter: SearchableColonyContributorFilterInput!, $nextToken: String) {
   searchColonyContributors(
