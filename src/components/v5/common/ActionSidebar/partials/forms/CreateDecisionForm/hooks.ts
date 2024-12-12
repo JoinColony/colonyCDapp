@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { mapPayload, pipe } from '~utils/actions.ts';
@@ -24,13 +25,7 @@ export const useCreateDecision = (
   const walletAddress = user?.walletAddress || '';
   const dispatch = useDispatch();
 
-  // @TODO: checking if decision has draft status
-  // const draftDecision = useSelector(
-  //   getDraftDecisionFromStore(
-  //     user?.walletAddress || '',
-  //     colony?.colonyAddress ?? '',
-  //   ),
-  // );
+  const { getIsDraftAgreement } = useDraftAgreement();
 
   const handleSaveAgreementInLocalStorage = useCallback(
     (values: DecisionDraft) => {
@@ -80,5 +75,8 @@ export const useCreateDecision = (
       ),
       [],
     ),
+    onFormClose: {
+      shouldShowCancelModal: !getIsDraftAgreement(),
+    },
   });
 };
