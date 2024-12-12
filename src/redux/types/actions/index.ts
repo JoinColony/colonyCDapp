@@ -9,6 +9,7 @@ import { type IpfsActionTypes } from './ipfs.ts';
 import { type MessageActionTypes } from './message.ts';
 import { type MotionActionTypes } from './motion.ts';
 import { type MultiSigActionTypes } from './multiSig.ts';
+import { type ProxyColoniesActionTypes } from './proxyColonies.ts';
 import { type TransactionActionTypes } from './transaction.ts';
 import { type UserActionTypes } from './user.ts';
 import { type MetacolonyVestingTypes } from './vesting.ts';
@@ -108,7 +109,8 @@ export type AllActions =
   | MetacolonyVestingTypes
   | WalletActionTypes
   | DecisionActionTypes
-  | ExpendituresActionTypes;
+  | ExpendituresActionTypes
+  | ProxyColoniesActionTypes;
 
 export type Action<T extends AllActions['type']> = Extract<
   AllActions,

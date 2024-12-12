@@ -1542,6 +1542,10 @@ type Colony @model {
   """
   name: String! @index(name: "byName", queryField: "getColonyByName")
   """
+  The block number the colony was created attached
+  """
+  createdAtBlock: Int
+  """
   The unique address of the native token of the Colony
   """
   nativeTokenId: ID!
