@@ -85,7 +85,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
 
                   onChange(updatedFilterValue);
                 }}
-                classNames="subnav-button px-0 sm:px-3.5"
+                className="subnav-button px-0 sm:px-3.5"
               >
                 {checkboxLabel}
               </Checkbox>
@@ -111,7 +111,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
                               [nestedValue]: !filterValue[nestedValue],
                             });
                           }}
-                          classNames="subnav-button px-0 sm:px-3.5"
+                          className="subnav-button px-0 sm:px-3.5"
                         >
                           {nestedCheckboxLabel}
                         </Checkbox>
@@ -143,7 +143,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
                 hasShadow: true,
                 className: 'py-6 px-2',
               }}
-              classNames="w-full sm:max-w-[13.25rem]"
+              className="w-full sm:max-w-[13.25rem]"
             >
               <span className="px-3.5 pb-2 uppercase text-gray-400 text-4">
                 {formatText({ id: 'permissions.type' })}
@@ -178,7 +178,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
 
                         onChange(updatedFilterValue);
                       }}
-                      classNames="subnav-button px-0 sm:px-3.5"
+                      className="subnav-button px-0 sm:px-3.5"
                     >
                       {checkboxLabel}
                     </Checkbox>
@@ -192,7 +192,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
                           hasShadow: true,
                           className: 'py-6 px-2',
                         }}
-                        classNames="w-full sm:max-w-[13.25rem]"
+                        className="w-full sm:max-w-[13.25rem]"
                       >
                         <span className="px-3.5 uppercase text-gray-400 text-4">
                           {formatText({ id: 'permissions.type' })}
@@ -211,7 +211,7 @@ const RootFilter: FC<PermissionsPageFilterRootProps> = ({
                                   [nestedValue]: !filterValue[nestedValue],
                                 });
                               }}
-                              classNames="subnav-button px-0 sm:px-3.5"
+                              className="subnav-button px-0 sm:px-3.5"
                             >
                               {nestedCheckboxLabel}
                             </Checkbox>

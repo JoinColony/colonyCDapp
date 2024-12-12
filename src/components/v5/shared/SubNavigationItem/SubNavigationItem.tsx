@@ -76,7 +76,7 @@ const SubNavigationItem: FC<SubNavigationItemProps> = ({
             hasShadow: true,
             className: 'py-4 sm:pt-6 sm:pb-4 px-2',
           }}
-          classNames="w-full sm:max-w-[17.375rem]"
+          className="w-full sm:max-w-[17.375rem]"
         >
           {option && nestedFilters && (
             <NestedOptions

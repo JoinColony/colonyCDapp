@@ -119,7 +119,7 @@ const Filter: FC<FilterProps> = ({
                 hasShadow: true,
                 className: 'pt-6 pb-4 px-2.5',
               }}
-              classNames="w-full sm:max-w-[17.375rem]"
+              className="w-full sm:max-w-[17.375rem]"
             >
               <div className="sm:mb-6 sm:px-3.5">
                 <SearchInput
