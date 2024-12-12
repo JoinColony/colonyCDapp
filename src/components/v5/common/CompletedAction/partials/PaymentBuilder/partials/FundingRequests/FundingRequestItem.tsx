@@ -9,7 +9,10 @@ import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyActio
 
 import { type FundingRequestItemProps } from './types.ts';
 
-const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
+const FundingRequestItem: FC<FundingRequestItemProps> = ({
+  action,
+  isOnlyItem,
+}) => {
   const { motionState, loadingAction } = useGetColonyAction(
     action.transactionHash,
   );
@@ -27,8 +30,9 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
       className={clsx(
         'group flex w-full items-center justify-between outline-none transition-all',
         {
-          'text-blue-400': isSelected,
-          'text-gray-600': !isSelected,
+          'text-blue-400': isSelected && !isOnlyItem,
+          'text-gray-600 hover:text-blue-400': !isSelected || isOnlyItem,
+          'cursor-default': isOnlyItem,
         },
       )}
       onClick={() => {
@@ -37,7 +41,7 @@ const FundingRequestItem: FC<FundingRequestItemProps> = ({ action }) => {
     >
       <span
         className={clsx('text-sm', {
-          underline: isSelected,
+          underline: isSelected && !isOnlyItem,
         })}
       >
         <FormattedDate

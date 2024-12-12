@@ -6,4 +6,5 @@ export interface FundingRequestsProps {
 
 export interface FundingRequestItemProps {
   action: ExpenditureAction;
+  isOnlyItem: boolean;
 }
