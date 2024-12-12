@@ -2,25 +2,21 @@ import { Confetti, Password } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
+import { Flow } from '~common/Onboarding/types.ts';
 import { ADDRESS_ZERO, REQUEST_ACCESS } from '~constants/index.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { LandingPageLayout } from '~frame/Extensions/layouts/LandingPageLayout.tsx';
 import InfoBanner from '~frame/LandingPage/partials/InfoBanner/InfoBanner.tsx';
 import LoadingTemplate from '~frame/LoadingTemplate/LoadingTemplate.tsx';
+import OnboardingPage from '~frame/v5/pages/OnboardingPage/index.ts';
 import {
   useGetColonyMemberInviteQuery,
   useValidateUserInviteMutation,
   useGetPublicColonyByNameQuery,
 } from '~gql';
 import useIsContributor from '~hooks/useIsContributor.ts';
-import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CardWithCallout from '~v5/shared/CardWithCallout/CardWithCallout.tsx';
@@ -89,7 +85,6 @@ const ColonyPreviewPage = () => {
     inviteCode: string;
     colonyName: string;
   }>();
-  const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { connectWallet, wallet, user, userLoading, walletConnecting } =
     useAppContext();
@@ -141,9 +136,7 @@ const ColonyPreviewPage = () => {
   }
 
   if (wallet && !user) {
-    return (
-      <Navigate to={CREATE_PROFILE_ROUTE} state={{ redirectTo: pathname }} />
-    );
+    return <OnboardingPage flow={Flow.User} />;
   }
 
   if (isContributor) {
