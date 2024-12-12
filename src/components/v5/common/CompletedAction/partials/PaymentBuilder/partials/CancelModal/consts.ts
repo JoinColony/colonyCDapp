@@ -3,14 +3,19 @@ import { object, string } from 'yup';
 import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const cancelDecisionMethodDescriptions = {
-  [DecisionMethod.Permissions]: formatText({
-    id: 'cancelModal.permissionsDescription',
-  }),
+export const getCancelDecisionMethodDescriptions = (userRole: string) => ({
+  [DecisionMethod.Permissions]: formatText(
+    {
+      id: 'cancelModal.permissionsDescription',
+    },
+    {
+      permission: userRole,
+    },
+  ),
   [DecisionMethod.Reputation]: formatText({
     id: 'cancelModal.reputationDescription',
   }),
-};
+});
 
 export const validationSchema = object()
   .shape({

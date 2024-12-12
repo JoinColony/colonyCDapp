@@ -40,6 +40,7 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
+import CancelModal from '../CancelModal/CancelModal.tsx';
 import CancelRequests from '../CancelRequests/CancelRequests.tsx';
 import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
 import FormatDate from '../FormatDate/FormatDate.tsx';
@@ -89,6 +90,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     setSelectedReleaseAction,
     selectedCancellingAction,
     setSelectedCancellingAction,
+    isCancelModalOpen,
+    toggleOffCancelModal,
   } = usePaymentBuilderContext();
 
   const { expenditureId } = action;
@@ -571,7 +574,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                     actionType={ActionTypes.EXPENDITURE_LOCK}
                     mode="primarySolid"
                     className="w-full"
-                    isLoading={expectedStepKey === ExpenditureStep.Funding}
+                    isLoading={
+                      expectedStepKey === ExpenditureStep.Funding ||
+                      expectedStepKey === ExpenditureStep.Cancel
+                    }
                     isFullSize
                   />
                 }
@@ -626,7 +632,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               })}
               content={
                 <>
-                  {expectedStepKey === ExpenditureStep.Release ? (
+                  {expectedStepKey === ExpenditureStep.Release ||
+                  expectedStepKey === ExpenditureStep.Cancel ? (
                     <IconButton
                       className="w-full"
                       rounded="s"
@@ -740,11 +747,13 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
   }
 
   const currentIndex = getCancelStepIndex(expenditure, items);
-
   const updatedItems =
     (isExpenditureCanceled && !isAnyCancellingMotionInProgress) ||
     expenditure?.status === ExpenditureStatus.Cancelled
-      ? [...items.slice(0, currentIndex), reclaimStakeItem]
+      ? [
+          ...items.slice(0, currentIndex === 1 ? 2 : currentIndex),
+          reclaimStakeItem,
+        ]
       : items;
 
   if (loadingExpenditure) {
@@ -790,6 +799,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               setExpectedStepKey(ExpenditureStep.Release);
             }}
             // @todo: update when split payment will be ready
+          />
+          <CancelModal
+            isOpen={isCancelModalOpen}
+            expenditure={expenditure}
+            onClose={toggleOffCancelModal}
+            refetchExpenditure={refetchExpenditure}
+            isActionStaked={expenditure.isStaked}
+            onSuccess={() => {
+              setExpectedStepKey(ExpenditureStep.Cancel);
+            }}
           />
         </>
       )}

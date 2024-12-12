@@ -15,9 +15,14 @@ const PenaliseBadge: FC<PenaliseBadgeProps> = ({
   ...rest
 }) => (
   <PillsBase
-    className={clsx('border bg-teams-blue-50 text-teams-blue-400', className, {
-      'bg-teams-pink-100 text-teams-pink-500': isPenalised,
-    })}
+    className={clsx(
+      'border border-teams-blue-50 bg-teams-blue-50 text-teams-blue-400',
+      className,
+      {
+        'border-teams-pink-100 bg-teams-pink-100 text-teams-pink-500':
+          isPenalised,
+      },
+    )}
     icon={icon}
     {...rest}
   >

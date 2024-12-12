@@ -1811,7 +1811,7 @@
     "cancelModal.description": "This action cannot be undone. You will not be penalized for canceling the payment, any stakes made will be returned.",
     "cancelModal.locked.description": "To cancel, you will need to have Payer level or above permissions or use an available decision method.",
     "cancelModal.locked.submit": "Confirm cancellation",
-    "cancelModal.permissionsDescription": "This will use your Payer permissions to immediately cancel the payment and either return or penalize the creators stake.",
+    "cancelModal.permissionsDescription": "This will use your {permission} permissions to immediately cancel the payment and either return or penalize the creators stake.",
     "cancelModal.reputationDescription": "This will start the lazy consensus process to make the decision to cancel the payment and either return or penalize the creators stake.",
     "cancelModal.creatorStake": "Creator’s stake",
     "cancelModal.penaliseTitle": "Was this payment inappropriate? If so, should the payment’s creator be penalised?",

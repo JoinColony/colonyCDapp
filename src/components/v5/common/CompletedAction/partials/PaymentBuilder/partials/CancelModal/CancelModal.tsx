@@ -8,9 +8,9 @@ import {
 import React, { useState, type FC } from 'react';
 import { toast } from 'react-toastify';
 
+import { getRole } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { usePaymentBuilderContext } from '~context/PaymentBuilderContext/PaymentBuilderContext.ts';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import useExpenditureStaking from '~hooks/useExpenditureStaking.ts';
@@ -27,7 +27,9 @@ import {
 import Toast from '~shared/Extensions/Toast/index.ts';
 import { Form } from '~shared/Fields/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button, { ActionButton } from '~v5/shared/Button/index.ts';
@@ -36,10 +38,9 @@ import Modal from '~v5/shared/Modal/index.ts';
 
 import DecisionMethodSelect from '../DecisionMethodSelect/DecisionMethodSelect.tsx';
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
-import { ExpenditureStep } from '../PaymentBuilderWidget/types.ts';
 
 import {
-  cancelDecisionMethodDescriptions,
+  getCancelDecisionMethodDescriptions,
   stakedValidationSchema,
   validationSchema,
 } from './consts.ts';
@@ -54,12 +55,12 @@ const CancelModal: FC<CancelModalProps> = ({
   refetchExpenditure,
   isActionStaked,
   expenditure,
+  onSuccess,
   ...rest
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useAppContext();
   const { colony } = useColonyContext();
-  const { setExpectedStepKey } = usePaymentBuilderContext();
   const { votingReputationAddress } = useEnabledExtensions();
   const { nativeToken } = colony;
   const { tokenAddress } = nativeToken;
@@ -139,14 +140,17 @@ const CancelModal: FC<CancelModalProps> = ({
         decisionMethod &&
         decisionMethod.value === DecisionMethod.Reputation
       ) {
-        if (penalise) {
+        if (expenditure.isStaked) {
           await cancelStakedExpenditureViaMotion(stakedMotionPayload);
         } else {
           await cancelExpenditureViaMotion(motionPayload);
         }
-      } else if (penalise) {
+      } else if (expenditure.isStaked) {
         await cancelStakedExpenditure(stakedPayload);
-        await reclaimExpenditureStake(reclaimPayload);
+
+        if (!penalise) {
+          await reclaimExpenditureStake(reclaimPayload);
+        }
       } else {
         await cancelExpenditure(payload);
       }
@@ -156,9 +160,7 @@ const CancelModal: FC<CancelModalProps> = ({
       });
 
       setIsSubmitting(false);
-      setExpectedStepKey(
-        isActionStaked ? ExpenditureStep.Reclaim : ExpenditureStep.Cancel,
-      );
+      onSuccess();
       onClose();
     } catch (err) {
       setIsSubmitting(false);
@@ -170,7 +172,14 @@ const CancelModal: FC<CancelModalProps> = ({
     expenditure.lockingActions?.items &&
     expenditure.lockingActions.items.length > 0;
 
+  const colonyRoles = extractColonyRoles(colony.roles);
+  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
+  const userRole = getRole(userPermissions);
+
   const cancelDecisionMethodItems = useCancelingDecisionMethods();
+  const cancelDecisionMethodDescriptions = getCancelDecisionMethodDescriptions(
+    userRole.name,
+  );
 
   return (
     <Modal
@@ -325,7 +334,7 @@ const CancelModal: FC<CancelModalProps> = ({
               loadingBehavior={LoadingBehavior.TxLoader}
               onSuccess={() => {
                 onClose();
-                setExpectedStepKey(ExpenditureStep.Cancel);
+                onSuccess();
                 toast.success(
                   <Toast
                     type="success"
