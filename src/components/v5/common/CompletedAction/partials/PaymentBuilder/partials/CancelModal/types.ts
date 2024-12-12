@@ -6,5 +6,5 @@ export interface CancelModalProps extends ModalProps {
   expenditure: Expenditure;
   refetchExpenditure: RefetchExpenditureType;
   isActionStaked: boolean;
-  onSuccess: () => void;
+  onSuccess?: () => void;
 }

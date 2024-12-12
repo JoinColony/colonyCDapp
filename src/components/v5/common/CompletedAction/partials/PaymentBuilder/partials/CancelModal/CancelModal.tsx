@@ -160,7 +160,7 @@ const CancelModal: FC<CancelModalProps> = ({
       });
 
       setIsSubmitting(false);
-      onSuccess();
+      onSuccess?.();
       onClose();
     } catch (err) {
       setIsSubmitting(false);
@@ -334,7 +334,7 @@ const CancelModal: FC<CancelModalProps> = ({
               loadingBehavior={LoadingBehavior.TxLoader}
               onSuccess={() => {
                 onClose();
-                onSuccess();
+                onSuccess?.();
                 toast.success(
                   <Toast
                     type="success"
