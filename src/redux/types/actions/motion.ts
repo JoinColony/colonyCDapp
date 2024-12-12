@@ -18,6 +18,7 @@ import {
   type Address,
   type ManageVerifiedMembersOperation,
 } from '~types/index.ts';
+import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
@@ -469,5 +470,24 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_MANAGE_TOKENS_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_ARBITRARY_TRANSACTION,
+      {
+        customActionTitle: string;
+        colonyAddress: Address;
+        colonyName?: string;
+        colonyDomains: Domain[];
+        colonyRoles: ColonyRoleFragment[];
+        annotationMessage?: string;
+
+        transactions: AddTransactionTableModel[];
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_ARBITRARY_TRANSACTION_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_ARBITRARY_TRANSACTION_SUCCESS,
       MetaWithSetter<object>
     >;

@@ -96,6 +96,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
       case ColonyActionType.MakeArbitraryTransaction:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
         return <ArbitraryTransaction action={action} />;
       /**
        * @deprecated
@@ -149,6 +150,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ReleaseStagedPaymentsMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return <Motions transactionId={action.transactionHash} />;
       // @todo: reorganize folder structure after all of the advanced payments will be ready

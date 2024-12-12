@@ -13,7 +13,6 @@ import { ActionTypes } from '../actionTypes.ts';
 import { type AllActions } from '../types/actions/index.ts';
 
 import actionsSagas from './actions/index.ts';
-import arbitraryTxActionSaga from './arbitraryTxs/arbitraryTx.ts';
 import colonyFinishCreateSaga from './colony/colonyFinishCreate.ts';
 import colonySagas, { colonyCreateSaga } from './colony/index.ts';
 import decisionsSagas from './decisions/index.ts';
@@ -61,7 +60,6 @@ function* setupContextDependentSagas() {
     // call(vestingSagas),
     call(setupUsersSagas),
     call(expendituresSagas),
-    call(arbitraryTxActionSaga),
     call(setupTransactionsSaga),
     /**
      * We've loaded all the context sagas, so we can proceed with redering
