@@ -29,6 +29,7 @@ const getValueByType = ({ type, value, isFull }) => {
 export const useArbitraryTxsTableColumns = ({
   openTransactionModal,
   isError,
+  hasNoDecisionMethods,
 }): ColumnDef<AddTransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<AddTransactionTableModel>(),
@@ -59,6 +60,7 @@ export const useArbitraryTxsTableColumns = ({
                 type="button"
                 onClick={openTransactionModal}
                 mode="link"
+                disabled={hasNoDecisionMethods}
                 className={clsx(
                   'text-gray-400 no-underline md:hover:text-blue-400',
                   {
@@ -93,17 +95,17 @@ export const useArbitraryTxsTableColumns = ({
           const data: CellDescriptionItem[] = [];
           if (original?.method) {
             data.push({
-              title: 'Method',
+              name: 'Method',
               value: original?.method,
             });
           }
           if (original?.args) {
-            Object.entries(original.args).forEach((item) => {
+            original.args?.forEach(({ name, type, value }) => {
               data.push({
-                title: `${item[0]} (${item[1].type})`,
+                name: `${name} (${type})`,
                 value: getValueByType({
-                  value: item[1].value,
-                  type: item[1].type,
+                  value,
+                  type,
                   isFull: !isMobile,
                 }),
               });
