@@ -1,13 +1,14 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { BigNumber } from 'ethers';
-import React, { type FC, useMemo } from 'react';
+import React, { type FC, useMemo, useState, useEffect } from 'react';
 
 import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { type ExpenditureSlotFragment, ExpenditureStatus } from '~gql';
 import { useTablet } from '~hooks';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { type ExpenditurePayoutWithSlotId } from '~types/expenditures.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -45,10 +46,18 @@ const useGetPaymentBuilderColumns = ({
   const { currentBlockTime: blockTime, fetchCurrentBlockTime } =
     useCurrentBlockTime();
 
-  const claimablePayouts = useMemo(
-    () => getClaimableExpenditurePayouts(slots, blockTime, finalizedTimestamp),
-    [blockTime, finalizedTimestamp, slots],
-  );
+  const [claimablePayouts, setClaimablePayouts] = useState<
+    ExpenditurePayoutWithSlotId[]
+  >([]);
+
+  useEffect(() => {
+    if (finalizedTimestamp !== null) {
+      fetchCurrentBlockTime();
+      setClaimablePayouts(
+        getClaimableExpenditurePayouts(slots, blockTime, finalizedTimestamp),
+      );
+    }
+  }, [slots, blockTime, finalizedTimestamp, fetchCurrentBlockTime]);
 
   const allPaymentsLoaded = data.filter((item) => item.isLoading).length === 0;
 

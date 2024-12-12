@@ -15,6 +15,7 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux';
 import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpenditure.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { DecisionMethod } from '~types/actions.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
 import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
@@ -37,17 +38,17 @@ import { type StepperItem } from '~v5/shared/Stepper/types.ts';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
-import FinalizeByPaymentCreatorInfo from '../FinalizeByPaymentCreatorInfo/FinalizeByPaymentCreatorInfo.tsx';
+import FinalizePaymentModal from '../FinalizePaymentModal/FinalizePaymentModal.tsx';
+import { waitForDbAfterClaimingPayouts } from '../FinalizePaymentModal/utils.ts';
 import FundingModal from '../FundingModal/FundingModal.tsx';
-import FundingRequests from '../FundingRequests/FundingRequests.tsx';
 import MotionBox from '../MotionBox/MotionBox.tsx';
 import PaymentStepDetailsBlock from '../PaymentStepDetailsBlock/PaymentStepDetailsBlock.tsx';
-import ReleasePaymentModal from '../ReleasePaymentModal/ReleasePaymentModal.tsx';
-import { waitForDbAfterClaimingPayouts } from '../ReleasePaymentModal/utils.ts';
+import RequestsBox from '../RequestsBox/RequestsBox.tsx';
 import StagedPaymentStep from '../StagedPaymentStep/StagedPaymentStep.tsx';
 import StepDetailsBlock from '../StepDetailsBlock/StepDetailsBlock.tsx';
 import UninstalledExtensionBox from '../UninstalledExtensionBox/UninstalledExtensionBox.tsx';
 
+import { useGetFinalizeStep } from './hooks.tsx';
 import MultiSigFunding from './partials/MultiSigFunding.tsx';
 import { ExpenditureStep, type PaymentBuilderWidgetProps } from './types.ts';
 import {
@@ -73,9 +74,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     isFundingModalOpen,
     toggleOffFundingModal: hideFundingModal,
     toggleOnFundingModal: showFundingModal,
-    isReleaseModalOpen: isReleasePaymentModalOpen,
-    toggleOffReleaseModal: hideReleasePaymentModal,
-    toggleOnReleaseModal: showReleasePaymentModal,
+    isFinalizeModalOpen: isFinalizePaymentModalOpen,
+    toggleOffFinalizeModal: hideFinalizePaymentModal,
     selectedFundingAction,
     selectedReleaseAction,
     setSelectedFundingAction,
@@ -94,13 +94,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
 
   const {
     fundingActions,
-    finalizingActions,
     cancellingActions,
     releaseActions,
-    finalizedAt,
     isStaked,
     userStake,
-    ownerAddress,
     status,
   } = expenditure || {};
   const { amount: stakeAmount = '' } = userStake || {};
@@ -151,6 +148,13 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       setExpectedStepKey(null);
     }
   }, [expectedStepKey, expenditureStep]);
+
+  const finalizeStep = useGetFinalizeStep({
+    expectedStepKey,
+    expenditure,
+    expenditureStep,
+    setExpectedStepKey,
+  });
 
   const lockExpenditurePayload: LockExpenditurePayload | null = useMemo(
     () =>
@@ -383,9 +387,8 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                     values={lockExpenditurePayload}
                     actionType={ActionTypes.EXPENDITURE_LOCK}
                     mode="primarySolid"
-                    className="w-full"
-                    isLoading={expectedStepKey === ExpenditureStep.Funding}
                     isFullSize
+                    isLoading={expectedStepKey === ExpenditureStep.Funding}
                   />
                 }
               />
@@ -429,7 +432,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               <UninstalledExtensionBox />
             )}
           {sortedFundingActions.length > 0 && (
-            <FundingRequests actions={sortedFundingActions} />
+            <RequestsBox
+              actions={sortedFundingActions}
+              selectedAction={selectedFundingAction}
+              onClick={setSelectedFundingAction}
+              title={formatText({
+                id: 'expenditure.fundingRequest.title',
+              })}
+            />
           )}
           {getFundingStepContent()}
           {shouldShowFundingButton && (
@@ -466,56 +476,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         </div>
       ),
     },
-    {
-      key: ExpenditureStep.Release,
-      heading: { label: formatText({ id: 'expenditure.releaseStage.label' }) },
-      content: (
-        <>
-          {expenditureStep === ExpenditureStep.Release ? (
-            <>
-              {hasUninstalledExtension ? (
-                <UninstalledExtensionBox />
-              ) : (
-                <StepDetailsBlock
-                  text={formatText({
-                    id: 'expenditure.releaseStage.info',
-                  })}
-                  content={
-                    <Button
-                      className="w-full"
-                      onClick={showReleasePaymentModal}
-                      text={formatText({
-                        id: 'expenditure.releaseStage.button',
-                      })}
-                      loading={expectedStepKey === ExpenditureStep.Payment}
-                    />
-                  }
-                />
-              )}
-            </>
-          ) : (
-            <>
-              {finalizedAt ? (
-                <>
-                  {finalizingActions?.items[0]?.initiatorAddress ===
-                  ownerAddress ? (
-                    <FinalizeByPaymentCreatorInfo
-                      userAdddress={expenditure?.ownerAddress}
-                    />
-                  ) : (
-                    <ActionWithPermissionsInfo
-                      action={finalizingActions?.items[0]}
-                    />
-                  )}
-                </>
-              ) : (
-                <div />
-              )}
-            </>
-          )}
-        </>
-      ),
-    },
+    finalizeStep,
     paymentStep,
   ];
 
@@ -537,12 +498,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
       />
       {expenditure && (
         <>
-          <ReleasePaymentModal
+          <FinalizePaymentModal
             expenditure={expenditure}
-            isOpen={isReleasePaymentModalOpen}
-            onClose={hideReleasePaymentModal}
-            onSuccess={async () => {
+            isOpen={isFinalizePaymentModalOpen}
+            onClose={hideFinalizePaymentModal}
+            onSuccess={async (decisionMethod) => {
               setExpectedStepKey(ExpenditureStep.Payment);
+
+              if (decisionMethod.value === DecisionMethod.Reputation) {
+                return;
+              }
 
               try {
                 const claimablePayouts = getClaimableExpenditurePayouts(
