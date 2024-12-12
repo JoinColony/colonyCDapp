@@ -2,7 +2,6 @@ import { ChartPieSlice, UsersThree } from '@phosphor-icons/react';
 import React, { useEffect, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
@@ -12,7 +11,6 @@ import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMetho
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamsSelect from '~v5/common/ActionSidebar/partials/TeamsSelect/index.ts';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
-import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { useSplitPayment } from './hooks.ts';
@@ -27,11 +25,6 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
 
   const { watch, trigger } = useFormContext();
   const selectedTeam = watch('team');
-
-  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
-    DecisionMethod.Reputation,
-    DecisionMethod.MultiSig,
-  ]);
 
   useEffect(() => {
     const subscription = watch((_, { name: fieldName = '', type }) => {
@@ -99,7 +92,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
-      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
+      <DecisionMethodField />
       <Description />
       {currentToken && (
         <SplitPaymentRecipientsField
