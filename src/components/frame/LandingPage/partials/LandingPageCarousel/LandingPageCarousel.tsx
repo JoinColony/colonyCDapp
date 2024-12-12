@@ -8,7 +8,7 @@ import Slide2 from '~images/assets/landing/slider2.png';
 import Slide3 from '~images/assets/landing/slider3.png';
 import SlideMobile from '~images/assets/landing/sliderMobile.png';
 
-const displayName = 'frame.LandingPageCarousel';
+const displayName = 'frame.LandingPage.partials.LandingPageCarousel';
 
 const MSG = defineMessages({
   titleSlide0: {
@@ -60,15 +60,16 @@ const LandingPageCarousel = () => {
 
   return (
     <div>
-      <div className="w-full max-w-[31.25rem] md:hidden">
-        <img className="h-auto w-full" src={SlideMobile} alt="slider mobile" />
+      <div className="w-full md:hidden">
+        <img className="w-full" src={SlideMobile} alt="slider mobile" />
       </div>
       <div className="hidden w-full max-w-[31.25rem] md:block">
         <div className="relative mb-9 h-[7.25rem]">
           {slides.map((slide, index) => {
             const isCurrentSlide = currentSlide === index;
+
             return (
-              <div className="absolute left-0 top-0">
+              <div className="absolute left-0 top-0" key={slide.title.id}>
                 <h1
                   className={clsx(
                     'transition-opacity duration-normal heading-2',

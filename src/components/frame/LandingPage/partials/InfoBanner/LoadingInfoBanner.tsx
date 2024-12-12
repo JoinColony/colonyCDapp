@@ -8,7 +8,7 @@ interface LoadingInfoBannerProps {
   contentClassNames: string;
 }
 
-const displayName = 'frame.LandingPage.InfoBanner';
+const displayName = 'frame.LandingPage.partials.InfoBanner';
 
 const LoadingInfoBanner: FC<LoadingInfoBannerProps> = ({
   containerClassNames,

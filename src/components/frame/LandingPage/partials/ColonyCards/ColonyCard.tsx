@@ -14,7 +14,7 @@ export interface ColonyCardProps {
   membersCount: number;
 }
 
-const displayName = 'frame.LandingPage.ColonyCards';
+const displayName = 'frame.LandingPage.partials.ColonyCards';
 
 const MSG = defineMessages({
   members: {

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import LandingPageCarousel from '~frame/LandingPage/LandingPageCarousel.tsx';
+import LandingPageCarousel from '~frame/LandingPage/partials/LandingPageCarousel/LandingPageCarousel.tsx';
 
 const meta: Meta<typeof LandingPageCarousel> = {
   title: 'Common/Landing Page Carousel',
