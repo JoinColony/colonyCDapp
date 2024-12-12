@@ -54,6 +54,8 @@ const TextareaBase = React.forwardRef<HTMLTextAreaElement, TextareaBaseProps>(
             'w-full resize-none bg-base-white text-md outline-none',
             {
               'placeholder:text-gray-400': !disabled,
+              'transition-colors md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+                state !== FieldState.Error && !disabled,
               'pointer-events-none text-gray-300 placeholder:text-gray-300':
                 disabled,
             },

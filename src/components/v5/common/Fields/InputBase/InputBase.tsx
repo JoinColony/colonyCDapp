@@ -68,6 +68,8 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
           'w-full bg-transparent text-md outline-0 focus:outline-none',
           {
             'text-gray-900 placeholder:text-gray-400': !disabled,
+            'transition-colors md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+              state !== FieldState.Error && !disabled,
             'pointer-events-none bg-transparent text-gray-400 placeholder:text-gray-300':
               disabled,
             'rounded border border-gray-300 bg-base-white px-3.5 py-2 focus:border-blue-200 focus:shadow-light-blue':

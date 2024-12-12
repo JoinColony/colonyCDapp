@@ -169,7 +169,8 @@ const AmountField: FC<AmountFieldProps> = ({
         className={clsx(
           'col-start-1 row-start-1 w-auto min-w-[0.5em] flex-shrink resize-none appearance-none bg-base-white text-md outline-none outline-0',
           {
-            'text-gray-900 placeholder:text-gray-400': !isError && !isDisabled,
+            'text-gray-900 transition-colors placeholder:text-gray-400 md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
+              !isError && !isDisabled,
             'text-gray-400 placeholder:text-gray-300':
               isDisabled && !isTokenSelectionDisabled,
             'text-gray-500 placeholder:text-gray-300':
