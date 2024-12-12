@@ -59,7 +59,7 @@ const updateContributorQueries = (
       const modifiedContributors = data.searchColonyContributors.items.map(
         (contributor) => {
           if (!contributor) {
-            return contributor;
+            return null;
           }
 
           const contributorData = updatedContributors.find(
@@ -67,11 +67,24 @@ const updateContributorQueries = (
               contributorEntry.userAddress === contributor.contributorAddress,
           );
 
-          if (!contributorData) {
+          if (!contributorData || !contributor.user) {
             return contributor;
           }
 
-          return merge({ ...contributor }, contributorData.newData);
+          const mergedProfile = merge(
+            { ...contributor.user.profile },
+            contributorData.newData.user?.profile,
+          );
+
+          const updatedContributor = {
+            ...contributor,
+            user: {
+              ...contributor.user,
+              profile: mergedProfile,
+            },
+          };
+
+          return updatedContributor;
         },
       );
 
@@ -97,16 +110,26 @@ const updateContributorQueries = (
       (
         data: GetColonyContributorQuery | null,
       ): GetColonyContributorQuery | null => {
-        if (!data?.getColonyContributor) {
+        if (!data?.getColonyContributor || !data.getColonyContributor.user) {
           return null;
         }
 
+        const mergedProfile = merge(
+          { ...data.getColonyContributor.user.profile },
+          newData.user?.profile,
+        );
+
+        const updatedContributor = {
+          ...data.getColonyContributor,
+          user: {
+            ...data.getColonyContributor.user,
+            profile: mergedProfile,
+          },
+        };
+
         return {
           ...data,
-          getColonyContributor: merge(
-            { ...data.getColonyContributor },
-            newData,
-          ),
+          getColonyContributor: updatedContributor,
         };
       },
     );
