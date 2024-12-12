@@ -1,7 +1,6 @@
 import { MagnifyingGlass } from '@phosphor-icons/react';
 import React, { type FC, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useFilterContext } from '~context/FilterContext/FilterContext.ts';
 import { useSearchContext } from '~context/SearchContext/SearchContext.ts';
@@ -11,8 +10,10 @@ import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 import PopoverBase from '~v5/shared/PopoverBase/index.ts';
 
+import SearchPill from '../Pills/SearchPill/SearchPill.tsx';
 import TableFiltering from '../TableFiltering/index.ts';
 
+import { useSearchFilter } from './hooks.ts';
 import FilterOptions from './partials/FilterOptions.tsx';
 import SearchInput from './partials/SearchInput/index.ts';
 import { type FilterProps } from './types.ts';
@@ -27,20 +28,15 @@ const Filter: FC<FilterProps> = ({
 }) => {
   const { formatMessage } = useIntl();
   const [isOpened, setOpened] = useState(false);
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
-  const isMobile = useMobile();
   const {
+    isSearchOpened,
+    openSearch,
+    closeSearch,
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-end',
-    trigger: 'click',
-    interactive: true,
-  });
+  } = useSearchFilter();
+  const isMobile = useMobile();
 
   const { selectedFilterCount } = useFilterContext();
   const { searchValue, setSearchValue } = useSearchContext();
@@ -48,58 +44,72 @@ const Filter: FC<FilterProps> = ({
   return (
     <>
       {isMobile ? (
-        <div className="flex items-center gap-2">
-          <FilterButton
-            isOpen={isOpened}
-            onClick={() => setOpened(!isOpened)}
-            numberSelectedFilters={selectedFilterCount}
-            customLabel={customLabel}
-          />
-          <Button
-            mode="tertiary"
-            className="flex sm:hidden"
-            size="small"
-            aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
-          >
-            <MagnifyingGlass size={14} />
-          </Button>
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setOpened(false)}
-            isOpen={isOpened}
-            withPaddingBottom
-          >
-            <FilterOptions excludeFilterType={excludeFilterType} />
-          </Modal>
-          <Modal
-            isFullOnMobile={false}
-            onClose={() => setIsSearchOpened(false)}
-            isOpen={isSearchOpened}
-            withPaddingBottom
-          >
-            <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
-            <div className="sm:mb-6 sm:px-3.5">
-              <SearchInput
-                onSearchButtonClick={() => setIsSearchOpened(false)}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                searchInputPlaceholder={searchInputPlaceholder}
-              />
-            </div>
-          </Modal>
+        <div className="flex flex-col items-start gap-2">
+          <div className="flex items-center gap-2">
+            <FilterButton
+              isOpen={isOpened}
+              onClick={() => setOpened(!isOpened)}
+              numberSelectedFilters={selectedFilterCount}
+              customLabel={customLabel}
+            />
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatMessage({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+            <Modal
+              isFullOnMobile={false}
+              onClose={() => setOpened(false)}
+              isOpen={isOpened}
+              withPaddingBottom
+            >
+              <FilterOptions excludeFilterType={excludeFilterType} />
+            </Modal>
+            <Modal
+              isFullOnMobile={false}
+              onClose={closeSearch}
+              isOpen={isSearchOpened}
+              withPaddingBottom
+            >
+              <p className="mb-4 text-gray-400 text-4">{searchInputLabel}</p>
+              <div className="sm:mb-6 sm:px-3.5">
+                <SearchInput
+                  onSearchButtonClick={closeSearch}
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  searchInputPlaceholder={searchInputPlaceholder}
+                />
+              </div>
+            </Modal>
+          </div>
+          {!!searchValue && (
+            <SearchPill
+              value={searchValue}
+              onClick={() => setSearchValue('')}
+            />
+          )}
         </div>
       ) : (
         <>
           <div className="flex flex-row gap-2">
             <TableFiltering />
+            {!!searchValue && (
+              <SearchPill
+                value={searchValue}
+                onClick={() => setSearchValue('')}
+              />
+            )}
             <FilterButton
-              isOpen={isFiltersOpen}
+              isOpen={isSearchOpened}
               setTriggerRef={setTriggerRef}
               customLabel={customLabel}
             />
           </div>
-          {isFiltersOpen && (
+          {isSearchOpened && (
             <PopoverBase
               setTooltipRef={setTooltipRef}
               tooltipProps={getTooltipProps}
@@ -113,7 +123,7 @@ const Filter: FC<FilterProps> = ({
             >
               <div className="sm:mb-6 sm:px-3.5">
                 <SearchInput
-                  onSearchButtonClick={() => setIsSearchOpened(false)}
+                  onSearchButtonClick={closeSearch}
                   searchValue={searchValue}
                   setSearchValue={setSearchValue}
                   searchInputPlaceholder={searchInputPlaceholder}

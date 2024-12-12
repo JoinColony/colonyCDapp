@@ -11,6 +11,7 @@ const displayName = 'v5.SearchSelect.partials.SearchInput';
 
 const SearchInput: FC<SearchInputProps> = ({
   onChange,
+  onClose,
   value,
   placeholder = formatText({ id: 'placeholder.search' }),
   shouldFocus = false,
@@ -41,6 +42,11 @@ const SearchInput: FC<SearchInputProps> = ({
             <MagnifyingGlass size={14} />
           </span>
         }
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onClose?.();
+          }
+        }}
         prefix={
           value ? (
             <button

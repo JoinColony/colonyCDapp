@@ -1,11 +1,16 @@
 import { MagnifyingGlass } from '@phosphor-icons/react';
-import React, { type FC, useCallback, useState } from 'react';
-import { usePopperTooltip } from 'react-popper-tooltip';
+import clsx from 'clsx';
+import React, { type FC, useCallback } from 'react';
 
+import { Action } from '~constants/actions.ts';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
+import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import FilterButton from '~v5/shared/Filter/FilterButton.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -25,17 +30,16 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
   activeFiltersNumber,
 }) => {
   const {
+    isSearchOpened,
+    openSearch,
+    closeSearch,
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
-    visible: isFiltersOpen,
-  } = usePopperTooltip({
-    delayShow: 200,
-    delayHide: 200,
-    placement: 'bottom-end',
-    trigger: 'click',
-    interactive: true,
-  });
+  } = useSearchFilter();
+  const {
+    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
+  } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -45,7 +49,6 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
     },
     [onSearch],
   );
-  const [isSearchOpened, setIsSearchOpened] = useState(false);
 
   const RootItems = items.map(
     ({ icon, items: nestedItems, label, name, title }) => (
@@ -64,24 +67,48 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
-        <FilterButton
-          isOpen={isFiltersOpen}
-          onClick={toggleModalOn}
-          setTriggerRef={setTriggerRef}
-          customLabel={formatText({ id: 'allFilters' })}
-          numberSelectedFilters={activeFiltersNumber}
-        />
-        {isMobile && (
+      <div
+        className={clsx('flex flex-col', {
+          'items-start gap-2': isMobile && searchValue,
+        })}
+      >
+        <div className="flex flex-row gap-2">
+          {!!searchValue && !isMobile && (
+            <SearchPill value={searchValue} onClick={() => onSearch('')} />
+          )}
+          <FilterButton
+            isOpen={isSearchOpened}
+            onClick={toggleModalOn}
+            setTriggerRef={setTriggerRef}
+            customLabel={formatText({ id: 'allFilters' })}
+            numberSelectedFilters={activeFiltersNumber}
+          />
+          {isMobile && (
+            <Button
+              mode="tertiary"
+              className="flex sm:hidden"
+              size="small"
+              aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
+              onClick={openSearch}
+            >
+              <MagnifyingGlass size={14} />
+            </Button>
+          )}
           <Button
-            mode="tertiary"
-            className="flex sm:hidden"
+            mode="primarySolid"
             size="small"
-            aria-label={formatText({ id: 'ariaLabel.openSearchModal' })}
-            onClick={() => setIsSearchOpened(true)}
+            isFullSize={false}
+            onClick={() => {
+              toggleActionSidebarOn({
+                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              });
+            }}
           >
-            <MagnifyingGlass size={14} />
+            {formatText({ id: 'permissionsPage.managePermissions' })}
           </Button>
+        </div>
+        {!!searchValue && isMobile && (
+          <SearchPill value={searchValue} onClick={() => onSearch('')} />
         )}
       </div>
       {isMobile && (
@@ -99,7 +126,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           </Modal>
           <Modal
             isFullOnMobile={false}
-            onClose={() => setIsSearchOpened(false)}
+            onClose={closeSearch}
             isOpen={isSearchOpened}
             withPaddingBottom
           >
@@ -108,7 +135,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             </p>
             <div className="sm:mb-6 sm:px-3.5">
               <SearchInputMobile
-                onSearchButtonClick={() => setIsSearchOpened(false)}
+                onSearchButtonClick={closeSearch}
                 setSearchValue={onInputChange}
                 searchValue={searchValue}
                 searchInputPlaceholder={formatText({
@@ -119,7 +146,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           </Modal>
         </>
       )}
-      {isFiltersOpen && !isMobile && (
+      {isSearchOpened && !isMobile && (
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
@@ -134,6 +161,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
           <div className="mb-6 px-3.5">
             <SearchInputDesktop
               onChange={onInputChange}
+              onClose={closeSearch}
               placeholder={formatText({ id: 'permissionsPage.filter.search' })}
               value={searchValue}
             />

@@ -14,7 +14,6 @@ import Table from '~v5/common/Table/index.ts';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 
-import AcceptButton from '../AcceptButton/index.ts';
 import Filter from '../Filter/index.ts';
 
 import { useFundsTable, useFundsTableColumns } from './hooks.tsx';
@@ -73,15 +72,12 @@ const FundsTable: FC = () => {
                 </div>
               ) : null,
             )}
-          <Filter {...filters} />
-          {unclaimedClaims.length > 0 && (
-            <AcceptButton
-              tokenAddresses={allUnclaimedClaims}
-              disabled={!searchedTokens.length}
-            >
-              {formatText({ id: 'incomingFundsPage.table.claimAllFunds' })}
-            </AcceptButton>
-          )}
+          <Filter
+            {...filters}
+            unclaimedClaims={allUnclaimedClaims}
+            isButtonDisabled={!searchedTokens.length}
+            shouldShowButton={unclaimedClaims.length > 0}
+          />
         </div>
       </TableHeader>
       <Table<FundsTableModel>
