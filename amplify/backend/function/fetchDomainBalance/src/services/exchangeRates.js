@@ -9,7 +9,7 @@ const {
 const { getStartOfDayFor } = require('../utils');
 const { SupportedCurrencies, SupportedNetwork } = require('../consts');
 
-const { constants: ethersConstants } = require('ethers');
+const { constants: ethersConstants, utils: ethersUtils } = require('ethers');
 
 const ADDRESS_ZERO = ethersConstants.AddressZero;
 
@@ -17,6 +17,7 @@ const isDev = process.env.ENV === 'dev';
 
 const ExchangeRatesService = (() => {
   const exchangeRates = {};
+  let apiTokenIdsData = null;
 
   const saveEntryToDB = async ({ tokenId, date, marketPrice }) => {
     const { mappings } = await CoinGeckoConfig.getConfig();
@@ -57,7 +58,10 @@ const ExchangeRatesService = (() => {
     return [...uniqueDatesSet];
   };
 
-  const getApiTokenIdFromAddress = async ({ tokenAddress, chainId }) => {
+  const getApiTokenIdFromAddress = async ({
+    tokenAddress,
+    supportedNetwork,
+  }) => {
     const { mappings } = await CoinGeckoConfig.getConfig();
     const { DEFAULT_NETWORK_TOKEN } = await NetworkConfig.getConfig();
 
@@ -65,11 +69,15 @@ const ExchangeRatesService = (() => {
       return mappings.networkTokens[DEFAULT_NETWORK_TOKEN.symbol];
     }
 
+    const tokenAddressRegEx = new RegExp(`^${tokenAddress}$`, 'i');
+
     try {
-      const chain = mappings.chains[chainId] ?? chainId;
-      const data = await getTokensList();
-      const token = data.find(
-        (coinItem) => coinItem?.platforms?.[chain] === tokenAddress,
+      const chain = mappings.chains[supportedNetwork] ?? supportedNetwork;
+      if (!apiTokenIdsData) {
+        apiTokenIdsData = await getTokensList();
+      }
+      const token = apiTokenIdsData.find((coinItem) =>
+        tokenAddressRegEx.test(coinItem?.platforms?.[chain]),
       );
 
       return token?.id;
@@ -81,10 +89,13 @@ const ExchangeRatesService = (() => {
   const getExchangeRatesForToken = async ({
     tokenAddress,
     currency,
-    chainId,
+    supportedNetwork,
     dates,
   }) => {
-    const tokenId = await getApiTokenIdFromAddress({ tokenAddress, chainId });
+    const tokenId = await getApiTokenIdFromAddress({
+      tokenAddress,
+      supportedNetwork,
+    });
     const tokenExchangeRate = {};
     const uniqueDates = getUniqueDates(dates);
 
@@ -173,13 +184,20 @@ const ExchangeRatesService = (() => {
   };
 
   return {
-    getExchangeRates: async (tokens, currency, chainId) => {
+    getExchangeRates: async (tokens, currency) => {
+      const { supportedNetwork } = await NetworkConfig.getConfig();
       const tokensExchangeRate = await Promise.all(
         Object.entries(tokens).map(async ([tokenAddress, dates]) => {
+          let checksummedTokenAddress = tokenAddress;
+
+          if (ethersUtils.isAddress(tokenAddress)) {
+            checksummedTokenAddress = ethersUtils.getAddress(tokenAddress);
+          }
+
           return getExchangeRatesForToken({
-            tokenAddress,
+            tokenAddress: checksummedTokenAddress,
             currency: currency ?? SupportedCurrencies.USD,
-            chainId: chainId ?? SupportedNetwork.Mainnet,
+            supportedNetwork,
             dates,
           });
         }),

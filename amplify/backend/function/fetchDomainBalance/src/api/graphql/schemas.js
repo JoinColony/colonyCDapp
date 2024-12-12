@@ -218,10 +218,12 @@ module.exports = {
     }
   `,
   getToken: /* GraphQL */ `
-    query GetToken($tokenAddress: ID!) {
-      getToken(id: $tokenAddress) {
-        id
-        decimals
+    query GetTokenFromEverywhere($tokenAddress: String!) {
+      getTokenFromEverywhere(input: { tokenAddress: $tokenAddress }) {
+        items {
+          id
+          decimals
+        }
       }
     }
   `,

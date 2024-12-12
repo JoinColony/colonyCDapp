@@ -207,7 +207,8 @@ const getTokensDecimalsFor = async (tokenAddresses) => {
   );
 
   tokenResponses.forEach((tokenResponse) => {
-    const { id, decimals } = tokenResponse?.data?.getToken || {};
+    const { id, decimals } =
+      tokenResponse?.data?.getTokenFromEverywhere?.items?.[0] || {};
     tokenDecimals[id] = decimals;
   });
 
