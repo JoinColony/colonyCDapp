@@ -1,0 +1,7 @@
+query GetProxyColonies($colonyAddress: ID!) {
+  getProxyColoniesByColonyAddress(colonyAddress: $colonyAddress) {
+    items {
+      ...ProxyColony
+    }
+  }
+}
