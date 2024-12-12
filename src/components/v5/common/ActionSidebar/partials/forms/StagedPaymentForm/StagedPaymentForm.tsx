@@ -9,7 +9,6 @@ import {
   RECIPIENT_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
-import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/CreatedIn.tsx';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
@@ -77,7 +76,6 @@ const StagedPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
         filterOptionsFn={decisionMethodFilterFn}
         disabled={isFieldDisabled}
       />
-      <CreatedIn disabled={isFieldDisabled} />
       <Description disabled={isFieldDisabled} />
       <StagedPaymentRecipientsField name="stages" />
       {renderStakedExpenditureModal()}

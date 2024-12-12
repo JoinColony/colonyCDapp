@@ -1,6 +1,6 @@
 import { Scales } from '@phosphor-icons/react';
-import React from 'react';
-import { useWatch } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -10,7 +10,10 @@ import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import {
+  ACTION_TYPE_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
+} from '~v5/common/ActionSidebar/consts.ts';
 import { actionsWithStakingDecisionMethod } from '~v5/common/ActionSidebar/hooks/permissions/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
@@ -41,6 +44,10 @@ const DecisionMethodField = ({
   );
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+
+  const decisionMethod = useWatch({ name: DECISION_METHOD_FIELD_NAME });
+
+  const { setValue } = useFormContext();
 
   const {
     isVotingReputationEnabled,
@@ -99,6 +106,18 @@ const DecisionMethodField = ({
     return decisionMethods;
   };
 
+  const isDecisionMethodAvailable = getDecisionMethods()
+    .map((decision) => decision.value)
+    .includes(decisionMethod);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      if (!isDecisionMethodAvailable) {
+        setValue(DECISION_METHOD_FIELD_NAME, undefined);
+      }
+    });
+  }, [isDecisionMethodAvailable, setValue]);
+
   return (
     <ActionFormRow
       icon={Scales}
@@ -122,6 +141,9 @@ const DecisionMethodField = ({
         })}
         disabled={disabled || hasNoDecisionMethods}
         cardClassName="sm:min-w-[12.875rem]"
+        {...(!isDecisionMethodAvailable && {
+          valueOverride: undefined,
+        })}
       />
     </ActionFormRow>
   );
