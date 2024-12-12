@@ -50,10 +50,6 @@ test.describe('Manage Account', () => {
 
     test('Website field', async ({ page }) => {
       const websiteInput = page.locator('[name="website"]');
-      const toast = page
-        .getByRole('alert')
-        .filter({ hasText: /action completed successfully/i })
-        .last();
 
       const saveChangesButton = page.getByRole('button', {
         name: 'Save changes',
@@ -86,9 +82,9 @@ test.describe('Manage Account', () => {
         });
 
         await saveChangesButton.click();
-        await expect(toast).toBeVisible();
+
         await expect(websiteInput).toHaveValue('');
-        await expect(toast).toBeHidden();
+        await expect(page.getByTestId('form-error')).toBeHidden();
       });
 
       await test.step('Accepts a valid website', async () => {
@@ -101,9 +97,8 @@ test.describe('Manage Account', () => {
         });
         await saveChangesButton.click();
 
-        await expect(toast).toBeVisible();
-
-        await expect(toast).toBeHidden();
+        await expect(websiteInput).toHaveValue(website);
+        await expect(page.getByTestId('form-error')).toBeHidden();
       });
     });
 
@@ -116,10 +111,6 @@ test.describe('Manage Account', () => {
       ).toBeVisible();
 
       const bioInput = page.locator('[name="bio"]');
-      const toast = page
-        .getByRole('alert')
-        .filter({ hasText: /action completed successfully/i })
-        .last();
 
       await test.step('Shows an error message when the bio is too long', async () => {
         // eslint-disable-next-line playwright/no-wait-for-timeout
@@ -140,9 +131,8 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(toast).toBeVisible();
-
-        await expect(toast).toBeHidden();
+        await expect(page.getByTestId('form-error')).toBeHidden();
+        await expect(bioInput).toHaveValue('');
       });
 
       await test.step('Accepts a valid value', async () => {
@@ -157,15 +147,12 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(toast).toBeVisible();
+        await expect(bioInput).toHaveValue(text);
+        await expect(page.getByTestId('form-error')).toBeHidden();
       });
     });
 
     test('Location field', async ({ page }) => {
-      const toast = page
-        .getByRole('alert')
-        .filter({ hasText: /action completed successfully/i })
-        .last();
       await expect(page.getByText(/Location/)).toBeVisible();
       await expect(
         page.getByText(
@@ -180,9 +167,8 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(toast).toBeVisible();
-
-        await expect(toast).toBeHidden();
+        await expect(page.getByTestId('form-error')).toBeHidden();
+        await expect(locationInput).toHaveValue('');
       });
 
       await test.step('Accepts a valid value', async () => {
@@ -197,10 +183,8 @@ test.describe('Manage Account', () => {
 
         await page.getByRole('button', { name: /save changes/i }).click();
 
-        await expect(toast).toBeVisible();
-
         await expect(locationInput).toHaveValue(location);
-        await expect(toast).toBeHidden();
+        await expect(page.getByTestId('form-error')).toBeHidden();
       });
     });
   });

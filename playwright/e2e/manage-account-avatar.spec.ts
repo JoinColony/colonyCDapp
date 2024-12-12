@@ -27,12 +27,15 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.getByRole('button', { name: 'Change avatar' }).click();
     await page.locator('input[type="file"]').setInputFiles(validPng);
 
-    // Check success message
-
-    await page.getByRole('alert').waitFor();
-    await expect(page.getByRole('alert').last()).toContainText(
-      /profile image changed successfully/i,
-    );
+    await page.getByRole('button', { name: 'Click to upload' }).waitFor({
+      state: 'hidden',
+    });
+    await expect(
+      page.getByRole('button', { name: 'Remove avatar' }),
+    ).toBeVisible();
+    await expect(
+      page.getByTestId('avatar-uploader-error-content'),
+    ).toBeHidden();
   });
 
   test('accepts valid JPG file with correct dimensions', async ({ page }) => {
@@ -44,10 +47,16 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.getByRole('button', { name: 'Change avatar' }).click();
     await page.locator('input[type="file"]').setInputFiles(validJpg);
 
-    await page.getByRole('alert').waitFor();
-    await expect(page.getByRole('alert').last()).toContainText(
-      /profile image changed successfully/i,
-    );
+    await page.getByRole('button', { name: 'Click to upload' }).waitFor({
+      state: 'hidden',
+    });
+    await expect(
+      page.getByRole('button', { name: 'Remove avatar' }),
+    ).toBeVisible();
+
+    await expect(
+      page.getByTestId('avatar-uploader-error-content'),
+    ).toBeHidden();
   });
 
   test('accepts valid SVG file with correct dimensions', async ({ page }) => {
@@ -59,10 +68,16 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await page.getByRole('button', { name: 'Change avatar' }).click();
     await page.locator('input[type="file"]').setInputFiles(validSvg);
 
-    await page.getByRole('alert').waitFor();
-    await expect(page.getByRole('alert').last()).toContainText(
-      /profile image changed successfully/i,
-    );
+    await page.getByRole('button', { name: 'Click to upload' }).waitFor({
+      state: 'hidden',
+    });
+
+    await expect(
+      page.getByRole('button', { name: 'Remove avatar' }),
+    ).toBeVisible();
+    await expect(
+      page.getByTestId('avatar-uploader-error-content'),
+    ).toBeHidden();
   });
   // NOTE: enable this test once we have fixed issue #3858 with the avatar uploader
   test.skip('rejects file smaller than 250x250px', async ({ page }) => {

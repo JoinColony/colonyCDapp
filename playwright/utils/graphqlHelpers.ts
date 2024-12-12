@@ -103,7 +103,7 @@ export async function fetchFirstValidTokenAddress() {
   return response.data.listTokens.items[0].id;
 }
 
-export async function getColonyAddressByName(name: string = 'planex') {
+export async function getColonyAddressByName(name = 'planex') {
   const QUERY = `
     query GetColonyByName {
        getColonyByName(name: "${name}", limit: 1) {
@@ -116,4 +116,45 @@ export async function getColonyAddressByName(name: string = 'planex') {
 
   const response = await graphqlRequest(QUERY);
   return response.data.getColonyByName.items[0].id;
+}
+
+export async function getFirstDomainAndTotalFunds(params: {
+  colonyName: string;
+}) {
+  const QUERY = `
+    query GetColonyByName {
+      getColonyByName(name: "${params.colonyName}") {
+        items {
+          balances {
+            items {
+              balance
+              domain {
+                metadata {
+                  name
+            }
+          }
+          token {
+            decimals
+            symbol
+          }
+        }
+      }
+    }
+  }
+}
+  `;
+
+  const response = await graphqlRequest(QUERY);
+  const firstNonZeroBalance =
+    response.data.getColonyByName.items[0].balances.items.find(
+      (balance) =>
+        balance.balance !== '0' && balance.domain.metadata.name !== 'General',
+    );
+
+  return {
+    balance: firstNonZeroBalance.balance,
+    domainName: firstNonZeroBalance.domain.metadata.name,
+    tokenSymbol: firstNonZeroBalance.token.symbol,
+    tokenDecimals: firstNonZeroBalance.token.decimals,
+  };
 }
