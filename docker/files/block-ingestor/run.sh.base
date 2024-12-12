@@ -8,6 +8,6 @@ cd block-ingestor
 wget http://network-files:3006/etherrouter-address.json
 
 # Write to env file...
-echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> .env
+echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> apps/main-chain/.env
 
-npm run start
+pnpm --filter @joincolony/main-chain run start
