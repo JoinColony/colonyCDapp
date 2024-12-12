@@ -1156,6 +1156,13 @@ export type ColonyMultiSig = {
   executedBy?: Maybe<Scalars['ID']>;
   /** Extended user object for given executedBy */
   executedByUser?: Maybe<User>;
+  /**
+   * In case of multiple funding actions in a multisig, when funding an expenditure, array containing
+   * the details of tokens and amounts to be funded
+   */
+  expenditureFunding?: Maybe<Array<ExpenditureFundingItem>>;
+  /** Expenditure associated with the motion, if any */
+  expenditureId?: Maybe<Scalars['ID']>;
   /** Whether the underlying action completed */
   hasActionCompleted: Scalars['Boolean'];
   /**
@@ -1605,6 +1612,8 @@ export type CreateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
+  expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
   isDecision: Scalars['Boolean'];
@@ -3289,6 +3298,7 @@ export type ModelColonyMultiSigConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
   isExecuted?: InputMaybe<ModelBooleanInput>;
@@ -3316,6 +3326,7 @@ export type ModelColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  expenditureId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -4368,6 +4379,7 @@ export type ModelSubscriptionColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedBy?: InputMaybe<ModelSubscriptionIdInput>;
+  expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   hasActionCompleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -6668,6 +6680,7 @@ export type Query = {
   getMotionTimeoutPeriods?: Maybe<GetMotionTimeoutPeriodsReturn>;
   getMotionVoterRewards?: Maybe<ModelVoterRewardsHistoryConnection>;
   getMultiSigByColonyAddress?: Maybe<ModelColonyMultiSigConnection>;
+  getMultiSigByExpenditureId?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigByTransactionHash?: Maybe<ModelColonyMultiSigConnection>;
   getMultiSigUserSignature?: Maybe<MultiSigUserSignature>;
   getMultiSigUserSignatureByMultiSigId?: Maybe<ModelMultiSigUserSignatureConnection>;
@@ -7241,6 +7254,16 @@ export type QueryGetMotionVoterRewardsArgs = {
 /** Root query type */
 export type QueryGetMultiSigByColonyAddressArgs = {
   colonyAddress: Scalars['ID'];
+  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
+export type QueryGetMultiSigByExpenditureIdArgs = {
+  expenditureId: Scalars['ID'];
   filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
@@ -9635,6 +9658,8 @@ export type UpdateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
+  expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
+  expenditureId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isDecision?: InputMaybe<Scalars['Boolean']>;
