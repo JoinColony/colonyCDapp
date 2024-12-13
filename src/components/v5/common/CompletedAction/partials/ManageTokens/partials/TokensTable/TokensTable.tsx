@@ -1,3 +1,4 @@
+import { getPaginationRowModel } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -6,7 +7,8 @@ import { useTablet } from '~hooks';
 import { type ApprovedTokenChanges } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { renderCellContent } from '~v5/common/Table/utils.tsx';
 import { TokenStatus } from '~v5/common/types.ts';
 
 import { useTokensTableColumns } from './hooks.tsx';
@@ -66,13 +68,25 @@ const TokensTable = ({ approvedTokenChanges }: TokensTableProps) => {
         className={clsx({
           '[&_tbody_td]:h-[3.375rem] [&_td:first-child]:pl-4 [&_td]:pr-4 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
             !isTablet,
+          'pb-4': combinedTokens.length > 10,
         })}
-        getRowId={({ tokenAddress }) => tokenAddress}
         columns={columns}
         data={combinedTokens}
-        verticalLayout={isTablet}
-        renderCellWrapper={(_, content) => content}
-        withBorder={false}
+        layout={isTablet ? 'vertical' : 'horizontal'}
+        renderCellWrapper={renderCellContent}
+        borders={{
+          visible: true,
+          type: 'unset',
+        }}
+        overrides={{
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 10,
+            },
+          },
+          getPaginationRowModel: getPaginationRowModel(),
+        }}
       />
     </div>
   );

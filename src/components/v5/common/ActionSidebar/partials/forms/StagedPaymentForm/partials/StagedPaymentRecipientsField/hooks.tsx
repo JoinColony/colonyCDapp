@@ -1,4 +1,8 @@
-import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import {
+  type ColumnDef,
+  createColumnHelper,
+  type Row,
+} from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,6 +14,8 @@ import AmountField from '~v5/common/ActionSidebar/partials/AmountField/AmountFie
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import { type StagedPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/hooks.ts';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import {
   type StagedPaymentRecipientsTableModel,
@@ -19,17 +25,32 @@ import {
 export const useStagedPaymentRecipientsTableColumns = (
   name: string,
   data: StagedPaymentRecipientsFieldModel[],
+  getMenuProps: (
+    row: Row<StagedPaymentRecipientsTableModel>,
+  ) => MeatBallMenuProps | undefined,
 ) => {
   const { watch } = useFormContext<StagedPaymentFormValues>();
   const hasMoreThanOneToken = data.length > 1;
   const selectedTeam = watch(FROM_FIELD_NAME);
   const dataRef = useWrapWithRef(data);
 
+  const columnHelper = useMemo(
+    () => createColumnHelper<StagedPaymentRecipientsTableModel>(),
+    [],
+  );
+
+  const menuColumn: ColumnDef<StagedPaymentRecipientsTableModel, string> =
+    useMemo(
+      () =>
+        makeMenuColumn({
+          helper: columnHelper,
+          getMenuProps,
+        }),
+      [columnHelper, getMenuProps],
+    );
+
   const columns: ColumnDef<StagedPaymentRecipientsTableModel, string>[] =
     useMemo(() => {
-      const columnHelper =
-        createColumnHelper<StagedPaymentRecipientsTableModel>();
-
       return [
         columnHelper.display({
           id: 'milestone',
@@ -87,7 +108,7 @@ export const useStagedPaymentRecipientsTableColumns = (
             : undefined,
         }),
       ];
-    }, [dataRef, hasMoreThanOneToken, name, selectedTeam]);
+    }, [columnHelper, dataRef, hasMoreThanOneToken, name, selectedTeam]);
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

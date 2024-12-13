@@ -10,7 +10,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useMobile } from '~hooks/index.ts';
 import { type BridgeDrain } from '~types/graphql.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
 import FiatTransferDescription from './FiatTransferDescription.tsx';
@@ -54,27 +54,35 @@ const FiatTransfersTable = () => {
       <Table<BridgeDrain>
         columns={columns}
         data={loading ? Array(3).fill({}) : sortedData}
-        state={{
-          columnVisibility: isMobile
-            ? {
-                createdAt: false,
-                receipt: false,
-              }
-            : {
-                expander: false,
-              },
-          sorting,
+        overrides={{
+          getRowId: (row) => row.id,
+          initialState: {
+            pagination: { pageIndex: 0, pageSize: 10 },
+          },
+          state: {
+            columnVisibility: isMobile
+              ? {
+                  createdAt: false,
+                  receipt: false,
+                }
+              : {
+                  expander: false,
+                },
+            sorting,
+          },
+          onSortingChange: setSorting,
+          getSortedRowModel: getSortedRowModel(),
+          getPaginationRowModel: getPaginationRowModel(),
         }}
-        getRowId={(row) => row.id}
-        initialState={{ pagination: { pageSize: 10 } }}
-        showPageNumber={sortedData.length >= 10}
-        onSortingChange={setSorting}
-        getSortedRowModel={getSortedRowModel()}
-        getPaginationRowModel={getPaginationRowModel()}
-        getRowCanExpand={() => isMobile}
-        renderSubComponent={({ row }) => (
-          <FiatTransferDescription actionRow={row} loading={loading} />
-        )}
+        pagination={{
+          pageNumberVisible: sortedData.length >= 10,
+        }}
+        rows={{
+          canExpand: () => isMobile,
+          renderSubComponent: ({ row }) => (
+            <FiatTransferDescription actionRow={row} loading={loading} />
+          ),
+        }}
         className="pb-5 [&_td:nth-child(1)>div]:font-medium [&_td:nth-child(1)>div]:text-gray-900 [&_td:nth-child(2)>div]:text-gray-600 [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none"
         emptyContent={
           !sortedData.length &&
