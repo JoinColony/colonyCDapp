@@ -3,6 +3,7 @@ import { useVisible } from 'react-hooks-visible';
 
 import { type TableRowProps, type VirtualizedRowProps } from './types.ts';
 
+/** @TODO refactor this to use @tanstack/react-virtual */
 const VirtualizedRow: FC<VirtualizedRowProps> = ({
   children,
   className,

@@ -111,7 +111,8 @@ export const HorizontalLayout = <T,>({
                   </tr>
                 )}
                 {
-                  /** Unfortunately Safari is not yet that friendly to allow the usage of absolutely positioned (pseudo)-element inside tables
+                  /**
+                   * Unfortunately Safari is not yet that friendly to allow the usage of absolutely positioned (pseudo)-element inside tables
                    * So, for the moment, this is our best shot for showing borders with paddings from the tr margins
                    */
                   withNarrowBorder && <TableRowDivider />

@@ -18,7 +18,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import TokenInfo from '~shared/TokenInfo/index.ts';
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { UnpaginatedTable } from '~v5/common/Table/refactoring/UnpaginatedTable.tsx';
 import AccordionItem from '~v5/shared/Accordion/partials/AccordionItem/index.ts';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -134,31 +134,34 @@ const TokenTable: FC<TokenTableProps> = ({ token }) => {
           </div>
         }
       >
-        <Table
+        <UnpaginatedTable
           data={currentClaims}
-          getSortedRowModel={getSortedRowModel()}
-          getPaginationRowModel={getPaginationRowModel()}
           columns={columns}
           className="-mx-[1.125rem] !w-[calc(100%+2.25rem)] border-none px-[1.125rem] [&_td]:px-[1.125rem] [&_td]:py-4 [&_th]:!rounded-none [&_th]:border-y"
           tableClassName="rounded-none border-none"
-          initialState={{
-            sorting: [
-              {
-                id: 'isClaimed',
-                desc: true,
+          overrides={{
+            initialState: {
+              sorting: [
+                {
+                  id: 'isClaimed',
+                  desc: true,
+                },
+                {
+                  id: 'amount',
+                  desc: true,
+                },
+              ],
+              pagination: {
+                pageIndex: 0,
+                pageSize: 10,
               },
-              {
-                id: 'amount',
-                desc: true,
-              },
-            ],
-            pagination: {
-              pageSize: 10,
             },
+            // This ensures that all sort actions made by the user are multisort.
+            // In other words, it's always sorting by all columns.
+            isMultiSortEvent: () => true,
+            getSortedRowModel: getSortedRowModel(),
+            getPaginationRowModel: getPaginationRowModel(),
           }}
-          // This ensures that all sort actions made by the user are multisort.
-          // In other words, it's always sorting by all columns.
-          isMultiSortEvent={() => true}
         />
         {isTokenNativeChainToken && (
           <div className="flex items-center border-t border-gray-100 px-[1.125rem] py-4">

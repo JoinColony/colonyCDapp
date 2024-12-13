@@ -9,6 +9,7 @@ import React, { useEffect, useMemo } from 'react';
 
 import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
+import noop from '~utils/noop.ts';
 
 import { TableFooter } from './partials/TableFooter.tsx';
 import { TableLayout } from './partials/TableLayout/TableLayout.tsx';
@@ -89,6 +90,7 @@ const Table = <T,>({
     getExpandedRowModel: getExpandedRowModel<T>(),
     ...rest,
   });
+
   const { rows } = table.getRowModel();
   const headerGroups = table.getHeaderGroups();
   const footerGroups = table.getFooterGroups();
@@ -152,14 +154,14 @@ const Table = <T,>({
         />
         <TableFooter
           colSpan={footerColSpan}
-          verticalLayout={verticalLayout}
+          hasBorder={!verticalLayout}
           groups={footerGroups}
         />
       </table>
       {showPagination && (
         <TablePagination
-          onNextClick={hasPagination ? goToNextPage : () => {}}
-          onPrevClick={hasPagination ? goToPreviousPage : () => {}}
+          onNextClick={hasPagination ? goToNextPage : noop}
+          onPrevClick={hasPagination ? goToPreviousPage : noop}
           canGoToNextPage={
             hasPagination ? canGoToNextPage : alwaysShowPagination
           }
