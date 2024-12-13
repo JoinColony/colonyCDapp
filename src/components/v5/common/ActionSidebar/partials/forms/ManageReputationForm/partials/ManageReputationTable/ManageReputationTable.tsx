@@ -81,10 +81,10 @@ const ManageReputationTable: FC = () => {
         }}
         disabled={isChangeFieldDisabled}
         name="amount"
-        className={clsx('flex-shrink outline-none outline-0', {
+        className={clsx('flex-shrink bg-transparent outline-none outline-0', {
           'placeholder:text-negative-400': !!error,
-          'bg-transparent placeholder:text-gray-300': isChangeFieldDisabled,
-          'bg-base-white placeholder:text-gray-400':
+          'placeholder:text-gray-300': isChangeFieldDisabled,
+          'transition-colors placeholder:text-gray-400 md:hover:text-blue-400 md:placeholder:hover:text-blue-400':
             !isChangeFieldDisabled && !error,
         })}
         placeholder={formatText({ id: 'actionSidebar.enterValue' })}
