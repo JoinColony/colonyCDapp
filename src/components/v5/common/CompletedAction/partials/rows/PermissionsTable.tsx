@@ -11,7 +11,7 @@ import {
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import { UserRoleModifier } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 import { getCustomPermissionsTableColumns } from './utils.tsx';
 
@@ -67,7 +67,7 @@ const PermissionsTable = ({
           )}
           data={ALLOWED_CUSTOM_PERMISSIONS_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
-          verticalLayout={isMobile}
+          layout={isMobile ? 'vertical' : 'horizontal'}
         />
       )}
     </div>

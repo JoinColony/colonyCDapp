@@ -3,12 +3,7 @@ import { flexRender, type HeaderGroup } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React from 'react';
 
-import { type HorizontalLayoutProps } from './types.ts';
-
-type HorizontalTableHeaderProps<T> = Pick<
-  HorizontalLayoutProps<T>,
-  'sizeUnit'
-> & {
+type HorizontalTableHeaderProps<T> = {
   groups: HeaderGroup<T>[];
   disabled?: boolean;
 };
@@ -16,7 +11,6 @@ type HorizontalTableHeaderProps<T> = Pick<
 export const HorizontalTableHeader = <T,>({
   groups,
   disabled,
-  sizeUnit,
 }: HorizontalTableHeaderProps<T>) => {
   return (
     <thead>
@@ -38,8 +32,8 @@ export const HorizontalTableHeader = <T,>({
               style={{
                 width:
                   header.column.columnDef.staticSize ||
-                  (header.getSize() !== 150
-                    ? `${header.column.getSize()}${sizeUnit}`
+                  (header.column.getSize() !== 150
+                    ? `${header.column.getSize()}px`
                     : undefined),
               }}
             >

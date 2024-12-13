@@ -2,16 +2,15 @@ import { flexRender, type Row, type Cell } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { type CSSProperties } from 'react';
 
+import { type HorizontalTableLayoutProps } from '~v5/common/Table/types.ts';
 import { getDefaultRenderCellWrapper } from '~v5/common/Table/utils.tsx';
-
-import { type HorizontalLayoutProps } from './types.ts';
 
 type HorizontalTableCellProps<T> = {
   isDisabled?: boolean;
   style?: CSSProperties;
   row: Row<T>;
   cell: Cell<T, unknown>;
-} & Pick<HorizontalLayoutProps<T>, 'renderCellWrapper'>;
+} & Pick<HorizontalTableLayoutProps<T>, 'renderCellWrapper'>;
 
 export const HorizontalTableCell = <T,>({
   isDisabled,

@@ -9,6 +9,7 @@ import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 
 import ActionBadge from '../partials/ActionBadge/ActionBadge.tsx';
 import ActionDescription from '../partials/ActionDescription/index.ts';
@@ -28,6 +29,7 @@ const useColonyActionsTableColumns = ({
   refetchMotionStates,
   showUserAvatar = true,
   isRecentActivityVariant = false,
+  getMenuProps,
 }) => {
   const isMobile = useMobile();
 
@@ -127,6 +129,13 @@ const useColonyActionsTableColumns = ({
           ? 'flex items-end'
           : '',
       }),
+      makeMenuColumn({
+        helper,
+        getMenuProps,
+        cellProps: {
+          staticSize: isRecentActivityVariant ? '2rem' : '3rem',
+        },
+      }),
       helper.display({
         id: 'expander',
         staticSize: '2.25rem',
@@ -154,6 +163,7 @@ const useColonyActionsTableColumns = ({
     loadingMotionStates,
     refetchMotionStates,
     showUserAvatar,
+    getMenuProps,
   ]);
 };
 

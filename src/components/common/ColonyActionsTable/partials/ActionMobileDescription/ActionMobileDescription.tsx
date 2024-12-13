@@ -144,7 +144,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
       {meatBallMenuProps && (
         <MeatBallMenu
           {...meatBallMenuProps}
-          contentWrapperClassName="!left-6 right-6"
+          contentWrapperClassName="!left-0 right-6"
           buttonClassName={(isMenuOpen) =>
             clsx({ '!text-gray-600': !isMenuOpen })
           }

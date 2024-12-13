@@ -5,7 +5,12 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import {
+  getMoreActionsMenu,
+  renderCellContent,
+} from '~v5/common/Table/utils.tsx';
 import { TokenStatus } from '~v5/common/types.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -30,7 +35,6 @@ const TokensTable: FC<TokensTableProps> = ({
   const fieldState = getFieldState(name);
   const selectedTokenAddresses = useWatch({ name });
   const value = useWatch({ name }) || [];
-  const columns = useTokensTableColumns(name, value);
   const getMenuProps = ({ index }) => {
     const shouldShow = shouldShowMenu(value[index]?.status);
 
@@ -65,6 +69,7 @@ const TokensTable: FC<TokensTableProps> = ({
         }
       : undefined;
   };
+  const columns = useTokensTableColumns(name, value, getMenuProps);
 
   // Added to trigger validation on token change to check for duplicates in previous fields
   useEffect(() => {
@@ -93,16 +98,38 @@ const TokensTable: FC<TokensTableProps> = ({
             '[&_tbody_td]:h-[3.375rem] [&_td:first-child]:pl-4 [&_td:nth-child(2)]:pr-2 [&_td]:pr-4 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
               !isTablet,
             '[&_table]:table-auto': isTablet,
+            'pb-4': data.length > 10,
           })}
-          getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          getMenuProps={getMenuProps}
           isDisabled={isDisabled}
-          verticalLayout={isTablet}
-          renderCellWrapper={(_, content) => content}
-          withBorder={false}
-          meatBallMenuSize={34}
+          layout={isTablet ? 'vertical' : 'horizontal'}
+          borders={{
+            type: 'unset',
+            visible: true,
+          }}
+          renderCellWrapper={renderCellContent}
+          pagination={{
+            pageNumberVisible: false,
+          }}
+          overrides={{
+            getRowId: ({ key }) => key,
+            initialState: {
+              pagination: {
+                pageIndex: 0,
+                pageSize: 400,
+              },
+            },
+            state: {
+              columnVisibility: {
+                [MEATBALL_MENU_COLUMN_ID]: !isTablet,
+              },
+            },
+          }}
+          moreActions={getMoreActionsMenu({
+            getMenuProps,
+            visible: isTablet,
+          })}
         />
       )}
       <Button

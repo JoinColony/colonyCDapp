@@ -1,4 +1,8 @@
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  type Row,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import { BigNumber } from 'ethers';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -8,6 +12,8 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import AmountField from '~v5/common/ActionSidebar/partials/AmountField/index.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import ClaimDelayField from '../ClaimDelayField/ClaimDelayField.tsx';
 import PaymentBuilderPayoutsTotal from '../PaymentBuilderPayoutsTotal/index.ts';
@@ -21,6 +27,9 @@ import { UserSelectRow } from './UserSelectRow.tsx';
 export const useRecipientsFieldTableColumns = (
   name: string,
   data: PaymentBuilderRecipientsFieldModel[],
+  getMenuProps: (
+    row: Row<PaymentBuilderRecipientsTableModel>,
+  ) => MeatBallMenuProps | undefined,
 ): ColumnDef<PaymentBuilderRecipientsTableModel, string>[] => {
   const { colony } = useColonyContext();
   const { expendituresGlobalClaimDelay } = colony;
@@ -36,6 +45,11 @@ export const useRecipientsFieldTableColumns = (
   const { watch } = useFormContext();
   const selectedTeam = watch('from');
   const hasMoreThanOneToken = data.length > 1;
+
+  const columnHelper = useMemo(
+    () => createColumnHelper<PaymentBuilderRecipientsTableModel>(),
+    [],
+  );
 
   const footerData = useMemo(
     () => ({
@@ -66,11 +80,20 @@ export const useRecipientsFieldTableColumns = (
     [hasMoreThanOneToken],
   );
 
+  const menuColumn = useMemo(
+    () =>
+      makeMenuColumn({
+        helper: columnHelper,
+        getMenuProps,
+        cellProps: {
+          size: 34,
+        },
+      }),
+    [columnHelper, getMenuProps],
+  );
+
   const columns: ColumnDef<PaymentBuilderRecipientsTableModel, string>[] =
     useMemo(() => {
-      const columnHelper =
-        createColumnHelper<PaymentBuilderRecipientsTableModel>();
-
       return [
         columnHelper.display({
           id: 'recipient',
@@ -133,7 +156,13 @@ export const useRecipientsFieldTableColumns = (
           : []),
       ];
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [expendituresGlobalClaimDelayHours, footerData, name, selectedTeam]);
+    }, [
+      columnHelper,
+      expendituresGlobalClaimDelayHours,
+      footerData,
+      name,
+      selectedTeam,
+    ]);
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

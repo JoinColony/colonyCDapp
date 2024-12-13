@@ -4,13 +4,13 @@ import React from 'react';
 
 interface TableFooterProps<T> {
   colSpan?: number;
-  verticalLayout?: boolean;
+  hasBorder?: boolean;
   groups: HeaderGroup<T>[];
 }
 
 export const TableFooter = <T,>({
   colSpan,
-  verticalLayout,
+  hasBorder,
   groups,
 }: TableFooterProps<T>) => {
   const hasFooter = groups.map((footerGroup) =>
@@ -35,7 +35,7 @@ export const TableFooter = <T,>({
                 colSpan={isLastColumn ? colSpan : 1}
                 key={column.id}
                 className={clsx('h-full px-[1.1rem] text-md text-gray-500', {
-                  'border-t border-gray-200': !verticalLayout,
+                  'border-t border-gray-200': hasBorder,
                 })}
               >
                 {flexRender(

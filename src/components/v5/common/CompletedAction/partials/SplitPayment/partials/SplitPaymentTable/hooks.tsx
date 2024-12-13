@@ -22,7 +22,10 @@ export const useGetSplitPaymentColumns = (
   isLoading?: boolean,
 ) => {
   const isTablet = useTablet();
-  const splitPaymentColumnHelper = createColumnHelper<SplitPaymentTableModel>();
+  const splitPaymentColumnHelper = useMemo(
+    () => createColumnHelper<SplitPaymentTableModel>(),
+    [],
+  );
   const { colony } = useColonyContext();
   const { loading: isColonyContributorDataLoading } = useMemberContext();
   const isDataLoading = isLoading || isColonyContributorDataLoading;
