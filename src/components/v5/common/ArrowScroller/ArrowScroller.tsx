@@ -55,9 +55,10 @@ const ArrowScroller: FC<ArrowScrollerProps> = ({
       return;
     }
 
-    const { clientWidth } = containerRef.current;
+    const { clientWidth, scrollLeft: currentScrollLeft } = containerRef.current;
+    const boundedScrollLeft = Math.min(clientWidth * 0.5, currentScrollLeft);
     containerRef?.current.scrollBy({
-      left: -clientWidth * 0.75,
+      left: -boundedScrollLeft,
       behavior: 'smooth',
     });
   };
@@ -67,9 +68,15 @@ const ArrowScroller: FC<ArrowScrollerProps> = ({
       return;
     }
 
-    const { clientWidth } = containerRef.current;
+    const {
+      clientWidth,
+      scrollLeft: currentScrollLeft,
+      scrollWidth,
+    } = containerRef.current;
+    const remainingScroll = scrollWidth - currentScrollLeft - clientWidth;
+    const boundedScrollLeft = Math.min(clientWidth * 0.5, remainingScroll);
     containerRef?.current.scrollBy({
-      left: clientWidth * 0.5,
+      left: boundedScrollLeft,
       behavior: 'smooth',
     });
   };
