@@ -133,7 +133,7 @@ const RichText: FC<RichTextProps> = ({
 
                     setIsTextTruncated(ref.scrollHeight > ref.offsetHeight);
                   }}
-                  className="line-clamp-2 text-left"
+                  className="line-clamp-2 text-left break-word"
                 >
                   {notFormattedContent}
                 </span>
