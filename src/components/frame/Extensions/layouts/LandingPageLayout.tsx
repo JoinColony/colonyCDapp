@@ -54,7 +54,7 @@ export const LandingPageLayout = ({
                   />
                 </div>
                 {rightComponent ?? (
-                  <div className="flex h-full items-center pt-4 md:px-8">
+                  <div className="flex h-full w-full items-center pt-4 md:max-w-[35rem] md:px-8">
                     <LandingPageCarousel />
                   </div>
                 )}
