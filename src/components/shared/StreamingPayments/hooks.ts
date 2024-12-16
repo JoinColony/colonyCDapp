@@ -5,12 +5,25 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { useGetStreamingPaymentsByColonyQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
+import {
+  getStreamingPaymentAmountsLeft,
+  getStreamingPaymentStatus,
+} from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
 import { calculateTotalsFromStreams } from './utils.ts';
 
-export const useStreamingPaymentsTotalFunds = () => {
+interface useStreamingPaymentsTotalFundsProps {
+  isFilteredByWalletAddress?: boolean;
+  nativeDomainId?: number;
+}
+
+export const useStreamingPaymentsTotalFunds = ({
+  isFilteredByWalletAddress = true,
+  nativeDomainId = undefined,
+}: useStreamingPaymentsTotalFundsProps) => {
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
@@ -18,7 +31,13 @@ export const useStreamingPaymentsTotalFunds = () => {
 
   const { data, loading, fetchMore } = useGetStreamingPaymentsByColonyQuery({
     variables: {
-      recipientAddress: walletAddress ?? '',
+      ...(isFilteredByWalletAddress &&
+        walletAddress && {
+          recipientAddress: walletAddress,
+        }),
+      ...(nativeDomainId && {
+        domainId: nativeDomainId,
+      }),
       colonyId: colony.colonyAddress,
     },
     onCompleted: (receivedData) => {
@@ -65,6 +84,8 @@ export const useStreamingPaymentsTotalFunds = () => {
   });
   const [isAnyPaymentActive, setIsAnyPaymentActive] = useState(false);
   const [ratePerSecond, setRatePerSecond] = useState<number>(0);
+  const [activeStreamingPayments, setActiveStreamingPayments] = useState(0);
+  const [totalLastMonthStreaming, setTotalLastMonthStreaming] = useState(0);
 
   const getTotalFunds = useCallback(
     async (items: StreamingPaymentItems) => {
@@ -73,6 +94,7 @@ export const useStreamingPaymentsTotalFunds = () => {
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond: ratePerSecondValue,
+        lastMonthStreaming,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
         currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
@@ -80,17 +102,49 @@ export const useStreamingPaymentsTotalFunds = () => {
         colony,
       });
 
+      setTotalLastMonthStreaming(lastMonthStreaming);
+
       setIsAnyPaymentActive(isAtLeastOnePaymentActive);
-      setTotalFunds({ totalAvailable, totalClaimed });
+      setTotalFunds({
+        totalAvailable,
+        totalClaimed,
+      });
       setRatePerSecond(ratePerSecondValue);
     },
     [blockTime, colony, currency],
   );
 
+  const getTotalActiveStreamingPayments = useCallback(
+    (items: StreamingPaymentItems) => {
+      const activeStreams = items.filter((item) => {
+        const { amountAvailableToClaim } = getStreamingPaymentAmountsLeft(
+          item,
+          Math.floor(blockTime ?? Date.now() / 1000),
+        );
+        return (
+          getStreamingPaymentStatus({
+            streamingPayment: item,
+            currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
+            amountAvailableToClaim,
+          }) === StreamingPaymentStatus.Active
+        );
+      });
+
+      setActiveStreamingPayments(activeStreams.length);
+    },
+    [blockTime],
+  );
+
   useEffect(() => {
     fetchMore({
       variables: {
-        recipientAddress: walletAddress ?? '',
+        ...(isFilteredByWalletAddress &&
+          walletAddress && {
+            recipientAddress: walletAddress,
+          }),
+        ...(nativeDomainId && {
+          domainId: nativeDomainId,
+        }),
         colonyId: colony.colonyAddress,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
@@ -109,15 +163,21 @@ export const useStreamingPaymentsTotalFunds = () => {
         };
       },
     });
-  }, [colony.colonyAddress, fetchMore, walletAddress]);
+  }, [
+    colony.colonyAddress,
+    fetchMore,
+    walletAddress,
+    isFilteredByWalletAddress,
+    nativeDomainId,
+  ]);
 
   useEffect(() => {
-    if (streamingPayments.length) {
-      getTotalFunds(streamingPayments);
-    }
-  }, [getTotalFunds, streamingPayments]);
+    getTotalFunds(streamingPayments);
+    getTotalActiveStreamingPayments(streamingPayments);
+  }, [getTotalFunds, streamingPayments, getTotalActiveStreamingPayments]);
 
   return {
+    totalStreamed: totalFunds.totalClaimed + totalFunds.totalAvailable,
     totalFunds,
     isAnyPaymentActive,
     ratePerSecond,
@@ -125,5 +185,7 @@ export const useStreamingPaymentsTotalFunds = () => {
     currency,
     getTotalFunds,
     streamingPayments,
+    activeStreamingPayments,
+    totalLastMonthStreaming,
   };
 };
