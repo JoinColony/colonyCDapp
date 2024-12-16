@@ -1,7 +1,5 @@
-import clsx from 'clsx';
 import React from 'react';
 
-import { useMobile, useTablet } from '~hooks';
 import { getFormattedNumeralValue } from '~shared/Numeral/helpers.tsx';
 import { type NumeralValue } from '~shared/Numeral/types.ts';
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
@@ -27,9 +25,6 @@ const StatsCards = ({
   prefix,
   suffix,
 }: StatsCardsProps) => {
-  const isTablet = useTablet();
-  const isMobile = useMobile();
-
   const streamingPerMonthDecimal = convertToDecimal(streamingPerMonth, 0);
   const totalStreamedDecimal = convertToDecimal(totalStreamed, 0);
   const unclaimedFoundsDecimal = convertToDecimal(unclaimedFounds, 0);
@@ -89,9 +84,7 @@ const StatsCards = ({
         }
       />
       <WidgetBox
-        className={clsx({
-          hidden: isTablet && !isMobile,
-        })}
+        className="md:hidden lg:block"
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalActiveStreams',
         })}
