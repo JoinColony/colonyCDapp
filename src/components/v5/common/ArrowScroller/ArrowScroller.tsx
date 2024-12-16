@@ -57,7 +57,7 @@ const ArrowScroller: FC<ArrowScrollerProps> = ({
 
     const { clientWidth } = containerRef.current;
     containerRef?.current.scrollBy({
-      left: -clientWidth * 0.75,
+      left: -clientWidth * 0.5,
       behavior: 'smooth',
     });
   };
