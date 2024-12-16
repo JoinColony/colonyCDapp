@@ -1197,7 +1197,7 @@
     "actionSidebar.tooltip.decisionMethod": "Mechanism behind the decision-making process.",
     "actionSidebar.tooltip.manageMembers": "Whether members are being added or removed.",
     "actionSidebar.tooltip.createdIn": "Team responsible for decision-making and action execution.",
-    "actionSidebar.tooltip.description": "Rationale and context behind the action.",
+    "actionSidebar.tooltip.description": "Provide a description for why this action is being performed including any relevant details.",
     "actionSidebar.tooltip.simplePayment.from": "Team source of the funds.",
     "actionSidebar.tooltip.simplePayment.recipient": "Member or address designated to receive the funds.",
     "actionSidebar.tooltip.simplePayment.amount": "Quantity and type of funds of the payment.",

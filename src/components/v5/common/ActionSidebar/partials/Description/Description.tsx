@@ -24,14 +24,14 @@ const Description: FC<DescriptionProps> = ({
     <ActionFormRow
       icon={Pencil}
       fieldName={DESCRIPTION_FIELD_NAME}
-      // Tooltip disabled to experiment with improving user experience
-      // tooltips={{
-      //   label: {
-      //     tooltipContent: formatMessage({
-      //       id: 'actionSidebar.tooltip.description',
-      //     }),
-      //   },
-      // }}
+      tooltips={{
+        label: {
+          placement: 'bottom-start',
+          tooltipContent: formatText({
+            id: 'actionSidebar.tooltip.description',
+          }),
+        },
+      }}
       title={formatText({ id: 'actionSidebar.description' })}
       isExpandable={!(disabled || hasNoDecisionMethods)}
       isDisabled={disabled || hasNoDecisionMethods}
