@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import ColonyInvitationBanner from '~frame/LandingPage/ColonyInvitationBanner.tsx';
+import ColonyInvitationBanner from '~frame/LandingPage/partials/ColonyInvitationBanner/ColonyInvitationBanner.tsx';
 
 const meta: Meta<typeof ColonyInvitationBanner> = {
   title: 'Common/Colony Invitation Banner',

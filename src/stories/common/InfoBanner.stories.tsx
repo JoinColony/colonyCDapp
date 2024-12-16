@@ -2,7 +2,7 @@ import { Password, Confetti, Keyhole } from '@phosphor-icons/react';
 import { type Meta, type StoryObj } from '@storybook/react';
 import React from 'react';
 
-import InfoBanner from '~frame/LandingPage/InfoBanner/InfoBanner.tsx';
+import InfoBanner from '~frame/LandingPage/partials/InfoBanner/InfoBanner.tsx';
 
 const meta: Meta<typeof InfoBanner> = {
   title: 'Common/Info Banner',
