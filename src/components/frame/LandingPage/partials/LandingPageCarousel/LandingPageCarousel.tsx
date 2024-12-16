@@ -59,11 +59,11 @@ const LandingPageCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
-    <div>
+    <div className="flex h-full flex-col justify-center">
       <div className="w-full md:hidden">
         <img className="w-full" src={SlideMobile} alt="slider mobile" />
       </div>
-      <div className="hidden w-full max-w-[31.25rem] md:block">
+      <div className="flex hidden h-full max-h-[700px] w-full max-w-[31.25rem] flex-col pt-11 md:block">
         <div className="relative mb-9 h-[7.25rem]">
           {slides.map((slide, index) => {
             const isCurrentSlide = currentSlide === index;
@@ -96,16 +96,18 @@ const LandingPageCarousel = () => {
             );
           })}
         </div>
-        <ImageCarousel
-          slideUrls={[Slide1, Slide2, Slide3]}
-          slideWrapperClassName="min-w-full"
-          slideImageClassName="w-full object-cover"
-          options={{ align: 'center', loop: true }}
-          isAutoplay
-          isChangeSlideDotButton={false}
-          setSelectedIndex={setCurrentSlide}
-          className="mx-[-30px] pb-[115px]"
-        />
+        <div className="h-[calc(100%-10.625rem)] flex-1">
+          <ImageCarousel
+            slideUrls={[Slide1, Slide2, Slide3]}
+            slideWrapperClassName="min-w-full"
+            slideImageClassName="w-full object-cover"
+            options={{ align: 'center', loop: true }}
+            isAutoplay
+            isChangeSlideDotButton={false}
+            setSelectedIndex={setCurrentSlide}
+            className="mx-[-30px] flex h-full flex-col justify-between"
+          />
+        </div>
       </div>
     </div>
   );
