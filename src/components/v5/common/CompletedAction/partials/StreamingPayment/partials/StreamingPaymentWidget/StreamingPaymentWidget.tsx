@@ -99,11 +99,7 @@ const StreamingPaymentWidget: FC<StreamingPaymentWidgetProps> = ({
 
   useEffect(() => {
     setHasEnoughFunds(checkIfHasEnoughFunds());
-  }, [
-    checkIfHasEnoughFunds,
-    amounts.amountAvailableToClaim,
-    streamingPaymentData,
-  ]);
+  }, [checkIfHasEnoughFunds]);
 
   const claim = useAsyncFunction({
     submit: ActionTypes.STREAMING_PAYMENT_CLAIM,
