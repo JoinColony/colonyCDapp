@@ -90,7 +90,7 @@ function* createVersionUpgradeAction({
       },
     } = yield waitForTxResult(upgrade.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (supportAnnotation) {
       yield uploadAnnotation({
