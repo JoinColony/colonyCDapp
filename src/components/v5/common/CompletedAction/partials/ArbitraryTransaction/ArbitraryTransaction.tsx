@@ -13,7 +13,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
   console.log('action:', action);
 
   return (
-    <div className="flex flex-col gap-4 border-b-2">
+    <div className="flex flex-col gap-4">
       {action.arbitraryTransactions?.map((transaction) => {
         const abi = action.metadata?.arbitraryTxAbis?.find(
           (abiItem) => abiItem.contractAddress === transaction.contractAddress,
@@ -33,7 +33,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
         }
 
         return (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 border-b-2">
             <div>
               Contract address:
               <MaskedAddress address={transaction.contractAddress} />

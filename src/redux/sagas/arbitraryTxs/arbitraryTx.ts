@@ -1,4 +1,5 @@
 import { ClientType } from '@colony/colony-js';
+import { utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
@@ -104,7 +105,10 @@ function* arbitraryTxSaga({
 
     const abisByAddress = transactions.reduce<Record<string, string>>(
       (acc, transaction) => {
-        acc[transaction.contractAddress] = transaction.jsonAbi;
+        const checksummedAddress = utils.getAddress(
+          transaction.contractAddress,
+        );
+        acc[checksummedAddress] = transaction.jsonAbi;
         return acc;
       },
       {},
