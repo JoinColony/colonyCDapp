@@ -30,6 +30,13 @@ const Currency = ({ closeSubmenu }: CurrencyProps) => {
     <>
       <MenuList className="grid w-[calc(100%+2rem)] grid-cols-2">
         {Object.values(SupportedCurrencies)
+          /**
+           * @Note This filter needs to be removed once we re-enable SupportedCurrencies.Clny
+           */
+          .filter(
+            (supportedCurrency) =>
+              supportedCurrency !== SupportedCurrencies.Clny,
+          )
           .reverse()
           .map((currency) => {
             const CurrencyIcon = currencyIcons[currency] || ClnyTokenIcon;

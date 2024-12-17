@@ -18,12 +18,16 @@ const useCurrency = ({
     if (!contractAddress) return;
 
     const getPrice = async () => {
-      const currentPrice = await fetchCurrentPrice({
-        contractAddress,
-        chainId,
-        conversionDenomination,
-      });
-      setPrice(currentPrice);
+      try {
+        const currentPrice = await fetchCurrentPrice({
+          contractAddress,
+          chainId,
+          conversionDenomination,
+        });
+        setPrice(currentPrice);
+      } catch {
+        console.warn(`Failed to fetch current price for ${contractAddress}`);
+      }
     };
 
     getPrice();
