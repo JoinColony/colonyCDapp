@@ -37,16 +37,12 @@ function* arbitraryTxSaga({
     const methodsBytes: string[] = [];
 
     transactions.forEach(({ contractAddress, ...item }) => {
-      try {
-        const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
-          item.method,
-          item.args?.map((arg) => arg.value),
-        );
-        contractAddresses.push(contractAddress);
-        methodsBytes.push(encodedFunction);
-      } catch (e) {
-        console.error(e);
-      }
+      const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
+        item.method,
+        item.args?.map((arg) => arg.value),
+      );
+      contractAddresses.push(contractAddress);
+      methodsBytes.push(encodedFunction);
     });
 
     // setup batch ids and channels
