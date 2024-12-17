@@ -120,6 +120,10 @@ fragment ColonyAction on ColonyAction {
   }
   metadata {
     customTitle
+    arbitraryTxAbis {
+      contractAddress
+      jsonAbi
+    }
   }
   members
   rootHash

@@ -102,8 +102,23 @@ function* arbitraryTxSaga({
       },
     } = yield waitForTxResult(makeArbitraryTransactions.channel);
 
+    const abisByAddress = transactions.reduce<Record<string, string>>(
+      (acc, transaction) => {
+        acc[transaction.contractAddress] = transaction.jsonAbi;
+        return acc;
+      },
+      {},
+    );
+    const arbitraryTxAbis = Object.entries(abisByAddress).map(
+      ([contractAddress, jsonAbi]) => ({
+        contractAddress,
+        jsonAbi,
+      }),
+    );
+
     yield createActionMetadataInDB(txHash, {
       customTitle: customActionTitle,
+      arbitraryTxAbis,
     });
 
     if (annotationMessage) {
