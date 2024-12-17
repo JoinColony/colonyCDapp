@@ -75,6 +75,17 @@ export type ArbitraryTransactionMethodArgInput = {
   value: Scalars['String'];
 };
 
+export type ArbitraryTxAbi = {
+  __typename?: 'ArbitraryTxAbi';
+  contractAddress: Scalars['String'];
+  jsonAbi: Scalars['String'];
+};
+
+export type ArbitraryTxAbiInput = {
+  contractAddress: Scalars['String'];
+  jsonAbi: Scalars['String'];
+};
+
 export type BridgeBankAccount = {
   __typename?: 'BridgeBankAccount';
   accountOwner: Scalars['String'];
@@ -575,6 +586,8 @@ export type ColonyActionArbitraryTransactionInput = {
 
 export type ColonyActionMetadata = {
   __typename?: 'ColonyActionMetadata';
+  /** In case of arbitrary transaction actions, stores the array of ABIs used to encode the transactions */
+  arbitraryTxAbis?: Maybe<Array<ArbitraryTxAbi>>;
   createdAt: Scalars['AWSDateTime'];
   customTitle: Scalars['String'];
   id: Scalars['ID'];
@@ -1487,6 +1500,7 @@ export type CreateColonyActionInput = {
 };
 
 export type CreateColonyActionMetadataInput = {
+  arbitraryTxAbis?: InputMaybe<Array<ArbitraryTxAbiInput>>;
   customTitle: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
 };
@@ -9554,6 +9568,7 @@ export type UpdateColonyActionInput = {
 };
 
 export type UpdateColonyActionMetadataInput = {
+  arbitraryTxAbis?: InputMaybe<Array<ArbitraryTxAbiInput>>;
   customTitle?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
 };

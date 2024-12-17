@@ -3544,6 +3544,15 @@ type ExpenditureSlotChanges {
 type ColonyActionMetadata @model {
   id: ID!
   customTitle: String!
+  """
+  In case of arbitrary transaction actions, stores the array of ABIs used to encode the transactions
+  """
+  arbitraryTxAbis: [ArbitraryTxAbi!]
+}
+
+type ArbitraryTxAbi {
+  contractAddress: String!
+  jsonAbi: String!
 }
 
 type ColonyDecision @model {
