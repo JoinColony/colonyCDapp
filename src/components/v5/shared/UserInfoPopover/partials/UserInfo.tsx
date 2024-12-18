@@ -49,7 +49,7 @@ const UserInfo: FC<UserInfoProps> = ({
     >
       <div
         className={clsx({
-          'bg-purple-100 px-[22px] pb-[18px] pt-6': isTopContributorType,
+          'bg-purple-100 px-5.5 pb-[18px] pt-6': isTopContributorType,
           'px-[23px] pt-6': !isTopContributorType,
         })}
       >
@@ -103,7 +103,7 @@ const UserInfo: FC<UserInfoProps> = ({
         {aboutDescriptionText && (
           <div
             className={clsx({
-              'px-[22px]': isTopContributorType,
+              'px-5.5': isTopContributorType,
               'px-[23px]': !isTopContributorType,
             })}
           >
@@ -117,7 +117,7 @@ const UserInfo: FC<UserInfoProps> = ({
         {additionalContent && (
           <div
             className={clsx({
-              'px-[22px]': isTopContributorType,
+              'px-5.5': isTopContributorType,
               'px-[23px]': !isTopContributorType,
             })}
           >

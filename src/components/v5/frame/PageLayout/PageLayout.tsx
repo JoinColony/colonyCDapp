@@ -46,9 +46,9 @@ const PageLayout: FC<PropsWithChildren<PageLayoutProps>> = ({
         pauseOnHover
         closeButton={CloseButton}
       />
-      <div className="flex h-screen w-screen flex-col">
+      <div className="flex h-full w-full flex-col">
         <section ref={topContentContainerRef}>{topContent}</section>
-        <div className="flex h-[calc(100vh-var(--top-content-height))] flex-row">
+        <div className="flex h-[calc(100dvh-var(--top-content-height))] flex-row">
           <section
             className={clsx('relative md:py-4 md:pl-4', {
               'sm:py-4 sm:pl-4': enableMobileAndDesktopLayoutBreakpoints,
