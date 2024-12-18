@@ -72,6 +72,9 @@ export const getRolesNeededForMultiSigAction = ({
     case ColonyActionType.FundExpenditureMultisig:
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.TransferFunds;
       break;
+    case ColonyActionType.MakeArbitraryTransactionsMultisig:
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
+      break;
     default:
       permissions = undefined;
       break;
