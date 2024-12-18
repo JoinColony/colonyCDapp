@@ -127,6 +127,8 @@ module.exports = {
     extend: {
       height: {
         screen: ['100vh /* fallback for Opera, IE and etc. */', '100dvh'],
+        'dynamic-screen':
+          'calc(100dvh - var(--header-nav-section-height) - var(--top-content-height))',
       },
       boxShadow: {
         default: '0px 10px 30px rgba(0, 0, 0, 0.05)',
@@ -157,6 +159,7 @@ module.exports = {
       },
       spacing: {
         4.5: '1.125rem',
+        5.5: '1.375rem',
         6.5: '1.625rem',
         8.5: '2.125rem',
       },
@@ -172,17 +175,13 @@ module.exports = {
           '--top-content-height': '0px',
         },
         html: {
-          '@apply font-inter text-lg text-gray-900 min-h-full h-auto antialiased':
-            {},
+          '@apply font-inter text-lg text-gray-900 h-auto antialiased': {},
         },
         body: {
-          '@apply min-h-screen bg-base-white overflow-x-hidden': {},
+          '@apply bg-base-white overflow-x-hidden': {},
         },
         'svg:not([class])': {
           '@apply fill-current stroke-none': {},
-        },
-        '#root': {
-          '@apply min-h-screen': {},
         },
         button: {
           'text-decoration': 'inherit',

@@ -6,6 +6,7 @@ import { FeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsCo
 import { useNotificationsUserContext } from '~context/Notifications/NotificationsUserContext/NotificationsUserContext.ts';
 import CryptoToFiatContextProvider from '~frame/v5/pages/UserCryptoToFiatPage/context/CryptoToFiatContextProvider.tsx';
 import { useMobile } from '~hooks/index.ts';
+import { useLockBodyScroll } from '~hooks/useLockBodyScroll/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Select from '~v5/common/Fields/Select/index.ts';
 import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/NotificationsEnabledWrapper.tsx';
@@ -77,16 +78,21 @@ const UserHub: FC<Props> = ({
   //   </ButtonLink>
   // );
 
+  useLockBodyScroll(isMobile);
+
   return (
     <div
-      className={clsx('flex h-full flex-col sm:w-[42.625rem] sm:flex-row', {
-        'sm:h-[27.75rem]':
-          selectedTab !== UserHubTab.Balance &&
-          selectedTab !== UserHubTab.CryptoToFiat,
-        'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
-      })}
+      className={clsx(
+        'mt-5.5 flex h-dynamic-screen flex-col sm:mt-0 sm:h-auto sm:w-[42.625rem] sm:flex-row',
+        {
+          'sm:h-[27.75rem]':
+            selectedTab !== UserHubTab.Balance &&
+            selectedTab !== UserHubTab.CryptoToFiat,
+          'sm:min-h-[27.75rem]': selectedTab === UserHubTab.Balance,
+        },
+      )}
     >
-      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 pt-4 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[216px] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
+      <div className="sticky left-0 right-0 top-0 flex shrink-0 flex-col justify-between border-b border-b-gray-200 bg-base-white px-6 pb-6 sm:static sm:left-auto sm:right-auto sm:top-auto sm:w-[216px] sm:border-b-0 sm:border-r sm:border-gray-100 sm:bg-transparent sm:p-6 sm:px-6">
         {isMobile ? (
           <Select
             options={filteredTabList}

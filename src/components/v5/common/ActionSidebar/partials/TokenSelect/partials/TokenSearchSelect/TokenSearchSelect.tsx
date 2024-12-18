@@ -120,7 +120,7 @@ const TokenSearchSelect = React.forwardRef<
             className={clsx({
               'flex h-5 justify-center':
                 isLoading || isTokensListDataLoading || loadingTokenData,
-              'max-h-[calc(100vh-12rem)] overflow-y-auto px-1.5 pr-1 sm:max-h-none sm:w-full':
+              'max-h-[calc(100dvh-12rem)] overflow-y-auto px-1.5 pr-1 sm:max-h-none sm:w-full':
                 !(isLoading || isTokensListDataLoading || loadingTokenData),
             })}
           >
