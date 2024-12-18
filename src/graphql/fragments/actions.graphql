@@ -145,14 +145,7 @@ fragment ColonyAction on ColonyAction {
   }
   arbitraryTransactions {
     contractAddress
-    method
-    methodSignature
     encodedFunction
-    args {
-      value
-      name
-      type
-    }
   }
 }
 
