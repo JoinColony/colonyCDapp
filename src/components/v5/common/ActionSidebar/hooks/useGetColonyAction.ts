@@ -77,7 +77,8 @@ const useGetColonyAction = (transactionHash?: string) => {
   const startPollingForAction = useCallback(() => {
     startPolling(pollInterval);
     setIsPolling(true);
-  }, [pollInterval, startPolling]);
+    refetchAction();
+  }, [pollInterval, startPolling, refetchAction]);
 
   const stopPollingForAction = useCallback(() => {
     stopPolling();
