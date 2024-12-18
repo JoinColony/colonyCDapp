@@ -480,6 +480,7 @@ export type MotionActionTypes =
         colonyDomains: Domain[];
         colonyRoles: ColonyRoleFragment[];
         annotationMessage?: string;
+        isMultiSig?: boolean;
         transactions: AddTransactionTableModel[];
       },
       MetaWithSetter<object>
