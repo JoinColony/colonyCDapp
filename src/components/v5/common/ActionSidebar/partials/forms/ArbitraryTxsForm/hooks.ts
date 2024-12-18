@@ -6,6 +6,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
+import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { sanitizeHTML } from '~utils/strings.ts';
 import { DECISION_METHOD_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
@@ -49,10 +50,15 @@ export const useCreateArbitraryTxs = (
         colonyAddress,
       };
 
-      if (payload.decisionMethod === DecisionMethod.Reputation) {
+      if (
+        payload.decisionMethod === DecisionMethod.Reputation ||
+        payload.decisionMethod === DecisionMethod.MultiSig
+      ) {
         return {
           ...commonPayload,
+          colonyRoles: extractColonyRoles(colony.roles),
           colonyDomains: extractColonyDomains(colony.domains),
+          isMultiSig: payload.decisionMethod === DecisionMethod.MultiSig,
         };
       }
 
