@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useGlobalTriggersContext } from '~context/GlobalTriggersContext/GlobalTriggersContext.ts';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
   useOnCreateColonyActionMetadataSubscription,
+  useOnUpdateColonyMotionSubscription,
   useSearchActionsQuery,
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -35,6 +37,9 @@ const useActivityFeed = (
   { pageSize = ITEMS_PER_PAGE }: ActivityFeedOptions = {},
 ): UseActivityFeedReturn => {
   const { colony } = useColonyContext();
+
+  const { actionsTableTriggers, setActionsTableTriggers } =
+    useGlobalTriggersContext();
 
   const { colonyAddress } = colony;
 
@@ -95,6 +100,27 @@ const useActivityFeed = (
     refetch: refetchMotionStates,
   } = useNetworkMotionStates(motionIds);
 
+  const refreshActionStates = useCallback(async () => {
+    await refetchActions();
+    refetchMotionStates();
+  }, [refetchActions, refetchMotionStates]);
+
+  useOnUpdateColonyMotionSubscription({
+    onData: refreshActionStates,
+  });
+
+  const { shouldRefetchMotionStates } = actionsTableTriggers;
+
+  useEffect(() => {
+    if (shouldRefetchMotionStates) {
+      refreshActionStates();
+      setActionsTableTriggers((triggers) => ({
+        ...triggers,
+        shouldRefetchMotionStates: false,
+      }));
+    }
+  }, [shouldRefetchMotionStates, refreshActionStates, setActionsTableTriggers]);
+
   const actions = useMemo(
     () =>
       (items?.filter(notNull) ?? []).map(
@@ -126,6 +152,7 @@ const useActivityFeed = (
     !!nextToken &&
     filteredActions.length < requestedActionsCount &&
     !loadingMotionStateFilter;
+
   useEffect(() => {
     if (fetchMoreActions) {
       fetchMore({ variables: { nextToken } });
@@ -157,6 +184,7 @@ const useActivityFeed = (
     pageNumber,
     pageSize,
   );
+
   const nextPageActions = getActionsByPageNumber(
     filteredActions,
     pageNumber + 1,
