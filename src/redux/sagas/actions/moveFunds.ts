@@ -162,7 +162,7 @@ function* createMoveFundsAction({
       },
     } = yield waitForTxResult(moveFunds.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

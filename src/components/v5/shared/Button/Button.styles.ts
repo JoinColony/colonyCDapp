@@ -27,6 +27,7 @@ const buttonClasses = {
   septenary: tw`border border-gray-200 bg-base-white text-gray-700 disabled:text-gray-300
     md:hover:border-gray-900 md:hover:bg-gray-900 md:hover:text-base-white`,
   completed: tw`border border-success-400 bg-success-400 text-base-white`,
+  link: tw`!m-0 min-h-[auto] !px-0 !py-0 font-medium text-blue-400 underline disabled:text-gray-400`,
 };
 
 export default buttonClasses;

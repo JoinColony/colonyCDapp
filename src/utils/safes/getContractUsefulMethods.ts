@@ -1,7 +1,10 @@
 import { type JsonFragment } from '@ethersproject/abi';
 import { keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 
-import { BINANCE_NETWORK, SUPPORTED_SAFE_NETWORKS } from '~constants/index.ts';
+import {
+  ARBITRARY_TRANSACTION_NETWORKS,
+  BINANCE_NETWORK,
+} from '~constants/index.ts';
 
 export interface AbiItemExtended extends JsonFragment {
   name: string;
@@ -12,7 +15,9 @@ export interface AbiItemExtended extends JsonFragment {
 }
 
 const getCurrentNetworkData = (chainId: string) => {
-  return SUPPORTED_SAFE_NETWORKS.find((network) => network.chainId === chainId);
+  return ARBITRARY_TRANSACTION_NETWORKS.find(
+    (network) => network.chainId === chainId,
+  );
 };
 
 export const getApiKey = (chainId: string) => {
@@ -50,7 +55,7 @@ export const fetchContractName = async (
 
 export const fetchContractABI = async (
   contractAddress: string,
-  safeChainId: string,
+  chainId: string,
 ) => {
   if (!contractAddress) {
     return [];
@@ -59,9 +64,9 @@ export const fetchContractABI = async (
   try {
     // will be defined since fetchContractABI is only called if selectedSafe is defined
 
-    const currentNetworkData = getCurrentNetworkData(safeChainId)!;
+    const currentNetworkData = getCurrentNetworkData(chainId)!;
 
-    const apiKey = getApiKey(currentNetworkData.chainId);
+    const apiKey = import.meta.env.ARBISCAN_API_KEY;
     const apiUri =
       `${currentNetworkData.apiUri}` +
       `?apiKey=${apiKey}` +

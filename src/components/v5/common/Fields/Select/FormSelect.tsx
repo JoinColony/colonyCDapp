@@ -1,5 +1,10 @@
 import React from 'react';
-import { Controller, type Message, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  type Message,
+  type UseControllerProps,
+  useFormContext,
+} from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import { get } from '~utils/lodash.ts';
@@ -14,15 +19,17 @@ interface FormSelectProps<T> {
   handleChange?: any;
   placeholder?: string;
   formatOptionLabel?: (option: SelectOption) => JSX.Element;
+  rules?: UseControllerProps['rules'];
 }
 
-export const FormSelect = <T,>({
+const FormSelect = <T,>({
   name,
   options,
   labelMessage,
   placeholder,
   handleChange,
   formatOptionLabel,
+  rules,
 }: FormSelectProps<T>) => {
   const {
     control,
@@ -34,8 +41,9 @@ export const FormSelect = <T,>({
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field }) => (
-        <>
+        <div>
           {labelMessage && (
             <label
               className="flex flex-col pb-1.5 text-1"
@@ -62,8 +70,10 @@ export const FormSelect = <T,>({
               {formatText(error)}
             </FormError>
           )}
-        </>
+        </div>
       )}
     />
   );
 };
+
+export default FormSelect;
