@@ -8,9 +8,8 @@ export type ProxyColoniesActionTypes =
       ActionTypes.PROXY_COLONY_CREATE,
       {
         colonyAddress: Address;
-        signerAddress: Address;
-        blockNumber: number;
         foreignChainId: number;
+        creationSalt: string;
       },
       object
     >
