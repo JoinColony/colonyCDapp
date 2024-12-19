@@ -95,7 +95,7 @@ function Stepper<TKey extends React.Key>({
 
   return items.length ? (
     <>
-      <div className="flex w-full items-center gap-1">
+      <div className="flex w-full items-center gap-1" data-testid="stepper">
         {isMobile && isScrollableList && (
           <button type="button" onClick={scrollLeft}>
             <CaretLeft className="text-gray-400" size={18} />
