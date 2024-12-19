@@ -9,7 +9,12 @@ import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { useBuildTokenSumsMap } from '~v5/common/ActionSidebar/partials/forms/shared/hooks/useBuildTokenSumsMap.ts';
 import { useIsFieldDisabled } from '~v5/common/ActionSidebar/partials/hooks.ts';
-import Table from '~v5/common/Table/Table.tsx';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import {
+  getMoreActionsMenu,
+  renderCellContent,
+} from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { useStagedPaymentRecipientsTableColumns } from './hooks.tsx';
@@ -40,7 +45,6 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
     key: id,
   }));
   const value: StagedPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
-  const columns = useStagedPaymentRecipientsTableColumns(name, value);
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
   const getMenuProps = ({ index }) => ({
@@ -67,6 +71,11 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
         : []),
     ],
   });
+  const columns = useStagedPaymentRecipientsTableColumns(
+    name,
+    value,
+    getMenuProps,
+  );
 
   return (
     <div>
@@ -87,19 +96,33 @@ const StagedPaymentRecipientsField: FC<StagedPaymentRecipientsFieldProps> = ({
                 !isTablet,
             },
           )}
-          verticalLayout={isTablet}
-          getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          getMenuProps={getMenuProps}
-          withBorder={false}
+          layout={isTablet ? 'vertical' : 'horizontal'}
           footerColSpan={isMobile ? 2 : 1}
-          renderCellWrapper={(_, content) => content}
-          initialState={{
-            pagination: {
-              pageSize: 400,
+          renderCellWrapper={renderCellContent}
+          borders={{
+            visible: true,
+            type: 'unset',
+          }}
+          overrides={{
+            getRowId: ({ key }) => key,
+            state: {
+              columnVisibility: {
+                [MEATBALL_MENU_COLUMN_ID]: !isTablet,
+              },
+            },
+            initialState: {
+              pagination: {
+                pageIndex: 0,
+                pageSize: 400,
+              },
             },
           }}
+          moreActions={getMoreActionsMenu({
+            getMenuProps,
+            visible: isTablet,
+          })}
         />
       )}
       <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row">

@@ -13,7 +13,8 @@ import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
 import { convertPeriodToHours } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { renderCellContent } from '~v5/common/Table/utils.tsx';
 
 import AmountField from './partials/AmountField/AmountField.tsx';
 import ClaimStatusBadge from './partials/ClaimStatusBadge/ClaimStatusBadge.tsx';
@@ -259,13 +260,6 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
       <Table<PaymentBuilderTableModel>
-        virtualizedProps={
-          data.length > 10
-            ? {
-                virtualizedRowHeight: isTablet ? 46 : 54,
-              }
-            : undefined
-        }
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
@@ -308,13 +302,26 @@ const PaymentBuilderTable: FC<PaymentBuilderTableProps> = ({
             : data
         }
         columns={columns}
-        renderCellWrapper={(_, content) => content}
-        verticalLayout={isTablet}
-        withBorder={false}
-        initialState={{
-          pagination: {
-            pageSize: 400,
+        renderCellWrapper={renderCellContent}
+        rows={
+          data.length > 10
+            ? {
+                virtualizedRowHeight: isTablet ? 46 : 54,
+              }
+            : undefined
+        }
+        overrides={{
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 400,
+            },
           },
+        }}
+        layout={isTablet ? 'vertical' : 'horizontal'}
+        borders={{
+          visible: true,
+          type: 'unset',
         }}
       />
     </div>

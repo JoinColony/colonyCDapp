@@ -1,4 +1,8 @@
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  type Row,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -12,13 +16,16 @@ import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/
 import TokenSymbol from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenSymbol/TokenSymbol.tsx';
 import TokenSelect from '~v5/common/ActionSidebar/partials/TokenSelect/TokenSelect.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 import { TokenStatus } from '~v5/common/types.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import { type TokensTableModel } from './types.ts';
 
 export const useTokensTableColumns = (
   name: string,
   data,
+  getMenuProps: (row: Row<TokensTableModel>) => MeatBallMenuProps | undefined,
 ): ColumnDef<TokensTableModel, string>[] => {
   const isTablet = useTablet();
   const columnHelper = useMemo(
@@ -35,6 +42,18 @@ export const useTokensTableColumns = (
   );
 
   const { getFieldState } = useFormContext();
+
+  const menuColumn: ColumnDef<TokensTableModel, string> = useMemo(
+    () =>
+      makeMenuColumn({
+        helper: columnHelper,
+        getMenuProps,
+        cellProps: {
+          size: 34,
+        },
+      }),
+    [columnHelper, getMenuProps],
+  );
 
   const columns: ColumnDef<TokensTableModel, string>[] = useMemo(
     () => [
@@ -134,5 +153,5 @@ export const useTokensTableColumns = (
     ],
   );
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

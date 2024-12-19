@@ -13,7 +13,8 @@ import { formatText } from '~utils/intl.ts';
 import PaymentBuilderPayoutsTotal from '~v5/common/ActionSidebar/partials/forms/PaymentBuilderForm/partials/PaymentBuilderPayoutsTotal/index.ts';
 import { type StagedPaymentRecipientsFieldModel } from '~v5/common/ActionSidebar/partials/forms/StagedPaymentForm/partials/StagedPaymentRecipientsField/types.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { renderCellContent } from '~v5/common/Table/utils.tsx';
 
 import AmountField from '../PaymentBuilderTable/partials/AmountField/AmountField.tsx';
 import { type MilestoneItem } from '../StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
@@ -254,14 +255,20 @@ const StagedPaymentTable: FC<StagedPaymentTableProps> = ({
                 !isTablet,
             },
           )}
-          verticalLayout={isTablet}
           columns={columns}
           data={data}
-          withBorder={false}
-          renderCellWrapper={(_, content) => content}
-          initialState={{
-            pagination: {
-              pageSize: 400,
+          layout={isTablet ? 'vertical' : 'horizontal'}
+          borders={{
+            visible: true,
+            type: 'unset',
+          }}
+          renderCellWrapper={renderCellContent}
+          overrides={{
+            initialState: {
+              pagination: {
+                pageIndex: 0,
+                pageSize: 400,
+              },
             },
           }}
         />
