@@ -8,7 +8,6 @@ services:
       - 'amplify-mock-data:/mock-data'
       - '../amplify/backend/:/backend-repo'
     command: '/bin/bash -c "rm -rf /backend/* && rm -rf /mock-data/* && touch /backend/.initialized && touch /mock-data/.initialized && cp -r /backend-repo/* /backend/ && chown -R $(id -u node):$(id -g node) /backend && chown -R $(id -u node):$(id -g node) /mock-data"'
-
   network-contracts:
     container_name: 'network'
     image: colony-cdapp-dev-env/network:latest
@@ -25,7 +24,6 @@ services:
     depends_on:
       amplify-setup:
         condition: service_completed_successfully
-
   reputation-monitor:
     container_name: 'monitor'
     image: colony-cdapp-dev-env/reputation-monitor:latest
@@ -36,7 +34,6 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
-
   block-ingestor:
     container_name: 'ingestor'
     image: colony-cdapp-dev-env/block-ingestor:latest
@@ -49,7 +46,6 @@ services:
         condition: service_healthy
       amplify:
         condition: service_healthy
-
   amplify:
     container_name: 'amplify'
     image: colony-cdapp-dev-env/amplify:latest
@@ -73,7 +69,6 @@ services:
       test: ['CMD', 'curl', '-f', 'http://localhost:9200']
       interval: 5s
       retries: 1000
-
   auth-proxy:
     container_name: 'auth'
     image: colony-cdapp-dev-env/auth-proxy:latest
@@ -82,7 +77,6 @@ services:
     depends_on:
       amplify:
         condition: service_healthy
-
   network-files:
     container_name: 'network-files'
     image: colony-cdapp-dev-env/base:latest
@@ -94,7 +88,6 @@ services:
     depends_on:
       network-contracts:
         condition: service_healthy
-
 volumes:
   amplify-backend:
   amplify-mock-data:
