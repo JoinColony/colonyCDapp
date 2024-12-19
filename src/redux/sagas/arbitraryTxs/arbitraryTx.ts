@@ -1,4 +1,5 @@
 import { ClientType } from '@colony/colony-js';
+import { utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
@@ -37,16 +38,12 @@ function* arbitraryTxSaga({
     const methodsBytes: string[] = [];
 
     transactions.forEach(({ contractAddress, ...item }) => {
-      try {
-        const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
-          item.method,
-          item.args?.map((arg) => arg.value),
-        );
-        contractAddresses.push(contractAddress);
-        methodsBytes.push(encodedFunction);
-      } catch (e) {
-        console.error(e);
-      }
+      const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
+        item.method,
+        item.args?.map((arg) => arg.value),
+      );
+      contractAddresses.push(contractAddress);
+      methodsBytes.push(encodedFunction);
     });
 
     // setup batch ids and channels
@@ -106,7 +103,27 @@ function* arbitraryTxSaga({
       },
     } = yield waitForTxResult(makeArbitraryTransactions.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    const abisByAddress = transactions.reduce<Record<string, string>>(
+      (acc, transaction) => {
+        const checksummedAddress = utils.getAddress(
+          transaction.contractAddress,
+        );
+        acc[checksummedAddress] = transaction.jsonAbi;
+        return acc;
+      },
+      {},
+    );
+    const arbitraryTxAbis = Object.entries(abisByAddress).map(
+      ([contractAddress, jsonAbi]) => ({
+        contractAddress,
+        jsonAbi,
+      }),
+    );
+
+    yield createActionMetadataInDB(txHash, {
+      customTitle: customActionTitle,
+      arbitraryTxAbis,
+    });
 
     if (annotationMessage) {
       yield uploadAnnotation({

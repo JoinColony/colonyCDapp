@@ -4,9 +4,18 @@ import {
   type CreateColonyActionMetadataMutation,
   type CreateColonyActionMetadataMutationVariables,
   CreateColonyActionMetadataDocument,
+  type CreateColonyActionMetadataInput,
 } from '~gql';
 
-export function* createActionMetadataInDB(txHash: string, customTitle: string) {
+type ActionMetadataFields = Pick<
+  CreateColonyActionMetadataInput,
+  'customTitle' | 'arbitraryTxAbis'
+>;
+
+export function* createActionMetadataInDB(
+  txHash: string,
+  fields: ActionMetadataFields,
+) {
   const apolloClient = getContext(ContextModule.ApolloClient);
 
   yield mutateWithAuthRetry(() =>
@@ -18,7 +27,7 @@ export function* createActionMetadataInDB(txHash: string, customTitle: string) {
       variables: {
         input: {
           id: txHash,
-          customTitle,
+          ...fields,
         },
       },
     }),

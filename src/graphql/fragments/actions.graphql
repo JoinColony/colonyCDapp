@@ -120,6 +120,10 @@ fragment ColonyAction on ColonyAction {
   }
   metadata {
     customTitle
+    arbitraryTxAbis {
+      contractAddress
+      jsonAbi
+    }
   }
   members
   rootHash
@@ -141,14 +145,7 @@ fragment ColonyAction on ColonyAction {
   }
   arbitraryTransactions {
     contractAddress
-    method
-    methodSignature
     encodedFunction
-    args {
-      value
-      name
-      type
-    }
   }
 }
 
