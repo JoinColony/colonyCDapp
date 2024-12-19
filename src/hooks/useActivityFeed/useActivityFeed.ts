@@ -5,6 +5,7 @@ import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
   useOnCreateColonyActionMetadataSubscription,
+  useOnUpdateColonyMotionSubscription,
   useSearchActionsQuery,
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -95,6 +96,13 @@ const useActivityFeed = (
     refetch: refetchMotionStates,
   } = useNetworkMotionStates(motionIds);
 
+  useOnUpdateColonyMotionSubscription({
+    onData: async () => {
+      await refetchActions();
+      refetchMotionStates();
+    },
+  });
+
   const actions = useMemo(
     () =>
       (items?.filter(notNull) ?? []).map(
@@ -126,6 +134,7 @@ const useActivityFeed = (
     !!nextToken &&
     filteredActions.length < requestedActionsCount &&
     !loadingMotionStateFilter;
+
   useEffect(() => {
     if (fetchMoreActions) {
       fetchMore({ variables: { nextToken } });
@@ -157,6 +166,7 @@ const useActivityFeed = (
     pageNumber,
     pageSize,
   );
+
   const nextPageActions = getActionsByPageNumber(
     filteredActions,
     pageNumber + 1,
