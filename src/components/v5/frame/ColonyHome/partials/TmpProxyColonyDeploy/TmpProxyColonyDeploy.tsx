@@ -32,8 +32,7 @@ export const TmpProxyColonyDeploy = () => {
 
     await createProxyColony({
       colonyAddress: colony.colonyAddress,
-      signerAddress: colony.colonyCreateEvent.signerAddress,
-      blockNumber: colony.colonyCreateEvent.blockNumber,
+      creationSalt: colony.colonyCreateEvent.creationSalt,
       foreignChainId: chainId,
     });
   };
