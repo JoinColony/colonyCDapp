@@ -91,7 +91,7 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
           name="acknowledge"
           isChecked={isAcknowledged}
           onChange={() => setIsAcknowledged((state) => !state)}
-          classNames="mb-8"
+          className="mb-8"
           disabled={isFormSubmitting}
         >
           <p className="text-md">{formatText(MSG.acknowledge)}</p>

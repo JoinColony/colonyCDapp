@@ -222,7 +222,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
         <PopoverBase
           setTooltipRef={setTooltipRef}
           tooltipProps={getTooltipProps}
-          classNames={clsx(
+          className={clsx(
             'w-full border-none bg-base-white p-0 shadow-none sm:w-auto sm:rounded-lg sm:border sm:border-solid sm:border-gray-200 sm:shadow-default',
             {
               '!top-[calc(var(--header-nav-section-height)-1.4rem)] h-[calc(100dvh-var(--top-content-height)+1.5rem)] !translate-x-0 !translate-y-0':
