@@ -15,6 +15,7 @@ const ModalBase: FC<ModalBaseProps> = ({
   withPaddingBottom,
   withBorder,
   isOpen,
+  className,
   ...props
 }) => {
   useDisableBodyScroll(isOpen);
@@ -46,6 +47,7 @@ const ModalBase: FC<ModalBaseProps> = ({
           'pb-6': withPaddingBottom,
           'border-2 border-purple-200': withBorder,
         },
+        className,
       )}
       shouldFocusAfterRender
       shouldCloseOnOverlayClick

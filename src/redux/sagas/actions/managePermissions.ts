@@ -180,7 +180,7 @@ function* managePermissionsAction({
       },
     } = yield waitForTxResult(setUserRoles.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

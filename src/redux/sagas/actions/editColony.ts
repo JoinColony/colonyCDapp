@@ -151,7 +151,7 @@ function* editColonyAction({
       },
     } = yield waitForTxResult(editColony.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

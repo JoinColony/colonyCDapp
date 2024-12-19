@@ -3,8 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { getCountries } from '~utils/countries.ts';
 import { formatText } from '~utils/intl.ts';
-
-import { FormSelect } from '../FormSelect.tsx';
+import FormSelect from '~v5/common/Fields/Select/FormSelect.tsx';
 
 import { CONTACT_DETAILS_FORM_MSGS } from './consts.ts';
 import { AddressFields, type ContactDetailsFormSchema } from './validation.ts';

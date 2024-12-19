@@ -94,7 +94,7 @@ function* manageTokensAction({
       },
     } = yield waitForTxResult(manageTokens.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

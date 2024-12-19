@@ -2,8 +2,8 @@ import React, { type FC } from 'react';
 
 import { Form } from '~shared/Fields/index.ts';
 import { formatText } from '~utils/intl.ts';
+import FormInput from '~v5/common/Fields/InputBase/FormInput.tsx';
 
-import { FormInput } from '../FormInput.tsx';
 import { FormRow } from '../FormRow.tsx';
 import ModalFormCTAButtons from '../ModalFormCTAButtons/ModalFormCTAButtons.tsx';
 import ModalHeading from '../ModalHeading/ModalHeading.tsx';

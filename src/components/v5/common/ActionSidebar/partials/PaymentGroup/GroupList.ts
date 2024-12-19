@@ -13,7 +13,7 @@ import {
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-type GroupListItem = {
+export type GroupListItem = {
   title: string;
   description: string;
   Icon: Icon;

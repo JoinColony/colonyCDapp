@@ -274,7 +274,9 @@ function* createStakedExpenditure({
     });
 
     if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
+      });
     }
 
     if (isStaged) {

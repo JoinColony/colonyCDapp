@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import React, { type RefObject, forwardRef } from 'react';
 
 import { type Address } from '~types/index.ts';
-import { splitAddress, type AddressElements } from '~utils/strings.ts';
+
+import getMaskedAddress from './getMaskedAddress.ts';
 
 interface Props {
   /*
@@ -39,7 +40,11 @@ const MaskedAddress = forwardRef(
     { address, mask = '...', full = false, dataTest, className }: Props,
     ref: RefObject<any>,
   ) => {
-    const cutAddress: AddressElements = splitAddress(address);
+    const { result, cutAddress } = getMaskedAddress({
+      address,
+      isFull: full,
+      mask,
+    });
 
     return (
       <span
@@ -48,10 +53,16 @@ const MaskedAddress = forwardRef(
         ref={ref}
         data-test={dataTest}
       >
-        {cutAddress.header}
-        {cutAddress.start}
-        {full ? <span className="mx-1">{cutAddress.middle}</span> : mask}
-        {cutAddress.end}
+        {cutAddress ? (
+          <>
+            {cutAddress.header}
+            {cutAddress.start}
+            {full ? <span className="mx-1">{cutAddress.middle}</span> : mask}
+            {cutAddress.end}
+          </>
+        ) : (
+          <>{result}</>
+        )}
       </span>
     );
   },

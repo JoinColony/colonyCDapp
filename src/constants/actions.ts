@@ -31,9 +31,11 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   PaymentBuilder: [[ColonyRole.Administration]],
   SplitPayment: [[ColonyRole.Administration]],
   StagedPayment: [[ColonyRole.Administration]],
+  ArbitraryTxs: [[ColonyRole.Root]],
 };
 
 export enum Action {
+  ArbitraryTxs = 'arbitrary-txs',
   PaymentGroup = 'payment-group',
   SimplePayment = 'simple-payment',
   PaymentBuilder = 'payment-builder',

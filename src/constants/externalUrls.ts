@@ -112,3 +112,10 @@ export const getSafeTransactionMonitor = (
  */
 export const LEARN_MORE_CRYPTO_TO_FIAT =
   'https://help.colony.io/en/articles/9529993-crypto-to-fiat#h_af81098357';
+
+/**
+ * Arbitrary Transactions
+ */
+
+export const LEARN_MORE_ARBITRARY_TRANSACTIONS =
+  'https://help.colony.io/en/articles/9739602-interact-with-any-contract-from-a-colony';

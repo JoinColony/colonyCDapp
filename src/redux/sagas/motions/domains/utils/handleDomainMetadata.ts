@@ -83,5 +83,5 @@ export function* handleDomainMetadata({
     );
   }
 
-  yield createActionMetadataInDB(txHash, customActionTitle);
+  yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 }
