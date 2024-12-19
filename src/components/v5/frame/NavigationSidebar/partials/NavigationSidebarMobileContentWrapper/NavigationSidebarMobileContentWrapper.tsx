@@ -27,7 +27,7 @@ const NavigationSidebarMobileContentWrapper: FC<
         right-0
         top-full
         z-base
-        h-[calc(100vh-var(--top-content-height))]
+        h-[calc(100dvh-var(--top-content-height))]
         w-full
         overflow-hidden
         bg-base-white

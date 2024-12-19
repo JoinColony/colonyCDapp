@@ -7,8 +7,8 @@ const LabelLoadingSkeleton = () => (
 );
 const BarGroupLoadingSkeleton = () => (
   <div className="flex flex-row gap-1">
-    <LoadingSkeleton isLoading className="h-1 w-[22px] rounded" />
-    <LoadingSkeleton isLoading className="h-1 w-[22px] rounded" />
+    <LoadingSkeleton isLoading className="h-1 w-5.5 rounded" />
+    <LoadingSkeleton isLoading className="h-1 w-5.5 rounded" />
   </div>
 );
 
