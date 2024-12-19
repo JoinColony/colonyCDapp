@@ -30,7 +30,6 @@ import { getSelectedToken } from '~utils/tokens.ts';
 import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import { useGetExpenditureData } from '~v5/common/ActionSidebar/hooks/useGetExpenditureData.ts';
 import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
-import Avatar from '~v5/shared/Avatar/Avatar.tsx';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -38,6 +37,7 @@ import { LoadingBehavior } from '~v5/shared/Button/types.ts';
 import MotionWidgetSkeleton from '~v5/shared/MotionWidgetSkeleton/MotionWidgetSkeleton.tsx';
 import Stepper from '~v5/shared/Stepper/index.ts';
 import { type StepperItem } from '~v5/shared/Stepper/types.ts';
+import UserPopover from '~v5/shared/UserPopover/UserPopover.tsx';
 
 import ActionWithPermissionsInfo from '../ActionWithPermissionsInfo/ActionWithPermissionsInfo.tsx';
 import ActionWithStakingInfo from '../ActionWithStakingInfo/ActionWithStakingInfo.tsx';
@@ -85,7 +85,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
     setSelectedReleaseAction,
   } = usePaymentBuilderContext();
 
-  const { expenditureId, initiatorUser } = action;
+  const { expenditureId } = action;
 
   const {
     expenditure,
@@ -386,7 +386,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                 content={
                   !expenditure?.ownerAddress ||
                   walletAddress !== expenditure?.ownerAddress ? (
-                    <div className="mb-2">
+                    <div>
                       <h4 className="mb-3 flex items-center justify-between text-1">
                         {formatText({
                           id: 'expenditure.reviewStage.confirmDetails.title',
@@ -401,14 +401,10 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
                         </dt>
                         <dd>
                           <div className="flex w-full items-center">
-                            <Avatar
-                              address={initiatorUser?.walletAddress ?? ''}
-                              size={20}
-                              src={initiatorUser?.profile?.avatar ?? ''}
+                            <UserPopover
+                              walletAddress={action.initiatorAddress}
+                              size={18}
                             />
-                            <p className="ml-2.5">
-                              {initiatorUser?.profile?.displayName}
-                            </p>
                           </div>
                         </dd>
                       </div>
