@@ -1,6 +1,6 @@
 import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
@@ -44,16 +44,12 @@ function* arbitraryTxMotion({
     const methodsBytes: string[] = [];
 
     transactions.forEach(({ contractAddress, ...item }) => {
-      try {
-        const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
-          item.method,
-          item.args?.map((arg) => arg.value),
-        );
-        contractAddresses.push(contractAddress);
-        methodsBytes.push(encodedFunction);
-      } catch (e) {
-        console.error(e);
-      }
+      const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
+        item.method,
+        item.args?.map((arg) => arg.value),
+      );
+      contractAddresses.push(contractAddress);
+      methodsBytes.push(encodedFunction);
     });
 
     const colonyClient = yield colonyManager.getClient(
@@ -163,7 +159,27 @@ function* arbitraryTxMotion({
       },
     } = yield waitForTxResult(createMotion.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    const abisByAddress = transactions.reduce<Record<string, string>>(
+      (acc, transaction) => {
+        const checksummedAddress = utils.getAddress(
+          transaction.contractAddress,
+        );
+        acc[checksummedAddress] = transaction.jsonAbi;
+        return acc;
+      },
+      {},
+    );
+    const arbitraryTxAbis = Object.entries(abisByAddress).map(
+      ([contractAddress, jsonAbi]) => ({
+        contractAddress,
+        jsonAbi,
+      }),
+    );
+
+    yield createActionMetadataInDB(txHash, {
+      customTitle: customActionTitle,
+      arbitraryTxAbis,
+    });
 
     if (annotationMessage) {
       yield uploadAnnotation({
