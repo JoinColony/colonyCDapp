@@ -197,7 +197,7 @@ export const useClaimConfig = (
   const buttonTextId = isClaimed ? 'button.claimed' : 'button.claim';
   const remainingStakesNumber = remainingStakes.length;
   const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
-  const handleClaimSuccess = () => {
+  const handleClaimSuccess = async () => {
     setIsClaimed(true);
     startPollingAction(getSafePollingInterval());
     pollLockedTokenBalance();
