@@ -20,7 +20,10 @@ const ErrorContent: FC<ErrorContentProps> = ({
   const errorMessage = getErrorMessage(errorCode || DropzoneErrors.DEFAULT);
 
   return (
-    <div className="flex w-full gap-3 rounded border border-negative-400 bg-base-white px-6 py-4">
+    <div
+      data-testid="avatar-uploader-error-content"
+      className="flex w-full gap-3 rounded border border-negative-400 bg-base-white px-6 py-4"
+    >
       <div className="mb-2 w-10">
         <div className="flex items-start justify-center rounded-full bg-negative-100 p-[0.25rem]">
           <div className="flex items-start justify-center rounded-full bg-negative-200 p-[0.25rem] text-negative-400">
