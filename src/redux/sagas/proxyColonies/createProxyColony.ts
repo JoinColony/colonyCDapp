@@ -1,9 +1,8 @@
 import { ClientType } from '@colony/colony-js';
 import { type CustomContract } from '@colony/sdk';
-import { utils, providers } from 'ethers';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { utils } from 'ethers';
+import { put, takeEvery } from 'redux-saga/effects';
 
-import { GANACHE_LOCAL_RPC_URL, isDev } from '~constants';
 import { colonyAbi } from '~constants/abis.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux';
@@ -17,18 +16,14 @@ import { addTransactionToDb } from '~state/transactionState.ts';
 import { TransactionStatus } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import {
-  getColonyManager,
-  getNetworkClient,
-  putError,
-} from '../utils/index.ts';
+import { getColonyManager, putError } from '../utils/index.ts';
 
 export type CreateProxyColonyPayload =
   Action<ActionTypes.PROXY_COLONY_CREATE>['payload'];
 
 // @TODO if metatx are enabled sent a metaTx instead of tx
 function* createProxyColony({
-  payload: { colonyAddress, signerAddress, blockNumber, foreignChainId },
+  payload: { colonyAddress, creationSalt, foreignChainId },
   meta,
 }: Action<ActionTypes.PROXY_COLONY_CREATE>) {
   const batchKey = TRANSACTION_METHODS.CreateProxyColony;
@@ -38,28 +33,10 @@ function* createProxyColony({
 
   const walletAddress = utils.getAddress(address);
 
-  const provider = (() => {
-    if (isDev) {
-      return new providers.StaticJsonRpcProvider(GANACHE_LOCAL_RPC_URL);
-    }
-    return new providers.Web3Provider(window.ethereum!);
-  })();
-
-  /**
-   * For the networkClient.getColonyCreationSalt to properly work when passing the `from` value
-   * We need to instantiate the ColonyNetworkClient using a provider
-   */
-  const networkClient = yield call(getNetworkClient, provider);
-
   try {
-    const generatedColonySalt = yield networkClient.getColonyCreationSalt({
-      blockTag: blockNumber,
-      from: signerAddress,
-    });
-
     const proxyColonyContract: CustomContract<typeof colonyAbi> =
       colonyManager.getCustomContract(colonyAddress, colonyAbi);
-    const params = [foreignChainId, generatedColonySalt];
+    const params = [foreignChainId, creationSalt];
 
     yield addTransactionToDb(meta.id, {
       context: ClientType.ColonyClient, // @NOTE we want to add a new context type
@@ -78,7 +55,7 @@ function* createProxyColony({
     const [transaction, waitForMined] = yield proxyColonyContract
       .createTxCreator('createProxyColony', [
         BigInt(foreignChainId),
-        generatedColonySalt,
+        creationSalt,
         {
           gasLimit: BigInt(10_000_000),
         },
