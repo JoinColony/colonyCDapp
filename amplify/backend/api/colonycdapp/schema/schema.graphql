@@ -1539,9 +1539,9 @@ type ColonyCreateEvent {
   """
   blockNumber: Int!
   """
-  The address that signed the transaction
+  The salt used during creation
   """
-  signerAddress: String!
+  creationSalt: String!
 }
 
 """
