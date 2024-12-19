@@ -3,7 +3,7 @@ fragment Colony on Colony {
   name
   colonyCreateEvent {
     blockNumber
-    signerAddress
+    creationSalt
   }
   nativeToken {
     ...Token
