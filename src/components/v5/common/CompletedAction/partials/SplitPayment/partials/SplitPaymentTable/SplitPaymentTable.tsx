@@ -3,7 +3,8 @@ import React, { type FC, useMemo } from 'react';
 
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { UnpaginatedTable } from '~v5/common/Table/refactoring/UnpaginatedTable.tsx';
+import { renderCellContent } from '~v5/common/Table/refactoring/utils.tsx';
 
 import { useGetSplitPaymentColumns } from './hooks.tsx';
 import {
@@ -43,7 +44,7 @@ const SplitPaymentTable: FC<SplitPaymentTableProps> = ({
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>
-      <Table<SplitPaymentTableModel>
+      <UnpaginatedTable<SplitPaymentTableModel>
         className={clsx(
           '[&_tfoot>tr>td]:border-gray-200 [&_tfoot>tr>td]:py-2 md:[&_tfoot>tr>td]:border-t',
           {
@@ -80,9 +81,12 @@ const SplitPaymentTable: FC<SplitPaymentTableProps> = ({
             : data
         }
         columns={columns}
-        renderCellWrapper={(_, content) => content}
-        verticalLayout={isTablet}
-        withBorder={false}
+        renderCellWrapper={renderCellContent}
+        layout={isTablet ? 'vertical' : 'horizontal'}
+        borders={{
+          visible: true,
+          type: 'unset',
+        }}
       />
     </div>
   );

@@ -14,7 +14,7 @@ import {
   getRemovedInheritedPermissions,
 } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
-import Table from '~v5/common/Table/Table.tsx';
+import { UnpaginatedTable } from '~v5/common/Table/refactoring/UnpaginatedTable.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
@@ -83,7 +83,7 @@ const PermissionsRemovalModal: React.FC<PermissionsRemovalModalProps> = ({
         </div>
         <h1 className="mb-2 text-lg font-bold">{formatText(MSG.title)}</h1>
         <p className="mb-6 text-md text-gray-600">{formatText(MSG.body)}</p>
-        <Table<PermissionsTableModel>
+        <UnpaginatedTable<PermissionsTableModel>
           {...permissionsTableProps}
           className="mb-4"
         />

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/FiltersContextProvider.tsx';
 import RecentActivityTable from '~common/ColonyActionsTable/RecentActivityTable.tsx';
 import { TourTargets } from '~common/Tours/enums.ts';
-import { useMobile } from '~hooks/index.ts';
 import {
   // @BETA: Disabled for now
   // COLONY_TEAMS_ROUTE,
@@ -23,7 +22,6 @@ import TotalInOutBalance from './partials/TotalInOutBalance/TotalInOutBalance.ts
 const displayName = 'v5.frame.ColonyHome';
 
 const ColonyHome = () => {
-  const isMobile = useMobile();
   const [selectedAction, setSelectedAction] = useState<string | undefined>(
     undefined,
   );
@@ -66,21 +64,6 @@ const ColonyHome = () => {
             }}
             className="flex w-full flex-grow flex-col justify-between [&_tr.expanded-below:not(last-child)_td>*:not(.expandable)]:!pb-2 [&_tr.expanded-below_td]:border-none [&_tr:last-child_td>*:not(.expandable)]:!py-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pb-[13px] [&_tr:not(last-child)_td>*:not(.expandable)]:!pt-[13px]"
             pageSize={7}
-            state={{
-              columnVisibility: isMobile
-                ? {
-                    description: true,
-                    motionState: true,
-                    team: false,
-                    createdAt: false,
-                  }
-                : {
-                    description: true,
-                    motionState: true,
-                    team: false,
-                    createdAt: true,
-                  },
-            }}
           />
         </FiltersContextProvider>
       </div>

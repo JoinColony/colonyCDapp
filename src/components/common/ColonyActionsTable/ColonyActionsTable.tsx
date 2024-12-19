@@ -2,7 +2,7 @@ import React, { type FC } from 'react';
 
 import { type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { PaginatedTable } from '~v5/common/Table/refactoring/PaginatedTable.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
 import { useActionsTableProps } from './hooks/useActionsTableProps.tsx';
@@ -17,7 +17,7 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
   actionProps,
   ...rest
 }) => {
-  const { tableProps, renderSubComponent } = useActionsTableProps(
+  const { tableProps } = useActionsTableProps(
     rest,
     actionProps.setSelectedAction,
   );
@@ -33,9 +33,12 @@ const ColonyActionsTable: FC<ColonyActionsTableProps> = ({
           <ActionsTableFilters />
         </TableHeader>
       )}
-      <Table<ColonyAction>
+      <PaginatedTable<ColonyAction>
         {...tableProps}
-        renderSubComponent={renderSubComponent}
+        borders={{
+          type: 'wide',
+          visible: true,
+        }}
       />
     </>
   );

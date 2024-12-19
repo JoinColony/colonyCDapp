@@ -5,7 +5,9 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { UnpaginatedTable } from '~v5/common/Table/refactoring/UnpaginatedTable.tsx';
+import { getMoreActionsMenu } from '~v5/common/Table/refactoring/utils.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
 import { useBatchPaymentsTableColumns } from './hooks.tsx';
@@ -28,7 +30,6 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
   );
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
-  const columns = useBatchPaymentsTableColumns();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
     items: [
@@ -40,6 +41,7 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
       },
     ],
   });
+  const columns = useBatchPaymentsTableColumns(getMenuProps);
 
   return (
     <div>
@@ -48,15 +50,25 @@ const BatchPaymentsTable: FC<BatchPaymentsTableProps> = ({ name }) => {
           <h5 className="mb-3 mt-6 text-2">
             {formatText({ id: 'actionSidebar.payments' })}
           </h5>
-          <Table<BatchPaymentsTableModel>
+          <UnpaginatedTable<BatchPaymentsTableModel>
             className={clsx('mb-6', {
               '!border-negative-400': !!fieldState.error,
             })}
-            getRowId={({ key }) => key}
             columns={columns}
             data={data}
-            getMenuProps={getMenuProps}
-            verticalLayout={isMobile}
+            layout={isMobile ? 'vertical' : 'horizontal'}
+            overrides={{
+              getRowId: ({ key }) => key,
+              state: {
+                columnVisibility: {
+                  [MEATBALL_MENU_COLUMN_ID]: !isMobile,
+                },
+              },
+            }}
+            moreActions={getMoreActionsMenu({
+              getMenuProps,
+              visible: isMobile,
+            })}
           />
         </>
       )}

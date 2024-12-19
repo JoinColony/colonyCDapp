@@ -11,7 +11,7 @@ import {
 } from '~types/permissions.ts';
 import { CUSTOM_PERMISSION_TABLE_CONTENT } from '~utils/colonyActions.ts';
 import { UserRoleModifier } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
-import Table from '~v5/common/Table/index.ts';
+import { UnpaginatedTable } from '~v5/common/Table/refactoring/UnpaginatedTable.tsx';
 
 import { getCustomPermissionsTableColumns } from './utils.tsx';
 
@@ -59,15 +59,15 @@ const PermissionsTable = ({
   return (
     <div className="mt-7">
       {formRole !== UserRole.Custom ? (
-        <Table<PermissionsTableModel> {...permissionsTableProps} />
+        <UnpaginatedTable<PermissionsTableModel> {...permissionsTableProps} />
       ) : (
-        <Table<CustomPermissionTableModel>
+        <UnpaginatedTable<CustomPermissionTableModel>
           className={clsx(
             'sm:[&_td:nth-child(2)>div]:px-0 sm:[&_td>div]:min-h-[2.875rem] sm:[&_td>div]:py-2 sm:[&_th:nth-child(2)]:px-0 sm:[&_tr>td]:border-none',
           )}
           data={ALLOWED_CUSTOM_PERMISSIONS_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
-          verticalLayout={isMobile}
+          layout={isMobile ? 'vertical' : 'horizontal'}
         />
       )}
     </div>
