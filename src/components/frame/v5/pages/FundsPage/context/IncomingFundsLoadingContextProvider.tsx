@@ -6,23 +6,44 @@ import React, {
   type PropsWithChildren,
 } from 'react';
 
+import useFundsStateUpdater, { useRefetchColonyData } from './hooks.ts';
 import { IncomingFundsLoadingContext } from './IncomingFundsLoadingContext.ts';
 
 export const IncomingFundsLoadingContextProvider: FC<PropsWithChildren> = ({
   children,
 }) => {
   const [isAcceptLoading, setIsAcceptLoading] = useState(false);
+  const [isFundsUpdatePending, setIsFundsUpdatePending] = useState(false);
 
   const enableAcceptLoading = useCallback(() => setIsAcceptLoading(true), []);
-  const disableAcceptLoading = useCallback(() => setIsAcceptLoading(false), []);
+  const enableIsFundsUpdatePending = useCallback(
+    () => setIsFundsUpdatePending(true),
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setIsAcceptLoading(false);
+    setIsFundsUpdatePending(false);
+  }, []);
+
+  useFundsStateUpdater(isFundsUpdatePending, reset);
+  useRefetchColonyData(isAcceptLoading, reset);
 
   const value = useMemo(
     () => ({
       isAcceptLoading,
       enableAcceptLoading,
-      disableAcceptLoading,
+      isFundsUpdatePending,
+      enableIsFundsUpdatePending,
+      reset,
     }),
-    [isAcceptLoading, enableAcceptLoading, disableAcceptLoading],
+    [
+      isAcceptLoading,
+      enableAcceptLoading,
+      isFundsUpdatePending,
+      enableIsFundsUpdatePending,
+      reset,
+    ],
   );
 
   return (

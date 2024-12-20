@@ -4,15 +4,23 @@ import noop from '~utils/noop.ts';
 
 interface IncomingFundsLoadingContextValues {
   isAcceptLoading: boolean;
-  enableAcceptLoading: () => void;
-  disableAcceptLoading: () => void;
+  enableAcceptLoading: VoidFunction;
+  isFundsUpdatePending: boolean;
+  enableIsFundsUpdatePending: VoidFunction;
+  /**
+   * Resets all loading-related states (`isAcceptLoading` and `waitForClaimUpdate`)
+   * to their initial values.
+   */
+  reset: VoidFunction;
 }
 
 export const IncomingFundsLoadingContext =
   createContext<IncomingFundsLoadingContextValues>({
     isAcceptLoading: false,
     enableAcceptLoading: noop,
-    disableAcceptLoading: noop,
+    isFundsUpdatePending: false,
+    enableIsFundsUpdatePending: noop,
+    reset: noop,
   });
 
 export const useIncomingFundsLoadingContext = () => {
