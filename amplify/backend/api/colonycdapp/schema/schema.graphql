@@ -1542,6 +1542,10 @@ type Colony @model {
   """
   name: String! @index(name: "byName", queryField: "getColonyByName")
   """
+  The block number the colony was created attached
+  """
+  createdAtBlock: Int
+  """
   The unique address of the native token of the Colony
   """
   nativeTokenId: ID!
@@ -3785,6 +3789,13 @@ type IngestorStats @model {
   Unique identifier of the ingestor stats
   """
   id: ID!
+  """
+  The chain id the stats are generated on
+  """
+  chainId: String! @index(
+      name: "byChainId"
+      queryField: "getIngestorStatsByChainId"
+    )
   """
   JSON string to pass custom, dynamic values
   """
