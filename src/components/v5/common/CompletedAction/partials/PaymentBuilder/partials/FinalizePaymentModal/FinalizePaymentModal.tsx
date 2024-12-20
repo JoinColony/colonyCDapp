@@ -34,15 +34,12 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  actionType,
   ...rest
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
-  const finalizeDecisionMethodItems = useGetFinalizeDecisionMethodItems(
-    expenditure,
-    actionType,
-  );
+  const finalizeDecisionMethodItems =
+    useGetFinalizeDecisionMethodItems(expenditure);
 
   const noDecisionMethodAvailable = finalizeDecisionMethodItems.every(
     ({ isDisabled }) => isDisabled,
