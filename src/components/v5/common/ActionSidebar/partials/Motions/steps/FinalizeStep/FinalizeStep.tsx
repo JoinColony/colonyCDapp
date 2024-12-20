@@ -90,6 +90,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
     if (
       type === ColonyActionType.CancelExpenditureMotion &&
+      !actionData.motionData.willPunishExpenditureStaker &&
       expenditure?.isStaked
     ) {
       const payload: ReclaimExpenditureStakePayload = {

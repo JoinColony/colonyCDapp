@@ -14,6 +14,7 @@ import { type ActionWithPermissionsInfoProps } from './types.ts';
 const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   action,
   title,
+  additionalBadge,
 }) => {
   if (!action) {
     return null;
@@ -42,11 +43,14 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
           key: '1',
           content: (
             <>
-              <h4 className="text-1">
-                {formatText({
-                  id: 'action.executed.permissions.overview',
-                })}
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="text-1">
+                  {formatText({
+                    id: 'action.executed.permissions.overview',
+                  })}
+                </h4>
+                {additionalBadge}
+              </div>
               {initiatorAddress && (
                 <>
                   <div className="mt-2 flex items-center gap-2">

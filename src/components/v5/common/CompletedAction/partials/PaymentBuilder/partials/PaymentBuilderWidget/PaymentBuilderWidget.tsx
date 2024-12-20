@@ -303,6 +303,14 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           <ActionWithPermissionsInfo
             action={sortedCancellingActions?.[0]}
             title={formatText({ id: 'expenditure.cancelStage.info' })}
+            additionalBadge={
+              expenditure?.status === ExpenditureStatus.Cancelled && (
+                <PenaliseBadge
+                  text={formatText({ id: 'expenditure.penalised' })}
+                  isPenalised
+                />
+              )
+            }
           />
         ),
       isHidden: allCancelMotions.length === 0 && !isExpenditureCanceled,
