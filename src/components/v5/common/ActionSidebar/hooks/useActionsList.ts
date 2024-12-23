@@ -25,11 +25,6 @@ const useActionsList = () => {
             value: Action.PaymentBuilder,
             isNew: true,
           },
-          // @BETA: Disabled for now
-          // {
-          //   label: { id: 'actions.batchPayment' },
-          //   value: Action.BatchPayment,
-          // },
           {
             label: { id: 'actions.splitPayment' },
             value: Action.SplitPayment,
@@ -40,10 +35,10 @@ const useActionsList = () => {
             value: Action.StagedPayment,
             isNew: true,
           },
-          // {
-          //   label: { id: 'actions.streamingPayment' },
-          //   value: Action.StreamingPayment,
-          // },
+          {
+            label: { id: 'actions.streamingPayment' },
+            value: Action.StreamingPayment,
+          },
         ],
       },
       {

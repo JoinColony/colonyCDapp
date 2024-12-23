@@ -17,6 +17,7 @@ import PaymentBuilderDescription from './partials/PaymentBuilderDescription.tsx'
 import SimplePaymentDescription from './partials/SimplePaymentDescription.tsx';
 import SplitPaymentDescription from './partials/SplitPaymentDescription.tsx';
 import StagedPaymentsDescription from './partials/StagedPaymentsDescription.tsx';
+import StreamingPaymentDescription from './partials/StreamingPaymentDescription.tsx';
 import TransferFundsDescription from './partials/TransferFundsDescription.tsx';
 import UnlockTokenDescription from './partials/UnlockTokenDescription.tsx';
 import UpgradeColonyDescription from './partials/UpgradeColonyDescription.tsx';
@@ -62,6 +63,8 @@ const ActionSidebarDescription = () => {
       return <SplitPaymentDescription />;
     case Action.StagedPayment:
       return <StagedPaymentsDescription />;
+    case Action.StreamingPayment:
+      return <StreamingPaymentDescription />;
     default:
       return null;
   }

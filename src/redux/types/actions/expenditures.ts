@@ -243,6 +243,7 @@ export type ExpendituresActionTypes =
         endCondition: StreamingPaymentEndCondition;
         limitAmount?: string;
         annotationMessage?: string;
+        customActionTitle?: string;
       },
       MetaWithSetter<object>
     >

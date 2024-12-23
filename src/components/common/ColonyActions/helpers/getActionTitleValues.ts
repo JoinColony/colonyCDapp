@@ -7,6 +7,7 @@ import {
   ColonyActionType,
   type Colony,
   type Expenditure,
+  type StreamingPayment,
 } from '~types/graphql.ts';
 import {
   getExtendedActionType,
@@ -41,12 +42,32 @@ export enum ActionTitleMessageKeys {
   MilestonesCount = 'milestonesCount',
   Milestones = 'milestones',
   StagedAmount = 'stagedAmount',
+  Period = 'period',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
+/**
+ * @TODO: Refactor to use comparison instead of includes which is just a partial match on the string
+ */
 const getMessageDescriptorKeys = (actionType: AnyActionType) => {
   switch (true) {
     case actionType === ColonyActionType.Payment:
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+      ];
+    case actionType.includes(ColonyActionType.CreateStreamingPayment):
+      return [
+        ActionTitleMessageKeys.Recipient,
+        ActionTitleMessageKeys.Amount,
+        ActionTitleMessageKeys.TokenSymbol,
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.Period,
+      ];
+    case actionType.includes(ColonyActionType.Payment) &&
+      !actionType.includes(ExtendedColonyActionType.SplitPayment):
       return [
         ActionTitleMessageKeys.Recipient,
         ActionTitleMessageKeys.Amount,
@@ -172,12 +193,14 @@ const useGetActionTitleValues = ({
   keyFallbackValues,
   expenditureData,
   networkInverseFee,
+  streamingPaymentData,
 }: {
   actionData: ColonyAction | null | undefined;
   colony: Pick<Colony, 'metadata' | 'nativeToken'> | undefined;
   keyFallbackValues?: Partial<Record<ActionTitleMessageKeys, React.ReactNode>>;
   expenditureData?: Expenditure;
   networkInverseFee?: string;
+  streamingPaymentData?: StreamingPayment;
 }) => {
   const { isMotion, pendingColonyMetadata } = actionData || {};
 
@@ -187,6 +210,7 @@ const useGetActionTitleValues = ({
     keyFallbackValues,
     expenditureData,
     networkInverseFee,
+    streamingPaymentData,
   });
 
   if (!actionData || !colony) {
