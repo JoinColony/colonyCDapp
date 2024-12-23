@@ -26,11 +26,10 @@ export const useActionsTableProps = (
   const {
     className,
     pageSize = 10,
-    additionalPaginationButtonsContent,
-    showTotalPagesNumber,
+    pagination,
+    overrides,
     showUserAvatar,
     isRecentActivityVariant,
-    ...rest
   } = props;
 
   const { searchFilter, selectedFiltersCount } = useFiltersContext();
@@ -49,22 +48,23 @@ export const useActionsTableProps = (
     pageNumber,
   } = useActionsTableData(pageSize);
 
+  const getMenuProps = useGetMenuProps({
+    setAction,
+    colonyActions,
+    colonyActionsLoading,
+  });
+
   const columns = useColonyActionsTableColumns({
     loading: colonyActionsLoading,
     loadingMotionStates,
     refetchMotionStates,
     showUserAvatar,
     isRecentActivityVariant,
+    getMenuProps,
   });
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
   } = useActionSidebarContext();
-
-  const getMenuProps = useGetMenuProps({
-    setAction,
-    colonyActions,
-    colonyActionsLoading,
-  });
 
   const renderRowLink = useRenderRowLink(
     colonyActionsLoading,
@@ -80,87 +80,101 @@ export const useActionsTableProps = (
 
   const isMobile = useMobile();
 
-  const tableProps = merge(
-    {
-      className: clsx(
-        className,
-        'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
-        {
-          'sm:[&_td]:h-[66px]': isRecentActivityVariant,
-          'sm:[&_td]:h-[70px]': !isRecentActivityVariant,
-          'sm:[&_tr:hover]:bg-gray-25':
-            colonyActions.length > 0 && !colonyActionsLoading,
-        },
-      ),
-      enableSortingRemoval: false,
-      renderCellWrapper: isMobile ? undefined : renderRowLink,
-      state: {
-        columnVisibility: isMobile
-          ? {
-              description: true,
-              motionState: true,
-              team: false,
-              createdAt: false,
-              [MEATBALL_MENU_COLUMN_ID]: false,
-            }
-          : {
-              expander: false,
-            },
-        sorting,
-        pagination: {
-          pageIndex: pageNumber - 1,
-          pageSize,
-        },
+  const tableProps = merge({
+    className: clsx(
+      className,
+      'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+      {
+        'sm:[&_td]:h-[66px]': isRecentActivityVariant,
+        'sm:[&_td]:h-[70px]': !isRecentActivityVariant,
+        'sm:[&_tr:hover]:bg-gray-25':
+          colonyActions.length > 0 && !colonyActionsLoading,
       },
-      additionalPaginationButtonsContent: colonyActionsLoading
-        ? undefined
-        : additionalPaginationButtonsContent,
-      onSortingChange: setSorting,
-      getRowId: (row) => row.transactionHash,
-      meatBallMenuStaticSize: isRecentActivityVariant ? '2rem' : '3rem',
-      getMenuProps,
-      columns,
-      data: colonyActions,
-      manualPagination: true,
-      canNextPage: hasNextPage || colonyActionsLoading,
-      canPreviousPage: hasPrevPage,
-      showTotalPagesNumber,
-      nextPage: goToNextPage,
-      previousPage: goToPreviousPage,
-      paginationDisabled: colonyActionsLoading,
-      getRowCanExpand: () => isMobile,
-      emptyContent: (
-        <EmptyContent
-          className="h-[19.125rem] sm:h-[32.8125rem]"
-          icon={Binoculars}
-          title={{
-            id:
-              searchFilter || selectedFiltersCount
-                ? 'activityFeedTable.table.search.emptyTitle'
-                : 'activityFeedTable.table.emptyTitle',
-          }}
-          description={{
-            id:
-              searchFilter || selectedFiltersCount
-                ? 'activityFeedTable.table.search.emptyDescription'
-                : 'activityFeedTable.table.emptyDescription',
-          }}
-          buttonText={
-            searchFilter || selectedFiltersCount
-              ? undefined
-              : { id: 'activityFeedTable.table.emptyButtonLabel' }
+    ),
+    overrides: merge(
+      {
+        enableSortingRemoval: false,
+        onSortingChange: setSorting,
+        state: {
+          columnVisibility: isMobile
+            ? {
+                description: true,
+                motionState: true,
+                team: false,
+                createdAt: false,
+                [MEATBALL_MENU_COLUMN_ID]: false,
+              }
+            : {
+                description: true,
+                motionState: true,
+                team: false,
+                createdAt: true,
+                expander: false,
+              },
+          sorting,
+          pagination: {
+            pageIndex: pageNumber - 1,
+            pageSize,
+          },
+        },
+        manualPagination: true,
+        getRowId: (row) => row.transactionHash,
+      },
+      overrides,
+    ),
+    pagination: merge(
+      {
+        children: colonyActionsLoading ? undefined : pagination?.children,
+        canNextPage: hasNextPage || colonyActionsLoading,
+        canPreviousPage: hasPrevPage,
+        onPageChange: (direction) => {
+          if (direction === 'previous') {
+            goToPreviousPage();
+          } else {
+            goToNextPage();
           }
-          onClick={
+        },
+        disabled: colonyActionsLoading,
+      },
+      pagination,
+    ),
+    rows: {
+      canExpand: () => isMobile,
+      renderSubComponent,
+    },
+    columns,
+    renderCellWrapper: isMobile ? undefined : renderRowLink,
+    data: colonyActions,
+    emptyContent: (
+      <EmptyContent
+        className="h-[19.125rem] sm:h-[32.8125rem]"
+        icon={Binoculars}
+        title={{
+          id:
             searchFilter || selectedFiltersCount
-              ? undefined
-              : () => toggleActionSidebarOn()
-          }
-          withoutButtonIcon
-        />
-      ),
-    } as TableProps<ColonyAction>,
-    rest,
-  );
+              ? 'activityFeedTable.table.search.emptyTitle'
+              : 'activityFeedTable.table.emptyTitle',
+        }}
+        description={{
+          id:
+            searchFilter || selectedFiltersCount
+              ? 'activityFeedTable.table.search.emptyDescription'
+              : 'activityFeedTable.table.emptyDescription',
+        }}
+        buttonText={
+          searchFilter || selectedFiltersCount
+            ? undefined
+            : { id: 'activityFeedTable.table.emptyButtonLabel' }
+        }
+        onClick={
+          searchFilter || selectedFiltersCount
+            ? undefined
+            : () => toggleActionSidebarOn()
+        }
+        withoutButtonIcon
+      />
+    ),
+  } as TableProps<ColonyAction>);
 
-  return { tableProps, renderSubComponent };
+  return { tableProps };
 };

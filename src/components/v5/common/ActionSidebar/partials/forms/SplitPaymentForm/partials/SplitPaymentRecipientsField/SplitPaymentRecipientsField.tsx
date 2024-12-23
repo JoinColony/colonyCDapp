@@ -7,7 +7,12 @@ import { FormattedMessage } from 'react-intl';
 import { SplitPaymentDistributionType } from '~gql';
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import {
+  getMoreActionsMenu,
+  renderCellContent,
+} from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import {
@@ -37,16 +42,6 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   );
   const value: SplitPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
   const amount: string | undefined = useWatch({ name: 'amount' });
-
-  const columns = useRecipientsFieldTableColumns({
-    name,
-    token,
-    data: value,
-    amount,
-    fieldArrayMethods,
-    disabled,
-    distributionMethod,
-  });
   const isTablet = useTablet();
   const getMenuProps = ({ index }) => ({
     cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
@@ -64,6 +59,16 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
         icon: Trash,
       },
     ],
+  });
+  const columns = useRecipientsFieldTableColumns({
+    name,
+    token,
+    data: value,
+    amount,
+    fieldArrayMethods,
+    disabled,
+    distributionMethod,
+    getMenuProps,
   });
   const { getFieldState, watch } = useFormContext();
   const fieldState = getFieldState(name);
@@ -136,20 +141,31 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
                 !!fieldState.error,
             },
           )}
-          getRowId={({ key }) => key}
           columns={columns}
           data={data}
-          getMenuProps={disabled ? undefined : getMenuProps}
+          borders={{
+            type: 'unset',
+            visible: true,
+          }}
+          layout={isTablet ? 'vertical' : 'horizontal'}
           isDisabled={disabled}
-          verticalLayout={isTablet}
-          withBorder={false}
-          renderCellWrapper={(_, content) => content}
-          state={{
-            pagination: {
-              pageSize: data.length,
-              pageIndex: 0,
+          renderCellWrapper={renderCellContent}
+          overrides={{
+            getRowId: ({ key }) => key,
+            state: {
+              columnVisibility: {
+                [MEATBALL_MENU_COLUMN_ID]: !disabled && !isTablet,
+              },
+              pagination: {
+                pageSize: data.length,
+                pageIndex: 0,
+              },
             },
           }}
+          moreActions={getMoreActionsMenu({
+            getMenuProps,
+            visible: isTablet,
+          })}
         />
       )}
       <Button

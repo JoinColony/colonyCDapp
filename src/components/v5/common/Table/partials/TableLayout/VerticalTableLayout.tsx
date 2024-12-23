@@ -2,23 +2,17 @@ import { flexRender } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React from 'react';
 
-import MeatBallMenu from '~v5/shared/MeatBallMenu/MeatBallMenu.tsx';
+import { TableRow } from '~v5/common/Table/partials/VirtualizedRow/VirtualizedRow.tsx';
+import { type VerticalTableLayoutProps } from '~v5/common/Table/types.ts';
 
-import { TableRow } from '../VirtualizedRow/VirtualizedRow.tsx';
-
-import { type VerticalLayoutProps } from './types.ts';
-
-export const VerticalLayout = <T,>({
-  rows,
-  headerGroups,
-  getRowClassName,
-  getMenuProps,
-  virtualizedProps,
-  sizeUnit,
-  meatBallMenuSize,
-  meatBallMenuStaticSize,
-  withBorder,
-}: VerticalLayoutProps<T>) => {
+export const VerticalTableLayout = <T,>({
+  rows: rowsConfig,
+  borders,
+  moreActions,
+  table,
+}: VerticalTableLayoutProps<T>) => {
+  const { rows } = table.getRowModel();
+  const headerGroups = table.getHeaderGroups();
   return (
     <>
       {rows.map((row) => {
@@ -28,31 +22,28 @@ export const VerticalLayout = <T,>({
           <tbody
             key={row.id}
             className={clsx(
-              getRowClassName(row),
-              '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
+              rowsConfig?.getRowClassName?.(row),
+              '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&:nth-child(1)>tr:first-child>th]:rounded-tl-lg [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
             )}
           >
             {headerGroups.map((headerGroup) =>
               headerGroup.headers.map((header, index) => {
-                const rowWithMeatBallMenu = index === 0 && !!getMenuProps;
-                const meatBallMenuProps = getMenuProps?.(row);
-                const hasMeatballMenu =
-                  !!meatBallMenuProps && rowWithMeatBallMenu;
-                const width = meatBallMenuSize || meatBallMenuStaticSize;
-                const colSpan = hasMeatballMenu ? undefined : 2;
+                const hasMoreActions = index === 0 && !!moreActions;
+                const colSpan = hasMoreActions ? undefined : 2;
 
                 return (
                   <TableRow
                     key={row.id + headerGroup.id + header.id}
-                    itemHeight={virtualizedProps?.virtualizedRowHeight || 0}
-                    isEnabled={!!virtualizedProps}
+                    itemHeight={rowsConfig?.virtualizedRowHeight ?? 0}
+                    isEnabled={rowsConfig?.virtualizedRowHeight !== undefined}
                     className={clsx({
                       '[&:not(:last-child)>td]:border-b [&:not(:last-child)>td]:border-gray-100':
-                        withBorder,
+                        borders?.type === 'wide',
                     })}
                   >
                     <th
                       className={`
+                        first-child:border-lg
                         h-[2.625rem]
                         border-r
                         border-r-gray-200
@@ -62,14 +53,12 @@ export const VerticalLayout = <T,>({
                         text-left
                         text-sm
                         font-normal
-                        first:rounded-tl-lg
-                        last:rounded-tr-lg
                       `}
                       style={{
                         width:
                           header.column.columnDef.staticSize ||
-                          (header.getSize() !== 150
-                            ? `${header.column.getSize()}${sizeUnit}`
+                          (header.column.getSize() !== 150
+                            ? `${header.column.getSize()}px`
                             : undefined),
                       }}
                     >
@@ -92,21 +81,11 @@ export const VerticalLayout = <T,>({
                         cells[index].getContext(),
                       )}
                     </td>
-                    {hasMeatballMenu && (
+                    {hasMoreActions && (
                       <td
-                        className="px-4"
-                        style={{
-                          ...(width && { width: `${width}${sizeUnit}` }),
-                        }}
+                        className={clsx('px-4', moreActions?.wrapperClassName)}
                       >
-                        <MeatBallMenu
-                          {...meatBallMenuProps}
-                          buttonClassName="ml-auto"
-                          contentWrapperClassName={clsx(
-                            meatBallMenuProps?.contentWrapperClassName,
-                            '!left-6 right-6 !z-[65] sm:!left-auto',
-                          )}
-                        />
+                        {moreActions.renderMoreActions?.(row)}
                       </td>
                     )}
                   </TableRow>

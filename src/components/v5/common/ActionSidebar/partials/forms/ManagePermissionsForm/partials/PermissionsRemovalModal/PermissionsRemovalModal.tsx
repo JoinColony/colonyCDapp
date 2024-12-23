@@ -14,7 +14,7 @@ import {
   getRemovedInheritedPermissions,
 } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/utils.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
-import Table from '~v5/common/Table/Table.tsx';
+import { Table } from '~v5/common/Table/Table.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';

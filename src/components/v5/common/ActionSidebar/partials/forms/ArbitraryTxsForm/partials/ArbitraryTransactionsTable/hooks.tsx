@@ -7,6 +7,7 @@ import { useMobile } from '~hooks/index.ts';
 import getMaskedAddress from '~shared/MaskedAddress/getMaskedAddress.ts';
 import { formatText } from '~utils/intl.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
@@ -30,12 +31,27 @@ export const useArbitraryTxsTableColumns = ({
   openTransactionModal,
   isError,
   hasNoDecisionMethods,
+  getMenuProps,
 }): ColumnDef<AddTransactionTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<AddTransactionTableModel>(),
     [],
   );
   const isMobile = useMobile();
+
+  const menuColumn = useMemo(
+    () =>
+      getMenuProps
+        ? makeMenuColumn({
+            helper: columnHelper,
+            getMenuProps,
+            cellProps: {
+              staticSize: isMobile ? '60px' : '10%',
+            },
+          })
+        : null,
+    [getMenuProps, columnHelper, isMobile],
+  );
 
   const columns: ColumnDef<AddTransactionTableModel, string>[] = useMemo(
     () => [
@@ -82,7 +98,7 @@ export const useArbitraryTxsTableColumns = ({
             </span>
           );
         },
-        size: isMobile ? 100 : 30,
+        staticSize: isMobile ? '100px' : '30%',
       }),
       columnHelper.display({
         id: 'description',
@@ -113,11 +129,11 @@ export const useArbitraryTxsTableColumns = ({
           }
           return <CellDescription data={data} />;
         },
-        size: isMobile ? 100 : 67,
+        staticSize: isMobile ? '100px' : '67%',
       }),
     ],
     [columnHelper, isMobile, openTransactionModal, isError],
   );
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

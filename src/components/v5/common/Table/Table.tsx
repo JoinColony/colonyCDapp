@@ -1,191 +1,58 @@
-import {
-  useReactTable,
-  getCoreRowModel as libGetCoreRowModel,
-  createColumnHelper,
-  getExpandedRowModel,
-} from '@tanstack/react-table';
-import clsx from 'clsx';
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 
-import { useMobile } from '~hooks';
 import { formatText } from '~utils/intl.ts';
 
-import { TableFooter } from './partials/TableFooter.tsx';
-import { TableLayout } from './partials/TableLayout/TableLayout.tsx';
-import TablePagination from './partials/TablePagination/index.ts';
+import { useTable } from './hooks.ts';
+import { BaseTable } from './partials/BaseTable.tsx';
+import TablePagination from './partials/TablePagination/TablePagination.tsx';
 import { type TableProps } from './types.ts';
-import { getDefaultRenderCellWrapper, makeMenuColumn } from './utils.tsx';
+import { getPaginationConfig } from './utils.tsx';
 
-const displayName = 'v5.common.Table';
+export const Table = <T,>(props: TableProps<T>) => {
+  const { pagination = {}, ...rest } = props;
+  const { pageTotalVisible = true, children } = pagination;
+  const { data, rows, columns, overrides = {} } = rest;
 
-const Table = <T,>({
-  className,
-  getCoreRowModel,
-  getRowClassName = () => undefined,
-  sizeUnit = 'px',
-  canNextPage,
-  canPreviousPage,
-  previousPage,
-  nextPage,
-  showPageNumber = true,
-  showTotalPagesNumber = true,
-  paginationDisabled,
-  renderCellWrapper = getDefaultRenderCellWrapper<T>(),
-  additionalPaginationButtonsContent,
-  emptyContent,
-  data,
-  getMenuProps,
-  meatBallMenuSize = 60,
-  meatBallMenuStaticSize,
-  columns,
-  renderSubComponent,
-  getRowCanExpand,
-  withBorder = true,
-  withNarrowBorder = false,
-  isDisabled = false,
-  verticalLayout,
-  virtualizedProps,
-  tableClassName,
-  tableBodyRowKeyProp,
-  showTableHead = true,
-  showTableBorder = true,
-  alwaysShowPagination = false,
-  footerColSpan,
-  ...rest
-}: TableProps<T>) => {
-  const helper = useMemo(() => createColumnHelper<T>(), []);
-  const isMobile = useMobile();
-
-  const columnsWithMenu = useMemo(
-    () => [
-      ...columns,
-      ...(getMenuProps && !verticalLayout
-        ? [
-            makeMenuColumn<T>({
-              helper,
-              getMenuProps,
-              meatBallMenuSize,
-              meatBallMenuStaticSize,
-            }),
-          ]
-        : []),
-    ],
-    [
-      columns,
-      getMenuProps,
-      verticalLayout,
-      helper,
-      meatBallMenuSize,
-      meatBallMenuStaticSize,
-    ],
-  );
-
-  const table = useReactTable<T>({
-    getCoreRowModel: getCoreRowModel || libGetCoreRowModel<T>(),
+  const table = useTable<T>({
     data,
-    columns: columnsWithMenu,
-    enableSortingRemoval: false,
-    getRowCanExpand,
-    getExpandedRowModel: getExpandedRowModel<T>(),
-    ...rest,
+    rows,
+    overrides,
+    columns,
   });
-  const { rows } = table.getRowModel();
-  const headerGroups = table.getHeaderGroups();
-  const footerGroups = table.getFooterGroups();
-  const goToNextPage = nextPage || table.nextPage;
-  const goToPreviousPage = previousPage || table.previousPage;
-  const canGoToNextPage =
-    canNextPage === undefined ? table.getCanNextPage() : canNextPage;
-  const canGoToPreviousPage =
-    canPreviousPage === undefined
-      ? table.getCanPreviousPage()
-      : canPreviousPage;
-  const pageCount = table.getPageCount();
-  const hasPagination = pageCount > 1 || canGoToNextPage || canGoToPreviousPage;
-  const showPagination =
-    alwaysShowPagination || (hasPagination && showPageNumber);
-  const totalColumnsCount = table.getVisibleFlatColumns().length;
-  const hasExpandableRows = !!renderSubComponent;
 
-  useEffect(() => {
-    if (!isMobile && hasExpandableRows) {
-      rows.forEach((row) => {
-        if (row.getIsExpanded()) {
-          row.toggleExpanded(false);
-        }
-      });
-    }
-  }, [isMobile, hasExpandableRows, rows]);
+  const {
+    disabled,
+    showPagination,
+    actualPage,
+    pageNumber,
+    goToNextPage,
+    goToPreviousPage,
+    canGoToNextPage,
+    canGoToPreviousPage,
+  } = getPaginationConfig(table, pagination);
 
   return (
-    <div
-      className={clsx(className, {
-        'border-separate border-spacing-0 rounded-lg border border-gray-200':
-          showTableBorder,
-      })}
-    >
-      <table
-        className={clsx('w-full table-fixed', tableClassName)}
-        cellPadding="0"
-        cellSpacing="0"
-      >
-        <TableLayout
-          verticalLayout={verticalLayout}
-          rows={rows}
-          headerGroups={headerGroups}
-          getRowClassName={getRowClassName}
-          getMenuProps={getMenuProps}
-          renderSubComponent={renderSubComponent}
-          showTableHead={showTableHead}
-          emptyContent={emptyContent}
-          totalColumnsCount={totalColumnsCount}
-          withBorder={withBorder}
-          withNarrowBorder={withNarrowBorder}
-          virtualizedProps={virtualizedProps}
-          sizeUnit={sizeUnit}
-          meatBallMenuSize={meatBallMenuSize}
-          meatBallMenuStaticSize={meatBallMenuStaticSize}
-          renderCellWrapper={renderCellWrapper}
-          data={data}
-          isDisabled={isDisabled}
-          tableBodyRowKeyProp={tableBodyRowKeyProp}
-        />
-        <TableFooter
-          colSpan={footerColSpan}
-          verticalLayout={verticalLayout}
-          groups={footerGroups}
-        />
-      </table>
-      {showPagination && (
+    <BaseTable {...rest} table={table}>
+      {showPagination ? (
         <TablePagination
-          onNextClick={hasPagination ? goToNextPage : () => {}}
-          onPrevClick={hasPagination ? goToPreviousPage : () => {}}
-          canGoToNextPage={
-            hasPagination ? canGoToNextPage : alwaysShowPagination
-          }
-          canGoToPreviousPage={hasPagination ? canGoToPreviousPage : false}
+          onNextClick={goToNextPage}
+          onPrevClick={goToPreviousPage}
+          canGoToNextPage={canGoToNextPage}
+          canGoToPreviousPage={canGoToPreviousPage}
           pageNumberLabel={formatText(
             {
-              id: showTotalPagesNumber
-                ? 'table.pageNumberWithTotal'
-                : 'table.pageNumber',
+              id: `table.${pageTotalVisible ? 'pageNumberWithTotal' : 'pageNumber'}`,
             },
             {
-              actualPage: hasPagination
-                ? table.getState().pagination.pageIndex + 1
-                : 1,
-              pageNumber: hasPagination ? pageCount : 1,
+              actualPage,
+              pageNumber,
             },
           )}
-          disabled={!hasPagination || paginationDisabled}
+          disabled={disabled}
         >
-          {additionalPaginationButtonsContent}
+          {children}
         </TablePagination>
-      )}
-    </div>
+      ) : null}
+    </BaseTable>
   );
 };
-
-Table.displayName = displayName;
-
-export default Table;

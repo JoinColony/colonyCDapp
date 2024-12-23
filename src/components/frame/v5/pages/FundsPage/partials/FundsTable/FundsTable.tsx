@@ -3,6 +3,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import { IncomingFundsLoadingContextProvider } from '~frame/v5/pages/FundsPage/context/IncomingFundsLoadingContextProvider.tsx';
@@ -10,7 +11,7 @@ import { useMobile } from '~hooks';
 import useColonyFundsClaims from '~hooks/useColonyFundsClaims.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import CloseButton from '~v5/shared/Button/CloseButton.tsx';
 
@@ -83,14 +84,22 @@ const FundsTable: FC = () => {
       <Table<FundsTableModel>
         data={searchedTokens}
         columns={columns}
-        initialState={{
-          pagination: {
-            pageSize: 10,
+        overrides={{
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 10,
+            },
           },
+          getFilteredRowModel: getFilteredRowModel(),
+          getPaginationRowModel: getPaginationRowModel(),
         }}
-        getFilteredRowModel={getFilteredRowModel()}
-        getPaginationRowModel={getPaginationRowModel()}
-        className="w-full [&_td>div]:p-0 [&_td]:border-b [&_td]:border-gray-100 [&_th:empty]:border-none [&_th:last-child]:text-right [&_tr:last-child>td]:border-0"
+        className={clsx(
+          'w-full [&_td>div]:p-0 [&_td]:border-b [&_td]:border-gray-100 [&_th:empty]:border-none [&_th:last-child]:text-right [&_tr:last-child>td]:border-0',
+          {
+            'pb-4': searchedTokens.length > 10,
+          },
+        )}
         emptyContent={
           (!searchedTokens.length || claims.length <= 0) && (
             <div className="w-full rounded-lg">
