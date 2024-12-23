@@ -121,6 +121,10 @@ const useActionsList = () => {
             label: { id: 'actions.manageVerifiedMembers' },
             value: Action.ManageVerifiedMembers,
           },
+          {
+            label: { id: 'actions.manageSupportedChains' },
+            value: Action.ManageSupportedChains,
+          },
           // @BETA: Disabled for now
           // {
           //   label: { id: 'actions.enterRecoveryMode' },

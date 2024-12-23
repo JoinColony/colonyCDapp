@@ -1,7 +1,7 @@
 import { ClientType } from '@colony/colony-js';
 import { type CustomContract } from '@colony/sdk';
 import { utils } from 'ethers';
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { colonyAbi } from '~constants/abis.ts';
 import { ContextModule, getContext } from '~context/index.ts';
@@ -16,6 +16,7 @@ import { addTransactionToDb } from '~state/transactionState.ts';
 import { TransactionStatus } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
+import { getTxChannel } from '../transactions/createTransaction.ts';
 import { getColonyManager, putError } from '../utils/index.ts';
 
 export type CreateProxyColonyPayload =
@@ -24,8 +25,10 @@ export type CreateProxyColonyPayload =
 // @TODO if metatx are enabled sent a metaTx instead of tx
 function* createProxyColony({
   payload: { colonyAddress, creationSalt, foreignChainId },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.PROXY_COLONY_CREATE>) {
+  let txChannel;
   const batchKey = TRANSACTION_METHODS.CreateProxyColony;
 
   const colonyManager = yield getColonyManager();
@@ -34,11 +37,13 @@ function* createProxyColony({
   const walletAddress = utils.getAddress(address);
 
   try {
+    txChannel = yield call(getTxChannel, metaId);
+
     const proxyColonyContract: CustomContract<typeof colonyAbi> =
       colonyManager.getCustomContract(colonyAddress, colonyAbi);
     const params = [foreignChainId, creationSalt];
 
-    yield addTransactionToDb(meta.id, {
+    yield addTransactionToDb(metaId, {
       context: ClientType.ColonyClient, // @NOTE we want to add a new context type
       createdAt: new Date(),
       methodName: 'createProxyColony',
@@ -47,7 +52,7 @@ function* createProxyColony({
       status: TransactionStatus.Ready,
       group: {
         key: batchKey,
-        id: meta.id,
+        id: metaId,
         index: 0,
       },
     });
@@ -67,14 +72,14 @@ function* createProxyColony({
       // })
       .send();
 
-    put(transactionSent(meta.id));
+    put(transactionSent(metaId));
 
     if (!transaction || !transaction.blockHash || !transaction.blockNumber) {
       throw new Error('Invalid transaction'); // @TODO add more info
     }
 
     put(
-      transactionHashReceived(meta.id, {
+      transactionHashReceived(metaId, {
         hash: transaction.hash,
         blockNumber: transaction.blockNumber,
         blockHash: transaction.blockHash,
@@ -86,8 +91,10 @@ function* createProxyColony({
 
     const [eventData, receipt] = yield waitForMined();
 
-    put(transactionReceiptReceived(meta.id, { params, receipt }));
-    put(transactionSucceeded(meta.id, { eventData, receipt, params }));
+    put(transactionReceiptReceived(metaId, { params, receipt }));
+    put(transactionSucceeded(metaId, { eventData, receipt, params }));
+
+    setTxHash?.(transaction.hash);
 
     yield put<AllActions>({
       type: ActionTypes.PROXY_COLONY_CREATE_SUCCESS,
@@ -96,6 +103,8 @@ function* createProxyColony({
     });
   } catch (error) {
     yield putError(ActionTypes.PROXY_COLONY_CREATE_ERROR, error, meta);
+  } finally {
+    txChannel.close();
   }
 }
 

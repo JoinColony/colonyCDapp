@@ -1,7 +1,7 @@
 import { type Icon } from '@phosphor-icons/react';
 import { constants as ethersContants } from 'ethers';
 
-import ArbitrumIcon from '~icons/ArbitrumIcom.tsx';
+import ArbitrumIcon from '~icons/ArbitrumIcon.tsx';
 import EthereumIcon from '~icons/EthereumIcon.tsx';
 import GanacheIcon from '~icons/GanacheIcon.tsx';
 import GnosisIcon from '~icons/GnosisIcon.tsx';

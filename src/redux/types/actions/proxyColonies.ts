@@ -1,7 +1,11 @@
 import { type ActionTypes } from '~redux/actionTypes.ts';
 import { type Address } from '~types/index.ts';
 
-import { type ErrorActionType, type UniqueActionType } from './index.ts';
+import {
+  type MetaWithSetter,
+  type ErrorActionType,
+  type UniqueActionType,
+} from './index.ts';
 
 export type ProxyColoniesActionTypes =
   | UniqueActionType<
@@ -11,7 +15,7 @@ export type ProxyColoniesActionTypes =
         foreignChainId: number;
         creationSalt: string;
       },
-      object
+      MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.PROXY_COLONY_CREATE_ERROR, object>
   | UniqueActionType<ActionTypes.PROXY_COLONY_CREATE_SUCCESS, object, object>;
