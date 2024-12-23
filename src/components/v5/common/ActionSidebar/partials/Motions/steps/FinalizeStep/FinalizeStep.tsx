@@ -108,7 +108,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     actionData,
     refetchColony,
   ]);
-  // console.log('action data: ', actionData);
 
   const actionType = getExtendedActionType(
     actionData,
