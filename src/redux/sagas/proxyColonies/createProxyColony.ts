@@ -23,6 +23,8 @@ export type CreateProxyColonyPayload =
   Action<ActionTypes.PROXY_COLONY_CREATE>['payload'];
 
 // @TODO if metatx are enabled sent a metaTx instead of tx
+// @TODO we need to add the annotationMessage and the customActionTitle
+// @TODO we need to add re-enable logic if the proxy colony was already deployed
 function* createProxyColony({
   payload: { colonyAddress, creationSalt, foreignChainId },
   meta: { id: metaId, setTxHash },

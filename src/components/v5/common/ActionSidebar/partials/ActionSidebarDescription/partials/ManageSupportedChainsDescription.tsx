@@ -40,8 +40,7 @@ export const ManageSupportedChainsDescription = () => {
         actionType:
           manageSupportedChains === ManageEntityOperation.Add
             ? ColonyActionType.AddProxyColony
-            : // @TODO once available we should replace ColonyActionType.Generic with ColonyActionType.RemoveProxyColony
-              ColonyActionType.Generic,
+            : ColonyActionType.RemoveProxyColony,
         chain,
         initiator: <CurrentUser />,
       }}

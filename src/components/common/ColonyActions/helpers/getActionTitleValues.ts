@@ -142,6 +142,7 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
     case actionType.includes(ColonyActionType.CreateDecisionMotion):
       return [ActionTitleMessageKeys.Initiator];
     case actionType.includes(ColonyActionType.AddProxyColony):
+    case actionType.includes(ColonyActionType.RemoveProxyColony):
       return [ActionTitleMessageKeys.Chain, ActionTitleMessageKeys.Initiator];
     /**
      * @deprecated

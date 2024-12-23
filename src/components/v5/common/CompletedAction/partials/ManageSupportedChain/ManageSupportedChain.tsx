@@ -25,16 +25,6 @@ interface ManageSupportedChainProps {
 }
 
 const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
-  const {
-    customTitle = formatText(
-      {
-        id: 'action.type',
-      },
-      {
-        actionType: ColonyActionType.AddProxyColony,
-      },
-    ),
-  } = action?.metadata || {};
   const { initiatorUser, annotation, multiChainInfo } = action;
   const chainInfo = supportedChainsConfig.find(
     (supportedChain) =>
@@ -43,6 +33,16 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
   const isAddOperation = action.type.startsWith(
     ColonyActionType.AddProxyColony,
   );
+  const {
+    customTitle = formatText(
+      {
+        id: 'action.type',
+      },
+      {
+        actionType: action.type,
+      },
+    ),
+  } = action?.metadata || {};
 
   return (
     <>
@@ -53,7 +53,7 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
             id: 'action.title',
           },
           {
-            actionType: ColonyActionType.AddProxyColony,
+            actionType: action.type,
             chain: chainInfo?.name,
             initiator: initiatorUser ? (
               <UserInfoPopover

@@ -85,6 +85,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.RemoveVerifiedMembersMultisig:
         return <RemoveVerifiedMembers action={action} />;
       case ColonyActionType.AddProxyColony:
+      case ColonyActionType.RemoveProxyColony:
         return <ManageSupportedChain action={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:

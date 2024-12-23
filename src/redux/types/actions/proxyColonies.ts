@@ -14,8 +14,22 @@ export type ProxyColoniesActionTypes =
         colonyAddress: Address;
         foreignChainId: number;
         creationSalt: string;
+        annotationMessage?: string;
+        customActionTitle: string;
       },
       MetaWithSetter<object>
     >
   | ErrorActionType<ActionTypes.PROXY_COLONY_CREATE_ERROR, object>
-  | UniqueActionType<ActionTypes.PROXY_COLONY_CREATE_SUCCESS, object, object>;
+  | UniqueActionType<ActionTypes.PROXY_COLONY_CREATE_SUCCESS, object, object>
+  | UniqueActionType<
+      ActionTypes.PROXY_COLONY_REMOVE,
+      {
+        colonyAddress: Address;
+        foreignChainId: number;
+        annotationMessage?: string;
+        customActionTitle: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.PROXY_COLONY_REMOVE_ERROR, object>
+  | UniqueActionType<ActionTypes.PROXY_COLONY_REMOVE_SUCCESS, object, object>;

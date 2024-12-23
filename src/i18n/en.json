@@ -377,6 +377,7 @@
     "transaction.ColonyClient.upgrade.title": "Colony Version Upgrade",
     "transaction.ColonyClient.upgradeExtension.title": "Upgrade Colony Extension",
     "transaction.ColonyClient.createProxyColony.title": "Add Chain Support",
+    "transaction.ColonyClient.removeProxyColony.title": "Remove Chain Support",
 
     "transaction.NetworkClient.createColonyForFrontend.title": "Create Colony",
     "transaction.NetworkClient.deployToken.title": "Create Token",
