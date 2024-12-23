@@ -11,13 +11,14 @@ import {
   Upload,
   UserCircleCheck,
   Usb,
+  Link,
   // TrafficCone,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { type GroupListItem } from '../PaymentGroup/GroupList.ts';
+import { type GroupListItem } from '../GroupedAction/types.ts';
 
 export const GROUP_FUNDS_LIST: GroupListItem[] = [
   {
@@ -106,6 +107,15 @@ export const GROUP_ADMIN_LIST: GroupListItem[] = [
     }),
     Icon: HouseLine,
     action: Action.EditColonyDetails,
+  },
+  {
+    title: formatText({ id: 'actions.manageSupportedChains' }),
+    description: formatText({
+      id: 'actions.description.manageSupportedChains',
+    }),
+    Icon: Link,
+    action: Action.ManageSupportedChains,
+    isNew: true,
   },
   {
     title: formatText({ id: 'actions.upgradeColonyVersion' }),

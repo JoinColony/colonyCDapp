@@ -7,20 +7,12 @@ import {
   ArrowsOutLineHorizontal,
   // @TODO: uncomment when staged payment is ready
   Steps,
-  type Icon,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export type GroupListItem = {
-  title: string;
-  description: string;
-  Icon: Icon;
-  action: Action;
-  isNew?: boolean;
-  isHidden?: boolean;
-};
+import { type GroupListItem } from '../GroupedAction/types.ts';
 
 export const GROUP_LIST: GroupListItem[] = [
   {

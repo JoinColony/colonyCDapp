@@ -11,6 +11,7 @@ import EditDomainDescription from './partials/EditDomainDescription.tsx';
 import EnterRecoveryModeDescription from './partials/EnterRecoveryModeDescription.tsx';
 import ManagePermissionsDescription from './partials/ManagePermissionsDescription.tsx';
 import ManageReputationDescription from './partials/ManageReputationDescription.tsx';
+import { ManageSupportedChainsDescription } from './partials/ManageSupportedChainsDescription.tsx';
 import ManageTokensDescription from './partials/ManageTokensDescription.tsx';
 import ManageVerifiedMembersDescription from './partials/ManageVerifiedMembersDescription.tsx';
 import MintTokensDescription from './partials/MintTokensDescription.tsx';
@@ -55,6 +56,8 @@ const ActionSidebarDescription = () => {
       return <UpgradeColonyDescription />;
     case Action.ManageVerifiedMembers:
       return <ManageVerifiedMembersDescription />;
+    case Action.ManageSupportedChains:
+      return <ManageSupportedChainsDescription />;
     case Action.ManageReputation:
       return <ManageReputationDescription />;
     case Action.PaymentBuilder:

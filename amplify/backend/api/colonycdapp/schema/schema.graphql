@@ -906,6 +906,10 @@ enum ColonyActionType {
   An action related to creating a proxy colony
   """
   ADD_PROXY_COLONY
+  """
+  An action related to disabling a proxy colony
+  """
+  REMOVE_PROXY_COLONY
 }
 
 """
