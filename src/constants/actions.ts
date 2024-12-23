@@ -63,6 +63,7 @@ export enum Action {
   UserPermissions = 'user-permissions',
   SimpleDiscussion = 'simple-discussion',
   ManageVerifiedMembers = 'manage-verified-members',
+  ManageSupportedChains = 'manage-supported-chains',
 }
 
 export const ACTIONS_WITH_NETWORK_FEE = new Set([

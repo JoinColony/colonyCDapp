@@ -2,6 +2,7 @@ enum MetadataDeltaActionType {
   ADD_VERIFIED_MEMBERS = 'ADD_VERIFIED_MEMBERS',
   REMOVE_VERIFIED_MEMBERS = 'REMOVE_VERIFIED_MEMBERS',
   MANAGE_TOKENS = 'MANAGE_TOKENS',
+  DISABLE_PROXY_COLONY = 'DISABLE_PROXY_COLONY',
 }
 
 type AddVerifiedMembersOperation = {
@@ -16,6 +17,11 @@ type RemoveVerifiedMembersOperation = {
 
 type ManageTokensOperation = {
   type: MetadataDeltaActionType.MANAGE_TOKENS;
+  payload: string[] | unknown[];
+};
+
+type DisableProxyColonyOperation = {
+  type: MetadataDeltaActionType.DISABLE_PROXY_COLONY;
   payload: string[] | unknown[];
 };
 
@@ -48,5 +54,14 @@ export const getManageTokensOperation = (
   return {
     type: MetadataDeltaActionType.MANAGE_TOKENS,
     payload: tokenAddresses,
+  };
+};
+
+export const getDisableProxyColonyOperation = (
+  payload: string[],
+): DisableProxyColonyOperation => {
+  return {
+    type: MetadataDeltaActionType.DISABLE_PROXY_COLONY,
+    payload,
   };
 };
