@@ -15,6 +15,10 @@ const useActionsList = () => {
     featureFlags.ARBITRARY_TXS_ACTION?.isLoading ||
     featureFlags.ARBITRARY_TXS_ACTION?.isEnabled;
 
+  const isFeatureFlagSupportedChainsEnabled =
+    featureFlags.SUPPORTED_CHAINS_ACTION?.isLoading ||
+    featureFlags.SUPPORTED_CHAINS_ACTION?.isEnabled;
+
   return useMemo((): SearchSelectOptionProps[] => {
     const actionsListOptions: SearchSelectOptionProps[] = [
       {
@@ -125,6 +129,11 @@ const useActionsList = () => {
             value: Action.EditColonyDetails,
           },
           {
+            label: { id: 'actions.manageSupportedChains' },
+            value: Action.ManageSupportedChains,
+            isNew: true,
+          },
+          {
             label: { id: 'actions.upgradeColonyVersion' },
             value: Action.UpgradeColonyVersion,
           },
@@ -152,6 +161,14 @@ const useActionsList = () => {
 
       actionsListOptions[4].options.splice(arbitraryTxsIndex, 1);
     }
+
+    if (!isFeatureFlagSupportedChainsEnabled) {
+      const supportedChainsIndex = actionsListOptions[4].options.findIndex(
+        ({ value }) => value === Action.ManageSupportedChains,
+      );
+      actionsListOptions[5].options.splice(supportedChainsIndex, 1);
+    }
+
     if (!isStagedExpenditureEnabled) {
       const stagedPaymentIndex = actionsListOptions[0].options.findIndex(
         ({ value }) => value === Action.StagedPayment,
@@ -166,7 +183,12 @@ const useActionsList = () => {
       actionsListOptions[2].options[2].isDisabled = true;
     }
     return actionsListOptions;
-  }, [colony, isStagedExpenditureEnabled, isFeatureFlagArbitraryTxsEnabled]);
+  }, [
+    colony,
+    isStagedExpenditureEnabled,
+    isFeatureFlagArbitraryTxsEnabled,
+    isFeatureFlagSupportedChainsEnabled,
+  ]);
 };
 
 export default useActionsList;
