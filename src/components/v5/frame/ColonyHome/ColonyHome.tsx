@@ -17,7 +17,6 @@ import DashboardHeader from './partials/DashboardHeader/index.ts';
 import FundsCards from './partials/FundsCards/index.ts';
 import LeaveColonyModal from './partials/LeaveColonyModal/index.ts';
 import ReputationChart from './partials/ReputationChart/index.ts';
-import { TmpProxyColonyDeploy } from './partials/TmpProxyColonyDeploy/TmpProxyColonyDeploy.tsx';
 import TotalInOutBalance from './partials/TotalInOutBalance/TotalInOutBalance.tsx';
 
 const displayName = 'v5.frame.ColonyHome';
@@ -38,7 +37,6 @@ const ColonyHome = () => {
         <TeamFilter />
       </div>
       <FundsCards />
-      <TmpProxyColonyDeploy />
       <div className="flex h-fit w-full flex-col gap-4.5 lg:grid lg:grid-cols-3">
         <TotalInOutBalance />
         <div className="w-full sm:hidden lg:flex">

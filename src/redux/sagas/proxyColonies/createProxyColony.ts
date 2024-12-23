@@ -1,7 +1,7 @@
 import { ClientType } from '@colony/colony-js';
 import { type CustomContract } from '@colony/sdk';
 import { utils } from 'ethers';
-import { put, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { colonyAbi } from '~constants/abis.ts';
 import { ContextModule, getContext } from '~context/index.ts';
@@ -16,17 +16,43 @@ import { addTransactionToDb } from '~state/transactionState.ts';
 import { TransactionStatus } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
 
-import { getColonyManager, putError } from '../utils/index.ts';
+import {
+  createTransaction,
+  createTransactionChannels,
+  getTxChannel,
+} from '../transactions/createTransaction.ts';
+import {
+  createActionMetadataInDB,
+  getColonyManager,
+  putError,
+  takeFrom,
+  uploadAnnotation,
+} from '../utils/index.ts';
 
 export type CreateProxyColonyPayload =
   Action<ActionTypes.PROXY_COLONY_CREATE>['payload'];
 
 // @TODO if metatx are enabled sent a metaTx instead of tx
+// @TODO we need to add the annotationMessage and the customActionTitle
+// @TODO we need to add re-enable logic if the proxy colony was already deployed
 function* createProxyColony({
-  payload: { colonyAddress, creationSalt, foreignChainId },
+  payload: {
+    colonyAddress,
+    creationSalt,
+    foreignChainId,
+    customActionTitle,
+    annotationMessage,
+  },
+  meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.PROXY_COLONY_CREATE>) {
+  let txChannel;
   const batchKey = TRANSACTION_METHODS.CreateProxyColony;
+
+  const { annotateCreateProxyColony } = yield createTransactionChannels(
+    metaId,
+    ['annotateCreateProxyColony'],
+  );
 
   const colonyManager = yield getColonyManager();
   const { address } = getContext(ContextModule.Wallet);
@@ -34,11 +60,13 @@ function* createProxyColony({
   const walletAddress = utils.getAddress(address);
 
   try {
+    txChannel = yield call(getTxChannel, metaId);
+
     const proxyColonyContract: CustomContract<typeof colonyAbi> =
       colonyManager.getCustomContract(colonyAddress, colonyAbi);
     const params = [foreignChainId, creationSalt];
 
-    yield addTransactionToDb(meta.id, {
+    yield addTransactionToDb(metaId, {
       context: ClientType.ColonyClient, // @NOTE we want to add a new context type
       createdAt: new Date(),
       methodName: 'createProxyColony',
@@ -47,10 +75,25 @@ function* createProxyColony({
       status: TransactionStatus.Ready,
       group: {
         key: batchKey,
-        id: meta.id,
+        id: metaId,
         index: 0,
       },
     });
+
+    if (annotationMessage) {
+      yield fork(createTransaction, annotateCreateProxyColony.id, {
+        context: ClientType.ColonyClient,
+        methodName: 'annotateTransaction',
+        identifier: colonyAddress,
+        params: [],
+        group: {
+          key: batchKey,
+          id: metaId,
+          index: 1,
+        },
+        ready: false,
+      });
+    }
 
     const [transaction, waitForMined] = yield proxyColonyContract
       .createTxCreator('createProxyColony', [
@@ -62,14 +105,14 @@ function* createProxyColony({
         gasLimit: BigInt(10_000_000),
       });
 
-    put(transactionSent(meta.id));
+    put(transactionSent(metaId));
 
     if (!transaction || !transaction.blockHash || !transaction.blockNumber) {
       throw new Error('Invalid transaction'); // @TODO add more info
     }
 
     put(
-      transactionHashReceived(meta.id, {
+      transactionHashReceived(metaId, {
         hash: transaction.hash,
         blockNumber: transaction.blockNumber,
         blockHash: transaction.blockHash,
@@ -81,8 +124,26 @@ function* createProxyColony({
 
     const [eventData, receipt] = yield waitForMined();
 
-    put(transactionReceiptReceived(meta.id, { params, receipt }));
-    put(transactionSucceeded(meta.id, { eventData, receipt, params }));
+    put(transactionReceiptReceived(metaId, { params, receipt }));
+    put(transactionSucceeded(metaId, { eventData, receipt, params }));
+
+    if (annotationMessage) {
+      yield takeFrom(
+        annotateCreateProxyColony.channel,
+        ActionTypes.TRANSACTION_CREATED,
+      );
+    }
+
+    yield createActionMetadataInDB(transaction.hash, customActionTitle);
+
+    if (annotationMessage) {
+      yield uploadAnnotation({
+        txChannel: annotateCreateProxyColony,
+        message: annotationMessage,
+        txHash: transaction.hash,
+      });
+    }
+    setTxHash?.(transaction.hash);
 
     yield put<AllActions>({
       type: ActionTypes.PROXY_COLONY_CREATE_SUCCESS,
@@ -91,6 +152,8 @@ function* createProxyColony({
     });
   } catch (error) {
     yield putError(ActionTypes.PROXY_COLONY_CREATE_ERROR, error, meta);
+  } finally {
+    txChannel.close();
   }
 }
 
