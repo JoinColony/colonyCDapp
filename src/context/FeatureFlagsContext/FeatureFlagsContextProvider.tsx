@@ -34,6 +34,9 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const cryptoToFiatWithdrawalsFeature = useFeatureFlag(
     FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS,
   );
+  const supportedChainsAction = useFeatureFlag(
+    FeatureFlag.SUPPORTED_CHAINS_ACTION,
+  );
 
   const featureFlags: Record<
     FeatureFlag,
@@ -42,8 +45,13 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
     () => ({
       [FeatureFlag.CRYPTO_TO_FIAT]: cryptoToFiatFeature,
       [FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS]: cryptoToFiatWithdrawalsFeature,
+      [FeatureFlag.SUPPORTED_CHAINS_ACTION]: supportedChainsAction,
     }),
-    [cryptoToFiatFeature, cryptoToFiatWithdrawalsFeature],
+    [
+      cryptoToFiatFeature,
+      cryptoToFiatWithdrawalsFeature,
+      supportedChainsAction,
+    ],
   );
 
   return (
