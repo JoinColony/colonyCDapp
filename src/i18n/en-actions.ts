@@ -57,6 +57,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
+      ${ColonyActionType.AddProxyColony} {Add chain support for {chain}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -121,6 +122,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+      ${ColonyActionType.AddProxyColony} {Manage supported chains}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

@@ -46,7 +46,7 @@ const ManageColonyGroup = () => {
         })}
       </GroupedAction.List>
       <GroupedAction.List title={formatText({ id: 'actions.admin' })}>
-        {GROUP_ADMIN_LIST.map(({ Icon, title, description, action }) => {
+        {GROUP_ADMIN_LIST.map(({ Icon, title, description, action, isNew }) => {
           return (
             <GroupedAction.Item
               color="warning"
@@ -55,6 +55,7 @@ const ManageColonyGroup = () => {
               description={description}
               action={action}
               key={`group-action-item-${action}`}
+              isNew={isNew}
             />
           );
         })}

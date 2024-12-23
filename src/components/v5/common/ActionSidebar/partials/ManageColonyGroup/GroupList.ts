@@ -10,6 +10,7 @@ import {
   HouseLine,
   Upload,
   UserCircleCheck,
+  Link,
   // TrafficCone,
 } from '@phosphor-icons/react';
 
@@ -94,6 +95,15 @@ export const GROUP_ADMIN_LIST = [
     }),
     Icon: HouseLine,
     action: Action.EditColonyDetails,
+  },
+  {
+    title: formatText({ id: 'actions.manageSupportedChains' }),
+    description: formatText({
+      id: 'actions.description.manageSupportedChains',
+    }),
+    Icon: Link,
+    action: Action.ManageSupportedChains,
+    isNew: true,
   },
   {
     title: formatText({ id: 'actions.upgradeColonyVersion' }),
