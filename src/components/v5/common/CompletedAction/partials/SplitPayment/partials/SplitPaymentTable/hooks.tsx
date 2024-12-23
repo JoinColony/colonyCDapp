@@ -103,9 +103,10 @@ export const useGetSplitPaymentColumns = (
               isLoading={isDataLoading}
               className="h-4 w-full rounded"
             >
-              <span className="text-md font-medium text-gray-900">
-                {parseFloat(percentCalculated.toFixed(4))}%
-              </span>
+              <div className="flex items-center gap-2 text-md font-medium text-gray-900">
+                {parseFloat(percentCalculated.toFixed(4))}
+                <span>%</span>
+              </div>
             </LoadingSkeleton>
           );
         },

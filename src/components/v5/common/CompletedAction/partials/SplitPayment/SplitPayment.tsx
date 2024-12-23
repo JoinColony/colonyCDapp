@@ -275,7 +275,6 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             id: 'actionSidebar.tooltip.distributionTypes',
           })}
         />
-        <AmountRow amount={amount || '1'} token={splitToken} />
 
         {selectedTeam?.metadata && (
           <TeamFromRow
@@ -283,6 +282,7 @@ const SplitPayment = ({ action }: SplitPaymentProps) => {
             actionType={action.type}
           />
         )}
+        <AmountRow amount={amount || '1'} token={splitToken} />
 
         <DecisionMethodRow action={action} />
 

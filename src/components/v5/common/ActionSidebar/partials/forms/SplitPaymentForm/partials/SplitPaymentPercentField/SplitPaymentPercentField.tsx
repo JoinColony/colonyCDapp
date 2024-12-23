@@ -26,6 +26,7 @@ const SplitPaymentPercentField: FC<SplitPaymentPercentFieldProps> = ({
         }
       }}
       wrapperClassName="flex-row flex text-md"
+      inputWrapperClassName="flex items-center gap-2"
       type="text"
       shouldAllowOnlyNumbers
       mode="secondary"

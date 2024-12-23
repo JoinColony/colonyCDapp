@@ -1,9 +1,10 @@
-import { CopySimple, Plus, Trash } from '@phosphor-icons/react';
+import { Coins, CopySimple, Plus, Trash } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useEffect, type FC } from 'react';
 import { useFieldArray, useWatch, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { SplitPaymentDistributionType } from '~gql';
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -27,6 +28,9 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   token,
   disabled,
 }) => {
+  const {
+    colony: { nativeToken },
+  } = useColonyContext();
   const fieldArrayMethods = useFieldArray({
     name,
   });
@@ -51,6 +55,18 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   const getMenuProps = ({ index }) => ({
     cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
     items: [
+      {
+        key: 'add-token',
+        onClick: () =>
+          fieldArrayMethods.insert(index + 1, {
+            recipient: '',
+            amount: '',
+            tokenAddress: nativeToken?.tokenAddress || '',
+            delay: '',
+          }),
+        label: formatText({ id: 'button.addRow' }),
+        icon: Coins,
+      },
       {
         key: 'duplicate',
         onClick: () => fieldArrayMethods.insert(index + 1, value[index]),

@@ -67,16 +67,6 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
           disabled={hasNoDecisionMethods}
         />
       </ActionFormRow>
-      <AmountRow
-        domainId={selectedTeam}
-        tooltips={{
-          label: {
-            tooltipContent: formatText({
-              id: 'actionSidebar.tooltip.simplePayment.amount',
-            }),
-          },
-        }}
-      />
       <ActionFormRow
         icon={UsersThree}
         fieldName="team"
@@ -92,6 +82,16 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
       >
         <TeamsSelect name="team" disabled={hasNoDecisionMethods} />
       </ActionFormRow>
+      <AmountRow
+        domainId={selectedTeam}
+        tooltips={{
+          label: {
+            tooltipContent: formatText({
+              id: 'actionSidebar.tooltip.simplePayment.amount',
+            }),
+          },
+        }}
+      />
       <DecisionMethodField />
       <Description />
       {currentToken && (
