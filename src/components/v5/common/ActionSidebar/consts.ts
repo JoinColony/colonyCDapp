@@ -21,6 +21,8 @@ export const AMOUNT_FIELD_NAME = 'amount';
 export const TOKEN_FIELD_NAME = 'tokenAddress';
 export const DESCRIPTION_FIELD_NAME = 'description';
 export const CREATED_IN_FIELD_NAME = 'createdIn';
+export const MANAGE_SUPPORTED_CHAINS_FIELD_NAME = 'manageSupportedChains';
+export const CHAIN_FIELD_NAME = 'chain';
 export const MODIFICATION_FIELD_NAME = 'modification';
 export const TEAM_FIELD_NAME = 'team';
 export const MEMBER_FIELD_NAME = 'member';
@@ -35,6 +37,11 @@ export const COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME =
   'colonyObjectiveDescription';
 
 export const NON_RESETTABLE_FIELDS = [TITLE_FIELD_NAME, ACTION_TYPE_FIELD_NAME];
+
+export enum ManageEntityOperation {
+  Add = 'Add',
+  Remove = 'Remove',
+}
 
 export const actionSidebarAnimation: Variants = {
   hidden: {

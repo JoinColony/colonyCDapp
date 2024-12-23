@@ -28,6 +28,7 @@ import { formatRolesTitle } from '~utils/colonyActions.ts';
 import { getRecipientsNumber, getTokensNumber } from '~utils/expenditures.ts';
 import { getAmountLessFee } from '~utils/getAmountLessFee.ts';
 import { formatText, intl } from '~utils/intl.ts';
+import { findSupportedChain } from '~utils/proxyColonies.ts';
 import { formatReputationChange } from '~utils/reputation.ts';
 import { getAddedSafeChainName } from '~utils/safes/index.ts';
 import {
@@ -206,6 +207,14 @@ const getExpenditureStagesData = (
     summedAmount: result.summedAmount.toString(),
     stagedPaymentToken: result.stagedPaymentToken,
   };
+};
+
+const getProxyColonyDeployedChain = (actionData: ColonyAction) => {
+  const chainInfo = findSupportedChain(
+    actionData?.multiChainInfo?.targetChainId,
+  );
+
+  return chainInfo?.name;
 };
 
 export const useMapColonyActionToExpectedFormat = ({
@@ -439,5 +448,6 @@ export const useMapColonyActionToExpectedFormat = ({
     [ActionTitleMessageKeys.ArbitraryTransactionsLength]:
       arbitraryTransactionsLength,
     [ActionTitleMessageKeys.ArbitraryMethod]: arbitraryMethod,
+    [ActionTitleMessageKeys.Chain]: getProxyColonyDeployedChain(actionData),
   };
 };

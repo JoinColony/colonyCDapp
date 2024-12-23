@@ -13,6 +13,7 @@ import EditTeamForm from '../partials/forms/EditTeamForm/index.ts';
 import EnterRecoveryModeForm from '../partials/forms/EnterRecoveryModeForm/index.ts';
 import ManagePermissionsForm from '../partials/forms/ManagePermissionsForm/index.ts';
 import ManageReputationForm from '../partials/forms/ManageReputationForm/index.ts';
+import ManageSupportedChainsForm from '../partials/forms/ManageSupportedChainsForm/ManageSupportedChainsForm.tsx';
 import ManageTokensForm from '../partials/forms/ManageTokensForm/ManageTokensForm.tsx';
 import ManageVerifiedMembersForm from '../partials/forms/ManageVerifiedMembersForm/index.ts';
 import MintTokenForm from '../partials/forms/MintTokenForm/index.ts';
@@ -49,6 +50,7 @@ const useSidebarActionForm = () => {
       [Action.ManageVerifiedMembers]: ManageVerifiedMembersForm,
       [Action.ManageReputation]: ManageReputationForm,
       [Action.ArbitraryTxs]: ArbitraryTxsForm,
+      [Action.ManageSupportedChains]: ManageSupportedChainsForm,
     }),
     [],
   );

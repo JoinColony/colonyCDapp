@@ -71,6 +71,8 @@ const actionsMessageDescriptors = {
         1 {Arbitrary transaction with method {arbitraryMethod} by {initiator}}
         other {Arbitrary transaction with multiple methods by {initiator}}
       }}
+      ${ColonyActionType.AddProxyColony} {Add support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColony} {Remove support for {chain} chain by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -135,9 +137,14 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokens} {Manage tokens}
       ${ColonyActionType.ManageTokensMotion} {Manage tokens}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens}
+<<<<<<< HEAD
       ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMotion} {Custom transactions}
       ${ColonyActionType.MakeArbitraryTransactionsMultisig} {Custom transactions}
+=======
+      ${ColonyActionType.AddProxyColony} {Manage supported chains}
+      ${ColonyActionType.RemoveProxyColony} {Manage supported chains}
+>>>>>>> 6aee3801c (Feat: Add manage supported chain action)
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

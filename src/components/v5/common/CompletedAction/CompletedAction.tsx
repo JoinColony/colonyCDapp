@@ -15,6 +15,7 @@ import ArbitraryTransaction from './partials/ArbitraryTransaction/index.ts';
 import CreateDecision from './partials/CreateDecision/index.ts';
 import EditColonyDetails from './partials/EditColonyDetails/index.ts';
 import ManageReputation from './partials/ManageReputation/index.ts';
+import ManageSupportedChain from './partials/ManageSupportedChain/ManageSupportedChain.tsx';
 import ManageTeam from './partials/ManageTeam/index.ts';
 import ManageTokens from './partials/ManageTokens/ManageTokens.tsx';
 import MintTokens from './partials/MintTokens/index.ts';
@@ -80,6 +81,9 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ColonyActionType.RemoveVerifiedMembersMotion:
       case ColonyActionType.RemoveVerifiedMembersMultisig:
         return <RemoveVerifiedMembers action={action} />;
+      case ColonyActionType.AddProxyColony:
+      case ColonyActionType.RemoveProxyColony:
+        return <ManageSupportedChain action={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:
       case ColonyActionType.EmitDomainReputationRewardMultisig:

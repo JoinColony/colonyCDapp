@@ -42,6 +42,7 @@ const SearchItem: FC<SearchItemProps> = ({
           isDisabled,
           isComingSoon,
           isNew,
+          icon: Icon,
           avatar,
           showAvatar,
           color,
@@ -82,6 +83,7 @@ const SearchItem: FC<SearchItemProps> = ({
                 }}
               >
                 <div className="relative flex w-full items-center">
+                  {Icon && <Icon size={20} className="mr-2" />}
                   {color && !isLabelVisible && (
                     <div
                       className={clsx(teamColor, 'mx-auto rounded sm:mx-0', {

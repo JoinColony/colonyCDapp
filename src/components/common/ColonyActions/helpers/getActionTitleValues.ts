@@ -43,6 +43,7 @@ export enum ActionTitleMessageKeys {
   StagedAmount = 'stagedAmount',
   ArbitraryTransactionsLength = 'arbitraryTransactionsLength',
   ArbitraryMethod = 'arbitraryMethod',
+  Chain = 'chain',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
@@ -135,6 +136,9 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
       return [ActionTitleMessageKeys.ChainName];
     case actionType.includes(ColonyActionType.CreateDecisionMotion):
       return [ActionTitleMessageKeys.Initiator];
+    case actionType.includes(ColonyActionType.AddProxyColony):
+    case actionType.includes(ColonyActionType.RemoveProxyColony):
+      return [ActionTitleMessageKeys.Chain, ActionTitleMessageKeys.Initiator];
     /**
      * @deprecated
      * This is still needed to allow users to view existing Colony Objectives Actions

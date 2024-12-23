@@ -36,6 +36,9 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   );
   const guidedToursFeature = useFeatureFlag(FeatureFlag.GUIDED_TOURS);
   const arbitraryTxsAction = useFeatureFlag(FeatureFlag.ARBITRARY_TXS_ACTION);
+  const supportedChainsAction = useFeatureFlag(
+    FeatureFlag.SUPPORTED_CHAINS_ACTION,
+  );
 
   const featureFlags: Record<
     FeatureFlag,
@@ -46,12 +49,14 @@ const FeatureFlagsContextProvider: FC<PropsWithChildren> = ({ children }) => {
       [FeatureFlag.CRYPTO_TO_FIAT_WITHDRAWALS]: cryptoToFiatWithdrawalsFeature,
       [FeatureFlag.GUIDED_TOURS]: guidedToursFeature,
       [FeatureFlag.ARBITRARY_TXS_ACTION]: arbitraryTxsAction,
+      [FeatureFlag.SUPPORTED_CHAINS_ACTION]: supportedChainsAction,
     }),
     [
       cryptoToFiatFeature,
       cryptoToFiatWithdrawalsFeature,
       guidedToursFeature,
       arbitraryTxsAction,
+      supportedChainsAction,
     ],
   );
 
