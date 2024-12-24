@@ -12,7 +12,7 @@ import {
 import { initiateTransaction, putError, takeFrom } from '../utils/effects.ts';
 
 function* finalizeMultiSigAction({
-  payload: { colonyAddress, multiSigId, canActionFail },
+  payload: { colonyAddress, multiSigId, canActionFail, associatedActionId },
   meta,
 }: Action<ActionTypes.MULTISIG_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -33,6 +33,7 @@ function* finalizeMultiSigAction({
         id: meta.id,
         index: 0,
       },
+      associatedActionId,
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);

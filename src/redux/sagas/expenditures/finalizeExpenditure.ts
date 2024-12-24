@@ -27,8 +27,11 @@ function* finalizeExpenditureAction({
   meta,
 }: Action<ActionTypes.EXPENDITURE_FINALIZE>) {
   const batchKey = 'finalizeExpenditure';
-  const { nativeId: expenditureId, nativeDomainId: expenditureDomainId } =
-    expenditure;
+  const {
+    nativeId: expenditureId,
+    nativeDomainId: expenditureDomainId,
+    creatingActions,
+  } = expenditure;
 
   const {
     finalizeExpenditure,
@@ -57,6 +60,7 @@ function* finalizeExpenditureAction({
           id: meta.id,
           index: 0,
         },
+        associatedActionId: creatingActions?.items[0]?.transactionHash,
       });
     } else {
       const [permissionDomainId, childSkillIndex] = yield getPermissionProofs(
@@ -78,6 +82,7 @@ function* finalizeExpenditureAction({
           id: meta.id,
           index: 0,
         },
+        associatedActionId: creatingActions?.items[0]?.transactionHash,
       });
     }
 
@@ -96,6 +101,7 @@ function* finalizeExpenditureAction({
       metaId: meta.id,
       nativeExpenditureId: expenditure.nativeId,
       colonyClient,
+      associatedActionId: creatingActions?.items[0]?.transactionHash ?? '',
     });
 
     yield put<AllActions>({

@@ -22,9 +22,10 @@ import {
 export type MotionVotePayload = Action<ActionTypes.MOTION_VOTE>['payload'];
 function* voteMotion({
   meta,
-  payload: { userAddress, colonyAddress, motionId, vote },
+  payload: { associatedActionId, userAddress, colonyAddress, motionId, vote },
 }: Action<ActionTypes.MOTION_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
+
   try {
     const colonyManager = yield getColonyManager();
     const colonyClient = yield colonyManager.getClient(
@@ -76,6 +77,7 @@ function* voteMotion({
       batchKey: 'voteMotion',
       meta,
       config: {
+        associatedActionId,
         context: ClientType.VotingReputationClient,
         methodName: 'submitVote',
         identifier: colonyAddress,

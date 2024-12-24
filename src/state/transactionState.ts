@@ -43,6 +43,8 @@ import { DEFAULT_TX_HASH } from './consts.ts';
 export const TX_PAGE_SIZE = 20;
 
 export const convertTransactionType = ({
+  associatedActionId,
+  colonyAddress,
   context,
   createdAt,
   error,
@@ -90,6 +92,7 @@ export const convertTransactionType = ({
 
   return {
     context: context as ClientTypeTokens | ExtendedClientType,
+    colonyAddress,
     createdAt: new Date(createdAt),
     error: error ?? undefined,
     from,
@@ -105,6 +108,7 @@ export const convertTransactionType = ({
     title: title ? JSON.parse(title) : undefined,
     titleValues: titleValues ? JSON.parse(titleValues) : undefined,
     options: options ? JSON.parse(options) : undefined,
+    associatedActionId: associatedActionId ?? undefined,
   };
 };
 
@@ -228,6 +232,7 @@ export const getTransaction = async (id: string, fetchPolicy?: FetchPolicy) => {
 export const addTransactionToDb = async (
   id: string,
   {
+    associatedActionId,
     context,
     createdAt,
     from,
@@ -288,6 +293,7 @@ export const addTransactionToDb = async (
     params: txParams,
     identifier: identifier || null,
     options: JSON.stringify(options),
+    associatedActionId: associatedActionId || null,
   };
 
   await mutateWithAuthRetry(() =>
@@ -383,10 +389,14 @@ export const updateTransaction = async (
   }
 
   await mutateWithAuthRetry(() =>
-    apollo.mutate<
-      UpdateTransactionMutation,
-      UpdateTransactionMutationVariables
-    >(mutationOpts),
+    apollo
+      .mutate<
+        UpdateTransactionMutation,
+        UpdateTransactionMutationVariables
+      >(mutationOpts)
+      .then(() =>
+        apollo.refetchQueries({ include: [GetUserTransactionsDocument] }),
+      ),
   );
   // return;
 };

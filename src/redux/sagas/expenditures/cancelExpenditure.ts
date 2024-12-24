@@ -117,6 +117,8 @@ function* cancelDraftExpenditure({
       methodName: 'cancelAndReclaimStake',
       identifier: colonyAddress,
       params: [permissionDomainId, childSkillIndex, expenditure.nativeId],
+      associatedActionId:
+        expenditure.creatingActions?.items[0]?.transactionHash,
     });
   } else {
     yield fork(createTransaction, meta.id, {
@@ -129,6 +131,8 @@ function* cancelDraftExpenditure({
       methodName: 'cancelExpenditure',
       identifier: colonyAddress,
       params: [expenditure.nativeId],
+      associatedActionId:
+        expenditure.creatingActions?.items[0]?.transactionHash,
     });
   }
 
@@ -162,6 +166,7 @@ function* cancelLockedExpenditure({
     methodName: 'cancelExpenditureViaArbitration',
     identifier: colonyAddress,
     params,
+    associatedActionId: expenditure.creatingActions?.items[0]?.transactionHash,
   });
 
   yield initiateTransaction(meta.id);

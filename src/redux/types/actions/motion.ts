@@ -60,6 +60,7 @@ export type ExpenditureCancelMotionPayload = Omit<
 };
 
 export type MotionFinalizePayload = {
+  associatedActionId: string;
   userAddress: Address;
   colonyAddress: Address;
   motionId: string;
@@ -99,7 +100,8 @@ export type MotionActionTypes =
         activateTokens: boolean;
         activeAmount: string;
         tokenAddress: Address;
-        actionId?: string;
+        actionId: string;
+        associatedActionId: string;
         annotationMessage?: string;
       },
       object
@@ -109,6 +111,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_VOTE,
       {
+        associatedActionId: string;
         userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
@@ -121,6 +124,7 @@ export type MotionActionTypes =
   | UniqueActionType<
       ActionTypes.MOTION_REVEAL_VOTE,
       {
+        associatedActionId: string;
         userAddress: Address;
         colonyAddress: Address;
         motionId: BigNumber;
@@ -142,6 +146,7 @@ export type MotionActionTypes =
         colonyAddress: Address;
         extensionAddress: Address;
         transactionHash: string;
+        associatedActionId: string;
       },
       object
     >
@@ -158,6 +163,7 @@ export type MotionActionTypes =
           colonyAddress: string;
           extensionAddress: string;
         }[];
+        associatedActionId: string;
       },
       object
     >

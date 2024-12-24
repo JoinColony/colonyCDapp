@@ -41,6 +41,9 @@ const FinalizeButton: FC<FinalizeButtonProps> = ({
   const { colony } = useColonyContext();
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
   const transform = mapPayload(() => ({
+    associatedActionId:
+      action.expenditure?.creatingActions?.items[0]?.transactionHash ||
+      action.transactionHash,
     colonyAddress: colony.colonyAddress,
     multiSigId,
     canActionFail: isMotionOlderThanAWeek,

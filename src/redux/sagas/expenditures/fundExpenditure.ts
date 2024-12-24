@@ -144,6 +144,8 @@ function* fundExpenditure({
       },
       ready: false,
       params: [multicallData],
+      associatedActionId:
+        expenditure.creatingActions?.items[0]?.transactionHash,
     });
 
     if (annotationMessage) {

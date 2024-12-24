@@ -104,6 +104,8 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
 
       if (expenditure.isStaked) {
         const payload: ReclaimExpenditureStakePayload = {
+          associatedActionId:
+            expenditure.creatingActions?.items[0]?.transactionHash ?? '',
           colonyAddress: colony.colonyAddress,
           nativeExpenditureId: expenditure.nativeId,
         };

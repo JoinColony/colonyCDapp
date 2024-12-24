@@ -126,6 +126,8 @@ function* releaseExpenditureStages({
       },
       ready: false,
       params: [multicallData],
+      associatedActionId:
+        expenditure.creatingActions?.items[0]?.transactionHash ?? '',
     });
 
     if (annotationMessage) {
@@ -139,6 +141,8 @@ function* releaseExpenditureStages({
           index: 1,
         },
         ready: false,
+        associatedActionId:
+          expenditure.creatingActions?.items[0]?.transactionHash ?? '',
       });
     }
 

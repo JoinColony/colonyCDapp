@@ -34,7 +34,13 @@ export type ClaimMotionRewardsPayload =
 
 function* claimMotionRewards({
   meta,
-  payload: { userAddress, colonyAddress, extensionAddress, transactionHash },
+  payload: {
+    userAddress,
+    colonyAddress,
+    extensionAddress,
+    transactionHash,
+    associatedActionId,
+  },
 }: Action<ActionTypes.MOTION_CLAIM>) {
   try {
     const apolloClient = getContext(ContextModule.ApolloClient);
@@ -108,6 +114,7 @@ function* claimMotionRewards({
           batchKey: BATCH_KEY,
           meta,
           config: {
+            associatedActionId,
             context: ClientType.VotingReputationClient,
             methodName: 'claimReward',
             identifier: colonyAddress,

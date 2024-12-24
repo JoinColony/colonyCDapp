@@ -100,6 +100,8 @@ function* cancelExpenditureMotion({
           id: meta.id,
           index: 1,
         },
+        associatedActionId:
+          expenditure.creatingActions?.items[0]?.transactionHash,
       },
     });
 

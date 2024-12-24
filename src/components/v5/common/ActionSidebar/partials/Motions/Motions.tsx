@@ -177,7 +177,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
         key: NetworkMotionState.Reveal,
         content: (
           <RevealStep
-            motionData={motionData}
+            actionData={action as MotionAction}
             motionState={networkMotionState}
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}

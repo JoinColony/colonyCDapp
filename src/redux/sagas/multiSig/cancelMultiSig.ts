@@ -13,7 +13,7 @@ import {
 import { initiateTransaction, putError, takeFrom } from '../utils/index.ts';
 
 function* cancelMultiSig({
-  payload: { colonyAddress, motionId },
+  payload: { associatedActionId, colonyAddress, motionId },
   meta,
 }: Action<ActionTypes.MULTISIG_CANCEL>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -30,6 +30,7 @@ function* cancelMultiSig({
         id: meta.id,
         index: 0,
       },
+      associatedActionId,
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);
