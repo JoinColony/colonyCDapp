@@ -3,6 +3,7 @@ import { type Domain, DomainColor } from '~types/graphql.ts';
 import { notNull } from '~utils/arrays/index.ts';
 import { getDomainNameFallback } from '~utils/domains.ts';
 import {
+  type TeamOption,
   type SearchSelectOption,
   type SearchSelectOptionProps,
 } from '~v5/shared/SearchSelect/types.ts';
@@ -23,8 +24,8 @@ const sortByReputationAndName = (a: Domain, b: Domain) => {
 };
 
 const useTeamsOptions = (
-  filterOptionsFn?: (option: SearchSelectOption) => boolean,
-): SearchSelectOptionProps['options'] => {
+  filterOptionsFn?: (option: SearchSelectOption<TeamOption>) => boolean,
+): SearchSelectOptionProps<TeamOption>['options'] => {
   const {
     colony: { domains },
   } = useColonyContext();

@@ -4,7 +4,10 @@ import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useFeatureFlagsContext } from '~context/FeatureFlagsContext/FeatureFlagsContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
-import { type SearchSelectOptionProps } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOptionProps,
+  type WithBadgesOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 const useActionsList = () => {
   const { colony } = useColonyContext();
@@ -19,8 +22,8 @@ const useActionsList = () => {
     featureFlags.SUPPORTED_CHAINS_ACTION?.isLoading ||
     featureFlags.SUPPORTED_CHAINS_ACTION?.isEnabled;
 
-  return useMemo((): SearchSelectOptionProps[] => {
-    const actionsListOptions: SearchSelectOptionProps[] = [
+  return useMemo((): SearchSelectOptionProps<WithBadgesOption>[] => {
+    const actionsListOptions: SearchSelectOptionProps<WithBadgesOption>[] = [
       {
         key: '1',
         title: { id: 'actions.payments' },
