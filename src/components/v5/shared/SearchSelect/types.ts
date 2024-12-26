@@ -1,3 +1,4 @@
+import { type Icon } from '@phosphor-icons/react';
 import { type MessageDescriptor } from 'react-intl';
 
 import { type TokenFragment } from '~gql';
@@ -34,6 +35,7 @@ export interface SearchSelectOption {
   thumbnail?: string;
   showAvatar?: boolean;
   color?: string;
+  icon?: Icon;
   walletAddress?: string;
   nativeId?: number;
   token?: TokenFragment;

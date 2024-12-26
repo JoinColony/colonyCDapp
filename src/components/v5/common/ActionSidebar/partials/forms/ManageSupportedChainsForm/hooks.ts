@@ -1,0 +1,51 @@
+import { Id } from '@colony/sdk';
+import { useCallback, useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
+import { type DeepPartial } from 'redux';
+
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { ActionTypes } from '~redux';
+import { mapPayload } from '~utils/actions.ts';
+import {
+  MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
+  ManageEntityOperation,
+} from '~v5/common/ActionSidebar/consts.ts';
+import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
+import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+
+import {
+  type ManageSupportedChainsFormValues,
+  validationSchema,
+} from './consts.ts';
+import { getManageSupportedChainsPayload } from './utils.ts';
+
+export const useManageSupportedChainsForm = (
+  getFormOptions: ActionFormBaseProps['getFormOptions'],
+) => {
+  const { colony } = useColonyContext();
+
+  const operation = useWatch({ name: MANAGE_SUPPORTED_CHAINS_FIELD_NAME });
+
+  useActionFormBaseHook({
+    getFormOptions,
+    validationSchema,
+    actionType:
+      operation === ManageEntityOperation.Add
+        ? ActionTypes.PROXY_COLONY_CREATE
+        : ActionTypes.PROXY_COLONY_REMOVE,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    transform: useCallback(
+      mapPayload((values: ManageSupportedChainsFormValues) =>
+        getManageSupportedChainsPayload(colony, values),
+      ),
+      [],
+    ),
+    defaultValues: useMemo<DeepPartial<ManageSupportedChainsFormValues>>(
+      () => ({
+        createdIn: Id.RootDomain,
+        chain: '',
+      }),
+      [],
+    ),
+  });
+};
