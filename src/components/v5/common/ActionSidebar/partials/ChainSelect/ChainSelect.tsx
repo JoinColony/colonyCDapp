@@ -8,8 +8,9 @@ import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ChainBadge from '~v5/common/Pills/ChainBadge/ChainBadge.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
+import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
-import { useAvailableChains } from './hooks.ts';
+import { useChainOptions } from './hooks.ts';
 
 const displayName = 'v5.common.ActionsContent.partials.ChainSelect';
 
@@ -17,12 +18,14 @@ interface ChainSelectProps {
   name: string;
   disabled?: boolean;
   readOnly?: boolean;
+  filterOptionsFn?: (option: SearchSelectOption) => boolean;
 }
 
 const ChainSelect: FC<ChainSelectProps> = ({
   name,
   disabled = false,
   readOnly: readOnlyProp,
+  filterOptionsFn,
 }) => {
   const {
     field,
@@ -32,7 +35,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   });
   const fieldValue = field.value;
   const isError = !!error;
-  const availableChains = useAvailableChains();
+  const chainOptions = useChainOptions(filterOptionsFn);
 
   const { readonly } = useAdditionalFormOptionsContext();
   const isReadOnly = readonly || readOnlyProp;
@@ -54,7 +57,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
 
   const renderButtonContent = () => {
     const selectedChain = fieldValue
-      ? availableChains.find(
+      ? chainOptions.find(
           (availableChain) => availableChain.value === fieldValue,
         )
       : null;
@@ -106,7 +109,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
                   key: 'chains',
                   title: { id: 'actionSidebar.chain.title' },
                   isAccordion: false,
-                  options: availableChains,
+                  options: chainOptions,
                 },
               ]}
               onSelect={(value) => {

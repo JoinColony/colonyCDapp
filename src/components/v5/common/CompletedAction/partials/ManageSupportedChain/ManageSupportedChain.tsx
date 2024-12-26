@@ -1,8 +1,9 @@
 import { Link, PlusMinus } from '@phosphor-icons/react';
 import { type FC } from 'react';
 import React from 'react';
+import { defineMessages } from 'react-intl';
 
-import { supportedChainsConfig } from '~constants/chains.ts';
+import { SUPPORTED_CHAINS } from '~constants/proxyColonies.ts';
 import { ColonyActionType, type ColonyAction } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import ChainBadge from '~v5/common/Pills/ChainBadge/ChainBadge.tsx';
@@ -24,9 +25,16 @@ interface ManageSupportedChainProps {
   action: ColonyAction;
 }
 
+const MSG = defineMessages({
+  unknownChain: {
+    id: `${displayName}.unknownChain`,
+    defaultMessage: 'Unknown',
+  },
+});
+
 const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
   const { initiatorUser, annotation, multiChainInfo } = action;
-  const chainInfo = supportedChainsConfig.find(
+  const chainInfo = SUPPORTED_CHAINS.find(
     (supportedChain) =>
       supportedChain.chainId === multiChainInfo?.targetChainId,
   );
@@ -43,30 +51,29 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
       },
     ),
   } = action?.metadata || {};
+  const subTitle = formatText(
+    {
+      id: 'action.title',
+    },
+    {
+      actionType: action.type,
+      chain: chainInfo?.name,
+      initiator: initiatorUser ? (
+        <UserInfoPopover
+          walletAddress={initiatorUser.walletAddress}
+          user={initiatorUser}
+          withVerifiedBadge={false}
+        >
+          {initiatorUser.profile?.displayName}
+        </UserInfoPopover>
+      ) : null,
+    },
+  );
 
   return (
     <>
       <ActionTitle>{customTitle}</ActionTitle>
-      <ActionSubtitle>
-        {formatText(
-          {
-            id: 'action.title',
-          },
-          {
-            actionType: action.type,
-            chain: chainInfo?.name,
-            initiator: initiatorUser ? (
-              <UserInfoPopover
-                walletAddress={initiatorUser.walletAddress}
-                user={initiatorUser}
-                withVerifiedBadge={false}
-              >
-                {initiatorUser.profile?.displayName}
-              </UserInfoPopover>
-            ) : null,
-          },
-        )}
-      </ActionSubtitle>
+      <ActionSubtitle>{subTitle}</ActionSubtitle>
       <ActionDataGrid>
         <ActionTypeRow actionType={action.type} />
         <ActionData
@@ -79,7 +86,10 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
         <ActionData
           rowLabel={formatText({ id: 'actionSidebar.chain' })}
           rowContent={
-            <ChainBadge text={chainInfo?.name || ''} icon={chainInfo?.icon} />
+            <ChainBadge
+              text={chainInfo?.name || formatText(MSG.unknownChain)}
+              icon={chainInfo?.icon}
+            />
           }
           RowIcon={Link}
         />

@@ -30,7 +30,6 @@ export const useManageSupportedChainsForm = (
     getFormOptions,
     validationSchema,
     actionType:
-      // @TODO here we need to check which action we want to use for disabling an existing colony
       operation === ManageEntityOperation.Add
         ? ActionTypes.PROXY_COLONY_CREATE
         : ActionTypes.PROXY_COLONY_REMOVE,

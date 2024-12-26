@@ -337,6 +337,7 @@
     "transaction.group.releaseExpenditure.title": "Release Expenditure",
     "transaction.group.releaseExpenditure.description": "Releasing expenditure",
     "transaction.group.createProxyColony.title": "Add Chain Support",
+    "transaction.group.removeProxyColony.title": "Remove Chain Support",
 
     "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
     "transaction.ColonyClient.addDomain(uint256,uint256,uint256).title": "Create Team",

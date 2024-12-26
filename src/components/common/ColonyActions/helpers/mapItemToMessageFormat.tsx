@@ -4,7 +4,7 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
-import { supportedChainsConfig } from '~constants/chains.ts';
+import { SUPPORTED_CHAINS } from '~constants/proxyColonies.ts';
 import { getNetworkTokenList } from '~constants/tokens/getNetworkTokenList.ts';
 import { ColonyActionType, type TokenFragment, type SimpleTarget } from '~gql';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
@@ -209,7 +209,7 @@ const getExpenditureStagesData = (
 };
 
 const getProxyColonyDeployedChain = (actionData: ColonyAction) => {
-  const chainInfo = supportedChainsConfig.find(
+  const chainInfo = SUPPORTED_CHAINS.find(
     (supportedChain) =>
       supportedChain.chainId === actionData?.multiChainInfo?.targetChainId,
   );

@@ -2,6 +2,7 @@ import { Link, PlusMinus } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
@@ -9,10 +10,12 @@ import {
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
+import { useFilterChainSelectField } from '~v5/common/ActionSidebar/hooks/useFilterChainSelectField.ts';
 import ChainSelect from '~v5/common/ActionSidebar/partials/ChainSelect/ChainSelect.tsx';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { getManageSupportedChainsOptions } from './consts.ts';
@@ -24,10 +27,15 @@ const displayName =
 const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
   getFormOptions,
 }) => {
+  useManageSupportedChainsForm(getFormOptions);
   const { manageSupportedChainsOptions } = getManageSupportedChainsOptions();
   const { resetField } = useFormContext();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
-  useManageSupportedChainsForm(getFormOptions);
+  const chainSelectFilterFn = useFilterChainSelectField();
+  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
+    DecisionMethod.MultiSig,
+    DecisionMethod.Reputation,
+  ]);
 
   return (
     <>
@@ -65,9 +73,12 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
         title={formatText({ id: 'actionSidebar.chain' })}
         isDisabled={hasNoDecisionMethods}
       >
-        <ChainSelect name={CHAIN_FIELD_NAME} />
+        <ChainSelect
+          name={CHAIN_FIELD_NAME}
+          filterOptionsFn={chainSelectFilterFn}
+        />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
       <Description />
     </>
   );

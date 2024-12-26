@@ -33,7 +33,7 @@ function* disableProxyColonyAction({
   meta: { id: metaId, setTxHash },
   meta,
 }: Action<ActionTypes.PROXY_COLONY_REMOVE>) {
-  const batchKey = TRANSACTION_METHODS.CreateProxyColony;
+  const batchKey = TRANSACTION_METHODS.RemoveProxyColony;
 
   const { disableProxyColony, annotateDisableProxyColony } =
     yield createTransactionChannels(metaId, [
