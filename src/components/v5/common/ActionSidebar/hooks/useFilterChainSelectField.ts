@@ -1,4 +1,8 @@
 import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
+import {
+  type SearchSelectOption,
+  type IconOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import {
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
@@ -17,7 +21,7 @@ export const useFilterChainSelectField = () => {
     filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
   });
 
-  const filterFn = (chainId) =>
+  const filterFn = ({ value: chainId }: SearchSelectOption<IconOption>) =>
     isRemoveOperation
       ? activeProxyColoniesChainIds.includes(chainId.toString())
       : !activeProxyColoniesChainIds.includes(chainId.toString());
