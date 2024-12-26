@@ -3,7 +3,10 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { DecisionMethod } from '~types/actions.ts';
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOption,
+  type TeamOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import {
   CREATED_IN_FIELD_NAME,
@@ -45,7 +48,7 @@ const useFilterCreatedInField = (
     }
   }, [onlyAllowRoot, decisionMethod, selectedTeam, setValue]);
 
-  const createdInFilterFn = (team: SearchSelectOption): boolean => {
+  const createdInFilterFn = (team: SearchSelectOption<TeamOption>): boolean => {
     if (onlyAllowRoot) return !!team.isRoot;
     if (!selectedTeam) return true;
 
