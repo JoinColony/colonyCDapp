@@ -21,7 +21,8 @@ const MSG = defineMessages({
 export const ManageSupportedChainsDescription = () => {
   const formValues =
     useFormContext<ManageSupportedChainsFormValues>().getValues();
-  const { manageSupportedChains, chain } = formValues;
+  const { manageSupportedChains } = formValues;
+
   if (manageSupportedChains === undefined) {
     return (
       <FormattedMessage
@@ -41,7 +42,6 @@ export const ManageSupportedChainsDescription = () => {
           manageSupportedChains === ManageEntityOperation.Add
             ? ColonyActionType.AddProxyColony
             : ColonyActionType.RemoveProxyColony,
-        chain,
         initiator: <CurrentUser />,
       }}
     />

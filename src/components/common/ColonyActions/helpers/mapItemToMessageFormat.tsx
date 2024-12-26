@@ -4,7 +4,6 @@ import { BigNumber } from 'ethers';
 import React from 'react';
 
 import { ACTIONS_WITH_NETWORK_FEE } from '~constants/actions.ts';
-import { SUPPORTED_CHAINS } from '~constants/proxyColonies.ts';
 import { getNetworkTokenList } from '~constants/tokens/getNetworkTokenList.ts';
 import { ColonyActionType, type TokenFragment, type SimpleTarget } from '~gql';
 import useUserByAddress from '~hooks/useUserByAddress.ts';
@@ -206,15 +205,6 @@ const getExpenditureStagesData = (
     summedAmount: result.summedAmount.toString(),
     stagedPaymentToken: result.stagedPaymentToken,
   };
-};
-
-const getProxyColonyDeployedChain = (actionData: ColonyAction) => {
-  const chainInfo = SUPPORTED_CHAINS.find(
-    (supportedChain) =>
-      supportedChain.chainId === actionData?.multiChainInfo?.targetChainId,
-  );
-
-  return chainInfo?.name;
 };
 
 export const useMapColonyActionToExpectedFormat = ({
@@ -442,6 +432,5 @@ export const useMapColonyActionToExpectedFormat = ({
       ActionTitleMessageKeys.SplitAmount,
       !!expenditureData?.slots,
     ),
-    [ActionTitleMessageKeys.Chain]: getProxyColonyDeployedChain(actionData),
   };
 };
