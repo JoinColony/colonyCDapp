@@ -1,12 +1,16 @@
 import { utils } from 'ethers';
-import { useMemo } from 'react';
+import debounce from 'lodash/debounce';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 
-import { type SearchSelectOptionProps } from './types.ts';
+import {
+  isUserSearchSelectOption,
+  type SearchSelectOptionProps,
+} from './types.ts';
 
-export const useSearchSelect = (
-  items: SearchSelectOptionProps[],
+export const useFilterItems = <T>(
+  items: SearchSelectOptionProps<T>[],
   searchValue: string,
 ) => {
   const searchedOptions = useMemo(
@@ -32,7 +36,11 @@ export const useSearchSelect = (
             ? [
                 {
                   ...item.options[0],
-                  avatar: item.options[0]?.showAvatar ? '' : undefined,
+                  avatar:
+                    isUserSearchSelectOption(item.options[0]) &&
+                    item.options[0]?.showAvatar
+                      ? ''
+                      : undefined,
                   value: searchValue,
                   label: searchValue,
                   walletAddress: searchValue,
@@ -54,4 +62,63 @@ export const useSearchSelect = (
   );
 
   return filteredOptions;
+};
+
+export const useAccordion = <T>(items: SearchSelectOptionProps<T>[]) => {
+  const defaultOpenedAccordions = useMemo(
+    () => items.filter(({ isAccordion }) => isAccordion).map(({ key }) => key),
+    [items],
+  );
+
+  const [openedAccordions, setOpenedAccordions] = useState<string[]>(
+    defaultOpenedAccordions,
+  );
+
+  const onAccordionClick = useCallback((key: string) => {
+    setOpenedAccordions((prev) => {
+      if (prev.includes(key)) {
+        return prev.filter((item) => item !== key);
+      }
+
+      return [...prev, key];
+    });
+  }, []);
+
+  return { openedAccordions, onAccordionClick };
+};
+
+export const useSearch = (
+  initialSearchValue: string,
+  onSearch?: (value: string) => void,
+) => {
+  const [searchValue, setSearchValue] = useState(initialSearchValue);
+  const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setDebouncedSearchValue(searchValue);
+    }, 500);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [searchValue]);
+
+  const handleSearch = useMemo(
+    () => debounce((value: string) => setDebouncedSearchValue(value), 500),
+    [],
+  );
+
+  const onChange = useCallback(
+    (value: string) => {
+      onSearch?.(value);
+      setSearchValue(value);
+      if (value) {
+        handleSearch(value);
+      } else {
+        setDebouncedSearchValue('');
+      }
+    },
+    [handleSearch, onSearch],
+  );
+
+  return { searchValue, debouncedSearchValue, onChange };
 };
