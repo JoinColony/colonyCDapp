@@ -18,10 +18,8 @@ import {
   GROUP_TEAMS_LIST,
   GROUP_ADMIN_LIST,
 } from './partials/ManageColonyGroup/GroupList.ts';
-import {
-  GROUP_LIST,
-  type GroupListItem,
-} from './partials/PaymentGroup/GroupList.ts';
+import { GROUP_LIST } from './partials/PaymentGroup/GroupList.ts';
+import { GroupListItem } from './partials/GroupedAction/types.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action

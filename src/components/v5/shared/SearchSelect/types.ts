@@ -4,8 +4,13 @@ import { type MessageDescriptor } from 'react-intl';
 import { type TokenFragment } from '~gql';
 import { type BaseFieldProps } from '~v5/common/Fields/types.ts';
 
-export interface SearchSelectProps extends BaseFieldProps {
-  items: SearchSelectOptionProps[];
+export type OptionRenderer<T> = (
+  option: SearchSelectOption<T>,
+  isLabelVisible?: boolean,
+) => React.ReactNode;
+
+export interface SearchSelectProps<T> extends BaseFieldProps {
+  items: SearchSelectOptionProps<T>[];
   onSelect?: (value: string) => void;
   isLoading?: boolean;
   className?: string;
@@ -17,30 +22,72 @@ export interface SearchSelectProps extends BaseFieldProps {
   additionalButtons?: React.ReactNode;
   placeholder?: string;
   shouldReturnAddresses?: boolean;
+  renderOption: OptionRenderer<T>;
 }
 
-export interface SearchSelectOptionProps {
+export interface SearchSelectOptionProps<T> {
   key: string;
   title: MessageDescriptor;
   isAccordion?: boolean;
-  options: SearchSelectOption[];
+  options: SearchSelectOption<T>[];
 }
 
-export interface SearchSelectOption {
-  label: MessageDescriptor | string;
+export type SearchSelectOption<T> = T & {
   value: string | number;
+  label: MessageDescriptor | string;
   isDisabled?: boolean;
+};
+
+export interface WithBadgesOption {
   isComingSoon?: boolean;
   isNew?: boolean;
+}
+
+export type WithBadgesOptionRendererProps = OptionRenderer<WithBadgesOption>;
+
+export interface UserOption {
   avatar?: string;
-  thumbnail?: string;
   showAvatar?: boolean;
-  color?: string;
-  icon?: Icon;
   walletAddress?: string;
-  nativeId?: number;
-  token?: TokenFragment;
-  isRoot?: boolean;
   isVerified?: boolean;
   userReputation?: string;
+  thumbnail?: string;
 }
+
+export type UserOptionRendererProps = OptionRenderer<UserOption>;
+
+export interface TokenOption {
+  token: TokenFragment;
+}
+
+export type TokenOptionRendererProps = OptionRenderer<TokenOption>;
+
+export interface TeamOption {
+  color?: string;
+  isRoot?: boolean;
+}
+
+export type TeamOptionRendererProps = OptionRenderer<TeamOption>;
+
+export interface IconOption {
+  icon: Icon;
+}
+
+export type IconOptionRendererProps = OptionRenderer<IconOption>;
+
+export type AllSearchSelectOptions =
+  | UserOption
+  | TeamOption
+  | TokenOption
+  | IconOption
+  | WithBadgesOption;
+
+export const isUserSearchSelectOption = (
+  option: SearchSelectOption<AllSearchSelectOptions>,
+): option is SearchSelectOption<UserOption> => {
+  if ('walletAddress' in option && option.walletAddress) {
+    return true;
+  }
+
+  return false;
+};
