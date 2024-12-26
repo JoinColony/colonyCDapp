@@ -1,11 +1,14 @@
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { splitAddress } from '~utils/strings.ts';
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOption,
+  type UserOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 export const useVerifiedMembersSelect = () => {
   const { verifiedMembers } = useMemberContext();
 
-  const options = verifiedMembers.reduce<SearchSelectOption[]>(
+  const options = verifiedMembers.reduce<SearchSelectOption<UserOption>[]>(
     (result, member) => {
       const { walletAddress, profile } = member.user || {};
 
