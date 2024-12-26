@@ -1,7 +1,11 @@
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectProps,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
-export interface SearchItemProps {
-  options: SearchSelectOption[];
+export interface SearchItemProps<T>
+  extends Pick<SearchSelectProps<T>, 'renderOption'> {
+  options: SearchSelectOption<T>[];
   onChange?: (value: string | number) => void;
   isLabelVisible?: boolean;
 }
