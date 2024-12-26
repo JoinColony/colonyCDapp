@@ -8,7 +8,7 @@ import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 
-type ThemeColor = 'blue' | 'success' | 'purple' | 'warning';
+import { type ThemeColor } from './types.ts';
 
 const getIconClassesByColor = (color: ThemeColor) => {
   let iconColorClass = '';
