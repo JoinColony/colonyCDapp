@@ -1,7 +1,7 @@
 FROM colony-cdapp-dev-env/base:latest
 
 # @TODO maybe add a PROXY_BLOCK_INGESTOR_HASH and fallback to BLOCK_INGESTOR_HASH
-ENV BLOCK_INGESTOR_HASH=cea35726fddf113760822e845882bc4421257f8c
+ENV BLOCK_INGESTOR_HASH=59880ff3a841c3eb4ed08e05022be7ff162bc1ec
 # @TODO do we need here a contract to be in the format:
 # {
 #   name: 'ColonyNetwork',
