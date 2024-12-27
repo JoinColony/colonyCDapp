@@ -8,7 +8,10 @@ import React, {
 import { useGetTokensListQuery } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import { type TokenSearchItemOption } from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenSearchItem/types.ts';
+import {
+  type TokenOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import { TokenSelectContext } from './TokenSelectContext.ts';
 
@@ -56,7 +59,7 @@ const TokenSelectContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [tokensListData],
   );
 
-  const suggestedOptions: TokenSearchItemOption[] = predefinedTokens
+  const suggestedOptions: SearchSelectOption<TokenOption>[] = predefinedTokens
     .filter((token, index, self) => {
       return (
         index === self.findIndex((t) => t.tokenAddress === token.tokenAddress)
@@ -68,7 +71,7 @@ const TokenSelectContextProvider: FC<PropsWithChildren> = ({ children }) => {
       token: item,
     }));
 
-  const allTokensOptions: TokenSearchItemOption[] = [
+  const allTokensOptions: SearchSelectOption<TokenOption>[] = [
     ...(allTokens.flatMap(({ token }) => token).filter(notNull) ?? []),
   ].map((item) => ({
     label: item.name,
