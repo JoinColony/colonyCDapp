@@ -4,7 +4,7 @@ import { formatText } from '~utils/intl.ts';
 import { type TokenOptionRendererProps } from '~v5/shared/SearchSelect/types.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 
-export const TokenOptionRenderer: TokenOptionRendererProps = (
+export const renderTokenOption: TokenOptionRendererProps = (
   option,
   isLabelVisible,
 ) => {
