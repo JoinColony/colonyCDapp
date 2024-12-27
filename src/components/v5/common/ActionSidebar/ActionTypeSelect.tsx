@@ -8,7 +8,7 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
-import { WithBadgesOptionRenderer } from '~v5/shared/SearchSelect/partials/OptionRenderer/WithBadgesOptionRenderer.tsx';
+import { renderWithBadgesOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/WithBadgesOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
@@ -106,7 +106,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                   registerContainerRef(ref);
                   portalElementRef.current = ref;
                 }}
-                renderOption={WithBadgesOptionRenderer}
+                renderOption={renderWithBadgesOption}
                 items={actionsList}
                 onSelect={(action) => {
                   toggleSelectOff();

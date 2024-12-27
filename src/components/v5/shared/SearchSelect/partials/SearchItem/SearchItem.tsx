@@ -59,7 +59,7 @@ const SearchItem = <T,>({
               }}
             >
               <div className="relative flex w-full items-center">
-                {renderOption(option, isLabelVisible)}
+                {renderOption(option, isLabelVisible, isMobile)}
               </div>
             </button>
           </li>

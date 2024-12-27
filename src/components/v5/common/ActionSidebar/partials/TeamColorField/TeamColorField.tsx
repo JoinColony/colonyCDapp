@@ -10,7 +10,7 @@ import { formatText } from '~utils/intl.ts';
 import TeamColorBadge from '~v5/common/TeamColorBadge.tsx';
 import MenuContainer from '~v5/shared/MenuContainer/index.ts';
 import Portal from '~v5/shared/Portal/index.ts';
-import { TeamOptionRenderer } from '~v5/shared/SearchSelect/partials/OptionRenderer/TeamOptionRenderer.tsx';
+import { renderTeamOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/TeamOptionRenderer.tsx';
 import SearchItem from '~v5/shared/SearchSelect/partials/SearchItem/SearchItem.tsx';
 
 import { type TeamColourFieldProps } from './types.ts';
@@ -94,7 +94,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
                     toggleOffDecisionSelect();
                   }}
                   isLabelVisible={false}
-                  renderOption={TeamOptionRenderer}
+                  renderOption={renderTeamOption}
                 />
               </MenuContainer>
             </Portal>

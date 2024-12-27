@@ -10,7 +10,7 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import { UserOptionRenderer } from '~v5/shared/SearchSelect/partials/OptionRenderer/UserOptionRenderer.tsx';
+import { renderUserOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/UserOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
@@ -150,7 +150,7 @@ const VerifiedMembersSelect: FC<VerifiedMembersSelectProps> = ({
           </button>
           {isUserSelectVisible && (
             <SearchSelect
-              renderOption={UserOptionRenderer}
+              renderOption={renderUserOption}
               items={[usersOptions]}
               onSelect={onMemberSelect}
               checkboxesList={checkedItems}
