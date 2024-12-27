@@ -2,17 +2,16 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { DomainColor } from '~gql';
-import { useMobile } from '~hooks';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
 import { type TeamOptionRendererProps } from '~v5/shared/SearchSelect/types.ts';
 
-export const TeamOptionRenderer: TeamOptionRendererProps = (
+export const renderTeamOption: TeamOptionRendererProps = (
   option,
   isLabelVisible,
+  isMobile,
 ) => {
-  const isMobile = useMobile();
   const { color, label } = option;
   const labelText = formatText(label || '');
   const teamColor = getTeamColor(

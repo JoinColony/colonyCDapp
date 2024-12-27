@@ -5,7 +5,7 @@ import { formatText } from '~utils/intl.ts';
 import { type UserOptionRendererProps } from '~v5/shared/SearchSelect/types.ts';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
-export const UserOptionRenderer: UserOptionRendererProps = (
+export const renderUserOption: UserOptionRendererProps = (
   option,
   isLabelVisible,
 ) => {

@@ -4,7 +4,7 @@ import React, { type FC, useState } from 'react';
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { FieldState } from '~v5/common/Fields/consts.ts';
-import { TokenOptionRenderer } from '~v5/shared/SearchSelect/partials/OptionRenderer/TokenOptionRenderer.tsx';
+import { renderTokenOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/TokenOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { useSearchSelect } from './hooks.ts';
@@ -47,7 +47,7 @@ const TokenSearchSelect = React.forwardRef<
       <SearchSelect
         ref={ref}
         isLoading={isLoading || isTokensListDataLoading || loadingTokenData}
-        renderOption={TokenOptionRenderer}
+        renderOption={renderTokenOption}
         items={items}
         className={className}
         onSelect={onSelect}
