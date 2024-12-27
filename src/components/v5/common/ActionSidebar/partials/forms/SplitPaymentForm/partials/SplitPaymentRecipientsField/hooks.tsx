@@ -1,5 +1,7 @@
+import { Id } from '@colony/colony-js';
 import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import Decimal from 'decimal.js';
+import { BigNumber } from 'ethers';
 import moveDecimal from 'move-decimal-point';
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { type FieldValues, type UseFieldArrayReturn } from 'react-hook-form';
@@ -13,7 +15,9 @@ import useWrapWithRef from '~hooks/useWrapWithRef.ts';
 import { type ColonyContributor, type Token } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSelectedToken } from '~utils/tokens.ts';
-import UserSelect from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
+import UserSelect, {
+  type UserSearchSelectOption,
+} from '~v5/common/ActionSidebar/partials/UserSelect/index.ts';
 
 import SplitPaymentAmountField from '../SplitPaymentAmountField/SplitPaymentAmountField.tsx';
 import SplitPaymentPayoutsTotal from '../SplitPaymentPayoutsTotal/SplitPaymentPayoutsTotal.tsx';
@@ -33,6 +37,7 @@ export const useRecipientsFieldTableColumns = ({
   fieldArrayMethods: { update },
   disabled,
   distributionMethod,
+  domainId = Id.RootDomain,
 }: {
   name: string;
   token: Token;
@@ -41,6 +46,7 @@ export const useRecipientsFieldTableColumns = ({
   fieldArrayMethods: UseFieldArrayReturn<FieldValues, string, 'id'>;
   disabled?: boolean;
   distributionMethod?: SplitPaymentDistributionType;
+  domainId?: number;
 }): ColumnDef<SplitPaymentRecipientsTableModel, string>[] => {
   const isTablet = useTablet();
   const columnHelper = useMemo(
@@ -55,6 +61,11 @@ export const useRecipientsFieldTableColumns = ({
     return percent;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const filterUsersWithReputation = (userOption: UserSearchSelectOption) => {
+    return userOption?.userReputation
+      ? BigNumber.from(userOption.userReputation).gt(0)
+      : false;
+  };
 
   const columns: ColumnDef<SplitPaymentRecipientsTableModel, string>[] =
     useMemo(
@@ -67,6 +78,13 @@ export const useRecipientsFieldTableColumns = ({
               key={row.id}
               name={`${name}.${row.index}.recipient`}
               disabled={disabled}
+              domainId={domainId}
+              filterOptionsFn={
+                distributionMethodRef?.current ===
+                SplitPaymentDistributionType.Reputation
+                  ? filterUsersWithReputation
+                  : undefined
+              }
             />
           ),
           footer: () => (
@@ -193,7 +211,7 @@ export const useRecipientsFieldTableColumns = ({
         }),
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [amount, columnHelper, name, token, disabled],
+      [amount, columnHelper, name, token, disabled, domainId],
     );
 
   return columns;
