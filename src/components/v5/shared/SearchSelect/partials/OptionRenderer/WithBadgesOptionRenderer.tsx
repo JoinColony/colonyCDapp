@@ -4,7 +4,7 @@ import { formatText } from '~utils/intl.ts';
 import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import { type WithBadgesOptionRendererProps } from '~v5/shared/SearchSelect/types.ts';
 
-export const WithBadgesOptionRenderer: WithBadgesOptionRendererProps = (
+export const renderWithBadgesOption: WithBadgesOptionRendererProps = (
   option,
   isLabelVisible,
 ) => {

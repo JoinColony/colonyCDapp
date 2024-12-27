@@ -3,7 +3,7 @@ import React from 'react';
 import { formatText } from '~utils/intl.ts';
 import { type IconOptionRendererProps } from '~v5/shared/SearchSelect/types.ts';
 
-export const IconOptionRenderer: IconOptionRendererProps = (
+export const renderIconOption: IconOptionRendererProps = (
   option,
   isLabelVisible,
 ) => {
