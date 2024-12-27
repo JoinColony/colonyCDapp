@@ -15,6 +15,7 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
   extra,
   isHidden,
   className,
+  isInColony,
 }) => {
   const userHubComponent = userHub || <HeaderAvatar />;
   const userNavigation = (
@@ -23,6 +24,7 @@ const UserNavigationWrapper: FC<UserNavigationWrapperProps> = ({
       txButton={txButton}
       userHub={userHubComponent}
       extra={extra}
+      isInColony={isInColony}
     />
   );
 

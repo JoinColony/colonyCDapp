@@ -72,6 +72,7 @@ const PageHeader: FC<PageHeaderProps> = () => {
               ) : null
             }
             extra={colonyContext ? <JoinButton /> : null}
+            isInColony={!!colonyContext}
             className={clsx(
               'modal-blur-navigation [.show-header-in-modal_&]:z-userNavModal',
               {
