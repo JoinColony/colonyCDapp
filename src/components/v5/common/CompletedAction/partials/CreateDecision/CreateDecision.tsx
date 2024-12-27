@@ -73,7 +73,10 @@ const CreateDecision = ({ action }: CreateDecisionProps) => {
         )}
       </ActionDataGrid>
       {action.decisionData?.description && (
-        <DescriptionRow description={action.decisionData.description} />
+        <DescriptionRow
+          description={action.decisionData.description}
+          isDefaultExpanded
+        />
       )}
     </>
   );

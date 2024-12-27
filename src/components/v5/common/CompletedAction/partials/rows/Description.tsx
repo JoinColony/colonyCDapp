@@ -13,6 +13,7 @@ const displayName = 'v5.common.CompletedAction.partials.DescriptionRow';
 
 interface DescriptionRowProps {
   description: string;
+  isDefaultExpanded?: boolean;
 }
 
 const SHORT_DESCRIPTION_CHAR_LIMIT = 180;
@@ -27,8 +28,11 @@ const MSG = defineMessages({
 
 // @NOTE this is pretty hacky with the arbitrary limit and DOMPurify sanitization
 // it's also outside the grid, since it changes from a row to a column
-const DescriptionRow = ({ description }: DescriptionRowProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const DescriptionRow = ({
+  description,
+  isDefaultExpanded = false,
+}: DescriptionRowProps) => {
+  const [isExpanded, setIsExpanded] = useState(isDefaultExpanded);
 
   const descriptionTextContent = DOMPurify.sanitize(description, {
     ALLOWED_TAGS: [],
