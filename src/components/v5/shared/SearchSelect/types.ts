@@ -16,7 +16,9 @@ export interface SearchSelectProps<T> extends BaseFieldProps {
   className?: string;
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
+  onDebouncedSearch?: (value: string) => void;
   showEmptyContent?: boolean;
+  emptyContent?: React.ReactNode;
   readonly?: boolean;
   checkboxesList?: string[];
   additionalButtons?: React.ReactNode;
@@ -27,7 +29,7 @@ export interface SearchSelectProps<T> extends BaseFieldProps {
 
 export interface SearchSelectOptionProps<T> {
   key: string;
-  title: MessageDescriptor;
+  title?: MessageDescriptor;
   isAccordion?: boolean;
   options: SearchSelectOption<T>[];
 }
@@ -57,7 +59,7 @@ export interface UserOption {
 export type UserOptionRendererProps = OptionRenderer<UserOption>;
 
 export interface TokenOption {
-  token: TokenFragment;
+  token?: TokenFragment;
 }
 
 export type TokenOptionRendererProps = OptionRenderer<TokenOption>;
