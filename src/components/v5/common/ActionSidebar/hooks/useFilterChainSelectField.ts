@@ -2,6 +2,10 @@ import { useWatch } from 'react-hook-form';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetProxyColoniesQuery } from '~gql';
+import {
+  type SearchSelectOption,
+  type IconOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import {
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
@@ -23,7 +27,7 @@ export const useFilterChainSelectField = () => {
     .filter((deployedProxyColony) => deployedProxyColony?.isActive)
     .map((deployedProxyColony) => deployedProxyColony?.chainId);
 
-  const filterFn = (chainId) =>
+  const filterFn = ({ value: chainId }: SearchSelectOption<IconOption>) =>
     operation && operation === ManageEntityOperation.Add
       ? !activeProxyColoniesChainIds.includes(chainId.toString())
       : activeProxyColoniesChainIds.includes(chainId.toString());

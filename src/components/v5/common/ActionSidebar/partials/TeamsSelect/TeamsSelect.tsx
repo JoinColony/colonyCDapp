@@ -8,7 +8,8 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useTeamsOptions from '~hooks/useTeamsOptions.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import { renderTeamOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/TeamOptionRenderer.tsx';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { type TeamSelectProps } from './types.ts';
 
@@ -98,6 +99,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
           </button>
           {isTeamSelectVisible && (
             <SearchSelect
+              renderOption={renderTeamOption}
               ref={(ref) => {
                 registerContainerRef(ref);
                 portalElementRef.current = ref;
