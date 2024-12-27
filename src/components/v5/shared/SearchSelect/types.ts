@@ -7,6 +7,7 @@ import { type BaseFieldProps } from '~v5/common/Fields/types.ts';
 export type OptionRenderer<T> = (
   option: SearchSelectOption<T>,
   isLabelVisible?: boolean,
+  isMobile?: boolean,
 ) => React.ReactNode;
 
 export interface SearchSelectProps<T> extends BaseFieldProps {
