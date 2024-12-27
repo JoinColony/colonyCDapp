@@ -1,4 +1,5 @@
-import { CopySimple } from '@phosphor-icons/react';
+import { CopySimple, SmileySticker } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
@@ -20,12 +21,12 @@ interface Props {
 const MSG = defineMessages({
   modalTitle: {
     id: `${displayName}.modalTitle`,
-    defaultMessage: 'Invite members to the private beta',
+    defaultMessage: 'Invite people to this colony',
   },
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'You can invite up to 100 members to your Colony during the private beta using the invite link below.',
+      'Up to 100 people can join to follow and be apart of this colony during early access. If you exceed the limit, you can request more.',
   },
   invitesUsed: {
     id: `${displayName}.invitesUsed`,
@@ -33,7 +34,15 @@ const MSG = defineMessages({
   },
   inviteLinkHeading: {
     id: `${displayName}.inviteLinkHeading`,
-    defaultMessage: 'Your unique invite link:',
+    defaultMessage: 'Unique colony invite link:',
+  },
+  limitReached: {
+    id: `${displayName}.limitReached`,
+    defaultMessage: 'Invite limit reached',
+  },
+  requestMoreInvites: {
+    id: `${displayName}.requestMoreInvites`,
+    defaultMessage: 'Request more invites for your colony',
   },
   buttonText: {
     id: `${displayName}.buttonText`,
@@ -54,12 +63,14 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
     `/invite/${colonyName}/${colonyMemberInvite?.id}`,
   );
   const invitesUsed = 100 - (colonyMemberInvite?.invitesRemaining || 0);
+  const isOutOfInvites = invitesUsed >= invitesAvailable;
 
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
 
   return (
     <Modal isOpen={isOpen} onClose={() => onClose()}>
       <div className="mb-8 mt-10 flex flex-col items-center">
+        <SmileySticker size={42} className="mb-3" />
         <Heading3
           appearance={{ theme: 'dark' }}
           className="font-semibold text-gray-900"
@@ -71,14 +82,25 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
       </div>
       <CardWithCallout
         title={
-          <span className="rounded-lg bg-gray-100 p-2 text-sm font-medium text-gray-900">
+          <span
+            className={clsx(
+              'rounded-lg bg-gray-100 p-2 text-sm font-medium text-gray-900',
+              {
+                'bg-negative-100 text-negative-400': isOutOfInvites,
+              },
+            )}
+          >
             <FormattedMessage
               {...MSG.invitesUsed}
               values={{ invitesAvailable, invitesUsed }}
             />
           </span>
         }
-        subtitle={<FormattedMessage {...MSG.inviteLinkHeading} />}
+        subtitle={
+          <FormattedMessage
+            {...(isOutOfInvites ? MSG.limitReached : MSG.inviteLinkHeading)}
+          />
+        }
         button={
           <Button
             text={MSG.buttonText}
@@ -90,7 +112,11 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           />
         }
       >
-        {inviteLink}
+        {isOutOfInvites ? (
+          <FormattedMessage {...MSG.requestMoreInvites} />
+        ) : (
+          inviteLink
+        )}
       </CardWithCallout>
     </Modal>
   );

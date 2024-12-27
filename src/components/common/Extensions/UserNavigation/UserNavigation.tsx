@@ -1,16 +1,18 @@
-import { Cardholder, GearSix, List, X } from '@phosphor-icons/react';
+import { Cardholder, GearSix, List, UserPlus, X } from '@phosphor-icons/react';
 import React, { useState, type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { TourTargets } from '~common/Tours/enums.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants';
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useGetCurrentNetwork from '~hooks/useGetCurrentNetwork.ts';
 import { formatText } from '~utils/intl.ts';
+import InviteMembersModal from '~v5/common/Modals/InviteMembersModal/index.ts';
 import useNavigationSidebarContext from '~v5/frame/NavigationSidebar/partials/NavigationSidebarContext/hooks.ts';
 import Button, { Hamburger } from '~v5/shared/Button/index.ts';
 
@@ -24,6 +26,10 @@ const MSG = defineMessages({
   wrongNetwork: {
     id: `${displayName}.unlockedToken`,
     defaultMessage: `Please switch your wallet to the {correctNetworkName} network. More chains will be supported in future.`,
+  },
+  invite: {
+    id: `${displayName}.invite`,
+    defaultMessage: 'Invite',
   },
 });
 
@@ -39,6 +45,10 @@ const UserNavigation: FC<UserNavigationProps> = ({
   const [, { toggleOff }] = mobileMenuToggle;
   const { setShowTabletColonyPicker, setShowTabletSidebar } =
     usePageLayoutContext();
+  const { actionSidebarToggle } = useActionSidebarContext();
+  const [isInviteMembersModalOpen, setIsInviteMembersModalOpen] =
+    useState(false);
+  const [isActionSidebarOpen] = actionSidebarToggle;
 
   const isWalletConnected = !!wallet?.address;
   const networkInfo = useGetCurrentNetwork();
@@ -79,6 +89,16 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
+      {!isActionSidebarOpen ? (
+        <Button
+          text={isMobile ? undefined : MSG.invite}
+          mode="tertiary"
+          icon={UserPlus}
+          size="small"
+          isFullRounded
+          onClick={() => setIsInviteMembersModalOpen(true)}
+        />
+      ) : null}
       {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">
@@ -121,6 +141,10 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {extra}
+      <InviteMembersModal
+        isOpen={isInviteMembersModalOpen}
+        onClose={() => setIsInviteMembersModalOpen(false)}
+      />
     </div>
   );
 };
