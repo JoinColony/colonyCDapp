@@ -26,11 +26,11 @@ export const SearchGroup = <T,>({
   renderOption,
   isOpen,
 }: SearchGroupProps<T>) => {
-  const title = (
+  const title = titleDescriptor ? (
     <h5 className="mb-2 uppercase text-gray-400 text-4">
       {formatText(titleDescriptor)}
     </h5>
-  );
+  ) : null;
   const content = checkboxesList ? (
     <CheckboxSearchItem
       renderOption={renderOption}

@@ -1,8 +1,11 @@
-import { type TokenSearchItemOption } from './partials/TokenSearchItem/types.ts';
+import {
+  type TokenOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 export interface TokenSelectProps {
   name: string;
   disabled?: boolean;
   readOnly?: boolean;
-  filterOptionsFn?: (option: TokenSearchItemOption) => boolean;
+  filterOptionsFn?: (option: SearchSelectOption<TokenOption>) => boolean;
 }
