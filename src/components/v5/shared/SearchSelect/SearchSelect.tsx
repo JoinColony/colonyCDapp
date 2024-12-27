@@ -23,7 +23,9 @@ const SearchSelectInner = <T,>(
     isLoading,
     hideSearchOnMobile,
     onSearch,
+    onDebouncedSearch,
     showEmptyContent = true,
+    emptyContent,
     state,
     message,
     checkboxesList,
@@ -40,8 +42,19 @@ const SearchSelectInner = <T,>(
   const { searchValue, debouncedSearchValue, onChange } = useSearch(
     '',
     onSearch,
+    onDebouncedSearch,
   );
   const filteredList = useFilterItems(items, debouncedSearchValue);
+
+  const contentFallback =
+    showEmptyContent &&
+    (emptyContent || (
+      <EmptyContent
+        icon={Binoculars}
+        title={{ id: 'actionSidebar.emptyTitle' }}
+        description={{ id: 'actionSidebar.emptyDescription' }}
+      />
+    ));
 
   const content = (
     <>
@@ -89,13 +102,7 @@ const SearchSelectInner = <T,>(
                     checkboxesList={checkboxesList}
                   />
                 ))
-              : showEmptyContent && (
-                  <EmptyContent
-                    icon={Binoculars}
-                    title={{ id: 'actionSidebar.emptyTitle' }}
-                    description={{ id: 'actionSidebar.emptyDescription' }}
-                  />
-                )}
+              : contentFallback}
           </div>
         </div>
       )}

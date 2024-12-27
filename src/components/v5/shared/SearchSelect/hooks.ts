@@ -90,6 +90,7 @@ export const useAccordion = <T>(items: SearchSelectOptionProps<T>[]) => {
 export const useSearch = (
   initialSearchValue: string,
   onSearch?: (value: string) => void,
+  onDebouncedSearch?: (value: string) => void,
 ) => {
   const [searchValue, setSearchValue] = useState(initialSearchValue);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
@@ -101,6 +102,12 @@ export const useSearch = (
 
     return () => clearTimeout(debounceTimeout);
   }, [searchValue]);
+
+  useEffect(() => {
+    onDebouncedSearch?.(debouncedSearchValue);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchValue]);
 
   const handleSearch = useMemo(
     () => debounce((value: string) => setDebouncedSearchValue(value), 500),
