@@ -140,6 +140,7 @@ fragment ColonyAction on ColonyAction {
       distributionType
     }
   }
+  streamingPaymentId
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
