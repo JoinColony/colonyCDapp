@@ -1,14 +1,19 @@
 import { createContext, useContext } from 'react';
 
-import { type TokenSearchItemOption } from '~v5/common/ActionSidebar/partials/TokenSelect/partials/TokenSearchItem/types.ts';
+import {
+  type TokenOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 export const TokenSelectContext = createContext<
   | {
       isLoading?: boolean;
       setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-      setOptions: React.Dispatch<React.SetStateAction<TokenSearchItemOption[]>>;
-      options: TokenSearchItemOption[];
-      suggestedOptions: TokenSearchItemOption[];
+      setOptions: React.Dispatch<
+        React.SetStateAction<SearchSelectOption<TokenOption>[]>
+      >;
+      options: SearchSelectOption<TokenOption>[];
+      suggestedOptions: SearchSelectOption<TokenOption>[];
     }
   | undefined
 >(undefined);
