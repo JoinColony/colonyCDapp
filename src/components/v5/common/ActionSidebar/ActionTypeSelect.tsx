@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React, { type FC, useState } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
+import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -33,6 +34,7 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
     { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
   ] = useToggle();
   const actionType = useActiveActionType();
+  const { updateActionSidebarInitialValues } = useActionSidebarContext();
   const {
     field: { onChange },
   } = useController({ name: ACTION_TYPE_FIELD_NAME });
@@ -108,6 +110,9 @@ const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
                 items={actionsList}
                 onSelect={(action) => {
                   toggleSelectOff();
+                  updateActionSidebarInitialValues({
+                    [ACTION_TYPE_FIELD_NAME]: action,
+                  });
 
                   if (action === actionType) {
                     return;

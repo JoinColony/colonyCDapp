@@ -1,4 +1,5 @@
 import {
+  ArrowLeft,
   ArrowLineRight,
   ArrowsOutSimple,
   ShareNetwork,
@@ -28,9 +29,10 @@ import Modal from '~v5/shared/Modal/index.ts';
 import CompletedAction from '../CompletedAction/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
-import { actionSidebarAnimation } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
+import { useGetActionGroup } from './hooks/useGetActionGroup.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
@@ -38,6 +40,7 @@ import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleto
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
+import { mapActionTypeToAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -62,12 +65,19 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
-      { toggle: toggleActionSidebarOff, registerContainerRef },
+      {
+        toggle: toggleActionSidebarOff,
+        toggleOn: toggleActionSidebarOn,
+        registerContainerRef,
+      },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
     actionSidebarInitialValues,
   } = useActionSidebarContext();
-
+  const actionType = mapActionTypeToAction(action);
+  const actionGroupType = useGetActionGroup(
+    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
+  );
   const GroupedActionComponent = useGetGroupedActionComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
@@ -209,6 +219,31 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             >
               <X size={18} />
             </button>
+            {actionGroupType && (
+              <button
+                type="button"
+                className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
+                onClick={() => {
+                  if (transactionId) {
+                    closeSidebarClick();
+
+                    setTimeout(() => {
+                      toggleActionSidebarOn({
+                        [ACTION_TYPE_FIELD_NAME]: actionGroupType,
+                      });
+                    }, 500);
+
+                    return;
+                  }
+
+                  toggleActionSidebarOn({
+                    [ACTION_TYPE_FIELD_NAME]: actionGroupType,
+                  });
+                }}
+              >
+                <ArrowLeft size={18} />
+              </button>
+            )}
             {!isMobile && (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
