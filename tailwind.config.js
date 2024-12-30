@@ -147,7 +147,7 @@ module.exports = {
       },
       zIndex: {
         base: '1',
-        mid: '2',
+        aboveBase: '2',
         sidebar: '10',
         dropdown: '20',
         header: '100',
@@ -157,7 +157,7 @@ module.exports = {
       },
       spacing: {
         4.5: '1.125rem',
-        8.5: '2.125rem'
+        8.5: '2.125rem',
       },
     },
   },
