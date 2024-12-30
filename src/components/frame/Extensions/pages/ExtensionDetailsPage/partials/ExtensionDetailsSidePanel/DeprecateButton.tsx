@@ -1,6 +1,7 @@
 import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/Modal.tsx';
@@ -19,6 +20,7 @@ const DeprecateButton = ({
   extensionData: { extensionId },
 }: DeprecateButtonProps) => {
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   const { handleDeprecate, isLoading } = useDeprecate({
     extensionId,
@@ -35,6 +37,7 @@ const DeprecateButton = ({
           loaderClassName="!px-4 !py-2 !text-sm"
           loaderIconSize={14}
           onClick={() => setIsDeprecateModalOpen(true)}
+          disabled={waitingForActionConfirmation}
         >
           {formatText({ id: 'button.deprecateExtension' })}
         </ButtonWithLoader>

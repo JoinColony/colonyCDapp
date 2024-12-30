@@ -1,6 +1,7 @@
 import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -22,6 +23,8 @@ const ReenableButton = ({
   });
   const isMobile = useMobile();
 
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+
   return (
     <>
       <ButtonWithLoader
@@ -29,6 +32,7 @@ const ReenableButton = ({
         onClick={() => setIsReEnableModalOpen(true)}
         isFullSize={isMobile}
         loading={isLoading}
+        disabled={waitingForActionConfirmation}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>

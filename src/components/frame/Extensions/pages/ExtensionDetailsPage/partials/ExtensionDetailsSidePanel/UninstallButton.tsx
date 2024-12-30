@@ -3,6 +3,7 @@ import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import Checkbox from '~v5/common/Checkbox/Checkbox.tsx';
@@ -112,6 +113,7 @@ const UninstallButton = ({
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   return (
     <>
@@ -122,6 +124,7 @@ const UninstallButton = ({
           isFullSize
           loading={isLoading}
           onClick={() => setIsUninstallModalOpen(true)}
+          disabled={waitingForActionConfirmation}
         >
           {formatText({ id: 'button.uninstallExtension' })}
         </Button>

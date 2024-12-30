@@ -5,6 +5,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
@@ -54,6 +55,7 @@ const PermissionsNeededBanner = ({
   });
 
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
+  const { setWaitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   const enableAndCheckStatus = async () => {
     await asyncFunction({
@@ -63,6 +65,7 @@ const PermissionsNeededBanner = ({
     refetchColony();
     await waitForDbAfterExtensionAction({
       method: ExtensionMethods.ENABLE,
+      setWaitingForActionConfirmation,
       refetchExtensionData,
     });
   };
