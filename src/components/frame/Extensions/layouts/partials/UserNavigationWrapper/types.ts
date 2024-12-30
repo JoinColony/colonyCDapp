@@ -6,4 +6,5 @@ export interface UserNavigationWrapperProps {
   extra?: ReactNode;
   isHidden?: boolean;
   className?: string;
+  isInColony?: boolean;
 }

@@ -38,8 +38,9 @@ const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,
   userHub,
   txButton = null,
+  isInColony,
 }) => {
-  const { wallet, connectWallet } = useAppContext();
+  const { wallet, connectWallet, user } = useAppContext();
   const isMobile = useMobile();
   const { setOpenItemIndex, mobileMenuToggle } = useNavigationSidebarContext();
   const [, { toggleOff }] = mobileMenuToggle;
@@ -89,7 +90,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
-      {!isActionSidebarOpen ? (
+      {!isActionSidebarOpen && isWalletConnected && user && isInColony ? (
         <Button
           text={isMobile ? undefined : MSG.invite}
           mode="tertiary"
@@ -141,10 +142,12 @@ const UserNavigation: FC<UserNavigationProps> = ({
         />
       )}
       {extra}
-      <InviteMembersModal
-        isOpen={isInviteMembersModalOpen}
-        onClose={() => setIsInviteMembersModalOpen(false)}
-      />
+      {isInColony && (
+        <InviteMembersModal
+          isOpen={isInviteMembersModalOpen}
+          onClose={() => setIsInviteMembersModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

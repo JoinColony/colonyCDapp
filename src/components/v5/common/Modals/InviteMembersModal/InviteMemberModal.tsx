@@ -7,8 +7,10 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
+import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
+import Link from '~v5/shared/Link/Link.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 const displayName = 'v5.common.Modals.InviteMembersModal';
@@ -39,6 +41,10 @@ const MSG = defineMessages({
   limitReached: {
     id: `${displayName}.limitReached`,
     defaultMessage: 'Invite limit reached',
+  },
+  requestInvites: {
+    id: `${displayName}.requestInvites`,
+    defaultMessage: 'Request invites',
   },
   requestMoreInvites: {
     id: `${displayName}.requestMoreInvites`,
@@ -102,14 +108,25 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           />
         }
         button={
-          <Button
-            text={MSG.buttonText}
-            mode={isCopied ? 'completed' : 'quinary'}
-            icon={isCopied ? undefined : CopySimple}
-            onClick={() => handleClipboardCopy(inviteLink)}
-            size="small"
-            textValues={{ isCopied }}
-          />
+          !isOutOfInvites ? (
+            <Button
+              text={MSG.buttonText}
+              mode={isCopied ? 'completed' : 'quinary'}
+              icon={isCopied ? undefined : CopySimple}
+              onClick={() => handleClipboardCopy(inviteLink)}
+              size="small"
+              textValues={{ isCopied }}
+            />
+          ) : (
+            <Link
+              to={`https://colony.io/request-member-invites?colony=${colonyName}`}
+              target="_blank"
+              className="flex min-h-8.5 items-center justify-center gap-2
+                whitespace-nowrap rounded-lg border border-gray-900 bg-base-white px-2.5 py-1.5 text-sm font-medium text-gray-900 transition-all duration-normal disabled:border-gray-300 disabled:text-gray-300 md:hover:border-gray-900 md:hover:bg-gray-900 md:hover:!text-base-white"
+            >
+              {formatText(MSG.requestInvites)}
+            </Link>
+          )
         }
       >
         {isOutOfInvites ? (

@@ -4,4 +4,5 @@ export interface UserNavigationProps {
   extra?: ReactNode;
   userHub: ReactNode;
   txButton?: ReactNode;
+  isInColony?: boolean;
 }
