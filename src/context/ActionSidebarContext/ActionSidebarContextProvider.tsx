@@ -64,9 +64,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate();
 
   const removeTxParamOnClose = useCallback(() => {
-    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM), {
-      replace: true,
-    });
+    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM));
   }, [navigate]);
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
@@ -93,14 +91,21 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     [selectedDomainNativeId],
   );
 
-  const toggleOn = useCallback(
+  const updateActionSidebarInitialValues = useCallback(
     (initialValues) => {
       setActionSidebarInitialValues(getSidebarInitialValues(initialValues));
+    },
+    [getSidebarInitialValues],
+  );
+
+  const toggleOn = useCallback(
+    (initialValues) => {
+      updateActionSidebarInitialValues(initialValues);
       // Track the event when the action panel is opened
       trackEvent(OPEN_ACTION_PANEL_EVENT);
       return toggleActionSidebarOn();
     },
-    [getSidebarInitialValues, toggleActionSidebarOn, trackEvent],
+    [updateActionSidebarInitialValues, toggleActionSidebarOn, trackEvent],
   );
 
   const toggleOff = useCallback((): void => {
@@ -111,11 +116,15 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const toggle = useCallback(
     (initialValues): void => {
       if (!isActionSidebarOpen) {
-        setActionSidebarInitialValues(getSidebarInitialValues(initialValues));
+        updateActionSidebarInitialValues(initialValues);
       }
       toggleActionSidebar();
     },
-    [isActionSidebarOpen, getSidebarInitialValues, toggleActionSidebar],
+    [
+      isActionSidebarOpen,
+      updateActionSidebarInitialValues,
+      toggleActionSidebar,
+    ],
   );
 
   const value = useMemo<ActionSidebarContextValue>(
@@ -131,6 +140,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
           registerContainerRef: actionSidebarRegisterContainerRef,
         },
       ],
+      updateActionSidebarInitialValues,
       cancelModalToggle,
       actionSidebarInitialValues,
     }),
@@ -138,6 +148,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
       actionSidebarInitialValues,
       actionSidebarRegisterContainerRef,
       actionSidebarUseRegisterOnBeforeCloseCallback,
+      updateActionSidebarInitialValues,
       cancelModalToggle,
       isActionSidebarOpen,
       toggle,

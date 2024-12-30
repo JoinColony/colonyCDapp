@@ -21,12 +21,14 @@ type ActionSidebarToggle = [
 export interface ActionSidebarContextValue {
   actionSidebarToggle: ActionSidebarToggle;
   cancelModalToggle: UseToggleReturnType;
+  updateActionSidebarInitialValues: (initialValues: FieldValues) => void;
   actionSidebarInitialValues?: FieldValues;
 }
 
 export const ActionSidebarContext = createContext<ActionSidebarContextValue>({
   actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
   cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
+  updateActionSidebarInitialValues: () => {},
 });
 
 export const useActionSidebarContext = () => useContext(ActionSidebarContext);
