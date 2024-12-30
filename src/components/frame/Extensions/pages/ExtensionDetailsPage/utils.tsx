@@ -5,6 +5,7 @@ import {
   ExtensionMethods,
   type RefetchExtensionDataFn,
 } from '~hooks/useExtensionData.ts';
+import { type SetStateFn } from '~types';
 import { type AnyExtensionData } from '~types/extensions.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { camelCase } from '~utils/lodash.ts';
@@ -44,6 +45,7 @@ export const waitForDbAfterExtensionSettingsChange = async ({
 export const waitForDbAfterExtensionAction = async (
   args: {
     refetchExtensionData: RefetchExtensionDataFn;
+    setWaitingForActionConfirmation: SetStateFn;
     interval?: number;
     timeout?: number;
   } & (
@@ -68,10 +70,13 @@ export const waitForDbAfterExtensionAction = async (
 ) => {
   const {
     refetchExtensionData,
+    setWaitingForActionConfirmation,
     interval = 1000,
     timeout = 30000,
     method,
   } = args;
+
+  setWaitingForActionConfirmation(true);
 
   await waitForCondition(
     async () => {
@@ -165,6 +170,8 @@ export const waitForDbAfterExtensionAction = async (
       timeout,
     },
   );
+
+  setWaitingForActionConfirmation(false);
 };
 
 export const getTextChunks = () => {

@@ -2,6 +2,7 @@ import { Extension } from '@colony/colony-js';
 import React from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -22,6 +23,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
     colony: { colonyAddress, nativeToken },
     isSupportedColonyVersion,
   } = useColonyContext();
+  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
 
   const isMobile = useMobile();
 
@@ -53,7 +55,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
-      disabled={!isSupportedColonyVersion}
+      disabled={!isSupportedColonyVersion || waitingForActionConfirmation}
     >
       {formatText({ id: 'button.install' })}
     </ActionButton>
