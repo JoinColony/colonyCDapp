@@ -41,24 +41,23 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
     <WidgetCards.Item
       onClick={onTeamClick}
       title={
-        <LoadingSkeleton isLoading={loading} className="mb-1 h-5 w-14 rounded">
-          <span className="mb-1 mt-0.5 flex">{domainName}</span>
+        <LoadingSkeleton isLoading={loading} className="h-5 w-14 rounded">
+          <span className="flex">{domainName}</span>
         </LoadingSkeleton>
       }
       subTitle={
-        <div className="pt-0.5">
-          <FundsCardsSubTitle
-            currency={currency}
-            isLoading={loading}
-            value={
-              <NumeralCurrency
-                value={total.toString()}
-                prefix={currencySymbolMap[currency]}
-                decimals={18}
-              />
-            }
-          />
-        </div>
+        <FundsCardsSubTitle
+          className={loading ? 'mt-1' : 'mt-0.5'}
+          currency={currency}
+          isLoading={loading}
+          value={
+            <NumeralCurrency
+              value={total.toString()}
+              prefix={currencySymbolMap[currency]}
+              decimals={18}
+            />
+          }
+        />
       }
     />
   );
