@@ -30,7 +30,7 @@ const NoWalletContent = ({ connectWallet }: NoWalletContentProps) => (
   <div className="flex w-full flex-col justify-between">
     <div>
       <h1 className="pb-2 heading-2">{formatText(MSG.connectWalletTitle)}</h1>
-      <p className="text-md font-normal text-gray-600">
+      <p className="pb-4 text-md font-normal text-gray-600 md:pb-0">
         {formatText(MSG.connectWalletDescription)}
       </p>
     </div>

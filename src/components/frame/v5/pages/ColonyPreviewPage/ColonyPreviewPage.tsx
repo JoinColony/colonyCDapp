@@ -159,31 +159,29 @@ const ColonyPreviewPage = () => {
   const socialLinks =
     colonyData?.getColonyByName?.items[0]?.metadata?.externalLinks || [];
 
+  const actions = !wallet ? (
+    <Button isFullSize onClick={connectWallet}>
+      {formatText(MSG.connectWalletButton)}
+    </Button>
+  ) : (
+    <>
+      {inviteIsValid && (
+        <Button isFullSize onClick={validateInviteCode}>
+          {formatText(MSG.joinColonyButton)}
+        </Button>
+      )}
+      {inviteIsInvalid && (
+        <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
+          <Button isFullSize>{formatText(MSG.requestAccessButton)}</Button>
+        </a>
+      )}
+    </>
+  );
+
   return (
     <LandingPageLayout
       bottomComponent={
-        <div className="w-full px-6 pb-6 md:hidden">
-          {!wallet ? (
-            <Button isFullSize onClick={connectWallet}>
-              {formatText(MSG.connectWalletButton)}
-            </Button>
-          ) : (
-            <>
-              {inviteIsValid && (
-                <Button isFullSize onClick={validateInviteCode}>
-                  {formatText(MSG.joinColonyButton)}
-                </Button>
-              )}
-              {inviteIsInvalid && (
-                <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
-                  <Button isFullSize>
-                    {formatText(MSG.requestAccessButton)}
-                  </Button>
-                </a>
-              )}
-            </>
-          )}
-        </div>
+        <div className="w-full px-6 pb-6 md:hidden">{actions}</div>
       }
     >
       <div className="flex h-full items-center px-8 md:px-0">
@@ -250,28 +248,7 @@ const ColonyPreviewPage = () => {
               )}
             </div>
           </div>
-          <div className="hidden w-full md:block">
-            {!wallet ? (
-              <Button isFullSize onClick={connectWallet}>
-                {formatText(MSG.connectWalletButton)}
-              </Button>
-            ) : (
-              <>
-                {inviteIsValid && (
-                  <Button isFullSize onClick={validateInviteCode}>
-                    {formatText(MSG.joinColonyButton)}
-                  </Button>
-                )}
-                {inviteIsInvalid && (
-                  <a href={REQUEST_ACCESS} target="_blank" rel="noreferrer">
-                    <Button isFullSize>
-                      {formatText(MSG.requestAccessButton)}
-                    </Button>
-                  </a>
-                )}
-              </>
-            )}
-          </div>
+          <div className="hidden w-full md:block">{actions}</div>
         </div>
       </div>
     </LandingPageLayout>
