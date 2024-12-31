@@ -45,6 +45,7 @@ import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleto
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
+import { mapActionTypeToAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -78,8 +79,9 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
     actionSidebarInitialValues,
   } = useActionSidebarContext();
+  const actionType = mapActionTypeToAction(action);
   const actionGroupType = useGetActionGroup(
-    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME],
+    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
   );
   const GroupedActionComponent = useGetGroupedActionComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
@@ -280,11 +282,23 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               <button
                 type="button"
                 className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                onClick={() =>
+                onClick={() => {
+                  if (transactionId) {
+                    closeSidebarClick();
+
+                    setTimeout(() => {
+                      toggleActionSidebarOn({
+                        [ACTION_TYPE_FIELD_NAME]: actionGroupType,
+                      });
+                    }, 500);
+
+                    return;
+                  }
+
                   toggleActionSidebarOn({
                     [ACTION_TYPE_FIELD_NAME]: actionGroupType,
-                  })
-                }
+                  });
+                }}
               >
                 <ArrowLeft size={18} />
               </button>
