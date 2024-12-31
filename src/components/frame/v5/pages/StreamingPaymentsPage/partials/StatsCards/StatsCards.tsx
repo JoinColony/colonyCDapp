@@ -30,7 +30,7 @@ const StatsCards = ({
   const unclaimedFoundsDecimal = convertToDecimal(unclaimedFounds, 0);
 
   return (
-    <div className="mt-6 flex flex-col gap-2 md:mt-0  md:flex-row md:gap-6">
+    <div className="flex flex-col gap-2 sm:flex-row sm:gap-6">
       <WidgetBox
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalStreaming',
@@ -84,7 +84,7 @@ const StatsCards = ({
         }
       />
       <WidgetBox
-        className="md:hidden lg:block"
+        className="sm:hidden lg:block"
         title={formatText({
           id: 'streamingPaymentsPage.widget.totalActiveStreams',
         })}
