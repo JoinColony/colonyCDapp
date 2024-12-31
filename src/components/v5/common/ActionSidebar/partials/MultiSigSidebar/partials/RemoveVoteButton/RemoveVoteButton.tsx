@@ -8,6 +8,7 @@ import { MultiSigVote } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type VoteOnMultiSigActionPayload } from '~redux/sagas/multiSig/voteOnMultiSig.ts';
 import { type MultiSigAction } from '~types/motions.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { extractColonyDomains } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -46,6 +47,8 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
       multiSigData: { nativeMultiSigId, nativeMultiSigDomainId },
     } = action;
 
+    const associatedActionId = getMotionAssociatedActionId(action);
+
     return {
       colonyAddress: colony.colonyAddress,
       colonyDomains: extractColonyDomains(colony.domains),
@@ -54,9 +57,7 @@ const RemoveVoteButton: FC<RemoveVoteButtonProps> = ({
       domainId: Number(nativeMultiSigDomainId),
       multiSigId: nativeMultiSigId,
       roles: requiredRoles,
-      associatedActionId:
-        action.expenditure?.creatingActions?.items[0]?.transactionHash ||
-        action.transactionHash,
+      associatedActionId,
     };
   };
 

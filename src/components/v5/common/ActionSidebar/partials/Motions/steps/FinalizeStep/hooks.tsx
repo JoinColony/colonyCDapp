@@ -13,7 +13,7 @@ import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotion
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
@@ -65,13 +65,13 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const isFinalizable =
     hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
       mapPayload(
         (): MotionFinalizePayload => ({
-          associatedActionId:
-            actionData.expenditure?.creatingActions?.items[0]
-              ?.transactionHash || actionData.transactionHash,
+          associatedActionId,
           colonyAddress,
           userAddress: user?.walletAddress || '',
           motionId,
@@ -79,7 +79,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
         }),
       ),
     [
-      actionData,
+      associatedActionId,
       colonyAddress,
       isMotionOlderThanWeek,
       motionId,
@@ -100,7 +100,6 @@ export const useClaimConfig = (
   refetchAction: RefetchAction,
 ) => {
   const {
-    expenditure,
     motionData: {
       isFinalized: isMotionFinalized,
       stakerRewards,
@@ -213,6 +212,8 @@ export const useClaimConfig = (
     pollLockedTokenBalance();
   };
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const claimPayload = useMemo(
     () =>
       mapPayload(
@@ -224,9 +225,7 @@ export const useClaimConfig = (
             extensionData && isInstalledExtensionData(extensionData)
               ? extensionData.address
               : ADDRESS_ZERO,
-          associatedActionId:
-            expenditure?.creatingActions?.items[0]?.transactionHash ||
-            transactionHash,
+          associatedActionId,
         }),
       ),
     [
@@ -234,7 +233,7 @@ export const useClaimConfig = (
       colonyAddress,
       transactionHash,
       extensionData,
-      expenditure?.creatingActions?.items,
+      associatedActionId,
     ],
   );
 

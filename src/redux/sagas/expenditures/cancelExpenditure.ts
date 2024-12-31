@@ -11,6 +11,7 @@ import { ExpenditureStatus } from '~gql';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { type Expenditure } from '~types/graphql.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 import {
   createTransaction,
@@ -117,8 +118,7 @@ function* cancelDraftExpenditure({
       methodName: 'cancelAndReclaimStake',
       identifier: colonyAddress,
       params: [permissionDomainId, childSkillIndex, expenditure.nativeId],
-      associatedActionId:
-        expenditure.creatingActions?.items[0]?.transactionHash,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
   } else {
     yield fork(createTransaction, meta.id, {
@@ -131,8 +131,7 @@ function* cancelDraftExpenditure({
       methodName: 'cancelExpenditure',
       identifier: colonyAddress,
       params: [expenditure.nativeId],
-      associatedActionId:
-        expenditure.creatingActions?.items[0]?.transactionHash,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
   }
 
@@ -166,7 +165,7 @@ function* cancelLockedExpenditure({
     methodName: 'cancelExpenditureViaArbitration',
     identifier: colonyAddress,
     params,
-    associatedActionId: expenditure.creatingActions?.items[0]?.transactionHash,
+    associatedActionId: getExpenditureCreatingActionId(expenditure),
   });
 
   yield initiateTransaction(meta.id);

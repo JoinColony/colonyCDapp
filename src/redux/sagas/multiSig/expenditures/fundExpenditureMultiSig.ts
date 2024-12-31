@@ -23,6 +23,7 @@ import {
   uploadAnnotation,
 } from '~redux/sagas/utils/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 export type FundExpenditurePayload =
   Action<ActionTypes.MULTISIG_EXPENDITURE_FUND>['payload'];
@@ -47,8 +48,7 @@ function* fundExpenditureMultiSig({
     Extension.MultisigPermissions,
   );
 
-  const { creatingActions, nativeFundingPotId: expenditureFundingPotId } =
-    expenditure;
+  const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
 
   const batchKey = TRANSACTION_METHODS.FundExpenditure;
 
@@ -156,7 +156,7 @@ function* fundExpenditureMultiSig({
         index: 0,
       },
       ready: false,
-      associatedActionId: creatingActions?.items[0]?.transactionHash,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     if (annotationMessage) {
@@ -170,7 +170,7 @@ function* fundExpenditureMultiSig({
           index: 1,
         },
         ready: false,
-        associatedActionId: creatingActions?.items[0]?.transactionHash,
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
       });
     }
 

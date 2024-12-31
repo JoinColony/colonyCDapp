@@ -15,6 +15,7 @@ import { Form } from '~shared/Fields/index.ts';
 import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -104,8 +105,7 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
 
       if (expenditure.isStaked) {
         const payload: ReclaimExpenditureStakePayload = {
-          associatedActionId:
-            expenditure.creatingActions?.items[0]?.transactionHash ?? '',
+          associatedActionId: getExpenditureCreatingActionId(expenditure),
           colonyAddress: colony.colonyAddress,
           nativeExpenditureId: expenditure.nativeId,
         };

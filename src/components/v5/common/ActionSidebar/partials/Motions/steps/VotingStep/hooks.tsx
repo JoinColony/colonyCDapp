@@ -14,7 +14,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type VoterRecord } from '~types/graphql.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -79,7 +79,7 @@ export const useVotingStep = ({
     colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { wallet, user } = useAppContext();
-  const { motionData, rootHash, transactionHash, expenditure } = actionData;
+  const { motionData, rootHash } = actionData;
   const {
     motionId,
     voterRecord,
@@ -124,27 +124,21 @@ export const useVotingStep = ({
     getLocalStorageVoteValue(transactionId),
   );
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
       mapPayload(
         ({ vote }) =>
           ({
-            associatedActionId:
-              expenditure?.creatingActions?.items[0]?.transactionHash ||
-              transactionHash,
+            associatedActionId,
             colonyAddress,
             userAddress: user?.walletAddress,
             vote: Number(vote),
             motionId: BigNumber.from(motionId),
           }) as MotionVotePayload,
       ),
-    [
-      expenditure?.creatingActions?.items,
-      transactionHash,
-      colonyAddress,
-      user?.walletAddress,
-      motionId,
-    ],
+    [associatedActionId, colonyAddress, user?.walletAddress, motionId],
   );
 
   const getChangedVote = () => {
@@ -183,9 +177,7 @@ export const useVotingStep = ({
     const changedVote = getChangedVote();
 
     return {
-      associatedActionId:
-        expenditure?.creatingActions?.items[0]?.transactionHash ||
-        transactionHash,
+      associatedActionId,
       colonyAddress,
       userAddress: user?.walletAddress || '',
       vote: Number(changedVote),

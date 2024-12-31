@@ -8,7 +8,7 @@ import { type RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion.
 import { type OnSuccess } from '~shared/Fields/index.ts';
 import { type VoterRecord } from '~types/graphql.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils.tsx';
@@ -57,7 +57,7 @@ export const useRevealStep = ({
   transactionId: string;
   rootHash: string | undefined;
 }) => {
-  const { expenditure, motionData } = actionData || {};
+  const { motionData } = actionData || {};
   const { nativeMotionDomainId, voterRecord, motionId } = motionData || {};
   const { user } = useAppContext();
   const {
@@ -81,25 +81,20 @@ export const useRevealStep = ({
 
   const { vote, hasUserVoted, userVoteRevealed, setUserVoteRevealed } =
     useRevealWidgetUpdate(voterRecord || [], stopPollingAction);
+
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
       mapPayload(
         (): RevealMotionPayload => ({
-          associatedActionId:
-            expenditure?.creatingActions?.items[0]?.transactionHash ||
-            transactionId,
+          associatedActionId,
           colonyAddress,
           userAddress: user?.walletAddress ?? '',
           motionId: BigNumber.from(motionId),
         }),
       ),
-    [
-      expenditure?.creatingActions?.items,
-      transactionId,
-      colonyAddress,
-      user?.walletAddress,
-      motionId,
-    ],
+    [associatedActionId, colonyAddress, user?.walletAddress, motionId],
   );
 
   const handleSuccess: OnSuccess<Record<string, number>> = (_, { reset }) => {

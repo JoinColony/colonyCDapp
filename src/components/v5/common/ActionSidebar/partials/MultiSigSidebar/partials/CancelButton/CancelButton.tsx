@@ -5,6 +5,7 @@ import { defineMessages } from 'react-intl';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type MultiSigAction } from '~types/motions.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionButton from '~v5/shared/Button/ActionButton.tsx';
 import { LoadingBehavior, type ButtonProps } from '~v5/shared/Button/types.ts';
@@ -39,12 +40,12 @@ const CancelButton: FC<CancelButtonProps> = ({
   const getCancelPayload = () => {
     handleLoadingChange(true);
 
+    const associatedActionId = getMotionAssociatedActionId(action);
+
     return {
       colonyAddress: colony.colonyAddress,
       motionId: multiSigId,
-      associatedActionId:
-        action.expenditure?.creatingActions?.items[0]?.transactionHash ||
-        action.transactionHash,
+      associatedActionId,
     };
   };
 

@@ -22,6 +22,7 @@ import {
   uploadAnnotation,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 function* fundExpenditureMotion({
   payload: {
@@ -43,8 +44,7 @@ function* fundExpenditureMotion({
 
   try {
     const balances = getExpenditureBalancesByTokenAddress(expenditure);
-    const { nativeFundingPotId: expenditureFundingPotId, creatingActions } =
-      expenditure;
+    const { nativeFundingPotId: expenditureFundingPotId } = expenditure;
 
     const colonyManager = yield call(getColonyManager);
     const colonyClient = yield colonyManager.getClient(
@@ -155,7 +155,7 @@ function* fundExpenditureMotion({
         index: 0,
       },
       ready: false,
-      associatedActionId: creatingActions?.items[0]?.transactionHash ?? '',
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     if (annotationMessage) {

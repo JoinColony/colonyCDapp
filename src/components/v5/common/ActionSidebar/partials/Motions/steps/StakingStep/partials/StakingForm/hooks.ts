@@ -6,6 +6,7 @@ import { number, object, type ObjectSchema, string } from 'yup';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/UserTokenBalanceContext.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTokenDecimalsWithFallback } from '~utils/tokens.ts';
@@ -47,11 +48,7 @@ export const useStakingForm = () => {
     tokenBalanceData?.activeBalance ?? 0,
   ).add(tokenBalanceData?.inactiveBalance ?? 0);
 
-  const expenditureCreatedActionId = useMemo(() => {
-    return (
-      motionAction.expenditure?.creatingActions?.items[0]?.transactionHash ?? ''
-    );
-  }, [motionAction.expenditure?.creatingActions?.items]);
+  const associatedActionId = getMotionAssociatedActionId(motionAction);
 
   const validationSchema: ObjectSchema<StakingFormValues> = object()
     .shape({
@@ -127,8 +124,7 @@ export const useStakingForm = () => {
         nativeTokenDecimals: tokenDecimals,
         tokenAddress,
         activeAmount: tokenBalanceData?.activeBalance ?? '0',
-        associatedActionId:
-          expenditureCreatedActionId || motionAction.transactionHash,
+        associatedActionId,
       }),
     [
       motionAction.transactionHash,
@@ -138,7 +134,7 @@ export const useStakingForm = () => {
       tokenDecimals,
       tokenAddress,
       tokenBalanceData?.activeBalance,
-      expenditureCreatedActionId,
+      associatedActionId,
     ],
   );
 
