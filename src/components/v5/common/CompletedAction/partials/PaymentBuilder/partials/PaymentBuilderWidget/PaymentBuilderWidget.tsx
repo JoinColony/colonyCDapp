@@ -456,10 +456,16 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
               <ActionWithStakingInfo
                 userAdddress={expenditure?.ownerAddress}
                 stakeAmount={stakeAmount ?? ''}
+                title={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.completedInfo',
+                })}
               />
             ) : (
               <ActionWithPermissionsInfo
                 action={expenditure?.lockingActions?.items[0]}
+                title={formatText({
+                  id: 'expenditure.reviewStage.confirmDetails.completedInfo',
+                })}
               />
             )}
           </>

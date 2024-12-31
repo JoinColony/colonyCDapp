@@ -1889,6 +1889,7 @@
     "expenditure.reviewStage.tooltip": "Payment is currently in review. The payment creator can make changes freely until details are confirmed.",
     "expenditure.reviewStage.confirmDetails.creatorInfo": "Payment is in Review. While in review, changes can be freely made by the Payment creator. If correct, confirm details and proceed to funding.",
     "expenditure.reviewStage.confirmDetails.info": "Payment is in Review. While in review, changes can be freely made by the Payment creator.",
+    "expenditure.reviewStage.confirmDetails.completedInfo": "Payment creator completed the review step.",
     "expenditure.reviewStage.confirmDetails.title": "Overview",
     "expenditure.reviewStage.confirmDetails.creator": "Payment creator",
     "expenditure.reviewStage.confirmDetails.stakeAmount": "Stake amount",
