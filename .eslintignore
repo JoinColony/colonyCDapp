@@ -3,6 +3,7 @@ scripts
 postcss.config.js
 webpack.*
 src/graphql/generated.ts
+src/constants/abis.ts
 
 
 # amplify
