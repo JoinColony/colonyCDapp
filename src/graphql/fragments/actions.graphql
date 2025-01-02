@@ -142,6 +142,7 @@ fragment ColonyAction on ColonyAction {
     metadata {
       distributionType
     }
+    nativeId
   }
   arbitraryTransactions {
     contractAddress
@@ -201,6 +202,7 @@ fragment ColonyMotion on ColonyMotion {
     ...Domain
   }
   nativeMotionDomainId
+  willPunishExpenditureStaker
   stakerRewards {
     address
     rewards {
