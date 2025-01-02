@@ -23,7 +23,7 @@ import { useColonyCreatedModalContext } from '~context/ColonyCreateModalContext/
 import { useMemberModalContext } from '~context/MemberModalContext/MemberModalContext.ts';
 import { usePageLayoutContext } from '~context/PageLayoutContext/PageLayoutContext.ts';
 import { useTablet } from '~hooks';
-import useLocationChange from '~hooks/useLocationChange.ts';
+import useLocationPathnameChange from '~hooks/useLocationPathnameChange.ts';
 import usePrevious from '~hooks/usePrevious.ts';
 import { TX_SEARCH_PARAM } from '~routes/index.ts';
 import ActionSidebar from '~v5/common/ActionSidebar/index.ts';
@@ -82,7 +82,7 @@ const ColonyLayout: FC<PropsWithChildren> = ({ children }) => {
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
 
-  useLocationChange(() => {
+  useLocationPathnameChange(() => {
     if (!!previousTransactionId && !transactionId && isActionSidebarOpen) {
       toggleActionSidebarOff();
     }

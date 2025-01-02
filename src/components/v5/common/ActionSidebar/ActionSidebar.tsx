@@ -14,7 +14,6 @@ import React, {
   useLayoutEffect,
   useRef,
 } from 'react';
-import { Link } from 'react-router-dom';
 
 import { isFullScreen } from '~constants/index.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
@@ -22,22 +21,18 @@ import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
-import { COLONY_ACTIVITY_ROUTE, TX_SEARCH_PARAM } from '~routes';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
-import { removeQueryParamFromUrl } from '~utils/urls.ts';
-import Button from '~v5/shared/Button/Button.tsx';
-import ButtonLink from '~v5/shared/Button/ButtonLink.tsx';
 import Modal from '~v5/shared/Modal/index.ts';
 
 import CompletedAction from '../CompletedAction/index.ts';
-import FourOFourMessage from '../FourOFourMessage/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
 import { actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
+import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
@@ -118,65 +113,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
 
     if (actionNotFound) {
       return (
-        <div className="pt-14">
-          <FourOFourMessage
-            description={formatText({
-              id: isInvalidTransactionHash
-                ? 'actionSidebar.fourOfour.descriptionInvalidHash'
-                : 'actionSidebar.fourOfour.description',
-            })}
-            links={
-              <>
-                {!isInvalidTransactionHash && (
-                  <Link
-                    to={COLONY_ACTIVITY_ROUTE}
-                    className="mb-2 text-sm text-blue-400 underline"
-                    onClick={toggleActionSidebarOff}
-                  >
-                    {formatText({
-                      id: 'actionSidebar.fourOfour.activityPageLink',
-                    })}
-                  </Link>
-                )}
-                <Link
-                  to={removeQueryParamFromUrl(
-                    window.location.href,
-                    TX_SEARCH_PARAM,
-                  )}
-                  className="mb-2 text-sm text-blue-400 underline"
-                >
-                  {formatText({
-                    id: 'actionSidebar.fourOfour.createNewAction',
-                  })}
-                </Link>
-              </>
-            }
-            primaryLinkButton={
-              isInvalidTransactionHash ? (
-                <ButtonLink
-                  mode="primarySolid"
-                  to={COLONY_ACTIVITY_ROUTE}
-                  className="flex-1"
-                  onClick={toggleActionSidebarOff}
-                >
-                  {formatText({
-                    id: 'actionSidebar.fourOfour.activityPageLink',
-                  })}
-                </ButtonLink>
-              ) : (
-                <Button
-                  mode="primarySolid"
-                  className="flex-1"
-                  onClick={startPollingForAction}
-                >
-                  {formatText({
-                    id: 'button.retry',
-                  })}
-                </Button>
-              )
-            }
-          />
-        </div>
+        <ActionNotFound
+          isInvalidTransactionHash={isInvalidTransactionHash}
+          onCloseSidebar={toggleActionSidebarOff}
+          onRefetchAction={startPollingForAction}
+        />
       );
     }
 
