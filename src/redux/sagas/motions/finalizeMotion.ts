@@ -20,7 +20,7 @@ import {
 
 function* finalizeMotion({
   meta,
-  payload: { colonyAddress, motionId, canMotionFail },
+  payload: { associatedActionId, colonyAddress, motionId, canMotionFail },
 }: Action<ActionTypes.MOTION_FINALIZE>) {
   const txChannel = yield call(getTxChannel, meta.id);
 
@@ -56,6 +56,7 @@ function* finalizeMotion({
       batchKey,
       meta,
       config: {
+        associatedActionId,
         context: ClientType.VotingReputationClient,
         methodName: contractMethodToCall,
         identifier: colonyAddress,

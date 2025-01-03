@@ -17,7 +17,10 @@ import { type LockExpenditurePayload } from '~redux/sagas/expenditures/lockExpen
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { DecisionMethod } from '~types/actions.ts';
 import { notMaybe, notNull } from '~utils/arrays/index.ts';
-import { getClaimableExpenditurePayouts } from '~utils/expenditures.ts';
+import {
+  getClaimableExpenditurePayouts,
+  getExpenditureCreatingActionId,
+} from '~utils/expenditures.ts';
 import { formatText } from '~utils/intl.ts';
 import { isMultiSig } from '~utils/multiSig/index.ts';
 import {
@@ -162,6 +165,7 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         ? {
             colonyAddress: colony.colonyAddress,
             nativeExpenditureId: expenditure.nativeId,
+            associatedActionId: getExpenditureCreatingActionId(expenditure),
           }
         : null,
     [colony.colonyAddress, expenditure],

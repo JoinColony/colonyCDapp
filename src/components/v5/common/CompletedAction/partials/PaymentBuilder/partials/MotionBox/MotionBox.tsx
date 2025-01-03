@@ -78,7 +78,7 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
         key: NetworkMotionState.Reveal,
         content: (
           <RevealStep
-            motionData={motionData}
+            actionData={action as MotionAction}
             motionState={networkMotionState}
             startPollingAction={startPollingForAction}
             stopPollingAction={stopPollingForAction}
@@ -107,7 +107,6 @@ const MotionBox: FC<MotionBoxProps> = ({ transactionId }) => {
     action,
     activeStepKey,
     canInteract,
-    motionData,
     motionStakes,
     motionState,
     networkMotionState,

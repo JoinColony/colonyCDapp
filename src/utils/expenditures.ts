@@ -80,3 +80,9 @@ export const getTokensNumber = (expenditureData?: Expenditure) => {
 
   return metadata.expectedNumberOfTokens;
 };
+
+export const getExpenditureCreatingActionId = (
+  expenditure?: Expenditure | null,
+) => {
+  return expenditure?.creatingActions?.items[0]?.transactionHash ?? '';
+};

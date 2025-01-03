@@ -25,9 +25,10 @@ export type RevealMotionPayload =
 
 function* revealVoteMotion({
   meta,
-  payload: { userAddress, colonyAddress, motionId },
+  payload: { associatedActionId, userAddress, colonyAddress, motionId },
 }: Action<ActionTypes.MOTION_REVEAL_VOTE>) {
   const txChannel = yield call(getTxChannel, meta.id);
+
   try {
     /*
      * We need to set up a non-retry provider when revealing votes
@@ -128,6 +129,7 @@ function* revealVoteMotion({
         batchKey: 'revealVoteMotion',
         meta,
         config: {
+          associatedActionId,
           context: ClientType.VotingReputationClient,
           methodName: 'revealVote',
           identifier: colonyAddress,

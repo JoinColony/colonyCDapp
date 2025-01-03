@@ -4,9 +4,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useGetVoterRewardsQuery } from '~gql';
+import { type RevealMotionPayload } from '~redux/sagas/motions/revealVoteMotion.ts';
 import { type OnSuccess } from '~shared/Fields/index.ts';
-import { type ColonyMotion, type VoterRecord } from '~types/graphql.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { type VoterRecord } from '~types/graphql.ts';
+import { type MotionAction } from '~types/motions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 
 import { getLocalStorageVoteValue } from '../VotingStep/utils.tsx';
@@ -43,18 +45,19 @@ const useRevealWidgetUpdate = (
 };
 
 export const useRevealStep = ({
-  motionData,
+  actionData,
   startPollingAction,
   stopPollingAction,
   transactionId,
   rootHash,
 }: {
-  motionData: ColonyMotion | undefined | null;
+  actionData: MotionAction | undefined | null;
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
   transactionId: string;
   rootHash: string | undefined;
 }) => {
+  const { motionData } = actionData || {};
   const { nativeMotionDomainId, voterRecord, motionId } = motionData || {};
   const { user } = useAppContext();
   const {
@@ -78,14 +81,20 @@ export const useRevealStep = ({
 
   const { vote, hasUserVoted, userVoteRevealed, setUserVoteRevealed } =
     useRevealWidgetUpdate(voterRecord || [], stopPollingAction);
+
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
-      mapPayload(() => ({
-        colonyAddress,
-        userAddress: user?.walletAddress ?? '',
-        motionId: BigNumber.from(motionId),
-      })),
-    [colonyAddress, user?.walletAddress, motionId],
+      mapPayload(
+        (): RevealMotionPayload => ({
+          associatedActionId,
+          colonyAddress,
+          userAddress: user?.walletAddress ?? '',
+          motionId: BigNumber.from(motionId),
+        }),
+      ),
+    [associatedActionId, colonyAddress, user?.walletAddress, motionId],
   );
 
   const handleSuccess: OnSuccess<Record<string, number>> = (_, { reset }) => {

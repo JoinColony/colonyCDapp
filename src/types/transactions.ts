@@ -12,6 +12,7 @@ export { TransactionErrors };
 export type MethodParams = (MethodParam | MethodParam[] | MethodParam[][])[];
 
 export interface TxConfig {
+  associatedActionId?: string;
   context: string;
   group: {
     key: string;

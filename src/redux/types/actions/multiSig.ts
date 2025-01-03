@@ -44,6 +44,7 @@ export type MultiSigActionTypes =
         domainId: number;
         roles: ColonyRole[];
         multiSigId: string;
+        associatedActionId: string;
       },
       MetaWithSetter<object>
     >
@@ -55,6 +56,7 @@ export type MultiSigActionTypes =
   | UniqueActionType<
       ActionTypes.MULTISIG_FINALIZE,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         multiSigId: string;
         canActionFail: boolean;
@@ -69,6 +71,7 @@ export type MultiSigActionTypes =
   | UniqueActionType<
       ActionTypes.MULTISIG_CANCEL,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         motionId: string;
       },

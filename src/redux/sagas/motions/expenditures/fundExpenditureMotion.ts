@@ -22,6 +22,7 @@ import {
   uploadAnnotation,
 } from '~redux/sagas/utils/index.ts';
 import { type Action } from '~redux/types/index.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 function* fundExpenditureMotion({
   payload: {
@@ -154,6 +155,7 @@ function* fundExpenditureMotion({
         index: 0,
       },
       ready: false,
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     if (annotationMessage) {

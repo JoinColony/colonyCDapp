@@ -5,7 +5,7 @@ import { FormattedDate, defineMessages } from 'react-intl';
 import { type ColonyMultiSigFragment } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import usePrevious from '~hooks/usePrevious.ts';
-import { type ColonyAction } from '~types/graphql.ts';
+import { type MultiSigAction } from '~types/motions.ts';
 import { type Threshold } from '~types/multiSig.ts';
 import { notMaybe } from '~utils/arrays/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -141,7 +141,7 @@ interface FinalizeStepProps {
   multiSigData: ColonyMultiSigFragment;
   initiatorAddress: string;
   thresholdPerRole: Threshold;
-  action: ColonyAction;
+  action: MultiSigAction;
 }
 
 const FinalizeStep: FC<FinalizeStepProps> = ({

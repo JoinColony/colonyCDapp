@@ -1,9 +1,9 @@
-import { type ColonyMotion } from '~types/graphql.ts';
+import { type MotionAction } from '~types/motions.ts';
 
 export interface RevealStepProps {
   startPollingAction: (pollingInterval: number) => void;
   stopPollingAction: () => void;
-  motionData: ColonyMotion | undefined | null;
+  actionData: MotionAction | undefined | null;
   rootHash: string | undefined;
   transactionId: string;
   motionState?: number;

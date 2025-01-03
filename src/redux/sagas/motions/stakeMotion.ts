@@ -42,6 +42,7 @@ function* stakeMotion({
     tokenAddress,
     activateTokens,
     activeAmount,
+    associatedActionId,
   },
 }: Action<ActionTypes.MOTION_STAKE>) {
   const txChannel = yield call(getTxChannel, meta.id);
@@ -91,6 +92,7 @@ function* stakeMotion({
         batchKey,
         meta,
         config: {
+          associatedActionId,
           context: ClientType.TokenClient,
           methodName: 'approve',
           identifier: tokenAddress,
@@ -104,6 +106,7 @@ function* stakeMotion({
         batchKey,
         meta,
         config: {
+          associatedActionId,
           context: ClientType.TokenLockingClient,
           methodName: 'deposit(address,uint256,bool)',
           identifier: colonyAddress,
@@ -118,6 +121,7 @@ function* stakeMotion({
       batchKey,
       meta,
       config: {
+        associatedActionId,
         context: ClientType.ColonyClient,
         methodName: 'approveStake',
         identifier: colonyAddress,
@@ -131,6 +135,7 @@ function* stakeMotion({
       batchKey,
       meta,
       config: {
+        associatedActionId,
         context: ClientType.VotingReputationClient,
         methodName: 'stakeMotion',
         identifier: colonyAddress,
@@ -145,6 +150,7 @@ function* stakeMotion({
         batchKey,
         meta,
         config: {
+          associatedActionId,
           context: ClientType.ColonyClient,
           methodName: 'annotateTransaction',
           identifier: colonyAddress,

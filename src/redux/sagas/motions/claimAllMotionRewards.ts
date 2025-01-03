@@ -129,6 +129,7 @@ function* claimAllMotionRewards({
             batchKey: 'claimMotionRewards',
             meta,
             config: {
+              associatedActionId: currentMotion?.transactionHash,
               context: ClientType.VotingReputationClient,
               methodName: 'claimReward',
               identifier: colonyAddress,

@@ -91,12 +91,11 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
         key: MultiSigState.Approval,
         content: (
           <ApprovalStep
-            actionType={actionType}
             thresholdPerRole={thresholdPerRole}
-            multiSigData={multiSigData}
             requiredRoles={requiredRoles}
             initiatorAddress={action.initiatorAddress}
             onMultiSigRejected={onMultiSigRejected}
+            action={action}
           />
         ),
         heading: {
@@ -120,7 +119,6 @@ const MultiSigWidget: FC<MultiSigWidgetProps> = ({
     ];
   }, [
     isLoading,
-    actionType,
     thresholdPerRole,
     multiSigData,
     requiredRoles,

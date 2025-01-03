@@ -14,7 +14,7 @@ import Numeral from '~shared/Numeral/index.ts';
 import { type InstalledExtensionData } from '~types/extensions.ts';
 import { type VoterRecord } from '~types/graphql.ts';
 import { type MotionAction } from '~types/motions.ts';
-import { mapPayload } from '~utils/actions.ts';
+import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { MotionVote } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 
@@ -124,18 +124,21 @@ export const useVotingStep = ({
     getLocalStorageVoteValue(transactionId),
   );
 
+  const associatedActionId = getMotionAssociatedActionId(actionData);
+
   const transform = useMemo(
     () =>
       mapPayload(
         ({ vote }) =>
           ({
+            associatedActionId,
             colonyAddress,
             userAddress: user?.walletAddress,
             vote: Number(vote),
             motionId: BigNumber.from(motionId),
           }) as MotionVotePayload,
       ),
-    [colonyAddress, user?.walletAddress, motionId],
+    [associatedActionId, colonyAddress, user?.walletAddress, motionId],
   );
 
   const getChangedVote = () => {
@@ -170,12 +173,13 @@ export const useVotingStep = ({
     startPollingAction();
   };
 
-  const getChangeVotePayload = () => {
+  const getChangeVotePayload = (): MotionVotePayload => {
     const changedVote = getChangedVote();
 
     return {
+      associatedActionId,
       colonyAddress,
-      userAddress: user?.walletAddress,
+      userAddress: user?.walletAddress || '',
       vote: Number(changedVote),
       motionId: BigNumber.from(motionId),
     };

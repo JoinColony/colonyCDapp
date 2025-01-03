@@ -69,6 +69,7 @@ export type ExpendituresActionTypes =
       {
         colonyAddress: Address;
         nativeExpenditureId: number;
+        associatedActionId: string;
       },
       object
     >
@@ -116,6 +117,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.EXPENDITURE_CLAIM,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
         claimablePayouts: ExpenditurePayoutWithSlotId[];
@@ -155,6 +157,7 @@ export type ExpendituresActionTypes =
   | UniqueActionType<
       ActionTypes.RECLAIM_EXPENDITURE_STAKE,
       {
+        associatedActionId: string;
         colonyAddress: Address;
         nativeExpenditureId: number;
       },
