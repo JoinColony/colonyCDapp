@@ -16,16 +16,18 @@ const MSG = defineMessages({
 
 interface ShareInvitationButtonProps {
   onCreateColony: () => void;
+  className?: string;
 }
 
 const ShareInvitationButton = ({
   onCreateColony,
+  className,
 }: ShareInvitationButtonProps) => (
   <div className="hidden md:block">
     <Button
       icon={Plus}
       isFullSize
-      className="mt-[1.875rem] md:mb-[3.125rem] md:max-w-[27.5rem]"
+      className={className}
       onClick={onCreateColony}
     >
       {formatText(MSG.createColonyButton)}

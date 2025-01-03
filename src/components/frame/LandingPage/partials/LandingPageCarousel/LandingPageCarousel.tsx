@@ -63,41 +63,44 @@ const LandingPageCarousel = () => {
       <div className="w-full md:hidden">
         <img className="w-full" src={SlideMobile} alt="slider mobile" />
       </div>
-      <div className="flex hidden h-full max-h-[700px] w-full max-w-[31.25rem] flex-col pt-11 md:block">
-        <div className="relative mb-9 h-[7.25rem]">
-          {slides.map((slide, index) => {
-            const isCurrentSlide = currentSlide === index;
-
-            return (
-              <div className="absolute left-0 top-0" key={slide.title.id}>
-                <h1
-                  className={clsx(
-                    'transition-opacity duration-normal heading-2',
-                    {
-                      'opacity-100 delay-150': isCurrentSlide,
-                      'opacity-0': !isCurrentSlide,
-                    },
-                  )}
-                >
-                  <FormattedMessage {...slide.title} />
-                </h1>
-                <p
-                  className={clsx(
-                    'mt-[.875rem] text-md font-normal text-gray-600 transition-opacity duration-normal',
-                    {
-                      'opacity-100 delay-150': isCurrentSlide,
-                      'opacity-0': !isCurrentSlide,
-                    },
-                  )}
-                >
-                  <FormattedMessage {...slide.description} />
-                </p>
-              </div>
-            );
-          })}
-        </div>
-        <div className="h-[calc(100%-10.625rem)] flex-1">
+      <div className="flex hidden h-full w-full max-w-[31.25rem] flex-col pt-11 md:block">
+        <div className="h-full flex-1 pb-[3.125rem]">
           <ImageCarousel
+            sliderHeader={
+              <div className="relative mx-[1.875rem] mb-9 h-[7.25rem]">
+                {slides.map((slide, index) => {
+                  const isCurrentSlide = currentSlide === index;
+
+                  return (
+                    <div className="absolute left-0 top-0" key={slide.title.id}>
+                      <h1
+                        className={clsx(
+                          'transition-opacity duration-normal heading-2',
+                          {
+                            'opacity-100 delay-150': isCurrentSlide,
+                            'opacity-0': !isCurrentSlide,
+                          },
+                        )}
+                      >
+                        <FormattedMessage {...slide.title} />
+                      </h1>
+                      <p
+                        className={clsx(
+                          'mt-[.875rem] text-md font-normal text-gray-600 transition-opacity duration-normal',
+                          {
+                            'opacity-100 delay-150': isCurrentSlide,
+                            'opacity-0': !isCurrentSlide,
+                          },
+                        )}
+                      >
+                        <FormattedMessage {...slide.description} />
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            }
+            slidesContainerClassName="relative top-[50%] translate-y-[-50%]"
             slideUrls={[Slide1, Slide2, Slide3]}
             slideWrapperClassName="min-w-full"
             slideImageClassName="w-full object-cover"
@@ -105,7 +108,7 @@ const LandingPageCarousel = () => {
             isAutoplay
             isChangeSlideDotButton={false}
             setSelectedIndex={setCurrentSlide}
-            className="mx-[-30px] flex h-full flex-col justify-between"
+            className="mx-[-30px] flex h-full flex-col"
           />
         </div>
       </div>
