@@ -67,11 +67,15 @@ const MSG = defineMessages({
       other {You’ve been invited!}
     }`,
   },
-  infoBannerDescription: {
+  infoBannerInvalidDescription: {
+    id: `${displayName}.infoBannerInvalidDescription`,
+    defaultMessage: `Your invite code to {colony} is not valid. Please check the code and try again.`,
+  },
+  infoBannerValidDescription: {
     id: `${displayName}.infoBannerDescription`,
     defaultMessage: `
-      {needsToRequestAccess, select,
-      true {Your invite code to {colony} is not valid. Please check the code and try again.}
+      {connected, select,
+      true {You’ve been invited to join the {colony}. Join it to gain access.}
       other {You’ve been invited to join the {colony}. Connect your wallet below to join the colony!}
     }`,
   },
@@ -209,12 +213,24 @@ const ColonyPreviewPage = () => {
                   title={formatText(MSG.infoBannerTitle, {
                     needsToRequestAccess: inviteIsInvalid,
                   })}
-                  text={formatText(MSG.infoBannerDescription, {
-                    needsToRequestAccess: inviteIsInvalid,
-                    colony: (
-                      <span className="font-bold">{colonyDisplayName}</span>
-                    ),
-                  })}
+                  text={
+                    inviteIsInvalid
+                      ? formatText(MSG.infoBannerInvalidDescription, {
+                          colony: (
+                            <span className="font-bold">
+                              {colonyDisplayName}
+                            </span>
+                          ),
+                        })
+                      : formatText(MSG.infoBannerValidDescription, {
+                          connected: !!wallet,
+                          colony: (
+                            <span className="font-bold">
+                              {colonyDisplayName}
+                            </span>
+                          ),
+                        })
+                  }
                   variant={inviteIsValid ? 'success' : 'error'}
                 />
               ) : (
