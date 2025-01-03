@@ -7,7 +7,7 @@ const useLocationChange = (callback) => {
     callback();
     // We want to react only to location changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [location.pathname]);
 };
 
 export default useLocationChange;
