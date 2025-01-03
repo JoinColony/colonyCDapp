@@ -97,6 +97,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           icon={UserPlus}
           size="small"
           isFullRounded
+          className="md:hover:!border-blue-400"
           onClick={() => setIsInviteMembersModalOpen(true)}
         />
       ) : null}

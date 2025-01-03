@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
+import { getRequestInvitesLink } from '~constants/externalUrls.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
@@ -28,11 +29,12 @@ const MSG = defineMessages({
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'Up to 100 people can join to follow and be apart of this colony during early access. If you exceed the limit, you can request more.',
+      'Up to {invitesAvailable} people can join to follow and be apart of this colony during early access. If you exceed the limit, you can request more.',
   },
   invitesUsed: {
     id: `${displayName}.invitesUsed`,
-    defaultMessage: '{invitesUsed}/{invitesAvailable} invites used',
+    defaultMessage:
+      '{invitesAvailable} {invitesAvailable, plural, one {invite} other {invites}} remaining',
   },
   inviteLinkHeading: {
     id: `${displayName}.inviteLinkHeading`,
@@ -83,14 +85,17 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           text={MSG.modalTitle}
         />
         <p className="mt-1 text-center text-sm text-gray-600">
-          <FormattedMessage {...MSG.modalDescription} />
+          <FormattedMessage
+            {...MSG.modalDescription}
+            values={{ invitesAvailable }}
+          />
         </p>
       </div>
       <CardWithCallout
         title={
           <span
             className={clsx(
-              'rounded-lg bg-gray-100 p-2 text-sm font-medium text-gray-900',
+              'rounded-lg bg-blue-100 p-2 text-sm font-medium text-blue-400',
               {
                 'bg-negative-100 text-negative-400': isOutOfInvites,
               },
@@ -98,7 +103,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
           >
             <FormattedMessage
               {...MSG.invitesUsed}
-              values={{ invitesAvailable, invitesUsed }}
+              values={{ invitesAvailable }}
             />
           </span>
         }
@@ -119,7 +124,7 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
             />
           ) : (
             <Link
-              to={`https://colony.io/request-member-invites?colony=${colonyName}`}
+              to={getRequestInvitesLink(colonyName)}
               target="_blank"
               className="flex min-h-8.5 items-center justify-center gap-2
                 whitespace-nowrap rounded-lg border border-gray-900 bg-base-white px-2.5 py-1.5 text-sm font-medium text-gray-900 transition-all duration-normal disabled:border-gray-300 disabled:text-gray-300 md:hover:border-gray-900 md:hover:bg-gray-900 md:hover:!text-base-white"
