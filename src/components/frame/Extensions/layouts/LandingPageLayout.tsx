@@ -42,7 +42,7 @@ export const LandingPageLayout = ({
           </div>
           <div className="flex h-full w-full flex-col-reverse overflow-hidden md:flex-row md:bg-transparent">
             <div className="flex h-full w-full flex-1 justify-center md:justify-end">
-              <div className="flex w-full justify-center md:max-w-[43.75rem] md:px-8">
+              <div className="flex w-full justify-center md:max-w-[43.75rem] md:px-8 lg:md:mx-[-25px]">
                 <div className="w-full md:max-w-[28.125rem]">{children}</div>
               </div>
             </div>

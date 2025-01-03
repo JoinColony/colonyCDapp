@@ -23,7 +23,7 @@ const BaseColonyCard = ({
     className={clsx(
       'flex items-center justify-between gap-[.875rem] rounded border px-5 py-4 transition-colors duration-normal',
       {
-        'cursor-pointer hover:border-gray-900': isClickable,
+        'cursor-pointer hover:bg-gray-25': isClickable,
       },
     )}
   >

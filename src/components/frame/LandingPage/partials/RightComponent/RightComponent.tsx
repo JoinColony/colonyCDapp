@@ -35,7 +35,7 @@ const RightComponent = ({
   inviteLink,
   remainingInvitations,
 }: RightComponentProps) => (
-  <div className="w-full px-6 pt-8 md:w-auto">
+  <div className="w-full px-6 pt-8 md:min-h-[31.25rem] md:w-auto md:pt-0">
     <div className="hidden max-w-[31.25rem] md:block">
       <h1 className="pb-2 heading-2">{formatText(MSG.createColonyTitle)}</h1>
       <p className="pb-14 text-md font-normal text-gray-600">

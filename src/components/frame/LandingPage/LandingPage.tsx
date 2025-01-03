@@ -69,7 +69,6 @@ const LandingPage = () => {
         <div
           className={clsx('flex h-full px-6 pb-0 md:px-0', {
             'md:items-center md:pb-24': !canInteract,
-            'md:items-end': canInteract,
           })}
         >
           {!wallet ? (

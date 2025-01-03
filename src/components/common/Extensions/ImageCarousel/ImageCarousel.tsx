@@ -19,6 +19,8 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
   isChangeSlideDotButton = true,
   setSelectedIndex,
   className,
+  sliderHeader,
+  slidesContainerClassName,
 }) => {
   const { scrollSnaps, emblaRef, scrollTo, selectedIndex } =
     useEmblaCarouselSettings(options, isAutoplay);
@@ -29,27 +31,30 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
 
   return (
     <div className={clsx(className, 'relative pb-[1.75rem]')}>
-      <div className="cursor-grab overflow-hidden">
-        <div ref={emblaRef}>
-          <div className="flex">
-            {slideUrls.map((url) => (
-              <div
-                className={
-                  slideWrapperClassName ??
-                  'min-w-full sm:mr-4 sm:w-[31.875rem] sm:min-w-[31.875rem]'
-                }
-                key={url}
-              >
-                <img
-                  alt="file"
-                  src={url}
+      <div className={slidesContainerClassName}>
+        {sliderHeader}
+        <div className={clsx('cursor-grab overflow-hidden')}>
+          <div ref={emblaRef}>
+            <div className="flex">
+              {slideUrls.map((url) => (
+                <div
                   className={
-                    slideImageClassName ??
-                    'aspect-[380/248] w-full object-cover sm:aspect-[510/248]'
+                    slideWrapperClassName ??
+                    'min-w-full sm:mr-4 sm:w-[31.875rem] sm:min-w-[31.875rem]'
                   }
-                />
-              </div>
-            ))}
+                  key={url}
+                >
+                  <img
+                    alt="file"
+                    src={url}
+                    className={
+                      slideImageClassName ??
+                      'aspect-[380/248] w-full object-cover sm:aspect-[510/248]'
+                    }
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
