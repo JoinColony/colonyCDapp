@@ -86,10 +86,9 @@ const Routes = () => {
         <Route path={NOT_FOUND_ROUTE} element={<FourOFour />} />
 
         {/* Main routes */}
-        <Route element={<MainRoute />}>
-          <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
-          <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
-        </Route>
+        <Route element={<MainRoute />} />
+        <Route path={USER_INVITE_ROUTE} element={<ColonyPreviewPage />} />
+        <Route path={COLONY_SPLASH_ROUTE} element={<ColonyPreviewPage />} />
 
         {/* User routes */}
         <Route path={USER_HOME_ROUTE} element={<UserRoute />}>

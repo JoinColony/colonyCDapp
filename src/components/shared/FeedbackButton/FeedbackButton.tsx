@@ -137,15 +137,18 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
           isFullSize
           id={FEEDBACK_BUTTON_ID}
           onClick={handleClick}
-          className={clsx('!justify-start !gap-3 !border-none bg-gray-900', {
-            '!p-2': !isPopoverMode,
-            'pointer-events-none absolute -left-1 -top-0.5 !w-fit !justify-center !px-3 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100':
-              isPopoverMode,
-            '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
-            '!bg-gray-50': isDarkMode && isWidgetOpen,
-            'hover:!bg-gray-800': !isDarkMode,
-            '!bg-gray-800': !isDarkMode && isWidgetOpen,
-          })}
+          className={clsx(
+            'z-10 !justify-start !gap-3 !border-none bg-gray-900',
+            {
+              '!p-2': !isPopoverMode,
+              'pointer-events-none absolute -left-1 -top-0.5 !w-fit !justify-center !px-3 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100':
+                isPopoverMode,
+              '!bg-gray-100 hover:!bg-gray-50': isDarkMode,
+              '!bg-gray-50': isDarkMode && isWidgetOpen,
+              'hover:!bg-gray-800': !isDarkMode,
+              '!bg-gray-800': !isDarkMode && isWidgetOpen,
+            },
+          )}
         >
           {renderChatsCircle()}
           <p
