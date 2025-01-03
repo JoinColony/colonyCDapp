@@ -15,26 +15,23 @@ const MSG = defineMessages({
 });
 
 interface ShareInvitationButtonProps {
-  hasShareableInvitationCode: boolean;
   onCreateColony: () => void;
 }
 
 const ShareInvitationButton = ({
-  hasShareableInvitationCode,
   onCreateColony,
-}: ShareInvitationButtonProps) =>
-  hasShareableInvitationCode ? (
-    <div className="hidden md:block">
-      <Button
-        icon={Plus}
-        isFullSize
-        className="mt-[1.875rem] md:mb-[3.125rem] md:max-w-[27.5rem]"
-        onClick={onCreateColony}
-      >
-        {formatText(MSG.createColonyButton)}
-      </Button>
-    </div>
-  ) : null;
+}: ShareInvitationButtonProps) => (
+  <div className="hidden md:block">
+    <Button
+      icon={Plus}
+      isFullSize
+      className="mt-[1.875rem] md:mb-[3.125rem] md:max-w-[27.5rem]"
+      onClick={onCreateColony}
+    >
+      {formatText(MSG.createColonyButton)}
+    </Button>
+  </div>
+);
 
 ShareInvitationButton.displayName = displayName;
 
