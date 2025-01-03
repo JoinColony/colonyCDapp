@@ -77,10 +77,9 @@ const WalletConnectedContent = ({
           />
         )}
       </div>
-      <ShareInvitationButton
-        hasShareableInvitationCode={hasShareableInvitationCode}
-        onCreateColony={onCreateColony}
-      />
+      {hasShareableInvitationCode && (
+        <ShareInvitationButton onCreateColony={onCreateColony} />
+      )}
     </div>
   </div>
 );

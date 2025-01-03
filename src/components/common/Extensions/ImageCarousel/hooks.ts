@@ -36,7 +36,7 @@ export const useEmblaCarouselSettings = (options, autoplay) => {
         emblaApi?.plugins().autoplay?.reset();
       }
     },
-    [emblaApi?.plugins().autoplay],
+    [emblaApi],
   );
 
   useEffect(() => {
