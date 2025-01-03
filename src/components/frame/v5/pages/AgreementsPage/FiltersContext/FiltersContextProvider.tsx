@@ -18,17 +18,19 @@ import { MOTION_FILTERS } from './consts.ts';
 import { FiltersContext } from './FiltersContext.ts';
 import { FiltersValues } from './types.ts';
 
+const emptyDateFilters: DateOptions = {
+  pastHour: false,
+  pastDay: false,
+  pastWeek: false,
+  pastMonth: false,
+  pastYear: false,
+  custom: undefined,
+};
+
 const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState('');
   const [motionStates, setMotionStates] = useState<MotionState[]>([]);
-  const [dateFilters, setDateFilters] = useState<DateOptions>({
-    pastHour: false,
-    pastDay: false,
-    pastWeek: false,
-    pastMonth: false,
-    pastYear: false,
-    custom: undefined,
-  });
+  const [dateFilters, setDateFilters] = useState<DateOptions>(emptyDateFilters);
 
   const handleMotionStatesFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,12 +56,12 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       const name = event.target.name as keyof DateOptions;
 
       if (isChecked) {
-        setDateFilters({ ...dateFilters, [name]: true });
+        setDateFilters({ ...emptyDateFilters, [name]: true });
       } else {
-        setDateFilters({ ...dateFilters, [name]: false });
+        setDateFilters(emptyDateFilters);
       }
     },
-    [dateFilters],
+    [],
   );
 
   const handleCustomDateFilterChange = useCallback(
@@ -68,7 +70,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
       if (newStartDate && newEndDate) {
         setDateFilters({
-          ...dateFilters,
+          ...emptyDateFilters,
           custom:
             !newStartDate && !newEndDate
               ? undefined
@@ -76,7 +78,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
         });
       }
     },
-    [dateFilters],
+    [],
   );
 
   const activeFilters: AgreementsPageFilters = useMemo(() => {
@@ -96,14 +98,7 @@ const FiltersContextProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       case FiltersValues.Date:
       case FiltersValues.Custom: {
-        return setDateFilters({
-          pastHour: false,
-          pastDay: false,
-          pastWeek: false,
-          pastMonth: false,
-          pastYear: false,
-          custom: undefined,
-        });
+        return setDateFilters(emptyDateFilters);
       }
       default: {
         return undefined;
