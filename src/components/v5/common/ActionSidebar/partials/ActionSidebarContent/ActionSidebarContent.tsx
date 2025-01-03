@@ -4,18 +4,16 @@ import clsx from 'clsx';
 import React, { useEffect, type FC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
-import { useSelector } from 'react-redux';
 
 import { TourTargets } from '~common/Tours/enums.ts';
 import { Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { GetTotalColonyActionsDocument, SearchActionsDocument } from '~gql';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
-import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import { isQueryActive } from '~utils/isQueryActive.ts';
 import ActionTypeSelect from '~v5/common/ActionSidebar/ActionTypeSelect.tsx';
@@ -59,10 +57,9 @@ const MSG = defineMessages({
 
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
-  actionFormProps: { primaryButton },
+  actionFormProps: { primaryButton, onFormClose },
   showApolloNetworkError,
 }) => {
-  const { colony } = useColonyContext();
   const { user } = useAppContext();
   const { formComponent: FormComponent, selectedAction } =
     useSidebarActionForm();
@@ -117,9 +114,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     { toggleOn: showRemoveDraftModal, toggleOff: hideRemoveDraftModal },
   ] = useToggle();
 
-  const draftAgreement = useSelector(
-    getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
-  );
+  const { draftAgreement } = useDraftAgreement();
 
   useEffect(() => {
     if (
@@ -230,6 +225,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
           <ActionButtons
             isActionDisabled={isSubmitDisabled}
             primaryButton={primaryButton}
+            onFormClose={onFormClose}
           />
         </div>
       )}
