@@ -150,11 +150,13 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
           layout={isTablet ? 'vertical' : 'horizontal'}
           isDisabled={disabled}
           renderCellWrapper={renderCellContent}
+          footerColSpan={isTablet ? 2 : undefined}
           overrides={{
             getRowId: ({ key }) => key,
             state: {
               columnVisibility: {
                 [MEATBALL_MENU_COLUMN_ID]: !disabled && !isTablet,
+                percent: !isTablet,
               },
               pagination: {
                 pageSize: data.length,

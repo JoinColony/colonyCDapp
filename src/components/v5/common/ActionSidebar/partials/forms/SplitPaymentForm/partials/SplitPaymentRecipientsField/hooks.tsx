@@ -212,7 +212,7 @@ export const useRecipientsFieldTableColumns = ({
         }),
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [amount, columnHelper, name, token, disabled],
+      [amount, columnHelper, name, token, disabled, isTablet],
     );
 
   return menuColumn ? [...columns, menuColumn] : columns;

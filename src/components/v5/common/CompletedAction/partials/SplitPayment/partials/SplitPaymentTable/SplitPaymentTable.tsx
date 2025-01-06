@@ -80,6 +80,14 @@ const SplitPaymentTable: FC<SplitPaymentTableProps> = ({
               ]
             : data
         }
+        footerColSpan={isTablet ? 2 : undefined}
+        overrides={{
+          state: {
+            columnVisibility: {
+              percent: !isTablet,
+            },
+          },
+        }}
         columns={columns}
         renderCellWrapper={renderCellContent}
         layout={isTablet ? 'vertical' : 'horizontal'}
