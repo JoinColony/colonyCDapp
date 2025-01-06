@@ -107,8 +107,6 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           },
         }}
         layout={isMobile ? 'vertical' : 'horizontal'}
-        // sizeUnit={isMobile ? undefined : '%'}
-        // meatBallMenuSize={isMobile ? undefined : 10}
         className={clsx('mb-6', {
           '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
             !!fieldState.error,

@@ -132,7 +132,13 @@ export const useArbitraryTxsTableColumns = ({
         staticSize: isMobile ? '100px' : '67%',
       }),
     ],
-    [columnHelper, isMobile, openTransactionModal, isError],
+    [
+      columnHelper,
+      isMobile,
+      hasNoDecisionMethods,
+      openTransactionModal,
+      isError,
+    ],
   );
 
   return menuColumn ? [...columns, menuColumn] : columns;

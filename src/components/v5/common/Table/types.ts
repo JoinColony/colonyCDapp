@@ -23,8 +23,8 @@ export type RenderCellWrapper<T> = (
 ) => React.ReactNode;
 
 export interface MoreActionsOptions<T> {
-  renderMoreActions?: (row: Row<T>) => React.ReactElement | null;
-  wrapperClassName?: string;
+  renderMoreActions?: (row: Row<T>) => React.ReactElement | null; // Actions menu rendering based on row
+  wrapperClassName?: string; // Actions menu wrapper class name
 }
 
 export interface TableRowOptions<T> {
@@ -41,7 +41,7 @@ export interface PaginationOptions {
   pageSize?: number; // Number of rows per page
   canNextPage?: boolean; // Enable "next page"
   canPreviousPage?: boolean; // Enable "previous page"
-  onPageChange?: (direction: PaginationDirection) => void;
+  onPageChange?: (direction: PaginationDirection) => void; // Custom handler on page change
   disabled?: boolean; // Disable pagination
   visible?: boolean; // Control visibility
   pageNumberVisible?: boolean; // Show current page number
@@ -100,13 +100,13 @@ export interface BaseTableOptions<T>
 export interface BaseTableProps<T> extends BaseTableOptions<T> {
   table: Table<T>; // React Table instance
   rows?: TableRowOptions<T>; // Row-specific options
-  moreActions?: MoreActionsOptions<T>;
+  moreActions?: MoreActionsOptions<T>; // Actions menu options
   overrides?: TableOptionsOverrides<T>; // Overrides for advanced customization based on the TableOptions provided by @tanstack/react-table
   children?: React.ReactNode; // Custom children
 }
 
 export interface TableProps<T> extends Omit<BaseTableProps<T>, 'table'> {
-  pagination?: PaginationOptions;
+  pagination?: PaginationOptions; // Pagination-specific options
 }
 
 export type BaseTableLayoutProps<T> = Pick<
