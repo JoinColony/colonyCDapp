@@ -8,6 +8,8 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { SplitPaymentDistributionType } from '~gql';
 import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
+import { TEAM_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import { type SplitPaymentFormValues } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/hooks.ts';
 import Table from '~v5/common/Table/index.ts';
 import Button from '~v5/shared/Button/Button.tsx';
 
@@ -40,6 +42,9 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
     }),
   );
   const value: SplitPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
+  const domainId = useWatch<SplitPaymentFormValues, 'team'>({
+    name: TEAM_FIELD_NAME,
+  });
   const amount: string | undefined = useWatch({ name: 'amount' });
 
   const columns = useRecipientsFieldTableColumns({
@@ -50,6 +55,7 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
     fieldArrayMethods,
     disabled,
     distributionMethod,
+    domainId,
   });
   const isTablet = useTablet();
   const getMenuProps = ({ index }) => ({
