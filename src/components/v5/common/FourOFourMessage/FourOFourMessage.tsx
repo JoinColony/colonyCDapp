@@ -1,4 +1,5 @@
 import { SmileySad } from '@phosphor-icons/react';
+import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
@@ -33,9 +34,15 @@ const FourOFourMessage: FC<FourOFourMessageProps> = ({
   description,
   links,
   primaryLinkButton,
+  className,
 }) => {
   return (
-    <div className="mx-auto flex w-full flex-col items-start sm:max-w-lg sm:p-0 md:w-auto">
+    <div
+      className={clsx(
+        className,
+        'mx-auto flex w-full flex-col items-start sm:max-w-lg sm:p-0 md:w-auto',
+      )}
+    >
       <SmileySad size={32} />
       <h3 className="my-2 heading-3">{formatText(MSG.title)}</h3>
       <p className="text-sm text-gray-600">{description}</p>
