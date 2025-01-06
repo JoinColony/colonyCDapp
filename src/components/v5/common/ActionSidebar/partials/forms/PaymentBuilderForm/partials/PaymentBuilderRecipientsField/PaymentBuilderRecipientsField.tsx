@@ -182,7 +182,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
             },
             state: {
               columnVisibility: {
-                [MEATBALL_MENU_COLUMN_ID]: !isMobile,
+                [MEATBALL_MENU_COLUMN_ID]: !isTablet,
               },
             },
           }}

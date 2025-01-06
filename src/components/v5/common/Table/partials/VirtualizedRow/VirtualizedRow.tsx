@@ -19,7 +19,7 @@ const VirtualizedRow: FC<VirtualizedRowProps> = ({
       {isVisible ? (
         children
       ) : (
-        <td style={{ width: '100%', height: itemHeight }} />
+        <td style={{ width: 'auto', height: itemHeight }} />
       )}
     </tr>
   );
