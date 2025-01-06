@@ -1,5 +1,4 @@
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGetProxyColoniesQuery } from '~gql';
+import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 
 import {
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
@@ -14,18 +13,9 @@ export const useFilterChainSelectField = () => {
     ManageEntityOperation.Remove,
   );
 
-  const { colony } = useColonyContext();
-  const { data } = useGetProxyColoniesQuery({
-    variables: {
-      colonyAddress: colony.colonyAddress,
-    },
-    fetchPolicy: 'cache-and-network',
+  const activeProxyColoniesChainIds = useDeployedChainIds({
+    filterFn: (deployedProxyColony) => deployedProxyColony?.isActive,
   });
-  const deployedProxyColonies =
-    data?.getProxyColoniesByColonyAddress?.items || [];
-  const activeProxyColoniesChainIds = deployedProxyColonies
-    .filter((deployedProxyColony) => deployedProxyColony?.isActive)
-    .map((deployedProxyColony) => deployedProxyColony?.chainId);
 
   const filterFn = (chainId) =>
     isRemoveOperation

@@ -1,11 +1,14 @@
 import { Id } from '@colony/sdk';
 import { useCallback, useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
 import { type DeepPartial } from 'redux';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import { ActionTypes } from '~redux';
 import { mapPayload } from '~utils/actions.ts';
 import {
+  CHAIN_FIELD_NAME,
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
   ManageEntityOperation,
 } from '~v5/common/ActionSidebar/consts.ts';
@@ -19,22 +22,41 @@ import {
 } from './consts.ts';
 import { getManageSupportedChainsPayload } from './utils.ts';
 
-export const useManageSupportedChainsForm = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
-) => {
-  const { colony } = useColonyContext();
-
+const useActionType = () => {
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
     ManageEntityOperation.Remove,
   );
 
+  const chainId = useWatch({ name: CHAIN_FIELD_NAME });
+  const disabledProxyColoniesChainIds = useDeployedChainIds({
+    filterFn: (deployedProxyColony) => !deployedProxyColony?.isActive,
+  });
+  const isChainDisabled = disabledProxyColoniesChainIds.includes(
+    chainId?.toString(),
+  );
+
+  if (isRemoveOperation) {
+    return ActionTypes.PROXY_COLONY_REMOVE;
+  }
+
+  if (isChainDisabled) {
+    return ActionTypes.PROXY_COLONY_ENABLE;
+  }
+
+  return ActionTypes.PROXY_COLONY_CREATE;
+};
+
+export const useManageSupportedChainsForm = (
+  getFormOptions: ActionFormBaseProps['getFormOptions'],
+) => {
+  const { colony } = useColonyContext();
+  const actionType = useActionType();
+
   useActionFormBaseHook({
     getFormOptions,
     validationSchema,
-    actionType: isRemoveOperation
-      ? ActionTypes.PROXY_COLONY_REMOVE
-      : ActionTypes.PROXY_COLONY_CREATE,
+    actionType,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     transform: useCallback(
       mapPayload((values: ManageSupportedChainsFormValues) =>
