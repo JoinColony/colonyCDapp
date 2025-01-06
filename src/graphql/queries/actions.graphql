@@ -87,3 +87,9 @@ query SearchActions(
     nextToken
   }
 }
+
+subscription OnCreateColonyActionMetadata {
+  onCreateColonyActionMetadata {
+    updatedAt
+  }
+}

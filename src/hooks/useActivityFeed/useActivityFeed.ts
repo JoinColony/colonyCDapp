@@ -4,6 +4,7 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
+  useOnCreateColonyActionMetadataSubscription,
   useSearchActionsQuery,
 } from '~gql';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
@@ -55,7 +56,12 @@ const useActivityFeed = (
     setPageNumber(1);
   }, [stringifiedFilters]);
 
-  const { data, fetchMore, loading } = useSearchActionsQuery({
+  const {
+    data,
+    fetchMore,
+    loading,
+    refetch: refetchActions,
+  } = useSearchActionsQuery({
     variables: {
       filter: getSearchActionsFilterVariable(colonyAddress, filters),
       sort: sort || {
@@ -65,6 +71,12 @@ const useActivityFeed = (
       limit: pageSize * 2,
     },
     fetchPolicy: 'network-only',
+  });
+
+  useOnCreateColonyActionMetadataSubscription({
+    onData: () => {
+      refetchActions();
+    },
   });
 
   const { items, nextToken } = data?.searchColonyActions ?? {};
