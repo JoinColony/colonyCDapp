@@ -13,7 +13,6 @@ export interface StreamingPaymentFilters {
   tokenTypes?: TokenTypes;
   endConditions?: StreamingPaymentEndCondition[];
   totalStreamedFilters?: ModelSortDirection | undefined;
-  date?: Array<{ dateFrom: Date; dateTo: Date }>;
 }
 
 export interface DateOptions {

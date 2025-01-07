@@ -137,7 +137,7 @@ const StreamingFiltersContextProvider: FC<PropsWithChildren> = ({
       ...(tokenTypes.length ? { endConditions } : {}),
       ...(searchFilter ? { search: searchFilter } : {}),
       ...(Object.keys(tokenTypes).length ? { tokenTypes } : {}),
-      ...(date.length ? { date } : {}),
+      ...(date || {}),
     };
   }, [
     dateFilters,
