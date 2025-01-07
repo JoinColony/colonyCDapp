@@ -13,8 +13,7 @@ import { StreamingPaymentEndCondition } from '~gql';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
-
-import useHasNoDecisionMethods from '../../hooks/permissions/useHasNoDecisionMethods.ts';
+import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 
 import { END_OPTIONS, START_OPTIONS } from './consts.ts';
 import { CUSTOM_DATE_VALUE } from './partials/TimeRowField/consts.ts';
