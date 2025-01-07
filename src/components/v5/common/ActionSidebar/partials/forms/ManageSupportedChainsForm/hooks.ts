@@ -6,9 +6,11 @@ import { type DeepPartial } from 'redux';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useDeployedChainIds } from '~hooks/proxyColonies/useDeployedChainIds.ts';
 import { ActionTypes } from '~redux';
+import { DecisionMethod } from '~types/actions.ts';
 import { mapPayload } from '~utils/actions.ts';
 import {
   CHAIN_FIELD_NAME,
+  DECISION_METHOD_FIELD_NAME,
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
   ManageEntityOperation,
 } from '~v5/common/ActionSidebar/consts.ts';
@@ -23,6 +25,9 @@ import {
 import { getManageSupportedChainsPayload } from './utils.ts';
 
 const useActionType = () => {
+  const decisionMethod: DecisionMethod | undefined = useWatch({
+    name: DECISION_METHOD_FIELD_NAME,
+  });
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
     ManageEntityOperation.Remove,
@@ -42,6 +47,10 @@ const useActionType = () => {
 
   if (isChainDisabled) {
     return ActionTypes.PROXY_COLONY_ENABLE;
+  }
+
+  if (decisionMethod === DecisionMethod.Reputation) {
+    return ActionTypes.MOTION_PROXY_COLONY_CREATE;
   }
 
   return ActionTypes.PROXY_COLONY_CREATE;

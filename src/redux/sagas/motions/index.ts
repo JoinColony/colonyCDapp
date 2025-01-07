@@ -23,6 +23,7 @@ import manageTokensMotionSaga from './manageTokens.ts';
 import manageVerifiedMembersMotionSaga from './manageVerifiedMembers.ts';
 import moveFundsMotionSaga from './moveFundsMotion.ts';
 import paymentMotionSaga from './paymentMotion.ts';
+import { createProxyColonyMotionSaga } from './proxyColonies/index.ts';
 import revealVoteMotionSaga from './revealVoteMotion.ts';
 import rootMotionSaga from './rootMotion.ts';
 import stakeMotionSaga from './stakeMotion.ts';
@@ -55,5 +56,6 @@ export default function* actionsSagas() {
     call(manageReputationMotionSaga),
     call(initiateSafeTransactionMotionSaga),
     call(manageTokensMotionSaga),
+    call(createProxyColonyMotionSaga),
   ]);
 }
