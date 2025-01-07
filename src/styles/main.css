@@ -75,6 +75,14 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
 }
 
 /* Styling for onboardJS */
+ul.react-datepicker__time-list {
+  @apply bg-base-white;
+}
+
+li.react-datepicker__time-list-item {
+  @apply hover:bg-gray-50 !important;
+}
+
 :root {
   --onboard-connect-sidebar-background: var(--color-gray-200);
   --onboard-main-scroll-container-background: var(--color-base-white);
