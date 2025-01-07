@@ -1993,7 +1993,7 @@
     "streamingPayment.table.filter.ascending": "Lowest to highest",
     "streamingPayment.table.filter.sortBy": "Sort by:",
     "streamingPayment.table.emptyContent.title": "No results to display",
-    "streamingPayment.table.emptyContent.description": "There are no streaming payments in the Colony yet. New streams will show here",
+    "streamingPayment.table.emptyContent.description": "There are no streaming payments to show.",
     "streamingPayment.table.emptyContent.search.description": "There are no streaming payments to show. Try searching again",
     "action.createdAt.todayAt": "Today at {time}",
     "action.createdAt.yesterdayAt": "Yesterday at {time}",

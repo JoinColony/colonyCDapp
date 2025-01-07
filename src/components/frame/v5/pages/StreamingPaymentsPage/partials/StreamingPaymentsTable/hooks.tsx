@@ -133,7 +133,7 @@ const getSearchStreamingPaymentsFilterVariable = (
   return {
     and: [
       { colonyId: { eq: colonyAddress } },
-      ...activeTokens,
+      ...(activeTokens.length > 0 ? [{ or: activeTokens }] : []),
       dateFilter,
     ].filter((obj) => Object.keys(obj).length > 0),
   };
