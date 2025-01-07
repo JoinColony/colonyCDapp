@@ -32,6 +32,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   SplitPayment: [[ColonyRole.Administration]],
   StagedPayment: [[ColonyRole.Administration]],
   ArbitraryTxs: [[ColonyRole.Root]],
+  ManageSupportedChains: [[ColonyRole.Root]],
 };
 
 export enum Action {
