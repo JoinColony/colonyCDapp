@@ -73,7 +73,7 @@ const ActionMobileDescription: FC<ActionMobileDescriptionProps> = ({
   );
 
   return (
-    <div className="expandable flex items-start justify-between gap-1 pb-4 pl-[1.125rem] pr-[.9375rem]">
+    <div className="expandable flex items-start justify-between gap-1 pb-4">
       <div className="flex flex-col gap-2 text-gray-500">
         {shouldShowCounter && isMotion && motionData && motionState && (
           <MotionCountDownTimer

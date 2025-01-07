@@ -9,6 +9,7 @@ import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
+import { EXPANDER_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 
 import ActionBadge from '../partials/ActionBadge/ActionBadge.tsx';
@@ -137,7 +138,7 @@ const useColonyActionsTableColumns = ({
         },
       }),
       helper.display({
-        id: 'expander',
+        id: EXPANDER_COLUMN_ID,
         staticSize: '2.25rem',
         header: () => null,
         enableSorting: false,
