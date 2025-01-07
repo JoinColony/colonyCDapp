@@ -29,7 +29,12 @@ const MSG = defineMessages({
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'Up to {invitesAvailable} people can join to follow and be apart of this colony during early access. If you exceed the limit, you can request more.',
+      'You can invite {invitesAvailable} more people to join and follow this colony during early access. If you run out, you will be able to request more.',
+  },
+  modalDescriptionReached: {
+    id: `${displayName}.modalDescriptionReached`,
+    defaultMessage:
+      'You have reached your invite limit during early access. If you need more, please make a request.',
   },
   invitesUsed: {
     id: `${displayName}.invitesUsed`,
@@ -86,7 +91,9 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
         />
         <p className="mt-1 text-center text-sm text-gray-600">
           <FormattedMessage
-            {...MSG.modalDescription}
+            {...(isOutOfInvites
+              ? MSG.modalDescriptionReached
+              : MSG.modalDescription)}
             values={{ invitesAvailable }}
           />
         </p>
