@@ -898,6 +898,10 @@ enum ColonyActionType {
   MANAGE_TOKENS
   MANAGE_TOKENS_MOTION
   MANAGE_TOKENS_MULTISIG
+  """
+  An action related to creating a proxy colony
+  """
+  ADD_PROXY_COLONY
 }
 
 """
@@ -1529,6 +1533,17 @@ type ColonyContributor @model @searchable {
     @hasMany(indexName: "byTargetAddress", fields: ["contributorAddress"])
 }
 
+type ColonyCreateEvent {
+  """
+  The block number the colony was created at
+  """
+  blockNumber: Int!
+  """
+  The salt used during creation
+  """
+  creationSalt: String!
+}
+
 """
 Represents a Colony within the Colony Network
 """
@@ -1542,9 +1557,9 @@ type Colony @model {
   """
   name: String! @index(name: "byName", queryField: "getColonyByName")
   """
-  The block number the colony was created attached
+  Colony creation data
   """
-  createdAtBlock: Int
+  colonyCreateEvent: ColonyCreateEvent
   """
   The unique address of the native token of the Colony
   """
@@ -3513,6 +3528,22 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
+  """
+  Multichain info if the action is bridged"
+  """
+  multiChainInfo: MultiChainInfo
+}
+
+type MultiChainInfo {
+  targetChainId: Int!
+  completed: Boolean!
+  wormholeInfo: ActionWormholeInfo
+}
+
+type ActionWormholeInfo {
+  emitterChainId: Int
+  emitterAddress: String!
+  sequence: String!
 }
 
 """
@@ -3792,10 +3823,8 @@ type IngestorStats @model {
   """
   The chain id the stats are generated on
   """
-  chainId: String! @index(
-      name: "byChainId"
-      queryField: "getIngestorStatsByChainId"
-    )
+  chainId: String!
+    @index(name: "byChainId", queryField: "getIngestorStatsByChainId")
   """
   JSON string to pass custom, dynamic values
   """
