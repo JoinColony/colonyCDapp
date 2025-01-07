@@ -6,9 +6,7 @@ import { formatText } from '~utils/intl.ts';
 const displayName = 'v5.pages.StreamingPaymentsPage';
 
 const StreamingPaymentsPage = () => {
-  useSetPageHeadingTitle(
-    formatText({ id: 'navigation.finances.streamingPayments' }),
-  );
+  useSetPageHeadingTitle(formatText({ id: 'streamingPaymentsPage.title' }));
 
   return <div />;
 };
