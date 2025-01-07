@@ -16,7 +16,7 @@ import {
   UserRoleModifier,
   type ManagePermissionsFormValues,
 } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 import { useCustomPermissionsTableColumns } from './hooks.tsx';
 
@@ -64,11 +64,16 @@ const PermissionsTable: FC<PermissionsTableProps> = ({
               '!border-negative-300': !!formState.errors.permissions,
             },
           )}
+          layout={isMobile ? 'vertical' : 'horizontal'}
           data={ALLOWED_CUSTOM_PERMISSION_TABLE_CONTENT}
           columns={customPermissionsTableColumns}
-          verticalLayout={isMobile}
-          withBorder={false}
-          tableBodyRowKeyProp="type"
+          borders={{
+            visible: true,
+            type: 'unset',
+          }}
+          rows={{
+            key: 'type',
+          }}
         />
       ) : (
         <Table<PermissionsTableModel>

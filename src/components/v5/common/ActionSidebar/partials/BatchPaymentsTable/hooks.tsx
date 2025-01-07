@@ -1,14 +1,21 @@
-import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
+import {
+  createColumnHelper,
+  type Row,
+  type ColumnDef,
+} from '@tanstack/react-table';
 import { useMemo } from 'react';
 
 import { formatText } from '~utils/intl.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import { type BatchPaymentsTableModel } from './types.ts';
 
-export const useBatchPaymentsTableColumns = (): ColumnDef<
-  BatchPaymentsTableModel,
-  string
->[] => {
+export const useBatchPaymentsTableColumns = (
+  getMenuProps: (
+    row: Row<BatchPaymentsTableModel>,
+  ) => MeatBallMenuProps | undefined,
+): ColumnDef<BatchPaymentsTableModel, string>[] => {
   const columnHelper = useMemo(
     () => createColumnHelper<BatchPaymentsTableModel>(),
     [],
@@ -37,8 +44,12 @@ export const useBatchPaymentsTableColumns = (): ColumnDef<
           // @TODO: display data
         },
       }),
+      makeMenuColumn({
+        helper: columnHelper,
+        getMenuProps,
+      }),
     ],
-    [columnHelper],
+    [columnHelper, getMenuProps],
   );
 
   return columns;

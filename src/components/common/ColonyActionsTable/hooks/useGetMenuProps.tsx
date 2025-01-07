@@ -4,6 +4,7 @@ import {
   ShareNetwork,
   Repeat,
 } from '@phosphor-icons/react';
+import { type Row } from '@tanstack/react-table';
 import React from 'react';
 import { generatePath, useNavigate } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ import {
 } from '~routes';
 import TransactionLink from '~shared/TransactionLink/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { type TableProps } from '~v5/common/Table/types.ts';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import MeatballMenuCopyItem from '../partials/MeatballMenuCopyItem/index.ts';
 import { type ColonyActionsTableProps } from '../types.ts';
@@ -44,9 +45,9 @@ export const useGetMenuProps = ({
     colonyActionsLoading,
   });
 
-  const getMenuProps: TableProps<ActivityFeedColonyAction>['getMenuProps'] = ({
-    original: colonyAction,
-  }) => {
+  const getMenuProps: (
+    row: Row<ActivityFeedColonyAction>,
+  ) => MeatBallMenuProps | undefined = ({ original: colonyAction }) => {
     const { transactionHash } = colonyAction;
 
     return {

@@ -55,7 +55,7 @@ export const useFiatTransfersTableColumns = (
   loading: boolean,
 ): ColumnDef<BridgeDrain, any>[] => {
   const isMobile = useMobile();
-  const columnHelper = createColumnHelper<BridgeDrain>();
+  const columnHelper = useMemo(() => createColumnHelper<BridgeDrain>(), []);
 
   return useMemo(() => {
     return [

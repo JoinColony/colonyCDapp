@@ -7,7 +7,9 @@ import { FormattedMessage } from 'react-intl';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { getMoreActionsMenu } from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import { useTransactionTableColumns } from './hooks.tsx';
@@ -28,7 +30,6 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
     }),
   );
   const { readonly } = useAdditionalFormOptionsContext();
-  const columns = useTransactionTableColumns(name);
   const isMobile = useMobile();
   const value = useWatch({ name });
   const getMenuProps = ({ index }) =>
@@ -54,6 +55,7 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
           ],
         }
       : undefined;
+  const columns = useTransactionTableColumns(name, getMenuProps);
 
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
@@ -69,11 +71,21 @@ const TransactionTable: FC<TransactionTableProps> = ({ name }) => {
             className={clsx({
               '!border-negative-400': !!fieldState.error,
             })}
-            getRowId={({ key }) => key}
             columns={columns}
             data={data}
-            getMenuProps={getMenuProps}
-            verticalLayout={isMobile}
+            layout={isMobile ? 'vertical' : 'horizontal'}
+            overrides={{
+              getRowId: ({ key }) => key,
+              state: {
+                columnVisibility: {
+                  [MEATBALL_MENU_COLUMN_ID]: !isMobile,
+                },
+              },
+            }}
+            moreActions={getMoreActionsMenu({
+              getMenuProps,
+              visible: isMobile,
+            })}
           />
         </>
       )}

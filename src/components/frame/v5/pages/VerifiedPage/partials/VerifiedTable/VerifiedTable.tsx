@@ -13,7 +13,7 @@ import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import Filter from '~v5/common/Filter/index.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -73,48 +73,48 @@ const VerifiedTable: FC<TableProps> = ({ list }) => {
         </Button>
       </TableHeader>
       <Table<ColonyContributorFragment>
-        emptyContent={
-          !listLength && (
-            <div className="border-1 w-full rounded-b-lg border border-gray-200">
-              <EmptyContent
-                icon={Binoculars}
-                title={{ id: 'verifiedPage.table.emptyTitle' }}
-                description={{ id: 'verifiedPage.table.emptyDescription' }}
-                buttonText={{ id: 'button.addNewMember' }}
-                onClick={onAddClick}
-                withoutButtonIcon
-              />
-            </div>
-          )
-        }
-        className="w-full"
-        getRowId={({ contributorAddress }) => contributorAddress}
         columns={columns}
         data={list}
-        state={{
-          sorting,
-          rowSelection,
-          columnVisibility: {
-            colonyReputationPercentage: !isMobile,
-            status: !isMobile,
-          },
-        }}
-        initialState={{
-          pagination: {
-            pageSize: 10,
-          },
-        }}
-        onSortingChange={setSorting}
-        onRowSelectionChange={setRowSelection}
-        getSortedRowModel={getSortedRowModel()}
-        getPaginationRowModel={getPaginationRowModel()}
-        enableSortingRemoval={false}
-        enableSorting
-        sortDescFirst={false}
-        sizeUnit="px"
+        className={clsx('w-full', { 'pb-4': listLength > 10 })}
+        emptyContent={
+          !listLength && (
+            <EmptyContent
+              icon={Binoculars}
+              title={{ id: 'verifiedPage.table.emptyTitle' }}
+              description={{ id: 'verifiedPage.table.emptyDescription' }}
+              buttonText={{ id: 'button.addNewMember' }}
+              onClick={onAddClick}
+              withoutButtonIcon
+            />
+          )
+        }
         renderCellWrapper={(classNames, content) => (
           <div className={clsx(classNames, 'py-3.5')}>{content}</div>
         )}
+        overrides={{
+          getRowId: ({ contributorAddress }) => contributorAddress,
+          state: {
+            sorting,
+            rowSelection,
+            columnVisibility: {
+              reputation: !isMobile,
+              status: !isMobile,
+            },
+          },
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 10,
+            },
+          },
+          onSortingChange: setSorting,
+          onRowSelectionChange: setRowSelection,
+          getSortedRowModel: getSortedRowModel(),
+          getPaginationRowModel: getPaginationRowModel(),
+          enableSortingRemoval: false,
+          enableSorting: true,
+          sortDescFirst: false,
+        }}
       />
     </>
   );

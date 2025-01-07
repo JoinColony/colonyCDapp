@@ -1,5 +1,9 @@
 import { Id } from '@colony/colony-js';
-import { type ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import {
+  type ColumnDef,
+  createColumnHelper,
+  type Row,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
@@ -19,6 +23,9 @@ import {
 } from '~utils/tokens.ts';
 import TokenTypeBadge from '~v5/common/Pills/TokenTypeBadge/index.ts';
 import { TOKEN_TYPE } from '~v5/common/Pills/TokenTypeBadge/types.ts';
+import { type NullableColumnDef } from '~v5/common/Table/types.ts';
+import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
+import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
 
 import TokenCell from '../TokenCell/index.ts';
 
@@ -109,12 +116,33 @@ export const useBalancesData = (): BalanceTableFieldModel[] => {
 export const useBalanceTableColumns = (
   nativeToken: Token,
   nativeTokenStatus?: NativeTokenStatus | null,
+  getMenuProps?: (
+    row: Row<BalanceTableFieldModel>,
+  ) => MeatBallMenuProps | undefined,
 ): ColumnDef<BalanceTableFieldModel, string>[] => {
   const isMobile = useMobile();
 
-  const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(() => {
-    const columnHelper = createColumnHelper<BalanceTableFieldModel>();
+  const columnHelper = useMemo(
+    () => createColumnHelper<BalanceTableFieldModel>(),
+    [],
+  );
 
+  const menuColumn: NullableColumnDef<BalanceTableFieldModel> = useMemo(
+    () =>
+      getMenuProps
+        ? makeMenuColumn({
+            helper: columnHelper,
+            getMenuProps,
+            cellProps: {
+              staticSize: isMobile ? '2.25rem' : undefined,
+              size: 60,
+            },
+          })
+        : null,
+    [columnHelper, getMenuProps, isMobile],
+  );
+
+  const columns: ColumnDef<BalanceTableFieldModel, string>[] = useMemo(() => {
     return [
       columnHelper.display({
         id: 'asset',
@@ -215,7 +243,7 @@ export const useBalanceTableColumns = (
         },
       }),
     ];
-  }, [isMobile, nativeToken.tokenAddress, nativeTokenStatus]);
+  }, [isMobile, nativeToken.tokenAddress, nativeTokenStatus, columnHelper]);
 
-  return columns;
+  return menuColumn ? [...columns, menuColumn] : columns;
 };

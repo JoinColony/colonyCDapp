@@ -8,7 +8,9 @@ import { useMobile } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { type AddTransactionTableModel } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/types.ts';
-import Table from '~v5/common/Table/index.ts';
+import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { getMoreActionsMenu } from '~v5/common/Table/utils.tsx';
 import Button from '~v5/shared/Button/Button.tsx';
 
 import AddTransactionModal from '../AddTransactionModal/AddTransactionModal.tsx';
@@ -39,11 +41,6 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
   const { getFieldState } = useFormContext();
   const fieldState = getFieldState(name);
 
-  const columns = useArbitraryTxsTableColumns({
-    openTransactionModal,
-    isError: !!fieldState.error,
-    hasNoDecisionMethods,
-  });
   const closeTransactionModal = () => {
     setDefaultValues({} as AddTransactionTableModel);
     setIsModalOpen(false);
@@ -88,23 +85,38 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
         }
       : undefined;
 
+  const columns = useArbitraryTxsTableColumns({
+    openTransactionModal,
+    isError: !!fieldState.error,
+    hasNoDecisionMethods,
+    getMenuProps,
+  });
+
   return (
     <div className="pt-4">
       <h5 className="mb-4 text-2">
         {formatText({ id: 'actionSidebar.transactions' })}
       </h5>
       <Table<AddTransactionTableModel>
-        sizeUnit={isMobile ? undefined : '%'}
-        meatBallMenuSize={isMobile ? undefined : 10}
+        overrides={{
+          getRowId: ({ key }) => key,
+          state: {
+            columnVisibility: {
+              [MEATBALL_MENU_COLUMN_ID]: !isMobile,
+            },
+          },
+        }}
+        layout={isMobile ? 'vertical' : 'horizontal'}
         className={clsx('mb-6', {
           '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
             !!fieldState.error,
         })}
-        getRowId={({ key }) => key}
         columns={columns}
-        getMenuProps={getMenuProps}
         data={data.length === 0 ? [{} as AddTransactionTableModel] : data}
-        verticalLayout={isMobile}
+        moreActions={getMoreActionsMenu({
+          getMenuProps,
+          visible: isMobile,
+        })}
       />
       {!readonly && (
         <>

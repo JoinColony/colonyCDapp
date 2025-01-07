@@ -3,7 +3,8 @@ import React, { type FC, useMemo } from 'react';
 
 import { useTablet } from '~hooks';
 import { formatText } from '~utils/intl.ts';
-import Table from '~v5/common/Table/index.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
+import { renderCellContent } from '~v5/common/Table/utils.tsx';
 
 import { useGetSplitPaymentColumns } from './hooks.tsx';
 import {
@@ -79,10 +80,21 @@ const SplitPaymentTable: FC<SplitPaymentTableProps> = ({
               ]
             : data
         }
+        footerColSpan={isTablet ? 2 : undefined}
+        overrides={{
+          state: {
+            columnVisibility: {
+              percent: !isTablet,
+            },
+          },
+        }}
         columns={columns}
-        renderCellWrapper={(_, content) => content}
-        verticalLayout={isTablet}
-        withBorder={false}
+        renderCellWrapper={renderCellContent}
+        layout={isTablet ? 'vertical' : 'horizontal'}
+        borders={{
+          visible: true,
+          type: 'unset',
+        }}
       />
     </div>
   );
