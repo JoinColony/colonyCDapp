@@ -90,6 +90,11 @@ export const useGetSplitPaymentColumns = (
             tokenAddress={row.original.tokenAddress}
           />
         ),
+        meta: {
+          footer: {
+            colSpan: isTablet ? 2 : undefined,
+          },
+        },
       }),
       splitPaymentColumnHelper.accessor('percent', {
         enableSorting: false,
@@ -123,6 +128,11 @@ export const useGetSplitPaymentColumns = (
               </LoadingSkeleton>
             )
           : undefined,
+        meta: {
+          footer: {
+            display: isTablet ? 'none' : undefined,
+          },
+        },
       }),
     ],
     [

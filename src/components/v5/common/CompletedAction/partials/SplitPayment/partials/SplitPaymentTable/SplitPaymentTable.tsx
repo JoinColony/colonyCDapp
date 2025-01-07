@@ -80,11 +80,11 @@ const SplitPaymentTable: FC<SplitPaymentTableProps> = ({
               ]
             : data
         }
-        footerColSpan={isTablet ? 2 : undefined}
         overrides={{
-          state: {
-            columnVisibility: {
-              percent: !isTablet,
+          initialState: {
+            pagination: {
+              pageIndex: 0,
+              pageSize: 400,
             },
           },
         }}

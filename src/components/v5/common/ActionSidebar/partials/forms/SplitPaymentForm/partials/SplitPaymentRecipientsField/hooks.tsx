@@ -152,6 +152,11 @@ export const useRecipientsFieldTableColumns = ({
               )}
             </div>
           ),
+          meta: {
+            footer: {
+              colSpan: isTablet ? 2 : undefined,
+            },
+          },
         }),
         columnHelper.display({
           id: 'percent',
@@ -209,6 +214,11 @@ export const useRecipientsFieldTableColumns = ({
                 );
               }
             : undefined,
+          meta: {
+            footer: {
+              display: isTablet ? 'none' : undefined,
+            },
+          },
         }),
       ],
       // eslint-disable-next-line react-hooks/exhaustive-deps
