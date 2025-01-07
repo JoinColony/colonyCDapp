@@ -16,7 +16,7 @@ import {
   useGetPublicColonyByNameQuery,
 } from '~gql';
 import useIsContributor from '~hooks/useIsContributor.ts';
-import { CREATE_PROFILE_ROUTE } from '~routes/index.ts';
+import { CREATE_PROFILE_ROUTE, NOT_FOUND_ROUTE } from '~routes/index.ts';
 import PageLoader from '~v5/common/PageLoader/index.ts';
 import Button from '~v5/shared/Button/index.ts';
 import CardConnectWallet from '~v5/shared/CardConnectWallet/index.ts';
@@ -144,6 +144,10 @@ const ColonyPreviewPage = () => {
 
   if (isContributor) {
     return <Navigate to={`/${colonyName}`} />;
+  }
+
+  if (!colonyAddress) {
+    return <Navigate to={NOT_FOUND_ROUTE} />;
   }
 
   const inviteIsValid =
