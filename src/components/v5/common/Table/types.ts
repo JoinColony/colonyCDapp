@@ -48,4 +48,9 @@ export interface TableProps<T>
   showTableHead?: boolean;
   showTableBorder?: boolean;
   alwaysShowPagination?: boolean;
+  loadMoreProps?: {
+    renderContent: (loadMore: () => void) => React.ReactNode;
+    itemsPerPage: number;
+  };
+  hidePagination?: boolean;
 }

@@ -220,7 +220,7 @@ export const getAmountPerValue = (interval: string) => {
 
 export const convertToMonthlyAmount = (
   amount: BigNumber,
-  interval: number,
+  interval: BigNumber,
 ): BigNumber => {
   const intervalsPerMonth = BigNumber.from(SECONDS_IN_MONTH).div(interval);
 

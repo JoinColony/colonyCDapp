@@ -9,18 +9,27 @@ const displayName =
 interface UserFieldProps {
   address: string;
   isLoading: boolean;
+  toggleExpanded: (expanded?: boolean | undefined) => void;
 }
 
-const UserField: FC<UserFieldProps> = ({ address, isLoading }) => {
+const UserField: FC<UserFieldProps> = ({
+  address,
+  isLoading,
+  toggleExpanded,
+}) => {
   const { user, loading: isUserLoading } = useUserByAddress(address, true);
 
   return isUserLoading || isLoading ? (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 pl-[1.125rem]">
       <div className="h-6 w-6 overflow-hidden rounded-full skeleton" />
       <div className="h-5 w-1/4 overflow-hidden skeleton" />
     </div>
   ) : (
-    <div className="flex items-center gap-4">
+    <button
+      type="button"
+      className="flex h-full w-full items-center gap-4 pl-[1.125rem] pr-4"
+      onClick={() => toggleExpanded()}
+    >
       <UserAvatar
         size={24}
         userAvatarSrc={user?.profile?.avatar ?? undefined}
@@ -30,7 +39,7 @@ const UserField: FC<UserFieldProps> = ({ address, isLoading }) => {
       <span className="text-1">
         {user?.profile?.displayName || user?.walletAddress}
       </span>
-    </div>
+    </button>
   );
 };
 
