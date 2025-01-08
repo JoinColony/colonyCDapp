@@ -4,12 +4,14 @@ import { useEffect, useMemo } from 'react';
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
 import { formatText } from '~utils/intl.ts';
-
-import { type TokenSearchItemOption } from '../TokenSearchItem/types.ts';
+import {
+  type TokenOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 export const useSearchSelect = (
   searchValue: string,
-  filterOptionsFn?: (option: TokenSearchItemOption) => boolean,
+  filterOptionsFn?: (option: SearchSelectOption<TokenOption>) => boolean,
 ) => {
   const { setOptions, options, suggestedOptions } = useTokenSelectContext();
 
@@ -55,7 +57,7 @@ export const useSearchSelect = (
     }
   }, [setOptions, tokenData?.getTokenFromEverywhere?.items]);
 
-  const searchedOptions: TokenSearchItemOption[] = useMemo(
+  const searchedOptions: SearchSelectOption<TokenOption>[] = useMemo(
     () =>
       options.filter((option) => {
         const searchQuery = searchValue.toLowerCase();
@@ -89,9 +91,22 @@ export const useSearchSelect = (
     [filterOptionsFn, suggestedOptions],
   );
 
+  const items = useMemo(() => {
+    return [
+      {
+        key: 'tokens',
+        title: !searchValue
+          ? {
+              id: 'manageTokensTable.suggestedTokens',
+            }
+          : undefined,
+        options: searchValue ? filteredOptions : filteredSuggestedOptions,
+      },
+    ];
+  }, [searchValue, filteredOptions, filteredSuggestedOptions]);
+
   return {
-    filteredOptions,
     loading,
-    suggestedOptions: filteredSuggestedOptions,
+    items,
   };
 };

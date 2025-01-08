@@ -7,8 +7,12 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import ChainBadge from '~v5/common/Pills/ChainBadge/ChainBadge.tsx';
+import { renderIconOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/IconOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOption,
+  type IconOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 import { useChainOptions } from './hooks.ts';
 
@@ -18,7 +22,7 @@ interface ChainSelectProps {
   name: string;
   disabled?: boolean;
   readOnly?: boolean;
-  filterOptionsFn?: (option: SearchSelectOption) => boolean;
+  filterOptionsFn?: (option: SearchSelectOption<IconOption>) => boolean;
 }
 
 const ChainSelect: FC<ChainSelectProps> = ({
@@ -117,6 +121,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
 
                 toggleChainSelectOff();
               }}
+              renderOption={renderIconOption}
               className="z-sidebar"
             />
           )}
