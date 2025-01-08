@@ -11,9 +11,7 @@ import StatsCards from './partials/StatsCards/StatsCards.tsx';
 const displayName = 'v5.pages.StreamingPaymentsPage';
 
 const StreamingPaymentsPage = () => {
-  useSetPageHeadingTitle(
-    formatText({ id: 'navigation.finances.streamingPayments' }),
-  );
+  useSetPageHeadingTitle(formatText({ id: 'streamingPaymentsPage.title' }));
 
   const nativeDomainId = useGetSelectedDomainFilter()?.nativeId;
 
