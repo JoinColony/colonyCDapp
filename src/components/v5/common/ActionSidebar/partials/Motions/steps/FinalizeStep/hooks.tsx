@@ -19,7 +19,6 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 
@@ -88,7 +87,6 @@ export const useFinalizeStep = (actionData: MotionAction) => {
 export const useClaimConfig = (
   actionData: MotionAction,
   startPollingAction: (pollingInterval: number) => void,
-  refetchAction: RefetchAction,
 ) => {
   const {
     motionData: {
@@ -96,14 +94,13 @@ export const useClaimConfig = (
       stakerRewards,
       usersStakes,
       voterRewards,
-      databaseMotionId,
       remainingStakes,
     },
     transactionHash,
   } = actionData;
   const { user } = useAppContext();
   const {
-    colony: { colonyAddress, nativeToken, motionsWithUnclaimedStakes },
+    colony: { colonyAddress, nativeToken },
   } = useColonyContext();
   const { extensionData } = useExtensionData(Extension.VotingReputation);
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
@@ -120,31 +117,6 @@ export const useClaimConfig = (
   const stakerReward = stakerRewards.find(
     ({ address }) => address === userAddress,
   );
-
-  // Keep isClaimed state in sync with changes to unclaimed motions on colony object
-  useEffect(() => {
-    if (motionsWithUnclaimedStakes) {
-      const motionIsUnclaimed = motionsWithUnclaimedStakes.some(
-        ({ motionId }) => motionId === databaseMotionId,
-      );
-
-      if (!motionIsUnclaimed) {
-        setIsClaimed(true);
-        refetchAction();
-      } else {
-        setIsClaimed(false);
-      }
-    }
-  }, [motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
-
-  // Keep isClaimed state in sync with user changes
-  useEffect(() => {
-    if (!user) {
-      setIsClaimed(false);
-    } else {
-      setIsClaimed(!!stakerReward?.isClaimed);
-    }
-  }, [user, stakerReward?.isClaimed]);
 
   useEffect(() => {
     if (stakerReward?.isClaimed && !isClaimed) {
