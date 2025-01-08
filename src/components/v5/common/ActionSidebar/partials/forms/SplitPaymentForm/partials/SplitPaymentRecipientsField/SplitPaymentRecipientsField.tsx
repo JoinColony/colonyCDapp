@@ -47,9 +47,8 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
   const value: SplitPaymentRecipientsFieldModel[] = useWatch({ name }) || [];
   const amount: string | undefined = useWatch({ name: 'amount' });
   const isTablet = useTablet();
-  const getMenuProps = ({ index }) => ({
-    cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
-    items: [
+  const getMenuProps = ({ index }) => {
+    const baseItems = [
       {
         key: 'add-token',
         onClick: () =>
@@ -68,14 +67,18 @@ const SplitPaymentRecipientsField: FC<SplitPaymentRecipientsFieldProps> = ({
         label: formatText({ id: 'table.row.duplicate' }),
         icon: CopySimple,
       },
-      {
-        key: 'remove',
-        onClick: () => fieldArrayMethods.remove(index),
-        label: formatText({ id: 'table.row.remove' }),
-        icon: Trash,
-      },
-    ],
-  });
+    ];
+    const removeItem = {
+      key: 'remove',
+      onClick: () => fieldArrayMethods.remove(index),
+      label: formatText({ id: 'table.row.remove' }),
+      icon: Trash,
+    };
+    return {
+      cardClassName: 'min-w-[9.625rem] whitespace-nowrap',
+      items: data?.length > 1 ? [...baseItems, removeItem] : baseItems,
+    };
+  };
   const columns = useRecipientsFieldTableColumns({
     name,
     token,

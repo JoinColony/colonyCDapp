@@ -33,7 +33,7 @@ export const getSplitPaymentPayload = (
       ? undefined
       : findDomainByNativeId(createdIn, colony) || rootDomain;
 
-  if (!payments.length) {
+  if (!payments?.length) {
     return null;
   }
 
@@ -52,12 +52,13 @@ export const getSplitPaymentPayload = (
       SplitPaymentDistributionType,
       distributionMethod,
     ),
-    payouts: payments.map((payment) => ({
-      recipientAddress: payment.recipient,
-      tokenAddress,
-      amount: payment.amount,
-      claimDelay: '0',
-      tokenDecimals,
-    })),
+    payouts:
+      payments?.map((payment) => ({
+        recipientAddress: payment.recipient,
+        tokenAddress,
+        amount: payment.amount,
+        claimDelay: '0',
+        tokenDecimals,
+      })) || [],
   };
 };
