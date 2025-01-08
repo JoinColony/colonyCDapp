@@ -25,6 +25,7 @@ const SearchSelectInner = <T,>(
     onSearch,
     onDebouncedSearch,
     showEmptyContent = true,
+    showSearchValueAsOption = false,
     emptyContent,
     state,
     message,
@@ -44,7 +45,11 @@ const SearchSelectInner = <T,>(
     onSearch,
     onDebouncedSearch,
   );
-  const filteredList = useFilterItems(items, debouncedSearchValue);
+  const filteredList = useFilterItems(
+    items,
+    debouncedSearchValue,
+    showSearchValueAsOption,
+  );
 
   const contentFallback =
     showEmptyContent &&

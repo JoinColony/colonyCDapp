@@ -54,6 +54,7 @@ const TokenSearchSelect = React.forwardRef<
         onSearch={onSearch}
         onDebouncedSearch={handleDebouncedSearch}
         showEmptyContent={!hasError}
+        showSearchValueAsOption
         additionalButtons={additionalButtons}
         hideSearchOnMobile={hideSearchOnMobile}
         message={message}
