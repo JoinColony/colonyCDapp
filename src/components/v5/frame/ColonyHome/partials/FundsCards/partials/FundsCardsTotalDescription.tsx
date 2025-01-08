@@ -20,6 +20,10 @@ const MSG = defineMessages({
     id: 'v5.frame.ColonyHome.FundsCards.FundsCardsTotalDescription.weeklyTrend',
     defaultMessage: '{percent} Week',
   },
+  native: {
+    id: 'v5.frame.ColonyHome.FundsCards.FundsCardsTotalDescription.native',
+    defaultMessage: 'Native',
+  },
 });
 
 export const FundsCardsTotalDescription: React.FC<
@@ -36,11 +40,11 @@ export const FundsCardsTotalDescription: React.FC<
   );
 
   return (
-    <div className="mt-1.5 flex w-full justify-between text-xs">
+    <div className="mt-1 flex w-full justify-between text-xs">
       <LoadingSkeleton isLoading={isLoading} className="h-4 w-[114px] rounded">
-        <span className="uppercase text-gray-400">
+        <span className="font-medium uppercase text-gray-400">
           <Numeral
-            prefix="Native"
+            prefix={formatText(MSG.native)}
             value={tokenBalance.toString()}
             decimals={nativeToken.decimals}
             suffix={` ${nativeToken.symbol}`}
