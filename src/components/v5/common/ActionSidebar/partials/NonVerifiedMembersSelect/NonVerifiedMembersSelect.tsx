@@ -156,6 +156,7 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
                 'left-6 right-[1.9rem] w-auto': isMobile,
               })}
               showEmptyContent
+              showSearchValueAsOption
               additionalButtons={
                 isMobile && (
                   <div className="flex items-center justify-between gap-2 pt-2">
