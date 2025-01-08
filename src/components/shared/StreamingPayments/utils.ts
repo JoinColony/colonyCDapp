@@ -44,6 +44,17 @@ export const calculateToCurrency = async ({
   return new Decimal(balanceInWeiToEth).mul(currentPrice ?? 0);
 };
 
+const calculateActiveStreaming = (
+  singleStreamAmount: number,
+  streamingInterval: number,
+) => {
+  const thirtyDaysInSeconds = 30 * 24 * 3600;
+
+  const activeStreaming =
+    (singleStreamAmount / streamingInterval) * thirtyDaysInSeconds;
+  return activeStreaming;
+};
+
 export const calculateTotalsFromStreams = async ({
   colony,
   currency,
@@ -95,11 +106,26 @@ export const calculateTotalsFromStreams = async ({
         colony,
       });
 
+      const singleStreamAmount = await calculateToCurrency({
+        amount: item.amount,
+        tokenAddress: item.tokenAddress,
+        currency,
+        colony,
+      });
+
+      const singleStreamAmountToNumber = singleStreamAmount?.toNumber() ?? 0;
+
+      const streamedFundsInLast30Days = calculateActiveStreaming(
+        singleStreamAmountToNumber,
+        Number(item.interval),
+      );
+
       const {
         totalAvailable,
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond,
+        lastMonthStreaming,
       } = await result;
 
       return {
@@ -111,6 +137,11 @@ export const calculateTotalsFromStreams = async ({
         isAtLeastOnePaymentActive:
           paymentStatus === StreamingPaymentStatus.Active ||
           isAtLeastOnePaymentActive,
+        lastMonthStreaming: lastMonthStreaming.add(
+          paymentStatus === StreamingPaymentStatus.Active
+            ? streamedFundsInLast30Days
+            : 0,
+        ),
       };
     },
     Promise.resolve({
@@ -118,6 +149,8 @@ export const calculateTotalsFromStreams = async ({
       totalClaimed: new Decimal(0),
       ratePerSecond: new Decimal(0),
       isAtLeastOnePaymentActive: false,
+      itemsWithinLastMonth: [],
+      lastMonthStreaming: new Decimal(0),
     }),
   );
 
@@ -126,6 +159,7 @@ export const calculateTotalsFromStreams = async ({
     totalAvailable,
     isAtLeastOnePaymentActive,
     ratePerSecond,
+    lastMonthStreaming,
   } = await totals;
 
   return {
@@ -133,5 +167,6 @@ export const calculateTotalsFromStreams = async ({
     totalAvailable: totalAvailable.toNumber(),
     ratePerSecond: ratePerSecond.toNumber(),
     isAtLeastOnePaymentActive,
+    lastMonthStreaming: lastMonthStreaming.toNumber(),
   };
 };
