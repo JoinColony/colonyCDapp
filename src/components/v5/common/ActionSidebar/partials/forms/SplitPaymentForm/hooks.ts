@@ -5,7 +5,6 @@ import { array, type InferType, number, object, string } from 'yup';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { SplitPaymentDistributionType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -81,9 +80,23 @@ export const useValidationSchema = () => {
               ),
           ),
         createdIn: number().defined().required(),
-        team: number().required(),
-        decisionMethod: string().defined().required(),
-        distributionMethod: string().defined().required(),
+        team: number()
+          .required()
+          .typeError(formatText({ id: 'errors.domain' })),
+        decisionMethod: string()
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.decisionMethod.defined' }),
+            (value) => value !== undefined,
+          )
+          .required(),
+        distributionMethod: string()
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.distributionMethod.defined' }),
+            (value) => value !== undefined,
+          )
+          .required(),
         payments: array()
           .of(
             object()
@@ -176,22 +189,24 @@ export const useValidationSchema = () => {
               .defined()
               .required(),
           )
+          /*
+           * Transform empty arrays to null since array.of() validation passes for empty arrays,
+           * preventing array.min() from being properly checked. This ensures length validation
+           * gets triggered before object-level validation occurs.
+           */
+          .transform((value) => {
+            if (!value || value.length === 0) return null;
+            return value;
+          })
+          .required(formatText({ id: 'errors.payments.defined' }))
           .test(
             'sum',
             formatText({ id: 'errors.sumOfPercentageMustBe100' }) || '',
             (value, context) => {
               const { parent } = context;
-              const decisionMethod = parent?.decisionMethod;
               const distributionMethod = parent?.distributionMethod;
-              if (!value) {
-                return false;
-              }
 
-              if (
-                !decisionMethod ||
-                distributionMethod === SplitPaymentDistributionType.Equal ||
-                distributionMethod === SplitPaymentDistributionType.Reputation
-              ) {
+              if (!distributionMethod || !value) {
                 return true;
               }
 
@@ -203,7 +218,8 @@ export const useValidationSchema = () => {
               return sum === 100;
             },
           )
-          .required(),
+          .defined()
+          .nullable(),
       })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
