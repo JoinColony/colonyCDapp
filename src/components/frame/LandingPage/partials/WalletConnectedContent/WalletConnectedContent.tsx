@@ -41,7 +41,15 @@ const WalletConnectedContent = ({
   remainingInvitations,
 }: WalletConnectedContentProps) => (
   <div className="relative w-full">
-    <div className="w-full md:absolute md:top-[50%] md:h-[31.25rem] md:translate-y-[-15.625rem] md:pt-0">
+    <div
+      className={clsx(
+        'md:absolute md:top-[50%] md:translate-y-[-15.625rem] md:pt-0',
+        {
+          'w-full md:h-[600px]': availableColonies.length <= 5,
+          'w-[calc(100%+20px)] md:h-[550px]': availableColonies.length > 5,
+        },
+      )}
+    >
       <div className="flex h-full flex-col">
         <h1 className="hidden pb-2 heading-2 md:block">
           {formatText(MSG.displayColoniesTitle)}
@@ -62,14 +70,20 @@ const WalletConnectedContent = ({
                 name,
                 displayName: colonyName,
               }) => (
-                <Link to={`/${name}`} key={address}>
-                  <ColonyCard
-                    colonyAddress={address}
-                    colonyAvatar={avatar}
-                    colonyName={colonyName ?? ''}
-                    membersCount={membersCount ?? 0}
-                  />
-                </Link>
+                <div
+                  className={clsx({
+                    'pr-4': availableColonies.length > 5,
+                  })}
+                >
+                  <Link to={`/${name}`} key={address}>
+                    <ColonyCard
+                      colonyAddress={address}
+                      colonyAvatar={avatar}
+                      colonyName={colonyName ?? ''}
+                      membersCount={membersCount ?? 0}
+                    />
+                  </Link>
+                </div>
               ),
             )
           ) : (
@@ -82,8 +96,8 @@ const WalletConnectedContent = ({
         {hasShareableInvitationCode && (
           <div
             className={clsx({
-              'absolute bottom-0 w-full translate-y-[100%]':
-                availableColonies.length > 4,
+              'absolute bottom-0 w-full translate-y-[100%] pr-5':
+                availableColonies.length > 5,
             })}
           >
             <ShareInvitationButton

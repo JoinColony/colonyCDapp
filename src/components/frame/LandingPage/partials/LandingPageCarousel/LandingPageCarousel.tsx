@@ -60,7 +60,7 @@ const LandingPageCarousel = () => {
 
   return (
     <div className="flex h-full flex-col justify-center">
-      <div className="w-full px-8 pb-9 pt-4.5 md:hidden">
+      <div className="w-full px-6 pb-9 pt-4.5 md:hidden">
         <img className="w-full" src={SlideMobile} alt="slider mobile" />
       </div>
       <div className="flex hidden h-full w-full max-w-[31.25rem] flex-col pt-11 md:block">
@@ -100,7 +100,7 @@ const LandingPageCarousel = () => {
                 })}
               </div>
             }
-            slidesContainerClassName="relative top-[50%] translate-y-[-50%]"
+            slidesContainerClassName="relative top-[50%] translate-y-[-50%] md:min-w-[25rem] lg:min-w-[35rem] min-h-[35rem]"
             slideUrls={[Slide1, Slide2, Slide3]}
             slideWrapperClassName="min-w-full"
             slideImageClassName="w-full object-cover"

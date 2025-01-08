@@ -79,7 +79,7 @@ const CreateColonyPage = () => {
         </div>
       }
     >
-      <div className="flex h-full items-center px-8 md:px-0">
+      <div className="flex h-full items-center px-6 md:px-0">
         <div className="w-full">
           <div className="mb-8">
             <h1 className="heading-2">
