@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 
 import PermissionRow from '~frame/v5/pages/VerifiedPage/partials/PermissionRow/index.ts';
+import { formatDate } from '~utils/date.ts';
 import { formatText } from '~utils/intl.ts';
 import MenuWithStatusText from '~v5/shared/MenuWithStatusText/index.ts';
 import RelativeDate from '~v5/shared/RelativeDate/index.ts';

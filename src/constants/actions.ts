@@ -31,6 +31,7 @@ export const PERMISSIONS_NEEDED_FOR_ACTION = {
   PaymentBuilder: [[ColonyRole.Administration]],
   SplitPayment: [[ColonyRole.Administration]],
   StagedPayment: [[ColonyRole.Administration]],
+  StreamingPayment: [[ColonyRole.Administration]],
 };
 
 export enum Action {
