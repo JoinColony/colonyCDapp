@@ -36,7 +36,6 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
   const chainSelectFilterFn = useFilterChainSelectField();
   const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
     DecisionMethod.MultiSig,
-    DecisionMethod.Reputation,
   ]);
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,

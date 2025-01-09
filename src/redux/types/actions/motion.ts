@@ -475,4 +475,22 @@ export type MotionActionTypes =
   | ActionTypeWithMeta<
       ActionTypes.MOTION_MANAGE_TOKENS_SUCCESS,
       MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_PROXY_COLONY_CREATE,
+      {
+        colonyAddress: Address;
+        customActionTitle: string;
+        annotationMessage?: string;
+        colonyRoles: ColonyRoleFragment[];
+        colonyDomains: Domain[];
+        foreignChainId: number;
+        creationSalt: string;
+      },
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_PROXY_COLONY_CREATE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_PROXY_COLONY_CREATE_SUCCESS,
+      MetaWithSetter<object>
     >;
