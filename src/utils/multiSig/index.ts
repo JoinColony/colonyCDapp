@@ -69,6 +69,9 @@ export const getRolesNeededForMultiSigAction = ({
     case ColonyActionType.ManageTokensMultisig:
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageTokens;
       break;
+    case ColonyActionType.AddProxyColonyMultisig:
+      permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains;
+      break;
     default:
       permissions = undefined;
       break;

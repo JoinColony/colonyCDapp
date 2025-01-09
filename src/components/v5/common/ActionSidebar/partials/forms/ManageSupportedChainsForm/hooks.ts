@@ -49,7 +49,10 @@ const useActionType = () => {
     return ActionTypes.PROXY_COLONY_ENABLE;
   }
 
-  if (decisionMethod === DecisionMethod.Reputation) {
+  if (
+    decisionMethod === DecisionMethod.Reputation ||
+    decisionMethod === DecisionMethod.MultiSig
+  ) {
     return ActionTypes.MOTION_PROXY_COLONY_CREATE;
   }
 
