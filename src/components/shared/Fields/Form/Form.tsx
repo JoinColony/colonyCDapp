@@ -103,7 +103,7 @@ const Form = <FormData extends FieldValues>({
     watch,
     reset,
     getValues,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors: formErrors },
   } = formHelpers;
   const values = watch();
 
@@ -112,10 +112,10 @@ const Form = <FormData extends FieldValues>({
    * Useful in user settings.
    */
   useEffect(() => {
-    if (isSubmitting && resetOnSubmit) {
+    if (isSubmitting && resetOnSubmit && !Object.keys(formErrors)) {
       reset(values);
     }
-  }, [isSubmitting, values, resetOnSubmit, reset]);
+  }, [isSubmitting, values, resetOnSubmit, reset, formErrors]);
 
   const submitHandler = useCallback<React.FormEventHandler<HTMLFormElement>>(
     (event) => {
