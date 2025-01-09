@@ -74,6 +74,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
             setActiveTab(ExtensionDetailsPageTabId.Settings);
           }}
           isFullSize={isMobile}
+          disabled={waitingForActionConfirmation}
         >
           {formatText({ id: 'button.enable' })}
         </Button>
@@ -83,7 +84,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     return (
       <ButtonWithLoader
         type="submit"
-        disabled={!isValid}
+        disabled={!isValid || waitingForActionConfirmation}
         isFullSize={isMobile}
         loading={isSubmitting || waitingForActionConfirmation}
       >
@@ -98,6 +99,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
         type="submit"
         isFullSize={isMobile}
         loading={isSubmitting || waitingForActionConfirmation}
+        disabled={waitingForActionConfirmation}
       >
         {formatText({ id: 'button.saveChanges' })}
       </ButtonWithLoader>

@@ -149,6 +149,7 @@ export const handleWaitingForDbAfterFormCompletion = async ({
       await waitForDbAfterExtensionAction({
         method,
         refetchExtensionData,
+        setWaitingForActionConfirmation,
         initialiseTransactionFailed,
         setUserRolesTransactionFailed,
       });

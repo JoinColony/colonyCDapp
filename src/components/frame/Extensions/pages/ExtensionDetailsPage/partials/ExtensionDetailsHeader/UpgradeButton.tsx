@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { waitForDbAfterExtensionAction } from '~frame/Extensions/pages/ExtensionDetailsPage/utils.tsx';
 import { useMobile } from '~hooks/index.ts';
 import useExtensionData, { ExtensionMethods } from '~hooks/useExtensionData.ts';
@@ -28,6 +29,8 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
     isSupportedColonyVersion,
   } = useColonyContext();
   const isMobile = useMobile();
+  const { setWaitingForActionConfirmation, waitingForActionConfirmation } =
+    useExtensionDetailsPageContext();
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const [isPolling, setIsPolling] = useState(false);
   const [isUpgradeDisabled, setIsUpgradeDisabled] = useState(false);
@@ -51,6 +54,7 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
     setIsPolling(true);
     await waitForDbAfterExtensionAction({
       method: ExtensionMethods.UPGRADE,
+      setWaitingForActionConfirmation,
       refetchExtensionData,
       latestVersion: extensionData.availableVersion,
     });
@@ -85,7 +89,7 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
       onError={handleUpgradeError}
       isLoading={isPolling}
       isFullSize={isMobile}
-      disabled={isUpgradeButtonDisabled}
+      disabled={isUpgradeButtonDisabled || waitingForActionConfirmation}
     >
       {formatText({ id: 'button.updateVersion' })}
     </ActionButton>
