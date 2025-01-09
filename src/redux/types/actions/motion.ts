@@ -18,6 +18,7 @@ import {
   type Address,
   type ManageVerifiedMembersOperation,
 } from '~types/index.ts';
+import { type ManageEntityOperation } from '~v5/common/ActionSidebar/consts.ts';
 
 import { type OneTxPaymentPayload } from './colonyActions.ts';
 import {
@@ -87,6 +88,17 @@ export type MotionDomainCreateEditPayload = {
   colonyDomains: Domain[];
   domainCreatedInNativeId: number;
 };
+
+type MotionProxyColonyEnableDisablePayload = {
+  colonyAddress: Address;
+  customActionTitle: string;
+  annotationMessage?: string;
+  colonyDomains: Domain[];
+  foreignChainId: number;
+  operation: ManageEntityOperation;
+  isMultiSig?: boolean;
+};
+
 interface OneTxPaymentMotionPayload extends OneTxPaymentPayload {
   colonyDomains: Domain[];
   colonyRoles: ColonyRoleFragment[];
@@ -492,5 +504,25 @@ export type MotionActionTypes =
   | ErrorActionType<ActionTypes.MOTION_PROXY_COLONY_CREATE_ERROR, object>
   | ActionTypeWithMeta<
       ActionTypes.MOTION_PROXY_COLONY_CREATE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_PROXY_COLONY_ENABLE,
+      MotionProxyColonyEnableDisablePayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_PROXY_COLONY_ENABLE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_PROXY_COLONY_ENABLE_SUCCESS,
+      MetaWithSetter<object>
+    >
+  | UniqueActionType<
+      ActionTypes.MOTION_PROXY_COLONY_REMOVE,
+      MotionProxyColonyEnableDisablePayload,
+      MetaWithSetter<object>
+    >
+  | ErrorActionType<ActionTypes.MOTION_PROXY_COLONY_REMOVE_ERROR, object>
+  | ActionTypeWithMeta<
+      ActionTypes.MOTION_PROXY_COLONY_REMOVE_SUCCESS,
       MetaWithSetter<object>
     >;
