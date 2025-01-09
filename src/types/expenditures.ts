@@ -18,3 +18,15 @@ export interface ExpenditureStageFieldValue {
 export interface ExpenditurePayoutWithSlotId extends ExpenditurePayout {
   slotId: number;
 }
+
+export enum ExpenditureActionStatus {
+  Review = 'Review',
+  Funding = 'Funding',
+  Release = 'Release',
+  Changes = 'Changes',
+  Cancel = 'Cancel',
+  Canceled = 'Canceled',
+  Payable = 'Payable',
+  Passed = 'Passed',
+  Edit = 'Edit',
+}
