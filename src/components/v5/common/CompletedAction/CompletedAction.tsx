@@ -120,6 +120,8 @@ const CompletedAction = ({ action }: ICompletedAction) => {
         return <SplitPayment action={action} />;
       case ColonyActionType.CreateStreamingPayment:
         return <StreamingPayment action={action} />;
+      case ColonyActionType.CancelStreamingPayment:
+        return <StreamingPayment action={action} />;
       default:
         console.warn('Unsupported action display', action);
         return <div>Not implemented yet</div>;
