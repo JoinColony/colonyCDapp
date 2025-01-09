@@ -84,6 +84,7 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ColonyActionType.AddProxyColony:
       case ColonyActionType.RemoveProxyColony:
       case ColonyActionType.AddProxyColonyMotion:
+      case ColonyActionType.AddProxyColonyMultisig:
         return <ManageSupportedChain action={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:

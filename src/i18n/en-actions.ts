@@ -73,6 +73,7 @@ const actionsMessageDescriptors = {
       }}
       ${ColonyActionType.AddProxyColony} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.AddProxyColonyMotion} {Add support for {chain} chain by {initiator}}
+      ${ColonyActionType.AddProxyColonyMultisig} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.RemoveProxyColony} {Remove support for {chain} chain by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
@@ -145,6 +146,7 @@ const actionsMessageDescriptors = {
 =======
       ${ColonyActionType.AddProxyColony} {Manage supported chains}
       ${ColonyActionType.AddProxyColonyMotion} {Manage supported chains}
+      ${ColonyActionType.AddProxyColonyMultisig} {Manage supported chains}
       ${ColonyActionType.RemoveProxyColony} {Manage supported chains}
 >>>>>>> 6aee3801c (Feat: Add manage supported chain action)
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
