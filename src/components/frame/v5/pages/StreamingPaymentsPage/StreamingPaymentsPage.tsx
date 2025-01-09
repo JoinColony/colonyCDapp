@@ -5,6 +5,7 @@ import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingC
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
 import { formatText } from '~utils/intl.ts';
+import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
 import StatsCards from './partials/StatsCards/StatsCards.tsx';
 
@@ -29,14 +30,19 @@ const StreamingPaymentsPage = () => {
   });
 
   return (
-    <StatsCards
-      streamingPerMonth={totalLastMonthStreaming}
-      totalActiveStreams={activeStreamingPayments}
-      totalStreamed={totalStreamed}
-      unclaimedFounds={totalFunds.totalAvailable}
-      prefix={currencySymbolMap[currency]}
-      suffix={currency}
-    />
+    <>
+      <TeamFilter />
+      <div className="pt-8">
+        <StatsCards
+          streamingPerMonth={totalLastMonthStreaming}
+          totalActiveStreams={activeStreamingPayments}
+          totalStreamed={totalStreamed}
+          unclaimedFounds={totalFunds.totalAvailable}
+          prefix={currencySymbolMap[currency]}
+          suffix={currency}
+        />
+      </div>
+    </>
   );
 };
 
