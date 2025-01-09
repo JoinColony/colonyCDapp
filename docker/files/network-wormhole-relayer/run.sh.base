@@ -1,0 +1,48 @@
+#!/bin/bash
+cd ./colonyNetwork/lib/wormhole/ && DOCKER_BUILDKIT=1 docker build --target node-export -f Dockerfile.proto -o type=local,dest=. .
+cd ../.. && npx tsc --esModuleInterop --downlevelIteration ./scripts/mockGuardianSpy.ts
+
+cd ./lib/safe-contracts
+
+# This is the private key for the first account we create on ganache, so has ether to pay for gas fees
+rm -rf ./deployments/custom
+PK="0x0355596cdb5e5242ad082c4fe3f8bbe48c9dba843fe1f99dd8272f487e70efae" NODE_URL=http://network:8545 npx hardhat deploy --network custom
+
+rm -rf ./deployments/custom
+PK="0x0355596cdb5e5242ad082c4fe3f8bbe48c9dba843fe1f99dd8272f487e70efae" NODE_URL=http://network-remote:8545 npx hardhat deploy --network custom
+
+rm -rf ./deployments/custom
+PK="0x0355596cdb5e5242ad082c4fe3f8bbe48c9dba843fe1f99dd8272f487e70efae" NODE_URL=http://network-remote-2:8545 npx hardhat deploy --network custom
+
+cd ../../
+
+echo "const wormhole = require("@certusone/wormhole-sdk");
+
+module.exports = {
+  chains: {
+    [wormhole.CHAIN_ID_ARBITRUM_SEPOLIA]: {
+      endpoints: ["http://localhost:8545"],
+      colonyBridgeAddress: "0x633899227A3BC1f79de097149E1E3C8097c07b1a",
+      payForGas: true,
+      evmChainId: 265669100,
+    },
+    [wormhole.CHAIN_ID_SEPOLIA]: {
+      endpoints: ["http://localhost:8546"],
+      colonyBridgeAddress: "0x161944B5601a7d3004E20d4Ca823F710838Ea1be",
+      payForGas: true,
+      evmChainId: 265669101,
+    },
+    [wormhole.CHAIN_ID_OPTIMISM_SEPOLIA]: {
+      endpoints: ["http://localhost:8547"],
+      colonyBridgeAddress: "0x161944B5601a7d3004E20d4Ca823F710838Ea1be",
+      payForGas: false,
+      evmChainId: 265669102,
+    },
+    }
+  },
+};
+" > ./packages/wormhole-relayer/config.js
+
+node -e 'require("./scripts/setup-bridging-contracts.js").setupBridging("http://network:8545", ["http://network-remote:8545", "http://network-remote-2:8545"])'
+
+sleep infinity
