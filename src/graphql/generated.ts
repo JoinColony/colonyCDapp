@@ -605,6 +605,7 @@ export enum ColonyActionType {
   /** An action related to creating a proxy colony */
   AddProxyColony = 'ADD_PROXY_COLONY',
   AddProxyColonyMotion = 'ADD_PROXY_COLONY_MOTION',
+  AddProxyColonyMultisig = 'ADD_PROXY_COLONY_MULTISIG',
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
