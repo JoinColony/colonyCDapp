@@ -506,6 +506,7 @@ export type MotionActionTypes =
         colonyDomains: Domain[];
         foreignChainId: number;
         creationSalt: string;
+        isMultiSig: boolean;
       },
       MetaWithSetter<object>
     >

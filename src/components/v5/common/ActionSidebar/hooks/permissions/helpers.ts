@@ -109,6 +109,9 @@ export const getPermissionsNeededForAction = (
     case Action.ArbitraryTxs: {
       return PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
     }
+    case Action.ManageSupportedChains: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains;
+    }
 
     default:
       return undefined;
