@@ -46,8 +46,9 @@ export const LandingPageLayout = ({
                 <div className="w-full md:max-w-[28.125rem]">{children}</div>
               </div>
             </div>
-            <div className="flex-none md:flex-1 md:rounded-l-3xl md:bg-gray-50">
-              <div className="flex h-full w-full flex-col items-center justify-center md:max-w-[43.75rem]">
+            <div className="relative flex-none md:flex-1 md:rounded-l-3xl md:bg-gray-50">
+              <div className="absolute left-0 top-0 h-[72%] w-full bg-gray-50 md:hidden" />
+              <div className="relative flex h-full w-full flex-col items-center justify-center md:max-w-[43.75rem]">
                 <div className="block h-full w-full min-w-[7.75rem] px-6 pt-8 md:hidden">
                   <ColonyLogo
                     color={isDarkMode ? light.baseWhite : light.gray900}

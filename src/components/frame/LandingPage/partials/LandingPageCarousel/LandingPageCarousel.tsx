@@ -60,8 +60,12 @@ const LandingPageCarousel = () => {
 
   return (
     <div className="flex h-full flex-col justify-center">
-      <div className="w-full px-6 pb-9 pt-4.5 md:hidden">
-        <img className="w-full" src={SlideMobile} alt="slider mobile" />
+      <div className="w-full overflow-hidden rounded-md px-6 pb-9 pt-4.5 md:hidden">
+        <img
+          className="w-full overflow-hidden rounded-xl drop-shadow-default"
+          src={SlideMobile}
+          alt="slider mobile"
+        />
       </div>
       <div className="flex hidden h-full w-full max-w-[31.25rem] flex-col pt-11 md:block">
         <div className="h-full flex-1 pb-[3.125rem]">
