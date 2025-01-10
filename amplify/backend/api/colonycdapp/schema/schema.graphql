@@ -2903,6 +2903,18 @@ type ColonyMultiSig @model {
   """
   expenditureId: ID
     @index(name: "byExpenditureId", queryField: "getMultiSigByExpenditureId")
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMultiSigByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 """
 Represents a Motion within a Colony
@@ -3038,6 +3050,18 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMotionByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 
 type ExpenditureFundingItem {
@@ -3551,16 +3575,19 @@ type ColonyAction @model @searchable {
   Ids of the staged payment slots released by the action, if any
   """
   expenditureSlotIds: [Int!]
-<<<<<<< HEAD
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
   """
   Multichain info if the action is bridged
-=======
-  """
-  Multichain info if the action is bridged"
->>>>>>> 4c26eff2a (Feat: Add multichain info to action)
   """
   multiChainInfo: MultiChainInfo
+  """
+  The motion action txHash that this action finalized
+  """
+  finalizedActionId: ID
+  """
+  Expanded `ColonyAction`
+  """
+  finalizedActionData: ColonyAction @hasOne(fields: ["finalizedActionId"])
 }
 
 type MultiChainInfo {
