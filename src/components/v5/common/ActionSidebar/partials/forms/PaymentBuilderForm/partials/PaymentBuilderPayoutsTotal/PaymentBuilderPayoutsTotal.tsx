@@ -108,7 +108,7 @@ const PaymentBuilderTokensTotal: FC<PaymentBuilderPayoutsTotalProps> = ({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full" data-testid="payment-builder-payouts-total">
       {sortedTokens.length > 1 ? (
         <>
           <button

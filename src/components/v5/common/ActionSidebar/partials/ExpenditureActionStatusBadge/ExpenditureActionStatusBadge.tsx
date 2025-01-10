@@ -62,6 +62,7 @@ const ExpenditureActionStatusBadge: FC<ExpenditureActionStatusBadgeProps> = ({
 
   const pill = (
     <PillsBase
+      testId="expenditure-action-status-badge"
       className={clsx(
         className,
         EXPENDITURE_STATUS_TO_CLASSNAME_MAP[activeStatus],
@@ -78,7 +79,10 @@ const ExpenditureActionStatusBadge: FC<ExpenditureActionStatusBadgeProps> = ({
     ExpenditureActionStatus.Changes,
     ExpenditureActionStatus.Edit,
   ].includes(activeStatus) ? (
-    <Tooltip tooltipContent={formatText(MSG.tooltipText, { activeStatus })}>
+    <Tooltip
+      testId="expenditure-action-status-badge-tooltip"
+      tooltipContent={formatText(MSG.tooltipText, { activeStatus })}
+    >
       {pill}
     </Tooltip>
   ) : (
