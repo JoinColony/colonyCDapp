@@ -16,6 +16,7 @@ export type Meta = { id: string; metatransaction?: boolean };
 
 export type TransactionCreatedPayload = Pick<
   TransactionType,
+  | 'associatedActionId'
   | 'context'
   | 'createdAt'
   | 'from'

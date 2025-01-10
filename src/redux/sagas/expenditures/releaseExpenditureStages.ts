@@ -5,6 +5,7 @@ import { ExpenditureStatus } from '~gql';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 import {
   type ChannelDefinition,
@@ -126,6 +127,7 @@ function* releaseExpenditureStages({
       },
       ready: false,
       params: [multicallData],
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     if (annotationMessage) {
@@ -139,6 +141,7 @@ function* releaseExpenditureStages({
           index: 1,
         },
         ready: false,
+        associatedActionId: getExpenditureCreatingActionId(expenditure),
       });
     }
 

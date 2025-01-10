@@ -2025,6 +2025,10 @@ type Transaction @model {
   Options associated with the transaction
   """
   options: String # JSON string
+  """
+  ID of the action associated with the transaction
+  """
+  associatedActionId: String
 }
 
 """

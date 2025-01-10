@@ -84,6 +84,7 @@ function* updateTransactionInDb({
       case ActionTypes.TRANSACTION_HASH_RECEIVED: {
         const { blockHash, blockNumber, hash } =
           payload as TransactionHashReceivedPayload;
+
         yield updateTransaction({
           id,
           blockHash,

@@ -37,6 +37,7 @@ function* voteOnMultiSigAction({
     multiSigId,
     roles,
     domainId,
+    associatedActionId,
   },
   meta,
 }: Action<ActionTypes.MULTISIG_VOTE>) {
@@ -85,6 +86,7 @@ function* voteOnMultiSigAction({
         id: meta.id,
         index: 0,
       },
+      associatedActionId,
     });
 
     yield takeFrom(txChannel, ActionTypes.TRANSACTION_CREATED);

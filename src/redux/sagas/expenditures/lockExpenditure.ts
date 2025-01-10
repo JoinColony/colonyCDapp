@@ -17,7 +17,7 @@ export type LockExpenditurePayload =
   Action<ActionTypes.EXPENDITURE_LOCK>['payload'];
 
 function* lockExpenditureAction({
-  payload: { colonyAddress, nativeExpenditureId },
+  payload: { colonyAddress, nativeExpenditureId, associatedActionId },
   meta,
 }: Action<ActionTypes.EXPENDITURE_LOCK>) {
   const batchKey = TRANSACTION_METHODS.LockExpenditure;
@@ -36,6 +36,7 @@ function* lockExpenditureAction({
       methodName: 'lockExpenditure',
       identifier: colonyAddress,
       params: [nativeExpenditureId],
+      associatedActionId,
     });
 
     yield takeFrom(lockExpenditure.channel, ActionTypes.TRANSACTION_CREATED);

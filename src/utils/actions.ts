@@ -1,6 +1,7 @@
 import pipe from 'lodash/fp/pipe';
 
 import { type ActionTypes, type UniqueActionType } from '~redux/index.ts';
+import { type MotionAction, type MultiSigAction } from '~types/motions.ts';
 
 export type ActionTransformFnType = (
   arg0: UniqueActionType<any, any, any>,
@@ -47,3 +48,14 @@ export const getFormAction = (
   action: ActionTypes,
   actionType: 'ERROR' | 'SUCCESS',
 ) => `${action}_${actionType}`;
+
+export const getMotionAssociatedActionId = (
+  action?: MotionAction | MultiSigAction | null,
+) => {
+  if (!action) return '';
+
+  return (
+    action.expenditure?.creatingActions?.items[0]?.transactionHash ??
+    action.transactionHash
+  );
+};

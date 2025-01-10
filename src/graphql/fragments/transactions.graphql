@@ -28,4 +28,5 @@ fragment Transaction on Transaction {
   title
   titleValues
   options
+  associatedActionId
 }

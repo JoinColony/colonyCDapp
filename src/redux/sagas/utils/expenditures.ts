@@ -122,6 +122,7 @@ interface ClaimExpendituresPayoutsParams {
   claimablePayouts: ExpenditurePayoutWithSlotId[];
   metaId: string;
   colonyClient: AnyColonyClient;
+  associatedActionId: string;
 }
 
 // NOTE: this is called from 3 sagas so it's designed to be wrapped in a try catch
@@ -131,6 +132,7 @@ export function* claimExpenditurePayouts({
   nativeExpenditureId,
   metaId,
   colonyClient,
+  associatedActionId,
 }: ClaimExpendituresPayoutsParams) {
   if (claimablePayouts.length === 0) {
     return;
@@ -149,6 +151,7 @@ export function* claimExpenditurePayouts({
     metaId,
     batchKey: 'claimExpenditurePayouts',
     channelId: 'claimPayouts',
+    associatedActionId,
   });
 
   yield createMulticallChannels();

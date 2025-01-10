@@ -14,7 +14,12 @@ export type ClaimExpenditurePayload =
 
 export function* claimExpenditure({
   meta,
-  payload: { colonyAddress, nativeExpenditureId, claimablePayouts },
+  payload: {
+    associatedActionId,
+    colonyAddress,
+    nativeExpenditureId,
+    claimablePayouts,
+  },
 }: Action<ActionTypes.EXPENDITURE_CLAIM>) {
   try {
     const colonyManager = yield getColonyManager();
@@ -29,6 +34,7 @@ export function* claimExpenditure({
       metaId: meta.id,
       nativeExpenditureId,
       colonyClient,
+      associatedActionId,
     });
 
     yield put<AllActions>({

@@ -5,6 +5,7 @@ import { call, fork, put, takeEvery } from 'redux-saga/effects';
 import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
+import { getExpenditureCreatingActionId } from '~utils/expenditures.ts';
 
 import {
   type ChannelDefinition,
@@ -144,6 +145,7 @@ function* fundExpenditure({
       },
       ready: false,
       params: [multicallData],
+      associatedActionId: getExpenditureCreatingActionId(expenditure),
     });
 
     if (annotationMessage) {
