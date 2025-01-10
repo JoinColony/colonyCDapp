@@ -23,11 +23,10 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://localhost:9091',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    /* Collect trace for failed tests. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
   },
-  // Needed for running tests against the app in development mode
-  timeout: !process.env.CI ? 90000 : undefined,
+  timeout: !process.env.CI ? 60000 : undefined,
   /* Configure projects for major browsers */
   projects: [
     {
