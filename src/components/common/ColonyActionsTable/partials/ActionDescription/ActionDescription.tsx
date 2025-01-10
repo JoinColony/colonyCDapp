@@ -46,7 +46,7 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     useGetExpenditureData(expenditureId);
 
   const { streamingPaymentData, loadingStreamingPayment } =
-    useGetStreamingPaymentData(expenditureId);
+    useGetStreamingPaymentData(action?.streamingPaymentId);
 
   const isLoading =
     loading || loadingExpenditure || loadingStreamingPayment || loadingUser;
