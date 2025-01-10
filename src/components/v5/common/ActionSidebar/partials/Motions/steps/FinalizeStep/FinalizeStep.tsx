@@ -9,6 +9,7 @@ import { ColonyActionType } from '~gql';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getExtendedActionType } from '~utils/colonyActions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -108,6 +109,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     refetchColony,
   ]);
 
+  const actionType = getExtendedActionType(
+    actionData,
+    actionData.colony.metadata,
+  );
+
   /*
    * @NOTE This is just needed until we properly save motion data in the db
    * For now, we just fetch it live from chain, so when we uninstall the extension
@@ -127,6 +133,24 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       : 'motion.finalizeStep.statusText';
   })();
 
+  const canBeExecuted =
+    !isPolling &&
+    !isMotionFailedNotFinalizable &&
+    !isMotionFinalized &&
+    !isMotionAgreement;
+
+  const supportedStatusText = canBeExecuted
+    ? 'motion.finalizeStep.passedAction'
+    : 'motion.finalizeStep.completedStatusText';
+
+  const finalizeStatusText = isMotionFailed
+    ? 'motion.finalizeStep.opposedAction'
+    : supportedStatusText;
+
+  const statusText = isMotionFailedNotFinalizable
+    ? 'motion.finalizeStep.failed.statusText'
+    : finalizeStatusText;
+
   return (
     <MenuWithStatusText
       statusText={
@@ -136,7 +160,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
           iconAlignment="top"
           iconSize={16}
         >
-          {formatText({ id: statusId })}
+          {actionType === ColonyActionType.CreateDecisionMotion
+            ? formatText({ id: statusId })
+            : formatText({
+                id: statusText,
+              })}
         </StatusText>
       }
       content={
@@ -186,7 +214,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                       <div className="mb-2">
                         <h4 className="mb-3 flex items-center justify-between text-1">
                           {formatText({ id: 'motion.finalizeStep.title' })}
-                          {isClaimed && (
+                          {isClaimed && canClaimStakes && (
                             <PillsBase className="bg-teams-pink-100 text-teams-pink-500">
                               {formatText({
                                 id: 'motion.finalizeStep.claimed',
