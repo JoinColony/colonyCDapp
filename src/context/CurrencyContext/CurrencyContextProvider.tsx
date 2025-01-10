@@ -19,9 +19,20 @@ const CurrencyContextProvider = ({ children }: { children: ReactNode }) => {
   const [updateProfile] = useUpdateUserProfileMutation();
 
   const STORED_CURRENCY_KEY = 'preferredCurrency';
+  /**
+   * @Note This needs to be removed once we re-enable SupportedCurrencies.Clny
+   */
+  const isCLNYTokenStored =
+    JSON.parse(localStorage.getItem(STORED_CURRENCY_KEY) || '') ===
+    SupportedCurrencies.Clny;
 
   const updatePreferredCurrency = useCallback(
     async (newCurrency: SupportedCurrencies) => {
+      /**
+       * @Note This needs to be removed once we re-enable SupportedCurrencies.Clny
+       */
+      if (newCurrency === SupportedCurrencies.Clny) return;
+
       setCurrency(newCurrency);
       localStorage.setItem(STORED_CURRENCY_KEY, JSON.stringify(newCurrency));
 
@@ -41,25 +52,44 @@ const CurrencyContextProvider = ({ children }: { children: ReactNode }) => {
     [updateProfile, user?.walletAddress],
   );
 
-  useEffect(() => {
-    const setDefaultUserCurrency = async () => {
-      const storedCurrency = localStorage.getItem(STORED_CURRENCY_KEY);
-      if (storedCurrency !== null) {
-        updatePreferredCurrency(
-          JSON.parse(storedCurrency) as SupportedCurrencies,
-        );
-      } else {
-        const defaultCurrency = await getUserCurrencyByLocation();
-        updatePreferredCurrency(defaultCurrency);
-      }
-    };
+  /**
+   * @Note This can be moved in the previous
+   * useEffect(() => {}, [user?.profile?.preferredCurrency, setDefaultUserCurrency])
+   * once we re-enable SupportedCurrencies.Clny
+   */
+  const setDefaultUserCurrency = useCallback(async () => {
+    const storedCurrency = localStorage.getItem(STORED_CURRENCY_KEY);
+    const parsedStoredCurrency = storedCurrency
+      ? JSON.parse(storedCurrency)
+      : null;
+    if (parsedStoredCurrency !== null) {
+      updatePreferredCurrency(parsedStoredCurrency as SupportedCurrencies);
+    } else {
+      const defaultCurrency = await getUserCurrencyByLocation();
+      updatePreferredCurrency(defaultCurrency);
+    }
+  }, [updatePreferredCurrency]);
 
-    if (user?.profile?.preferredCurrency) {
+  /**
+   * @Note This needs to be removed once we re-enable SupportedCurrencies.Clny
+   */
+  useEffect(() => {
+    if (isCLNYTokenStored) {
+      localStorage.removeItem(STORED_CURRENCY_KEY);
+      setDefaultUserCurrency();
+    }
+  }, [isCLNYTokenStored, setDefaultUserCurrency]);
+
+  useEffect(() => {
+    if (
+      user?.profile?.preferredCurrency &&
+      user?.profile?.preferredCurrency !== SupportedCurrencies.Clny
+    ) {
       setCurrency(user?.profile?.preferredCurrency);
     } else {
       setDefaultUserCurrency();
     }
-  }, [user?.profile?.preferredCurrency, updatePreferredCurrency]);
+  }, [user?.profile?.preferredCurrency, setDefaultUserCurrency]);
 
   const value = useMemo(
     () => ({
