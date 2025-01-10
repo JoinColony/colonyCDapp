@@ -95,7 +95,8 @@ export const useIsFieldDisabled = () => {
 
   if (
     extensionId &&
-    selectedAction === Action.CreateDecision &&
+    (selectedAction === Action.CreateDecision ||
+      selectedAction === Action.StreamingPayment) &&
     !isExtensionEnabled &&
     !loading
   ) {

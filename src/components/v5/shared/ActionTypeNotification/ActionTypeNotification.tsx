@@ -29,10 +29,10 @@ const MSG = defineMessages({
     defaultMessage:
       'This will disable the Colony and prevent any further activity until resolved.',
   },
-  createDecisionError: {
-    id: `${displayName}.createDecisionError`,
+  noExtensionError: {
+    id: `${displayName}.noExtensionError`,
     defaultMessage:
-      'Agreements requires the Reputation weighted extension to be enabled.',
+      '{actionName} requires the {extensionName} extension to be enabled.',
   },
   learnMore: {
     id: `${displayName}.learnMore`,
@@ -48,6 +48,11 @@ const MSG = defineMessages({
       'You need to install the {extensionName} extension to create this action.',
   },
 });
+
+const extensions = {
+  [Action.CreateDecision]: Extension.VotingReputation,
+  [Action.StreamingPayment]: Extension.StreamingPayments,
+};
 
 export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   selectedAction,
@@ -76,7 +81,10 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         return formatText(MSG.enterRecoveryModeError);
       case Action.CreateDecision:
         return isFieldDisabled
-          ? formatText(MSG.createDecisionError)
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Agreements',
+              extensionName: 'Reputation weighted',
+            })
           : undefined;
       case Action.StreamingPayment: {
         const extensionName = supportedExtensionsConfig.find(
@@ -84,8 +92,9 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
         )?.name;
 
         return isFieldDisabled && extensionName
-          ? formatText(MSG.extensionNotInstalled, {
-              extensionName: formatText(extensionName),
+          ? formatText(MSG.noExtensionError, {
+              actionName: 'Streaming',
+              extensionName: 'Streaming Payments',
             })
           : undefined;
       }
@@ -113,17 +122,15 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                   {formatText(MSG.learnMore)}
                 </a>
               ) : (
-                selectedAction === Action.CreateDecision && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigate(`extensions/${Extension.VotingReputation}`);
-                      toggleActionSidebarOff();
-                    }}
-                  >
-                    {formatText(MSG.viewExtension)}
-                  </button>
-                )
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate(`extensions/${extensions[selectedAction]}`);
+                    toggleActionSidebarOff();
+                  }}
+                >
+                  {formatText(MSG.viewExtension)}
+                </button>
               )
             }
           >
