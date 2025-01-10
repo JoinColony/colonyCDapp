@@ -23,7 +23,7 @@ export const VerticalTableLayout = <T,>({
             key={row.id}
             className={clsx(
               rowsConfig?.getRowClassName?.(row),
-              '[&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&:nth-child(1)>tr:first-child>th]:rounded-tl-lg [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
+              '[&:last-child>tr:last-child>th]:rounded-bl-lg [&:not(:last-child)>tr:last-child>td]:border-b [&:not(:last-child)>tr:last-child>th]:border-b [&:nth-child(1)>tr:first-child>th]:rounded-tl-lg [&_tr:first-child_td]:pt-2 [&_tr:first-child_th]:h-[2.875rem] [&_tr:first-child_th]:pt-2 [&_tr:last-child_td]:pb-2 [&_tr:last-child_th]:h-[2.875rem] [&_tr:last-child_th]:pb-2',
             )}
           >
             {headerGroups.map((headerGroup) =>

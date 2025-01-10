@@ -97,8 +97,6 @@ const TokensTable: FC<TokensTableProps> = ({
             '!border-negative-400': !!fieldState.error,
             '[&_tbody_td]:h-[3.375rem] [&_td:first-child]:pl-4 [&_td:nth-child(2)]:pr-2 [&_td]:pr-4 [&_th:first-child]:pl-4 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4':
               !isTablet,
-            '[&_table]:table-auto': isTablet,
-            'pb-4': data.length > 10,
           })}
           columns={columns}
           data={data}
