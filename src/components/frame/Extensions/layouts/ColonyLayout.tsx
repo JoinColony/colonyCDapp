@@ -39,7 +39,7 @@ import CalamityBanner from '~v5/shared/CalamityBanner/index.ts';
 import ColonyPageSidebar from '~v5/shared/Navigation/Sidebar/sidebars/ColonyPageSidebar/ColonyPageSidebar.tsx';
 import TxButton from '~v5/shared/TxButton/TxButton.tsx';
 
-import { useCalamityBannerInfo } from './hooks.tsx';
+import { useCalamityBannerInfo } from './hooks.ts';
 import UserNavigationWrapper from './partials/UserNavigationWrapper/index.ts';
 
 const displayName = 'frame.Extensions.layouts.ColonyLayout';
