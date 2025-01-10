@@ -42,11 +42,21 @@ const useActionType = () => {
   );
 
   if (isRemoveOperation) {
-    return ActionTypes.PROXY_COLONY_REMOVE;
+    // This logic only works for Permissions, MultiSig & Reputation
+    // Update as needed to support other decision methods
+    if (decisionMethod === DecisionMethod.Permissions) {
+      return ActionTypes.PROXY_COLONY_REMOVE;
+    }
+
+    return ActionTypes.MOTION_PROXY_COLONY_REMOVE;
   }
 
   if (isChainDisabled) {
-    return ActionTypes.PROXY_COLONY_ENABLE;
+    if (decisionMethod === DecisionMethod.Permissions) {
+      return ActionTypes.PROXY_COLONY_ENABLE;
+    }
+
+    return ActionTypes.MOTION_PROXY_COLONY_ENABLE;
   }
 
   if (decisionMethod === DecisionMethod.Reputation) {
