@@ -23,7 +23,11 @@ import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
+import {
+  ColonyActionType,
+  StreamingPaymentEndCondition,
+  useGetUserByAddressQuery,
+} from '~gql';
 import { useMobile } from '~hooks';
 import {
   COLONY_ACTIVITY_ROUTE,
@@ -101,6 +105,14 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   const decisionMethod = useDecisionMethod(action);
 
   const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
+
+  const { data: recipentData } = useGetUserByAddressQuery({
+    variables: { address: streamingPaymentData?.recipientAddress || '' },
+    skip: !streamingPaymentData?.recipientAddress,
+  });
+
+  const recipientName =
+    recipentData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
 
   if (loadingStreamingPayment) {
     return (
@@ -275,7 +287,9 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
                 walletAddress={recipientAddress}
                 withVerifiedBadge={false}
                 withUserName
-              />
+              >
+                {recipientName}
+              </UserInfoPopover>
             ) : null,
             initiator: initiatorUser ? (
               <UserInfoPopover
