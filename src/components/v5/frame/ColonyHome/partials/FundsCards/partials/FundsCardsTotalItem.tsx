@@ -46,6 +46,7 @@ export const FundsCardsTotalItem: FC<FundsCardsTotalItemProps> = ({
   return (
     <WidgetCards.Item
       className={className}
+      isLoading={loading}
       title={
         <LoadingSkeleton isLoading={loading} className="h-5 w-[34px] rounded">
           <span className="font-semibold">

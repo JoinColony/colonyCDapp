@@ -40,6 +40,7 @@ export const FundsCardsItem: FC<FundsCardsItemProps> = ({
   return (
     <WidgetCards.Item
       onClick={onTeamClick}
+      isLoading={loading}
       title={
         <LoadingSkeleton isLoading={loading} className="h-5 w-14 rounded">
           <span className="flex">{domainName}</span>
