@@ -19,10 +19,12 @@ export enum RpcMethods {
 
 export enum RetryProviderMethod {
   Call = 'call',
+  EstimateGas = 'estimateGas',
 }
 
 export enum IColonyContractMethodSignature {
   Locked = 'locked()',
   Nonces = 'nonces(address)',
   GetMetatransactionNonce = 'getMetatransactionNonce(address)',
+  MakeArbitraryTransactions = 'makeArbitraryTransactions(address[],bytes[],bool)',
 }
