@@ -2885,6 +2885,15 @@ type ColonyMultiSig @model {
   The timestamp when the motion was created at
   """
   createdAt: AWSDateTime!
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(name: "byFinalizationActionId", queryField: "getColonyMultiSigByFinalizationActionId")
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 """
 Represents a Motion within a Colony
@@ -3020,6 +3029,15 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(name: "byFinalizationActionId", queryField: "getColonyMotionByFinalizationActionId")
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 
 type ExpenditureFundingItem {
@@ -3537,6 +3555,14 @@ type ColonyAction @model @searchable {
   Multichain info if the action is bridged"
   """
   multiChainInfo: MultiChainInfo
+  """
+  The motion action txHash that this action finalized
+  """
+  finalizedActionId: ID
+  """
+  Expanded `ColonyAction`
+  """
+  finalizedActionData: ColonyAction @hasOne(fields: ["finalizedActionId"])
 }
 
 type MultiChainInfo {
