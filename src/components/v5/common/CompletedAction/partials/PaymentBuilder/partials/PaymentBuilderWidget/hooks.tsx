@@ -145,7 +145,9 @@ export const useGetFinalizeStep = ({
             )}
 
             {selectedFinalizeAction && !selectedFinalizeMotion && (
-              <ActionWithPermissionsInfo action={selectedFinalizeAction} />
+              <FinalizeByPaymentCreatorInfo
+                userAdddress={selectedFinalizeAction.initiatorAddress}
+              />
             )}
 
             {expenditureStep === ExpenditureStep.Release &&
