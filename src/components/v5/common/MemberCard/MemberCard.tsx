@@ -62,12 +62,10 @@ const MemberCard: FC<MemberCardProps> = ({
       </div>
       {(reputation !== undefined || role) && (
         <div className="mt-[.6875rem] flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-[.6875rem]">
-          {reputation !== undefined && (
-            <ReputationBadge
-              className="min-h-[1.625rem]"
-              reputation={reputation}
-            />
-          )}
+          <ReputationBadge
+            className="min-h-[1.625rem]"
+            reputation={reputation || 0}
+          />
           {role && (
             <div className="ml-auto">
               <RolesTooltip role={role} isRoleInherited={isRoleInherited} />
