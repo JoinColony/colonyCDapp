@@ -20,6 +20,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useMobile } from '~hooks/index.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { formatText } from '~utils/intl.ts';
@@ -96,6 +97,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   }, [loadingAction, stopPollingForAction]);
 
   const { formRef, closeSidebarClick } = useCloseSidebarClick();
+
+  const { getIsDraftAgreement } = useDraftAgreement({
+    formContextOverride: formRef.current,
+  });
+
   const { isCopied, handleClipboardCopy } = useCopyToClipboard();
   const isMobile = useMobile();
 
@@ -204,7 +210,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             <button
               type="button"
               className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-              onClick={closeSidebarClick}
+              onClick={() =>
+                closeSidebarClick({
+                  shouldShowCancelModal: !getIsDraftAgreement(),
+                })
+              }
               aria-label={formatText({ id: 'ariaLabel.closeModal' })}
             >
               <X size={18} />
