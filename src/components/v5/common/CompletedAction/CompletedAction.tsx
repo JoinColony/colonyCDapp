@@ -96,6 +96,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ColonyEditMultisig:
         return <EditColonyDetails action={action} />;
       case ColonyActionType.MakeArbitraryTransaction:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
         return <ArbitraryTransaction action={action} />;
       /**
        * @deprecated
@@ -147,6 +148,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
       case ColonyActionType.ReleaseStagedPaymentsMotion:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
