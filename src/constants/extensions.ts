@@ -30,7 +30,6 @@ import { toFinite } from '~utils/lodash.ts';
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
-  Expenditures = 'Expenditures',
 }
 
 const multiSigName = 'extensions.MultiSig';
@@ -342,7 +341,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionAdvancedPaymentsIcon,
     imageURLs: [stakedHero, stakedInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.DecisionMethods,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
     descriptionShort: MSG.stakedExpenditureDescriptionShort,
@@ -389,7 +388,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionStreamingPaymentsIcon,
     imageURLs: [streamingHero, streamingInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.Payments,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,
     descriptionShort: MSG.streamingPaymentsDescriptionShort,
