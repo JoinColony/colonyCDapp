@@ -477,11 +477,9 @@ export type MotionActionTypes =
       {
         customActionTitle: string;
         colonyAddress: Address;
-        colonyName?: string;
         colonyDomains: Domain[];
         colonyRoles: ColonyRoleFragment[];
         annotationMessage?: string;
-
         transactions: AddTransactionTableModel[];
       },
       MetaWithSetter<object>

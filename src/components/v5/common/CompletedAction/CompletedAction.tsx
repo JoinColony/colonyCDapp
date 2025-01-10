@@ -148,9 +148,9 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.EmitDomainReputationPenaltyMotion:
       case ExtendedColonyActionType.UpdateColonyObjectiveMotion:
       case ColonyActionType.ReleaseStagedPaymentsMotion:
+      case ColonyActionType.MakeArbitraryTransactionsMotion:
       case ColonyActionType.EditExpenditureMotion:
       case ColonyActionType.FundExpenditureMotion:
-      case ColonyActionType.MakeArbitraryTransactionsMotion:
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
         return <Motions transactionId={action.transactionHash} />;
       // @todo: reorganize folder structure after all of the advanced payments will be ready
