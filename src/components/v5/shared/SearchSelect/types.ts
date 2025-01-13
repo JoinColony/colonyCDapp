@@ -17,7 +17,6 @@ export interface SearchSelectProps<T> extends BaseFieldProps {
   className?: string;
   hideSearchOnMobile?: boolean;
   onSearch?: (value: string) => void;
-  onDebouncedSearch?: (value: string) => void;
   showEmptyContent?: boolean;
   showSearchValueAsOption?: boolean;
   emptyContent?: React.ReactNode;
