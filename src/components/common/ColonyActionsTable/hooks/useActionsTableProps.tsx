@@ -13,6 +13,12 @@ import {
 } from '~v5/common/Table/consts.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 
+import {
+  CREATED_AT_COLUMN_ID,
+  DESCRIPTION_COLUMN_ID,
+  MOTION_STATE_COLUMN_ID,
+  TEAM_COLUMN_ID,
+} from '../consts.ts';
 import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import { type ColonyActionsTableProps } from '../types.ts';
 
@@ -101,17 +107,17 @@ export const useActionsTableProps = (
         state: {
           columnVisibility: isMobile
             ? {
-                description: true,
-                motionState: true,
-                team: false,
-                createdAt: false,
+                [DESCRIPTION_COLUMN_ID]: true,
+                [MOTION_STATE_COLUMN_ID]: true,
+                [TEAM_COLUMN_ID]: false,
+                [CREATED_AT_COLUMN_ID]: false,
                 [MEATBALL_MENU_COLUMN_ID]: false,
               }
             : {
-                description: true,
-                motionState: true,
-                team: false,
-                createdAt: true,
+                [DESCRIPTION_COLUMN_ID]: true,
+                [MOTION_STATE_COLUMN_ID]: true,
+                [TEAM_COLUMN_ID]: false,
+                [CREATED_AT_COLUMN_ID]: true,
                 [EXPANDER_COLUMN_ID]: false,
               },
           sorting,
