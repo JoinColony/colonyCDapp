@@ -189,16 +189,6 @@ export const useValidationSchema = () => {
               .defined()
               .required(),
           )
-          /*
-           * Transform empty arrays to null since array.of() validation passes for empty arrays,
-           * preventing array.min() from being properly checked. This ensures length validation
-           * gets triggered before object-level validation occurs.
-           */
-          .transform((value) => {
-            if (!value || value.length === 0) return null;
-            return value;
-          })
-          .required(formatText({ id: 'errors.payments.defined' }))
           .test(
             'sum',
             formatText({ id: 'errors.sumOfPercentageMustBe100' }) || '',
@@ -218,8 +208,12 @@ export const useValidationSchema = () => {
               return sum === 100;
             },
           )
-          .defined()
-          .nullable(),
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.payments.defined' }),
+            (value) => value !== undefined,
+          )
+          .required(),
       })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
