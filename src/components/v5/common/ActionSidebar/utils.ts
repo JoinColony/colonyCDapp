@@ -13,13 +13,13 @@ import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 import { splitAddress } from '~utils/strings.ts';
 import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
 
+import { type GroupListItem } from './partials/GroupedAction/types.ts';
 import {
   GROUP_FUNDS_LIST,
   GROUP_TEAMS_LIST,
   GROUP_ADMIN_LIST,
 } from './partials/ManageColonyGroup/GroupList.ts';
 import { GROUP_LIST } from './partials/PaymentGroup/GroupList.ts';
-import { GroupListItem } from './partials/GroupedAction/types.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
