@@ -58,9 +58,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
   const isMobile = useMobile();
   const navigate = useNavigate();
   const { joinedColonies, joinedColoniesLoading } = useAppContext();
-  const {
-    colony: { name: currentColonyName },
-  } = useColonyContext();
+  const colonyContext = useColonyContext({ nullableContext: true });
 
   const groupKey = getGroupKey(transactionGroup);
   const groupId = getGroupId(transactionGroup);
@@ -146,7 +144,7 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
 
     // Otherwise, this is transaction is related to an action.
     const path =
-      colonyName === currentColonyName
+      colonyContext && colonyName === colonyContext.colony.name
         ? window.location.pathname
         : `/${colonyName}`;
     navigate(
