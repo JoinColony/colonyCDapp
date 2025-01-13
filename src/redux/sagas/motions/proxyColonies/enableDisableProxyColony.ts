@@ -3,6 +3,8 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
+import { ADDRESS_ZERO } from '~constants/index.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -19,6 +21,7 @@ import {
   initiateTransaction,
   createActionMetadataInDB,
   getChildIndexLocal,
+  getPermissionProofsLocal,
 } from '~redux/sagas/utils/index.ts';
 import {
   getDisableProxyColonyOperation,
@@ -36,6 +39,8 @@ function* enableDisableProxyColonyMotionSaga({
     annotationMessage,
     colonyDomains,
     operation,
+    colonyRoles,
+    isMultiSig,
   },
   meta: { id: metaId, setTxHash },
   meta,
@@ -73,6 +78,42 @@ function* enableDisableProxyColonyMotionSaga({
 
     // eslint-disable-next-line no-inner-declarations
     function* getCreateMotionParams() {
+      if (isMultiSig) {
+        const initiatorAddress = yield colonyClient.signer.getAddress();
+
+        // Permission proofs for the user creating the multi-sig motion
+        const [, childSkillIndex] = yield call(getPermissionProofsLocal, {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: Id.RootDomain,
+          requiredColonyRoles:
+            PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains,
+          // The address of the user creating the multi-sig motion
+          permissionAddress: initiatorAddress,
+          // The user must have multi-sig permissions
+          isMultiSig: true,
+        });
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: TRANSACTION_METHODS.CreateMotion,
+          identifier: colonyAddress,
+          params: [
+            Id.RootDomain,
+            childSkillIndex,
+            [ADDRESS_ZERO],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
       const rootDomain = colonyDomains.find((domain) =>
         BigNumber.from(domain.nativeId).eq(Id.RootDomain),
       );
