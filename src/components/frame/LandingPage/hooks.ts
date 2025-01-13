@@ -40,7 +40,6 @@ export const useLandingPage = () => {
 
   const baseInviteLink = `${CREATE_COLONY_ROUTE_BASE}/${invitationCode}`;
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const inviteLink = useBaseUrl(baseInviteLink);
 
   const onCreateColony = () => {
