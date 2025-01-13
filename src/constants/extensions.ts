@@ -197,7 +197,8 @@ const streamingPaymentsMessage = {
   },
   streamingPaymentsDescriptionShort: {
     id: `${streamingPaymentsName}.description`,
-    defaultMessage: 'Streaming Payments extension.',
+    defaultMessage:
+      'Continuously stream tokens to a recipient, that are claimable at any time. Useful for things like salaries, subscriptions, and more.',
   },
   streamingPaymentsDescriptionLong: {
     id: `${streamingPaymentsName}.descriptionLong`,
