@@ -83,6 +83,7 @@ const setEnvVariables = async () => {
 
       const networkClient = getColonyNetworkClient(network, provider, {
         networkAddress,
+        disableVersionCheck: true,
       });
 
       const tokenLockingClient = await networkClient.getTokenLockingClient();

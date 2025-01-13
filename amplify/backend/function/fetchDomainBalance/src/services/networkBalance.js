@@ -176,6 +176,7 @@ const getNetworkTotalBalance = async ({
   const provider = new providers.StaticJsonRpcProvider(rpcURL);
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
+    disableVersionCheck: true,
   });
 
   const currentBlockNumber = await provider.getBlockNumber();

@@ -45,6 +45,7 @@ exports.handler = async (event) => {
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,
+    disableVersionCheck: true,
   });
 
   const { motionId, colonyAddress } = event.arguments?.input || {};
