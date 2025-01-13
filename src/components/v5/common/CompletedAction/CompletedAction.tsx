@@ -82,10 +82,12 @@ const CompletedAction = ({ action }: ICompletedAction) => {
       case ColonyActionType.RemoveVerifiedMembersMultisig:
         return <RemoveVerifiedMembers action={action} />;
       case ColonyActionType.AddProxyColony:
-      case ColonyActionType.RemoveProxyColony:
       case ColonyActionType.AddProxyColonyMotion:
       case ColonyActionType.RemoveProxyColonyMotion:
       case ColonyActionType.AddProxyColonyMultisig:
+      case ColonyActionType.RemoveProxyColony:
+      case ColonyActionType.RemoveProxyColonyMotion:
+      case ColonyActionType.RemoveProxyColonyMultisig:
         return <ManageSupportedChain action={action} />;
       case ColonyActionType.EmitDomainReputationReward:
       case ColonyActionType.EmitDomainReputationRewardMotion:

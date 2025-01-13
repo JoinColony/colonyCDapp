@@ -737,6 +737,7 @@ export enum ColonyActionType {
   /** An action related to disabling a proxy colony */
   RemoveProxyColony = 'REMOVE_PROXY_COLONY',
   RemoveProxyColonyMotion = 'REMOVE_PROXY_COLONY_MOTION',
+  RemoveProxyColonyMultisig = 'REMOVE_PROXY_COLONY_MULTISIG',
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
   RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',

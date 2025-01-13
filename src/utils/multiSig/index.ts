@@ -75,6 +75,7 @@ export const getRolesNeededForMultiSigAction = ({
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs;
       break;
     case ColonyActionType.AddProxyColonyMultisig:
+    case ColonyActionType.RemoveProxyColonyMultisig:
       permissions = PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains;
       break;
     default:
