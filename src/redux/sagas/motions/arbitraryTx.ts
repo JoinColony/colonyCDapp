@@ -4,6 +4,7 @@ import { BigNumber, utils } from 'ethers';
 import { Interface } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import { type AllActions, type Action } from '~redux/types/actions/index.ts';
@@ -22,6 +23,7 @@ import {
   uploadAnnotation,
   initiateTransaction,
   createActionMetadataInDB,
+  getPermissionProofsLocal,
   getChildIndexLocal,
 } from '../utils/index.ts';
 
@@ -30,8 +32,10 @@ function* arbitraryTxMotion({
     colonyAddress,
     annotationMessage,
     customActionTitle,
+    colonyRoles,
     colonyDomains,
     transactions,
+    isMultiSig = false,
   },
   meta: { id: metaId, setTxHash },
   meta,
@@ -51,11 +55,12 @@ function* arbitraryTxMotion({
       contractAddresses.push(contractAddress);
       methodsBytes.push(encodedFunction);
     });
-
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
     );
+
+    const userAddress = yield colonyClient.signer.getAddress();
 
     const encodedAction = colonyClient.interface.encodeFunctionData(
       'makeArbitraryTransactions',
@@ -75,6 +80,36 @@ function* arbitraryTxMotion({
 
     // eslint-disable-next-line no-inner-declarations
     function* getCreateMotionParams() {
+      if (isMultiSig) {
+        const [, childSkillIndex] = yield call(getPermissionProofsLocal, {
+          networkClient: colonyClient.networkClient,
+          colonyRoles,
+          colonyDomains,
+          requiredDomainId: Id.RootDomain,
+          requiredColonyRoles: PERMISSIONS_NEEDED_FOR_ACTION.ArbitraryTxs,
+          permissionAddress: userAddress,
+          isMultiSig: true,
+        });
+
+        return {
+          context: ClientType.MultisigPermissionsClient,
+          methodName: 'createMotion',
+          identifier: colonyAddress,
+          params: [
+            Id.RootDomain,
+            childSkillIndex,
+            [AddressZero],
+            [encodedAction],
+          ],
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+          ready: false,
+        };
+      }
+
       const rootDomain = colonyDomains.find((domain) =>
         BigNumber.from(domain.nativeId).eq(Id.RootDomain),
       );

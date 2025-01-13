@@ -97,6 +97,7 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
         return <EditColonyDetails action={action} />;
       case ColonyActionType.MakeArbitraryTransaction:
       case ColonyActionType.MakeArbitraryTransactionsMotion:
+      case ColonyActionType.MakeArbitraryTransactionsMultisig:
         return <ArbitraryTransaction action={action} />;
       /**
        * @deprecated
