@@ -75,6 +75,10 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
 }
 
 /* Styling for onboardJS */
+div.react-datepicker__day--selected {
+  @apply bg-base-white !important;
+}
+
 ul.react-datepicker__time-list {
   @apply bg-base-white;
 }
