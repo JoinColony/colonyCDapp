@@ -1230,7 +1230,6 @@ export type ColonyMultiSig = {
   executedBy?: Maybe<Scalars['ID']>;
   /** Extended user object for given executedBy */
   executedByUser?: Maybe<User>;
-<<<<<<< HEAD
   /**
    * In case of multiple funding actions in a multisig, when funding an expenditure, array containing
    * the details of tokens and amounts to be funded
@@ -1238,12 +1237,10 @@ export type ColonyMultiSig = {
   expenditureFunding?: Maybe<Array<ExpenditureFundingItem>>;
   /** Expenditure associated with the motion, if any */
   expenditureId?: Maybe<Scalars['ID']>;
-=======
   /** Expanded `ColonyAction` */
   finalizationActionData?: Maybe<ColonyAction>;
   /** The action txHash that was triggered upon motion finalization */
   finalizationActionId?: Maybe<Scalars['ID']>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   /** Whether the underlying action completed */
   hasActionCompleted: Scalars['Boolean'];
   /**
@@ -1699,12 +1696,9 @@ export type CreateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
-<<<<<<< HEAD
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
-=======
   finalizationActionId?: InputMaybe<Scalars['ID']>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   hasActionCompleted: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
   isDecision: Scalars['Boolean'];
@@ -3406,11 +3400,8 @@ export type ModelColonyMultiSigConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
-<<<<<<< HEAD
   expenditureId?: InputMaybe<ModelIdInput>;
-=======
   finalizationActionId?: InputMaybe<ModelIdInput>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
   isExecuted?: InputMaybe<ModelBooleanInput>;
@@ -3438,11 +3429,8 @@ export type ModelColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
-<<<<<<< HEAD
   expenditureId?: InputMaybe<ModelIdInput>;
-=======
   finalizationActionId?: InputMaybe<ModelIdInput>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -4524,11 +4512,8 @@ export type ModelSubscriptionColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedBy?: InputMaybe<ModelSubscriptionIdInput>;
-<<<<<<< HEAD
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
-=======
   finalizationActionId?: InputMaybe<ModelSubscriptionIdInput>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   hasActionCompleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -9961,12 +9946,9 @@ export type UpdateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
-<<<<<<< HEAD
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
-=======
   finalizationActionId?: InputMaybe<Scalars['ID']>;
->>>>>>> 2be129c35 (feat: add finalization action info to multisig and motions, and add a reference to the action an action finalized)
   hasActionCompleted?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isDecision?: InputMaybe<Scalars['Boolean']>;

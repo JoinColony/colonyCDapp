@@ -134,7 +134,9 @@ function* createProxyColony({
       );
     }
 
-    yield createActionMetadataInDB(transaction.hash, customActionTitle);
+    yield createActionMetadataInDB(transaction.hash, {
+      customTitle: customActionTitle,
+    });
 
     if (annotationMessage) {
       yield uploadAnnotation({
