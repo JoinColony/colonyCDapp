@@ -1,5 +1,6 @@
 import { Binoculars, Coin } from '@phosphor-icons/react';
-import React, { type FC, useState } from 'react';
+import debounce from 'lodash/debounce';
+import React, { type FC, useCallback, useState } from 'react';
 
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
@@ -39,9 +40,21 @@ const TokenSearchSelect = React.forwardRef<
       filterOptionsFn,
     );
 
-    const handleDebouncedSearch = (value: string) => {
-      setDebouncedSearchValue(value);
-    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleSetDebouncedSearchValue = useCallback(
+      debounce((value: string) => {
+        setDebouncedSearchValue(value);
+      }, 500),
+      [],
+    );
+
+    const handleSearch = useCallback(
+      (value: string) => {
+        onSearch?.(value);
+        handleSetDebouncedSearchValue(value);
+      },
+      [onSearch, handleSetDebouncedSearchValue],
+    );
 
     return (
       <SearchSelect
@@ -51,8 +64,7 @@ const TokenSearchSelect = React.forwardRef<
         items={items}
         className={className}
         onSelect={onSelect}
-        onSearch={onSearch}
-        onDebouncedSearch={handleDebouncedSearch}
+        onSearch={handleSearch}
         showEmptyContent={!hasError}
         showSearchValueAsOption
         additionalButtons={additionalButtons}

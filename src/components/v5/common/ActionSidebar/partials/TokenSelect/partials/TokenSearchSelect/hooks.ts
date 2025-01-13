@@ -3,7 +3,6 @@ import { useEffect, useMemo } from 'react';
 
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
-import { formatText } from '~utils/intl.ts';
 import {
   type TokenOption,
   type SearchSelectOption,
@@ -57,41 +56,12 @@ export const useSearchSelect = (
     }
   }, [setOptions, tokenData?.getTokenFromEverywhere?.items]);
 
-  const searchedOptions: SearchSelectOption<TokenOption>[] = useMemo(
-    () =>
-      options.filter((option) => {
-        const searchQuery = searchValue.toLowerCase();
-        const optionValue =
-          typeof option.value === 'string'
-            ? option.value.replace('-', ' ').toLowerCase()
-            : option.value;
-        const optionUserName = formatText(option.label).toLowerCase();
-
-        return [optionValue, optionUserName].some((value) =>
-          value.toString().includes(searchQuery),
-        );
-      }),
-
-    [options, searchValue],
-  );
-
-  const filteredOptions = useMemo(
-    () =>
-      filterOptionsFn
-        ? searchedOptions.filter(filterOptionsFn)
-        : searchedOptions,
-    [filterOptionsFn, searchedOptions],
-  );
-
-  const filteredSuggestedOptions = useMemo(
-    () =>
-      filterOptionsFn
-        ? suggestedOptions.filter(filterOptionsFn)
-        : suggestedOptions,
-    [filterOptionsFn, suggestedOptions],
-  );
-
   const items = useMemo(() => {
+    const sourceOptions = searchValue ? options : suggestedOptions;
+    const filteredOptions = filterOptionsFn
+      ? sourceOptions.filter(filterOptionsFn)
+      : sourceOptions;
+
     return [
       {
         key: 'tokens',
@@ -100,10 +70,10 @@ export const useSearchSelect = (
               id: 'manageTokensTable.suggestedTokens',
             }
           : undefined,
-        options: searchValue ? filteredOptions : filteredSuggestedOptions,
+        options: filteredOptions,
       },
     ];
-  }, [searchValue, filteredOptions, filteredSuggestedOptions]);
+  }, [searchValue, options, suggestedOptions, filterOptionsFn]);
 
   return {
     loading,
