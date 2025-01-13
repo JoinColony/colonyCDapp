@@ -61,6 +61,10 @@ body.ReactModal__Body--open:not(.show-header-in-modal) .modal-blur-navigation {
   @apply blur-[0.125rem];
 }
 
+div.react-datepicker__day--selected {
+  @apply bg-base-white !important;
+}
+
 ul.react-datepicker__time-list {
   @apply bg-base-white;
 }
