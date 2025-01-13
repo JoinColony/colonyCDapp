@@ -10,15 +10,13 @@ import {
 } from '~utils/members.ts';
 import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 
+import { type GroupListItem } from './partials/GroupedAction/types.ts';
 import {
   GROUP_FUNDS_LIST,
   GROUP_TEAMS_LIST,
   GROUP_ADMIN_LIST,
 } from './partials/ManageColonyGroup/GroupList.ts';
-import {
-  GROUP_LIST,
-  type GroupListItem,
-} from './partials/PaymentGroup/GroupList.ts';
+import { GROUP_LIST } from './partials/PaymentGroup/GroupList.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action

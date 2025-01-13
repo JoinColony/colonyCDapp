@@ -101,7 +101,7 @@ function* enableProxyColonyAction({
     // eslint-disable-next-line no-console
     console.log('PROXY COLONY ENABLE TXHASH', txHash, customActionTitle);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({

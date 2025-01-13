@@ -98,7 +98,7 @@ function* disableProxyColonyAction({
       },
     } = yield waitForTxResult(disableProxyColony.channel);
 
-    yield createActionMetadataInDB(txHash, customActionTitle);
+    yield createActionMetadataInDB(txHash, { customTitle: customActionTitle });
 
     if (annotationMessage) {
       yield uploadAnnotation({
