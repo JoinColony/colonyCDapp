@@ -1,8 +1,22 @@
-import useEmblaCarousel, { type EmblaCarouselType } from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import useEmblaCarousel, {
+  type EmblaPluginType,
+  type EmblaCarouselType,
+} from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 
-export const useEmblaCarouselSettings = (options) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+export const useEmblaCarouselSettings = (options, autoplay) => {
+  const plugins: EmblaPluginType[] = [];
+  if (autoplay) {
+    plugins.push(
+      Autoplay({
+        playOnInit: true,
+        delay: 3000,
+      }),
+    );
+  }
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(options, plugins);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
@@ -15,9 +29,15 @@ export const useEmblaCarouselSettings = (options) => {
     setScrollSnaps(embla.scrollSnapList());
   }, []);
 
-  const onSelect = useCallback((embla: EmblaCarouselType) => {
-    setSelectedIndex(embla.selectedScrollSnap());
-  }, []);
+  const onSelect = useCallback(
+    (embla: EmblaCarouselType) => {
+      setSelectedIndex(embla.selectedScrollSnap());
+      if (emblaApi?.plugins().autoplay) {
+        emblaApi?.plugins().autoplay?.reset();
+      }
+    },
+    [emblaApi],
+  );
 
   useEffect(() => {
     if (!emblaApi) return;
