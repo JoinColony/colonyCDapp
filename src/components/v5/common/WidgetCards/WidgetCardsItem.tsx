@@ -11,7 +11,7 @@ const wrapperClassName = tw`
   select-none flex-col justify-center rounded-lg border
   px-6 py-5 text-left outline-offset-[-1px]
 `;
-const hoverClassName = tw`transition-colors hover:border-gray-900 hover:text-gray-900`;
+const hoverClassName = tw`transition-colors hover:bg-gray-25`;
 
 type WidgetCardsItemVariant = 'default' | 'dashed';
 
@@ -21,6 +21,7 @@ interface WidgetCardsItemProps {
   title?: React.ReactNode;
   subTitle?: React.ReactNode;
   onClick?: () => void;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -36,6 +37,7 @@ export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
   title,
   subTitle,
   onClick,
+  isLoading,
   className,
 }) => {
   const wrapperVariantClassName = variantClassNames[variant];
@@ -51,7 +53,7 @@ export const WidgetCardsItem: FC<PropsWithChildren<WidgetCardsItemProps>> = ({
     </WidgetContent>
   );
 
-  if (onClick) {
+  if (onClick && !isLoading) {
     return (
       <button
         onClick={onClick}
