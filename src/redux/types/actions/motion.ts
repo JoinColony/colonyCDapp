@@ -525,6 +525,8 @@ export type MotionActionTypes =
         colonyDomains: Domain[];
         foreignChainId: number;
         operation: ManageEntityOperation;
+        colonyRoles: ColonyRoleFragment[];
+        isMultiSig?: boolean;
       },
       MetaWithSetter<object>
     >
