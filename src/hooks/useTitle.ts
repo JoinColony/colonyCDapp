@@ -115,11 +115,12 @@ const MSG = defineMessages({
   colonyExtensionDetails: {
     id: `${displayName}.useTitle.colonyExtensionDetails`,
     defaultMessage: `{extensionId, select,
-      VotingReputation {Governance}
+      VotingReputation {Reputation Weighted (Lazy Consensus method)}
       OneTxPayment {One Transaction Payment}
-      StakedExpenditure {Staked Expenditure}
-      StagedExpenditure {Staged Expenditure}
+      StakedExpenditure {Staking Advanced Payments}
+      StagedExpenditure {Staged Payments}
       StreamingPayments {Streaming Payments}
+      MultisigPermissions {Multi-sig Permissions}
       other {{extensionId}}
       } Extension | Colony - {colonyName}`,
   },

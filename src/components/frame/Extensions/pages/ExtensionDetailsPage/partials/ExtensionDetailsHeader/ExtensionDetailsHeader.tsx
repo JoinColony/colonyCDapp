@@ -1,7 +1,6 @@
 import React, { type FC } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import useActiveInstalls from '~hooks/useActiveInstalls.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
@@ -52,18 +51,6 @@ const ExtensionDetailsHeader: FC = () => {
     extensionData.missingColonyPermissions.length > 0 &&
     !waitingForActionConfirmation;
 
-  const {
-    colony: { metadata },
-  } = useColonyContext();
-
-  const extensionName = formatText(
-    { id: 'extensionsPage.extensionName' },
-    {
-      colonyName: metadata?.displayName,
-      extensionName: extensionData.name.defaultMessage as string,
-    },
-  );
-
   return (
     <>
       <ExtensionPermissionsBanner
@@ -73,7 +60,7 @@ const ExtensionDetailsHeader: FC = () => {
       <div className="flex min-h-10 flex-col flex-wrap justify-between sm:flex-row sm:items-center sm:gap-6">
         <div className="flex w-full flex-col flex-wrap gap-4 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-6">
           <div className="flex flex-col sm:grow sm:flex-row sm:items-center sm:gap-2">
-            <HeadingIcon name={extensionName} icon={extensionData.icon} />
+            <HeadingIcon name={extensionData.name} icon={extensionData.icon} />
             <div className="mt-4 flex items-center justify-between gap-4 sm:mt-0 sm:shrink-0 sm:grow">
               {badgeMode && badgeText && (
                 <ExtensionStatusBadge
