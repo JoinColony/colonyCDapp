@@ -23,7 +23,6 @@ const SearchSelectInner = <T,>(
     isLoading,
     hideSearchOnMobile,
     onSearch,
-    onDebouncedSearch,
     showEmptyContent = true,
     showSearchValueAsOption = false,
     emptyContent,
@@ -40,11 +39,7 @@ const SearchSelectInner = <T,>(
   const isMobile = useMobile();
 
   const { openedAccordions, onAccordionClick } = useAccordion(items);
-  const { searchValue, debouncedSearchValue, onChange } = useSearch(
-    '',
-    onSearch,
-    onDebouncedSearch,
-  );
+  const { searchValue, debouncedSearchValue, onChange } = useSearch(onSearch);
   const filteredList = useFilterItems(
     items,
     debouncedSearchValue,
