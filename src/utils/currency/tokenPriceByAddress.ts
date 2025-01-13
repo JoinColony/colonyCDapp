@@ -70,27 +70,34 @@ export const fetchTokenPriceByAddress = async ({
 }: Pick<FetchCurrentPriceArgs, 'chainId' | 'contractAddress'> & {
   conversionDenomination: CoinGeckoSupportedCurrencies;
 }) => {
-  const url = buildTokenAddressCoinGeckoURL(
-    contractAddress,
-    chainId,
-    conversionDenomination,
-  );
-
-  return fetchJsonData<TokenAddressPriceResponse>(
-    url,
-    `Api called failed at ${url}.`,
-  ).then((data) => {
-    if (isAddressPriceSuccessResponse(data)) {
-      return extractAddressPriceFromResponse(
-        data,
-        contractAddress,
-        conversionDenomination,
-      );
-    }
-
-    console.error(
-      `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
+  try {
+    const url = buildTokenAddressCoinGeckoURL(
+      contractAddress,
+      chainId,
+      conversionDenomination,
     );
+
+    return fetchJsonData<TokenAddressPriceResponse>(
+      url,
+      `Api called failed at ${url}.`,
+    ).then((data) => {
+      if (isAddressPriceSuccessResponse(data)) {
+        return extractAddressPriceFromResponse(
+          data,
+          contractAddress,
+          conversionDenomination,
+        );
+      }
+
+      console.error(
+        `Unable to get price for ${contractAddress}. It probably doesn't have a listed exchange value.`,
+      );
+      return 0;
+    });
+  } catch (e) {
+    if (import.meta.env.DEV) {
+      console.error(e);
+    }
     return 0;
-  });
+  }
 };
