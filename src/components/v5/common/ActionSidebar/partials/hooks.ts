@@ -1,4 +1,3 @@
-import { Extension } from '@colony/colony-js';
 import { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
@@ -17,6 +16,8 @@ import {
   type ClaimMintTokensActionParams,
   type FinalizeSuccessCallback,
 } from '../types.ts';
+
+import { getNeededExtension } from './utils.ts';
 
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
@@ -74,17 +75,6 @@ export const useSubmitButtonDisabled = () => {
 };
 
 export const useIsFieldDisabled = () => {
-  const getNeededExtension = (action: Action) => {
-    switch (action) {
-      case Action.CreateDecision:
-        return Extension.VotingReputation;
-      case Action.StreamingPayment:
-        return Extension.StreamingPayments;
-      default:
-        return '';
-    }
-  };
-
   const selectedAction = useActiveActionType();
   const extensionId = selectedAction ? getNeededExtension(selectedAction) : '';
   const { extensionData, loading } = useExtensionData(extensionId);

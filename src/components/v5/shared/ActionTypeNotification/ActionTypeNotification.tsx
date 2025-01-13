@@ -8,7 +8,9 @@ import { supportedExtensionsConfig } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { COLONY_EXTENSIONS_ROUTE } from '~routes';
 import { formatText } from '~utils/intl.ts';
+import { getNeededExtension } from '~v5/common/ActionSidebar/partials/utils.ts';
 import NotificationBanner from '~v5/shared/NotificationBanner/index.ts';
 
 import { type ActionTypeNotificationProps } from './types.ts';
@@ -48,11 +50,6 @@ const MSG = defineMessages({
       'You need to install the {extensionName} extension to create this action.',
   },
 });
-
-const extensions = {
-  [Action.CreateDecision]: Extension.VotingReputation,
-  [Action.StreamingPayment]: Extension.StreamingPayments,
-};
 
 export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   selectedAction,
@@ -105,6 +102,9 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
 
   const notificationTitle = getNotificationTitle();
 
+  const extensionId = getNeededExtension(selectedAction);
+  const extensionLink = `${COLONY_EXTENSIONS_ROUTE}/${extensionId}`;
+
   return (
     <>
       {notificationTitle && (
@@ -125,7 +125,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    navigate(`extensions/${extensions[selectedAction]}`);
+                    navigate(extensionLink);
                     toggleActionSidebarOff();
                   }}
                 >
