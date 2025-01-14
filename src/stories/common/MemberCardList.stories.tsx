@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { UserRole } from '~constants/permissions.ts';
 import MemberCard from '~v5/common/MemberCard/index.ts';
 import MemberCardList from '~v5/common/MemberCardList/index.ts';
 
@@ -32,11 +31,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={42}
-          role={{
-            name: 'admin',
-            role: UserRole.Admin,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
@@ -61,11 +56,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={37}
-          role={{
-            name: 'admin',
-            role: UserRole.Admin,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
@@ -90,11 +81,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={22}
-          role={{
-            name: 'admin',
-            role: UserRole.Admin,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified={false}
           contributorType={undefined}
         />
@@ -119,11 +106,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={13}
-          role={{
-            name: 'payer',
-            role: UserRole.Payer,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
@@ -148,11 +131,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={9}
-          role={{
-            name: 'payer',
-            role: UserRole.Payer,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
@@ -177,11 +156,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={6}
-          role={{
-            name: 'payer',
-            role: UserRole.Payer,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
@@ -206,11 +181,7 @@ const memberCardListMeta: Meta<typeof MemberCardList> = {
             ],
           }}
           reputation={5}
-          role={{
-            name: 'payer',
-            role: UserRole.Payer,
-            permissions: [],
-          }}
+          domains={[]}
           isVerified
           contributorType={undefined}
         />
