@@ -5,6 +5,7 @@ import { array, type InferType, number, object, string } from 'yup';
 
 import { Action } from '~constants/actions.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { SplitPaymentDistributionType } from '~gql';
 import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import useTokenLockStates from '~hooks/useTokenLockStates.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -196,7 +197,15 @@ export const useValidationSchema = () => {
               const { parent } = context;
               const distributionMethod = parent?.distributionMethod;
 
-              if (!distributionMethod || !value) {
+              if (!value || !value.length) {
+                return false;
+              }
+
+              if (
+                !distributionMethod ||
+                distributionMethod === SplitPaymentDistributionType.Equal ||
+                distributionMethod === SplitPaymentDistributionType.Reputation
+              ) {
                 return true;
               }
 
