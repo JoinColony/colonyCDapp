@@ -75,6 +75,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.AddProxyColonyMotion} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.AddProxyColonyMultisig} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.RemoveProxyColony} {Remove support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColonyMotion} {Remove support for {chain} chain by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -148,7 +149,11 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.AddProxyColonyMotion} {Manage supported chains}
       ${ColonyActionType.AddProxyColonyMultisig} {Manage supported chains}
       ${ColonyActionType.RemoveProxyColony} {Manage supported chains}
+<<<<<<< HEAD
 >>>>>>> 6aee3801c (Feat: Add manage supported chain action)
+=======
+      ${ColonyActionType.RemoveProxyColonyMotion} {Manage supported chains}
+>>>>>>> 45dad0337 (feat: enable disable proxy colony via reputation)
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
