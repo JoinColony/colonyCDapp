@@ -1,4 +1,6 @@
-import { type UserRole } from '~constants/permissions.ts';
+import { ColonyRole } from '@colony/colony-js';
+
+import { type UserRoleMeta } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
@@ -9,13 +11,18 @@ import { type DecisionMethodOption } from '../DecisionMethodSelect/types.ts';
 
 export const useGetFinalizeDecisionMethodItems = (
   expenditure: Expenditure,
-  userRole?: UserRole,
+  userRole?: UserRoleMeta,
 ): DecisionMethodOption[] => {
   const { user } = useAppContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
   const userIsCreator =
-    userRole === 'owner' || userRole === 'payer' || userRole === 'custom';
+    userRole?.role === 'owner' ||
+    userRole?.role === 'payer' ||
+    (userRole?.role === 'custom' &&
+      userRole.permissions.some(
+        (permission) => permission === ColonyRole.Arbitration,
+      ));
 
   if (!user) {
     return [];

@@ -45,7 +45,7 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
 
   const finalizeDecisionMethodItems = useGetFinalizeDecisionMethodItems(
     expenditure,
-    userRole.role,
+    userRole,
   );
 
   const noDecisionMethodAvailable = finalizeDecisionMethodItems.every(
