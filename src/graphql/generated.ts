@@ -742,6 +742,7 @@ export enum ColonyActionType {
   ReleaseStagedPaymentsMotion = 'RELEASE_STAGED_PAYMENTS_MOTION',
   /** An action related to disabling a proxy colony */
   RemoveProxyColony = 'REMOVE_PROXY_COLONY',
+  RemoveProxyColonyMotion = 'REMOVE_PROXY_COLONY_MOTION',
   /** An action related to removing verified members */
   RemoveVerifiedMembers = 'REMOVE_VERIFIED_MEMBERS',
   RemoveVerifiedMembersMotion = 'REMOVE_VERIFIED_MEMBERS_MOTION',
