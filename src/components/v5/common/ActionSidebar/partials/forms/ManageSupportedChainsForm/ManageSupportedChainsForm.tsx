@@ -7,6 +7,7 @@ import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
   CHAIN_FIELD_NAME,
+  FROM_FIELD_NAME,
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
   ManageEntityOperation,
 } from '~v5/common/ActionSidebar/consts.ts';
@@ -39,7 +40,7 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
   const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
     DecisionMethod.MultiSig,
   ]);
-  const createdInFilterFn = useFilterCreatedInField('from');
+  const createdInFilterFn = useFilterCreatedInField(FROM_FIELD_NAME);
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
     ManageEntityOperation.Remove,
