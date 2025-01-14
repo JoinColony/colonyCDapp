@@ -98,7 +98,7 @@ exports.handler = async (event) => {
       return true;
     }
 
-    log({ totalRepInColony: totalRepInColony?.toString() });
+    log({ totalRepInColony: totalRepInColony?.toString() || '0' });
 
     // query database rep metadata
     const { data: response } =
@@ -160,8 +160,8 @@ exports.handler = async (event) => {
           databaseDomainId: getDomainDatabaseId(colonyAddress, nativeId),
           apiKey,
           graphqlURL,
-          reputation: totalRepInDomain.toString(),
-          colonyReputation: totalRepInColony.toString(),
+          reputation: totalRepInDomain?.toString() || '0',
+          colonyReputation: totalRepInColony?.toString() || '0',
         });
 
         // For each domain, sort addresses by reputation, get the contributor type, and
@@ -181,11 +181,11 @@ exports.handler = async (event) => {
         log({
           nativeId,
           nativeSkillId,
-          totalRepInDomain: totalRepInDomain?.toString(),
+          totalRepInDomain: totalRepInDomain?.toString() || '0',
           addressesWithReputation: JSON.stringify(
             sortedAddresses.map(({ address, reputationBN }) => ({
               address,
-              reputationBN: reputationBN.toString(),
+              reputationBN: reputationBN?.toString() || '0',
             })),
           ),
         });
@@ -206,7 +206,7 @@ exports.handler = async (event) => {
 
             const contributorReputationId = `${colonyAddress}_${nativeId}_${contributorAddress}`;
             const colonyContributorId = `${colonyAddress}_${contributorAddress}`;
-            const reputation = reputationBN.toString();
+            const reputation = reputationBN?.toString() || '0';
 
             const { data: repResponse } =
               (await graphqlRequest(
@@ -315,7 +315,7 @@ exports.handler = async (event) => {
         input: {
           id: colonyAddress,
           lastUpdatedContributorsWithReputation: new Date().toISOString(),
-          reputation: totalRepInColony.toString(),
+          reputation: totalRepInColony?.toString() || '0',
         },
       },
       graphqlURL,
