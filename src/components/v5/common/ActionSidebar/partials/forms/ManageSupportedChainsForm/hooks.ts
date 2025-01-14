@@ -41,6 +41,20 @@ const useActionType = () => {
     chainId?.toString(),
   );
 
+  /**
+   * This assumes that we only have Permissions, Reputation & Multi-Sig
+   * Update this once we start to support more decision methods
+   */
+  if (
+    (isRemoveOperation || isChainDisabled) &&
+    decisionMethod !== DecisionMethod.Permissions
+  ) {
+    return ActionTypes.MOTION_PROXY_COLONY_ENABLE_DISABLE;
+  }
+
+  /**
+   * @TODO Consider unifying the permissions saga for enabling & disabling as well
+   */
   if (isRemoveOperation) {
     return ActionTypes.PROXY_COLONY_REMOVE;
   }
