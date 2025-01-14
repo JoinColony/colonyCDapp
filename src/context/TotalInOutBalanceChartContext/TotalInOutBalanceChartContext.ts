@@ -7,9 +7,9 @@ export const TotalInOutBalanceChartContext = createContext<
     loading: boolean;
     timeframe:
       | {
-          label: string | undefined;
-          in: string | undefined | null;
-          out: string | undefined | null;
+          label: string;
+          in: string;
+          out: string;
         }[]
       | undefined
       | null;
