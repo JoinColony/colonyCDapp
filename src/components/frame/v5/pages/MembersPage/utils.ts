@@ -6,10 +6,12 @@ import {
   type UserRoleMeta,
 } from '~constants/permissions.ts';
 import { type ColonyContributorFragment, type ColonyFragment } from '~gql';
+import { getContributorBreakdown } from '~hooks/members/useContributorBreakdown.ts';
 import {
   getHighestTierRoleForUser,
   getUserRolesForDomain,
 } from '~transformers/index.ts';
+import { notNull } from '~utils/arrays/index.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 
 import { type MemberItem } from './types.ts';
@@ -106,6 +108,13 @@ export const getMembersList = (
       type,
     } = contributor;
 
+    const { domains: colonyDomains } = colony;
+
+    const domains = getContributorBreakdown(
+      colonyDomains?.items.filter(notNull) || [],
+      contributor,
+    );
+
     const { role: domainRolesMeta, isInherited: isRoleInherited } = getRoleInfo(
       {
         colonyRoles,
@@ -144,6 +153,7 @@ export const getMembersList = (
 
     return {
       user,
+      domains,
       walletAddress: contributorAddress,
       isVerified,
       reputation: isAllTeamsSelected

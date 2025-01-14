@@ -1,12 +1,15 @@
+import { Id } from '@colony/colony-js';
 import { SealCheck } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 
+import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { splitAddress } from '~utils/strings.ts';
 import ContributorTypeWrapper from '~v5/shared/ContributorTypeWrapper/ContributorTypeWrapper.tsx';
 import MeatBallMenu from '~v5/shared/MeatBallMenu/index.ts';
 import ReputationBadge from '~v5/shared/ReputationBadge/index.ts';
-import RolesTooltip from '~v5/shared/RolesTooltip/RolesTooltip.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+import PermissionTooltip from '~v5/shared/UserInfoPopover/partials/PermissionTooltip/PermissionTooltip.tsx';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
 
 import { type MemberCardProps } from './types.ts';
@@ -16,15 +19,27 @@ const displayName = 'v5.common.MemberCard';
 const MemberCard: FC<MemberCardProps> = ({
   userAddress,
   user,
+  domains,
   meatBallMenuProps,
   reputation,
-  role,
-  isRoleInherited,
   contributorType,
   isVerified,
 }) => {
   const { header, start, end } = splitAddress(userAddress);
   const userName = user?.profile?.displayName || `${header}${start}...${end}`;
+
+  const { isMultiSigEnabled } = useEnabledExtensions();
+  const selectedDomain = useGetSelectedDomainFilter();
+
+  const contributorRootDomain = domains.find(
+    ({ nativeId }) => nativeId === Id.RootDomain,
+  );
+  const contributorDomain = domains.find(
+    ({ nativeId }) => nativeId === selectedDomain?.nativeId,
+  );
+
+  const isRootDomain =
+    selectedDomain?.nativeId === contributorRootDomain?.nativeId;
 
   return (
     <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
@@ -60,19 +75,35 @@ const MemberCard: FC<MemberCardProps> = ({
           <MeatBallMenu withVerticalIcon {...meatBallMenuProps} />
         </div>
       </div>
-      {(reputation !== undefined || role) && (
-        <div className="mt-[.6875rem] flex w-full items-center justify-between gap-4 border-t border-t-gray-200 pt-[.6875rem]">
-          <ReputationBadge
-            className="min-h-[1.625rem]"
-            reputation={reputation || 0}
+      <div className="mt-[.6875rem] flex w-full items-center justify-between border-t border-t-gray-200 pt-[.6875rem]">
+        <ReputationBadge
+          className="min-h-[1.625rem] min-w-[4.25rem]"
+          reputation={reputation || 0}
+        />
+        <div className="flex w-full justify-end gap-1 @container/cardDetails">
+          <PermissionTooltip
+            userPermissionsInDomain={contributorDomain?.permissions || []}
+            userPermissionsInParentDomain={
+              contributorRootDomain?.permissions || []
+            }
+            isRootDomain={isRootDomain}
+            showRoleLabel
           />
-          {role && (
-            <div className="ml-auto">
-              <RolesTooltip role={role} isRoleInherited={isRoleInherited} />
-            </div>
+          {isMultiSigEnabled && (
+            <PermissionTooltip
+              userPermissionsInDomain={
+                contributorDomain?.multiSigPermissions || []
+              }
+              userPermissionsInParentDomain={
+                contributorRootDomain?.multiSigPermissions || []
+              }
+              isRootDomain={isRootDomain}
+              isMultiSig
+              showRoleLabel
+            />
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
