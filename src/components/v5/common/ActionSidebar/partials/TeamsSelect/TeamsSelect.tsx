@@ -2,13 +2,12 @@ import clsx from 'clsx';
 import React, { useEffect, type FC } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
-import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useTeamsOptions from '~hooks/useTeamsOptions.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import TeamBadge from '~v5/common/Pills/TeamBadge/index.ts';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
 
 import { type TeamSelectProps } from './types.ts';
 
@@ -31,25 +30,18 @@ const TeamsSelect: FC<TeamSelectProps> = ({
   const isError = !!error;
   const teamsOptions = useTeamsOptions(filterOptionsFn);
   const { formatMessage } = useIntl();
-  const [
-    isTeamSelectVisible,
-    {
-      toggle: toggleTeamSelect,
-      toggleOff: toggleTeamSelectOff,
-      registerContainerRef,
-    },
-  ] = useToggle();
+
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
   const selectedOption = teamsOptions.find(
     (option) => option.value === selectedTeam,
   );
   const { readonly } = useAdditionalFormOptionsContext();
-
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isTeamSelectVisible], {
-    top: 8,
-  });
 
   useEffect(() => {
     if (!selectedOption && field.value) {
@@ -72,15 +64,14 @@ const TeamsSelect: FC<TeamSelectProps> = ({
         <>
           <button
             type="button"
-            ref={relativeElementRef}
+            ref={setTriggerRef}
             className={clsx('flex text-md transition-colors', {
-              'text-gray-400': !isError && !isTeamSelectVisible && !disabled,
+              'text-gray-400': !isError && !visible && !disabled,
               'text-gray-300': disabled,
               'text-negative-400': !disabled && isError,
-              'text-blue-400': isTeamSelectVisible,
+              'text-blue-400': visible,
               'md:hover:text-blue-400': !disabled,
             })}
-            onClick={toggleTeamSelect}
             disabled={disabled}
           >
             {selectedOption && !disabled ? (
@@ -96,12 +87,11 @@ const TeamsSelect: FC<TeamSelectProps> = ({
               formatMessage({ id: 'actionSidebar.selectTeam' })
             )}
           </button>
-          {isTeamSelectVisible && (
-            <SearchSelect
-              ref={(ref) => {
-                registerContainerRef(ref);
-                portalElementRef.current = ref;
-              }}
+          {visible && (
+            <SearchSelectPopover
+              tooltipProps={getTooltipProps}
+              setTooltipRef={setTooltipRef}
+              triggerRef={triggerRef}
               items={[
                 {
                   key: 'teams',
@@ -110,12 +100,7 @@ const TeamsSelect: FC<TeamSelectProps> = ({
                   options: teamsOptions,
                 },
               ]}
-              onSelect={(value) => {
-                field.onChange(value);
-
-                toggleTeamSelectOff();
-              }}
-              className="z-sidebar"
+              onSelect={field.onChange}
             />
           )}
         </>

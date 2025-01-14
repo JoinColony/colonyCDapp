@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { ExpenditureType } from '~gql';
 import { type ExpenditureAction } from '~types/graphql.ts';
-import noop from '~utils/noop.ts';
+import { noop } from '~utils/noop.ts';
 import { type ExpenditureStep } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/PaymentBuilderWidget/types.ts';
 import { type MilestoneItem } from '~v5/common/CompletedAction/partials/PaymentBuilder/partials/StagedPaymentStep/partials/MilestoneReleaseModal/types.ts';
 

@@ -9,6 +9,7 @@ import { useUserTokenBalanceContext } from '~context/UserTokenBalanceContext/Use
 import { ColonyActionType } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
 import useExtensionData from '~hooks/useExtensionData.ts';
+import { type RefetchAction } from '~hooks/useGetColonyAction.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
@@ -19,7 +20,6 @@ import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 
 import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 

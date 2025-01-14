@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
 import { type ColonyActionsTableProps } from '../types.ts';
 
@@ -9,13 +12,13 @@ export const useHandleRedoAction = ({
 }: {
   actionProps: ColonyActionsTableProps['actionProps'];
 }) => {
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   useEffect(() => {
     if (actionProps.defaultValues && actionProps.selectedAction) {
-      toggleActionSidebarOn({ ...actionProps.defaultValues });
+      showActionSidebar(ActionSidebarMode.CreateAction, {
+        initialValues: actionProps.defaultValues,
+      });
 
       setTimeout(() => {
         actionProps.setSelectedAction(undefined);
@@ -23,7 +26,7 @@ export const useHandleRedoAction = ({
     }
   }, [
     actionProps.defaultValues,
-    toggleActionSidebarOn,
+    showActionSidebar,
     actionProps.selectedAction,
     actionProps,
   ]);

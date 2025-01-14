@@ -12,7 +12,6 @@ import { canColonyBeUpgraded } from '~utils/checks/index.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 
-import { useActiveActionType } from '../hooks/useActiveActionType.ts';
 import {
   type ClaimMintTokensActionParams,
   type FinalizeSuccessCallback,
@@ -42,10 +41,8 @@ const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.ArbitraryTxs]: 'button.createTransaction',
 };
 
-export const useSubmitButtonText = () => {
-  const selectedAction = useActiveActionType();
-  const selectedActionText =
-    selectedAction && SUBMIT_BUTTON_TEXT_MAP[selectedAction];
+export const useSubmitButtonText = (actionType?: Action) => {
+  const selectedActionText = actionType && SUBMIT_BUTTON_TEXT_MAP[actionType];
 
   return useMemo(
     () =>
@@ -56,15 +53,14 @@ export const useSubmitButtonText = () => {
   );
 };
 
-export const useSubmitButtonDisabled = () => {
+export const useSubmitButtonDisabled = (actionType?: Action) => {
   const { colony } = useColonyContext();
   const { colonyContractVersion } = useColonyContractVersion();
   const canUpgrade = canColonyBeUpgraded(colony, colonyContractVersion);
 
   const isNativeTokenUnlocked = !!colony.status?.nativeToken?.unlocked;
-  const selectedAction = useActiveActionType();
 
-  switch (selectedAction) {
+  switch (actionType) {
     case Action.UnlockToken:
       return isNativeTokenUnlocked;
     case Action.UpgradeColonyVersion:
@@ -74,7 +70,7 @@ export const useSubmitButtonDisabled = () => {
   }
 };
 
-export const useIsFieldDisabled = () => {
+export const useIsFieldDisabled = (actionType?: Action) => {
   const {
     extensionData: votingReputationExtensionData,
     loading: votingReputationLoading,
@@ -85,15 +81,13 @@ export const useIsFieldDisabled = () => {
     loading: stagedExpenditureLoading,
   } = useExtensionData(Extension.StagedExpenditure);
 
-  const selectedAction = useActiveActionType();
-
   const isVotingReputationExtensionEnabled =
     votingReputationExtensionData &&
     isInstalledExtensionData(votingReputationExtensionData) &&
     votingReputationExtensionData.isEnabled;
 
   if (
-    selectedAction === Action.CreateDecision &&
+    actionType === Action.CreateDecision &&
     !isVotingReputationExtensionEnabled &&
     !votingReputationLoading
   ) {
@@ -106,7 +100,7 @@ export const useIsFieldDisabled = () => {
     stagedExpenditureExtensionData.isEnabled;
 
   if (
-    selectedAction === Action.StagedPayment &&
+    actionType === Action.StagedPayment &&
     !isStagedExpenditureExtensionEnabled &&
     !stagedExpenditureLoading
   ) {

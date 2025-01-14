@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl';
 import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import TimerValue from '~shared/TimerValue/TimerValue.tsx';
 import { formatText } from '~utils/intl.ts';
-import { splitTimeLeft } from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/helpers.ts';
+import { splitTimeLeft } from '~v5/common/MotionCountDownTimer/helpers.ts';
 
 const displayName =
   'v5.common.CompletedAction.partials.StagedPaymentTable.partials.ClaimDelayTooltip';

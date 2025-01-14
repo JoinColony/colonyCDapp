@@ -15,7 +15,6 @@ import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import {
-  ACTION_TYPE_FIELD_NAME,
   DECISION_METHOD_FIELD_NAME,
   DESCRIPTION_FIELD_NAME,
   TEAM_FIELD_NAME,
@@ -141,9 +140,9 @@ const SetUserRoles = ({ action }: Props) => {
         <ActionTitle>{customTitle}</ActionTitle>
         <MeatballMenu
           transactionHash={transactionHash}
+          action={Action.ManagePermissions}
           defaultValues={{
             [TITLE_FIELD_NAME]: customTitle,
-            [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
             member: recipientAddress,
             authority: roleAuthority,
             role: getIsPermissionsRemoval(roles)

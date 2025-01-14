@@ -7,6 +7,7 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import {
   COLONY_AGREEMENTS_ROUTE,
   COLONY_HOME_ROUTE,
@@ -16,8 +17,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
-import MotionCountDownTimer from '~v5/common/ActionSidebar/partials/Motions/partials/MotionCountDownTimer/MotionCountDownTimer.tsx';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import MotionStateBadge from '~v5/common/Pills/MotionStateBadge/MotionStateBadge.tsx';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
 import TeamBadge from '~v5/common/Pills/TeamBadge/TeamBadge.tsx';

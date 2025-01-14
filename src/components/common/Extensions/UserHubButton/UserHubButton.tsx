@@ -53,8 +53,7 @@ const UserHubButton: FC<Props> = ({ openTab, onOpen }) => {
   const [searchParams] = useSearchParams();
   const transactionId = searchParams?.get(TX_SEARCH_PARAM);
   const previousTransactionId = usePrevious(transactionId);
-  const { actionSidebarToggle } = useActionSidebarContext();
-  const [isActionSidebarOpen] = actionSidebarToggle;
+  const { isActionSidebarOpen } = useActionSidebarContext();
 
   const { trackEvent } = useAnalyticsContext();
   const walletAddress = wallet?.address;

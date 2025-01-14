@@ -19,7 +19,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks/index.ts';
 import useToggle from '~hooks/useToggle/index.ts';
@@ -27,7 +30,6 @@ import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
 // import { useSearchContext } from '~context/SearchContext';
 // import Filter from '~v5/common/Filter';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { AddFundsModal } from '~v5/common/Modals/AddFundsModal/AddFundsModal.tsx';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
@@ -75,9 +77,7 @@ const BalanceTable: FC = () => {
   const [rowSelection, setRowSelection] = useState({});
   const tokensDataLength = data?.length;
   const { formatMessage } = useIntl();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const [
     isAddFundsModalOpened,
     { toggleOn: toggleAddFundsModalOn, toggleOff: toggleAddFundsModalOff },
@@ -138,8 +138,8 @@ const BalanceTable: FC = () => {
               {
                 key: 'mint_tokens',
                 onClick: () => {
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+                  showActionSidebar(ActionSidebarMode.CreateAction, {
+                    action: Action.MintTokens,
                   });
                 },
                 label: formatMessage(MSG.labelMintToken),
@@ -150,9 +150,11 @@ const BalanceTable: FC = () => {
         {
           key: 'transfer_funds',
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
-              tokenAddress: selectedTokenData?.tokenAddress,
+            showActionSidebar(ActionSidebarMode.CreateAction, {
+              action: Action.TransferFunds,
+              initialValues: {
+                tokenAddress: selectedTokenData?.tokenAddress,
+              },
             });
           },
           label: formatMessage(MSG.labelTransferFunds),
@@ -161,9 +163,11 @@ const BalanceTable: FC = () => {
         {
           key: 'make_payment',
           onClick: () => {
-            toggleActionSidebarOn({
-              [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-              tokenAddress: selectedTokenData?.tokenAddress,
+            showActionSidebar(ActionSidebarMode.CreateAction, {
+              action: Action.SimplePayment,
+              initialValues: {
+                tokenAddress: selectedTokenData?.tokenAddress,
+              },
             });
           },
           label: formatMessage(MSG.labelMakePayment),

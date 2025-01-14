@@ -13,7 +13,7 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/index.ts';
 import Description from '~v5/common/ActionSidebar/partials/Description/index.ts';
 import TeamColorField from '~v5/common/ActionSidebar/partials/TeamColorField/index.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { type CreateActionFormProps } from '~v5/common/ActionSidebar/types.ts';
 import FormInputBase from '~v5/common/Fields/InputBase/FormInputBase.tsx';
 import FormTextareaBase from '~v5/common/Fields/TextareaBase/FormTextareaBase.tsx';
 
@@ -21,7 +21,7 @@ import { useCreateNewTeam } from './hooks.ts';
 
 const displayName = 'v5.common.ActionSidebar.partials.CreateNewTeamForm';
 
-const CreateNewTeamForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
+const CreateNewTeamForm: FC<CreateActionFormProps> = ({ getFormOptions }) => {
   const { readonly } = useAdditionalFormOptionsContext();
 
   useCreateNewTeam(getFormOptions);

@@ -8,6 +8,8 @@ import { Action } from '~constants/actions.ts';
 import { getRole, UserRole } from '~constants/permissions.ts';
 import { ColonyActionType } from '~gql';
 import { useGetAllTokens } from '~hooks/useGetAllTokens.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
+import useGetExpenditureData from '~hooks/useGetExpenditureData.ts';
 import { convertRolesToArray } from '~transformers/index.ts';
 import { DecisionMethod, ExtendedColonyActionType } from '~types/actions.ts';
 import { Authority } from '~types/authority.ts';
@@ -19,21 +21,17 @@ import {
   getSelectedToken,
   getTokenDecimalsWithFallback,
 } from '~utils/tokens.ts';
-
 import {
-  ACTION_TYPE_FIELD_NAME,
+  ACTION_TYPE_PARAM_NAME,
   AMOUNT_FIELD_NAME,
   FROM_FIELD_NAME,
   RECIPIENT_FIELD_NAME,
   TEAM_FIELD_NAME,
   TOKEN_FIELD_NAME,
-} from '../consts.ts';
-import { AVAILABLE_PERMISSIONS } from '../partials/forms/ManagePermissionsForm/consts.ts';
-import { ModificationOption } from '../partials/forms/ManageReputationForm/consts.ts';
-import { calculatePercentageValue } from '../partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
-
-import useGetColonyAction from './useGetColonyAction.ts';
-import { useGetExpenditureData } from './useGetExpenditureData.ts';
+} from '~v5/common/ActionSidebar/consts.ts';
+import { AVAILABLE_PERMISSIONS } from '~v5/common/ActionSidebar/partials/forms/ManagePermissionsForm/consts.ts';
+import { ModificationOption } from '~v5/common/ActionSidebar/partials/forms/ManageReputationForm/consts.ts';
+import { calculatePercentageValue } from '~v5/common/ActionSidebar/partials/forms/SplitPaymentForm/partials/SplitPaymentRecipientsField/utils.ts';
 
 const useGetActionData = (transactionId: string | undefined) => {
   const {
@@ -100,7 +98,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MintTokens:
       case ColonyActionType.MintTokensMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.MintTokens,
+          [ACTION_TYPE_PARAM_NAME]: Action.MintTokens,
           amount: convertToDecimal(
             amount || '',
             getTokenDecimalsWithFallback(token?.decimals),
@@ -111,7 +109,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.Payment:
       case ColonyActionType.PaymentMotion: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+          [ACTION_TYPE_PARAM_NAME]: Action.SimplePayment,
           amount: moveDecimal(
             amount,
             -getTokenDecimalsWithFallback(token?.decimals),
@@ -127,7 +125,7 @@ const useGetActionData = (transactionId: string | undefined) => {
         const [firstPayment, ...additionalPayments] = payments || [];
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
+          [ACTION_TYPE_PARAM_NAME]: Action.SimplePayment,
           from: fromDomain?.nativeId,
           amount: moveDecimal(
             firstPayment.amount,
@@ -151,7 +149,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.MoveFunds:
       case ColonyActionType.MoveFundsMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.TransferFunds,
+          [ACTION_TYPE_PARAM_NAME]: Action.TransferFunds,
           from: fromDomain?.nativeId,
           to: toDomain?.nativeId,
           amount: convertToDecimal(
@@ -165,7 +163,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.ColonyEdit:
       case ColonyActionType.ColonyEditMotion: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EditColonyDetails,
+          [ACTION_TYPE_PARAM_NAME]: Action.EditColonyDetails,
           colonyName: motionData
             ? pendingColonyMetadata?.displayName
             : metadata?.displayName,
@@ -190,7 +188,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.CreateDomain:
       case ColonyActionType.CreateDomainMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+          [ACTION_TYPE_PARAM_NAME]: Action.CreateNewTeam,
           teamName: action.isMotion
             ? pendingDomainMetadata?.name
             : fromDomain?.metadata?.name,
@@ -209,7 +207,7 @@ const useGetActionData = (transactionId: string | undefined) => {
         );
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
+          [ACTION_TYPE_PARAM_NAME]: Action.EditExistingTeam,
           team: fromDomain?.nativeId,
           teamName: isMotion ? pendingDomainMetadata?.name : changelog?.newName,
           domainColor: isMotion
@@ -223,7 +221,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       }
       case ColonyActionType.CreateDecisionMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.CreateDecision,
+          [ACTION_TYPE_PARAM_NAME]: Action.CreateDecision,
           createdIn: decisionData?.motionDomainId,
           title: decisionData?.title,
           description: decisionData?.description,
@@ -234,12 +232,12 @@ const useGetActionData = (transactionId: string | undefined) => {
       case ColonyActionType.UnlockToken:
       case ColonyActionType.UnlockTokenMotion:
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.UnlockToken,
+          [ACTION_TYPE_PARAM_NAME]: Action.UnlockToken,
           ...repeatableFields,
         };
       case ColonyActionType.CreateExpenditure: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.PaymentBuilder,
+          [ACTION_TYPE_PARAM_NAME]: Action.PaymentBuilder,
           [FROM_FIELD_NAME]: expenditureMetadata?.fundFromDomainNativeId,
           payments: slots?.map((slot) => {
             const paymentToken = allTokens.find(
@@ -262,7 +260,7 @@ const useGetActionData = (transactionId: string | undefined) => {
       }
       case ExtendedColonyActionType.StagedPayment: {
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.StagedPayment,
+          [ACTION_TYPE_PARAM_NAME]: Action.StagedPayment,
           [FROM_FIELD_NAME]: fromDomain?.nativeId,
           [RECIPIENT_FIELD_NAME]: expenditure?.slots?.[0]?.recipientAddress,
           stages: (expenditure?.metadata?.stages || []).map((stage) => {
@@ -305,7 +303,7 @@ const useGetActionData = (transactionId: string | undefined) => {
         );
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.SplitPayment,
+          [ACTION_TYPE_PARAM_NAME]: Action.SplitPayment,
           distributionMethod: expenditure?.metadata?.distributionType,
           [TEAM_FIELD_NAME]: expenditure?.metadata?.fundFromDomainNativeId,
           [AMOUNT_FIELD_NAME]: formattedAmount,
@@ -332,7 +330,7 @@ const useGetActionData = (transactionId: string | undefined) => {
         const { role } = getRole(rolesList);
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+          [ACTION_TYPE_PARAM_NAME]: Action.ManagePermissions,
           member: recipientAddress,
           authority: action.rolesAreMultiSig
             ? Authority.ViaMultiSig
@@ -374,7 +372,7 @@ const useGetActionData = (transactionId: string | undefined) => {
         );
 
         return {
-          [ACTION_TYPE_FIELD_NAME]: Action.ManageReputation,
+          [ACTION_TYPE_PARAM_NAME]: Action.ManageReputation,
           member: recipientAddress,
           modification: isSmite
             ? ModificationOption.RemoveReputation
