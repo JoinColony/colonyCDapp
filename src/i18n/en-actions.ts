@@ -62,6 +62,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.AddProxyColonyMotion} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.AddProxyColonyMultisig} {Add support for {chain} chain by {initiator}}
       ${ColonyActionType.RemoveProxyColony} {Remove support for {chain} chain by {initiator}}
+      ${ColonyActionType.RemoveProxyColonyMotion} {Remove support for {chain} chain by {initiator}}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}
@@ -130,6 +131,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.AddProxyColonyMotion} {Manage supported chains}
       ${ColonyActionType.AddProxyColonyMultisig} {Manage supported chains}
       ${ColonyActionType.RemoveProxyColony} {Manage supported chains}
+      ${ColonyActionType.RemoveProxyColonyMotion} {Manage supported chains}
       ${ExtendedColonyActionType.StagedPayment} {Staged payment}
       ${ExtendedColonyActionType.AddSafe} {Add Safe}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}

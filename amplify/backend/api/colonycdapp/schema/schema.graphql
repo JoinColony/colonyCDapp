@@ -912,6 +912,7 @@ enum ColonyActionType {
   An action related to disabling a proxy colony
   """
   REMOVE_PROXY_COLONY
+  REMOVE_PROXY_COLONY_MOTION
 }
 
 """
