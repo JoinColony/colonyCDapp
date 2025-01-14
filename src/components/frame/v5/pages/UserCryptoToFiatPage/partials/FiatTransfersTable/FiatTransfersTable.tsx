@@ -10,6 +10,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useMobile } from '~hooks/index.ts';
 import { type BridgeDrain } from '~types/graphql.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
+import { EXPANDER_COLUMN_ID } from '~v5/common/Table/consts.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
 import TableHeader from '~v5/common/TableHeader/TableHeader.tsx';
 
@@ -66,7 +67,7 @@ const FiatTransfersTable = () => {
                   receipt: false,
                 }
               : {
-                  expander: false,
+                  [EXPANDER_COLUMN_ID]: false,
                 },
             sorting,
           },

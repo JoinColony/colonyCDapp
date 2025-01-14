@@ -15,6 +15,7 @@ import { getFormattedAmount } from '~utils/getFormattedAmount.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
 import PillsBase from '~v5/common/Pills/PillsBase.tsx';
+import { EXPANDER_COLUMN_ID } from '~v5/common/Table/consts.ts';
 
 import { FiatTransferState, statusPillScheme, STATUS_MSGS } from './consts.ts';
 
@@ -156,7 +157,7 @@ export const useFiatTransfersTableColumns = (
         },
       }),
       columnHelper.display({
-        id: 'expander',
+        id: EXPANDER_COLUMN_ID,
         staticSize: '2.25rem',
         header: () => null,
         enableSorting: false,

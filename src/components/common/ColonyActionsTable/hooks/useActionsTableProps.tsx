@@ -7,9 +7,18 @@ import { useMobile } from '~hooks/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
 import { merge } from '~utils/lodash.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
-import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
+import {
+  EXPANDER_COLUMN_ID,
+  MEATBALL_MENU_COLUMN_ID,
+} from '~v5/common/Table/consts.ts';
 import { type TableProps } from '~v5/common/Table/types.ts';
 
+import {
+  CREATED_AT_COLUMN_ID,
+  DESCRIPTION_COLUMN_ID,
+  MOTION_STATE_COLUMN_ID,
+  TEAM_COLUMN_ID,
+} from '../consts.ts';
 import { useFiltersContext } from '../FiltersContext/FiltersContext.ts';
 import { type ColonyActionsTableProps } from '../types.ts';
 
@@ -83,7 +92,7 @@ export const useActionsTableProps = (
   const tableProps = merge({
     className: clsx(
       className,
-      'sm:[&_td:first-child]:pl-[1.125rem] sm:[&_td]:pr-[1.125rem] sm:[&_th:first-child]:pl-[1.125rem] sm:[&_th:not(:first-child)]:pl-0 sm:[&_th]:pr-[1.125rem]',
+      '[&_td:first-child]:pl-4 sm:[&_td:first-child]:pl-4.5 [&_td]:pr-4 sm:[&_td]:pr-4.5 [&_th:first-child]:pl-4 sm:[&_th:first-child]:pl-4.5 [&_th:not(:first-child)]:pl-0 [&_th]:pr-4 sm:[&_th]:pr-4.5',
       {
         'sm:[&_td]:h-[66px]': isRecentActivityVariant,
         'sm:[&_td]:h-[70px]': !isRecentActivityVariant,
@@ -98,18 +107,18 @@ export const useActionsTableProps = (
         state: {
           columnVisibility: isMobile
             ? {
-                description: true,
-                motionState: true,
-                team: false,
-                createdAt: false,
+                [DESCRIPTION_COLUMN_ID]: true,
+                [MOTION_STATE_COLUMN_ID]: true,
+                [TEAM_COLUMN_ID]: false,
+                [CREATED_AT_COLUMN_ID]: false,
                 [MEATBALL_MENU_COLUMN_ID]: false,
               }
             : {
-                description: true,
-                motionState: true,
-                team: false,
-                createdAt: true,
-                expander: false,
+                [DESCRIPTION_COLUMN_ID]: true,
+                [MOTION_STATE_COLUMN_ID]: true,
+                [TEAM_COLUMN_ID]: false,
+                [CREATED_AT_COLUMN_ID]: true,
+                [EXPANDER_COLUMN_ID]: false,
               },
           sorting,
           pagination: {
@@ -143,7 +152,7 @@ export const useActionsTableProps = (
       renderSubComponent,
     },
     columns,
-    renderCellWrapper: isMobile ? undefined : renderRowLink,
+    renderCellWrapper: renderRowLink,
     data: colonyActions,
     emptyContent: (
       <EmptyContent
