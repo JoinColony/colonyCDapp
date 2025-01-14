@@ -147,10 +147,11 @@ const useActionsList = () => {
     ];
 
     if (!isFeatureFlagSupportedChainsEnabled) {
-      const arbitraryTxsIndex = actionsListOptions[4].options.findIndex(
-        ({ value }) => value === Action.ManageSupportedChains,
-      );
-      actionsListOptions[5].options.splice(arbitraryTxsIndex, 1);
+      const manageSupportedChainsIndex =
+        actionsListOptions[4].options.findIndex(
+          ({ value }) => value === Action.ManageSupportedChains,
+        );
+      actionsListOptions[4].options.splice(manageSupportedChainsIndex, 1);
     }
 
     if (!isStagedExpenditureEnabled) {
