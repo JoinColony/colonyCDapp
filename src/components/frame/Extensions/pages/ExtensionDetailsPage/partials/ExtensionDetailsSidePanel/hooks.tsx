@@ -17,8 +17,11 @@ export const useUninstall = (extensionId: Extension) => {
   } = useColonyContext();
   const [isLoading, setIsLoading] = useState(false);
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const { setActiveTab, setWaitingForActionConfirmation } =
-    useExtensionDetailsPageContext();
+  const {
+    setActiveTab,
+    setWaitingForActionConfirmation,
+    setIsPendingManagement,
+  } = useExtensionDetailsPageContext();
 
   const uninstallAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_UNINSTALL,
@@ -33,6 +36,7 @@ export const useUninstall = (extensionId: Extension) => {
 
   const handleUninstall = async () => {
     try {
+      setIsPendingManagement(true);
       setIsLoading(true);
       await uninstallAsyncFunction(uninstallExtensionPayload);
       await waitForDbAfterExtensionAction({
@@ -63,6 +67,7 @@ export const useUninstall = (extensionId: Extension) => {
         />,
       );
     } finally {
+      setIsPendingManagement(false);
       setIsLoading(false);
     }
   };
@@ -75,7 +80,8 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const { setWaitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { setWaitingForActionConfirmation, setIsPendingManagement } =
+    useExtensionDetailsPageContext();
   const deprecateExtensionValues = {
     colonyAddress,
     extensionId,
@@ -92,6 +98,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
 
   const handleDeprecate = async () => {
     try {
+      setIsPendingManagement(true);
       setIsLoading(true);
       await deprecateAsyncFunction(deprecateExtensionValues);
       await waitForDbAfterExtensionAction({
@@ -116,6 +123,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
         />,
       );
     } finally {
+      setIsPendingManagement(false);
       setIsLoading(false);
     }
   };

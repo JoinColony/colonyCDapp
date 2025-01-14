@@ -17,6 +17,10 @@ interface ExtensionDetailsPageContextValues {
   setWaitingForActionConfirmation: Dispatch<SetStateAction<boolean>>;
   extensionData: AnyExtensionData;
   userHasRoot: boolean;
+  isPendingManagement: boolean;
+  setIsPendingManagement: Dispatch<SetStateAction<boolean>>;
+  isSavingChanges: boolean;
+  setIsSavingChanges: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ExtensionDetailsPageContext =
@@ -27,6 +31,10 @@ export const ExtensionDetailsPageContext =
     setWaitingForActionConfirmation: noop,
     extensionData: {} as AnyExtensionData,
     userHasRoot: false,
+    isPendingManagement: false,
+    setIsPendingManagement: noop,
+    isSavingChanges: false,
+    setIsSavingChanges: noop,
   });
 
 export const useExtensionDetailsPageContext = () => {

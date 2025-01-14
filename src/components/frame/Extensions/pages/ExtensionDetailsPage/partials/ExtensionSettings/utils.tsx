@@ -123,6 +123,7 @@ const showEnableErrorToast = (isSaveChanges?: boolean) => {
 
 export const handleWaitingForDbAfterFormCompletion = async ({
   setWaitingForActionConfirmation,
+  setIsSavingChanges,
   extensionData,
   refetchExtensionData,
   setActiveTab,
@@ -132,6 +133,7 @@ export const handleWaitingForDbAfterFormCompletion = async ({
   method,
 }: {
   setWaitingForActionConfirmation: SetStateFn;
+  setIsSavingChanges: SetStateFn;
   setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
   extensionData: AnyExtensionData;
   refetchExtensionData: RefetchExtensionDataFn;
@@ -143,6 +145,10 @@ export const handleWaitingForDbAfterFormCompletion = async ({
   setWaitingForActionConfirmation(true);
 
   const isSaveChanges = getIsSaveChanges(extensionData, method);
+
+  if (isSaveChanges) {
+    setIsSavingChanges(true);
+  }
 
   try {
     if (!isSaveChanges) {
@@ -250,17 +256,20 @@ export const handleWaitingForDbAfterFormCompletion = async ({
     }
   } finally {
     setWaitingForActionConfirmation(false);
+    setIsSavingChanges(false);
   }
 };
 
 export const getFormSuccessFn =
   <T extends FieldValues>({
     setWaitingForActionConfirmation,
+    setIsSavingChanges,
     extensionData,
     refetchExtensionData,
     setActiveTab,
   }: {
     setWaitingForActionConfirmation: SetStateFn;
+    setIsSavingChanges: SetStateFn;
     setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
     extensionData: AnyExtensionData;
     refetchExtensionData: RefetchExtensionDataFn;
@@ -268,6 +277,7 @@ export const getFormSuccessFn =
   async (_, { reset }) => {
     await handleWaitingForDbAfterFormCompletion({
       setWaitingForActionConfirmation,
+      setIsSavingChanges,
       extensionData,
       refetchExtensionData,
       setActiveTab,
@@ -279,11 +289,13 @@ export const getFormSuccessFn =
 export const getFormErrorFn =
   <T extends FieldValues>({
     setWaitingForActionConfirmation,
+    setIsSavingChanges,
     extensionData,
     refetchExtensionData,
     setActiveTab,
   }: {
     setWaitingForActionConfirmation: SetStateFn;
+    setIsSavingChanges: SetStateFn;
     setActiveTab: (tabId: ExtensionDetailsPageTabId) => void;
     extensionData: AnyExtensionData;
     refetchExtensionData: RefetchExtensionDataFn;
@@ -295,6 +307,7 @@ export const getFormErrorFn =
     if (initialiseTransactionFailed || setUserRolesTransactionFailed) {
       await handleWaitingForDbAfterFormCompletion({
         setWaitingForActionConfirmation,
+        setIsSavingChanges,
         extensionData,
         refetchExtensionData,
         setActiveTab,

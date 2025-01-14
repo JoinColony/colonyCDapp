@@ -1,6 +1,7 @@
 import { Extension } from '@colony/colony-js';
 import { Trash } from '@phosphor-icons/react';
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
@@ -113,7 +114,12 @@ const UninstallButton = ({
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
-  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { waitingForActionConfirmation, isPendingManagement } =
+    useExtensionDetailsPageContext();
+
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
 
   return (
     <>
@@ -124,7 +130,9 @@ const UninstallButton = ({
           isFullSize
           loading={isLoading}
           onClick={() => setIsUninstallModalOpen(true)}
-          disabled={waitingForActionConfirmation}
+          disabled={
+            isPendingManagement || isSubmitting || waitingForActionConfirmation
+          }
         >
           {formatText({ id: 'button.uninstallExtension' })}
         </Button>

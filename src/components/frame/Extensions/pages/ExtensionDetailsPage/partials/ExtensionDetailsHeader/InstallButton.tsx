@@ -23,11 +23,12 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
     colony: { colonyAddress, nativeToken },
     isSupportedColonyVersion,
   } = useColonyContext();
-  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { waitingForActionConfirmation, isPendingManagement } =
+    useExtensionDetailsPageContext();
 
   const isMobile = useMobile();
 
-  const { isLoading, handleInstallSuccess, handleInstallError } =
+  const { handleInstallSuccess, handleInstallError, isLoading } =
     useInstall(extensionData);
 
   const getDefaultExtensionParams = (extensionId: Extension) => {
@@ -55,7 +56,11 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
-      disabled={!isSupportedColonyVersion || waitingForActionConfirmation}
+      disabled={
+        isPendingManagement ||
+        !isSupportedColonyVersion ||
+        waitingForActionConfirmation
+      }
     >
       {formatText({ id: 'button.install' })}
     </ActionButton>

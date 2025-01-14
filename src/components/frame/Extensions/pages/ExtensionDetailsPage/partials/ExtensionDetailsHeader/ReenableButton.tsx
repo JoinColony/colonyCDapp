@@ -1,5 +1,6 @@
 import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { useMobile } from '~hooks/index.ts';
@@ -23,7 +24,12 @@ const ReenableButton = ({
   });
   const isMobile = useMobile();
 
-  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
+
+  const { waitingForActionConfirmation, isPendingManagement } =
+    useExtensionDetailsPageContext();
 
   return (
     <>
@@ -32,7 +38,9 @@ const ReenableButton = ({
         onClick={() => setIsReEnableModalOpen(true)}
         isFullSize={isMobile}
         loading={isLoading}
-        disabled={waitingForActionConfirmation}
+        disabled={
+          isPendingManagement || isSubmitting || waitingForActionConfirmation
+        }
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>
