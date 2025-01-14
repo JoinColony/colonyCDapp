@@ -67,7 +67,7 @@
     "@jackfranklin/test-data-bot": "^1.4.0",
     "@jest/globals": "^29.0.2",
     "@limegrass/eslint-plugin-import-alias": "^1.4.1",
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.49.1",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",

@@ -141,7 +141,7 @@ const PaymentBuilderRecipientsField: FC<PaymentBuilderRecipientsFieldProps> = ({
   );
 
   return (
-    <div>
+    <div data-testid="payment-builder-recipients-field">
       <h5 className="mb-3 mt-6 text-2">
         {formatText({ id: 'actionSidebar.payments' })}
       </h5>

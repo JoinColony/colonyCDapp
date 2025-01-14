@@ -15,11 +15,13 @@ const PillsBase: FC<PropsWithChildren<PillsProps>> = ({
   pillSize = 'medium',
   isCapitalized = true,
   textClassName,
+  testId,
 }) => {
   const content = text || children;
 
   return (
     <span
+      data-testid={testId}
       className={clsx(
         'inline-flex shrink-0 items-center rounded-3xl px-[9px] py-1.5 text-center',
         className,
