@@ -66,31 +66,36 @@ const PermissionTooltip: FC<PermissionTooltipProps> = ({
   const role = getRole(mergedPermissions);
 
   return (
-    <Tooltip
-      placement="top"
-      // Add singleBadge container when there is only one badge
-      className="justify-end only:w-full only:@container/singleBadge"
-      tooltipContent={
-        <PermissionTooltipContent
-          userPermissions={userPermissionsInDomain}
-          userInheritedPermissions={userInheritedPermissions}
-          rolePrepend={isMultiSig ? formatText(MSG.multiSigPrepend) : undefined}
-        />
-      }
-    >
-      <PermissionsBadge
-        icon={isMultiSig ? UsersThree : User}
-        pillSize={showRoleLabel ? 'medium' : 'small'}
-        // If only one badge, show at a smaller container width
-        textClassName="hidden @[6rem]/singleBadge:block @[11rem]/cardDetails:block"
-        text={
-          showRoleLabel
-            ? USER_ROLES.find(({ role: roleField }) => roleField === role.role)
-                ?.name || formatText({ id: 'role.custom' })
-            : undefined
+    // Add singleBadge container when there is only one badge
+    <div className="only:flex only:w-full only:justify-end only:@container/singleBadge">
+      <Tooltip
+        placement="top"
+        className="w-fit"
+        tooltipContent={
+          <PermissionTooltipContent
+            userPermissions={userPermissionsInDomain}
+            userInheritedPermissions={userInheritedPermissions}
+            rolePrepend={
+              isMultiSig ? formatText(MSG.multiSigPrepend) : undefined
+            }
+          />
         }
-      />
-    </Tooltip>
+      >
+        <PermissionsBadge
+          icon={isMultiSig ? UsersThree : User}
+          pillSize={showRoleLabel ? 'medium' : 'small'}
+          // If only one badge, show at a smaller container width
+          textClassName="hidden @[6rem]/singleBadge:block @[11rem]/cardDetails:block"
+          text={
+            showRoleLabel
+              ? USER_ROLES.find(
+                  ({ role: roleField }) => roleField === role.role,
+                )?.name || formatText({ id: 'role.custom' })
+              : undefined
+          }
+        />
+      </Tooltip>
+    </div>
   );
 };
 

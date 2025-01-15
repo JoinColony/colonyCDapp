@@ -34,12 +34,13 @@ const MemberCard: FC<MemberCardProps> = ({
   const contributorRootDomain = domains.find(
     ({ nativeId }) => nativeId === Id.RootDomain,
   );
-  const contributorDomain = domains.find(
-    ({ nativeId }) => nativeId === selectedDomain?.nativeId,
-  );
 
   const isRootDomain =
-    selectedDomain?.nativeId === contributorRootDomain?.nativeId;
+    !selectedDomain || selectedDomain.nativeId === Id.RootDomain;
+
+  const contributorDomain = isRootDomain
+    ? contributorRootDomain
+    : domains.find(({ nativeId }) => nativeId === selectedDomain?.nativeId);
 
   return (
     <div className="flex h-full w-full flex-col rounded-lg border border-gray-200 bg-gray-25 p-5">
