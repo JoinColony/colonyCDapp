@@ -16,8 +16,9 @@ export const useGetFinalizeDecisionMethodItems = (
   const { user } = useAppContext();
   const { isVotingReputationEnabled } = useEnabledExtensions();
 
-  const userIsCreator =
-    userRole?.role === 'owner' ||
+  const userIsCreator = user?.walletAddress === expenditure.ownerAddress;
+
+  const hasUserPermissions =
     userRole?.role === 'payer' ||
     (userRole?.role === 'custom' &&
       userRole.permissions.some(
@@ -29,6 +30,15 @@ export const useGetFinalizeDecisionMethodItems = (
   }
 
   return [
+    ...(hasUserPermissions
+      ? [
+          {
+            label: formatText({ id: 'decisionMethod.permissions' }),
+            value: DecisionMethod.Permissions,
+            isDisabled: !hasUserPermissions,
+          },
+        ]
+      : []),
     ...(isVotingReputationEnabled
       ? [
           {
