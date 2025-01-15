@@ -113,4 +113,5 @@ export enum TRANSACTION_METHODS {
   VoteOnMultiSig = 'voteOnMultiSig',
   // Proxy colonies
   CreateProxyColony = 'createProxyColony',
+  RemoveProxyColony = 'removeProxyColony',
 }

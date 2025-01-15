@@ -10,13 +10,16 @@ import {
   HouseLine,
   Upload,
   UserCircleCheck,
+  Link,
   // TrafficCone,
 } from '@phosphor-icons/react';
 
 import { Action } from '~constants/actions.ts';
 import { formatText } from '~utils/intl.ts';
 
-export const GROUP_FUNDS_LIST = [
+import { type GroupListItem } from '../GroupedAction/types.ts';
+
+export const GROUP_FUNDS_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.transferFunds' }),
     description: formatText({
@@ -51,7 +54,7 @@ export const GROUP_FUNDS_LIST = [
   },
 ];
 
-export const GROUP_TEAMS_LIST = [
+export const GROUP_TEAMS_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.createNewTeam' }),
     description: formatText({
@@ -70,7 +73,7 @@ export const GROUP_TEAMS_LIST = [
   },
 ];
 
-export const GROUP_ADMIN_LIST = [
+export const GROUP_ADMIN_LIST: GroupListItem[] = [
   {
     title: formatText({ id: 'actions.manageReputation' }),
     description: formatText({
@@ -94,6 +97,15 @@ export const GROUP_ADMIN_LIST = [
     }),
     Icon: HouseLine,
     action: Action.EditColonyDetails,
+  },
+  {
+    title: formatText({ id: 'actions.manageSupportedChains' }),
+    description: formatText({
+      id: 'actions.description.manageSupportedChains',
+    }),
+    Icon: Link,
+    action: Action.ManageSupportedChains,
+    isNew: true,
   },
   {
     title: formatText({ id: 'actions.upgradeColonyVersion' }),
