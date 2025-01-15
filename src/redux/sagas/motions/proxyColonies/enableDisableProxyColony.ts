@@ -1,10 +1,8 @@
 import { ClientType, Id } from '@colony/colony-js';
-import { type CustomContract } from '@colony/sdk';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { colonyAbi } from '~constants/abis.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -54,28 +52,23 @@ function* enableDisableProxyColonyMotionSaga({
       colonyAddress,
     );
 
-    const proxyColonyContract: CustomContract<typeof colonyAbi> =
-      colonyManager.getCustomContract(colonyAddress, colonyAbi);
-
     const editColonyByDeltaOperation = isEnableOperation
       ? getEnableProxyColonyOperation
       : getDisableProxyColonyOperation;
 
-    const encodedAction = yield proxyColonyContract
-      .createTxCreator('editColonyByDelta', [
-        JSON.stringify(editColonyByDeltaOperation([foreignChainId.toString()])),
-      ])
-      .tx()
-      .encode();
+    const encodedAction = colonyClient.interface.encodeFunctionData(
+      TRANSACTION_METHODS.EditColonyByDelta,
+      [JSON.stringify(editColonyByDeltaOperation([foreignChainId.toString()]))],
+    );
 
     txChannel = yield call(getTxChannel, metaId);
 
     const batchKey = TRANSACTION_METHODS.CreateMotion;
 
-    const { createMotion, annotateRootMotion } =
+    const { manageProxyColonyMotion, annotateManageProxyColonyMotion } =
       yield createTransactionChannels(metaId, [
-        'createMotion',
-        'annotateRootMotion',
+        'manageProxyColonyMotion',
+        'annotateManageProxyColonyMotion',
       ]);
 
     // eslint-disable-next-line no-inner-declarations
@@ -131,10 +124,14 @@ function* enableDisableProxyColonyMotionSaga({
 
     const transactionParams = yield getCreateMotionParams();
 
-    yield fork(createTransaction, createMotion.id, transactionParams);
+    yield fork(
+      createTransaction,
+      manageProxyColonyMotion.id,
+      transactionParams,
+    );
 
     if (annotationMessage) {
-      yield fork(createTransaction, annotateRootMotion.id, {
+      yield fork(createTransaction, annotateManageProxyColonyMotion.id, {
         context: ClientType.ColonyClient,
         methodName: 'annotateTransaction',
         identifier: colonyAddress,
@@ -148,27 +145,30 @@ function* enableDisableProxyColonyMotionSaga({
       });
     }
 
-    yield takeFrom(createMotion.channel, ActionTypes.TRANSACTION_CREATED);
+    yield takeFrom(
+      manageProxyColonyMotion.channel,
+      ActionTypes.TRANSACTION_CREATED,
+    );
     if (annotationMessage) {
       yield takeFrom(
-        annotateRootMotion.channel,
+        annotateManageProxyColonyMotion.channel,
         ActionTypes.TRANSACTION_CREATED,
       );
     }
 
-    yield initiateTransaction(createMotion.id);
+    yield initiateTransaction(manageProxyColonyMotion.id);
 
     const {
       payload: {
         receipt: { transactionHash: txHash },
       },
-    } = yield waitForTxResult(createMotion.channel);
+    } = yield waitForTxResult(manageProxyColonyMotion.channel);
 
     yield createActionMetadataInDB(txHash, customActionTitle);
 
     if (annotationMessage) {
       yield uploadAnnotation({
-        txChannel: annotateRootMotion,
+        txChannel: annotateManageProxyColonyMotion,
         message: annotationMessage,
         txHash,
       });
