@@ -9,6 +9,7 @@ import { type GasPricesProps } from '~redux/immutable/index.ts';
 import { gasPrices as gasPricesSelector } from '~redux/selectors/index.ts';
 import { Network } from '~types/network.ts';
 import { RpcMethods } from '~types/rpcMethods.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 interface EthGasStationAPIResponse {
   average: number;
@@ -163,7 +164,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       const { maxFeePerGas, maxPriorityFeePerGas } =
         await userWallet.ethersProvider.getFeeData();
 
-      console.info('GAS DEBUG', {
+      debugLogging('GAS DEBUG', {
         maxFeePerGas,
         maxPriorityFeePerGas,
         userWallet,
