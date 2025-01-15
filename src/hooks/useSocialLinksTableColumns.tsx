@@ -6,12 +6,17 @@ import {
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 
+import { ExternalLinks } from '~gql';
 import { useMobile } from '~hooks';
 import { type SocialLinksTableModel } from '~types/colony.ts';
 import { formatText } from '~utils/intl.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { makeMenuColumn } from '~v5/common/Table/utils.tsx';
 import { type MeatBallMenuProps } from '~v5/shared/MeatBallMenu/types.ts';
+
+const LINK_NAME_OVERRIDES: Partial<Record<ExternalLinks, string>> = {
+  [ExternalLinks.Twitter]: 'X',
+};
 
 export const useSocialLinksTableColumns = (
   getMenuProps?: (
@@ -58,7 +63,7 @@ export const useSocialLinksTableColumns = (
               'text-gray-300': hasNoDecisionMethods,
             })}
           >
-            {getValue()}
+            {LINK_NAME_OVERRIDES[getValue()] ?? getValue()}
           </span>
         ),
         staticSize: isMobile ? '118px' : '23%',

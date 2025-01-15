@@ -7,8 +7,8 @@ import {
   InstagramLogo,
   Scroll,
   TelegramLogo,
-  TwitterLogo,
   YoutubeLogo,
+  XLogo,
 } from '@phosphor-icons/react';
 import { type ComponentType } from 'react';
 import { defineMessages } from 'react-intl';
@@ -35,8 +35,8 @@ const MSG = defineMessages({
     defaultMessage: 'Discord',
   },
   [ExternalLinks.Twitter]: {
-    id: `${linksPrefix}.twitter`,
-    defaultMessage: 'Twitter',
+    id: `${linksPrefix}.x`,
+    defaultMessage: 'X',
   },
   [ExternalLinks.Telegram]: {
     id: `${linksPrefix}.telegram`,
@@ -84,7 +84,7 @@ export const COLONY_LINK_CONFIG: Record<ExternalLinks, ColonyLink> = {
   },
   [ExternalLinks.Twitter]: {
     id: ExternalLinks.Twitter,
-    LinkIcon: TwitterLogo,
+    LinkIcon: XLogo,
     label: formatText(MSG[ExternalLinks.Twitter]),
   },
   [ExternalLinks.Telegram]: {

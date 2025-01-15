@@ -1,18 +1,8 @@
-import {
-  Bug,
-  DiscordLogo,
-  Lifebuoy,
-  Star,
-  TwitterLogo,
-} from '@phosphor-icons/react';
+import { Bug, DiscordLogo, Lifebuoy, Star, XLogo } from '@phosphor-icons/react';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import {
-  COLONY_DISCORD,
-  COLONY_DOCS,
-  COLONY_TWITTER,
-} from '~constants/index.ts';
+import { COLONY_DISCORD, COLONY_DOCS, COLONY_X } from '~constants/index.ts';
 import { useMobile } from '~hooks/index.ts';
 import { openFeaturesBugs, openWhatsNew } from '~hooks/useBeamer.ts';
 import ExternalLink from '~shared/ExternalLink/index.ts';
@@ -43,9 +33,9 @@ const MSG = defineMessages({
     id: `${displayName}.discord`,
     defaultMessage: 'Discord',
   },
-  twitter: {
-    id: `${displayName}.twitter`,
-    defaultMessage: 'Twitter',
+  x: {
+    id: `${displayName}.X`,
+    defaultMessage: 'X',
   },
 });
 
@@ -88,9 +78,9 @@ const Contact = () => {
         </ExternalLink>
       </MenuListItem>
       <MenuListItem>
-        <ExternalLink href={COLONY_TWITTER} className={actionItemClass}>
-          <TwitterLogo size={iconSize} />
-          <p className={actionItemLabelClass}>{formatText(MSG.twitter)}</p>
+        <ExternalLink href={COLONY_X} className={actionItemClass}>
+          <XLogo size={iconSize} />
+          <p className={actionItemLabelClass}>{formatText(MSG.x)}</p>
         </ExternalLink>
       </MenuListItem>
     </MenuList>
