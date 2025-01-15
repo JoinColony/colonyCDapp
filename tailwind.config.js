@@ -288,7 +288,7 @@ module.exports = {
           '@apply px-6 w-full max-w-[77.375rem] mx-auto': {},
         },
         '.navigation-link': {
-          '@apply text-gray-700 w-full flex items-center !duration-0 heading-5 hover:!text-gray-900 hover:font-medium px-4 py-2 sm:font-normal sm:text-md sm:text-gray-900':
+          '@apply text-gray-700 w-full flex items-center !duration-0 heading-5 hover:!text-gray-900 hover:font-medium px-4 py-2 md:font-normal md:text-md md:text-gray-900':
             {},
         },
         '.subnav-button': {

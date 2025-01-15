@@ -1,6 +1,5 @@
 import {
   Cardholder,
-  CaretDown,
   CaretLeft,
   CaretRight,
   CirclesThreePlus,
@@ -39,7 +38,6 @@ const UserMenu: FC<UserMenuProps> = ({
   isVerified,
   setVisible,
 }) => {
-  // QUESTION: Why change on tablet, and not on mobile like the UserHub?
   const isTablet = useTablet();
   const { connectWallet, disconnectWallet, user, wallet } = useAppContext();
   const { profile } = user || {};
@@ -49,11 +47,6 @@ const UserMenu: FC<UserMenuProps> = ({
   const { actionSidebarToggle } = useActionSidebarContext();
   const [isActionSidebarOpen] = actionSidebarToggle;
 
-  const caretIcon = isTablet ? (
-    <CaretDown size={12} />
-  ) : (
-    <CaretRight size={12} />
-  );
   const iconSize = isTablet ? 18 : 16;
   const { currency } = useCurrencyContext();
 
@@ -126,7 +119,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 {formatText({ id: 'help' })}
               </Button>
             </div>
-            <div className="mb-6 w-full pb-4 sm:pb-0">
+            <div className="mb-6 w-full pb-4 md:pb-0">
               <Button mode="quinary" isFullSize onClick={connectWallet}>
                 {formatText({ id: 'connectWallet' })}
               </Button>
@@ -135,7 +128,7 @@ const UserMenu: FC<UserMenuProps> = ({
         )}
         <div
           className={clsx('w-full', {
-            'mb-5 border-b border-b-gray-200 pb-4 sm:pb-3': wallet,
+            'mb-5 border-b border-b-gray-200 pb-4 md:pb-3': wallet,
           })}
         >
           <TitleLabel
@@ -143,7 +136,7 @@ const UserMenu: FC<UserMenuProps> = ({
             className="pb-2"
           />
           <ul className="text-left">
-            <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0">
+            <li className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 md:mb-0">
               <Link to="/" className="navigation-link">
                 <CirclesThreePlus size={iconSize} />
                 <p className="ml-2">
@@ -154,7 +147,7 @@ const UserMenu: FC<UserMenuProps> = ({
             {filteredUserMenuItems.map(({ id, icon: Icon, name: itemName }) => (
               <li
                 key={id}
-                className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 sm:mb-0"
+                className="-ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 md:mb-0"
               >
                 <button
                   type="button"
@@ -163,11 +156,11 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-expanded={activeSubmenu === itemName}
                   aria-controls="actionsWithVisibility"
                 >
-                  <span className="mr-2 flex shrink-0 flex-grow items-center sm:mr-0">
+                  <span className="mr-2 flex shrink-0 flex-grow items-center md:mr-0">
                     <Icon size={iconSize} />
                     <p className="ml-2">{formatText({ id: itemName })}</p>
                   </span>
-                  {caretIcon}
+                  <CaretRight size={12} />
                 </button>
               </li>
             ))}
@@ -181,11 +174,11 @@ const UserMenu: FC<UserMenuProps> = ({
                   aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
                   aria-controls="actionsWithVisibility"
                 >
-                  <span className="mr-2 flex shrink-0 flex-grow items-center sm:mr-0">
+                  <span className="mr-2 flex shrink-0 flex-grow items-center md:mr-0">
                     <CurrencyIcon size={iconSize} />
                     <p className="ml-2">{currency.toUpperCase()}</p>
                   </span>
-                  {caretIcon}
+                  <CaretRight size={12} />
                 </button>
               </li>
             )}
