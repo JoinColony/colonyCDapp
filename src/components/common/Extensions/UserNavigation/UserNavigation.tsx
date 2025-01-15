@@ -95,9 +95,10 @@ const UserNavigation: FC<UserNavigationProps> = ({
           text={isMobile ? undefined : MSG.invite}
           mode="tertiary"
           icon={UserPlus}
+          iconSize={16}
           size="small"
           isFullRounded
-          className="md:hover:!border-blue-400"
+          className="gap-1 md:hover:!border-blue-400"
           onClick={() => setIsInviteMembersModalOpen(true)}
         />
       ) : null}
