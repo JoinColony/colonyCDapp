@@ -10,6 +10,16 @@ import {
 } from '~utils/members.ts';
 import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 
+import {
+  GROUP_FUNDS_LIST,
+  GROUP_TEAMS_LIST,
+  GROUP_ADMIN_LIST,
+} from './partials/ManageColonyGroup/GroupList.ts';
+import {
+  GROUP_LIST,
+  type GroupListItem,
+} from './partials/PaymentGroup/GroupList.ts';
+
 export const translateAction = (action?: Action) => {
   const actionName = action
     ?.split('-')
@@ -160,4 +170,28 @@ export const mapActionTypeToAction = (
     default:
       return null;
   }
+};
+
+const getAvailableActions = (list: GroupListItem[]) =>
+  list.filter((item) => !item.isHidden).map((item) => item.action);
+
+const ManageColonyActions = getAvailableActions([
+  ...GROUP_ADMIN_LIST,
+  ...GROUP_FUNDS_LIST,
+  ...GROUP_TEAMS_LIST,
+]);
+const PaymentActions = getAvailableActions(GROUP_LIST);
+
+export const getActionGroup = (actionType: Action) => {
+  if (!actionType) {
+    return null;
+  }
+
+  if (ManageColonyActions.includes(actionType)) return Action.ManageColony;
+
+  if (PaymentActions.includes(actionType)) {
+    return Action.PaymentGroup;
+  }
+
+  return null;
 };

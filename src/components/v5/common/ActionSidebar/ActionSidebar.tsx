@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   ArrowLineRight,
   ArrowsOutSimple,
   ShareNetwork,
@@ -32,15 +31,15 @@ import PillsBase from '../Pills/PillsBase.tsx';
 import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
-import { useGetActionGroup } from './hooks/useGetActionGroup.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
+import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
-import { mapActionTypeToAction } from './utils.ts';
+import { getActionGroup, mapActionTypeToAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -65,17 +64,13 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
   const {
     actionSidebarToggle: [
       isActionSidebarOpen,
-      {
-        toggle: toggleActionSidebarOff,
-        toggleOn: toggleActionSidebarOn,
-        registerContainerRef,
-      },
+      { toggle: toggleActionSidebarOff, registerContainerRef },
     ],
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
     actionSidebarInitialValues,
   } = useActionSidebarContext();
   const actionType = mapActionTypeToAction(action);
-  const actionGroupType = useGetActionGroup(
+  const actionGroupType = getActionGroup(
     actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
   );
   const GroupedActionComponent = useGetGroupedActionComponent();
@@ -220,29 +215,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
               <X size={18} />
             </button>
             {actionGroupType && (
-              <button
-                type="button"
-                className="flex items-center justify-center py-2.5 text-gray-400 transition sm:hover:text-blue-400"
-                onClick={() => {
-                  if (transactionId) {
-                    closeSidebarClick();
-
-                    setTimeout(() => {
-                      toggleActionSidebarOn({
-                        [ACTION_TYPE_FIELD_NAME]: actionGroupType,
-                      });
-                    }, 500);
-
-                    return;
-                  }
-
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: actionGroupType,
-                  });
-                }}
-              >
-                <ArrowLeft size={18} />
-              </button>
+              <GoBackButton
+                action={action}
+                onClick={transactionId ? closeSidebarClick : undefined}
+              />
             )}
             {!isMobile && (
               <div className="flex items-center gap-4">
