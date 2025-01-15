@@ -163,6 +163,12 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       const { maxFeePerGas, maxPriorityFeePerGas } =
         await userWallet.ethersProvider.getFeeData();
 
+      console.info('GAS DEBUG', {
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+        userWallet,
+      });
+
       return {
         ...defaultGasPrices,
 
