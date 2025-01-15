@@ -6,7 +6,9 @@
 
 var fs = require('fs');
 
-const LOCAL_KEY = Math.floor(100000000 + Math.random() * 900000000);
+const LOCAL_KEY = process.env.npm_config_notifications
+  ? Math.floor(100000000 + Math.random() * 900000000)
+  : 'OFF';
 
 fs.readFile('.env', 'utf8', function (err, data) {
   if (err) {
