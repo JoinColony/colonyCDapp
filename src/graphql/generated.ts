@@ -457,6 +457,10 @@ export type ColonyAction = {
   expenditureSlotChanges?: Maybe<ExpenditureSlotChanges>;
   /** Ids of the staged payment slots released by the action, if any */
   expenditureSlotIds?: Maybe<Array<Scalars['Int']>>;
+  /** Expanded `ColonyAction` */
+  finalizedActionData?: Maybe<ColonyAction>;
+  /** The motion action txHash that this action finalized */
+  finalizedActionId?: Maybe<Scalars['ID']>;
   /** The source Domain of the action, if applicable */
   fromDomain?: Maybe<Domain>;
   /** The source Domain identifier, if applicable */
@@ -600,6 +604,7 @@ export type ColonyActionRolesInput = {
 export enum ColonyActionType {
   /** An action related to creating a proxy colony */
   AddProxyColony = 'ADD_PROXY_COLONY',
+  AddProxyColonyMotion = 'ADD_PROXY_COLONY_MOTION',
   /** An action related to adding verified members */
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
@@ -1101,6 +1106,10 @@ export type ColonyMotion = {
   expenditureId?: Maybe<Scalars['ID']>;
   /** Ids of the staged payment slots to be released if the motion pass, if any */
   expenditureSlotIds?: Maybe<Array<Scalars['Int']>>;
+  /** Expanded `ColonyAction` */
+  finalizationActionData?: Maybe<ColonyAction>;
+  /** The action txHash that was triggered upon motion finalization */
+  finalizationActionId?: Maybe<Scalars['ID']>;
   /** Simple flag indicating whether both sides of staking have been activated */
   hasObjection: Scalars['Boolean'];
   /**
@@ -1190,6 +1199,10 @@ export type ColonyMultiSig = {
   executedBy?: Maybe<Scalars['ID']>;
   /** Extended user object for given executedBy */
   executedByUser?: Maybe<User>;
+  /** Expanded `ColonyAction` */
+  finalizationActionData?: Maybe<ColonyAction>;
+  /** The action txHash that was triggered upon motion finalization */
+  finalizationActionId?: Maybe<Scalars['ID']>;
   /** Whether the underlying action completed */
   hasActionCompleted: Scalars['Boolean'];
   /**
@@ -1449,6 +1462,7 @@ export type CreateColonyActionInput = {
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
   expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
+  finalizedActionId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -1614,6 +1628,7 @@ export type CreateColonyMotionInput = {
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
+  finalizationActionId?: InputMaybe<Scalars['ID']>;
   hasObjection: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
   isDecision: Scalars['Boolean'];
@@ -1641,6 +1656,7 @@ export type CreateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
+  finalizationActionId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted: Scalars['Boolean'];
   id?: InputMaybe<Scalars['ID']>;
   isDecision: Scalars['Boolean'];
@@ -2914,6 +2930,7 @@ export type ModelColonyActionConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   expenditureSlotIds?: InputMaybe<ModelIntInput>;
+  finalizedActionId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   fromPotId?: InputMaybe<ModelIntInput>;
   individualEvents?: InputMaybe<ModelStringInput>;
@@ -2959,6 +2976,7 @@ export type ModelColonyActionFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   expenditureSlotIds?: InputMaybe<ModelIntInput>;
+  finalizedActionId?: InputMaybe<ModelIdInput>;
   fromDomainId?: InputMaybe<ModelIdInput>;
   fromPotId?: InputMaybe<ModelIntInput>;
   id?: InputMaybe<ModelIdInput>;
@@ -3287,6 +3305,7 @@ export type ModelColonyMotionConditionInput = {
   createdBy?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   expenditureSlotIds?: InputMaybe<ModelIntInput>;
+  finalizationActionId?: InputMaybe<ModelIdInput>;
   hasObjection?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
   isFinalized?: InputMaybe<ModelBooleanInput>;
@@ -3315,6 +3334,7 @@ export type ModelColonyMotionFilterInput = {
   createdBy?: InputMaybe<ModelStringInput>;
   expenditureId?: InputMaybe<ModelIdInput>;
   expenditureSlotIds?: InputMaybe<ModelIntInput>;
+  finalizationActionId?: InputMaybe<ModelIdInput>;
   hasObjection?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -3339,6 +3359,7 @@ export type ModelColonyMultiSigConditionInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  finalizationActionId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
   isExecuted?: InputMaybe<ModelBooleanInput>;
@@ -3366,6 +3387,7 @@ export type ModelColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   executedAt?: InputMaybe<ModelStringInput>;
   executedBy?: InputMaybe<ModelIdInput>;
+  finalizationActionId?: InputMaybe<ModelIdInput>;
   hasActionCompleted?: InputMaybe<ModelBooleanInput>;
   id?: InputMaybe<ModelIdInput>;
   isDecision?: InputMaybe<ModelBooleanInput>;
@@ -4277,6 +4299,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   expenditureSlotIds?: InputMaybe<ModelSubscriptionIntInput>;
+  finalizedActionId?: InputMaybe<ModelSubscriptionIdInput>;
   fromDomainId?: InputMaybe<ModelSubscriptionIdInput>;
   fromPotId?: InputMaybe<ModelSubscriptionIntInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
@@ -4422,6 +4445,7 @@ export type ModelSubscriptionColonyMotionFilterInput = {
   createdBy?: InputMaybe<ModelSubscriptionStringInput>;
   expenditureId?: InputMaybe<ModelSubscriptionIdInput>;
   expenditureSlotIds?: InputMaybe<ModelSubscriptionIntInput>;
+  finalizationActionId?: InputMaybe<ModelSubscriptionIdInput>;
   hasObjection?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -4445,6 +4469,7 @@ export type ModelSubscriptionColonyMultiSigFilterInput = {
   createdAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedAt?: InputMaybe<ModelSubscriptionStringInput>;
   executedBy?: InputMaybe<ModelSubscriptionIdInput>;
+  finalizationActionId?: InputMaybe<ModelSubscriptionIdInput>;
   hasActionCompleted?: InputMaybe<ModelSubscriptionBooleanInput>;
   id?: InputMaybe<ModelSubscriptionIdInput>;
   isDecision?: InputMaybe<ModelSubscriptionBooleanInput>;
@@ -6770,7 +6795,9 @@ export type Query = {
   getColonyMemberInvite?: Maybe<ColonyMemberInvite>;
   getColonyMetadata?: Maybe<ColonyMetadata>;
   getColonyMotion?: Maybe<ColonyMotion>;
+  getColonyMotionByFinalizationActionId?: Maybe<ModelColonyMotionConnection>;
   getColonyMultiSig?: Maybe<ColonyMultiSig>;
+  getColonyMultiSigByFinalizationActionId?: Maybe<ModelColonyMultiSigConnection>;
   getColonyRole?: Maybe<ColonyRole>;
   getColonyTokens?: Maybe<ColonyTokens>;
   getContractEvent?: Maybe<ContractEvent>;
@@ -7114,8 +7141,28 @@ export type QueryGetColonyMotionArgs = {
 
 
 /** Root query type */
+export type QueryGetColonyMotionByFinalizationActionIdArgs = {
+  filter?: InputMaybe<ModelColonyMotionFilterInput>;
+  finalizationActionId: Scalars['ID'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
+};
+
+
+/** Root query type */
 export type QueryGetColonyMultiSigArgs = {
   id: Scalars['ID'];
+};
+
+
+/** Root query type */
+export type QueryGetColonyMultiSigByFinalizationActionIdArgs = {
+  filter?: InputMaybe<ModelColonyMultiSigFilterInput>;
+  finalizationActionId: Scalars['ID'];
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
 
@@ -8232,6 +8279,7 @@ export enum SearchableColonyActionAggregateField {
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
   ExpenditureSlotIds = 'expenditureSlotIds',
+  FinalizedActionId = 'finalizedActionId',
   FromDomainId = 'fromDomainId',
   FromPotId = 'fromPotId',
   Id = 'id',
@@ -8285,6 +8333,7 @@ export type SearchableColonyActionFilterInput = {
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   expenditureId?: InputMaybe<SearchableIdFilterInput>;
   expenditureSlotIds?: InputMaybe<SearchableIntFilterInput>;
+  finalizedActionId?: InputMaybe<SearchableIdFilterInput>;
   fromDomainId?: InputMaybe<SearchableIdFilterInput>;
   fromPotId?: InputMaybe<SearchableIntFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
@@ -8330,6 +8379,7 @@ export enum SearchableColonyActionSortableFields {
   CreatedAt = 'createdAt',
   ExpenditureId = 'expenditureId',
   ExpenditureSlotIds = 'expenditureSlotIds',
+  FinalizedActionId = 'finalizedActionId',
   FromDomainId = 'fromDomainId',
   FromPotId = 'fromPotId',
   Id = 'id',
@@ -9662,6 +9712,7 @@ export type UpdateColonyActionInput = {
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotChanges?: InputMaybe<ExpenditureSlotChangesInput>;
   expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
+  finalizedActionId?: InputMaybe<Scalars['ID']>;
   fromDomainId?: InputMaybe<Scalars['ID']>;
   fromPotId?: InputMaybe<Scalars['Int']>;
   id: Scalars['ID'];
@@ -9805,6 +9856,7 @@ export type UpdateColonyMotionInput = {
   expenditureFunding?: InputMaybe<Array<ExpenditureFundingItemInput>>;
   expenditureId?: InputMaybe<Scalars['ID']>;
   expenditureSlotIds?: InputMaybe<Array<Scalars['Int']>>;
+  finalizationActionId?: InputMaybe<Scalars['ID']>;
   hasObjection?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isDecision?: InputMaybe<Scalars['Boolean']>;
@@ -9832,6 +9884,7 @@ export type UpdateColonyMultiSigInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedAt?: InputMaybe<Scalars['AWSDateTime']>;
   executedBy?: InputMaybe<Scalars['ID']>;
+  finalizationActionId?: InputMaybe<Scalars['ID']>;
   hasActionCompleted?: InputMaybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isDecision?: InputMaybe<Scalars['Boolean']>;
