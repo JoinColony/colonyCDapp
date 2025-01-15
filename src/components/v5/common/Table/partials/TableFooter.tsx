@@ -9,7 +9,7 @@ interface TableFooterProps<T> {
 }
 
 export const TableFooter = <T,>({
-  colSpan,
+  colSpan: defaultColSpan,
   hasBorder,
   groups,
 }: TableFooterProps<T>) => {
@@ -29,19 +29,29 @@ export const TableFooter = <T,>({
         <tr key={footerGroup.id}>
           {footerGroup.headers.map((column, index) => {
             const isLastColumn = index === footerGroup.headers.length - 1;
+            const { footer, meta } = column.column.columnDef;
+
+            if (meta?.footer?.display === 'none') {
+              return null;
+            }
+
+            let colSpan: number | undefined = 1;
+            if (isLastColumn) {
+              colSpan = defaultColSpan;
+            }
+            if (meta?.footer?.colSpan) {
+              colSpan = meta?.footer?.colSpan;
+            }
 
             return (
               <td
-                colSpan={isLastColumn ? colSpan : 1}
+                colSpan={colSpan}
                 key={column.id}
                 className={clsx('h-full px-[1.1rem] text-md text-gray-500', {
                   'border-t border-gray-200': hasBorder,
                 })}
               >
-                {flexRender(
-                  column.column.columnDef.footer,
-                  column.getContext(),
-                )}
+                {flexRender(footer, column.getContext())}
               </td>
             );
           })}
