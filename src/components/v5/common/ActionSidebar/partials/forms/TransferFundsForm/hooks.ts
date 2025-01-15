@@ -95,9 +95,8 @@ export const useTransferFunds = (
   getFormOptions: ActionFormBaseProps['getFormOptions'],
 ) => {
   const { colony } = useColonyContext();
-  const { [DECISION_METHOD_FIELD_NAME]: decisionMethod, from } = useWatch<{
+  const { [DECISION_METHOD_FIELD_NAME]: decisionMethod } = useWatch<{
     decisionMethod: DecisionMethod;
-    from: TransferFundsFormValues['from'];
   }>();
 
   const validationSchema = useValidationSchema();
@@ -106,10 +105,10 @@ export const useTransferFunds = (
     validationSchema,
     defaultValues: useMemo<DeepPartial<TransferFundsFormValues>>(
       () => ({
-        createdIn: from || Id.RootDomain,
+        createdIn: Id.RootDomain,
         tokenAddress: colony.nativeToken.tokenAddress,
       }),
-      [from, colony.nativeToken.tokenAddress],
+      [colony.nativeToken.tokenAddress],
     ),
     actionType:
       decisionMethod === DecisionMethod.Permissions
