@@ -3,6 +3,7 @@ import { type TransactionResponse } from '@ethersproject/providers';
 import { type Overrides } from 'ethers';
 
 import { type TransactionType } from '~redux/immutable/index.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 /*
  * Given a method and a transaction record, create a promise for sending the
@@ -26,19 +27,20 @@ async function getTransactionPromise(
     gasLimit,
     gasPrice,
   } = tx;
+
   const sendOptions: Overrides = {
     maxFeePerGas,
     maxPriorityFeePerGas,
-    gasLimit: gasLimitOverride || gasLimit,
+    gasLimit: gasLimitOverride || gasLimit || undefined,
     ...restOptions,
   };
   if (!maxFeePerGas && !maxPriorityFeePerGas) {
     delete sendOptions.maxFeePerGas;
     delete sendOptions.maxPriorityFeePerGas;
-    sendOptions.gasPrice = gasPriceOverride || gasPrice;
+    sendOptions.gasPrice = gasPriceOverride || gasPrice || undefined;
   }
 
-  console.info('TX DEBUG', {
+  debugLogging('TX DEBUG', {
     client: client?.clientType || 'unknownContractClient',
     methodName,
     params,
