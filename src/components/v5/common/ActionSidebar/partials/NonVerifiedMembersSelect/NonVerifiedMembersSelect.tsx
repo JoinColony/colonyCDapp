@@ -9,7 +9,8 @@ import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import { renderUserOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/UserOptionRenderer.tsx';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 
 import { useNonVerifiedMembersSelect } from './hooks.ts';
@@ -143,6 +144,7 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
           </button>
           {isUserSelectVisible && (
             <SearchSelect
+              renderOption={renderUserOption}
               items={[usersOptions]}
               onSelect={onMemberSelect}
               checkboxesList={checkedItems}
@@ -154,6 +156,7 @@ const NonVerifiedMembersSelect: FC<NonVerifiedMembersSelectProps> = ({
                 'left-6 right-[1.9rem] w-auto': isMobile,
               })}
               showEmptyContent
+              showSearchValueAsOption
               additionalButtons={
                 isMobile && (
                   <div className="flex items-center justify-between gap-2 pt-2">

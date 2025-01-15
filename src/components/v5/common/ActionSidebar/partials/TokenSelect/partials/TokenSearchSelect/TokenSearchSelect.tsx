@@ -1,25 +1,12 @@
 import { Binoculars, Coin } from '@phosphor-icons/react';
-import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, {
-  type FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { type FC, useCallback, useState } from 'react';
 
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
-import { useMobile } from '~hooks/index.ts';
-import { SpinnerLoader } from '~shared/Preloaders/index.ts';
-import { formatText } from '~utils/intl.ts';
 import EmptyContent from '~v5/common/EmptyContent/index.ts';
 import { FieldState } from '~v5/common/Fields/consts.ts';
-import MenuContainer from '~v5/shared/MenuContainer/MenuContainer.tsx';
-import Portal from '~v5/shared/Portal/index.ts';
-import SearchInput from '~v5/shared/SearchSelect/partials/SearchInput/SearchInput.tsx';
-
-import TokenSearchItem from '../TokenSearchItem/TokenSearchItem.tsx';
+import { renderTokenOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/TokenOptionRenderer.tsx';
+import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 
 import { useSearchSelect } from './hooks.ts';
 import { type TokenSearchSelectProps } from './types.ts';
@@ -45,135 +32,62 @@ const TokenSearchSelect = React.forwardRef<
     },
     ref,
   ) => {
-    const { isLoading: isTokensListDataLoading } = useTokenSelectContext();
-
-    const [searchValue, setSearchValue] = useState('');
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
-    const isMobile = useMobile();
-    const {
-      filteredOptions,
-      loading: loadingTokenData,
-      suggestedOptions,
-    } = useSearchSelect(debouncedSearchValue, filterOptionsFn);
-
     const hasError = state && state === FieldState.Error;
-
-    useEffect(() => {
-      const debounceTimeout = setTimeout(() => {
-        setDebouncedSearchValue(searchValue);
-      }, 500);
-
-      return () => clearTimeout(debounceTimeout);
-    }, [searchValue]);
-
-    const handleSearch = useMemo(
-      () => debounce(setDebouncedSearchValue, 500),
-      [setDebouncedSearchValue],
+    const { isLoading: isTokensListDataLoading } = useTokenSelectContext();
+    const { items, loading: loadingTokenData } = useSearchSelect(
+      debouncedSearchValue,
+      filterOptionsFn,
     );
 
-    const onChange = useCallback(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleSetDebouncedSearchValue = useCallback(
+      debounce((value: string) => {
+        setDebouncedSearchValue(value);
+      }, 500),
+      [],
+    );
+
+    const handleSearch = useCallback(
       (value: string) => {
         onSearch?.(value);
-        setSearchValue(value);
-        if (value) {
-          handleSearch(value);
-        } else {
-          setDebouncedSearchValue('');
-        }
+        handleSetDebouncedSearchValue(value);
       },
-      [handleSearch, onSearch],
+      [onSearch, handleSetDebouncedSearchValue],
     );
 
     return (
-      <Portal>
-        <MenuContainer
-          className={clsx(
-            className,
-            'absolute z-dropdown max-h-[37.5rem] w-full max-w-[calc(100%-2.25rem)] bg-base-white px-2.5 py-6 sm:max-w-[20.375rem]',
-          )}
-          hasShadow
-          rounded="s"
-          ref={ref}
-        >
-          <div
-            className={clsx('px-3.5', {
-              'mb-5': !hasError,
-            })}
-          >
-            {isMobile && hideSearchOnMobile ? (
-              <p className="uppercase text-gray-400 text-4">
-                {formatText({ id: 'actions.selectActionType' })}
-              </p>
-            ) : (
-              <SearchInput
-                onChange={onChange}
-                state={state}
-                message={message}
-                value={searchValue}
-                placeholder={formatText({
-                  id: 'manageTokensTable.select',
-                })}
-              />
-            )}
-          </div>
-          <div
-            className={clsx({
-              'flex h-5 justify-center':
-                isLoading || isTokensListDataLoading || loadingTokenData,
-              'max-h-[calc(100vh-12rem)] overflow-y-auto px-1.5 pr-1 sm:max-h-none sm:w-full':
-                !(isLoading || isTokensListDataLoading || loadingTokenData),
-            })}
-          >
-            {isLoading || isTokensListDataLoading || loadingTokenData ? (
-              <SpinnerLoader appearance={{ size: 'medium' }} />
-            ) : (
-              <>
-                {(debouncedSearchValue && !!filteredOptions.length) ||
-                (!debouncedSearchValue && !!suggestedOptions.length) ? (
-                  <div className="mb-[0.625rem] last:mb-0">
-                    {!debouncedSearchValue && (
-                      <h5 className="mb-2 pl-2 uppercase text-gray-400 text-4">
-                        {formatText({
-                          id: 'manageTokensTable.suggestedTokens',
-                        })}
-                      </h5>
-                    )}
-                    <TokenSearchItem
-                      options={
-                        debouncedSearchValue
-                          ? filteredOptions
-                          : suggestedOptions
-                      }
-                      onOptionClick={onSelect}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    {!hasError && (
-                      <EmptyContent
-                        icon={debouncedSearchValue ? Binoculars : Coin}
-                        title={{
-                          id: debouncedSearchValue
-                            ? 'manageTokensTable.noTokenFound.title'
-                            : 'manageTokensTable.addNewToken.title',
-                        }}
-                        description={{
-                          id: debouncedSearchValue
-                            ? 'manageTokensTable.noTokenFound.description'
-                            : 'manageTokensTable.addNewToken.description',
-                        }}
-                        isDropdown
-                        className="!p-0"
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </div>
-          {additionalButtons}
-        </MenuContainer>
-      </Portal>
+      <SearchSelect
+        ref={ref}
+        isLoading={isLoading || isTokensListDataLoading || loadingTokenData}
+        renderOption={renderTokenOption}
+        items={items}
+        className={className}
+        onSelect={onSelect}
+        onSearch={handleSearch}
+        showEmptyContent={!hasError}
+        showSearchValueAsOption
+        additionalButtons={additionalButtons}
+        hideSearchOnMobile={hideSearchOnMobile}
+        message={message}
+        emptyContent={
+          <EmptyContent
+            icon={debouncedSearchValue ? Binoculars : Coin}
+            title={{
+              id: debouncedSearchValue
+                ? 'manageTokensTable.noTokenFound.title'
+                : 'manageTokensTable.addNewToken.title',
+            }}
+            description={{
+              id: debouncedSearchValue
+                ? 'manageTokensTable.noTokenFound.description'
+                : 'manageTokensTable.addNewToken.description',
+            }}
+            isDropdown
+            className="!p-0"
+          />
+        }
+      />
     );
   },
 );

@@ -13,6 +13,7 @@ import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
 import { type User } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
+import { renderUserOption } from '~v5/shared/SearchSelect/partials/OptionRenderer/UserOptionRenderer.tsx';
 import SearchSelect from '~v5/shared/SearchSelect/SearchSelect.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/index.ts';
 import UserInfoPopover from '~v5/shared/UserInfoPopover/UserInfoPopover.tsx';
@@ -214,6 +215,7 @@ const UserSelect: FC<UserSelectProps> = ({
           {selectedUserContent}
           {isUserSelectVisible && (
             <SearchSelect
+              renderOption={renderUserOption}
               placeholder={formatText({
                 id: 'placeholder.searchUser',
               })}
@@ -229,6 +231,7 @@ const UserSelect: FC<UserSelectProps> = ({
               isLoading={usersOptions.isLoading}
               className="z-sidebar"
               showEmptyContent={false}
+              showSearchValueAsOption
             />
           )}
         </>
