@@ -1,6 +1,5 @@
 import { ClientType } from '@colony/colony-js';
 import { utils } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
@@ -12,6 +11,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
+import { encodeArbitraryTransactions } from '../utils/arbitraryTxs.ts';
 import {
   initiateTransaction,
   putError,
@@ -34,17 +34,8 @@ function* arbitraryTxSaga({
   try {
     txChannel = yield call(getTxChannel, metaId);
 
-    const contractAddresses: string[] = [];
-    const methodsBytes: string[] = [];
-
-    transactions.forEach(({ contractAddress, ...item }) => {
-      const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
-        item.method,
-        item.args?.map((arg) => arg.value),
-      );
-      contractAddresses.push(contractAddress);
-      methodsBytes.push(encodedFunction);
-    });
+    const { contractAddresses, methodsBytes } =
+      encodeArbitraryTransactions(transactions);
 
     // setup batch ids and channels
     const batchKey = TRANSACTION_METHODS.ArbitraryTxs;
