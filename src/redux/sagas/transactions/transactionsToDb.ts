@@ -1,7 +1,7 @@
 import { type ApolloQueryResult } from '@apollo/client';
 import { type TxOverrides } from '@colony/colony-js';
 import { utils } from 'ethers';
-import { takeEvery } from 'redux-saga/effects';
+import { takeEvery, put } from 'redux-saga/effects';
 
 import { ContextModule, getContext } from '~context/index.ts';
 import {
@@ -195,6 +195,10 @@ function* updateTransactionInDb({
         break;
       }
     }
+    // Emit a success action after updating the transaction in the db, so that other
+    // sagas can listen to it, in case they need to do something that requires the
+    // transaction to be updated in the db first
+    yield put({ type: ActionTypes.TRANSACTION_UPDATED_IN_DB, meta: { id } });
   } catch (e) {
     console.error(
       `Unable to update transaction with id: ${id} in db.
@@ -217,6 +221,7 @@ export default function* setupTransactionsSaga() {
       ActionTypes.TRANSACTION_LOAD_RELATED,
       ActionTypes.TRANSACTION_HASH_RECEIVED,
       ActionTypes.TRANSACTION_GAS_UPDATE,
+      ActionTypes.TRANSACTION_OPTIONS_UPDATE,
     ],
     updateTransactionInDb,
   );
