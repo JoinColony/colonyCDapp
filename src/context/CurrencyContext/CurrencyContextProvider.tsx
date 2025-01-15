@@ -23,7 +23,7 @@ const CurrencyContextProvider = ({ children }: { children: ReactNode }) => {
    * @Note This needs to be removed once we re-enable SupportedCurrencies.Clny
    */
   const isCLNYTokenStored =
-    JSON.parse(localStorage.getItem(STORED_CURRENCY_KEY) || '') ===
+    JSON.parse(localStorage.getItem(STORED_CURRENCY_KEY) || '{}') ===
     SupportedCurrencies.Clny;
 
   const updatePreferredCurrency = useCallback(
