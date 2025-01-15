@@ -31,8 +31,8 @@ interface TransactionRecordProps {
   error?: TransactionError;
   eventData?: object;
   from: string;
-  gasLimit?: number;
-  gasPrice?: BigNumber;
+  gasLimit?: string | BigNumber | null;
+  gasPrice?: string | BigNumber | null;
   groupId: string;
   group: {
     key: string;

@@ -21,6 +21,8 @@ fragment Transaction on Transaction {
     title
     titleValues
   }
+  gasLimit
+  gasPrice
   hash
   methodContext
   methodName
