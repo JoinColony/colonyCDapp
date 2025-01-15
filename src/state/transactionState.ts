@@ -61,6 +61,8 @@ export const convertTransactionType = ({
   title,
   titleValues,
   options,
+  gasLimit,
+  gasPrice,
 }: Transaction): TransactionType => {
   const txGroup = {
     key: group.key,
@@ -90,6 +92,25 @@ export const convertTransactionType = ({
     return param;
   });
 
+  const parsedOptions = JSON.parse(options ?? '{}');
+  Object.keys(parsedOptions).map((key) => {
+    // @NOTE Try to convert BigNumber option object values back to Ethers BigNumber
+    //
+    // This is the same as the params one above, just that it deals with an nested object, rather than an array
+    //
+    // When the transaction gets saved in the database, the BigNumber objects get stringified
+    // meaning it will loose its BigNumber properties and prototypes
+    // Converting it back will create an Object shaped like a BigNumber, but it won't have the prototype, hence
+    // it won't be a proper BigNumber object, and won't have the methods like add, sub, etc.
+    //
+    // Here we're trying to convert it back to a Ethers BigNumber object by "trying to be smart" and checking if
+    // the object has a "type" property, with the value "BigNumber" (which is what Ethers uses), as well as a "hex" property
+    if (parsedOptions[key]?.type === 'BigNumber' && parsedOptions[key]?.hex) {
+      parsedOptions[key] = BigNumber.from(parsedOptions[key]);
+    }
+    return parsedOptions[key];
+  });
+
   return {
     context: context as ClientTypeTokens | ExtendedClientType,
     colonyAddress,
@@ -107,8 +128,10 @@ export const convertTransactionType = ({
     params: convertedParams,
     title: title ? JSON.parse(title) : undefined,
     titleValues: titleValues ? JSON.parse(titleValues) : undefined,
-    options: options ? JSON.parse(options) : undefined,
+    options: parsedOptions,
     associatedActionId: associatedActionId ?? undefined,
+    gasLimit,
+    gasPrice,
   };
 };
 
@@ -398,7 +421,6 @@ export const updateTransaction = async (
         apollo.refetchQueries({ include: [GetUserTransactionsDocument] }),
       ),
   );
-  // return;
 };
 
 export const deleteTransaction = async (id: string) => {
