@@ -167,8 +167,14 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       DEFAULT_NETWORK === Network.ArbitrumSepolia
     ) {
       const cheaper = defaultGasPrices.network;
-      const { maxFeePerGas, maxPriorityFeePerGas } =
-        await userWallet.ethersProvider.getFeeData();
+      const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
+
+      // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+      const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
+        'eth_maxPriorityFeePerGas',
+        [],
+      );
+      const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
 
       debugLogging('ARBITRUM GAS DEBUG', {
         maxFeePerGas,
@@ -197,8 +203,14 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     // All other networks
 
     const cheaper = defaultGasPrices.network;
-    const { maxFeePerGas, maxPriorityFeePerGas } =
-      await userWallet.ethersProvider.getFeeData();
+    const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
+
+    // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+    const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
+      'eth_maxPriorityFeePerGas',
+      [],
+    );
+    const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
 
     // This wil essentially make the local dev gas price estimation act more like production
     const defaultNetworkGasPrices = {
