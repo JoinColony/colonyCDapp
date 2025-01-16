@@ -7,7 +7,6 @@ import {
 import moveDecimal from 'move-decimal-point';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { mutateWithAuthRetry } from '~apollo/utils.ts';
 import { ContextModule, getContext } from '~context/index.ts';
 import {
   CreateStreamingPaymentMetadataDocument,
@@ -179,7 +178,9 @@ function* createStreamingPaymentAction({
     } = yield waitForTxResult(createStreamingPayment.channel);
 
     if (customActionTitle) {
-      yield createActionMetadataInDB(txHash, customActionTitle);
+      yield createActionMetadataInDB(txHash, {
+        customTitle: customActionTitle,
+      });
     }
 
     if (annotationMessage) {
@@ -194,24 +195,21 @@ function* createStreamingPaymentAction({
       streamingPaymentsClient.getNumStreamingPayments,
     );
 
-    yield mutateWithAuthRetry(() =>
-      apolloClient.mutate<
-        CreateStreamingPaymentMetadataMutation,
-        CreateStreamingPaymentMetadataMutationVariables
-      >({
-        mutation: CreateStreamingPaymentMetadataDocument,
-        variables: {
-          input: {
-            id: getExpenditureDatabaseId(
-              colonyAddress,
-              toNumber(streamingPaymentId),
-            ),
-            endCondition,
-            limitAmount,
-          },
+    yield apolloClient.mutate<
+      CreateStreamingPaymentMetadataMutation,
+      CreateStreamingPaymentMetadataMutationVariables
+    >({
+      mutation: CreateStreamingPaymentMetadataDocument,
+      variables: {
+        input: {
+          id: getExpenditureDatabaseId(
+            colonyAddress,
+            toNumber(streamingPaymentId),
+          ),
+          endCondition,
         },
-      }),
-    );
+      },
+    });
 
     yield put<AllActions>({
       type: ActionTypes.STREAMING_PAYMENT_CREATE_SUCCESS,
