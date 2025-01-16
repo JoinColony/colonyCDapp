@@ -50,10 +50,10 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
     annotation,
     transactionHash,
     metadata,
-    multiChainInfo,
+    targetChainId,
   } = action;
   const decisionMethod = useDecisionMethod(action);
-  const chainInfo = findSupportedChain(multiChainInfo?.targetChainId);
+  const chainInfo = findSupportedChain(targetChainId);
   const isAddOperation = action.type.startsWith(
     ColonyActionType.AddProxyColony,
   );
