@@ -893,6 +893,30 @@ enum ColonyActionType {
   """
   FINALIZE_EXPENDITURE_MOTION
   """
+  An action related to creating a streaming payment
+  """
+  CREATE_STREAMING_PAYMENT
+  """
+  An action related to cancelling a streaming payment
+  """
+  CANCEL_STREAMING_PAYMENT
+  """
+  An action related to cancelling and waiving a streaming payment
+  """
+  CANCEL_AND_WAIVE_STREAMING_PAYMENT
+  """
+  An action related to cancelling a streaming payment via a motion
+  """
+  CANCEL_STREAMING_PAYMENT_MOTION
+  """
+  An action related to editing a streaming payment
+  """
+  EDIT_STREAMING_PAYMENT
+  """
+  An action related to editing a streaming payment via a motion
+  """
+  EDIT_STREAMING_PAYMENT_MOTION
+  """
   An action related to adding / removing approved colony tokens
   """
   MANAGE_TOKENS
@@ -1631,7 +1655,15 @@ type Colony @model {
   """
   reputation: String
 
+  """
+  Expenditures within the colony
+  """
   expenditures: [Expenditure] @hasMany(indexName: "byColony", fields: ["id"])
+  """
+  Streaming payments within the colony
+  """
+  streamingPayments: [StreamingPayment]
+    @hasMany(indexName: "byColony", fields: ["id"])
   """
   Global claim delay for expenditures (in seconds)
   """
@@ -3014,6 +3046,35 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getMotionByStreamingPaymentId"
+    )
+
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+
+  """
+  Streaming Payment changes by the action
+  """
+  pendingStreamingPaymentChanges: StreamingPaymentChanges
+
+  """
+  Identifier of streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadataId: ID
+  """
+  Streaming payment metadata that is stored temporarily and committed to the database once the corresponding motion passes
+  """
+  pendingStreamingPaymentMetadata: StreamingPaymentMetadata
+    @hasOne(fields: ["pendingStreamingPaymentMetadataId"])
 }
 
 type ExpenditureFundingItem {
@@ -3529,6 +3590,41 @@ type ColonyAction @model @searchable {
   expenditureSlotIds: [Int!]
 
   arbitraryTransactions: [ColonyActionArbitraryTransaction!]
+  """
+  ID of the associated streaming payment, if any
+  """
+  streamingPaymentId: ID
+    @index(
+      name: "byStreamingPaymentId"
+      queryField: "getActionByStreamingPaymentId"
+    )
+  """
+  Streaming payment associated with the action, if any
+  """
+  streamingPayment: StreamingPayment @hasOne(fields: ["streamingPaymentId"])
+  """
+  Changes to the streaming payment associated with the action, if any
+  Applicable to `EDIT_STREAMING_PAYMENT` action only
+  """
+  streamingPaymentChanges: StreamingPaymentChangeSet
+}
+
+type StreamingPaymentChangeSet {
+  """
+  The values before the change
+  """
+  oldValues: StreamingPaymentChanges!
+  """
+  The values before the change
+  """
+  newValues: StreamingPaymentChanges!
+}
+
+type StreamingPaymentChanges {
+  startTime: String!
+  endTime: String!
+  interval: String!
+  amount: String!
 }
 
 """
@@ -3982,23 +4078,90 @@ type ExpenditureStage {
   name: String!
 }
 
-type StreamingPayment @model {
+type StreamingPayment @model @searchable {
   id: ID! # Self-managed, formatted as colonyId_nativeId
+  """
+  Native ID of the streaming payment within a colony
+  """
   nativeId: Int!
+  """
+  Colony ID (address) to which the expenditure belongs
+  """
+  colonyId: ID!
+    @index(
+      name: "byColony"
+      queryField: "getStreamingPaymentsByColony"
+      sortKeyFields: ["createdAt"]
+    )
+  """
+  The Colony to which the expenditure belongs
+  """
+  colony: Colony! @belongsTo(fields: ["colonyId"])
   createdAt: AWSDateTime!
   recipientAddress: String!
   nativeDomainId: Int!
-  startTime: AWSTimestamp!
-  endTime: AWSTimestamp!
+  startTime: String!
+  endTime: String!
   interval: String!
-  payouts: [ExpenditurePayout!]
+  tokenAddress: ID!
+  token: Token @hasOne(fields: ["tokenAddress"])
+  amount: String!
+  claims: [StreamingPaymentClaim!]
   metadata: StreamingPaymentMetadata @hasOne(fields: ["id"])
+  """
+  Actions associated with the streaming payment
+  """
+  actions: [ColonyAction!]
+    @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  Is the stream cancelled?
+  """
+  isCancelled: Boolean
+  """
+  Is the stream waived?
+  """
+  isWaived: Boolean
+  """
+  The motions created that relate to this streaming payment, if there are any
+  """
+  motions: [ColonyMotion]
+    @hasMany(indexName: "byStreamingPaymentId", fields: ["id"])
+  """
+  Address of the stream creator, can be a user or an extension
+  """
+  creatorAddress: ID!
 }
 
 type StreamingPaymentMetadata @model {
   id: ID! # Self-managed, formatted as colonyId_nativeId
   endCondition: StreamingPaymentEndCondition!
-  limitAmount: String
+  """
+  List of Streaming Payment metadata changelog entries
+  """
+  changelog: [StreamingPaymentMetadataChangelog!]
+}
+
+"""
+Represents a changelog entry for Streaming Payment metadata
+"""
+type StreamingPaymentMetadataChangelog {
+  """
+  Transaction hash associated with the changelog entry
+  """
+  transactionHash: String!
+  """
+  The end condition before the change
+  """
+  oldEndCondition: StreamingPaymentEndCondition!
+  """
+  The end condition after the change
+  """
+  newEndCondition: StreamingPaymentEndCondition!
+}
+
+type StreamingPaymentClaim {
+  amount: String!
+  timestamp: String!
 }
 
 """
