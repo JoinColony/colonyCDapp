@@ -317,6 +317,8 @@ export const addTransactionToDb = async (
     identifier: identifier || null,
     options: JSON.stringify(options),
     associatedActionId: associatedActionId || null,
+    gasLimit: null,
+    gasPrice: null,
   };
 
   await mutateWithAuthRetry(() =>
@@ -393,6 +395,8 @@ export const updateTransaction = async (
     variables: {
       input: {
         ...input,
+        gasLimit: input?.gasLimit,
+        gasPrice: input?.gasPrice,
         from: walletAddress,
       },
     },
@@ -406,6 +410,8 @@ export const updateTransaction = async (
         identifier: null,
         params: null,
         deleted: optimisticResponse.deleted || false,
+        gasLimit: optimisticResponse.gasLimit || null,
+        gasPrice: optimisticResponse.gasPrice || null,
         ...optimisticResponse,
       },
     };
