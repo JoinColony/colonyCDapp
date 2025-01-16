@@ -3561,9 +3561,13 @@ type ColonyAction @model @searchable {
   """
   expenditureSlotIds: [Int!]
   """
-  Multichain info if the action is bridged"
+  Multichain info if the action is bridged
   """
   multiChainInfo: MultiChainInfo
+  """
+  Target chain id if the action is on a proxy colony chain
+  """
+  targetChainId: Int
   """
   The motion action txHash that this action finalized
   """
@@ -3575,7 +3579,6 @@ type ColonyAction @model @searchable {
 }
 
 type MultiChainInfo {
-  targetChainId: Int!
   completed: Boolean!
   wormholeInfo: ActionWormholeInfo
 }
