@@ -71,6 +71,9 @@ const PermissionTooltip: FC<PermissionTooltipProps> = ({
       <Tooltip
         placement="top"
         className="w-fit"
+        popperOptions={{
+          strategy: 'fixed',
+        }}
         tooltipContent={
           <PermissionTooltipContent
             userPermissions={userPermissionsInDomain}
