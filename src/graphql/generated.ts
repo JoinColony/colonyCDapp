@@ -10545,7 +10545,7 @@ export type UpdateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', deleted?: boolean | null, id: string, identifier?: string | null, params?: string | null, status: TransactionStatus, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null } | null };
+export type UpdateTransactionMutation = { __typename?: 'Mutation', updateTransaction?: { __typename?: 'Transaction', deleted?: boolean | null, id: string, identifier?: string | null, params?: string | null, status: TransactionStatus, gasLimit?: string | null, gasPrice?: string | null, error?: { __typename?: 'TransactionError', type: TransactionErrors, message: string } | null } | null };
 
 export type CreateUniqueUserMutationVariables = Exact<{
   input: CreateUniqueUserInput;
@@ -13012,6 +13012,8 @@ export const UpdateTransactionDocument = gql`
     identifier
     params
     status
+    gasLimit
+    gasPrice
   }
 }
     `;

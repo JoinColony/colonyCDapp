@@ -15,5 +15,7 @@ mutation UpdateTransaction($input: UpdateTransactionInput!) {
     identifier
     params
     status
+    gasLimit
+    gasPrice
   }
 }
