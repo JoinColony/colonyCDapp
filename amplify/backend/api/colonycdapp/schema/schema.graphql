@@ -3584,6 +3584,10 @@ type ColonyAction @model @searchable {
   """
   multiChainInfo: MultiChainInfo
   """
+  Target chain id if the action is on a proxy colony chain
+  """
+  targetChainId: Int
+  """
   The motion action txHash that this action finalized
   """
   finalizedActionId: ID
@@ -3594,7 +3598,6 @@ type ColonyAction @model @searchable {
 }
 
 type MultiChainInfo {
-  targetChainId: Int!
   completed: Boolean!
   wormholeInfo: ActionWormholeInfo
 }

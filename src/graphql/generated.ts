@@ -559,6 +559,8 @@ export type ColonyAction = {
    * Currently it is impossible to tell the reason for the action being hidden from the actions list
    */
   showInActionsList: Scalars['Boolean'];
+  /** Target chain id if the action is on a proxy colony chain */
+  targetChainId?: Maybe<Scalars['Int']>;
   /** The target Domain of the action, if applicable */
   toDomain?: Maybe<Domain>;
   /** The target Domain identifier, if applicable */
@@ -1524,6 +1526,7 @@ export type CreateColonyActionInput = {
   rolesAreMultiSig?: InputMaybe<Scalars['Boolean']>;
   rootHash: Scalars['String'];
   showInActionsList: Scalars['Boolean'];
+  targetChainId?: InputMaybe<Scalars['Int']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
@@ -2992,6 +2995,7 @@ export type ModelColonyActionConditionInput = {
   rolesAreMultiSig?: InputMaybe<ModelBooleanInput>;
   rootHash?: InputMaybe<ModelStringInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
+  targetChainId?: InputMaybe<ModelIntInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
   toPotId?: InputMaybe<ModelIntInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
@@ -3039,6 +3043,7 @@ export type ModelColonyActionFilterInput = {
   rolesAreMultiSig?: InputMaybe<ModelBooleanInput>;
   rootHash?: InputMaybe<ModelStringInput>;
   showInActionsList?: InputMaybe<ModelBooleanInput>;
+  targetChainId?: InputMaybe<ModelIntInput>;
   toDomainId?: InputMaybe<ModelIdInput>;
   toPotId?: InputMaybe<ModelIntInput>;
   tokenAddress?: InputMaybe<ModelIdInput>;
@@ -4363,6 +4368,7 @@ export type ModelSubscriptionColonyActionFilterInput = {
   rolesAreMultiSig?: InputMaybe<ModelSubscriptionBooleanInput>;
   rootHash?: InputMaybe<ModelSubscriptionStringInput>;
   showInActionsList?: InputMaybe<ModelSubscriptionBooleanInput>;
+  targetChainId?: InputMaybe<ModelSubscriptionIntInput>;
   toDomainId?: InputMaybe<ModelSubscriptionIdInput>;
   toPotId?: InputMaybe<ModelSubscriptionIntInput>;
   tokenAddress?: InputMaybe<ModelSubscriptionIdInput>;
@@ -5329,13 +5335,11 @@ export type MotionStateHistoryInput = {
 export type MultiChainInfo = {
   __typename?: 'MultiChainInfo';
   completed: Scalars['Boolean'];
-  targetChainId: Scalars['Int'];
   wormholeInfo?: Maybe<ActionWormholeInfo>;
 };
 
 export type MultiChainInfoInput = {
   completed: Scalars['Boolean'];
-  targetChainId: Scalars['Int'];
   wormholeInfo?: InputMaybe<ActionWormholeInfoInput>;
 };
 
@@ -8357,6 +8361,7 @@ export enum SearchableColonyActionAggregateField {
   RolesAreMultiSig = 'rolesAreMultiSig',
   RootHash = 'rootHash',
   ShowInActionsList = 'showInActionsList',
+  TargetChainId = 'targetChainId',
   ToDomainId = 'toDomainId',
   ToPotId = 'toPotId',
   TokenAddress = 'tokenAddress',
@@ -8413,6 +8418,7 @@ export type SearchableColonyActionFilterInput = {
   rolesAreMultiSig?: InputMaybe<SearchableBooleanFilterInput>;
   rootHash?: InputMaybe<SearchableStringFilterInput>;
   showInActionsList?: InputMaybe<SearchableBooleanFilterInput>;
+  targetChainId?: InputMaybe<SearchableIntFilterInput>;
   toDomainId?: InputMaybe<SearchableIdFilterInput>;
   toPotId?: InputMaybe<SearchableIntFilterInput>;
   tokenAddress?: InputMaybe<SearchableIdFilterInput>;
@@ -8457,6 +8463,7 @@ export enum SearchableColonyActionSortableFields {
   RolesAreMultiSig = 'rolesAreMultiSig',
   RootHash = 'rootHash',
   ShowInActionsList = 'showInActionsList',
+  TargetChainId = 'targetChainId',
   ToDomainId = 'toDomainId',
   ToPotId = 'toPotId',
   TokenAddress = 'tokenAddress',
@@ -9796,6 +9803,7 @@ export type UpdateColonyActionInput = {
   rolesAreMultiSig?: InputMaybe<Scalars['Boolean']>;
   rootHash?: InputMaybe<Scalars['String']>;
   showInActionsList?: InputMaybe<Scalars['Boolean']>;
+  targetChainId?: InputMaybe<Scalars['Int']>;
   toDomainId?: InputMaybe<Scalars['ID']>;
   toPotId?: InputMaybe<Scalars['Int']>;
   tokenAddress?: InputMaybe<Scalars['ID']>;
@@ -12477,9 +12485,7 @@ export const ColonyActionFragmentDoc = gql`
     contractAddress
     encodedFunction
   }
-  multiChainInfo {
-    targetChainId
-  }
+  targetChainId
 }
     ${UserDisplayFragmentDoc}
 ${PublicColonyFragmentDoc}
