@@ -23,8 +23,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
     colony: { colonyAddress, nativeToken },
     isSupportedColonyVersion,
   } = useColonyContext();
-  const { waitingForActionConfirmation, isPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   const isMobile = useMobile();
 
@@ -56,11 +55,7 @@ const InstallButton = ({ extensionData }: InstallButtonProps) => {
       onSuccess={handleInstallSuccess}
       onError={handleInstallError}
       isFullSize={isMobile}
-      disabled={
-        isPendingManagement ||
-        !isSupportedColonyVersion ||
-        waitingForActionConfirmation
-      }
+      disabled={isPendingManagement || !isSupportedColonyVersion}
     >
       {formatText({ id: 'button.install' })}
     </ActionButton>

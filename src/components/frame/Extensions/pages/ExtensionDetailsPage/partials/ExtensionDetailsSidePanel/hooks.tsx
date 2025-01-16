@@ -17,11 +17,8 @@ export const useUninstall = (extensionId: Extension) => {
   } = useColonyContext();
   const [isLoading, setIsLoading] = useState(false);
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const {
-    setActiveTab,
-    setWaitingForActionConfirmation,
-    setIsPendingManagement,
-  } = useExtensionDetailsPageContext();
+  const { setActiveTab, setIsPendingManagement } =
+    useExtensionDetailsPageContext();
 
   const uninstallAsyncFunction = useAsyncFunction({
     submit: ActionTypes.EXTENSION_UNINSTALL,
@@ -42,7 +39,6 @@ export const useUninstall = (extensionId: Extension) => {
       await waitForDbAfterExtensionAction({
         method: ExtensionMethods.UNINSTALL,
         refetchExtensionData,
-        setWaitingForActionConfirmation,
       });
       toast.success(
         <Toast
@@ -80,8 +76,7 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const { setWaitingForActionConfirmation, setIsPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { setIsPendingManagement } = useExtensionDetailsPageContext();
   const deprecateExtensionValues = {
     colonyAddress,
     extensionId,
@@ -103,7 +98,6 @@ export const useDeprecate = ({ extensionId }: { extensionId: Extension }) => {
       await deprecateAsyncFunction(deprecateExtensionValues);
       await waitForDbAfterExtensionAction({
         method: ExtensionMethods.DEPRECATE,
-        setWaitingForActionConfirmation,
         refetchExtensionData,
       });
       toast.success(

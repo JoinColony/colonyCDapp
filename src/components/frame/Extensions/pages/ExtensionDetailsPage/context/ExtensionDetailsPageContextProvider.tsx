@@ -28,8 +28,6 @@ export const ExtensionDetailsPageContextProvider: FC<
   const [activeTab, setActiveTab] = useState(
     ExtensionDetailsPageTabId.Overview,
   );
-  const [waitingForActionConfirmation, setWaitingForActionConfirmation] =
-    useState(false);
   const [isPendingManagement, setIsPendingManagement] = useState(false);
   const [isSavingChanges, setIsSavingChanges] = useState(false);
 
@@ -46,8 +44,6 @@ export const ExtensionDetailsPageContextProvider: FC<
     () => ({
       activeTab,
       setActiveTab,
-      waitingForActionConfirmation,
-      setWaitingForActionConfirmation,
       extensionData,
       userHasRoot,
       isPendingManagement,
@@ -61,7 +57,6 @@ export const ExtensionDetailsPageContextProvider: FC<
       isPendingManagement,
       isSavingChanges,
       userHasRoot,
-      waitingForActionConfirmation,
     ],
   );
 

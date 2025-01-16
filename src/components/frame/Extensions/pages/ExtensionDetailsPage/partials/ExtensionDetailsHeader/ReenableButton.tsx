@@ -28,8 +28,7 @@ const ReenableButton = ({
     formState: { isSubmitting },
   } = useFormContext();
 
-  const { waitingForActionConfirmation, isPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   return (
     <>
@@ -38,9 +37,7 @@ const ReenableButton = ({
         onClick={() => setIsReEnableModalOpen(true)}
         isFullSize={isMobile}
         loading={isLoading}
-        disabled={
-          isPendingManagement || isSubmitting || waitingForActionConfirmation
-        }
+        disabled={isPendingManagement || isSubmitting}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>

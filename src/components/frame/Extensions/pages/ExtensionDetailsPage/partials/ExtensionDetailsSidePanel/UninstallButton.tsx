@@ -114,8 +114,7 @@ const UninstallButton = ({
   const [isUninstallModalOpen, setIsUninstallModalOpen] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const { handleUninstall, isLoading } = useUninstall(extensionId);
-  const { waitingForActionConfirmation, isPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   const {
     formState: { isSubmitting },
@@ -130,9 +129,7 @@ const UninstallButton = ({
           isFullSize
           loading={isLoading}
           onClick={() => setIsUninstallModalOpen(true)}
-          disabled={
-            isPendingManagement || isSubmitting || waitingForActionConfirmation
-          }
+          disabled={isPendingManagement || isSubmitting}
         >
           {formatText({ id: 'button.uninstallExtension' })}
         </Button>

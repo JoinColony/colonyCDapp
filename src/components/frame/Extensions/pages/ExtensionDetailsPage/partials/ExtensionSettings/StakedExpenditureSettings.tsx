@@ -27,11 +27,10 @@ const MSG = defineMessages({
 });
 
 const StakedExpenditureSettings: FC = () => {
-  const { userHasRoot, waitingForActionConfirmation } =
-    useExtensionDetailsPageContext();
+  const { userHasRoot, isPendingManagement } = useExtensionDetailsPageContext();
   const { h4, p, b, ul, li } = getTextChunks();
 
-  const isFormDisabled = !userHasRoot || waitingForActionConfirmation;
+  const isFormDisabled = !userHasRoot || isPendingManagement;
 
   return (
     <div>

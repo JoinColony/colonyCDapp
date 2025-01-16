@@ -21,8 +21,7 @@ const DeprecateButton = ({
   extensionData: { extensionId },
 }: DeprecateButtonProps) => {
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
-  const { waitingForActionConfirmation, isPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   const { handleDeprecate, isLoading } = useDeprecate({
     extensionId,
@@ -43,9 +42,7 @@ const DeprecateButton = ({
           loaderClassName="!px-4 !py-2 !text-sm"
           loaderIconSize={14}
           onClick={() => setIsDeprecateModalOpen(true)}
-          disabled={
-            isPendingManagement || isSubmitting || waitingForActionConfirmation
-          }
+          disabled={isPendingManagement || isSubmitting}
         >
           {formatText({ id: 'button.deprecateExtension' })}
         </ButtonWithLoader>

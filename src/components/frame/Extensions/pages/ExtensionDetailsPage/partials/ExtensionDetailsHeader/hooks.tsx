@@ -21,8 +21,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const { setWaitingForActionConfirmation, setIsPendingManagement } =
-    useExtensionDetailsPageContext();
+  const { setIsPendingManagement } = useExtensionDetailsPageContext();
 
   const enableExtensionValues = {
     colonyAddress,
@@ -43,7 +42,6 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
       await enableAsyncFunction(enableExtensionValues);
       await waitForDbAfterExtensionAction({
         method: ExtensionMethods.REENABLE,
-        setWaitingForActionConfirmation,
         refetchExtensionData,
       });
       toast.success(
@@ -74,12 +72,8 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
 
 export const useInstall = (extensionData: AnyExtensionData) => {
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
-  const {
-    setActiveTab,
-    setWaitingForActionConfirmation,
-    setIsPendingManagement,
-    setIsSavingChanges,
-  } = useExtensionDetailsPageContext();
+  const { setActiveTab, setIsPendingManagement, setIsSavingChanges } =
+    useExtensionDetailsPageContext();
   const { reset } = useFormContext();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +82,6 @@ export const useInstall = (extensionData: AnyExtensionData) => {
     setIsPendingManagement(true);
     setIsLoading(true);
     await handleWaitingForDbAfterFormCompletion({
-      setWaitingForActionConfirmation,
       setIsSavingChanges,
       extensionData,
       refetchExtensionData,
@@ -118,7 +111,6 @@ export const useInstall = (extensionData: AnyExtensionData) => {
     setIsPendingManagement(true);
     setIsLoading(true);
     await handleWaitingForDbAfterFormCompletion({
-      setWaitingForActionConfirmation,
       setIsSavingChanges,
       extensionData,
       refetchExtensionData,

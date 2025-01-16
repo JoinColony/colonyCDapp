@@ -23,7 +23,7 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const {
     extensionData,
     setActiveTab,
-    setWaitingForActionConfirmation,
+    setIsPendingManagement,
     setIsSavingChanges,
   } = useExtensionDetailsPageContext();
   const { refetchExtensionData } = useExtensionData(extensionData?.extensionId);
@@ -47,7 +47,7 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
     extensionData,
     refetchExtensionData,
-    setWaitingForActionConfirmation,
+    setIsPendingManagement,
     setIsSavingChanges,
     setActiveTab,
   });
@@ -55,7 +55,7 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const handleFormError = getFormErrorFn<typeof defaultValues>({
     extensionData,
     refetchExtensionData,
-    setWaitingForActionConfirmation,
+    setIsPendingManagement,
     setIsSavingChanges,
     setActiveTab,
   });

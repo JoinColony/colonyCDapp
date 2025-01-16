@@ -30,13 +30,8 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
   const { colony } = useColonyContext();
   const isMobile = useMobile();
 
-  const {
-    waitingForActionConfirmation,
-    activeTab,
-    setActiveTab,
-    isPendingManagement,
-    isSavingChanges,
-  } = useExtensionDetailsPageContext();
+  const { activeTab, setActiveTab, isPendingManagement, isSavingChanges } =
+    useExtensionDetailsPageContext();
 
   const {
     formState: { isValid, isSubmitting, isDirty },
@@ -79,9 +74,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
             setActiveTab(ExtensionDetailsPageTabId.Settings);
           }}
           isFullSize={isMobile}
-          disabled={
-            isPendingManagement || isSubmitting || waitingForActionConfirmation
-          }
+          disabled={isPendingManagement || isSubmitting}
         >
           {formatText({ id: 'button.enable' })}
         </Button>
@@ -91,13 +84,9 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     return (
       <ButtonWithLoader
         type="submit"
-        disabled={
-          isPendingManagement || !isValid || waitingForActionConfirmation
-        }
+        disabled={isPendingManagement || !isValid}
         isFullSize={isMobile}
-        loading={
-          isSubmitting || (waitingForActionConfirmation && isSavingChanges)
-        }
+        loading={isSubmitting || (isPendingManagement && isSavingChanges)}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>
@@ -109,12 +98,8 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
       <ButtonWithLoader
         type="submit"
         isFullSize={isMobile}
-        loading={
-          isSubmitting || (waitingForActionConfirmation && isSavingChanges)
-        }
-        disabled={
-          isPendingManagement || isSubmitting || waitingForActionConfirmation
-        }
+        loading={isSubmitting || (isPendingManagement && isSavingChanges)}
+        disabled={isPendingManagement || isSubmitting}
       >
         {formatText({ id: 'button.saveChanges' })}
       </ButtonWithLoader>
