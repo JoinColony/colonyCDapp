@@ -209,9 +209,7 @@ const getExpenditureStagesData = (
 };
 
 const getProxyColonyDeployedChain = (actionData: ColonyAction) => {
-  const chainInfo = findSupportedChain(
-    actionData?.multiChainInfo?.targetChainId,
-  );
+  const chainInfo = findSupportedChain(actionData?.targetChainId);
 
   return chainInfo?.name;
 };

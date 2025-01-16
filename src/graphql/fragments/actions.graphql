@@ -152,9 +152,7 @@ fragment ColonyAction on ColonyAction {
     contractAddress
     encodedFunction
   }
-  multiChainInfo {
-    targetChainId
-  }
+  targetChainId
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
