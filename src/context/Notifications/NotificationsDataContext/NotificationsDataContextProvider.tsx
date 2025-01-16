@@ -71,7 +71,7 @@ const NotificationsDataContextProvider = ({
       userExternalId={user.notificationsData.magicbellUserId}
       userKey={data?.getUserNotificationsHMAC || ''}
       stores={
-        isDev
+        isDev && !!import.meta.env.MAGICBELL_DEV_KEY
           ? [
               {
                 id: 'dev-store',
