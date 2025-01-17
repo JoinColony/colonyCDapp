@@ -128,7 +128,7 @@ const UserMenu: FC<UserMenuProps> = ({
         )}
         <div
           className={clsx('w-full', {
-            'mb-5 border-b border-b-gray-200 pb-4 md:pb-3': wallet,
+            'mb-6 border-b border-b-gray-200 pb-2 md:pb-3': wallet,
           })}
         >
           <TitleLabel
@@ -160,45 +160,48 @@ const UserMenu: FC<UserMenuProps> = ({
                     <Icon size={iconSize} />
                     <p className="ml-2">{formatText({ id: itemName })}</p>
                   </span>
-                  <CaretRight size={12} />
+                  <CaretRight size={16} />
                 </button>
               </li>
             ))}
-
-            {wallet && (
-              <li className="-ml-4 mb-0 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
-                <button
-                  type="button"
-                  className="navigation-link"
-                  onClick={() => setActiveSubmenu(UserMenuItemName.CURRENCY)}
-                  aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
-                  aria-controls="actionsWithVisibility"
-                >
-                  <span className="mr-2 flex shrink-0 flex-grow items-center md:mr-0">
-                    <CurrencyIcon size={iconSize} />
-                    <p className="ml-2">{currency.toUpperCase()}</p>
-                  </span>
-                  <CaretRight size={12} />
-                </button>
-              </li>
-            )}
           </ul>
         </div>
         {wallet && (
-          <div className="w-full">
-            <TitleLabel
-              text={formatText({ id: 'userMenu.other' })}
-              className="pb-2"
-            />
-            <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
-              <Plugs size={iconSize} />
-              <button type="button" className="ml-2" onClick={disconnectWallet}>
-                {formatText({ id: 'userMenu.disconnectWalletTitle' })}
+          <ul className="text-left">
+            <li className="w-full">
+              <TitleLabel
+                text={formatText({ id: 'userMenu.other' })}
+                className="pb-2"
+              />
+              <div className="navigation-link -ml-4 mb-2 w-[calc(100%+2rem)] rounded hover:bg-gray-50 md:mb-0">
+                <Plugs size={iconSize} />
+                <button
+                  type="button"
+                  className="ml-2"
+                  onClick={disconnectWallet}
+                >
+                  {formatText({ id: 'userMenu.disconnectWalletTitle' })}
+                </button>
+              </div>
+            </li>
+            <li className="-ml-4 mb-0 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
+              <button
+                type="button"
+                className="navigation-link"
+                onClick={() => setActiveSubmenu(UserMenuItemName.CURRENCY)}
+                aria-expanded={activeSubmenu === UserMenuItemName.CURRENCY}
+                aria-controls="actionsWithVisibility"
+              >
+                <span className="mr-2 flex shrink-0 flex-grow items-center md:mr-0">
+                  <CurrencyIcon size={iconSize} />
+                  <p className="ml-2">{currency.toUpperCase()}</p>
+                </span>
+                <CaretRight size={16} />
               </button>
-            </div>
-          </div>
+            </li>
+          </ul>
         )}
-        <div className="mt-6">
+        <div className="mt-4">
           <ThemeSwitcher />
         </div>
       </div>
