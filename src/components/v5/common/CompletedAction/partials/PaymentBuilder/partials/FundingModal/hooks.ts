@@ -1,6 +1,7 @@
 import { FUND_EXPENDITURE_REQUIRED_ROLE } from '~constants/permissions.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
@@ -15,6 +16,9 @@ export const useFundingDecisionMethods = (
   const { user } = useAppContext();
   const { isVotingReputationEnabled, isMultiSigEnabled } =
     useEnabledExtensions();
+  const { membersByAddress } = useMemberContext();
+
+  const { hasReputation } = membersByAddress[user?.walletAddress ?? ''] ?? {};
 
   const userHasFundingPermissions = user
     ? addressHasRoles({
@@ -35,6 +39,7 @@ export const useFundingDecisionMethods = (
       })
     : false;
   const shouldShowMultiSig = isMultiSigEnabled && userHasMultiSigPermissions;
+  const shouldShowReputation = isVotingReputationEnabled && hasReputation;
 
   return [
     {
@@ -42,7 +47,7 @@ export const useFundingDecisionMethods = (
       value: DecisionMethod.Permissions,
       isDisabled: !userHasFundingPermissions,
     },
-    ...(isVotingReputationEnabled
+    ...(shouldShowReputation
       ? [
           {
             label: formatText({
