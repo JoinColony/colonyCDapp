@@ -106,6 +106,7 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
             },
           },
         }}
+        rows={{ getRowClassName: () => 'align-top' }}
         layout={isMobile ? 'vertical' : 'horizontal'}
         className={clsx('mb-6', {
           '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
