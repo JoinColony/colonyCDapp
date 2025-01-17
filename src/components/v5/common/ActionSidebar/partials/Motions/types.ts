@@ -1,7 +1,9 @@
 import { type MotionState } from '@colony/colony-js';
 
-export interface MotionsProps {
-  transactionId: string;
+import { type CompletedActionProps } from '~v5/common/CompletedAction/types.ts';
+
+export interface MotionsProps extends CompletedActionProps {
+  motionData: NonNullable<CompletedActionProps['action']['motionData']>;
 }
 
 export enum CustomStep {

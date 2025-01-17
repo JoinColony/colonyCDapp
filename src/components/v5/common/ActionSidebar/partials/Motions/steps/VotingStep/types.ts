@@ -1,10 +1,8 @@
-import { type MotionAction } from '~types/motions.ts';
+import { type CompletedActionProps } from '~v5/common/CompletedAction/types.ts';
 
 export interface VotingStepProps {
-  startPollingAction: () => void;
-  stopPollingAction: () => void;
-  actionData: MotionAction;
-  transactionId: string;
+  action: CompletedActionProps['action'];
+  motionData: NonNullable<CompletedActionProps['action']['motionData']>;
 }
 
 export interface VotingFormValues {

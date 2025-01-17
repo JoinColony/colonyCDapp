@@ -34,8 +34,7 @@ export const useStakingForm = () => {
   const { user } = useAppContext();
   const { pollLockedTokenBalance, tokenBalanceData } =
     useUserTokenBalanceContext();
-  const { motionAction, setIsRefetching, startPollingAction, isRefetching } =
-    useMotionContext();
+  const { motionAction, setIsRefetching, isRefetching } = useMotionContext();
 
   const { colony, motionData } = motionAction || {};
   const { nativeToken } = colony || {};
@@ -140,7 +139,6 @@ export const useStakingForm = () => {
 
   const handleSuccess = getHandleStakeSuccessFn(
     setIsRefetching,
-    startPollingAction,
     pollLockedTokenBalance,
   );
 

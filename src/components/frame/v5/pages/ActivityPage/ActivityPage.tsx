@@ -4,7 +4,7 @@ import FiltersContextProvider from '~common/ColonyActionsTable/FiltersContext/Fi
 import ColonyActionsTable from '~common/ColonyActionsTable/index.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
+import useGetActionFormData from '~v5/common/ActionSidebar/hooks/useGetActionFormData.ts';
 import WidgetBoxList from '~v5/common/WidgetBoxList/index.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
 
@@ -20,7 +20,8 @@ const ActivityPage: FC = () => {
   const [selectedAction, setSelectedAction] = useState<string | undefined>(
     undefined,
   );
-  const { defaultValues } = useGetActionData(selectedAction || undefined);
+
+  const { defaultValues } = useGetActionFormData(selectedAction);
 
   return (
     <ContentWithTeamFilter>

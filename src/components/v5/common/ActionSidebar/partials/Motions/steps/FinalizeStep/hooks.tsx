@@ -12,27 +12,22 @@ import useExtensionData from '~hooks/useExtensionData.ts';
 import { type ClaimMotionRewardsPayload } from '~redux/sagas/motions/claimMotionRewards.ts';
 import { type MotionFinalizePayload } from '~redux/types/actions/motion.ts';
 import Numeral from '~shared/Numeral/index.ts';
-import { type MotionAction } from '~types/motions.ts';
 import { getMotionAssociatedActionId, mapPayload } from '~utils/actions.ts';
 import { getIsMotionOlderThanAWeek } from '~utils/dates.ts';
 import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
-import { getSafePollingInterval } from '~utils/queries.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { type RefetchAction } from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import { type MotionsProps } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
 
 import { type DescriptionListItem } from '../VotingStep/partials/DescriptionList/types.ts';
 
-import { WinningsItems } from './types.ts';
+import { type FinalizeStepProps, WinningsItems } from './types.ts';
 
-export const useFinalizeStep = (actionData: MotionAction) => {
-  const {
-    motionData: { motionId, motionStateHistory },
-    type,
-    amount,
-    fromDomain,
-    tokenAddress,
-  } = actionData;
+export const useFinalizeStep = ({ action, motionData }: FinalizeStepProps) => {
+  const { type, amount, fromDomain, tokenAddress, createdAt } = action;
+
+  const { motionId, motionStateHistory } = motionData;
+
   const {
     colony: { colonyAddress, balances },
   } = useColonyContext();
@@ -40,7 +35,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
 
   const { currentBlockTime } = useCurrentBlockTime();
   const isMotionOlderThanWeek = currentBlockTime
-    ? getIsMotionOlderThanAWeek(actionData.createdAt, currentBlockTime * 1000)
+    ? getIsMotionOlderThanAWeek(createdAt, currentBlockTime * 1000)
     : false;
 
   const domainBalance = getBalanceForTokenAndDomain(
@@ -65,7 +60,7 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   const isFinalizable =
     hasEnoughFundsToFinalize && !motionStateHistory.hasFailedNotFinalizable;
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const transform = useMemo(
     () =>
@@ -94,27 +89,27 @@ export const useFinalizeStep = (actionData: MotionAction) => {
   };
 };
 
-export const useClaimConfig = (
-  actionData: MotionAction,
-  startPollingAction: (pollingInterval: number) => void,
-  refetchAction: RefetchAction,
-) => {
+export const useClaimConfig = ({ action, motionData }: MotionsProps) => {
   const {
-    motionData: {
-      isFinalized: isMotionFinalized,
-      stakerRewards,
-      usersStakes,
-      voterRewards,
-      databaseMotionId,
-      remainingStakes,
-    },
-    transactionHash,
-  } = actionData;
+    isFinalized: isMotionFinalized,
+    stakerRewards,
+    usersStakes,
+    voterRewards,
+    databaseMotionId,
+    remainingStakes,
+    motionStateHistory,
+  } = motionData;
+
+  const { transactionHash, type } = action;
+
   const { user } = useAppContext();
+
   const {
     colony: { colonyAddress, nativeToken, motionsWithUnclaimedStakes },
   } = useColonyContext();
+
   const { extensionData } = useExtensionData(Extension.VotingReputation);
+
   const { pollLockedTokenBalance } = useUserTokenBalanceContext();
 
   const [isClaimed, setIsClaimed] = useState(false);
@@ -123,7 +118,7 @@ export const useClaimConfig = (
   const nativeTokenDecimals = nativeToken.decimals;
   const nativeTokenSymbol = ` ${nativeToken.symbol}`;
   const isMotionFailedNotFinalizable =
-    actionData.motionData.motionStateHistory.hasFailedNotFinalizable;
+    motionStateHistory.hasFailedNotFinalizable;
 
   const userStake = usersStakes.find(({ address }) => address === userAddress);
   const stakerReward = stakerRewards.find(
@@ -139,12 +134,11 @@ export const useClaimConfig = (
 
       if (!motionIsUnclaimed) {
         setIsClaimed(true);
-        refetchAction();
       } else {
         setIsClaimed(false);
       }
     }
-  }, [motionsWithUnclaimedStakes, databaseMotionId, refetchAction]);
+  }, [motionsWithUnclaimedStakes, databaseMotionId]);
 
   // Keep isClaimed state in sync with user changes
   useEffect(() => {
@@ -208,11 +202,10 @@ export const useClaimConfig = (
   const canClaimStakes = userTotalStake ? !userTotalStake.isZero() : false;
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingAction(getSafePollingInterval());
     pollLockedTokenBalance();
   };
 
-  const associatedActionId = getMotionAssociatedActionId(actionData);
+  const associatedActionId = getMotionAssociatedActionId(action);
 
   const claimPayload = useMemo(
     () =>
@@ -238,8 +231,7 @@ export const useClaimConfig = (
   );
 
   const getDescriptionItems = (): DescriptionListItem[] => {
-    const isMotionAgreement =
-      actionData.type === ColonyActionType.CreateDecisionMotion;
+    const isMotionAgreement = type === ColonyActionType.CreateDecisionMotion;
 
     if (
       !isMotionFailedNotFinalizable &&

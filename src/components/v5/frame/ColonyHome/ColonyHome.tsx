@@ -9,7 +9,7 @@ import {
   COLONY_ACTIVITY_ROUTE,
 } from '~routes/index.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetActionData from '~v5/common/ActionSidebar/hooks/useGetActionData.ts';
+import useGetActionFormData from '~v5/common/ActionSidebar/hooks/useGetActionFormData.ts';
 import Link from '~v5/shared/Link/index.ts';
 import TeamFilter from '~v5/shared/TeamFilter/TeamFilter.tsx';
 
@@ -25,7 +25,7 @@ const ColonyHome = () => {
   const [selectedAction, setSelectedAction] = useState<string | undefined>(
     undefined,
   );
-  const { defaultValues } = useGetActionData(selectedAction || undefined);
+  const { defaultValues } = useGetActionFormData(selectedAction);
 
   return (
     <div
