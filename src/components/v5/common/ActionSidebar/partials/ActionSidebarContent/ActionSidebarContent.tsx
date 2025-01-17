@@ -2,7 +2,7 @@ import { ApolloError, useApolloClient } from '@apollo/client';
 import { WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useEffect, type FC, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { type FieldError, useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { TourTargets } from '~common/Tours/enums.ts';
@@ -53,12 +53,17 @@ const MSG = defineMessages({
     defaultMessage:
       'There has been a database error. Your transaction may still have been processed.',
   },
+  arbitraryTxError: {
+    id: `${displayName}.arbitraryTxError`,
+    defaultMessage:
+      'Contract execution failed. Please verify your inputs match the contract requirements and try again.',
+  },
 });
 
 const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
   getFormOptions,
   actionFormProps: { primaryButton, onFormClose },
-  showApolloNetworkError,
+  customError,
 }) => {
   const { user } = useAppContext();
   const { formComponent: FormComponent, selectedAction } =
@@ -81,11 +86,13 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
 
   const {
     formState: {
-      errors: { this: customError },
+      errors: { this: formCustomError },
     },
     getValues,
     reset,
   } = useFormContext();
+
+  const sidebarCustomError = formCustomError || customError;
 
   const formValues = getValues();
 
@@ -106,8 +113,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     hasPermissions === false ||
     areMemberPermissionsLoading ||
     !canCreateAction ||
-    hasNoDecisionMethods ||
-    showApolloNetworkError;
+    hasNoDecisionMethods;
 
   const [
     isRemoveDraftModalVisible,
@@ -183,21 +189,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         <NoReputationError />
-        {showApolloNetworkError && (
-          <div className="mt-7">
-            <NotificationBanner icon={WarningCircle} status="error">
-              {showApolloNetworkError && formatText(MSG.apolloNetworkError)}
-            </NotificationBanner>
-          </div>
-        )}
-        {customError && (
+        {sidebarCustomError && (
           <div className="mt-7">
             <NotificationBanner
               icon={WarningCircle}
               status="error"
               testId="action-sidebar-custom-error"
             >
-              {customError.message?.toString()}
+              {sidebarCustomError.message?.toString()}
             </NotificationBanner>
           </div>
         )}
@@ -263,7 +262,10 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
   const { getFormOptions, actionFormProps } = useActionFormProps(defaultValues);
   const client = useApolloClient();
 
-  const [showApolloNetworkError, setShowApolloNetworkError] = useState(false);
+  const [customError, setCustomError] = useState<null | Pick<
+    FieldError,
+    'message'
+  >>(null);
 
   return (
     <div
@@ -285,7 +287,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               (error.message as unknown) === 'Auth failed' ||
               (error.code as unknown) === 4001
             ) {
-              setShowApolloNetworkError(true);
+              setCustomError({ message: formatText(MSG.apolloNetworkError) });
             }
 
             // Mutation failed in saga
@@ -296,8 +298,12 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
                 ?.statusCode;
 
               if (statusCode === 403) {
-                setShowApolloNetworkError(true);
+                setCustomError({ message: formatText(MSG.apolloNetworkError) });
               }
+            }
+
+            if (error.arbitraryTxActionFailed) {
+              setCustomError({ message: formatText(MSG.arbitraryTxError) });
             }
           }}
           onSuccess={() => {
@@ -320,7 +326,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
           <ActionSidebarFormContent
             getFormOptions={getFormOptions}
             actionFormProps={actionFormProps}
-            showApolloNetworkError={showApolloNetworkError}
+            customError={customError}
           />
         </ActionForm>
       </div>
