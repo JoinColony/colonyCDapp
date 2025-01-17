@@ -19,6 +19,7 @@ import {
   COLONY_INCOMING_ROUTE,
   COLONY_PERMISSIONS_ROUTE,
   COLONY_TEAMS_ROUTE,
+  COLONY_STREAMING_PAYMENTS_ROUTE,
 } from '~routes';
 import { type SidebarRouteItemProps } from '~v5/shared/Navigation/Sidebar/partials/SidebarRouteItem/types.ts';
 
@@ -49,6 +50,11 @@ export const sidebarNavigationScheme: SidebarRouteItemProps[] = [
       {
         translation: { id: 'navigation.finances.incoming' },
         path: COLONY_INCOMING_ROUTE,
+        isColonyRoute: true,
+      },
+      {
+        translation: { id: 'navigation.finances.streamingPayments' },
+        path: COLONY_STREAMING_PAYMENTS_ROUTE,
         isColonyRoute: true,
       },
       // @TODO: Uncomment once these pages are available

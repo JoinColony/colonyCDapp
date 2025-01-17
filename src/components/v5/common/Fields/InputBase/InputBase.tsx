@@ -85,15 +85,17 @@ const InputBase = React.forwardRef<HTMLInputElement, InputBaseProps>(
 
     return (
       <div className={clsx(wrapperClassName, 'w-full')}>
-        <label
-          className={clsx(
-            labelClassName,
-            'mb-1.5 text-md font-medium text-gray-700',
-          )}
-          htmlFor={id}
-        >
-          {label}
-        </label>
+        {label && (
+          <label
+            className={clsx(
+              labelClassName,
+              'mb-1.5 text-md font-medium text-gray-700',
+            )}
+            htmlFor={id}
+          >
+            {label}
+          </label>
+        )}
         {prefix || suffix ? (
           <div
             className={clsx(inputWrapperClassName, 'w-full', {

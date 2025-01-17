@@ -30,7 +30,6 @@ import { toFinite } from '~utils/lodash.ts';
 export enum ExtensionCategory {
   Payments = 'Payments',
   DecisionMethods = 'Decision Methods',
-  Expenditures = 'Expenditures',
 }
 
 const multiSigName = 'extensions.MultiSig';
@@ -198,7 +197,8 @@ const streamingPaymentsMessage = {
   },
   streamingPaymentsDescriptionShort: {
     id: `${streamingPaymentsName}.description`,
-    defaultMessage: 'Streaming Payments extension.',
+    defaultMessage:
+      'Continuously stream tokens to a recipient, that are claimable at any time. Useful for things like salaries, subscriptions, and more.',
   },
   streamingPaymentsDescriptionLong: {
     id: `${streamingPaymentsName}.descriptionLong`,
@@ -342,7 +342,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionAdvancedPaymentsIcon,
     imageURLs: [stakedHero, stakedInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.DecisionMethods,
     extensionId: Extension.StakedExpenditure,
     name: MSG.stakedExpenditureName,
     descriptionShort: MSG.stakedExpenditureDescriptionShort,
@@ -389,7 +389,7 @@ export const supportedExtensionsConfig: ExtensionConfig[] = [
   {
     icon: ExtensionStreamingPaymentsIcon,
     imageURLs: [streamingHero, streamingInterface],
-    category: ExtensionCategory.Expenditures,
+    category: ExtensionCategory.Payments,
     extensionId: Extension.StreamingPayments,
     name: MSG.streamingPaymentsName,
     descriptionShort: MSG.streamingPaymentsDescriptionShort,

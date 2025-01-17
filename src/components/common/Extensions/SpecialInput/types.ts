@@ -17,7 +17,7 @@ export interface SpecialInputProps {
   onChange?: (e: SyntheticEvent<HTMLInputElement>) => void;
 }
 
-export type ComponentType = 'percent' | 'hours';
+export type ComponentType = 'percent' | 'hours' | 'days';
 
 export type FormHourInput = {
   hours?: number;
