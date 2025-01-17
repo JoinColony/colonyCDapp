@@ -6,18 +6,18 @@ import {
 } from '@phosphor-icons/react';
 import clsx from 'clsx';
 import React, { useCallback, type FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Action } from '~constants/actions.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMobile } from '~hooks';
+import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
 import useToggle from '~hooks/useToggle/index.ts';
 import { removeDecisionAction } from '~redux/actionCreators/index.ts';
 import { DecisionMethod } from '~types/actions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
-import { getDraftDecisionFromStore } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -36,9 +36,8 @@ const DraftCard: FC = () => {
   const { user, userLoading: loading } = useAppContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff, toggleOn }] = useToggle();
-  const draftAgreement = useSelector(
-    getDraftDecisionFromStore(user?.walletAddress || '', colony.colonyAddress),
-  );
+
+  const { draftAgreement } = useDraftAgreement();
 
   const {
     actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],

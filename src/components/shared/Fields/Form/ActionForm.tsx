@@ -62,6 +62,12 @@ export interface ActionFormProps<
     onClick?: MouseEventHandler<HTMLButtonElement>;
   };
   testId?: string;
+
+  /** On form close behaviour overrides */
+  onFormClose?: {
+    /** When satisfied, it causes the cancel modal to be shown */
+    shouldShowCancelModal?: boolean;
+  };
 }
 
 const ActionForm = <V extends Record<string, any>>({
