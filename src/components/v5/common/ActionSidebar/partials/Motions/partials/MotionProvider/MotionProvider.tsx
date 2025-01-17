@@ -1,30 +1,26 @@
 import React, { type FC, type PropsWithChildren, useMemo } from 'react';
 
+import { type ICompletedMotionAction } from '~v5/common/ActionSidebar/partials/Motions/types.ts';
+
 import { useStakingWidgetUpdate } from './hooks.ts';
 import { MotionContext } from './MotionContext.ts';
-import { type MotionProviderProps } from './types.ts';
 
-const MotionProvider: FC<PropsWithChildren<MotionProviderProps>> = ({
+const MotionProvider: FC<PropsWithChildren<ICompletedMotionAction>> = ({
   children,
-  motionAction,
-  startPollingAction,
-  stopPollingAction,
+  motionData,
+  action,
 }) => {
-  const { motionData } = motionAction;
   const { motionStakes } = motionData;
-  const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(
-    motionStakes,
-    stopPollingAction,
-  );
+  const [isRefetching, setIsRefetching] = useStakingWidgetUpdate(motionStakes);
 
   const stakingWidgetValues = useMemo(
     () => ({
-      motionAction,
-      startPollingAction,
+      motionData,
       isRefetching,
       setIsRefetching,
+      action,
     }),
-    [motionAction, startPollingAction, isRefetching, setIsRefetching],
+    [action, isRefetching, motionData, setIsRefetching],
   );
 
   return (

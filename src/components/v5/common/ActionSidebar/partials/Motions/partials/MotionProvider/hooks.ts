@@ -24,7 +24,6 @@ export const useMotionContext = () => {
 
 export const useStakingWidgetUpdate = (
   motionStakes: MotionStakes,
-  stopPollingAction: () => void,
 ): [boolean, SetStateFn<boolean>] => {
   const [isRefetching, setIsRefetching] = useState(false);
   const [prevStakes, setPrevMotionStakes] = useState(motionStakes);
@@ -45,7 +44,6 @@ export const useStakingWidgetUpdate = (
 
     setIsRefetching(false);
     setPrevMotionStakes(motionStakes);
-    stopPollingAction();
 
     if (!motionJustPassedThreshold) {
       return;
@@ -57,7 +55,7 @@ export const useStakingWidgetUpdate = (
         include: [SearchActionsDocument],
       });
     }
-  }, [motionStakes, prevStakes, setIsRefetching, stopPollingAction, client]);
+  }, [motionStakes, prevStakes, setIsRefetching, client]);
 
   return [isRefetching, setIsRefetching];
 };

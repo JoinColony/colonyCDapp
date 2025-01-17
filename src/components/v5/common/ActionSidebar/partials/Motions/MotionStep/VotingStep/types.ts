@@ -1,12 +1,3 @@
-import { type MotionAction } from '~types/motions.ts';
-
-export interface VotingStepProps {
-  startPollingAction: () => void;
-  stopPollingAction: () => void;
-  actionData: MotionAction;
-  transactionId: string;
-}
-
 export interface VotingFormValues {
   vote: number;
 }

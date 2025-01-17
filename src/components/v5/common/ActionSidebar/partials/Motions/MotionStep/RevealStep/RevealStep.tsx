@@ -25,14 +25,8 @@ import { type RevealStepProps } from './types.ts';
 const displayName =
   'v5.common.ActionSidebar.partials.motions.MotionSimplePayment.steps.RevealStep';
 
-const RevealStep: FC<RevealStepProps> = ({
-  actionData,
-  motionState,
-  startPollingAction,
-  stopPollingAction,
-  transactionId,
-  rootHash,
-}) => {
+const RevealStep: FC<RevealStepProps> = ({ action, motionState }) => {
+  const { transactionHash, rootHash } = action;
   const { canInteract } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
     useToggle();
@@ -48,10 +42,8 @@ const RevealStep: FC<RevealStepProps> = ({
     revealProgress,
     totalVoters,
   } = useRevealStep({
-    actionData,
-    startPollingAction,
-    stopPollingAction,
-    transactionId,
+    action,
+    transactionHash,
     rootHash,
   });
 

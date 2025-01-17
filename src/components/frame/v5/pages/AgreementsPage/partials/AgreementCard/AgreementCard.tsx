@@ -1,6 +1,6 @@
 import { FilePlus, ShareNetwork, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useEffect } from 'react';
+import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath, useNavigate } from 'react-router-dom';
 
@@ -52,8 +52,6 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
     loadingAction,
     networkMotionState,
     motionState,
-    startPollingForAction,
-    stopPollingForAction,
   } = useGetColonyAction(transactionId);
   const { decisionData, motionData, showInActionsList } = action || {};
   const {
@@ -70,11 +68,6 @@ const AgreementCard: FC<AgreementCardProps> = ({ transactionId }) => {
   const currentTeam = colony?.domains?.items.find(
     (domain) => domain?.nativeId === motionDomainId,
   );
-
-  useEffect(() => {
-    startPollingForAction();
-    return () => stopPollingForAction();
-  }, [networkMotionState, startPollingForAction, stopPollingForAction]);
 
   const isMotionActive =
     motionStakes &&

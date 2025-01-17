@@ -26,3 +26,9 @@ query GetMotionTimeoutPeriods($input: GetMotionTimeoutPeriodsInput!) {
     timeLeftToEscalate
   }
 }
+
+subscription OnUpdateColonyMotion {
+  onUpdateColonyMotion {
+    ...ColonyMotion
+  }
+}

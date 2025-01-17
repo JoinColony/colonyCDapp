@@ -4,7 +4,6 @@ import React from 'react';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { ColonyActionType } from '~gql';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { type ColonyAction } from '~types/graphql.ts';
 import { getExtendedActionType } from '~utils/colonyActions.ts';
 
 import PermissionSidebar from '../ActionSidebar/partials/ActionSidebarContent/partials/PermissionSidebar.tsx';
@@ -29,14 +28,11 @@ import TransferFunds from './partials/TransferFunds/index.ts';
 import UnlockToken from './partials/UnlockToken/index.ts';
 import UpgradeColonyObjective from './partials/UpgradeColonyObjective/index.ts';
 import UpgradeColonyVersion from './partials/UpgradeColonyVersion/index.ts';
-
-interface CompletedActionProps {
-  action: ColonyAction;
-}
+import { type ICompletedAction } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction';
 
-const CompletedAction = ({ action }: CompletedActionProps) => {
+const CompletedAction = ({ action }: ICompletedAction) => {
   const { colony } = useColonyContext();
 
   const actionType = getExtendedActionType(action, colony.metadata);
@@ -127,8 +123,10 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
   };
 
   const getSidebarWidgetContent = () => {
-    if (action.isMultiSig) {
-      return <MultiSigSidebar transactionId={action.transactionHash} />;
+    const { isMultiSig } = action;
+
+    if (isMultiSig) {
+      return <MultiSigSidebar />;
     }
 
     switch (actionType) {
@@ -151,9 +149,15 @@ const CompletedAction = ({ action }: CompletedActionProps) => {
       case ColonyActionType.ReleaseStagedPaymentsMotion:
       case ColonyActionType.MakeArbitraryTransactionsMotion:
       case ColonyActionType.EditExpenditureMotion:
-      case ColonyActionType.FundExpenditureMotion:
+      case ColonyActionType.FundExpenditureMotion: {
+        const { motionData } = action;
+
         // @NOTE: Enabling expenditure-related motions above temporarily (action UI will be missing)
-        return <Motions transactionId={action.transactionHash} />;
+        return motionData ? (
+          <Motions action={action} motionData={motionData} />
+        ) : null;
+      }
+
       // @todo: reorganize folder structure after all of the advanced payments will be ready
       case ColonyActionType.CreateExpenditure:
       case ExtendedColonyActionType.StagedPayment:

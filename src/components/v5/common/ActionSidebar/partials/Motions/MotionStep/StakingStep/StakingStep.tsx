@@ -26,7 +26,7 @@ const displayName =
 
 const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
   const { canInteract } = useAppContext();
-  const { motionAction } = useMotionContext();
+  const { action, motionData } = useMotionContext();
   const [isAccordionOpen, { toggle: toggleAccordion }] = useToggle();
   const {
     enoughReputationToStakeMinimum,
@@ -35,8 +35,13 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     userActivatedTokens,
     userInactivatedTokens,
   } = useStakingStep();
-  const { motionData, colony, token } = motionAction;
-  const { usersStakes, motionStakes, requiredStake } = motionData;
+  const { colony, token } = action;
+  const {
+    usersStakes,
+    motionStakes,
+    requiredStake,
+    motionDomain: { metadata },
+  } = motionData;
 
   const { nativeToken } = colony;
   const { nativeTokenDecimals, nativeTokenSymbol } = nativeToken;
@@ -57,7 +62,7 @@ const StakingStep: FC<StakingStepProps> = ({ className, isActive }) => {
     (message) => message?.name === SystemMessages.MotionVotingPhase,
   );
 
-  const teamName = motionAction.motionData.motionDomain.metadata?.name;
+  const teamName = metadata?.name;
 
   const cardTitleMessageId = (() => {
     if (isFullyStaked) {
