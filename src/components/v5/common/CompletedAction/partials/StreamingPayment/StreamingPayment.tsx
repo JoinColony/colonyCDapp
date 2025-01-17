@@ -268,9 +268,6 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
           contentWrapperClassName={clsx('z-[65] sm:min-w-[11.25rem]', {
             '!left-6 right-6': isMobile,
           })}
-          dropdownPlacementProps={{
-            top: 12,
-          }}
           items={meatballOptions}
         />
       </div>
