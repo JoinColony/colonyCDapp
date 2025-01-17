@@ -35,7 +35,7 @@ const StreamingPaymentsPage = () => {
   const isStreamingPaymentsInstalled =
     extensionData && isInstalledExtensionData(extensionData);
 
-  const inStreamingPaymentsDisabled =
+  const isStreamingPaymentsDisabled =
     !!extensionData && !isStreamingPaymentsInstalled;
 
   return (
@@ -50,7 +50,7 @@ const StreamingPaymentsPage = () => {
           suffix={currency}
         />
       </div>
-      {inStreamingPaymentsDisabled && (
+      {isStreamingPaymentsDisabled && (
         <div className="pb-9">
           <NoExtensionBanner />
         </div>
