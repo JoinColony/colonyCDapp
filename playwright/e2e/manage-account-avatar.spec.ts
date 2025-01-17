@@ -9,7 +9,10 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     await setCookieConsent(context, baseURL);
     await page.goto('/');
     await selectWallet(page);
-    await page.getByTestId('user-navigation-hamburger').click();
+    await page
+      .getByRole('banner')
+      .getByTestId('user-navigation-hamburger')
+      .click();
     await page.getByTestId('user-menu').waitFor({ state: 'visible' });
     await page
       .getByTestId('user-menu')
