@@ -29,6 +29,7 @@ import { Form } from '~shared/Fields/index.ts';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
 import { getAllUserRoles } from '~transformers';
 import { DecisionMethod } from '~types/actions.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { extractColonyRoles } from '~utils/colonyRoles.ts';
 import { formatText } from '~utils/intl.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
@@ -56,6 +57,7 @@ const CancelModal: FC<CancelModalProps> = ({
   isActionStaked,
   expenditure,
   onSuccess,
+  actionData,
   ...rest
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,6 +111,7 @@ const CancelModal: FC<CancelModalProps> = ({
     error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
     success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
+  const associatedActionId = getMotionAssociatedActionId(actionData);
 
   const handleFundExpenditure = async ({ decisionMethod, penalise }) => {
     setIsSubmitting(true);
@@ -134,6 +137,7 @@ const CancelModal: FC<CancelModalProps> = ({
       const reclaimPayload: ReclaimExpenditureStakePayload = {
         colonyAddress: colony.colonyAddress,
         nativeExpenditureId: expenditure.nativeId,
+        associatedActionId,
       };
 
       if (

@@ -13,7 +13,7 @@ const useCloseSidebarClick = () => {
     cancelModalToggle: [, { toggle: toggleCancelModal }],
   } = useActionSidebarContext();
 
-  const closeSidebarClick = (args: ActionFormProps['onFormClose']) => {
+  const closeSidebarClick = (args?: ActionFormProps['onFormClose']) => {
     const { dirtyFields } = (formContext || formRef.current)?.formState ?? {};
 
     const hasDirtyFields = dirtyFields && Object.keys(dirtyFields).length > 0;

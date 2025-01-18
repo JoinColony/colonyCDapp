@@ -11,6 +11,7 @@ import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
 import { type ReclaimExpenditureStakePayload } from '~redux/sagas/expenditures/reclaimExpenditureStake.ts';
 import { ActionForm } from '~shared/Fields/index.ts';
+import { getMotionAssociatedActionId } from '~utils/actions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
 import { getSafePollingInterval } from '~utils/queries.ts';
@@ -82,6 +83,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     error: ActionTypes.RECLAIM_EXPENDITURE_STAKE_ERROR,
     success: ActionTypes.RECLAIM_EXPENDITURE_STAKE_SUCCESS,
   });
+  const associatedActionId = getMotionAssociatedActionId(actionData);
 
   const handleSuccess = async () => {
     startPollingAction(getSafePollingInterval());
@@ -96,6 +98,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
       const payload: ReclaimExpenditureStakePayload = {
         colonyAddress: colony.colonyAddress,
         nativeExpenditureId: expenditure.nativeId,
+        associatedActionId,
       };
 
       await reclaimExpenditureStake(payload);
