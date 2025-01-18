@@ -308,12 +308,42 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
           <ActionWithPermissionsInfo
             action={sortedCancellingActions?.[0]}
             title={formatText({ id: 'expenditure.cancelStage.info' })}
+            isActionCancelled
+            additionlInfo={
+              isUserStaker && !expenditure?.userStake?.isForfeited ? (
+                <div className="my-2 flex items-center justify-between gap-2 text-sm">
+                  <p className="text-gray-600">
+                    {formatText({ id: 'expenditure.staking.amount' })}
+                  </p>
+                  <p>
+                    <Numeral
+                      value={stakeAmount}
+                      decimals={nativeToken.decimals}
+                    />{' '}
+                    {nativeToken.symbol}
+                  </p>
+                </div>
+              ) : null
+            }
             additionalBadge={
               expenditure?.status === ExpenditureStatus.Cancelled && (
-                <PenaliseBadge
-                  text={formatText({ id: 'expenditure.penalised' })}
-                  isPenalised
-                />
+                <>
+                  {isUserStaker && (
+                    <>
+                      {expenditure?.userStake?.isForfeited ? (
+                        <PenaliseBadge
+                          text={formatText({ id: 'expenditure.penalised' })}
+                          isPenalised
+                        />
+                      ) : (
+                        <PenaliseBadge
+                          text={formatText({ id: 'expenditure.noPenalty' })}
+                          isPenalised={false}
+                        />
+                      )}
+                    </>
+                  )}
+                </>
               )
             }
           />
@@ -372,7 +402,9 @@ const PaymentBuilderWidget: FC<PaymentBuilderWidgetProps> = ({ action }) => {
         }
       />
     ),
-    isHidden: expenditureStep !== ExpenditureStep.Reclaim,
+    isHidden:
+      expenditureStep !== ExpenditureStep.Reclaim ||
+      !expenditure?.userStake?.isForfeited,
   };
 
   const isStagedExpenditure = expenditure?.type === ExpenditureType.Staged;

@@ -15,6 +15,8 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
   action,
   title,
   additionalBadge,
+  isActionCancelled,
+  additionlInfo,
 }) => {
   if (!action) {
     return null;
@@ -77,11 +79,14 @@ const ActionWithPermissionsInfo: FC<ActionWithPermissionsInfoProps> = ({
                   </div>
                 </>
               )}
+              {additionlInfo && additionlInfo}
               {createdAt && (
                 <div className="mt-2 flex items-center justify-between gap-2">
                   <span className="text-sm text-gray-600">
                     {formatText({
-                      id: 'action.executed.permissions.date',
+                      id: isActionCancelled
+                        ? 'action.cancelled.permissions.date'
+                        : 'action.executed.permissions.date',
                     })}
                   </span>
                   <span className="text-sm text-gray-900">

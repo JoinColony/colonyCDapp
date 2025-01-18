@@ -214,7 +214,7 @@ export const getExpenditureStep = (
     case ExpenditureStatus.Finalized:
       return ExpenditureStep.Payment;
     case ExpenditureStatus.Cancelled: {
-      if (!isForfeited && isStaked) {
+      if (isForfeited && isStaked) {
         return ExpenditureStep.Reclaim;
       }
 

@@ -1411,6 +1411,7 @@
     "action.executed.permissions.member": "Member",
     "action.executed.permissions.permission": "Permission",
     "action.executed.permissions.date": "Created",
+    "action.cancelled.permissions.date": "Cancelled",
     "ariaLabel.openModal": "Open modal",
     "motion.staking.label": "Staking",
     "button.stake.oppose": "Oppose",
