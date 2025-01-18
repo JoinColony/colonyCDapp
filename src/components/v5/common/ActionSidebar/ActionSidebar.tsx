@@ -29,7 +29,7 @@ import Modal from '~v5/shared/Modal/index.ts';
 import CompletedAction from '../CompletedAction/index.ts';
 import PillsBase from '../Pills/PillsBase.tsx';
 
-import { actionSidebarAnimation } from './consts.ts';
+import { ACTION_TYPE_FIELD_NAME, actionSidebarAnimation } from './consts.ts';
 import useCloseSidebarClick from './hooks/useCloseSidebarClick.ts';
 import useGetActionData from './hooks/useGetActionData.ts';
 import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.tsx';
@@ -37,8 +37,10 @@ import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLoadingSkeleton from './partials/ActionSidebarLoadingSkeleton/ActionSidebarLoadingSkeleton.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
+import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
 import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
+import { getActionGroup, mapActionTypeToAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionSidebar';
 
@@ -68,7 +70,10 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     cancelModalToggle: [isCancelModalOpen, { toggleOff: toggleCancelModalOff }],
     actionSidebarInitialValues,
   } = useActionSidebarContext();
-
+  const actionType = mapActionTypeToAction(action);
+  const actionGroupType = getActionGroup(
+    actionSidebarInitialValues?.[ACTION_TYPE_FIELD_NAME] || actionType,
+  );
   const GroupedActionComponent = useGetGroupedActionComponent();
   const [isSidebarFullscreen, { toggle: toggleIsSidebarFullscreen, toggleOn }] =
     useToggle();
@@ -219,6 +224,12 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
             >
               <X size={18} />
             </button>
+            {actionGroupType && (
+              <GoBackButton
+                action={action}
+                onClick={transactionId ? closeSidebarClick : undefined}
+              />
+            )}
             {!isMobile && (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">

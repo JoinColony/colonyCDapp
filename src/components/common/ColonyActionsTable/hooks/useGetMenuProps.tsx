@@ -60,9 +60,6 @@ export const useGetMenuProps = ({
           onClick: () => {
             navigate(
               `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionHash}`,
-              {
-                replace: true,
-              },
             );
           },
         },
