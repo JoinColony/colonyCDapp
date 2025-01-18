@@ -3,7 +3,6 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { Heading3 } from '~shared/Heading/index.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -65,10 +64,8 @@ const InviteMembersModal = ({ isOpen, onClose }: Props) => {
   const {
     colony: { colonyMemberInvite },
   } = useColonyContext();
-  const { totalMemberCount } = useMemberContext();
   const invitesAvailable = colonyMemberInvite?.invitesRemaining || 0;
-  const invitesUsed = totalMemberCount;
-  const isOutOfInvites = invitesUsed >= invitesAvailable;
+  const isOutOfInvites = invitesAvailable === 0;
 
   const getModalSubtitle = () => {
     if (isOutOfInvites) {
