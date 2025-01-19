@@ -292,10 +292,8 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               (error.code as unknown) === 4001
             ) {
               setCustomError({ message: formatText(MSG.apolloNetworkError) });
-            }
-
-            // Mutation failed in saga
-            if (error instanceof ApolloError) {
+            } else if (error instanceof ApolloError) {
+              // Mutation failed in saga
               const { networkError } = error;
 
               const statusCode = (networkError as { statusCode?: number })
@@ -304,9 +302,7 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               if (statusCode === 403) {
                 setCustomError({ message: formatText(MSG.apolloNetworkError) });
               }
-            }
-
-            if (error.arbitraryTxActionFailed) {
+            } else if (error.arbitraryTxActionFailed) {
               setCustomError({ message: formatText(MSG.arbitraryTxError) });
             }
           }}
