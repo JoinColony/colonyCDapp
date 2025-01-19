@@ -57,7 +57,20 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.ManageTokensMotion} {Manage tokens by {initiator}}
       ${ColonyActionType.ManageTokensMultisig} {Manage tokens by {initiator}}
       ${ColonyActionType.FundExpenditureMotion} {Payment to {recipientsNumber} {recipientsNumber, plural, one {recipient} other {recipients}} with {tokensNumber} {tokensNumber, plural, one {token} other {tokens}} by {initiator}}
-      ${ColonyActionType.MakeArbitraryTransaction} {Custom transactions by {initiator}}
+
+      ${ColonyActionType.MakeArbitraryTransaction} {{arbitraryTransactionsLength, select,
+        0 {Arbitrary transaction by {initiator}}
+        1 {Arbitrary transaction with method {arbitraryMethod} by {initiator}}
+        other {Arbitrary transaction with multiple methods by {initiator}}
+      }} ${ColonyActionType.MakeArbitraryTransactionsMotion} {{arbitraryTransactionsLength, select,
+        0 {Arbitrary transaction by {initiator}}
+        1 {Arbitrary transaction with method {arbitraryMethod} by {initiator}}
+        other {Arbitrary transaction with multiple methods by {initiator}}
+      }} ${ColonyActionType.MakeArbitraryTransactionsMultisig} {{arbitraryTransactionsLength, select,
+        0 {Arbitrary transaction by {initiator}}
+        1 {Arbitrary transaction with method {arbitraryMethod} by {initiator}}
+        other {Arbitrary transaction with multiple methods by {initiator}}
+      }}
       ${ExtendedColonyActionType.AddSafe} {Add Safe from {chainName}}
       ${ExtendedColonyActionType.RemoveSafe} {Remove Safe}
       ${ExtendedColonyActionType.SafeMultipleTransactions} ${safeActionTitle}

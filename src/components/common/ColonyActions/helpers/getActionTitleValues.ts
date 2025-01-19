@@ -8,6 +8,7 @@ import {
   type Colony,
   type Expenditure,
 } from '~types/graphql.ts';
+import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import {
   getExtendedActionType,
   safeActionTypes,
@@ -41,6 +42,8 @@ export enum ActionTitleMessageKeys {
   MilestonesCount = 'milestonesCount',
   Milestones = 'milestones',
   StagedAmount = 'stagedAmount',
+  ArbitraryTransactionsLength = 'arbitraryTransactionsLength',
+  ArbitraryMethod = 'arbitraryMethod',
 }
 
 /* Maps actionTypes to message values as found in en-actions.ts */
@@ -160,6 +163,12 @@ const getMessageDescriptorKeys = (actionType: AnyActionType) => {
         ActionTitleMessageKeys.TokenSymbol,
         ActionTitleMessageKeys.Initiator,
       ];
+    case actionType.includes(ColonyActionType.MakeArbitraryTransaction):
+      return [
+        ActionTitleMessageKeys.Initiator,
+        ActionTitleMessageKeys.ArbitraryTransactionsLength,
+        ActionTitleMessageKeys.ArbitraryMethod,
+      ];
     default:
       return [];
   }
@@ -199,9 +208,19 @@ const useGetActionTitleValues = ({
   );
   const keys = getMessageDescriptorKeys(actionType);
 
-  return generateMessageValues(updatedItem, keys, {
+  const messageValues = generateMessageValues(updatedItem, keys, {
     actionType,
   });
+
+  if (actionType.includes(ColonyActionType.MakeArbitraryTransaction)) {
+    const arbitraryMessageValues =
+      getFormatValuesArbitraryTransactions(actionData);
+    messageValues.arbitraryTransactionsLength =
+      arbitraryMessageValues.arbitraryTransactionsLength;
+    messageValues.arbitraryMethod = arbitraryMessageValues.arbitraryMethod;
+  }
+
+  return messageValues;
 };
 
 export default useGetActionTitleValues;
