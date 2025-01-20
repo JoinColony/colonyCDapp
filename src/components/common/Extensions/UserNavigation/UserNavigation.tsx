@@ -98,7 +98,7 @@ const UserNavigation: FC<UserNavigationProps> = ({
           iconSize={16}
           size="small"
           isFullRounded
-          className="gap-1 md:hover:!border-blue-400"
+          className="gap-1 px-[0.875rem] sm:px-2.5 md:hover:!border-blue-400"
           onClick={() => setIsInviteMembersModalOpen(true)}
         />
       ) : null}

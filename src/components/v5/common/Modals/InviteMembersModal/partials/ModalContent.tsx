@@ -9,7 +9,7 @@ import useBaseUrl from '~hooks/useBaseUrl.ts';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
-import CardWithCallout from '~v5/shared/CardWithCallout/index.ts';
+import Card from '~v5/shared/Card/Card.tsx';
 import Link from '~v5/shared/Link/Link.tsx';
 
 const displayName = 'v5.common.Modals.InviteMembersModal.partials.ModalContent';
@@ -80,9 +80,9 @@ export const ModalContent: FC<Props> = ({
 
   if (isOutOfInvites) {
     return (
-      <CardWithCallout
-        title={
-          <span
+      <Card>
+        <div className="mb-1.5 flex items-center gap-x-2">
+          <h2
             className={clsx(
               commonClassName,
               'bg-negative-100 text-negative-400',
@@ -92,50 +92,62 @@ export const ModalContent: FC<Props> = ({
               {...MSG.invitesUsed}
               values={{ invitesAvailable }}
             />
-          </span>
-        }
-        subtitle={<FormattedMessage {...MSG.limitReached} />}
-        button={
-          <Link
-            to={getRequestInvitesLink(colonyName)}
-            target="_blank"
-            className="flex min-h-8.5 items-center justify-center gap-2 whitespace-nowrap 
-              rounded-lg border border-gray-900 bg-base-white px-2.5 py-1.5 text-sm font-medium text-gray-900 
-              transition-all duration-normal disabled:border-gray-300 disabled:text-gray-300 md:hover:border-gray-900 
+          </h2>
+        </div>
+        <div>
+          <div className="flex w-full items-center justify-between gap-3">
+            <div>
+              <h3 className="mb-1 text-md font-medium">
+                <FormattedMessage {...MSG.limitReached} />
+              </h3>
+              <p className="text-sm text-gray-600">
+                <FormattedMessage {...MSG.requestMoreInvites} />
+              </p>
+            </div>
+            <Link
+              to={getRequestInvitesLink(colonyName)}
+              target="_blank"
+              className="flex min-h-8.5 items-center justify-center gap-2 whitespace-nowrap
+              rounded-lg border border-gray-900 bg-base-white px-2.5 py-1.5 text-sm font-medium text-gray-900
+              transition-all duration-normal disabled:border-gray-300 disabled:text-gray-300 md:hover:border-gray-900
               md:hover:bg-gray-900 md:hover:!text-base-white"
-          >
-            {formatText(MSG.requestInvites)}
-          </Link>
-        }
-      >
-        <FormattedMessage {...MSG.requestMoreInvites} />
-      </CardWithCallout>
+            >
+              {formatText(MSG.requestInvites)}
+            </Link>
+          </div>
+        </div>
+      </Card>
     );
   }
 
   return (
-    <CardWithCallout
-      title={
-        <span className={clsx(commonClassName, 'bg-blue-100 text-blue-400')}>
+    <Card>
+      <div className="mb-1.5 flex items-center gap-x-2">
+        <h2 className={clsx(commonClassName, 'bg-blue-100 text-blue-400')}>
           <FormattedMessage
             {...MSG.invitesUsed}
             values={{ invitesAvailable }}
           />
-        </span>
-      }
-      subtitle={<FormattedMessage {...MSG.inviteLinkHeading} />}
-      button={
-        <Button
-          text={MSG.buttonText}
-          mode={isCopied ? 'completed' : 'quinary'}
-          icon={isCopied ? undefined : CopySimple}
-          onClick={() => handleClipboardCopy(inviteLink)}
-          size="small"
-          textValues={{ isCopied }}
-        />
-      }
-    >
-      {inviteLink}
-    </CardWithCallout>
+        </h2>
+      </div>
+      <div>
+        <div className="flex items-center gap-3">
+          <div>
+            <h3 className="mb-1 text-md font-medium">
+              <FormattedMessage {...MSG.inviteLinkHeading} />
+            </h3>
+            <p className="break-all text-sm text-gray-600">{inviteLink}</p>
+          </div>
+          <Button
+            text={MSG.buttonText}
+            mode={isCopied ? 'completed' : 'quinary'}
+            icon={isCopied ? undefined : CopySimple}
+            onClick={() => handleClipboardCopy(inviteLink)}
+            size="small"
+            textValues={{ isCopied }}
+          />
+        </div>
+      </div>
+    </Card>
   );
 };
