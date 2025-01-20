@@ -46,6 +46,7 @@ exports.handler = async ({ walletAddress, colonyAddress }) => {
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,
+    disableVersionCheck: true,
   });
   const colonyClient = await networkClient.getColonyClient(colonyAddress);
   const { skillId } = await colonyClient.getDomain(1);

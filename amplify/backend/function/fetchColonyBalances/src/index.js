@@ -57,6 +57,7 @@ exports.handler = async ({ source: { id: colonyAddress } }) => {
     const provider = new providers.StaticJsonRpcProvider(rpcURL);
     const networkClient = getColonyNetworkClient(network, provider, {
       networkAddress,
+      disableVersionCheck: true,
     });
 
     const colonyClient = await networkClient.getColonyClient(colonyAddress);

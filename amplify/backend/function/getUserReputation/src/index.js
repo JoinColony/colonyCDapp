@@ -53,6 +53,7 @@ exports.handler = async (event) => {
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,
+    disableVersionCheck: true,
   });
 
   const colonyClient = await networkClient.getColonyClient(colonyAddress);

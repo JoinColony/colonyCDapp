@@ -57,6 +57,7 @@ const getNetworkClient = () => {
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,
+    disableVersionCheck: true,
   });
 
   return networkClient;
@@ -285,7 +286,12 @@ const updateMotionMessagesInDB = async (motionData, motionMessages, flag) => {
   const updatedStateHistory = {
     ...motionStateHistory,
     [flag]: true,
-    endedAt: flag === 'hasFailed' || flag === 'hasPassed' || flag === 'hasFailedNotFinalizable' ? new Date().toISOString() : null,
+    endedAt:
+      flag === 'hasFailed' ||
+      flag === 'hasPassed' ||
+      flag === 'hasFailedNotFinalizable'
+        ? new Date().toISOString()
+        : null,
   };
 
   const messageKeys = new Set(messages.items.map((m) => m.messageKey));

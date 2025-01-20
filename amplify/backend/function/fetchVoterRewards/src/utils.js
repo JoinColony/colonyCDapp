@@ -49,6 +49,7 @@ const getNetworkClient = () => {
   const networkClient = getColonyNetworkClient(network, provider, {
     networkAddress,
     reputationOracleEndpoint,
+    disableVersionCheck: true,
   });
 
   return networkClient;
