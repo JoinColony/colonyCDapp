@@ -25,9 +25,7 @@ export const useUserSelect = ({
         const { reputation, user } = member;
         const reputationItems = reputation?.items ?? [];
         const userReputation = reputationItems?.find(
-          (item) =>
-            item?.domain.nativeId === domainId ||
-            item?.domain.nativeId === Id.RootDomain,
+          (item) => item?.domain.nativeId === domainId,
         )?.reputationRaw;
 
         const { walletAddress, profile } = user || {};

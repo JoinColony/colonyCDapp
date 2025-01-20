@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/index.ts';
+import { TEAM_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import AmountRow from '~v5/common/ActionSidebar/partials/AmountRow/AmountRow.tsx';
 import { distributionMethodOptions } from '~v5/common/ActionSidebar/partials/consts.tsx';
@@ -24,7 +25,7 @@ const SplitPaymentForm: FC<ActionFormBaseProps> = ({ getFormOptions }) => {
   const hasNoDecisionMethods = useHasNoDecisionMethods();
 
   const { watch, trigger } = useFormContext();
-  const selectedTeam = watch('team');
+  const selectedTeam = watch(TEAM_FIELD_NAME);
 
   useEffect(() => {
     const subscription = watch((_, { name: fieldName = '', type }) => {
