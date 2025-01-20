@@ -2,14 +2,13 @@ import { Extension } from '@colony/colony-js';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
+import { useExtensionItem } from '~common/Extensions/ExtensionItem/hooks.ts';
 import { Action } from '~constants/actions.ts';
 import { currencySymbolMap } from '~constants/currency.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useSetPageHeadingTitle } from '~context/PageHeadingContext/PageHeadingContext.ts';
-import useExtensionData from '~hooks/useExtensionData.ts';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import { useStreamingPaymentsTotalFunds } from '~shared/StreamingPayments/hooks.ts';
-import { isInstalledExtensionData } from '~utils/extensions.ts';
 import { formatText } from '~utils/intl.ts';
 import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import ContentWithTeamFilter from '~v5/frame/ContentWithTeamFilter/ContentWithTeamFilter.tsx';
@@ -52,12 +51,9 @@ const StreamingPaymentsPage = () => {
     nativeDomainId,
   });
 
-  const { extensionData } = useExtensionData(Extension.StreamingPayments);
-  const isStreamingPaymentsInstalled =
-    extensionData && isInstalledExtensionData(extensionData);
-
-  const isStreamingPaymentsDisabled =
-    !!extensionData && !isStreamingPaymentsInstalled;
+  const { isExtensionInstalled, extensionDataLoading } = useExtensionItem(
+    Extension.StreamingPayments,
+  );
 
   return (
     <ContentWithTeamFilter>
@@ -71,7 +67,7 @@ const StreamingPaymentsPage = () => {
           suffix={currency}
         />
       </div>
-      {isStreamingPaymentsDisabled && (
+      {!isExtensionInstalled && !extensionDataLoading && (
         <div className="pb-9">
           <NoExtensionBanner />
         </div>
