@@ -28,6 +28,7 @@ import { TRANSACTION_METHODS } from '~types/transactions.ts';
 import { arrayToObject } from '~utils/arrays/index.ts';
 import { getFormattedDateFrom } from '~utils/getFormattedDateFrom.ts';
 import { formatText } from '~utils/intl.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 
 import { type GroupedTransactionProps } from '../types.ts';
 
@@ -148,7 +149,12 @@ const GroupedTransaction: FC<GroupedTransactionProps> = ({
         ? window.location.pathname
         : `/${colonyName}`;
     navigate(
-      `${path}?${TX_SEARCH_PARAM}=${values.associatedActionId || values.hash}`,
+      setQueryParamOnUrl({
+        path,
+        params: {
+          [TX_SEARCH_PARAM]: values.associatedActionId || values.hash,
+        },
+      }),
       {
         replace: true,
       },

@@ -14,6 +14,7 @@ import useNetworkInverseFee from '~hooks/useNetworkInverseFee.ts';
 import { TX_SEARCH_PARAM } from '~routes';
 import { type Notification as NotificationInterface } from '~types/notifications.ts';
 import { formatText } from '~utils/intl.ts';
+import { setQueryParamOnUrl } from '~utils/urls.ts';
 
 import { MentionNotificationMessage } from '../Action/MentionNotificationMessage.tsx';
 import NotificationWrapper from '../NotificationWrapper.tsx';
@@ -147,9 +148,17 @@ const ExpenditureNotification: FC<NotificationProps> = ({
       ? window.location.pathname
       : `/${colony?.name}`;
 
-    navigate(`${path}?${TX_SEARCH_PARAM}=${transactionHash}`, {
-      replace: true,
-    });
+    navigate(
+      setQueryParamOnUrl({
+        path,
+        params: {
+          [TX_SEARCH_PARAM]: transactionHash,
+        },
+      }),
+      {
+        replace: true,
+      },
+    );
   };
 
   const actionTitle = action?.metadata?.customTitle || '';
