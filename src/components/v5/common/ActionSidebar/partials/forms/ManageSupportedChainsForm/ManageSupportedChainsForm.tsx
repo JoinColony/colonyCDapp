@@ -2,20 +2,25 @@ import { Link, PlusMinus } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
   CHAIN_FIELD_NAME,
+  FROM_FIELD_NAME,
   MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
   ManageEntityOperation,
 } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import { useCheckOperationType } from '~v5/common/ActionSidebar/hooks/useCheckOperationType.ts';
 import { useFilterChainSelectField } from '~v5/common/ActionSidebar/hooks/useFilterChainSelectField.ts';
+import useFilterCreatedInField from '~v5/common/ActionSidebar/hooks/useFilterCreatedInField.ts';
 import ChainSelect from '~v5/common/ActionSidebar/partials/ChainSelect/ChainSelect.tsx';
+import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { getManageSupportedChainsOptions } from './consts.ts';
@@ -32,6 +37,10 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
   const { resetField } = useFormContext();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const chainSelectFilterFn = useFilterChainSelectField();
+  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
+    DecisionMethod.MultiSig,
+  ]);
+  const createdInFilterFn = useFilterCreatedInField(FROM_FIELD_NAME);
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
     ManageEntityOperation.Remove,
@@ -92,7 +101,8 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
           filterOptionsFn={chainSelectFilterFn}
         />
       </ActionFormRow>
-      <DecisionMethodField />
+      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
+      <CreatedIn readonly filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
   );

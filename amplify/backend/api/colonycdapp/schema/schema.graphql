@@ -908,6 +908,7 @@ enum ColonyActionType {
   An action related to disabling a proxy colony
   """
   REMOVE_PROXY_COLONY
+  REMOVE_PROXY_COLONY_MOTION
 }
 
 """
@@ -2890,7 +2891,10 @@ type ColonyMultiSig @model {
   The action txHash that was triggered upon motion finalization
   """
   finalizationActionId: ID
-    @index(name: "byFinalizationActionId", queryField: "getColonyMultiSigByFinalizationActionId")
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMultiSigByFinalizationActionId"
+    )
   """
   Expanded `ColonyAction`
   """
@@ -3034,7 +3038,10 @@ type ColonyMotion @model {
   The action txHash that was triggered upon motion finalization
   """
   finalizationActionId: ID
-    @index(name: "byFinalizationActionId", queryField: "getColonyMotionByFinalizationActionId")
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMotionByFinalizationActionId"
+    )
   """
   Expanded `ColonyAction`
   """
