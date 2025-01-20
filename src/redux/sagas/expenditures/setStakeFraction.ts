@@ -40,10 +40,6 @@ function* setStakeFractionAction({
     yield takeFrom(setStakeFraction.channel, ActionTypes.TRANSACTION_CREATED);
 
     yield initiateTransaction(setStakeFraction.id);
-    yield takeFrom(
-      setStakeFraction.channel,
-      ActionTypes.TRANSACTION_HASH_RECEIVED,
-    );
 
     yield waitForTxResult(setStakeFraction.channel);
 

@@ -79,11 +79,15 @@ interface VotingReputationSettingsProps {
 const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
   userHasRoot,
 }) => {
-  const { extensionData } = useExtensionDetailsPageContext();
+  const { extensionData, isPendingManagement } =
+    useExtensionDetailsPageContext();
   const { openIndex, onOpenIndexChange, isAccordionOpen } = useAccordion();
   const [isCustomChecked, setIsCustomChecked] = useState(false);
 
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    formState: { isSubmitting },
+  } = useFormContext();
 
   const onChangeGovernance = (selectedDefaultOption: GovernanceOptions) => {
     if (selectedDefaultOption === GovernanceOptions.CUSTOM) {
@@ -113,6 +117,8 @@ const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
     return <VotingReputationParams extensionData={extensionData} />;
   }
 
+  const isFormDisabled = isPendingManagement || isSubmitting;
+
   return (
     <div className="w-full">
       <p className="text-md text-gray-600">
@@ -126,7 +132,14 @@ const VotingReputationSettings: FC<VotingReputationSettingsProps> = ({
       <div className="mt-6">
         <RadioList
           title={formatText({ id: 'choose.governanceStyle' })}
-          items={governanceRadioList}
+          items={
+            isFormDisabled
+              ? governanceRadioList.map((item) => ({
+                  ...item,
+                  disabled: true,
+                }))
+              : governanceRadioList
+          }
           onChange={onChangeGovernance}
           name="governance"
           checkedRadios={{ [GovernanceOptions.CUSTOM]: isCustomChecked }}

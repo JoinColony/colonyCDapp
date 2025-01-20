@@ -20,8 +20,12 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const {
     colony: { colonyAddress },
   } = useColonyContext();
-  const { extensionData, setActiveTab, setWaitingForActionConfirmation } =
-    useExtensionDetailsPageContext();
+  const {
+    extensionData,
+    setActiveTab,
+    setIsPendingManagement,
+    setIsSavingChanges,
+  } = useExtensionDetailsPageContext();
   const { refetchExtensionData } = useExtensionData(extensionData?.extensionId);
 
   const defaultValues = useMemo(
@@ -43,14 +47,16 @@ const ExtensionSettingsForm: FC<PropsWithChildren> = ({ children }) => {
   const handleFormSuccess = getFormSuccessFn<typeof defaultValues>({
     extensionData,
     refetchExtensionData,
-    setWaitingForActionConfirmation,
+    setIsPendingManagement,
+    setIsSavingChanges,
     setActiveTab,
   });
 
   const handleFormError = getFormErrorFn<typeof defaultValues>({
     extensionData,
     refetchExtensionData,
-    setWaitingForActionConfirmation,
+    setIsPendingManagement,
+    setIsSavingChanges,
     setActiveTab,
   });
 

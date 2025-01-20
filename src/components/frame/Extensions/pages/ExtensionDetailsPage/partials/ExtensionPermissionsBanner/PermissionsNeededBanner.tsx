@@ -55,9 +55,10 @@ const PermissionsNeededBanner = ({
   });
 
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
-  const { setWaitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { setIsPendingManagement } = useExtensionDetailsPageContext();
 
   const enableAndCheckStatus = async () => {
+    setIsPendingManagement(true);
     await asyncFunction({
       colonyAddress: colony.colonyAddress,
       extensionData,
@@ -65,9 +66,9 @@ const PermissionsNeededBanner = ({
     refetchColony();
     await waitForDbAfterExtensionAction({
       method: ExtensionMethods.ENABLE,
-      setWaitingForActionConfirmation,
       refetchExtensionData,
     });
+    setIsPendingManagement(false);
   };
 
   const handleEnableClick = async () => {

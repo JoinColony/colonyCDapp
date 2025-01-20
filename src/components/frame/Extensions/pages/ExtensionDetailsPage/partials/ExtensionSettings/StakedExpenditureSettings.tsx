@@ -1,4 +1,5 @@
 import React, { type FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
@@ -27,11 +28,14 @@ const MSG = defineMessages({
 });
 
 const StakedExpenditureSettings: FC = () => {
-  const { userHasRoot, waitingForActionConfirmation } =
-    useExtensionDetailsPageContext();
+  const { userHasRoot, isPendingManagement } = useExtensionDetailsPageContext();
   const { h4, p, b, ul, li } = getTextChunks();
 
-  const isFormDisabled = !userHasRoot || waitingForActionConfirmation;
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
+
+  const isFormDisabled = !userHasRoot || isPendingManagement || isSubmitting;
 
   return (
     <div>

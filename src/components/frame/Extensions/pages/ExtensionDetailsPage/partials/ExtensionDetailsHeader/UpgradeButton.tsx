@@ -29,7 +29,7 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
     isSupportedColonyVersion,
   } = useColonyContext();
   const isMobile = useMobile();
-  const { setWaitingForActionConfirmation, waitingForActionConfirmation } =
+  const { setIsPendingManagement, isPendingManagement } =
     useExtensionDetailsPageContext();
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
   const [isPolling, setIsPolling] = useState(false);
@@ -52,12 +52,13 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
   const handleUpgradeSuccess = async () => {
     setIsUpgradeDisabled(true);
     setIsPolling(true);
+    setIsPendingManagement(true);
     await waitForDbAfterExtensionAction({
       method: ExtensionMethods.UPGRADE,
-      setWaitingForActionConfirmation,
       refetchExtensionData,
       latestVersion: extensionData.availableVersion,
     });
+    setIsPendingManagement(false);
     setIsPolling(false);
     toast.success(
       <Toast
@@ -89,7 +90,7 @@ const UpgradeButton = ({ extensionData }: UpgradeButtonProps) => {
       onError={handleUpgradeError}
       isLoading={isPolling}
       isFullSize={isMobile}
-      disabled={isUpgradeButtonDisabled || waitingForActionConfirmation}
+      disabled={isUpgradeButtonDisabled || isPendingManagement}
     >
       {formatText({ id: 'button.updateVersion' })}
     </ActionButton>

@@ -1,5 +1,6 @@
 import { Question } from '@phosphor-icons/react';
 import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { type AnyExtensionData } from '~types/extensions.ts';
@@ -20,11 +21,15 @@ const DeprecateButton = ({
   extensionData: { extensionId },
 }: DeprecateButtonProps) => {
   const [isDeprecateModalOpen, setIsDeprecateModalOpen] = useState(false);
-  const { waitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   const { handleDeprecate, isLoading } = useDeprecate({
     extensionId,
   });
+
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
 
   return (
     <>
@@ -37,7 +42,7 @@ const DeprecateButton = ({
           loaderClassName="!px-4 !py-2 !text-sm"
           loaderIconSize={14}
           onClick={() => setIsDeprecateModalOpen(true)}
-          disabled={waitingForActionConfirmation}
+          disabled={isPendingManagement || isSubmitting}
         >
           {formatText({ id: 'button.deprecateExtension' })}
         </ButtonWithLoader>

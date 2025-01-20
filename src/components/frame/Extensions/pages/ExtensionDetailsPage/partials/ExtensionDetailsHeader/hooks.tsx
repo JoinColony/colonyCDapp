@@ -21,7 +21,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
     colony: { colonyAddress },
   } = useColonyContext();
   const { refetchExtensionData } = useExtensionData(extensionId);
-  const { setWaitingForActionConfirmation } = useExtensionDetailsPageContext();
+  const { setIsPendingManagement } = useExtensionDetailsPageContext();
 
   const enableExtensionValues = {
     colonyAddress,
@@ -37,11 +37,11 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
 
   const handleReenable = async () => {
     try {
+      setIsPendingManagement(true);
       setIsLoading(true);
       await enableAsyncFunction(enableExtensionValues);
       await waitForDbAfterExtensionAction({
         method: ExtensionMethods.REENABLE,
-        setWaitingForActionConfirmation,
         refetchExtensionData,
       });
       toast.success(
@@ -62,6 +62,7 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
         />,
       );
     } finally {
+      setIsPendingManagement(false);
       setIsLoading(false);
     }
   };
@@ -71,22 +72,24 @@ export const useReenable = ({ extensionId }: { extensionId: Extension }) => {
 
 export const useInstall = (extensionData: AnyExtensionData) => {
   const { refetchExtensionData } = useExtensionData(extensionData.extensionId);
-  const { setActiveTab, setWaitingForActionConfirmation } =
+  const { setActiveTab, setIsPendingManagement, setIsSavingChanges } =
     useExtensionDetailsPageContext();
   const { reset } = useFormContext();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInstallSuccess = async () => {
+    setIsPendingManagement(true);
     setIsLoading(true);
     await handleWaitingForDbAfterFormCompletion({
-      setWaitingForActionConfirmation,
+      setIsSavingChanges,
       extensionData,
       refetchExtensionData,
       setActiveTab,
       reset,
       method: ExtensionMethods.INSTALL,
     });
+    setIsPendingManagement(false);
     setIsLoading(false);
   };
 
@@ -105,9 +108,10 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       return;
     }
 
+    setIsPendingManagement(true);
     setIsLoading(true);
     await handleWaitingForDbAfterFormCompletion({
-      setWaitingForActionConfirmation,
+      setIsSavingChanges,
       extensionData,
       refetchExtensionData,
       setActiveTab,
@@ -116,6 +120,7 @@ export const useInstall = (extensionData: AnyExtensionData) => {
       initialiseTransactionFailed,
       setUserRolesTransactionFailed,
     });
+    setIsPendingManagement(false);
     setIsLoading(false);
   };
 

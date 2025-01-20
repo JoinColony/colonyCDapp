@@ -1,5 +1,6 @@
 import { CaretDown } from '@phosphor-icons/react';
 import React, { useEffect, type FC } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { defineMessages } from 'react-intl';
 
 import { InputGroup } from '~common/Extensions/Fields/InputGroup/InputGroup.tsx';
@@ -94,7 +95,7 @@ const inputGroupSharedConfig = {
 };
 
 const MultiSigSettings: FC = () => {
-  const { extensionData, userHasRoot, waitingForActionConfirmation } =
+  const { extensionData, userHasRoot, isPendingManagement } =
     useExtensionDetailsPageContext();
   const {
     register,
@@ -105,6 +106,10 @@ const MultiSigSettings: FC = () => {
     handleDomainThresholdTypeChange,
     handleGlobalThresholdTypeChange,
   } = useThresholdData(extensionData);
+
+  const {
+    formState: { isSubmitting },
+  } = useFormContext();
 
   const [isCustomSettingsVisible, { toggle: toggleCustomSettings, toggleOn }] =
     useToggle();
@@ -144,7 +149,7 @@ const MultiSigSettings: FC = () => {
     );
   }
 
-  const isFormDisabled = !userHasRoot || waitingForActionConfirmation;
+  const isFormDisabled = !userHasRoot || isPendingManagement || isSubmitting;
 
   return (
     <div className="w-full">

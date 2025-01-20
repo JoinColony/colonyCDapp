@@ -21,7 +21,7 @@ const displayName = 'pages.ExtensionDetailsPage.ExtensionDetailsHeader';
 
 const ExtensionDetailsHeader: FC = () => {
   const { user } = useAppContext();
-  const { extensionData, userHasRoot, waitingForActionConfirmation } =
+  const { extensionData, userHasRoot, isPendingManagement } =
     useExtensionDetailsPageContext();
 
   const activeInstalls = useActiveInstalls(extensionData.extensionId);
@@ -49,7 +49,7 @@ const ExtensionDetailsHeader: FC = () => {
     isInstalledExtensionData(extensionData) &&
     extensionData.isEnabled &&
     extensionData.missingColonyPermissions.length > 0 &&
-    !waitingForActionConfirmation;
+    !isPendingManagement;
 
   return (
     <>

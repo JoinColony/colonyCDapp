@@ -1,6 +1,7 @@
 import React, { type SyntheticEvent, type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { useExtensionDetailsPageContext } from '~frame/Extensions/pages/ExtensionDetailsPage/context/ExtensionDetailsPageContext.ts';
 import { GovernanceOptions } from '~frame/Extensions/pages/ExtensionsPage/types.ts';
 import SpecialHourInput from '~shared/Extensions/ConnectForm/partials/SpecialHourInput.tsx';
 import SpecialPercentageInput from '~shared/Extensions/ConnectForm/partials/SpecialPercentageInput.tsx';
@@ -15,12 +16,19 @@ const AccordionContent: FC<AccordionItemProps> = ({
   content,
   onInputChange,
 }) => {
-  const { setValue } = useFormContext();
+  const {
+    setValue,
+    formState: { isSubmitting },
+  } = useFormContext();
+
+  const { isPendingManagement } = useExtensionDetailsPageContext();
 
   const handleInputChange = (e: SyntheticEvent<HTMLInputElement>) => {
     onInputChange?.(e);
     setValue('option', GovernanceOptions.CUSTOM);
   };
+
+  const isFormDisabled = isPendingManagement || isSubmitting;
 
   return (
     <div className="mt-6">
@@ -45,12 +53,14 @@ const AccordionContent: FC<AccordionItemProps> = ({
                         name={name}
                         step={step}
                         onInputChange={handleInputChange}
+                        disabled={isFormDisabled}
                       />
                     ) : (
                       <SpecialHourInput
                         name={name}
                         step={step}
                         onInputChange={onInputChange}
+                        disabled={isFormDisabled}
                       />
                     )}
                   </div>
