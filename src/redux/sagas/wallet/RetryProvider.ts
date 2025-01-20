@@ -39,6 +39,7 @@ const classFactory = (
         IColonyContractMethodSignature.Locked,
         IColonyContractMethodSignature.Nonces,
         IColonyContractMethodSignature.GetMetatransactionNonce,
+        IColonyContractMethodSignature.MakeArbitraryTransactions,
       ].map(RetryRpcProvider.generateBypassedMethodsHex);
     }
 
@@ -78,7 +79,8 @@ const classFactory = (
       // These methods are methods that we call inside try-catches and expect
       // to fail sometimes, so don't retry.
       if (
-        method === RetryProviderMethod.Call &&
+        (method === RetryProviderMethod.Call ||
+          method === RetryProviderMethod.EstimateGas) &&
         this.bypassedMethods.includes(params?.transaction?.data?.slice(0, 10))
       ) {
         return super.perform(method, params);

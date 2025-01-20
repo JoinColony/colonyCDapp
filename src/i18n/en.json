@@ -338,6 +338,9 @@
     "transaction.group.releaseExpenditure.title": "Release Expenditure",
     "transaction.group.releaseExpenditure.description": "Releasing expenditure",
 
+    "transaction.group.arbitraryTxs.title": "Custom Transactions",
+    "transaction.group.arbitraryTxs.description": "Custom Transactions",
+
     "transaction.ColonyClient.addExistingSafe.title": "Add Existing Safe",
     "transaction.ColonyClient.addDomain(uint256,uint256,uint256).title": "Create Team",
     "transaction.ColonyClient.annotateTransaction.title": "Annotate Transaction",
@@ -360,8 +363,7 @@
     "transaction.ColonyClient.initiateSafeTransaction.title": "{title}",
     "transaction.ColonyClient.installExtension.title": "Add Extension to Colony",
     "transaction.ColonyClient.lockExpenditure.title": "Lock Expenditure",
-    "transaction.ColonyClient.makeArbitraryTransaction.title": "Make arbitrary transaction",
-    "transaction.ColonyClient.makeArbitraryTransactions.title": "{title}",
+    "transaction.ColonyClient.makeArbitraryTransactions.title": "Custom Transactions",
     "transaction.ColonyClient.makeExpenditure.title": "Make Expenditure",
     "transaction.ColonyClient.mintTokens.title": "Mint New Tokens",
     "transaction.ColonyClient.moveFundsBetweenPots(uint256,uint256,uint256,uint256,uint256,uint256,address).title": "Move Funds Between Pots",
@@ -376,6 +378,7 @@
     "transaction.ColonyClient.unlockToken.title": "Unlocking Token",
     "transaction.ColonyClient.upgrade.title": "Colony Version Upgrade",
     "transaction.ColonyClient.upgradeExtension.title": "Upgrade Colony Extension",
+
 
     "transaction.NetworkClient.createColonyForFrontend.title": "Create Colony",
     "transaction.NetworkClient.deployToken.title": "Create Token",

@@ -1,4 +1,4 @@
-import { type UseFormReturn } from 'react-hook-form';
+import { type FieldError, type UseFormReturn } from 'react-hook-form';
 
 import { type ActionFormProps } from '~shared/Fields/Form/index.ts';
 import { type ColonyAction } from '~types/graphql.ts';
@@ -9,7 +9,7 @@ export interface ActionSidebarFormContentProps extends ActionFormBaseProps {
   transactionId?: string;
   isExpenditure?: boolean;
   actionFormProps: Omit<ActionFormProps, 'children' | 'actionType'>;
-  showApolloNetworkError?: boolean;
+  customError?: null | Pick<FieldError, 'message'>;
 }
 
 export interface ActionSidebarContentProps {

@@ -20,6 +20,10 @@ import {
   uploadAnnotation,
 } from '../utils/index.ts';
 
+export interface ArbitraryTxError extends Error {
+  arbitraryTxActionFailed?: boolean;
+}
+
 function* arbitraryTxSaga({
   payload: {
     transactions,
@@ -140,6 +144,7 @@ function* arbitraryTxSaga({
       meta,
     });
   } catch (caughtError) {
+    (caughtError as ArbitraryTxError).arbitraryTxActionFailed = true;
     yield putError(
       ActionTypes.CREATE_ARBITRARY_TRANSACTION_ERROR,
       caughtError,

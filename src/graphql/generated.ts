@@ -611,8 +611,6 @@ export enum ColonyActionType {
   AddVerifiedMembers = 'ADD_VERIFIED_MEMBERS',
   AddVerifiedMembersMotion = 'ADD_VERIFIED_MEMBERS_MOTION',
   AddVerifiedMembersMultisig = 'ADD_VERIFIED_MEMBERS_MULTISIG',
-  /** An action related to arbitrary transaction */
-  ArbitraryTx = 'ARBITRARY_TX',
   /** An action related to canceling an expenditure */
   CancelExpenditure = 'CANCEL_EXPENDITURE',
   /** An action related to a motion to cancel an expenditure */
