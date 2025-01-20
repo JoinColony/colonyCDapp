@@ -18,8 +18,6 @@ import {
   type FinalizeSuccessCallback,
 } from '../types.ts';
 
-import { getNeededExtension } from './utils.ts';
-
 const SUBMIT_BUTTON_TEXT_MAP: Partial<Record<Action, string>> = {
   [Action.PaymentBuilder]: 'button.createPayment',
   [Action.SimplePayment]: 'button.createPayment',
