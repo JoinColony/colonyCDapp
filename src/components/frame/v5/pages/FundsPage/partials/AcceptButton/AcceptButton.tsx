@@ -15,16 +15,15 @@ const AcceptButton: FC<AcceptButtonProps> = ({
   disabled,
   ...rest
 }) => {
-  const {
-    colony,
-    canInteractWithColony,
-    startPollingColonyData,
-    stopPollingColonyData,
-  } = useColonyContext();
+  const { colony, canInteractWithColony } = useColonyContext();
   const [isClaimed, setIsClaimed] = useState(false);
 
-  const { isAcceptLoading, enableAcceptLoading, disableAcceptLoading } =
-    useIncomingFundsLoadingContext();
+  const {
+    isAcceptLoading,
+    enableAcceptLoading,
+    setPendingFundsTokenAddresses,
+    reset,
+  } = useIncomingFundsLoadingContext();
 
   // Used to set acceptLoading in the context whilst transaction is processed
   const getPayload = () => {
@@ -38,9 +37,7 @@ const AcceptButton: FC<AcceptButtonProps> = ({
 
   const handleClaimSuccess = () => {
     setIsClaimed(true);
-    startPollingColonyData(1_000);
-    setTimeout(stopPollingColonyData, 10_000);
-    disableAcceptLoading();
+    setPendingFundsTokenAddresses(tokenAddresses);
   };
 
   const isBtnDisabled =
@@ -50,7 +47,7 @@ const AcceptButton: FC<AcceptButtonProps> = ({
       {...rest}
       actionType={ActionTypes.CLAIM_TOKEN}
       onSuccess={handleClaimSuccess}
-      onError={disableAcceptLoading}
+      onError={reset}
       disabled={isBtnDisabled}
       mode="primarySolid"
       size="small"
