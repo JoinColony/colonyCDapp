@@ -1,8 +1,6 @@
 import React, { type FC, type PropsWithChildren, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { useBeamer } from '~hooks/useBeamer.ts';
-
 import { AnalyticsContext, type AnalyticsEvent } from './AnalyticsContext.ts';
 
 const defaultAnalyticsContext = {
@@ -13,7 +11,6 @@ const defaultAnalyticsContext = {
 // AnalyticsContextProvider
 const AnalyticsContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const gtmId = import.meta.env.GOOGLE_TAG_MANAGER_ID; // GTM ID from environment variable
-  useBeamer();
 
   const contextValue = useMemo(() => {
     return gtmId
