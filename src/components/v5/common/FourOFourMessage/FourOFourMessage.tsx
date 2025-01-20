@@ -3,7 +3,10 @@ import clsx from 'clsx';
 import React, { type FC } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { openFeaturesBugs } from '~hooks/useBeamer.ts';
+import {
+  FeaturebaseBoards,
+  useOpenFeedbackWidget,
+} from '~hooks/useFeaturebase.ts';
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -36,6 +39,8 @@ const FourOFourMessage: FC<FourOFourMessageProps> = ({
   primaryLinkButton,
   className,
 }) => {
+  const openFeedbackWidget = useOpenFeedbackWidget(FeaturebaseBoards.BugReport);
+
   return (
     <div
       className={clsx(
@@ -51,7 +56,7 @@ const FourOFourMessage: FC<FourOFourMessageProps> = ({
       </p>
       <hr className="h-px w-full" />
       <div className="mb-6 mt-8 flex w-full flex-col gap-2 sm:flex-row sm:gap-6">
-        <Button mode="quinary" className="flex-1" onClick={openFeaturesBugs}>
+        <Button mode="quinary" className="flex-1" onClick={openFeedbackWidget}>
           {formatText(MSG.reportBugBtn)}
         </Button>
         {primaryLinkButton}

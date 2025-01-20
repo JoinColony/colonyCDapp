@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
+import FeaturebaseContextProvider from '~context/FeaturebaseContext/FeaturebaseContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
 import ColonyFiltersContextProvider from '~context/GlobalFiltersContext/ColonyFiltersContextProvider.tsx';
 import NotificationsUserContextProvider from '~context/Notifications/NotificationsUserContext/NotificationsUserContextProvider.tsx';
@@ -31,15 +32,17 @@ const RootRoute = () => (
   <PageThemeContextProvider>
     <PageLayoutContextProvider>
       <AppContextProvider>
-        <ColonyFiltersContextProvider>
-          <FeatureFlagsContextProvider>
-            <CurrencyContextProvider>
-              <NotificationsUserContextProvider>
-                <RootRouteInner />
-              </NotificationsUserContextProvider>
-            </CurrencyContextProvider>
-          </FeatureFlagsContextProvider>
-        </ColonyFiltersContextProvider>
+        <FeaturebaseContextProvider>
+          <ColonyFiltersContextProvider>
+            <FeatureFlagsContextProvider>
+              <CurrencyContextProvider>
+                <NotificationsUserContextProvider>
+                  <RootRouteInner />
+                </NotificationsUserContextProvider>
+              </CurrencyContextProvider>
+            </FeatureFlagsContextProvider>
+          </ColonyFiltersContextProvider>
+        </FeaturebaseContextProvider>
       </AppContextProvider>
     </PageLayoutContextProvider>
   </PageThemeContextProvider>
