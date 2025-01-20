@@ -139,9 +139,7 @@ fragment ColonyAction on ColonyAction {
       distributionType
     }
   }
-  multiChainInfo {
-    targetChainId
-  }
+  targetChainId
 }
 
 fragment ApprovedTokenChanges on ApprovedTokenChanges {
