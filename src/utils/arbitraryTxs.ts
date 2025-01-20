@@ -11,6 +11,14 @@ const getFunctionSignature = (encodedFunction: string) => {
     : `0x${encodedFunction.slice(0, 8)}`;
 };
 
+const parseValue = (value: any) => {
+  if (Array.isArray(value)) {
+    return `[${value.map((element) => parseValue(element)).join(', ')}]`;
+  }
+
+  return value.toString();
+};
+
 export const decodeArbitraryTransaction = (
   jsonAbi: string,
   encodedFunction: string,
@@ -31,7 +39,7 @@ export const decodeArbitraryTransaction = (
       method: functionFragment.name,
       args: decodedArgs.map((arg, index) => ({
         name: functionArgs[index].name,
-        value: arg.toString(),
+        value: parseValue(arg),
         type: functionArgs[index].type,
       })),
     };

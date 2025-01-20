@@ -1,7 +1,6 @@
 import { ClientType, Id } from '@colony/colony-js';
 import { AddressZero } from '@ethersproject/constants';
 import { BigNumber, utils } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
@@ -16,6 +15,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '../transactions/index.ts';
+import { encodeArbitraryTransactions } from '../utils/arbitraryTxs.ts';
 import {
   putError,
   takeFrom,
@@ -44,17 +44,9 @@ function* arbitraryTxMotion({
   try {
     const colonyManager: ColonyManager = yield getColonyManager();
 
-    const contractAddresses: string[] = [];
-    const methodsBytes: string[] = [];
+    const { contractAddresses, methodsBytes } =
+      encodeArbitraryTransactions(transactions);
 
-    transactions.forEach(({ contractAddress, ...item }) => {
-      const encodedFunction = new Interface(item.jsonAbi).encodeFunctionData(
-        item.method,
-        item.args?.map((arg) => arg.value),
-      );
-      contractAddresses.push(contractAddress);
-      methodsBytes.push(encodedFunction);
-    });
     const colonyClient = yield colonyManager.getClient(
       ClientType.ColonyClient,
       colonyAddress,
