@@ -32,7 +32,7 @@ declare global {
   interface Window {
     dataLayer: DataLayerObject[];
     ethereum: object | undefined;
-    Beamer: any;
+    Featurebase: any;
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: typeof compose | undefined;
   }
 

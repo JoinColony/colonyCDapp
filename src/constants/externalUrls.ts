@@ -1,18 +1,16 @@
 import { GNOSIS_AMB_BRIDGES } from '~constants/index.ts';
 
-export const FEEDBACK = `https://news.colony.io/ideas/en`;
 export const COLONY_DEV_DOCS = `https://docs.colony.io/develop`;
 export const COLONY_DISCORD = `https://discord.gg/feVZWwysqM`;
 export const COLONY_DOCS = `https://docs.colony.io/`;
 export const COLONY_GITHUB = `https://github.com/joincolony`;
 export const COLONY_X = `https://x.com/joincolony`;
-export const FEATURES_BUGS = `https://news.colony.io/ideas/en`;
-export const WHATS_NEW = `https://news.colony.io/en`;
-export const HELP = `https://docs.colony.io/colonynetwork/tldr/colony/`;
-export const BETA_DISCLAIMER = `https://docs.colony.io/use/beta/`;
+export const COLONY_EDUCATION_PORTAL = `https://help.colony.io/en/`;
+export const COLONY_FEATURE_REQUEST = `https://features.colony.io/?b=6630e32497ee945de430e3c9`;
+export const COLONY_BUG_REPORT = `https://features.colony.io/?b=678e43c25877586f8632e21b`;
+export const COLONY_CHANGELOG = `https://features.colony.io/changelog`;
 export const PRIVACY_POLICY = `https://colony.io/terms-of-service#privacy-policy`;
 export const TERMS_AND_CONDITIONS = `https://colony.io/terms-of-service`;
-export const ADVANCED_SETTINGS = `https://docs.colony.io/use/advanced-features/`;
 export const REQUEST_ACCESS = `https://colony.io/request-access`;
 export const REQUEST_INVITES = `https://colony.io/request-invite`;
 
