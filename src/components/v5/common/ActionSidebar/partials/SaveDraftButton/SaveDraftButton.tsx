@@ -9,6 +9,7 @@ import { useMobile } from '~hooks';
 import { createDecisionAction } from '~redux/actionCreators/index.ts';
 import { type DecisionDraft } from '~utils/decisions.ts';
 import { formatText } from '~utils/intl.ts';
+import { REPUTATION_VALIDATION_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import useHasNoDecisionMethods from '~v5/common/ActionSidebar/hooks/permissions/useHasNoDecisionMethods.ts';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -19,14 +20,15 @@ const SaveDraftButton: FC = () => {
   const { wallet } = useAppContext();
   const dispatch = useDispatch();
   const {
-    formState: { isValid, ...formState },
-    getValues,
+    watch,
+    formState: { isValidating, errors },
     trigger,
   } = useFormContext();
 
-  const formValues = getValues();
+  const formValues = watch();
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const isDisabled = isValidating || isDraftSaved || hasNoDecisionMethods;
 
   const handleSaveAgreementInLocalStorage = useCallback(
     (values: DecisionDraft) => {
@@ -47,6 +49,23 @@ const SaveDraftButton: FC = () => {
     [colony.colonyAddress, dispatch, refetchColony],
   );
 
+  const handleClick = () => {
+    trigger().then((isValid) => {
+      const hasOnlyMissingReputationError = Object.keys(errors).every(
+        (errorKey) => errorKey === REPUTATION_VALIDATION_FIELD_NAME,
+      );
+      if (isValid || hasOnlyMissingReputationError) {
+        handleSaveAgreementInLocalStorage({
+          colonyAddress: colony.colonyAddress,
+          description: formValues.description,
+          title: formValues.title,
+          walletAddress: wallet?.address ?? '',
+          motionDomainId: formValues.motionDomainId,
+        });
+      }
+    });
+  };
+
   if (!wallet?.address) {
     return null;
   }
@@ -55,21 +74,9 @@ const SaveDraftButton: FC = () => {
     <Button
       mode={isDraftSaved ? 'completed' : 'primaryOutline'}
       iconSize={18}
-      onClick={() => {
-        trigger();
-
-        if (isValid) {
-          handleSaveAgreementInLocalStorage({
-            colonyAddress: colony.colonyAddress,
-            description: formValues.description,
-            title: formValues.title,
-            walletAddress: wallet?.address,
-            motionDomainId: formValues.motionDomainId,
-          });
-        }
-      }}
+      onClick={handleClick}
       isFullSize={isMobile}
-      disabled={formState.isValidating || isDraftSaved || hasNoDecisionMethods}
+      disabled={isDisabled}
     >
       {!isDraftSaved && <FileDashed size={18} className="mr-2" />}
       {formatText({
