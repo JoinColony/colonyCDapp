@@ -3,7 +3,7 @@ import {
   Scroll,
   YoutubeLogo,
   DiscordLogo,
-  TwitterLogo,
+  XLogo,
   TelegramLogo,
   GithubLogo,
   InstagramLogo,
@@ -39,7 +39,7 @@ export const LINK_TYPE_TO_LABEL_MAP: Record<ExternalLinks, string | undefined> =
       id: 'editColony.socialLinks.discord',
     }),
     [ExternalLinks.Twitter]: formatText({
-      id: 'editColony.socialLinks.twitter',
+      id: 'editColony.socialLinks.x',
     }),
     [ExternalLinks.Telegram]: formatText({
       id: 'editColony.socialLinks.telegram',
@@ -92,9 +92,11 @@ export const LINK_TYPE_RADIO_BUTTONS: TileRadioButtonItem<ExternalLinks>[] = [
   },
   {
     id: ExternalLinks.Twitter,
-    label: ExternalLinks.Twitter,
+    label: formatText({
+      id: 'socialLink.button.X',
+    }),
     icon: ({ checked }) => (
-      <TwitterLogo size={18} className={clsx({ 'text-[#91D2FA]': !checked })} />
+      <XLogo size={18} className={clsx({ 'text-gray-900': !checked })} />
     ),
     value: ExternalLinks.Twitter,
   },
