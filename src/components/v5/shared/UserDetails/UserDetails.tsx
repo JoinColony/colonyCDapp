@@ -22,7 +22,7 @@ const UserDetails: FC<UserDetailsProps> = ({
       <div className="relative flex justify-center">
         <ContributorTypeWrapper contributorType={contributorType}>
           <UserAvatar
-            size={60}
+            size={70}
             userAvatarSrc={userAvatarSrc}
             userName={userName ?? undefined}
             userAddress={walletAddress}
