@@ -32,6 +32,7 @@ const RevealStep: FC<RevealStepProps> = ({
   stopPollingAction,
   transactionId,
   rootHash,
+  isActionCancelled,
 }) => {
   const { canInteract } = useAppContext();
   const [isInformationAccordionOpen, { toggle: toggleInformationAccordion }] =
@@ -111,6 +112,19 @@ const RevealStep: FC<RevealStepProps> = ({
         </>
       }
       sections={[
+        ...(isActionCancelled
+          ? [
+              {
+                key: '3',
+                content: (
+                  <p className="text-sm">
+                    {formatText({ id: 'motion.cancelled' })}
+                  </p>
+                ),
+                className: 'bg-negative-100 text-negative-400 !py-3',
+              },
+            ]
+          : []),
         {
           key: '1',
           content: (
@@ -172,7 +186,7 @@ const RevealStep: FC<RevealStepProps> = ({
                   : 'motion.revealStep.buttonShow',
               })}
               isOpen={isInformationAccordionOpen}
-              onToggle={toggleInformationAccordion}
+              onToggle={() => toggleInformationAccordion()}
               className={clsx(
                 `
                   [&_.accordion-toggler]:text-sm
