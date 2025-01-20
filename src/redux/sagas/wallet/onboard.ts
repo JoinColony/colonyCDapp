@@ -1,5 +1,7 @@
 import Onboard, { type InitOptions } from '@web3-onboard/core';
-import injectedWallets from '@web3-onboard/injected-wallets';
+import injectedWalletsModule, {
+  ProviderLabel,
+} from '@web3-onboard/injected-wallets';
 
 import {
   TERMS_AND_CONDITIONS,
@@ -7,6 +9,9 @@ import {
   TOKEN_DATA,
   GANACHE_NETWORK,
   GANACHE_LOCAL_RPC_URL,
+  ARBITRUM_NETWORK,
+  ARBITRUM_SEPOLIA_NETWORK,
+  GNOSIS_NETWORK,
 } from '~constants/index.ts';
 import { Network } from '~types/network.ts';
 import { getChainIdAsHex } from '~utils/chainId.ts';
@@ -16,7 +21,7 @@ import ganacheModule from './ganacheModule.ts';
 
 const { formatMessage } = intl({
   'metadata.name': 'Colony App',
-  'metadata.description': `Logging into your Colony is done using your wallet. You’ll be able to perform actions, contribute, and make use of any earned reputation.`,
+  'metadata.description': `Logging into your Colony is done using your wallet. You'll be able to perform actions, contribute, and make use of any earned reputation.`,
   'info.text': 'Connect your wallet to log in',
 });
 
@@ -47,23 +52,77 @@ const getDevelopmentWallets = async () => {
   return [];
 };
 
-// chains: [
-//   {
-//     /*
-//      * chain id for @web3-onboard needs to be expressed as a hex string
-//      */
-//     // id: `0x${GANACHE_NETWORK.chainId.toString(16)}`,
-//     id: '0x64',
-//     token: TOKEN_DATA[Network.Gnosis].symbol,
-//     label: 'Metamask Wallet',
-//     rpcUrl: 'https://rpc.gnosischain.com',
-//   },
-// ],
-
 const onboardConfig: InitOptions = {
-  wallets: [injectedWallets()],
+  wallets: [
+    injectedWalletsModule({
+      // Only enable required injected wallets
+      filter: {
+        [ProviderLabel.AlphaWallet]: false,
+        [ProviderLabel.ApexWallet]: false,
+        [ProviderLabel.AToken]: false,
+        [ProviderLabel.BifrostWallet]: false,
+        [ProviderLabel.Binance]: true, // Enabled
+        [ProviderLabel.Bitpie]: false,
+        [ProviderLabel.Bitski]: false,
+        [ProviderLabel.BlockWallet]: false,
+        [ProviderLabel.Brave]: true, // Enabled
+        [ProviderLabel.Coinbase]: true, // Enabled
+        [ProviderLabel.Dcent]: false,
+        [ProviderLabel.Detected]: false,
+        [ProviderLabel.Exodus]: true, // Enabled
+        [ProviderLabel.Frame]: false,
+        [ProviderLabel.Frontier]: false,
+        [ProviderLabel.HuobiWallet]: false,
+        [ProviderLabel.HyperPay]: false,
+        [ProviderLabel.ImToken]: false,
+        [ProviderLabel.InfinityWallet]: false,
+        [ProviderLabel.Liquality]: false,
+        [ProviderLabel.MeetOne]: false,
+        [ProviderLabel.MetaMask]: true, // Enabled
+        [ProviderLabel.MyKey]: false,
+        [ProviderLabel.Opera]: false,
+        [ProviderLabel.OwnBit]: false,
+        [ProviderLabel.Status]: false,
+        [ProviderLabel.Trust]: true, // Enabled
+        [ProviderLabel.TokenPocket]: false,
+        [ProviderLabel.TP]: false,
+        [ProviderLabel.WalletIo]: false,
+        [ProviderLabel.XDEFI]: false,
+        [ProviderLabel.OneInch]: false,
+        [ProviderLabel.Tokenary]: false,
+        [ProviderLabel.Tally]: false,
+        [ProviderLabel.Rabby]: false,
+        [ProviderLabel.MathWallet]: false,
+        [ProviderLabel.Bitget]: false,
+        [ProviderLabel.Sequence]: false,
+        [ProviderLabel.Core]: false,
+        [ProviderLabel.Enkrypt]: false,
+        [ProviderLabel.Zeal]: false,
+        [ProviderLabel.Phantom]: false,
+        [ProviderLabel.OKXWallet]: false,
+        [ProviderLabel.Zerion]: true, // Enabled
+        [ProviderLabel.Rainbow]: false,
+        [ProviderLabel.SafePal]: false,
+        [ProviderLabel.DeFiWallet]: false,
+        [ProviderLabel.Safeheron]: false,
+        [ProviderLabel.Talisman]: false,
+        [ProviderLabel.OneKey]: false,
+        [ProviderLabel.Fordefi]: false,
+        [ProviderLabel.RoninWallet]: false,
+        [ProviderLabel.Coin98Wallet]: false,
+        [ProviderLabel.SubWallet]: false,
+        [ProviderLabel.Kayros]: false,
+        [ProviderLabel.FoxWallet]: false,
+        [ProviderLabel.Lif3Wallet]: false,
+        [ProviderLabel.ZodiacPilot]: false,
+        [ProviderLabel.StableWallet]: false,
+        [ProviderLabel.Echooo]: false,
+      },
+    }),
+  ],
   // Chains array only used in `ganacheModule` for use in development.
   chains: [
+    // local
     {
       // web3-onboard formats chain id as hex strings
       id: getChainIdAsHex(GANACHE_NETWORK.chainId),
@@ -71,14 +130,35 @@ const onboardConfig: InitOptions = {
       label: GANACHE_NETWORK.shortName,
       rpcUrl: GANACHE_LOCAL_RPC_URL,
     },
+    // arbitrum
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumOne].symbol,
+      label: ARBITRUM_NETWORK.shortName,
+    },
+    // arbitrum sepolia (testnet)
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(ARBITRUM_SEPOLIA_NETWORK.chainId),
+      token: TOKEN_DATA[Network.ArbitrumSepolia].symbol,
+      label: ARBITRUM_SEPOLIA_NETWORK.shortName,
+    },
+    // gnosis
+    {
+      // web3-onboard formats chain id as hex strings
+      id: getChainIdAsHex(GNOSIS_NETWORK.chainId),
+      token: TOKEN_DATA[Network.Gnosis].symbol,
+      label: GNOSIS_NETWORK.shortName,
+    },
   ],
   accountCenter: {
     desktop: { enabled: false },
     mobile: { enabled: false },
   },
   notify: {
-    desktop: { enabled: false, transactionHandler: () => {} },
-    mobile: { enabled: false, transactionHandler: () => {} },
+    desktop: { enabled: false },
+    mobile: { enabled: false },
   },
   appMetadata: {
     name: formatMessage({ id: 'info.text' }),
