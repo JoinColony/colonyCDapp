@@ -35,23 +35,24 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  actionType,
   ...rest
 }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
+
+  const colonyRoles = extractColonyRoles(colony.roles);
+  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
+  const userRole = getRole(userPermissions);
+
   const finalizeDecisionMethodItems = useGetFinalizeDecisionMethodItems(
     expenditure,
-    actionType,
+    userRole,
   );
 
   const noDecisionMethodAvailable = finalizeDecisionMethodItems.every(
     ({ isDisabled }) => isDisabled,
   );
 
-  const colonyRoles = extractColonyRoles(colony.roles);
-  const userPermissions = getAllUserRoles(colonyRoles, user?.walletAddress);
-  const userRole = getRole(userPermissions);
   const finalizeDecisionMethodDescriptions =
     getFinalizeDecisionMethodDescriptions(userRole.name);
 
