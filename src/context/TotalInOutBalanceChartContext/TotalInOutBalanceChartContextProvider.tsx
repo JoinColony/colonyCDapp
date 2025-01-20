@@ -14,8 +14,9 @@ import {
 } from '~gql';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
 import {
-  sortByLabel,
+  mapToFormattedLabel,
   parseTimeframeKey,
+  sortByLabel,
 } from '~v5/frame/ColonyHome/partials/TotalInOutBalance/utils.ts';
 
 import { useColonyContext } from '../ColonyContext/ColonyContext.ts';
@@ -82,11 +83,12 @@ const TotalInOutBalanceChartContextProvider: FC<PropsWithChildren> = ({
   const value = useMemo(() => {
     const timeframeBalanceArray = domainBalanceData?.timeframe
       ?.map((timeframeBalance) => ({
-        label: parseTimeframeKey(timeframeBalance?.key),
+        label: parseTimeframeKey(timeframeBalance?.key ?? ''),
         in: convertAmount(timeframeBalance?.value?.totalIn ?? '0'),
         out: convertAmount(timeframeBalance?.value?.totalOut ?? '0'),
       }))
-      .sort(sortByLabel);
+      .sort(sortByLabel)
+      .map(mapToFormattedLabel);
 
     let stepValue = 10000;
     const ySteps: number[] = [];

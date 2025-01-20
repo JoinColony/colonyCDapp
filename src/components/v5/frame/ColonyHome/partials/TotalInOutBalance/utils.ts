@@ -1,19 +1,32 @@
-import { format, parse, setMonth, setWeek, startOfWeek } from 'date-fns';
+import {
+  format,
+  isAfter,
+  parse,
+  setMonth,
+  setWeek,
+  startOfWeek,
+} from 'date-fns';
 import numbro from 'numbro';
 
 import { convertToDecimal } from '~utils/convertToDecimal.ts';
 
 import { type BarChartDataItem } from './types.ts';
 
-export const sortByLabel = (a: BarChartDataItem, b: BarChartDataItem) =>
-  parseInt(a.label ?? 0, 10) - parseInt(b.label ?? 0, 10);
+type IntermediateBarChartDataItem = Pick<BarChartDataItem, 'in' | 'out'> & {
+  label: Date;
+};
 
-export const getMonthShortName = (month: string) => {
-  const parsedMonth = parseInt(month, 10) - 1;
+export const sortByLabel = (
+  a: IntermediateBarChartDataItem,
+  b: IntermediateBarChartDataItem,
+) => {
+  return isAfter(a.label, b.label) ? 1 : -1;
+};
 
-  const now = Date.now();
+export const getMonthShortName = (label: string) => {
+  const date = parse(label, 'dd-MM-yyyy', new Date());
 
-  return format(new Date(setMonth(now, parsedMonth)), 'MMM');
+  return format(date, 'MMM');
 };
 
 export const parseTimeframeKey = (key: string = '') => {
@@ -30,23 +43,28 @@ export const parseTimeframeKey = (key: string = '') => {
     });
   }
 
-  return format(parsedDate, 'MM');
+  return parsedDate;
 };
 
-export const getFallbackData = () => {
+export const mapToFormattedLabel = (item: IntermediateBarChartDataItem) => ({
+  ...item,
+  label: format(item.label, 'dd-MM-yyyy'),
+});
+
+export const getFallbackData = (): BarChartDataItem[] => {
   const now = new Date();
   const currentMonth = now.getMonth();
-  const fallbackData: any = [];
+  const fallbackData: IntermediateBarChartDataItem[] = [];
 
   for (let i = 0; i < 4; i += 1) {
     fallbackData.push({
-      label: format(new Date(setMonth(now, currentMonth - i)), 'MM'),
-      in: 0,
-      out: 0,
+      label: new Date(setMonth(now, currentMonth - i)),
+      in: '0',
+      out: '0',
     });
   }
 
-  return fallbackData.sort(sortByLabel);
+  return fallbackData.sort(sortByLabel).map(mapToFormattedLabel);
 };
 
 export const getFormattedShortAmount = (value) => {
