@@ -27,7 +27,9 @@ const SplitPaymentAmountField: FC<SplitPaymentAmountFieldProps> = ({
       onBlur={onBlur}
       onChange={() => {
         if (distributionMethod !== SplitPaymentDistributionType.Unequal) {
-          setValue('distributionMethod', SplitPaymentDistributionType.Unequal);
+          setValue('distributionMethod', SplitPaymentDistributionType.Unequal, {
+            shouldValidate: true,
+          });
         }
       }}
       isDisabled={isDisabled}

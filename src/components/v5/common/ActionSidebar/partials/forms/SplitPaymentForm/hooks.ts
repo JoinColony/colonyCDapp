@@ -81,9 +81,23 @@ export const useValidationSchema = () => {
               ),
           ),
         createdIn: number().defined().required(),
-        team: number().required(),
-        decisionMethod: string().defined().required(),
-        distributionMethod: string().defined().required(),
+        team: number()
+          .required()
+          .typeError(formatText({ id: 'errors.domain' })),
+        decisionMethod: string()
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.decisionMethod.defined' }),
+            (value) => value !== undefined,
+          )
+          .required(),
+        distributionMethod: string()
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.distributionMethod.defined' }),
+            (value) => value !== undefined,
+          )
+          .required(),
         payments: array()
           .of(
             object()
@@ -181,14 +195,14 @@ export const useValidationSchema = () => {
             formatText({ id: 'errors.sumOfPercentageMustBe100' }) || '',
             (value, context) => {
               const { parent } = context;
-              const decisionMethod = parent?.decisionMethod;
               const distributionMethod = parent?.distributionMethod;
-              if (!value) {
+
+              if (!value || !value.length) {
                 return false;
               }
 
               if (
-                !decisionMethod ||
+                !distributionMethod ||
                 distributionMethod === SplitPaymentDistributionType.Equal ||
                 distributionMethod === SplitPaymentDistributionType.Reputation
               ) {
@@ -202,6 +216,11 @@ export const useValidationSchema = () => {
 
               return sum === 100;
             },
+          )
+          .test(
+            'is-defined',
+            formatText({ id: 'errors.payments.defined' }),
+            (value) => value !== undefined,
           )
           .required(),
       })
