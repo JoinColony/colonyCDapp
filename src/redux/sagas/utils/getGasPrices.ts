@@ -9,6 +9,7 @@ import { type GasPricesProps } from '~redux/immutable/index.ts';
 import { gasPrices as gasPricesSelector } from '~redux/selectors/index.ts';
 import { Network } from '~types/network.ts';
 import { RpcMethods } from '~types/rpcMethods.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
 interface EthGasStationAPIResponse {
   average: number;
@@ -32,6 +33,7 @@ interface BlockscoutGasStationAPIResponse {
 }
 
 const DEFAULT_GAS_PRICE = BigNumber.from('3000000000');
+const POINT_ONE_GWEI = BigNumber.from(10 ** 8);
 
 const fetchGasPrices = async (): Promise<GasPricesProps> => {
   const defaultGasPrices = {
@@ -92,14 +94,13 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     if (DEFAULT_NETWORK === Network.Mainnet) {
       const data: EthGasStationAPIResponse = await response.json();
       // API prices are in 10Gwei, so they need to be normalised
-      const pointOneGwei = BigNumber.from(10 ** 8);
 
       return {
         ...defaultGasPrices,
 
-        suggested: BigNumber.from(data.average).mul(pointOneGwei),
-        cheaper: BigNumber.from(data.safeLow).mul(pointOneGwei),
-        faster: BigNumber.from(data.fast).mul(pointOneGwei),
+        suggested: BigNumber.from(data.average).mul(POINT_ONE_GWEI),
+        cheaper: BigNumber.from(data.safeLow).mul(POINT_ONE_GWEI),
+        faster: BigNumber.from(data.fast).mul(POINT_ONE_GWEI),
 
         suggestedWait: data.avgWait * 60,
         cheaperWait: data.safeLowWait * 60,
@@ -139,7 +140,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       const [slowInteger, slowRemainder = 0] = String(data.slow).split('.');
       const [fastInteger, fastRemainder = 0] = String(fast).split('.');
 
-      return {
+      const gasPrices = {
         ...defaultGasPrices,
 
         suggested: BigNumber.from(averageInteger)
@@ -152,6 +153,12 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
           .mul(oneGwei)
           .add(String(fastRemainder).padEnd(9, '0')),
       };
+
+      debugLogging('XDAI GAS DEBUG', {
+        ...gasPrices,
+      });
+
+      return gasPrices;
     }
 
     // We don't have a oracle for Arbitrum, so we have to do our best
@@ -160,10 +167,16 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       DEFAULT_NETWORK === Network.ArbitrumSepolia
     ) {
       const cheaper = defaultGasPrices.network;
-      const { maxFeePerGas, maxPriorityFeePerGas } =
-        await userWallet.ethersProvider.getFeeData();
+      const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
 
-      console.info('GAS DEBUG', {
+      // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+      const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
+        'eth_maxPriorityFeePerGas',
+        [],
+      );
+      const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+
+      debugLogging('ARBITRUM GAS DEBUG', {
         maxFeePerGas,
         maxPriorityFeePerGas,
         userWallet,
@@ -176,8 +189,10 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
         suggested: cheaper.mul(150).div(100), // 50% more than network
         faster: cheaper.mul(200).div(100), // 100% more than network
 
-        maxFeePerGas,
-        maxPriorityFeePerGas,
+        maxFeePerGas: maxFeePerGas.add(maxFeePerGas.mul(5).div(100)), // 5% more
+        maxPriorityFeePerGas: maxPriorityFeePerGas.add(
+          maxPriorityFeePerGas.mul(5).div(100),
+        ), // 5% more
 
         suggestedWait: -Infinity,
         cheaperWait: -Infinity,
@@ -185,7 +200,39 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       };
     }
 
-    return defaultGasPrices;
+    // All other networks
+
+    const cheaper = defaultGasPrices.network;
+    const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
+
+    // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+    const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
+      'eth_maxPriorityFeePerGas',
+      [],
+    );
+    const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+
+    // This wil essentially make the local dev gas price estimation act more like production
+    const defaultNetworkGasPrices = {
+      ...defaultGasPrices,
+
+      cheaper,
+
+      maxFeePerGas: maxFeePerGas.add(maxFeePerGas.mul(5).div(100)), // 5% more
+      maxPriorityFeePerGas: maxPriorityFeePerGas.add(
+        maxPriorityFeePerGas.mul(5).div(100),
+      ), // 5% more
+
+      suggestedWait: -Infinity,
+      cheaperWait: -Infinity,
+      fasterWait: -Infinity,
+    };
+
+    debugLogging(`${DEFAULT_NETWORK.toUpperCase()} GAS DEBUG`, {
+      ...defaultNetworkGasPrices,
+    });
+
+    return defaultNetworkGasPrices;
   } catch (caughtError) {
     console.info(
       `Could not get ${DEFAULT_NETWORK} network gas prices: ${caughtError.message}`,

@@ -13,6 +13,7 @@ import {
 } from '~types/transactions.ts';
 import { isFullWallet } from '~types/wallet.ts';
 import { getChainId } from '~utils/chainId.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 import {
   generateMetatransactionErrorMessage,
   generateMetamaskTypedDataSignatureErrorMessage,
@@ -230,7 +231,7 @@ async function getMetatransactionPromise(
     };
   }
 
-  console.info('METATX DEBUG', {
+  debugLogging('METATX DEBUG', {
     normalizedMethodName,
     broadcastData,
   });
