@@ -19,14 +19,16 @@ const SaveDraftButton: FC = () => {
   const { wallet } = useAppContext();
   const dispatch = useDispatch();
   const {
-    formState: { isValid, ...formState },
-    getValues,
+    watch,
+    formState: { isValidating },
     trigger,
+    handleSubmit,
   } = useFormContext();
 
-  const formValues = getValues();
+  const formValues = watch();
 
   const hasNoDecisionMethods = useHasNoDecisionMethods();
+  const isDisabled = isValidating || isDraftSaved || hasNoDecisionMethods;
 
   const handleSaveAgreementInLocalStorage = useCallback(
     (values: DecisionDraft) => {
@@ -47,6 +49,20 @@ const SaveDraftButton: FC = () => {
     [colony.colonyAddress, dispatch, refetchColony],
   );
 
+  const handleClick = () => {
+    trigger().then((isValid) => {
+      if (isValid) {
+        handleSaveAgreementInLocalStorage({
+          colonyAddress: colony.colonyAddress,
+          description: formValues.description,
+          title: formValues.title,
+          walletAddress: wallet?.address ?? '',
+          motionDomainId: formValues.motionDomainId,
+        });
+      }
+    });
+  };
+
   if (!wallet?.address) {
     return null;
   }
@@ -55,21 +71,9 @@ const SaveDraftButton: FC = () => {
     <Button
       mode={isDraftSaved ? 'completed' : 'primaryOutline'}
       iconSize={18}
-      onClick={() => {
-        trigger();
-
-        if (isValid) {
-          handleSaveAgreementInLocalStorage({
-            colonyAddress: colony.colonyAddress,
-            description: formValues.description,
-            title: formValues.title,
-            walletAddress: wallet?.address,
-            motionDomainId: formValues.motionDomainId,
-          });
-        }
-      }}
+      onClick={handleSubmit(handleClick)}
       isFullSize={isMobile}
-      disabled={formState.isValidating || isDraftSaved || hasNoDecisionMethods}
+      disabled={isDisabled}
     >
       {!isDraftSaved && <FileDashed size={18} className="mr-2" />}
       {formatText({
