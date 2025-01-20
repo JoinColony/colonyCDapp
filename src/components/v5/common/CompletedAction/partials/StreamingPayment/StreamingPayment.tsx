@@ -24,7 +24,11 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { useActionStatusContext } from '~context/ActionStatusContext/ActionStatusContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { ColonyActionType, StreamingPaymentEndCondition } from '~gql';
+import {
+  ColonyActionType,
+  StreamingPaymentEndCondition,
+  useGetUserByAddressQuery,
+} from '~gql';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import {
@@ -113,6 +117,14 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
 
   const { loadingStreamingPayment, streamingPaymentData } =
     useGetStreamingPaymentData(action?.streamingPaymentId);
+
+  const { data: recipentData } = useGetUserByAddressQuery({
+    variables: { address: streamingPaymentData?.recipientAddress || '' },
+    skip: !streamingPaymentData?.recipientAddress,
+  });
+
+  const recipientName =
+    recipentData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
 
   useEffect(() => {
     if (expectedActionStatus && expectedActionStatus !== actionStatus) {
@@ -298,7 +310,9 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
                 walletAddress={recipientAddress}
                 withVerifiedBadge={false}
                 withUserName
-              />
+              >
+                {recipientName}
+              </UserInfoPopover>
             ) : null,
             initiator: initiatorUser ? (
               <UserInfoPopover

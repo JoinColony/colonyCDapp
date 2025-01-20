@@ -29,7 +29,6 @@ import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.t
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLayout from './partials/ActionSidebarLayout/ActionSidebarLayout.tsx';
-import ActionSidebarNotFoundContent from './partials/ActionSidebarNotFoundContent/ActionSidebarNotFoundContent.tsx';
 import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
 import ExpenditureActionStatusBadge from './partials/ExpenditureActionStatusBadge/ExpenditureActionStatusBadge.tsx';
 import { GoBackButton } from './partials/GoBackButton/GoBackButton.tsx';
@@ -136,7 +135,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     >
       <ActionSidebarLayout
         ref={registerContainerRef}
-        onCloseClick={closeSidebarClick}
+        onCloseClick={() =>
+          closeSidebarClick({
+            shouldShowCancelModal: !getIsDraftAgreement(),
+          })
+        }
         className={className}
         shareButtonProps={
           transactionId

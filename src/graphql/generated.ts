@@ -12139,17 +12139,6 @@ export type GetStreamingPaymentsByColonyQueryVariables = Exact<{
 
 export type GetStreamingPaymentsByColonyQuery = { __typename?: 'Query', getStreamingPaymentsByColony?: { __typename?: 'ModelStreamingPaymentConnection', nextToken?: string | null, items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null> } | null };
 
-export type GetStreamingPaymentsByColonyQueryVariables = Exact<{
-  colonyId: Scalars['ID'];
-  sortDirection?: InputMaybe<ModelSortDirection>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  recipientAddress: Scalars['String'];
-}>;
-
-
-export type GetStreamingPaymentsByColonyQuery = { __typename?: 'Query', getStreamingPaymentsByColony?: { __typename?: 'ModelStreamingPaymentConnection', nextToken?: string | null, items: Array<{ __typename?: 'StreamingPayment', id: string, nativeId: number, recipientAddress: string, nativeDomainId: number, startTime: string, endTime: string, interval: string, tokenAddress: string, amount: string, isCancelled?: boolean | null, isWaived?: boolean | null, createdAt: string, token?: { __typename?: 'Token', decimals: number, name: string, symbol: string, type?: TokenType | null, avatar?: string | null, thumbnail?: string | null, tokenAddress: string } | null, metadata?: { __typename?: 'StreamingPaymentMetadata', endCondition: StreamingPaymentEndCondition, changelog?: Array<{ __typename?: 'StreamingPaymentMetadataChangelog', transactionHash: string, oldEndCondition: StreamingPaymentEndCondition, newEndCondition: StreamingPaymentEndCondition }> | null } | null, claims?: Array<{ __typename?: 'StreamingPaymentClaim', amount: string, timestamp: string }> | null } | null> } | null };
-
 export type GetTokenByAddressQueryVariables = Exact<{
   address: Scalars['ID'];
 }>;

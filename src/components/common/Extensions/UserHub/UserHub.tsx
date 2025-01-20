@@ -13,13 +13,13 @@ import NotificationsEnabledWrapper from '~v5/common/NotificationsEnabledWrapper/
 import TitleLabel from '~v5/shared/TitleLabel/index.ts';
 
 import { tabList } from './consts.ts';
+import BalanceTab from './partials/BalanceTab/BalanceTab.tsx';
 import CryptoToFiatTab from './partials/CryptoToFiatTab/CryptoToFiatTab.tsx';
 import NotificationsTab from './partials/NotificationsTab/NotificationsTab.tsx';
 import StakesTab from './partials/StakesTab/index.ts';
 import TransactionsTab from './partials/TransactionsTab/index.ts';
 import UnreadNotifications from './partials/UnreadNotifications.tsx';
 import { UserHubTab } from './types.ts';
-import BalanceTab from './partials/BalanceTab/BalanceTab.tsx';
 
 // @BETA: Disabled for now
 // import { COLONY_HOME_ROUTE } from '~routes';
