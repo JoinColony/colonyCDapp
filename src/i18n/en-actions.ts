@@ -111,7 +111,7 @@ const actionsMessageDescriptors = {
       ${ColonyActionType.EmitDomainReputationReward} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationRewardMotion} {Manage reputation}
       ${ColonyActionType.EmitDomainReputationRewardMultisig} {Manage reputation}
-      ${ColonyActionType.CreateDecisionMotion} {Decision}
+      ${ColonyActionType.CreateDecisionMotion} {Create agreement}
       ${ColonyActionType.AddVerifiedMembers} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMotion} {Manage verified members}
       ${ColonyActionType.AddVerifiedMembersMultisig} {Manage verified members}
