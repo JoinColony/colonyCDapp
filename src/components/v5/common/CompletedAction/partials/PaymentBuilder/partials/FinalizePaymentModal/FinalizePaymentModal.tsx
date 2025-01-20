@@ -110,7 +110,9 @@ const FinalizePaymentModal: FC<FinalizePaymentModalProps> = ({
           nativeExpenditureId: expenditure.nativeId,
         };
 
-        await reclaimExpenditureStake(payload);
+        if (decisionMethod.value === DecisionMethod.Permissions) {
+          await reclaimExpenditureStake(payload);
+        }
       }
 
       onSuccess(decisionMethod);
