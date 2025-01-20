@@ -1,0 +1,17 @@
+FROM colony-cdapp-dev-env/network:latest
+# Add dependencies from the host
+# Note: these are listed individually so that if they change, they won't affect
+# the build of the other images
+ADD docker/files/network-remote/run.sh.base /colonyCDappBackend/run.sh
+
+WORKDIR /colonyCDappBackend
+
+# Open up ports to the docker image
+# Ganache
+EXPOSE 8545
+
+# Make the run script executable
+RUN chmod +x ./run.sh
+
+# Battlecruiser Operational!
+CMD [ "./run.sh" ]
