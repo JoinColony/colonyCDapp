@@ -84,15 +84,7 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
     setCanCreateAction(canCreate);
   };
 
-  const {
-    formState: {
-      errors: { this: formCustomError },
-    },
-    getValues,
-    reset,
-  } = useFormContext();
-
-  const sidebarCustomError = formCustomError || customError;
+  const { getValues, reset } = useFormContext();
 
   const formValues = getValues();
 
@@ -189,14 +181,14 @@ const ActionSidebarFormContent: FC<ActionSidebarFormContentProps> = ({
         {FormComponent && <FormComponent getFormOptions={getFormOptions} />}
 
         <NoReputationError />
-        {sidebarCustomError && (
+        {customError && (
           <div className="mt-7">
             <NotificationBanner
               icon={WarningCircle}
               status="error"
               testId="action-sidebar-custom-error"
             >
-              {sidebarCustomError.message?.toString()}
+              {customError.message?.toString()}
             </NotificationBanner>
           </div>
         )}
@@ -288,8 +280,10 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               (error.code as unknown) === 4001
             ) {
               setCustomError({ message: formatText(MSG.apolloNetworkError) });
-            } else if (error instanceof ApolloError) {
-              // Mutation failed in saga
+              return;
+            }
+            // Mutation failed in saga
+            if (error instanceof ApolloError) {
               const { networkError } = error;
 
               const statusCode = (networkError as { statusCode?: number })
@@ -298,7 +292,9 @@ const ActionSidebarContent: FC<ActionSidebarContentProps> = ({
               if (statusCode === 403) {
                 setCustomError({ message: formatText(MSG.apolloNetworkError) });
               }
-            } else if (error.arbitraryTxActionFailed) {
+              return;
+            }
+            if (error.arbitraryTxActionFailed) {
               setCustomError({ message: formatText(MSG.arbitraryTxError) });
             }
           }}
