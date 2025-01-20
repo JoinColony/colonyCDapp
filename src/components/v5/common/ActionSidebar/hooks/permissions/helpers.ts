@@ -106,6 +106,9 @@ export const getPermissionsNeededForAction = (
     case Action.StagedPayment: {
       return PERMISSIONS_NEEDED_FOR_ACTION.StagedPayment;
     }
+    case Action.ManageSupportedChains: {
+      return PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains;
+    }
 
     default:
       return undefined;

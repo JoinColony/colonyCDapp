@@ -902,6 +902,14 @@ enum ColonyActionType {
   An action related to creating a proxy colony
   """
   ADD_PROXY_COLONY
+  ADD_PROXY_COLONY_MOTION
+  ADD_PROXY_COLONY_MULTISIG
+  """
+  An action related to disabling a proxy colony
+  """
+  REMOVE_PROXY_COLONY
+  REMOVE_PROXY_COLONY_MOTION
+  REMOVE_PROXY_COLONY_MULTISIG
 }
 
 """
@@ -2880,6 +2888,18 @@ type ColonyMultiSig @model {
   The timestamp when the motion was created at
   """
   createdAt: AWSDateTime!
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMultiSigByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 """
 Represents a Motion within a Colony
@@ -3015,6 +3035,18 @@ type ColonyMotion @model {
   the details of tokens and amounts to be funded
   """
   expenditureFunding: [ExpenditureFundingItem!]
+  """
+  The action txHash that was triggered upon motion finalization
+  """
+  finalizationActionId: ID
+    @index(
+      name: "byFinalizationActionId"
+      queryField: "getColonyMotionByFinalizationActionId"
+    )
+  """
+  Expanded `ColonyAction`
+  """
+  finalizationActionData: ColonyAction @hasOne(fields: ["finalizationActionId"])
 }
 
 type ExpenditureFundingItem {
@@ -3532,6 +3564,14 @@ type ColonyAction @model @searchable {
   Multichain info if the action is bridged"
   """
   multiChainInfo: MultiChainInfo
+  """
+  The motion action txHash that this action finalized
+  """
+  finalizedActionId: ID
+  """
+  Expanded `ColonyAction`
+  """
+  finalizedActionData: ColonyAction @hasOne(fields: ["finalizedActionId"])
 }
 
 type MultiChainInfo {

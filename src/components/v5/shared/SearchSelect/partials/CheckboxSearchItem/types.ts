@@ -1,8 +1,12 @@
-import { type SearchSelectOption } from '~v5/shared/SearchSelect/types.ts';
+import {
+  type SearchSelectOption,
+  type SearchSelectProps,
+} from '~v5/shared/SearchSelect/types.ts';
 
-export interface CheckboxSearchItemProps {
+export interface CheckboxSearchItemProps<T>
+  extends Pick<SearchSelectProps<T>, 'renderOption'> {
   checkboxesList?: string[];
-  options: SearchSelectOption[];
+  options: SearchSelectOption<T>[];
   onChange?: (value: string | number) => void;
   isLabelVisible?: boolean;
 }

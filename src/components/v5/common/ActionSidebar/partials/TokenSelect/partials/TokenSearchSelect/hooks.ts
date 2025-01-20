@@ -3,13 +3,14 @@ import { useEffect, useMemo } from 'react';
 
 import { useTokenSelectContext } from '~context/TokenSelectContext/TokenSelectContext.ts';
 import { useGetTokenFromEverywhereQuery } from '~gql';
-import { formatText } from '~utils/intl.ts';
-
-import { type TokenSearchItemOption } from '../TokenSearchItem/types.ts';
+import {
+  type TokenOption,
+  type SearchSelectOption,
+} from '~v5/shared/SearchSelect/types.ts';
 
 export const useSearchSelect = (
   searchValue: string,
-  filterOptionsFn?: (option: TokenSearchItemOption) => boolean,
+  filterOptionsFn?: (option: SearchSelectOption<TokenOption>) => boolean,
 ) => {
   const { setOptions, options, suggestedOptions } = useTokenSelectContext();
 
@@ -55,43 +56,27 @@ export const useSearchSelect = (
     }
   }, [setOptions, tokenData?.getTokenFromEverywhere?.items]);
 
-  const searchedOptions: TokenSearchItemOption[] = useMemo(
-    () =>
-      options.filter((option) => {
-        const searchQuery = searchValue.toLowerCase();
-        const optionValue =
-          typeof option.value === 'string'
-            ? option.value.replace('-', ' ').toLowerCase()
-            : option.value;
-        const optionUserName = formatText(option.label).toLowerCase();
+  const items = useMemo(() => {
+    const sourceOptions = searchValue ? options : suggestedOptions;
+    const filteredOptions = filterOptionsFn
+      ? sourceOptions.filter(filterOptionsFn)
+      : sourceOptions;
 
-        return [optionValue, optionUserName].some((value) =>
-          value.toString().includes(searchQuery),
-        );
-      }),
-
-    [options, searchValue],
-  );
-
-  const filteredOptions = useMemo(
-    () =>
-      filterOptionsFn
-        ? searchedOptions.filter(filterOptionsFn)
-        : searchedOptions,
-    [filterOptionsFn, searchedOptions],
-  );
-
-  const filteredSuggestedOptions = useMemo(
-    () =>
-      filterOptionsFn
-        ? suggestedOptions.filter(filterOptionsFn)
-        : suggestedOptions,
-    [filterOptionsFn, suggestedOptions],
-  );
+    return [
+      {
+        key: 'tokens',
+        title: !searchValue
+          ? {
+              id: 'manageTokensTable.suggestedTokens',
+            }
+          : undefined,
+        options: filteredOptions,
+      },
+    ];
+  }, [searchValue, options, suggestedOptions, filterOptionsFn]);
 
   return {
-    filteredOptions,
     loading,
-    suggestedOptions: filteredSuggestedOptions,
+    items,
   };
 };
