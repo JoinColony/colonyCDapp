@@ -11,12 +11,7 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import ActionStatusContextProvider from '~context/ActionStatusContext/ActionStatusContextProvider.tsx';
 import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import useDisableBodyScroll from '~hooks/useDisableBodyScroll/index.ts';
-<<<<<<< HEAD
 import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
-import Tooltip from '~shared/Extensions/Tooltip/Tooltip.tsx';
-=======
->>>>>>> 91a48c142 (feat: cancel streaming payment)
 import { formatText } from '~utils/intl.ts';
 import Modal from '~v5/shared/Modal/index.ts';
 
@@ -28,9 +23,7 @@ import useGetGroupedActionComponent from './hooks/useGetGroupedActionComponent.t
 import { ActionNotFound } from './partials/ActionNotFound.tsx';
 import ActionSidebarContent from './partials/ActionSidebarContent/ActionSidebarContent.tsx';
 import ActionSidebarLayout from './partials/ActionSidebarLayout/ActionSidebarLayout.tsx';
-import ActionSidebarNotFoundContent from './partials/ActionSidebarNotFoundContent/ActionSidebarNotFoundContent.tsx';
 import ActionSidebarStatusPill from './partials/ActionSidebarStatusPill/ActionSidebarStatusPill.tsx';
-import MotionOutcomeBadge from './partials/MotionOutcomeBadge/index.ts';
 import { type ActionSidebarProps } from './types.ts';
 
 const displayName = 'v5.common.ActionSidebar';
@@ -139,7 +132,11 @@ const ActionSidebar: FC<PropsWithChildren<ActionSidebarProps>> = ({
     >
       <ActionSidebarLayout
         ref={registerContainerRef}
-        onCloseClick={closeSidebarClick}
+        onCloseClick={() =>
+          closeSidebarClick({
+            shouldShowCancelModal: !getIsDraftAgreement(),
+          })
+        }
         className={className}
         shareButtonProps={
           transactionId
