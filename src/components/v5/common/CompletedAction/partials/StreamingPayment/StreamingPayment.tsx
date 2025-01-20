@@ -12,7 +12,7 @@ import {
 import clsx from 'clsx';
 import format from 'date-fns/format';
 import { BigNumber } from 'ethers';
-import React, { type FC } from 'react';
+import React, { useState, type FC, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { generatePath } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ import { ADDRESS_ZERO, APP_URL } from '~constants';
 import { Action } from '~constants/actions.ts';
 import { ONE_DAY_IN_SECONDS, ONE_HOUR_IN_SECONDS } from '~constants/time.ts';
 import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { useActionStatusContext } from '~context/ActionStatusContext/ActionStatusContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import {
@@ -29,12 +30,14 @@ import {
   useGetUserByAddressQuery,
 } from '~gql';
 import { useMobile } from '~hooks';
+import useToggle from '~hooks/useToggle/index.ts';
 import {
   COLONY_ACTIVITY_ROUTE,
   COLONY_HOME_ROUTE,
   TX_SEARCH_PARAM,
 } from '~routes';
 import SpinnerLoader from '~shared/Preloaders/SpinnerLoader.tsx';
+import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { addressHasRoles } from '~utils/checks/userHasRoles.ts';
 import { findDomainByNativeId } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
@@ -54,6 +57,7 @@ import {
   TITLE_FIELD_NAME,
   TOKEN_FIELD_NAME,
 } from '~v5/common/ActionSidebar/consts.ts';
+import { useGetStreamingPaymentData } from '~v5/common/ActionSidebar/hooks/useGetStreamingPaymentData.ts';
 import {
   END_OPTIONS,
   START_IMMEDIATELY_VALUE,
@@ -78,6 +82,7 @@ import DecisionMethodRow from '../rows/DecisionMethod.tsx';
 import DescriptionRow from '../rows/Description.tsx';
 import TeamFromRow from '../rows/TeamFrom.tsx';
 
+import CancelModal from './partials/CancelModal/CancelModal.tsx';
 import { type StreamingPaymentProps } from './types.ts';
 
 const displayName = 'v5.common.CompletedAction.partials.StreamingPayment';
@@ -89,10 +94,7 @@ const MSG = defineMessages({
   },
 });
 
-const StreamingPayment: FC<StreamingPaymentProps> = ({
-  action,
-  streamingPayment,
-}) => {
+const StreamingPayment: FC<StreamingPaymentProps> = ({ action }) => {
   const { colony } = useColonyContext();
   const { user } = useAppContext();
   const isMobile = useMobile();
@@ -104,7 +106,17 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
   } = useActionSidebarContext();
   const decisionMethod = useDecisionMethod(action);
 
-  const { loadingStreamingPayment, streamingPaymentData } = streamingPayment;
+  const { actionStatus, setIsLoading } = useActionStatusContext();
+  const [expectedActionStatus, setExpectedActionStatus] =
+    useState<StreamingPaymentStatus | null>(null);
+
+  const [
+    isCancelModalOpen,
+    { toggleOn: toggleCancelModalOn, toggleOff: toggleCancelModalOff },
+  ] = useToggle();
+
+  const { loadingStreamingPayment, streamingPaymentData } =
+    useGetStreamingPaymentData(action?.streamingPaymentId);
 
   const { data: recipentData } = useGetUserByAddressQuery({
     variables: { address: streamingPaymentData?.recipientAddress || '' },
@@ -113,6 +125,18 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
 
   const recipientName =
     recipentData?.getUserByAddress?.items[0]?.profile?.displayName ?? '';
+
+  useEffect(() => {
+    if (expectedActionStatus && expectedActionStatus !== actionStatus) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (expectedActionStatus && expectedActionStatus === actionStatus) {
+      setIsLoading(false);
+      setExpectedActionStatus(null);
+    }
+  }, [actionStatus, expectedActionStatus, setIsLoading]);
 
   if (loadingStreamingPayment) {
     return (
@@ -124,11 +148,9 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
       </div>
     );
   }
-
   if (!streamingPaymentData) {
     return null;
   }
-
   const {
     metadata,
     initiatorUser,
@@ -154,11 +176,10 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     amount || '1',
     selectedToken?.decimals,
   );
-
   const { endCondition } = streamingPaymentMetadata || {};
+  const selectedTeam = findDomainByNativeId(nativeDomainId, colony);
   const motionDomain = motionData?.motionDomain ?? null;
 
-  const selectedTeam = findDomainByNativeId(nativeDomainId, colony);
   const limitAmount = getStreamingPaymentLimit({
     streamingPayment: streamingPaymentData,
   });
@@ -175,10 +196,13 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
     requiredRolesDomain: streamingPaymentData.nativeDomainId,
   });
 
-  // @todo: update cancel-related logic in separate PR
   const showCancelOption =
-    streamingPaymentData.isCancelled &&
-    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions);
+    actionStatus &&
+    [StreamingPaymentStatus.Active, StreamingPaymentStatus.NotStarted].includes(
+      actionStatus as StreamingPaymentStatus,
+    ) &&
+    (user?.walletAddress === initiatorUser?.walletAddress || hasPermissions) &&
+    expectedActionStatus !== StreamingPaymentStatus.Cancelled;
 
   const isCustomInterval =
     Number(interval) !== ONE_HOUR_IN_SECONDS &&
@@ -188,6 +212,8 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
 
   const isStartImmediately =
     Math.abs(startTimeDate.getTime() - new Date(createdAt).getTime()) < 60000;
+
+  // console.log({isStartImmediately, startTimeDate, createdAt});
 
   const meatballOptions: MeatBallMenuItem[] = [
     {
@@ -239,7 +265,7 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
             key: '2',
             label: formatText({ id: 'expenditure.cancelPayment' }),
             icon: Prohibit,
-            onClick: () => {},
+            onClick: toggleCancelModalOn,
           },
         ]
       : []),
@@ -383,7 +409,6 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
             />
           )}
         <DecisionMethodRow action={action} />
-
         {action.motionData?.motionDomain.metadata && (
           <CreatedInRow
             motionDomainMetadata={action.motionData.motionDomain.metadata}
@@ -393,6 +418,14 @@ const StreamingPayment: FC<StreamingPaymentProps> = ({
       {action.annotation?.message && (
         <DescriptionRow description={action.annotation.message} />
       )}
+      <CancelModal
+        isOpen={isCancelModalOpen}
+        streamingPayment={streamingPaymentData}
+        onClose={toggleCancelModalOff}
+        onSuccess={() =>
+          setExpectedActionStatus(StreamingPaymentStatus.Cancelled)
+        }
+      />
     </>
   );
 };

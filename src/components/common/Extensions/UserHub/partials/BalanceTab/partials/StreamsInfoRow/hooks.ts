@@ -5,22 +5,12 @@ import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useCurrencyContext } from '~context/CurrencyContext/CurrencyContext.ts';
 import { useGetStreamingPaymentsByColonyQuery } from '~gql';
 import useCurrentBlockTime from '~hooks/useCurrentBlockTime.ts';
-import { StreamingPaymentStatus } from '~types/streamingPayments.ts';
 import { notNull } from '~utils/arrays/index.ts';
-import { getStreamingPaymentStatus } from '~utils/streamingPayments.ts';
 
 import { type StreamingPaymentItems } from './types.ts';
 import { calculateTotalsFromStreams } from './utils.ts';
 
-interface useStreamingPaymentsTotalFundsProps {
-  isFilteredByWalletAddress?: boolean;
-  nativeDomainId?: number;
-}
-
-export const useStreamingPaymentsTotalFunds = ({
-  isFilteredByWalletAddress = true,
-  nativeDomainId = undefined,
-}: useStreamingPaymentsTotalFundsProps) => {
+export const useStreamingPaymentsTotalFunds = () => {
   const { user } = useAppContext();
   const { walletAddress } = user ?? {};
   const { currentBlockTime: blockTime } = useCurrentBlockTime();
@@ -28,13 +18,7 @@ export const useStreamingPaymentsTotalFunds = ({
 
   const { data, loading, fetchMore } = useGetStreamingPaymentsByColonyQuery({
     variables: {
-      ...(isFilteredByWalletAddress &&
-        walletAddress && {
-          recipientAddress: walletAddress,
-        }),
-      ...(nativeDomainId && {
-        domainId: nativeDomainId,
-      }),
+      recipientAddress: walletAddress ?? '',
       colonyId: colony.colonyAddress,
     },
     onCompleted: (receivedData) => {
@@ -81,62 +65,32 @@ export const useStreamingPaymentsTotalFunds = ({
   });
   const [isAnyPaymentActive, setIsAnyPaymentActive] = useState(false);
   const [ratePerSecond, setRatePerSecond] = useState<number>(0);
-  const [activeStreamingPayments, setActiveStreamingPayments] = useState(0);
-  const [totalLastMonthStreaming, setTotalLastMonthStreaming] = useState(0);
 
   const getTotalFunds = useCallback(
-    async (items: StreamingPaymentItems, currentTimestamp: number) => {
+    async (items: StreamingPaymentItems) => {
       const {
         totalAvailable,
         totalClaimed,
         isAtLeastOnePaymentActive,
         ratePerSecond: ratePerSecondValue,
-        lastMonthStreaming,
       } = await calculateTotalsFromStreams({
         streamingPayments: items,
-        currentTimestamp,
+        currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
         currency,
         colony,
       });
 
-      setTotalLastMonthStreaming(lastMonthStreaming);
-
       setIsAnyPaymentActive(isAtLeastOnePaymentActive);
-      setTotalFunds({
-        totalAvailable,
-        totalClaimed,
-      });
+      setTotalFunds({ totalAvailable, totalClaimed });
       setRatePerSecond(ratePerSecondValue);
     },
-    [colony, currency],
-  );
-
-  const getTotalActiveStreamingPayments = useCallback(
-    (items: StreamingPaymentItems) => {
-      const activeStreams = items.filter((item) => {
-        return (
-          getStreamingPaymentStatus({
-            streamingPayment: item,
-            currentTimestamp: Math.floor(blockTime ?? Date.now() / 1000),
-          }) === StreamingPaymentStatus.Active
-        );
-      });
-
-      setActiveStreamingPayments(activeStreams.length);
-    },
-    [blockTime],
+    [blockTime, colony, currency],
   );
 
   useEffect(() => {
     fetchMore({
       variables: {
-        ...(isFilteredByWalletAddress &&
-          walletAddress && {
-            recipientAddress: walletAddress,
-          }),
-        ...(nativeDomainId && {
-          domainId: nativeDomainId,
-        }),
+        recipientAddress: walletAddress ?? '',
         colonyId: colony.colonyAddress,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
@@ -155,30 +109,15 @@ export const useStreamingPaymentsTotalFunds = ({
         };
       },
     });
-  }, [
-    colony.colonyAddress,
-    fetchMore,
-    walletAddress,
-    isFilteredByWalletAddress,
-    nativeDomainId,
-  ]);
+  }, [colony.colonyAddress, fetchMore, walletAddress]);
+
   useEffect(() => {
     if (streamingPayments.length) {
-      getTotalFunds(
-        streamingPayments,
-        Math.floor(blockTime ?? Date.now() / 1000),
-      );
-      getTotalActiveStreamingPayments(streamingPayments);
+      getTotalFunds(streamingPayments);
     }
-  }, [
-    blockTime,
-    getTotalFunds,
-    streamingPayments,
-    getTotalActiveStreamingPayments,
-  ]);
+  }, [getTotalFunds, streamingPayments]);
 
   return {
-    totalStreamed: totalFunds.totalClaimed + totalFunds.totalAvailable,
     totalFunds,
     isAnyPaymentActive,
     ratePerSecond,
@@ -186,7 +125,5 @@ export const useStreamingPaymentsTotalFunds = ({
     currency,
     getTotalFunds,
     streamingPayments,
-    activeStreamingPayments,
-    totalLastMonthStreaming,
   };
 };

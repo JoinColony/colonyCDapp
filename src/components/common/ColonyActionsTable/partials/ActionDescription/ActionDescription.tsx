@@ -33,7 +33,6 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     isMotion,
     motionData,
     motionState,
-    expenditureId,
     recipientAddress,
   } = action;
 
@@ -42,8 +41,9 @@ const ActionDescription: FC<ActionDescriptionProps> = ({
     true,
   );
 
-  const { expenditure, loadingExpenditure } =
-    useGetExpenditureData(expenditureId);
+  const { expenditure, loadingExpenditure } = useGetExpenditureData(
+    action.streamingPaymentId,
+  );
 
   const { streamingPaymentData, loadingStreamingPayment } =
     useGetStreamingPaymentData(action?.streamingPaymentId);
