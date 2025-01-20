@@ -52,7 +52,7 @@ test.describe('Staged Payment', () => {
 
   test('Permission decision method', async () => {
     await stagedPayment.fillForm({
-      title: 'Test Staged Payment with Permission Decision Method',
+      title: 'Test Staged Payment',
       team: 'General',
       recipient: recipientAddress,
       decisionMethod: 'Permissions',
@@ -173,9 +173,9 @@ test.describe('Staged Payment', () => {
     await verifyCompletedStagedPayment(stagedPayment);
   });
 
-  test('Reputation decision method', async () => {
+  test('Reputation decision method | Voting', async () => {
     await stagedPayment.fillForm({
-      title: 'Test Staged Payment with Reputation Decision Method',
+      title: 'Test Staged Payment',
       team: 'General',
       recipient: recipientAddress,
       decisionMethod: 'Permissions',
