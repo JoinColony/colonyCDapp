@@ -36,6 +36,13 @@ const ActionSidebarStatusPill: FC = () => {
           />
         );
       }
+      case ColonyActionType.CancelStreamingPayment: {
+        return (
+          <StreamingPaymentStatusPill
+            status={actionStatus as StreamingPaymentStatus}
+          />
+        );
+      }
       default: {
         if (actionType.endsWith('Motion') || actionType.endsWith('Multisig')) {
           return (

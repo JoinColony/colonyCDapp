@@ -173,6 +173,8 @@ const CompletedAction = ({ action }: ICompletedAction) => {
         return <PaymentBuilderWidget action={action} />;
       case ColonyActionType.CreateStreamingPayment:
         return <StreamingPaymentWidget action={action} />;
+      case ColonyActionType.CancelStreamingPayment:
+        return <StreamingPaymentWidget action={action} />;
       default:
         return <PermissionSidebar action={action} />;
     }
