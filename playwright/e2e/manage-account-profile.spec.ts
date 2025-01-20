@@ -10,7 +10,10 @@ test.describe('Manage Account', () => {
 
     await selectWallet(page);
 
-    await page.getByTestId('user-navigation-hamburger').click();
+    await page
+      .getByRole('banner')
+      .getByTestId('user-navigation-hamburger')
+      .click();
 
     await page.getByTestId('user-menu').waitFor({ state: 'visible' });
 

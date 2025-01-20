@@ -79,8 +79,6 @@ export const selectWallet = async (
 
   await page.getByText(wallet).click();
 
-  await page.getByText(/Local Ganache Instance/i).waitFor({ state: 'visible' });
-
   const loadingIndicator = page.getByText(/Checking your access.../i);
   const loadingIndicatorVisible = await loadingIndicator.isVisible();
 
