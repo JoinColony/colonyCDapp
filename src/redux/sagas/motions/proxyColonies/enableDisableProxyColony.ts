@@ -3,6 +3,7 @@ import { AddressZero } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { PERMISSIONS_NEEDED_FOR_ACTION } from '~constants/actions.ts';
 import { type ColonyManager } from '~context/index.ts';
 import { ActionTypes } from '~redux/actionTypes.ts';
 import {
@@ -11,6 +12,7 @@ import {
   getTxChannel,
   waitForTxResult,
 } from '~redux/sagas/transactions/index.ts';
+import getMultiSigMotionParams from '~redux/sagas/utils/getMultiSigMotionParams.ts';
 import {
   putError,
   takeFrom,
@@ -36,6 +38,8 @@ function* enableDisableProxyColonyMotionSaga({
     annotationMessage,
     colonyDomains,
     operation,
+    colonyRoles,
+    isMultiSig,
   },
   meta: { id: metaId, setTxHash },
   meta,
@@ -73,6 +77,23 @@ function* enableDisableProxyColonyMotionSaga({
 
     // eslint-disable-next-line no-inner-declarations
     function* getCreateMotionParams() {
+      if (isMultiSig) {
+        return yield call(getMultiSigMotionParams, {
+          colonyClient,
+          colonyRoles,
+          colonyAddress,
+          colonyDomains,
+          encodedAction,
+          requiredColonyRoles:
+            PERMISSIONS_NEEDED_FOR_ACTION.ManageSupportedChains,
+          group: {
+            key: batchKey,
+            id: metaId,
+            index: 0,
+          },
+        });
+      }
+
       const rootDomain = colonyDomains.find((domain) =>
         BigNumber.from(domain.nativeId).eq(Id.RootDomain),
       );

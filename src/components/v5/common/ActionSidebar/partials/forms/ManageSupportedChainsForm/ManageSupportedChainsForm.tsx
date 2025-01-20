@@ -2,7 +2,6 @@ import { Link, PlusMinus } from '@phosphor-icons/react';
 import React, { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DecisionMethod } from '~types/actions.ts';
 import { formatText } from '~utils/intl.ts';
 import ActionFormRow from '~v5/common/ActionFormRow/ActionFormRow.tsx';
 import {
@@ -20,7 +19,6 @@ import CreatedIn from '~v5/common/ActionSidebar/partials/CreatedIn/index.ts';
 import DecisionMethodField from '~v5/common/ActionSidebar/partials/DecisionMethodField/DecisionMethodField.tsx';
 import Description from '~v5/common/ActionSidebar/partials/Description/Description.tsx';
 import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
-import { createUnsupportedDecisionMethodFilter } from '~v5/common/ActionSidebar/utils.ts';
 import { FormCardSelect } from '~v5/common/Fields/CardSelect/index.ts';
 
 import { getManageSupportedChainsOptions } from './consts.ts';
@@ -37,9 +35,6 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
   const { resetField } = useFormContext();
   const hasNoDecisionMethods = useHasNoDecisionMethods();
   const chainSelectFilterFn = useFilterChainSelectField();
-  const decisionMethodFilterFn = createUnsupportedDecisionMethodFilter([
-    DecisionMethod.MultiSig,
-  ]);
   const createdInFilterFn = useFilterCreatedInField(FROM_FIELD_NAME);
   const isRemoveOperation = useCheckOperationType(
     MANAGE_SUPPORTED_CHAINS_FIELD_NAME,
@@ -101,7 +96,7 @@ const ManageSupportedChainsForm: FC<ActionFormBaseProps> = ({
           filterOptionsFn={chainSelectFilterFn}
         />
       </ActionFormRow>
-      <DecisionMethodField filterOptionsFn={decisionMethodFilterFn} />
+      <DecisionMethodField />
       <CreatedIn readonly filterOptionsFn={createdInFilterFn} />
       <Description />
     </>
