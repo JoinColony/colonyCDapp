@@ -91,12 +91,11 @@ const MembersTabContent: FC<PropsWithChildren<MembersTabContentProps>> = ({
                 key={item.member.walletAddress}
                 userAddress={item.member.walletAddress}
                 user={item.member.user ?? undefined}
+                domains={item.member.domains}
                 meatBallMenuProps={item.meatBallMenuProps}
                 reputation={item.member.reputation}
-                role={item.member.role}
                 isVerified={item.member.isVerified}
                 contributorType={item.member.contributorType}
-                isRoleInherited={item.member.isRoleInherited}
               />
             );
           })}

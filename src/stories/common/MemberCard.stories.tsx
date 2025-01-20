@@ -1,4 +1,3 @@
-import { UserRole } from '~constants/permissions.ts';
 import { ContributorType } from '~gql';
 import MemberCard from '~v5/common/MemberCard/index.ts';
 
@@ -43,11 +42,7 @@ export const WithBadge: StoryObj<typeof MemberCard> = {
     },
     contributorType: ContributorType.Active,
     userAddress: '',
-    role: {
-      name: 'admin',
-      role: UserRole.Admin,
-      permissions: [],
-    },
+    domains: [],
   },
 };
 
@@ -60,10 +55,6 @@ export const WithReputation: StoryObj<typeof MemberCard> = {
 export const WithReputationAndBadge: StoryObj<typeof MemberCard> = {
   args: {
     reputation: 59,
-    role: {
-      name: 'admin',
-      role: UserRole.Admin,
-      permissions: [],
-    },
+    domains: [],
   },
 };

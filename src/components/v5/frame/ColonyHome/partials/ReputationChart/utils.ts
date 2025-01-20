@@ -5,6 +5,7 @@ import { TEAM_SEARCH_PARAM } from '~routes';
 import { type Domain } from '~types/graphql.ts';
 import { formatText } from '~utils/intl.ts';
 import { adjustPercentagesTo100 } from '~utils/numbers.ts';
+import { splitWalletAddress } from '~utils/splitWalletAddress.ts';
 import { getTeamHexColor } from '~utils/teams.ts';
 
 import { CONTRIBUTORS_COLORS_LIST } from './consts.ts';
@@ -122,7 +123,7 @@ export const getContributorReputationChartData = (
     .map(({ walletAddress, user, reputation }, index) => {
       return {
         id: walletAddress,
-        label: user?.profile?.displayName || '',
+        label: user?.profile?.displayName || splitWalletAddress(walletAddress),
         value: reputation || 0,
         color: getTeamHexColor(CONTRIBUTORS_COLORS_LIST[index]),
       };
