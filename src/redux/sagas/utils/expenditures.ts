@@ -112,7 +112,7 @@ export const getPayoutsWithSlotIds = (
 ) => {
   return payouts.map((payout, index) => ({
     ...payout,
-    slotId: index + 1,
+    slotId: payout.slotId ?? index + 1,
   }));
 };
 
