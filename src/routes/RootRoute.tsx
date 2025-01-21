@@ -5,7 +5,6 @@ import AppContextProvider from '~context/AppContext/AppContextProvider.tsx';
 import CurrencyContextProvider from '~context/CurrencyContext/CurrencyContextProvider.tsx';
 import FeatureFlagsContextProvider from '~context/FeatureFlagsContext/FeatureFlagsContextProvider.tsx';
 import ColonyFiltersContextProvider from '~context/GlobalFiltersContext/ColonyFiltersContextProvider.tsx';
-import GlobalTriggersContextProvider from '~context/GlobalTriggersContext/GlobalTriggersContextProvider.tsx';
 import NotificationsUserContextProvider from '~context/Notifications/NotificationsUserContext/NotificationsUserContextProvider.tsx';
 import PageHeadingContextProvider from '~context/PageHeadingContext/PageHeadingContextProvider.tsx';
 import PageLayoutContextProvider from '~context/PageLayoutContext/PageLayoutContextProvider.tsx';
@@ -30,21 +29,19 @@ const RootRouteInner = () => {
 
 const RootRoute = () => (
   <PageThemeContextProvider>
-    <GlobalTriggersContextProvider>
-      <PageLayoutContextProvider>
-        <AppContextProvider>
-          <ColonyFiltersContextProvider>
-            <FeatureFlagsContextProvider>
-              <CurrencyContextProvider>
-                <NotificationsUserContextProvider>
-                  <RootRouteInner />
-                </NotificationsUserContextProvider>
-              </CurrencyContextProvider>
-            </FeatureFlagsContextProvider>
-          </ColonyFiltersContextProvider>
-        </AppContextProvider>
-      </PageLayoutContextProvider>
-    </GlobalTriggersContextProvider>
+    <PageLayoutContextProvider>
+      <AppContextProvider>
+        <ColonyFiltersContextProvider>
+          <FeatureFlagsContextProvider>
+            <CurrencyContextProvider>
+              <NotificationsUserContextProvider>
+                <RootRouteInner />
+              </NotificationsUserContextProvider>
+            </CurrencyContextProvider>
+          </FeatureFlagsContextProvider>
+        </ColonyFiltersContextProvider>
+      </AppContextProvider>
+    </PageLayoutContextProvider>
   </PageThemeContextProvider>
 );
 

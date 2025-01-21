@@ -5,7 +5,7 @@ import { defineMessages } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGlobalTriggersContext } from '~context/GlobalTriggersContext/GlobalTriggersContext.ts';
+import { useColonyTriggersContext } from '~context/GlobalTriggersContext/ColonyTriggersContext.ts';
 import { ColonyActionType } from '~gql';
 import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
@@ -63,7 +63,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     canClaimStakes,
   } = useClaimConfig(actionData, startPollingAction, refetchAction);
 
-  const { setActionsTableTriggers } = useGlobalTriggersContext();
+  const { setActionsTableTriggers } = useColonyTriggersContext();
 
   const isMotionFinalized = actionData.motionData.isFinalized;
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);

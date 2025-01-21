@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGlobalTriggersContext } from '~context/GlobalTriggersContext/GlobalTriggersContext.ts';
+import { useColonyTriggersContext } from '~context/GlobalTriggersContext/ColonyTriggersContext.ts';
 import {
   SearchableColonyActionSortableFields,
   SearchableSortDirection,
@@ -39,7 +39,7 @@ const useActivityFeed = (
   const { colony } = useColonyContext();
 
   const { actionsTableTriggers, setActionsTableTriggers } =
-    useGlobalTriggersContext();
+    useColonyTriggersContext();
 
   const { colonyAddress } = colony;
 

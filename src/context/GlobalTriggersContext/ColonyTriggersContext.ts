@@ -8,26 +8,26 @@ type ActionsTableTriggers = {
   shouldRefetchMotionStates: boolean;
 };
 
-export interface GlobalTriggersContextValue {
+export interface ColonyTriggersContextValue {
   actionsTableTriggers: ActionsTableTriggers;
   setActionsTableTriggers: React.Dispatch<
     React.SetStateAction<ActionsTableTriggers>
   >;
 }
 
-export const GlobalTriggersContext = createContext<GlobalTriggersContextValue>({
+export const ColonyTriggersContext = createContext<ColonyTriggersContextValue>({
   actionsTableTriggers: {
     shouldRefetchMotionStates: false,
   },
   setActionsTableTriggers: noop,
 });
 
-export const useGlobalTriggersContext = () => {
-  const context = useContext(GlobalTriggersContext);
+export const useColonyTriggersContext = () => {
+  const context = useContext(ColonyTriggersContext);
 
   if (!context) {
     throw new Error(
-      'This hook must be used within the "GlobalTriggersContext" provider',
+      'This hook must be used within the "ColonyTriggersContext" provider',
     );
   }
 

@@ -2,7 +2,7 @@ import { type MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
-import { useGlobalTriggersContext } from '~context/GlobalTriggersContext/GlobalTriggersContext.ts';
+import { useColonyTriggersContext } from '~context/GlobalTriggersContext/ColonyTriggersContext.ts';
 import { type MotionStakes, useGetMotionTimeoutPeriodsQuery } from '~gql';
 import { type TimerValueProps } from '~shared/TimerValue/TimerValue.tsx';
 import { MotionState } from '~utils/colonyMotions.ts';
@@ -66,7 +66,7 @@ export const useMotionCountdown = ({
 
   const [timeLeft, setTimeLeft] = useState<number>(-1);
 
-  const { setActionsTableTriggers } = useGlobalTriggersContext();
+  const { setActionsTableTriggers } = useColonyTriggersContext();
 
   const prevStateRef: MutableRefObject<MotionState | null> = useRef(null);
   const isStakingPhaseState =
