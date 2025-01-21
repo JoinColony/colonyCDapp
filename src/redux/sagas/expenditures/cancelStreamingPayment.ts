@@ -8,6 +8,7 @@ import {
   type ColonyManager,
 } from '~context/index.ts';
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { getStreamingPaymentCreatingActionId } from '~utils/streamingPayments.ts';
 
 import {
   createTransaction,
@@ -86,6 +87,7 @@ function* cancelStreamingPaymentAction({
       params: isCancelMethod
         ? [permissionDomainId, childSkillIndex, streamingPayment.nativeId]
         : [streamingPayment.nativeId],
+      associatedActionId: getStreamingPaymentCreatingActionId(streamingPayment),
     });
 
     yield takeFrom(
@@ -104,6 +106,8 @@ function* cancelStreamingPaymentAction({
           index: 1,
         },
         ready: false,
+        associatedActionId:
+          getStreamingPaymentCreatingActionId(streamingPayment),
       });
 
       yield takeFrom(
