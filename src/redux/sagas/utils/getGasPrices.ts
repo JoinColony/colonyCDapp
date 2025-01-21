@@ -169,12 +169,35 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       const cheaper = defaultGasPrices.network;
       const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
 
-      // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
-      const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
-        'eth_maxPriorityFeePerGas',
-        [],
-      );
-      const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+      // In cases where we cannot make the `eth_maxPriorityFeePerGas` call, we'll just default to zero
+      // This might, and most likely will happen with Metamask since, even if the RPC provider support EIP-1559,
+      // Metamask will block the call
+      // See this PR for more info: https://github.com/MetaMask/metamask-extension/pull/29818
+      //
+      // Defaulting to zero (0) here means that the user will not pay any "extra" atop of what the actual
+      // gas required for the transaction.
+      // This works fine for Arbitrum, Arbitrum Sepolia, Local Dev, basically everywhere where a miner doesn't
+      // have an incentive to include the transaction in a block via this "tip", or in the case of Arbitrum,
+      // a sequencer
+      // https://docs.arbitrum.io/learn-more/faq#do-i-need-to-pay-a-tip-or-priority-fee-for-my-arbitrum-transactions
+      //
+      // However this will definetly not work on Mainnet, Gnosis for example since there the miners
+      // are actively looking for this
+      //
+      // If we ever have to re-deploy to mainnet, this will need to be revisited and somehow fixed
+
+      let maxPriorityFeePerGas = BigNumber.from(0);
+      try {
+        // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+        const maxPriorityFeePerGasResponse =
+          await userWallet.ethersProvider.send('eth_maxPriorityFeePerGas', []);
+
+        maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+      } catch (error) {
+        debugLogging(
+          `The "eth_maxPriorityFeePerGas" provider call failed: "${error.message}"`,
+        );
+      }
 
       debugLogging('ARBITRUM GAS DEBUG', {
         maxFeePerGas,
@@ -205,12 +228,37 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
     const cheaper = defaultGasPrices.network;
     const { maxFeePerGas } = await userWallet.ethersProvider.getFeeData();
 
-    // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
-    const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
-      'eth_maxPriorityFeePerGas',
-      [],
-    );
-    const maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+    // In cases where we cannot make the `eth_maxPriorityFeePerGas` call, we'll just default to zero
+    // This might, and most likely will happen with Metamask since, even if the RPC provider support EIP-1559,
+    // Metamask will block the call
+    // See this PR for more info: https://github.com/MetaMask/metamask-extension/pull/29818
+    //
+    // Defaulting to zero (0) here means that the user will not pay any "extra" atop of what the actual
+    // gas required for the transaction.
+    // This works fine for Arbitrum, Arbitrum Sepolia, Local Dev, basically everywhere where a miner doesn't
+    // have an incentive to include the transaction in a block via this "tip", or in the case of Arbitrum,
+    // a sequencer
+    // https://docs.arbitrum.io/learn-more/faq#do-i-need-to-pay-a-tip-or-priority-fee-for-my-arbitrum-transactions
+    //
+    // However this will definetly not work on Mainnet, Gnosis for example since there the miners
+    // are actively looking for this
+    //
+    // If we ever have to re-deploy to mainnet, this will need to be revisited and somehow fixed
+
+    let maxPriorityFeePerGas = BigNumber.from(0);
+    try {
+      // Ethers v5.7 just returns 1.5 GWei for maxPriorityFeePerGas. We should get it ourselves
+      const maxPriorityFeePerGasResponse = await userWallet.ethersProvider.send(
+        'eth_maxPriorityFeePerGas',
+        [],
+      );
+
+      maxPriorityFeePerGas = BigNumber.from(maxPriorityFeePerGasResponse);
+    } catch (error) {
+      debugLogging(
+        `The "eth_maxPriorityFeePerGas" provider call failed: "${error.message}"`,
+      );
+    }
 
     // This wil essentially make the local dev gas price estimation act more like production
     const defaultNetworkGasPrices = {
@@ -234,7 +282,7 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
 
     return defaultNetworkGasPrices;
   } catch (caughtError) {
-    console.info(
+    debugLogging(
       `Could not get ${DEFAULT_NETWORK} network gas prices: ${caughtError.message}`,
     );
     // Default values
