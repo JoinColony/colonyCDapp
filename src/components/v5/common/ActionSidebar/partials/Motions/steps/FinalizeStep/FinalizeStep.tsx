@@ -60,6 +60,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
+    hasUserStake,
   } = useClaimConfig(actionData, startPollingAction);
 
   const isMotionFinalized = actionData.motionData.isFinalized;
@@ -69,9 +70,11 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const isMotionFailed = actionData.motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
     actionData.type === ColonyActionType.CreateDecisionMotion;
-  const isMotionClaimable =
-    isMotionFinalized ||
-    isMotionFailedNotFinalizable ||
+  const isMotionClaimable = isMotionFinalized && !isClaimed;
+  const isAgreementClaimable =
+    ((isMotionFinalized || isMotionFailedNotFinalizable) &&
+      !isMotionFailed &&
+      !isMotionFailedNotFinalizable) ||
     (isMotionAgreement && !isClaimed);
 
   const handleSuccess = () => {
@@ -121,9 +124,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   const statusId = (() => {
     if (isMotionAgreement) {
-      return isClaimed
-        ? 'motion.finalizeStep.finalizeAgreement'
-        : 'motion.finalizeStep.claimable.finalizeAgreement';
+      const userNotStakeOrClaimedText = isMotionFailed
+        ? 'motion.finalizeStep.finalizeAgreement.failed'
+        : 'motion.finalizeStep.finalizeAgreement.supported';
+
+      const userStakeUnclaimedText = isMotionFailed
+        ? 'motion.finalizeStep.claimable.finalizeAgreement.failed'
+        : 'motion.finalizeStep.claimable.finalizeAgreement.passed';
+
+      return isClaimed || !hasUserStake
+        ? userNotStakeOrClaimedText
+        : userStakeUnclaimedText;
     }
 
     return isMotionFailedNotFinalizable
@@ -216,8 +227,13 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                   !isMotionAgreement;
 
                 const showClaimButton =
+                  hasUserStake &&
+                  !isPolling &&
+                  !isSubmitting &&
                   !showPendingButton &&
-                  isMotionClaimable &&
+                  !isMotionFailedNotFinalizable &&
+                  (isMotionClaimable ||
+                    (isMotionAgreement && isAgreementClaimable)) &&
                   canClaimStakes &&
                   !isClaimed;
 
@@ -270,6 +286,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         )}
                         {showFinalizeButton && (
                           <Button
+                            className="mt-6"
                             mode="primarySolid"
                             disabled={!isFinalizable || wrongMotionState}
                             isFullSize
@@ -281,6 +298,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         )}
                         {showClaimButton && (
                           <Button
+                            className="mt-6"
                             mode="primarySolid"
                             disabled={
                               !canClaimStakes ||
