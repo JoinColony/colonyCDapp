@@ -1,3 +1,7 @@
+import { Id } from '@colony/colony-js';
+
+import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
+import { type DomainFragment } from '~gql';
 import {
   type ColonyContributor,
   type ContributorReputation,
@@ -13,6 +17,7 @@ import {
 const mergeDomains = (
   reputation: ContributorReputation[],
   permissions: ContributorRoles[],
+  colonyDomains: DomainFragment[],
 ) => {
   const domains: Record<string, DomainWithPermissionsAndReputation> = {};
 
@@ -80,10 +85,41 @@ const mergeDomains = (
     }
   }
 
+  const hasPermissionsInRoot = Object.values(domains).some(
+    (domain) =>
+      domain.nativeId === Id.RootDomain &&
+      (domain.permissions.length > 0 || domain.multiSigPermissions.length > 0),
+  );
+
+  // Ensure all domains are included if there are permissions in the root domain
+  if (hasPermissionsInRoot) {
+    for (const colonyDomain of colonyDomains) {
+      // Skip domains that are already included
+      if (
+        !Object.values(domains).some(
+          (domain) => domain.nativeId === colonyDomain.nativeId,
+        )
+      ) {
+        domains[colonyDomain.id] = {
+          nativeId: colonyDomain.nativeId,
+          domainId: colonyDomain.id,
+          domainColor: colonyDomain?.metadata?.color,
+          domainName:
+            colonyDomain?.metadata?.name ?? `Domain ${colonyDomain.nativeId}`,
+          permissions: [],
+          multiSigPermissions: [],
+          reputationRaw: '0',
+          reputationPercentage: 0,
+        };
+      }
+    }
+  }
+
   return Object.values(domains).sort((a, b) => a.nativeId - b.nativeId);
 };
 
 export const getContributorBreakdown = (
+  domains: DomainFragment[],
   contributor?: ColonyContributor | null,
 ) => {
   if (!contributor) {
@@ -92,11 +128,20 @@ export const getContributorBreakdown = (
   const rep = contributor.reputation?.items.filter(notNull) ?? [];
   const roles = contributor.roles?.items.filter(notNull) ?? [];
 
-  return mergeDomains(rep, roles);
+  return mergeDomains(rep, roles, domains);
 };
 
 const useContributorBreakdown = (contributor?: ColonyContributor | null) => {
-  return getContributorBreakdown(contributor);
+  const {
+    colony: { domains },
+  } = useColonyContext();
+
+  const contributorBreakdown = getContributorBreakdown(
+    domains?.items.filter(notNull) || [],
+    contributor,
+  );
+
+  return contributorBreakdown;
 };
 
 export default useContributorBreakdown;
