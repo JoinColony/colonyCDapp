@@ -71,12 +71,12 @@ const NotificationsDataContextProvider = ({
       userExternalId={user.notificationsData.magicbellUserId}
       userKey={data?.getUserNotificationsHMAC || ''}
       stores={
-        isDev
+        isDev && !!import.meta.env.MAGICBELL_DEV_KEY
           ? [
               {
                 id: 'dev-store',
                 defaultQueryParams: {
-                  category: import.meta.env.MAGICBELL_DEV_KEY,
+                  topic: import.meta.env.MAGICBELL_DEV_KEY,
                   // eslint-disable-next-line camelcase
                   per_page: 10,
                 },
