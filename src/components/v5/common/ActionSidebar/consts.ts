@@ -27,6 +27,7 @@ export const MANAGE_MEMBERS_FIELD_NAME = 'manageMembers';
 export const COLONY_NAME_FIELD_NAME = 'colonyName';
 export const COLONY_AVATAR_FIELD_NAME = 'avatar';
 export const COLONY_DESCRIPTION_FIELD_NAME = 'colonyDescription';
+export const ARBITRARY_TRANSACTIONS_FIELD_NAME = 'transactions';
 export const COLONY_OBJECTIVE_TITLE_FIELD_NAME = 'colonyObjectiveTitle';
 export const COLONY_OBJECTIVE_DESCRIPTION_FIELD_NAME =
   'colonyObjectiveDescription';
