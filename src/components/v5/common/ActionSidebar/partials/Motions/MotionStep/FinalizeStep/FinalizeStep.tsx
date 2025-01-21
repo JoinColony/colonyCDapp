@@ -58,6 +58,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
+    hasUserStake,
   } = useClaimConfig({ action, motionData });
 
   const { type: actionType } = action;
@@ -75,11 +76,12 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
   const isMotionFailed = motionData.motionStateHistory.hasFailed;
   const isMotionAgreement =
-    actionType === ColonyActionType.CreateDecisionMotion;
-
-  const isMotionClaimable =
-    isMotionFinalized ||
-    isMotionFailedNotFinalizable ||
+    action.type === ColonyActionType.CreateDecisionMotion;
+  const isMotionClaimable = isMotionFinalized && !isClaimed;
+  const isAgreementClaimable =
+    ((isMotionFinalized || isMotionFailedNotFinalizable) &&
+      !isMotionFailed &&
+      !isMotionFailedNotFinalizable) ||
     (isMotionAgreement && !isClaimed);
 
   const handleSuccess = () => {
@@ -120,9 +122,17 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
 
   const statusId = (() => {
     if (isMotionAgreement) {
-      return isClaimed
-        ? 'motion.finalizeStep.finalizeAgreement'
-        : 'motion.finalizeStep.claimable.finalizeAgreement';
+      const userNotStakeOrClaimedText = isMotionFailed
+        ? 'motion.finalizeStep.finalizeAgreement.failed'
+        : 'motion.finalizeStep.finalizeAgreement.supported';
+
+      const userStakeUnclaimedText = isMotionFailed
+        ? 'motion.finalizeStep.claimable.finalizeAgreement.failed'
+        : 'motion.finalizeStep.claimable.finalizeAgreement.passed';
+
+      return isClaimed || !hasUserStake
+        ? userNotStakeOrClaimedText
+        : userStakeUnclaimedText;
     }
 
     return isMotionFailedNotFinalizable
@@ -133,7 +143,9 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   const showFinalizeButton =
     !isMotionFailedNotFinalizable && !isMotionFinalized && !isMotionAgreement;
 
-  const showClaimButton = isMotionClaimable && canClaimStakes && !isClaimed;
+  const showClaimButton =
+    (isMotionClaimable && canClaimStakes && !isClaimed) ||
+    (isMotionAgreement && isAgreementClaimable && hasUserStake && !isClaimed);
   const canBeExecuted =
     !isPolling &&
     !isMotionFailedNotFinalizable &&
