@@ -56,16 +56,11 @@ function* createProxyColony({
       .createTxCreator('createProxyColony', [
         BigInt(foreignChainId),
         creationSalt,
-        {
-          gasLimit: BigInt(10_000_000),
-        },
-      ] as any)
+      ])
       .tx()
-      // @TODO why can't we use the ovverides exposed by TxCreator
-      // .send({
-      //   gasLimit: BigInt(1000000)
-      // })
-      .send();
+      .send({
+        gasLimit: BigInt(10_000_000),
+      });
 
     put(transactionSent(meta.id));
 
