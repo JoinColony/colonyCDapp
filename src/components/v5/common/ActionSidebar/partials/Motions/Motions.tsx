@@ -8,13 +8,13 @@ import clsx from 'clsx';
 import { BigNumber } from 'ethers';
 import React, { type FC, useEffect, useMemo, useState } from 'react';
 
+import { useActionContext } from '~context/ActionContext/ActionContext.ts';
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
@@ -25,7 +25,7 @@ import OutcomeStep from './steps/OutcomeStep/index.ts';
 import RevealStep from './steps/RevealStep/index.ts';
 import StakingStep from './steps/StakingStep/index.ts';
 import VotingStep from './steps/VotingStep/index.ts';
-import { type MotionsProps, type Steps, CustomStep } from './types.ts';
+import { type Steps, CustomStep, type MotionsProps } from './types.ts';
 import {
   getFinalizeStepTooltipText,
   getOutcomeStepTooltipText,
@@ -36,18 +36,11 @@ import {
 
 const displayName = 'v5.common.ActionSidebar.partials.Motions';
 
-const Motions: FC<MotionsProps> = ({ transactionId }) => {
+const Motions: FC<MotionsProps> = ({ action, motionData }) => {
+  const { motionState, refetchMotionState, networkMotionState, loadingAction } =
+    useActionContext();
+
   const { canInteract } = useAppContext();
-  const {
-    action,
-    networkMotionState,
-    motionState,
-    refetchMotionState,
-    loadingAction,
-    startPollingForAction,
-    stopPollingForAction,
-    refetchAction,
-  } = useGetColonyAction(transactionId);
 
   const { loading: loadingExtensions, votingReputationExtensionData } =
     useEnabledExtensions();
@@ -55,8 +48,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const isVotingReputationExtensionUninstalled =
     !loadingExtensions && !votingReputationExtensionData;
 
-  const { motionData, rootHash } = action || {};
-  const { motionId = '', motionStakes, motionStateHistory } = motionData || {};
+  const {
+    motionId = '',
+    motionStakes,
+    motionStateHistory,
+    remainingStakes,
+  } = motionData;
 
   const [activeStepKey, setActiveStepKey] = useState<Steps>(networkMotionState);
 
@@ -70,20 +67,12 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   const motionOutcomeAvailable = motionFinished && endedAt;
 
   useEffect(() => {
-    startPollingForAction();
-
     setActiveStepKey(networkMotionState);
 
     if (motionFinished) {
       setActiveStepKey(CustomStep.Finalize);
     }
-    return () => stopPollingForAction();
-  }, [
-    motionFinished,
-    networkMotionState,
-    startPollingForAction,
-    stopPollingForAction,
-  ]);
+  }, [motionFinished, networkMotionState]);
 
   const { percentage } = motionStakes || {};
   const { nay, yay } = percentage || {};
@@ -97,7 +86,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
 
   const motionStakedAndFinalizable =
     motionFinished &&
-    motionData?.remainingStakes
+    remainingStakes
       .reduce((totalStakes, stake) => totalStakes.add(stake), BigNumber.from(0))
       .gt(0);
 
@@ -142,14 +131,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       },
       {
         key: NetworkMotionState.Submit,
-        content: (
-          <VotingStep
-            actionData={action as MotionAction}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            transactionId={transactionId}
-          />
-        ),
+        content: <VotingStep action={action} motionData={motionData} />,
         heading: {
           label: formatText({ id: 'motion.voting.label' }) || '',
           decor:
@@ -176,14 +158,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       {
         key: NetworkMotionState.Reveal,
         content: (
-          <RevealStep
-            actionData={action as MotionAction}
-            motionState={networkMotionState}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            transactionId={transactionId}
-            rootHash={rootHash}
-          />
+          <RevealStep action={action} motionState={networkMotionState} />
         ),
         heading: {
           label: formatText({ id: 'motion.reveal.label' }) || '',
@@ -275,12 +250,10 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       },
       {
         key: CustomStep.Finalize,
-        content: motionState && (
+        content: (
           <FinalizeStep
-            actionData={action as MotionAction}
-            startPollingAction={startPollingForAction}
-            stopPollingAction={stopPollingForAction}
-            refetchAction={refetchAction}
+            action={action}
+            motionData={motionData}
             motionState={motionState}
           />
         ),
@@ -299,30 +272,25 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
       },
     ];
   }, [
+    action,
+    activeStepKey,
+    canInteract,
+    hasPassed,
+    isFullyStaked,
+    isVotingReputationExtensionUninstalled,
     loadingAction,
     loadingExtensions,
-    isVotingReputationExtensionUninstalled,
-    activeStepKey,
+    motionData,
+    motionId,
+    motionOutcomeAvailable,
+    motionStakedAndFinalizable,
     motionStakes,
     motionState,
-    motionId,
-    refetchMotionState,
-    networkMotionState,
-    motionData,
-    action,
-    startPollingForAction,
-    stopPollingForAction,
-    transactionId,
-    isFullyStaked,
-    motionStakedAndFinalizable,
-    rootHash,
-    motionStateHistory?.hasPassed,
     motionStateHistory?.hasFailed,
     motionStateHistory?.hasFailedNotFinalizable,
-    hasPassed,
-    refetchAction,
-    canInteract,
-    motionOutcomeAvailable,
+    motionStateHistory?.hasPassed,
+    networkMotionState,
+    refetchMotionState,
   ]);
 
   if (
@@ -335,11 +303,7 @@ const Motions: FC<MotionsProps> = ({ transactionId }) => {
   return loadingAction || loadingExtensions ? (
     <SpinnerLoader appearance={{ size: 'medium' }} />
   ) : (
-    <MotionProvider
-      motionAction={action as MotionAction}
-      startPollingAction={startPollingForAction}
-      stopPollingAction={stopPollingForAction}
-    >
+    <MotionProvider motionAction={action as MotionAction}>
       <Stepper<Steps>
         activeStepKey={activeStepKey}
         setActiveStepKey={setActiveStepKey}

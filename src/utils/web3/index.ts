@@ -3,6 +3,7 @@ import BN from 'bn.js';
 
 import { NETWORK_DATA } from '~constants/index.ts';
 import { type TransactionError } from '~redux/immutable/Transaction.ts';
+import { type OptionalValue } from '~types';
 import { ExtendedClientType } from '~types/transactions.ts';
 
 export {
@@ -41,7 +42,7 @@ export type Unit =
   | 'tether';
 
 export const isTransactionFormat = (
-  potentialTransactionHash?: string,
+  potentialTransactionHash?: OptionalValue<string>,
 ): boolean => {
   const hexStringRegex = /^0x([A-Fa-f0-9]{64})$/;
   if (!potentialTransactionHash) {

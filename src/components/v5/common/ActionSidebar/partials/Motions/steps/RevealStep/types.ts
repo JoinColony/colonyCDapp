@@ -1,10 +1,5 @@
-import { type MotionAction } from '~types/motions.ts';
+import { type CompletedActionProps } from '~v5/common/CompletedAction/types.ts';
 
-export interface RevealStepProps {
-  startPollingAction: (pollingInterval: number) => void;
-  stopPollingAction: () => void;
-  actionData: MotionAction | undefined | null;
-  rootHash: string | undefined;
-  transactionId: string;
+export interface RevealStepProps extends Pick<CompletedActionProps, 'action'> {
   motionState?: number;
 }
