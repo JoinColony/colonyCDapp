@@ -9,7 +9,7 @@ export type ProxyColoniesActionTypes =
       {
         colonyAddress: Address;
         foreignChainId: number;
-        creationSalt: string;
+        creationSalt: `0x${string}`;
       },
       object
     >
