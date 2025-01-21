@@ -2,6 +2,7 @@ import { ClientType, ColonyRole, getPermissionProofs } from '@colony/colony-js';
 import { call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { type Action, ActionTypes, type AllActions } from '~redux/index.ts';
+import { getStreamingPaymentCreatingActionId } from '~utils/streamingPayments.ts';
 
 import {
   createTransaction,
@@ -61,6 +62,7 @@ function* claimStreamingPayment({
         id: meta.id,
         index: 0,
       },
+      associatedActionId: getStreamingPaymentCreatingActionId(streamingPayment),
     });
 
     yield initiateTransaction(meta.id);
