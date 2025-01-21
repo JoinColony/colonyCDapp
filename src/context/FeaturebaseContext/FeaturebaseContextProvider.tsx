@@ -13,6 +13,15 @@ import { FeaturebaseContext } from './FeaturebaseContext.ts';
 
 const FEATUREBASE_SCRIPT_ID = 'featurebase-sdk';
 
+const initializeFeaturebase = () => {
+  if (typeof window.Featurebase !== 'function') {
+    window.Featurebase = function Featurebase() {
+      // eslint-disable-next-line prefer-rest-params
+      (window.Featurebase.q = window.Featurebase.q || []).push(arguments);
+    };
+  }
+};
+
 const FeaturebaseContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const { user } = useAppContext();
   const { isDarkMode } = usePageThemeContext();
@@ -29,12 +38,7 @@ const FeaturebaseContextProvider: FC<PropsWithChildren> = ({ children }) => {
       script.id = FEATUREBASE_SCRIPT_ID;
 
       script.onload = () => {
-        if (typeof window.Featurebase !== 'function') {
-          window.Featurebase = function Featurebase() {
-            // eslint-disable-next-line prefer-rest-params
-            (window.Featurebase.q = window.Featurebase.q || []).push(arguments);
-          };
-        }
+        initializeFeaturebase();
         setIsFeaturebaseBooted(true);
       };
 
@@ -43,12 +47,7 @@ const FeaturebaseContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
       document.head.appendChild(script);
     } else {
-      if (typeof window.Featurebase !== 'function') {
-        window.Featurebase = function Featurebase() {
-          // eslint-disable-next-line prefer-rest-params
-          (window.Featurebase.q = window.Featurebase.q || []).push(arguments);
-        };
-      }
+      initializeFeaturebase();
       setIsFeaturebaseBooted(true);
     }
   }, []);
