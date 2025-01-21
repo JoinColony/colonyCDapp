@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { type FC } from 'react';
 
 import {
@@ -34,8 +33,12 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
       </h5>
       <Table<ArbitraryTransactionsTableItem>
         layout={isTablet ? 'vertical' : 'horizontal'}
-        className={clsx('mb-6')}
+        className="mb-6"
         columns={columns}
+        borders={{
+          type: 'unset',
+          visible: true,
+        }}
         rows={{ getRowClassName: () => 'align-top' }}
         data={data.length === 0 ? [{} as ArbitraryTransactionsTableItem] : data}
       />

@@ -2,7 +2,7 @@ import { createColumnHelper, type ColumnDef } from '@tanstack/react-table';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useMemo } from 'react';
 
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import getMaskedAddress from '~shared/MaskedAddress/getMaskedAddress.ts';
 import { decodeArbitraryTransaction } from '~utils/arbitraryTxs.ts';
 import { formatText } from '~utils/intl.ts';
@@ -34,16 +34,16 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
     () => createColumnHelper<ArbitraryTransactionsTableItem>(),
     [],
   );
-  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   const columns: ColumnDef<ArbitraryTransactionsTableItem, string>[] = useMemo(
     () => [
       columnHelper.accessor('contractAddress', {
         enableSorting: false,
         header: () => (
-          <span className="text-sm text-gray-600">
+          <div className="pt-1.5 text-sm text-gray-600 md:pt-0">
             {formatText({ id: 'table.row.contract' })}
-          </span>
+          </div>
         ),
         cellContentWrapperClassName: '!justify-start',
         cell: ({ getValue }) => {
@@ -54,7 +54,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
           });
 
           return (
-            <span className="flex max-w-full items-center gap-2">
+            <span className="flex max-w-full items-center gap-2 pt-1">
               {isAddressValid && <UserAvatar userAddress={address} size={20} />}
 
               <span className="truncate text-md font-medium text-gray-900">
@@ -63,14 +63,14 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             </span>
           );
         },
-        staticSize: isMobile ? '100px' : '30%',
+        staticSize: isTablet ? '97px' : '30%',
       }),
       columnHelper.display({
         id: 'description',
         header: () => (
-          <span className="text-sm text-gray-600">
+          <div className="pt-1.5 text-sm text-gray-600  md:pt-0">
             {formatText({ id: 'table.row.details' })}
-          </span>
+          </div>
         ),
         cell: ({ row: { original: transaction } }) => {
           const data: CellDescriptionItem[] = [];
@@ -91,7 +91,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
 
           if (!decodedTx) {
             return (
-              <span className="mb-3 flex flex-col">
+              <span className="mb-3 flex flex-col text-md">
                 <span className="mb-3 font-medium text-gray-900">
                   {formatText(MSG.transactionByteData)}:
                 </span>
@@ -115,17 +115,17 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
                 value: getValueByType({
                   value,
                   type,
-                  isFull: !isMobile,
+                  isFull: !isTablet,
                 }),
               });
             });
           }
           return <CellDescription data={data} />;
         },
-        staticSize: isMobile ? '100px' : '67%',
+        staticSize: isTablet ? '97px' : '67%',
       }),
     ],
-    [columnHelper, isMobile],
+    [columnHelper, isTablet],
   );
 
   return columns;

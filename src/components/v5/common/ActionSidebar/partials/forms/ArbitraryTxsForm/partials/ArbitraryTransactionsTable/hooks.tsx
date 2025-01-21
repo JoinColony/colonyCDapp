@@ -58,9 +58,9 @@ export const useArbitraryTxsTableColumns = ({
       columnHelper.accessor('contractAddress', {
         enableSorting: false,
         header: () => (
-          <span className="text-sm text-gray-600">
+          <div className="pt-1.5 text-sm text-gray-600 sm:pt-0">
             {formatText({ id: 'table.row.contract' })}
-          </span>
+          </div>
         ),
         cellContentWrapperClassName: '!justify-start',
 
@@ -72,24 +72,26 @@ export const useArbitraryTxsTableColumns = ({
           });
           if (!address) {
             return (
-              <Button
-                type="button"
-                onClick={openTransactionModal}
-                mode="link"
-                disabled={hasNoDecisionMethods}
-                className={clsx(
-                  'text-gray-400 no-underline md:hover:text-blue-400',
-                  {
-                    'text-negative-400': isError,
-                  },
-                )}
-              >
-                {formatText({ id: 'button.addTransaction' })}
-              </Button>
+              <div className="pt-1">
+                <Button
+                  type="button"
+                  onClick={openTransactionModal}
+                  mode="link"
+                  disabled={hasNoDecisionMethods}
+                  className={clsx(
+                    'text-gray-400 no-underline md:hover:text-blue-400',
+                    {
+                      'text-negative-400': isError,
+                    },
+                  )}
+                >
+                  {formatText({ id: 'button.addTransaction' })}
+                </Button>
+              </div>
             );
           }
           return (
-            <span className="flex max-w-full items-center gap-2">
+            <span className="flex max-w-full items-center gap-2 pt-1">
               {isAddressValid && <UserAvatar userAddress={address} size={20} />}
 
               <span className="truncate text-md font-medium text-gray-900">
@@ -98,14 +100,14 @@ export const useArbitraryTxsTableColumns = ({
             </span>
           );
         },
-        staticSize: isMobile ? '100px' : '30%',
+        staticSize: isMobile ? '97px' : '35%',
       }),
       columnHelper.display({
         id: 'description',
         header: () => (
-          <span className="text-sm text-gray-600">
+          <div className="pt-1.5 text-sm text-gray-600 sm:pt-0">
             {formatText({ id: 'table.row.details' })}
-          </span>
+          </div>
         ),
         cell: ({ row: { original } }) => {
           const data: CellDescriptionItem[] = [];
@@ -129,7 +131,7 @@ export const useArbitraryTxsTableColumns = ({
           }
           return <CellDescription data={data} />;
         },
-        staticSize: isMobile ? '100px' : '67%',
+        staticSize: isMobile ? '97px' : '67%',
       }),
     ],
     [

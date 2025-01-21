@@ -112,6 +112,10 @@ const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
           '!border-negative-400 md:[&_tfoot_td]:!border-negative-400 md:[&_th]:border-negative-400':
             !!fieldState.error,
         })}
+        borders={{
+          type: 'unset',
+          visible: true,
+        }}
         columns={columns}
         data={data.length === 0 ? [{} as AddTransactionTableModel] : data}
         moreActions={getMoreActionsMenu({
