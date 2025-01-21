@@ -40,7 +40,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
   actionData,
   startPollingAction,
   stopPollingAction,
-  refetchAction,
   motionState,
 }) => {
   const { onFinalizeSuccessCallback } = useFinalizeSuccessCallback();
@@ -60,7 +59,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     handleClaimSuccess,
     claimPayload,
     canClaimStakes,
-  } = useClaimConfig(actionData, startPollingAction, refetchAction);
+  } = useClaimConfig(actionData, startPollingAction);
 
   const isMotionFinalized = actionData.motionData.isFinalized;
   const previousIsMotionFinalized = usePrevious(isMotionFinalized);
@@ -200,15 +199,14 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         className={clsx({
                           'mb-6':
                             !isMotionFailedNotFinalizable &&
-                            (!isMotionFinalized ||
-                              (!isClaimed && canClaimStakes)),
+                            (!isMotionFinalized || !isClaimed),
                         })}
                       />
                     </>
                   )}
                   {canInteract && (
                     <>
-                      {(isPolling || isSubmitting) && (
+                      {(isPolling || isSubmitting) && !isClaimed && (
                         <IconButton
                           className="w-full"
                           rounded="s"
