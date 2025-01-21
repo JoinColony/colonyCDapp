@@ -8,6 +8,8 @@ import { useTablet } from '~hooks/index.ts';
 import { formatText } from '~utils/intl.ts';
 import { Table } from '~v5/common/Table/Table.tsx';
 
+import { useModifyArbitraryTransaction } from '../ArbitraryTransaction/hooks.ts';
+
 import { displayName } from './const.ts';
 import { useArbitraryTxsTableColumns } from './hooks.tsx';
 
@@ -16,15 +18,20 @@ export type ArbitraryTransactionsTableItem =
     action: ColonyActionFragment;
   };
 interface ArbitraryTransactionsTableProps {
-  data?: ArbitraryTransactionsTableItem[];
+  action: ColonyActionFragment;
 }
 
 const ArbitraryTransactionsTable: FC<ArbitraryTransactionsTableProps> = ({
-  data = [],
+  action,
 }) => {
   const isTablet = useTablet();
 
   const columns = useArbitraryTxsTableColumns();
+
+  const data = useModifyArbitraryTransaction(
+    action.arbitraryTransactions || [],
+    action,
+  );
 
   return (
     <div className="pt-4">

@@ -12,7 +12,7 @@ import CellDescription, {
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
 import { type ArbitraryTransactionsTableItem } from './ArbitraryTransactionsTable.tsx';
-import { MSG } from './translation.ts';
+import { EncodedTransactionCell } from './EncodedTransactionCell.tsx';
 
 const getValueByType = ({ type, value, isFull }) => {
   if (type === 'address') {
@@ -81,7 +81,11 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
           );
 
           if (!abi) {
-            return <div>{formatText(MSG.noAbi)}</div>;
+            return (
+              <EncodedTransactionCell
+                encodedFunction={transaction.encodedFunction}
+              />
+            );
           }
 
           const decodedTx = decodeArbitraryTransaction(
@@ -91,14 +95,9 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
 
           if (!decodedTx) {
             return (
-              <span className="mb-3 flex flex-col text-md">
-                <span className="mb-3 font-medium text-gray-900">
-                  {formatText(MSG.transactionByteData)}:
-                </span>
-                <span className="text-gray-600 break-word">
-                  {transaction.encodedFunction}
-                </span>
-              </span>
+              <EncodedTransactionCell
+                encodedFunction={transaction.encodedFunction}
+              />
             );
           }
 

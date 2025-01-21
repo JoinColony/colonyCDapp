@@ -18,8 +18,6 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
-import { useModifyArbitraryTransaction } from './hooks.ts';
-
 interface ArbitraryTransactionProps {
   action: ColonyAction;
 }
@@ -36,11 +34,6 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
     ),
   } = action?.metadata || {};
   const { initiatorUser, transactionHash } = action;
-
-  const data = useModifyArbitraryTransaction(
-    action.arbitraryTransactions || [],
-    action,
-  );
 
   return (
     <>
@@ -81,7 +74,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
         <DescriptionRow description={action.annotation.message} />
       )}
 
-      <ArbitraryTransactionsTable data={data} />
+      <ArbitraryTransactionsTable action={action} />
     </>
   );
 };
