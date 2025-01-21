@@ -64,6 +64,12 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
         name: 'target',
         internalType: 'address',
         type: 'address',
@@ -73,69 +79,6 @@ export const colonyAbi = [
       { name: 'success', internalType: 'bool', type: 'bool', indexed: false },
     ],
     name: 'ArbitraryTransaction',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'auction',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'token',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'quantity',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'AuctionCreated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'bridgeAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'BridgeSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'colonyId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: true,
-      },
-      {
-        name: 'colonyAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'token',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'ColonyAdded',
   },
   {
     type: 'event',
@@ -255,25 +198,6 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'label',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-    ],
-    name: 'ColonyLabelRegistered',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
         name: 'agent',
         internalType: 'address',
         type: 'address',
@@ -306,19 +230,6 @@ export const colonyAbi = [
       },
     ],
     name: 'ColonyMetadataDelta',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'resolver',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'ColonyNetworkInitialised',
   },
   {
     type: 'event',
@@ -385,25 +296,6 @@ export const colonyAbi = [
       },
     ],
     name: 'ColonyUpgraded',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'version',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'resolver',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'ColonyVersionAdded',
   },
   {
     type: 'event',
@@ -830,119 +722,6 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'extensionId',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'version',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ExtensionAddedToNetwork',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'extensionId',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'deprecated',
-        internalType: 'bool',
-        type: 'bool',
-        indexed: false,
-      },
-    ],
-    name: 'ExtensionDeprecated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'extensionId',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'version',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ExtensionInstalled',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'extensionId',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-    ],
-    name: 'ExtensionUninstalled',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'extensionId',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: true,
-      },
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'version',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ExtensionUpgraded',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
         name: 'fundingPotId',
         internalType: 'uint256',
         type: 'uint256',
@@ -1026,31 +805,6 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'metaColony',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'token',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'rootSkillId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'MetaColonyCreated',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
         name: 'userAddress',
         internalType: 'address',
         type: 'address',
@@ -1065,32 +819,6 @@ export const colonyAbi = [
       { name: 'payload', internalType: 'bytes', type: 'bytes', indexed: false },
     ],
     name: 'MetaTransactionExecuted',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'miningCycleResolver',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'MiningCycleResolverSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'feeInverse',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'NetworkFeeInverseSet',
   },
   {
     type: 'event',
@@ -1304,6 +1032,12 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'agent',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
+      {
         name: 'destinationChainId',
         internalType: 'uint256',
         type: 'uint256',
@@ -1317,153 +1051,6 @@ export const colonyAbi = [
       },
     ],
     name: 'ProxyColonyRequested',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'ens', internalType: 'address', type: 'address', indexed: false },
-      {
-        name: 'rootNode',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-    ],
-    name: 'RegistrarInitialised',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'miner',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'tokensLost',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationMinerPenalised',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'hash',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-      {
-        name: 'nLeaves',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationMiningCycleComplete',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'inactiveReputationMiningCycle',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationMiningInitialised',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'amount',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationMiningRewardSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'newHash',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-      {
-        name: 'newNLeaves',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'stakers',
-        internalType: 'address[]',
-        type: 'address[]',
-        indexed: false,
-      },
-      {
-        name: 'reward',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationRootHashSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'count',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationUpdateSentToBridge',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'colony',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      {
-        name: 'count',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'ReputationUpdateStored',
   },
   {
     type: 'event',
@@ -1528,25 +1115,6 @@ export const colonyAbi = [
       },
     ],
     name: 'RewardPayoutCycleStarted',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'skillId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-      {
-        name: 'parentSkillId',
-        internalType: 'uint256',
-        type: 'uint256',
-        indexed: false,
-      },
-    ],
-    name: 'SkillAdded',
   },
   {
     type: 'event',
@@ -1795,45 +1363,6 @@ export const colonyAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'tokenAuthorityAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'TokenAuthorityDeployed',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tokenAddress',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'TokenDeployed',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'tokenLocking',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-    ],
-    name: 'TokenLockingAddressSet',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
         name: 'agent',
         internalType: 'address',
         type: 'address',
@@ -1841,20 +1370,6 @@ export const colonyAbi = [
       },
     ],
     name: 'TokenUnlocked',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'token',
-        internalType: 'address',
-        type: 'address',
-        indexed: false,
-      },
-      { name: 'status', internalType: 'bool', type: 'bool', indexed: false },
-    ],
-    name: 'TokenWhitelisted',
   },
   {
     type: 'event',
@@ -1900,20 +1415,6 @@ export const colonyAbi = [
       },
     ],
     name: 'TokensMinted',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'user', internalType: 'address', type: 'address', indexed: true },
-      {
-        name: 'label',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-    ],
-    name: 'UserLabelRegistered',
   },
   {
     type: 'function',
@@ -2567,12 +2068,12 @@ export const colonyAbi = [
     ],
     stateMutability: 'pure',
   },
-] as const
+] as const;
 
 export const colonyAddress =
-  '0x777760996135F0791E2e1a74aFAA060711197778' as const
+  '0x777760996135F0791E2e1a74aFAA060711197778' as const;
 
-export const colonyConfig = { address: colonyAddress, abi: colonyAbi } as const
+export const colonyConfig = { address: colonyAddress, abi: colonyAbi } as const;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // ColonyNetwork
@@ -2907,6 +2408,12 @@ export const colonyNetworkAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
+      {
+        name: 'colony',
+        internalType: 'address',
+        type: 'address',
+        indexed: false,
+      },
       {
         name: 'destinationChainId',
         internalType: 'uint256',
@@ -3314,7 +2821,7 @@ export const colonyNetworkAbi = [
     outputs: [
       {
         name: 'skill',
-        internalType: 'struct ColonyNetworkDataTypes.Skill',
+        internalType: 'struct CommonDataTypes.Skill',
         type: 'tuple',
         components: [
           { name: 'nParents', internalType: 'uint128', type: 'uint128' },
@@ -3438,12 +2945,12 @@ export const colonyNetworkAbi = [
     outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
-] as const
+] as const;
 
 export const colonyNetworkAddress =
-  '0x777760996135F0791E2e1a74aFAa060711197777' as const
+  '0x777760996135F0791E2e1a74aFAa060711197777' as const;
 
 export const colonyNetworkConfig = {
   address: colonyNetworkAddress,
   abi: colonyNetworkAbi,
-} as const
+} as const;
