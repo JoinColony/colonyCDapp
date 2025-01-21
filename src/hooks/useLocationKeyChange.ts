@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const useLocationPathnameChange = (callback: VoidFunction) => {
+const useLocationKeyChange = (callback: VoidFunction) => {
   const location = useLocation();
   useEffect(() => {
     callback();
-    // We want to react only to location pathname changes
+    // We want to react only to location key changes, as in when the location history changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location.key]);
 };
 
-export default useLocationPathnameChange;
+export default useLocationKeyChange;

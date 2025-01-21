@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { type FieldValues } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useTablet } from '~hooks';
 import useGetSelectedDomainFilter from '~hooks/useGetSelectedDomainFilter.tsx';
@@ -62,10 +62,15 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const selectedDomain = useGetSelectedDomainFilter();
   const selectedDomainNativeId = selectedDomain?.nativeId ?? '';
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const transactionId = searchParams?.get(TX_SEARCH_PARAM);
 
   const removeTxParamOnClose = useCallback(() => {
-    navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM));
-  }, [navigate]);
+    // Remove the TX_SEARCH_PARAM search param only if it is present
+    if (transactionId) {
+      navigate(removeQueryParamFromUrl(window.location.href, TX_SEARCH_PARAM));
+    }
+  }, [navigate, transactionId]);
 
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
