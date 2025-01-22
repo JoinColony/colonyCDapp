@@ -1,8 +1,6 @@
-import { type Block } from '@ethersproject/providers';
 import { providers, utils } from 'ethers';
 import { backOff } from 'exponential-backoff';
 
-import { GANACHE_LOCAL_RPC_URL } from '~constants/index.ts';
 import { type Address } from '~types/index.ts';
 import {
   RetryProviderMethod,
@@ -14,17 +12,8 @@ type RetryProviderOptions = {
   delay?: number; // in milliseconds
 };
 
-const classFactory = (
-  walletType: 'MetaMask' | string = '',
-  walletAddress?: Address,
-) => {
-  const devWallet = walletType !== 'MetaMask';
-
-  const Extender = devWallet
-    ? providers.JsonRpcProvider
-    : providers.Web3Provider;
-
-  return class RetryRpcProvider extends Extender {
+const classFactory = (transport, walletAddress?: Address) => {
+  return class RetryRpcProvider extends providers.Web3Provider {
     attempts: number;
 
     delay: number;
@@ -32,7 +21,7 @@ const classFactory = (
     bypassedMethods: string[];
 
     constructor(options?: RetryProviderOptions) {
-      super(devWallet ? GANACHE_LOCAL_RPC_URL : window.ethereum);
+      super(transport);
       this.attempts = options?.attempts || 5;
       this.delay = options?.delay || 1000;
       this.bypassedMethods = [
@@ -53,10 +42,6 @@ const classFactory = (
         return false;
       }
       return true;
-    }
-
-    getBlock(blockHashOrBlockTag?: string | number): Promise<Block> {
-      return super.getBlock(blockHashOrBlockTag);
     }
 
     getSigner(
