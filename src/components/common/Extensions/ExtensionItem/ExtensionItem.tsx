@@ -1,6 +1,7 @@
 import React, { type FC } from 'react';
 import { useIntl } from 'react-intl';
 
+import LoadingSkeleton from '~common/LoadingSkeleton/LoadingSkeleton.tsx';
 import ExtensionStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -21,6 +22,7 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
   const {
     extensionUrl,
     isExtensionInstalled,
+    isExtensionDataLoading,
     status,
     handleNavigateToExtensionDetails,
   } = useExtensionItem(extensionId);
@@ -51,10 +53,15 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
                   v{version}
                 </span>
               </h5>
-              <ExtensionStatusBadge
-                mode={status}
-                text={formatMessage({ id: `extension.status.${status}` })}
-              />
+              <LoadingSkeleton
+                isLoading={isExtensionDataLoading}
+                className="h-6.5 w-20 min-w-20 rounded-full"
+              >
+                <ExtensionStatusBadge
+                  mode={status}
+                  text={formatMessage({ id: `extension.status.${status}` })}
+                />
+              </LoadingSkeleton>
             </div>
             <p className="mt-1.5 text-md text-gray-600">
               {formatMessage(description)}
@@ -62,7 +69,12 @@ const ExtensionItem: FC<ExtensionItemProps> = ({
           </div>
         </Link>
         <div className="ml-[3.125rem] self-stretch sm:ml-0 sm:self-auto">
-          {button}
+          <LoadingSkeleton
+            isLoading={isExtensionDataLoading}
+            className="h-10 w-full rounded-lg sm:w-20"
+          >
+            {button}
+          </LoadingSkeleton>
         </div>
       </div>
     </div>

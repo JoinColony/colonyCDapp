@@ -11,7 +11,7 @@ export const useExtensionItem = (extensionId: string) => {
   const {
     colony: { name: colonyName },
   } = useColonyContext();
-  const { extensionData } = useExtensionData(extensionId);
+  const { extensionData, loading } = useExtensionData(extensionId);
   const navigate = useNavigate();
 
   const isExtensionInstalled =
@@ -28,6 +28,7 @@ export const useExtensionItem = (extensionId: string) => {
   return {
     extensionUrl,
     isExtensionInstalled,
+    isExtensionDataLoading: loading,
     status,
     handleNavigateToExtensionDetails,
   };
