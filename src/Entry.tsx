@@ -5,7 +5,7 @@ import {
   mergeNetworks,
 } from '@dynamic-labs/sdk-react-core';
 import { PostHogProvider } from 'posthog-js/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -43,10 +43,25 @@ if (__COMMIT_HASH__) {
 
 const Entry = ({ store }: Props) => {
   const apolloClient = getContext(ContextModule.ApolloClient);
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem('isDarkMode') === 'true' || false,
+  );
+
+  useEffect(() => {
+    function checkAppTheme() {
+      setIsDarkMode(localStorage.getItem('isDarkMode') === 'true');
+    }
+    window.addEventListener('storage', checkAppTheme);
+
+    return () => {
+      window.removeEventListener('storage', checkAppTheme);
+    };
+  }, []);
 
   return (
     <DynamicContextProvider
       mobileExperience="redirect"
+      theme={isDarkMode ? 'dark' : 'light'}
       logLevel={import.meta.env.DEV ? 'warn' : 'error'}
       settings={{
         environmentId: import.meta.env.DYNAMIC_ENV_ID,
