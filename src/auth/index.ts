@@ -3,7 +3,6 @@ import { SiweMessage } from 'siwe';
 
 import { APP_URL } from '~constants/index.ts';
 import { ContextModule, getContext } from '~context/index.ts';
-import { isFullWallet } from '~types/wallet.ts';
 
 const authProxyRequest = async (urlPartial: string, options?: RequestInit) => {
   try {
@@ -37,10 +36,6 @@ export const deauthenticateWallet = async (): Promise<void> => {
 
 export const authenticateWallet = async (): Promise<void> => {
   const wallet = getContext(ContextModule.Wallet);
-
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
 
   const signer = wallet.ethersProvider.getSigner();
 
