@@ -106,6 +106,7 @@ const Entry = ({ store }: Props) => {
             return networks;
           },
         },
+        shadowDOMEnabled: false,
       }}
     >
       <PostHogProvider {...posthogConfig}>
