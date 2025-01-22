@@ -144,7 +144,7 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
     !isMotionFailedNotFinalizable && !isMotionFinalized && !isMotionAgreement;
 
   const showClaimButton =
-    (isMotionClaimable && canClaimStakes && !isClaimed) ||
+    (isMotionClaimable && canClaimStakes && !isClaimed && hasUserStake) ||
     (isMotionAgreement && isAgreementClaimable && hasUserStake && !isClaimed);
   const canBeExecuted =
     !isPolling &&
