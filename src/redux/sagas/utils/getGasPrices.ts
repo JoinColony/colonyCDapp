@@ -63,9 +63,10 @@ const fetchGasPrices = async (): Promise<GasPricesProps> => {
       );
     }
 
-    const rawNetworkGasPrice = await userWallet.provider.request({
-      method: RpcMethods.GasPrice,
-    });
+    const rawNetworkGasPrice = await userWallet.ethersProvider.send(
+      RpcMethods.GasPrice,
+    );
+
     defaultGasPrices.network = BigNumber.from(rawNetworkGasPrice);
 
     let response;
