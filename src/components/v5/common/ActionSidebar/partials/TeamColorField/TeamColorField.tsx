@@ -85,6 +85,7 @@ const TeamColorField: FC<TeamColourFieldProps> = ({ name, disabled }) => {
                 className="absolute z-sidebar w-full max-w-[calc(100%-2.25rem)] px-0 py-6 sm:w-auto sm:max-w-none sm:px-6"
                 hasShadow
                 rounded="s"
+                testId="team-color-select-menu"
               >
                 <SearchItem
                   options={colorsOptions?.options}

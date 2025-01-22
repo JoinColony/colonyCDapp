@@ -13,6 +13,7 @@ test.describe('Manage Colony Funds', () => {
   let context: BrowserContext;
   let manageColonyFunds: ManageColonyFunds;
   let extensions: Extensions;
+
   test.beforeAll(async ({ browser, baseURL }) => {
     context = await browser.newContext();
     page = await context.newPage();
@@ -97,11 +98,10 @@ test.describe('Manage Colony Funds', () => {
       const initial = parseFloat(currentBalance);
       const after = parseFloat(newBalance);
 
-      await expect(after).toBeGreaterThan(initial);
+      expect(after).toBeGreaterThan(initial);
     });
 
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip('Reputation decision method', async () => {
+    test('Reputation decision method', async () => {
       await manageColonyFunds.open('Mint tokens');
 
       await manageColonyFunds.fillMintTokensForm({
@@ -174,6 +174,8 @@ test.describe('Manage Colony Funds', () => {
           ManageColonyFunds.validationMessages.common.title.maxLengthExceeded,
         ),
       ).toBeVisible();
+
+      await manageColonyFunds.close();
     });
   });
 
@@ -230,8 +232,7 @@ test.describe('Manage Colony Funds', () => {
       );
     });
 
-    // eslint-disable-next-line playwright/no-skipped-test
-    test.skip('Reputation decision method', async () => {
+    test('Reputation decision method', async () => {
       await manageColonyFunds.open('Transfer funds');
 
       await manageColonyFunds.fillTransferFundsForm({
@@ -352,6 +353,213 @@ test.describe('Manage Colony Funds', () => {
           ManageColonyFunds.validationMessages.fundsTransfer.token.locked,
         ),
       ).toBeVisible();
+
+      await manageColonyFunds.close();
+    });
+  });
+
+  test.describe('Manage tokens', () => {
+    test.afterAll(async () => {
+      await manageColonyFunds.removeTokens();
+    });
+    test('Add/Remove tokens | Permissions decision method', async () => {
+      await manageColonyFunds.open('Manage tokens');
+      await manageColonyFunds.setTitle('Manage tokens test');
+      await manageColonyFunds.setDecisionMethod('Permissions');
+
+      const approvedTokens = await manageColonyFunds.tokenSelector.count();
+      await expect(
+        manageColonyFunds.form.getByRole('heading', {
+          name: 'Approved tokens',
+        }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.manageTokensTable.getByText('Ether', { exact: true }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.manageTokensTable.getByText('ETH', { exact: true }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.manageTokensTable.getByText('Space Credits', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.manageTokensTable.getByText('CREDS', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      await manageColonyFunds.form
+        .getByRole('button', {
+          name: 'Add token',
+        })
+        .click();
+
+      await manageColonyFunds.manageTokensTable
+        .getByLabel('Select token or enter token')
+        .click();
+
+      await manageColonyFunds.tokenSearchMenu
+        .getByRole('button', {
+          name: 'Avatar of token',
+        })
+        .first()
+        .click();
+
+      await expect(manageColonyFunds.tokenSelector).toHaveCount(
+        approvedTokens + 1,
+      );
+
+      await expect(
+        manageColonyFunds.manageTokensTable.getByText('New'),
+      ).toBeVisible();
+
+      await manageColonyFunds.updateTokensButton.click();
+
+      await manageColonyFunds.waitForTransaction();
+
+      await expect(
+        manageColonyFunds.completedAction.getByRole('heading', {
+          name: 'Manage tokens test',
+        }),
+      ).toBeVisible();
+
+      await expect(manageColonyFunds.manageTokensTable).toBeVisible();
+      await expect(
+        manageColonyFunds.completedAction.getByText('Manage tokens', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.completedAction.getByText('Permissions', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.completedAction.getByText('New', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      const newTokenSymbol = (
+        await manageColonyFunds.manageTokensTable
+          .getByRole('cell', { name: 'New' })
+          .textContent()
+      )
+        ?.replace('New', '')
+        ?.slice(0, 5);
+
+      await manageColonyFunds.verifyTokenAdded({
+        colonyName: 'planex',
+        token: newTokenSymbol ?? '',
+      });
+    });
+
+    test('Reputation decision method', async () => {
+      await manageColonyFunds.open('Manage tokens');
+      await manageColonyFunds.setTitle('Manage tokens test');
+      await manageColonyFunds.setDecisionMethod('Reputation');
+
+      await manageColonyFunds.form
+        .getByRole('button', {
+          name: 'Add token',
+        })
+        .click();
+
+      await manageColonyFunds.manageTokensTable
+        .getByLabel('Select token or enter token')
+        .click();
+
+      await manageColonyFunds.tokenSearchMenu
+        .getByRole('button', {
+          name: 'Avatar of token',
+        })
+        .first()
+        .click();
+
+      await manageColonyFunds.updateTokensButton.click();
+
+      await manageColonyFunds.waitForTransaction();
+
+      await expect(
+        manageColonyFunds.completedAction.getByText('Manage tokens', {
+          exact: true,
+        }),
+      ).toBeVisible();
+
+      await expect(
+        manageColonyFunds.stepper.getByText(/Total stake required: \d+/),
+      ).toBeVisible();
+
+      await manageColonyFunds.support();
+
+      await expect(manageColonyFunds.stepper).toHaveText(/100% Supported/);
+
+      await manageColonyFunds.oppose();
+
+      await expect(manageColonyFunds.stepper).toHaveText(/100% Opposed/);
+
+      await manageColonyFunds.stepper
+        .getByText(/Vote to support or oppose?/)
+        .waitFor();
+      await manageColonyFunds.supportButton.click();
+      await manageColonyFunds.submitVoteButton.click();
+      await manageColonyFunds.revealVoteButton.click();
+      await manageColonyFunds.stepper.getByText('vote revealed').waitFor();
+      await expect(
+        manageColonyFunds.stepper.getByText(
+          'Finalize to execute the agreed transaction',
+        ),
+      ).toBeVisible();
+      await manageColonyFunds.finalizeButton.click();
+
+      await manageColonyFunds.waitForPending();
+      await manageColonyFunds.claimButton.click();
+
+      await manageColonyFunds.completedAction
+        .getByRole('heading', { name: 'Your overview Claimed' })
+        .waitFor();
+
+      await expect(manageColonyFunds.claimButton).toBeHidden();
+    });
+
+    test('Form validation', async () => {
+      await manageColonyFunds.open('Manage tokens');
+      await manageColonyFunds.updateTokensButton.click();
+
+      for (const message of ManageColonyFunds.validationMessages.manageTokens
+        .allRequiredFields) {
+        await expect(manageColonyFunds.drawer.getByText(message)).toBeVisible();
+      }
+
+      await manageColonyFunds.form
+        .getByRole('button', {
+          name: 'Add token',
+        })
+        .click();
+      await manageColonyFunds.manageTokensTable
+        .getByLabel('Select token or enter token')
+        .click();
+
+      await manageColonyFunds.tokenSearchMenu
+        .getByPlaceholder('Select token or enter token address')
+        .fill('0x0000000000000000000000000000000000000000');
+
+      await expect(
+        manageColonyFunds.tokenSearchMenu.getByText(
+          ManageColonyFunds.validationMessages.manageTokens.token
+            .isAlreadyAdded,
+        ),
+      ).toBeVisible();
+
+      await manageColonyFunds.close();
     });
   });
 });
