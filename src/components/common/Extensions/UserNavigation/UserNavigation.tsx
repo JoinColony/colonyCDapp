@@ -28,6 +28,8 @@ const MSG = defineMessages({
   },
 });
 
+const localStorageKey = '__DYNAMIC_WALLET_DEBUG_ENABLED__';
+
 // @TODO: Rename this to something more explanatory
 const UserNavigation: FC<UserNavigationProps> = ({
   extra = null,
@@ -80,7 +82,15 @@ const UserNavigation: FC<UserNavigationProps> = ({
 
   return (
     <div data-tour={TourTargets.UserMenu} className="flex gap-1 md:relative">
-      <DynamicWidget />
+      <div
+        className={
+          localStorage.getItem(localStorageKey) === 'true'
+            ? 'visible'
+            : 'hidden'
+        }
+      >
+        <DynamicWidget />
+      </div>
       {txButton}
       {isWalletConnected ? (
         <div className="flex gap-1">
