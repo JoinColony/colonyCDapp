@@ -1,3 +1,4 @@
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { utils } from 'ethers';
 import React, {
   useState,
@@ -6,16 +7,15 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { useDynamicContext, useDynamicEvents } from '@dynamic-labs/sdk-react-core';
 
 import { useGetUserByAddressLazyQuery } from '~gql';
 import useAsyncFunction from '~hooks/useAsyncFunction.ts';
 import useJoinedColonies from '~hooks/useJoinedColonies.ts';
-import usePrevious from '~hooks/usePrevious.ts';
 import { ActionTypes } from '~redux/index.ts';
-import { getLastWallet } from '~utils/autoLogin.ts';
+import retryProviderFactory from '~redux/sagas/wallet/RetryProvider.ts';
+import debugLogging from '~utils/debug/debugLogging.ts';
 
-import { getContext, ContextModule } from '../index.ts';
+import { getContext, ContextModule, setContext } from '../index.ts';
 import { TokenActivationProvider } from '../TokenActivationContext/TokenActivationContextProvider.tsx';
 
 import { AppContext, type AppContextValue } from './AppContext.ts';
@@ -26,12 +26,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [userLoading, setUserLoading] = useState(false);
   // We need to start with true here as we can't know whethere we are going to try to connect
   // and the first render is important here
-  const [walletConnecting, setWalletConnecting] = useState(true);
-  const { setShowAuthFlow } = useDynamicContext();
-
-  useDynamicEvents("walletAdded", (args) => {
-    console.log('dynamic wallet login success', args);
-  });
+  const [walletConnecting, setWalletConnecting] = useState(false);
+  const { setShowAuthFlow, handleLogOut, primaryWallet } = useDynamicContext();
 
   const [getUserByAddress] = useGetUserByAddressLazyQuery();
 
@@ -74,9 +70,9 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const updateWallet = useCallback(() => {
     try {
       const updatedWallet = getContext(ContextModule.Wallet);
-      updatedWallet.address = utils.getAddress(
-        updatedWallet.address,
-      ) as `0x${string}`;
+      // updatedWallet.address = utils.getAddress(
+      //   updatedWallet.address,
+      // ) as `0x${string}`;
       setWallet(updatedWallet);
       // Update the user as soon as the wallet address changes
       if (updatedWallet.address !== wallet?.address) {
@@ -113,7 +109,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setWalletConnecting(false);
     }
-  }, [setupUserContext, updateWallet, setWalletConnecting, setShowAuthFlow]);
+  }, [setWalletConnecting, setShowAuthFlow]);
 
   /*
    * Handle wallet disconnection
@@ -121,6 +117,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const disconnectWallet = useCallback(
     async ({ shouldRemoveWalletContext = true } = {}) => {
       try {
+        await handleLogOut();
         await userLogout({ shouldRemoveWalletContext });
       } catch (error) {
         console.error('Could not disconnect wallet', error);
@@ -129,59 +126,113 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setWallet(null);
       setUser(null);
     },
-    [setWallet, setUser, userLogout],
+    [setWallet, setUser, userLogout, handleLogOut],
   );
+
+  useEffect(() => {
+    const walletHandler = async () => {
+      if (primaryWallet) {
+        let contextWallet;
+
+        try {
+          contextWallet = getContext(ContextModule.Wallet);
+        } catch (error) {
+          // no wallet in context
+        }
+
+        if (!contextWallet) {
+          // no wallet exists, set it
+          setWalletConnecting(true);
+
+          const publicClient = await primaryWallet.getPublicClient();
+          const walletClient = await primaryWallet.getWalletClient();
+
+          const walletAddress = utils.getAddress(primaryWallet.address);
+
+          const RetryProvider = retryProviderFactory(
+            walletClient.transport,
+            walletAddress,
+          );
+          const provider = new RetryProvider();
+
+          const dynamicWallet = {
+            ...walletClient,
+            publicClient,
+            ethersProvider: provider,
+            provider,
+            primaryWallet,
+            address: walletAddress,
+            label: primaryWallet.key,
+            chains: [publicClient.chain, walletClient.chain],
+          };
+
+          debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
+
+          setContext(ContextModule.Wallet, dynamicWallet);
+
+          await setupUserContext(undefined);
+
+          updateWallet();
+
+          setWalletConnecting(false);
+        }
+
+        // setWallet(primaryWallet);
+      }
+    };
+    walletHandler();
+  }, [primaryWallet, setupUserContext, updateWallet]);
 
   /*
    * When the user switches account in Metamask, re-initiate the wallet connect flow
    * so as to update their wallet details in the app's memory.
    */
-  const handleAccountChange = useCallback(async () => {
-    // @ts-ignore
-    const accounts = await window.ethereum.request({
-      method: 'eth_accounts',
-    });
-    const loggedInAccount = accounts[0];
-    await disconnectWallet({ shouldRemoveWalletContext: false });
-    if (loggedInAccount) {
-      connectWallet();
-    }
-  }, [connectWallet, disconnectWallet]);
+  // const handleAccountChange = useCallback(async () => {
+  //   // @ts-ignore
+  //   const accounts = await window.ethereum.request({
+  //     method: 'eth_accounts',
+  //   });
+  //   const loggedInAccount = accounts[0];
+  //   await disconnectWallet({ shouldRemoveWalletContext: false });
+  //   if (loggedInAccount) {
+  //     connectWallet();
+  //   }
+  // }, [connectWallet, disconnectWallet]);
 
-  const previousAccountChange = usePrevious(handleAccountChange);
+  // const previousAccountChange = usePrevious(handleAccountChange);
 
-  useEffect(() => {
-    if (window.ethereum) {
-      if (previousAccountChange) {
-        // @ts-ignore
-        window.ethereum.removeListener(
-          'accountsChanged',
-          previousAccountChange,
-        );
-      }
-      // @ts-ignore
-      window.ethereum.on('accountsChanged', handleAccountChange);
-    }
+  // useEffect(() => {
+  //   if (window.ethereum) {
+  //     if (previousAccountChange) {
+  //       // @ts-ignore
+  //       window.ethereum.removeListener(
+  //         'accountsChanged',
+  //         previousAccountChange,
+  //       );
+  //     }
+  //     // @ts-ignore
+  //     window.ethereum.on('accountsChanged', handleAccountChange);
+  //   }
 
-    return () => {
-      if (window.ethereum) {
-        // @ts-ignore
-        window.ethereum.removeListener('accountsChanged', handleAccountChange);
-      }
-    };
-  }, [handleAccountChange, previousAccountChange]);
+  //   return () => {
+  //     if (window.ethereum) {
+  //       // @ts-ignore
+  //       window.ethereum.removeListener('accountsChanged', handleAccountChange);
+  //     }
+  //   };
+  // }, [handleAccountChange, previousAccountChange]);
 
-  useEffect(() => {
-    if (getLastWallet()) {
-      connectWallet();
-    } else {
-      setWalletConnecting(false);
-    }
+  // useEffect(() => {
+  //   if (getLastWallet()) {
+  //     connectWallet();
+  //   } else {
+  //     setWalletConnecting(false);
+  //   }
 
-    // NOTE: We really want this to run exactly once (when the app starts)
-    // connectWallet is dependent on the wallet itself, so this is to avoid an infinite loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // NOTE: We really want this to run exactly once (when the app starts)
+  //   // connectWallet is dependent on the wallet itself, so this is to avoid an infinite loop
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const appContext = useMemo<AppContextValue>(
     () => ({
