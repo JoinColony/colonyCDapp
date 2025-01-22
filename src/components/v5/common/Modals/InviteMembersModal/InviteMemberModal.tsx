@@ -23,7 +23,7 @@ const MSG = defineMessages({
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'You can invite {invitesAvailable} more people to join and follow this colony during early access. If you run out, you will be able to request more.',
+      'You can invite {invitesAvailable} more {invitesAvailable, plural, one {person} other {people}} to join and follow this colony during early access. If you run out, you will be able to request more.',
   },
   modalDescriptionReached: {
     id: `${displayName}.modalDescriptionReached`,

@@ -27,7 +27,7 @@ const MSG = defineMessages({
   modalDescription: {
     id: `${displayName}.modalDescription`,
     defaultMessage:
-      'You can invite {invitesAvailable} more people to join and follow this colony during early access. If you run out, you will be able to request more.',
+      'You can invite {invitesAvailable} more {invitesAvailable, plural, one {person} other {people}} to join and follow this colony during early access. If you run out, you will be able to request more.',
   },
   modalDescriptionReached: {
     id: `${displayName}.modalDescriptionReached`,
@@ -64,6 +64,8 @@ const MSG = defineMessages({
   },
 });
 
+const commonClassName = 'rounded-lg p-2 text-sm font-medium';
+
 export const ModalContent: FC<Props> = ({
   isOutOfInvites,
   invitesAvailable,
@@ -76,7 +78,6 @@ export const ModalContent: FC<Props> = ({
   const inviteLink = useBaseUrl(
     `/invite/${colonyName}/${colonyMemberInvite?.id}`,
   );
-  const commonClassName = 'rounded-lg p-2 text-sm font-medium';
 
   if (isOutOfInvites) {
     return (
