@@ -211,7 +211,7 @@ const getExpenditureStagesData = (
 const getProxyColonyDeployedChain = (actionData: ColonyAction) => {
   const chainInfo = findSupportedChain(actionData?.targetChainId);
 
-  return chainInfo?.name;
+  return chainInfo?.shortName;
 };
 
 export const useMapColonyActionToExpectedFormat = ({

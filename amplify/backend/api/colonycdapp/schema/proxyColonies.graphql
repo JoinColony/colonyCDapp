@@ -22,3 +22,14 @@ type ProxyColony @model {
   """
   isActive: Boolean!
 }
+
+type SupportedChain @model {
+  """
+  The chainId of the supported chain
+  """
+  id: ID!
+  """
+  A flag that tells us if the supported chain is active or not
+  """
+  isActive: Boolean
+}

@@ -40,7 +40,7 @@ export const ManageSupportedChainsDescription = () => {
     <FormattedMessage
       id="action.title"
       values={{
-        chain: chainInfo.name,
+        chain: chainInfo.shortName,
         actionType:
           manageSupportedChains === ManageEntityOperation.Add
             ? ColonyActionType.AddProxyColony
