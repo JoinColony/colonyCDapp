@@ -43,6 +43,6 @@ module.exports = {
 };
 " > ./packages/wormhole-relayer/config.js
 
-node -e 'require("./scripts/setup-bridging-contracts.js").setupBridging("http://network:8545", ["http://network-remote:8545", "http://network-remote-2:8545"])'
+node -e 'require("./scripts/setup-bridging-contracts.js").setupBridging("http://network:8545", ["http://network-remote:8545", "http://network-remote-2:8545"], false)'
 
 sleep infinity
