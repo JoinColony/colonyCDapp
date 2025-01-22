@@ -71,12 +71,20 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
     const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
     const dynamicWalletModal = getElementWithSelector('#dynamic-modal');
+    const dynamicSendTransactionModal = getElementWithSelector(
+      '#dynamic-send-transaction',
+    );
+    const dynamicSignMessageModal = getElementWithSelector(
+      '#dynamic-sign-message',
+    );
 
     if (
       !isClickedInside ||
       (isChildOf(navigationWrapper, element) && !isTablet) ||
-      // Do not close the sidebar when clicking within the Dynamic wallet library modal
-      isChildOf(dynamicWalletModal, element)
+      // Do not close the sidebar when clicking within the Dynamic wallet library modals
+      isChildOf(dynamicWalletModal, element) ||
+      isChildOf(dynamicSendTransactionModal, element) ||
+      isChildOf(dynamicSignMessageModal, element)
     ) {
       return false;
     }
