@@ -24,7 +24,7 @@ import { ActionTypes } from '~redux/actionTypes.ts';
 import { type Action, type AllActions } from '~redux/types/actions/index.ts';
 import { LANDING_PAGE_ROUTE } from '~routes/index.ts';
 import { TRANSACTION_METHODS } from '~types/transactions.ts';
-import { clearLastWallet, getLastWallet } from '~utils/autoLogin.ts';
+import { clearLastWallet } from '~utils/autoLogin.ts';
 
 import {
   createGroupTransaction,
@@ -198,15 +198,19 @@ export function* userLogout(data?: UserLogoutParams) {
   try {
     removeContext(ContextModule.ColonyManager);
     const apolloClient = getContext(ContextModule.ApolloClient);
-    let walletLabel;
-    try {
-      const wallet = getContext(ContextModule.Wallet);
-      walletLabel = wallet.label;
-    } catch {
-      const lastWallet = getLastWallet();
-      walletLabel = lastWallet?.type;
+    // let walletLabel;
+    // try {
+    //   const wallet = getContext(ContextModule.Wallet);
+    //   walletLabel = wallet.label;
+    // } catch {
+    //   const lastWallet = getLastWallet();
+    //   walletLabel = lastWallet?.type;
+    // }
+    // disconnectWallet(walletLabel, shouldRemoveWalletContext);
+    if (shouldRemoveWalletContext) {
+      removeContext(ContextModule.Wallet);
     }
-    disconnectWallet(walletLabel, shouldRemoveWalletContext);
+    clearLastWallet(); // only for legacy purposes
     yield deauthenticateWallet();
     apolloClient.resetStore();
     yield put<AllActions>({
