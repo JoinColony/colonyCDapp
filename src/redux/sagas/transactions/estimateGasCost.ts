@@ -93,9 +93,6 @@ export default function* estimateGasCost({
       yield take(ActionTypes.TRANSACTION_UPDATED_IN_DB);
     }
 
-    // wait for transactions options to be updated
-    yield take(ActionTypes.TRANSACTION_UPDATED_IN_DB);
-
     yield put(transactionSend(id));
   } catch (error) {
     console.error(error);
