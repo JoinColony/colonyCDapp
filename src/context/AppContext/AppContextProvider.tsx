@@ -144,7 +144,13 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
           // no wallet exists, set it
           setWalletConnecting(true);
 
+          // Both methods exist as described by the documentation
+          // https://docs.dynamic.xyz/wallets/using-wallets/evm/evm-wallets#ethereum-wallet-methods
+          // and as supported by the code actually working
+          // I suspect their types are the ones not working properly here
+          // @ts-ignore
           const publicClient = await primaryWallet.getPublicClient();
+          // @ts-ignore
           const walletClient = await primaryWallet.getWalletClient();
 
           const walletAddress = utils.getAddress(primaryWallet.address);
