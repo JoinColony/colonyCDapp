@@ -286,7 +286,6 @@ const FinalizeStep: FC<FinalizeStepProps> = ({
                         )}
                         {showFinalizeButton && (
                           <Button
-                            className="mt-6"
                             mode="primarySolid"
                             disabled={!isFinalizable || wrongMotionState}
                             isFullSize
