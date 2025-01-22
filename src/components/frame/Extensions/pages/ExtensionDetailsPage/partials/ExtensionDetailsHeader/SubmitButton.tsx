@@ -30,7 +30,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
   const { colony } = useColonyContext();
   const isMobile = useMobile();
 
-  const { waitingForActionConfirmation, activeTab, setActiveTab } =
+  const { activeTab, setActiveTab, isPendingManagement, isSavingChanges } =
     useExtensionDetailsPageContext();
 
   const {
@@ -74,7 +74,7 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
             setActiveTab(ExtensionDetailsPageTabId.Settings);
           }}
           isFullSize={isMobile}
-          disabled={waitingForActionConfirmation}
+          disabled={isPendingManagement || isSubmitting}
         >
           {formatText({ id: 'button.enable' })}
         </Button>
@@ -84,9 +84,9 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
     return (
       <ButtonWithLoader
         type="submit"
-        disabled={!isValid || waitingForActionConfirmation}
+        disabled={isPendingManagement || !isValid}
         isFullSize={isMobile}
-        loading={isSubmitting || waitingForActionConfirmation}
+        loading={isSubmitting || (isPendingManagement && isSavingChanges)}
       >
         {formatText({ id: 'button.enable' })}
       </ButtonWithLoader>
@@ -98,8 +98,8 @@ const SubmitButton = ({ userHasRoot, extensionData }: SubmitButtonProps) => {
       <ButtonWithLoader
         type="submit"
         isFullSize={isMobile}
-        loading={isSubmitting || waitingForActionConfirmation}
-        disabled={waitingForActionConfirmation}
+        loading={isSubmitting || (isPendingManagement && isSavingChanges)}
+        disabled={isPendingManagement || isSubmitting}
       >
         {formatText({ id: 'button.saveChanges' })}
       </ButtonWithLoader>

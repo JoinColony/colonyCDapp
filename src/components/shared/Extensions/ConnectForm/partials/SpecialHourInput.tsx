@@ -16,6 +16,7 @@ const SpecialHourInput: FC<SpecialInputProps> = ({
   step,
   name = '',
   onInputChange,
+  disabled,
 }) => {
   const {
     formState: { errors },
@@ -39,6 +40,7 @@ const SpecialHourInput: FC<SpecialInputProps> = ({
           type="hours"
           placeholder="1"
           onChange={handleInputChange}
+          disabled={disabled}
         />
         {error && <FormError>{formatText(error)}</FormError>}
       </div>
