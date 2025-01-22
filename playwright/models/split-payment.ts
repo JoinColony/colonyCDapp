@@ -180,12 +180,13 @@ export class SplitPayment {
       ] of recipients.entries()) {
         const row = index + 1;
         await this.setRecipient({ address: recipient, row });
-
-        await this.recipientsTable
-          .getByRole('row')
-          .nth(row)
-          .getByPlaceholder('Enter amount')
-          .fill(amount);
+        if (amount) {
+          await this.recipientsTable
+            .getByRole('row')
+            .nth(row)
+            .getByPlaceholder('Enter amount')
+            .fill(amount);
+        }
         if (percentage) {
           await this.recipientsTable
             .getByRole('row')
@@ -303,7 +304,7 @@ export class SplitPayment {
 
 type Distribution = 'Equal' | 'Unequal' | 'Reputation percentage';
 type Recipient = {
-  amount: string;
+  amount?: string;
   recipient: string;
   percentage?: string;
 };

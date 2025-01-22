@@ -39,7 +39,7 @@ test.describe('Split payment', () => {
     await splitPayment.close();
   });
 
-  test('Happy path (Unequal distribution/Staking decision method)', async () => {
+  test('Happy path (Staking decision method)', async () => {
     await splitPayment.fillForm({
       title: 'Test Split Payment',
       team: 'General',
@@ -124,6 +124,30 @@ test.describe('Split payment', () => {
     await splitPayment.releasePayment({ releaseMethod: 'Permissions' });
 
     await expect(splitPayment.expenditureActionStatusBadge).toHaveText('Paid');
+    await expect(
+      splitPayment.completedAction.getByText('Action type'),
+    ).toBeVisible();
+    await expect(
+      splitPayment.completedAction.getByText('Split payment', {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      splitPayment.completedAction.getByText('General', {
+        exact: true,
+      }),
+    ).toBeVisible();
+    // Distribution should be displayed as Unequal here as we manually typed in the values of amount and percentage fields
+    await expect(
+      splitPayment.completedAction.getByText('Unequal', {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      splitPayment.completedAction.getByText('Permissions', {
+        exact: true,
+      }),
+    ).toBeVisible();
     for (const [index, row] of [
       /fry\s*1CREDS\s*50%/i,
       /amy\s*1CREDS\s*50%/i,
@@ -286,5 +310,35 @@ test.describe('Split payment', () => {
         SplitPayment.validationMessages.percentage.mustBe100,
       ),
     ).toBeVisible();
+  });
+
+  test('Equal distribution automatically calculates amounts and percentages', async () => {
+    await splitPayment.fillForm({
+      title: 'Auto-calculated Split Payment',
+      team: 'General',
+      decisionMethod: 'Permissions',
+      distribution: 'Equal',
+      totalAmount: '100',
+      recipients: [{ recipient }, { recipient: recipient2 }],
+    });
+
+    const rows = splitPayment.recipientsTable.locator('tbody tr');
+    // Check that amounts and percentages were automatically calculated
+    // Verify first recipient
+    await expect(rows.nth(0).getByPlaceholder('Enter amount')).toHaveValue(
+      '50',
+    );
+    await expect(rows.nth(0).getByPlaceholder('Enter value')).toHaveValue('50');
+
+    // Verify second recipient
+    await expect(rows.nth(1).getByPlaceholder('Enter amount')).toHaveValue(
+      '50',
+    );
+    await expect(rows.nth(1).getByPlaceholder('Enter value')).toHaveValue('50');
+
+    // Verify total adds up correctly
+    await expect(
+      splitPayment.recipientsTable.locator('tfoot tr').first(),
+    ).toContainText('100%');
   });
 });
