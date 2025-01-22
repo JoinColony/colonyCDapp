@@ -17,7 +17,7 @@ export type HandleFileAccept = (file: FileReaderFile) => void;
 
 export interface ErrorContentProps
   extends Pick<FileUploadProps, 'handleFileRemove' | 'errorCode'> {
-  fileRejections?: string;
+  processedFile?: string;
   open: () => void;
 }
 

@@ -38,6 +38,10 @@ const MSG = defineMessages({
     id: `${displayName}.wrongRecipient`,
     defaultMessage: 'Recipient address is incorrect, please try again',
   },
+  fileMinDimensionsError: {
+    id: `${displayName}.fileMinDimensionsError`,
+    defaultMessage: 'Image dimensions should be at least 120x120px',
+  },
 });
 
 /**
@@ -54,6 +58,7 @@ export enum DropzoneErrors {
   CUSTOM = 'custom-error',
   DEFAULT = 'default',
   FINGERPRINT_ENABLED = 'fingerprint-enabled',
+  DIMENSIONS_TOO_SMALL = 'dimensions-too-small',
 }
 
 /**
@@ -78,6 +83,9 @@ export const getErrorMessage = (errorCode: DropzoneErrors) => {
     case DropzoneErrors.FINGERPRINT_ENABLED: {
       return MSG.fingerprintError;
     }
+    case DropzoneErrors.DIMENSIONS_TOO_SMALL: {
+      return MSG.fileMinDimensionsError;
+    }
 
     /* Extend here with too-small and too-many as needed */
 
@@ -97,3 +105,52 @@ export const DEFAULT_MIME_TYPES = {
 export const DEFAULT_MAX_FILE_SIZE = 1048576; // 1MB
 
 export const DEFAULT_MAX_FILE_LIMIT = 10;
+
+export const DEFAULT_MIN_FILE_DIMENSIONS = {
+  width: 120,
+  height: 120,
+};
+
+export const validateMinimumFileDimensions = (
+  file: File,
+  minWidth = DEFAULT_MIN_FILE_DIMENSIONS.width,
+  minHeight = DEFAULT_MIN_FILE_DIMENSIONS.height,
+): Promise<boolean> => {
+  const unexpectedErrorMessage =
+    'An error occurred while verifying minimum dimensions';
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onerror = () => {
+      reject(new Error(unexpectedErrorMessage));
+    };
+
+    reader.onload = (e) => {
+      const result = e.target?.result;
+
+      if (!result) {
+        reject(new Error(unexpectedErrorMessage));
+
+        return;
+      }
+
+      img.src = result as string;
+    };
+
+    img.onload = () => {
+      if (img.width < minWidth || img.height < minHeight) {
+        reject(new Error(DropzoneErrors.DIMENSIONS_TOO_SMALL));
+      } else {
+        resolve(true);
+      }
+    };
+
+    img.onerror = () => {
+      reject(new Error(unexpectedErrorMessage));
+    };
+
+    reader.readAsDataURL(file);
+  });
+};

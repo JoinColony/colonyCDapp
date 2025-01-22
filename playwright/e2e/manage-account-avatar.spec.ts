@@ -80,7 +80,7 @@ test.describe('Avatar Uploader on Manage Account page', () => {
     ).toBeHidden();
   });
   // NOTE: enable this test once we have fixed issue #3858 with the avatar uploader
-  test.skip('rejects file smaller than 250x250px', async ({ page }) => {
+  test.skip('rejects file smaller than 120x120px', async ({ page }) => {
     const smallImage = path.join(
       __dirname,
       '../fixtures/images/small-avatar-200x200.png',
@@ -91,7 +91,7 @@ test.describe('Avatar Uploader on Manage Account page', () => {
 
     await expect(
       // The error message to be confirmed
-      page.getByText(/Image must be at least 250x250px/i),
+      page.getByText(/Image must be at least 120x120px/i),
     ).toBeVisible({ timeout: 10000 });
   });
 

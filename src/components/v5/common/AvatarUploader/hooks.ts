@@ -10,7 +10,11 @@ import { convertBytes } from '~utils/convertBytes.ts';
 import { type FileReaderFile } from '~utils/fileReader/types.ts';
 
 import { type FileUploadOptions } from './types.ts';
-import { DropzoneErrors, getFileRejectionErrors } from './utils.ts';
+import {
+  DropzoneErrors,
+  getFileRejectionErrors,
+  validateMinimumFileDimensions,
+} from './utils.ts';
 
 export interface UseAvatarUploaderProps {
   updateFn: (
@@ -20,39 +24,56 @@ export interface UseAvatarUploaderProps {
   ) => Promise<void>;
 }
 
+/**
+ * @todo Investigate if it's sensible to unify useAvatarUploader & useChangeColonyAvatar
+ */
 export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [uploadAvatarError, setUploadAvatarError] = useState<DropzoneErrors>();
 
   const [showProgress, setShowProgress] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [file, setFileName] = useState({ fileName: '', fileSize: '' });
+  const [file, setFile] = useState({ fileName: '', fileSize: '' });
 
-  const handleFileUpload = async (avatarFile: FileReaderFile | null) => {
-    if (avatarFile) {
-      setUploadAvatarError(undefined);
-      setIsLoading(true);
+  const handleFileUpload = async (
+    avatarFileToUpload: FileReaderFile | null,
+  ) => {
+    if (!avatarFileToUpload) {
+      return;
     }
 
+    const { file: avatarFile } = avatarFileToUpload;
+
     try {
-      const avatar = await getOptimisedAvatarUnder300KB(avatarFile?.file);
-      setFileName({
-        fileName: avatarFile?.file.name || '',
-        fileSize: convertBytes(avatarFile?.file.size, 0),
+      setUploadAvatarError(undefined);
+      setIsLoading(true);
+
+      const avatar = await getOptimisedAvatarUnder300KB(avatarFile);
+
+      setFile({
+        fileName: avatarFile.name || '',
+        fileSize: convertBytes(avatarFile.size, 0),
       });
 
-      const thumbnail = await getOptimisedThumbnail(avatarFile?.file);
+      const thumbnail = await getOptimisedThumbnail(avatarFile);
+
+      await validateMinimumFileDimensions(avatarFile);
 
       await updateFn(avatar, thumbnail, setUploadProgress);
-    } catch (e) {
-      if (e.message.includes('exceeded the maximum')) {
+    } catch (error) {
+      const { message: errorMessage } = error;
+
+      if (errorMessage.includes('exceeded the maximum')) {
         setUploadAvatarError(DropzoneErrors.TOO_LARGE);
       } else if (
-        e.message.includes(
+        // Here's where this comes from: https://github.com/nodeca/pica/blob/e4e661623a14160a824087c6a66059e3b6dba5a0/index.js#L653
+        errorMessage.includes(
           "Pica: cannot use getImageData on canvas, make sure fingerprinting protection isn't enabled",
         )
       ) {
         setUploadAvatarError(DropzoneErrors.FINGERPRINT_ENABLED);
+      } else if (errorMessage === DropzoneErrors.DIMENSIONS_TOO_SMALL) {
+        setUploadAvatarError(DropzoneErrors.DIMENSIONS_TOO_SMALL);
       } else {
         setUploadAvatarError(DropzoneErrors.DEFAULT);
       }
@@ -63,6 +84,7 @@ export const useAvatarUploader = ({ updateFn }: UseAvatarUploaderProps) => {
   };
 
   const handleFileRemove = async () => {
+    await updateFn(null, null, setUploadProgress);
     await handleFileUpload(null);
     setUploadAvatarError(undefined);
   };

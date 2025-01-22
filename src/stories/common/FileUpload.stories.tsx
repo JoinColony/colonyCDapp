@@ -25,7 +25,7 @@ export const Base: StoryObj<typeof FileUpload> = {
   args: {
     fileOptions: {
       fileFormat: ['.csv', '.jpg', '.png'],
-      fileDimension: '250x250px',
+      fileDimension: '120x120px',
       fileSize: '1MB',
     },
   },
@@ -36,7 +36,7 @@ export const WithSimplifiedUploader: StoryObj<typeof FileUpload> = {
     isSimplified: true,
     fileOptions: {
       fileFormat: ['.csv'],
-      fileDimension: '250x250px',
+      fileDimension: '120x120px',
       fileSize: '1MB',
     },
   },

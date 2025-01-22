@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   type DropzoneOptions,
   type DropzoneProps,
@@ -51,7 +52,13 @@ const useDropzoneWithFileReader = ({
     ...restDropzoneOptions,
   });
 
-  return dropzoneState;
+  const processedFiles = useMemo(() => {
+    const { fileRejections, acceptedFiles } = dropzoneState;
+
+    return { ...fileRejections.map(({ file }) => file), ...acceptedFiles };
+  }, [dropzoneState]);
+
+  return { ...dropzoneState, processedFiles };
 };
 
 export default useDropzoneWithFileReader;
