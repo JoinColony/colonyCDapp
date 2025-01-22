@@ -20,6 +20,7 @@ import {
   GROUP_ADMIN_LIST,
 } from './partials/ManageColonyGroup/GroupList.ts';
 import { GROUP_LIST } from './partials/PaymentGroup/GroupList.ts';
+import { type UserSearchSelectOption } from './partials/UserSelect/types.ts';
 
 export const translateAction = (action?: Action) => {
   const actionName = action
@@ -200,7 +201,7 @@ export const getActionGroup = (actionType: Action) => {
 export const formatMembersSelectOptions = (
   members: ColonyContributorFragment[],
   isVerified = true,
-): SearchSelectOption[] => {
+): SearchSelectOption<UserSearchSelectOption>[] => {
   return members.map((member, index) => {
     const { walletAddress, profile } = member.user || {};
 

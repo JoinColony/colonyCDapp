@@ -17,9 +17,6 @@ else
   INDEX=$((CONTAINER_REPLICA_NUMBER - 1))
 fi
 
-CONTRACT_ADDRESSES_ARRAY=($(echo "$CONTRACT_ADDRESSES" | jq -r '.[]'))
-CONTRACT_ADDRESS=${CONTRACT_ADDRESSES_ARRAY[$INDEX]}
-
 echo "Used contract address: $CONTRACT_ADDRESS"
 
 CHAIN_RPC_ENDPOINTS_ARRAY=($(echo "$CHAIN_RPC_ENDPOINTS" | jq -r '.[]'))
@@ -37,7 +34,6 @@ wget http://network-files:3006/etherrouter-address.json
 
 # Write to env file...
 echo "CHAIN_NETWORK_CONTRACT=`jq -r .etherRouterAddress etherrouter-address.json`" >> apps/proxy-chain/.env
-echo "CONTRACT_ADDRESS=$CONTRACT_ADDRESS" >> apps/proxy-chain/.env
 echo "CHAIN_RPC_ENDPOINT=$CHAIN_RPC_ENDPOINT" >> apps/proxy-chain/.env
 echo "STATS_PORT=$STATS_PORT" >> apps/proxy-chain/.env
 
