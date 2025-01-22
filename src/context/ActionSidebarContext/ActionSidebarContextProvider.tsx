@@ -75,13 +75,10 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
   actionSidebarUseRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
     const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
-    const dynamicWalletModal = getElementWithSelector('#dynamic-modal');
 
     if (
       !isClickedInside ||
-      (isChildOf(navigationWrapper, element) && !isTablet) ||
-      // Do not close the sidebar when clicking within the Dynamic wallet library modal
-      isChildOf(dynamicWalletModal, element)
+      (isChildOf(navigationWrapper, element) && !isTablet)
     ) {
       return false;
     }
