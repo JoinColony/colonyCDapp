@@ -4,7 +4,7 @@ import { type ColonyActionFragment } from '~gql';
 
 import { type ActionTitleMessageKeys } from '../components/common/ColonyActions/helpers/getActionTitleValues.ts';
 
-interface DecodedArbitraryTransaction {
+export interface DecodedArbitraryTransaction {
   method: string;
   args: Array<{ name: string; value: string; type: string }>;
 }
@@ -35,7 +35,7 @@ export const decodeArbitraryTransaction = (
     );
 
     return {
-      method: functionFragment.name,
+      method: `${functionFragment.name}(${functionFragment.inputs.map((input) => input.type).join(',')})`,
       args: decodedArgs.map((arg, index) => ({
         name: functionArgs[index].name,
         value: arg.toString(),
@@ -91,7 +91,10 @@ export const getFormatValuesArbitraryTransactions = (
         arbitraryTransactions[0].encodedFunction,
       );
       if (decoded?.method) {
-        messageValues.arbitraryMethod = decoded?.method;
+        messageValues.arbitraryMethod = decoded?.method.replace(
+          /\s*\([^)]*\)/g,
+          '',
+        );
       } else {
         messageValues.arbitraryTransactionsLength = 0;
         messageValues.arbitraryMethod = '';

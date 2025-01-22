@@ -16,7 +16,7 @@ export const ArbitraryTxsDescription = () => {
   const { transactions } = formValues;
 
   const firstArbitraryMethodName =
-    transactions?.[0]?.method.replace(/\s*\([^)]*\)/g, '') || '';
+    transactions?.[0]?.method?.replace(/\s*\([^)]*\)/g, '') || '';
 
   return (
     <FormattedMessage

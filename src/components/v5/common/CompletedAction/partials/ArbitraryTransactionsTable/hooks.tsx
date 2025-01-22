@@ -4,14 +4,14 @@ import React, { useMemo } from 'react';
 
 import { useTablet } from '~hooks/index.ts';
 import getMaskedAddress from '~shared/MaskedAddress/getMaskedAddress.ts';
-import { decodeArbitraryTransaction } from '~utils/arbitraryTxs.ts';
 import { formatText } from '~utils/intl.ts';
 import CellDescription, {
   type CellDescriptionItem,
 } from '~v5/common/ActionSidebar/partials/forms/ArbitraryTxsForm/partials/ArbitraryTransactionsTable/CellDescription.tsx';
 import UserAvatar from '~v5/shared/UserAvatar/UserAvatar.tsx';
 
-import { type ArbitraryTransactionsTableItem } from './ArbitraryTransactionsTable.tsx';
+import { type CompletedArbitraryTransactions } from '../ArbitraryTransaction/hooks.ts';
+
 import { EncodedTransactionCell } from './EncodedTransactionCell.tsx';
 
 const getValueByType = ({ type, value, isFull }) => {
@@ -27,16 +27,16 @@ const getValueByType = ({ type, value, isFull }) => {
 };
 
 export const useArbitraryTxsTableColumns = (): ColumnDef<
-  ArbitraryTransactionsTableItem,
+  CompletedArbitraryTransactions,
   string
 >[] => {
   const columnHelper = useMemo(
-    () => createColumnHelper<ArbitraryTransactionsTableItem>(),
+    () => createColumnHelper<CompletedArbitraryTransactions>(),
     [],
   );
   const isTablet = useTablet();
 
-  const columns: ColumnDef<ArbitraryTransactionsTableItem, string>[] = useMemo(
+  const columns: ColumnDef<CompletedArbitraryTransactions, string>[] = useMemo(
     () => [
       columnHelper.accessor('contractAddress', {
         enableSorting: false,
@@ -75,12 +75,7 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
         cell: ({ row: { original: transaction } }) => {
           const data: CellDescriptionItem[] = [];
 
-          const abi = transaction.action.metadata?.arbitraryTxAbis?.find(
-            (abiItem) =>
-              abiItem.contractAddress === transaction.contractAddress,
-          );
-
-          if (!abi) {
+          if (transaction.encodedFunction) {
             return (
               <EncodedTransactionCell
                 encodedFunction={transaction.encodedFunction}
@@ -88,27 +83,14 @@ export const useArbitraryTxsTableColumns = (): ColumnDef<
             );
           }
 
-          const decodedTx = decodeArbitraryTransaction(
-            abi.jsonAbi,
-            transaction.encodedFunction,
-          );
-
-          if (!decodedTx) {
-            return (
-              <EncodedTransactionCell
-                encodedFunction={transaction.encodedFunction}
-              />
-            );
-          }
-
-          if (decodedTx?.method) {
+          if (transaction.method) {
             data.push({
               name: 'Method',
-              value: decodedTx?.method,
+              value: transaction.method,
             });
           }
-          if (decodedTx?.args) {
-            decodedTx.args?.forEach(({ name, type, value }) => {
+          if (transaction.args) {
+            transaction.args?.forEach(({ name, type, value }) => {
               data.push({
                 name: `${name} (${type})`,
                 value: getValueByType({
