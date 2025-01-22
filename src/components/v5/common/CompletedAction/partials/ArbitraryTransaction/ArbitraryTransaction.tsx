@@ -2,10 +2,7 @@ import React, { type FC } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { type ColonyAction, ColonyActionType } from '~types/graphql.ts';
-import {
-  decodeArbitraryTransaction,
-  getFormatValuesArbitraryTransactions,
-} from '~utils/arbitraryTxs.ts';
+import { getFormatValuesArbitraryTransactions } from '~utils/arbitraryTxs.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   ACTION_TYPE_FIELD_NAME,
@@ -31,6 +28,8 @@ import {
   DescriptionRow,
 } from '../rows/index.ts';
 
+import { useTransformArbitraryTransactions } from './hooks.ts';
+
 interface ArbitraryTransactionProps {
   action: ColonyAction;
 }
@@ -47,30 +46,11 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
       },
     ),
   } = action?.metadata || {};
-  const { initiatorUser, transactionHash, annotation, arbitraryTransactions } =
-    action;
+  const { initiatorUser, transactionHash, annotation } = action;
 
-  const decodedArbitraryTransactions = arbitraryTransactions?.map(
-    ({ contractAddress, encodedFunction }) => {
-      const abi = action.metadata?.arbitraryTxAbis?.find(
-        (abiItem) => abiItem.contractAddress === contractAddress,
-      );
-      if (!abi) {
-        return {
-          contractAddress,
-        };
-      }
-
-      const decodedTx = decodeArbitraryTransaction(
-        abi.jsonAbi,
-        encodedFunction,
-      );
-      return {
-        contractAddress,
-        jsonAbi: abi,
-        ...decodedTx,
-      };
-    },
+  const data = useTransformArbitraryTransactions(
+    action.arbitraryTransactions || [],
+    action,
   );
 
   const arbitraryMessageValues = getFormatValuesArbitraryTransactions(action);
@@ -86,7 +66,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
             [ACTION_TYPE_FIELD_NAME]: Action.ArbitraryTxs,
             [DECISION_METHOD_FIELD_NAME]: decisionMethod,
             [DESCRIPTION_FIELD_NAME]: annotation?.message,
-            [ARBITRARY_TRANSACTIONS_FIELD_NAME]: decodedArbitraryTransactions,
+            [ARBITRARY_TRANSACTIONS_FIELD_NAME]: data,
           }}
         />
       </div>
@@ -124,7 +104,7 @@ const ArbitraryTransaction: FC<ArbitraryTransactionProps> = ({ action }) => {
         <DescriptionRow description={action.annotation.message} />
       )}
 
-      <ArbitraryTransactionsTable action={action} />
+      <ArbitraryTransactionsTable data={data} />
     </>
   );
 };
