@@ -15,21 +15,8 @@ export const useGenerateABI = ({ setContractAbiLoading }) => {
   const [isJsonAbiFormatted, setIsJsonAbiFormatted] = useState(false);
   const [showJsonAbiEditWarning, setShowJsonAbiEditWarning] = useState(false);
 
-  useEffect(() => {
-    const { unsubscribe } = watch(
-      ({ contractAddress: contractAddressField }, { name }) => {
-        if (name === 'contractAddress' && isAddress(contractAddressField)) {
-          getABIFromContractAddress(contractAddressField);
-
-          // Reset jsonAbi state if contractAddress is updated
-          // jsonAbi will be filled with data after a successful ABI response
-          setValue('jsonAbi', '');
-          setIsJsonAbiFormatted(false);
-        }
-      },
-    );
-
-    async function getABIFromContractAddress(contractAddress: string) {
+  const getABIFromContractAddress = useCallback(
+    async (contractAddress: string) => {
       if (!networkInfo?.chainId) {
         return;
       }
@@ -57,12 +44,48 @@ export const useGenerateABI = ({ setContractAbiLoading }) => {
         // eslint-disable-next-line no-console
         console.log(e);
       }
-    }
+    },
+    [networkInfo?.chainId, setContractAbiLoading, setValue, trigger],
+  );
+
+  useEffect(() => {
+    const { unsubscribe } = watch(
+      ({ contractAddress: contractAddressField }, { name }) => {
+        if (name === 'contractAddress' && isAddress(contractAddressField)) {
+          getABIFromContractAddress(contractAddressField);
+
+          // Reset jsonAbi state if contractAddress is updated
+          // jsonAbi will be filled with data after a successful ABI response
+          setValue('jsonAbi', '');
+          setIsJsonAbiFormatted(false);
+        }
+      },
+    );
 
     return () => unsubscribe();
-  }, [watch, networkInfo?.chainId, setContractAbiLoading, setValue, trigger]);
+  }, [
+    watch,
+    networkInfo?.chainId,
+    setContractAbiLoading,
+    setValue,
+    trigger,
+    getABIFromContractAddress,
+  ]);
 
   const jsonAbiField = watch('jsonAbi');
+  const contractAddressField = watch('contractAddress');
+
+  useEffect(() => {
+    // Initial ABI loading in case there is no ABI after REDO action
+    if (
+      contractAddressField &&
+      isAddress(contractAddressField) &&
+      !jsonAbiField
+    ) {
+      getABIFromContractAddress(contractAddressField);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleJsonFormat = useCallback(() => {
     try {
