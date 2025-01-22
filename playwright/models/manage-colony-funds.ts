@@ -1,4 +1,4 @@
-import type { Page, Locator } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 
 export class ManageColonyFunds {
   static readonly validationMessages = {
@@ -39,6 +39,16 @@ export class ManageColonyFunds {
           'This token is locked and is not able to be used for payments. Check with the token creator for details.',
       },
     },
+    manageTokens: {
+      allRequiredFields: [
+        'No changes in the table',
+        'Title is required',
+        "Decision Method can't be empty",
+      ],
+      token: {
+        isAlreadyAdded: 'This token is already on colony tokens list',
+      },
+    },
   };
 
   drawer: Locator;
@@ -74,6 +84,14 @@ export class ManageColonyFunds {
   claimButton: Locator;
 
   transferFundsButton: Locator;
+
+  updateTokensButton: Locator;
+
+  manageTokensTable: Locator;
+
+  tokenSelector: Locator;
+
+  tokenSearchMenu: Locator;
 
   constructor(private page: Page) {
     this.drawer = page.getByTestId('action-drawer');
@@ -117,9 +135,21 @@ export class ManageColonyFunds {
         name: 'Transfer funds',
       })
       .last();
+    this.updateTokensButton = this.form
+      .getByRole('button', {
+        name: 'Update tokens',
+      })
+      .last();
+    this.manageTokensTable = this.drawer.getByRole('table');
+    this.tokenSelector = this.page.getByTestId('token-select');
+    this.tokenSearchMenu = this.page.getByTestId('token-search-select');
   }
 
-  async open(motionTitle: 'Mint tokens' | 'Transfer funds') {
+  async setTitle(title: string) {
+    await this.form.getByPlaceholder('Enter title').fill(title);
+  }
+
+  async open(motionTitle: 'Mint tokens' | 'Transfer funds' | 'Manage tokens') {
     await this.sidebar.getByLabel('Start the manage colony action').click();
     await this.drawer.waitFor({ state: 'visible' });
     await this.drawer
@@ -213,7 +243,7 @@ export class ManageColonyFunds {
     title?: string;
   }) {
     if (title) {
-      await this.form.getByPlaceholder('Enter title').fill(title);
+      await this.setTitle(title);
     }
     if (amount) {
       await this.form.getByPlaceholder('Enter amount').fill(amount);
@@ -240,7 +270,7 @@ export class ManageColonyFunds {
     tokenSymbol?: string;
   }) {
     if (title) {
-      await this.form.getByPlaceholder('Enter title').fill(title);
+      await this.setTitle(title);
     }
     if (amount) {
       await this.form.getByPlaceholder('Enter amount').fill(amount);
@@ -284,7 +314,7 @@ export class ManageColonyFunds {
     } else {
       await this.stepper.getByRole('button', { name: 'Max' }).click();
     }
-    await this.stepper.getByRole('button', { name: 'Stake' }).waitFor();
+
     await this.stepper.getByRole('button', { name: 'Stake' }).click();
   }
 
@@ -295,7 +325,52 @@ export class ManageColonyFunds {
     } else {
       await this.stepper.getByRole('button', { name: 'Max' }).click();
     }
-    await this.stepper.getByRole('button', { name: 'Stake' }).waitFor();
+
     await this.stepper.getByRole('button', { name: 'Stake' }).click();
+  }
+
+  async verifyTokenAdded({
+    colonyName,
+    token,
+  }: {
+    colonyName: string;
+    token: string;
+  }) {
+    await this.page.goto(`/${colonyName}/balances`);
+
+    await this.page
+      .getByRole('heading', { name: 'Colony token balance' })
+      .waitFor({ state: 'visible' });
+    await this.page.getByRole('table').waitFor({ state: 'visible' });
+    await this.page
+      .getByRole('table')
+      .getByText(token)
+      .first()
+      .waitFor({ state: 'visible' });
+  }
+
+  async removeTokens() {
+    await this.open('Manage tokens');
+    await this.setTitle('Remove tokens');
+    await this.setDecisionMethod('Permissions');
+    const allAddedTokens = await this.manageTokensTable
+      .getByLabel('Open menu')
+      .all();
+
+    if (allAddedTokens.length === 0) {
+      return;
+    }
+
+    for (const token of allAddedTokens) {
+      await token.click();
+      await this.page.getByRole('button', { name: 'Remove row' }).click();
+    }
+
+    await this.updateTokensButton.click();
+    await this.waitForTransaction();
+
+    await expect(this.manageTokensTable.getByText('Removed')).toHaveCount(
+      allAddedTokens.length,
+    );
   }
 }
