@@ -11,7 +11,6 @@ import {
   TRANSACTION_METHODS,
   ExtendedClientType,
 } from '~types/transactions.ts';
-import { isFullWallet } from '~types/wallet.ts';
 import { getChainId } from '~utils/chainId.ts';
 import debugLogging from '~utils/debug/debugLogging.ts';
 import {
@@ -31,10 +30,6 @@ async function getMetatransactionPromise(
   { methodName, params = [], identifier: clientAddress }: TransactionType,
 ): Promise<TransactionResponse> {
   const wallet = getContext(ContextModule.Wallet);
-
-  if (!isFullWallet(wallet)) {
-    throw new Error('Background login not yet completed.');
-  }
 
   const signer = wallet.ethersProvider.getSigner();
 
