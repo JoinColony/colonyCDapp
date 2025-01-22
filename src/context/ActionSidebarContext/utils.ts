@@ -10,8 +10,8 @@ export const isElementInsideModalOrPortal = (element: Element) => {
     getPortalContainer().contains(element) ||
     reactModalPortals.some((portal) => portal.contains(element))
   ) {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
 };

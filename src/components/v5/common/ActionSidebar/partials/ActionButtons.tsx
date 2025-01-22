@@ -7,6 +7,8 @@ import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSid
 import { isElementInsideModalOrPortal } from '~context/ActionSidebarContext/utils.ts';
 import { useMobile } from '~hooks/index.ts';
 import { useDraftAgreement } from '~hooks/useDraftAgreement.ts';
+import { isChildOf } from '~utils/checks/isChildOf.ts';
+import { getElementWithSelector } from '~utils/elements.ts';
 import IconButton from '~v5/shared/Button/IconButton.tsx';
 import Button from '~v5/shared/Button/index.ts';
 
@@ -50,8 +52,20 @@ const ActionButtons: FC<ActionButtonsProps> = ({
 
   useRegisterOnBeforeCloseCallback((element) => {
     const isClickedInside = isElementInsideModalOrPortal(element);
+    const dynamicWalletModal = getElementWithSelector('#dynamic-modal');
+    const dynamicSendTransactionModal = getElementWithSelector(
+      '#dynamic-send-transaction',
+    );
+    const dynamicSignMessageModal = getElementWithSelector(
+      '#dynamic-sign-message',
+    );
 
-    if (!isClickedInside) {
+    if (
+      isClickedInside ||
+      isChildOf(dynamicWalletModal, element) ||
+      isChildOf(dynamicSendTransactionModal, element) ||
+      isChildOf(dynamicSignMessageModal, element)
+    ) {
       return false;
     }
 
