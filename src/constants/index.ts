@@ -156,6 +156,36 @@ export const GANACHE_NETWORK: NetworkInfo = {
   blockTime: 5,
 };
 
+export const GANACHE_NETWORK_1: NetworkInfo = {
+  name: 'Local Proxy Chain 1',
+  chainId: '265669101',
+  shortName: 'Local Proxy Chain 1',
+  blockExplorerName: 'Noexplorer',
+  blockExplorerUrl: 'http://localhost',
+  displayENSDomain: 'joincolony.eth',
+  tokenExplorerLink: 'http://localhost',
+  contractAddressLink: 'http://localhost',
+  apiUri: 'https://api-sepolia.arbiscan.io/api',
+  icon: GanacheIcon,
+  nativeToken: ETHER_TOKEN,
+  blockTime: 5,
+};
+
+export const GANACHE_NETWORK_2: NetworkInfo = {
+  name: 'Local Proxy Chain 2',
+  chainId: '265669102',
+  shortName: 'Local Proxy Chain 2',
+  blockExplorerName: 'Noexplorer',
+  blockExplorerUrl: 'http://localhost',
+  displayENSDomain: 'joincolony.eth',
+  tokenExplorerLink: 'http://localhost',
+  contractAddressLink: 'http://localhost',
+  apiUri: 'https://api-sepolia.arbiscan.io/api',
+  icon: GanacheIcon,
+  nativeToken: ETHER_TOKEN,
+  blockTime: 5,
+};
+
 export const BINANCE_NETWORK: NetworkInfo = {
   name: 'Binance Smart Chain',
   chainId: '56',

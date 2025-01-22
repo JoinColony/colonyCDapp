@@ -75,7 +75,7 @@ const ManageSupportedChain: FC<ManageSupportedChainProps> = ({ action }) => {
     },
     {
       actionType: action.type,
-      chain: chainInfo?.name,
+      chain: chainInfo?.shortName,
       initiator:
         initiatorUser || initiatorAddress ? (
           <UserInfoPopover

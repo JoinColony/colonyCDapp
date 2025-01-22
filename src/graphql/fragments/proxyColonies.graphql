@@ -4,3 +4,8 @@ fragment ProxyColony on ProxyColony {
   chainId
   isActive
 }
+
+fragment SupportedChain on SupportedChain {
+  id
+  isActive
+}
