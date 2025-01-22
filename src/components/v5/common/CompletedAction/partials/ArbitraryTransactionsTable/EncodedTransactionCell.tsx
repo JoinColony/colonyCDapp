@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 
 import { formatText } from '~utils/intl.ts';
 import Button from '~v5/shared/Button/Button.tsx';
@@ -16,13 +16,26 @@ export const EncodedTransactionCell = ({
 
   const contentRef = React.useRef<HTMLSpanElement>(null);
 
-  React.useEffect(() => {
+  const updateTruncation = useCallback(() => {
     if (contentRef.current) {
       setIsTruncated(
         contentRef.current.scrollHeight > contentRef.current.clientHeight,
       );
     }
-  }, [encodedFunction]);
+  }, []);
+
+  useLayoutEffect(() => {
+    updateTruncation();
+
+    const resizeObserver = new ResizeObserver(updateTruncation);
+    if (contentRef.current) {
+      resizeObserver.observe(contentRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [updateTruncation, encodedFunction]);
 
   const toggleTruncatedContent = () => {
     setIsExpanded((val) => !val);
@@ -35,13 +48,13 @@ export const EncodedTransactionCell = ({
       </span>
       <span
         ref={contentRef}
-        className={clsx(' text-gray-600 break-word', {
-          'line-clamp-10': !isExpanded,
+        className={clsx('text-gray-600 break-word', {
+          'line-clamp-[10]': !isExpanded,
         })}
       >
         {encodedFunction}
       </span>
-      {isTruncated && (
+      {(isTruncated || isExpanded) && (
         <Button
           type="button"
           onClick={toggleTruncatedContent}
