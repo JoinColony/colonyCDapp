@@ -46,52 +46,50 @@ const Entry = ({ store }: Props) => {
 
   return (
     <DynamicContextProvider
+      mobileExperience="redirect"
+      logLevel={import.meta.env.DEV ? 'warn' : 'error'}
       settings={{
-        // Find your environment id at https://app.dynamic.xyz/dashboard/developer
-        environmentId: '9c7dab02-843a-43b4-87b8-64a67f5b47e8',
+        environmentId: import.meta.env.DYNAMIC_ENV_ID,
         walletConnectors: [EthereumWalletConnectors],
         initialAuthenticationMode: 'connect-only',
-        events: {
-          onAuthSuccess: (args) => {
-            console.log('onAuthSuccess was called', args);
-          }
-        },
-        handlers: {
-          handleConnectedWallet: async (args) => {
-            console.log("handleConnectedWallet was called", args);
-            // if runYourOwnLogic return true, the connection will be established, otherwise it will not
-            return true
+        enableVisitTrackingOnConnectOnly: false,
+        recommendedWallets: [
+          {
+            walletKey: 'metamask',
+            label: 'Recommended',
           },
-          handleAuthenticatedUser: async (args) => {
-            console.log("handleAuthenticatedUser was called", args);
-          },
-        },
+        ],
         overrides: {
-          evmNetworks: (networks) =>
-            mergeNetworks(
-              [
-                {
-                  blockExplorerUrls: [
-                    GANACHE_NETWORK.blockExplorerUrl as string,
-                  ],
-                  chainId: parseInt(GANACHE_NETWORK.chainId, 10),
-                  chainName: 'Local Hardhat Instance',
-                  iconUrls: ['/src/images/icons/hardhat.svg'],
-                  name: 'Local Hardhat Instance',
-                  nativeCurrency: {
-                    decimals: 18,
-                    name: 'Ether',
-                    symbol: 'ETH',
-                    iconUrl: 'https://app.dynamic.xyz/assets/networks/eth.svg',
-                  },
-                  networkId: parseInt(GANACHE_NETWORK.chainId, 10),
+          evmNetworks: (networks) => {
+            if (import.meta.env.DEV) {
+              return mergeNetworks(
+                [
+                  {
+                    blockExplorerUrls: [
+                      GANACHE_NETWORK.blockExplorerUrl as string,
+                    ],
+                    chainId: parseInt(GANACHE_NETWORK.chainId, 10),
+                    chainName: 'Local Hardhat Instance',
+                    iconUrls: ['/src/images/icons/hardhat.svg'],
+                    name: 'Local Hardhat Instance',
+                    nativeCurrency: {
+                      decimals: 18,
+                      name: 'Ether',
+                      symbol: 'ETH',
+                      iconUrl:
+                        'https://app.dynamic.xyz/assets/networks/eth.svg',
+                    },
+                    networkId: parseInt(GANACHE_NETWORK.chainId, 10),
 
-                  rpcUrls: [GANACHE_LOCAL_RPC_URL],
-                  vanityName: 'Hardhat',
-                },
-              ],
-              networks,
-            ),
+                    rpcUrls: [GANACHE_LOCAL_RPC_URL],
+                    vanityName: 'Hardhat',
+                  },
+                ],
+                networks,
+              );
+            }
+            return networks;
+          },
         },
       }}
     >
