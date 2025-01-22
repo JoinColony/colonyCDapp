@@ -3,11 +3,13 @@ import React, { type FC, useCallback, useState } from 'react';
 import { usePopperTooltip } from 'react-popper-tooltip';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
 import Button from '~v5/shared/Button/index.ts';
@@ -38,9 +40,7 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
     visible: isSearchOpened,
     onVisibleChange: setIsSearchOpened,
   });
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -94,8 +94,8 @@ const TeamsPageFilter: FC<TeamsPageFilterProps> = ({
           )}
           <Button
             onClick={() =>
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+              showActionSidebar(ActionSidebarMode.CreateAction, {
+                action: Action.CreateNewTeam,
               })
             }
             text={formatText({ id: 'teamsPage.createNewTeam' })}

@@ -1,7 +1,5 @@
 import { Id } from '@colony/colony-js';
-import { useCallback, useMemo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { type DeepPartial } from 'utility-types';
+import { useMemo } from 'react';
 import { array, type InferType, number, object, string } from 'yup';
 
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
@@ -17,19 +15,13 @@ import { removeCacheEntry, CacheQueryKeys } from '~utils/queries.ts';
 import { shouldPreventPaymentsWithTokenInColony } from '~utils/tokens.ts';
 import { amountGreaterThanZeroValidation } from '~utils/validation/amountGreaterThanZeroValidation.ts';
 import { hasEnoughFundsValidation } from '~utils/validation/hasEnoughFundsValidation.ts';
-import {
-  ACTION_BASE_VALIDATION_SCHEMA,
-  DECISION_METHOD_FIELD_NAME,
-} from '~v5/common/ActionSidebar/consts.ts';
-import useActionFormBaseHook from '~v5/common/ActionSidebar/hooks/useActionFormBaseHook.ts';
-import { type ActionFormBaseProps } from '~v5/common/ActionSidebar/types.ts';
+import { ACTION_BASE_VALIDATION_SCHEMA } from '~v5/common/ActionSidebar/consts.ts';
+import { type UseFormOptionsReturn } from '~v5/common/ActionSidebar/hooks/useActionForm.ts';
 
 import { getSimplePaymentPayload } from './utils.tsx';
 
-export const useValidationSchema = (networkInverseFee: string | undefined) => {
+const useValidationSchema = (networkInverseFee: string | undefined) => {
   const { colony } = useColonyContext();
-  const { watch } = useFormContext();
-  const fromDomainId: number | undefined = watch('from');
   const tokenLockStatesMap = useTokenLockStates();
 
   const validationSchema = useMemo(
@@ -62,7 +54,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
                 hasEnoughFundsValidation({
                   value,
                   context,
-                  domainId: fromDomainId,
+                  domainId: context.parent.from,
                   colony,
                   networkInverseFee,
                 }),
@@ -111,7 +103,7 @@ export const useValidationSchema = (networkInverseFee: string | undefined) => {
         })
         .defined()
         .concat(ACTION_BASE_VALIDATION_SCHEMA),
-    [colony, fromDomainId, networkInverseFee, tokenLockStatesMap],
+    [colony, networkInverseFee, tokenLockStatesMap],
   );
 
   return validationSchema;
@@ -121,48 +113,40 @@ export type SimplePaymentFormValues = InferType<
   ReturnType<typeof useValidationSchema>
 >;
 
-export const useSimplePayment = (
-  getFormOptions: ActionFormBaseProps['getFormOptions'],
-) => {
-  const { networkInverseFee } = useNetworkInverseFee();
-  const { colony } = useColonyContext();
-  const decisionMethod: DecisionMethod | undefined = useWatch({
-    name: DECISION_METHOD_FIELD_NAME,
-  });
-  const validationSchema = useValidationSchema(networkInverseFee);
+export const useFormOptions =
+  (): UseFormOptionsReturn<SimplePaymentFormValues> => {
+    const { networkInverseFee } = useNetworkInverseFee();
+    const { colony } = useColonyContext();
+    const validationSchema = useValidationSchema(networkInverseFee);
 
-  useActionFormBaseHook({
-    validationSchema,
-    defaultValues: useMemo<DeepPartial<SimplePaymentFormValues>>(
+    return useMemo(
       () => ({
-        createdIn: Id.RootDomain,
-        payments: [],
-        tokenAddress: colony.nativeToken.tokenAddress,
+        async actionType(formValues: SimplePaymentFormValues) {
+          return formValues.decisionMethod === DecisionMethod.Permissions
+            ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
+            : ActionTypes.MOTION_EXPENDITURE_PAYMENT;
+        },
+        validationSchema,
+        defaultValues: {
+          createdIn: Id.RootDomain,
+          payments: [],
+          tokenAddress: colony.nativeToken.tokenAddress,
+        },
+        transform: pipe(
+          mapPayload((values: SimplePaymentFormValues) => {
+            return getSimplePaymentPayload(colony, values, networkInverseFee);
+          }),
+        ),
+        onSuccess(formValues) {
+          /**
+           * We need to remove all getDomainBalance queries once a payment has been successfully completed
+           * By default it will refetch all active queries
+           */
+          if (formValues.decisionMethod === DecisionMethod.Permissions) {
+            removeCacheEntry(CacheQueryKeys.GetDomainBalance);
+          }
+        },
       }),
-      [colony.nativeToken.tokenAddress],
-    ),
-    actionType:
-      decisionMethod === DecisionMethod.Permissions
-        ? ActionTypes.ACTION_EXPENDITURE_PAYMENT
-        : ActionTypes.MOTION_EXPENDITURE_PAYMENT,
-    getFormOptions,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    transform: useCallback(
-      pipe(
-        mapPayload((values: SimplePaymentFormValues) => {
-          return getSimplePaymentPayload(colony, values, networkInverseFee);
-        }),
-      ),
-      [colony, networkInverseFee],
-    ),
-    onSuccess: () => {
-      /**
-       * We need to remove all getDomainBalance queries once a payment has been successfully completed
-       * By default it will refetch all active queries
-       */
-      if (decisionMethod === DecisionMethod.Permissions) {
-        removeCacheEntry(CacheQueryKeys.GetDomainBalance);
-      }
-    },
-  });
-};
+      [colony, networkInverseFee, validationSchema],
+    );
+  };

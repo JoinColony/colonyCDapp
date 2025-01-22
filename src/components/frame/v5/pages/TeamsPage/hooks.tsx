@@ -12,7 +12,10 @@ import {
 import React, { useCallback, useState } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useColonyContext } from '~context/ColonyContext/ColonyContext.ts';
 import { useMemberContext } from '~context/MemberContext/MemberContext.ts';
 import { DomainColor, ModelSortDirection } from '~gql';
@@ -32,7 +35,6 @@ import { convertToDecimal } from '~utils/convertToDecimal.ts';
 import { getDomainNameFallback } from '~utils/domains.ts';
 import { formatText } from '~utils/intl.ts';
 import { getBalanceForTokenAndDomain } from '~utils/tokens.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { type TeamCardListItem } from '~v5/common/TeamCardList/types.ts';
 import Link from '~v5/shared/Link/index.ts';
 
@@ -49,9 +51,7 @@ export const useTeams = () => {
 
   const { totalContributors: members, loading: membersLoading } =
     useMemberContext();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const { domainsActionCount } = useActivityData();
 
@@ -139,11 +139,14 @@ export const useTeams = () => {
                 key: '1',
                 icon: Pencil,
                 label: formatText({ id: 'teamsPage.menu.editTeam' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.EditExistingTeam,
-                    team: nativeId,
-                  }),
+                onClick: () => {
+                  showActionSidebar(ActionSidebarMode.CreateAction, {
+                    action: Action.EditExistingTeam,
+                    initialValues: {
+                      team: nativeId,
+                    },
+                  });
+                },
               },
               {
                 key: '2',

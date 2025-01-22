@@ -56,9 +56,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
   const { colony } = useColonyContext();
   const isNativeTokenUnlocked = !!colony?.status?.nativeToken?.unlocked;
   const navigate = useNavigate();
-  const {
-    actionSidebarToggle: [, { toggleOff: toggleActionSidebarOff }],
-  } = useActionSidebarContext();
+  const { hideActionSidebar } = useActionSidebarContext();
 
   const actionTypeNotificationHref =
     (selectedAction === Action.UnlockToken &&
@@ -110,7 +108,7 @@ export const ActionTypeNotification: FC<ActionTypeNotificationProps> = ({
                     type="button"
                     onClick={() => {
                       navigate(`extensions/${Extension.VotingReputation}`);
-                      toggleActionSidebarOff();
+                      hideActionSidebar();
                     }}
                   >
                     {formatText(MSG.viewExtension)}

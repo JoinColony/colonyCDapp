@@ -1,161 +1,98 @@
-import { FilePlus, WarningCircle } from '@phosphor-icons/react';
+import { FilePlus } from '@phosphor-icons/react';
 import clsx from 'clsx';
-import React, { type FC, useState } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import React, { type FC } from 'react';
+import { defineMessages } from 'react-intl';
+import { usePopperTooltip } from 'react-popper-tooltip';
 
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import { type Action } from '~constants/actions.ts';
 import { useAdditionalFormOptionsContext } from '~context/AdditionalFormOptionsContext/AdditionalFormOptionsContext.ts';
-import useRelativePortalElement from '~hooks/useRelativePortalElement.ts';
-import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import Modal from '~v5/shared/Modal/index.ts';
-import SearchSelect from '~v5/shared/SearchSelect/index.ts';
+import SearchSelectPopover from '~v5/shared/SearchSelect/SearchSelectPopover.tsx';
 
 import ActionFormRow from '../ActionFormRow/index.ts';
 
-import { ACTION_TYPE_FIELD_NAME, NON_RESETTABLE_FIELDS } from './consts.ts';
 import useActionsList from './hooks/useActionsList.ts';
-import { useActiveActionType } from './hooks/useActiveActionType.ts';
 import { translateAction } from './utils.ts';
 
 const displayName = 'v5.common.ActionTypeSelect';
 
+const MSG = defineMessages({
+  chooseActionType: {
+    id: `${displayName}.chooseActionType`,
+    defaultMessage: 'Choose action type',
+  },
+});
+
 interface ActionTypeSelectProps {
   className?: string;
+  // Maybe the form can just know this from the form context?
+  action?: Action;
+  onSelect: (actionType: Action) => void;
 }
 
-const ActionTypeSelect: FC<ActionTypeSelectProps> = ({ className }) => {
+const ActionTypeSelect: FC<ActionTypeSelectProps> = ({
+  className,
+  action,
+  onSelect,
+}) => {
   const actionsList = useActionsList();
-  const [nextActionType, setNextActionType] = useState<string | undefined>(
-    undefined,
-  );
-  const [
-    isSelectVisible,
-    { toggle: toggleSelect, toggleOff: toggleSelectOff, registerContainerRef },
-  ] = useToggle();
-  const actionType = useActiveActionType();
-  const { updateActionSidebarInitialValues } = useActionSidebarContext();
-  const {
-    field: { onChange },
-  } = useController({ name: ACTION_TYPE_FIELD_NAME });
-  const { portalElementRef, relativeElementRef } = useRelativePortalElement<
-    HTMLButtonElement,
-    HTMLDivElement
-  >([isSelectVisible], {
-    top: 8,
-  });
-  const { formState, reset, watch } = useFormContext();
   const { readonly } = useAdditionalFormOptionsContext();
 
-  const defaultValues = NON_RESETTABLE_FIELDS.reduce(
-    (acc, fieldName) => ({
-      ...acc,
-      [fieldName]:
-        fieldName === ACTION_TYPE_FIELD_NAME
-          ? nextActionType
-          : watch(fieldName),
-    }),
-    {},
-  );
+  const { getTooltipProps, setTooltipRef, setTriggerRef, triggerRef, visible } =
+    usePopperTooltip({
+      placement: 'bottom-start',
+      trigger: ['click'],
+      interactive: true,
+      closeOnOutsideClick: true,
+    });
 
   return (
     <div className={className}>
       <ActionFormRow
-        fieldName={ACTION_TYPE_FIELD_NAME}
         icon={FilePlus}
         title={formatText({ id: 'actionSidebar.actionType' })}
-        // Disabled to improve user experience
-        // tooltips={{
-        //   label: {
-        //     tooltipContent: formatText({
-        //       id: 'actionSidebar.tooltip.actionType',
-        //     }),
-        //   },
-        // }}
       >
-        {readonly ? (
+        {readonly && action ? (
           <span className="text-md text-gray-900">
-            {formatText({
-              id: translateAction(actionType),
-            })}
+            {translateAction(action)}
           </span>
         ) : (
           <>
             <button
               type="button"
-              ref={relativeElementRef}
+              ref={setTriggerRef}
               className={clsx(
                 'flex text-left text-md transition-colors md:hover:text-blue-400',
                 {
-                  'text-gray-400': !actionType && !isSelectVisible,
-                  'text-gray-900': actionType && !isSelectVisible,
-                  'text-blue-400': isSelectVisible,
+                  'text-gray-400': !action && !visible,
+                  'text-gray-900': action && !visible,
+                  'text-blue-400': visible,
                 },
               )}
-              onClick={toggleSelect}
             >
-              {formatText({
-                id: actionType
-                  ? translateAction(actionType)
-                  : 'actionSidebar.chooseActionType',
-              })}
+              {formatText(
+                action
+                  ? {
+                      id: translateAction(action),
+                    }
+                  : MSG.chooseActionType,
+              )}
             </button>
-            {isSelectVisible && (
-              <SearchSelect
-                hideSearchOnMobile
-                ref={(ref) => {
-                  registerContainerRef(ref);
-                  portalElementRef.current = ref;
-                }}
+            {visible && (
+              <SearchSelectPopover
                 items={actionsList}
-                onSelect={(action) => {
-                  toggleSelectOff();
-                  updateActionSidebarInitialValues({
-                    [ACTION_TYPE_FIELD_NAME]: action,
-                  });
-
-                  if (action === actionType) {
-                    return;
-                  }
-
-                  const hasMadeChanges = Object.keys(
-                    formState.dirtyFields,
-                  ).find(
-                    (fieldName) =>
-                      NON_RESETTABLE_FIELDS.indexOf(fieldName) === -1,
-                  );
-
-                  if (hasMadeChanges && actionType) {
-                    setNextActionType(action);
-
-                    return;
-                  }
-
-                  onChange(action);
-                }}
+                hideSearchOnMobile
+                // FIXME: We might need to update the action sidebar initial values on select?
+                // See https://github.com/JoinColony/colonyCDapp/blob/76626dd9fc3ef778bc39f631dc25241f8cd8413c/src/components/v5/common/ActionSidebar/ActionTypeSelect.tsx#L113-L115
+                onSelect={onSelect}
+                setTooltipRef={setTooltipRef}
+                tooltipProps={getTooltipProps}
+                triggerRef={triggerRef}
               />
             )}
           </>
         )}
       </ActionFormRow>
-      <Modal
-        title={formatText({ id: 'actionSidebar.changeActionModal.title' })}
-        subTitle={formatText({
-          id: 'actionSidebar.cancelModal.subtitle',
-        })}
-        isOpen={!!nextActionType}
-        onClose={() => setNextActionType(undefined)}
-        onConfirm={() => {
-          reset(defaultValues);
-          setNextActionType(undefined);
-        }}
-        icon={WarningCircle}
-        buttonMode="primarySolid"
-        confirmMessage={formatText({ id: 'button.changeAction' })}
-        closeMessage={formatText({
-          id: 'button.continueAction',
-        })}
-      />
     </div>
   );
 };

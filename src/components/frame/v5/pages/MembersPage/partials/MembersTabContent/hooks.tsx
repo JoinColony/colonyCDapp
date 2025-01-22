@@ -4,7 +4,10 @@ import React, { useMemo } from 'react';
 
 import { Action } from '~constants/actions.ts';
 import { DEFAULT_NETWORK_INFO } from '~constants/index.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 // @BETA: Disabled for now
 // import { useMemberModalContext } from '~context/MemberModalContext';
 import {
@@ -16,7 +19,6 @@ import useCopyToClipboard from '~hooks/useCopyToClipboard.ts';
 import Tooltip from '~shared/Extensions/Tooltip/index.ts';
 import { getBlockExplorerLink } from '~utils/external/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import Link from '~v5/shared/Link/index.ts';
 
 export const useMembersTabContentItems = (
@@ -26,9 +28,7 @@ export const useMembersTabContentItems = (
   // const { setIsMemberModalOpen, setUser } = useMemberModalContext();
   const isMobile = useMobile();
   const { handleClipboardCopy, isCopied } = useCopyToClipboard();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   return useMemo(
     () =>
@@ -56,11 +56,14 @@ export const useMembersTabContentItems = (
                 key: '2',
                 icon: HandCoins,
                 label: formatText({ id: 'membersPage.memberNav.makePayment' }),
-                onClick: () =>
-                  toggleActionSidebarOn({
-                    [ACTION_TYPE_FIELD_NAME]: Action.SimplePayment,
-                    recipient: walletAddress,
-                  }),
+                onClick: () => {
+                  showActionSidebar(ActionSidebarMode.CreateAction, {
+                    action: Action.SimplePayment,
+                    initialValues: {
+                      recipient: walletAddress,
+                    },
+                  });
+                },
               },
               ...(walletAddress
                 ? [
@@ -132,7 +135,7 @@ export const useMembersTabContentItems = (
       // @BETA: Disabled for now
       // setIsMemberModalOpen,
       // setUser,
-      toggleActionSidebarOn,
+      showActionSidebar,
     ],
   );
 };

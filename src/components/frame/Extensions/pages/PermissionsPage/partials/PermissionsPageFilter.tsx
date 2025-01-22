@@ -3,11 +3,13 @@ import clsx from 'clsx';
 import React, { type FC, useCallback } from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import useToggle from '~hooks/useToggle/index.ts';
 import { formatText } from '~utils/intl.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
 import { useSearchFilter } from '~v5/common/Filter/hooks.ts';
 import SearchInputMobile from '~v5/common/Filter/partials/SearchInput/SearchInput.tsx';
 import SearchPill from '~v5/common/Pills/SearchPill/SearchPill.tsx';
@@ -37,9 +39,7 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
     setTooltipRef,
     setTriggerRef,
   } = useSearchFilter();
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
   const isMobile = useMobile();
   const [isModalOpen, { toggleOff: toggleModalOff, toggleOn: toggleModalOn }] =
     useToggle();
@@ -99,8 +99,8 @@ const PermissionsPageFilter: FC<PermissionsPageFilterProps> = ({
             size="small"
             isFullSize={false}
             onClick={() => {
-              toggleActionSidebarOn({
-                [ACTION_TYPE_FIELD_NAME]: Action.ManagePermissions,
+              showActionSidebar(ActionSidebarMode.CreateAction, {
+                action: Action.ManagePermissions,
               });
             }}
           >

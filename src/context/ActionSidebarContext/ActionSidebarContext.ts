@@ -1,34 +1,44 @@
 import { createContext, useContext } from 'react';
 import { type FieldValues } from 'react-hook-form';
 
-import { DEFAULT_USE_TOGGLE_RETURN_VALUE } from '~hooks/useToggle/consts.ts';
-import {
-  type OnBeforeCloseCallback,
-  type UseToggleReturnType,
-} from '~hooks/useToggle/types.ts';
+import { type Action } from '~constants/actions.ts';
+import { asyncNoop, noop } from '~utils/noop.ts';
 
-type ActionSidebarToggle = [
-  boolean,
-  {
-    toggle: (actionSidebarInitialValues?: FieldValues) => void;
-    toggleOn: (actionSidebarInitialValues?: FieldValues) => void;
-    toggleOff: () => void;
-    registerContainerRef: (ref: HTMLElement | null) => void;
-    useRegisterOnBeforeCloseCallback: (callback: OnBeforeCloseCallback) => void;
-  },
-];
+export enum ActionSidebarMode {
+  Disabled,
+  CreateAction,
+  ActionOverview,
+  ViewAction,
+}
+
+export interface ActionSidebarData {
+  action?: Action;
+  initialValues?: FieldValues;
+  // FIXME: This is probably an enum somewhere
+  overviewGroup?: any;
+}
 
 export interface ActionSidebarContextValue {
-  actionSidebarToggle: ActionSidebarToggle;
-  cancelModalToggle: UseToggleReturnType;
-  updateActionSidebarInitialValues: (initialValues: FieldValues) => void;
-  actionSidebarInitialValues?: FieldValues;
+  data: ActionSidebarData;
+  hideActionSidebar: () => Promise<void>;
+  isActionSidebarOpen: boolean;
+  mode: ActionSidebarMode;
+  registerOnBeforeCloseCallback: (cb: () => Promise<boolean>) => void;
+  unregisterOnBeforeCloseCallback: (cb: () => Promise<boolean>) => void;
+  showActionSidebar: (
+    mode: ActionSidebarMode,
+    data?: ActionSidebarData,
+  ) => Promise<void>;
 }
 
 export const ActionSidebarContext = createContext<ActionSidebarContextValue>({
-  actionSidebarToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
-  cancelModalToggle: DEFAULT_USE_TOGGLE_RETURN_VALUE,
-  updateActionSidebarInitialValues: () => {},
+  data: {},
+  hideActionSidebar: asyncNoop,
+  isActionSidebarOpen: false,
+  mode: ActionSidebarMode.Disabled,
+  registerOnBeforeCloseCallback: noop,
+  unregisterOnBeforeCloseCallback: noop,
+  showActionSidebar: asyncNoop,
 });
 
 export const useActionSidebarContext = () => useContext(ActionSidebarContext);

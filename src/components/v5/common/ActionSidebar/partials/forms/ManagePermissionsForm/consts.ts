@@ -6,6 +6,7 @@ import { boolean, number, object, string, type TestContext } from 'yup';
 
 import { PERMISSIONS_TABLE_CONTENT, UserRole } from '~constants/permissions.ts';
 import { DecisionMethod } from '~types/actions.ts';
+import { Authority } from '~types/authority.ts';
 import { formatText } from '~utils/intl.ts';
 import {
   capitalizeFirstLetter,
@@ -96,11 +97,6 @@ export const permissionsSchema = object({
 
 export enum UserRoleModifier {
   Remove = 'Remove',
-}
-
-export enum Authority {
-  ViaMultiSig = 'via-multi-sig',
-  Own = 'own',
 }
 
 export const AuthorityOptions: CardSelectOption<string>[] = [

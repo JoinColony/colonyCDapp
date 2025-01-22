@@ -3,7 +3,10 @@ import clsx from 'clsx';
 import React, { useMemo, type FC } from 'react';
 
 import { DEFAULT_NETWORK_INFO } from '~constants';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 import { useMobile } from '~hooks';
 import TransactionLink from '~shared/TransactionLink/index.ts';
 import { formatText } from '~utils/intl.ts';
@@ -14,16 +17,12 @@ import { type MeatballMenuProps } from './types.ts';
 
 const MeatballMenu: FC<MeatballMenuProps> = ({
   transactionHash,
+  action,
   defaultValues = {},
   showRedoItem = true,
 }) => {
   const isMobile = useMobile();
-  const {
-    actionSidebarToggle: [
-      ,
-      { toggleOn: toggleActionSidebarOn, toggleOff: toggleActionSidebarOff },
-    ],
-  } = useActionSidebarContext();
+  const { showActionSidebar, hideActionSidebar } = useActionSidebarContext();
 
   const items = useMemo(() => {
     const menuItems: MeatBallMenuItem[] = [];
@@ -34,10 +33,13 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
         label: formatText({ id: 'completedAction.redoAction' }),
         icon: Repeat,
         onClick: () => {
-          toggleActionSidebarOff();
+          hideActionSidebar();
 
           setTimeout(() => {
-            toggleActionSidebarOn({ ...defaultValues });
+            showActionSidebar(ActionSidebarMode.CreateAction, {
+              action,
+              initialValues: defaultValues,
+            });
           }, 500);
         },
       });
@@ -60,11 +62,12 @@ const MeatballMenu: FC<MeatballMenuProps> = ({
 
     return menuItems;
   }, [
+    action,
     transactionHash,
     defaultValues,
     showRedoItem,
-    toggleActionSidebarOn,
-    toggleActionSidebarOff,
+    showActionSidebar,
+    hideActionSidebar,
   ]);
 
   return (

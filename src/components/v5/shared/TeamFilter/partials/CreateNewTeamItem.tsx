@@ -2,19 +2,19 @@ import { Plus } from '@phosphor-icons/react';
 import React from 'react';
 
 import { Action } from '~constants/actions.ts';
-import { useActionSidebarContext } from '~context/ActionSidebarContext/ActionSidebarContext.ts';
-import { ACTION_TYPE_FIELD_NAME } from '~v5/common/ActionSidebar/consts.ts';
+import {
+  ActionSidebarMode,
+  useActionSidebarContext,
+} from '~context/ActionSidebarContext/ActionSidebarContext.ts';
 
 const displayName = 'v5.shared.TeamFilter.partials.CreateNewTeamItem';
 
 const CreateNewTeamItem = () => {
-  const {
-    actionSidebarToggle: [, { toggleOn: toggleActionSidebarOn }],
-  } = useActionSidebarContext();
+  const { showActionSidebar } = useActionSidebarContext();
 
   const handleClick = () => {
-    toggleActionSidebarOn({
-      [ACTION_TYPE_FIELD_NAME]: Action.CreateNewTeam,
+    showActionSidebar(ActionSidebarMode.CreateAction, {
+      action: Action.CreateNewTeam,
     });
   };
 

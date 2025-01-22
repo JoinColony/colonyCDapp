@@ -10,15 +10,15 @@ import React, { type FC, useEffect, useMemo, useState } from 'react';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
 import useEnabledExtensions from '~hooks/useEnabledExtensions.ts';
+import useGetColonyAction from '~hooks/useGetColonyAction.ts';
 import { SpinnerLoader } from '~shared/Preloaders/index.ts';
 import { type MotionAction } from '~types/motions.ts';
 import { MotionState } from '~utils/colonyMotions.ts';
 import { formatText } from '~utils/intl.ts';
-import useGetColonyAction from '~v5/common/ActionSidebar/hooks/useGetColonyAction.ts';
+import MotionCountDownTimer from '~v5/common/MotionCountDownTimer/MotionCountDownTimer.tsx';
 import UninstalledMessage from '~v5/common/UninstalledMessage/index.ts';
 import Stepper from '~v5/shared/Stepper/index.ts';
 
-import MotionCountDownTimer from './partials/MotionCountDownTimer/index.ts';
 import MotionProvider from './partials/MotionProvider/MotionProvider.tsx';
 import FinalizeStep from './steps/FinalizeStep/index.ts';
 import OutcomeStep from './steps/OutcomeStep/index.ts';

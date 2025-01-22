@@ -46,8 +46,7 @@ const UserMenu: FC<UserMenuProps> = ({
   const [activeSubmenu, setActiveSubmenu] = useState<UserMenuItemName | null>(
     null,
   );
-  const { actionSidebarToggle } = useActionSidebarContext();
-  const [isActionSidebarOpen] = actionSidebarToggle;
+  const { isActionSidebarOpen } = useActionSidebarContext();
 
   const caretIcon = isTablet ? (
     <CaretDown size={12} />
