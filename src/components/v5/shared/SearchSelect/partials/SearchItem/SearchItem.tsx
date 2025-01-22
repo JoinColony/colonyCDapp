@@ -4,6 +4,7 @@ import React, { type FC } from 'react';
 
 import { DomainColor } from '~gql';
 import { useMobile } from '~hooks/index.ts';
+import MaskedAddress from '~shared/MaskedAddress/MaskedAddress.tsx';
 import { getEnumValueFromKey } from '~utils/getEnumValueFromKey.ts';
 import { formatText } from '~utils/intl.ts';
 import { getTeamColor } from '~utils/teams.ts';
@@ -11,6 +12,8 @@ import ExtensionsStatusBadge from '~v5/common/Pills/ExtensionStatusBadge/index.t
 import { sortDisabled } from '~v5/shared/SearchSelect/utils.ts';
 import { TokenAvatar } from '~v5/shared/TokenAvatar/TokenAvatar.tsx';
 import { UserAvatar } from '~v5/shared/UserAvatar/UserAvatar.tsx';
+
+import { SearchItemLabelText } from '../SearchItemLabelText/index.tsx';
 
 import { type SearchItemProps } from './types.ts';
 
@@ -112,8 +115,12 @@ const SearchItem: FC<SearchItemProps> = ({
                       size={20}
                     />
                   )}
-                  {isLabelVisible && labelText}
-                  {!label && <span className="truncate">{walletAddress}</span>}
+                  <span className="truncate">
+                    {isLabelVisible && (
+                      <SearchItemLabelText labelText={labelText} />
+                    )}
+                    {!label && <MaskedAddress address={walletAddress} />}
+                  </span>
                   {isVerified && (
                     <CircleWavyCheck
                       size={14}
