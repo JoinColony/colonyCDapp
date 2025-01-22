@@ -72,7 +72,7 @@ const ActionSidebarContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const navigationWrapper = getElementWithSelector('.modal-blur-navigation');
 
     if (
-      !isClickedInside ||
+      isClickedInside ||
       (isChildOf(navigationWrapper, element) && !isTablet)
     ) {
       return false;
