@@ -198,15 +198,6 @@ export function* userLogout(data?: UserLogoutParams) {
   try {
     removeContext(ContextModule.ColonyManager);
     const apolloClient = getContext(ContextModule.ApolloClient);
-    // let walletLabel;
-    // try {
-    //   const wallet = getContext(ContextModule.Wallet);
-    //   walletLabel = wallet.label;
-    // } catch {
-    //   const lastWallet = getLastWallet();
-    //   walletLabel = lastWallet?.type;
-    // }
-    // disconnectWallet(walletLabel, shouldRemoveWalletContext);
     if (shouldRemoveWalletContext) {
       removeContext(ContextModule.Wallet);
     }
