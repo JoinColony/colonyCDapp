@@ -34,29 +34,15 @@ const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
     <div className="mb-6 w-full border-b border-b-gray-200 pb-4 md:mb-5 md:pb-3">
       <div className="mb-4 md:mb-2">{children}</div>
       {user ? (
-        <>
-          <Link
-            to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
-            className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50"
-          >
-            <UserCircleGear size={iconSize} />
-            <p className="ml-2">
-              {formatMessage({ id: 'userMenu.manageTitle' })}
-            </p>
-          </Link>
-          {wallet?.label === 'turnkeyhd' && (
-            <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
-              <Wallet size={iconSize} />
-              <button
-                type="button"
-                className="ml-2"
-                onClick={() => setShowAuthFlow(true)}
-              >
-                {formatMessage(MSG.manageEmbedded)}
-              </button>
-            </div>
-          )}
-        </>
+        <Link
+          to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
+          className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50"
+        >
+          <UserCircleGear size={iconSize} />
+          <p className="ml-2">
+            {formatMessage({ id: 'userMenu.manageTitle' })}
+          </p>
+        </Link>
       ) : (
         <Link
           to={CREATE_PROFILE_ROUTE}
@@ -67,6 +53,18 @@ const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
             {formatMessage({ id: 'userMenu.createTitle' })}
           </p>
         </Link>
+      )}
+      {wallet?.label === 'turnkeyhd' && (
+        <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
+          <Wallet size={iconSize} />
+          <button
+            type="button"
+            className="ml-2"
+            onClick={() => setShowAuthFlow(true)}
+          >
+            {formatMessage(MSG.manageEmbedded)}
+          </button>
+        </div>
       )}
     </div>
   );
