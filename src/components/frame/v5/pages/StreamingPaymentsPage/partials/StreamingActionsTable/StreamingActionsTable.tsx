@@ -1,4 +1,4 @@
-import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
+import { ArrowCircleDown, FilePlus, ShareNetwork } from '@phosphor-icons/react';
 import {
   type SortingState,
   type Row,
@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
+import { defineMessages } from 'react-intl';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
@@ -32,6 +33,13 @@ import useRenderRowLink from './useRenderRowLink.tsx';
 
 const displayName =
   'pages.StreamingPaymentsPage.partials.StreamingActionsTable.StreamingActionsTable';
+
+const MSG = defineMessages({
+  loadMoreStreams: {
+    id: `${displayName}.loadMoreStreams`,
+    defaultMessage: 'Load more streams',
+  },
+});
 
 interface StreamingActionsTableProps {
   actionRow: Row<StreamingTableFieldModel>;
@@ -115,6 +123,19 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
             pageSize: 1000000,
           },
         },
+        loadMoreProps: {
+          renderContent: (loadMore) => (
+            <button
+              type="button"
+              onClick={loadMore}
+              className="flex h-full w-full items-center justify-center gap-1 transition-colors text-3 hover:text-blue-400"
+            >
+              <ArrowCircleDown size={16} />
+              {formatText(MSG.loadMoreStreams)}
+            </button>
+          ),
+          itemsPerPage: 5,
+        },
         state: {
           sorting,
           columnVisibility: isMobile
@@ -141,19 +162,6 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
         canExpand: () => true,
         renderSubComponent,
       }}
-      // loadMoreProps={{
-      //   renderContent: (loadMore) => (
-      //     <button
-      //       type="button"
-      //       onClick={loadMore}
-      //       className="flex h-full w-full items-center justify-center gap-1 transition-colors text-3 hover:text-blue-400"
-      //     >
-      //       <ArrowCircleDown size={16} />
-      //       {formatText(MSG.loadMoreStreams)}
-      //     </button>
-      //   ),
-      //   itemsPerPage: 5,
-      // }}
       tableClassName="border-none"
     />
   );
