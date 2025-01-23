@@ -119,20 +119,6 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [primaryWallet]);
 
-  /*
-   * Handle wallet connection
-   */
-  const connectWallet = useCallback(async () => {
-    try {
-      setWalletConnecting(true);
-      setShowAuthFlow(true);
-    } catch (error) {
-      console.error('Could not connect wallet', error);
-    } finally {
-      setWalletConnecting(false);
-    }
-  }, [setWalletConnecting, setShowAuthFlow]);
-
   const setupUserContext = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
@@ -145,14 +131,45 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     success: ActionTypes.USER_LOGOUT_SUCCESS,
   });
 
+  const setUserContextWithErrorFallback = useCallback(async () => {
+    try {
+      await setupUserContext(undefined);
+    } catch (error) {
+      // In case of error clear out the wallet and user (in the local state)
+      // All the others are cleared by the `userLogout` saga call which is called
+      // automatically if the `setupUserContext` saga fails
+      setWalletConnecting(true);
+      await handleLogOut();
+      setWallet(null);
+      setUser(null);
+      setWalletConnecting(false);
+    }
+  }, [setupUserContext, setWallet, setUser, setWalletConnecting, handleLogOut]);
+
+  /*
+   * Trigger wallet connection
+   */
+  const connectWallet = useCallback(async () => {
+    try {
+      setWalletConnecting(true);
+      setShowAuthFlow(true);
+    } catch (error) {
+      console.error('Could not connect wallet', error);
+    } finally {
+      setWalletConnecting(false);
+    }
+  }, [setWalletConnecting, setShowAuthFlow]);
+
   /*
    * Handle wallet disconnection
    */
   const disconnectWallet = useCallback(
     async ({ shouldRemoveWalletContext = true } = {}) => {
       try {
+        setWalletConnecting(true);
         await userLogout({ shouldRemoveWalletContext });
         await handleLogOut();
+        setWalletConnecting(false);
       } catch (error) {
         console.error('Could not disconnect wallet', error);
         return;
@@ -163,6 +180,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     [setWallet, setUser, userLogout, handleLogOut],
   );
 
+  // Handle wallet connected
   useEffect(() => {
     const walletHandler = async () => {
       if (primaryWallet) {
@@ -181,12 +199,17 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateUser(primaryWalletAddress);
 
-          await setupUserContext(undefined);
+          await setUserContextWithErrorFallback();
         }
       }
     };
     walletHandler();
-  }, [primaryWallet, setupUserContext, updateUser, updateWallet]);
+  }, [
+    primaryWallet,
+    setUserContextWithErrorFallback,
+    updateUser,
+    updateWallet,
+  ]);
 
   // Network changed
   useDynamicEvents('primaryWalletNetworkChanged', async (...args) => {
@@ -206,12 +229,18 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
           await updateUser(primaryWalletAddress);
 
-          await setupUserContext(undefined);
+          await setUserContextWithErrorFallback();
         }
       }
     };
     watchForWalletChange();
-  }, [primaryWallet, setupUserContext, updateUser, updateWallet, wallet]);
+  }, [
+    primaryWallet,
+    setUserContextWithErrorFallback,
+    updateUser,
+    updateWallet,
+    wallet,
+  ]);
 
   const appContext = useMemo<AppContextValue>(
     () => ({
