@@ -70,22 +70,6 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     [getUserByAddress],
   );
 
-  const updateWallet = useCallback(() => {
-    try {
-      const updatedWallet = getContext(ContextModule.Wallet);
-      // updatedWallet.address = utils.getAddress(
-      //   updatedWallet.address,
-      // ) as `0x${string}`;
-      setWallet(updatedWallet);
-      // Update the user as soon as the wallet address changes
-      if (updatedWallet.address !== wallet?.address) {
-        updateUser(updatedWallet.address);
-      }
-    } catch (error) {
-      // It means that it was not set in context yet
-    }
-  }, [updateUser, wallet]);
-
   const setupUserContext = useAsyncFunction({
     submit: ActionTypes.WALLET_OPEN,
     error: ActionTypes.WALLET_OPEN_ERROR,
@@ -98,14 +82,62 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     success: ActionTypes.USER_LOGOUT_SUCCESS,
   });
 
+  const updateWallet = useCallback(async () => {
+    try {
+      if (primaryWallet) {
+        setWalletConnecting(true);
+
+        // Both methods exist as described by the documentation
+        // https://docs.dynamic.xyz/wallets/using-wallets/evm/evm-wallets#ethereum-wallet-methods
+        // and as supported by the code actually working
+        // I suspect their types are the ones not working properly here
+        // @ts-ignore
+        const publicClient = await primaryWallet.getPublicClient();
+        // @ts-ignore
+        const walletClient = await primaryWallet.getWalletClient();
+
+        const walletAddress = utils.getAddress(primaryWallet.address);
+
+        const RetryProvider = retryProviderFactory(
+          walletClient.transport,
+          walletAddress,
+        );
+        const provider = new RetryProvider();
+
+        const dynamicWallet = {
+          ...walletClient,
+          publicClient,
+          ethersProvider: provider,
+          provider,
+          primaryWallet,
+          address: walletAddress,
+          label: primaryWallet.key,
+          chains: [publicClient.chain, walletClient.chain],
+        };
+
+        debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
+
+        setContext(ContextModule.Wallet, dynamicWallet);
+
+        await updateUser(dynamicWallet.address);
+
+        await setupUserContext(undefined);
+
+        setWallet(dynamicWallet);
+
+        setWalletConnecting(false);
+      }
+    } catch (error) {
+      // It means that it was not set in context yet
+    }
+  }, [primaryWallet, setupUserContext, updateUser]);
+
   /*
    * Handle wallet connection
    */
   const connectWallet = useCallback(async () => {
     try {
-      // await setupUserContext(undefined);
       setWalletConnecting(true);
-      // updateWallet();
       setShowAuthFlow(true);
     } catch (error) {
       console.error('Could not connect wallet', error);
@@ -144,150 +176,26 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!contextWallet) {
-          // no wallet exists, set it
-          setWalletConnecting(true);
-
-          // Both methods exist as described by the documentation
-          // https://docs.dynamic.xyz/wallets/using-wallets/evm/evm-wallets#ethereum-wallet-methods
-          // and as supported by the code actually working
-          // I suspect their types are the ones not working properly here
-          // @ts-ignore
-          const publicClient = await primaryWallet.getPublicClient();
-          // @ts-ignore
-          const walletClient = await primaryWallet.getWalletClient();
-
-          const walletAddress = utils.getAddress(primaryWallet.address);
-
-          const RetryProvider = retryProviderFactory(
-            walletClient.transport,
-            walletAddress,
-          );
-          const provider = new RetryProvider();
-
-          const dynamicWallet = {
-            ...walletClient,
-            publicClient,
-            ethersProvider: provider,
-            provider,
-            primaryWallet,
-            address: walletAddress,
-            label: primaryWallet.key,
-            chains: [publicClient.chain, walletClient.chain],
-          };
-
-          debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
-
-          setContext(ContextModule.Wallet, dynamicWallet);
-
-          await setupUserContext(undefined);
-
           updateWallet();
-
-          setWalletConnecting(false);
         }
-
-        // setWallet(primaryWallet);
       }
     };
     walletHandler();
   }, [primaryWallet, setupUserContext, updateWallet]);
 
-  useDynamicEvents('primaryWalletNetworkChanged', async () => {
-    // console.log('network change', args);
-    // console.log({ primaryWallet })
-    if (primaryWallet) {
-      setWalletConnecting(true);
-
-      // Both methods exist as described by the documentation
-      // https://docs.dynamic.xyz/wallets/using-wallets/evm/evm-wallets#ethereum-wallet-methods
-      // and as supported by the code actually working
-      // I suspect their types are the ones not working properly here
-      // @ts-ignore
-      const publicClient = await primaryWallet.getPublicClient();
-      // @ts-ignore
-      const walletClient = await primaryWallet.getWalletClient();
-
-      const walletAddress = utils.getAddress(primaryWallet.address);
-
-      const RetryProvider = retryProviderFactory(
-        walletClient.transport,
-        walletAddress,
-      );
-      const provider = new RetryProvider();
-
-      const dynamicWallet = {
-        ...walletClient,
-        publicClient,
-        ethersProvider: provider,
-        provider,
-        primaryWallet,
-        address: walletAddress,
-        label: primaryWallet.key,
-        chains: [publicClient.chain, walletClient.chain],
-      };
-
-      debugLogging('SETTING WALLET CONTEXT', dynamicWallet);
-
-      setContext(ContextModule.Wallet, dynamicWallet);
-
-      updateWallet();
-
-      await setupUserContext(undefined);
-
-      setWalletConnecting(false);
-    }
+  // Network changed
+  useDynamicEvents('primaryWalletNetworkChanged', async (...args) => {
+    debugLogging('WALLET NETWORK CHANGED', args);
+    updateWallet();
   });
 
-  /*
-   * When the user switches account in Metamask, re-initiate the wallet connect flow
-   * so as to update their wallet details in the app's memory.
-   */
-  // const handleAccountChange = useCallback(async () => {
-  //   // @ts-ignore
-  //   const accounts = await window.ethereum.request({
-  //     method: 'eth_accounts',
-  //   });
-  //   const loggedInAccount = accounts[0];
-  //   await disconnectWallet({ shouldRemoveWalletContext: false });
-  //   if (loggedInAccount) {
-  //     connectWallet();
-  //   }
-  // }, [connectWallet, disconnectWallet]);
-
-  // const previousAccountChange = usePrevious(handleAccountChange);
-
-  // useEffect(() => {
-  //   if (window.ethereum) {
-  //     if (previousAccountChange) {
-  //       // @ts-ignore
-  //       window.ethereum.removeListener(
-  //         'accountsChanged',
-  //         previousAccountChange,
-  //       );
-  //     }
-  //     // @ts-ignore
-  //     window.ethereum.on('accountsChanged', handleAccountChange);
-  //   }
-
-  //   return () => {
-  //     if (window.ethereum) {
-  //       // @ts-ignore
-  //       window.ethereum.removeListener('accountsChanged', handleAccountChange);
-  //     }
-  //   };
-  // }, [handleAccountChange, previousAccountChange]);
-
-  // useEffect(() => {
-  //   if (getLastWallet()) {
-  //     connectWallet();
-  //   } else {
-  //     setWalletConnecting(false);
-  //   }
-
-  //   // NOTE: We really want this to run exactly once (when the app starts)
-  //   // connectWallet is dependent on the wallet itself, so this is to avoid an infinite loop
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  // dynamic wallet controls and the CDapp's have gone out of sync
+  useEffect(() => {
+    if (primaryWallet && !wallet) {
+      debugLogging('DYNAMIC WALLET AND CDAPP OUT OF SYNC');
+      updateWallet();
+    }
+  }, [primaryWallet, updateWallet, wallet]);
 
   const appContext = useMemo<AppContextValue>(
     () => ({
