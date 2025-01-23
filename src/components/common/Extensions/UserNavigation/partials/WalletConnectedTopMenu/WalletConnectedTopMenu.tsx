@@ -54,6 +54,10 @@ const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
           </p>
         </Link>
       )}
+      {/*
+       * Only show the manage embedded wallet link if the wallet is embedded / custodial
+       * All the other wallet types have their own interface
+       */}
       {wallet?.label === 'turnkeyhd' && (
         <div className="navigation-link -ml-4 w-[calc(100%+2rem)] rounded hover:bg-gray-50">
           <Wallet size={iconSize} />
