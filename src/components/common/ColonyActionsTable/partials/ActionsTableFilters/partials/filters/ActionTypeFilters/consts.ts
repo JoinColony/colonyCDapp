@@ -65,6 +65,10 @@ export const ACTION_TYPES_FILTERS = [
     name: Action.ManagePermissions,
   },
   {
+    label: formatText({ id: 'actions.arbitraryTxs' }),
+    name: Action.ArbitraryTxs,
+  },
+  {
     label: formatText({ id: 'actions.editColonyDetails' }),
     name: Action.EditColonyDetails,
   },
