@@ -48,17 +48,20 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
             setUserLoading(true);
           }
 
-          const { data } = await getUserByAddress({
-            variables: {
-              address: utils.getAddress(address),
-            },
-            fetchPolicy: 'network-only',
-          });
-          const [currentUser] = data?.getUserByAddress?.items || [];
-          if (currentUser) {
-            setUser(currentUser);
-          } else {
-            setUser(null);
+          // Only request new user data if the wallet actually changed
+          if (user?.walletAddress !== address) {
+            const { data } = await getUserByAddress({
+              variables: {
+                address: utils.getAddress(address),
+              },
+              fetchPolicy: 'network-only',
+            });
+            const [currentUser] = data?.getUserByAddress?.items || [];
+            if (currentUser) {
+              setUser(currentUser);
+            } else {
+              setUser(null);
+            }
           }
         } catch (error) {
           console.error(error);
@@ -67,20 +70,8 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [getUserByAddress],
+    [getUserByAddress, user],
   );
-
-  const setupUserContext = useAsyncFunction({
-    submit: ActionTypes.WALLET_OPEN,
-    error: ActionTypes.WALLET_OPEN_ERROR,
-    success: ActionTypes.WALLET_OPEN_SUCCESS,
-  });
-
-  const userLogout = useAsyncFunction({
-    submit: ActionTypes.USER_LOGOUT,
-    error: ActionTypes.USER_LOGOUT_ERROR,
-    success: ActionTypes.USER_LOGOUT_SUCCESS,
-  });
 
   const updateWallet = useCallback(async () => {
     try {
@@ -119,10 +110,6 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
         setContext(ContextModule.Wallet, dynamicWallet);
 
-        await updateUser(dynamicWallet.address);
-
-        await setupUserContext(undefined);
-
         setWallet(dynamicWallet);
 
         setWalletConnecting(false);
@@ -130,7 +117,7 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       // It means that it was not set in context yet
     }
-  }, [primaryWallet, setupUserContext, updateUser]);
+  }, [primaryWallet]);
 
   /*
    * Handle wallet connection
@@ -146,14 +133,26 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [setWalletConnecting, setShowAuthFlow]);
 
+  const setupUserContext = useAsyncFunction({
+    submit: ActionTypes.WALLET_OPEN,
+    error: ActionTypes.WALLET_OPEN_ERROR,
+    success: ActionTypes.WALLET_OPEN_SUCCESS,
+  });
+
+  const userLogout = useAsyncFunction({
+    submit: ActionTypes.USER_LOGOUT,
+    error: ActionTypes.USER_LOGOUT_ERROR,
+    success: ActionTypes.USER_LOGOUT_SUCCESS,
+  });
+
   /*
    * Handle wallet disconnection
    */
   const disconnectWallet = useCallback(
     async ({ shouldRemoveWalletContext = true } = {}) => {
       try {
-        await handleLogOut();
         await userLogout({ shouldRemoveWalletContext });
+        await handleLogOut();
       } catch (error) {
         console.error('Could not disconnect wallet', error);
         return;
@@ -176,26 +175,43 @@ const AppContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!contextWallet) {
-          updateWallet();
+          const primaryWalletAddress = utils.getAddress(primaryWallet.address);
+
+          await updateWallet();
+
+          await updateUser(primaryWalletAddress);
+
+          await setupUserContext(undefined);
         }
       }
     };
     walletHandler();
-  }, [primaryWallet, setupUserContext, updateWallet]);
+  }, [primaryWallet, setupUserContext, updateUser, updateWallet]);
 
   // Network changed
   useDynamicEvents('primaryWalletNetworkChanged', async (...args) => {
     debugLogging('WALLET NETWORK CHANGED', args);
-    updateWallet();
+    await updateWallet();
   });
 
-  // dynamic wallet controls and the CDapp's have gone out of sync
+  // Wallet address changed
   useEffect(() => {
-    if (primaryWallet && !wallet) {
-      debugLogging('DYNAMIC WALLET AND CDAPP OUT OF SYNC');
-      updateWallet();
-    }
-  }, [primaryWallet, updateWallet, wallet]);
+    const watchForWalletChange = async () => {
+      if (primaryWallet && wallet) {
+        const primaryWalletAddress = utils.getAddress(primaryWallet.address);
+        if (primaryWalletAddress !== wallet.address) {
+          debugLogging('WALLET ADDRESS CHANGED', primaryWallet);
+
+          await updateWallet();
+
+          await updateUser(primaryWalletAddress);
+
+          await setupUserContext(undefined);
+        }
+      }
+    };
+    watchForWalletChange();
+  }, [primaryWallet, setupUserContext, updateUser, updateWallet, wallet]);
 
   const appContext = useMemo<AppContextValue>(
     () => ({
