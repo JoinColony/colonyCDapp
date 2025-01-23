@@ -29,13 +29,20 @@ const StreamingPaymentsTable = () => {
       data={loading ? Array(4).fill({}) : items}
       columns={columns}
       renderCellWrapper={(_, content) => content}
-      renderSubComponent={renderSubComponent}
-      paginationDisabled={loading}
-      showTotalPagesNumber={false}
-      getPaginationRowModel={getPaginationRowModel()}
-      initialState={{
-        pagination: {
-          pageSize: 10,
+      rows={{
+        canExpand: () => true,
+        renderSubComponent,
+      }}
+      pagination={{
+        disabled: loading,
+      }}
+      overrides={{
+        getPaginationRowModel: getPaginationRowModel(),
+        initialState: {
+          pagination: {
+            pageSize: 10,
+            pageIndex: 0,
+          },
         },
       }}
       emptyContent={

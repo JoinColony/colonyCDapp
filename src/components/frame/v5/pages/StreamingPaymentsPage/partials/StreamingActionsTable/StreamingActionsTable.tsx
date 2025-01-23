@@ -1,14 +1,11 @@
 import { FilePlus, ShareNetwork } from '@phosphor-icons/react';
-import { ArrowCircleDown } from '@phosphor-icons/react/dist/ssr/ArrowCircleDown';
 import {
   type SortingState,
   type Row,
-  getSortedRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import React, { useState, type FC } from 'react';
-import { defineMessages } from 'react-intl';
 import { generatePath, useNavigate } from 'react-router-dom';
 
 import MeatballMenuCopyItem from '~common/ColonyActionsTable/partials/MeatballMenuCopyItem/MeatballMenuCopyItem.tsx';
@@ -22,8 +19,7 @@ import {
 } from '~routes';
 import { formatText } from '~utils/intl.ts';
 import { MEATBALL_MENU_COLUMN_ID } from '~v5/common/Table/consts.ts';
-import Table from '~v5/common/Table/Table.tsx';
-import { type TableProps } from '~v5/common/Table/types.ts';
+import { Table } from '~v5/common/Table/Table.tsx';
 
 import {
   type StreamingTableFieldModel,
@@ -36,13 +32,6 @@ import useRenderRowLink from './useRenderRowLink.tsx';
 
 const displayName =
   'pages.StreamingPaymentsPage.partials.StreamingActionsTable.StreamingActionsTable';
-
-const MSG = defineMessages({
-  loadMoreStreams: {
-    id: `${displayName}.loadMoreStreams`,
-    defaultMessage: 'Load more streams',
-  },
-});
 
 interface StreamingActionsTableProps {
   actionRow: Row<StreamingTableFieldModel>;
@@ -67,40 +56,39 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
     },
   ]);
   const navigate = useNavigate();
-  const getMenuProps: TableProps<StreamingActionTableFieldModel>['getMenuProps'] =
-    ({ original: { transactionId } }) => ({
-      items: [
-        {
-          key: '1',
-          label: formatText({ id: 'activityFeedTable.menu.view' }),
-          icon: FilePlus,
-          onClick: () => {
-            navigate(
-              `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionId}`,
-              {
-                replace: true,
-              },
-            );
-          },
+  const getMenuProps = ({ original: { transactionId } }) => ({
+    items: [
+      {
+        key: '1',
+        label: formatText({ id: 'activityFeedTable.menu.view' }),
+        icon: FilePlus,
+        onClick: () => {
+          navigate(
+            `${window.location.pathname}?${TX_SEARCH_PARAM}=${transactionId}`,
+            {
+              replace: true,
+            },
+          );
         },
-        {
-          key: '2',
-          label: formatText({ id: 'activityFeedTable.menu.share' }),
-          renderItemWrapper: (itemWrapperProps, children) => (
-            <MeatballMenuCopyItem
-              textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
-                colonyName,
-              })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionId}`}
-              {...itemWrapperProps}
-            >
-              {children}
-            </MeatballMenuCopyItem>
-          ),
-          icon: ShareNetwork,
-          onClick: () => false,
-        },
-      ],
-    });
+      },
+      {
+        key: '2',
+        label: formatText({ id: 'activityFeedTable.menu.share' }),
+        renderItemWrapper: (itemWrapperProps, children) => (
+          <MeatballMenuCopyItem
+            textToCopy={`${APP_URL.origin}/${generatePath(COLONY_HOME_ROUTE, {
+              colonyName,
+            })}${COLONY_ACTIVITY_ROUTE}?${TX_SEARCH_PARAM}=${transactionId}`}
+            {...itemWrapperProps}
+          >
+            {children}
+          </MeatballMenuCopyItem>
+        ),
+        icon: ShareNetwork,
+        onClick: () => false,
+      },
+    ],
+  });
 
   const renderSubComponent = useRenderSubComponent({
     getMenuProps,
@@ -119,48 +107,53 @@ const StreamingActionsTable: FC<StreamingActionsTableProps> = ({
             !isTablet,
         },
       )}
-      enableSortingRemoval={false}
-      enableSorting
-      loadMoreProps={{
-        renderContent: (loadMore) => (
-          <button
-            type="button"
-            onClick={loadMore}
-            className="flex h-full w-full items-center justify-center gap-1 transition-colors text-3 hover:text-blue-400"
-          >
-            <ArrowCircleDown size={16} />
-            {formatText(MSG.loadMoreStreams)}
-          </button>
-        ),
-        itemsPerPage: 5,
-      }}
-      initialState={{
-        pagination: {
-          pageSize: 1000000,
+      overrides={{
+        enableSorting: true,
+        initialState: {
+          pagination: {
+            pageIndex: 0,
+            pageSize: 1000000,
+          },
         },
+        state: {
+          sorting,
+          columnVisibility: isMobile
+            ? {
+                title: true,
+                streamed: true,
+                token: true,
+                team: false,
+                status: false,
+                [MEATBALL_MENU_COLUMN_ID]: false,
+              }
+            : {
+                expander: false,
+              },
+        },
+        getRowId: (row) => row.transactionId,
+        onSortingChange: setSorting,
+        getPaginationRowModel: getPaginationRowModel(),
       }}
-      hidePagination
-      state={{
-        sorting,
-        columnVisibility: isMobile
-          ? {
-              title: true,
-              streamed: true,
-              token: true,
-              team: false,
-              status: false,
-              [MEATBALL_MENU_COLUMN_ID]: false,
-            }
-          : {
-              expander: false,
-            },
+      pagination={{
+        visible: false,
       }}
-      getRowId={(row) => row.transactionId}
-      getMenuProps={getMenuProps}
-      onSortingChange={setSorting}
-      getSortedRowModel={getSortedRowModel()}
-      getPaginationRowModel={getPaginationRowModel()}
-      renderSubComponent={renderSubComponent}
+      rows={{
+        canExpand: () => true,
+        renderSubComponent,
+      }}
+      // loadMoreProps={{
+      //   renderContent: (loadMore) => (
+      //     <button
+      //       type="button"
+      //       onClick={loadMore}
+      //       className="flex h-full w-full items-center justify-center gap-1 transition-colors text-3 hover:text-blue-400"
+      //     >
+      //       <ArrowCircleDown size={16} />
+      //       {formatText(MSG.loadMoreStreams)}
+      //     </button>
+      //   ),
+      //   itemsPerPage: 5,
+      // }}
       tableClassName="border-none"
     />
   );
