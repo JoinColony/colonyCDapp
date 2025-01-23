@@ -3,6 +3,7 @@ import { all, call, fork, put } from 'redux-saga/effects';
 // import AppLoadingState from '~context/appLoadingState';
 
 import { authenticateWallet } from '~auth/index.ts';
+import { getContext, ContextModule } from '~context/index.ts';
 import { failPendingTransactions } from '~state/transactionState.ts';
 
 import { ActionTypes } from '../actionTypes.ts';
@@ -46,72 +47,36 @@ function* setupContextDependentSagas() {
 }
 
 function* initializeFullWallet() {
-  // const wallet = yield call(getWallet, lastWallet);
-  // setContext(ContextModule.Wallet, wallet);
   // We're forking the next one as we don't really need to wait for it
   yield call(getGasPrices);
   yield call(authenticateWallet);
   yield fork(failPendingTransactions);
 }
 
-// console.log({ dynamic })
-
 /*
  * Given an action to get the user’s wallet, use this wallet to initialise the initial
  * context that depends on it (the wallet itself, the DDB, the ColonyManager),
  * and then any other context that depends on that.
  */
-export function* setupUserContext(dynamicWallet) {
+export function* setupUserContext() {
   try {
-    /* Instantiate the onboard object and load into context */
-    // const onboard = yield getOnboard();
-    // setContext(ContextModule.Onboard, onboard);
+    let wallet;
 
-    /*
-     * Get the new wallet and set it in context.
-     */
+    try {
+      wallet = getContext(ContextModule.Wallet);
+    } catch {
+      // wallet not seen in context yet
+    }
 
-    // let wallet: ColonyWallet | undefined;
-
-    // try {
-    //   wallet = getContext(ContextModule.Wallet);
-    // } catch {
-    //   // wallet not seen in context yet
-    // }
-
-    if (!dynamicWallet) {
-      console.error('dynamic wallet not working');
+    if (!wallet) {
       return yield putError(
         ActionTypes.WALLET_OPEN_ERROR,
-        Error('No wallet found'),
+        Error(
+          'Your wallet is not authenticated. Please reconnect your wallet.',
+        ),
         {},
       );
     }
-
-    // const lastWallet = getLastWallet();
-    // const selectedMetamaskAddress = yield getMetamaskAddress();
-
-    /*
-     * If the wallet we've pulled from context does not have the same address as the selected account
-     * in Metamask, it's because the user just switched their account in metamask.
-     * In this case we just logout previous user and disconnect wallet.
-     */
-    // if (
-    //   !wallet &&
-    //   lastWallet &&
-    //   selectedMetamaskAddress &&
-    //   lastWallet.address.toLocaleLowerCase() !==
-    //     selectedMetamaskAddress.toLocaleLowerCase() &&
-    //   lastWallet.type === ONBOARD_METAMASK_WALLET_LABEL
-    // ) {
-    //   return yield putError(
-    //     ActionTypes.WALLET_OPEN_ERROR,
-    //     Error(
-    //       'Your wallet is not authenticated. Please reconnect your wallet.',
-    //     ),
-    //     {},
-    //   );
-    // }
 
     yield call(initializeFullWallet);
 
@@ -126,18 +91,6 @@ export function* setupUserContext(dynamicWallet) {
      * but we then do not wait for a return value (which will never come).
      */
     yield fork(setupContextDependentSagas);
-
-    // const userContext = {
-    //   apolloClient,
-    //   colonyManager,
-    //   wallet,
-    // };
-    // yield setupResolvers(apolloClient, userContext);
-
-    /*
-     * Get the network contract values from the resolver
-     */
-    // yield updateNetworkContracts();
 
     yield put<AllActions>({
       type: ActionTypes.USER_CONTEXT_SETUP_SUCCESS,
