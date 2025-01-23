@@ -119,7 +119,7 @@ const MSG = {
     },
     uninstallConfirmation: {
       id: `${displayName}.${Extension.StreamingPayments}.uninstallConfirmation`,
-      defaultMessage: "I understand that deleted accounts aren't recoverable",
+      defaultMessage: 'I understand the risk of uninstalling this extension.',
     },
   }),
 };
