@@ -3,7 +3,7 @@ import React, { type PropsWithChildren, type FC } from 'react';
 import { useIntl } from 'react-intl';
 
 import { useAppContext } from '~context/AppContext/AppContext.ts';
-import { useMobile } from '~hooks/index.ts';
+import { useTablet } from '~hooks/index.ts';
 import {
   USER_HOME_ROUTE,
   USER_EDIT_PROFILE_ROUTE,
@@ -17,13 +17,13 @@ const displayName =
 const WalletConnectedTopMenu: FC<PropsWithChildren> = ({ children }) => {
   const { formatMessage } = useIntl();
   const { user } = useAppContext();
-  const isMobile = useMobile();
+  const isTablet = useTablet();
 
-  const iconSize = isMobile ? 18 : 16;
+  const iconSize = isTablet ? 18 : 16;
 
   return (
-    <div className="mb-6 w-full border-b border-b-gray-200 pb-4 sm:mb-5 sm:pb-3">
-      <div className="mb-4 sm:mb-2">{children}</div>
+    <div className="mb-6 w-full border-b border-b-gray-200 pb-4 md:mb-5 md:pb-3">
+      <div className="mb-4 md:mb-2">{children}</div>
       {user ? (
         <Link
           to={`${USER_HOME_ROUTE}/${USER_EDIT_PROFILE_ROUTE}`}
