@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { ColonyActionType, useGetColonyHistoricRoleRolesLazyQuery } from '~gql';
+import { ColonyActionType } from '~gql';
 import { type ActivityFeedColonyAction } from '~hooks/useActivityFeed/types.ts';
 import { ExtendedColonyActionType } from '~types/actions.ts';
-import { getHistoricRolesDatabaseId } from '~utils/databaseId.ts';
-import { transformActionRolesToColonyRoles } from '~v5/common/CompletedAction/partials/SetUserRoles/utils.ts';
+import { normalizeRolesForAction } from '~utils/colonyActions.ts';
 
 export const useBuildRedoEnabledActionsMap = ({
   colonyActions = [],
@@ -17,15 +16,11 @@ export const useBuildRedoEnabledActionsMap = ({
     Record<ActivityFeedColonyAction['transactionHash'], boolean>
   >({});
 
-  const [getHistoricRoles] = useGetColonyHistoricRoleRolesLazyQuery({
-    fetchPolicy: 'cache-and-network',
-  });
-
   // I'm using simple stringification to help the useEffect hook with shallow comparison and avoid unnecessary rerenders
   const stringifiedColonyActions = JSON.stringify(colonyActions);
 
   useEffect(() => {
-    const buildRedoEnabledActionsMap = async () => {
+    const buildRedoEnabledActionsMap = () => {
       const originalColonyActions = JSON.parse(
         stringifiedColonyActions,
       ) as typeof colonyActions;
@@ -35,7 +30,6 @@ export const useBuildRedoEnabledActionsMap = ({
       }
 
       const updatedActionsMap: typeof redoEnabledActionsMap = {};
-      const promises: Promise<void>[] = [];
 
       originalColonyActions.forEach((colonyAction) => {
         switch (
@@ -44,47 +38,23 @@ export const useBuildRedoEnabledActionsMap = ({
           case ColonyActionType.SetUserRoles:
           case ColonyActionType.SetUserRolesMotion:
           case ColonyActionType.SetUserRolesMultisig: {
-            const {
-              blockNumber,
-              colonyAddress,
-              fromDomain,
-              recipientAddress,
-              rolesAreMultiSig,
-              roles,
-              motionData,
-              multiSigData,
-            } = colonyAction;
+            const { roles, motionData, multiSigData } = colonyAction;
 
-            const promise = async () => {
-              const result = await getHistoricRoles({
-                variables: {
-                  id: getHistoricRolesDatabaseId({
-                    blockNumber,
-                    colonyAddress,
-                    nativeId: fromDomain?.nativeId,
-                    recipientAddress,
-                    isMultiSig: rolesAreMultiSig,
-                  }),
-                },
-              });
+            const normalizedRoles = normalizeRolesForAction(roles ?? {});
+            const isRemovingRoles =
+              normalizedRoles.filter((role) => role.setTo).length === 0;
 
-              const dbPermissionsNew = transformActionRolesToColonyRoles(
-                result?.data?.getColonyHistoricRole || roles,
-              );
+            const isMotion = !!motionData;
+            const isMultiSig = !!multiSigData;
 
-              const isMotion = !!motionData;
-              const isMultiSig = !!multiSigData;
+            const shouldShowRedoItem =
+              !isRemovingRoles ||
+              (isMotion && !motionData?.isFinalized) ||
+              (isMultiSig && !multiSigData?.isExecuted);
 
-              const shouldShowRedoItem =
-                !!dbPermissionsNew.length ||
-                (isMotion && !motionData?.isFinalized) ||
-                (isMultiSig && !multiSigData?.isExecuted);
+            updatedActionsMap[colonyAction.transactionHash] =
+              shouldShowRedoItem;
 
-              updatedActionsMap[colonyAction.transactionHash] =
-                shouldShowRedoItem;
-            };
-
-            promises.push(promise());
             break;
           }
 
@@ -124,13 +94,11 @@ export const useBuildRedoEnabledActionsMap = ({
         }
       });
 
-      await Promise.all(promises);
-
       setRedoEnabledActionsMap(updatedActionsMap);
     };
 
     buildRedoEnabledActionsMap();
-  }, [colonyActionsLoading, getHistoricRoles, stringifiedColonyActions]);
+  }, [colonyActionsLoading, stringifiedColonyActions]);
 
   return redoEnabledActionsMap;
 };

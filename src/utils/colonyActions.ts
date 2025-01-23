@@ -1,6 +1,4 @@
 import { ColonyRole } from '@colony/colony-js';
-import { type BigNumber } from 'ethers';
-import { type ReactNode } from 'react';
 
 import { getRole } from '~constants/permissions.ts';
 import {
@@ -13,17 +11,10 @@ import {
   ExtendedColonyActionType,
   type ActionUserRoles,
 } from '~types/actions.ts';
-import {
-  type Token,
-  type Domain as ColonyDomain,
-  type ColonyMetadata,
-  type ColonyAction,
-} from '~types/graphql.ts';
-import { type Address } from '~types/index.ts';
+import { type ColonyMetadata, type ColonyAction } from '~types/graphql.ts';
 import { type CustomPermissionTableModel } from '~types/permissions.ts';
 import { isEmpty, isEqual } from '~utils/lodash.ts';
 
-import { type MotionVote } from './colonyMotions.ts';
 import { formatText } from './intl.ts';
 import { parseSafeTransactionType } from './safes/index.ts';
 
@@ -173,36 +164,6 @@ export const getDetailItemsKeys = (actionType: AnyActionType) => {
       return [];
   }
 };
-
-export interface EventValues {
-  actionType: ColonyActionType;
-  amount?: string | ReactNode;
-  token?: Token;
-  tokenSymbol?: string | ReactNode;
-  decimals?: number;
-  fromDomain?: ColonyDomain;
-  toDomain?: ColonyDomain;
-  motionDomain?: ColonyDomain;
-  oldVersion?: string;
-  newVersion?: string;
-  colonyName?: string | ReactNode;
-  roles?: ActionUserRoles[];
-  user?: Address;
-  agent?: Address;
-  creator?: Address;
-  slot?: string;
-  toValue?: string;
-  fromValue?: string;
-  initiator?: string | ReactNode;
-  staker?: string;
-  stakeAmount?: BigNumber;
-  vote?: MotionVote;
-  voter?: Address;
-  motionTag?: ReactNode;
-  objectionTag?: ReactNode;
-  reputationChange?: string;
-  isSmiteAction?: boolean;
-}
 
 /*
  * Get values for action type based on action type
@@ -522,12 +483,12 @@ export const normalizeRolesForAction = (
    * Done manually since this list is static
    */
   const extractedRoles = [
-    { id: 0, setTo: roles.role_0 },
-    { id: 1, setTo: roles.role_1 },
-    { id: 2, setTo: roles.role_2 },
-    { id: 3, setTo: roles.role_3 },
-    { id: 5, setTo: roles.role_5 },
-    { id: 6, setTo: roles.role_6 },
+    { id: ColonyRole.Recovery, setTo: roles.role_0 },
+    { id: ColonyRole.Root, setTo: roles.role_1 },
+    { id: ColonyRole.Arbitration, setTo: roles.role_2 },
+    { id: ColonyRole.Architecture, setTo: roles.role_3 },
+    { id: ColonyRole.Funding, setTo: roles.role_5 },
+    { id: ColonyRole.Administration, setTo: roles.role_6 },
   ];
 
   return extractedRoles.filter(
