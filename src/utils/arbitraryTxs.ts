@@ -27,6 +27,9 @@ export const decodeArbitraryTransaction = (
   jsonAbi: string,
   encodedFunction: string,
 ): DecodedArbitraryTransaction | null => {
+  if (!jsonAbi) {
+    return null;
+  }
   try {
     const functionSignature = getFunctionSignature(encodedFunction);
 
@@ -82,15 +85,27 @@ export const getFormatValuesArbitraryTransactions = (
     arbitraryMethod: '',
     arbitraryTransactionsLength: 0,
   };
-  const arbitraryTransactions = action.arbitraryTransactions || [];
-  messageValues.arbitraryTransactionsLength = arbitraryTransactions.length;
 
-  if (arbitraryTransactions.length === 1 && action?.metadata?.arbitraryTxAbis) {
-    const decoded = decodeArbitraryTransaction(
-      action.metadata.arbitraryTxAbis[0].jsonAbi,
-      arbitraryTransactions[0].encodedFunction,
-    );
-    messageValues.arbitraryMethod = decoded?.method || '';
+  const arbitraryTransactions = action.arbitraryTransactions || [];
+  if (
+    action?.metadata?.arbitraryTxAbis &&
+    action?.metadata?.arbitraryTxAbis.length > 0
+  ) {
+    messageValues.arbitraryTransactionsLength = arbitraryTransactions.length;
+
+    if (arbitraryTransactions.length === 1) {
+      const decoded = decodeArbitraryTransaction(
+        action.metadata.arbitraryTxAbis[0]?.jsonAbi,
+        arbitraryTransactions[0].encodedFunction,
+      );
+      if (decoded?.method) {
+        messageValues.arbitraryMethod = decoded?.method;
+      } else {
+        messageValues.arbitraryTransactionsLength = 0;
+        messageValues.arbitraryMethod = '';
+      }
+    }
   }
+
   return messageValues;
 };

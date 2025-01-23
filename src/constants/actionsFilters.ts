@@ -78,6 +78,11 @@ export const ACTION_TYPE_TO_API_ACTION_TYPES_MAP: Partial<
     ColonyActionType.VersionUpgradeMotion,
     ColonyActionType.VersionUpgradeMultisig,
   ],
+  [Action.ArbitraryTxs]: [
+    ColonyActionType.MakeArbitraryTransaction,
+    ColonyActionType.MakeArbitraryTransactionsMotion,
+    ColonyActionType.MakeArbitraryTransactionsMultisig,
+  ],
   /**
    * @deprecated
    * This is still being used by our filters context for some components to filter by Colony Objectives Action type
